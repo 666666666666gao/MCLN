@@ -1,0 +1,45 @@
+{
+  "schema": "mcln-joint-box-mask-v2-implementation-audit-v1",
+  "created_at_cst": "2026-08-06T01:38:00+08:00",
+  "passed": true,
+  "contract": {
+    "adapter_schema": "rec-joint-box-mask-adapter-v2",
+    "mask_sources": ["text", "query", "fused"],
+    "mask_logit_thresholds": [-1.0, -0.5, 0.0, 0.5, 1.0],
+    "legacy_identity_policy_index": 12,
+    "query_consistent_rec_res": true,
+    "runtime_inference_uses_ground_truth": false,
+    "missing_policy_fails_closed": true
+  },
+  "verification": {
+    "pytest_passed": 163,
+    "pytest_skipped": 1,
+    "shell_syntax_passed": true,
+    "python_compile_passed": true,
+    "running_queue_pid": 599319,
+    "running_queue_inode": 6914648716,
+    "running_queue_fd_offset": 2075,
+    "appended_branch_is_after_fd_offset": true
+  },
+  "protected_artifacts": {
+    "best_rec_acc025": {
+      "path": "/root/autodl-tmp/DATA_ROOT/protected_mcln_artifacts/scanrefer_best_backbone_acc025_0.582878_component.pth",
+      "mode": "0444",
+      "inode": 10739770064,
+      "sha256": "3e44f4bdad3bd66ad82102032e1cb0241de57d147c0aa1d3eff9736926ef2208"
+    },
+    "v19_network_best": {
+      "path": "/root/autodl-tmp/DATA_ROOT/protected_mcln_artifacts/scanrefer_network_best_v19_rec025_0.581195_mask025_0.598233.pth",
+      "mode": "0444",
+      "inode": 6496464367,
+      "sha256": "2d6a3cf2914e5a7394ff2072378613314aae6d44c0dfa03762dcbb6e55ececbe"
+    }
+  },
+  "source_sha256": {
+    "models/rec_joint_box_mask.py": "1891f682ca25e5f3af4b3501584409cdc9909ae2df56cd4d11b1f2d7b48f5294",
+    "scripts/train_scanrefer_joint_box_mask.py": "1bcb0360ba38246770af128fa2b4f64a0f69e96a93ccab740b8ec4ce527d752d",
+    "train_dist_mod.py": "983f5e3c536ebf22a1bcf4b4d1997691f809b778578d82d13feeadb00686e476",
+    "src/grounding_evaluator.py": "a670bb70b607e4de1c855d1aed18aa25664cd98ece9919c1868a4650bb0e9485",
+    "scripts/queue_single_stage_best_postprocess.sh": "0036a78d25a02b06a122fc3e560b2620f58d935a160ff45dd2f53b6a09dafaff"
+  }
+}

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -z "${CHECKPOINT_PATH:-}" ]]; then
+  echo "CHECKPOINT_PATH=<single-stage checkpoint> is required" >&2
+  exit 2
+fi
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "${ROOT_DIR}"
+
+export MODEL_STAGE=single
+export SOURCE_ARBITER=selector
+export JOINT_QUERY_QUALITY_USE_MASK_CALIBRATION="${JOINT_QUERY_QUALITY_USE_MASK_CALIBRATION:-1}"
+export JOINT_QUERY_QUALITY_USE_SOURCE_MASK_EVIDENCE="${JOINT_QUERY_QUALITY_USE_SOURCE_MASK_EVIDENCE:-1}"
+export JOINT_QUERY_QUALITY_USE_GATE_EVIDENCE=0
+export JOINT_QUERY_QUALITY_CANDIDATE_MASK_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_CANDIDATE_MASK_LOSS_WEIGHT:-0.25}"
+export JOINT_QUERY_QUALITY_CANDIDATE_LOVASZ_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_CANDIDATE_LOVASZ_LOSS_WEIGHT:-0.10}"
+export JOINT_QUERY_QUALITY_CANDIDATE_MASK_TOP_K="${JOINT_QUERY_QUALITY_CANDIDATE_MASK_TOP_K:-16}"
+export EXP="${EXP:-single_stage_v45_selector_joint_query_mask}"
+
+exec bash scripts/train_scanrefer_joint_query_quality.sh "$@"

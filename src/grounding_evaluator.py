@@ -312,15 +312,17 @@ class GroundingEvaluator:
             raise ValueError(
                 'unique and multiple subgroup counts must partition samples'
             )
-        for suffix in ('025', '050'):
-            subgroup_hits = sum(
-                group['hits' + suffix]
-                for group in position_subgroups.values()
-            )
-            if subgroup_hits != position['learned_selector']['hits' + suffix]:
+        # The source-choice counters are recorded before the optional parent,
+        # geometry and contextual REC rerankers.  Position subgroups instead
+        # follow the final deployed ``last_`` ranking, so their hits need not
+        # partition ``learned_selector`` once a downstream reranker is active.
+        # Their denominators still strictly partition the evaluated samples,
+        # and each subgroup must preserve threshold nesting.
+        for group, subgroup in position_subgroups.items():
+            if subgroup['hits050'] > subgroup['hits025']:
                 raise ValueError(
-                    'unique and multiple hits{} must partition learned hits'
-                    .format(suffix)
+                    '{} position subgroup hits050 cannot exceed hits025'
+                    .format(group)
                 )
 
         mask_position_subgroups = {}

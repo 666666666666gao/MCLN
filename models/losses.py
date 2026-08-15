@@ -62,6 +62,176 @@ def build_source_moe_grounding_sample_mask(end_points, batch_size, device):
         device=device,
     )
 
+
+def build_sacr_score_mask_supervision_mask(
+        end_points, batch_size, device):
+    """Use mask quality only where ScanRefer supplies the target contract."""
+    sample_datasets = end_points.get("sample_dataset")
+    if sample_datasets is None:
+        raise ValueError(
+            "SACR score supervision requires per-sample dataset metadata"
+        )
+    if isinstance(sample_datasets, str):
+        sample_datasets = [sample_datasets] * batch_size
+    if len(sample_datasets) != batch_size:
+        raise ValueError("sample_dataset must align with SACR scores")
+    if any(not isinstance(name, str) or not name for name in sample_datasets):
+        raise ValueError("sample_dataset entries must be non-empty strings")
+    return torch.tensor(
+        [name.strip().lower() == "scanrefer" for name in sample_datasets],
+        dtype=torch.bool,
+        device=device,
+    )
+
+
+def compute_sacr_score_refiner_listwise_loss(
+        scores, box_ious, valid_mask, structured_valid_mask,
+        sample_mask=None, mask_ious=None, mask_supervision_mask=None,
+        temperature=0.1, mask_weight=0.25):
+    """KL-align every valid query score to continuous grounding quality."""
+    if (
+        not isinstance(scores, torch.Tensor)
+        or scores.dim() != 2
+        or not isinstance(box_ious, torch.Tensor)
+        or box_ious.shape != scores.shape
+        or not isinstance(valid_mask, torch.Tensor)
+        or valid_mask.dtype != torch.bool
+        or valid_mask.shape != scores.shape
+        or not isinstance(structured_valid_mask, torch.Tensor)
+        or structured_valid_mask.dtype != torch.bool
+        or structured_valid_mask.shape != (scores.shape[0],)
+    ):
+        raise ValueError(
+            "SACR score supervision must align as [B,Q] and [B]"
+        )
+    if box_ious.device != scores.device or valid_mask.device != scores.device:
+        raise ValueError("SACR score supervision tensors must share a device")
+    if mask_ious is not None and (
+        not isinstance(mask_ious, torch.Tensor)
+        or mask_ious.shape != scores.shape
+        or mask_ious.device != scores.device
+    ):
+        raise ValueError("SACR mask IoUs must align with scores")
+    if (
+        not isinstance(temperature, (float, int))
+        or isinstance(temperature, bool)
+        or not math.isfinite(float(temperature))
+        or float(temperature) <= 0.0
+    ):
+        raise ValueError("SACR score temperature must be finite and positive")
+    if (
+        not isinstance(mask_weight, (float, int))
+        or isinstance(mask_weight, bool)
+        or not math.isfinite(float(mask_weight))
+        or float(mask_weight) < 0.0
+    ):
+        raise ValueError("SACR score mask weight must be finite and non-negative")
+    if sample_mask is None:
+        sample_mask = torch.ones_like(structured_valid_mask)
+    if (
+        not isinstance(sample_mask, torch.Tensor)
+        or sample_mask.dtype != torch.bool
+        or sample_mask.shape != structured_valid_mask.shape
+        or sample_mask.device != scores.device
+    ):
+        raise ValueError("SACR score sample mask must be bool [B]")
+    if mask_supervision_mask is None:
+        mask_supervision_mask = torch.ones_like(structured_valid_mask)
+    if (
+        not isinstance(mask_supervision_mask, torch.Tensor)
+        or mask_supervision_mask.dtype != torch.bool
+        or mask_supervision_mask.shape != structured_valid_mask.shape
+        or mask_supervision_mask.device != scores.device
+    ):
+        raise ValueError("SACR mask supervision mask must be bool [B]")
+
+    supervised_rows = (
+        sample_mask & structured_valid_mask & valid_mask.any(dim=1)
+    )
+    target_quality = box_ious.float()
+    if mask_ious is not None:
+        target_quality = (
+            target_quality
+            + float(mask_weight)
+            * mask_ious.float()
+            * mask_supervision_mask.float().unsqueeze(1)
+        )
+    target_logits = (
+        target_quality / float(temperature)
+    ).masked_fill(~valid_mask, -1e4)
+    target_distribution = F.softmax(target_logits, dim=1)
+    score_log_distribution = F.log_softmax(
+        scores.float().masked_fill(~valid_mask, -1e4), dim=1
+    )
+    kl_rows = F.kl_div(
+        score_log_distribution,
+        target_distribution,
+        reduction="none",
+    ).sum(dim=1)
+    entropy_rows = -(
+        target_distribution
+        * (target_distribution + 1e-8).log()
+    ).sum(dim=1)
+    active = valid_mask & supervised_rows.unsqueeze(1)
+    mask_active = (
+        active & mask_supervision_mask.unsqueeze(1)
+        if mask_ious is not None else torch.zeros_like(active)
+    )
+    local_stats = torch.stack((
+        supervised_rows.float().sum(),
+        scores.new_tensor(float(scores.shape[0])),
+        (entropy_rows * supervised_rows.float()).sum(),
+        active.float().sum(),
+        (box_ious.float() * active.float()).sum(),
+        mask_active.float().sum(),
+        (
+            (mask_ious.float() * mask_active.float()).sum()
+            if mask_ious is not None else scores.new_zeros(())
+        ),
+        (supervised_rows & mask_supervision_mask).float().sum(),
+    )).detach()
+    global_stats = local_stats.clone()
+    world_size = 1
+    if is_dist_avail_and_initialized():
+        dist.all_reduce(global_stats)
+        world_size = dist.get_world_size()
+    global_supervised_count = global_stats[0]
+    if not bool((global_supervised_count > 0).item()):
+        zero = scores.sum() * 0.0
+        return {
+            "loss": zero,
+            "supervised_row_ratio": zero.detach(),
+            "mask_supervised_row_ratio": zero.detach(),
+            "target_entropy": zero.detach(),
+            "box_target_mean": zero.detach(),
+            "mask_target_mean": zero.detach(),
+        }
+
+    # DDP averages gradients across ranks.  Scaling each local KL sum by the
+    # world size over the global row count yields the true example-weighted
+    # global mean even when ranks contain unequal (or zero) valid rows.
+    local_kl_sum = (kl_rows * supervised_rows.float()).sum()
+    loss = (
+        local_kl_sum * float(world_size) / global_supervised_count
+    )
+    total_rows = global_stats[1].clamp(min=1.0)
+    active_count = global_stats[3].clamp(min=1.0)
+    mask_active_count = global_stats[5].clamp(min=1.0)
+    return {
+        "loss": loss,
+        "supervised_row_ratio": (global_stats[0] / total_rows).detach(),
+        "mask_supervised_row_ratio": (
+            global_stats[7] / total_rows
+        ).detach(),
+        "target_entropy": (
+            global_stats[2] / global_supervised_count
+        ).detach(),
+        "box_target_mean": (global_stats[4] / active_count).detach(),
+        "mask_target_mean": (
+            global_stats[6] / mask_active_count
+        ).detach(),
+    }
+
 def is_dist_avail_and_initialized():
     if not dist.is_available():
         return False
@@ -527,7 +697,7 @@ def build_joint_query_mask_candidate_mask(
 def compute_joint_query_mask_candidate_loss(
         text_mask_logits, query_mask_logits, adaptive_weights,
         gt_point_masks, superpoints, candidate_mask, compute_lovasz=False):
-    """Apply focal/dice supervision to selected query-wise fused masks."""
+    """Apply candidate mask losses with variable superpoint counts per scene."""
     if (not isinstance(text_mask_logits, (list, tuple))
             or not isinstance(query_mask_logits, (list, tuple))
             or not isinstance(adaptive_weights, (list, tuple))
@@ -551,8 +721,10 @@ def compute_joint_query_mask_candidate_loss(
     if not isinstance(compute_lovasz, bool):
         raise ValueError("compute_lovasz must be boolean")
 
-    selected_fused = []
-    selected_targets = []
+    mask_loss_sum = None
+    dice_loss_sum = None
+    lovasz_loss_sum = None
+    selected_count = 0
     differentiable_zero = None
     for batch_idx, (text_row, query_row, weight) in enumerate(zip(
             text_mask_logits, query_mask_logits, adaptive_weights)):
@@ -590,12 +762,38 @@ def compute_joint_query_mask_candidate_loss(
             dim_size=fused_row.shape[1],
         )
         target_superpoints = (target_superpoints > 0.5).to(fused_row.dtype)
-        selected_fused.append(fused_row)
-        selected_targets.append(target_superpoints.unsqueeze(0).expand_as(
-            fused_row
-        ))
+        targets_row = target_superpoints.unsqueeze(0).expand_as(fused_row)
+        row_count = int(fused_row.shape[0])
+        row_mask_loss = (
+            sigmoid_focal_loss(
+                fused_row, targets_row, num_boxes=row_count
+            ) * row_count
+        )
+        row_dice_loss = (
+            dice_loss(fused_row, targets_row, num_boxes=row_count)
+            * row_count
+        )
+        row_lovasz_loss = (
+            lovasz_hinge_loss(
+                fused_row, targets_row, num_masks=row_count
+            ) * row_count
+            if compute_lovasz else fused_row.sum() * 0.0
+        )
+        mask_loss_sum = (
+            row_mask_loss if mask_loss_sum is None
+            else mask_loss_sum + row_mask_loss
+        )
+        dice_loss_sum = (
+            row_dice_loss if dice_loss_sum is None
+            else dice_loss_sum + row_dice_loss
+        )
+        lovasz_loss_sum = (
+            row_lovasz_loss if lovasz_loss_sum is None
+            else lovasz_loss_sum + row_lovasz_loss
+        )
+        selected_count += row_count
 
-    if not selected_fused:
+    if selected_count == 0:
         if differentiable_zero is None:
             raise ValueError("candidate mask batch must not be empty")
         return {
@@ -603,16 +801,10 @@ def compute_joint_query_mask_candidate_loss(
             "dice_loss": differentiable_zero,
             "lovasz_loss": differentiable_zero,
         }
-    fused = torch.cat(selected_fused, dim=0)
-    targets = torch.cat(selected_targets, dim=0)
-    selected_count = fused.shape[0]
     return {
-        "mask_loss": sigmoid_focal_loss(fused, targets, selected_count),
-        "dice_loss": dice_loss(fused, targets, selected_count),
-        "lovasz_loss": (
-            lovasz_hinge_loss(fused, targets, selected_count)
-            if compute_lovasz else fused.sum() * 0.0
-        ),
+        "mask_loss": mask_loss_sum / selected_count,
+        "dice_loss": dice_loss_sum / selected_count,
+        "lovasz_loss": lovasz_loss_sum / selected_count,
     }
 
 # BRIEF Compute loss
@@ -1132,14 +1324,39 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                            joint_query_quality_aux_loss_weight=1.0,
                            joint_query_quality_anchor_loss_weight=0.5,
                            joint_query_quality_anchor_margin=0.05,
+                           joint_query_quality_use_metric_aligned_utility=False,
+                           joint_query_quality_metric_utility_temperature=0.05,
+                           joint_query_quality_bidirectional_anchor=False,
+                           joint_query_quality_anchor_margin_050=0.10,
+                           joint_query_quality_pairwise_loss_weight=0.0,
+                           joint_query_quality_listwise_loss_weight=1.0,
+                           joint_query_quality_transition_loss_weight=0.0,
+                           joint_query_quality_setwise_repair_boundary_loss_weight=0.0,
+                           joint_query_quality_setwise_negative_tail_loss_weight=0.0,
+                           joint_query_quality_setwise_rank_loss_weight=0.0,
+                           joint_query_quality_setwise_dense_safety_loss_weight=0.0,
+                           joint_query_quality_setwise_balanced_safety_loss_weight=0.0,
+                           joint_query_quality_setwise_factorized_safety_loss_weight=0.0,
+                           joint_query_quality_setwise_factorized_risk_bound_loss_weight=0.0,
+                           joint_query_quality_factorized_hit_loss_weight=0.0,
+                           joint_query_quality_factorized_pair_loss_weight=0.0,
+                           joint_query_quality_transition_break_cost=4.0,
+                           joint_query_quality_transition_neutral_weight=0.25,
+                           joint_query_quality_deploy_candidate_top_k=0,
+                           joint_query_quality_source_candidate_top_k=0,
+                           joint_query_quality_oracle_candidate_top_k=0,
                            joint_query_quality_source_mix_loss_weight=0.0,
                            joint_query_quality_source_mix_alignment_temperature=0.25,
                            joint_query_quality_source_mix_query_focus_weight=0.0,
                            joint_query_quality_candidate_mask_loss_weight=0.0,
                            joint_query_quality_candidate_lovasz_loss_weight=0.0,
                            joint_query_quality_candidate_mask_top_k=16,
+                           sacr_score_refiner_loss_weight=0.0,
+                           sacr_score_temperature=0.1,
+                           sacr_score_mask_weight=0.25,
                            query_mask_fusion_train_only=False,
-                           joint_query_quality_train_only=False):
+                           joint_query_quality_train_only=False,
+                           sacr_score_refiner_train_only=False):
     """Compute Hungarian matching loss containing CE, bbox and giou."""
     for scale_name, scale in (
             ("mask_loss_scale", mask_loss_scale),
@@ -1173,12 +1390,45 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
              joint_query_quality_anchor_loss_weight),
             ("joint_query_quality_anchor_margin",
              joint_query_quality_anchor_margin),
+            ("joint_query_quality_anchor_margin_050",
+             joint_query_quality_anchor_margin_050),
+            ("joint_query_quality_pairwise_loss_weight",
+             joint_query_quality_pairwise_loss_weight),
+            ("joint_query_quality_listwise_loss_weight",
+             joint_query_quality_listwise_loss_weight),
+            ("joint_query_quality_transition_loss_weight",
+             joint_query_quality_transition_loss_weight),
+            ("joint_query_quality_setwise_repair_boundary_loss_weight",
+             joint_query_quality_setwise_repair_boundary_loss_weight),
+            ("joint_query_quality_setwise_negative_tail_loss_weight",
+             joint_query_quality_setwise_negative_tail_loss_weight),
+            ("joint_query_quality_setwise_rank_loss_weight",
+             joint_query_quality_setwise_rank_loss_weight),
+            ("joint_query_quality_setwise_dense_safety_loss_weight",
+             joint_query_quality_setwise_dense_safety_loss_weight),
+            ("joint_query_quality_setwise_balanced_safety_loss_weight",
+             joint_query_quality_setwise_balanced_safety_loss_weight),
+            ("joint_query_quality_setwise_factorized_safety_loss_weight",
+             joint_query_quality_setwise_factorized_safety_loss_weight),
+            ("joint_query_quality_setwise_factorized_risk_bound_loss_weight",
+             joint_query_quality_setwise_factorized_risk_bound_loss_weight),
+            ("joint_query_quality_factorized_hit_loss_weight",
+             joint_query_quality_factorized_hit_loss_weight),
+            ("joint_query_quality_factorized_pair_loss_weight",
+             joint_query_quality_factorized_pair_loss_weight),
+            ("joint_query_quality_transition_break_cost",
+             joint_query_quality_transition_break_cost),
+            ("joint_query_quality_transition_neutral_weight",
+             joint_query_quality_transition_neutral_weight),
             ("joint_query_quality_source_mix_loss_weight",
              joint_query_quality_source_mix_loss_weight),
             ("joint_query_quality_candidate_mask_loss_weight",
              joint_query_quality_candidate_mask_loss_weight),
             ("joint_query_quality_candidate_lovasz_loss_weight",
              joint_query_quality_candidate_lovasz_loss_weight),
+            ("sacr_score_refiner_loss_weight",
+             sacr_score_refiner_loss_weight),
+            ("sacr_score_mask_weight", sacr_score_mask_weight),
             ("consistency_loss_scale", consistency_loss_scale)):
         try:
             is_valid = math.isfinite(scale) and scale >= 0
@@ -1188,6 +1438,36 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
             raise ValueError(
                 f"{scale_name} must be a finite non-negative number"
             )
+    if not isinstance(
+            joint_query_quality_use_metric_aligned_utility, bool):
+        raise ValueError(
+            "joint_query_quality_use_metric_aligned_utility must be boolean"
+        )
+    if not isinstance(joint_query_quality_bidirectional_anchor, bool):
+        raise ValueError(
+            "joint_query_quality_bidirectional_anchor must be boolean"
+        )
+    try:
+        metric_temperature_valid = (
+            math.isfinite(joint_query_quality_metric_utility_temperature)
+            and joint_query_quality_metric_utility_temperature > 0
+        )
+    except (TypeError, ValueError, OverflowError):
+        metric_temperature_valid = False
+    if not metric_temperature_valid:
+        raise ValueError(
+            "joint_query_quality_metric_utility_temperature must be positive"
+        )
+    for name, value in (
+            ("joint_query_quality_deploy_candidate_top_k",
+             joint_query_quality_deploy_candidate_top_k),
+            ("joint_query_quality_source_candidate_top_k",
+             joint_query_quality_source_candidate_top_k),
+            ("joint_query_quality_oracle_candidate_top_k",
+             joint_query_quality_oracle_candidate_top_k)):
+        if (not isinstance(value, int) or isinstance(value, bool)
+                or value < 0):
+            raise ValueError(f"{name} must be a non-negative integer")
     if (not isinstance(joint_query_quality_candidate_mask_top_k, int)
             or isinstance(joint_query_quality_candidate_mask_top_k, bool)
             or joint_query_quality_candidate_mask_top_k <= 0):
@@ -1321,6 +1601,15 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
     joint_query_quality_anchor_loss = torch.tensor(
         0.0, device=gt_bbox.device
     )
+    joint_query_quality_transition_loss = torch.tensor(
+        0.0, device=gt_bbox.device
+    )
+    joint_query_quality_factorized_hit_loss = torch.tensor(
+        0.0, device=gt_bbox.device
+    )
+    joint_query_quality_factorized_pair_loss = torch.tensor(
+        0.0, device=gt_bbox.device
+    )
     joint_query_quality_source_mix_alignment_loss = torch.tensor(
         0.0, device=gt_bbox.device
     )
@@ -1353,11 +1642,122 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         for b in range(gt_labels.shape[0])
     ]
 
-    if query_mask_fusion_train_only and joint_query_quality_train_only:
+    if sum(bool(value) for value in (
+            query_mask_fusion_train_only,
+            joint_query_quality_train_only,
+            sacr_score_refiner_train_only)) > 1:
         raise ValueError(
-            "query-mask-fusion-only and joint-query-quality-only modes are "
-            "mutually exclusive"
+            "query-mask-fusion, joint-query-quality, and SACR-score-only "
+            "modes are mutually exclusive"
         )
+
+    if sacr_score_refiner_train_only:
+        if sacr_score_refiner_loss_weight <= 0:
+            raise ValueError(
+                "SACR-score-only mode requires a positive loss weight"
+            )
+        required = (
+            "last_center", "last_pred_size", "selected_source_scores",
+            "sacr_score_refiner_scores", "sacr_score_valid_mask",
+            "sacr_score_structured_valid_mask",
+        )
+        missing = [key for key in required if key not in end_points]
+        if missing:
+            raise ValueError(
+                "SACR-score-only inputs are missing: " + ", ".join(missing)
+            )
+        scores = end_points["sacr_score_refiner_scores"]
+        valid_mask = end_points["sacr_score_valid_mask"]
+        structured_valid = end_points[
+            "sacr_score_structured_valid_mask"
+        ]
+        if not torch.equal(scores, end_points["selected_source_scores"]):
+            raise ValueError(
+                "deployed and supervised SACR scores must be identical"
+            )
+        candidate_boxes = torch.cat((
+            end_points["last_center"],
+            end_points["last_pred_size"].clamp(min=1e-6),
+        ), dim=-1)
+        if candidate_boxes.shape[:2] != scores.shape:
+            raise ValueError("SACR scores must align with last-layer boxes")
+        grounding_gt_valid = torch.zeros_like(
+            box_label_mask, dtype=torch.bool
+        )
+        grounding_gt_valid[:, 0] = box_label_mask[:, 0].bool()
+        if not bool(grounding_gt_valid[:, 0].all().item()):
+            raise ValueError("SACR score training requires root GT slot zero")
+        sample_mask = build_source_moe_grounding_sample_mask(
+            end_points, scores.shape[0], scores.device
+        )
+        mask_supervision_mask = build_sacr_score_mask_supervision_mask(
+            end_points, scores.shape[0], scores.device
+        )
+        with torch.no_grad():
+            box_ious = compute_query_box_ious(
+                candidate_boxes.detach(),
+                gt_bbox.detach(),
+                grounding_gt_valid,
+            )
+            mask_ious = None
+            mask_inputs = (
+                "last_pred_masks", "sp_last_pred_masks",
+                "adaptive_weights", "superpoints",
+            )
+            if (
+                    bool(mask_supervision_mask.any().item())
+                    and all(key in end_points for key in mask_inputs)):
+                fused_mask_logits = build_fused_query_mask_logits(
+                    end_points["last_pred_masks"],
+                    end_points["sp_last_pred_masks"],
+                    end_points["adaptive_weights"],
+                )
+                mask_ious = compute_query_mask_ious(
+                    fused_mask_logits,
+                    gt_masks.detach(),
+                    end_points["superpoints"],
+                    grounding_gt_valid,
+                )
+        supervision = compute_sacr_score_refiner_listwise_loss(
+            scores=scores,
+            box_ious=box_ious,
+            mask_ious=mask_ious,
+            valid_mask=valid_mask,
+            structured_valid_mask=structured_valid,
+            sample_mask=sample_mask,
+            mask_supervision_mask=mask_supervision_mask,
+            temperature=float(sacr_score_temperature),
+            mask_weight=float(sacr_score_mask_weight),
+        )
+        loss = (
+            float(sacr_score_refiner_loss_weight) * supervision["loss"]
+        ).reshape(())
+        zero = loss * 0.0
+        zero_keys = (
+            "loss_ce", "loss_bbox", "loss_giou",
+            "query_points_generation_loss", "loss_sem_align",
+            "loss_mask", "loss_dice", "sp_loss_mask", "sp_loss_dice",
+            "corresponding_loss_mask", "corresponding_loss_dice",
+            "adaptive_weight_loss_mask", "adaptive_weight_loss_dice",
+            "source_choice_loss", "moe_balance_loss",
+            "source_moe_rank_loss", "source_moe_box_rank_loss",
+            "source_moe_mask_rank_loss", "source_moe_anchor_loss",
+            "source_moe_gate_loss", "source_moe_gate_box_loss",
+            "source_moe_gate_mask_loss", "source_moe_gate_decision_loss",
+            "joint_query_quality_loss", "joint_query_quality_listwise_loss",
+            "joint_query_quality_aux_loss", "joint_query_quality_anchor_loss",
+            "joint_query_quality_transition_loss",
+            "joint_query_quality_factorized_hit_loss",
+            "joint_query_quality_factorized_pair_loss",
+        )
+        for key in zero_keys:
+            end_points[key] = zero
+        end_points["sacr_score_loss"] = supervision["loss"]
+        for key, value in supervision.items():
+            if key != "loss":
+                end_points["sacr_score_{}".format(key)] = value
+        end_points["loss"] = loss
+        return loss, end_points
 
     if joint_query_quality_train_only:
         if joint_query_quality_loss_weight <= 0:
@@ -1381,6 +1781,79 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
             "box_logits", "box_iou", "mask_logits", "mask_iou",
             "valid_mask",
         )
+        if joint_query_quality_transition_loss_weight > 0:
+            if "joint_query_quality_setwise_tier_advantage" in end_points:
+                transition_keys = (
+                    "setwise_tier_advantage",
+                    "setwise_tier_branch_scores",
+                    "setwise_tier_reachable_mask",
+                    "setwise_decoupled_promotion_safety",
+                    "setwise_safety_veto_gate",
+                    "setwise_cost_calibrated_risk_bound",
+                    "setwise_safety_slack_quantile_bound",
+                    "setwise_safety_slack_pairwise_order",
+                    "setwise_proposal_conditioned_safety",
+                    "setwise_parent_referenced_safety",
+                    "setwise_coupled_safe_repair_witness",
+                    "setwise_bidirectional_coupled_boundary",
+                    "setwise_centered_coupled_separation",
+                    "setwise_hazard_conditioned_coupled_separation",
+                    "setwise_monotonic_box_safety_folding",
+                    "setwise_same_candidate_branchwise_witness",
+                    "setwise_parent_non_degradation_certificate",
+                    "setwise_criterion_responsible_hazard_attribution",
+                    "setwise_independent_joint_hazard_certificate",
+                    "setwise_frozen_raw_joint_hazard_features",
+                )
+                if "joint_query_quality_setwise_independent_joint_hazard_scores" in end_points:
+                    transition_keys = transition_keys + (
+                        "setwise_independent_joint_hazard_scores",
+                    )
+                if "joint_query_quality_setwise_proposal_indices" in end_points:
+                    transition_keys = transition_keys + (
+                        "setwise_proposal_indices",
+                        "setwise_proposal_mask",
+                        "setwise_proposal_promotable_mask",
+                    )
+                if (
+                        joint_query_quality_setwise_factorized_safety_loss_weight
+                        > 0
+                        or joint_query_quality_setwise_factorized_risk_bound_loss_weight
+                        > 0):
+                    transition_keys = transition_keys + (
+                        "setwise_factorized_safety",
+                        "setwise_safety_criterion_scores",
+                    )
+                if (
+                        joint_query_quality_setwise_factorized_risk_bound_loss_weight
+                        > 0):
+                    transition_keys = transition_keys + (
+                        "setwise_factorized_risk_bound",
+                        "setwise_safety_bound_scores",
+                    )
+            elif (
+                    "joint_query_quality_decomposed_transition_logits"
+                    in end_points):
+                transition_keys = (
+                    "decomposed_transition_logits",
+                    "decomposed_counterfactual_costs",
+                    "decomposed_counterfactual_selected_indices",
+                )
+            else:
+                transition_keys = ("parent_transition_logits",)
+            joint_keys = joint_keys + transition_keys + (
+                "parent_transition_advantage",
+                "parent_transition_candidate_mask",
+            )
+        if (joint_query_quality_factorized_hit_loss_weight > 0
+                or joint_query_quality_factorized_pair_loss_weight > 0):
+            joint_keys = joint_keys + (
+                "factorized_hit_logits",
+                "factorized_counterfactual_costs",
+                "factorized_counterfactual_selected_indices",
+                "parent_transition_advantage",
+                "parent_transition_candidate_mask",
+            )
         missing_joint = [
             key for key in joint_keys
             if "joint_query_quality_{}".format(key) not in end_points
@@ -1468,6 +1941,69 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                 joint_query_quality_anchor_loss_weight
             ),
             anchor_margin=float(joint_query_quality_anchor_margin),
+            use_metric_aligned_utility=bool(
+                joint_query_quality_use_metric_aligned_utility
+            ),
+            metric_utility_temperature=float(
+                joint_query_quality_metric_utility_temperature
+            ),
+            bidirectional_anchor=bool(
+                joint_query_quality_bidirectional_anchor
+            ),
+            anchor_margin_050=float(
+                joint_query_quality_anchor_margin_050
+            ),
+            pairwise_loss_weight=float(
+                joint_query_quality_pairwise_loss_weight
+            ),
+            listwise_loss_weight=float(
+                joint_query_quality_listwise_loss_weight
+            ),
+            transition_loss_weight=float(
+                joint_query_quality_transition_loss_weight
+            ),
+            setwise_repair_boundary_loss_weight=float(
+                joint_query_quality_setwise_repair_boundary_loss_weight
+            ),
+            setwise_negative_tail_loss_weight=float(
+                joint_query_quality_setwise_negative_tail_loss_weight
+            ),
+            setwise_rank_loss_weight=float(
+                joint_query_quality_setwise_rank_loss_weight
+            ),
+            setwise_dense_safety_loss_weight=float(
+                joint_query_quality_setwise_dense_safety_loss_weight
+            ),
+            setwise_balanced_safety_loss_weight=float(
+                joint_query_quality_setwise_balanced_safety_loss_weight
+            ),
+            setwise_factorized_safety_loss_weight=float(
+                joint_query_quality_setwise_factorized_safety_loss_weight
+            ),
+            setwise_factorized_risk_bound_loss_weight=float(
+                joint_query_quality_setwise_factorized_risk_bound_loss_weight
+            ),
+            factorized_hit_loss_weight=float(
+                joint_query_quality_factorized_hit_loss_weight
+            ),
+            factorized_pair_loss_weight=float(
+                joint_query_quality_factorized_pair_loss_weight
+            ),
+            transition_break_cost=float(
+                joint_query_quality_transition_break_cost
+            ),
+            transition_neutral_weight=float(
+                joint_query_quality_transition_neutral_weight
+            ),
+            deploy_candidate_top_k=int(
+                joint_query_quality_deploy_candidate_top_k
+            ),
+            source_candidate_top_k=int(
+                joint_query_quality_source_candidate_top_k
+            ),
+            oracle_candidate_top_k=int(
+                joint_query_quality_oracle_candidate_top_k
+            ),
             source_mix_loss_weight=float(
                 joint_query_quality_source_mix_loss_weight
             ),
@@ -1478,6 +2014,15 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                 joint_query_quality_source_mix_query_focus_weight
             ),
         )
+        joint_query_quality_transition_loss = joint_supervision[
+            "transition_loss"
+        ]
+        joint_query_quality_factorized_hit_loss = joint_supervision[
+            "factorized_hit_loss"
+        ]
+        joint_query_quality_factorized_pair_loss = joint_supervision[
+            "factorized_pair_loss"
+        ]
         joint_query_quality_source_mix_alignment_loss = joint_supervision[
             "source_mix_alignment_loss"
         ]
@@ -1589,6 +2134,15 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         )
         end_points["joint_query_quality_anchor_loss"] = (
             joint_supervision["anchor_loss"]
+        )
+        end_points["joint_query_quality_transition_loss"] = (
+            joint_supervision["transition_loss"]
+        )
+        end_points["joint_query_quality_factorized_hit_loss"] = (
+            joint_supervision["factorized_hit_loss"]
+        )
+        end_points["joint_query_quality_factorized_pair_loss"] = (
+            joint_supervision["factorized_pair_loss"]
         )
         end_points["joint_query_quality_source_mix_alignment_loss"] = (
             joint_query_quality_source_mix_alignment_loss
@@ -1853,6 +2407,79 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                 "box_logits", "box_iou", "mask_logits", "mask_iou",
                 "valid_mask",
             )
+            if joint_query_quality_transition_loss_weight > 0:
+                if "joint_query_quality_setwise_tier_advantage" in end_points:
+                    transition_keys = (
+                        "setwise_tier_advantage",
+                        "setwise_tier_branch_scores",
+                        "setwise_tier_reachable_mask",
+                        "setwise_decoupled_promotion_safety",
+                        "setwise_safety_veto_gate",
+                        "setwise_cost_calibrated_risk_bound",
+                        "setwise_safety_slack_quantile_bound",
+                        "setwise_safety_slack_pairwise_order",
+                        "setwise_proposal_conditioned_safety",
+                        "setwise_parent_referenced_safety",
+                        "setwise_coupled_safe_repair_witness",
+                        "setwise_bidirectional_coupled_boundary",
+                        "setwise_centered_coupled_separation",
+                        "setwise_hazard_conditioned_coupled_separation",
+                        "setwise_monotonic_box_safety_folding",
+                        "setwise_same_candidate_branchwise_witness",
+                        "setwise_parent_non_degradation_certificate",
+                        "setwise_criterion_responsible_hazard_attribution",
+                        "setwise_independent_joint_hazard_certificate",
+                        "setwise_frozen_raw_joint_hazard_features",
+                    )
+                    if "joint_query_quality_setwise_independent_joint_hazard_scores" in end_points:
+                        transition_keys = transition_keys + (
+                            "setwise_independent_joint_hazard_scores",
+                        )
+                    if "joint_query_quality_setwise_proposal_indices" in end_points:
+                        transition_keys = transition_keys + (
+                            "setwise_proposal_indices",
+                            "setwise_proposal_mask",
+                            "setwise_proposal_promotable_mask",
+                        )
+                    if (
+                            joint_query_quality_setwise_factorized_safety_loss_weight
+                            > 0
+                            or joint_query_quality_setwise_factorized_risk_bound_loss_weight
+                            > 0):
+                        transition_keys = transition_keys + (
+                            "setwise_factorized_safety",
+                            "setwise_safety_criterion_scores",
+                        )
+                    if (
+                            joint_query_quality_setwise_factorized_risk_bound_loss_weight
+                            > 0):
+                        transition_keys = transition_keys + (
+                            "setwise_factorized_risk_bound",
+                            "setwise_safety_bound_scores",
+                        )
+                elif (
+                        "joint_query_quality_decomposed_transition_logits"
+                        in end_points):
+                    transition_keys = (
+                        "decomposed_transition_logits",
+                        "decomposed_counterfactual_costs",
+                        "decomposed_counterfactual_selected_indices",
+                    )
+                else:
+                    transition_keys = ("parent_transition_logits",)
+                joint_keys = joint_keys + transition_keys + (
+                    "parent_transition_advantage",
+                    "parent_transition_candidate_mask",
+                )
+            if (joint_query_quality_factorized_hit_loss_weight > 0
+                    or joint_query_quality_factorized_pair_loss_weight > 0):
+                joint_keys = joint_keys + (
+                    "factorized_hit_logits",
+                    "factorized_counterfactual_costs",
+                    "factorized_counterfactual_selected_indices",
+                    "parent_transition_advantage",
+                    "parent_transition_candidate_mask",
+                )
             missing_joint_keys = [
                 key for key in joint_keys
                 if "joint_query_quality_{}".format(key) not in end_points
@@ -1894,6 +2521,69 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                     joint_query_quality_anchor_loss_weight
                 ),
                 anchor_margin=float(joint_query_quality_anchor_margin),
+                use_metric_aligned_utility=bool(
+                    joint_query_quality_use_metric_aligned_utility
+                ),
+                metric_utility_temperature=float(
+                    joint_query_quality_metric_utility_temperature
+                ),
+                bidirectional_anchor=bool(
+                    joint_query_quality_bidirectional_anchor
+                ),
+                anchor_margin_050=float(
+                    joint_query_quality_anchor_margin_050
+                ),
+                pairwise_loss_weight=float(
+                    joint_query_quality_pairwise_loss_weight
+                ),
+                listwise_loss_weight=float(
+                    joint_query_quality_listwise_loss_weight
+                ),
+                transition_loss_weight=float(
+                    joint_query_quality_transition_loss_weight
+                ),
+                setwise_repair_boundary_loss_weight=float(
+                    joint_query_quality_setwise_repair_boundary_loss_weight
+                ),
+                setwise_negative_tail_loss_weight=float(
+                    joint_query_quality_setwise_negative_tail_loss_weight
+                ),
+                setwise_rank_loss_weight=float(
+                    joint_query_quality_setwise_rank_loss_weight
+                ),
+                setwise_dense_safety_loss_weight=float(
+                    joint_query_quality_setwise_dense_safety_loss_weight
+                ),
+                setwise_balanced_safety_loss_weight=float(
+                    joint_query_quality_setwise_balanced_safety_loss_weight
+                ),
+                setwise_factorized_safety_loss_weight=float(
+                    joint_query_quality_setwise_factorized_safety_loss_weight
+                ),
+                setwise_factorized_risk_bound_loss_weight=float(
+                    joint_query_quality_setwise_factorized_risk_bound_loss_weight
+                ),
+                factorized_hit_loss_weight=float(
+                    joint_query_quality_factorized_hit_loss_weight
+                ),
+                factorized_pair_loss_weight=float(
+                    joint_query_quality_factorized_pair_loss_weight
+                ),
+                transition_break_cost=float(
+                    joint_query_quality_transition_break_cost
+                ),
+                transition_neutral_weight=float(
+                    joint_query_quality_transition_neutral_weight
+                ),
+                deploy_candidate_top_k=int(
+                    joint_query_quality_deploy_candidate_top_k
+                ),
+                source_candidate_top_k=int(
+                    joint_query_quality_source_candidate_top_k
+                ),
+                oracle_candidate_top_k=int(
+                    joint_query_quality_oracle_candidate_top_k
+                ),
                 source_mix_loss_weight=float(
                     joint_query_quality_source_mix_loss_weight
                 ),
@@ -1913,6 +2603,15 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
             ]
             joint_query_quality_anchor_loss = joint_supervision[
                 "anchor_loss"
+            ]
+            joint_query_quality_transition_loss = joint_supervision[
+                "transition_loss"
+            ]
+            joint_query_quality_factorized_hit_loss = joint_supervision[
+                "factorized_hit_loss"
+            ]
+            joint_query_quality_factorized_pair_loss = joint_supervision[
+                "factorized_pair_loss"
             ]
             joint_query_quality_source_mix_alignment_loss = (
                 joint_supervision["source_mix_alignment_loss"]
@@ -2217,6 +2916,15 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
     end_points['joint_query_quality_aux_loss'] = joint_query_quality_aux_loss
     end_points['joint_query_quality_anchor_loss'] = (
         joint_query_quality_anchor_loss
+    )
+    end_points['joint_query_quality_transition_loss'] = (
+        joint_query_quality_transition_loss
+    )
+    end_points['joint_query_quality_factorized_hit_loss'] = (
+        joint_query_quality_factorized_hit_loss
+    )
+    end_points['joint_query_quality_factorized_pair_loss'] = (
+        joint_query_quality_factorized_pair_loss
     )
     end_points['joint_query_quality_source_mix_alignment_loss'] = (
         joint_query_quality_source_mix_alignment_loss

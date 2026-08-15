@@ -5,6 +5,8 @@ import torch
 
 from scripts.audit_source_moe_checkpoint import (
     AUDIT_PROFILES,
+    V20_CHANGED_PREFIXES,
+    V20_NEW_PREFIXES,
     V21_CHANGED_PREFIXES,
     V21_NEW_PREFIXES,
     V22_CHANGED_PREFIXES,
@@ -111,6 +113,7 @@ def test_checkpoint_audit_accepts_exact_v20_contract():
         "moment_tensor_count": 4,
         "moments_finite": True,
         "moments_nonzero": True,
+        "zero_second_moment_count": 0,
     }
 
 
@@ -547,6 +550,50 @@ def test_checkpoint_audit_accepts_v49_adaptive_source_mix_contract():
     assert AUDIT_PROFILES["v49"]["expected_optimizer_numel"] == 229460
 
 
+def test_checkpoint_audit_inherits_empty_joint_source_pool_from_parent():
+    baseline = {"backbone.weight": torch.tensor([1.0])}
+    candidate = dict(baseline)
+    candidate.update({
+        "joint_query_quality_reranker.input_projection.0.weight": (
+            torch.tensor([3.0, 4.0])
+        ),
+        "joint_query_quality_reranker.residual_head.bias": torch.tensor([5.0]),
+    })
+    checkpoint = _checkpoint(candidate)
+    checkpoint["config"] = SimpleNamespace(
+        use_joint_query_quality_reranker=True,
+        joint_query_quality_train_only=True,
+        source_choice_selector_sources=(
+            "default,contrastive_text,mask_text"
+        ),
+        joint_query_quality_source_names="",
+    )
+
+    result = audit_checkpoint(
+        _checkpoint(baseline), checkpoint,
+        changed_prefixes=JOINT_QUERY_QUALITY_PREFIXES,
+        new_prefixes=JOINT_QUERY_QUALITY_PREFIXES,
+        expected_common=1,
+        expected_changed=0,
+        expected_new=2,
+        expected_optimizer_states=2,
+        expected_optimizer_step=10,
+        expected_optimizer_numel=3,
+        expected_epoch=2,
+        expected_action=None,
+        expected_objective=None,
+        expected_contract="joint_query_quality",
+        expected_parent_source_names=(
+            "default", "contrastive_text", "mask_text"
+        ),
+        expected_joint_source_names=(
+            "default", "contrastive_text", "mask_text"
+        ),
+    )
+
+    assert result["pass"] is True
+
+
 def test_checkpoint_audit_accepts_v50_sacr_as_joint_only_fourth_source():
     baseline = {"backbone.weight": torch.tensor([1.0])}
     candidate = dict(baseline)
@@ -639,6 +686,135 @@ def test_v51_checkpoint_profile_requires_distribution_reliability():
         "expected_optimizer_numel"
     ] == 6 * 128
 
+
+
+
+def test_v55_checkpoint_profile_requires_nested_dominance_contract():
+    profile = AUDIT_PROFILES["v55_nested_dominance"]
+
+    assert profile["expected_contract"] == "joint_query_quality"
+    assert profile["expected_common"] == 1228
+    assert profile["expected_new"] == 22
+    assert profile["expected_optimizer_states"] == 18
+    assert profile["expected_optimizer_numel"] == 152886
+    assert profile["expected_preserve_parent_score"] is True
+    assert profile["expected_candidate_promotion_margin"] == pytest.approx(0.0)
+    assert profile["expected_factorized_hit_advantage"] is True
+    assert profile["expected_factorized_nested_dominance"] is True
+    assert profile["expected_factorized_hit_break_cost"] == pytest.approx(1.0)
+    assert profile["expected_parent_transition_candidate_top_k"] == 32
+
+
+def test_v53_checkpoint_profile_requires_factorized_hit_contract():
+    profile = AUDIT_PROFILES["v53_factorized_hit"]
+
+    assert profile["expected_contract"] == "joint_query_quality"
+    assert profile["expected_common"] == 1228
+    assert profile["expected_new"] == 22
+    assert profile["expected_optimizer_states"] == 18
+    assert profile["expected_optimizer_numel"] == 152886
+    assert profile["expected_sacr"] is False
+    assert profile["expected_adaptive_source_mixing"] is False
+    assert profile["expected_preserve_parent_score"] is True
+    assert profile["expected_parent_transition_advantage"] is False
+    assert profile["expected_factorized_hit_advantage"] is True
+    assert profile["expected_parent_transition_break_cost"] == pytest.approx(4.0)
+    assert profile["expected_parent_transition_candidate_top_k"] == 32
+
+def test_v62_checkpoint_profile_requires_decomposed_transition_contract():
+    profile = AUDIT_PROFILES["v62_decomposed_transition"]
+
+    assert profile["expected_contract"] == "joint_query_quality"
+    assert profile["expected_common"] == 1228
+    assert profile["expected_new"] == 26
+    assert profile["expected_optimizer_states"] == 22
+    assert profile["expected_optimizer_numel"] == 219320
+    assert profile["expected_preserve_parent_score"] is True
+    assert profile["expected_candidate_promotion_margin"] == pytest.approx(0.0)
+    assert profile["expected_parent_transition_advantage"] is False
+    assert profile["expected_decomposed_transition_advantage"] is True
+    assert profile["expected_factorized_hit_advantage"] is False
+    assert profile["expected_parent_transition_break_cost"] == pytest.approx(4.0)
+    assert profile["expected_parent_transition_candidate_top_k"] == 32
+
+
+def test_v52_checkpoint_profile_requires_parent_transition_contract():
+    profile = AUDIT_PROFILES["v52_parent_transition"]
+
+    assert profile["expected_contract"] == "joint_query_quality"
+    assert profile["expected_common"] == 1228
+    assert profile["expected_new"] == 26
+    assert profile["expected_optimizer_states"] == 22
+    assert profile["expected_optimizer_numel"] == 219578
+    assert profile["expected_sacr"] is False
+    assert profile["expected_adaptive_source_mixing"] is False
+    assert profile["expected_preserve_parent_score"] is True
+    assert profile["expected_candidate_promotion_margin"] == pytest.approx(0.05)
+    assert profile["expected_parent_transition_advantage"] is True
+    assert profile["expected_parent_transition_break_cost"] == pytest.approx(4.0)
+    assert profile["expected_parent_transition_candidate_top_k"] == 32
+
+
+def test_checkpoint_audit_rejects_parent_transition_contract_drift():
+    baseline = {"backbone.weight": torch.tensor([1.0])}
+    candidate = dict(baseline)
+    candidate.update({
+        "joint_query_quality_reranker.parent_transition_head.0.weight": (
+            torch.tensor([3.0])
+        ),
+        "joint_query_quality_reranker.parent_transition_head.3.bias": (
+            torch.tensor([4.0])
+        ),
+    })
+    baseline_checkpoint = _checkpoint(baseline)
+    candidate_checkpoint = _checkpoint(candidate)
+    candidate_checkpoint["config"] = SimpleNamespace(
+        use_joint_query_quality_reranker=True,
+        joint_query_quality_train_only=True,
+        joint_query_quality_use_mask_calibration=False,
+        joint_query_quality_use_source_mask_evidence=False,
+        joint_query_quality_use_gate_evidence=False,
+        joint_query_quality_use_spatial_mask_refiner=False,
+        joint_query_quality_use_adaptive_source_mixing=False,
+        joint_query_quality_use_source_distribution_reliability=False,
+        joint_query_quality_max_source_mix_delta=1.0,
+        joint_query_quality_source_mix_temperature=0.5,
+        joint_query_quality_source_mix_loss_weight=0.0,
+        joint_query_quality_source_mix_alignment_temperature=0.25,
+        joint_query_quality_source_mix_query_focus_weight=0.0,
+        joint_query_quality_preserve_parent_score=True,
+        joint_query_quality_candidate_promotion_margin=0.05,
+        joint_query_quality_max_delta=0.25,
+        joint_query_quality_direct_residual_scale=0.25,
+        joint_query_quality_use_metric_aligned_utility=False,
+        joint_query_quality_use_parent_transition_advantage=True,
+        joint_query_quality_parent_transition_break_cost=2.0,
+        joint_query_quality_parent_transition_candidate_top_k=32,
+        use_sacr_source=False,
+        source_choice_selector_sources="default,contrastive_text,mask_text",
+        joint_query_quality_source_names="default,contrastive_text,mask_text",
+    )
+
+    with pytest.raises(ValueError, match="parent transition break cost"):
+        audit_checkpoint(
+            baseline_checkpoint,
+            candidate_checkpoint,
+            changed_prefixes=JOINT_QUERY_QUALITY_PREFIXES,
+            new_prefixes=JOINT_QUERY_QUALITY_PREFIXES,
+            expected_common=1,
+            expected_changed=0,
+            expected_new=2,
+            expected_optimizer_states=2,
+            expected_optimizer_step=10,
+            expected_optimizer_numel=3,
+            expected_epoch=2,
+            expected_action=None,
+            expected_objective=None,
+            expected_contract="joint_query_quality",
+            expected_parent_transition_advantage=True,
+            expected_parent_transition_break_cost=4.0,
+            expected_parent_transition_candidate_top_k=32,
+        )
 
 def test_checkpoint_audit_accepts_v21_frozen_v19_contract():
     prefix = "source_moe.fallback_gate."
@@ -1072,3 +1248,47 @@ def test_checkpoint_audit_rejects_config_contract_drift():
             expected_optimizer_numel=3,
             expected_epoch=2,
         )
+
+
+def test_checkpoint_audit_accepts_second_moment_underflow_with_active_first():
+    baseline, candidate = _models()
+    baseline_checkpoint = _checkpoint(baseline)
+    candidate_checkpoint = _checkpoint(candidate)
+    candidate_checkpoint["optimizer"]["state"][0]["exp_avg_sq"].zero_()
+
+    result = audit_checkpoint(
+        baseline_checkpoint,
+        candidate_checkpoint,
+        changed_prefixes=V20_CHANGED_PREFIXES,
+        new_prefixes=V20_NEW_PREFIXES,
+        expected_common=3,
+        expected_changed=2,
+        expected_new=1,
+        expected_optimizer_states=2,
+        expected_optimizer_step=10,
+        expected_optimizer_numel=3,
+        expected_epoch=2,
+        expected_action="cascade_joint_risk_correction",
+        expected_objective="cascade_joint_risk_calibrated",
+    )
+
+    assert result["pass"] is True
+    assert result["optimizer"]["moments_nonzero"] is True
+    assert result["optimizer"]["zero_second_moment_count"] == 1
+
+
+def test_v63_checkpoint_profile_requires_setwise_tier_contract():
+    profile = AUDIT_PROFILES["v63_setwise_tier"]
+
+    assert profile["expected_contract"] == "joint_query_quality"
+    assert profile["expected_common"] == 1228
+    assert profile["expected_new"] == 25
+    assert profile["expected_optimizer_states"] == 21
+    assert profile["expected_optimizer_numel"] == 219060
+    assert profile["expected_preserve_parent_score"] is True
+    assert profile["expected_candidate_promotion_margin"] == pytest.approx(0.0)
+    assert profile["expected_parent_transition_advantage"] is False
+    assert profile["expected_decomposed_transition_advantage"] is False
+    assert profile["expected_setwise_tier_advantage"] is True
+    assert profile["expected_factorized_hit_advantage"] is False
+    assert profile["expected_parent_transition_candidate_top_k"] == 32

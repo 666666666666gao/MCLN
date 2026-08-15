@@ -408,6 +408,19 @@ def parse_option():
                         default=0.0)
     parser.add_argument('--source_moe_gate_lr', type=float, default=0.0003)
     parser.add_argument('--mask_head_lr_multiplier', type=float, default=1.0)
+    parser.add_argument('--use_decoder_query_adapter', action='store_true',
+                        default=False)
+    parser.add_argument('--decoder_query_adapter_train_only',
+                        action='store_true', default=False)
+    parser.add_argument('--decoder_query_adapter_lr', type=float,
+                        default=0.0003)
+    parser.add_argument('--decoder_query_adapter_hidden_dim', type=int,
+                        default=288)
+    parser.add_argument('--decoder_query_adapter_heads', type=int, default=4)
+    parser.add_argument('--decoder_query_adapter_dropout', type=float,
+                        default=0.1)
+    parser.add_argument('--decoder_query_adapter_max_delta', type=float,
+                        default=0.25)
     parser.add_argument('--use_query_mask_fusion_calibrator',
                         action='store_true', default=False)
     parser.add_argument('--query_mask_fusion_train_only',
@@ -418,6 +431,28 @@ def parse_option():
     parser.add_argument('--query_mask_fusion_hidden_dim', type=int, default=128)
     parser.add_argument('--query_mask_fusion_dropout', type=float, default=0.0)
     parser.add_argument('--query_mask_fusion_max_delta', type=float, default=0.25)
+    parser.add_argument('--use_egqs_mask_refiner', action='store_true',
+                        default=False)
+    parser.add_argument('--egqs_mask_refiner_train_only', action='store_true',
+                        default=False)
+    parser.add_argument('--egqs_mask_refiner_lr', type=float, default=0.0003)
+    parser.add_argument(
+        '--egqs_mask_refiner_arch', type=str, default='egqs',
+        choices=('egqs', 'graph'),
+    )
+    parser.add_argument('--egqs_mask_refiner_hidden_dim', type=int, default=32)
+    parser.add_argument('--egqs_mask_refiner_max_delta', type=float, default=2.0)
+    parser.add_argument(
+        '--egqs_mask_refiner_components', type=str, default='all',
+        choices=('content', 'evidence', 'geometry', 'all'),
+    )
+    parser.add_argument(
+        '--egqs_mask_refiner_graph_mode', type=str, default='bilateral',
+        choices=('spatial', 'bilateral'),
+    )
+    parser.add_argument(
+        '--egqs_mask_refiner_neighbor_count', type=int, default=8,
+    )
     parser.add_argument('--use_joint_query_quality_reranker',
                         action='store_true', default=False)
     parser.add_argument('--joint_query_quality_train_only',
@@ -435,6 +470,130 @@ def parse_option():
                         default=0.25)
     parser.add_argument('--joint_query_quality_score_weight', type=float,
                         default=1.0)
+    parser.add_argument(
+        '--joint_query_quality_direct_residual_scale',
+        type=float, default=1.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_metric_aligned_utility',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_preserve_parent_score',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_candidate_promotion_margin',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_parent_transition_advantage',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_decomposed_transition_advantage',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_setwise_tier_advantage',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_decoupled_setwise_heads',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_factorized_setwise_safety',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_factorized_setwise_risk_bound',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_setwise_safety_veto_gate',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_cost_calibrated_setwise_risk_bound',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_setwise_safety_slack_quantile_bound',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_setwise_safety_slack_pairwise_order',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_proposal_conditioned_safety',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_parent_referenced_safety',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_coupled_safe_repair_witness',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_bidirectional_coupled_boundary',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_centered_coupled_separation',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_hazard_conditioned_coupled_separation',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_monotonic_box_safety_folding',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_same_candidate_branchwise_witness',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_parent_non_degradation_certificate',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_criterion_responsible_hazard_attribution',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_independent_joint_hazard_certificate',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_frozen_raw_joint_hazard_features',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_factorized_hit_advantage',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_use_factorized_nested_dominance',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_factorized_hit_break_cost',
+        type=float, default=4.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_parent_transition_break_cost',
+        type=float, default=4.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_parent_transition_candidate_top_k',
+        type=int, default=0,
+    )
     parser.add_argument('--joint_query_quality_use_mask_calibration',
                         action='store_true', default=False)
     parser.add_argument('--joint_query_quality_max_mask_alpha_delta',
@@ -475,6 +634,85 @@ def parse_option():
                         default=0.5)
     parser.add_argument('--joint_query_quality_anchor_margin', type=float,
                         default=0.05)
+    parser.add_argument(
+        '--joint_query_quality_bidirectional_anchor',
+        action='store_true', default=False,
+    )
+    parser.add_argument(
+        '--joint_query_quality_anchor_margin_050', type=float, default=0.10,
+    )
+    parser.add_argument(
+        '--joint_query_quality_metric_utility_temperature',
+        type=float, default=0.05,
+    )
+    parser.add_argument(
+        '--joint_query_quality_pairwise_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_listwise_loss_weight',
+        type=float, default=1.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_transition_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_setwise_repair_boundary_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_setwise_negative_tail_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_setwise_rank_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_setwise_dense_safety_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_setwise_balanced_safety_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_setwise_factorized_safety_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_setwise_factorized_risk_bound_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_factorized_hit_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_factorized_pair_loss_weight',
+        type=float, default=0.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_transition_break_cost',
+        type=float, default=4.0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_transition_neutral_weight',
+        type=float, default=0.25,
+    )
+    parser.add_argument(
+        '--joint_query_quality_deploy_candidate_top_k',
+        type=int, default=0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_source_candidate_top_k',
+        type=int, default=0,
+    )
+    parser.add_argument(
+        '--joint_query_quality_oracle_candidate_top_k',
+        type=int, default=0,
+    )
     parser.add_argument('--joint_query_quality_source_mix_loss_weight',
                         type=float, default=0.0)
     parser.add_argument('--joint_query_quality_source_mix_alignment_temperature',
@@ -495,12 +733,24 @@ def parse_option():
         '--joint_query_quality_candidate_mask_top_k', type=int, default=16,
     )
     parser.add_argument('--use_sacr_source', action='store_true', default=False)
+    parser.add_argument('--use_sacr_score_refiner', action='store_true',
+                        default=False)
+    parser.add_argument('--sacr_score_refiner_train_only',
+                        action='store_true', default=False)
+    parser.add_argument('--sacr_score_refiner_lr', type=float, default=0.0003)
+    parser.add_argument('--sacr_score_refiner_loss_weight', type=float,
+                        default=1.0)
+    parser.add_argument('--sacr_score_temperature', type=float, default=0.1)
+    parser.add_argument('--sacr_score_mask_weight', type=float, default=0.25)
+    parser.add_argument('--sacr_score_max_delta', type=float, default=0.25)
     parser.add_argument('--sacr_hidden_dim', type=int, default=288)
     parser.add_argument('--sacr_max_pairs', type=int, default=3)
     parser.add_argument('--sacr_top_m_targets', type=int, default=32)
     parser.add_argument('--sacr_top_k_anchors', type=int, default=16)
     parser.add_argument('--sacr_geo_dim', type=int, default=16)
     parser.add_argument('--sacr_min_parse_confidence', type=float, default=0.0)
+    parser.add_argument('--sacr_score_contract_audit', action='store_true',
+                        default=False)
     parser.add_argument('--sacr_residual_scale_init', type=float, default=0.1)
     parser.add_argument('--mask_loss_scale', type=float, default=1.0)
     parser.add_argument('--consistency_loss_scale', type=float, default=1.0)
@@ -603,6 +853,13 @@ def parse_option():
     parser.add_argument("--rng_seed", type=int, default=0, help='manual seed')
     parser.add_argument("--debug", action='store_true',
                         help="try to overfit few samples")
+    parser.add_argument(
+        "--debug_train_holdout", action='store_true', default=False,
+        help=(
+            "with --debug, train and evaluate on two deterministic, "
+            "scene-disjoint 128-example subsets of the training split"
+        ),
+    )
     parser.add_argument('--eval', default=False, action='store_true')
     parser.add_argument('--eval_train', action='store_true')
     parser.add_argument('--pp_checkpoint', default=None)    # pointnet checkpoint
@@ -644,8 +901,18 @@ def prepare_source_moe_gate_checkpoint_config(args):
     query_mask_fusion_train_only = getattr(
         args, "query_mask_fusion_train_only", False
     )
+    egqs_mask_refiner_train_only = getattr(
+        args, "egqs_mask_refiner_train_only", False
+    )
     joint_query_quality_train_only = getattr(
         args, "joint_query_quality_train_only", False
+    )
+    sacr_score_refiner_train_only = getattr(
+        args, "sacr_score_refiner_train_only", False
+    )
+    sacr_score_eval = (
+        getattr(args, "eval", False)
+        and getattr(args, "use_sacr_score_refiner", False)
     )
     source_moe_eval = (
         getattr(args, "eval", False)
@@ -710,7 +977,11 @@ def prepare_source_moe_gate_checkpoint_config(args):
         raise ValueError("invalid SourceMoE gate objective")
     if (not gate_train_only and not moe_train_only
             and not query_mask_fusion_train_only
-            and not joint_query_quality_train_only and not source_moe_eval):
+            and not egqs_mask_refiner_train_only
+            and not joint_query_quality_train_only
+            and not sacr_score_refiner_train_only
+            and not sacr_score_eval
+            and not source_moe_eval):
         if requested_action_mode is None:
             args.source_moe_gate_action_mode = "decision"
         return args
@@ -743,17 +1014,123 @@ def prepare_source_moe_gate_checkpoint_config(args):
     checkpoint_has_source_selector = (
         config_value("use_source_choice_selector", False) is True
     )
+    checkpoint_state = checkpoint.get("model")
+    if not isinstance(checkpoint_state, dict):
+        raise ValueError("candidate checkpoint has no model state")
+
+    def canonical_state_name(name):
+        return name[7:] if name.startswith("module.") else name
+
+    score_component_presence = {
+        "structured_slot_builder": any(
+            canonical_state_name(name).startswith(
+                "structured_slot_builder."
+            ) for name in checkpoint_state
+        ),
+        "sacr_head": any(
+            canonical_state_name(name).startswith("sacr_head.")
+            for name in checkpoint_state
+        ),
+        "sacr_score_gate": any(
+            canonical_state_name(name) == "sacr_score_gate"
+            for name in checkpoint_state
+        ),
+    }
+    checkpoint_has_score_refiner = score_component_presence[
+        "sacr_score_gate"
+    ]
+    if checkpoint_has_score_refiner and not all(
+            score_component_presence.values()):
+        raise ValueError(
+            "candidate checkpoint has a partial SACR score refiner state: {}"
+            .format(score_component_presence)
+        )
+    checkpoint_config_has_score_refiner = (
+        config_value("use_sacr_score_refiner", False) is True
+    )
+    if (
+            checkpoint_config_has_score_refiner
+            != checkpoint_has_score_refiner):
+        raise ValueError(
+            "candidate checkpoint SACR score config/state disagree"
+        )
+
+    if sacr_score_refiner_train_only or sacr_score_eval:
+        if checkpoint_has_score_refiner:
+            if not checkpoint_has_source_selector:
+                raise ValueError(
+                    "trained V133 checkpoint must retain its selector parent"
+                )
+            if getattr(args, "use_source_moe", False):
+                raise ValueError(
+                    "selector-backed V133 continuation cannot enable SourceMoE"
+                )
+            args.use_source_choice_selector = True
+            args.source_choice_selector_sources = config_value(
+                "source_choice_selector_sources", required=True
+            )
+            args.source_choice_selector_hidden_dim = config_value(
+                "source_choice_selector_hidden_dim", required=True
+            )
+            score_runtime_keys = (
+                "sacr_hidden_dim",
+                "sacr_max_pairs",
+                "sacr_top_m_targets",
+                "sacr_top_k_anchors",
+                "sacr_geo_dim",
+                "sacr_min_parse_confidence",
+                "sacr_score_max_delta",
+            )
+            for key in score_runtime_keys:
+                setattr(args, key, config_value(key, required=True))
+            if sacr_score_refiner_train_only:
+                for key in (
+                        "sacr_score_refiner_lr",
+                        "sacr_score_refiner_loss_weight",
+                        "sacr_score_temperature",
+                        "sacr_score_mask_weight"):
+                    setattr(args, key, config_value(key, required=True))
+            args._sacr_score_checkpoint_has_refiner = True
+            if requested_action_mode is None:
+                args.source_moe_gate_action_mode = "decision"
+            del checkpoint
+            return args
+        if sacr_score_eval and not sacr_score_refiner_train_only:
+            raise ValueError(
+                "SACR score evaluation requires a trained refiner checkpoint"
+            )
+        args._sacr_score_checkpoint_has_refiner = False
     if not checkpoint_has_source_moe and moe_train_only:
         if requested_action_mode is None:
             args.source_moe_gate_action_mode = "decision"
         del checkpoint
         return args
+    if not checkpoint_has_source_moe and egqs_mask_refiner_train_only:
+        if getattr(args, "use_source_moe", False):
+            raise ValueError(
+                "plain/selector EGQS initialization cannot add SourceMoE"
+            )
+        if checkpoint_has_source_selector:
+            args.use_source_choice_selector = True
+            args.source_choice_selector_sources = config_value(
+                "source_choice_selector_sources", required=True
+            )
+            args.source_choice_selector_hidden_dim = config_value(
+                "source_choice_selector_hidden_dim", required=True
+            )
+        if requested_action_mode is None:
+            args.source_moe_gate_action_mode = "decision"
+        del checkpoint
+        return args
     if (not checkpoint_has_source_moe
-            and joint_query_quality_train_only
+            and (
+                joint_query_quality_train_only
+                or sacr_score_refiner_train_only
+            )
             and checkpoint_has_source_selector):
         if getattr(args, "use_source_moe", False):
             raise ValueError(
-                "selector-backed joint query training cannot enable SourceMoE"
+                "selector-backed score training cannot enable SourceMoE"
             )
         args.use_source_choice_selector = True
         args.source_choice_selector_sources = config_value(
@@ -762,7 +1139,9 @@ def prepare_source_moe_gate_checkpoint_config(args):
         args.source_choice_selector_hidden_dim = config_value(
             "source_choice_selector_hidden_dim", required=True
         )
-        if getattr(args, "joint_query_quality_use_gate_evidence", False):
+        if (
+                joint_query_quality_train_only
+                and getattr(args, "joint_query_quality_use_gate_evidence", False)):
             raise ValueError(
                 "joint query gate evidence requires a SourceMoE checkpoint"
             )
@@ -773,7 +1152,7 @@ def prepare_source_moe_gate_checkpoint_config(args):
     if not checkpoint_has_source_moe:
         raise ValueError(
             "checkpoint must contain a trained SourceMoE or, for joint-query-"
-            "only training, a trained source-choice selector"
+            "only/SACR-score-only training, a trained source-choice selector"
         )
     candidate_keys = (
         "source_choice_selector_sources",
@@ -1469,6 +1848,7 @@ def validate_source_moe_resume_checkpoint_contract(args, checkpoint):
             and not getattr(args, "source_moe_train_only", False)
             and not getattr(args, "source_moe_gate_train_only", False)
             and not getattr(args, "query_mask_fusion_train_only", False)
+            and not getattr(args, "egqs_mask_refiner_train_only", False)
             and not getattr(args, "joint_query_quality_train_only", False)
         )
     )
@@ -1603,7 +1983,10 @@ def load_checkpoint(args, model, optimizer, scheduler):
                 or getattr(args, "source_moe_train_only", False)
                 or getattr(args, "source_moe_gate_train_only", False)
                 or getattr(args, "query_mask_fusion_train_only", False)
+                or getattr(args, "egqs_mask_refiner_train_only", False)
                 or getattr(args, "joint_query_quality_train_only", False)
+                or getattr(args, "decoder_query_adapter_train_only", False)
+                or getattr(args, "sacr_score_refiner_train_only", False)
             )
             and not args.eval
             and not gate_optimizer_resume
@@ -1637,6 +2020,89 @@ def load_checkpoint(args, model, optimizer, scheduler):
         )
     current_state = model.state_dict()
     checkpoint_state = checkpoint['model']
+    score_state_prefixes = (
+        "structured_slot_builder.",
+        "sacr_head.",
+        "sacr_score_gate",
+    )
+
+    def canonical_state_name(name):
+        return name[7:] if name.startswith("module.") else name
+
+    def is_score_state(name):
+        canonical = canonical_state_name(name)
+        return any(
+            canonical.startswith(prefix) for prefix in score_state_prefixes
+        )
+
+    current_score_state = {
+        canonical_state_name(key): (key, value)
+        for key, value in current_state.items() if is_score_state(key)
+    }
+    checkpoint_score_state = {
+        canonical_state_name(key): (key, value)
+        for key, value in checkpoint_state.items() if is_score_state(key)
+    }
+    checkpoint_has_trained_score_refiner = (
+        "sacr_score_gate" in checkpoint_score_state
+    )
+    if (
+            getattr(args, "use_sacr_score_refiner", False)
+            and checkpoint_has_trained_score_refiner):
+        if set(current_score_state) != set(checkpoint_score_state):
+            raise ValueError(
+                "trained SACR score checkpoint state is not exact: "
+                "missing={}, unexpected={}".format(
+                    sorted(set(current_score_state) - set(checkpoint_score_state)),
+                    sorted(set(checkpoint_score_state) - set(current_score_state)),
+                )
+            )
+        incompatible_score_tensors = []
+        for name in sorted(current_score_state):
+            current_value = current_score_state[name][1]
+            saved_value = checkpoint_score_state[name][1]
+            if (
+                    not hasattr(current_value, "shape")
+                    or not hasattr(saved_value, "shape")
+                    or current_value.shape != saved_value.shape
+                    or current_value.dtype != saved_value.dtype):
+                incompatible_score_tensors.append(name)
+        if incompatible_score_tensors:
+            raise ValueError(
+                "trained SACR score checkpoint tensors differ in shape/dtype: "
+                + ", ".join(incompatible_score_tensors)
+            )
+        current_full_state = {
+            canonical_state_name(key): (key, value)
+            for key, value in current_state.items()
+        }
+        checkpoint_full_state = {
+            canonical_state_name(key): (key, value)
+            for key, value in checkpoint_state.items()
+        }
+        if set(current_full_state) != set(checkpoint_full_state):
+            raise ValueError(
+                "trained SACR checkpoint full model state is not exact: "
+                "missing={}, unexpected={}".format(
+                    sorted(set(current_full_state) - set(checkpoint_full_state)),
+                    sorted(set(checkpoint_full_state) - set(current_full_state)),
+                )
+            )
+        incompatible_full_tensors = []
+        for name in sorted(current_full_state):
+            current_value = current_full_state[name][1]
+            saved_value = checkpoint_full_state[name][1]
+            if (
+                    not hasattr(current_value, "shape")
+                    or not hasattr(saved_value, "shape")
+                    or current_value.shape != saved_value.shape
+                    or current_value.dtype != saved_value.dtype):
+                incompatible_full_tensors.append(name)
+        if incompatible_full_tensors:
+            raise ValueError(
+                "trained SACR checkpoint full model tensors differ in "
+                "shape/dtype: " + ", ".join(incompatible_full_tensors)
+            )
     for key, value in list(checkpoint_state.items()):
         if (
             key in current_state
@@ -1676,6 +2142,17 @@ def load_checkpoint(args, model, optimizer, scheduler):
             )
         )
     incompatible = model.load_state_dict(checkpoint_state, strict=False)
+    if (
+            getattr(args, "use_sacr_score_refiner", False)
+            and checkpoint_has_trained_score_refiner
+            and (incompatible.missing_keys or incompatible.unexpected_keys)):
+        raise ValueError(
+            "trained SACR checkpoint did not load as an exact full model: "
+            "missing={}, unexpected={}".format(
+                sorted(incompatible.missing_keys),
+                sorted(incompatible.unexpected_keys),
+            )
+        )
     if getattr(args, "query_mask_fusion_train_only", False):
         expected_missing = {
             key for key in current_state
@@ -1696,6 +2173,28 @@ def load_checkpoint(args, model, optimizer, scheduler):
             )
         print(
             "=> query mask fusion checkpoint contract verified: {} new "
+            "parameters".format(len(expected_missing))
+        )
+    if getattr(args, "egqs_mask_refiner_train_only", False):
+        expected_missing = {
+            key for key in current_state
+            if (
+                key[7:] if key.startswith("module.") else key
+            ).startswith("egqs_mask_refiner.")
+            and key not in checkpoint_state
+        }
+        actual_missing = set(incompatible.missing_keys)
+        if (actual_missing != expected_missing
+                or incompatible.unexpected_keys):
+            raise ValueError(
+                "EGQS mask refiner initialization has unexpected checkpoint "
+                "differences: missing={}, unexpected={}".format(
+                    sorted(actual_missing),
+                    sorted(incompatible.unexpected_keys),
+                )
+            )
+        print(
+            "=> EGQS mask refiner checkpoint contract verified: {} new "
             "parameters".format(len(expected_missing))
         )
     if getattr(args, "joint_query_quality_train_only", False):
@@ -1730,6 +2229,60 @@ def load_checkpoint(args, model, optimizer, scheduler):
             "=> joint query quality checkpoint contract verified: {} new "
             "parameters".format(len(expected_missing))
         )
+    if getattr(args, "sacr_score_refiner_train_only", False):
+        score_new_prefixes = (
+            "structured_slot_builder.",
+            "sacr_head.",
+            "sacr_score_gate",
+        )
+        expected_missing = (
+            set()
+            if checkpoint_has_trained_score_refiner
+            else {
+                key for key in current_state
+                if any(
+                    canonical_state_name(key).startswith(prefix)
+                    for prefix in score_new_prefixes
+                )
+                and key not in checkpoint_state
+            }
+        )
+        actual_missing = set(incompatible.missing_keys)
+        if (actual_missing != expected_missing
+                or incompatible.unexpected_keys):
+            raise ValueError(
+                "SACR score initialization has unexpected checkpoint "
+                "differences: missing={}, unexpected={}".format(
+                    sorted(actual_missing),
+                    sorted(incompatible.unexpected_keys),
+                )
+            )
+        print(
+            "=> SACR score checkpoint contract verified: {} new "
+            "parameters".format(len(expected_missing))
+        )
+    if getattr(args, "decoder_query_adapter_train_only", False):
+        expected_missing = {
+            key for key in current_state
+            if (
+                key[7:] if key.startswith("module.") else key
+            ).startswith("decoder_query_adapter.")
+            and key not in checkpoint_state
+        }
+        actual_missing = set(incompatible.missing_keys)
+        if (actual_missing != expected_missing
+                or incompatible.unexpected_keys):
+            raise ValueError(
+                "decoder query adapter initialization has unexpected "
+                "checkpoint differences: missing={}, unexpected={}".format(
+                    sorted(actual_missing),
+                    sorted(incompatible.unexpected_keys),
+                )
+            )
+        print(
+            "=> decoder query adapter checkpoint contract verified: {} new "
+            "parameters".format(len(expected_missing))
+        )
     load_optimizer_state = (
         gate_optimizer_resume
         or query_optimizer_resume
@@ -1742,7 +2295,10 @@ def load_checkpoint(args, model, optimizer, scheduler):
             and not getattr(args, "source_moe_train_only", False)
             and not getattr(args, "source_moe_gate_train_only", False)
             and not getattr(args, "query_mask_fusion_train_only", False)
+            and not getattr(args, "egqs_mask_refiner_train_only", False)
             and not getattr(args, "joint_query_quality_train_only", False)
+            and not getattr(args, "decoder_query_adapter_train_only", False)
+            and not getattr(args, "sacr_score_refiner_train_only", False)
         )
     )
     if load_optimizer_state:
@@ -2155,7 +2711,10 @@ class BaseTrainTester:
                 ),
                 collate_fn=(
                     joint_det_structured_collate
-                    if getattr(args, "use_sacr_source", False)
+                    if (
+                        getattr(args, "use_sacr_source", False)
+                        or getattr(args, "use_sacr_score_refiner", False)
+                    )
                     else None
                 ),
                 **multiprocessing_loader_args
@@ -2174,7 +2733,10 @@ class BaseTrainTester:
             generator=g,
             collate_fn=(
                 joint_det_structured_collate
-                if getattr(args, "use_sacr_source", False)
+                if (
+                    getattr(args, "use_sacr_source", False)
+                    or getattr(args, "use_sacr_score_refiner", False)
+                )
                 else None
             ),
             **multiprocessing_loader_args
@@ -2210,8 +2772,17 @@ class BaseTrainTester:
         query_mask_fusion_only = getattr(
             args, "query_mask_fusion_train_only", False
         )
+        egqs_mask_refiner_only = getattr(
+            args, "egqs_mask_refiner_train_only", False
+        )
         joint_query_quality_only = getattr(
             args, "joint_query_quality_train_only", False
+        )
+        decoder_query_adapter_only = getattr(
+            args, "decoder_query_adapter_train_only", False
+        )
+        sacr_score_refiner_only = getattr(
+            args, "sacr_score_refiner_train_only", False
         )
         gate_new_heads_only = getattr(
             args, "source_moe_gate_new_heads_only", False
@@ -2220,10 +2791,14 @@ class BaseTrainTester:
         gate_extra_prefixes = ()
         if sum(bool(value) for value in (
                 selector_only, moe_only, gate_only,
-                query_mask_fusion_only, joint_query_quality_only)) > 1:
+                query_mask_fusion_only, egqs_mask_refiner_only,
+                joint_query_quality_only, decoder_query_adapter_only,
+                sacr_score_refiner_only)) > 1:
             raise ValueError(
                 "selector-only, source-MoE-only, gate-only, and query mask "
-                "fusion-only/joint-query-quality-only modes are mutually "
+                "fusion-only/EGQS-only/joint-query-quality-only/SACR-score-"
+                "only modes are "
+                "mutually "
                 "exclusive"
             )
         if moe_only and not getattr(args, "use_source_moe", False):
@@ -2239,10 +2814,25 @@ class BaseTrainTester:
             raise ValueError(
                 "query_mask_fusion_train_only requires the calibrator"
             )
+        if egqs_mask_refiner_only and not getattr(
+                args, "use_egqs_mask_refiner", False):
+            raise ValueError(
+                "egqs_mask_refiner_train_only requires the EGQS refiner"
+            )
         if joint_query_quality_only and not getattr(
                 args, "use_joint_query_quality_reranker", False):
             raise ValueError(
                 "joint_query_quality_train_only requires the reranker"
+            )
+        if decoder_query_adapter_only and not getattr(
+                args, "use_decoder_query_adapter", False):
+            raise ValueError(
+                "decoder_query_adapter_train_only requires the adapter"
+            )
+        if sacr_score_refiner_only and not getattr(
+                args, "use_sacr_score_refiner", False):
+            raise ValueError(
+                "sacr_score_refiner_train_only requires the refiner"
             )
         if gate_new_heads_only:
             if not gate_only:
@@ -2410,7 +3000,9 @@ class BaseTrainTester:
                     "cascade action and calibrated objective"
                 )
         if (selector_only or moe_only or gate_only
-                or query_mask_fusion_only or joint_query_quality_only):
+                or query_mask_fusion_only or egqs_mask_refiner_only
+                or joint_query_quality_only or decoder_query_adapter_only
+                or sacr_score_refiner_only):
             if gate_only:
                 if gate_new_heads_only:
                     trainable_prefixes = tuple(
@@ -2430,6 +3022,10 @@ class BaseTrainTester:
                 trainable_prefixes = ("query_mask_fusion_calibrator",)
                 trainable_prefix = "query_mask_fusion_calibrator"
                 learning_rate = args.query_mask_fusion_lr
+            elif egqs_mask_refiner_only:
+                trainable_prefixes = ("egqs_mask_refiner",)
+                trainable_prefix = "egqs_mask_refiner"
+                learning_rate = args.egqs_mask_refiner_lr
             elif joint_query_quality_only:
                 trainable_prefixes = ("joint_query_quality_reranker",)
                 if getattr(args, "use_sacr_source", False):
@@ -2440,6 +3036,18 @@ class BaseTrainTester:
                     )
                 trainable_prefix = ",".join(trainable_prefixes)
                 learning_rate = args.joint_query_quality_lr
+            elif decoder_query_adapter_only:
+                trainable_prefixes = ("decoder_query_adapter",)
+                trainable_prefix = trainable_prefixes[0]
+                learning_rate = args.decoder_query_adapter_lr
+            elif sacr_score_refiner_only:
+                trainable_prefixes = (
+                    "structured_slot_builder",
+                    "sacr_head",
+                    "sacr_score_gate",
+                )
+                trainable_prefix = ",".join(trainable_prefixes)
+                learning_rate = args.sacr_score_refiner_lr
             else:
                 trainable_prefixes = ("source_choice_selector",)
                 trainable_prefix = "source_choice_selector"
@@ -2452,6 +3060,30 @@ class BaseTrainTester:
                     canonical_name.startswith(prefix)
                     for prefix in trainable_prefixes
                 )
+                if (p.requires_grad
+                        and joint_query_quality_only
+                        and (getattr(
+                            args,
+                            "joint_query_quality_use_parent_transition_advantage",
+                            False,
+                        ) or getattr(
+                            args,
+                            "joint_query_quality_use_decomposed_transition_advantage",
+                            False,
+                        ) or getattr(
+                            args,
+                            "joint_query_quality_use_setwise_tier_advantage",
+                            False,
+                        ) or getattr(
+                            args,
+                            "joint_query_quality_use_factorized_hit_advantage",
+                            False,
+                        ))
+                        and canonical_name.startswith((
+                            "joint_query_quality_reranker.quality_head.",
+                            "joint_query_quality_reranker.residual_head.",
+                        ))):
+                    p.requires_grad = False
                 if p.requires_grad:
                     trainable += p.numel()
             print(
@@ -2612,7 +3244,9 @@ class BaseTrainTester:
         # note Distributed Data-Parallel Training (DDP)
         find_unused_parameters = not (
             getattr(args, "query_mask_fusion_train_only", False)
+            or getattr(args, "egqs_mask_refiner_train_only", False)
             or getattr(args, "joint_query_quality_train_only", False)
+            or getattr(args, "sacr_score_refiner_train_only", False)
         )
         model = DistributedDataParallel(
             model, device_ids=[args.local_rank],
@@ -2861,6 +3495,82 @@ class BaseTrainTester:
             joint_query_quality_anchor_margin=getattr(
                 args, 'joint_query_quality_anchor_margin', 0.05
             ),
+            joint_query_quality_use_metric_aligned_utility=getattr(
+                args,
+                'joint_query_quality_use_metric_aligned_utility',
+                False,
+            ),
+            joint_query_quality_metric_utility_temperature=getattr(
+                args,
+                'joint_query_quality_metric_utility_temperature',
+                0.05,
+            ),
+            joint_query_quality_bidirectional_anchor=getattr(
+                args, 'joint_query_quality_bidirectional_anchor', False
+            ),
+            joint_query_quality_anchor_margin_050=getattr(
+                args, 'joint_query_quality_anchor_margin_050', 0.10
+            ),
+            joint_query_quality_pairwise_loss_weight=getattr(
+                args, 'joint_query_quality_pairwise_loss_weight', 0.0
+            ),
+            joint_query_quality_listwise_loss_weight=getattr(
+                args, 'joint_query_quality_listwise_loss_weight', 1.0
+            ),
+            joint_query_quality_transition_loss_weight=getattr(
+                args, 'joint_query_quality_transition_loss_weight', 0.0
+            ),
+            joint_query_quality_setwise_repair_boundary_loss_weight=getattr(
+                args,
+                'joint_query_quality_setwise_repair_boundary_loss_weight', 0.0
+            ),
+            joint_query_quality_setwise_negative_tail_loss_weight=getattr(
+                args,
+                'joint_query_quality_setwise_negative_tail_loss_weight', 0.0
+            ),
+            joint_query_quality_setwise_rank_loss_weight=getattr(
+                args, 'joint_query_quality_setwise_rank_loss_weight', 0.0
+            ),
+            joint_query_quality_setwise_dense_safety_loss_weight=getattr(
+                args,
+                'joint_query_quality_setwise_dense_safety_loss_weight', 0.0
+            ),
+            joint_query_quality_setwise_balanced_safety_loss_weight=getattr(
+                args,
+                'joint_query_quality_setwise_balanced_safety_loss_weight',
+                0.0,
+            ),
+            joint_query_quality_setwise_factorized_safety_loss_weight=getattr(
+                args,
+                'joint_query_quality_setwise_factorized_safety_loss_weight',
+                0.0,
+            ),
+            joint_query_quality_setwise_factorized_risk_bound_loss_weight=getattr(
+                args,
+                'joint_query_quality_setwise_factorized_risk_bound_loss_weight',
+                0.0,
+            ),
+            joint_query_quality_factorized_hit_loss_weight=getattr(
+                args, 'joint_query_quality_factorized_hit_loss_weight', 0.0
+            ),
+            joint_query_quality_factorized_pair_loss_weight=getattr(
+                args, 'joint_query_quality_factorized_pair_loss_weight', 0.0
+            ),
+            joint_query_quality_transition_break_cost=getattr(
+                args, 'joint_query_quality_transition_break_cost', 4.0
+            ),
+            joint_query_quality_transition_neutral_weight=getattr(
+                args, 'joint_query_quality_transition_neutral_weight', 0.25
+            ),
+            joint_query_quality_deploy_candidate_top_k=getattr(
+                args, 'joint_query_quality_deploy_candidate_top_k', 0
+            ),
+            joint_query_quality_source_candidate_top_k=getattr(
+                args, 'joint_query_quality_source_candidate_top_k', 0
+            ),
+            joint_query_quality_oracle_candidate_top_k=getattr(
+                args, 'joint_query_quality_oracle_candidate_top_k', 0
+            ),
             joint_query_quality_source_mix_loss_weight=getattr(
                 args, 'joint_query_quality_source_mix_loss_weight', 0.0
             ),
@@ -2883,11 +3593,24 @@ class BaseTrainTester:
             joint_query_quality_candidate_mask_top_k=getattr(
                 args, 'joint_query_quality_candidate_mask_top_k', 16
             ),
+            sacr_score_refiner_loss_weight=(
+                getattr(args, 'sacr_score_refiner_loss_weight', 1.0)
+                if getattr(args, 'use_sacr_score_refiner', False) else 0.0
+            ),
+            sacr_score_temperature=getattr(
+                args, 'sacr_score_temperature', 0.1
+            ),
+            sacr_score_mask_weight=getattr(
+                args, 'sacr_score_mask_weight', 0.25
+            ),
             query_mask_fusion_train_only=getattr(
                 args, 'query_mask_fusion_train_only', False
-            ),
+            ) or getattr(args, 'egqs_mask_refiner_train_only', False),
             joint_query_quality_train_only=getattr(
                 args, 'joint_query_quality_train_only', False
+            ),
+            sacr_score_refiner_train_only=getattr(
+                args, 'sacr_score_refiner_train_only', False
             ),
         )
         return loss, end_points
@@ -2926,9 +3649,13 @@ class BaseTrainTester:
             sacr_scalar = key.startswith(
                 'sacr_'
             ) and torch.is_tensor(end_points[key]) and end_points[key].numel() == 1
+            egqs_scalar = key.startswith(
+                'egqs_mask_refiner_'
+            ) and torch.is_tensor(end_points[key]) and end_points[key].numel() == 1
             if ('loss' in key or 'acc' in key or 'ratio' in key or moe_scalar
                     or query_mask_fusion_scalar
-                    or joint_query_quality_scalar or sacr_scalar):
+                    or joint_query_quality_scalar or sacr_scalar
+                    or egqs_scalar):
                 if key not in stat_dict:
                     stat_dict[key] = 0
                 if isinstance(end_points[key], (float, int)):
@@ -3016,8 +3743,16 @@ class BaseTrainTester:
         return values
 
     @classmethod
-    def _reject_nonfinite_optimizer_gradients(cls, optimizer, loss):
-        local_failure = False
+    def _reject_nonfinite_optimizer_gradients(
+            cls, optimizer, loss, model=None):
+        name_by_parameter = {}
+        if model is not None:
+            unwrapped = model.module if hasattr(model, "module") else model
+            name_by_parameter = {
+                id(parameter): name
+                for name, parameter in unwrapped.named_parameters()
+            }
+        local_failures = []
         for group in optimizer.param_groups:
             for parameter in group["params"]:
                 gradient = parameter.grad
@@ -3028,14 +3763,20 @@ class BaseTrainTester:
                     if gradient.is_sparse else gradient
                 )
                 if not bool(torch.isfinite(gradient_values).all().item()):
-                    local_failure = True
-                    break
-            if local_failure:
-                break
+                    local_failures.append(name_by_parameter.get(
+                        id(parameter), "<unnamed-parameter>"
+                    ))
         device = cls._optimizer_reference_device(optimizer, loss=loss)
+        local_failure = bool(local_failures)
         if cls._distributed_any(local_failure, device):
+            detail = (
+                ", ".join(local_failures[:16])
+                if local_failures else "another distributed rank"
+            )
             raise ValueError(
-                "optimizer gradient tensors must all be finite"
+                "optimizer gradient tensors must all be finite: {}".format(
+                    detail
+                )
             )
 
     @staticmethod
@@ -3122,18 +3863,47 @@ class BaseTrainTester:
         source_moe_only = getattr(args, "source_moe_train_only", False)
         gate_only = getattr(args, "source_moe_gate_train_only", False)
         query_only = getattr(args, "query_mask_fusion_train_only", False)
+        egqs_only = getattr(args, "egqs_mask_refiner_train_only", False)
         joint_query_only = getattr(
             args, "joint_query_quality_train_only", False
+        )
+        decoder_query_adapter_only = getattr(
+            args, "decoder_query_adapter_train_only", False
+        )
+        sacr_score_refiner_only = getattr(
+            args, "sacr_score_refiner_train_only", False
         )
         gate_new_heads_only = getattr(
             args, "source_moe_gate_new_heads_only", False
         )
-        if not (source_moe_only or gate_only or query_only or joint_query_only):
+        if not (
+                source_moe_only or gate_only or query_only or egqs_only
+                or joint_query_only or decoder_query_adapter_only
+                or sacr_score_refiner_only):
             model.train()
             return
 
         model.eval()
         unwrapped = model.module if hasattr(model, "module") else model
+        if sacr_score_refiner_only:
+            for module_name in ("structured_slot_builder", "sacr_head"):
+                module = getattr(unwrapped, module_name, None)
+                if module is None:
+                    raise ValueError(
+                        "SACR-score-only mode requires {}".format(
+                            module_name
+                        )
+                    )
+                module.train()
+            return
+        if decoder_query_adapter_only:
+            adapter = getattr(unwrapped, "decoder_query_adapter", None)
+            if adapter is None:
+                raise ValueError(
+                    "decoder-query-adapter-only mode requires an adapter"
+                )
+            adapter.train()
+            return
         if query_only:
             calibrator = getattr(
                 unwrapped, "query_mask_fusion_calibrator", None
@@ -3143,6 +3913,14 @@ class BaseTrainTester:
                     "query-mask-fusion-only mode requires a calibrator"
                 )
             calibrator.train()
+            return
+        if egqs_only:
+            refiner = getattr(unwrapped, "egqs_mask_refiner", None)
+            if refiner is None:
+                raise ValueError(
+                    "EGQS-only mode requires an EGQS mask refiner"
+                )
+            refiner.train()
             return
         if joint_query_only:
             reranker = getattr(
@@ -3324,7 +4102,9 @@ class BaseTrainTester:
             optimizer.zero_grad()
             loss.backward()
 
-            self._reject_nonfinite_optimizer_gradients(optimizer, loss)
+            self._reject_nonfinite_optimizer_gradients(
+                optimizer, loss, model=model
+            )
 
             if args.clip_norm > 0:
                 grad_total_norm = torch.nn.utils.clip_grad_norm_(
@@ -3396,6 +4176,20 @@ class BaseTrainTester:
                             stat_dict[key] / float(len(train_loader)),
                         )
                         for key in available
+                    )
+                )
+            egqs_diagnostics = tuple(
+                key for key in stat_dict
+                if key.startswith('egqs_mask_refiner_')
+            )
+            if egqs_diagnostics:
+                self.logger.info(
+                    'EGQS mask refiner: ' + ', '.join(
+                        '{}={:.6f}'.format(
+                            key,
+                            stat_dict[key] / float(len(train_loader)),
+                        )
+                        for key in sorted(egqs_diagnostics)
                     )
                 )
         return {

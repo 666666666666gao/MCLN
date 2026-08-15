@@ -14,6 +14,7 @@
 
 import csv
 from collections import defaultdict
+import hashlib
 import h5py
 import json
 import multiprocessing as mp
@@ -82,7 +83,8 @@ class Joint3DDataset(Dataset):
                  detect_intermediate=False,
                  butd=False, butd_gt=False, butd_cls=False, augment_det=False,
                  wo_obj_name="None", skip_missing_superpoints=False,
-                 use_sacr_source=False):
+                 use_sacr_source=False,
+                 scanrefer_debug_scene_partition=None):
         """Initialize dataset (here for ReferIt3D utterances)."""
         self.dataset_dict = dataset_dict
         self.test_dataset = test_dataset
@@ -108,6 +110,13 @@ class Joint3DDataset(Dataset):
         self.wo_obj_name = wo_obj_name
         self.skip_missing_superpoints = bool(skip_missing_superpoints)
         self.use_sacr_source = bool(use_sacr_source)
+        if scanrefer_debug_scene_partition not in (None, 'train', 'holdout'):
+            raise ValueError(
+                "scanrefer_debug_scene_partition must be train, holdout, or None"
+            )
+        self.scanrefer_debug_scene_partition = (
+            scanrefer_debug_scene_partition
+        )
 
         self.mean_rgb = np.array([109.8, 97.2, 83.8]) / 256
         
@@ -517,6 +526,37 @@ class Joint3DDataset(Dataset):
         if self.wo_obj_name != "None":
             with open(self.wo_obj_name) as f:
                 reader = json.load(f)
+        if self.scanrefer_debug_scene_partition is not None:
+            if split != 'train':
+                raise ValueError(
+                    "ScanRefer debug scene partition requires the train split"
+                )
+            partition = self.scanrefer_debug_scene_partition
+            reader = [
+                anno for anno in reader
+                if (
+                    int(hashlib.sha256(
+                        str(anno['scene_id']).encode('utf-8')
+                    ).hexdigest()[:8], 16) % 5 == 0
+                ) == (partition == 'holdout')
+            ]
+            records_by_scene = defaultdict(list)
+            for annotation in reader:
+                records_by_scene[str(annotation['scene_id'])].append(annotation)
+            interleaved_reader = []
+            depth = 0
+            ordered_scene_ids = sorted(records_by_scene)
+            while True:
+                appended = False
+                for scene_id in ordered_scene_ids:
+                    scene_records = records_by_scene[scene_id]
+                    if depth < len(scene_records):
+                        interleaved_reader.append(scene_records[depth])
+                        appended = True
+                if not appended:
+                    break
+                depth += 1
+            reader = interleaved_reader
         
         # STEP 1. load utterance
         annos = [

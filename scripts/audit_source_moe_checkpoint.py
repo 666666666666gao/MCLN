@@ -71,6 +71,9 @@ V39_NEW_PREFIXES = V39_CHANGED_PREFIXES
 QUERY_MASK_FUSION_PREFIXES = (
     "query_mask_fusion_calibrator.",
 )
+EGQS_MASK_REFINER_PREFIXES = (
+    "egqs_mask_refiner.",
+)
 JOINT_QUERY_QUALITY_PREFIXES = (
     "joint_query_quality_reranker.",
 )
@@ -332,6 +335,30 @@ AUDIT_PROFILES = {
         "expected_spatial_mask_hidden_dim": 32,
         "expected_max_spatial_mask_delta": 2.0,
     },
+    "v105": {
+        "changed_prefixes": EGQS_MASK_REFINER_PREFIXES,
+        "new_prefixes": EGQS_MASK_REFINER_PREFIXES,
+        "expected_common": 1228,
+        "expected_changed": 0,
+        "expected_new": 16,
+        "expected_optimizer_states": 16,
+        "expected_optimizer_numel": 26095,
+        "expected_action": None,
+        "expected_objective": None,
+        "expected_contract": "egqs_mask_refiner",
+    },
+    "v106": {
+        "changed_prefixes": EGQS_MASK_REFINER_PREFIXES,
+        "new_prefixes": EGQS_MASK_REFINER_PREFIXES,
+        "expected_common": 1228,
+        "expected_changed": 0,
+        "expected_new": 4,
+        "expected_optimizer_states": 4,
+        "expected_optimizer_numel": 2888,
+        "expected_action": None,
+        "expected_objective": None,
+        "expected_contract": "graph_mask_refiner",
+    },
     "v49": {
         "changed_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
         "new_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
@@ -384,6 +411,183 @@ AUDIT_PROFILES = {
         "expected_joint_source_names": (
             "default", "contrastive_text", "mask_text", "sacr_structured",
         ),
+    },
+    "v51_parent_promotion": {
+        "changed_prefixes": SACR_JOINT_QUERY_PREFIXES,
+        "new_prefixes": SACR_JOINT_QUERY_PREFIXES,
+        "expected_common": 1228,
+        "expected_changed": 0,
+        "expected_new": 52,
+        "expected_optimizer_states": 52,
+        "expected_optimizer_numel": 1126942,
+        "expected_action": None,
+        "expected_objective": None,
+        "expected_contract": "joint_query_quality",
+        "expected_adaptive_source_mixing": True,
+        "expected_source_distribution_reliability": False,
+        "expected_max_source_mix_delta": 1.0,
+        "expected_source_mix_temperature": 0.5,
+        "expected_sacr": True,
+        "expected_parent_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_joint_source_names": (
+            "default", "contrastive_text", "mask_text", "sacr_structured",
+        ),
+        "expected_preserve_parent_score": True,
+        "expected_candidate_promotion_margin": 0.05,
+        "expected_max_delta": 0.25,
+        "expected_direct_residual_scale": 0.25,
+        "expected_metric_aligned_utility": False,
+    },
+    "v55_nested_dominance": {
+        "changed_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "new_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "expected_common": 1228,
+        "expected_changed": 0,
+        "expected_new": 22,
+        "expected_optimizer_states": 18,
+        "expected_optimizer_numel": 152886,
+        "expected_action": None,
+        "expected_objective": None,
+        "expected_contract": "joint_query_quality",
+        "expected_adaptive_source_mixing": False,
+        "expected_sacr": False,
+        "expected_parent_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_joint_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_preserve_parent_score": True,
+        "expected_candidate_promotion_margin": 0.0,
+        "expected_max_delta": 0.25,
+        "expected_direct_residual_scale": 0.25,
+        "expected_metric_aligned_utility": False,
+        "expected_parent_transition_advantage": False,
+        "expected_factorized_hit_advantage": True,
+        "expected_factorized_nested_dominance": True,
+        "expected_factorized_hit_break_cost": 1.0,
+        "expected_parent_transition_break_cost": 4.0,
+        "expected_parent_transition_candidate_top_k": 32,
+    },
+    "v53_factorized_hit": {
+        "changed_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "new_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "expected_common": 1228,
+        "expected_changed": 0,
+        "expected_new": 22,
+        "expected_optimizer_states": 18,
+        "expected_optimizer_numel": 152886,
+        "expected_action": None,
+        "expected_objective": None,
+        "expected_contract": "joint_query_quality",
+        "expected_adaptive_source_mixing": False,
+        "expected_sacr": False,
+        "expected_parent_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_joint_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_preserve_parent_score": True,
+        "expected_candidate_promotion_margin": 0.05,
+        "expected_max_delta": 0.25,
+        "expected_direct_residual_scale": 0.25,
+        "expected_metric_aligned_utility": False,
+        "expected_parent_transition_advantage": False,
+        "expected_factorized_hit_advantage": True,
+        "expected_parent_transition_break_cost": 4.0,
+        "expected_parent_transition_candidate_top_k": 32,
+    },
+    "v62_decomposed_transition": {
+        "changed_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "new_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "expected_common": 1228,
+        "expected_changed": 0,
+        "expected_new": 26,
+        "expected_optimizer_states": 22,
+        "expected_optimizer_numel": 219320,
+        "expected_action": None,
+        "expected_objective": None,
+        "expected_contract": "joint_query_quality",
+        "expected_adaptive_source_mixing": False,
+        "expected_sacr": False,
+        "expected_parent_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_joint_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_preserve_parent_score": True,
+        "expected_candidate_promotion_margin": 0.0,
+        "expected_max_delta": 0.25,
+        "expected_direct_residual_scale": 0.25,
+        "expected_metric_aligned_utility": False,
+        "expected_parent_transition_advantage": False,
+        "expected_decomposed_transition_advantage": True,
+        "expected_factorized_hit_advantage": False,
+        "expected_parent_transition_break_cost": 4.0,
+        "expected_parent_transition_candidate_top_k": 32,
+    },
+    "v63_setwise_tier": {
+        "changed_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "new_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "expected_common": 1228,
+        "expected_changed": 0,
+        "expected_new": 25,
+        "expected_optimizer_states": 21,
+        "expected_optimizer_numel": 219060,
+        "expected_action": None,
+        "expected_objective": None,
+        "expected_contract": "joint_query_quality",
+        "expected_adaptive_source_mixing": False,
+        "expected_sacr": False,
+        "expected_parent_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_joint_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_preserve_parent_score": True,
+        "expected_candidate_promotion_margin": 0.0,
+        "expected_max_delta": 0.25,
+        "expected_direct_residual_scale": 0.25,
+        "expected_metric_aligned_utility": False,
+        "expected_parent_transition_advantage": False,
+        "expected_decomposed_transition_advantage": False,
+        "expected_setwise_tier_advantage": True,
+        "expected_factorized_hit_advantage": False,
+        "expected_parent_transition_break_cost": 4.0,
+        "expected_parent_transition_candidate_top_k": 32,
+    },
+    "v52_parent_transition": {
+        "changed_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "new_prefixes": JOINT_QUERY_QUALITY_PREFIXES,
+        "expected_common": 1228,
+        "expected_changed": 0,
+        "expected_new": 26,
+        "expected_optimizer_states": 22,
+        "expected_optimizer_numel": 219578,
+        "expected_action": None,
+        "expected_objective": None,
+        "expected_contract": "joint_query_quality",
+        "expected_adaptive_source_mixing": False,
+        "expected_sacr": False,
+        "expected_parent_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_joint_source_names": (
+            "default", "contrastive_text", "mask_text",
+        ),
+        "expected_preserve_parent_score": True,
+        "expected_candidate_promotion_margin": 0.05,
+        "expected_max_delta": 0.25,
+        "expected_direct_residual_scale": 0.25,
+        "expected_metric_aligned_utility": False,
+        "expected_parent_transition_advantage": True,
+        "expected_parent_transition_break_cost": 4.0,
+        "expected_parent_transition_candidate_top_k": 32,
     },
     "v51_rapf_source_reliability": {
         "changed_prefixes": SACR_JOINT_QUERY_PREFIXES,
@@ -486,12 +690,16 @@ def _scalar_step(value, label):
 
 
 def _audit_optimizer(optimizer, expected_states, expected_step,
-                     expected_numel):
+                     expected_numel, allowed_zero_parameter_ids=()):
     if (not isinstance(optimizer, dict)
             or not isinstance(optimizer.get("state"), dict)
             or not isinstance(optimizer.get("param_groups"), list)):
         raise ValueError("candidate optimizer state is invalid")
     state = optimizer["state"]
+    allowed_zero_parameter_ids = set(allowed_zero_parameter_ids)
+    if not all(isinstance(value, int) and value >= 0
+               for value in allowed_zero_parameter_ids):
+        raise ValueError("allowed zero optimizer ids must be non-negative ints")
     if len(state) != expected_states:
         raise ValueError(
             "optimizer has {} states, expected {}".format(
@@ -511,6 +719,8 @@ def _audit_optimizer(optimizer, expected_states, expected_step,
 
     steps = set()
     moment_numel = 0
+    zero_second_moment_count = 0
+    zero_parameter_ids = set()
     for parameter_id, values in state.items():
         if not isinstance(values, dict):
             raise ValueError("optimizer state entry is invalid")
@@ -527,16 +737,31 @@ def _audit_optimizer(optimizer, expected_states, expected_step,
                     )
                 )
             if int(torch.count_nonzero(moment).item()) == 0:
-                raise ValueError(
-                    "optimizer {} for {} is entirely zero".format(
-                        moment_name, parameter_id
+                if parameter_id in allowed_zero_parameter_ids:
+                    zero_parameter_ids.add(parameter_id)
+                elif moment_name == "exp_avg_sq" and int(
+                        torch.count_nonzero(values["exp_avg"]).item()
+                ) > 0:
+                    zero_second_moment_count += 1
+                else:
+                    raise ValueError(
+                        "optimizer {} for {} is entirely zero".format(
+                            moment_name, parameter_id
+                        )
                     )
-                )
             moment_numel += moment.numel()
     if steps != {expected_step}:
         raise ValueError(
             "optimizer steps are {}, expected {}".format(
                 sorted(steps), expected_step
+            )
+        )
+    if (allowed_zero_parameter_ids
+            and zero_parameter_ids != allowed_zero_parameter_ids):
+        raise ValueError(
+            "optimizer zero-moment ids are {}, expected inactive ids {}".format(
+                sorted(zero_parameter_ids),
+                sorted(allowed_zero_parameter_ids),
             )
         )
     parameter_numel = moment_numel // 2
@@ -552,7 +777,11 @@ def _audit_optimizer(optimizer, expected_states, expected_step,
         "parameter_numel": parameter_numel,
         "moment_tensor_count": 2 * len(state),
         "moments_finite": True,
-        "moments_nonzero": True,
+        "moments_nonzero": not bool(zero_parameter_ids),
+        "active_moments_nonzero": True,
+        "zero_second_moment_count": zero_second_moment_count,
+        "allowed_zero_parameter_ids": sorted(allowed_zero_parameter_ids),
+        "observed_zero_parameter_ids": sorted(zero_parameter_ids),
     }
 
 
@@ -578,7 +807,19 @@ def audit_checkpoint(
         expected_source_mix_alignment_temperature=None,
         expected_source_mix_query_focus_weight=None,
         expected_sacr=None, expected_parent_source_names=None,
-        expected_joint_source_names=None):
+        expected_joint_source_names=None,
+        expected_preserve_parent_score=None,
+        expected_candidate_promotion_margin=None,
+        expected_max_delta=None, expected_direct_residual_scale=None,
+        expected_metric_aligned_utility=None,
+        expected_parent_transition_advantage=None,
+        expected_decomposed_transition_advantage=None,
+        expected_setwise_tier_advantage=None,
+        expected_factorized_hit_advantage=None,
+        expected_factorized_nested_dominance=None,
+        expected_factorized_hit_break_cost=None,
+        expected_parent_transition_break_cost=None,
+        expected_parent_transition_candidate_top_k=None):
     """Return an exact initializer-to-candidate checkpoint contract audit."""
     for value, label in (
             (expected_common, "expected common tensor count"),
@@ -599,7 +840,9 @@ def audit_checkpoint(
         expected_optimizer_step, "expected optimizer step", allow_zero=True
     )
     if expected_contract not in (
-            "gate", "query_mask_fusion", "joint_query_quality",
+            "gate", "query_mask_fusion", "egqs_mask_refiner",
+            "graph_mask_refiner",
+            "joint_query_quality",
             "joint_query_mask_calibration", "joint_query_mask_evidence",
             "joint_query_gate_evidence",
             "joint_query_spatial_mask_refinement",
@@ -607,7 +850,8 @@ def audit_checkpoint(
             "joint_query_sacr_adaptive_source_mixing",
             "joint_query_sacr_source_distribution_reliability"):
         raise ValueError(
-            "expected contract must be gate, query_mask_fusion, or "
+            "expected contract must be gate, query_mask_fusion, "
+            "egqs_mask_refiner, graph_mask_refiner, or "
             "joint_query_quality/joint_query_mask_calibration/"
             "joint_query_mask_evidence/joint_query_gate_evidence/"
             "joint_query_spatial_mask_refinement/"
@@ -680,6 +924,7 @@ def audit_checkpoint(
             )
         )
     config = candidate.get("config")
+    allowed_zero_optimizer_ids = ()
     if expected_contract == "gate":
         if (_checkpoint_field(config, "source_moe_gate_action_mode")
                 != expected_action):
@@ -708,6 +953,60 @@ def audit_checkpoint(
         contract = {
             "query_mask_fusion": True,
             "query_mask_fusion_only": True,
+        }
+    elif expected_contract == "egqs_mask_refiner":
+        if (_checkpoint_field(config, "use_egqs_mask_refiner") is not True):
+            raise ValueError("candidate must enable the EGQS mask refiner")
+        if (_checkpoint_field(
+                config, "egqs_mask_refiner_train_only") is not True):
+            raise ValueError("candidate must use EGQS-mask-only training")
+        components = _checkpoint_field(
+            config, "egqs_mask_refiner_components"
+        )
+        if components not in ("content", "evidence", "geometry", "all"):
+            raise ValueError("candidate has invalid EGQS components")
+        if (_checkpoint_field(config, "egqs_mask_refiner_hidden_dim") != 32
+                or _checkpoint_field(
+                    config, "egqs_mask_refiner_max_delta"
+                ) != 2.0):
+            raise ValueError("candidate EGQS architecture is incompatible")
+        if components == "content":
+            allowed_zero_optimizer_ids = tuple(range(12, 16))
+        elif components == "evidence":
+            allowed_zero_optimizer_ids = tuple(range(2, 12)) + (14, 15)
+        elif components == "geometry":
+            allowed_zero_optimizer_ids = tuple(range(2, 14))
+        contract = {
+            "egqs_mask_refiner": True,
+            "egqs_mask_refiner_only": True,
+            "components": components,
+            "hidden_dim": 32,
+            "max_delta": 2.0,
+        }
+    elif expected_contract == "graph_mask_refiner":
+        if (_checkpoint_field(config, "use_egqs_mask_refiner") is not True):
+            raise ValueError("candidate must enable the graph mask refiner")
+        if (_checkpoint_field(
+                config, "egqs_mask_refiner_train_only") is not True):
+            raise ValueError("candidate must use graph-mask-only training")
+        architecture = _checkpoint_field(config, "egqs_mask_refiner_arch")
+        graph_mode = _checkpoint_field(
+            config, "egqs_mask_refiner_graph_mode"
+        )
+        if architecture != "graph" or graph_mode not in (
+                "spatial", "bilateral"):
+            raise ValueError("candidate graph architecture is incompatible")
+        if (_checkpoint_field(
+                config, "egqs_mask_refiner_neighbor_count") != 8
+                or _checkpoint_field(
+                    config, "egqs_mask_refiner_max_delta") != 2.0):
+            raise ValueError("candidate graph contract is incompatible")
+        contract = {
+            "graph_mask_refiner": True,
+            "graph_mask_refiner_only": True,
+            "graph_mode": graph_mode,
+            "neighbor_count": 8,
+            "max_delta": 2.0,
         }
     else:
         if (_checkpoint_field(config, "use_joint_query_quality_reranker")
@@ -773,6 +1072,48 @@ def audit_checkpoint(
         observed_source_mix_query_focus_weight = _checkpoint_field(
             config,
             "joint_query_quality_source_mix_query_focus_weight",
+        )
+        observed_preserve_parent_score = _checkpoint_field(
+            config, "joint_query_quality_preserve_parent_score"
+        ) is True
+        observed_candidate_promotion_margin = _checkpoint_field(
+            config, "joint_query_quality_candidate_promotion_margin"
+        )
+        observed_max_delta = _checkpoint_field(
+            config, "joint_query_quality_max_delta"
+        )
+        observed_direct_residual_scale = _checkpoint_field(
+            config, "joint_query_quality_direct_residual_scale"
+        )
+        observed_metric_aligned_utility = _checkpoint_field(
+            config, "joint_query_quality_use_metric_aligned_utility"
+        ) is True
+        observed_parent_transition_advantage = _checkpoint_field(
+            config, "joint_query_quality_use_parent_transition_advantage"
+        ) is True
+        observed_decomposed_transition_advantage = _checkpoint_field(
+            config,
+            "joint_query_quality_use_decomposed_transition_advantage",
+        ) is True
+        observed_setwise_tier_advantage = _checkpoint_field(
+            config, "joint_query_quality_use_setwise_tier_advantage"
+        ) is True
+        observed_factorized_hit_advantage = _checkpoint_field(
+            config, "joint_query_quality_use_factorized_hit_advantage"
+        ) is True
+        observed_factorized_nested_dominance = _checkpoint_field(
+            config,
+            "joint_query_quality_use_factorized_nested_dominance",
+        ) is True
+        observed_factorized_hit_break_cost = _checkpoint_field(
+            config, "joint_query_quality_factorized_hit_break_cost"
+        )
+        observed_parent_transition_break_cost = _checkpoint_field(
+            config, "joint_query_quality_parent_transition_break_cost"
+        )
+        observed_parent_transition_candidate_top_k = _checkpoint_field(
+            config,
+            "joint_query_quality_parent_transition_candidate_top_k",
         )
         if expected_contract in (
                 "joint_query_mask_calibration", "joint_query_mask_evidence",
@@ -868,6 +1209,10 @@ def audit_checkpoint(
         observed_joint_sources = normalized_source_names(
             _checkpoint_field(config, "joint_query_quality_source_names")
         )
+        # Match MCLN's runtime source-pool resolution: an empty joint pool
+        # inherits the parent selector sources (models/mcln.py).
+        if not observed_joint_sources:
+            observed_joint_sources = observed_parent_sources
         if (expected_parent_source_names is not None
                 and observed_parent_sources
                 != tuple(expected_parent_source_names)):
@@ -927,6 +1272,50 @@ def audit_checkpoint(
                 "candidate source mix query focus weight contract is "
                 "incompatible"
             )
+        for observed_value, expected_value, label in (
+                (observed_preserve_parent_score,
+                 expected_preserve_parent_score,
+                 "parent score preservation"),
+                (observed_candidate_promotion_margin,
+                 expected_candidate_promotion_margin,
+                 "candidate promotion margin"),
+                (observed_max_delta, expected_max_delta,
+                 "joint query max delta"),
+                (observed_direct_residual_scale,
+                 expected_direct_residual_scale,
+                 "direct residual scale"),
+                (observed_metric_aligned_utility,
+                 expected_metric_aligned_utility,
+                 "metric aligned utility"),
+                (observed_parent_transition_advantage,
+                 expected_parent_transition_advantage,
+                 "parent transition advantage"),
+                (observed_decomposed_transition_advantage,
+                 expected_decomposed_transition_advantage,
+                 "decomposed transition advantage"),
+                (observed_setwise_tier_advantage,
+                 expected_setwise_tier_advantage,
+                 "setwise tier advantage"),
+                (observed_factorized_hit_advantage,
+                 expected_factorized_hit_advantage,
+                 "factorized hit advantage"),
+                (observed_factorized_nested_dominance,
+                 expected_factorized_nested_dominance,
+                 "factorized nested dominance"),
+                (observed_factorized_hit_break_cost,
+                 expected_factorized_hit_break_cost,
+                 "factorized hit break cost"),
+                (observed_parent_transition_break_cost,
+                 expected_parent_transition_break_cost,
+                 "parent transition break cost"),
+                (observed_parent_transition_candidate_top_k,
+                 expected_parent_transition_candidate_top_k,
+                 "parent transition candidate top k")):
+            if (expected_value is not None
+                    and observed_value != expected_value):
+                raise ValueError(
+                    "candidate {} contract is incompatible".format(label)
+                )
         if (expected_contract == "joint_query_quality" and mask_calibration):
             raise ValueError(
                 "plain joint query quality candidate must not enable mask "
@@ -937,6 +1326,64 @@ def audit_checkpoint(
             "joint_query_quality_only": True,
             "joint_query_mask_calibration": mask_calibration,
         }
+        if (expected_preserve_parent_score is not None
+                or expected_candidate_promotion_margin is not None
+                or expected_max_delta is not None
+                or expected_direct_residual_scale is not None
+                or expected_metric_aligned_utility is not None
+                or observed_preserve_parent_score
+                or observed_candidate_promotion_margin not in (None, 0.0)):
+            contract.update({
+                "joint_query_preserve_parent_score": (
+                    observed_preserve_parent_score
+                ),
+                "joint_query_candidate_promotion_margin": (
+                    observed_candidate_promotion_margin
+                ),
+                "joint_query_max_delta": observed_max_delta,
+                "joint_query_direct_residual_scale": (
+                    observed_direct_residual_scale
+                ),
+                "joint_query_metric_aligned_utility": (
+                    observed_metric_aligned_utility
+                ),
+            })
+        if (expected_parent_transition_advantage is not None
+                or observed_parent_transition_advantage
+                or expected_decomposed_transition_advantage is not None
+                or observed_decomposed_transition_advantage
+                or expected_setwise_tier_advantage is not None
+                or observed_setwise_tier_advantage
+                or expected_factorized_hit_advantage is not None
+                or observed_factorized_hit_advantage
+                or expected_factorized_nested_dominance is not None
+                or observed_factorized_nested_dominance):
+            contract.update({
+                "joint_query_parent_transition_advantage": (
+                    observed_parent_transition_advantage
+                ),
+                "joint_query_decomposed_transition_advantage": (
+                    observed_decomposed_transition_advantage
+                ),
+                "joint_query_setwise_tier_advantage": (
+                    observed_setwise_tier_advantage
+                ),
+                "joint_query_factorized_hit_advantage": (
+                    observed_factorized_hit_advantage
+                ),
+                "joint_query_factorized_nested_dominance": (
+                    observed_factorized_nested_dominance
+                ),
+                "joint_query_factorized_hit_break_cost": (
+                    observed_factorized_hit_break_cost
+                ),
+                "joint_query_parent_transition_break_cost": (
+                    observed_parent_transition_break_cost
+                ),
+                "joint_query_parent_transition_candidate_top_k": (
+                    observed_parent_transition_candidate_top_k
+                ),
+            })
         if expected_gate_evidence is not None or gate_evidence:
             contract["joint_query_gate_evidence"] = gate_evidence
         if expected_spatial_mask_refiner is not None or spatial_mask_refiner:
@@ -990,6 +1437,7 @@ def audit_checkpoint(
         expected_states=expected_optimizer_states,
         expected_step=expected_optimizer_step,
         expected_numel=expected_optimizer_numel,
+        allowed_zero_parameter_ids=allowed_zero_optimizer_ids,
     )
     return {
         "schema": SCHEMA,
@@ -1111,6 +1559,43 @@ def main():
         ),
         expected_joint_source_names=profile.get(
             "expected_joint_source_names"
+        ),
+        expected_preserve_parent_score=profile.get(
+            "expected_preserve_parent_score"
+        ),
+        expected_candidate_promotion_margin=profile.get(
+            "expected_candidate_promotion_margin"
+        ),
+        expected_max_delta=profile.get("expected_max_delta"),
+        expected_direct_residual_scale=profile.get(
+            "expected_direct_residual_scale"
+        ),
+        expected_metric_aligned_utility=profile.get(
+            "expected_metric_aligned_utility"
+        ),
+        expected_parent_transition_advantage=profile.get(
+            "expected_parent_transition_advantage"
+        ),
+        expected_decomposed_transition_advantage=profile.get(
+            "expected_decomposed_transition_advantage"
+        ),
+        expected_setwise_tier_advantage=profile.get(
+            "expected_setwise_tier_advantage"
+        ),
+        expected_factorized_hit_advantage=profile.get(
+            "expected_factorized_hit_advantage"
+        ),
+        expected_factorized_nested_dominance=profile.get(
+            "expected_factorized_nested_dominance"
+        ),
+        expected_factorized_hit_break_cost=profile.get(
+            "expected_factorized_hit_break_cost"
+        ),
+        expected_parent_transition_break_cost=profile.get(
+            "expected_parent_transition_break_cost"
+        ),
+        expected_parent_transition_candidate_top_k=profile.get(
+            "expected_parent_transition_candidate_top_k"
         ),
     )
     result["profile"] = args.profile

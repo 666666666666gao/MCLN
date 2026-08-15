@@ -12,9 +12,11 @@
 
 import contextlib
 import hashlib
+import io
 import math
 import os
 from pathlib import Path
+import stat
 
 import numpy as np
 import torch
@@ -53,6 +55,12 @@ from models.rec_hierarchical_reranker import (
     apply_hierarchical_policy,
     select_hierarchical_proposal,
 )
+from models.rec_pareto_contextual_hierarchy import (
+    V99_ARTIFACT_SCHEMA,
+    V113_ARTIFACT_SCHEMA,
+    apply_asymmetric_risk_contextual_policy,
+    apply_pareto_contextual_policy,
+)
 from models.rec_mask_geometry import build_rec_mask_geometry_candidates
 from scripts.train_rec_reranker import normalize_features
 
@@ -63,6 +71,17 @@ import ipdb
 st = ipdb.set_trace
 
 import numpy as np
+
+
+V101_ARTIFACT_SCHEMA = "rec-pareto-contextual-full-train-artifact-v1"
+V109_ARTIFACT_SCHEMA = (
+    "rec-pareto-contextual-meshsp-nested-policy-full-train-artifact-v1"
+)
+PARETO_CONTEXTUAL_ARTIFACT_SCHEMAS = frozenset({
+    V99_ARTIFACT_SCHEMA,
+    V101_ARTIFACT_SCHEMA,
+    V109_ARTIFACT_SCHEMA,
+})
 
 
 _PARENT_RUNTIME_COMPATIBILITY = {
@@ -486,27 +505,92 @@ def validate_rec_hierarchical_runtime_provenance(
     if (checkpoint_sha is not None
             and inputs.get("backbone") != checkpoint_sha):
         raise ValueError("hierarchical backbone artifact SHA mismatch")
-    from scripts.train_scanrefer_rec_hierarchical_reranker import (
-        validate_hierarchical_artifact,
-    )
-
-    validate_hierarchical_artifact(
-        hierarchical_artifact,
-        expected_geometry_feature_names=geometry_artifact.get(
-            "feature_names"
-        ),
-        expected_backbone_sha256=inputs.get("backbone"),
-        expected_parent_sha256=parent_sha,
-        expected_geometry_sha256=geometry_sha,
-        expected_deployable=True,
-    )
-    selection = hierarchical_artifact.get("selection")
-    margin = selection.get("margin") if isinstance(selection, dict) else None
+    artifact_schema = hierarchical_artifact.get("schema")
+    if artifact_schema == V113_ARTIFACT_SCHEMA:
+        from scripts.build_v113_meshsp_asymmetric_risk_artifact import (
+            validate_v113_artifact,
+        )
+        validate_v113_artifact(
+            hierarchical_artifact,
+            expected_parent_sha256=parent_sha,
+            expected_geometry_sha256=geometry_sha,
+            expected_feature_names=geometry_artifact.get("feature_names"),
+        )
+        policy = hierarchical_artifact.get("policy", {})
+        margin = policy.get("aggregate_lcb_margin")
+        min_head_gain025 = policy.get("min_head_lcb025")
+        min_head_gain050 = policy.get("min_head_lcb050")
+        scene_fold_sha256 = hierarchical_artifact["fit"][
+            "scene_fold_sha256"
+        ]
+        oof_record_sha256 = hierarchical_artifact["oof_evidence"][
+            "sha256"
+        ]
+    elif artifact_schema in PARETO_CONTEXTUAL_ARTIFACT_SCHEMAS:
+        if artifact_schema == V99_ARTIFACT_SCHEMA:
+            from scripts.build_v99_pareto_contextual_artifact import (
+                validate_v99_artifact,
+            )
+            validate_pareto_artifact = validate_v99_artifact
+        elif artifact_schema == V101_ARTIFACT_SCHEMA:
+            from scripts.build_v101_full_train_pareto_artifact import (
+                validate_v101_artifact,
+            )
+            validate_pareto_artifact = validate_v101_artifact
+        elif artifact_schema == V109_ARTIFACT_SCHEMA:
+            from scripts.build_v109_meshsp_nested_policy_artifact import (
+                validate_v109_artifact,
+            )
+            validate_pareto_artifact = validate_v109_artifact
+        else:
+            raise ValueError("unsupported Pareto hierarchy artifact schema")
+        validate_pareto_artifact(
+            hierarchical_artifact,
+            expected_parent_sha256=parent_sha,
+            expected_geometry_sha256=geometry_sha,
+            expected_feature_names=geometry_artifact.get("feature_names"),
+        )
+        policy = hierarchical_artifact.get("policy", {})
+        margin = policy.get("aggregate_margin")
+        min_head_gain025 = policy.get("min_head_gain025", 0.0)
+        min_head_gain050 = policy.get("min_head_gain050", 0.0)
+        scene_fold_sha256 = hierarchical_artifact["fit"][
+            "scene_fold_sha256"
+        ]
+        oof_record_sha256 = hierarchical_artifact["oof_evidence"]["sha256"]
+    else:
+        from scripts.train_scanrefer_rec_hierarchical_reranker import (
+            validate_hierarchical_artifact,
+        )
+        validate_hierarchical_artifact(
+            hierarchical_artifact,
+            expected_geometry_feature_names=geometry_artifact.get(
+                "feature_names"
+            ),
+            expected_backbone_sha256=inputs.get("backbone"),
+            expected_parent_sha256=parent_sha,
+            expected_geometry_sha256=geometry_sha,
+            expected_deployable=True,
+        )
+        selection = hierarchical_artifact.get("selection")
+        margin = (
+            selection.get("margin") if isinstance(selection, dict) else None
+        )
+        scene_fold_sha256 = hierarchical_artifact["scene_fold_sha256"]
+        oof_record_sha256 = hierarchical_artifact["oof_record_sha256"]
+        min_head_gain025 = 0.0
+        min_head_gain050 = 0.0
     if (not isinstance(margin, (float, int))
             or isinstance(margin, bool)
             or not math.isfinite(float(margin))
             or float(margin) <= 0.0):
         raise ValueError("hierarchical runtime margin is invalid")
+    for name, value in {
+            "min_head_gain025": min_head_gain025,
+            "min_head_gain050": min_head_gain050}.items():
+        if (not isinstance(value, (float, int)) or isinstance(value, bool)
+                or not math.isfinite(float(value)) or float(value) < 0.0):
+            raise ValueError("hierarchical runtime {} is invalid".format(name))
     _validate_frozen_artifact_model(
         hierarchical_model, hierarchical_artifact, "hierarchical reranker"
     )
@@ -520,8 +604,8 @@ def validate_rec_hierarchical_runtime_provenance(
         "normalization_sha256": hierarchical_artifact[
             "normalization_sha256"
         ],
-        "scene_fold_sha256": hierarchical_artifact["scene_fold_sha256"],
-        "oof_record_sha256": hierarchical_artifact["oof_record_sha256"],
+        "scene_fold_sha256": scene_fold_sha256,
+        "oof_record_sha256": oof_record_sha256,
     }
 
 
@@ -532,20 +616,105 @@ def load_rec_hierarchical_runtime_artifact(
     geometry_sha = getattr(geometry_model, "_artifact_sha256", None)
     if not _is_sha256(parent_sha) or not _is_sha256(geometry_sha):
         raise ValueError("frozen rerankers lack stable artifact SHAs")
-    from scripts.train_scanrefer_rec_hierarchical_reranker import (
-        load_hierarchical_artifact,
+    resolved = Path(path).expanduser().absolute()
+    header = None
+    try:
+        entry = os.lstat(str(resolved))
+        if stat.S_ISLNK(entry.st_mode) or not stat.S_ISREG(entry.st_mode):
+            raise ValueError(
+                "hierarchical artifact must be a regular non-symlink file"
+            )
+        descriptor = os.open(
+            str(resolved), os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+        )
+        try:
+            before = os.fstat(descriptor)
+            with os.fdopen(descriptor, "rb", closefd=False) as handle:
+                snapshot = handle.read()
+            after = os.fstat(descriptor)
+        finally:
+            os.close(descriptor)
+        live = os.stat(str(resolved), follow_symlinks=False)
+    except FileNotFoundError:
+        # Preserve the legacy loader seam used by unit tests and downstream
+        # wrappers that resolve the path themselves.  Real V99 artifacts are
+        # immutable files and always take the stable schema-inspection path.
+        snapshot = None
+    except ValueError:
+        raise
+    except OSError as error:
+        raise ValueError("could not inspect hierarchical artifact") from error
+    identity = lambda value: (
+        int(value.st_dev), int(value.st_ino), int(value.st_size),
+        int(value.st_mtime_ns), int(value.st_ctime_ns),
     )
-
-    model, artifact = load_hierarchical_artifact(
-        path,
-        device=device,
-        expected_geometry_feature_names=geometry_artifact.get(
-            "feature_names"
-        ),
-        expected_deployable=True,
-        parent_sha256=parent_sha,
-        geometry_sha256=geometry_sha,
-    )
+    if snapshot is not None:
+        if (identity(before) != identity(after)
+                or identity(after) != identity(live)):
+            raise ValueError(
+                "hierarchical artifact changed during schema inspection"
+            )
+        try:
+            header = torch.load(io.BytesIO(snapshot), map_location="cpu")
+        except Exception as error:
+            raise ValueError(
+                "could not inspect hierarchical artifact schema"
+            ) from error
+    header_schema = header.get("schema") if isinstance(header, dict) else None
+    if header_schema == V113_ARTIFACT_SCHEMA:
+        from scripts.build_v113_meshsp_asymmetric_risk_artifact import (
+            load_v113_artifact,
+        )
+        model, artifact = load_v113_artifact(
+            path,
+            device=device,
+            parent_sha256=parent_sha,
+            geometry_sha256=geometry_sha,
+            expected_geometry_feature_names=geometry_artifact.get(
+                "feature_names"
+            ),
+        )
+    elif header_schema in PARETO_CONTEXTUAL_ARTIFACT_SCHEMAS:
+        if header_schema == V99_ARTIFACT_SCHEMA:
+            from scripts.build_v99_pareto_contextual_artifact import (
+                load_v99_artifact,
+            )
+            load_pareto_artifact = load_v99_artifact
+        elif header_schema == V101_ARTIFACT_SCHEMA:
+            from scripts.build_v101_full_train_pareto_artifact import (
+                load_v101_artifact,
+            )
+            load_pareto_artifact = load_v101_artifact
+        elif header_schema == V109_ARTIFACT_SCHEMA:
+            from scripts.build_v109_meshsp_nested_policy_artifact import (
+                load_v109_artifact,
+            )
+            load_pareto_artifact = load_v109_artifact
+        else:
+            raise ValueError("unsupported Pareto hierarchy artifact schema")
+        model, artifact = load_pareto_artifact(
+            path,
+            device=device,
+            parent_sha256=parent_sha,
+            geometry_sha256=geometry_sha,
+            expected_geometry_feature_names=geometry_artifact.get(
+                "feature_names"
+            ),
+        )
+    else:
+        from scripts.train_scanrefer_rec_hierarchical_reranker import (
+            load_hierarchical_artifact,
+        )
+        model, artifact = load_hierarchical_artifact(
+            path,
+            device=device,
+            expected_geometry_feature_names=geometry_artifact.get(
+                "feature_names"
+            ),
+            expected_deployable=True,
+            parent_sha256=parent_sha,
+            geometry_sha256=geometry_sha,
+        )
     validate_rec_hierarchical_runtime_provenance(
         parent_model,
         geometry_model,
@@ -1592,47 +1761,99 @@ def _build_rec_geometry_runtime_outputs_float32(
             geometry_artifact,
             hierarchical_artifact,
         )
-        selection = hierarchical_artifact.get("selection")
-        margin = (
-            selection.get("margin") if isinstance(selection, dict) else None
+        is_v113_committee = (
+            hierarchical_artifact.get("schema") == V113_ARTIFACT_SCHEMA
         )
+        is_pareto_contextual = (
+            hierarchical_artifact.get("schema")
+            in PARETO_CONTEXTUAL_ARTIFACT_SCHEMAS
+        )
+        if is_v113_committee:
+            committee_policy = hierarchical_artifact.get("policy", {})
+            margin = committee_policy.get("aggregate_lcb_margin")
+        elif is_pareto_contextual:
+            pareto_policy = hierarchical_artifact.get("policy", {})
+            margin = pareto_policy.get("aggregate_margin")
+            min_head_gain025 = pareto_policy.get(
+                "min_head_gain025", 0.0
+            )
+            min_head_gain050 = pareto_policy.get(
+                "min_head_gain050", 0.0
+            )
+        else:
+            selection = hierarchical_artifact.get("selection")
+            margin = (
+                selection.get("margin")
+                if isinstance(selection, dict) else None
+            )
         if (not isinstance(margin, (float, int))
                 or isinstance(margin, bool)
                 or not math.isfinite(float(margin))
                 or float(margin) <= 0.0):
             raise ValueError("hierarchical artifact margin is invalid")
         hierarchy_outputs = hierarchical_model(**hierarchy_batch)
-        if (not isinstance(hierarchy_outputs, dict)
-                or set(hierarchy_outputs) != {
-                    "query_logits", "variant_logits", "query_embedding",
-                    "variant_embedding",
-                }):
-            raise ValueError("hierarchical model outputs are malformed")
-        proposal = select_hierarchical_proposal(
-            hierarchy_outputs["query_logits"],
-            hierarchy_outputs["variant_logits"],
-            hierarchy_batch["query_valid"],
-            hierarchy_batch["variant_valid"],
-        )
-        flat_utility = proposal["variant_utility"].reshape(
-            flat_scores.shape[0], -1
-        )
-        rows = torch.arange(
-            flat_scores.shape[0], device=flat_scores.device
-        )
-        baseline_indices = flat_scores.argmax(dim=1)
-        proposal_indices = proposal["flat_indices"]
-        predicted_gain = (
-            flat_utility[rows, proposal_indices]
-            - flat_utility[rows, baseline_indices]
-        )
-        policy = apply_hierarchical_policy(
-            flat_scores,
-            proposal_indices,
-            predicted_gain.float(),
-            hierarchy_batch["variant_valid"],
-            float(margin),
-        )
+        if is_v113_committee:
+            if (not isinstance(hierarchy_outputs, dict)
+                    or set(hierarchy_outputs) != {
+                        "member_query_logits", "member_variant_logits",
+                    }):
+                raise ValueError("V113 committee outputs are malformed")
+            policy = apply_asymmetric_risk_contextual_policy(
+                flat_scores,
+                hierarchy_outputs["member_query_logits"],
+                hierarchy_outputs["member_variant_logits"],
+                hierarchy_batch["query_valid"],
+                hierarchy_batch["variant_valid"],
+                float(margin),
+                min_head_lcb025=committee_policy.get("min_head_lcb025"),
+                min_head_lcb050=committee_policy.get("min_head_lcb050"),
+                risk_lambda025=committee_policy.get("risk_lambda025"),
+                risk_lambda050=committee_policy.get("risk_lambda050"),
+            )
+        else:
+            if (not isinstance(hierarchy_outputs, dict)
+                    or set(hierarchy_outputs) != {
+                        "query_logits", "variant_logits", "query_embedding",
+                        "variant_embedding",
+                    }):
+                raise ValueError("hierarchical model outputs are malformed")
+        if is_pareto_contextual:
+            policy = apply_pareto_contextual_policy(
+                flat_scores,
+                hierarchy_outputs["query_logits"],
+                hierarchy_outputs["variant_logits"],
+                hierarchy_batch["query_valid"],
+                hierarchy_batch["variant_valid"],
+                float(margin),
+                min_head_gain025=min_head_gain025,
+                min_head_gain050=min_head_gain050,
+            )
+        elif not is_v113_committee:
+            proposal = select_hierarchical_proposal(
+                hierarchy_outputs["query_logits"],
+                hierarchy_outputs["variant_logits"],
+                hierarchy_batch["query_valid"],
+                hierarchy_batch["variant_valid"],
+            )
+            flat_utility = proposal["variant_utility"].reshape(
+                flat_scores.shape[0], -1
+            )
+            rows = torch.arange(
+                flat_scores.shape[0], device=flat_scores.device
+            )
+            baseline_indices = flat_scores.argmax(dim=1)
+            proposal_indices = proposal["flat_indices"]
+            predicted_gain = (
+                flat_utility[rows, proposal_indices]
+                - flat_utility[rows, baseline_indices]
+            )
+            policy = apply_hierarchical_policy(
+                flat_scores,
+                proposal_indices,
+                predicted_gain.float(),
+                hierarchy_batch["variant_valid"],
+                float(margin),
+            )
         flat_scores = policy["scores"]
     joint_policy = None
     if (joint_model is None) != (joint_artifact is None):
@@ -2121,6 +2342,77 @@ class TrainTester(BaseTrainTester):
             dataset_dict['scannet'] = 10
         print('Loading datasets:', sorted(list(dataset_dict.keys())))
 
+        debug_train_holdout = bool(getattr(args, 'debug_train_holdout', False))
+        if debug_train_holdout:
+            if not args.debug:
+                raise ValueError("debug_train_holdout requires --debug")
+            shared_kwargs = dict(
+                dataset_dict=dataset_dict,
+                test_dataset=args.test_dataset,
+                split='train',
+                use_color=args.use_color,
+                use_height=args.use_height,
+                overfit=False,
+                data_path=args.data_root,
+                detect_intermediate=args.detect_intermediate,
+                use_multiview=args.use_multiview,
+                butd=args.butd,
+                butd_gt=args.butd_gt,
+                butd_cls=args.butd_cls,
+                augment_det=args.augment_det,
+                skip_missing_superpoints=args.skip_missing_superpoints,
+                use_sacr_source=(
+                    getattr(args, 'use_sacr_source', False)
+                    or getattr(args, 'use_sacr_score_refiner', False)
+                ),
+            )
+            train_dataset = Joint3DDataset(
+                **dict(
+                    shared_kwargs,
+                    overfit=True,
+                    scanrefer_debug_scene_partition='train',
+                )
+            )
+            test_dataset = Joint3DDataset(
+                **dict(
+                    shared_kwargs,
+                    overfit=True,
+                    augment_det=False,
+                    scanrefer_debug_scene_partition='holdout',
+                )
+            )
+            test_dataset.augment = False
+            if len(train_dataset) != 128 or len(test_dataset) != 128:
+                raise ValueError(
+                    "debug train holdout could not collect two 128-example sets"
+                )
+            train_scenes = {
+                annotation['scan_id'] for annotation in train_dataset.annos
+            }
+            holdout_scenes = {
+                annotation['scan_id'] for annotation in test_dataset.annos
+            }
+            if len(train_scenes) != 128 or len(holdout_scenes) != 120:
+                raise ValueError(
+                    "debug train/holdout scene cardinality changed: "
+                    "train={}, holdout={} (expected 128/120)".format(
+                        len(train_scenes), len(holdout_scenes)
+                    )
+                )
+            if train_scenes.intersection(holdout_scenes):
+                raise ValueError("debug train/holdout scenes are not disjoint")
+            if args.eval:
+                train_dataset = None
+            print(
+                "Debug train holdout: train={} examples/{} scenes; "
+                "holdout={} examples/{} scenes; overlap=0".format(
+                    0 if train_dataset is None else 128,
+                    0 if train_dataset is None else len(train_scenes),
+                    128, len(holdout_scenes),
+                )
+            )
+            return train_dataset, test_dataset
+
         if args.eval:
             train_dataset = None
         else:
@@ -2138,7 +2430,10 @@ class TrainTester(BaseTrainTester):
                 butd_cls=args.butd_cls,
                 augment_det=args.augment_det,
                 skip_missing_superpoints=args.skip_missing_superpoints,
-                use_sacr_source=getattr(args, 'use_sacr_source', False),
+                use_sacr_source=(
+                    getattr(args, 'use_sacr_source', False)
+                    or getattr(args, 'use_sacr_score_refiner', False)
+                ),
             )
         
         test_dataset = Joint3DDataset(
@@ -2155,7 +2450,10 @@ class TrainTester(BaseTrainTester):
             butd_cls=args.butd_cls,
             wo_obj_name=args.wo_obj_name,
             skip_missing_superpoints=args.skip_missing_superpoints,
-            use_sacr_source=getattr(args, 'use_sacr_source', False),
+            use_sacr_source=(
+                getattr(args, 'use_sacr_source', False)
+                or getattr(args, 'use_sacr_score_refiner', False)
+            ),
         )
         return train_dataset, test_dataset
 
@@ -2258,6 +2556,28 @@ class TrainTester(BaseTrainTester):
                 args, 'query_mask_fusion_max_delta', 0.25
             ),
             query_mask_fusion_detach_inputs=True,
+            use_egqs_mask_refiner=getattr(
+                args, 'use_egqs_mask_refiner', False
+            ),
+            egqs_mask_refiner_arch=getattr(
+                args, 'egqs_mask_refiner_arch', 'egqs'
+            ),
+            egqs_mask_refiner_hidden_dim=getattr(
+                args, 'egqs_mask_refiner_hidden_dim', 32
+            ),
+            egqs_mask_refiner_max_delta=getattr(
+                args, 'egqs_mask_refiner_max_delta', 2.0
+            ),
+            egqs_mask_refiner_components=getattr(
+                args, 'egqs_mask_refiner_components', 'all'
+            ),
+            egqs_mask_refiner_graph_mode=getattr(
+                args, 'egqs_mask_refiner_graph_mode', 'bilateral'
+            ),
+            egqs_mask_refiner_neighbor_count=getattr(
+                args, 'egqs_mask_refiner_neighbor_count', 8
+            ),
+            egqs_mask_refiner_detach_inputs=True,
             use_joint_query_quality_reranker=getattr(
                 args, 'use_joint_query_quality_reranker', False
             ),
@@ -2281,6 +2601,157 @@ class TrainTester(BaseTrainTester):
             ),
             joint_query_quality_score_weight=getattr(
                 args, 'joint_query_quality_score_weight', 1.0
+            ),
+            joint_query_quality_direct_residual_scale=getattr(
+                args, 'joint_query_quality_direct_residual_scale', 1.0
+            ),
+            joint_query_quality_use_metric_aligned_utility=getattr(
+                args, 'joint_query_quality_use_metric_aligned_utility', False
+            ),
+            joint_query_quality_preserve_parent_score=getattr(
+                args, 'joint_query_quality_preserve_parent_score', False
+            ),
+            joint_query_quality_candidate_promotion_margin=getattr(
+                args,
+                'joint_query_quality_candidate_promotion_margin',
+                0.0,
+            ),
+            joint_query_quality_use_parent_transition_advantage=getattr(
+                args,
+                'joint_query_quality_use_parent_transition_advantage',
+                False,
+            ),
+            joint_query_quality_use_decomposed_transition_advantage=getattr(
+                args,
+                'joint_query_quality_use_decomposed_transition_advantage',
+                False,
+            ),
+            joint_query_quality_use_setwise_tier_advantage=getattr(
+                args,
+                'joint_query_quality_use_setwise_tier_advantage',
+                False,
+            ),
+            joint_query_quality_use_decoupled_setwise_heads=getattr(
+                args,
+                'joint_query_quality_use_decoupled_setwise_heads',
+                False,
+            ),
+            joint_query_quality_use_factorized_setwise_safety=getattr(
+                args,
+                'joint_query_quality_use_factorized_setwise_safety',
+                False,
+            ),
+            joint_query_quality_use_factorized_setwise_risk_bound=getattr(
+                args,
+                'joint_query_quality_use_factorized_setwise_risk_bound',
+                False,
+            ),
+            joint_query_quality_use_setwise_safety_veto_gate=getattr(
+                args,
+                'joint_query_quality_use_setwise_safety_veto_gate',
+                False,
+            ),
+            joint_query_quality_use_cost_calibrated_setwise_risk_bound=getattr(
+                args,
+                'joint_query_quality_use_cost_calibrated_setwise_risk_bound',
+                False,
+            ),
+            joint_query_quality_use_setwise_safety_slack_quantile_bound=getattr(
+                args,
+                'joint_query_quality_use_setwise_safety_slack_quantile_bound',
+                False,
+            ),
+            joint_query_quality_use_setwise_safety_slack_pairwise_order=getattr(
+                args,
+                'joint_query_quality_use_setwise_safety_slack_pairwise_order',
+                False,
+            ),
+            joint_query_quality_use_proposal_conditioned_safety=getattr(
+                args,
+                'joint_query_quality_use_proposal_conditioned_safety',
+                False,
+            ),
+            joint_query_quality_use_parent_referenced_safety=getattr(
+                args,
+                'joint_query_quality_use_parent_referenced_safety',
+                False,
+            ),
+            joint_query_quality_use_coupled_safe_repair_witness=getattr(
+                args,
+                'joint_query_quality_use_coupled_safe_repair_witness',
+                False,
+            ),
+            joint_query_quality_use_bidirectional_coupled_boundary=getattr(
+                args,
+                'joint_query_quality_use_bidirectional_coupled_boundary',
+                False,
+            ),
+            joint_query_quality_use_centered_coupled_separation=getattr(
+                args,
+                'joint_query_quality_use_centered_coupled_separation',
+                False,
+            ),
+            joint_query_quality_use_hazard_conditioned_coupled_separation=(
+                getattr(
+                    args,
+                    'joint_query_quality_use_hazard_conditioned_coupled_separation',
+                    False,
+                )
+            ),
+            joint_query_quality_use_monotonic_box_safety_folding=getattr(
+                args,
+                'joint_query_quality_use_monotonic_box_safety_folding',
+                False,
+            ),
+            joint_query_quality_use_same_candidate_branchwise_witness=getattr(
+                args,
+                'joint_query_quality_use_same_candidate_branchwise_witness',
+                False,
+            ),
+            joint_query_quality_use_parent_non_degradation_certificate=getattr(
+                args,
+                'joint_query_quality_use_parent_non_degradation_certificate',
+                False,
+            ),
+            joint_query_quality_use_criterion_responsible_hazard_attribution=getattr(
+                args,
+                'joint_query_quality_use_criterion_responsible_hazard_attribution',
+                False,
+            ),
+            joint_query_quality_use_independent_joint_hazard_certificate=getattr(
+                args,
+                'joint_query_quality_use_independent_joint_hazard_certificate',
+                False,
+            ),
+            joint_query_quality_use_frozen_raw_joint_hazard_features=getattr(
+                args,
+                'joint_query_quality_use_frozen_raw_joint_hazard_features',
+                False,
+            ),
+            joint_query_quality_use_factorized_hit_advantage=getattr(
+                args,
+                'joint_query_quality_use_factorized_hit_advantage',
+                False,
+            ),
+            joint_query_quality_use_factorized_nested_dominance=getattr(
+                args,
+                'joint_query_quality_use_factorized_nested_dominance',
+                False,
+            ),
+            joint_query_quality_factorized_hit_break_cost=getattr(
+                args,
+                'joint_query_quality_factorized_hit_break_cost',
+                4.0,
+            ),
+            joint_query_quality_parent_transition_break_cost=getattr(
+                args,
+                'joint_query_quality_parent_transition_break_cost',
+                4.0,
+            ),
+            joint_query_quality_parent_transition_candidate_top_k=getattr(
+                args,
+                'joint_query_quality_parent_transition_candidate_top_k',
+                0,
             ),
             joint_query_quality_use_mask_calibration=getattr(
                 args, 'joint_query_quality_use_mask_calibration', False
@@ -2328,7 +2799,28 @@ class TrainTester(BaseTrainTester):
             joint_query_quality_detach_inputs=(
                 not getattr(args, 'use_sacr_source', False)
             ),
+            use_decoder_query_adapter=getattr(
+                args, 'use_decoder_query_adapter', False
+            ),
+            decoder_query_adapter_hidden_dim=getattr(
+                args, 'decoder_query_adapter_hidden_dim', 288
+            ),
+            decoder_query_adapter_heads=getattr(
+                args, 'decoder_query_adapter_heads', 4
+            ),
+            decoder_query_adapter_dropout=getattr(
+                args, 'decoder_query_adapter_dropout', 0.1
+            ),
+            decoder_query_adapter_max_delta=getattr(
+                args, 'decoder_query_adapter_max_delta', 0.25
+            ),
             use_sacr_source=getattr(args, 'use_sacr_source', False),
+            use_sacr_score_refiner=getattr(
+                args, 'use_sacr_score_refiner', False
+            ),
+            sacr_score_max_delta=getattr(
+                args, 'sacr_score_max_delta', 0.25
+            ),
             sacr_hidden_dim=getattr(args, 'sacr_hidden_dim', 288),
             sacr_max_pairs=getattr(args, 'sacr_max_pairs', 3),
             sacr_top_m_targets=getattr(args, 'sacr_top_m_targets', 32),
@@ -2336,6 +2828,9 @@ class TrainTester(BaseTrainTester):
             sacr_geo_dim=getattr(args, 'sacr_geo_dim', 16),
             sacr_min_parse_confidence=getattr(
                 args, 'sacr_min_parse_confidence', 0.0
+            ),
+            sacr_score_contract_audit=getattr(
+                args, 'sacr_score_contract_audit', False
             ),
             sacr_residual_scale_init=getattr(
                 args, 'sacr_residual_scale_init', 0.1

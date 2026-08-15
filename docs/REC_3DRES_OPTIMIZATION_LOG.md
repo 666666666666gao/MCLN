@@ -1,22 +1,24 @@
 # ScanRefer REC / 3DRES 优化交接记录
 
-更新日期：2026-08-06
+更新日期：2026-08-14
 
 ## 目标与保护基线
 
 | 指标 | 当前保护结果 | 目标 |
 | --- | ---: | ---: |
-| REC Position Acc@0.25 | 58.2878%（5542/9508） | >= 59.00%（>= 5610/9508） |
-| REC Position Acc@0.50 | 48.6012%（4621/9508） | >= 49.00%（>= 4659/9508） |
-| 3DRES Mask Acc@0.25 | 59.6971% | 不下降并争取提升 |
-| 3DRES Mask Acc@0.50 | 49.0324% | > 50.70% |
-| 3DRES Mask semantic mIoU | 41.7676% | > 44.72% |
+| REC Position Acc@0.25 | **58.6033%（5572/9508）** | >= 59.00%（>= 5610/9508） |
+| REC Position Acc@0.50 | **50.4523%（4797/9508）** | >= 49.00%（>= 4659/9508） |
+| 3DRES Mask Acc@0.25 | **59.8443%（5690/9508）** | 不下降并争取提升 |
+| 3DRES Mask Acc@0.50 | **52.3349%（4976/9508）** | > 50.70% |
+| 3DRES Mask semantic mIoU | **45.9303%** | > 44.72% |
 
-### 当前验收状态（2026-08-06 01:52 CST）
+### 当前验收状态（2026-08-14 CST）
 
 | 验收项 | 当前权威结果 | 状态 |
 | --- | --- | --- |
-| 双阶段 REC 目标 | 历史受保护系统 `0.582878/0.486012`；目标 `0.59/0.49` | 未达标，分别还差 68/38 hits |
+| 双阶段 REC 目标 | V99 + 官方 mesh superpoints `0.586033/0.504523`；目标 `0.59/0.49` | @0.50 已超过 138 hits；@0.25 仍差 38 hits |
+| 双阶段 Mask 目标 | V99 + 官方 mesh superpoints `0.598443/0.523349/0.459303` | 三项均超过用户基线 `0.5870/0.5070/0.4472` |
+| V101 唯一正式验证 | REC `0.584034/0.499159`；Mask `0.598338/0.523244/0.459220` | clean exit，但未超过 V99；本轮冻结为负结果，不重试或按 val 调参 |
 | 网络内最好 | V19 REC `0.581195/0.465398`；Mask `0.598233/0.491376/0.418613` | 已保护，未达到 REC 与 Mask@0.50/mIoU 目标 |
 | 候选覆盖上界 | V19 完整 query oracle `0.629680/0.550063`，超过目标 377/571 hits | proposal 充分，主问题是 query 排序和安全覆盖 |
 | 单阶段 ScanRefer | epoch 28；retained best REC `0.571939/0.461927`，Mask `0.588241/0.483382/0.412678` | 100 epoch 正式训练中 |
@@ -24,10 +26,11 @@
 | 分割专项架构 | 联合六维 Box/Mask 质量、query alpha/bias、source evidence、空间 residual、候选 Mask 损失 | 已实现，V48--V50 队列待运行 |
 | 跨数据集合同 | ScanRefer/Nr3D/Sr3D train SACR join 与 token/relation 对齐 | 三个数据集均通过，正式指标待 ScanRefer 主目标后执行 |
 
-当前执行链固定为：单阶段完整 100 epoch -> parent/geometry/JointBoxMask v2 -> 单阶段 Joint Query
--> V48 spatial Mask -> V49 adaptive source smoke/formal -> V50 SACR 四源 formal。历史 `0.582878`、
-V19、parent、geometry 和 Mask best 权重均为只读保护；各活动 run 使用 metric retention 自动清理
-低指标中间权重。
+当前执行链已收敛为：保留 epoch71 + parent + geometry + V99；V101 唯一 validation 已完成且未刷新
+V99，train/val mesh-derived superpoints 均已修复并切入可逆 view，后续进入新的 train-only 路线；服务器仅一张 GPU，所有训练/评估
+固定 GPU0 串行。V99 最佳 artifact 与必要 backbone/parent/geometry 均为只读；V101 负结果 artifact
+已按“只保留最好权重”规则删除，但 receipt、claim、日志、配置和完整 SHA 仍保留。失败路线 checkpoint
+同样在审计后删除。
 
 保护输入均为只读 `0444`，禁止覆盖：
 
@@ -43,6 +46,8 @@ V19、parent、geometry 和 Mask best 权重均为只读保护；各活动 run �
 | 实验 | 数据/规模 | Position @0.25 / @0.50 | Mask @0.25 / @0.50 / mIoU | 结论 |
 | --- | --- | --- | --- | --- |
 | Epoch-71 + parent + geometry 正式验证 | ScanRefer val，9508 | 58.2878% / 48.6012% | 59.6971% / 49.0324% / 41.7676% | 当前保护基线；@0.25 还差 68 hits |
+| V99 + mesh-derived official superpoints | ScanRefer val，9508 | **58.6033% / 50.4523%** | **59.8443% / 52.3349% / 45.9303%** | 当前同一系统最好；仅 REC@0.25 尚差 38 hits |
+| V101 full-train Pareto + mesh-derived official superpoints | ScanRefer val，9508 | 58.4034% / 49.9159% | 59.8338% / 52.3244% / 45.9220% | 仍超过用户 Mask baseline，但 REC 与 Mask 均未超过 V99；负结果封存 |
 | Joint box-mask Stage-0 smoke | train，1 scene × 4 expressions，重复两次 | 仅 smoke，不作总体指标 | oracle 相对 legacy：@0.50 +25.0pp，mIoU +23.42pp | 两次 rows/summary 一致；样本太少，不能外推 |
 | Joint box-mask Stage-0 正式 panel 首次运行 | train，计划 64 × 16 | 未完成 | 未完成 | 在实际第 287 行前因旧 cache query identity 漂移而 fail-closed |
 
@@ -4888,3 +4893,4801 @@ oracle headroom 仅 `0.00095/0.00105`。retention 已用 epoch 28 latest 替换�
 epoch 27 到 28 的发布间隔为 `27m08s`，下次只在约 `2026-08-06 02:47 CST` 检查 epoch 29。按
 剩余 72 个 epoch 粗估，epoch 100 约在 `2026-08-07 10:54 CST` 完成。完整收据为
 `experiment_output/single_stage_epoch28_full_metrics.json`。
+
+
+## 14. 2026-08-12 重启审计与 V51 BMQ-Rank 实施
+
+### 14.1 真实基线与瓶颈复核
+
+本轮重新读取 9508 条 ScanRefer 验证收据、candidate headroom、源码和进程。受保护后处理系统
+REC 为 5542/9508=0.582878、4621/9508=0.486012，距 0.59/0.49 还差 68/38 个命中；
+Mask 为 0.596971/0.490324/0.417676。V19 learned REC 为 0.581195/0.465398，Mask 为
+0.598233/0.491376/0.418613；相同候选的 oracle REC 已达 0.629680/0.550063，mask oracle
+mIoU 为 0.451708。因此首要问题是 query 排序和安全切换，而不是 proposal 覆盖。
+
+源码复核确认：原 Joint Query anchor 只保护已命中的父 query，没有父 query 未命中时的 repair；
+MCLN text mask 只生成一个 mask，再 expand 到 256 个 query。V49/V50 队列因上游 summary 缺失
+已经停止，四张 A100 40GB 当前空闲。第 13.25 节 V51-RAPF 是未执行的可选预注册；本轮主线
+命名为 V51 BMQ-Rank，RAPF 留作后续可靠性消融。
+
+### 14.2 V51 实现合同
+
+已在 models/joint_query_quality.py 实施，所有开关默认关闭以保持历史路径：
+
+1. 平滑 utility：Box 为 1*soft025 + 2*soft050 + 0.5*IoU；Mask 为
+   0.5*soft025 + 1*soft050 + 0.5*IoU，总 Mask 权重 0.25，温度 0.05。
+2. 双向 anchor：protect 与 repair，margin 为 0.05@0.25 和 0.10@0.50。
+3. Top-K 并集：joint Top-16、各 source Top-8、训练期 GT utility Top-4，并强制包含父 query。
+   GT 不进入 forward/inference。
+4. 按 |U_i-U_j| 加权的 pairwise softplus loss，权重 0.5。
+5. direct residual logit 缩放为 0.25，保留质量与 source-mix 路径。
+6. 新增 protect/repair、candidate ratio 和分项 loss 诊断。
+
+CLI、MCLN 构造、训练损失和训练脚本已接线；独立 launcher 为
+scripts/run_double_stage_v51_bmq_rank.sh，不再依赖死亡队列。V51 保留 V50 SACR 四源池、
+Mask calibration、query-superpoint spatial refiner 与候选 Mask Focal/Dice/Lovasz 监督。
+
+### 14.3 回归与初始化
+
+V51/Joint Query/SACR/初始化聚焦回归为 83 passed（2 个 CPU autocast warning），SourceMoE
+integration 与训练参数组为 124 passed。初始化收据
+experiment_output/v51_bmq_rank/v51_bmq_protected_v19_initialization.json 为 pass=true：
+common/changed/missing/unexpected/shape-mismatch=1228/0/66/0/0，新模块参数 1,150,390，
+输出头零初始化，direct scale 0.25 与 metric utility 已写入审计。受保护 V19 未修改。
+
+### 14.4 运行顺序
+
+先运行 2 个 debug epoch/128 条验证的 R2-S。通过后才进入四卡 40 epoch、完整 9508 条验证的
+R2-F。若 REC 排名提升但 Mask@0.50/mIoU 仍受限，进入 V52 QTM-3D；若 selected rank 仍显著
+低于 candidate oracle，再进入 V53 last-two-decoder DN/Group refinement。
+
+依据：Rank-DETR https://arxiv.org/abs/2310.08854 与
+https://github.com/LeapLabTHU/Rank-DETR；Mask2Former https://arxiv.org/abs/2112.01527；
+DINO https://arxiv.org/abs/2203.03605。
+
+### 14.5 R2-S 真实数据烟测、故障修复与候选冻结
+
+R2-S 首次进入真实数据后发现两个此前单元测试没有覆盖的问题：
+
+1. Candidate Mask loss 将不同场景的 superpoint mask 直接 `torch.cat`；真实 batch 的场景宽度
+   不同（观测到 2961 与 1431），因此第一批即 shape error。现改为逐场景累计、按被选 mask 数
+   加权归一，允许每个场景有独立的 superpoint 数。
+2. 修复后第一批出现 SACR 梯度非有限。新增逐参数诊断定位到 SACR residual/slot attention/MLP；
+   根因是常量 source score 的 rank-normalize 方差为 0，而 `sqrt(variance)+eps` 在 0 点导数
+   非有限。现改为 `variance.clamp(min=eps**2).sqrt()`，并补充常量源有限梯度回归。
+
+修复后的 Joint Query/SACR/finite-training 聚焦回归为 `87 passed`，仅有 2 个 CPU autocast
+warning。变量 superpoint 数和常量 source score 均已有固定回归。
+
+第一组 aggressive full smoke 虽完成 2 epoch，但发生过度切换，故明确拒绝：epoch 1
+fixed/learned REC 命中为 `63/56 -> 60/52`，Mask 为 `61/49`、mIoU `0.330190`；
+epoch 2 learned 进一步降至 `56/46`，Mask `58/44`、mIoU `0.304320`，switch 约 0.5。
+它证明“放大自由 residual”会破坏父模型，不进入正式训练。
+
+随后对同一 128 条 debug 合同执行两组 safe smoke：
+
+| 变体 | epoch | fixed REC hits | learned REC hits | Mask hits | Mask mIoU |
+|---|---:|---:|---:|---:|---:|
+| R1 anchor-only | 1 | 63/57 | 64/58 | 64/51 | 0.350195 |
+| R1 anchor-only | 2 | 63/57 | 64/58 | 64/52 | 0.350130 |
+| R2 BMQ-safe | 1 | 63/56 | 64/57 | 64/51 | 0.350186 |
+| R2 BMQ-safe | 2 | 63/56 | 64/57 | 64/51 | 0.352024 |
+
+两组在各自 run 内均实现 REC +1/+1，且没有破坏 Mask；并发 debug 的 fixed@0.50 有 1 个样本
+随机差异，因此只比较 run 内 delta。BMQ-safe 保留 metric-aligned utility、双向 anchor、
+Top-16/8/4 候选并集和 gain-weighted pairwise，但将 pairwise 权重冻结为 0.25、direct residual
+scale 冻结为 0.25、reranker LR 冻结为 1e-4，作为 R2-F 唯一正式候选。第 14.2 节的 0.5 是
+aggressive 初始配置，不再用于正式训练。
+
+为给正式训练释放空间，已在精确核对路径后删除
+`/root/autodl-tmp/DATA_ROOT/output/double_stage_v51_bmq_smoke` 下 24 个烟测 checkpoint
+硬链接；约释放 3.5 GiB，可用空间从约 7.4 GiB 增至约 11 GiB。该删除不可恢复，但 smoke 的
+JSON、config 和完整日志均保留，受保护 V19 与历史最好权重未触碰。
+
+### 14.6 R2-F 四卡正式运行
+
+R2-F 已于 `2026-08-12 03:01:07 CST` 启动，screen 为 `v51_bmq_formal`。launcher 日志：
+
+`experiment_output/v51_bmq_rank/v51_bmq_safe_formal_e1_e40_b12x4_20260812_030107.log`
+
+正式 run 目录：
+
+`/root/autodl-tmp/DATA_ROOT/output/double_stage_v51_bmq_formal/scanrefer/v51_bmq_safe_formal_e1_e40_b12x4/1786474880`
+
+配置为 4 x A100、每卡 batch 12、40 epoch、每 epoch 完整验证 9508 条。关键冻结合同为：
+metric utility 温度 0.05，双向 anchor 权重 2.0、margin 0.05/0.10，pairwise 0.25，
+Top-K 16/8/4，direct residual 0.25，最大 joint delta 0.5，candidate Mask
+Focal/Dice 权重 0.25、Lovasz 0.05。V50 SACR 四源、adaptive source mixing、Mask calibration
+和空间 Mask refiner 全部保留。
+
+启动初始化审计再次为 `pass=true`，受保护 V19 的 1228 个公共 tensor 零改变，新模块 66 个
+tensor/1,150,390 参数按合同初始化。截至 `2026-08-12 03:05:50 CST`，4 个 DDP rank 均存活，
+正以约 96% CPU 执行 train split 文本解耦，尚未进入 GPU batch；这属于数据集构建阶段，当前
+没有 OOM、NaN 或进程退出。首个完整 epoch receipt 发布后再依据 fix/break、source switch、
+REC/Mask overall 与 subgroup 决定继续或早停，不能仅凭 128 条 smoke 外推正式指标。
+
+### 14.7 R2-F epoch 1 全量门禁失败并停止
+
+R2-F epoch 1 于 `2026-08-12 03:30:11 CST` 完成 9508 条正式验证：
+
+| 指标 | fixed / V19 parent | learned BMQ | delta |
+|---|---:|---:|---:|
+| REC@0.25 | 5515/9508 = 0.580038 | 5458/9508 = 0.574043 | -57 hits / -0.005995 |
+| REC@0.50 | 4410/9508 = 0.463820 | 4332/9508 = 0.455616 | -78 hits / -0.008204 |
+| Mask@0.25 | V19 0.598233 | 5659/9508 = 0.595183 | -0.003050 |
+| Mask@0.50 | V19 0.491376 | 4623/9508 = 0.486222 | -0.005154 |
+| Mask mIoU | V19 0.418613 | 0.414974 | -0.003639 |
+
+精确 threshold effects 显示 REC@0.25 fix/break 为 1.462%/2.061%，REC@0.50 为
+1.125%/1.946%；验证期 joint switch 约 12.35%，错误切换多于修复。候选能力仍充足：
+gate candidate oracle 为 5986/9508=0.629575、5232/9508=0.550273，mIoU 0.451913。
+因此本轮失败不是 proposal coverage，而是 deployed ranking precision。
+
+Mask 的 Unique/Multiple 为 1287/4372 hits@0.25、1038/3585 hits@0.50；REC
+Unique/Multiple 为 1246/4212 hits@0.25、1053/3279 hits@0.50。退化不是某个小 subgroup
+单独造成，Multiple 仍是绝对主瓶颈。
+
+epoch 1 checkpoint 审计收据
+`experiment_output/v51_bmq_rank/v51_bmq_safe_formal_epoch1_checkpoint_audit.json`
+为 pass=true：1228 个公共主干 tensor 零变化，只有允许的 66 个新 tensor 更新；optimizer
+为 66 states、1,150,390 参数、763 step，moment 全部有限且非零。由此排除错误初始化、主干漂移、
+NaN 和 optimizer 漏参，结论锁定为 BMQ 的自由部署 residual 过强：验证 residual abs mean/max
+为 0.3810/0.4871，第一轮即接近 max delta 0.5。
+
+确认 epoch 1 JSON、日志及单 inode checkpoint 保留后，于约 `03:32 CST` 对精确进程组发送
+SIGINT；screen 和所有 rank 已退出，四卡回到 1 MiB。R2-F 标记 rejected，不继续盲跑 39 轮。
+该失败权重仅作为审计证据，不作为后继初始化。
+
+### 14.8 R1-F anchor-safe 全量消融启动
+
+为区分“BMQ metric/pairwise 目标失败”和“允许的部署改动过大”，已于
+`2026-08-12 03:33:59 CST` 启动 R1-F，screen 为 `v51_anchor_formal`。launcher 日志：
+
+`experiment_output/v51_bmq_rank/v51_anchor_formal_e1_e40_b12x4_20260812_033359.log`
+
+run 目录：
+
+`/root/autodl-tmp/DATA_ROOT/output/double_stage_v51_bmq_formal/scanrefer/v51_anchor_formal_e1_e40_b12x4/1786476851`
+
+R1-F 仍从受保护 V19 零初始化新头，4 卡、每卡 batch 12、每轮完整 9508 条验证；只将
+joint max delta 收紧到 0.25，关闭 metric-aligned utility、pairwise 和 Top-K loss restriction，
+保留双向 anchor margin 0.05/0.10、anchor weight 2、direct scale 0.25、SACR 四源、
+source mixing、Mask calibration、空间 refiner 与 candidate Mask loss。首轮门禁与 R2-F 相同：
+若 REC/Mask 明显低于 fixed parent，就停止并实施带部署候选限制/硬保护的一致训练-推理版本；
+若恢复净正增益，才允许进入 epoch 2。
+
+
+### 14.9 R1-F epoch 1 全量门禁失败、审计与停止
+
+R1-F epoch 1 于 `2026-08-12 04:02:31 CST` 完成 9508 条正式验证：
+
+| 指标 | fixed / V19 parent | learned anchor-safe | delta |
+|---|---:|---:|---:|
+| REC@0.25 | 5515/9508 = 0.580038 | 5494/9508 = 0.577829 | -21 hits / -0.002209 |
+| REC@0.50 | 4409/9508 = 0.463715 | 4387/9508 = 0.461401 | -22 hits / -0.002314 |
+| Mask@0.25 | V19 0.598233 | 5675/9508 = 0.596866 | -0.001367 |
+| Mask@0.50 | V19 0.491376 | 4660/9508 = 0.490114 | -0.001262 |
+| Mask mIoU | V19 0.418613 | 0.417830 | -0.000783 |
+
+精确 threshold effects 为 REC@0.25 fix/break `75/96`（0.7888%/1.0097%），REC@0.50
+`61/83`（0.6416%/0.8729%）；即使比 R2-F 保守，验证集仍是错误切换多于修复。候选能力保持不变，
+gate candidate oracle 为 `5987/9508=0.629680`、`5230/9508=0.550063`，mIoU `0.451888`，继续
+确认失败点是 deployed ranking precision 而不是 proposal coverage。
+
+训练 batch 100 时 joint switch 仅 0.08%，fix/break@0.25 为 0.08%/0；batch 700 时约为
+0.37%/0.30%，看似略为净正。但完整验证时 switch 升到 3.73%，ranking residual abs mean/max
+达到 `0.2268/0.2465`，再次贴近本轮更小的 max delta 0.25。单纯收紧 residual bound 只能缩小
+退化，不能防止自由候选通过抬分击穿父 query。Mask spatial residual 同时达到
+`1.7233/1.9992`（上限 2.0），解释了 Mask 没有从 candidate supervision 获益。
+
+检查点审计收据
+`experiment_output/v51_bmq_rank/v51_anchor_formal_epoch1_checkpoint_audit.json` 为 `pass=true`：
+公共主干 `1228/0` common/changed，新模块 66 个 tensor、1,150,390 参数，optimizer 66 states、
+step 763，权重与 moment 均 finite/nonzero。另修正 launcher 初始化审计的 profile 选择：anchor
+profile 现在显式要求 `metric_aligned_utility=false`；正确收据
+`experiment_output/v51_bmq_rank/v51_anchor_protected_v19_initialization.json` 亦为 `pass=true`。
+这只修复审计标签，运行时 config 原本就是 false，不影响本次结果。
+
+确认 epoch 1 的 JSON、日志和 7 个硬链接共享的单一 checkpoint inode 后，对精确进程组停止后续
+39 轮；screen、所有 rank 与 dataloader 均已退出，四卡回到 1 MiB。R1-F 标记 rejected。
+
+下一步预注册为 R2-P（parent-score-preserving promotion）：父 Top-1 的部署 score 保持为原始
+baseline score，不允许 learned negative residual 降低它；非父候选必须在自身 learned score 上扣除
+固定 promotion margin 后仍超过父 score 才能切换。listwise/anchor 训练直接消费同一 deployed score，
+保证训练与推理一致。这是排序层内部的安全合同，不读取数据集名、验证阈值或后处理规则，可迁移到
+ScanRefer/Nr3D/Sr3D。先关闭会饱和的输出 Mask calibration/spatial residual，隔离验证 REC 排序；
+REC 通过后再进入 V52 QTM-3D，以零初始化 query-specific Mask residual 解决单一文本 Mask 广播问题。
+
+
+### 14.10 R2-P 实现、审计与真实数据烟测
+
+R1-F/R2-F 的共同失败模式不是“父 query 自身被降分”这么单一，而是任意非父 candidate 可凭自由
+residual 直接越过父 query；两轮验证 residual 均贴近各自上限，训练 batch 的净修复也没有泛化。
+因此实现默认关闭的 R2-P 部署合同，并在 reranker forward 内同时供训练 loss 与 evaluator 消费：
+
+1. 先由原始 parent score 的 Top-1 确定父 query；父 query 部署 residual 强制为 0，部署 score 逐值
+   等于原始 parent score。
+2. 非父 query 的 learned residual 在部署前统一扣除 `promotion_margin=0.05`；只有 learned score 同时
+   跨过原始父子分差与该 margin 才能晋升。
+3. `scores`、`selected_indices`、listwise/anchor loss 和 evaluator 全部消费同一个部署张量，不存在
+   只在评估时执行的后处理分支；合同不读取数据集名、GT 或 validation IoU。
+4. 新增父分数 drift、learned residual 与 deployed residual 的分离诊断。历史路径默认
+   `preserve_parent_score=false, margin=0`，逐值保持兼容。
+5. 为隔离 REC 安全性，R2-P 关闭 Mask calibration、source-mask evidence、spatial Mask residual、
+   candidate Focal/Dice/Lovasz；保留 SACR 四源、source mixing、双向 anchor 与 quality/listwise 训练。
+
+核心、CLI、MCLN、通用训练脚本、独立 launcher、初始化与正式 checkpoint audit 均已接线。
+受保护 V19 初始化收据
+`experiment_output/v51_bmq_rank/v51_parent_promotion_protected_v19_initialization.json` 为
+`pass=true`：common/changed/missing/unexpected/shape-mismatch=`1228/0/52/0/0`，仅新增允许的
+1,126,942 参数；父分数保持、0.05 margin、max delta 0.25、direct scale 0.25、Mask 输出关闭均
+逐项审计。
+
+128 条、单卡、2 epoch 真实数据烟测 run：
+
+`/root/autodl-tmp/DATA_ROOT/output/double_stage_v51_bmq_smoke/scanrefer/v51_parent_safe_smoke_e1_e2_b12x1/1786479766`
+
+两轮收据完全一致：fixed REC `63/56`，learned REC `64/57`，均为 `+1/+1` 且 selector break 为 0；
+Mask `64/52`、mIoU `0.350607`，因输出 Mask 路径隔离而与父部署保持一致。父分数 drift 全程严格为
+0，candidate promotion margin 为 0.05，candidate Mask loss 与所有 Mask 输出 residual 为 0。
+烟测 checkpoint 审计
+`experiment_output/v51_bmq_rank/v51_parent_safe_smoke_epoch2_checkpoint_audit.json` 为
+`pass=true`：52 states、1,126,942 参数、step 20，公共主干无变化。`rel_attn` 一阶矩约 2.1e-23
+非零，二阶矩在 float32 平方后下溢为 0；审计只在“一阶矩非零且所有值 finite”时允许该二阶矩
+下溢，并显式记录 `zero_second_moment_count=1`，全零一阶矩仍被拒绝。对应数值边界已有回归。
+
+Joint Query、SACR、真实 MCLN forward、有限梯度、初始化和 checkpoint audit 聚焦回归为
+`229 passed`。烟测只证明合同正确和小样本净增，不作为目标指标证据；下一步仍需 9508 条正式
+验证，首轮若 fix 不大于 break 或 REC/Mask 低于父模型即停止。
+
+
+### 14.11 R2-P 正式训练早停：父分数不变仍不足以保证净修复
+
+R2-P 四卡正式 run 的 launcher 日志为：
+
+`experiment_output/v51_bmq_rank/v51_parent_safe_formal_e1_e40_b12x4_20260812_104403.log`
+
+该 run 没有等到完整验证，因为训练期部署行为已连续越过安全门禁。batch 100 时 switch 为
+`39.42%`，REC@0.25 fix/break 为 `1.33%/2.08%`，REC@0.50 为
+`3.08%/3.83%`；batch 200 时 switch 上升到 `68.58%`，fix/break@0.25 为
+`1.88%/2.63%`，@0.50 为 `4.96%/6.50%`。随后 switch 继续上升到约
+`76.53%`。两个阈值在两个正式检查点均是 break 大于 fix，说明仅冻结父 query 的 score
+并不能阻止大量候选被统一抬高后错误越过父 query。
+
+因此在精确确认 PGID 后停止进程，screen、DDP ranks 和 dataloader workers 均已退出；未生成
+9508 条 validation receipt，也不把中途状态称为正式精度。日志保留作为否证，R2-P 标记
+rejected。结论是后继模块必须学习“这个具体候选相对当前父 query 会修复还是破坏”，而不能再输出
+一个无类别约束的自由 scalar residual。
+
+### 14.12 V51-T：Parent-Conditioned Transition Advantage
+
+针对 R2-F、R1-F、R2-P 的共同失败模式，实现默认关闭的 V51-T（parent-conditioned
+transition advantage）。该模块不是再增加一个样本级 Gate，而是对每个候选与当前父 query
+组成有序 pair，并在 REC 的 0.25/0.50 两个阈值分别预测三类状态：
+
+- `break`：父 query 命中而候选不命中；
+- `neutral`：父子在该阈值同为命中或同为未命中；
+- `fix`：父 query 未命中而候选命中。
+
+pair 特征由 candidate hidden、parent hidden、差值、逐元素积、父子 baseline rank 差和标准化
+score 差构成；输出形状为 `[B,Q,2,3]`。部署优势使用 `fix` 对
+`neutral + break_cost * break` 的风险敏感 log-odds，两个阈值权重为 1:2。父 score 逐值保持
+不变，非父候选仍需跨过 0.05 promotion margin，且仅允许原始父分数 Top-32 候选参与晋升；
+所有限制同时被训练 loss 与 evaluator 消费，不依赖数据集名或 validation GT。
+
+训练端使用相对父 query 的精确 transition 标签，并只监督同一 Top-32 部署候选。为避免类别频率
+约 22%/72%/6% 导致多数类塌缩，loss 对每个样本内的有效类别先按类数归一化，再按可配置 class
+weight 聚合。部署 break cost 与训练 class weight 分离：当前预注册配置训练为
+break/neutral/fix=`1/1/1`，部署仍为 `break_cost=4`。旧的 quality/residual 输出头在该模式
+被显式移出 optimizer，解决了首次 DDP 烟测因 unused parameters 在 batch 2 退出的问题。
+
+初始化审计
+`experiment_output/v51_bmq_rank/v52_parent_transition_protected_v19_initialization.json`
+为 pass：公共 checkpoint tensor `1228/0` common/changed，新增 26 tensors、220,481 参数，
+zero initialization、父分数保持、Top-32、margin 0.05、max delta 0.25、关闭 SACR/adaptive
+source mixing/Mask 输出均符合合同。optimizer 只训练其中 219,578 参数；聚焦单测包含 step-zero
+恒等、Top-K 边界、有限梯度、三类监督、非法合同和 DDP optimizer 参数过滤。
+
+两轮初始烟测完成且安全，但 transition 头预测全 break，部署优势全负、实际 switch=0；run 内
+fixed `63/57` 到 learned `64/58` 的 +1/+1 来自既有父路径差异，不能归因于新模块。将训练
+class weight 调整为等权、LR 提高到 3e-4 后又执行 5 epoch/每轮 10 step 的 128 条烟测：
+
+`experiment_output/v51_bmq_rank/v51_parent_transition_smoke_e1_e5_b12x1_20260812_120337.log`
+
+五轮 fixed/learned 均为 `63/57 -> 64/58`，Mask `64/52`、mIoU 约 0.3505；父分数 drift、
+transition switch、fix 和 break 均严格为 0，因此部署安全。头从全 break 转为全 neutral，
+transition loss 约从 0.91 降到 0.88，但 50 个 step 仍不足以学出 fix。关键新证据是验证 Top-32
+candidate oracle 达到约 `0.8106/0.7576`，远高于目标 `0.59/0.49`，候选限制没有耗尽
+headroom；瓶颈仍是 pair 分类泛化。
+
+因此不以短烟测的 neutral collapse 直接否决，而于 `2026-08-12 12:14:41 CST` 启动四卡正式
+训练，screen 为 `v52_parent_transition_formal`，launcher 日志：
+
+`experiment_output/v51_bmq_rank/v51_parent_transition_formal_e1_e40_b12x4_20260812_121433.log`
+
+run 目录为
+`/root/autodl-tmp/DATA_ROOT/output/double_stage_v51_bmq_formal/scanrefer/v51_parent_transition_formal_e1_e40_b12x4/1786508086`。
+预注册早停门禁：batch 100/200 检查 transition 三类 recall、advantage positive ratio、
+switch 及两个阈值 fix-break；若开始切换且连续出现 break>fix，则停止。若保持安全或净修复，
+必须完成 epoch 1 的 9508 条验证后才判断是否进入下一轮。
+
+
+### 14.13 V51-T epoch 1 正式收据与 checkpoint 审计
+
+V51-T epoch 1 完成 9508 条正式验证，成为本轮首个两个 REC 阈值均在完整验证上净正的新增架构：
+
+| 指标 | fixed / V19 parent | learned V51-T | delta |
+|---|---:|---:|---:|
+| REC@0.25 | 5515/9508 = 0.580038 | 5522/9508 = 0.580774 | +7 hits / +0.000736 |
+| REC@0.50 | 4410/9508 = 0.463820 | 4419/9508 = 0.464767 | +9 hits / +0.000947 |
+| Mask@0.25 | V19 0.598233 | 5684/9508 = 0.597812 | -0.000421 |
+| Mask@0.50 | V19 0.491376 | 4667/9508 = 0.490850 | -0.000526 |
+| Mask mIoU | V19 0.418613 | 0.418073 | -0.000540 |
+
+验证期 transition switch 为约 0.71%，fix/break@0.25 为 0.29%/0.25%，@0.50 同为
+0.29%/0.25%，与 +7/+9 的精确命中增益一致。父分数 drift 仍严格为 0；Top-32 candidate
+oracle 为 0.7693/0.6855。与 R2-F/R1-F 相比，本方案把错误切换压到很低，并首次实现完整验证
+净修复；但距受保护后处理目标仍差约 61/29 hits，单轮增益规模尚不够。
+
+checkpoint 审计收据
+`experiment_output/v51_bmq_rank/v52_parent_transition_formal_epoch1_checkpoint_audit.json`
+为 pass：common/changed/new=`1228/0/26`，公共主干零变化；optimizer 为 22 states、
+219,578 参数、step 763，全部 moment finite/nonzero。审计同时锁定 parent-transition 开关、
+部署 break cost 4、Top-32、父分数保持、margin 0.05 和 max delta 0.25。完整聚焦回归为
+`213 passed`。
+
+因为两个主阈值均净正、Mask 退化小于 0.001，允许进入 epoch 2，而不是按旧失败方案停止。
+epoch 2 训练 batch 100/200/300 的累计 REC@0.25 fix-break 分别为 +0.33%、+0.17%、+0.20%，
+@0.50 为 +0.17%、+0.08%、+0.11%；目前仍为净正且 switch 低于 1%，继续等待第二轮正式
+9508 条验证。若 epoch 2 不再扩大净增益，则停止 direct three-class 版本，改为 factorized
+candidate/parent absolute-hit probability：对每个 Top-32 query 直接监督两个阈值命中概率，
+再由概率恒等式构造 fix/break/neutral，以解决 direct transition 的 fix 类仅约 3--6%、
+recall 学习缓慢问题。
+
+
+### 14.14 V51-T epoch 2 否决、停止与 V53-FH 架构切换
+
+V51-T epoch 2 的 9508 条正式验证否决继续训练：fixed 仍为 `5515/4410 = 0.580038/0.463820`，learned 降为 `5508/4405 = 0.579302/0.463294`，即相对父路径 `-7/-5 hits`，也比 epoch 1 的 `5522/4419` 明显回退。Mask 同步降为 `0.596130/0.488957/0.416789`。checkpoint retention 已确认五项最佳全部仍是 epoch 1，且六个 best 名称与 `ckpt_epoch_1.pth` 共享 inode `6457389551`、link count 6，故最佳权重不会被后续轮覆盖。进入 epoch 3 后 batch 100 的累计 fix/break 已恶化到 `0.08%/0.92%@0.25`、`0.08%/0.83%@0.50`，因此于 `2026-08-12 12:50 CST` 精确终止 PGID 78012，复查无残留进程。结论：直接三分类在第一轮可小幅净修复，但第二轮迅速过拟合 neutral/break；epoch 1 保留为 V51-T 唯一候选。
+
+随后实现 V53-FH（Factorized Hit Advantage）。它不直接拟合稀疏的 fix/break/neutral：共享 query encoder 后增加仅 258 参数的 ordinal hit head，密集监督 Top-32 每个 query 的 `P(Box IoU>0.25)` 和 `P(Box IoU>0.50)`，并结构保证后者不高于前者。部署时将候选概率 `p_c` 与不可变父 query 概率 `p_p` 解析分解为 `p_fix=(1-p_p)p_c`、`p_break=p_p(1-p_c)`，以阈值权重 1:2 聚合 `p_fix-4p_break` 产生 residual；仍保留父分数、0.05 promotion margin、Top-32 和 max-delta 0.25。零初始化下所有候选风险效用为负，故不会随机切换。
+
+远程实现已贯通 `models/joint_query_quality.py`、`models/mcln.py`、`models/losses.py`、`main_utils.py`、`train_dist_mod.py` 和训练 launcher。新增聚焦测试覆盖零步安全、概率嵌套、密集平衡损失梯度及互斥契约；聚焦结果 `99 passed`（其中 joint-query 文件 `75 passed`）。全套测试首次跑至 1953 项时，一个无关的 frozen geometry 文件监视竞态用例失败，单独复跑 `1 passed`，判为时序偶发而非本次回归。
+
+受保护 V19 初始化审计收据：`experiment_output/v51_bmq_rank/v53_factorized_hit_protected_v19_initialization.json`。结果 pass，common/changed/missing=`1228/0/22`，公共主干逐位不变，新模块总参数 153,789，输出头零初始化，父分数/Top-32/break-cost 契约全部通过。下一门禁是真实 128 条短烟测：确认 DDP 无 unused parameter、loss 有效下降且部署仍无明显 break，再进入完整验证。
+
+
+### 14.15 V53-FH 烟测、风险校准与 V54-FR 正式注册
+
+V53-FH 进行了 5 epoch、每轮 10 step、128 条 debug 烟测，launcher 日志为 `experiment_output/v51_bmq_rank/v53_factorized_hit_smoke_e1_e5_b12x1_20260812_1324.log`。训练稳定且无 DDP unused parameter；factorized BCE 从首 batch 0.7193 下降，父分数 drift、两个阈值 break 和模块 switch 始终为 0。第 5 轮 checkpoint 审计 `experiment_output/v51_bmq_rank/v53_factorized_hit_smoke_epoch5_checkpoint_audit.json` 通过：18 optimizer states、152886 参数、step 50，moment 全 finite/nonzero，公共主干 1228 张量零改动。验证表 `63/56 -> 64/57` 来自既有父路径差异，不能归因于 switch=0 的新模块。
+
+为分离训练与部署校准，加入独立 `factorized_hit_break_cost`。同一 epoch-5 权重只评估 cost=4/2 均无正 advantage；cost=1 时解析式严格化简为 `p_candidate-p_parent`，约 14.7% 候选为正，但原 margin 0.05 仍阻断全部切换。cost=1、margin=0 的机制验证产生 switch 3.03%，两个阈值 fix/break 均为 `0.76%/0`，fixed `63/56` 到 learned `65/58`；Mask 同时由 64/52、mIoU 0.35049 升为 65/53、0.35833。由于 debug train/eval 是同一 128 条，只能证明 dense hit rank 可学且解析部署可修复，不能视为泛化结果。
+
+据此正式注册 V54-FR（Factorized Hit Ranking）：训练仍为 Top-32 ordinal dense absolute-hit BCE；部署使用校准不敏感的相对概率差 `p_candidate-p_parent`（即 factorized cost=1），父 query 严格不变、margin=0、Top-32、max-delta 0.25。受保护初始化审计 `experiment_output/v51_bmq_rank/v54_factorized_rank_protected_v19_initialization.json` pass，common/changed/missing=`1228/0/22`，参数 153789，零初始化和安全契约通过。正式门禁必须用独立完整 9508 验证；若 epoch 1 任一阈值 break>fix 或 Mask@0.25 退化超过 0.001，则停止/回滚。
+
+
+V54-FR 四卡正式 run 已于 `2026-08-12 13:45:09 CST` 启动，screen `v54_factorized_rank_formal`，launcher 日志 `experiment_output/v51_bmq_rank/v54_factorized_rank_formal_e1_e40_b12x4_20260812_1345.log`，run 目录 `/root/autodl-tmp/DATA_ROOT/output/double_stage_v54_factorized_rank_formal/scanrefer/v54_factorized_rank_formal_e1_e40_b12x4/1786513514`。四 rank 配置核对为完整 36665/9508 数据、global batch 48、LR 3e-4、factorized cost 1、margin 0、Top-32；当前处于 CPU 侧 train/val text decoupling，四进程各持续约 100% CPU，无 I/O 或进程挂死证据。历史正式 run 从 config 到 dataset ready 约 8 分 43 秒，因此继续等待而不重启。
+
+
+### 14.16 V54-FR 连续净破坏早停与 V55-ND 嵌套支配
+
+V54-FR 完成初始化后在训练 epoch 1 的 batch 100/200/300/400 连续暴露同一部署风险。factorized BCE 从 0.5836 降至 0.4722，但决策切换率从 9.58% 增至 23.56%；累计 fix/break@0.50 依次为 0.58%/1.00%、1.21%/1.63%、1.53%/1.94%、1.77%/2.38%，四个窗口均为净破坏。batch 400 的 @0.25 为 1.21%/1.13%，虽略净正，但不能抵消更关键的 @0.50 退化。父分数 drift 始终为 0，说明失败来自加权平均效用允许候选以 @0.50 损失换取 @0.25 收益，而非受保护主干漂移。按预注册连续窗口规则于 2026-08-12 14:00 CST 精确终止 PGID 87609，复查无残留 GPU 进程；该 run 未进入 epoch 1 验证，也不保留为候选。run 目录为 `/root/autodl-tmp/DATA_ROOT/output/double_stage_v54_factorized_rank_formal/scanrefer/v54_factorized_rank_formal_e1_e40_b12x4/1786513514`。
+
+据此实现 V55-ND（Nested-threshold Dominance）。训练监督仍是可迁移的 Top-32 ordinal dense hit probability，不增加数据集专用后处理或新参数；仅将解析部署效用从两个阈值的 1:2 加权均值改为 `min(utility@0.25, utility@0.50)`。当 cost=1 时，每个 utility 严格等于 `P_candidate(hit)-P_parent(hit)`，所以候选只有在两个嵌套阈值都预测优于父查询时才可能被提升，幅度由较弱改善决定。该约束直接编码 ScanRefer/Nr3D/Sr3D 共用的嵌套 IoU 指标结构，而不是学习一个数据集特定 Gate。新增分阈值 positive-ratio 诊断，可区分 0.25-only、0.50-only 与两阈值共同改善证据。
+
+远程实现贯通 `models/joint_query_quality.py`、`models/mcln.py`、`main_utils.py`、`train_dist_mod.py`、launcher 与聚焦测试；语法检查及聚焦回归为 `101 passed`。受保护初始化审计 `experiment_output/v51_bmq_rank/v55_nested_dominance_protected_v19_initialization.json` 为 pass：common/changed/missing=`1228/0/22`，新模块 153,789 参数，zero-init、父分数保持、Top-32、cost=1、margin=0 和 nested-dominance 合同全部通过。
+
+只改部署规则、复用 V53 epoch-5 权重的 128 条机制对照记录在 `experiment_output/v51_bmq_rank/v55_nested_smoke_eval_cost1_margin0.log`。相对 V54 加权规则，switch 从 3.03% 降至 2.27%，两个阈值 break 仍为 0；REC 为 64/58（0.50000/0.45312），即 @0.25 回到 fixed、@0.50 仍比 fixed 56 命中多 2。由于该 128 条与烟测训练集相同，只证明约束能降低风险，不能证明泛化；正式判定必须来自独立 9508 条验证。预注册早停门禁：batch 100/200 连续观察两个阈值 fix-break 与 nested positive ratio；若任一阈值连续净破坏则停止。若训练窗口安全，完成 epoch 1 全量验证；只有两个 REC 阈值均不低于 fixed 且 Mask@0.25 退化不超过 0.001 才允许进入 epoch 2。
+
+### 14.17 V55-ND 正式早停、分布偏差与 V56-PRR
+
+V55-ND batch 100 的 switch/fix-break 为 4.83%、0.17%/0.42%@0.25、0.33%/0.83%@0.50；batch 200 为 11.54%、0.54%/0.79%@0.25、1.00%/1.46%@0.50。两个阈值连续净破坏，故终止 PGID 91540；未生成 9508 条收据。日志：`experiment_output/v51_bmq_rank/v55_nested_dominance_formal_e1_e40_b12x4_20260812_142505.log`。
+
+代码追踪发现 V51--V55 无条件启用 `--augment_det`：仅训练期约 30% 概率随机替换 detector box，验证/部署无同样 corruption。V54 正式 target ratio 约 0.79/0.60，同一 debug-val 约 0.37/0.27，存在 train-deploy 分布偏差。launcher 已新增 `AUGMENT_DET` 开关，后续 ranker-only 实验设为 0。
+
+V56-PRR 增加父相对 pair 监督；聚焦回归 `103 passed`，初始化审计 `experiment_output/v51_bmq_rank/v56_parent_relative_rank_protected_v19_initialization.json` 通过。128 条 smoke 的 break recall 接近 1、fix recall 约 0.02、switch=0，属于过度保护，拒绝正式训练。
+
+### 14.18 V57-HPA、V58 与 V59 短消融
+
+V57-HPA 用 hardest bidirectional parent anchor 替换全 pair loss。V57 smoke 最终 repair recall 为 86.36%/90.91%，protect recall 仅 29.47%/2.83%；dense BCE 同时退化为 @0.25 全命中、@0.50 全未命中。REC 五轮均 64/57，但模块 switch/fix/break 全 0，故不能归因于 V57。日志：`experiment_output/v51_bmq_rank/v57_hard_parent_anchor_smoke_e1_e5_b12x1_20260812.log`。
+
+V58 对同一权重扫 promotion-margin=0.0025/0.005/0.01/0.02，四档均 64/57、switch=0。V59 比较 BCE、hard anchor、score anchor 和学习率；三组在并发写约 606 MB checkpoint 时因数据盘仅余 589 MB 收到 SIGABRT，归因于存储资源。唯一完整 V59c 使用 LR=1e-3、BCE=0.1、hard anchor=5、score anchor=0、augment_det=0。128 条 epoch 1--5 REC 为：0.50000/0.45312、0.50000/0.45312、0.50781/0.46094、0.49219/0.44531、0.46094/0.41406。epoch 3 两阈值均 +1/128，之后过拟合；epoch-3 最佳权重与收据保留。
+
+只删除了 V56/V57 可复现 smoke 的 `.pth` 临时权重和 V59c 非最佳 epoch-5 inode；全部日志、收据和 V59c epoch-3 最佳权重保留。数据盘可用空间从 589 MB 恢复到 3.4 GB；正式 checkpoint 改存项目所在远程 overlay。
+
+### 14.19 V60-HPA 正式注册与启动
+
+V60 配方：`augment_det=0`、LR=1e-3、dense BCE=0.1、hard parent anchor=5、score anchor=0、父分数保持、Top-32、nested dominance、cost=1、margin=0、Mask 输出关闭。初始化审计 `experiment_output/v51_bmq_rank/v60_hard_anchor_protected_v19_initialization.json` 为 pass：common/changed/missing=`1228/0/22`，新增 153,789 参数，公共主干逐位不变、输出头零初始化。
+
+四卡 screen `v60_hard_anchor_formal` 于 2026-08-12 15:41 CST 启动，日志 `experiment_output/v51_bmq_rank/v60_hard_anchor_formal_e1_e40_b12x4_20260812.log`，checkpoint 根为 `experiment_output/v60_hard_anchor_formal_checkpoints`。预注册门禁：batch 100/200 任一阈值连续净破坏即停止；否则完成 epoch 1 全量 9508 验证。
+### 14.20 V60 正式前缀停止（2026-08-12）
+
+- 配置：V59c 梯度方案，`augment_det=0`，部署 break cost=1，4 GPU 正式训练。
+- 初始化审计：共同/改写/缺失张量 `1228/0/22`，新模块 153,789 参数，零初始化通过。
+- 前缀回执：batch100 的切换率约 9.42%；Acc@0.25 fix/break=`0.0042/0.0100`，Acc@0.50=`0.0108/0.0117`。batch200 切换率约 13%；Acc@0.25=`0.0042/0.0113`，Acc@0.50=`0.0121/0.0138`。
+- 判定：两个连续前缀的 break 均超过 fix，按预注册停止规则终止，未进入 validation。
+
+### 14.21 V61 部署成本与全量评估（2026-08-12）
+
+- V61 只把同一因子化方案的部署 cost 改为 4；正式训练到 epoch5。最佳 Position Acc@0.25 为 epoch3 `0.581405`，Acc@0.50 为 epoch1 约 `0.465187`，仍低于目标且没有实质净增益。
+- epoch1 全量 9,508 条复评：Position `0.58109/0.46508`，Mask `0.598233/0.491376`，Mask mIoU `0.418498`。
+- 选择器切换率仅约 `0.0001`；高成本成功冻结了破坏，也几乎完全冻结了修复。
+- 因首次评估进程启动于 counterfactual endpoint 透传修补之前，最终日志没有可靠的六成本反事实字段；该问题已在 `models/losses.py` 两条 loss 收集路径修复，不能用缺失字段推断最优成本。
+
+### 14.22 V62 分解式父候选转移头（2026-08-12）
+
+目标是修复 V52 三分类 neutral 主导和 V57 绝对 hit 相减的问题。对每个候选-父查询、每个阈值分别预测：
+
+1. `p(change)`：候选是否改变父查询的命中状态；
+2. `p(fix | change)`：发生改变时是修复还是破坏。
+
+训练中 neutral/change、fix/break 分组独立归一；方向概率训练不注入部署风险成本。部署采用嵌套阈值最小效用，父分数严格保留，候选限制 Top32。
+
+实现与验证：
+
+- 新开关 `joint_query_quality_use_decomposed_transition_advantage`，与旧 direct/factorized 模式互斥；CLI、MCLN 构造、训练脚本和 optimizer 冻结规则均已接通。
+- 初始化审计：共同/改写/缺失张量 `1228/0/26`，新模块 220,223 参数；受保护基线零改写，安全初始化通过。
+- 相关回归测试 121 项通过；随后新增 V62c 多成本回执后，模块单测 82 项通过。
+
+#### V62a/V62b smoke
+
+- V62a 同时在训练 loss 和部署 utility 使用 cost=4，导致方向头 fix recall 长期为 0，零切换；拒绝。
+- V62b 改为事实概率等组训练，cost=2 时学会 fix，但切换率 33%–50%，128 条验证从固定父选择器约 `0.5000/0.4531` 降至最好 `0.4844/0.4219`；拒绝。
+- V62a/V62b 的可复现 smoke `.pth` 已删除以释放约 1.2 GB 实际空间；32 份日志和 JSON 回执保留。删除权重不可直接恢复，但可按配置重跑。
+
+#### V62c 风险阈值重新参数化
+
+- 部署效用改为 `p(change) * tanh((direction_log_odds - log(cost))/2)`；其符号严格等价于 `p(fix|change) > cost/(1+cost)`。
+- 方向头 step-0 偏置设为 `log(cost)`，因此零初始化仍精确等于父选择器，同时成本语义不被中心常数抵消。
+- 初始化审计和单测通过。128 条/约10训练 step 的 cost=4 smoke 保持零切换；同权重反事实显示 cost<=2 全切换且净负，cost>=2.5 零切换，说明小 smoke 主要只学到全局偏置，必须进入正式前缀观察候选间方差。
+- 已启动 V62c cost=4、`augment_det=0`、LR=1e-3、4 GPU 正式前缀；通过一次前向回执 1.25–4.0 多成本的 switch/fix/break，按前缀规则早停或进入 validation。
+
+### 14.23 V62c 正式前缀反事实与早停（2026-08-12）
+
+正式配置为 4 GPU、global batch 48、`augment_det=0`、LR=`1e-3`、Top-32、部署 cost=4；完整训练/验证集规模为 36,665/9,508。run 日志：`experiment_output/v51_bmq_rank/v62c_decomp_prior_c4_formal_e1_e40_b12x4_20260812.log`。
+
+批次 100 的同权重多成本反事实（格式为 switch、fix/break@0.25、fix/break@0.50）：
+- cost 1.25：`86.83%, 2.92/4.25%, 7.00/8.00%`
+- cost 2.00：`44.33%, 1.33/2.83%, 4.08/4.58%`
+- cost 3.00：`20.67%, 0.58/1.58%, 2.33/2.58%`
+- cost 4.00：`5.42%, 0.17/0.33%, 0.58/0.58%`
+
+批次 200：
+- cost 1.25：`76.75%, 2.88/3.50%, 6.21/7.79%`
+- cost 1.50：`61.75%, 2.29/2.96%, 5.00/6.50%`
+- cost 2.00：`37.75%, 1.67/2.17%, 3.58/4.42%`
+- cost 2.50：`23.54%, 1.13/1.54%, 2.46/2.58%`
+- cost 3.00：`15.29%, 0.75/1.08%, 1.83/1.79%`
+- cost 3.50：`9.63%, 0.46/0.67%, 0.96/1.13%`
+- cost 4.00：`5.04%, 0.33/0.42%, 0.54/0.63%`
+
+结论：两个连续正式前缀中，所有可产生实质切换的成本在 Acc@0.25 都是净破坏；实际 cost=4 也从 batch100 的净 `-0.16pp/0.00pp` 变为 batch200 的 `-0.09pp/-0.09pp`。cost=3 在 batch200 的 @0.50 仅暂时净 `+0.04pp`，但同时 @0.25 净 `-0.33pp`，不满足双阈值目标。因而失败来自候选方向排序，而非部署成本选择，继续扫描 cost 或训练到完整 epoch 缺乏依据。
+
+按预注册规则终止进程组 PGID 119320；复查对应进程、screen `v62c_formal` 与 GPU compute-app 均为空。终止信号传递期间日志多出现一个后续累计窗口，但不改变已由 batch100/200触发的判定。V62c 未进入 9,508 条正式验证，不作为候选权重。下一步不得继续调 Gate/cost；应直接改进候选间的 setwise 排序监督，使稀疏 fix 在同一场景 Top-32 内优先于 break/neutral。
+
+
+### 14.24 V63 场景内 setwise tier 排序与边界对齐（2026-08-12）
+
+V62c 证明部署 cost 不是主因后，V63 将监督单位改为同一场景 Top-32 内的 repair-or-stay 决策。新 setwise tier head 对候选-父查询 pair 输出两个安全分支，部署取两支优势的最小值；最终层零初始化，step-0 精确复现父选择器。训练将 repair 行与 stay 行等组平均：存在严格提升父 box tier（0/1/2）的候选时，目标分布只放在最佳可达 tier；否则目标为父查询。两分支共同监督，只有两支都支持候选才会实际切换。
+
+实现已贯通模型、MCLN/CLI/launcher、optimizer 冻结和两条 loss 收集路径。联合及集成回归分别为 85/85、95/95。初始化审计 `experiment_output/v63_setwise_tier_initialization_audit.json` 通过：common/changed/missing=`1228/0/26`，新模块 219,965 参数，公共主干零改写、输出头全零、父分数保持和 Top-32 合同一致。
+
+V63a smoke 暴露一个不可达标签问题：训练 softmax 使用“父分数+有界 residual”，而许多最佳 tier 候选与父分数差超过 max-delta=0.25；模型无法令目标候选胜出，转而把全部候选优势推到约 -1.4，stay recall=1、repair recall=0。V63a 不进入正式训练。
+
+V63b 将训练分数改为实际部署边界余量。对候选所需 residual (r=score_parent-score_candidate+margin)，若 (r>=max_delta) 则从 repair 候选中排除；否则训练 logit 为 (a-atanh(r/max_delta)/4)。其正号严格等价于部署时候选可超过父查询，消除了不可满足标签。
+
+同样 128 条、5 epoch smoke 中，固定父为 63/56 hits；V63b learned 五轮分别为 64/57、64/58、64/58、64/57、64/57，两个阈值始终 0 break。epoch2 @0.25 为 +1、@0.50 为 +2，repair recall 约 1.82%，stay recall 100%；Mask 输出未启用，保持 64/52、mIoU 0.350491。该结果只作为机制门禁，不视为泛化成绩。保留 epoch2（与 best-rec050 同 inode）权重；V63a 全部与 V63b 其余可复现 smoke `.pth` 已删除，日志/JSON/配置全保留，overlay 可用空间由 2.4GB 回到 4.7GB。
+
+
+### 14.25 V63b 正式前缀连续无修复停止（2026-08-12）
+
+V63b 四卡正式配置为 global batch 48、完整 36,665/9,508、`augment_det=0`、LR 1e-3、Top-32、max-delta 0.25。运行时确认 joint-only 可训练参数 219,062，与 V63 checkpoint 审计合同一致。
+
+batch100：switch/fix/break 两阈值全为 0；repair-row ratio 20.08%，reachable-query ratio 99.92%，repair recall 0，stay recall 1。batch200：同样 switch/fix/break 全 0；repair-row ratio 18.71%，reachable-query ratio 99.88%，repair recall 0，stay recall 1。
+
+该结果不是候选不可达，而是 row softmax CE 仍可通过把所有候选压低来优化占多数的负项。虽未触发 break>fix 风险线，但连续两个大前缀无任何修复，进入完整验证没有信息价值，故按补充的连续无修复无效门禁终止 PGID 123930；复查进程、screen 和 GPU 为空。V63b 正式 run 未生成 checkpoint/9508 收据，不作为候选。
+
+下一版 V63c 强制每场景候选优势零均值，使全局 accept/reject 偏置不可表达；并将 row softmax CE 替换为实际切换边界上的等权 hardest-positive / hardest-negative 对比损失。repair 正项与所有保护负项各占 50%，全体同号不再是 loss 最优解。
+
+### 14.26 V63c/V63d 候选中心化对比与低学习率门禁（2026-08-12）
+
+V63b 正式前缀的全拒绝捷径说明，只做边界对齐仍不足。V63c 对同一场景 Top-32 的非父候选原始 pair advantage 做候选维中心化，从表示层消除全体共同 accept/reject 偏置；训练损失改为等权的实际边界 hardest-positive / hardest-negative 对比：repair 行推动最佳严格 tier 提升候选越过父边界，保护项推动最危险非 repair 候选留在边界以下。最终 setwise head 去掉会被中心化严格抵消的 bias，因此参数合同为 missing=25、总参数 219,963、可训练参数 219,060。
+
+V63c（LR=1e-3）128 条、3 epoch smoke 证明候选间信号可学习，但更新过快：epoch1 为 fixed `63/56` 到 learned `64/57`，两阈值均零 break，Mask `64/52`、mIoU `0.350491`；epoch2 降到 `57/50`，fix 约 7.03%、break 约 11.72%，Mask 同步降到 `57/46`、mIoU `0.310018`；epoch3 又恢复到 `64/57`。该振荡否决 LR=1e-3 正式训练。
+
+V63d 仅将 LR 降到 `3e-4`，其余架构和 loss 完全不变。128 条、5 epoch smoke 的 Position hits（fixed 恒为 `63/56`）依次为：`64/57`、`64/57`、`63/56`、`63/56`、`63/56`；对应 fix/break 为 `(1/0,1/0)`、`(2/1,2/1)`、`(1/1,1/1)`、`(1/1,1/1)`、`(2/2,2/2)`。五轮 Position 无净负，但 Mask mIoU 从 epoch1 的 `0.350491` 依次降为 `0.346818/0.344831/0.341801/0.343069`，因此只保留 epoch1 作为机制候选，不把后续轮视为安全收益。
+
+V63d epoch1 实物 checkpoint 审计回执：`experiment_output/v63d_centered_contrast_lr3e4_smoke_epoch1_checkpoint_audit.json`。结果 pass：公共张量 common/changed/new=`1228/0/25`，所有张量有限；优化器仅含 21 个新模块状态、219,060 参数、step=10，动量有限且非零。审计过程中发现 checkpoint 保存空 `joint_query_quality_source_names`，模型运行时会继承父 selector source pool，而审计器此前未复现该继承语义。已修复审计器并加入回归测试；联合 V63 模块/审计测试 `115 passed`。
+
+空间清理仅删除 V63b/V63c 和 V63d epoch5 的可复现 smoke `.pth`；全部日志、JSON、配置与 V63d epoch1 最佳权重保留。overlay 可用空间由 3.0 GB 恢复到 4.7 GB。
+
+V63d 四卡正式训练已于 `2026-08-12 19:51 CST` 从受保护 V19 重新初始化启动，而非从 smoke 权重续训。配置为完整 36,665/9,508、global batch 48、`augment_det=0`、LR=`3e-4`、Top-32、max-delta=0.25、父分数严格保持；screen `v63d_formal`，PGID `128580`，日志 `experiment_output/v51_bmq_rank/v63d_centered_contrast_lr3e4_formal_e1_e40_b12x4_20260812.log`，checkpoint 根 `experiment_output/v63d_centered_contrast_lr3e4_formal_checkpoints`。门禁保持严格：batch100/200 若任一阈值连续 break>fix 则停止；若连续无修复也停止；只有训练前缀安全才进入 epoch1 的 9,508 条正式验证。
+
+### 14.27 V63d 正式零修复停止与 V64 集合内 repair 排序（2026-08-12）
+
+V63d 正式 run 在 batch100 与 batch200 连续给出相同结论：两个阈值 fix/break 全为 0，repair recall=0；stay recall 分别为 99.88% 与 99.94%，repair-row ratio 为 20.08%/18.71%，reachable-query ratio 为 99.92%/99.88%。loss 仅从 0.7045 降至 0.7032，说明低学习率把 V63c 的振荡破坏转化成了近乎全拒绝，并未改善正式分布的 repair 候选排序。按预注册连续无修复门禁终止 PGID 128580；screen、进程组和 GPU compute-app 均清空，未产生 checkpoint 或 9508 条验证收据。
+
+代码审计进一步定位：V63 的 pair head 本身已包含候选 hidden、父 hidden、差分、乘积和两类父相对 score，因此失败不能简单归因于“没有 pair 特征”。真正缺口在监督：现有 hardest-positive 边界项只要求某个最佳 repair 越过父边界，negative 项只要求最危险 non-repair 留在父边界下，却没有直接要求 repair 在候选集合内部排过 non-repair。正式多样分布下，模型可以略降边界 loss 而 repair top-rank recall 仍为 0。
+
+V64 新增可配置 `joint_query_quality_setwise_rank_loss_weight`（默认 0，保持所有旧实验行为）。在 repair 行内、排除父 query 后，对每个安全分支计算 `gap=max(best-tier repair margin)-max(non-repair margin)`，加入 `softplus(0.02-gap)`；该目标不能通过全候选拒绝优化。部署路径、父分数保持、候选中心化、双分支 hard-min、Top-32 和 step-0 identity 全部不变，也不增加模型参数。新增 rank margin/recall/loss 诊断。定向 V63/V64 测试 6 项通过，完整 joint-query + checkpoint auditor 回归 `117 passed`。
+
+
+
+### 14.28 V64 候选内排序 smoke 与正式前缀（2026-08-12）
+
+V64 以 LR=`3e-4`、setwise rank weight=`2.0` 完成 128 条、5 epoch smoke。固定父选择器恒为 Position `63/57`；learned selector 五轮依次为 `64/58`、`64/58`、`64/58`、`65/59`、`64/58`。最佳 epoch4 相对父查询两个阈值分别净增 `+2/+2`，零 break；Mask 同轮为 `65/53`、mIoU `0.356478`。训练 rank recall 从 `0.2379` 提升到 epoch4 的 `0.3621`，epoch4 repair recall `0.0227`、stay recall `1.0000`。
+
+epoch4 实物审计 `experiment_output/v64_setwise_rank_w2_lr3e4_smoke_epoch4_checkpoint_audit.json` 通过：common/changed/new=`1228/0/25`，21 个 optimizer states、219,060 参数、step=40，全部 finite/nonzero。
+
+V64 四卡正式任务从受保护 V19 重新初始化，完整 36,665/9,508、global batch 48、`augment_det=0`、LR=`3e-4`。batch50/100/150/200 的 rank recall 为 `0.2623/0.2682/0.2768/0.2828`，rank margin 从 `-0.0100` 收窄至 `-0.0077`；但两个阈值 fix/break 连续全 0，repair recall=0。最佳 repair 平均边界仍为 `-0.0398`，按连续无修复门禁终止，未进入完整验证。
+
+### 14.29 V65–V67 repair 边界与保护语义消融（2026-08-12）
+
+V65 新增默认关闭的 repair-boundary 额外权重，不改部署与模型参数。V65 weight=2 在 smoke epoch1 为净 `+1/+1`，随后切换失控；epoch2–5 Position 分别为 `53/41`、`56/45`、`56/45`、`52/41`，Mask 同步大幅下降。到 epoch5，non-repair 平均边界升到 `+0.0431`，stay recall 仅 `0.1392`，明确否决。
+
+V65b 将额外权重降到 0.5，仍在 epoch2 出现 fix/break=`6/11`、Position `58/51`，五轮均不达标。V65c 改为自步式：只有 best repair 已排过最危险 non-repair 的行才获得额外跨零力；epoch1 净 `+1/+1`、Mask mIoU `0.352439`，但 epoch2 仍变为 fix/break=`7/12`、Position `58/52`。资格门控降低初始风险，但共享参数仍把保护行一起抬高。
+
+V66 增加 top-4 non-repair tail 保护。epoch1 安全净 `+1/+1`，但 epoch2–5 Position 为 `58/52`、`62/56`、`56/50`、`53/47`；tail violation ratio 最终 `0.2935`。扩大 hardest-negative 覆盖仍不能抵消共享表示污染。
+
+V67 将 repair 限制为 Box tier 提升且 Mask tier 不低于父查询，并让双分支只把对应阈值真实 Box/Mask hit→miss 视为 break，safe-neutral 不再当负例；联合回归 `123 passed`。但 smoke epoch1 Position `63/51`、Mask `65/53`，epoch2 Position `55/43`、Mask `57/45`，说明 Mask 保护有效但 Position@0.50 严重退化，配置否决。
+
+V67 保存后续 checkpoint 时 overlay 仅余 92 MB，原子保存报 `unexpected pos` 并退出。已确认 screen/进程/GPU 全空，删除 V65/V65c/V66/V67 这些明确失败且由日志/JSON可重跑的全部 `.pth` 和原子临时文件；保留配置、JSON、完整日志、V64 epoch4 最佳权重及受保护 V19。可用空间恢复到 4.1 GB。后续不再用无条件 repair 跨零额外力；回到 rank-only 强化，先排对候选再观察原始边界项能否安全跨零。
+
+
+### 14.30 V68：提高候选内排序权重仍无法稳定越过部署边界（2026-08-12）
+
+- 目的：在 V64 基础上仅把 `setwise_rank_loss_weight` 从 2 提高到 5，判断更强候选内排序是否能稳定转化为 Top-1 修复。
+- 固定：V64 原始 Box tier repair 定义、候选中心化、双分支保守最小值、LR `3e-4`、128/128、5 epoch；V65/V66 额外损失均为 0。
+- 固定 parent：REC `63/57`。
+- learned REC（epoch 1–5）：`64/58`、`61/55`、`64/58`、`60/54`、`63/57`。
+- learned Mask（epoch 1–5）：`64/52`、`61/49`、`64/52`、`60/48`、`63/51`；epoch 1 mIoU `0.349644`。
+- 候选内 rank recall 从约 `0.25` 提升到 `0.36`，但修复边界召回仍接近 0，并出现跨 epoch 振荡。
+- 结论：单纯放大共享分支的 rank 梯度不能解决 promotion 与 protection 的梯度耦合，V68 淘汰，不进入正式验证。
+- 存储：失败实验的 `.pth` 已删除，日志、config 与逐 epoch JSON 保留。
+
+### 14.31 V69：独立 Promotion / Safety 双头（2026-08-12）
+
+- 动机：V63–V68 的两个输出来自同一 MLP，且监督标签相同，实际上是冗余副本；修复与保护仍共享同一优势值。
+- 架构：
+  - promotion head：独立非线性 pair head，候选内中心化，只承担最佳 repair 排序和越过 parent 边界；
+  - safety head：独立非线性 pair head，保留绝对输出，学习否决 Box@0.25、Box@0.50 或 Mask@0.25 的真实 threshold regression；
+  - 部署仍取 promotion/safety 两分支的保守最小值，不读取 GT，不增加独立 scalar gate；
+  - Mask@0.25 被显式保护，Mask@0.50 不作为 veto，以免锁死当前偏低的高阈值 Mask。
+- 验证：相关回归 `237 passed`；V69 专项 `4 passed`。受保护 V19 初始化审计通过：common `1228`、changed `0`、unexpected `0`、new tensors `30`、new params `286139`、输出头全零。
+- smoke：128/128、LR `3e-4`、rank weight 2、5 epoch。fixed parent REC 恒为 `63/56`。
+- learned REC（epoch 1–5）：`63/56`、`62/55`、`63/56`、`60/53`、`61/54`。
+- learned Mask（epoch 1–5）：`63/51`、`62/50`、`63/51`、`60/48`、`61/49`；最佳 mIoU 为 epoch 1 的 `0.344965`。
+- 诊断：promotion rank recall 能到约 `0.42–0.55`；safety hazard query ratio 约 `0.25`。但 safety 仅监督每行当前最危险的一个 hazard，后续危险候选尾部持续漏过；epoch 5 switch ratio `0.322`，fix/break 分别约 `0.083/0.114`，净退化。
+- 结论：职责解耦本身可训练且零初始化安全，但 safety 监督密度不足；V69 不进入正式验证。下一步 V70 在保持 promotion 与 V64 rank 不变的情况下，仅对 safety 的全部 hazard 做逐行平衡稠密否决。
+- 存储：V69 失败 `.pth` 已删除；日志、config、审计 JSON、逐 epoch 评估 JSON 保留。
+
+### 14.32 V70：逐行均衡的稠密 Safety 监督与 w=1 烟测（2026-08-12）
+
+- 动机：V69 的 safety head 每行只监督当前最危险的一个 hazard，未被选中的
+  Box@0.25、Box@0.50 或 Mask@0.25 hazard 可能在共享更新后越过零边界。
+- 实现：新增默认关闭的
+  `joint_query_quality_setwise_dense_safety_loss_weight`。仅在 V69 独立
+  promotion/safety 双头模式中，对每个 exact hazard 施加
+  `softplus(0.02 + safety_margin)`；先在行内平均、再跨行平均，避免 hazard 数量多的
+  scene 主导 batch。V69 原有 hardest-hazard 边界项保留，promotion head 不接收该
+  dense loss 梯度。
+- 接线修复：初版已写入 launcher 和两条监督路径，但漏了
+  `main_utils.py -> compute_hungarian_loss` 传参以及总 loss 函数形参/合法性检查；
+  正式运行前已补齐。V70 单测最初的 1/3 hazard fixture 实际误含 2/4 hazard，修正
+  非目标 query 的 Box/Mask IoU 后，逐行均衡解析值与实现一致。
+- 验证：语法检查通过；完整 joint-query 回归 `98 passed`，source-MoE、集成与初始化
+  审计相关回归 `275 passed`。受保护 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v70_dense_safety_initialization_audit.json`
+  通过：common/changed=`1228/0`，新模块 286,139 参数，输出头零初始化，父分数与
+  Top-32 合同不变。
+- w=1 单卡 128/128、5 epoch smoke：fixed parent 每轮 `63/57`；reported learned
+  每轮 `64/58`；Mask 每轮 `64/52`、mIoU `0.350491`。dense safety loss 在 epoch1
+  从 `0.6612` 降至 `0.6280`，五轮 hazard violation ratio 保持 0。
+- 关键判读：joint-query switch ratio 五轮均为 0，因此 reported learned 相对 fixed
+  的 `+1/+1` 来自既有父 selector，不能归因于 V70。w=1 消除了 V69 的 hazard 尾部
+  泄漏，但把 safety 分支推成全拒绝；不能进入正式 9,508 条验证。
+- 下一门禁：只降低 dense-safety 权重到 0.25，其他配置逐位保持。如果仍连续零
+  switch，则判为结构性过保护；如果再次出现 break>fix，则判为稠密权重无法同时
+  满足 promotion/protection，停止 V70 路线。
+
+### 14.33 V70b：低权重 Dense Safety 烟测与正式前缀注册（2026-08-12）
+
+- 配置：只将 V70 的 dense-safety 权重从 1.0 降至 0.25；其余保持 LR `3e-4`、
+  setwise rank weight 2、独立 promotion/safety 双头、Top-32、父分数保持、
+  `augment_det=0`、128/128、5 epoch。
+- fixed parent 每轮为 `63/57`。learned epoch1--4 均为 `64/58`，epoch5 为
+  `64/59`；Mask 五轮均为 `64/52`、mIoU `0.350491`。
+- 归因：父 selector 本身相对 fixed 贡献 `+1/+1`；epoch5 joint-query switch ratio
+  为 `1/128=0.0078125`，新增 @0.50 fix `1/128`，两个阈值 break 均为 0。因此 V70b
+  可归因净收益是 Position@0.50 `+1/128`，Mask 不变；这通过机制烟测但不是泛化
+  证据。
+- epoch5 实物审计
+  `experiment_output/v51_bmq_rank/v70b_dense_safety_w025_smoke_epoch5_checkpoint_audit.json`
+  通过：common/changed/new=`1228/0/30`，optimizer 26 states、285,236 参数、
+  step 50，所有新张量与动量 finite，且每个 state 的 exp_avg 非零。
+- 权重保留：epoch5 在所有指标上不差于 epoch1，且 @0.50 更优；所有 best 名称已
+  统一为 epoch5 inode `7225261154`（7 个 hard links）。被支配的 V70 w=1 权重和
+  V70b epoch1 重复 inode 已删除；配置、日志、五轮 JSON 与审计收据均保留，可按
+  原配置重跑。overlay 可用空间恢复到 3.5 GB。
+- 正式门禁：从受保护 V19 重新初始化，4 GPU、global batch 48、完整
+  36,665/9,508。batch100/200 若任一阈值连续 break>fix 则停止；若连续无 joint
+  fix/switch，则停止；只有正式前缀安全且出现可归因修复才进入 epoch1 全量验证。
+
+### 14.34 V70b 正式前缀确认负迁移并早停（2026-08-13）
+
+- 正式配置按 14.33 的预注册执行：从受保护 V19 重新初始化，4 GPU、global batch
+  48、完整 36,665/9,508、`augment_det=0`、LR `3e-4`、setwise rank weight 2、
+  dense-safety weight 0.25。日志：
+  `experiment_output/v51_bmq_rank/v70b_dense_safety_w025_formal_e1_e40_b12x4_20260812.log`。
+- 累计前缀（格式为 `fix/break@0.25, fix/break@0.50, switch`）：
+  - batch50：`0.67/0.50%, 0.50/1.17%, 6.17%`；
+  - batch100：`0.50/0.83%, 1.25/2.08%, 18.50%`；
+  - batch150：`1.11/1.44%, 2.22/3.89%, 33.28%`；
+  - batch200：`1.58/1.92%, 3.17/4.75%, 44.79%`。
+- batch100 与 batch200 两个预注册检查点中，两个阈值均连续
+  `break > fix`；同时 dense-safety violation ratio 从 batch50 的 0.46% 上升到
+  batch200 的 3.52%。这说明低权重 dense loss 在小 smoke 上产生的单个安全修复
+  不能泛化到正式分布，且训练推进时 safety 尾部重新泄漏。
+- 按预注册规则终止经命令行复核属于本任务的进程组 PGID `146358`。复查对应
+  训练进程、screen `v70b_dense_safety_formal`、GPU compute-app 与未完成 `.pth`
+  均为空；正式日志、launcher 和配置保留。未进入 9,508 条验证，不产生候选权重。
+- 结论：V70 的负类单向 dense safety 存在不可接受的两端行为：weight 1 为全拒绝，
+  weight 0.25 则在正式分布随训练逐步泄漏。下一版 V71 不再只把 hazard 向负侧推，
+  而对 transition-active 的 safe 与 hazard 候选分别施加正/负 margin，并先按行、
+  再按类别等权平均；目标是显式消除全负 safety 解，同时不让数量占优的 hazard
+  淹没 safe 类。
+
+### 14.35 V71 双向类别均衡 Safety 监督与 smoke 预注册（2026-08-13）
+
+- 实现：新增默认关闭的
+  `joint_query_quality_setwise_balanced_safety_loss_weight`。仅在独立
+  promotion/safety 双头的 safety 分支上，对所有 transition-active 非 hazard 候选
+  施加 `softplus(0.02-safety_margin)`，对所有 exact hazard 候选施加
+  `softplus(0.02+safety_margin)`；候选先在各自行内平均，行再在类内平均，最后
+  safe/hazard 两类等权。这样全负 safety 输出不再是最优解，且 hazard 数量不改变
+  两类相对权重。
+- 新 loss 与 V70 dense-safety 互斥，避免同一 hazard 被重复计权；默认两者均为 0，
+  所有旧配置保持逐位兼容。新增 safe/hazard violation ratio 诊断，不改变部署公式、
+  模型参数或父分数保持合同。
+- 验证：Python/shell 语法通过；V70/V71 定向测试 `4 passed`；完整 joint-query
+  `100 passed`；source-MoE、集成与初始化审计相关回归 `275 passed`。
+  受保护 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v71_balanced_safety_initialization_audit.json`
+  通过：common/changed/new=`1228/0/30`，新模块 286,139 参数，输出头全零且 safety
+  合同一致。
+- smoke 预注册：单 GPU、128/128、5 epoch、batch 12、`augment_det=0`、LR
+  `3e-4`、rank weight 2、dense weight 0、balanced weight 1，其余与 V70/V70b
+  完全一致。若任一 epoch 两阈值中出现 `break > fix`，或连续全拒绝且无可归因
+  joint fix，则不进入正式训练；只有出现零净破坏的 joint-query 修复且 Mask 不退化，
+  才审计实物 checkpoint 并考虑正式前缀。
+
+### 14.36 V71 smoke：单标量 Safety 仍无法稳定分离风险（2026-08-13）
+
+- fixed parent Position 恒为 `63/57`。learned Position（epoch1--5）为：
+  `64/58`、`63/57`、`61/55`、`61/55`、`62/56`。
+- joint-query 累计归因（epoch1--5，格式为
+  `fix/break@0.25, fix/break@0.50, switch`）：
+  - `0.00/0.00%, 0.00/0.00%, 0.00%`；
+  - `0.76/1.89%, 0.76/1.89%, 3.41%`；
+  - `0.76/3.41%, 0.76/3.41%, 5.68%`；
+  - `2.27/4.92%, 2.27/4.92%, 11.36%`；
+  - `0.76/2.65%, 0.76/2.65%, 4.92%`。
+- epoch1 的 reported `+1/+1` 发生在 joint switch=0 时，仍来自既有父 selector，
+  不能归因于 V71。epoch2 已触发预注册的 `break > fix` 门禁；读取聚合日志期间任务
+  已完成后续小规模轮次，因此保留五轮完整诊断，但不据此放宽门禁，也不进入正式
+  训练。
+- Mask（epoch1--5）为 `64/52`、`63/51`、`61/49`、`61/49`、`62/50`；mIoU
+  为 `0.350491/0.342098/0.330884/0.332173/0.340079`。除 epoch1 零 joint 切换外，
+  所有轮次均同步退化。
+- 诊断：balanced safe/hazard violation 在 epoch1 为 52.06%/34.74%，之后仍约
+  33%--52%/29%--42%。双向监督消除了 V70 w=1 的全拒绝，却把大量语义不同的
+  Box@0.25、Box@0.50、Mask@0.25 风险压进同一个 safety 标量；单头无法同时形成
+  三条稳定决策边界，最终由安全放行转成真实 break。
+- 终止后复查对应进程、screen 与 GPU compute-app 均为空。V71 epoch1 在所有关键
+  指标上不优于保留的 V70b epoch5（后者 Position `64/59`、Mask `64/52`），其余
+  epoch 更差。验证 config、checkpoint-retention、五轮 eval JSON、launcher、完整
+  日志均存在且 JSON 可解析，并确认 V70b 与受保护 V19 权重仍在后，删除 V71 两个
+  实际 checkpoint inode 的 8 个 `.pth` 名称；日志和全部回执保留。overlay 可用
+  空间从 2.4 GB 恢复到 3.5 GB；已删权重不可直接恢复，但可按保留配置完整重跑。
+- 下一版 V72 不再用复合 OR hazard 的单一 safety 输出。将三个保护标准拆成独立
+  Box@0.25、Box@0.50、Mask@0.25 风险头，分别做行内/类别均衡监督，部署时对三个
+  criterion margin 与 promotion margin 取保守最小值；目标是把 V71 的互相冲突
+  标签变成可辨识的多任务边界，仍不读取推理期 GT。
+
+### 14.37 V72 三标准因子化 Safety 头与 smoke 预注册（2026-08-13）
+
+- 架构：新增默认关闭的 `joint_query_quality_use_factorized_setwise_safety`。仅在
+  独立 promotion/safety 模式下，把 safety 输出从 1 维改为三维，分别对应
+  Box@0.25、Box@0.50、Mask@0.25。每个标准各自预测候选是否会把父查询的 hit
+  变成 miss；推理时先对三 safety margin 取最小值，再与 promotion margin 取
+  保守最小值。推理路径不读取 GT，父分数保持、Top-32 与 bounded residual 不变。
+- 监督：新增默认权重 0 的
+  `joint_query_quality_setwise_factorized_safety_loss_weight`。每个标准内部先按候选、
+  再按行、最后按 safe/hazard 类等权；三个标准再等权。V70 dense、V71 balanced
+  与 V72 factorized 三种附加 safety loss 互斥，防止重复计权。
+- 兼容性：不开新 flag 时仍实例化 V69--V71 的单 safety 头，state shape 与旧配置
+  不变；开 flag 时最终 safety weight 从 `1x128` 变为 `3x128`，总参数只增加 256。
+  最终层全零，step-0 三个 criterion margin 均为零，选择结果精确复现父 selector。
+- 验证：Python/shell 语法通过；V70--V72 定向测试 `7 passed`，V72 审计专项
+  `1 passed`；完整 joint-query+初始化审计 `113 passed`，source-MoE/集成
+  `266 passed`。真实受保护 V19 审计
+  `experiment_output/v51_bmq_rank/v72_factorized_safety_initialization_audit.json`
+  通过：common/changed/new=`1228/0/30`，参数 286,395，输出头全零，三头合同一致。
+- smoke 预注册：单 GPU、128/128、5 epoch、batch 12、`augment_det=0`、LR
+  `3e-4`、rank weight 2、factorized-safety weight 1；dense/balanced weight 0，
+  其余与 V71 完全一致。任一完整验证 epoch 若任一阈值 `break > fix`，则停止且不
+  进入正式训练；只有 joint-query 出现零净破坏的可归因修复，且 Mask 不退化，才
+  审计实物 checkpoint 并进入正式前缀。
+
+### 14.38 V72 smoke：出现安全增益窗口，但高学习率振荡否决正式晋级（2026-08-13）
+
+- 首次 launcher 已正确保存 factorized flag 和 loss weight，但 loss 收集器只搬运
+  旧 setwise 键，未把 `setwise_factorized_safety` marker 与三标准 scores 放入
+  `joint_outputs`，因此合同检查在首个 batch 主动报错；未产生有效更新或 `.pth`。
+  修复两条 loss 收集路径后，以独立 `_r1` 目录重跑，完整回归 `217 passed`。
+- fixed parent Position 恒为 `63/57`。V72-r1 learned Position（epoch1--5）为：
+  `64/58`、`62/56`、`61/55`、`66/60`、`65/59`。
+- joint-query 归因（格式为 `fix/break@0.25, fix/break@0.50, switch`）：
+  - epoch1：`1.52/1.52%, 1.52/1.52%, 3.03%`；
+  - epoch2：`3.03/4.55%, 3.03/4.55%, 14.02%`；
+  - epoch3：`1.52/4.17%, 1.52/4.17%, 7.95%`；
+  - epoch4：`1.52/0.00%, 1.52/0.00%, 1.52%`；
+  - epoch5：`0.76/0.00%, 0.76/0.00%, 1.52%`。
+- Mask（epoch1--5）为 `64/52`、`62/50`、`61/49`、`66/54`、`65/53`；mIoU
+  为 `0.349644/0.341612/0.332339/0.362777/0.358098`。epoch4 同时给出
+  Position `+3/+3`、Mask `+2/+2`，且 joint 自身 `+2/+2` 零 break，证明三标准
+  拆分可以产生安全窗口；但 epoch2 已触发预注册 `break > fix`，epoch3 继续失败，
+  不允许用事后挑选 epoch4 直接进入正式训练。
+- epoch4 checkpoint 审计
+  `experiment_output/v51_bmq_rank/v72_factorized_safety_smoke_epoch4_checkpoint_audit.json`
+  通过：common/changed/new=`1228/0/30`，optimizer 26 states、285,492 参数、
+  step40，全部张量与动量 finite/nonzero。保留 epoch4 的 6 个硬链接；验证五轮
+  config/eval/retention JSON 可解析且 V70b/受保护 V19 均仍在后，删除被支配的
+  epoch5/last inode。overlay 可用空间约 3.0 GB。
+- V72b 预注册：架构和所有 loss 权重不变，只把 joint LR 从 `3e-4` 降为 `1e-4`；
+  smoke 延长为 10 epoch（100 step），使累计更新量覆盖 V72 出现窗口的量级。
+  任一完整 epoch 只要任一阈值 `break > fix` 即停止；低 LR 若连续全拒绝也拒绝。
+  只有出现 joint 可归因、零净破坏且 Mask 不退化的稳定窗口，才进入正式前缀。
+
+### 14.39 V72b smoke：降学习率延后但未消除 Safety 振荡（2026-08-13）
+
+- 配置严格保持 V72 的三标准因子化架构、rank weight 2 与 factorized-safety
+  weight 1，只把 joint LR 从 `3e-4` 降至 `1e-4`，单 GPU、128/128、batch 12。
+  任务在读取归因门禁时已经完成 8 个验证 epoch 并开始 epoch9；确认当前命令行、
+  PID/PGID=`153431` 后按预注册规则终止整条进程组。终止后 screen 与 GPU
+  compute-app 均为空。
+- fixed parent Position 恒为 `63/57`。八轮 learned Position 为：
+  `64/58`、`64/58`、`65/59`、`63/57`、`65/59`、`64/58`、`64/58`、
+  `65/59`。对应 Mask hits 为 `64/52`、`64/52`、`65/53`、`63/51`、
+  `65/53`、`64/52`、`64/52`、`65/53`；mIoU 为
+  `0.350491/0.350491/0.358098/0.344965/0.358098/0.350491/0.350417/0.356076`。
+- joint-query 归因（格式为 `fix/break@0.25, fix/break@0.50, switch`）：
+  - epoch1：`0.00/0.00%, 0.00/0.00%, 0.00%`；
+  - epoch2：`0.00/0.00%, 0.00/0.00%, 0.00%`；
+  - epoch3：`0.76/0.00%, 0.76/0.00%, 0.76%`；
+  - epoch4：`0.76/1.52%, 0.76/1.52%, 2.27%`；
+  - epoch5：`0.76/0.00%, 0.76/0.00%, 1.52%`；
+  - epoch6：`0.00/0.00%, 0.00/0.00%, 0.00%`；
+  - epoch7：`0.76/1.14%, 0.76/1.14%, 1.89%`；
+  - epoch8：`1.52/1.14%, 1.52/1.14%, 3.41%`。
+- epoch3/5 给出 joint 自身 `+1/+1` 且零 break，Mask 同步 `+1/+1`，说明降
+  LR 确实把 V72 的安全窗口提前稳定到 30--50 step；但 epoch4 已首次触发
+  `break > fix` 的硬门禁，epoch7 再次失败。epoch8 虽为净正，也不能用事后挑选
+  覆盖前序失败，因此 V72b 整组拒绝，不进入正式全数据训练。
+- 三标准诊断显示问题不是 Box@0.25 单头：epoch3 的 hazard/safe violation
+  （Box@0.25、Box@0.50、Mask@0.25）分别为
+  `15.48/75.14%`、`37.55/49.58%`、`38.65/40.98%`；到首次失败 epoch4 为
+  `13.41/78.57%`、`35.10/49.66%`、`34.92/38.51%`。Box@0.50 与 Mask@0.25
+  风险边界仍接近随机重叠；部署取三个 margin 的最小值只能降低放行率，无法保证
+  被放行候选不含 hazard。仅降低 LR 因而只能改变振荡时间，不能解决辨识问题。
+- 保留 config、八轮 eval JSON、retention JSON、launcher 与完整日志作为失败回执。
+  epoch3/5 的相同最佳权重只作为机制证据；V72 epoch4 已有通过审计且表现更好的
+  受保护机制 checkpoint，因此 V72b 不形成新的最佳候选。再次确认受保护 V19、
+  V70b 与 V72 epoch4 权重均存在，并验证 18 个 JSON 全部可解析后，删除 V72b
+  8 个 `.pth` 名称（2 个实际 inode）；这些权重不可直接恢复，但可按保留配置完整
+  重跑。删除后 V72b 权重计数为 0，overlay 可用空间约 3.0 GB。
+- 下一步不继续扫 LR 或 safety loss 标量权重。V73 应把“候选是否安全”从单个
+  点估计改为带保守置信边界的风险估计，并让 promotion 只在收益下界为正且三个
+  hazard 上界均低于阈值时放行；目标是在不读取推理期 GT、不过拟合 ScanRefer
+  后处理的前提下，将安全门从平均分类器变成可训练的风险约束。
+
+### 14.40 V73 双边界保守风险头与 smoke 预注册（2026-08-13）
+
+- V72/V72b 表明单个三标准点估计会在“放行 safe”与“否决 hazard”之间振荡。
+  V73 新增默认关闭的 `joint_query_quality_use_factorized_setwise_risk_bound`：
+  每个 Box@0.25、Box@0.50、Mask@0.25 标准不再只输出一个 safety margin，而是
+  输出中心估计与保守 guard 两个 margin，共 6 路 veto。部署先对每个标准的两路
+  margin 取最小值，再对三个标准和 promotion 取最小值；任何 guard 不支持切换时
+  都回退到受保护父查询。该规则只使用模型特征，不读取推理期 GT，也不依赖
+  ScanRefer 类别或样本身份。
+- 新增默认权重 0 的
+  `joint_query_quality_setwise_factorized_risk_bound_loss_weight`。中心头继续做每个
+  criterion 内 safe/hazard 等类损失；guard 头使用同一明确标签，但按既有
+  `transition_break_cost=4` 对 hazard 类加权，形成偏向高 hazard recall 的风险上界。
+  两头损失等权后再跨三标准平均。新 loss 与 V70 dense、V71 balanced、V72
+  factorized point loss 互斥，promotion head 不接收 risk-bound 额外梯度。
+- 兼容性与初始化：不开 V73 flag 时，V72 仍是 3 输出 safety head，旧 checkpoint
+  shape/行为不变；开启时只把最终输出从 3 增至 6，总参数由 286,395 增至
+  286,779，state tensor 数仍为 30。六个最终输出全零，step-0 residual 为 0、父
+  分数与选择精确复现。V73 专项 `4 passed`，完整 joint-query/初始化
+  `117 passed`，Source-MoE/训练集成 `336 passed`。
+- 真实受保护 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v73_factorized_risk_bound_initialization_audit.json`
+  通过：common/changed/new=`1228/0/30`，unexpected/shape mismatch=`0/0`，
+  参数 286,779，六路输出头全零，父分数保持、Top-32 与 V73 合同一致。
+- smoke 固定为单 GPU、128/128、batch 12、`augment_det=0`、LR=`1e-4`、最多
+  10 epoch；rank weight 2、risk-bound weight 1、break cost 4，其余 safety loss
+  均为 0。任一完整 epoch 在任一阈值出现 `break > fix` 即停止并拒绝；到 epoch5
+  若仍无 joint 可归因修复也停止。只有至少两个完整 epoch 出现 `fix > 0`、
+  `break = 0` 且 Mask 不退化，才审计最佳实物 checkpoint 并考虑正式全数据前缀。
+
+### 14.41 V73 smoke：风险上界消除 hazard 但退化为全拒绝（2026-08-13）
+
+- 监控读取时任务已完成 6 个完整 epoch。fixed parent Position 恒为 `63/57`；
+  learned selector 六轮均为 `64/58`，Mask 均为 `64/52`、mIoU `0.350491`。
+  六轮 joint-query `fix/break@0.25`、`fix/break@0.50` 与 switch 全部为 0；因此
+  reported 的 `+1/+1` 完全来自既有父 selector，不能归因于 V73。
+- 三个 guard 从 epoch1 到 epoch6 的 hazard violation 全部严格为 0，但 safe
+  violation 也全部为 100%。中心 point 头并非全拒绝：例如 Box@0.25 的 point
+  hazard/safe violation 从 epoch1 `8.3/82.8%` 演化到 epoch6 `36.2/42.8%`，
+  Box@0.50 为 `17.7/74.7%` 到 `33.5/50.0%`，Mask@0.25 为 `12.2/79.3%`
+  到 `46.5/29.1%`。真正把所有切换否决的是 4 倍 hazard guard。
+- 这暴露出比 loss 权重更具体的结构问题：当前 safety margin 与 promotion margin
+  一样先减去候选跨越父分数所需的 `required_advantage`，然后 hard-min 直接决定
+  residual 幅度。Safety 因而同时承担“候选是否危险”和“候选能否补足父分数差”
+  两个职责；4 倍 guard 即使正确识别 hazard，也会因分数差把大量 safe margin 压
+  到负区间。V73 的风险头不是纯 veto，所谓上界仍与收益幅度耦合。
+- 按预注册“到 epoch5 无 joint 修复即停”规则，在重新核对命令与 PGID=`155894`
+  后终止进程组；复查 screen、进程组与 GPU compute-app 均为空。验证 config、
+  retention、六轮 eval/diagnostics 共 14 个 JSON 可解析，且 V19/V70b/V72 最佳
+  权重仍在后，删除 V73 8 个 `.pth` 名称（2 个实际 inode）。失败权重不可直接
+  恢复，但完整配置、日志与启动脚本保留；V73 不进入正式训练。
+- 下一版 V74 不调 break cost。它把 promotion 和 safety 的部署职责彻底分开：
+  promotion 独自决定 residual 幅度并承担 `required_advantage`；六路 safety 只在
+  原始绝对风险 margin 的零边界上作硬 veto，不再减父分数差。step-0 两者仍为 0，
+  精确复现父选择器；目标是保留 V73 的零 hazard，同时释放真正 safe 的 repair。
+
+### 14.42 V74 纯 Safety Veto Gate 与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的 `joint_query_quality_use_setwise_safety_veto_gate`。开启后，
+  candidate-centered promotion margin 独自生成 bounded residual；六路 safety 的
+  原始绝对 margin 只产生 `margin > 0` 的硬放行 gate。若 gate 否决，则只截断
+  promotion 的正部分，不改变其负部分；若 gate 放行，则完整保留 promotion 幅度。
+  用 straight-through sigmoid 提供局部反向梯度，但前向选择严格使用硬 gate。
+- 训练边界同步改为职责一致的两类 margin：promotion branch 仍减去候选越过父分数
+  所需的 `required_advantage`；safety branch、三个 criterion 与六个 point/guard
+  score 都不再减该值，只在零边界学习 safe/hazard。V73 风险 loss、4 倍 guard、
+  Top-32、父分数保持和所有标签定义均未改变，因此本轮只检验部署职责解耦。
+- step-0 时 promotion/safety 全为 0，截断前后 residual 仍精确为 0；旧 V63--V73
+  在新 flag 关闭时完全保留 hard-min 行为，不增加参数或 state tensor。V74 定向
+  `3 passed`，完整 joint-query/初始化 `120 passed`，集成 `336 passed`。真实 V19
+  审计 `experiment_output/v51_bmq_rank/v74_safety_veto_gate_initialization_audit.json`
+  通过：common/changed/new=`1228/0/30`，参数 286,779，输出头全零且合同一致。
+- smoke 仍为单 GPU、128/128、batch 12、`augment_det=0`、LR=`1e-4`、最多
+  10 epoch，rank/risk-bound=`2/1`、break cost 4。任一完整 epoch 任一阈值
+  `break > fix` 即停止；到 epoch5 无 joint 修复也停止。只有至少两个完整 epoch
+  `fix > 0, break = 0` 且 Mask 不退化，才审计实物 checkpoint 并进入正式前缀。
+
+### 14.43 V74 smoke：去除分数差耦合后 guard 仍全拒绝（2026-08-13）
+
+- V74 完成 6 个完整评测 epoch。fixed parent 恒为 `63/57`；learned Position
+  六轮均为 `64/58`，Mask 均为 `64/52`、mIoU `0.350491`。所有 epoch 的 joint
+  fix/break/switch 与 `safety_veto_accept_ratio` 全为 0；reported `+1/+1` 仍只
+  来自既有父 selector。按 epoch5 无修复门禁，在核对 PGID=`157911` 后停止，
+  screen、进程组与 GPU compute-app 均清空。
+- 去掉 `required_advantage` 后 point 头已能强烈放行部分标准：例如 epoch3
+  Box@0.25 point hazard/safe violation 为 `96.1/0.8%`，Mask@0.25 为
+  `100.0/0.0%`；但每轮、每个标准的 guard hazard/safe violation 仍精确为
+  `0/100%`，六路最小值因此永远不大于 0。V74 排除了“全拒绝仅由父分数差重复
+  扣除导致”的假设，定位到 cost-weighted guard 自身的决策基线。
+- 数学原因：guard 的 safe/hazard 类损失权重为 `1:4`。在特征尚未分开时，最优
+  cost-weighted safety logit 相对普通 log-odds 平移 `-log(4)`；直接用 0 作为
+  部署边界，等价于要求未加权 `P(safe) > 0.8`。短 smoke 里全负不是异常，而是
+  该损失与部署阈值不一致的必然基线。
+- 验证 config、retention、六轮 eval/diagnostics 共 14 个 JSON 可解析，且受保护
+  权重仍在后，删除 V74 8 个 `.pth` 名称（2 个 inode）。同时清除 V73/V74 各一
+  个被终止保存留下的无效 `.pth.tmp`，共约 1.2 GB；这些临时文件从未形成有效
+  checkpoint，均不可恢复也无需恢复。overlay 可用空间恢复到约 2.9 GB。
+
+### 14.44 V75 cost-prior 校准与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的
+  `joint_query_quality_use_cost_calibrated_setwise_risk_bound`。仅在 V73 risk-bound
+  头上启用：部署时给 guard safety logit 加回解析偏移 `log(break_cost)`，中心
+  point 不变，再做双头/三标准最小值；loss 内训练 guard 前减回同一偏移。因此
+  训练梯度和 4 倍 hazard 代价与 V74 完全相同，只修正 cost-sensitive logistic
+  loss 引入的先验平移，不新增可调阈值，也不扫描 cost。
+- break cost=4 时，step-0 point/guard 部署 margin 为 `0/log(4)`，最小值仍为 0，
+  residual 与父选择器精确不变。不开新 flag 时 V73/V74 行为保持；参数/state 数
+  不变。V75 定向 `3 passed`，完整 joint-query/初始化 `123 passed`，集成
+  `336 passed`。真实审计
+  `experiment_output/v51_bmq_rank/v75_cost_calibrated_risk_bound_initialization_audit.json`
+  通过：common/changed/new=`1228/0/30`，参数 286,779，合同与零初始化均通过。
+- smoke 与 V74 完全相同，只开启解析校准：单 GPU、128/128、batch 12、LR
+  `1e-4`、最多 10 epoch。任一 epoch 任一阈值 `break > fix` 即停止；epoch5
+  无 joint 修复也停止。仍要求至少两个 epoch `fix>0, break=0` 且 Mask 不退化，
+  才审计实物 checkpoint 并考虑正式前缀。
+
+### 14.45 V75 smoke：解析校准从全拒绝越过到危险全放行（2026-08-13）
+
+- 五个完整评测 epoch 的 learned Position 命中数依次为 `64/57, 64/57,
+  65/58, 63/56, 57/50`；Mask 依次为 `64/52, 64/52, 65/53, 63/51,
+  57/45`，mIoU 从 `0.350491` 在 epoch3 短暂升至 `0.358098`，epoch4/5 随后
+  降至 `0.344965/0.307341`。fixed parent 每轮均为 `63/56`。
+- joint `fix/break@.25`（`.50` 完全相同）依次为 `0/0, 0/0, 0.76/0,
+  0.76/1.52, 0.76/6.44%`，switch 为 `0, 0, 1.52, 3.03, 10.23%`；veto
+  accept 为 `0, 0, 4.48, 10.62, 62.07%`。epoch3 虽有一次净安全修复，只有
+  一个 epoch，未满足“两轮”门禁；epoch4 已出现 `break > fix`，明确触发停止。
+  监控返回时 epoch5 也已完成且恶化，epoch6 仅完成训练和 checkpoint 保存、尚未
+  完成评测。核对后只向精确 PGID `159948` 发送 TERM；screen、进程组与 GPU
+  compute-app 均已清空。
+- 校准后的三个 guard 在五轮评测中 hazard violation 全部为 `100%`、safe
+  violation 全部为 `0%`，即部署端对观测到的危险候选也全部放行。真正控制早期
+  gate 的是三个 point 头的交集：Box@.25 point safe violation 在 epoch1--5 为
+  `100.0, 100.0, 95.47, 89.52, 40.41%`；Box@.50 在前四轮为 `0%`、epoch5
+  为 `0.72%`，Mask@.25 从 epoch2 起为 `0%`。随着 Box@.25 point 放松，accept
+  激增，但已失效的 guard 无法阻止 break，解释了 epoch4--5 的快速退化。
+- 结论：`+log(4)` 精确抵消了 loss 的类别代价偏移，却不能被解释为逐候选风险
+  上界；当前 guard 只学到成本修正后的总体先验，未形成样本级 hazard 排序。V75
+  因预注册失败被拒绝，不进入正式前缀，也不把 epoch3 的小样本偶然提升当作候选。
+  后续版本必须让部署边界直接由可验证的“相对父候选损失”决定，不能再把类别代价
+  的常数校准当作安全证书，也不应仅对现有阈值做扫描。
+
+### 14.46 V76 连续 Safety Slack 分位数下界与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的
+  `joint_query_quality_use_setwise_safety_slack_quantile_bound`，要求 V73 的六路
+  risk-bound 头与 V74 veto gate，且与 V75 cost-calibration 互斥。六路参数合同
+  不变：每个 Box@.25、Box@.50、Mask@.25 标准分别输出 point 与 lower-bound。
+- V76 不再对 safe/hazard 二分类。若父候选在标准 `t` 上命中，监督目标为
+  `(candidate_metric-t)/t`；若父候选未命中，则该候选不可能造成 break，目标为
+  `(t-parent_metric)/t`。该连续、无量纲的 safety slack 严格满足：负值对应真实
+  hit-to-miss，正值对应不破坏，零就是部署边界；它同时携带候选离阈值多远的信息，
+  避免 V75 仅学习总体类别先验。
+- point 用逐行平均绝对误差回归 slack；lower-bound 用 pinball loss 学习
+  `tau=1/(1+break_cost)` 分位数。cost=4 时 `tau=0.2`；loss 再乘 `1+cost`，使
+  乐观高估风险边界的斜率与保守低估形成严格 `4:1`，而部署仍只检查解析的零边界，
+  没有新增可扫描阈值。三标准各取 point/lower 最小值后作硬 veto，promotion 仍只
+  负责候选排序和 residual 幅度。
+- 最终层仍为零，因此 step-0 point/lower/promotion 均为零，hard veto 虽不放行，
+  residual 也精确为零，父分数与父选择完全复现。不开新 flag 时 V73--V75 行为
+  保持。V76 新增/相邻定向 `5 passed`，完整 joint-query/初始化 `126 passed`，
+  Source-MoE/训练/retention 集成 `378 passed`（仅两个既有 scheduler deprecation
+  warning）。远程与本地传输副本 SHA256 逐文件一致，并保留八个
+  `.v76_slack_quantile_20260813.bak` 回滚文件。
+- 真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v76_safety_slack_quantile_bound_initialization_audit.json`
+  通过：common/changed/new=`1228/0/30`，unexpected/shape mismatch=`0/0`，
+  参数 286,779、state 30、输出头全零、父分数/Top-32/互斥合同均通过。
+- smoke 固定为单 GPU、128/128、batch 12、`augment_det=0`、LR=`1e-4`、最多
+  10 epoch；rank/slack-bound weight=`2/1`、break cost 4，其余 safety loss 为 0。
+  任一完整 epoch 任一 REC 阈值 `break > fix` 即停止；epoch5 仍无 joint 修复也
+  停止。只有至少两个完整 epoch `fix>0, break=0` 且 Mask 不退化，才审计最佳
+  实物 checkpoint 并考虑正式全数据前缀。
+
+### 14.47 V76 透传审计修正与 V76b smoke：分位数仍学成行级先验（2026-08-13）
+
+- 首次启动命令与 config 都显示 V76 flag=true，但训练日志 marker=0，point/guard
+  loss 仍约为旧 BCE 的 `0.69`。核查发现 `models/losses.py` 的两条 endpoint 收集
+  路径没有透传新 marker；模型构造本身正确，但 loss 端把缺失 marker 解释为 false。
+  发现时该无效 run 已完成若干快速 debug 轮，立即核对并终止精确 PGID `162270`；
+  它不计为 V76 结果。删除其 8 个 `.pth` 名称（2 inode），保留 config/JSON/log
+  作为审计证据。
+- 在两条 `transition_keys` 中加入 marker，给 `models/losses.py` 创建第九个
+  `.v76_slack_quantile_20260813.bak`，上传 SHA256 核对一致。合并回归为
+  `504 passed`（joint/audit 126 + Source-MoE/训练/retention 378），仅有两个既有
+  scheduler deprecation warning。V76b 从受保护 V19 重新初始化，运行时明确看到
+  marker=`1.0000`、point/quantile loss 约 `1.0/1.54`，确认执行的是新目标。
+- V76b 完成 6 个完整评测 epoch（停止请求到达前多完成一轮）。fixed parent 恒为
+  `63/57`；learned Position 六轮均为 `64/58`，Mask 六轮均为 `64/52`、mIoU
+  `0.350491`。joint fix/break/switch 与 veto accept 六轮全部为 0；所以 reported
+  `+1/+1` 仍来自既有父路径差异，新模块无可归因修复。按 epoch5 无修复门禁停止
+  PGID `163562`，screen、进程组、GPU compute-app 均为空。
+- 分位数 loss 的总体覆盖语义成立：Box@.25 coverage 从 `19.16%` 到 `19.50%`，
+  Box@.50 从 `23.64%` 到 `22.25%`，Mask@.25 从 `15.82%` 到 `15.89%`，围绕
+  `tau=20%`。但它仍主要学习行/数据总体先验而非候选排序：Box@.25 lower-bound
+  hazard violation 在 epoch2--6 约 `97.8%`，Mask@.25 同样约 `97.2%`；相反
+  Box@.50 lower-bound safe violation 从 `100%` 仅降到 `99.0%`，由这一标准把
+  所有候选最终否决。point 头也几乎对所有 safe 与 hazard 同时给正值。
+- 结论：连续 slack 修复了目标的信息量与统计解释，却没有消除“用行级常数满足
+  边际 loss”的捷径。V76b 拒绝，不进入正式前缀。下一版不改 tau/cost/零阈值，
+  而在同一父候选行内直接监督 safe 与 hazard 的 slack 顺序，使共同偏置无法降低
+  该项；仍保留分位数边界负责绝对校准。
+
+### 14.48 V77 行内 Safety Slack Pairwise Order 与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的
+  `joint_query_quality_use_setwise_safety_slack_pairwise_order`，要求 V76 quantile
+  bound；不增加参数、不改变 V76 的连续目标、`tau=0.2`、cost=4 或部署零边界。
+  对每个父候选行、每个标准，构造所有真实 safe 候选与 hazard 候选的有序对；point
+  与 lower-bound 都回归两候选真实 normalized slack 的差。loss 是预测差与真实差
+  的 L1，因此任何行级共同常数严格抵消，且真实连续差本身给出尺度，无需新 margin。
+- 绝对 point/quantile loss 继续负责把输出校准到零边界，pairwise loss 只负责候选
+  次序；二者在 V77 风险项内等权相加。新增每标准 point/lower pair MAE 与
+  safe-over-hazard accuracy。step-0 所有输出仍为零，pairwise loss 有非零有限梯度，
+  但 residual/父分数/选择严格复现 V19。
+- V77 新增/相邻定向 `3 passed`；完整 joint/audit + Source-MoE/训练/retention
+  合并回归 `506 passed`，仅两个既有 scheduler warning。真实初始化审计
+  `experiment_output/v51_bmq_rank/v77_safety_slack_pairwise_order_initialization_audit.json`
+  通过：common/changed/new=`1228/0/30`、参数 286,779、state 30，输出头全零，
+  V76/V77、veto、Top-32 和父分数合同一致。九个修改文件均有
+  `.v77_slack_pairwise_20260813.bak`。
+- smoke 与 V76b 相同：单 GPU、128/128、batch 12、LR=`1e-4`、最多 10 epoch，
+  promotion rank/slack risk=`2/1`。任一完整 epoch 任一阈值 `break > fix` 即停；
+  epoch5 无 joint 修复即停。仍只在至少两个 epoch `fix>0, break=0` 且 Mask
+  不退化时审计实物 checkpoint 并考虑正式前缀。
+
+### 14.49 V77 smoke：排序学会但零边界仍无可归因修复（2026-08-13）
+
+- 监控返回并执行停止前共完成 8 个完整评测 epoch。八轮 fixed parent 均为
+  `63/57`，reported learned Position 均为 `64/58`；Mask 均为 `64/52`、mIoU
+  `0.350491`。但 joint 内部归因在 epoch1--7 的 fix/break/switch 全为 0；epoch8
+  虽出现 `0.76%` switch，`fix/break@.25/.50` 仍全部为 0。因此 reported
+  `+1/+1` 是既有父路径与 fixed-default 的差异，不是 V77 新模块产生的修复。
+- lower-bound 的 safe-over-hazard 行内排序确实被学会：Box@.25 八轮 accuracy 为
+  `87.01, 87.39, 87.77, 88.01, 88.74, 89.02, 88.63, 88.33%`；Box@.50 为
+  `78.57, 63.53, 37.18, 43.10, 64.40, 83.75, 84.74, 84.95%`；Mask@.25 为
+  `94.34, 94.35, 94.41, 94.74, 95.43, 96.00, 95.73, 96.16%`。这验证了行内
+  pairwise loss 消除了共同偏置捷径并提供了有效候选排序信号。
+- 但绝对零边界仍没有形成有效决策：veto accept 八轮为 `0, 0, 0, 0.24,
+  0.15, 0.80, 41.53, 56.88%`。前六轮基本全拒绝；后两轮快速放开后，promotion
+  所选候选仍没有产生任何 REC fix，说明“安全排序正确”尚不能保证绝对边界校准，
+  也不能保证与 promotion 候选对齐。不能据此启动正式全验证集评测。
+- 按预注册的 epoch5 无可归因修复门禁拒绝 V77。停止前训练已进入 epoch9；核对
+  后仅向精确 PGID `165413` 发送 TERM，screen、进程组与 GPU compute-app 均清空。
+  删除该 run 的 8 个 `.pth` 名称（2 inode），保留 config、8 轮 eval JSON、source
+  diagnostics、retention JSON 与完整 launcher/log；受保护 V19 inode
+  `6496464367`、大小 `605267997` 未变，overlay 可用空间恢复到 `2.9G`。
+- 下一步不再调整 tau、cost 或部署阈值。V77 已证明相对排序可学，剩余结构性问题是
+  让安全分数具有父候选条件下的可识别零点，并让训练目标直接覆盖部署时唯一被
+  promotion 选中的候选；新设计必须继续保持 step-0 精确复现与无阈值扫描。
+
+### 14.50 V78 Proposal-Conditioned Safety 两阶段架构与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的 `joint_query_quality_use_proposal_conditioned_safety`，要求 V77 的
+  pairwise slack order 与 V74 safety veto。部署改成严格 `Propose -> Verify`：
+  promotion 先按“候选 promotion advantage - 击败父分数所需 advantage”提出唯一
+  非父候选；若 proposal 本身不能越过父分数，则直接保留父候选。只有可 promotion
+  的 proposal 才交给三标准 point/lower-bound 安全门验证；任一标准的最小值不大于
+  零都回退父候选，不会在被拒后隐式选择第二个候选。
+- V76/V77 的全候选 safe-vs-hazard pairwise loss 原样保留，继续学习候选相对安全
+  次序；但负责绝对零点的 point L1 与 lower pinball loss 只在当前 promotion
+  proposal 上计算。这样训练中的绝对校准对象与部署真正验证的唯一候选严格一致，
+  避免 V77 用大量部署不会选中的 easy safe 候选满足总体分位数。proposal argmax
+  作为离散两阶段接口，不向 promotion 传递 safety loss；promotion 仍由 setwise
+  tier/rank 目标独立训练，因此不存在 safety 通过换 proposal 自行降低 loss 的捷径。
+- 该改动不增加参数，不改变 `tau=0.2`、cost=4、零阈值或 Top-32 候选合同。最终层
+  零初始化时所有 proposal 的 promotion margin 小于等于零，promotable mask 全空，
+  residual 精确为零，父分数与选择精确复现。增加 proposal/hazard、promotable、
+  safety-accept 三类运行诊断；九个修改文件均保留
+  `.v78_propose_verify_20260813.bak` 回滚副本。
+- V76--V78 定向测试 `8 passed`；完整 joint-query/初始化 `131 passed`，Source-MoE、
+  训练、retention 等集成 `350 passed`，额外 scheduler/checkpoint `21 passed`（仅两个
+  既有 scheduler deprecation warning），合计 `502 passed`。真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v78_proposal_conditioned_safety_initialization_audit.json`
+  通过：common/changed/new=`1228/0/30`、unexpected/shape mismatch=`0/0`，参数
+  286,779、state 30，输出头全零、父保护/Top-32/V78 合同均通过。
+- smoke 沿用单 GPU、128/128、batch 12、LR=`1e-4`、最多 10 epoch，rank/slack
+  risk=`2/1`。任一完整 epoch 任一 REC 阈值 `break > fix` 立即停止；epoch5 仍无
+  joint 修复也停止。只有至少两个完整 epoch `fix>0, break=0` 且 Mask 不退化，才
+  审计实物 checkpoint 并进入正式全验证集前缀；否则拒绝且只清理该 run 的权重。
+
+### 14.51 V78 smoke：proposal 对齐暴露 promotion--safety 因果错位（2026-08-13）
+
+- 停止请求到达前完成 4 个完整评测 epoch。fixed parent 四轮均为 `63/56`；learned
+  Position 为 `64/57, 62/55, 64/57, 64/57`，Mask 为 `64/52, 62/50, 64/52,
+  64/52`，epoch2 mIoU 从约 `0.350607` 降到 `0.337473`。epoch1/3/4 的 reported
+  `+1/+1` 仍是既有父路径差异，不是 V78 修复。
+- joint 归因最关键的 epoch2 为两个 REC 阈值 `fix=0, break=1.52%`、switch
+  `1.52%`，明确触发 `break > fix` 停止门禁。epoch1 无 promotable proposal；
+  epoch2 proposal promotable=`1.52%`，但 proposal safety accept=`100%`，即唯一
+  真正越过父分数的危险候选被安全门放行。epoch3 安全门转为全拒绝而回到父路径，
+  不能撤销 epoch2 已观测到的风险证据。
+- proposal 本身的 hazard 比例从 epoch1 的 `21.66%` 升到 epoch2 的 `25.45%`，
+  同时三标准 lower-bound 行内排序仍约为 Box@.25 `85.99/86.99%`、Box@.50
+  `83.64/83.35%`、Mask@.25 `93.24/93.26%`。这说明 V77 的全候选安全排序能力
+  没有消失；失败来自 promotion 独立提出的候选分布与 safety 的在线校准不同步，
+  而 proposal-only 绝对 loss 的样本数在早期又太少，无法在首次可 promotion 时提供
+  可靠下界。严格两阶段接口正确暴露了这一因果错位，却未解决它。
+- 按预注册门禁拒绝 V78，不进入正式前缀。核对后只向精确 PGID `168023` 发送
+  TERM；screen、进程组与 GPU compute-app 均清空。删除该 run 8 个 `.pth` 名称
+  （2 inode），保留 config、4 轮 eval/source diagnostics、retention JSON 与完整
+  日志；受保护 V19 inode `6496464367`、大小 `605267997` 未变，overlay 可用空间
+  恢复为 `2.9G`。
+- 下一版应直接把 promotion 的候选选择与安全证据联合起来，而不是继续让一个独立
+  promotion argmax 产生高 hazard proposal 后再做稀疏在线校准；仍不得通过扫描阈值
+  或 ScanRefer 特化规则规避该问题。
+
+### 14.52 V79 Parent-Referenced Safety 与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的 `joint_query_quality_use_parent_referenced_safety`，要求 V77 pairwise
+  slack order，并与 V78 proposal-conditioned safety 互斥。对每个父候选行，六路
+  safety 原始输出统一减去 parent--parent pair 的六路输出，再进入 criterion min、
+  hard veto 和 V76/V77 loss。该结构精确消除任何行级共同偏置，候选之间的所有差值
+  完全保留；零点由同一网络对不可变父候选的输出条件化确定，而不是由数据集阈值扫描
+  或常数校准产生。
+- V79 恢复全候选连续 slack L1/pinball 校准，不使用 V78 稀疏 proposal-only 绝对
+  loss；因此每个 batch 从第一步起都对所有候选提供零点梯度。promotion 与安全仍是
+  独立非线性头，部署继续采用 hard safety veto；新模块不增加参数，不改变 tau=0.2、
+  cost=4、Top-32 或 promotion margin。最终层为零时，父参考与所有候选 safety 均为
+  零，hard veto 不放行，residual/父分数/选择精确复现。
+- 增加结构测试验证：对 safety head 任意加 `+100/-37` 行偏置，V79 部署六路输出
+  逐元素相同；parent 输出严格为零；V78/V79 互斥合同与缺失依赖均会 fail-fast。
+  V76--V79 定向 `10 passed`，完整 joint-query/初始化 `133 passed`，集成与
+  scheduler/checkpoint `371 passed`（仅两个既有 scheduler warning），合计
+  `504 passed`。
+- 真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v79_parent_referenced_safety_initialization_audit.json`
+  通过：common/changed/new=`1228/0/30`、unexpected/shape mismatch=`0/0`，参数
+  286,779、state 30、输出头全零、V79/父保护/Top-32 合同一致。九个修改文件均有
+  `.v79_parent_ref_20260813.bak`。
+- smoke 与 V77 相同：单 GPU、128/128、batch 12、LR=`1e-4`、最多 10 epoch，
+  rank/slack risk=`2/1`。任一完整 epoch 任一 REC 阈值 `break > fix` 即停；epoch5
+  无 joint 修复即停。仍只在至少两个 epoch `fix>0, break=0` 且 Mask 不退化时审计
+  实物 checkpoint 并考虑正式全验证集前缀。
+
+### 14.53 V79 smoke：父参考消除早期误放，但 promotion 交集仍为空（2026-08-13）
+
+- 停止请求到达前完成 6 个完整评测 epoch，fixed parent 每轮 `63/57`；learned
+  Position 每轮 `64/58`，Mask 每轮 `64/52`、mIoU `0.350491`。六轮 joint
+  `fix/break/switch@.25/.50` 全部为 0，因此 reported `+1/+1` 仍完全来自既有父路径。
+- 父参考显著改变了早期 safety 行为：epoch1 三路 lower-bound hazard violation 为
+  Box@.25 `1.29%`、Box@.50 `0%`、Mask@.25 `1.88%`，而 V76/V77 同阶段常出现
+  接近全误放或全拒绝；veto accept 仅 `1.01%`。到 epoch2--6 accept 逐步为
+  `1.41, 2.97, 9.38, 17.33, 38.07%`，仍无实际 switch，说明父参考确实给出了稳定
+  相对零点，而不是立刻发生 V78 的危险切换。
+- 行内 lower-bound 排序在六轮保持较高：Box@.25 从 `86.76%` 缓降到 `80.98%`，
+  Box@.50 从 `81.66%` 升到 `85.07%`，Mask@.25 约 `95.3%`。但随 accept 增长，
+  Box@.25/@.50 hazard violation 到 epoch6 也升到 `22.83/22.30%`；更关键的是
+  promotion-positive 候选与三路安全正交集始终没有击败父分数，所以没有修复也没有
+  break。V79 解决了行偏置与早期安全问题，却没有解决 promotion--safety 交集为空。
+- 按 epoch5 无可归因修复门禁拒绝 V79，不进入正式前缀。停止时训练已进入 epoch7；
+  核对后仅向精确 PGID `170042` 发送 TERM，screen、进程组与 GPU compute-app 均
+  清空。删除该 run 8 个 `.pth` 名称（2 inode），保留 config、6 轮完整 eval JSON、
+  diagnostics、retention 与日志；受保护 V19 inode `6496464367`、大小
+  `605267997` 未变，overlay 可用空间恢复到 `2.9G`。
+- 后续不应放松阈值来制造交集；需要把 promotion 目标改成在已学到的安全有序空间中
+  对 repair 候选形成可部署的联合优势，或直接监督“安全 repair 的联合 score”，同时
+  保持父参考零点与 step-0 复现。
+
+### 14.54 V80 Coupled Safe-Repair Witness 架构与 smoke 预注册（2026-08-13）
+
+- V79 的 promotion 与 safety 各自有连续监督，但两个目标可能由不同候选满足；部署却要求同一
+  候选同时越过父分数且通过三路安全门。新增默认关闭的
+  `joint_query_quality_use_coupled_safe_repair_witness`，并要求 V79 parent-referenced safety。
+  对每个真实 repair 候选，联合边界定义为 promotion 父边界与三路 safety 最小边界的最小值；
+  每行再取最佳 repair 候选，并用既有 `0.02` setwise margin 直接监督至少一个同候选联合 witness。
+  反传采用温度 `0.05` 的 smooth-min、前向保持 hard-min 精确值，修复行之外不产生该损失。
+- 这不是放松部署阈值：hard veto、零阈值、`tau=0.2`、cost=4、Top-32、promotion margin 与
+  inference 选择规则均不变，也不增加参数。新目标只消除“promotion 最优候选与 safety 最优候选
+  分属两处”的训练捷径；V79 的全候选相对排序、父参考绝对零点和三个安全标准仍全部保留。
+  最终层为零时联合 witness 仅提供训练梯度，部署 residual 仍为零，父分数与选择精确复现。
+- 结构测试覆盖依赖 fail-fast、真实 repair 行的同候选联合 loss、promotion/safety 两头非零梯度
+  和初始化 profile。V76--V80 定向 `12 passed`；完整 joint-query/初始化 `135 passed`；
+  Source-MoE、训练分组、retention 与 scheduler/checkpoint 集成 `371 passed`（仅两个既有
+  scheduler deprecation warning），合计 `506 passed`。Python compile、主训练脚本与两个 V80
+  launcher 的 `bash -n` 均通过。
+- 真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v80_coupled_safe_repair_witness_initialization_audit.json`
+  为 `pass=true`：common/changed/new=`1228/0/30`、unexpected/shape mismatch=`0/0`，新增模块
+  参数 `286,779`、state 30，所有输出头为零，V80/V79/父保护/Top-32 合同一致。九个修改文件均
+  保留 `.v80_coupled_witness_20260813.bak` 回滚副本。
+- smoke 继续使用单 GPU、训练/验证各 128 条、batch 12、LR=`1e-4`、最多 10 epoch，rank/slack
+  risk=`2/1`，不做阈值扫描。任一完整 epoch 任一 REC 阈值 `break > fix` 立即停止；epoch5 仍无
+  joint 修复也停止。只有至少两个完整 epoch `fix>0, break=0` 且 Mask 不退化，才审计实物
+  checkpoint 并考虑正式全验证集前缀；否则拒绝并只清理该 run 的权重。
+
+### 14.55 V80 smoke：同候选联合监督首次产生可归因净修复（2026-08-13）
+
+- run `1786561159` 完成全部 10 个 epoch。fixed parent 十轮均为 `63/57`；epoch1--3
+  joint fix/break/switch 全零，learned 的 `64/58` 仍来自既有父路径。epoch4 首次出现两个 REC
+  阈值共同 `fix=2/128、break=0`；epoch5 为 `3/128、0`，epoch6 为 `2/128、0`，连续三轮满足
+  预注册的安全修复门禁。对应 learned/Mask/mIoU 分别为 epoch4 `66/60, 66/54, 0.362777`、
+  epoch5 `67/61, 67/55, 0.370046`、epoch6 `66/60, 66/54, 0.365367`，Mask 没有以退化换 REC。
+- epoch8 为五项 retention 共同最佳：learned REC `69/63 = 0.5390625/0.4921875`，Mask
+  `69/57 = 0.5390625/0.4453125`、mIoU `0.386688`。joint 两阈值均为
+  `fix=6/128、break=1/128`，净增 5 hits；switch `10.61/128 = 8.33%`。witness recall 从
+  epoch1--3 的 0 升到 epoch4 `3.03%`、epoch5 `5.30%`、epoch8 `10.15%`，证明新增目标确实
+  建立了 promotion--三路安全的同候选交集，而不是沿用父路径伪提升。
+- epoch9/10 的 break 分别升到两个阈值 `2/128`，以及 `.25=2/128、.50=3/128`，但各轮
+  fix 仍更多，未触发 `break > fix`；learned 分别为 `68/62`、`67/60`。retention 正确锁定
+  epoch8。其五个 best 名称与 `ckpt_epoch_8.pth` 硬链接到同一 inode `740113099`，没有复制
+  六份大权重。
+- epoch8 实物 checkpoint 审计
+  `.../1786561159/v80_epoch8_checkpoint_audit.json` 为 `pass=true`：V19 common/changed
+  `1228/0`、new/joint-new `30/30`、unexpected 0；优化器参数 `285,876`、实际 state 26、
+  step 精确为 80，所有新增权重与 Adam moments finite，每个 state 的 `exp_avg` 非零。实物
+  config 再次确认 V80/V79、三路 factorized safety、hard veto、Top-32 与 cost=4 合同。
+- 这是 V76--V80 首次越过 smoke 晋级门禁的结构。下一步固定 epoch8 实物权重做完整 9508 条
+  validation prefix；不继续训练、不调整阈值。只有完整集仍为两阈值净修复且 Mask 不退化，才
+  考虑更长训练或正式候选；否则按完整集证据拒绝。
+
+### 14.56 V80 epoch8 全量 9508：正 witness 泛化失败，拒绝正式训练（2026-08-13）
+
+- 固定已审计 `ckpt_epoch_8.pth`、batch48、单卡执行只读 `--eval`，完整收据位于
+  `experiment_output/v80_coupled_safe_repair_witness_epoch8_full_eval/scanrefer/`
+  `v80_coupled_safe_repair_witness_epoch8_full9508_b48x1/1786561701/`。进程正常结束、GPU 与
+  screen 清空；`sample_count=9508`，未继续 optimizer step，也未扫描阈值。
+- 同次 fixed parent REC 为 `5514/4407 = 0.579932/0.463505`，V80 learned 为
+  `5486/4371 = 0.576988/0.459718`，分别退化 `-28/-36 hits`。joint 内部浮点收据为
+  `.25 fix/break=0.0069/0.0110`、`.50=0.0060/0.0112`，对应约 `66/105` 与 `57/106`；
+  两个阈值均明确 `break > fix`，触发预注册拒绝门禁。switch ratio 为 `5.29%`。
+- Mask 为 `5652/4629 = 0.594447/0.486853`、mIoU `0.415314`，低于 protected V19 的
+  `0.598233/0.491376/0.418613`；因此 smoke 的 Mask 同步提升同样没有泛化。REC Unique/Multiple
+  分别为 `.25 1237+4249=5486`、`.50 1046+3325=4371`；Mask 为
+  `.25 1272+4380=5652`、`.50 1031+3598=4629`，主计数均被 subgroup 精确还原。
+- failure localization 很清楚：full-set coupled witness recall 仅 `2.78%`，witness margin
+  `-0.0852`；safety veto accept 却升至 `79.96%`。Box@.25/@.50/Mask@.25 safety hazard
+  violation 分别为 `52.22/60.84/39.78%`。V80 只要求每个 repair 行存在一个正联合 witness，
+  解决了 smoke 中的正样本交集，却没有在同一联合边界上压住最难的非安全/非修复候选；小样本
+  的正 witness 因而伴随大规模错误放行。
+- 按完整集门禁拒绝 V80，不进入更长或四卡训练。protected V19 inode `6496464367`、大小
+  `605267997` 保持不变。下一架构不得靠阈值或 loss-weight 扫描；应把同一 coupled boundary
+  改为双侧可分离目标：正 safe-repair 至少一项越过既有 `0.02` margin，同时每行最难 unsafe /
+  non-repair candidate 留在零线下，并保持 parent-reference、hard veto 与 step-0 identity。
+
+### 14.57 V81 Bidirectional Coupled Boundary 与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的 `joint_query_quality_use_bidirectional_coupled_boundary`，要求 V80 coupled
+  witness。V80 的正侧保持不变：每个 repair 行至少一个最佳 safe-repair 候选的 deployed joint
+  margin 越过既有 `+0.02`。V81 在完全同一个 `min(promotion boundary, 三路 safety min)` 上
+  增加负侧：每行所有非最佳 repair 候选中的 hardest joint margin 必须低于 `-0.02`。正负约束
+  因而不能由不同 head、不同候选或不同边界分别满足。
+- V81 不增加参数，不改 inference、hard veto、父参考零点、零阈值、`tau=0.2`、cost=4、Top-32
+  或 promotion margin；smooth-min 仍仅作直通反传，hard-min 前向不变。新增 hardest-negative
+  margin/violation、正负 separation margin/recall 诊断。九个修改文件均有
+  `.v81_bidirectional_coupled_20260813.bak` 回滚副本。
+- V76--V81 定向 `14 passed`；完整 joint-query/初始化 `137 passed`；集成 `371 passed`（仅两个
+  既有 scheduler warning），合计 `508 passed`。Python compile、主 launcher 语法通过。真实
+  V19 初始化审计
+  `experiment_output/v51_bmq_rank/v81_bidirectional_coupled_boundary_initialization_audit.json`
+  为 `pass=true`：common/changed/new=`1228/0/30`、参数 `286,779`，所有输出头为零，V81/V80/
+  V79/父保护/Top-32 合同一致。
+- smoke 沿用单 GPU、128/128、batch12、LR=`1e-4`、最多10 epoch以及 rank/slack risk=`2/1`，
+  只增加结构性负侧 loss，不扫描权重或阈值。任一完整 epoch 任一 REC 阈值 `break>fix` 即停；
+  epoch5 无 joint 修复即停。至少两个 epoch 净修复且 Mask 不退化才审计实物；即使 smoke 晋级，
+  仍必须通过固定最佳 epoch 的完整 9508 条前缀，V80 的小样本提升不再作为正式训练依据。
+
+### 14.58 V81 smoke：负侧成立但正侧共同下移，拒绝（2026-08-13）
+
+- 停止请求到达前完成 6 个完整评测 epoch；fixed parent 均为 `63/56`，learned 均为
+  `64/57`，Mask 均为 `64/52`、mIoU `0.350491`。六轮 joint fix/break/switch 全零，因此
+  `+1/+1` 仍完全来自既有父路径，V81 没有可归因修复，触发 epoch5 门禁。
+- 负侧目标本身有效：hardest-negative margin 从 epoch1 `-0.0101` 单调降到 epoch6
+  `-0.0474`，negative violation 六轮均为 0。但正 witness margin 同时从 `-0.0316` 降到
+  `-0.0542`，positive recall 与正负 separation recall 始终为 0；separation margin 在
+  `-0.0214` 到 `-0.0070` 间仍为负。即两个独立绝对边界在共享表示上形成“整体下移”捷径，
+  安全拒绝增强却把 repair 一起压在零线下。
+- 核对后仅终止精确 PGID `176388`，screen/GPU 清空。停止到达前训练进入 epoch7；删除该 run
+  的 8 个 `.pth` 名称（2 inode），保留 config、6 轮完整 eval JSON、diagnostics、retention 与
+  日志。protected V19 inode `6496464367`、大小 `605267997` 未变，overlay 可用约 `2.3G`。
+- V81 不进入全量评测。下一版应直接监督同一 joint score 的
+  `best-positive - hardest-negative` 行内差值以消除共同平移自由度，并用正负中点锚定父参考零线；
+  不应通过调大正侧权重抵消负侧，也不改变部署阈值。
+
+### 14.59 V82 Centered Coupled Separation 与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的 `joint_query_quality_use_centered_coupled_separation`，要求 V81/V80/V79 链。
+  repair 行不再同时使用 V80 正绝对 loss 与 V81 负绝对 loss，而是在同一 deployed joint score
+  上直接要求 `best-safe-repair - hardest-nonrepair >= 0.04`；这一行内差值严格消除共同平移。
+  同时以 `abs((positive+negative)/2)` 把正负中点锚定到父参考零线，使 learned gap 不会整体漂到
+  零线同一侧。没有正候选的 stay 行仍保留 hardest-negative `< -0.02` 的单侧保护。
+- 部署路径、hard-min/hard veto、参数量、父参考、零阈值、`tau=0.2`、cost=4、Top-32 均不变；
+  V82 启用时 V80/V81 两个独立绝对 loss 经结构测试严格为零，避免重复施压。新增 midpoint abs 与
+  0.04-margin recall 诊断。九文件留有 `.v82_centered_coupled_20260813.bak`。
+- V76--V82 定向 `16 passed`，完整 joint-query/初始化 `139 passed`，集成 `371 passed`（两个既有
+  scheduler warning），合计 `510 passed`。真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v82_centered_coupled_separation_initialization_audit.json`
+  为 `pass=true`：common/changed/new=`1228/0/30`，参数 `286,779`，零输出头与 V82--V79/父保护/
+  Top-32 合同全通过。
+- smoke 仍为单 GPU、128/128、batch12、LR=`1e-4`、最多10轮，其他权重保持 V80/V81 原值；
+  不扫描 loss weight。任一阈值 `break>fix` 即停，epoch5 无 joint 修复即停；至少两个 epoch 净修复
+  且 Mask 不退化才审计并固定最佳实物做9508条全量前缀。
+
+### 14.60 V82 smoke：宽泛 non-repair 负集造成共同负漂移，拒绝（2026-08-13）
+
+- run `1786563827` 的 fixed parent 在 epoch1--5 均为 `63/57`。epoch1--3 learned 为
+  `64/58`、Mask `64/52`、mIoU `0.350491`，joint fix/break/switch 全零；epoch4 首次出现
+  两个阈值共同 `fix=1/128、break=0`，learned `65/59`、Mask `65/53`、mIoU `0.355170`；
+  epoch5 又回到 `64/58`、Mask `64/52`，joint fix/break 全零。到预注册 epoch5 只有一个净修复
+  epoch，未满足“至少两个净修复 epoch 且 Mask 不退化”的晋级条件，因此拒绝 V82，不做 checkpoint
+  审计或 9508 条全量评测。
+- separation 的早期方向一度正确：epoch1--3 的行内正负差从 `-0.0228` 改善到 `-0.0081`；
+  epoch4 margin recall 达到 `1.52%` 并产生一个 joint 修复。但 epoch5 separation 又退到
+  `-0.0131`、recall 归零。更关键的是 midpoint abs 从 epoch1 `0.0212` 持续恶化到 epoch5
+  `0.0476`，正 margin 从 `-0.0326` 降到 `-0.0541`，负 margin也从 `-0.0098` 降到
+  `-0.0431`：V82 虽消除了独立正负边界的纯平移自由度，却仍把两个端点共同推到部署零线下。
+- 停止信号发出时，128 条单轮训练已经快速完成 epoch6--8 并进入 epoch9；这些是停止门禁后的
+  旁观数据，不能用于反向修改预注册判定。epoch6 learned/Mask 为 `64/58, 64/52`，epoch7--8 为
+  `65/59, 65/53`；完整 config、epoch1--8 eval JSON、diagnostics、retention 与日志均保留。
+  精确终止 PGID `178474` 后 screen/GPU 清空，仅删除该 run 的全部 `.pth`（3 个 inode，多个
+  hardlink 名称），overlay 可用空间恢复到约 `2.3G`；protected V19 未触碰。
+- 失败定位不是 margin 或 loss-weight 数值不足，而是负集语义过宽：V82 把所有“非最佳修复”候选
+  都当作必须压到零线下的 hardest negative，其中包含不会破坏当前正确预测的中性/安全候选。
+  这与部署目标不一致，也给共享 risk-bound 表示施加了不必要的整体负压力。下一版固定其余合同，
+  只把会破坏 box@.25、box@.50 或 mask@.25 的 candidate 作为 coupled negative；repair 行有
+  hazard 时做 centered separation，无 hazard 时保留正 witness；stay 行只压制真实 hazard。
+
+### 14.61 V83 Hazard-Conditioned Coupled Separation 与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的 `joint_query_quality_use_hazard_conditioned_coupled_separation`，要求完整 V82
+  centered 链。V83 不再把所有 non-best-repair 当 joint negative，而只选父候选当前正确、目标
+  candidate 会破坏的精确保护事件：Box@.25、Box@.50 或 Mask@.25 任一 hazard。repair 行有
+  hazard 时仍在同一 deployed hard-min joint score 上做 `positive - hardest-hazard >= 0.04` 与
+  零中点锚定；repair 行没有 hazard 时恢复单侧 positive witness；stay 行只压制真实 hazard。
+  安全中性 candidate 不再获得负标签。
+- V83 不增加参数，不改 inference、hard veto、父参考零点、阈值、`tau=0.2`、cost=4、Top-32、
+  smooth-min ST 或所有 loss weight。新增 paired-repair-row、unpaired-positive-row 与 coupled hazard
+  candidate ratio 诊断。九个修改文件均保留 `.v83_hazard_conditioned_20260813.bak` 回滚副本。
+- 定向 V80--V83 测试 `9 passed`；完整 joint-query/初始化 `142 passed`；Source-MoE、训练分组、
+  checkpoint/retention、retrain provenance 与 ScanRefer train-only 集成 `390 passed`（仅两个既有
+  scheduler warning），合计 `532 passed`。Python compile、训练脚本与两个 V83 launcher 的
+  `bash -n` 均通过。
+- 真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v83_hazard_conditioned_coupled_separation_initialization_audit.json`
+  为 `pass=true`：common/changed/new=`1228/0/30`、unexpected/shape mismatch=`0/0`，新增模块参数
+  `286,779`、state 30，所有输出头为零，V83--V79、父保护与 Top-32 合同全部一致。
+- smoke 固定单 GPU、训练/验证各128条、batch12、LR=`1e-4`、最多10 epoch，rank/slack risk
+  权重仍为 `2/1`，不扫描阈值或权重。任一完整 epoch 任一 REC 阈值 `break>fix` 立即停止；
+  epoch5 仍无 joint 修复则停止。只有至少两个完整 epoch `fix>0, break=0` 且 Mask 不退化，才
+  审计实物 checkpoint，并固定最佳实物执行完整9508条验证；否则拒绝并只清理本 run 权重。
+
+### 14.62 V83 smoke：连续双阈值净修复，epoch7 晋级（2026-08-13）
+
+- run `1786566277` 完成10轮；fixed parent 始终为 `63/56`。epoch1--3 learned `64/57` 但
+  joint fix/break/switch 全零；epoch4--6 learned `64/58`，仅 `.50 fix=1/128、break=0`。
+  epoch7、8 首次连续满足完整门禁：learned REC `65/59`，两个阈值分别
+  `fix/break=1/0、2/0`，Mask `65/53`、mIoU `0.357759/0.357757`，没有以 Mask 退化换 REC。
+- epoch9--10 learned 仍为 `65/59`、Mask `65/53`，mIoU 升至 `0.358626`，但两个阈值都出现
+  1 个 break，内部为 `.25 fix/break=2/1、.50=3/1`。因此按安全优先的预注册规则选择五项
+  retention 共同最佳 epoch7，而不是事后选择 mIoU 更高但已有 break 的 epoch9/10。
+- V83 负集语义按设计生效：hazard candidate ratio 全程约 `25.01%`，repair 行约 `3.64%`
+  同时含 hazard、约 `87.27%` 走无 hazard 正 witness；配对中点 abs 保持 `0.0075--0.0095`，
+  显著小于 V82 epoch5 的 `0.0476`。epoch7 positive recall `3.33%`，hardest-hazard margin
+  `-0.0915`，证明安全中性候选不再驱动过宽负漂移。
+- epoch7 实物审计 `.../1786566277/v83_epoch7_checkpoint_audit.json` 为 `pass=true`：V19
+  common/changed=`1228/0`，new/joint-new=`30/30`，unexpected 0；优化器参数 `285,876`、
+  state 26、step精确为70，新增权重和 Adam moments 全部 finite，每个 state 的 `exp_avg` 非零。
+  因而固定 epoch7 做一次完整9508条只读评估，不继续训练、不调整阈值。
+
+### 14.63 V83 epoch7 全量9508：整体接近 V19，但新 joint 路径仍净伤害，拒绝（2026-08-13）
+
+- 完整收据位于
+  `experiment_output/v83_hazard_conditioned_coupled_separation_epoch7_full_eval/scanrefer/`
+  `v83_hazard_conditioned_coupled_separation_epoch7_full9508_b48x1/1786567326/`；样本精确9508，
+  同次 fixed parent REC `5514/4407`，V83 learned `5524/4408 = 0.580984/0.463610`，表面相对
+  fixed 为 `+10/+1 hits`。
+- 但内部新 joint 路径在两个阈值都违反门禁：`.25 fix/break=0.0010/0.0012`，约 `10/11`；
+  `.50=0.0014/0.0027`，约 `13/26`。整体相对 fixed 的小幅提升由既有父路径补偿了 V83 的净
+  伤害，不能归因成新结构成功。相对 protected V19 `5526/4425`，V83 仍为 `-2/-17 hits`，
+  也未达到历史 REC best 或正式目标。
+- Mask 为 `5686/4671 = 0.598023/0.491271`、mIoU `0.418634`；相对 protected V19
+  `5688/4672 = 0.598233/0.491376` 为 `-2/-1 hits`，mIoU仅 `+0.000021`。REC subgroup
+  Unique/Multiple 为 `.25 1243+4281=5524`、`.50 1049+3359=4408`；Mask为
+  `.25 1278+4408=5686`、`.50 1033+3638=4671`，都精确还原主计数。
+- 全量 failure localization：hazard candidate ratio `19.09%`，repair 行有 hazard / 无 hazard
+  分别 `24.19%/75.81%`；paired separation margin `0.0147`、0.04-margin recall `19.99%`，
+  但 positive witness margin `-0.1087`、recall仅 `0.57%`，而 hardest-hazard margin已到
+  `-0.0688`。即 V83 已能拒绝 hazard，但共享三路 hard-min/risk-bound 仍把绝大多数 safe-repair
+  witness 留在零线下；只缩窄负集不足以建立可泛化的正部署边界。
+- 按全量门禁拒绝 V83，不进入更长/四卡训练。精确目录内9个 `.pth` 名称（3 inode）全部删除，
+  保留 config、10轮 smoke eval/diagnostics、retention、初始化/实物审计以及全量回执和日志；
+  screen/GPU 清空，overlay可用约 `2.3G`，protected V19 未触碰。
+
+### 14.64 V84 Monotonic Box-Safety Folding 与 smoke 预注册（2026-08-13）
+
+- V83 全量分量诊断进一步定位正 witness 瓶颈：promotion@.25/.50 positive margin 为
+  `-0.0253/-0.0741`；安全候选在 Box@.25 point/guard 的误拒率为 `9.72/12.79%`，在
+  Mask@.25 为 `9.83/11.44%`，但 Box@.50 guard 高达 `43.88%`（point仅 `11.41%`）。该 guard
+  学的是总体 `tau=0.2` 风险分位数，却被逐候选当绝对硬否决，是 positive joint margin
+  `-0.1087` 的主要结构瓶颈。
+- 新增默认关闭的 `joint_query_quality_use_monotonic_box_safety_folding`，要求完整 V83 链。
+  box tier 改善在定义上不可能破坏 Box@.25/.50，因此 V84 将两项 box safety 折叠进 promotion：
+  V83 的真实 box hazard 仍作为 coupled negative 监督 promotion，但部署 hard veto 与 coupled
+  positive hard-min 只保留正交的 Mask@.25 safety。三个 criterion、六个 point/guard head 仍全部
+  训练和记录，V84 只移除两个 box guard 对 safe-repair 的重复逐候选否决。
+- 不增加参数，不改父参考、零阈值、cost=4、Top-32、promotion margin、loss weight 或
+  Mask@.25 hard veto。结构测试精确证明负的 Box@.25/.50 guard 不再拒绝 promoted candidate，
+  同一 candidate 的负 Mask@.25 point/guard 仍使其回退父候选。九个文件保留
+  `.v84_monotonic_box_folding_20260813.bak`。
+- V80--V84 定向 `11 passed`；完整 joint/init `144 passed`；集成 `390 passed`（两个既有
+  scheduler warning），合计 `534 passed`。真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v84_monotonic_box_safety_folding_initialization_audit.json`
+  为 `pass=true`：common/changed/new=`1228/0/30`、参数 `286,779`、所有输出头为零，V84--V79
+  与父保护合同全部一致。
+- smoke 沿用单 GPU、128/128、batch12、LR=`1e-4`、最多10轮、rank/slack risk=`2/1`，不扫描
+  权重或阈值。任一 REC 阈值 `break>fix` 即停；epoch5 无 joint 修复即停。至少两个完整 epoch
+  两阈值均 `fix>0, break=0` 且 Mask 不退化才审计实物并执行固定最佳 checkpoint 的9508条全量
+  前缀；否则拒绝并只清理本 run 权重。
+
+### 14.65 V84 smoke：box guard 折叠降低中点漂移，但安全修复不稳定，拒绝（2026-08-13）
+
+- run `1786569841` 完成10轮，fixed parent 全程 `63/57`。epoch1--3 learned `64/58` 但 joint
+  fix/break均零；epoch4两个阈值都 `fix/break=1/1`。epoch5 是唯一安全净修复轮：learned
+  `65/59`，两阈值 `1/0`，Mask `65/53`、mIoU `0.358098`。
+- epoch6立即在两阈值触发硬停止条件：`fix/break=0/1`，learned `63/57`、Mask `63/51`、mIoU
+  `0.344092`。监控延迟期间已快速完成后续轮次；epoch7为`1/1`，epoch8--9再次`0/1`，epoch10
+  joint归零。没有第二个完整 epoch 在两阈值同时 `fix>0,break=0`，所以不以单次 epoch5 峰值晋级，
+  不审计 checkpoint，也不做9508条全量评测。
+- V84 的结构作用可观测：paired midpoint abs 维持 `0.0025--0.0037`，低于 V83 smoke 的
+  `0.0075--0.0095`；但 positive witness margin仍从 `-0.0331` 下滑到 `-0.1368`，recall最多
+  `3.33%`。folding 解除了 Box@.50 guard 的重复 veto，却没有阻止同一 hard-min loss 在
+  promotion 与剩余 Mask@.25 safety 间轮流只修“当前最差分量”，因此切换边界出现交替 fix/break。
+- 按 smoke 门禁拒绝 V84。精确 run 内8个 `.pth` 名称（2 inode）全部删除，保留 config、10轮
+  eval/diagnostics、retention和日志；screen/GPU清空，overlay可用约`2.3G`，protected V19未触碰。
+  下一版不调权重或阈值：对同一个 oracle-safe best-repair candidate 分别要求 promotion margin
+  与 Mask@.25 safety margin越过零线，再保留 V83 hazard negative；避免一个 min loss 的瓶颈
+  轮换捷径。
+
+### 14.66 V85 Same-Candidate Branchwise Witness 与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的 `joint_query_quality_use_same_candidate_branchwise_witness`，要求完整 V84 链。
+  V85 先用精确 deployed joint score 在 best oracle-safe repair 集合中选定唯一候选，再对该同一
+  candidate 的 promotion branch 与 V84 剩余 Mask@.25 safety branch 分别施加 `>+0.02` 的正边界；
+  exact hazard 仍以同一 deployed joint score施加 `<-0.02` 负边界。它保持 V80 的同候选交集合同，
+  但消除 V84 单一 hard-min loss 只修当前最差 branch、下一轮换瓶颈的捷径。
+- V85 不增加参数、不改 inference、阈值、权重、父参考、cost=4、Top-32 或 Mask hard veto；启用时
+  V82 centered loss严格为零，由新的 branchwise loss接管。新增同候选 promotion margin、Mask safety
+  margin与双分支 recall 诊断。九文件均留 `.v85_branchwise_witness_20260813.bak`。
+- V80--V85 定向 `13 passed`；完整 joint/init `146 passed`；集成 `390 passed`（两个既有 scheduler
+  warning），合计 `536 passed`。真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v85_same_candidate_branchwise_witness_initialization_audit.json`
+  为 `pass=true`：common/changed/new=`1228/0/30`、参数`286,779`、零输出头与 V85--V79 合同一致。
+- smoke 仍为单 GPU、128/128、batch12、LR=`1e-4`、最多10轮、rank/slack risk=`2/1`，不扫描任何
+  权重或阈值。任一阈值 `break>fix` 即停，epoch5 无 joint 修复即停；至少两个完整 epoch 两阈值
+  同时 `fix>0,break=0` 且 Mask不退化才审计实物并固定最佳 checkpoint 做9508条全量前缀。
+
+### 14.67 V85 smoke：同候选双分支产生净增益，但始终伴随破坏，拒绝（2026-08-13）
+
+- run `1786571516` 自然完成10轮，fixed parent 全程为 `63/57`。epoch1--2 joint 路径不切换；
+  epoch3--4 learned 为 `64/58`，两个阈值均 `fix/break=1/1`。epoch5首次出现净增益：learned
+  `65/59`、Mask `65/53`、mIoU `0.356379`，但两个阈值仍为 `2/1`，不满足零破坏门禁。
+- 后续没有任何零破坏净修复轮。epoch7 learned `66/60`、Mask `66/54`、mIoU `0.363647`，两个
+  阈值均为 `3/1`；epoch8为`2/1`；epoch9为`3/2`。最终 epoch10再次达到 learned
+  `66/60`、Mask `67/54`、mIoU `0.368597`，两个阈值仍为`3/1`。因此虽有多个表面净增益轮，
+  却没有一个完整 epoch 达到 `fix>0,break=0`，更不可能满足连续两个安全轮的预注册晋级条件。
+- 分支诊断解释了这一失败：promotion margin 始终为负（约`-0.0283`至`-0.0361`）；Mask safety
+  margin 从接近零逐步恶化到 epoch10 的`-0.0557`，双分支 recall 最多仅`5.30%`。同时 negative
+  margin 从`-0.0239`持续拉到`-0.1086`。即分别监督两个 branch 确实比 V84 更常发现 repair，
+  但共享打分表示仍优先扩大 hazard 分离，未学出可跨 epoch 保持的无破坏同候选边界。
+- 按 smoke 门禁拒绝 V85，不审计 checkpoint、不做9508条全量评测，也不扫描阈值或权重。精确
+  run 内8个 `.pth`（每个`607,645,755` bytes，合计约`4.86 GB`）全部删除，保留 config、10轮
+  eval/diagnostics、retention、初始化审计与日志；screen已退出，protected V19未触碰。
+- 结论边界：V85 是 V84 之后首个在多轮同时提升 learned REC 与 Mask 的结构，但“收益必伴至少
+  一个 break”说明仅重写 loss 聚合不足以满足部署安全。后续若继续，应将优化对象从共享标量
+  joint score 改为具有显式父候选不劣约束的可验证决策机制；在此之前不应启动完整训练。
+
+### 14.68 V86 Parent Non-Degradation Certificate 与 smoke 预注册（2026-08-13）
+
+- V85 的 break 定位到部署合同本身：V84 folding 后 Box@.25/.50 不再参与 safety veto，只由
+  promotion 间接吸收 exact hazard negative；因此 promotion 的假阳性可以直接产生 Box break。
+  另一方面，V83 全量已证明把 Box guard 重新全量接入会过度拒绝，尤其 Box@.50 guard 的 safe
+  violation 为`43.88%`（point仅`11.41%`）。V86 因而新增默认关闭的
+  `joint_query_quality_use_parent_non_degradation_certificate`，要求完整 V85 链。
+- V86 对同一个 deployed candidate 建立四项显式证书：promotion、Box@.25 point slack、
+  Box@.50 point slack、Mask@.25 point+guard。只有四项都严格大于父参考零线才允许覆盖父候选；
+  任一 Box point 预测为退化即回退 immutable parent。Box 使用连续 parent-relative safety slack
+  point head，避开保守 quantile guard 的高误拒；Mask 继续保留 point+guard，未放松既有保护。
+- 训练时也先按精确四项 deployed hard-min 选唯一 oracle-safe best-repair，再对该同一候选四项
+  分别施加`>+0.02` witness；exact Box@.25/Box@.50/Mask@.25 hazard 仍走四项联合负边界。该机制
+  不用 ScanRefer 身份、类别或固定样本规则，阈值来自 ScanRefer/Nr3D/Sr3D 共用评测定义，具备
+  跨数据集架构泛化性；不增加参数，不改 LR、loss weight、cost=4、Top-32 或部署零阈值。
+- 九个既有文件先按 V85 SHA256 精确校验，再留
+  `.v86_parent_non_degradation_20260813.bak` 后原子部署；新增两个 launcher。定向 V80--V86
+  `13 passed`，完整 joint/init `149 passed`，Source-MoE、训练分组、checkpoint/retention、
+  retrain provenance 与 ScanRefer train-only 集成 `402 passed`（仅两个既有 scheduler warning），
+  合计`551 passed`；Python compile 与三个 shell `bash -n` 全通过。
+- 真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v86_parent_non_degradation_certificate_initialization_audit.json`
+  为`pass=true`：common/changed/new=`1228/0/30`、unexpected/shape mismatch=`0/0`，新增模块参数
+  `286,779`、state 30，所有输出头为零，V86--V79 合同与 protected parent 完全一致。
+- smoke 固定单 GPU、训练/验证各128条、batch12、LR=`1e-4`、最多10 epoch，rank/slack risk
+  权重仍为`2/1`，不扫描任何阈值或权重。任一完整 epoch 任一 REC 阈值`break>fix`立即停止；
+  epoch5仍无 joint 修复则停止。只有至少两个完整 epoch 两阈值均`fix>0,break=0`且 Mask 不退化，
+  才审计实物 checkpoint 并固定最佳实物执行9508条全量验证；否则拒绝并只清理本 run 权重。
+
+### 14.69 V86 smoke：证书消除 break，但仅末轮一次安全修复，未晋级（2026-08-13）
+
+- run `1786574027` 的 fixed parent 全程`63/57`。epoch1--9 learned 固定`64/58`、Mask`64/52`、
+  mIoU`0.350491`，joint switch/fix/break 全零；epoch5 已满足“仍无 joint 修复”的停止条件，但
+  监控轮询到达时训练已快速完成后续轮次。最终 epoch10 首次出现安全修复：learned`65/59`，
+  两阈值均`fix/break=1/0`，Mask`65/53`、mIoU`0.357759`，证明显式父候选不劣证书确实能
+  去掉 V85 中每次收益伴随的 break。
+- 但 epoch10 是唯一一个完整安全修复轮，不满足预注册的连续两个 epoch 晋级门槛，因此不以
+  末轮单次峰值做9508条全量评测。epoch10 实物审计`v86_epoch10_checkpoint_audit.json`为
+  `pass=true`：common/changed/new=`1228/0/30`、unexpected 0；优化器参数`285,876`、state 26、
+  step精确100，新权重和 moments 全 finite，且每个 state 的`exp_avg`非零。
+- 失败归因具有明确分支证据：Box@.25/.50 point certificate margin 从 epoch1 的
+  `+0.0024/+0.0017`持续增至 epoch10 的`+0.1697/+0.1309`，说明新增 Box 证书可学习且不是
+  拒绝瓶颈；相反 Mask@.25 certificate 从`-0.0023`降至`-0.1295`，promotion margin 从
+  `-0.0327`降至`-0.0421`，四分支 recall 直到 epoch10 才到`2.27%`。同时 hardest joint
+  negative 从`-0.0237`拉到`-0.1377`。根因是一个 Box hazard 的联合 hard-min 负损失可由
+  无关 Mask 或 promotion 分支承担，产生跨 criterion 的错误负归因。
+- 按门禁拒绝 V86，不进入全量。retention 的7个名称都指向同一 inode（每个`607,649,723`
+  bytes）；确认 protected V19、完整日志、逐轮收据、初始化与实物审计可恢复后，删除本 run 的
+  `.pth` 名称并保留其余证据。下一版保持 V86 部署证书不变，只把 hazard negative 分解到真实
+  负责的 Box@.25、Box@.50 或 Mask@.25 certificate，并以 stay-row promotion 负边界保护回退；
+  不再允许某一 criterion 的 hazard 压低无关分支。
+
+### 14.70 V87 Criterion-Responsible Hazard Attribution 与 smoke 预注册（2026-08-13）
+
+- 新增默认关闭的`joint_query_quality_use_criterion_responsible_hazard_attribution`，要求完整 V86
+  链。部署端完全保持 V86 的四项证书；变化仅在训练归因：Box@.25 hazard 只压低 Box@.25 point，
+  Box@.50 hazard 只压低 Box@.50 point，Mask@.25 hazard 只压低 Mask point+guard hard-min。
+  promotion 不再吸收某个具体 safety criterion 的 hazard；无 repair 的 stay 行另以 hardest
+  promotion `<-0.02` 保持父候选回退。
+- V87 同时关闭 V69 基础 safety 分支的共享 hardest-hazard negative，因为该项在 V86 仍把任意
+  criterion hazard 施加到当前最小的联合 safety certificate，会重复制造跨 criterion 负梯度。
+  连续 slack point/quantile calibration、safe-vs-hazard pair order、同候选四项正 witness 和
+  所有部署零阈值均保留；不增加参数、不改 LR、权重、cost=4、Top-32 或 Mask hard veto。
+- 梯度结构测试用“只有 Box@.50 hazard、没有 repair、Mask parent 本就错误”的行证明：安全头仅
+  Box@.50 point channel 获得 hazard 梯度，Box@.25、两个 Box guard、Mask point/guard 均严格零；
+  promotion 仅由独立 stay-row 项训练。V80--V87 定向`12 passed`，完整 joint/init`151 passed`，
+  Python compile 与三个 shell `bash -n` 全通过。
+- 真实 V19 初始化审计
+  `experiment_output/v51_bmq_rank/v87_criterion_responsible_hazard_attribution_initialization_audit.json`
+  为`pass=true`：common/changed/new=`1228/0/30`、unexpected/shape mismatch=`0/0`、参数`286,779`，
+  全部输出头为零；九个修改文件保留`.v87_criterion_responsible_hazard_20260813.bak`。
+- smoke 沿用单 GPU、128/128、batch12、LR=`1e-4`、最多10轮、rank/slack risk=`2/1`，不扫描
+  阈值或权重。任一阈值`break>fix`即停，epoch5无 joint 修复即停；至少两个完整 epoch 两阈值
+  都`fix>0,break=0`且 Mask不退化才审计实物并做固定 checkpoint 的9508条全量评测。
+
+### 14.71 V87 smoke：criterion 分解解除负污染，但证书系统性乐观，拒绝（2026-08-13）
+
+- run `1786575678` 的 fixed parent 为`63/57`。epoch1零切换；epoch2 learned`64/58`但两个阈值
+  已各`fix/break=1/1`。epoch3触发硬停止，learned`62/56`，两阈值均`1/3`；监控到达前已完成的
+  epoch4进一步为 learned`59/53`、`fix/break=3/约8`，Mask`59/47`、mIoU`0.322269`。
+  终止信号生效前共留下 epoch1--7 完整收据；epoch5--7仍持续`break>fix`，未出现可晋级轮。
+- criterion attribution 的隔离作用本身符合设计：epoch1三个负责证书 margin 均接近零正值，且
+  stay promotion margin 为`-0.0074`；到 epoch6，负责 Box@.25/.50/Mask@.25 margin 已升至
+  `+0.1784/+0.2027/+0.1266`，四证书 recall达`21.21%`。但这也暴露了单独 point certificate
+  的另一失败模式：真实 hazard 的 hardest margin 同样快速转正，安全头从 V86 的过度负污染切换
+  成系统性乐观假阳性，导致 switch ratio最高`22.73%`且 break多于fix。
+- 因任一阈值`break>fix`硬门禁已在 epoch3触发，拒绝 V87，不审计 checkpoint、不做全量评测。
+  精确 run 内9个 `.pth` 名称对应3个 inode；protected V19、代码回滚副本、完整日志、逐轮收据与
+  初始化审计均可恢复后只删除本 run 权重。下一版不在 point/guard 间扫描经验阈值：新增参数隔离、
+  零初始化的 joint-hazard veto head，独立学习“任何受保护指标退化”，并与 V86 四证书取交；从而
+  同时保留连续证书的可解释性与 V86 的零 break 行为，而不再污染 promotion/Mask 分支。
+
+### 14.72 V88 Independent Joint-Hazard Lower-Bound Certificate 与 smoke 预注册（2026-08-13）
+
+- V87 证明逐 criterion point 负归因不会互相污染，但各 point head 仍可对真实 hazard 同时产生
+  乐观假阳性。V88 新增默认关闭的
+  `joint_query_quality_use_independent_joint_hazard_certificate`，要求完整 V86 链且与 V87 模式
+  互斥。它新增独立 MLP，并将 parent/candidate pair feature 在输入处 `detach`；因此保守风险
+  梯度只能更新该证书自身参数，不能压低共享表示、promotion 或 V86 的 Box/Mask 证书。
+- 监督目标不是“任一 hazard”的 OR 分类，而是三个连续、无量纲、parent-relative safety slack
+  （Box@.25、Box@.50、Mask@.25）的逐候选 hard minimum。以 break cost=4 对应的 20% pinball
+  quantile 学习联合安全下界；部署时作为第五项证书与 V86 的 promotion、两个 Box point、Mask
+  point+guard 取严格交集，只有五项都`>0`才允许覆盖 immutable parent。它仍不读取数据集身份、
+  类别或验证集规则，阈值来自三套 grounding 数据共用评测定义，不扫描部署阈值或 loss weight。
+- V88 禁用 V86 的共享 hardest-hazard negative，并保留独立 stay-row promotion 回退约束；正样本
+  witness 则要求同一个 oracle-safe repair 的五项证书都跨过`+0.02`。定向契约验证了：零初始化
+  完全复现父选择；第五证书可单独 veto；其 score 反传时共享参数/输入梯度严格为空；连续 minimum
+  slack 与 1:4 pinball 数值精确匹配。
+- 九文件部署包 SHA256 为
+  `4091936f886903dec1ea33158a82972b49d79eabbb7e621dc483ebe68fc842bf`，部署前均保留
+  `.v88_independent_joint_hazard_20260813.bak`。完整 joint/init `156 passed`，Source-MoE、训练
+  分组、checkpoint/retention、retrain provenance 与 ScanRefer train-only 集成`402 passed`
+  （仅两个既有 scheduler warning），合计`558 passed`；Python compile 与 launcher `bash -n`
+  均作为启动前门禁。
+- 真实 protected V19 初始化审计
+  `experiment_output/v51_bmq_rank/v88_independent_joint_hazard_certificate_initialization_audit.json`
+  为`pass=true`：common/changed/new=`1228/0/35`、unexpected/shape mismatch=`0/0`，reranker 参数
+  `353,083`、state 35，全部输出头为零，V88--V79 合同完全一致。
+- smoke 沿用单 GPU、训练/验证各128条、batch12、LR=`1e-4`、最多10轮、rank/slack risk=`2/1`，
+  不扫描超参。任一完整 epoch 任一 REC 阈值`break>fix`立即停止；epoch5仍无 joint 修复则停止。
+  只有至少两个完整 epoch 两阈值均`fix>0,break=0`且 Mask不退化，才审计实物 checkpoint 并以
+  固定最佳实物做9508条全量验证；否则拒绝并只清理本 run 的权重，日志与审计继续保留。
+
+### 14.73 V88 smoke：反向梯度隔离仍遭遇移动表示，零 break 但全程零修复（2026-08-13）
+
+- run `1786577359` 的 fixed parent 为`63/56`；epoch1--8 learned 始终`64/57`、Mask`64/52`、
+  mIoU`0.350491`。八轮新 joint 路径的 switch/fix/break 均严格为零，因此 learned 相对 fixed
+  的`+1/+1`来自既有父 selector，不能归因给 V88。epoch5 已命中“仍无 joint 修复”的预注册
+  停止门槛；SSH 冷却期间后台完成的 epoch6--8 只作旁观证据，不用于反向挑选。
+- V88 下界并未学成稳定安全判别器：target-negative ratio 固定约`25.01%`，quantile coverage
+  约`24.5--25.8%`，但 safe-reject 从 epoch1/2 的`100%`降到 epoch4的`24.58%`后又波动，
+  unsafe-accept 则从`0%`升到 epoch3/4/5的`20.31/62.51/44.15%`；MAE 仅从`0.7724`
+  缓慢降到 epoch7的`0.7468`。联合五证书 recall 八轮始终为 0。
+- V86 的三个既有证书会学习：Box@.25/.50 margin 从 epoch1 的`+0.0049/+0.0044`升到
+  epoch5的`+0.1675/+0.1541`，Mask margin 也到`+0.0637`；真正仍在部署交集外的是
+  promotion（epoch5 `-0.0347`）与不稳定的新增下界。V88 虽在独立头输入处 detach，避免其 loss
+  反传污染共享表示，但它读取的仍是被 promotion/Box/Mask 等 loss 每步改写的 shared hidden，
+  因而面对移动输入分布；“梯度隔离”不等于“表示隔离”。
+- 按 epoch5 门禁拒绝 V88，不审计 checkpoint、不做全量验证。精确终止后 screen/训练进程为空，
+  四张 A100 均为`1 MiB/0%`；run 内8个 `.pth`名称对应2个 inode（每个`608,454,828` bytes），
+  在确认8轮收据、日志、launcher、初始化审计和 protected V19 可恢复后仅删除这些权重。
+- 下一最小因果对照 V89 保持 V88 loss、五证书部署合同、cost=4、LR与所有门禁不变，只让独立
+  joint-hazard MLP 直接读取冻结的原始 rich candidate/parent features 与父分数 rank/standardized
+  difference，自带投影器且完全绕过 shared joint hidden。若 V89 仍全拒绝或出现高 unsafe-accept，
+  则否决“移动共享表示是主因”，不再延续独立 hazard-head 方向。
+
+### 14.74 V89 Frozen-Raw Hazard Features：移动表示假设被否决（2026-08-13）
+
+- V89 是 V88 的单变量因果对照：新增默认关闭的
+  `joint_query_quality_use_frozen_raw_joint_hazard_features`，要求 V88 独立证书。独立 MLP 不再读取
+  shared joint hidden，而直接使用冻结 rich candidate/parent raw features、差值、逐元素积及父子
+  rank/standardized-score 差；监督、五证书部署交集、cost=4、LR、loss weight 与所有门禁不变。
+- 结构测试在任意大幅改写 shared input projection/attention 参数前后，证明 V89 hazard score 逐值
+  不变。V88/V89 定向`5 passed`，完整 joint/init`158 passed`，相同集成套件`402 passed`
+  （两个既有 scheduler warning），合计`560 passed`；部署包 SHA256 为
+  `e78432e1fafb4ba7a432177f4aabe7d27e49a08b0b481c61eeb914d1a92f03dc`。
+- protected V19 初始化审计
+  `experiment_output/v51_bmq_rank/v89_frozen_raw_joint_hazard_features_initialization_audit.json`
+  为`pass=true`：common/changed/new=`1228/0/35`、unexpected/shape mismatch=`0/0`，reranker 参数
+  `365,371`、state 35，全部输出头为零；九文件保留
+  `.v89_frozen_raw_joint_hazard_20260813.bak`。
+- run `1786578398` 的 epoch1--4仍为零 joint switch/fix/break；epoch5首次放行即同时破坏两个阈值：
+  `fix/break=.25=0/1,.50=0/1`，learned 从前四轮`64/57`降至`63/56`，Mask 从`64/52`
+  降至`63/51`、mIoU`0.344092`。独立头 unsafe-accept 在 epoch1--3为0，但 epoch4/5升到
+  `41.75%/46.64%`；MAE仍约`0.7685`，五证书 recall epoch5回到0。冻结 raw 输入只把 V88
+  的风险泄漏延后一轮，并未形成安全边界，故“shared hidden 移动是主因”被实验否决。
+- epoch5 已同时触发`break>fix`与“无安全修复”门禁，拒绝 V89，不做全量。停止到达前留下的
+  epoch6--8仅作旁观；终止后四卡`1 MiB/0%`。精确 run 内8个 `.pth`名称对应2个 inode
+  （每个`608,602,284` bytes），确认8轮收据/日志/审计与 protected V19 后仅删除这些权重。
+- V71--V89 已覆盖单/多 criterion、point/guard/continuous quantile、共享/归因/参数隔离和 frozen
+  raw 表示；继续叠加同类 safety head 缺乏新信息。下一步转向更高 immutable parent：审计并复用
+  已保护的历史 backbone+parent-reranker+geometry-reranker（REC`0.582878/0.486012`），把剩余目标
+  缺口降至68/38 hits，再评估其候选集中的可安全修复余量；不再以 V19 network-only parent
+  `0.581195/0.465398`作为唯一起点。
+
+### 14.75 历史 e71 Geometry 候选池只读 Oracle 审计（2026-08-13）
+
+- 审计严格复用受保护的 e71 parent、selected geometry artifact 与完整 9,508-row val base/geometry
+  cache，先以正式 sidecar 的 frozen score 路径选候选，再在选择完成后读取 IoU 标签做 oracle
+  诊断；报告明确标记`diagnostic_uses_validation_labels=true`，不会作为训练、超参或阈值选择输入。
+  产物为
+  `experiment_output/historical_e71_geometry/frozen_rec_geometry_headroom_audit_v1.json`，SHA256
+  `1b7dfaedf486d9a469f4d8f6194fae43b73f727c93b82701df3fe83bd753775e`。
+- 审计逐样本精确复现 frozen sidecar：parent=`5512/4421 = 0.579722/0.464977`，selected
+  geometry=`5542/4623 = 0.582878/0.486222`，parent→geometry 的 fix/break 为
+  @.25=`103/73`、@.50=`350/148`。封存 official 仍以`5542/4621 = 0.582878/0.486012`
+  为正式接受口径；sidecar 的 @.50 多 2 hits 只用于诊断，因此正式目标缺口仍是`68/38`，不是
+  sidecar 口径的`68/36`。
+- 同一个有效候选池（最多`16×7=112`）的逐样本 flat oracle 为
+  `6849/6308 = 0.720341/0.663441`，超过目标命中线`5610/4659`达`1239/1649` hits。
+  相对 selected geometry，oracle 可在零 break 条件下修复 @.25=`1307`、@.50=`1685`，其中
+  `1098`行可同时修复两个阈值。候选池覆盖远不是瓶颈，剩余目标只需识别现有安全修复的约
+  `5.2%/2.3%`。
+- 修复来源并不依赖单一特殊 variant：@.25 修复的 oracle variant 计数为
+  `[401,497,70,38,69,175,57]`，@.50 为`[568,585,88,40,72,255,77]`；regressed、
+  `fused_t0_exact`与 blend variant 均贡献显著。平均有效候选数`110.03`，75%样本有完整112个
+  候选；selected-to-oracle IoU regret 中位数`0.0377`、P90`0.6069`。
+- 结论：不扩大 proposal/geometry variant，不改 backbone，也不再延续 V71--V89 hazard-head
+  家族。下一步只审计并改进历史 geometry 的候选选择目标/表示，以 train-only scene split
+  拟合和校准；完整 val 只允许在结构、训练配置和 checkpoint 已冻结后做一次确认。
+
+### 14.76 V90 Selective Geometry Residual：固定协议与启动前门禁（2026-08-13）
+
+- 代码审计发现仓库已有但未留下正式训练产物的 selective residual 路线，恰好针对 14.75 暴露的
+  选择器瓶颈。它把受保护的 selected geometry winner 作为 immutable baseline；每个替代候选仅
+  读取可部署特征，学习相对 baseline 在 Box@.25、Box@.50 上分别属于
+  `break/neutral/fix`，不修改 backbone、parent 或原 geometry scorer，也不依赖 Mask 标签。
+- pair feature 固定为185维：179维 normalized geometry feature 差、parent rank 差、geometry
+  rank 差、两个原 geometry threshold probability 差、IoU-estimate 差与 same-query 指示。模型网格
+  仅含 linear/hidden64、weight decay `1e-4/1e-3`、break cost `2/4/8`，合计12个配置；两个阈值
+  head 的固定权重为`2:1`。部署分数是两个三分类 head 的加权期望
+  `P(fix)-P(break)`，且只提升超过 train-only margin 的一个候选，否则保持 baseline。
+- 选择协议预先锁定：e71 train cache 仍按 scene 分为 fit=`33,040`与 calibration=`3,625`；fit 内
+  做5折 scene-disjoint OOF，每配置固定10 epoch，margin 只取 OOF 正 gain 的
+  `50/60/70/80/90/95/97.5/99`最近秩百分位。候选必须五折在两个阈值均非负、pooled @.25
+  delta 为正、10,000次 scene-cluster bootstrap 的 @.25 95% lower bound `>0`且 @.50 lower
+  bound `>=0`；胜者按`2*delta025+delta050`、更高 margin、较少 switch 固定排序。
+- 只有 OOF 合格才在全部 fit scenes 重训一次并访问独立 train calibration。calibration gate 固定为
+  baseline `3461/3315`、oracle `3606/3588`，要求 residual `hits025>=3524`且
+  `hits050>=3315`，并逐值核对样本数、候选 IoU 与物化 SHA；失败则不发布 artifact。只有两道
+  train-only gate 都通过，才冻结 artifact 并允许后续一次完整 val/official 确认，不用 val 反选。
+- 启动前四卡均为`1 MiB/0%`，`/root/autodl-tmp`尚余约`3.4 GiB`；该阶段只生成小模型与 JSON
+  收据，不写大型 checkpoint。selective residual model/train/runtime/official 四套专项测试
+  `195 passed in 11.27s`。代码 SHA256：model
+  `d27be8220638bb4f4c4ac307ff6ca42a20072c3daa0b43f5689a05ca131d403b`，train
+  `e78491852b6b612e913445df99feaff65d3ad0265614b76e5588ddef094a6c7b`，official runner
+  `ef8ed4613ad4a8b9fd9812b9c12203d8df1b29747b9014b56ba7c1bbdc7a001a`。
+
+### 14.77 V90 train-only OOF：pairwise residual 信号不足，按门禁回退 baseline（2026-08-13）
+
+- V90 正常完成并原子发布
+  `experiment_output/historical_e71_geometry/v90_selective_geometry_residual_trainonly/result-receipt.json`，
+  SHA256 `06e4be7c0e73f1ae3821c78ccd0c92930ddd74e8524282ef9c3a8e2d368b1a4d`；派生分析
+  `analysis-summary.json` SHA256 为
+  `bc673ad8a9b0af2d87cd0fda2224dec95219c334e0f44e5f855260a6c399977b`。
+  收据为`selected=baseline`、`deployable=false`、`artifact=null`、
+  `validation_data_accessed=false`，protected backbone/parent/geometry 的前后身份逐值相同；因 OOF
+  已拒绝，独立 train calibration 按协议未运行。
+- 33,040-row fit baseline 为`31636/29418`，同池 oracle 为`32868/32392`，分别有
+  `1232/2974` hits 余量；但12个模型配置与各自 margin 共92个固定策略没有一个通过 OOF 门禁。
+  @.25 pooled delta 范围`[-112,+2]`，@.50 为`[-523,+8]`；92个策略的 @.25 scene-bootstrap
+  95% lower bound 全部未严格大于0，72个策略的 @.50 lower bound 为负。
+- 最佳加权净增策略（hidden64、break cost4、margin P80）仅 switch 143/33040，得到
+  @.25 fix/break=`2/0`、@.50=`5/3`，净增`+2/+2`；但 fold3 的 @.50 为`-2`，bootstrap
+  lower bound 为`0/-2`。最接近保守门禁的 P90 策略 switch 72，仅 @.50=`3/1`净增2，
+  @.25 完全没有修复；它不能贡献目标最缺的 @.25 68 hits。
+- 结论：不通过放宽 margin 或 bootstrap 反选 V90。单个 alternative-vs-baseline 的185维差分三分类
+  把 query 身份与其7个 geometry variant 混在同一 flat 决策中，OOF 可复现增益远小于候选 oracle；
+  后续需显式建模 query→variant 层次，而不是继续调整 break cost 或阈值。
+
+### 14.78 V91 Hierarchical Query→Variant Reranker 与预注册（2026-08-13）
+
+- V91 保持 e71 backbone、parent 和 selected geometry 完全冻结，把112个候选恢复为
+  `16 queries × 7 variants`。query head 读取152维 query feature及 default/parent score/rank、
+  两个 Top-1 标志；variant head 读取25维 geometry feature、geometry score/rank、regressed/valid
+  标志，并结合所选 query 表示。推理先选 utility 最大的 query，再只在该 query 的合法 variants
+  中选一个，避免 flat residual 对111个替代候选分别作相互独立判断。
+- 两级 head 均预测 @.25/@.50 命中概率，并以乘法参数化强制
+  `P(hit@.50)<=P(hit@.25)`；query 标签定义为“该 query 的任一合法 variant 命中”，variant 标签
+  是对应框的严格阈值命中。loss 对 query/variant 两级各做按行均衡 BCE，固定阈值权重`2:1`，
+  false-positive cost 只取`2/4`。
+- 固定网格为 hidden `64/128`、weight decay `1e-4/1e-3`、false-positive cost `2/4`，共8配置；
+  每折12 epoch、5折 scene-disjoint OOF。margin 仍只取 OOF 正 gain 的
+  `50/60/70/80/90/95/97.5/99`最近秩百分位。策略须五折两阈值均非负、pooled @.25 delta
+  `>0`，且两个 scene-bootstrap 95% lower bound 均`>=0`；不满足即回退 baseline。
+- OOF 合格后才重训并访问独立3,625-row train calibration；calibration gate 与 V90 完全相同，
+  要求`hits025>=3524`、`hits050>=3315`并核对全部 cache digest。只有两道 train-only gate 均通过
+  才发布 artifact；验证集不参与结构、模型、margin 或 checkpoint 选择。启动前 hierarchical
+  model/train/runtime/official 四套专项测试为`215 passed in 21.02s`。
+
+### 14.79 V91 train-only 结果：OOF 信号成立，但独立 calibration 否决发布（2026-08-13）
+
+- V91 正常完成并原子发布
+  `experiment_output/historical_e71_geometry/v91_hierarchical_query_variant_trainonly/result-receipt.json`，
+  SHA256 `5cc9c5ba94618bccd598b3d05f33d0dd1954602b9a2f54e246d0c19cef25ff6b`。收据最终为
+  `selected=baseline`、`deployable=false`、`artifact=null`、`validation_data_accessed=false`；四卡已
+  回到`1 MiB/0%`，protected backbone/parent/geometry 的路径、inode、mode、size 与 SHA256 在训练
+  前后逐值相同。
+- 5-fold scene-disjoint OOF 证明层次结构确实学到可泛化信号。33,040-row baseline 为
+  `31636/29418`，oracle 为`32868/32392`；72个固定 margin 策略中64个通过所有 OOF 谓词。按原
+  预注册排序选择 hidden128、weight decay`1e-3`、false-positive cost4、margin P50：切换
+  `14196`行，@.25 fix/break=`299/175`、@.50=`981/673`，净增`+124/+308`。五折 delta 分别为
+  @.25=`[22,24,43,26,9]`、@.50=`[49,47,54,57,101]`；10,000次 scene-bootstrap 95% lower
+  bound 为`+80/+212`。
+- 增益几乎都来自 query 纠错而非同 query 的 variant 微调：selected-query changes=`12803`，
+  same-query variant changes=`1393`；wrong-query recoveries 为 @.25=`271`、@.50=`875`，
+  wrong-variant recoveries 仅`28/106`。这印证 V90 的 flat pairwise 失败诊断：主瓶颈是先选对
+  query，显式 query→variant 分解是有效方向。
+- OOF 胜者按协议在独立3,625-row train calibration 上只得到 baseline`3461/3315`→
+  `3458/3318`：@.25 fix/break=`23/26`、@.50=`79/76`，净增`-3/+3`，scene-bootstrap lower
+  bound=`-17/-22`。它未达到预注册`3524/3315`门槛，故自动回退 baseline，不发布 artifact、
+  不运行 validation/official。这不是可通过查看 val 后放宽门槛挽救的候选。
+- 事后协议审计发现 calibration 的 @.25 门槛要求`+63/3625=1.74%`净增，而 OOF 胜者只有
+  `+124/33040=0.375%`；前者是后者增益率的约4.64倍，因而门槛把“最终正式目标缺口”错误地
+  等量施加到仅11%的独立 train calibration 上。这个门槛对 V91 必须维持，结果仍为拒绝；但后续
+  协议应使用预注册的非退化统计门槛与按样本比例缩放的最低效应，而不是不可达的绝对`+63`。
+
+### 14.80 V92 设计依据：固定高置信稀疏 query 切换，而非追逐 OOF 总增益（2026-08-13）
+
+- V91 的 OOF Pareto 前沿显示，hidden128、weight decay`1e-3`、false-positive cost2、margin P99
+  仅切换`279/33040=0.844%`，仍得到 @.25 fix/break=`122/41`、@.50=`124/44`，净增
+  `+81/+80`；五折为 @.25=`[12,17,15,26,11]`、@.50=`[14,17,11,31,7]`，bootstrap 95%
+  lower bound=`+55/+52`。这一个 train-only 策略的 OOF 净增已经超过正式缺口`68/38`，同时
+  switch 数比 V91 P50 少约50.9倍，净修复/切换率从`0.87%/2.17%`升到`29.0%/28.7%`。
+- V92 因此不增加新网络，也不扫描新模型超参：复用 V91 的层次结构与同一固定模型网格，但模型
+  选择目标预注册为“先满足 OOF 五折双阈值严格为正、双 bootstrap lower bound严格为正、OOF
+  净增至少覆盖正式缺口`68/38`，再最少化 switches；并列才比较`2*delta025+delta050`”。这会
+  在不读取 val 的前提下固定到高置信稀疏区域，而非 P50 高覆盖区域。
+- 独立 train calibration 继续是发布前硬门禁，但按 calibration 占 fit 的固定比例
+  `3625/33040`缩放最低效应：要求两个阈值都不低于 baseline，且 @.25/@.50 至少净增
+  `ceil(68*3625/33040)=8`与`ceil(38*3625/33040)=5`；同时两项 scene-bootstrap lower bound
+  均不得为负。该门槛在运行前写死，验证集继续完全不可见。若未通过，V92 同样不发布、不做
+  official；若通过，才冻结唯一 artifact 并允许一次完整正式验证。
+
+### 14.81 V92 sparse refit calibration：稀疏 OOF 优势仍未跨过全 fit 单模型重训（2026-08-13）
+
+- V92 严格验证 V91 收据及其 SHA 后，只从已封存的 OOF diagnostics 按 14.80 的规则选策略；59个
+  策略满足双阈值每折严格为正、双 bootstrap lower bound严格为正及 OOF 至少`+68/+38`。最少
+  switch 的唯一胜者确为 hidden128、wd`1e-3`、cost2、P99：margin=`0.9188945293`、
+  switch=`279`、OOF=`+81/+80`。选择过程未重跑 OOF、未读取 calibration 或 validation 标签。
+- 固定胜者在全部33,040-row fit 上重训一个模型，再一次性评估独立3,625-row train calibration。
+  只读产物
+  `experiment_output/historical_e71_geometry/v92_sparse_hierarchical_calibration_audit_v1.json`
+  SHA256 为`ef3c7d5feb7b1ad00762daf5a0aaabfb867a3e1f639bd027c91580dc310a2563`；
+  `validation_data_accessed=false`，protected 三件套前后身份完全相同，四卡结束后均`1 MiB/0%`。
+- calibration 只切换`23/3625=0.634%`，@.25 fix/break=`6/8`、@.50=`8/6`，baseline
+  `3461/3315`变为`3459/3317`，即`-2/+2`；scene-bootstrap 95% lower bound=`-9/-5`。
+  预注册的按比例最低效应`+8/+5`及两个非负 lower bound 四项全部失败，故 V92 不发布 artifact、
+  不做 validation/official。
+- V91 P50 与 V92 P99 在 OOF 都是五折一致正增益，但把五个 fold model 丢弃、在全 fit 上重训
+  一个模型后分别变成`-3/+3`与`-2/+2`。因此现有证据不能简单归结为“层次结构没有信号”；更
+  精确的待检验假设是 full-fit refit 的 normalization/score scale 或单次优化轨迹破坏了 OOF
+  模型的跨 scene 稳定性。
+
+### 14.82 V93 Five-fold Logit Ensemble 因果对照与预注册（2026-08-13）
+
+- V93 固定复用 V92 的唯一配置、P99 margin、数据划分、epoch、seed 与所有校准门槛；唯一变化是
+  不再训练 full-fit 单模型，而是保留五个 scene-fold model，每个仍只在4/5 fit scenes训练并使用
+  自己训练子集拟合的 normalization。部署预测对五个模型的 query logits 与 variant logits做等权
+  算术平均，再执行完全相同的 query→variant argmax 和固定 P99 margin；不扫描模型权重、投票数、
+  margin 或共识阈值。
+- calibration 对五个模型都属于从未参与训练的 scene 集，因此可直接检验“OOF 模型集成是否比
+  full-fit refit 稳定”。发布前门槛与 V92 完全相同：@.25/@.50 相对 baseline 至少`+8/+5`，且
+  两个 scene-bootstrap 95% lower bound 都`>=0`。不满足则只保留只读拒绝报告；满足也仅进入
+  ensemble artifact 的实现/契约测试，validation 仍需在 artifact 完整冻结后才允许一次正式访问。
+
+### 14.83 V93b 结果：fold ensemble 未改善 calibration，refit-only 假设被否决（2026-08-13）
+
+- V93 首次运行完整训练出5个 fold member，但汇总脚本误把公开 policy candidate 直接传给内部
+  diagnostics，缺少 selector 才补充的`sentinel`字段而在报告阶段抛出`KeyError`。该轮没有生成
+  JSON/artifact，失败 log 原样保留；修复仅改为调用公开`choose_hierarchical_configuration`接口，
+  不改模型、训练、预测或门槛。V93b 重跑时五个 normalization/state SHA256 与首次运行逐值一致，
+  证明训练确定性且报告修复没有改变模型。
+- 有效只读产物
+  `experiment_output/historical_e71_geometry/v93b_hierarchical_fold_ensemble_calibration_audit_v1.json`
+  SHA256 为`3760987d878ba6f30adaf5087c3925f21caf4b65e590aab571f9be380e5c65e7`；五个成员分别在
+  `26005/26536/26540/26713/26366`行与404/405 scenes上训练，state SHA256 全部不同，calibration
+  的56 scenes 与 fit 零重合。受保护三件套未变、四卡结束为`1 MiB/0%`。
+- 固定 P99 margin 下 ensemble 切换`24/3625=0.662%`，@.25 fix/break=`6/8`、@.50=`8/8`，
+  baseline`3461/3315`变为`3459/3315`，即`-2/0`；bootstrap lower bound=`-9/-8`，四项 V92
+  calibration 门槛仍全部失败。故不发布、不访问 validation/official。
+- V92 full-fit 单模型是`-2/+2`，V93b fold ensemble 是`-2/0`；两者都无法复现 OOF P99 的稳定
+  正增益。因此“问题主要是 full-fit refit/normalization score-scale 漂移”被否决。更可能的主因是
+  在同一组 OOF predictions 上从72个相关策略选最大值造成选择偏差，而 binary hit BCE 的真实 effect
+  本身过弱；后续不再扫描 margin、fold weighting、投票阈值或 seed。
+
+### 14.84 跨 split effect-size 更正与下一目标（2026-08-13）
+
+- 14.80 曾把33,040-row OOF 的`+81/+80`直接与9,508-row official 缺口`+68/+38`比较，这是跨
+  不同样本数的绝对 hit 数尺度错误。正确的等比例 OOF 最低净增应为
+  `ceil(68*33040/9508)=237`与`ceil(38*33040/9508)=133`；V91 最佳 P50 为`+124/+308`，仅 @.50
+  足够，@.25 只达到所需 effect 的52.3%；P99 的`+81/+80`更只有34.2%/60.2%。14.80 的实验选择
+  仍保持预注册且 V92 已被独立 calibration 拒绝，但“P99 OOF 已覆盖正式缺口”这一解释作废。
+- 下一候选的 train-only OOF 门槛预先修正为 @.25至少`+237`、@.50至少`+133`，五折双阈值均
+  不退化、双 bootstrap lower bound严格为正；calibration 的等比例门槛`+8/+5`也应相对 official
+  缺口按`3625/9508`缩放为`ceil(68*3625/9508)=26`与`ceil(38*3625/9508)=15`，而不是此前错误的
+  `8/5`。修正后门槛只会更严格，不会把 V91--V93 的任何拒绝改成接受。
+- 模型方向转为 graded listwise ranking：query target 使用该 query 七个 variant 中的最大连续 IoU
+  utility，variant target 使用连续 IoU utility；对16 queries先做 listwise softmax ranking，再在胜出
+  query内对7 variants排名，避免 binary BCE 把0.51与0.95、0.49与0.01视为同质标签。模型仍只读
+  同一 deployable feature、保持 query→variant 因子化与受保护三件套冻结；先在固定单配置上做
+  scene-disjoint OOF，未达到修正后的 effect-size 门槛就不运行 calibration，更不访问 validation。
+
+### 14.85 V94 Graded Listwise Query→Variant：固定协议与启动门禁（2026-08-13）
+
+- V94 继续复用 V91 的152维 query feature、25维 variant feature、query→variant 因子结构、候选池、
+  normalization、hidden128、dropout0.1、weight decay`1e-3`、LR`3e-4`、batch256、12 epoch和seed0；
+  不扫描模型、loss weight、temperature、margin或seed。受保护 backbone/parent/geometry 仍全冻结。
+- 唯一结构性变化是监督目标：每个合法 variant 的连续质量固定为
+  `q=IoU+1[IoU>.25]+2[IoU>.50]`，query 质量取其七个合法 variant 的最大 q；对16 queries和胜出
+  query内7 variants分别以固定 target temperature`0.25`构造 soft listwise target，最小化两个
+  masked softmax cross-entropy之和。推理仍把 ordered hit probability 按`2:1`合成 utility，先选
+  query再选variant，不读取标签。
+- 只跑一个配置与一个固定 P50 positive-gain margin，消除 V91 在72个相关策略中取最大值的选择
+  偏差。5-fold scene-disjoint OOF 的发布前门槛按14.84的正确样本比例固定为：@.25净增至少237、
+  @.50至少133、五折两个阈值均不退化、两个 scene-bootstrap 95% lower bound均严格为正。任一
+  失败即不运行独立 calibration。
+- 只有 OOF 全通过才在全部 fit scenes 重训一次，并访问独立3,625-row train calibration；固定要求
+  @.25/@.50至少净增`26/15`，且两个 bootstrap lower bound均非负。再失败则不发布模型；两道
+  train-only gate都通过也只生成 staged artifact 的实现候选，仍须完成契约测试和冻结后才允许一次
+  official。validation 全程不参与结构、target、temperature、margin、checkpoint或门槛选择。
+
+### 14.86 V94 OOF：连续 listwise 显著强化 @.50，但 @.25 effect 仍不足（2026-08-13）
+
+- V94 启动前新增三项数值/梯度测试并回归完整 hierarchical 合同，共`118 passed in 2.59s`；脚本与
+  测试 SHA256 分别为`35949078cae57ac2387170834373cda3df95c58743a6249623d3fe94dc1041ca`
+  与`a8ef52e46b8bd8ba34d839b91568197855f25b1516e686b1fa84f405b0cd6342`。五折最终总 loss 均在
+  `4.5156--4.5210`，query/variant 分量约`2.698--2.700/1.816--1.821`，无 NaN、OOM 或优化失稳。
+- 只读结果
+  `experiment_output/historical_e71_geometry/v94_graded_listwise_hierarchical_trainonly_v1.json`
+  SHA256 为`fb538a14e0c1c84f118f7ed4d16648b95d526800d63163f430388a1a9e748129`；
+  `validation_data_accessed=false`、protected 三件套前后相同，结束后四卡`1 MiB/0%`。
+- 固定 P50 margin=`0.1387150`，切换`4527/33040=13.70%`。OOF @.25 fix/break=`234/90`，
+  净增`+144`，五折`[22,21,48,23,30]`，bootstrap lower bound=`+105`；@.50 fix/break=
+  `702/298`，净增`+404`，五折`[90,59,75,74,106]`，lower bound=`+318`。相对 V91 P50 的
+  `+124/+308`，graded listwise 提升到`+144/+404`，说明连续质量排序是有效方向。
+- 但修正后的最低 OOF effect 是`+237/+133`；V94 只有 @.50 通过，@.25仍差93 hits，故按协议
+  `calibration_status=not_run`，不重训 full-fit、不发布 artifact、不访问 validation。迁移结构也发生
+  有益变化：同 query variant changes=`3443`、query changes=`1084`；@.50修复中482来自 variant、
+  220来自 query，而 @.25 为80/154。
+
+### 14.87 V95 Threshold-aligned Graded Listwise 预注册（2026-08-13）
+
+- V94 的训练质量是`IoU+1*hit25+2*hit50`，中等 IoU 候选只加1、同时过双阈值候选加3；但推理
+  utility 和当前正式缺口都更重视 @.25，固定为`2*P25+1*P50`。V95 的唯一变化是把训练 target
+  对齐为`IoU+2*hit25+1*hit50`：中等 IoU与双阈值候选分别加2/3，在不降低高 IoU排序的同时，
+  提升“刚跨过 .25 但未过 .50”候选相对低 IoU的 listwise margin。
+- hidden128、wd`1e-3`、dropout0.1、temperature0.25、12 epoch、seed0、P50 margin、候选池、
+  feature、normalization、query→variant结构和全部门槛均与 V94 完全相同；仍只跑一个配置、一个
+  策略。OOF必须达到`+237/+133`并满足五折双阈值非退化与双 bootstrap lower bound严格为正，
+  否则直接拒绝；通过后 calibration 仍要求`+26/+15`及双 lower bound非负。validation 零参与。
+
+### 14.88 V95 OOF：权重对齐只有小幅增益，仍未过 @.25 effect gate（2026-08-13）
+
+- V95 编译及同一套数值/梯度/hierarchical 回归为`118 passed in 2.26s`；脚本与测试 SHA256 为
+  `e26f64dc98b1e34a9bf648b3b4a9179a9e948a375e493c1953e760bd6c0595b1`和
+  `611e5038595efb6e407b9c04f509eb5c20bb945d0e19a9454ddb06aa0af32a20`。只读结果
+  `experiment_output/historical_e71_geometry/v95_threshold_aligned_listwise_hierarchical_trainonly_v1.json`
+  SHA256 为`5ae7393d59d1a8c65f4f03db7c4206f99c3f6188bf65424bad915bddd8be4bee`；validation未访问，
+  protected三件套未变，四卡结束为`1 MiB/0%`。
+- 固定 P50 margin=`0.1367993`，switch=`4509`。OOF @.25 fix/break=`233/84`，净增`+149`，
+  五折`[23,21,51,21,33]`，bootstrap lower bound=`+109`；@.50=`702/292`，净增`+410`，
+  五折`[92,66,73,70,109]`，lower bound=`+324`。相对 V94 只改善`+5/+6`，说明简单交换阈值
+  target 权重不是 @.25 瓶颈。
+- @.25仍低于正确门槛237，故`calibration_status=not_run`。V94/V95 五折最终 query loss 都约
+  `2.70`，非常接近16类均匀预测的`ln(16)=2.773`；现有训练先把两维 logits 经 ordered sigmoid
+  压到概率，再以`2*P25+P50`作为 listwise score，最大动态范围仅0--3，可能限制了 ranking margin。
+
+### 14.89 V96 Unbounded Listwise Utility 预注册（2026-08-13）
+
+- V96 保持 V95 的 target、结构、feature、hidden128、wd`1e-3`、temperature0.25、12 epoch、seed0、
+  P50、单配置与全部 OOF/calibration 门槛不变。唯一变化是 ranking score 不再经过 sigmoid：query
+  与 variant 都直接用 raw utility `2*logit25+logit50`做 listwise softmax、argmax与相对 baseline
+  margin。两个 logits 在本版本是无界 utility components，不再解释为校准命中概率。
+- 这是对“概率压缩导致 listwise underfit”的单变量检验；若 query loss 明显下降而 @.25 effect仍不
+  足，则否决该假设，不调整 temperature/epoch/LR。仍要求 OOF至少`+237/+133`、五折双阈值非退化、
+  双 bootstrap lower bound严格为正；通过才允许 calibration，且其门槛仍为`+26/+15`与双 lower
+  bound非负。validation继续零参与。
+
+### 14.90 V96 OOF：raw utility 降低 loss 但不提升 @.25，饱和假设被否决（2026-08-13）
+
+- V96 同时替换 OOF 与潜在 calibration 的 predictor，避免训练用 raw utility、校准悄悄回到 sigmoid；
+  新增无界性、2:1权重、排序方向与有限梯度测试，连同 V95/完整 hierarchical 回归共
+  `120 passed in 2.33s`。脚本/测试 SHA256 为
+  `01685c13252243e00adc78e0a50e5aa341e49700ad396577ffa5386c4cda1e28`与
+  `4b55b4dd0c7c0c48b2e137921a16f751534165cf8ac8a403b25b989fb46d67c1`。
+- 有效只读结果
+  `experiment_output/historical_e71_geometry/v96_unbounded_listwise_hierarchical_trainonly_v1.json`
+  SHA256=`9e5f97849f217156334854a3f2a4b36f916cf7c8e084f89383ca1d2b2d94cad8`；内部原始
+  V95-schema evidence 也以只读文件保留并由有效结果绑定。validation未访问，protected未变，四卡
+  结束`1 MiB/0%`。
+- 五折 query loss 约`2.6918--2.6934`，相对 V95 的`2.6982--2.7001`只下降约0.006；variant loss
+  下降约0.006--0.010。固定 P50 margin=`0.1199301`，switch=`6236`，OOF @.25 fix/break=
+  `223/74`、净增`+149`，五折`[24,25,47,22,31]`、lower bound=`+110`；@.50=`677/313`、
+  净增`+364`、lower bound=`+280`。@.25与V95完全相同，@.50反而少46，故未过237门槛并跳过
+  calibration。概率压缩不是 @.25 effect 不足的主因，不再调整 utility scale/temperature。
+
+### 14.91 V97 Query-set Contextual Listwise 预注册（2026-08-13）
+
+- 结构审计发现现有 hierarchical query encoder 对16个 query逐个独立编码，只有最终 listwise loss和
+  argmax形成竞争；它无法显式表达“候选A相对候选B更符合语言/几何上下文”。V97 在 V95 bounded
+  listwise 基础上加入一层 permutation-equivariant query-set Transformer encoder：hidden128、4头、
+  FFN256、GELU、dropout0.1，严格使用 query_valid key-padding mask。contextual query embedding同时
+  供 query head和其下7个 variant head使用；variant encoder、feature与候选池均不变。
+- 这是可跨 ScanRefer/Nr3D/Sr3D复用的集合比较模块，不读取数据集名、类别、scene规则或部署标签。
+  除该一层 context module外，V95 的 aligned target、bounded utility、wd`1e-3`、LR、epoch、seed、
+  P50、单配置与全部门槛不变；不扫描层数、head数、FFN或margin。
+- 启动前必须证明：query permutation等变；无效 padding query无论特征多大都不影响合法输出；修改一个
+  合法 query可通过 attention影响另一个合法 query；梯度有限；并回归 V95/原 hierarchical 合同。
+  OOF仍须至少`+237/+133`、五折双阈值非退化、双 bootstrap lower bound严格为正才运行 calibration；
+  calibration仍需`+26/+15`和双 lower bound非负。validation零参与。
+
+### 14.92 V97 OOF：集合上下文取得当前最强单配置 OOF（2026-08-13）
+
+- V97 启动前结构/数值/原 hierarchical 回归共`121 passed in 2.36s`；permutation等变、padding
+  隔离、合法 query跨候选作用和有限梯度均有定向测试。脚本/测试 SHA256 为
+  `ca12f2a832e93089cfb856882ba535b75807a2537fdaecfa21b5cc6f2227a94f`与
+  `dfdeb727ca0d608040462f26c9849c31e3721a157fab2cce32a78c04c90e1236`。
+- 有效只读结果
+  `experiment_output/historical_e71_geometry/v97_contextual_listwise_hierarchical_trainonly_v1.json`
+  SHA256=`ca04b4cbd1804b92d676d815b79bfcacdaab3e8745742177bd94283cedda7f8d`，内部原始 evidence
+  也由其绑定；validation未访问、protected未变、四卡结束`1 MiB/0%`。
+- V97 五折最终 loss=`4.4966--4.5022`，比 V95 的`4.5167--4.5219`一致更低。固定 P50 margin=
+  `0.1331222`、switch=`5316`；OOF @.25 fix/break=`245/71`、净增`+174`，五折
+  `[30,36,50,27,31]`、bootstrap lower bound=`+131`；@.50=`758/283`、净增`+475`，五折
+  `[119,68,80,90,118]`、lower bound=`+386`。它相对 V95 提升`+25/+65`，证明 query-set
+  contextual comparison 是有效、跨数据集可复用的结构改进。
+
+### 14.93 Effect-size transfer 第二次更正：必须按 oracle 可修复余量归一化（2026-08-13）
+
+- 14.84 用总样本数把 official 缺口缩放到 train，是另一个尺度错误：fit baseline @.25 已为
+  `31636/33040=95.75%`，val baseline仅`5542/9508=58.30%`，两者的剩余错误机会完全不同；要求
+  fit `+237`等于捕获其 oracle余量1232的19.2%，远严于 val 达标所需捕获1307余量的5.20%。
+  该错误门槛使 V94--V97 都跳过 calibration，但没有造成验证泄漏或错误发布。
+- 正确、预先可计算的 transfer effect 使用14.75及各 train baseline 已封存的同候选池 oracle repair
+  headroom。val 达标所需捕获比例为 @.25=`68/(6849-5542)=5.2028%`、@.50=
+  `38/(6308-4623)=2.2552%`（@.50分母沿用诊断 sidecar候选池，分子仍用更严格 official缺口38）。
+  对 fit oracle余量`1232/2974`取上整得到 OOF最低`+65/+68`；对独立 calibration余量
+  `145/273`得到`+8/+7`。这同时适配 train/val 不同难度和基线命中率。
+- 该更正在任何 V97 calibration/validation访问前完成，只使用早已封存的 oracle报告与 V91 receipt，
+  不用未知 split结果反调门槛。V97 OOF 的`+174/+475`、五折全正和 lower bound`+131/+386`
+  充分通过更正门槛，因此冻结 V97 作为唯一 calibration 候选；不在 V94--V97之间查看 calibration
+  后反选。独立 calibration 固定要求`+8/+7`且两个 scene-bootstrap lower bound均非负；失败仍拒绝，
+  通过才实现并测试 staged artifact。validation继续不可见。
+
+### 14.94 V97 独立 train calibration：@.50 达到效应，但 @.25 破坏略多于修复（2026-08-13）
+
+- calibration 脚本严格绑定 V97 OOF 报告 SHA、hidden/wd/P50 margin与`+174/+475`，并验证 fit 与
+  calibration scene零重合；定向源绑定/结构测试`6 passed in 1.99s`。脚本 SHA256 为
+  `a27e6feaf4edc32ea95d246e6fd5e043066b02e2d3b2f3022e012a1462f583ca`。
+- 只读产物
+  `experiment_output/historical_e71_geometry/v97_contextual_listwise_calibration_audit_v1.json`
+  SHA256=`42be0078d6019585235ac20ac276538d267890d4f0aa7375c653e9d06bd1d6ab`；
+  `validation_data_accessed=false`、protected前后相同，结束后四卡`1 MiB/0%`。
+- 固定 V97 切换`508/3625`；@.25 fix/break=`9/12`、净增`-3`，bootstrap lower bound=`-12`；
+  @.50=`53/33`、净增`+20`，lower bound=`-1`。@.50净增超过 oracle-headroom calibration门槛7，
+  但下界差1；@.25的效应和下界均失败。因此 V97 不发布、不做 validation/official。
+- 与 OOF @.25=`245/71`相比，full-fit→calibration 的 proposal distribution 在 .25 break/fix 上发生
+  明显反转，但 @.50仍保留正增益。下一最小方向不是继续改 query selector或margin，而是在 V97
+  已提出的一个候选上加入 proposal-specific verifier：只判断该次 baseline→proposal切换是否安全，
+  以拒绝少量 .25 break，同时尽量保留 .50 fixes。它与 V90 对111个任意 alternative做 flat
+  分类不同，输入分布由冻结 V97 selector定义，任务更窄且仍可跨三套 grounding 数据复用。
+
+### 14.95 V98 Nested Proposal Verifier 预注册（2026-08-13）
+
+- V97 calibration 已被读取，不能再把3,625-row split当成独立模型选择门禁。V98 全部选择证据回到
+  33,040-row fit，并采用严格 nested scene cross-fit：外层 held fold h 的 V97 proposal来自排除h的
+  四折模型；verifier训练行若属于 fold r，则 proposal来自同时排除h与r的三折模型。因此 held fold
+  的标签既不参与自身 proposal，也不参与 verifier训练 proposal的生成。
+- 计算去重后固定训练5个四折 V97 model与10个 unordered pair-exclusion三折 model，共15个；V97
+  架构、aligned target、12 epoch、P50 margin=`0.1331222057`完全冻结。每个 outer fold再训练一个
+  proposal verifier，它只接收 V97 已提议的单个 baseline→proposal 185维 deployable差分，不在112
+  候选中重选。verifier固定为 hidden64、dropout0.1、wd`1e-3`、LR`3e-4`、10 epoch、seed0、break
+  cost4的双阈值 break/neutral/fix分类器；用固定`2:1` expected signed gain，严格`>0`才接受。
+- 不扫描 verifier hidden、cost、margin、seed或投票规则。普通 non-nested stacking会同时报告以量化
+  选择偏差，但只有 nested结果有效。nested gate使用14.93 oracle-headroom尺度：@.25/@.50至少
+  `+65/+68`，五折两个阈值均非负，两个 scene-bootstrap 95% lower bound严格为正；失败即终止。
+  旧 calibration只允许在 V98完全冻结后作带`contaminated_diagnostic_only=true`的旁观，不参与选择；
+  validation仍不可见。
+
+
+### 14.96 V98 Nested Proposal Verifier 结果：拒绝（2026-08-13）
+
+- 修复仅涉及 fold 索引的 canonical 排序；修复后聚焦测试通过，并以新输出名完整重跑。正式证据为 `experiment_output/historical_e71_geometry/v98b_nested_proposal_verifier_trainonly_v1.json`，SHA-256 `20eb88903f6fcaa14bea77cc5569cf23ed8c8cc4373a9fed8052172aa12807d5`。
+- 严格 nested 路径完成 5 个主 V97 外折模型、10 个双折排除 V97 proposal generator，以及 5 个 verifier。它只接受 68/33040 次切换：@.25 fixes/breaks=`10/0`、净 `+10`、scene bootstrap 95% LB `+4`；@.50 fixes/breaks=`16/5`、净 `+11`、LB `+2`。五折净变化为 `0/0, 0/0, 0/0, +10/+11, 0/0`。
+- 虽然全折非负且两个 bootstrap 下界均为正，但未达到预注册的 oracle-repair headroom transfer 门槛 `+65/+68`，因此 `passed=false`，V98 明确拒绝，不生成 artifact、不访问 validation 或已污染 calibration。
+- ordinary stacking 只作为非独立诊断：271 次切换，@.25 `34/8=+26`、@.50 `57/21=+36`，LB `+12/+16`，同样低于效应门槛。nested 与 ordinary 的共同衰减表明二阶段 verifier 的主要问题是训练 proposal generator 与最终 proposal 分布错配，而非简单阈值过严。
+- 三个 protected artifacts 在运行前后 identity 完全一致；`validation_data_accessed=false`、`contaminated_calibration_accessed=false`。V98 到此冻结为负证据，不再调 verifier 超参。
+
+### 14.97 V99 Pareto Contextual Hierarchy 预注册（2026-08-13）
+
+- 结构目标：去掉 V98 的第二模型与 proposal-distribution mismatch，保留 V97 的单个、permutation-equivariant query-set contextual hierarchy。
+- proposal generator、V95 bounded target `IoU+2*hit25+hit50`、hidden=128、dropout=0.1、weight decay=1e-3、12 epochs、seed=0，以及 V97 已冻结 aggregate margin `0.13312220573425293` 全部不变。
+- 唯一新增的确定性部署门为 Pareto threshold gate：V97 proposal 与当前 geometry baseline 的预测 `p@.25` 增量和 `p@.50` 增量必须都严格大于 0，同时 aggregate gain 必须通过原 V97 margin，才允许切换。该门直接复用同一模型的两阈值输出，不训练 verifier、不增加数据集特定输入。
+- 只运行一次固定 5-fold scene-disjoint fit OOF，不读旧 calibration 或 validation，不做 grid search。晋级仍需 @.25/@.50 净增益至少 `+65/+68`、五折两阈值均非负、两项 scene-bootstrap 95% LB 均严格为正；失败即拒绝该结构。
+- 远程实现 `scripts/run_v99_pareto_contextual_hierarchical.py` SHA-256 `78ff3fb141ab9aa8334285cd1d9e3c37845c7769710b166ee0fce00c33fac4a9`；测试 `tests/test_v99_pareto_contextual_hierarchical.py` SHA-256 `bc1a7d25fdd369e0a9f286059f7f2abf872fc14b29351d851fbc7d7ff3acc261`。V99 + V97 + V95 聚焦回归 `9 passed`。
+
+
+### 14.98 V99 OOF 结果与 Artifact 冻结（2026-08-13）
+
+- 正式结果 `experiment_output/historical_e71_geometry/v99_pareto_contextual_hierarchical_trainonly_v1.json`，SHA-256 `db42ef5853fb36fba9bdc53afb719bff9eb5a3f9e772475a4c76c363db01572d`，mode `0444`。
+- V99 在 33040-row fit OOF 接受 5186 次切换：@.25 fixes/breaks=`245/70`、净 `+175`、scene-bootstrap 95% LB `+132`；@.50 fixes/breaks=`751/277`、净 `+474`、LB `+385`。五折净变化为 `+30/+120, +36/+70, +50/+80, +27/+89, +32/+115`，全部严格为正；六项预注册门禁全通过。
+- 相对固定 V97 的 5315 次切换与 `+174/+475`，Pareto gate veto 129 次（全部是预测 @.50 增量非正；预测 @.25 非正为 0），最终为 `+175/+474`。它未显著放大效应，但在不训练第二 verifier 的条件下保持了完整效应规模与跨折稳定性。
+- `validation_data_accessed=false`、`contaminated_calibration_accessed=false`，三份 protected artifact 运行前后 identity 一致。因此 V99 可进入一次 full-fit refit；旧 calibration 不参与 artifact 训练、阈值选择或晋级。
+- 部署实现新增独立 schema `rec-pareto-contextual-hierarchical-v1`，旧 `rec_hierarchical` artifact 路径继续兼容。运行时使用同一模型的 threshold heads 做 Pareto gate；相关 V95/V97/V99、geometry runtime、hierarchical runtime 与 official runner 回归共 `73 passed`。
+- full-fit artifact 必须绑定 V99 OOF result/script SHA、33040 rows/506 scenes、fit normalization、deployable-row/candidate-IoU digest、模型 state digest与 protected input SHA；以新文件 mode `0444` 独占写入并严格 reload。任何绑定或 reload 失败都不得进入 validation。
+
+
+### 14.99 V99 Artifact 与官方评测预检（2026-08-13）
+
+- full-fit artifact 已从 33040-row/506-scene fit split 重训并以 mode `0444` 冻结：`/root/autodl-tmp/DATA_ROOT/output/rec_reranker/e71_top16/v99_artifacts/pareto_contextual_h128_seed0_fullfit.pth`，SHA-256 `9752990c393fa6e45173a9dd129c4de4bb740924094dcbbec2f3121cbf39d1f2`，size 914315；receipt SHA-256 `9c53d22ce9d0dd31aeb032d9c8c43392bfc95c05e4c1e7420a06789605b6fb88`。
+- fit evidence：normalization `e3fbfd634f888328447a150fb2df73623825a1b9e5fdb7b0dc3c9af02a2947cb`，model state `e82b6ab8fe4a407ad79dc25b764cba22a086cc6676b9aa64cbb75f17b277332e`，deployable rows `1a0c31a549fb436a318d0cca1762e4a3ea9dea6f4afae249168294ab78df1e39`，candidate IoU `4b44ffebec929ea36fa7190c7f7471ad7dfce23345a8fb7e70506c8b4bcdbfa9`。final epoch loss/query/variant=`4.500388/2.693775/1.806613`。
+- 真实 CUDA loader 链 parent→geometry→V99 通过；V99 为 `cuda:0`、eval、全参数 frozen，222852 参数，artifact/parent/geometry/normalization/OOF/scene-fold SHA 均精确绑定。
+- 官方 runner `scripts/run_frozen_v99_pareto_contextual_official.py` SHA-256 `883afc66a7651a307726b3210dafbd8603261584d8e72e1267208373c2ab5384`。相关 official + runtime 回归 `151 passed`；dry-run 未创建 claim/output，绑定四 artifact，`validation_data_accessed=false`、`inference_uses_ground_truth=false`，205-file Python tree manifest SHA-256 `e25959c363a4d48904087937c7f8c7a6de4857bd90fc94da4835b36542f73767`。
+- 正式 REC 硬门为 `5610/4659`（即 Acc@.25≥.59、Acc@.50≥.49）。Mask 硬保持门相对同一 backbone+geometry 已封存基线 `5676/4662/0.4176762145`；历史 network-only V19 best `5688/4672/0.4186131` 同时作为更强的提升诊断，不能把“尽量提升”误作未经声明的额外硬阻断。
+- 正式运行创建唯一 claim 后，冻结四 artifact 与完整 Python tree，运行结束再次逐项验证不变；同一 9508-row stdout 同时封存 REC 与 Mask，禁止 GT 推理标志。
+
+
+### 14.100 V99 唯一官方验证：完整推理后的正式失败（2026-08-13）
+
+- 唯一官方验证访问完整 ScanRefer val `9508` rows、`793/793` batches；claim `/root/autodl-tmp/DATA_ROOT/output/rec_reranker/e71_top16/v99_artifacts/v99_official_validation_once.claim.json` 已在访问前以 mode `0444` 冻结，SHA-256 `e2ca7a1762b21470de76e8050f117e1358ed665f6ad71c3993fb28b535bdbab4`。未使用 GT 推理标志，也未重跑验证。
+- 不可变 stdout `/root/autodl-tmp/DATA_ROOT/output/rec_reranker/e71_top16/v99_official_val/official_stdout.log`，mode `0444`、SHA-256 `78c4fe2cfbd865bf4d7c81382e26cfd478130ad70010890eeb698c40e020e911`。它恰好包含一组完整 REC 与 Mask 汇总：REC `5552/4645 = 0.58393/0.48854`；相对 sealed geometry official `5542/4621` 仅 `+10/+24`，距目标 `5610/4659` 仍差 `58/14`，故 `rec_target_pass=false`。
+- 同一次 stdout 的 Mask 为 `5676/4662 = 0.5969709718/0.4903239377`，命中数与同 backbone+geometry baseline 完全一致；`mask_sem=0.4176463137`，比封存基线 `0.4176762145` 低 `0.0000299008`。因此按预注册逐项硬保持门，`mask_baseline_preservation_pass=false`；它也未达到 V19 best `5688/4672/0.4186131`。
+- 推理与指标打印完成后，旧 `GroundingEvaluator.export_retrain_metrics` 的 `unique and multiple hits025 must partition learned hits` 断言触发，子进程 `returncode=1`。该异常发生在两条 REC、三条 Mask 指标和最终 batch 全部输出之后，不改变已计算指标；runner 按 fail-closed 原则未自动发布结果。
+- 通过只读 recovery sealer 对既有 stdout 做恢复封存：`/root/autodl-tmp/DATA_ROOT/output/rec_reranker/e71_top16/v99_official_val/official_result.json`，mode `0444`、SHA-256 `82fe2b7e9578268b5cebc7efcb1bdec4d2db2712fe3b4823bc9bab7acbcdc6f1`。结果显式保留 `returncode=1`、failure stage/signature、`revalidation_performed=false`，不把后置异常伪装成正常退出。
+- recovery 要求开跑前 claim 中四份 protected artifact identity 与当前逐字节一致，并要求 205-file Python tree 的 manifest/records 与开跑前完全一致；两项均通过。V99 artifact 与所有历史 protected weights 仍为 mode `0444`，未被改写。
+- 结论：V99 的 fit-only OOF `+175/+474` 没有迁移到 full-fit official（仅 `+10/+24`）；artifact 作为可复现实验结果保留，但不得作为 goal best。正式验证结果只用于一次性 go/no-go 与迁移偏差审计，不用于对 V99 阈值做验证集调参。下一路线必须重新从 training OOF 构造更接近线上候选分布/部署语义的结构，并在进入任何后续 official 前通过 full-fit replay 与 runtime parity 门。
+
+
+### 14.101 V99 OOF→部署迁移审计（2026-08-13）
+
+- 冻结 V99 full-fit artifact 在原 33,040-row fit cache 上做只读 replay；结果 `experiment_output/historical_e71_geometry/v99_fullfit_train_replay_audit_v1.json`，mode `0444`、SHA-256 `ee10ce3780d721f796b4f26a9eb857f81389e006e4ea6091477e7873acb724f4`。artifact 实际接受 5,121 次切换，@.25/@.50 净增 `+233/+766`，五折按固定 scene mapping 分解为 `+33/+170, +45/+120, +70/+153, +44/+140, +41/+183`；bootstrap lower bound `+186/+673`。这排除“full-fit optimization 本身塌缩”的解释。
+- 进一步对同 33,040 rows 同时执行离线 materializer 与真实 `train_dist_mod.py` runtime builder；只读结果 `experiment_output/historical_e71_geometry/v99_train_runtime_parity_audit_v1.json`，mode `0444`、SHA-256 `4b7a2052f5bfaa003836e9f4af90d971c11d405f1a1ec8cc350eb97b557d7ece`。八个 normalized hierarchy inputs、baseline indices/scores、query/variant logits、proposal、Pareto pass、gain、switch mask、selected indices 全部位级一致，`row_count=33040`、`all_equal=true`。
+- 两个审计均只读取 train caches，`validation_data_accessed=false`、`contaminated_calibration_accessed=false`；backbone/parent/geometry/V99 identity 前后不变。由此 V99 official 仅 `+10/+24` 的主因不是 artifact refit 或 runtime 接线，而是 train-scene absolute-hit model 到未见 val scenes 的泛化/分布迁移。
+- 审计还暴露协议缺口：过去 artifact 晋级只要求 OOF，没有强制 full-fit replay 与 exact runtime parity。后续候选在 official 前必须补齐这两道门；但它们只能排除工程漂移，不能替代 scene-disjoint OOF 泛化证据。
+
+### 14.102 V100 Baseline-conditioned Relative-effect Contextual Ranker 预注册（2026-08-13）
+
+- V90 已证明对 111 个 alternative 各自独立做 185-D pair classification 缺少 query 层次；V98 又只验证 V97 已提出的单一 proposal，受 proposal-generator 分布错配限制。V100 与二者不同：保留 V97 的 16-query permutation-equivariant contextual encoder，同时让全部 `16×7=112` candidates 共同参与一个 baseline-conditioned relative-effect selector。
+- 对每个候选与 @.25/@.50，监督不再是绝对 IoU/命中概率，而是相对当前 frozen geometry baseline 的三类 `break/neutral/fix`。候选 head 显式读取 candidate query context/variant embedding、唯一 baseline 的 query context/variant embedding、两者差、各自 deployable auxiliary state与 same-query 标志；不读取 dataset 名、GT mask、类别规则或 scene-specific 常量。
+- 固定单配置：hidden128、1 层 query-set Transformer、4 heads、FFN256、GELU、dropout0.1、AdamW `lr=3e-4/wd=1e-3`、12 epochs、seed0、batch256。loss 固定为两阈值三分类 CE，按各阈值 baseline-hit/baseline-miss rows 等权，避免 e71 train baseline @.25=`95.75%` 的强 prior 淹没 fix 学习；再加一个按 baseline IoU 三段等权的 112-way signed-effect listwise term。没有 hidden/cost/temperature/margin/seed 网格。
+- 推理将每个 threshold 的 signed effect 定义为 `P(fix)-P(break)`，aggregate=`2*effect25+effect50`；在 112 个合法候选中取 aggregate 最大者，仅当它与 baseline 不同且 `effect25>0`、`effect50>0`、aggregate>0 时切换，否则保持 baseline。baseline 候选固定为 neutral anchor；不运行 margin percentile 搜索。
+- 在编码/运行前进一步锁定无歧义的 loss：三分类 CE 先在每行合法候选内平均，再对每个阈值的 baseline-hit 与 baseline-miss 两组等权；112-way listwise 使用真实 signed aggregate `2*(hit25_candidate-hit25_baseline)+(hit50_candidate-hit50_baseline)`，对每行所有最大 aggregate 候选均匀分配 target probability，不设 temperature。listwise row loss按 baseline IoU `<=.25 / (.25,.50] / >.50` 三段等权；总 loss=`classification + listwise`，不引入可调系数。
+- 推理精确定义：baseline anchor 的两个 effect 与 aggregate 固定为 0；非 baseline 候选只有在两个 predicted signed effects 均严格大于 0 时才参与 argmax，其余 mask 为 `-inf`。最大合格 aggregate 必须严格大于 baseline anchor 0 才切换；无额外 margin。
+- 有效证据是固定五折 scene-disjoint OOF；晋级要求 @.25/@.50 至少 `+65/+68`（14.93 oracle-headroom transfer）、五折两个阈值都严格为正、两个 10,000-scene-bootstrap 95% lower bound严格为正。通过后仍须 full-fit train replay不弱于 `+65/+68`、exact offline/runtime parity、artifact/protected SHA冻结；失败即拒绝，不访问旧 calibration或任何 validation。
+
+
+### 14.103 V100 OOF：纯 relative-effect selector 严重过切换，否决（2026-08-13）
+
+- 相关结构/策略/损失及既有层级回归 `138 passed`；模型、实验脚本、测试 SHA-256 分别为 `2f4e7d8e06130201a484541e9983d1c275386d1e9f28baabdf2c5898cc4cab6f`、`8c6a6846ed501536b2460a9fbbd34fd63af3bd97612aa24e477889d15b409e3f`、`b789081388262da64a900ceff773138928f1c2b2e46eddb9e38f818566a6c1ec`。
+- 只读结果 `experiment_output/historical_e71_geometry/v100_baseline_relative_contextual_trainonly_v1.json`，mode `0444`、SHA-256 `9df20aca38ea0dea9653376e30e883c200b3b863be15b9d410bf667ec75cd7c0`；`validation_data_accessed=false`、`contaminated_calibration_accessed=false`，protected 三件套前后 identity 一致。
+- 固定五折共切换 `31,696/33,040=95.93%`；@.25 fixes/breaks=`734/2105`、净 `-1371`、bootstrap LB `-1545`；@.50=`1542/4540`、净 `-2998`、LB `-3320`。五折净变化为 `-279/-669, -246/-608, -300/-659, -292/-641, -254/-421`，十二项 effect/fold/bootstrap 门全部失败。
+- 失败机制不是优化不收敛：五折最终 classification/listwise/total loss 范围稳定在约 `0.367--0.375 / 4.356--4.380 / 4.729--4.754`。真正问题是把 baseline-hit/miss 强制等权后，rare fix 的预测先验被严重放大；`effect25>0 & effect50>0` 在未校准 signed heads 上几乎不构成安全门。
+- V100 明确拒绝：不生成 artifact、不运行 calibration/validation，也不通过新增 margin sweep挽救。纯 relative-effect 不能替代 V99 的 absolute contextual listwise selector；若后续复用 relative target，只能作为保留自然先验的辅助损失/安全信息，而不能单独主导 112-candidate argmax。
+
+
+### 14.104 V101 预注册：全训练场景覆盖的 V99 固定协议 OOF（2026-08-13）
+
+V99 的正式验证仅获得 `+10/+24 hits`，但后续两项只读审计已经排除了两个直接实现故障：同一
+`33040` 条 fit 数据上的 frozen full-fit artifact replay 为 `+233/+766`，而离线预测与正式运行时的
+输入、proposal、gain、Pareto gate 和 selected index 在全部训练行逐项相等。因此当前待检验假设不是
+重拟合崩溃或部署路径漂移，而是 V99 仅使用 `506` 个场景、`33040` 条样本拟合，遗漏的 `56` 个训练
+场景、`3625` 条样本削弱了未见场景泛化。
+
+V101 不改网络结构、损失或部署选择规则，只把训练域覆盖扩大到 ScanRefer 的全部 train split：
+
+1. 数据固定为现有 e71 base/geometry train cache 的全部 `36665` 条 joined rows、`562` 个场景；不读
+   validation cache，也不把此前 calibration 结果当独立选择证据。旧 calibration 场景现在仅作为普通
+   train 场景进入新的 scene-disjoint OOF；每一行仍只由未见过其场景的 held-fold 模型预测。
+2. 固定五折 scene-disjoint OOF、seed 0；每折训练其余四折，禁止样本级随机拆分。必须覆盖全部
+   `36665` 行且每个 scene 只属于一个 held fold。
+3. 架构精确复用 V99 的 V97 contextual query-set hierarchy；目标精确复用 V95 bounded
+   threshold-aligned listwise；hidden `128`、dropout `0.1`、weight decay `1e-3`、学习率和 epoch
+   计划均沿用冻结实现。不得扫描 margin、权重、随机种子或结构。
+4. proposal 与部署规则固定为 V99：aggregate gain `2*delta025 + delta050` 不小于
+   `0.13312220573425293`，且 `delta025>0`、`delta050>0` 才接受；否则回退固定 geometry parent。
+5. 训练集全量基线/oracle 为 `35097/36474 @0.25`、`32733/35980 @0.50`。正式验证目标缺口相对
+   oracle headroom 的既定比例机械换算后，OOF 最低净增固定为 `+72/+74 hits`；此外五个 held fold
+   在两个阈值上都必须严格为正，scene bootstrap 95% lower bound 也必须严格为正。
+6. protected backbone/parent/geometry 的 path、size、mtime、SHA-256 必须前后一致；结果以
+   create-exclusive、只读 JSON 保存，并记录输入、源码和预测 digest。
+7. 若任一门禁失败，V101 立即否决，不构建 artifact、不访问 validation。只有全部通过，才允许用
+   全部 `36665` 条 train rows 构建新的冻结 artifact，先做同域 replay/runtime parity，再决定是否
+   执行一次正式目标验证。
+
+本轮是训练覆盖/泛化协议实验，不宣称新数据集特定技巧；模型输入和门控不包含 ScanRefer 专属类别
+或样本类型，因此代码合同仍应可用于 Nr3D/Sr3D。当前服务器未发现 Nr3D/Sr3D 的等价缓存，故本轮
+只验证跨 ScanRefer 未见场景的 OOF，不能据此声称已经取得跨数据集数值。
+
+
+### 14.105 V101 全训练场景 OOF 结果：通过（2026-08-13）
+
+- 正式 train-only 证据为 `experiment_output/historical_e71_geometry/v101_full_train_pareto_oof_v1.json`，
+  mode `0444`，SHA-256 `2cb453b130306449901bed9c337984aad7f8b7048d05bd4240b5077f0de9ac1e`；
+  `validation_data_accessed=false`、`prior_calibration_used_for_selection=false`，protected backbone、parent、
+  geometry 的运行前后 identity 完全一致。
+- 全部 `36665` 行、`562` 个场景恰好进入一次 held fold。五折 held rows/scenes 为
+  `7088/113, 7080/113, 7674/112, 7464/112, 7359/112`，对应 train scene 数为
+  `449,449,450,450,450`，没有 scene leakage。
+- 固定 V99 Pareto 协议接受 `5882` 次切换。@0.25 fixes/breaks=`236/77`，净 `+159`；@0.50
+  fixes/breaks=`827/307`，净 `+520`。五折净增依次为
+  `+28/+93, +28/+92, +26/+134, +53/+95, +24/+106`，两个阈值每折都严格为正。
+- scene bootstrap 10000 次的 95% lower bound 为 `+118/+421`；净增超过预注册的 oracle-scaled
+  门槛 `+72/+74`，全部六项 predicates 为真，故 `passed=true`。
+- 与 V99 的 `33040` 行 OOF `+175/+474` 相比，全训练覆盖将 @0.50 提高到 `+520`，但 @0.25
+  降到 `+159`。因此本结果只支持进入 artifact/replay/parity 阶段，不支持预先宣称正式验证必然优于
+  V99。后续仍固定同一结构、loss、margin 和 Pareto gate，不做阈值或随机种子搜索。
+- 首次启动在任何 materialization/训练前因 joined-row schema 防漏断言错误访问顶层 `scan_id` 而
+  fail closed；394-byte 原日志保留。唯一修复为读取真实字段 `row["base"]["scan_id"]`，修复后相关
+  回归 `8 passed`，最终 V101 驱动 SHA-256
+  `034291a86b08a2386b3861f8dbe732acd3ae34bacdf2f70145cf5ecde9e5af92`。
+
+下一门禁：用全部 `36665` 条 train rows 训练一个冻结 V101 artifact；同域 full-fit replay 必须两个阈值
+净正、运行时输入到 selected index 必须与离线预测一致、protected artifacts 必须不变。全部通过后才
+允许一次 formal validation；任一失败则不访问 validation。
+
+#### 14.106 V101 冻结补充与 Mask 退化定位（2026-08-13）
+
+- V101 全训练集 Pareto 上下文模型已冻结为只读 artifact：`/root/autodl-tmp/DATA_ROOT/output/rec_reranker/e71_top16/v101_artifacts/pareto_contextual_h128_seed0_fulltrain.pth`，SHA-256 `2c969a6c28a0c9315b53f0f847567345e47da8c912091344b23612680643a2ae`，mode `0444`。全拟合训练集 replay 为 `+237/+765` hits（@0.25/@0.50），5 折均为正；它仅证明冻结 artifact 与训练契约一致，不替代 OOF 或正式验证。
+- 为下游 Mask OOF 重放并冻结了 V101 逐行 OOF 决策：`experiment_output/historical_e71_geometry/v101_oof_row_decisions_v1.pth`，36,665 行、562 scenes、5,882 次接受切换、预测摘要 `b81664e65d64dad7058f8f252d990d4ab11dd8c00746c64a918bb120b6434c99`，文件 SHA-256 `d3d79f6b7b3948863c553683415b1f22297261871e20dd15b8584993040e141c`，mode `0444`。5 个 fold 的模型/归一化从训练场景重新拟合，逐字节复现 V101 OOF 报告。
+- 当前官方 V99 Mask 为 `59.6971/49.0324/41.7646`（Mask@0.25 / Mask@0.50 / semantic mIoU）；相对用户给出的 MCLN baseline `58.70/50.70/44.72`，@0.25 高 `+0.9971pp`，但 @0.50 低 `-1.6676pp`、mIoU 低 `-2.9554pp`。定位结果不是 evaluator 指标错配：epoch71 backbone 来自 REC/box pair sweep，未以 RES mIoU 选择；MCLN 的 text mask 对 query 广播，而 evaluator 再与 query-specific superpoint mask 融合，故改变 REC query 或只优化 box 会暴露 RES 退化。
+
+#### 14.107 V102 同一 query 的 Mask 后处理可行性审计（2026-08-13）
+
+- 冻结输入：V101 OOF parent query；不允许 mask 审计改 REC flat index。基线固定为该 query 的 `fused@logit 0.0`；oracle 只在同一 query 的 `text/query/fused × {-1,-0.5,0,0.5,1}` 共 15 个 mask policy 内选择。
+- 只读训练集审计：`experiment_output/historical_e71_geometry/v102_same_query_mask_oracle_audit_v1.json`，SHA-256 `92a8f6cf5f66d5f94591119c5de29366c14814feebdfb791ed8e16ec3918c077`，mode `0444`，`validation_data_accessed=false`。
+- 同-query oracle 相对基线：Mask@0.25 `94.5998 -> 95.9225`（`+485`, `+1.3228pp`），Mask@0.50 `85.6784 -> 87.8304`（`+789`, `+2.1519pp`），mIoU `72.2030 -> 74.5105`（`+2.3075pp`）；20,641 行 IoU 可提升，0 行下降。5 折分别 `+88/+172/+2.3499pp`、`+99/+134/+2.1156pp`、`+113/+181/+2.5317pp`、`+95/+164/+2.3338pp`、`+90/+138/+2.1905pp`，方向全部一致。
+- V101 换 query 本身在同一 legacy mask policy 下仅 `+18/+17/+0.0329pp`，因此 Mask 空间主要来自来源/阈值选择，不是偷换定位候选。最优全局固定 policy 仅提供小幅收益，不能替代逐样本策略。
+
+#### 14.108 V102 Mask-only 后处理预注册（训练前冻结，2026-08-13）
+
+1. **边界与不变量**：V101 先产生最终 REC flat index；V102 只能读取该 index 对应 parent query，输出一个 mask source 与 logit threshold。V102 返回的 REC score tensor 必须与 V101 bitwise 相同，最终 flat index/parent mapping 必须逐行一致；任何不一致 fail closed。训练与 OOF 不访问 validation，推理不接触 GT/IoU/类别名。
+2. **可部署特征**：新建 train-only v2 sidecar，逐 query 保存 52 个纯推理统计：三种 source 各 7 个 logit/probability/confidence/entropy 汇总，三种 source × 五阈值的前景比例，三对 source × 五阈值的二值一致率，以及融合 text weight。它与旧 15-policy label cache、候选 cache、epoch71 backbone 的 SHA/逐行 query identity 绑定。特征定义与类别、场景 ID、ScanRefer 文本模板无关，可沿相同模型输出接口迁移到 Nr3D/Sr3D。
+3. **模型**：`QueryMaskPolicyPostprocessor`。179-D query/geometry candidate 特征先做 128-D variant encoder；同-query mean/max 与全局 query context、52-D mask feature 共同进入 1 层 4-head、FFN=256 的 permutation-equivariant contextual encoder；密集输出每 query × 15 policy 的 IoU 估计与严格嵌套的 @0.25/@0.50 概率。hidden=128，dropout=0.1。
+4. **训练唯一配置**：seed=0，12 epochs，batch=128，AdamW，lr=`3e-4`，weight decay=`1e-3`，grad clip=`1.0`。所有有效 query/policy 做密集监督；loss=`SmoothL1(IoU)+BCE(hit025,hit050)+0.5*soft-listwise+0.5*expected-regret`；listwise utility=`IoU + P@0.25 + 2*P@0.50`，target temperature=`0.25`。normalization 只由每个 OOF fold 的 4/5 训练 scenes 拟合。
+5. **部署唯一策略**：在冻结 V101 parent query 上比较 15 policy；proposal 为预测 utility 的稳定 argmax。仅当相对 legacy `fused@0.0` 的预测 `delta IoU>0`、`delta P@0.25>0`、`delta P@0.50>0` 且 `delta IoU+delta P@0.25+2*delta P@0.50 >= 0.02` 时切换，否则严格回退 legacy。无 grid search、无 validation 调参。
+6. **OOF 门**：沿 V101 相同 5 个 scene-disjoint folds。要求 REC decision digest 完全不变；总 `delta_hits025>=49`、`delta_hits050>=79`、`delta_mIoU>=0.0023`；每折三项均非负且每折至少一项严格为正；scene-block bootstrap 95% lower bound 对三项均严格大于 0。任一失败则 V102 不可部署，不运行正式 validation。
+7. **后续顺序**：TDD feature/cache/model/policy/runtime -> v2 train cache 完整性与 parity -> 一次固定配置 OOF -> 通过后全训练集 artifact/严格 reload/runtime parity -> 合并 V101+V102 一次正式 ScanRefer validation；最后才比较当前 V99 与 MCLN mask baseline，并单独记录 Nr3D/Sr3D 尚缺跨数据集验证，不能把接口泛化误写成指标泛化。
+
+#### 14.109 V102 特征缓存、启动故障与可复现性封存（2026-08-13）
+
+- 首次两个 32-row smoke 若重新运行 top-16 候选选择，会分别在低排名 query 处出现冻结 base cache 与
+  当前 backbone 排名漂移（其中 batch24 的 row5 为 query `171 -> 169`）。根因是重新做候选排序不能
+  保证与旧 label/cache 轴逐位一致；这两次失败均发生在训练前，输出保留为负证据。修正为只从已绑定
+  base cache 读取冻结 `query_indices/candidate_valid`，再按该轴提取当前 mask logits；不重算候选身份。
+- 修正后的 32-row smoke 严格重载通过：shape=`[32,16,52]`、全部 finite、无效候选全零、52/52
+  特征非零方差；backbone/base/joint manifest SHA 均匹配。随后完整生成 train cache：
+  `/root/autodl-tmp/DATA_ROOT/output/scanrefer_joint_box_mask/v102_mask_features_train_full_v1`，
+  36,665 rows、586,640 valid candidates、52/52 非退化，content SHA-256
+  `41b1728971963cb09db58b1e4ab6f02314e23a5184c7a4cb8db5dc7b2e81668a`，manifest file SHA-256
+  `6f183499fd899767dcc321a71e95d01e9d29eb324e5417398c7e869dbaa5a39d`。
+- OOF 第一次启动在 import 时即失败：直接执行 `scripts/run_v102_mask_only_oof.py` 只把 `scripts/`
+  放入 Python 模块路径，无法 import `models`。最小红/绿对照稳定复现；仅增加
+  `PYTHONPATH=/tmp/mcln_repo` 后 `--help` 状态 0。失败日志只读 SHA-256
+  `40b113708089b3fd6993168795196db460fc04c9d5fd0b2fb8a67b5c55759c52`。
+- 第二次启动在任何数据加载/训练前失败：共享保护函数只接受严格三键
+  `{backbone,parent,geometry}`，驱动误把 `v101_sidecar` 放进同一字典。最小修复不放宽共享契约；
+  sidecar 改用同强度的 regular-file/non-symlink/mode0444/inode/time/size/SHA 身份前后比较。
+  相关聚焦回归 `14 passed`，真实 sidecar SHA `d3d79f...e141c` 校验通过，可写临时文件按预期
+  fail closed；失败日志 SHA-256 `0cd371f80d878d241aaaf05fb8f64f8d0eb32398b62bab1a588f7f616bf7db40`。
+- 最终 OOF 驱动 SHA-256 `20c02902cdbabb52ade119ab3f90671aa8bcfd851c2d3b157d89daed54ba8f50`；
+  以上两次均未写结果、未训练、未改 protected artifact，故不构成额外配置试验。
+
+#### 14.110 V102 五折 OOF 结果：部分有效但联合门失败，禁止部署（2026-08-13）
+
+- 正式只读结果 `experiment_output/historical_e71_geometry/v102_mask_only_oof_v1.json`，mode `0444`，
+  SHA-256 `4ed892f89bc04fecd0f1618dc415039614241d432b90b0010af3908ef719c1b0`；完整覆盖
+  36,665 rows、562 scenes、5 folds，`validation_data_accessed=false`、`inference_uses_ground_truth=false`。
+  backbone/parent/geometry/V101-sidecar 四份保护输入前后身份完全一致。
+- 固定 V102 接受 4,781 次 mask-policy 切换。相对同-query legacy fused@0：Mask@.25
+  `34685 -> 34801`，净 `+116 hits`（`+0.3164pp`）；Mask@.50 `31414 -> 31448`，净
+  `+34 hits`（`+0.0927pp`）；mIoU `0.7220305 -> 0.7228831`，净 `+0.0008526`。
+  REC parent/index digest 前后同为 `f043cd...e7ba`，证明 mask-only 边界成立。
+- 五折 delta 为 `+22/+6/+0.001484`、`+23/+9/+0.000703`、`+15/+28/+0.001512`、
+  `+35/-19/+0.000271`、`+21/+10/+0.000291`。scene bootstrap 10,000 次 95% lower bound 为
+  @.25 `+0.002271`、@.50 `-0.000247`、mIoU `+0.000254`。
+- 因 @.50 仅 `+34 < +79`、mIoU `+0.000853 < +0.0023`、held fold3 的 @.50 为 `-19`，且
+  @.50 bootstrap lower bound 为负，预注册联合 gate 明确 `passed=false/deployable=false`。
+  V102 不构建部署 artifact、不接 runtime、不访问 formal validation，也不得事后降低门槛。
+- 可复现决策重放逐折逐项相同，预测摘要 `f248e0ce2f853f59be0c09a1e9c80c846dc7e199cbefd89c2f770f06ebb4ab85`；
+  逐行 sidecar `v102_mask_only_oof_decisions_v1.pth` SHA-256
+  `a1039a8d6feebcf25f586ba3c795658d999f6b1ed78f1faab2e7756b00ed7ba6`，mode `0444`。
+
+#### 14.111 V102 失效机制与独立 result-to-claim 判定（2026-08-13）
+
+- 逐行诊断 `experiment_output/historical_e71_geometry/v102_mask_only_oof_diagnosis_v1.json`，mode `0444`，
+  SHA-256 `3827e4f5ca80bd003d897482a08b1a5e3dc3d59929d1d71e61aad7b52eb0b9be`。4,781 次接受中
+  @.25 rescue/break=`150/34`，@.50=`156/122`；IoU improve/equal/degrade=`1230/2412/1139`。
+  预测与真实 delta 的 Pearson 仅 @.25=`0.3086`、@.50=`0.1748`、IoU=`0.2306`，说明绝对
+  outcome heads 相减得到的 policy gain 校准不足，尤其无法可靠排除 @.50 break。
+- `text@-1.0` 被选 994 次，贡献 @.25 `+60`、@.50 `-13`；held fold3 更为
+  `+27/-10/-0.001388`。若无接受门把 34,000 个非 baseline proposal 全部采用，则 @.50
+  rescue/break=`370/368`、净 `+2`，mIoU `-0.000085`。因此问题不是简单把 margin 放宽或缩紧，
+  而是必须直接建模 baseline→proposal 的 rescue/break 风险并保留自然事件先验。
+- 只读固定-policy审计显示 `fused@-1.0` 相对 fused@0 在全 train OOF 为 `+24/+126/+0.001205`，
+  `fused@-0.5` 为 `+8/+103/+0.001355`，后者五折三项均正；但这些是观察 V102 后的诊断，不能
+  当作无偏发布证据或直接用于 validation。same-query oracle 子集仍保留大量余量：fused-only
+  `+93/+455/+0.01294`，query+fused `+101/+519/+0.01441`；说明可用阈值候选充足，瓶颈是选择。
+- 独立 result-to-claim 评审为高置信度 `partial`：支持“REC identity不变”和“train OOF下
+  Mask@.25可靠提升”，不支持三指标联合提升、可部署、正式 val 或 Nr3D/Sr3D 泛化。建议 V103
+  采用嵌套 scene-disjoint 校准、显式 break-cost/相对转移风险、多种子最坏情况，并只在新 OOF
+  预注册门通过后构建 artifact/runtime；V102 到此冻结为诊断性负证据。
+
+#### 14.112 V103 Relative Mask Transition Ensemble 预注册（编码前冻结，2026-08-14）
+
+1. **主张与边界**：V103 检验“直接预测 legacy→candidate 的 rescue/break 风险，比 V102 对两个绝对
+   outcome 相减更能稳定选择 mask policy”。冻结 V101 先给出 REC flat index/parent query；V103 仅输出
+   该 query 的 mask source/threshold，不得改 REC scores、flat index 或 parent mapping。推理特征仍只用
+   179-D 通用 query/geometry features 与 52-D mask logit statistics，不使用 GT、IoU、类别名、dataset
+   名或 scene ID；接口可复用于 Nr3D/Sr3D，但本轮不能宣称已有跨数据集数值。
+2. **候选集合**：legacy anchor 固定为 `fused@0.0`（原 15-policy index 12）。V102 显示低阈值
+   text-only 是主要 @.50 break 源，故 V103 在看自身 OOF 前冻结允许集合为原 indices
+   `[4,5,6,7,8,9,10,11,12,13,14]`：只保留收缩型 `text@+1.0` 与全部 query/fused thresholds；
+   indices `[0,1,2,3]` 永久禁止。该 11-policy 子集同-query oracle 为 `+202/+636/+0.017548`，五折
+   三项均正，证明仍有足够 headroom；oracle 只用于容量审计，不参与推理。
+3. **相对网络**：`RelativeMaskTransitionPostprocessor` 复用 V102 的 128-D variant encoder、同-query
+   mean/max 聚合、52-D mask feature 与 1-layer/4-head/FFN256 query contextual encoder。每个 query×11
+   policy 直接输出 `delta_iou in [-1,1]`，以及 @.25/@.50 各三类 transition logits：
+   `break/neutral/rescue`。anchor 的三项预测在选择时机械置零，不作为可切换 proposal。
+4. **唯一训练协议**：每个 outer fold 固定训练 seeds `[0,1,2]`，不按结果选 seed；部署对象就是三个
+   model 的固定 worst-case consensus ensemble。每个 model 为 12 epochs、batch128、AdamW
+   `lr=3e-4/wd=1e-3`、dropout0.1、clip1.0。normalization 只拟合该 outer fold 的四折 train scenes。
+   标签直接由 candidate 相对 anchor 计算：真实 delta IoU 与两个 `-1/0/+1` transition。loss 不做
+   rare-class 重采样/逆频率权重，保留自然 break/rescue prior；固定为
+   `SmoothL1(delta_iou)+CE025+2*CE050+0.5*listwise+0.5*regret`。listwise 的 target/pred utility 均为
+   `delta_iou + transition025 + 2*transition050`，target temperature=`0.25`。
+5. **唯一选择策略**：三个 seed 分别得到 `effect=P(rescue)-P(break)`。对每个 policy 取跨 seed 最坏值
+   `min(delta_iou), min(effect025), min(effect050), min(delta_iou+effect025+2*effect050)`；仅前三项都
+   严格正且 worst aggregate `>=0.02` 的非-anchor policy 有资格，取 worst aggregate 最大者（并列取
+   原 policy index 最小者），否则回退 anchor。没有 margin/temperature/cost/seed/policy subset sweep，
+   不使用 V102 held-row outcome 做阈值拟合。
+6. **证据范围与门**：沿 V101/V102 完全相同的 5 个 scene-disjoint outer folds；V103 是在 V102
+   train-only诊断后冻结的新 development OOF，不能冒充未触碰确认集。必须满足 REC digest 位级不变；
+   总 delta hits @.25 `>=49`、@.50 `>=79`、delta mIoU `>=0.0023`；五折三项均非负且每折至少一项
+   严格正；10,000 次 scene-block bootstrap 的三项 95% lower bound 均严格正。还须记录三个单 seed
+   的诊断结果，但不得事后挑 seed；正式 gate 只评估预注册 consensus ensemble。
+7. **晋级顺序**：先做公共 model/loss/selector/gate 聚焦测试与现有 V102 回归；再运行唯一 V103 OOF。
+   任一门失败则冻结为负证据，不构建 artifact、不接 runtime、不访问 validation。全部通过后才用全部
+   36,665 train rows 重训三 seed ensemble，要求只读 artifact 严格 reload、full-train replay三项净正、
+   offline/runtime mask policy逐位一致及 REC scores/index逐位一致；最后才允许 V101+V103 一次正式
+   ScanRefer validation。正式结果仍以用户给出的 MCLN mask baseline `58.70/50.70/44.72` 和当前
+   V99 official `59.6971/49.0324/41.7646` 分别比较，不能用 train OOF 指标替代 official。
+
+#### 14.113 V103 五折三种子 OOF：仅 mIoU 幅度门失败（2026-08-14）
+
+- 编码前预注册之后才新增 `models/rec_relative_mask_policy.py` 与
+  `scripts/run_v103_relative_mask_oof.py`；模型/驱动 SHA-256 分别为
+  `3eb89aaea7879ac086deb14449721713083c14143809be4238dd6fec5aa28626`、
+  `fd2b5ae44f73859d21a3d4e6d0804a58ecc3b1dae0ddaf91681621a78fb8e00a`。先得到模块不存在的红测，
+  再完成新 model/loss/三 seed selector/gate 与 V102 回归共 `16 passed`；A100 CUDA 前向、反向、
+  selector smoke 均 finite。唯一正式 OOF 训练 5 folds × seeds `[0,1,2]`，无 seed/policy/margin sweep。
+- 只读报告 `experiment_output/historical_e71_geometry/v103_relative_mask_transition_ensemble_oof_v1.json`
+  SHA-256 `d8e1a1c90bcf4bd6a726472903345e92e6a9694c1b47b346c074742c6380f2dc`，mode `0444`；只读逐行
+  sidecar `v103_relative_mask_transition_ensemble_oof_decisions_v1.pth` SHA-256
+  `8020a65c0464b0368bbe457416a8f5d08c41982ccc03011aa5a9fd63f27fc792`，mode `0444`。覆盖
+  36,665 rows、562 scenes、15 个训练模型；`validation_data_accessed=false`、
+  `inference_uses_ground_truth=false`，四份 protected artifact 身份前后完全相同。
+- consensus 接受 3,708 次 mask-policy 切换。相对 legacy fused@0，Mask@.25
+  `34685 -> 34746`，净 `+61 hits`（`+0.1664pp`）；Mask@.50 `31414 -> 31553`，净
+  `+139 hits`（`+0.3791pp`）；mIoU `0.7220305 -> 0.7240734`，净 `+0.0020429`。
+  REC parent/index digest 前后同为 `f043cd...e7ba`。
+- 五折 delta 依次为 `+14/+23/+0.002370`、`+10/+27/+0.001514`、
+  `+6/+41/+0.002322`、`+16/+21/+0.002322`、`+15/+27/+0.001663`；每折三项均严格为正，
+  且 V102 曾失败的 fold3 已不再出现 @.50 break。scene-block bootstrap 10,000 次 95% lower bound
+  为 @.25 `+0.001045`、@.50 `+0.002807`、mIoU `+0.001617`，三项均严格正。
+- 预注册 gate 的其余七项全部通过，但 mIoU 幅度 `+0.002043 < +0.0023`，故报告正确标记
+  `passed=false/deployable=false`。不得用“只差 0.000257”事后降低门槛；V103 不构建 full-train
+  artifact、不接 runtime、不访问 formal validation。三个单 seed 仅作诊断：分别为
+  `+52/+147/+0.001936`、`+59/+173/+0.002227`、`+59/+157/+0.002263`，不得挑 seed 发布。
+- sidecar 独立重放的 before/after、全局 metrics 与预测 SHA `c22b...c98` 逐项一致。3,708 次接受中
+  IoU improve/equal/degrade=`1516/1278/914`；预测 worst delta 与真实 delta Pearson=`0.4411`，
+  worst aggregate 与真实 delta=`0.5339`。事后把 `min worst_delta` 从 0 提至 0.0025--0.05 均不能
+  达到 mIoU 门，说明简单加阈值不是修复。V103 已在 @.25/@.50 留有 `+12/+60 hits` 的门槛余量，
+  下一轮应保持所有 eligibility 与 gate 不变，研究合格候选内部的 IoU 优先排序，而非放松安全约束。
+- 独立 result-to-claim 评审为高置信度 `partial`：支持以上 train OOF 增益、逐折/bootstrap 稳定性与
+  REC identity 不变，不支持可部署、正式 validation、联合最终指标或跨数据集数值泛化。评审确认
+  “eligible 内优先 worst delta-IoU”可作为一次新预注册 development OOF，且不属于降门槛或
+  ScanRefer 特化；但它由 V103 失败适应性启发，不能当作独立确认，若再失败不能继续反复改 selector。
+
+#### 14.114 V104 IoU-Priority Relative Consensus 预注册（编码前冻结，2026-08-14）
+
+1. **动机与证据边界**：V103 的 REC identity、五折非退化、三个 bootstrap 下界及 @.25/@.50
+   总命中门均已通过，仅 mIoU `+0.002043 < +0.0023`；同时命中门有 `+12/+60 hits` 余量。
+   逐行诊断表明简单提高 `min worst_delta` 不会补足 mIoU，因此 V104 不改 margin、不删 held rows，
+   只检验“在已经满足三指标安全约束的候选中，按相对 IoU head 排序能否把容量分配给更高质量 mask”。
+   这是观察 V103 train-only OOF 后冻结的下一次 development OOF，不是独立确认结果。
+2. **冻结不变项**：数据、5 个 scene-disjoint folds、V101 REC parent、179+52-D 推理特征、允许/禁止
+   policy 集、`RelativeMaskTransitionPostprocessor` 架构、loss、normalization、12 epochs、batch128、
+   AdamW `3e-4/1e-3`、dropout0.1、clip1.0、seeds `[0,1,2]` 以及不按 seed 选模均与 V103 完全相同。
+   不使用 validation、GT、类别名、dataset/scene ID，不重采样/重加权，不做阈值或 policy subset sweep。
+3. **唯一变化：合格后的排序**：仍逐 policy 计算三个 seed 的
+   `worst_delta_iou`、`worst_effect025`、`worst_effect050`、`worst_aggregate`；eligibility 与 V103
+   完全相同，即非 anchor、前三项严格正且 `worst_aggregate>=0.02`。V104 在 eligible 集内按
+   `(worst_delta_iou, worst_aggregate, -original_policy_index)` 字典序取最大；无 eligible 时回退
+   legacy fused@0。anchor 机械归零，REC parent/index 原样返回。不得在看到 V104 OOF 后切回
+   aggregate 排序或混合两个 selector。
+4. **复现实验与门**：重新训练固定 5×3 个模型，记录每 seed final loss 和单 seed 诊断；不把 V103
+   held outcomes 输入 V104。报告/逐行 sidecar 独占创建并设 `0444`，保护四份输入身份，要求 REC digest
+   完全不变。部署门一字不改：总 `delta_hits025>=49`、`delta_hits050>=79`、`delta_mIoU>=0.0023`，
+   五折三项非负且每折至少一项严格正，10,000 次 scene bootstrap 三个 95% lower bound 均严格正。
+5. **晋级纪律**：任一门失败即冻结为不可部署负证据，不构建 artifact/runtime、不访问 validation；
+   全部门通过后才训练 full-train 三 seed artifact，完成 strict reload、full-train replay、runtime parity、
+   REC bitwise invariance，再进行 V101+V104 唯一一次正式 ScanRefer validation。接口可迁移到
+   Nr3D/Sr3D，但未做跨数据集数值验证前不得宣称其指标泛化。
+
+#### 14.115 V104 OOF：IoU-priority 排序证伪，停止 selector 迭代（2026-08-14）
+
+- V104 selector/包装驱动 SHA-256 分别为
+  `229900e61ea706d509ec98fc3252fa4b3f82a956cbced2dc6e7134f86419996e`、
+  `33a244ebac2f48e6c4a24fc2811d65f4df91075ce71813bd8ff7d97a50b15867`；TDD 先红后绿，新旧
+  model/driver/V102 回归共 `21 passed`，A100 smoke 确认 ranking/parent 契约。V104 复用 V103 训练
+  驱动 `fd2b...e00a`，15 个 model 的逐折逐 seed final loss 与 V103 精确一致，证明唯一变量确为
+  eligible 内字典序排序。
+- 只读报告 `experiment_output/historical_e71_geometry/v104_iou_priority_relative_mask_oof_v1.json`
+  SHA-256 `47172ae1cb39ca431dd03180b738538cfa23b77b352e94848236be3a59a8ff56`，mode `0444`；只读 sidecar
+  `v104_iou_priority_relative_mask_oof_decisions_v1.pth` SHA-256
+  `48e2ec316a30416cf5f44b26126522b757876c393f1c4ffcc3c7eb44779d6506`，mode `0444`。schema、
+  `eligible_ranking=[worst_delta_iou,worst_aggregate,lowest_original_policy_index]`、双 driver SHA、
+  36,665 rows/562 scenes/5 folds/15 models 均与预注册一致；protected identity 前后相同，未访问 validation。
+- 3,708 次接受相对 legacy 得到 `+62 hits@.25`、`+134 hits@.50`、`+0.0019966 mIoU`；逐折为
+  `+14/+23/+0.002374`、`+10/+26/+0.001445`、`+6/+41/+0.002383`、
+  `+17/+17/+0.002095`、`+15/+27/+0.001662`。bootstrap 95% lower bound 为
+  `+0.001067/+0.002658/+0.001576`，REC digest 仍为 `f043cd...e7ba`。
+- gate 仍仅 `delta_mIoU>=0.0023` 失败，故 `deployable=false`，不构建 artifact/runtime、不访问
+  formal validation。sidecar 精确重放通过；相对 V103 仅 434 行改变，净效果为
+  `+1 hit@.25/-5 hits@.50/-0.0000463 mIoU`，直接证伪“把 worst delta head 用作首排序即可修复”。
+- V103 接受行的真实正/负 IoU 增益和分别为 `+109.089/-34.185`；只保留真实正增益的诊断 oracle
+  仍有 `+79/+195/+0.002975`，说明过滤 break 有容量。可是仅用 worst prediction 与 policy one-hot
+  做 leave-one-fold ridge filter 只有约 `+60/+135/+0.001999`，不能过门。至此停止对同一 OOF 反复
+  改固定 selector；若继续，应使用 outer-fold 内严格 inner-OOF 生成 proposal，再训练能读取原始
+  179+52-D 特征的非线性 switch verifier，以避免元层面泄漏和欠校准。
+
+#### 14.116 V48 query-superpoint 空间 Mask 对照恢复与启动前审计（2026-08-14）
+
+- **问题锚点**：当前唯一正式最好 V99 为 REC `0.583929/0.488536`、Mask
+  `0.596971/0.490324/0.417646`；相对用户给出的 MCLN Mask baseline
+  `0.5870/0.5070/0.4472`，Mask@.25 已高 `+0.009971`，但 Mask@.50 与 mIoU 仍低
+  `-0.016676/-0.029554`。V102--V104 只改变同一 query 的离散 mask policy，V104 已明确冻结为
+  不可部署，因此不再修改 selector。
+- **结构审计结论**：V42/V43 只产生逐 query 的 alpha 与统一 logit bias，同一 query 内所有
+  superpoint 获得相同偏移；V48 的 `QuerySuperpointMaskRefiner` 是现有唯一能输出局部
+  `[query,superpoint]` residual 的网络模块，但它此前因上游事件链重启而从未跑出真实 smoke。
+  当前实现只读取 query/superpoint feature，尚不读取两路 mask logits、源分歧或 box-relative
+  geometry。故先运行原 V48 作为必要对照；若其局部 residual 已激活但 Mask 指标不增，再预注册
+  evidence/geometry-aware 增强，不能跳过对照直接增加复杂度。
+- **主张与反主张**：主张 C1 是“局部 query-superpoint residual 能修复全局 alpha/bias 无法覆盖的
+  漏分与误分”；最低证据是空间 residual 的 query 内和 query 间方差均严格正，且 128-row
+  debug 的 Mask@.50/mIoU 不劣于同协议 control。反主张是“增益只来自额外 candidate loss 或短集
+  波动”；因此固定同一 protected V19、seed、batch、epochs 和 optimizer，只比较预注册的
+  `cmw/clw/K={0.10/0/8,0.25/0/16,0.25/0.05/16,0.25/0.10/16}`，不据结果新增第五组。
+- **执行与晋级门**：恢复既有 `queue_v48_spatial_mask_smokes_after_v47.sh` 的四组单卡、3 epoch、
+  128-row smoke；要求四组完整 REC/Mask Overall+Unique+Multiple 收据，初始化
+  `1228/0/34`、checkpoint/optimizer 合同、alpha/bias/source-evidence/candidate-loss 非零，且
+  `mask_spatial_superpoint_std_mean>0`、`mask_spatial_query_std_mean>0`。smoke 只用于可训练性和
+  方向筛选，不作为 9,508-row 正式指标；只有至少一组无非有限值、REC 无结构性崩坏且 Mask@.50
+  或 mIoU 相对 control 有正向信号，才允许预注册正式 V48 或增强版。否则冻结 V48 为负证据。
+- **代码身份**：启动前 SHA-256 为 `joint_query_quality.py=d6bbb0...df8111`、
+  `mcln.py=156d8f...98b08`、`mask_fusion.py=0ab1a7...c748`、训练 launcher
+  `5b083a...06df6`、V48 queue `76d505...85c0`；启动时将重新记录完整哈希和 protected V19
+  `2d6a3c...ecbe` 身份，不从任何 smoke 权重续训。
+- **容量与可恢复性清理**：启动门禁发现 overlay/data 盘仅约 `2.3/3.3GB`，低于并行 smoke 的
+  `4GiB` 下限。审计旧 V51 三个 128-row smoke 后确认：24 个 `.pth` 链接对应 6 个物理 inode、
+  共 `3,662,867,966` bytes；全部硬链接仅在
+  `DATA_ROOT/output/double_stage_v51_bmq_smoke` 内，无打开文件，正式 R2-P/V51-T 均从 protected
+  V19 重新初始化而未消费这些 smoke。其 config、完整日志、逐 epoch metrics/diagnostics 和
+  retention JSON 均保留，可用相同 runner 精确重跑。删除仅限这 24 个旧 smoke `.pth`，data 盘
+  free 从 `3,402,456` 增至 `6,979,496 KiB`；protected V19 删除后仍为 mode `0444`、SHA-256
+  `2d6a3cf2914e5a7394ff2072378613314aae6d44c0dfa03762dcbb6e55ececbe`。
+
+#### 14.117 V48 四组真实 smoke：空间残差激活但分割质量不增，禁止正式训练（2026-08-14）
+
+- protected V19 初始化审计通过：公共 tensor `1228/0/34`（common changed/new）、新模块
+  `176,979` 参数、34 个 state、输出头全零，mask calibration/source evidence/spatial refiner
+  开关与 `hidden=32/max_delta=2.0` 均符合冻结合同。四组单卡在 A100 上完成 3 epoch、每轮
+  128-row validation；无 OOM、非有限值或训练异常，四份 epoch3 checkpoint audit 均为
+  `34 states/176,979 elements/step=6` 且所有 68 个 Adam moments finite/nonzero。
+- 只读汇总
+  `/root/autodl-tmp/DATA_ROOT/output/v48_spatial_mask_20260814/v48_spatial_mask_smoke_summary.json`
+  SHA-256 `cbb5e3743f7ed261281202696be90270d1826328cf07f53deffcbbccdf5c3e11`，四组
+  structural `pass=true`。固定 epoch3 结果如下；同一 128-row V19 父 Mask 参照为
+  `64/52, mIoU=0.350607`，不能把 debug 比例当成完整 validation 指标。
+
+| variant (`cmw/clw/K`) | REC hits .25/.50 | Mask hits .25/.50 | mIoU | spatial abs / SP-std / Q-std |
+|---|---:|---:|---:|---:|
+| `0.10/0/8` | `64/57` | `64/50` | `0.350304` | `0.0049/0.0059/0.0027` |
+| `0.25/0/16` | `64/57` | `64/50` | `0.350109` | `0.0065/0.0039/0.0058` |
+| `0.25/0.05/16` | `64/57` | `64/52` | `0.349695` | `0.0137/0.0040/0.0065` |
+| `0.25/0.10/16` | `64/57` | `64/52` | `0.349527` | `0.0124/0.0028/0.0060` |
+
+- 空间 residual 在 superpoint 与 query 两个维度均真实非零，证明不是接线/梯度问题；但四组 mIoU
+  相对父参照分别低约 `0.000303/0.000498/0.000912/0.001080`，前两组还各损失 2 个 Mask@.50
+  hits。Lovasz 权重越高，residual 与统一 bias 越大而 mIoU 越低。故 C1“仅凭冻结 query/SP
+  feature 的低秩 residual 可修正局部边界”未获得质量证据；V48 不进入 9,508-row 或 full-data
+  正式训练，也不按 epoch1/2 反选变体。
+- 失败机制与实现一致：V48 residual 对当前 text/query/fused logits、源分歧、预测 box 和
+  superpoint 相对位置条件独立；同一 query 内哪些 superpoint 正处于不确定边界、位于预测框内外，
+  只能由冻结 feature 间接猜测。结果说明下一版必须显式读取这些推理时可用证据，而不是继续调
+  `cmw/clw/K`。
+- 按预注册清理规则，四组 checkpoint 在完成 receipt/checkpoint audit 与 summary 后全部删除，日志、
+  config、逐 epoch metrics、diagnostics 与 audit 保留；data 盘恢复约 `7.8GB` free。第三轮原子
+  checkpoint 前还清理了已被后继 V54/V55 正式实验取代的 V53-FH 128-row smoke：8 个链接、2 个
+  物理 inode、`1,212,071,974` bytes；其 config/log/五轮 metrics/diagnostics/retention 与独立
+  checkpoint audit 均保留，且无外部 hardlink、脚本依赖或打开文件，可从 protected V19 精确重跑。
+  protected V19 SHA 在两次清理后仍为 `2d6a3c...ecbe`。
+
+#### 14.118 V105 EGQS-R：Evidence/Geometry-conditioned Query-Superpoint Mask Refiner 预注册（编码前冻结，2026-08-14）
+
+1. **主张与边界**：V105 检验“局部 mask 修正必须显式依赖当前 source logits 的边界不确定性和
+   predicted-box-relative geometry”。它是 mask-only 网络模块，放在 REC source arbiter/sidecar 已
+   生成 scores 与 selected indices **之后**、最终 mask loss/evaluator **之前**；不得回写任何 REC
+   score、rank、query index 或 parent mapping。推理不读取 GT、类别名、dataset/scene ID 或固定
+   ScanRefer 源偏好，接口直接适用于 ScanRefer/Nr3D/Sr3D。
+2. **模块输入与零初始化**：每个样本读取冻结的 query feature `[Q,288]`、superpoint feature
+   `[S,288]`/center `[S,3]`、predicted box center/size `[Q,6]`、text/query mask logits `[Q,S]`
+   和现有 fusion alpha `[Q]`。先计算当前 fused logit，再构造 7 维连续 evidence basis：缩放后的
+   text/query/fused logit、fused uncertainty、两源 probability disagreement、signed source
+   difference；8 维 geometry basis 为 box-size 归一化相对坐标的 signed/absolute 三轴、连续 inside
+   margin 和径向距离。所有上游输入 detach。
+3. **高效 query-conditioned residual**：保留 V48 的低秩 query–superpoint content dot product，
+   另由 query embedding 输出 7/8 维 evidence/geometry 系数，与逐 superpoint basis 点积；避免在
+   `[Q,S]` 上构造大 hidden MLP。content 的 query 末层及两组 coefficient heads 全零初始化，最终
+   `delta=2*tanh(content+evidence+geometry)`，step0 必须逐位为零。delta 同时加到 text/query
+   logits，故不改变 alpha 语义；参数与计算不依赖 superpoint 数量。
+4. **干净消融与唯一 smoke 协议**：从 protected V19 相同初始化运行四组单卡、seed0、batch64、
+   3 epoch、LR `3e-4`、matched-query `10*focal+2*dice`，关闭 global alpha/bias、candidate dense
+   loss 与 Lovasz，唯一变化为 `content-only / evidence-only / geometry-only / all`。固定使用 epoch3，
+   不按 epoch1/2 或结果新增配置。content-only 是不含 V48 joint rerank/global calibration 的干净
+   局部对照；两个单分支是 novelty isolation；`all` 是唯一晋级候选。
+5. **公共接口与门**：测试 seam 冻结为 (a) refiner `forward` 数值/step0/置换与 source-swap 接口，
+   (b) `MCLN.forward` 的最终 `last_pred_masks/sp_last_pred_masks` 与 REC scores/index identity，
+   (c) launcher→checkpoint audit→128-row metrics。编码前需用户确认这些 seam。smoke 要求所有
+   optimizer/moment finite/nonzero，residual 的 SP/Q 两维 std 严格正，REC score/index digest
+   位级不变；`all` 固定 epoch3 的 Mask@.50 不低于 content-only，且 mIoU 至少高 `0.0003`，否则
+   V105 冻结为负证据，不进入正式训练。
+6. **正式晋级顺序**：smoke 过门后才从受保护 epoch71 backbone（SHA `3e44f4...2208`）用完整
+   36,665 train rows、4-GPU、seed0、global batch192、固定20 epoch训练 `all`；不按完整 validation
+   选 epoch，唯一候选固定为 epoch20。先做 strict reload、train replay、REC bitwise identity 与
+   runtime parity；全部通过后，才允许把固定 V101 REC artifact（SHA `2c969a...a2ae`）和 V105
+   mask head组合进行一次 9,508-row official validation。REC 硬门仍为 `5610/4659`；Mask 至少不低于
+   V99 official `5676/4662/0.4176463`，并同时报告与用户 baseline `0.5870/0.5070/0.4472` 的差值。
+   任一硬门失败均不发布为 goal best，也不得根据 validation 反调 V105 evidence/geometry 维度或门槛。
+
+#### 14.119 V105 只读接线审计与测试 seam 待确认状态（2026-08-14）
+
+- 14.118 的三个公共测试 seam 已在用户侧请求确认；按 TDD 纪律，收到确认前不写测试或模型代码。
+  本节只冻结实现落点，避免确认后再次做架构性选择。
+- 新模块放在 `models/mask_fusion.py`，不复用 `JointQueryQualityReranker` 的 score/residual head；
+  `models/mcln.py` 当前在 line 1720 先生成 arbiter 输出、line 2003 才 `end_points.update(selector_out)`，
+  V105 必须插在二者之间且只更新 `last_pred_masks/sp_last_pred_masks`。这样 source scores、selected
+  indices 与 parent mapping 已经冻结，mask residual 不可能反向改变 REC 选择；无 source arbiter 时
+  仍在最终 return 前执行同一 mask-only 分支。
+- `super_xyz_list` 已由输入点坐标和公开 superpoint mapping 确定性生成；query boxes 已存在于
+  `last_center/last_pred_size`，不需要新增数据集字段。text/query logits、alpha、query/SP features
+  也都在同一 forward 内可用，故 Nr3D/Sr3D 不需新增 loader 或类别分支。
+- 训练沿用 `compute_hungarian_loss(...query_mask_fusion_train_only)` 的真实 matched-query
+  Focal/Dice fast path，但新增独立 `query_superpoint_mask_refiner_train_only` 开关与参数前缀，避免
+  强制构造旧 `QueryMaskFusionCalibrator`。接线范围冻结为：`main_utils.py` 的 CLI/互斥训练模式/
+  freeze-train-mode/checkpoint missing-key 合同，`train_dist_mod.py` 的 model kwargs，
+  `models/mcln.py` 的构造与后-arbiter forward，`scripts/audit_source_moe_checkpoint.py` 的 V105
+  profile，以及独立 launcher/panel summary；loss 数值公式不改。
+- 当前代码身份仍为：doc `57fcfb...f861d`、`mask_fusion.py=0ab1a7...c748`、
+  `mcln.py=156d8f...98b08`、`main_utils.py=f02715...1aa1`、`train_dist_mod.py=f02fee...5503`。
+  四卡均 `1MiB/0%`、无 screen；因此等待 seam 确认不会覆盖运行中实验或产生半成品 checkpoint。
+
+#### 14.120 用户取消 TDD 确认门、V105 实现与单卡真实 smoke 启动（2026-08-14）
+
+- 用户明确要求“不用 TDD skill、不需要确认、直接执行”，因此 14.118/14.119 的等待条件取消；仍保留
+  三个 seam 作为实现后验证接口，不再把它们当成编码前门。随后用户说明服务器只剩一张 GPU，故
+  四路 smoke 从四卡并发改为 GPU0 串行，架构、seed、batch64、3 epoch、LR 与固定 epoch3 门均不变。
+  若 smoke 晋级，正式阶段必须使用单卡梯度累积保持预注册的 effective global batch192；不得把硬件
+  变化偷换为更小训练目标。
+- `models/mask_fusion.py` 新增 `EvidenceGeometryQuerySuperpointMaskRefiner`：16 个 state tensors、
+  26,095 参数。content 是 32 维低秩 query×SP dot；evidence 是 7D（两源/fused scaled logits、
+  fused probability/uncertainty、source probability absolute/signed disagreement）；geometry 是 8D
+  （box-size-normalized signed/absolute xyz、inside margin、radius）。content query 输出层与 7/8D
+  query-conditioned coefficient heads全零初始化，最终 `2*tanh` residual 同时加到两路 logits。
+  所有父输入 detach，且没有 dataset/class/scene ID。
+- `models/mcln.py` 只在所有 arbiter/joint score 已写回后、最终 return 前运行 EGQS；只覆盖
+  `last_pred_masks/sp_last_pred_masks`。`main_utils.py` 增加独立 `use/train_only/lr/hidden/delta/components`
+  CLI、父 checkpoint missing-key、optimizer prefix、eval-mode freeze 与 mask-only Focal/Dice fast path；
+  `train_dist_mod.py` 只传构造参数。新脚本为 `train_scanrefer_egqs_mask_refiner.sh`、
+  `queue_v105_egqs_mask_smokes.sh`、`summarize_v105_egqs_smoke.py` 和 contract smoke。
+- 独立 contract smoke 通过：step0 residual 逐位为零，激活后 residual abs mean `0.0414277`、
+  SP std `0.0211346`、Q std `0.0450663`，query/SP permutation max error `0`，source swap finite，
+  父输入无梯度；参数/张量数精确为 `26095/16`。protected V19 仍为 1228 张量、SHA
+  `2d6a3c...ecbe`，其 SourceMoE/gate/action/objective 全部按 checkpoint config 继承。
+- GPU0 为唯一 A100-PCIE-40GB；screen `mcln_v105_egqs_20260814` 启动串行 panel。content 固定
+  epoch3 已完成 128 条：REC `64/57`（与父路径一致），Mask `64/52`，mIoU `0.350716593`；训练后
+  residual abs mean/SP std/Q std 分别约 `3.39e-4/1.27e-4/3.52e-4`，证明真实激活。
+- 首次 checkpoint audit 因通用规则要求“所有 Adam moments 非零”而拒绝 content：禁用的
+  evidence/geometry heads按消融定义得到零梯度。审计现改为活动组件 moments 必须 finite/nonzero、
+  禁用组件的精确 parameter IDs 必须保持 zero moment；content 复审通过：common/changed/new
+  `1228/0/16`、optimizer states/numel/step `16/26095/6`，inactive IDs 正好 `12--15`。审计后删除
+  content 的 8 个 `.pth` links（2 个物理 inode）；指标、日志、completion/audit receipt 保留，队列
+  从 evidence 继续而不重复 content。
+
+#### 14.121 只保留最佳权重：V51 正式旧权重清理（2026-08-14）
+
+- 用户再次要求清理无用权重并只保留最好权重。只读盘点确认 V59c epoch3 虽仅 128-row，但历史日志
+  将它登记为该路线唯一候选，故保留；protected V19、epoch71、V99/V101 与 single-stage best 也不动。
+- `DATA_ROOT/output/double_stage_v51_bmq_formal` 的三组正式路线均已有 config、9508-row metrics、
+  checkpoint audits 与 launcher logs，且被 V99 综合结果支配；全部从 protected V19 初始化，可重跑。
+  对 22 个 `.pth` links 审计得到 4 个物理 inode、总 `2,449,779,612` bytes；所有 hardlinks 都在该
+  精确目录内，无外部 link、打开文件或活动 V51 Python 进程。删除后该目录剩余 `.pth=0`，配置/指标/
+  审计/日志未删。protected V19 与 epoch71 SHA 复核仍为 `2d6a3c...ecbe`、`3e44f4...2208`；数据盘
+  可用空间在 V105 同时写 checkpoint 的情况下约 `9.0GB`。这些 V51 权重不能直接恢复，只能从保留
+  的 V19+config 重跑；这是经用户授权的有损但可重建清理。
+
+#### 14.122 V105 四分支单卡 smoke 终态：结构通过、质量门失败（2026-08-14）
+
+- GPU0 串行完成 content/evidence/geometry/all 四组固定 epoch3；每组 REC 均为 `64/57`，证明
+  mask-only 接线没有改变 REC。四组 Mask@.25/.50/mIoU 依次为：content
+  `64/52/0.350716593`、evidence `64/52/0.350351649`、geometry
+  `64/51/0.350439980`、all `64/52/0.350835181`。all 保持 content 的 Mask@.50，但 mIoU 只增加
+  `0.000118588`，低于编码前冻结的 `+0.0003` 门；summary 的唯一 failure 为
+  `all mIoU margin`，因此 `pass=false`，禁止进入完整训练或 official validation。
+- 失败不是未激活：all 的 residual abs mean/max、SP std、Q std 分别为
+  `0.082627/0.858837/0.066225/0.090225`，content/evidence/geometry 三项贡献 abs mean 为
+  `0.002431/0.085094/0.097504`。四份 completion/checkpoint audit 均通过，公共 parent tensors
+  `1228/0/16`，all 的 16 个 optimizer states/32 个 moments 全 finite/nonzero、step=6；单分支禁用
+  参数的零 moments 与预注册 ID 精确一致。
+- 只读汇总
+  `/root/autodl-tmp/DATA_ROOT/output/v105_egqs_mask_20260814/v105_egqs_smoke_summary.json` 保留；四组
+  checkpoint 均在 audit 后删除，V105 根目录 `.pth=0`。protected V19、epoch71、V101 artifact SHA
+  复核仍为 `2d6a3c...ecbe`、`3e44f4...2208`、`2c969a...a2ae`，GPU 空闲，数据盘约 `11GB` 可用。
+- 因果解释边界：V105 已能读取 source evidence 与 box-relative geometry，但每个 superpoint 的
+  residual 仍独立生成，没有显式邻接或连通性约束。高幅度 residual 只产生极小 mIoU 正增益，说明
+  下一路线不应继续扩大逐点 MLP/系数头，而应检验局部拓扑传播能否形成连贯的边界修复。
+
+#### 14.123 V106 Boundary-aware Superpoint Graph Diffusion 预注册（编码前冻结，2026-08-14）
+
+1. **唯一新假设**：同一 query 的 fused mask 在空间/语义相邻 superpoints 上应有局部一致性；V106
+   用显式 KNN 图的邻域消息修正不确定边界，检验 V105 缺失的拓扑变量。它仍是 mask-only 网络头，
+   位于最终 REC arbiter 之后，只允许覆盖两路 mask logits；REC scores、rank、flat index 和 parent
+   mapping 必须逐位不变。
+2. **通用输入与图**：只读取 V105 已公开的 detached query/SP features、SP xyz、两路 mask logits、
+   fusion alpha 与预测 box，不读取 GT、类别、scene/dataset ID。每场景基于 SP xyz 构造固定 `K=8`
+   邻域；边权由距离尺度归一化和 frozen SP feature cosine 共同确定，并在 query 间共享。这样接口不
+   绑定 ScanRefer，Nr3D/Sr3D 可直接调用相同 forward。
+3. **边界消息与零初始化**：在当前 fused logit/probability 上计算邻域加权均值、signed diffusion、
+   局部 variation、uncertainty-gated diffusion 与 box inside-margin 支持，组成固定 graph basis；由
+   normalized query feature 输出 basis coefficients。唯一输出 head 全零初始化，故 step0 residual
+   必须逐位为零；最终 `max_delta=2` 的有界 residual 同时加到 text/query logits。父网络全部冻结，
+   仍训练 matched-query `10*focal+2*dice`，不加入 Lovasz、candidate loss 或 selector loss。
+4. **单卡固定 smoke**：唯一硬件为 GPU0 A100-40GB，按 seed0、batch64、128 train/128 val、3 epoch、
+   LR `3e-4` 串行运行两个事先冻结的变体：`spatial`（距离图）与 `bilateral`（距离+feature cosine 图）；
+   固定比较 epoch3，不按 epoch1/2 选模，不新增 K/LR/delta sweep。spatial 是图拓扑必要对照，
+   bilateral 是唯一晋级候选。
+5. **结构与质量门**：要求 step0 exact、SP permutation equivariance、KNN 无 self/重复/越界、父输入
+   detach、所有 active optimizer moments finite/nonzero、residual SP/Q std>0、REC `64/57` 与父路径
+   identity。bilateral 固定 epoch3 必须 Mask@.50 不低于 spatial 且 mIoU 至少高 `0.0003`；同时其
+   mIoU 必须高于 V105 all 的 `0.350835181`。任一失败立即冻结 V106，删除 transient checkpoints，
+   不进入正式训练。
+6. **若晋级**：完整训练仍只用一张 GPU；通过梯度累积把 effective global batch 固定为 192，使用
+   36,665 train rows、seed0、固定 epoch20。strict reload/train replay/runtime parity 后，才允许与
+   冻结 V101 REC artifact 组合进行一次 9,508-row official validation；门仍为 REC `5610/4659`，
+   Mask 不低于 V99 `5676/4662/0.4176463`。不得因单卡改变 batch 目标或用 validation 反调图参数。
+
+#### 14.124 V106 单卡 smoke 终态：图分支真实激活但质量门失败（2026-08-14）
+
+- 新增 `BoundaryAwareSuperpointGraphMaskRefiner`，只有 `2,888` 个参数、4 个 state tensors；固定
+  `K=8`，比较纯空间 KNN 与距离+冻结 superpoint feature cosine 的 bilateral 图。contract smoke
+  通过：step0 residual 精确为零，置换误差为零，KNN 无 self/重复/越界，所有父输入 detach；激活后
+  residual abs mean `0.017559`、SP/Q std `0.021318/0.021166`。contract receipt SHA-256
+  `4613e98bf727eac4b5b3384258c8757ecaa7aadb641d7dfb2bbff3e9bdf01c35`。
+- GPU0 串行完成两个固定 epoch3 smoke。spatial 为 REC `64/57`、Mask `64/52`、mIoU
+  `0.3504062698`；bilateral 为 REC `64/57`、Mask `64/51`、mIoU `0.3504654098`。bilateral
+  只增加 `0.00005914` mIoU，却损失 1 个 Mask@.50 hit，并低于 V105-all 的 `0.3508351807`；
+  三项预注册门均失败，summary `pass=false`，SHA-256
+  `b9a37a5a17033675181623c85cdfec31568506a29ce37b673cfc66e4f7ba597f`。
+- 两组 completion/audit 都通过，公共 parent tensors `1228/0/4`、optimizer 4 states / 2,888 params /
+  step6，moments finite/nonzero。spatial completion/audit SHA 分别 `f5532f...975`、`69c712...da9f`；
+  bilateral 为 `84083c...c4ef`、`f04551...99a0b`。两组 transient checkpoint 已全部删除，V106
+  根目录 `.pth=0`；只保留 config、日志、逐 epoch metrics、diagnostics、receipt 和 summary。
+- 结论：V105/V106 都证明后处理已真实读取局部 evidence/geometry/topology，但在当前 epoch71 mask
+  表征上收益远小于目标。停止继续扩大局部 mask refiner，转向核验官方 release 与数据预处理身份。
+
+#### 14.125 官方 epoch54 权重取得、旧 superpoint 口径复现（2026-08-14）
+
+- 官方 GitHub README 的 Google Drive ID `1oBUWrTEj3kYyx-DT0HAvAcDUQe4nQgYz` 在远程超时，改由
+  本机下载后通过单文件 staging 上传。服务端 Content-Disposition 为 `ckpt_epoch_54.pth`，size
+  `793,041,121` bytes、SHA-256
+  `a9930065996fce1d0dd5ee9fe00a120bdb3a2c88d158b7a3666717d842ac113d`；上传前后 size/SHA
+  一致后原子移入
+  `/root/autodl-tmp/DATA_ROOT/protected_mcln_artifacts/mcln_official_ckpt_epoch_54.pth` 并设 mode
+  `0444`。本机 793MB 临时副本随后删除；远程受保护文件是唯一工作副本，可从官方链接重取。
+- checkpoint 为 epoch54、1,135 个 model tensors、149,566,498 params，全部 finite；config 是
+  ScanRefer、6 decoder layers、color、BUTD、self-attend、joint detection、soft-token 与 contrastive，
+  不含任何 SourceMoE/selector/sidecar。当前代码 strict load 成功。
+- 在原 `/DATA_ROOT/superpoints/val` 上完成 9,508-row、单 GPU0、batch24 的无 sidecar 评测：REC
+  `5411/4317 = 56.9100/45.4039%`；Mask `5557/4527 = 58.4455/47.6125%`，semantic mIoU
+  `40.6768%`。它没有复现 README/用户给出的 `58.70/50.70/44.72` mask 基线。
+- 为排除本仓库 evaluator 修改，commit `9744a4ed219062d448ed0dba587eeb864491f158` 的上游原始代码
+  用同一 checkpoint/data 跑固定 128 rows；当前/上游的 REC、Mask 两档完全一致，mIoU 分别
+  `0.2964106504/0.2964405006`，只差 `0.00002985`。因此差距不是新增 evaluator 或后处理造成。
+
+#### 14.126 根因：206/312 个 val superpoints 是体素 fallback；数据修复与 A/B（2026-08-14）
+
+- 逐场景审计证明旧 val 目录有 `206/312=66.03%` 文件与
+  `fallback_superpoints_from_scan_pc(scan, voxel_size=0.18)` **逐元素完全相同**；服务器恰好只有
+  `106/312` 个 val mesh，缺 mesh 的 206 个场景与 fallback 集合一一对应。train 同样只有
+  `412/1201` 个 mesh、剩余 `789/1201` 为 fallback，故后续正式训练前也必须修复 train 数据。
+- 从 `https://huggingface.co/datasets/marvex/scannet-dataset` 只下载缺失的 206 个 val
+  `_vh_clean_2.ply`：共 `1,311,604,290` bytes。压缩上传包 size `781,141,732`、SHA-256
+  `dd50f365923c39b075ae21434ffc64ca56f7c34096dc76446e2adce025635f2c`；远程复核后仅向不存在的
+  mesh 路径解包，覆盖冲突数为 0，val mesh 覆盖变为 `312/312`，上传包随后删除。另对 3 个原有
+  mesh 做同源抽查，镜像与服务器文件 size/SHA 均逐字节相同。
+- 旧 superpoints 完整保留；在独立只读目录
+  `/root/autodl-tmp/DATA_ROOT/superpoints_mesh_official/val` 重新执行官方
+  `segmentator.segment_mesh`。312 个新文件长度均为 50,000；其中原有正规 106 个与旧文件逐元素
+  相同，206 个 fallback 全部改变。旧/新 superpoint 数中位数 `1512 -> 1001`，新目录 127MB、
+  mode `0444/0555`，排序文件 manifest SHA-256
+  `c043a3759297250cefcb996709563167e58e98a2359c98b28033826fb3f02409`。独立 data-root view
+  `/root/autodl-tmp/DATA_ROOT_mcln_meshsp` 只把 val superpoints 指向新目录，train/其他输入仍指向原
+  DATA_ROOT，故 A/B 可逆且不覆盖旧数据。
+- 128-row A/B 在 REC `52/44` 不变时，Mask 从 `54/42/0.2964106504` 变为
+  `54/52/0.3173006708`：Mask@.50 `+7.8125pp`、mIoU `+2.0890pp`。完整 9,508-row 单卡复现为
+  REC `5411/4315 = 56.9100/45.3828%`；Mask `5577/4819 = 58.6559/50.6836%`，semantic mIoU
+  `44.6926%`。相对用户基线只差 `-0.0441/-0.0164/-0.0274pp`，已把原先约 3--4pp 的异常缺口
+  解释并恢复到复现噪声级；无 NaN/OOM/缺文件，正式 stdout 正常退出。
+
+#### 14.127 V99 在修复 val superpoints 上的唯一固定复核（运行前冻结，2026-08-14）
+
+1. **目的与唯一变化**：旧 V99 official 的 REC `5552/4645` 是当前最好完整 REC；它的 Mask
+   `5676/4662/0.4176463` 使用了已证伪的 mixed/fallback val superpoints。本次只把 `--data_root`
+   改为 14.126 的只读 view；backbone、parent、geometry、V99 artifact、命令其余部分和 evaluator
+   全部冻结，不新增/训练/选择参数，不搜索 threshold，也不把本次 validation 用于调参。
+2. **冻结输入**：epoch71 backbone SHA `3e44f4...2208`、parent reranker `f06f8972...69b`、geometry
+   reranker `835c25be...3b6f`、V99 artifact
+   `/root/autodl-tmp/DATA_ROOT/output/rec_reranker/e71_top16/v99_artifacts/pareto_contextual_h128_seed0_fullfit.pth`
+   SHA `9752990c393fa6e45173a9dd129c4de4bb740924094dcbbec2f3121cbf39d1f2`，以及新 val superpoint
+   manifest `c043a375...02409`。全部在运行前后复核只读 identity。
+3. **协议与报告**：唯一正式运行使用 GPU0、batch12、9,508 rows，保留原 V99 的 parent+geometry+
+   hierarchical flags；必须报告 REC overall/unique/multiple 两档及 Mask overall/unique/multiple 两档和
+   mIoU。与旧 V99、修复后的官方 epoch54、用户 baseline 分别比较。运行只生成 log/config/receipt，
+   不生成 checkpoint；无论结果好坏都不据此修改 V99 artifact。
+
+#### 14.128 V99 + mesh-derived official superpoints 完整结果与封存（2026-08-14）
+
+- GPU0 单卡、固定 9,508-row validation 已完整生成全部预测和指标。REC overall 为
+  `5572/9508 = 58.603281%`、`4797/9508 = 50.452251%`；unique 为
+  `1261/1419 = 88.865398%`、`1143/1419 = 80.549683%`；multiple 为
+  `4311/8089 = 53.294598%`、`3654/8089 = 45.172456%`。
+- 同一选择结果的 Mask overall 为 `5690/9508 = 59.844342%`、
+  `4976/9508 = 52.334876%`，semantic mIoU `45.930260%`；unique 为
+  `1280/1419 = 90.204369%`、`1137/1419 = 80.126850%`；multiple 为
+  `4410/8089 = 54.518482%`、`3839/8089 = 47.459513%`。
+- 相对用户给出的 MCLN Mask baseline `58.70/50.70/44.72`，三项分别提高
+  `+1.144342/+1.634876/+1.210260pp`，因此此前“mask 没超过 baseline”的根因已经由缺失 mesh 导致的
+  fallback superpoints 解释并修复。相对旧 mixed-superpoint V99，REC 增加 `+20/+152` hits，Mask
+  增加 `+14/+314` hits，mIoU 提高 `+4.165630pp`。
+- REC@0.50 已超过目标 `138` hits；REC@0.25 距 `5610/9508` 仍差 `38` hits，因此总目标尚未完成，
+  不把 mask 达标替代为 REC 达标。下一步只在修复后的 train superpoints 上验证预注册 REC 候选。
+- 9,508 个样本和全部指标打印完成后，旧 `export_retrain_metrics` 才因 learned/subgroup 来源语义不同触发
+  `ValueError: unique and multiple hits025 must partition learned hits`，进程 return code 为 1。该异常位于
+  post-metric export，不中断预测或指标计算；receipt 明确记录为 recovered post-metric failure，不能写成
+  clean exit，也不据此丢弃已完成指标。
+- 只读结果 receipt：
+  `/root/autodl-tmp/DATA_ROOT/output/v99_meshsp_official_20260814/v99_meshsp_official_result.json`，
+  SHA-256 `311097c8a0fc1eceab3c95983937071e67fd8082ac46d1af5d3701ada4eb491c`。launcher/config/run-log
+  SHA 分别为 `d77eac...b364`、`c42acb...f6b0`、`2e6aa5...b61`；输出目录 `.pth=0`。
+  V99/epoch71/V19 输入 SHA 复核仍为 `975299...d1f2`、`3e44f4...2208`、`2d6a3c...ecbe`，GPU 空闲。
+
+#### 14.129 V101 通用 Pareto runtime 接线与 post-metric export 修复（2026-08-14）
+
+- 冻结 V101 artifact 的 schema 是 `rec-pareto-contextual-full-train-artifact-v1`，而现有 runtime 只把
+  V99 的 `rec-pareto-contextual-hierarchical-v1` 路由到通用 Pareto model/policy；V101 因而会被误送到
+  旧 hierarchical loader。这是接线缺失，不是模型或 OOF 失败。
+- `train_dist_mod.py` 只增加 V101 schema 到同一 Pareto schema 集合：V99 仍调用原
+  `load/validate_v99_artifact`，V101 调用已冻结的 `load/validate_v101_artifact`；两者之后完全共享
+  `aggregate_margin=0.1331222057` 与 `apply_pareto_contextual_policy`。未修改特征、候选、logits、margin、
+  threshold 或选择规则。文件 SHA 从 `0c084c...f5fa` 变为
+  `34a6ed34ffc09979479deb4b5b4c72cf0c6a98ef6c768e9a5630d652bb754078`。
+- 真实 GPU0 strict-load audit 同时加载 V99 SHA `975299...d1f2` 与 V101 SHA `2c969a...a2ae`；两者
+  model 均 eval、无 requires-grad、device `cuda:0`、父/geometry/backbone SHA 绑定通过。既有
+  hierarchical/V99 official 聚焦回归 `17 passed`，证明 V99 路径未回归。
+- V99 修复数据评估的 return code 1 来自一个口径错误：`position_subgroups` 在最终 parent+geometry+
+  contextual rerank 后记录，而 `position.learned_selector` 在这些 reranker 前记录，旧 exporter 却强制
+  两者 hits 相等。`src/grounding_evaluator.py` 现保留两套计数，不再做跨阶段相等断言；仍强制
+  unique/multiple denominator 完整分割、各 subgroup @.50<=@.25、Mask subgroup 与 overall 精确分割。
+  文件 SHA 从 `a670bb...9485` 变为
+  `736f26eb4474a628b13418947ba57b84740b0a82c0700a60e698ed73597b693c`；原指标测试 `29 passed`，
+  额外 stage-separation/nesting audit 通过。该修复不改变任何预测或指标，只避免完整评估在导出后报错。
+
+#### 14.130 V101 + mesh-derived val superpoints 唯一正式验证预注册（运行前冻结，2026-08-14）
+
+1. **唯一候选与变化**：使用已经通过 5-fold scene-disjoint OOF 的冻结 V101 artifact
+   `pareto_contextual_h128_seed0_fulltrain.pth`，SHA
+   `2c969a6c28a0c9315b53f0f847567345e47da8c912091344b23612680643a2ae`；相对 14.128 只替换 V99
+   artifact 为 V101。epoch71 backbone、parent、geometry、完整 mesh-derived val superpoints、batch12、
+   seed0、GPU0、9,508 rows 和所有 evaluator 口径不变。
+2. **训练证据但非结果承诺**：V101 使用全部 36,665 train rows / 562 scenes，OOF 为 `+159/+520`
+   hits，五折两档均严格正，scene bootstrap 下界 `+118/+421`；full-fit replay 为 `+237/+765`。
+   这些只允许它进入一次 validation，不能替代 validation，也不得据此挑 margin/seed。
+3. **运行纪律**：不读 validation GT 作为输入，不训练、不搜索、不根据 14.128 的 38-hit 缺口改阈值；
+   V101 与 V99 使用同一通用 Pareto policy。输出只允许 config/log/result receipt，不保存 checkpoint；
+   protected artifacts 前后 path/size/mode/SHA 必须一致。
+4. **硬门与次级比较**：REC 必须同时达到 `>=5610/9508` 与 `>=4659/9508`。Mask 硬保底为用户
+   baseline `>=58.70/>=50.70/>=44.72`；另外逐项报告是否保持当前 V99 最好
+   `59.844342/52.334876/45.930260`，但不得用 Mask 优势掩盖 REC@.25 未达标。
+5. **报告范围**：完整报告 REC 与 Mask 的 overall/unique/multiple 两档及 semantic mIoU，记录 exact
+   hits、所有输入/源码/log SHA 和 clean return code。无论通过或失败，V101 本轮不再做第二次
+   validation 或 validation-driven 修改；失败时转向修复后 train superpoints 上的新训练路线。
+
+#### 14.131 V101 第一次启动 fail-closed：data-root 尾斜杠合同（2026-08-14）
+
+- 首次启动在 dataset 构造 tokenizer 时、任何 batch/预测/指标前退出；GPU 无 evaluation 迭代，故它是
+  preflight failure，不是额外 validation 结果。runner 把 `Path` 转成字符串时去掉了 data-root 尾部
+  `/`，而旧 dataset 用字符串拼接 `data_path + "roberta-base/"`，产生不存在的
+  `/root/autodl-tmp/DATA_ROOT_mcln_meshsproberta-base/`。V101 artifact/model/policy/参数均未执行或修改。
+- 失败目录、launcher、exitcode 与原 claim 全部保留并改名标注
+  `failed_preflight_missing_trailing_slash`；output `.pth=0`。stdout/launcher/exitcode SHA 分别为
+  `92c36d...53c3`、`07fd0b...fc87`、`4355a4...d865`。
+- 唯一修复是让 authoritative command 保留已在 V99 成功命令中使用的
+  `/root/autodl-tmp/DATA_ROOT_mcln_meshsp/` 尾斜杠，并使用新的 create-exclusive retry claim；其余命令
+  和所有冻结参数逐项不变。dry-run 已精确打印带尾斜杠路径，runner SHA 为
+  `a3a3033fbe84f56ef048cc4f2402bca6387f283b7d66274a2231a1c3d9309b07`。该启动修复后允许重试同一
+  预注册 validation，不把 preflight typo 当作一次结果选择。
+
+#### 14.132 V101 + mesh-derived val superpoints 正式结果：未超过 V99（2026-08-14）
+
+- 单 GPU0、batch12、完整 `9,508` rows 正常退出，result `returncode=0`；没有 validation GT 作为输入，
+  没有训练或阈值搜索。REC overall 为 `5553/9508 = 58.4034%`、
+  `4746/9508 = 49.9159%`；unique 为 `1264/1419 = 89.0768%`、
+  `1137/1419 = 80.1268%`；multiple 为 `4289/8089 = 53.0226%`、
+  `3609/8089 = 44.6161%`。
+- 同一最终 query 的 Mask overall 为 `5689/9508 = 59.8338%`、
+  `4975/9508 = 52.3244%`，semantic mIoU `45.9220%`；unique 为
+  `1280/1419 = 90.2044%`、`1137/1419 = 80.1268%`；multiple 为
+  `4409/8089 = 54.5061%`、`3838/8089 = 47.4472%`。
+- V101 仍超过用户 Mask baseline `58.70/50.70/44.72`，分别为
+  `+1.1338/+1.6244/+1.2020pp`；但相对 V99，REC 少 `19/51` hits，Mask 两档各少 `1` hit，
+  mIoU 低 `0.0082pp`。因此全部最好指标仍归 V99；REC@.25 仍差 `38` hits，goal 未完成。
+- 权威 receipt：
+  `/root/autodl-tmp/DATA_ROOT/output/v101_meshsp_official_20260814/official_result.json`，SHA-256
+  `e07263ed12dad9d9c5003a46cefe370a09fb8f01cd65fe1da9d7cafe4dda534f`；stdout/launcher/exitcode
+  SHA 分别为 `a08ae8fe81fd9ac8d2cd732dd354ac3f260c6b3a00735f0a63ca6c36a8ebb7fd`、
+  `5e599e61ad0453b8c55689e1953e978293d3c90ef77c6a35ce612f436e27b034`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`。输出目录 `.pth=0`；
+  backbone/V101 artifact 运行前后 SHA 仍为 `3e44f4...2208`、`2c969a...a2ae`。
+- 这是 14.130 预注册候选的唯一 validation 结果。V101 不再重跑，也不根据 validation 修改 margin、
+  seed 或 policy；继续路线改为在修复后的 train superpoints 上产生新的 train-only 证据。
+
+#### 14.133 训练集 mesh 补全与 superpoint 重建启动（2026-08-14）
+
+- 旧 train superpoints 共 `1,201` scenes，其中 `789` 个场景因为缺 mesh 使用 voxel fallback；缺失集合
+  manifest 恰好 `789` 行，SHA-256
+  `caf63109bdf9f19cd8132b3c70eb1f2467d70fc605d174c6ec801b34c1c31079`。从同一 ScanNet 镜像取得
+  `789` 个 `_vh_clean_2.ply`，本地逐文件验证 PLY header、最小 size `800,072` bytes，无 `.part`。
+- 为控制 3.7--3.9GB 剩余磁盘，按 `100×7 + 89` 分成 8 个临时压缩包串行上传；每包均先做 SHA、
+  路径与覆盖冲突检查，只解包原先不存在的文件，解包后立即删除压缩包。8 个包 SHA 依次为
+  `efeabb...daea`、`7b42...f96c`、`9412...7449`、`519b...12a5`、`5edd...9dc0`、
+  `e261...b5a30`、`3d5c...f5e7`、`75759d...b5da9`；上传日志 SHA-256
+  `17f6b8c9f8f15a6c3cb5199847457912f4ca9699f0d213b590d863a78a4ee423`。
+- 远程门禁：manifest 中当前缺失 `0`，`scannet/scans` 下 mesh 文件 `1,513`，上传 staging 文件 `0`；
+  没有覆盖原有 412 train / 312 val mesh。V101 完全退出、GPU0 释放后才启动 CPU-only
+  `mcln_train_meshsp_build_20260814`，目标是独立目录
+  `/root/autodl-tmp/DATA_ROOT/superpoints_mesh_official/train`，不覆盖旧 train superpoints。
+- 构建后必须审计：新目录恰好 `1,201` 个长度 50,000 的整数 tensor；原有正规 `412` 个逐元素相同，
+  原 fallback `789` 个全部改变，集合必须与 manifest 精确一致。审计通过前不切换 train view，也不删除
+  本地 mesh staging。
+
+#### 14.134 train mesh-derived superpoints 完成、审计与可逆切换（2026-08-14）
+
+- CPU-only `mcln_train_meshsp_build_20260814` 正常退出，exit code `0`。独立目标目录包含恰好
+  `1,201` 个 `_superpoint.pth`，总 size `508,393,855` bytes，文件 mode `0444`、目录 mode `0555`；
+  每个 tensor 均为长度 50,000 的整数分组标签。
+- 自动审计为 `identical_to_old_count=412`、`changed_from_old_count=789`、
+  `changed_set_matches_fallback_manifest=true`；原正规场景全部逐元素不变，原 fallback 场景全部改变且
+  精确等于预冻结 manifest。superpoint 数中位数从 `1372` 变为 `843`，与 val 修复方向一致。
+- 审计 receipt
+  `/root/autodl-tmp/DATA_ROOT/superpoints_mesh_official/train_audit.json` 的 SHA-256 为
+  `a118d311a3f7f1a434f06ff61582142178d9f4e740b3e5a6a8b529b4239b9215`；排序文件 manifest SHA-256
+  `95c11c2714c2d67d3059b3de0e9d57a9eb717273ee66d2c98d35f18d4218869f`。build log/exitcode SHA 分别为
+  `419426256ebf5eb59ec554a6da7fcae91a6218a2ea2a84e5557dbd43152cb8e3`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均已只读。
+- 只修改可逆 view：
+  `/root/autodl-tmp/DATA_ROOT_mcln_meshsp/superpoints/train` 从旧
+  `/root/autodl-tmp/DATA_ROOT/superpoints/train` 原子切换到
+  `/root/autodl-tmp/DATA_ROOT/superpoints_mesh_official/train`；val 继续指向 mesh-derived val 目录。
+  view 核验 train/val 文件数为 `1201/312`。旧 train/val superpoints 和全部原 mesh 均未覆盖或删除，
+  因此 A/B 可随时回退。
+
+#### 14.135 第二轮只保留最佳权重清理（2026-08-14）
+
+- 清理前 `DATA_ROOT/output` 有 30 个 `.pth` 路径、表观 size `12,000,622,518` bytes；其中大量是
+  同一 inode 的 retention hardlink。逐 inode、指标和后继实验审计后删除 22 个精确路径，释放物理
+  `2,157,371,511` bytes；可用空间约从 `3.38GB` 增至 `5.54GB`。未递归删除实验目录，所有 config、
+  log、metrics、claim、receipt 与 checkpoint-retention JSON 均保留。
+- 单阶段 9 个路径实际为 3 份权重。保留 epoch7 的
+  `ckpt_best_rec_acc025.pth`（SHA `8804109f...3eec`；同时是 Mask 三项最好）和 epoch19 的
+  `ckpt_best_rec_acc050.pth`（SHA `551847ca...079`）；删除这两份权重的 5 个冗余 hardlink 名称，
+  并删除五项均劣于 retained best 的 epoch28/last 物理权重（SHA `9dd2bab4...f2d`）。
+- V59c epoch3 的 6 个名字是同一个 `606,036,179`-byte inode（SHA `3d26be9c...f3a6`）；同配方后继
+  V60 已在两个正式 train prefix 连续 `break>fix` 后 fail-closed，V61 全量结果也未晋级，因此全部
+  V59 `.pth` 删除。旧 source-choice epoch68 `0.57793/0.46140` 又被 epoch71 双指标严格支配，删除其
+  `794,127,241`-byte 权重（SHA `ff8fddc...21f6`）。两者都可由保留的父权重+config 重跑。
+- V101 唯一 validation 已证实全面未超过 V99，故删除 `914,379`-byte artifact（SHA
+  `2c969a6c...a2ae`）；其 immutable build receipt、两份 claim、OOF/result/log 和构建脚本全部保留，
+  负结果仍可审计。另删除未选中的 2 个 parent 与 5 个 geometry 小 artifact，只保留冻结的
+  `final_contract` 和 `selected_geometry_reranker`。
+- 清理后 `DATA_ROOT/output` 只剩 8 个 `.pth`：V99 必需的 epoch71/parent/geometry/V99 artifact，
+  V19 的 parent/geometry，以及单阶段两档各自最好 checkpoint。当前双阶段最佳关键 SHA 复核为
+  epoch71 `3e44f4...2208`、parent `f06f89...69b`、geometry `835c25...3b6f`、V99
+  `975299...d1f2`；protected V19 仍为 `2d6a3c...ecbe`。
+
+#### 14.136 V108 MeshSP-aligned train-only 重拟合路线预注册（2026-08-14）
+
+1. **动机与边界**：旧 V99/V101 的 36,665-row train cache 在 `789/1201` 个 train 场景仍使用
+   voxel fallback superpoints，而新正式 val 已全部使用 mesh-derived superpoints。基础 REC cache 的
+   152-D 特征明确包含 `mask_confidence`、`mask_foreground_ratio`、`mask_text_query_dice`，geometry
+   cache 还包含 25-D mask-to-box 特征；因此旧训练特征与当前部署特征存在已证实的数据口径错位。
+   V108 先消除这项 train/val mismatch，不改 validation、模型输出接口或 ScanRefer 特定规则。
+2. **冻结阶段顺序**：只在 train split 上依次执行：(a) 用 epoch71 和新的 train view 重建 Top-16
+   36,665-row base candidate cache；(b) 与旧 cache 做逐行因果 A/B，要求候选 identity/box/IoU 不变；
+   ScanRefer train 覆盖的 562 scenes 中，原正规 201 scenes 的全部特征必须不变，变化只能来自
+   manifest 交集中的 361 个原 fallback scenes 的 mask 特征；(c) 重建 train-only
+   mask geometry；(d) 重新训练通用 parent/geometry/contextual hierarchy 并做 5-fold scene-disjoint OOF。
+   任一阶段失败即停止，不生成 validation artifact。
+3. **阶段一固定命令**：唯一 GPU0，batch12、workers4、shard256、Top-16、seed0，输入 checkpoint SHA
+   `3e44f4...2208`、train SP audit SHA `a118d3...215`、SP sorted manifest
+   `95c11c...869f`，输出新目录 `DATA_ROOT/output/rec_reranker/e71_top16_meshsp/train`，不覆盖旧 cache。
+   runner `scripts/run_v108_meshsp_train_candidate_cache.sh` SHA-256
+   `573b6f77cac89f0e4c24c5e71492db96299272f476f37dcdcbd2200e02a7ef90`；输出只允许 `.pt` cache、
+   manifest/log/receipt，不允许新 checkpoint。
+4. **候选不变量门**：旧 train cache 的 frozen counts 为 default `34892/31870`、candidate oracle
+   `36405/35409`（总数 36,665）。新 cache 必须 exact 复现四个 counts、query identity、candidate
+   validity、boxes 与 candidate IoU；否则说明 superpoint 修复意外改变 REC 候选池，立即 fail closed。
+5. **OOF 晋级门**：后续 V108 模型仍只能读取通用 query/text/score/mask/box geometry，不读 dataset、
+   scene/category ID 或 validation GT。5 个 held-scene folds 两档净增均须严格为正、scene bootstrap 95%
+   下界均须大于 0；总增益至少达到 V101 原预注册下限 `+72/+74`，且 ScanRefer train 中原正规
+   201 scenes 与修复的 361 scenes 两个子集在两档都不得为负。只有这些 train-only 门全部通过，
+   才讨论一次新的 official validation；
+   不根据已知的 38-hit validation 缺口调 margin、seed 或阈值。
+6. **A/B 审计实现**：`scripts/audit_v108_meshsp_candidate_cache.py` SHA-256
+   `6d875d01a604a3049999f6cf4bbc626e5fb73243aaf6414163096d931feb2c86`，逐 shard 流式比较 36,665
+   rows；非 Mask 的 149 个 feature columns 与所有 candidate identity/score/box/IoU 必须 bitwise 相同，
+   三个允许变化的列固定为上述 `mask_*`，且变化 scene 必须是 frozen fallback manifest 的子集。
+
+#### 14.137 V108 batch24 启动在结果前停止、改为权威 batch12（2026-08-14）
+
+- 第一次 runner 把候选提取写成 batch24；运行到 `9216/36665` 时复核历史 geometry audit provenance，
+  确认旧 authoritative cache 的提取 batch 是 12。不同 batch shape 可能让 CUDA GEMM 产生微小浮点漂移，
+  会破坏 14.136 要求的 bitwise 因果 A/B；因此在任何完整 cache、OOF 或 validation 结果前主动停止。
+- 不完整的 36 个 shard 已逐文件删除，未生成 checkpoint；只读保留 incomplete log/manifest，SHA 分别为
+  `3074376675d11fe893440111b4cfdd1e86b206e170e08f0bce3f679de76244c8`、
+  `ab7dabc51f54ad07c6e97f03ec70cd9a9051b070229ce8a668ced1d12cd26765`，目录明确标注
+  `e71_top16_meshsp_failed_preflight_batch24`。该启动不是候选结果，不能参与选择。
+- 唯一协议修正为 batch12，其余 checkpoint/data/view/workers/shard/Top-K 均不变；新 runner SHA 即
+  14.136 所列 `573b6f...ef90`。修正依据只来自旧 cache provenance，不读取本轮质量指标或 validation。
+- 同时修复 portable geometry provenance：非 portable 路径仍强制 batch12；portable 路径改为严格绑定
+  audit selection 中的正整数真实 batch，而不再伪装成常量12。源码
+  `scripts/cache_scanrefer_rec_mask_geometry.py` SHA 从 `17f772...759d` 变为
+  `a291142eb1263792b82282cf904be2e19e27e78c35c2bf0a489161dc1c7424bc`；原回归 `29 passed`，
+  独立 batch24 portable 接受探针通过。V108 重跑仍使用 batch12；该修复用于后续完整 provenance。
+
+#### 14.138 V108 单 GPU 串行执行与子组 OOF 门（结果前冻结，2026-08-14）
+
+- 服务器当前只有一张 `NVIDIA A100-PCIE-40GB`，所有 CUDA 阶段固定 `CUDA_VISIBLE_DEVICES=0` 与
+  `cuda:0`，严格串行为 candidate cache → candidate A/B/mask-geometry cache → parent → geometry →
+  5-fold OOF。等待阶段只运行 shell polling，不创建 CUDA context；任一上游 exitcode、只读 receipt、
+  schema、样本数或 `validation_data_accessed=false` 不满足就停止，绝不启动下游。
+- candidate 完成后的第一段 runner 为
+  `scripts/run_v108_single_gpu_serial_geometry_wait.sh`（SHA-256
+  `0906ab0469995405c2635f0ef59110f3cd02958eae3efb0d1341dfae35a73c8c`）；它等待 candidate screen
+  完全退出且 receipt 存在后才调用 `scripts/run_v108_meshsp_train_geometry.sh`（SHA-256
+  `fe3272dd28d8a483ce7a629b8fbea407280cf0b13c7a1af63518c8ff46080ae8`）。后者先执行逐行 A/B，
+  再执行 256-row mask geometry audit，最后用 batch36/workers4 生成 36,665-row portable geometry cache。
+- 第二段 runner `scripts/run_v108_meshsp_models_oof_serial.sh`（SHA-256
+  `c20e524743be1fdacd6bf665c23f1f30c2a8746892328589e3b4f65fee4cb0c2`）等待上一段 clean receipt 后，
+  固定重训 parent `h256/dropout0.1/lr1e-3/wd1e-4/batch256/seed0` 与 geometry
+  `h256/dropout0.1/lr3e-4/wd1e-4/batch256/split0/model-seed0`，然后才运行 scene-disjoint OOF；
+  parent/geometry 内部均执行 best-state 恢复与 strict artifact reload。
+- 新 OOF 实现 `scripts/run_v108_meshsp_pareto_oof.py`（SHA-256
+  `05682999efcd313d8d0f25f616944c119cf8f2a50d8ab34c1e3e80b0eb104078`）保持 V99 的 contextual
+  query-set architecture、固定 margin、目标与 5-fold scene mapping，不搜索 seed/margin/阈值。除 14.136
+  的总增益、逐 fold 与 bootstrap 门外，它按冻结 manifest SHA
+  `caf63109bdf9f19cd8132b3c70eb1f2467d70fc605d174c6ec801b34c1c31079` 把 562 个训练场景精确划为
+  修复的 361 scenes 和原正规 201 scenes；两个子组在 @0.25/@0.50 的 OOF delta 都必须 `>=0`。
+  独立 synthetic gate probe 已验证 10 个谓词全真时通过、任一子组负增益时拒绝。该阶段只读 train
+  cache/GT，不读取 ScanRefer validation、Nr3D 或 Sr3D。
+- 三个 screen 名分别为 `mcln_v108_meshsp_candidate_20260814`、
+  `mcln_v108_meshsp_geometry_wait_20260814`、`mcln_v108_meshsp_models_oof_wait_20260814`；后两者在上游
+  运行时只是等待器。启动核验时 `nvidia-smi` 只有一个 CUDA PID，因此没有单卡并发。只有 OOF receipt
+  的全部预注册谓词为真，才允许构建 deployable artifact、做 full-fit/runtime parity 并预注册一次 official
+  validation；否则封存失败原因并清理落选 `.pth`。
+
+#### 14.139 V108 candidate 完成、旧代码 A/B 基线失败与同代码控制修正（2026-08-14）
+
+- batch12 的 MeshSP train candidate cache 已 clean exit：`36,665` rows、`144` shards，默认 Top-1
+  `34892/31870`，candidate oracle `36405/35409`，精确复现冻结四项计数；manifest/log/exit/receipt SHA-256
+  分别为 `fc4ef0c...6d6d`、`c77edc2b...ebc7`、`9a271f2a...86aa`、`bfe2a650...caaa`，目录与文件
+  已只读。该阶段仍未访问 validation，也未生成 checkpoint。
+- 随后的首轮 A/B 使用了 7 月 14 日生成的 `e71_top16/train` 作为旧-SP基线，并在首个原正规场景
+  `scene0000_00` 报 `regular-scene candidate features changed`；geometry、parent、OOF 均未启动。
+  fail-closed 的 6 个 log/exit 已逐文件移动到只读目录
+  `e71_top16_meshsp/failed_preflight_oldcode_cache_ab_20260814/`，没有删除，主要 A/B error log SHA 为
+  `9d7b2191...a298`。这不是模型负结果，而是因果控制口径失败。
+- 快速复现命令直接调用 `audit(...)`，约 10 秒连续两次稳定在同一 scene 失败。逐列探针证明：候选
+  identity/box/IoU 与 149 个非 Mask 列保持 exact；差异只在有效候选的
+  `mask_confidence/mask_foreground_ratio/mask_text_query_dice`，不是 padding。前 256 rows 的最大绝对差
+  约为 `0.00727/0.03161/0.39197`，同时既有 ULP 级小差异也有明显语义差异，故不能解释为纯 CUDA
+  舍入。抽样正规 scene 的旧/新 SP 文件逐字节相同，例如 `scene0000_00` SHA
+  `11f92113...ffd8`、`scene0002_00` SHA `30d8c366...587d`，排除 SP view 错配。
+- 根因是 **代码代际混杂**：冻结的 7 月源码 snapshot 中
+  `models/rec_candidate_adapter.py` SHA `9e471376...192b` 用
+  `adaptive_weights.mean()` 把所有 query 压成一个标量 Mask fusion alpha；当前源码 SHA
+  `dfc5afaa...10a3` 已在 8 月 5 日改为 `fuse_query_mask_logits(...)`，保留 scalar 或逐 query alpha。
+  因此即使 SP 完全相同，三列 Mask 特征也应变化；14.136 中要求它们在 201 个正规 scenes exact 的旧
+  基线不具因果可比性，不能靠放宽 bitwise tolerance 修补。
+- 当前代码+旧 SP 的 256-row probe 已 clean exit。与 MeshSP cache 对比时，前 252 rows 中正规 scene
+  匹配；只在 probe 最后 4 rows 出现非 Mask 差异，因为 `limit=256` 把正式 batch12 的末组切成 batch4。
+  这再次确认 batch shape 是复现合同的一部分，故不把有限 probe 作为正式 A/B。
+- 修正后的唯一因果协议是在 **完全相同当前源码、checkpoint、batch12、workers4、36,665 rows** 下新增
+  一份旧-SP control cache，然后以它对比 MeshSP cache。旧-SP 目录 1,201 文件、`509,239,295` bytes，
+  排序内容 SHA `365aa6a6...59e6`；控制 runner
+  `scripts/run_v108_currentcode_oldsp_train_candidate_cache.sh` SHA
+  `6d56c07302da8532c9fef29b2b7d989c55235dcef9a20d288b6779c6f1885f3e`，绑定 candidate script
+  `b1db28f1...f1932`、提取期 `train_dist_mod.py` `34a6ed34...4078`、MCLN/adapter/mask-fusion/dataset
+  六份关键源码 SHA，并生成完整只读 receipt。为让控制提取与已完成 MeshSP 提取的源码身份也一致，
+  尚未用于 forward 的 V108 runtime schema 扩展已临时还原；OOF 通过后再恢复并回归验证。
+- 几何 runner 现只接受上述 control receipt，A/B 旧端改为
+  `e71_top16_currentcode_oldsp/train`；新 geometry/wait runner SHA 分别为
+  `10758029...85d5`、`e16c306b...49c3`。当前三个串行 screen 为 control cache、geometry wait、models/OOF
+  wait，后两者不建立 CUDA context。正式 A/B 仍要求 regular201 全特征 exact、fallback361 仅三列 Mask
+  特征可变、候选/box/IoU/四项计数 exact；失败仍停止，成功才进入 geometry。整个修正过程没有读取
+  ScanRefer validation，也没有按已知 validation 缺口调整模型或阈值。
+
+#### 14.140 V108 同代码因果 A/B 通过与完整 MeshSP geometry cache（2026-08-14）
+
+- 当前代码+旧 SP control cache 已按正式 batch12 完成：36,665 rows、144 shards，四项冻结计数仍为
+  default `34892/31870`、oracle `36405/35409`；control receipt SHA-256 为
+  `c472528e114238511bc8784b0efd01d75414485a5bd3be000b334112042b700b`。它只用于隔离 SP 变量，
+  不参与模型选择或 validation。
+- 完整逐行 A/B clean pass，报告
+  `e71_top16_meshsp/candidate_ab_audit.json` SHA-256
+  `4439438db6b3e9cccbf462a527395a39c3ca60588cd24d87c9549bdaef35b663`：
+  36,665 rows/562 scenes 中，regular201 的 12,560 rows 全部特征 bitwise exact；fallback361 的
+  24,105 rows 全部发生变化，且所有变化都严格位于该子集。candidate identity/boxes/IoU、149 个非 Mask
+  列与四项计数均 exact；三列变化行数分别为 `24038/23906/24105`，最大绝对差为
+  `0.123588/0.247233/0.979181`。这把 Mask 特征变化因果归因于 train superpoint 修复，而非代码代际、
+  batch shape 或候选池变化。
+- 预注册 64 scenes/256 expressions 的 geometry audit 随后通过：default `0.74219/0.48047`，
+  `fused_t0_exact` 为 `0.77734/0.71875`（@0.25 fixes/breaks=`13/4`，@0.50=`66/5`），组合 geometry
+  oracle 为 `0.98047/0.94531`。这只是 train diagnostic，不是 official 指标。
+- 完整 geometry cache 在唯一 GPU0 上按 batch36/workers4 串行生成并原子发布：36,665 rows、562 scenes、
+  146 shards、622,730,170 shard bytes；content digest
+  `7bd0634bb7a6faeece7399e81dc98987e562dc8eea2ee701de8e9535f9bbc91f`，receipt SHA-256
+  `e45adaafb3730f45dabcea7f0c4f4492a6ea6360b7f07bdb164270bd934d9443`，exitcode `0`，
+  `validation_data_accessed=false`。整个阶段始终只有一个 CUDA PID，parent/geometry/OOF 均在上游退出后
+  才接棒。
+
+#### 14.141 V108 parent/geometry 重训、OOF 差 2 hits 拒绝与失败权重清理（2026-08-14）
+
+- parent 按冻结配置在 epoch4 早停，train 内 calibration `Acc@0.25=0.94290`、
+  `Acc@0.50=0.88138`；artifact SHA 为
+  `7b8956e854df3e2030a091e45e0b17ff2a9b56555d4bef660200f94d0c3b616f`。geometry 在 epoch5 早停，
+  融合权重 `0.90`，train 内 calibration `0.95228/0.92828`；artifact SHA 为
+  `20f33cf46d3e296529aa817f58729bf73783a6637b0e4bc8221ff730e9897972`。两者严格串行、只读保存后才启动
+  OOF；这些 calibration 数字不作为 official 结果。
+- OOF 初次进入时连续暴露三项历史基础设施常量：旧 residual loader 只接受 V19/V99 的固定
+  parent/geometry SHA；旧 immutable capture API 只允许三个固定键；旧 materialization validator 又把
+  geometry weight 写死为 `1.0`。三次都在相应计算前 fail closed，未访问 validation；traceback/log/exit
+  分别保存在四个只读 `failed_oof_*_20260814` 审计目录（第四个为完成 OOF 后 receipt 对“失败应返回75”
+  的错误假设）。修复保持历史 loader/validator 默认行为不变，只为 V108 冻结两个 cache receipt、两个
+  model SHA、四个 manifest/receipt 前后 SHA，并给 materializer 增加默认不变的可注入 validator；旧路径
+  物化回归 `4 passed`。
+- 修复后的代码 SHA：`train_scanrefer_rec_hierarchical_reranker.py`
+  `948075df82a17685e102c1913eff44f2ee032cc3e999bd5c3341aaa1b689aff3`，
+  `run_v108_meshsp_pareto_oof.py`
+  `94dbce107e8412e00ac777cdea732cf6f93d6a7985550258ef7ae46763053c8d`，
+  `build_v108_meshsp_pareto_artifact.py`
+  `af5ce0419b89a58d11bbcfd27e4dfb40b163e65009877b0ed83a576a95956efa`；恢复与终结脚本 SHA 分别为
+  `3454516e7e4c1a6059e402614124ef6ba31a0e0e3ecff7a60076e0c9e1bfadef`、
+  `b54c6d7e64700e0eb0071b64dde36c14057b24946fd20385020e28b1788c99c6`。
+- 5-fold scene-disjoint OOF 最终完整运行，五折增益均严格为正：@0.25 为
+  `+4/+13/+17/+28/+8`，@0.50 为 `+53/+33/+44/+56/+59`。总体 baseline hits
+  `35215/33808`，候选 hits `35285/34053`，即 **`+70/+245`**；scene bootstrap 95% 下界为
+  **`+32/+183`**。corrected361 子组 `+49/+178`，regular201 子组 `+21/+67`，两子组均非负。
+  10 个预注册谓词中仅 `delta025 >= +72` 失败，差 **2 hits**；其余总增益、逐折、bootstrap 与子组门
+  全部通过。因此 V108 按协议拒绝，未构建 deployable artifact，未读取 official validation。
+- OOF 报告 SHA-256 为
+  `72ca54b2db0bca829011a2f480c458c0a3e450a492dd77de9d8411e84f3e9162`；最终失败 receipt SHA-256 为
+  `983dbe5141a4bef2a3c36e23bbc0c833aa2d4a4ea026a833708b7b2dad6fdb32`，协议 exitcode `75`，明确记录
+  `gate_outcome=failed_delta025_by_two_hits` 与 `validation_data_accessed=false`。
+- 按“只保留最佳权重”要求，在 receipt 对 artifact SHA/size、训练日志、cache receipt 与重建配置全部绑定后，
+  已精确删除 V108 的两个落选 `.pth` 并删除空 `v108_artifacts` 目录；文件本身不可直接恢复，但可由保留的
+  36,665-row candidate/geometry caches 与冻结命令确定性重建。全 output `.pth` 从 10 回到 8，历史
+  epoch71、V19 parent/geometry、V99、single-stage @0.25/@0.50 最佳权重均未改动。
+
+#### 14.142 V109 双层 scene-cross-fit 策略校准预注册（结果前冻结，2026-08-14）
+
+- **动机**：V108 的模型 OOF 在 @0.50 有大余量（`+245`），但 @0.25 以 `+70` 比原门槛少 2 hits；
+  4,069 个切换在 @0.25 产生 194 fixes/124 breaks，说明下一步应提高对低置信 @0.25 切换的选择性，
+  而不是降低 `+72` 门、读取 validation 或修改候选/geometry。V109 保持 V108 的 parent、geometry、
+  contextual hierarchy、训练目标、seed、五折 scene mapping 和所有输入完全不变，只把固定 Pareto policy
+  改为 **leave-one-fold-out meta calibration**。
+- **无泄漏双层协议**：先像 V108 一样得到五份 scene-disjoint raw OOF proposal、aggregate gain 和两个
+  head gain。对外层 held fold `k`，policy 只能读取另外四个外层 OOF folds 的预测与 train GT；held fold
+  的标签在 policy 选择时不可见。选好后才应用到 fold `k`，五个 held 结果拼成最终 meta-OOF。用于部署的
+  单一 global policy 仅在全部 OOF 预测上按同一冻结规则选出；正式 validation 仍要等 meta-OOF 全门通过。
+- **冻结 30-policy grid**：aggregate margin 为
+  `{0.10,0.12,0.13312220573425293,0.15,0.18,0.22}`，最小 @0.25 head gain 为
+  `{0,0.0025,0.005,0.01,0.02}`，@0.50 head gain 始终严格 `>0`。在四折 calibration 上，候选须
+  overall @0.25 正增、每个可见 fold 两阈值非负，且 @0.50 增益至少为固定 V108 policy 在同四折增益的
+  `ceil(50%)`；随后依次最大化 @0.25、@0.50、减少 switches，并以更高 head floor/margin 作确定性 tie-break。
+  synthetic probe 验证 30 个候选齐全，改变被排除 held rows 的 IoU/head gain 不会改变 policy 选择。
+- **晋级门不变**：最终 meta-OOF 总增益仍须 `>=+72/+74`；五个 held folds 两阈值都须严格正增；
+  scene-bootstrap 95% 下界都须 `>0`；corrected361 与 regular201 两子组两阈值均须 `>=0`。任一失败即
+  exit76、禁止 official validation，并在 receipt 后删除本轮重建的两个落选 `.pth`。
+- 实现 `scripts/run_v109_meshsp_nested_policy_oof.py` SHA-256
+  `aa77fadd55d8e579ad65748f8e1a078cbb756eaf53b061ec0339b73495a17c33`；单卡串行 runner
+  `scripts/run_v109_meshsp_nested_policy_serial.sh` SHA-256
+  `6c5770ce5371da4e8b80349e9a66e008a572b2f4e775ef7640ec8404e37a7bff`。runner 先按原冻结命令重建
+  parent/geometry，并要求 artifact SHA 必须逐字节复现 V108 的 `7b8956...616f`、`20f33c...7972`；
+  随后才在唯一 GPU0 上运行 V109。启动前 free disk `4,001,886,208` bytes、GPU compute PID 为空。
+
+#### 14.143 V109 nested-policy OOF 全门通过与 full-fit artifact 构建冻结（2026-08-14）
+
+- parent/geometry 重建逐轮复现 V108，最终 artifact SHA 分别 exact 为 `7b8956...616f` 与
+  `20f33c...7972`；说明 14.141 的删除是可恢复的，也证明 V109 的差异只来自 policy procedure。
+- 五个外层模型 folds 的 raw prediction digest 受报告绑定；五个 leave-one-fold-out meta calibrations 都独立选择
+  同一策略：aggregate margin `0.15`、@0.25 head gain 严格 `>0.02`、@0.50 head gain 严格 `>0`。
+  held-fold 净增 @0.25 为 `+5/+14/+16/+28/+9`，@0.50 为 `+53/+35/+43/+56/+59`，全部严格为正。
+- 汇总 baseline hits `35215/33808`，V109 hits `35287/34054`，即 **`+72/+246`**；switches 从 V108
+  的 4,069 降到 3,897。@0.25 fixes/breaks 从 `194/124` 变为 `193/121`，净增正好从 +70 提到门槛
+  +72；@0.50 fixes/breaks 为 `477/231`。scene bootstrap 95% 下界为 **`+34/+183`**。
+- corrected361 子组为 `+52/+182`，bootstrap 下界 `+20/+131`；regular201 子组为 `+20/+64`，
+  其 @0.25 bootstrap 下界为 `-1`，但预注册子组门只要求 pooled delta 非负，故不改变门定义。
+  总增益、五折严格正增、整体 bootstrap 正下界、两个子组非负共 10/10 谓词全真。
+- OOF report SHA-256
+  `37680aaa34757cf9bb2376e93629ae6b89aa6b8fac16960ac091305cc20146a1`；单卡 pipeline receipt SHA-256
+  `07af9c6b331e808f86d16e62ae92a1106e86321c3f0734c3f2cb6ede46b94986`，exitcode `0`，
+  `validation_data_accessed=false`。因此允许进入 full-fit/runtime parity，但此时仍未访问 official validation。
+- full-fit builder `scripts/build_v109_meshsp_nested_policy_artifact.py` SHA-256
+  `93d5dca1b284d5cb4a34902b69a21a287c589a06e8c0ee43f12e375c608e5b98`，先严格重验 OOF、五个
+  meta policy 一致性、输入 receipt/model SHA，再在全 36,665 rows 上用原 V99 contextual hierarchy
+  的 12 epoch/h128/dropout0.1/wd1e-3 训练；artifact policy 额外冻结 margin/head025/head050 与双层选择过程。
+  单卡 runner `scripts/run_v109_meshsp_artifact_serial.sh` SHA-256
+  `2b75cc913c191517c490184a3df4c2fc01f10379e3eb8f65809ef7e075a98833`；输出只能是
+  `v109_artifacts/nested_policy_h128_seed0_fullfit.pth` 与只读 receipt。构建、strict reload、train replay、
+  runtime parity 全过后才允许一次 official validation；否则清理新增 artifact/落选权重。
+
+#### 14.144 V109 full-fit artifact 完成与只读封存（2026-08-14）
+
+- 唯一 GPU0 上的 full-fit 已 clean exit，并在 CPU 上 strict reload。artifact 为
+  `e71_top16_meshsp/v109_artifacts/nested_policy_h128_seed0_fullfit.pth`，SHA-256
+  `20db69ddc27680a035384277bc48cd44109215e3d7d1158cdc4a4f21ff7c785b`，大小 915,339 bytes，
+  mode `0444`；artifact receipt SHA-256 为
+  `19f7676241b1558beb53c67f770cf8c3a3d149d3e0ee21a61579e383d53b7115`，同为 `0444`。
+- 全量拟合精确使用 36,665 rows/562 scenes；第 12 epoch 的 loss/query/variant 为
+  `4.4842278593/2.6923590153/1.7918688299`。模型 state、normalization、scene fold、deployable rows、
+  candidate IoU digest 分别为 `4b5f4962...eceef`、`77046539...d3be`、`829d230d...3e53`、
+  `473be1a4...5f39`、`b0945e31...abed`。artifact schema 固定为
+  `rec-pareto-contextual-meshsp-nested-policy-full-train-artifact-v1`，policy 固定为 margin `0.15`、
+  @0.25 head gain 严格 `>0.02`、@0.50 head gain 严格 `>0`。
+- 构建前后 backbone、parent、geometry 及两个 cache manifest/receipt 的内容身份完全相同，
+  `validation_data_accessed=false`。V109 正式结论前继续保留 parent `7b8956...616f`、geometry
+  `20f33c...7972` 与 full-fit artifact 三个依赖权重；此时 output 下 `.pth` 共 11 个，没有并发或额外权重。
+
+#### 14.145 V109 runtime 接入、语义回归与 36,665-row parity（2026-08-14）
+
+- `train_dist_mod.py` 已只增加 V109 schema 的严格动态 loader/validator 分支，并从 artifact policy 读取
+  两个 head floor；`models/rec_pareto_contextual_hierarchy.py` 给 Pareto policy 增加默认均为 `0.0` 的
+  可选 floor，故 V99/V101 的旧调用行为不变。最终源码 SHA 分别为
+  `691a7aa969bc2fb277f9807bda578b20dcf5de1cf827ad37e4808e2b92c794fc` 与
+  `d108fc146b80646b7ab0479d7a03d2f7f7cf69ed45bea597232b46f9b836f9fe`。
+- 首轮既有回归发现 provenance 返回字典被多加两个字段，旧精确契约 18/19；已撤回多余返回字段后
+  19/19 通过。随后新增实现后的独立 V109 语义回归，把 runtime `switch_mask` 与冻结 OOF
+  `policy_accept_mask` 在确定性随机样本上直接比较，5/5 通过；最终联合回归 **20/20 passed**。
+- parity 脚本 `scripts/audit_v109_runtime_parity_train.py` SHA-256
+  `011a5de2881545a965df801db265a05f52002d9c55229cf7218e53975e70ff16`；单卡 runner SHA-256
+  `f86e474d0951294f2c291cbfcc8bdd98fe70668e5d994635a8ff931fe3329073`。前两次在计算前分别因训练
+  loader 没有裸模型 SHA 属性、parent 实为 `(model, artifact)` 而 fail closed；日志保存在
+  `failed_parity_loader_attrs_20260814/` 与 `failed_parity_parent_tuple_20260814/`，未访问 validation、
+  未改权重。第一次完整 PASS 的报告因 `-inf - -inf` 让诊断用 different-elements 误计数而被封存到
+  `superseded_parity_nonfinite_diagnostics_20260814/`，其核心 `torch.equal` 判定原本已全真，但不用于门禁。
+- 最终只读 parity 报告 `v109_train_runtime_parity.json` SHA-256
+  `5bc46bbf1146a34ee834b4241f934b244f1d8b2287fb931ec963c720350a9c46`，mode `0444`：36,665 rows 的
+  8 组层级输入、baseline indices/scores、query/variant logits、proposal/head gain/aggregate gain、
+  Pareto pass、switch mask 与 selected indices 全部 `equal=true`、`different_elements=0`、
+  `max_abs=0.0`；受保护的 backbone/parent/geometry/V109 artifact 前后身份相同，权重未修改，
+  validation 未访问。至此 full-fit、strict runtime loader、train replay 与 runtime parity 全门通过。
+
+#### 14.146 V109 唯一 official validation 预注册与 dry-run PASS（结果前冻结，2026-08-14）
+
+- official runner `scripts/run_frozen_v109_meshsp_official.py` SHA-256
+  `3095cdd1746d4e99fe120a5b2f35284483d448f2ef020433f19c0d0bf9ca286b`，只允许 GPU0/world-size1、
+  batch12、官方 epoch71 backbone、mesh-derived validation superpoint view 与 9,508 条 population；
+  parent/geometry/V109 artifact 精确绑定 `7b8956...616f`、`20f33c...7972`、`20db69...785b`，并强制
+  parity SHA `5bc46b...a9c46`、OOF SHA `37680a...e9162`、`validation_data_accessed=false`。
+- 无 validation forward 的 dry-run 已通过 strict artifact load、完整 Python tree snapshot、命令与环境校验，
+  只读 preflight SHA-256 为 `f7bdb28a4c77cea40f1e4621bbec127cab876377ba1a7f53b612605ec27025a2`；
+  回归为 20/20 passed，GPU0 此时空闲。实际输出唯一固定为
+  `/root/autodl-tmp/DATA_ROOT/output/v109_meshsp_official_20260814`，一次性 claim 为
+  `v109_artifacts/v109_meshsp_official_once_after_train_runtime_parity.claim.json`；claim/output 已确认不存在。
+- 正式门在结果前固定：REC hits 至少 `5610/4659`（Acc@0.25/0.50 至少 `0.59/0.49`）；Mask 至少保持
+  用户 baseline `0.5870/0.5070/mIoU 0.4472`，并单独报告是否保持 V99 meshSP 的
+  `5690/4976/mIoU 0.4593026021`。不允许 GT boxes/masks、train eval、selective residual 或第二个 CUDA 任务；
+  不按 validation 结果再调 policy。若 V109 在两个 REC 指标上均不形成新的最佳/Pareto 最佳，则在正式
+  result/claim/日志与三个权重 SHA 可恢复性封存后删除 V109 artifact 及重建的 parent/geometry；若形成新
+  最佳则保留这一整条最小依赖链，并继续清理非最佳权重。
+
+#### 14.147 V109 official 结果：@0.50 新最佳、@0.25 与 Mask 未胜 V99（2026-08-14）
+
+- 唯一正式运行在 screen `mcln_v109_official` 上用 GPU0 串行完成 793 batches/9,508 samples，runner
+  `scripts/run_v109_official_serial.sh` SHA-256
+  `4aa655b72d62996c5feccf8bec1578cdcf1725cc80663603dd285c403fa40218`；全程只有一个 CUDA PID，
+  exitcode `0`，结束后 GPU 回到 1 MiB。一次性 claim、stdout、result SHA-256 分别为
+  `3da2e573115e4985c185fb81f85c9aba407836791e15cb40c1be5000ee8178b0`、
+  `79f84f51438557bd5a9689e58fd3640577c1e0c2ca2e75220a2738ce6c199889`、
+  `9afe5160359e56f867d1f500cd906b7b2133af124b49a353ed0d50b8ab8778ba`，均为 mode `0444`。
+- 正式 REC/Mask 结果如下；百分比由精确 hit counts 计算，mIoU 为完整浮点值：
+
+| 指标 | V109 | V99 最佳 | V109 - V99 |
+|---|---:|---:|---:|
+| REC overall @0.25 | 5,551/9,508 = 58.3824% | 5,572 = 58.6033% | -21 hits / -0.2209 pp |
+| REC overall @0.50 | 4,834/9,508 = **50.8414%** | 4,797 = 50.4523% | **+37 hits / +0.3891 pp** |
+| REC unique @0.25 / @0.50 | 88.7949% / **81.1135%** | 88.8654% / 80.5497% | -1 / +8 hits |
+| REC multiple @0.25 / @0.50 | 53.0473% / **45.5310%** | 53.2946% / 45.1725% | -20 / +29 hits |
+| Mask overall @0.25 / @0.50 | 5,689/9,508 = 59.8338% / 4,974 = 52.3138% | 5,690 = 59.8443% / 4,976 = 52.3349% | -1 / -2 hits |
+| Mask unique @0.25 / @0.50 | 90.2044% / 80.1268% | 90.2044% / 80.1268% | 0 / 0 hits |
+| Mask multiple @0.25 / @0.50 | 54.5061% / 47.4348% | 54.5185% / 47.4595% | -1 / -2 hits |
+| Mask mIoU | 45.9224% | 45.9303% | -0.0079 pp |
+
+  Mask overall @0.25 的权威值为 `5,689/9,508 = 0.5983382414808582`。REC unique/multiple totals 分别为 1,419/8,089；
+  Mask unique hits 为 `1280/1137`，multiple hits 为 `4409/3837`。
+- 门结果：REC@0.50 目标 `>=0.49` 通过并刷新全局最佳；REC@0.25 只有 58.3824%，未达到 59.0%，
+  比目标少 59 hits。Mask 三项仍全部超过用户 baseline 58.70%/50.70%/44.72%，但均略低于 V99，
+  因而 `mask_user_baseline_preservation_pass=true`、`mask_v99_meshsp_preservation_pass=false`、
+  `rec_target_pass=false`、`all_goals_pass=false`。
+- result 中 protected artifacts 前后完全相同，完整 Python source-tree manifest 前后完全相同；无 GT boxes/
+  masks、无 train eval，正式 result 仅在冻结 OOF/parity 后读取 validation。V109 虽未同时胜出，但已形成
+  **@0.50 的新 Pareto 最佳**，所以按“保留最好权重”要求保留 V109 full-fit + V108 parent/geometry 三个
+  `.pth`；V99 仍是 @0.25 与 Mask 三项最佳，也继续保留。没有失败权重可删，output `.pth` 维持 11 个。
+
+#### 14.148 V110 预注册：跨种子不确定性 LCB 深度集成（2026-08-14）
+
+- 动机：V109 的 train-only OOF 为 `+72/+246 hits`，正式评测却在 REC@0.25 相对 V99 少 21 hits，且
+  regular 子群 @0.25 scene-bootstrap 95% 下界为 `-1`。V110 不读取 validation，也不针对 ScanRefer
+  标注规则增加特化修补；它复用可迁移到 ScanRefer/Nr3D/Sr3D 的 contextual hierarchy，在每个 scene-
+  disjoint 训练折上串行训练固定种子 `0/1/2` 三个成员，用单调 `P(IoU>0.25), P(IoU>0.50)` 的算术均值
+  选 proposal，并以三个成员对“ensemble proposal 相对 baseline”的 head-gain 总体标准差估计认知不确定性。
+- 冻结切换规则使用 head lower-confidence-bound：`LCB = mean_gain - λ·population_std`，仅在 proposal
+  不同于 baseline、`2*LCB025+LCB050 >= margin`、两个 head LCB 均为正且至少 `2/3` 成员同意 ensemble
+  proposal 时切换。完整冻结 grid 为 `margin={0.10,0.1331222057,0.15,0.18}`、
+  `min_LCB025={0,0.01,0.02}`、`λ={0,0.5,1}`、`consensus={2/3,1}`，共 72 个策略。
+- 协议为外层五折 scene-disjoint OOF，每折三个模型严格串行（共 15 次小模型拟合）；每个 held fold 的
+  策略只能由另外四个模型 OOF folds 的标签选择。候选必须达到按行数缩放的 V109 门槛
+  `ceil(73*n/36665)` / `ceil(246*n/36665)`，且参与校准的各折两阈值 delta 均非负；随后按
+  @0.25、@0.50、较少切换、较保守策略依次排序。若无合格策略则仍生成审计结果，但 gate fail closed。
+- 在任何结果产生前冻结的最终 promotion gate：整体 `delta025>=73`（严格超过 V109）、`delta050>=246`，
+  五折两阈值均严格为正；整体 bootstrap 下界至少 `34/183`；corrected 子群 bootstrap 下界至少
+  `20/131`；regular 子群 @0.25 下界严格大于 0、@0.50 下界至少 29；五个 meta 选择均可行且最终
+  policy 完全一致。只有全部通过才允许 full-fit/parity/一次正式评测；否则不创建权重、不访问 validation。
+- 实现 `scripts/run_v110_meshsp_uncertainty_ensemble_oof.py` SHA-256
+  `95ef5e9d69308bb104186bdee1badfc4134671ce339ac72ff134b7d1d268f596`；单卡 runner
+  `scripts/run_v110_meshsp_uncertainty_ensemble_serial.sh` SHA-256
+  `9261470445fe2cce4a460e29ea273110fbfe6ddecea786e0e1f5aba505af7234`，两者均 mode `0444`。runner
+  绑定 V109 OOF、两个 cache manifest/receipt、backbone、V108 parent/geometry 与全部相关源码 SHA，要求
+  恰好一张 GPU、GPU 无计算进程、至少 2.5 GiB 空间，并拒绝覆盖任何 V110 输出。
+- 上线前 `py_compile`、72-policy import/boundary probe 通过；hierarchical/V95/V97/V99 相关回归
+  **124/124 passed**。当前 GPU0 为 1 MiB/0%，V109 @0.50 artifact 及其 V108 parent/geometry 依赖链、
+  V99 @0.25/Mask 最佳依赖链继续保留；V110 OOF 不写任何 `.pth`。
+
+#### 14.149 V110 OOF 结果：不确定性有效，但 ensemble proposal/共识损失过大（2026-08-14）
+
+- 单卡 screen `v110_uncertainty_oof` 串行完成 5 个 scene-disjoint 外折、每折种子 `0/1/2`，共 15 次
+  训练；每个成员最终 loss 约 `4.4803--4.4924`，15 个 state SHA 均不同。结果、完整 stdout log、
+  exit receipt 分别为只读 SHA-256 `7970a54bbf8a26ca09370be6a2413e436dbcb408dbc1dc1eec0a162ee40f8d48`、
+  `4cdc1fa67039b7a942d4408fb842da589e4dac671d20805c242e8b1e96cb1ce1`、
+  `461144ccfd56ee3cf0f9a9d80e520c5b872166b23092d5fd838ecbdb46d64dab`；预期 gate-fail exit 为 `76`。
+  运行后 GPU0 回到 1 MiB/0%，protected weights 与 cache metadata 前后完全相同。
+- Nested held-fold 结果为 `delta025=+44`、`delta050=+128`、1,833 switches；五折依次为
+  `(+4,+34)/(+13,+10)/(+10,+37)/(+18,+28)/(-1,+19)`，整体 scene-bootstrap 95% 下界
+  `+13/+84`。corrected 子群为 `+25/+88`、下界 `-2/+53`；regular 子群为 `+19/+40`、下界
+  `+3/+16`。regular @0.25 下界确实从 V109 的 `-1` 改善为正，说明跨种子风险信号有价值。
+- 但 5 个 meta folds 的 72-policy grid 全部 `eligible_candidate_count=0`，选出的 fallback policies 也不一致；
+  全局标签可见诊断上最优 frozen policy 仅 `+58/+143`，仍显著低于 V109 `+72/+246`。失败 predicates
+  包括两项总体 delta、两项总体 bootstrap、两项 corrected bootstrap、regular @0.50 bootstrap、fold 4
+  @0.25、meta 可行性与一致性。按预注册规则禁止 full-fit/parity/validation，未创建任何 `.pth`。
+- 失败原因定位为：对三个成员概率取均值会改变 V109 seed-0 的高价值 proposal，而 `>=2/3` proposal
+  consensus 又进一步拒绝大量 @0.50 修复；这不是简单调 margin 能恢复的，因为全局最优 grid 也只到
+  `+58/+143`。下一版应固定 V109 seed-0 proposal，仅让其他种子评价“同一个 anchor proposal 相对
+  baseline”的收益方差，以风险折扣筛掉不稳定切换；`lambda=0` 必须严格退化为 V109 决策，避免再次
+  牺牲已验证的 @0.50 增益。
+- 权重清理审计：V110 只生成 JSON/log/exit，无失败权重可删；全 output `.pth` 仍为 11 个。用户指定保留的
+  V109 @0.50 artifact SHA `20db69...785b` 及 V108 parent/geometry SHA `7b8956...616f` /
+  `20f33c...7972` 完整保留，V99 @0.25/Mask Pareto 最佳链也未动。
+
+#### 14.150 V111 预注册：V109 anchor proposal + 跨种子风险委员会（2026-08-14）
+
+- V111 针对 V110 已定位的机制失败，不再平均三个成员的 proposal。每个外折仍串行拟合固定种子
+  `0/1/2`，但 proposal 和原始 head gain **只取 seed 0 anchor**；实现必须用
+  `tensor_sha256(proposal, 2*gain025+gain050, head_gain)` 与 V109 原始 OOF prediction SHA 完全相等，且
+  `lambda=0, margin=0.15, min_gain025=0.02` 的 base policy 必须精确复现 V109 `+72/+246`，否则在策略
+  选择前 fail closed。
+- seed 1/2 仅在 seed-0 已选定的同一个 anchor proposal 上计算相对 baseline 的两个 head gains；风险定义为
+  三成员 gain 相对 anchor gain 的 RMS disagreement，`risk=sqrt(mean_s((gain_s-gain_anchor)^2))`。切换使用
+  `LCB=anchor_gain-lambda*risk`，因此 `lambda=0` 严格退化为 V109，而正 lambda 只删除跨初始化不稳的
+  anchor switches，不会像 V110 那样改 proposal。这一模块只依赖模型预测分歧，可迁移到 Nr3D/Sr3D。
+- 冻结 150-policy grid：V109 原 margin
+  `{0.10,0.12,0.1331222057,0.15,0.18,0.22}`、`min_LCB025={0,0.0025,0.005,0.01,0.02}`、
+  `lambda={0,0.5,1,2,4}`，`min_LCB050=0`。每个 held fold 的策略仍只看另外四个 scene OOF folds；
+  非 base 候选必须在校准集上严格提高 base @0.25、不得降低 base @0.50，且四折两阈值 delta 均非负。
+  若存在候选，依次最大化最弱折 @0.25、整体 @0.25、最弱折 @0.50、整体 @0.50，再偏好较少 switches
+  与较保守参数；若不存在则确定性回退 V109 base，不伪造改进。
+- 最终 promotion gate 沿用并强化 V110 的预注册标准：nested OOF `delta025>=73`、`delta050>=246`，
+  五折两阈值严格为正；整体 bootstrap 下界至少 `34/183`；corrected 至少 `20/131`；regular @0.25
+  下界严格大于 0、@0.50 至少 29；五个 meta folds 都必须选到严格优于 base 的候选且 policy 完全一致；
+  两项 anchor exact-reproduction 契约也必须通过。全部通过前不 full-fit、不访问 validation、不写权重。
+- 实现 `scripts/run_v111_meshsp_anchor_committee_oof.py` SHA-256
+  `eed77d2b4b75923eb74e37dd7af5565b4459170e8c28614bc4971544bc03d89d`；单卡 runner
+  `scripts/run_v111_meshsp_anchor_committee_serial.sh` SHA-256
+  `be8bf3e72649062165e0d27dd0c0bfd3febc6d436c05106c0bf524b93711c3f4`，均 mode `0444`。runner
+  额外绑定 V109 success 与 V110 failure 报告 SHA，拒绝覆盖输出并要求单卡空闲。`py_compile`、150-policy
+  anchor/risk boundary probe 与相关回归 **124/124 passed**。V111 OOF 仍不产生 `.pth`。
+
+#### 14.151 V111 OOF 结果与 Pareto 审计：严格复现 V109，发现小幅阈值交换（2026-08-14）
+
+- 单卡完成 15 个成员；V111 result/log/exit 只读 SHA-256 分别为
+  `1455ec6044104932c1ecfd89c3bcc17a1e0a31cb85c518ca15db209390575a58`、
+  `a6aa7401e195ccb1242224f29e9272fdac61a592a6f8a225d7a39a72f1380892`、
+  `461144ccfd56ee3cf0f9a9d80e520c5b872166b23092d5fd838ecbdb46d64dab`，预期 gate-fail exit `76`。
+  seed-0 anchor prediction 的 expected/actual SHA 均为
+  `bdcc8c01aabf5fe891f7789ca630ea533209209090d80f02852ea9e66184a57d`；base policy 精确复现
+  V109 `+72/+246`、3,897 switches、逐折 `(+5,+53)/(+14,+35)/(+16,+43)/(+28,+56)/(+9,+59)`。
+  因严格不许 @0.50 降低，五个 meta folds 均无 strict-improvement candidate，确定性回退 base；最终只失败
+  `delta025>=73`、regular @0.25 bootstrap 下界 `>0`、meta 必须选到严格改进三项。protected 输入前后相同，
+  GPU 回到 1 MiB，未访问 validation、未写 `.pth`。
+- `analyze-results` 原始对比表（所有数字均为 train-only scene OOF，不是正式 validation）：
+
+| 配置 | 选择协议 | delta@0.25 | delta@0.50 | switches | 关键稳定性 |
+|---|---|---:|---:|---:|---|
+| V109 / V111 base | nested，@0.50 不得降低 | +72 | +246 | 3,897 | bootstrap lower +34/+183；regular -1/+29 |
+| V110 mean proposal + consensus | nested | +44 | +128 | 1,833 | fold4 @0.25=-1；regular lower +3/+16 |
+| V111 risk，margin=.10, lambda=.5 | 全 OOF 诊断 | +78 | +238 | 3,622 | 五折均正：+6/+15/+19/+29/+9 |
+| V111 risk，margin=.12, lambda=.5 | 全 OOF Pareto | **+79** | +236 | 3,414 | 五折均正：+6/+17/+19/+29/+8 |
+| 95% @0.50-preservation 规则 | nested 探索 | +74 | +231 | 尚待重放 | held @0.25 五折 +6/+15/+19/+29/+5 |
+
+- 关键发现：
+  1. **观察**：anchor SHA 与所有 V109 指标完全相等；**解释**：V110 的退化确由改 proposal/强制共识引起，
+     不是重训漂移；**含义**：固定 anchor 的风险过滤具有可靠对照；**下一步**：只改变风险容许规则。
+  2. **观察**：`lambda=.5` 把 @0.25 增益提高 6--7 hits，只损失 8--10 个 @0.50 hits；**解释**：跨种子
+     disagreement 能过滤一部分 @0.25 false-positive switches，但某些被过滤样本仍是 @0.50 修复；**含义**：
+     两阈值并非完全同向，应按任务硬目标而不是强制逐 hit Pareto；**下一步**：允许最多 5% 的 OOF @0.50
+     增益回撤，同时维持五折正向和 bootstrap 门。
+  3. **观察**：95% 规则的 nested held 合计 `+74/+231`，但五折 margin 不一致（`.10/.10/.10/.12/.18`），
+     `lambda=.5,min_LCB025=.02` 完全一致；**解释**：风险机制稳定而 margin 是折间 nuisance；**含义**：后续
+     full-fit 可用 meta 多数 margin `.10`，但必须先重放得到完整 bootstrap/子群统计；**下一步**：V112 保存
+     可复用的 train-only prediction cache，避免再为纯 policy 审计重复 15 次训练。
+- V111 未产生失败权重，远程 `.pth` 仍为 11 个；V109 @0.50 与 V99 @0.25/Mask 两条 Pareto 最佳链继续保留。
+
+#### 14.152 V112 预注册：95% @0.50 保留率的 nested 风险交换（2026-08-14）
+
+- V112 是明确标记的 **prior train OOF-informed protocol iteration**：V111 训练 OOF 用于提出 95% 保留率，
+  但 V112 每个 held fold 的 policy 仍只能读取另外四折，`validation_data_accessed=false`，也不把 V111 全局
+  Pareto policy 直接当 held 结果。架构、种子、anchor exact-reproduction 与 150-policy grid 均不变。
+- 每个 meta 校准将 @0.50 下限从“不得低于 anchor”改为
+  `ceil(0.95 * anchor_calibration_delta050)`；候选仍须严格提高 anchor @0.25，且参与校准的四折两阈值
+  delta 均非负。排序仍优先最弱折 @0.25、整体 @0.25、最弱折 @0.50、整体 @0.50、较少 switches 与
+  保守参数。五个 meta policy 允许 margin 随折变化，但 `lambda/min_LCB025/min_LCB050` 必须完全一致；
+  若通过，full-fit deployment margin 取五折多数，票数相同时取更高 margin。
+- 在重放完整 bootstrap 前冻结 promotion gate：nested `delta025>=73`、`delta050>=230`，五折两阈值严格
+  为正；整体 scene-bootstrap 95% 下界至少 `34/160`；corrected 子群至少 `20/120`；regular 子群
+  @0.25 下界严格大于 0、@0.50 至少 20；五折都必须选到严格优于 anchor 的候选，risk family 一致，
+  V109 anchor raw/base 两项精确复现。这里允许的 @0.50 OOF 回撤小于 V109 正式 @0.50 相对 49% 目标的
+  175-hit 余量，但只有全部 train-only 门通过才允许 full-fit/parity；正式评测门仍是 REC
+  `>=5610/4659` 且 Mask 至少用户 baseline。
+- 为避免后续纯 policy 审计再次重训 15 个成员，V112 会额外写一个只读 gzip JSON train-only prediction
+  cache，包含 scan/fold IDs、anchor proposal/gain/risk 与 baseline/proposal train IoU；明确不含 validation，
+  也不是模型权重。其 SHA 将绑定进主报告，之后若无需再审计可安全删除。
+- 实现 `scripts/run_v112_meshsp_anchor_committee_tradeoff_oof.py` SHA-256
+  `7939de3e65b7952c5fd8fb8b67020d33c28b3eff405c2385164c1fb8f958f207`；单卡 runner
+  `scripts/run_v112_meshsp_anchor_committee_tradeoff_serial.sh` SHA-256
+  `f0fe7c9951d5811bf29640a5c97c26ffd1b8840d0f5f74f19a8007eaeaee9457`，均 mode `0444`。
+  runner 绑定 V109/V110/V111 报告、V109--V112 相关源码、cache receipts/manifests 与三条 protected 权重 SHA；
+  `py_compile`、policy aggregation probe 和回归 **124/124 passed**。V112 OOF 本身不创建 `.pth`。
+
+#### 14.153 V112 首次重放的 cache 序列化兼容失败与只改 I/O 重跑（2026-08-14）
+
+- 首次重放已完成 15 个模型、5 个 meta folds 与所有 diagnostics 计算；held folds 为预期
+  `(+6,+53)/(+15,+33)/(+19,+45)/(+29,+51)/(+5,+49)`，合计 `+74/+231`，五折 risk family 均为
+  `lambda=.5,min_LCB025=.02`。但在报告落盘前，远程 Python 的旧版 `gzip.compress` 不接受 `mtime`
+  keyword，抛出 `TypeError`，exit `1`；因此没有主 JSON、没有 prediction cache、没有权重，GPU 已释放。
+- 失败 stdout/exit 已完整移动封存到
+  `failed_v112_cache_gzip_mtime_20260814/`，SHA-256 分别为
+  `1c7170536c808fd6fc5e1ba3471d0eb386e34d7bb5547b0bc9d8fdbdf83ec24a` 与
+  `4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865`，均 mode `0444`，可恢复且不冒充
+  正式 V112 报告。
+- 修复仅把 cache 压缩调用改为兼容旧 Python 的
+  `gzip.GzipFile(fileobj=BytesIO(),mtime=0,filename='')`；模型、数据、policy grid、selector、gates、
+  diagnostics 与输出 schema 均未改变。远程 legacy gzip round-trip probe 通过。
+- 修复后实现 SHA-256 为 `5f03702325d6ed93f7fe15348a0161032e95dac676bc06f35548f57131b3ce1b`；
+  runner SHA-256 为 `5915a32135a261ffded43e2d798184b878b803ed3d412a8bd4cc65d2234699ca`，均 mode `0444`。
+  第二次重放仍须完整执行并以新 report/cache SHA 为准；首次内存结果只用于确认执行到序列化边界，不替代报告。
+
+#### 14.154 V112 完整结果：总体与 corrected 通过，regular @0.25 下界等于 0（2026-08-14）
+
+- 修复后完整只读 report/cache/log/exit SHA-256 分别为
+  `128ce636d27234db7fca4fb23bd5d30945928d9ac9dcd1cf8139c38670a41b96`、
+  `1123df3d312e433bf14b83874de99742906907738802bf878056ca07caa7ffdd`、
+  `8bbf7931f262623a969f113348a3ea48a79486ac566f397e06af25501523c809`、
+  `461144ccfd56ee3cf0f9a9d80e520c5b872166b23092d5fd838ecbdb46d64dab`；exit `76` 为预期 gate fail。
+  cache 解压 schema、36,665 行长度、`validation_data_accessed=false`、`train_labels_only=true` 与 report 内绑定
+  SHA 全部通过；压缩/解压大小为 770,350/3,804,496 bytes。
+- Nested OOF 为 `+74/+231`、3,470 switches，五折为
+  `(+6,+53)/(+15,+33)/(+19,+45)/(+29,+51)/(+5,+49)`；整体 bootstrap 下界 `+39/+175`。
+  corrected 为 `+55/+168`、下界 `+26/+123`；regular 为 `+19/+63`、下界 **`0/+31`**。除
+  `regular_bootstrap025_lower_strictly_positive` 外所有预注册 predicates 均通过；deployment margin 投票
+  `.10:3/.12:1/.18:1`，risk family 一致。由于 regular 下界不是严格正数，禁止 full-fit/validation。
+- protected weights/cache metadata 前后完全相同，GPU 回到 1 MiB；未创建 `.pth`，远程权重仍为 11 个。
+
+#### 14.155 V113 预注册：非对称双 head 风险折扣的 cache-only nested 重放（2026-08-14）
+
+- V112 cache 的 CPU-only 设计审计显示两个阈值对跨种子风险的敏感度不同：固定
+  `lambda025=0.5, lambda050=0.25, min_LCB025=0.02, min_LCB050=0` 后，仅在六个既有 margins
+  `{.10,.12,.1331222057,.15,.18,.22}` 中做 leave-one-fold-out 选择。该规则对 @0.25 风险更谨慎、对
+  @0.50 修复保留更多，是阈值无关的双 head calibration 机制，不读取 corrected/regular 身份进行决策。
+- 每个 held fold 的 margin 仍只由其余四折选择：相对 V109 anchor 必须严格提高 @0.25、保留至少 95%
+  @0.50 增益，且四折两阈值非负；排序最大化最弱折 @0.25、整体 @0.25、最弱折 @0.50、整体 @0.50。
+  deployment margin 取五折多数，平票取更高 margin。
+- 在结果重放前冻结的 promotion gates：nested `delta025>=77`、`delta050>=235`；五折两阈值严格正；
+  整体 bootstrap 下界至少 `40/180`；corrected 至少 `25/125`；regular 至少 `1/35`；五折均有 eligible
+  margin，deployment margin 至少 3 票。全部通过才允许 full-fit 三成员、runtime parity 和一次正式评测。
+  V113 明确标记 `prior_train_oof_used_for_protocol_design=true`，不把它描述为未调参的独立统计检验。
+- 实现 `scripts/run_v113_meshsp_asymmetric_risk_replay.py` SHA-256
+  `439c75c081c3f445564ad36a55dfb4ab92443061ee889301297081ab4b4a2ee3`；CPU-only runner
+  `scripts/run_v113_meshsp_asymmetric_risk_replay_serial.sh` SHA-256
+  `661dd251c58248275b70e3a7ebb841fe07ef63406cd30c6f8bf4b932d793a1fb`，均 mode `0444`。
+  runner 绑定 V109/V112 report、V112 prediction cache 与 protected backbone/parent/geometry SHA，要求唯一 GPU
+  空闲但不启动 CUDA。`py_compile` 与 asymmetric boundary probe 通过；此重放不创建权重。
+
+#### 14.156 V113 重放结果：全部冻结门通过（2026-08-15）
+
+- V113 CPU-only replay 的 result/log/exit SHA-256 分别为
+  `ced399bca041cfa1f4213671100347f4a2423783aee4936ce7a82f785605e61d`、
+  `3c72e1800d7954a278229bc86dcc112ce221f5153115843409c918527b1a8ef8`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，exit `0`；V112 cache
+  SHA 仍为 `1123df3d...fdd`，seed-0 anchor raw prediction SHA 仍为
+  `bdcc8c01aabf5fe891f7789ca630ea533209209090d80f02852ea9e66184a57d`。未读取 validation，protected
+  backbone/parent/geometry 前后完全一致。
+- Nested held-fold 为 `+78/+240`、3,553 switches，五折依次为
+  `(+5,+52)/(+16,+36)/(+19,+45)/(+30,+53)/(+8,+54)`；整体 scene-bootstrap 95% 下界
+  `+42/+184`。corrected 子群为 `+57/+172`、下界 `+27/+127`；regular 子群为
+  `+21/+68`、下界 `+2/+36`。12 个预注册 predicates 全为 `true`，包括 regular @0.25 下界严格为正。
+- 五个 meta folds 的 margin 为 `.1331222057/.12/.12/.12/.12`，因此 deployment 以 4/5 多数冻结为
+  `aggregate_lcb_margin=.12, min_head_lcb025=.02, min_head_lcb050=0, risk_lambda025=.5,
+  risk_lambda050=.25`。全标签可见的诊断 winner 为 `+80/+243`，但部署严格采用 nested 多数规则，不能用
+  该诊断替换 held-fold 结果。
+- `analyze-results` 原始对比表（均为 train-only scene OOF，不是 validation）：
+
+| 配置 | nested delta@0.25 | nested delta@0.50 | switches | overall lower | corrected lower | regular lower |
+|---|---:|---:|---:|---|---|---|
+| V109 anchor | +72 | +246 | 3,897 | +34/+183 | +20/+131 | -1/+29 |
+| V112 对称风险 | +74 | +231 | 3,470 | +39/+175 | +26/+123 | 0/+31 |
+| V113 非对称风险 | **+78** | +240 | 3,553 | **+42/+184** | **+27/+127** | **+2/+36** |
+
+- **观察**：V113 相比 V109 增加 6 个 @0.25 OOF hits，只回撤 6 个 @0.50 hits，同时三个 bootstrap
+  切面均不再含负/零 @0.25 下界；**解释**：较小的 @0.50 风险系数保留了 V112 被过度过滤的阈值修复，
+  而 @0.25 仍用 `.5` 抑制初始化不稳定 switch；**含义**：V113 是目前唯一同时通过总体、corrected、regular
+  冻结门的风险策略；**下一实验**：只允许三成员 full-fit、完整 runtime parity 和一次正式验证，不再扫参数。
+- replay 不生成 `.pth`；执行后整棵 output 仍为 11 个权重。用户指定的 V109 @0.50 artifact 与 V99
+  @0.25/Mask Pareto 链均完整保留。
+
+#### 14.157 V113 full-fit/runtime 预注册与源码冻结（2026-08-15）
+
+- 部署结构为 `AsymmetricRiskContextualHierarchyCommittee`：固定三个独立种子 `0/1/2`；seed 0 唯一决定
+  proposal，三成员只在同一个 proposal 相对 baseline 上产生两个 head gains，风险严格按
+  `sqrt(mean_s((gain_s-gain_anchor)^2))` 计算，再按冻结的 `.5/.25` 系数构造 LCB。V99/V109 的 schema、
+  loader 和原策略分支保持不变。
+- full-fit builder `scripts/build_v113_meshsp_asymmetric_risk_artifact.py` SHA-256
+  `9875fa881b4d81aae92fc4f1f033c06de252073b93de2e9e76c85ba53fde8a8f`；模型模块
+  `models/rec_pareto_contextual_hierarchy.py` SHA
+  `fa56d3da22b9ce0c8c6389173ff4f45c3407818d7a73c2aeab9f44ce81722d4a`；runtime
+  `train_dist_mod.py` SHA `9916a5df1cf07d9a83d72108520b9b5617bb7991ecc3d526261eb07c4488a238`，均冻结为
+  mode `0444`。builder 在落盘前强制 seed-0 full-fit state 与封存 V109 artifact
+  `20db69...785b` 逐 tensor 完全相等，并在三个成员全部成功后才以 exclusive write 发布单一 committee
+  artifact；任一成员失败都不发布权重。
+- 单卡 runner `scripts/run_v113_meshsp_asymmetric_risk_artifact_serial.sh` SHA
+  `cc600ffcb2a52aacef22d044d651cf81df28f0562df0216e50f8168482279403`，mode `0555`。它绑定 V113/V112
+  report、V112 cache、V109 anchor、V108 parent/geometry、两个 cache receipt/manifest 与全部训练源码 SHA；
+  要求恰好一张 GPU、GPU0 无计算进程、至少 2.5 GiB 空间，并拒绝覆盖任何 V113 输出。
+- parity 程序 `scripts/audit_v113_runtime_parity_train.py` SHA
+  `7c989cbdc1dd73aeeea482130b028be69bc5f1d570889f5a1b5493de87f9d938`，mode `0444`。它将在完整
+  36,665 train rows 上逐字段比较离线/运行时 materialization、三个成员 logits、anchor proposal、成员 proposal、
+  anchor gain、RMS risk、双 head LCB、aggregate LCB、switch 与最终 selected index，要求 exact equality。
+- `py_compile`、新增 asymmetric risk 边界/三成员结构测试及完整 hierarchy/V94--V99/official 相关回归通过：
+  **245/245 passed**，log SHA `89647f0dc1ca1e82547f3dcf3e96d4658890de7cf906c954f0933de2f5d57b14`。
+  此时 GPU0 空闲，远程 `.pth` 仍为 11；只有 artifact full-fit 与 parity 均通过后才允许一次 9,508 样本
+  official meshSP 验证。
+
+#### 14.158 V113 full-fit 首次预检失败与保护快照修复（2026-08-15）
+
+- 首次 runner 在任何训练/物化前 fail closed：复用函数 `capture_immutable_artifact_identities` 的契约要求输入键
+  **只能**是 `backbone/parent/geometry`，初版 builder 为加强保护额外加入 `v109_anchor`，因此抛出
+  `ValueError: protected paths must name backbone, parent, geometry`，exit `1`。GPU 始终为 1 MiB/0%，没有创建
+  `v113_artifacts` 或任何 `.pth`，整棵 output 权重仍为 11 个。
+- 失败 build/pipeline/exit 已原样封存到
+  `failed_v113_artifact_protected_key_20260815/`，SHA-256 分别为
+  `46e85c7546c4127d3bf2155ff1862a7d779bb40a7724e83df748f9c7743ac1bf`、
+  `72c9eb31f3262fe95a036be46e1997ea001295777b085beec46872a90b144d1e`、
+  `4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865`，均只读；没有删除失败证据。
+- 修复只把 V109 anchor 改为独立 regular-file/non-symlink/mode-0444/stable-SHA 身份快照，再与三个既有 protected
+  identities 合并比较；模型结构、三个 seeds、数据、训练函数、policy、OOF gate 与 artifact schema 都未改变。
+  首次修复的 builder/runner SHA 为 `a6e7b894...8fb0` / `0b760d15...d8a9`；`py_compile`、V109 anchor
+  快照 probe 与 runner `bash -n` 已通过。它们随后仅因 14.159 的证据类型修复被新 SHA 取代。
+
+#### 14.159 V113 full-fit 第二次证据类型失败与无算法改动修复（2026-08-15）
+
+- 第二次 runner 已通过全部输入保护并完成 seed 0 full-fit，但在构造 member receipt 时把训练函数返回的
+  `epochs[-1]` 误当整数执行 `int(...)`；实际既有 V109/V111 契约是
+  `{epoch,loss,query_loss,variant_loss}` 字典，因此抛出 `TypeError`、exit `1`。失败发生在任何 artifact
+  exclusive write 之前；没有创建 `v113_artifacts` 或 `.pth`，权重仍为 11 个，GPU 已释放。
+- 失败 build/pipeline/exit 封存于 `failed_v113_artifact_final_epoch_type_20260815/`，SHA-256 为
+  `f55b60e32312c3292b371c2bb026e7946f82976e0fa0114777c9ce6039b3884c`、
+  `736a03b89cc1a83496f4380809895445f83a1db08eba1199027da9a0dec8f220`、
+  `4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865`，均只读；没有删除失败证据。
+- 修复仅原样深拷贝 final-epoch 字典，并严格校验键集合、正整数 epoch 与三个有限正 loss；模型状态、种子、
+  optimizer/epochs、数据、policy、artifact tensor 内容均不改变。最终 builder/runner SHA 更新为 14.157 所列
+  `9875fa88...a8f` / `cc600ffc...403`；`py_compile`、真实字典契约 probe 与 `bash -n` 通过，允许从头重跑。
+
+#### 14.160 V113 三成员 full-fit 成功与 parity 启动门（2026-08-15）
+
+- 第三次从头运行成功，artifact/pipeline exit `0`；build/pipeline/exit SHA-256 为
+  `55c53bf3854d708066820b9f23280c45cd8e892f753d3bed1672e1fb364ab040`、
+  `19b0f8b18cddb38c8bfa228d2b162d6be90b6845ecb55dadcf8b05e527aed4b3`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`。三个成员均完成 epoch 12：
+  seed/state SHA 为 `0/4b5f4962...ceef`、`1/aba027c6...cfaa`、`2/eed30276...adfe`，三个 state
+  互不相同；seed 0 与封存 V109 full-fit state 逐 tensor 完全相等，`anchor_matches_v109=true`。
+- 新 committee artifact 为
+  `v113_artifacts/asymmetric_risk_committee_h128_seeds0_1_2_fullfit.pth`，SHA-256
+  `45f96279794da73c9d21f5f7e817bb47def03a86a30ab7db092c1b1c0275a37b`，2,713,351 bytes，mode `0444`；
+  receipt SHA `1af664eac2be45cbd6032f1a9340c7043f24a2ab91c09284d267eda0bbc9097d`。artifact 绑定 36,665 rows、
+  562 scenes、冻结 normalization、三个 member states、V113 OOF/report 与 V108/V109 保护链，strict reload 通过。
+- 这是 **provisional candidate**，不是当前最好权重；output `.pth` 暂从 11 增至 12。V99/V109 及其依赖均未动，
+  V109 artifact 继续按用户指定明确保留。只有 parity + official 后形成新 Pareto 最好，V113 才保留；否则在完整
+  结果/可恢复证据写入后清理这个候选权重。
+- parity runner `scripts/run_v113_meshsp_runtime_parity_serial.sh` SHA-256
+  `440108e9211e765509b4397e860a4d45982a128ec84f490d8480651451341877`，mode `0555`；它绑定 artifact/
+  receipt、parent/geometry、cache receipts/manifests、builder/model/runtime/parity source SHA，要求唯一 GPU 空闲，
+  并拒绝覆盖报告。下一步只允许完整 36,665-row exact parity；此门通过前禁止 official。
+
+#### 14.161 V113 完整 train/runtime parity 通过（2026-08-15）
+
+- 在完整 36,665 train rows 上完成离线物化与 `train_dist_mod.py` 实际运行路径的逐字段审计，报告
+  `v113_train_runtime_parity.json` SHA-256
+  `53e86c392e86a7cb8813041d3a978413cc3c1784f741ded82a9444aba8ac4a81`，mode `0444`；log/pipeline/exit
+  SHA-256 分别为 `9704930a4f6ff8eb8c4b7c839298ce7a1b73fc0e9f061f086c41e91c54102537`、
+  `7b2f7358ae57e862e628d37149b5e7460e798ca2f08bffa9eeb032f2390d7795`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，exit `0`。
+- `all_equal=true`：raw query/variant/aux/valid、baseline index/score、三成员 query/variant logits、anchor/member
+  proposal、anchor/member gains、双 head RMS risk/LCB、aggregate LCB、Pareto/switch/selected index 的差异元素数
+  全为 0，最大绝对差全为 0。审计未读取 validation、未修改权重，protected artifact 前后相同。
+- 审计结束后 GPU0 为 1 MiB，output `.pth` 为 12 个：V113 仍只是 provisional candidate；V99、V109 及依赖
+  完整保留。parity 门已满足，允许进入预先承诺的唯一一次 9,508 样本 official。
+
+#### 14.162 V113 唯一一次 official 的冻结预检（2026-08-15）
+
+- official 驱动 `scripts/run_frozen_v113_meshsp_official.py` SHA-256
+  `bc56b06a2b00acf554fecbdbd0b41afe08cdb7d58536fc46a31ba8e2fa0d3f82`，mode `0444`；它固定 9,508
+  样本、单 GPU、V108 parent/geometry、V113 committee 与 parity SHA，拒绝所有 GT inference flags，并在真正运行前
+  exclusive 创建一次性 claim。REC 门为 hits `>=5610/4659`，Mask 同时记录用户 baseline 与 V99 Pareto 保留诊断。
+- 不访问 validation 的 dry-run 预检
+  `v113_official_preflight_dryrun.json` SHA-256
+  `05a5b23e2b3ac9c4f4d21e808cf88c61d64295a62301d94791413e77a09724f9`，mode `0444`：
+  `sample_count=9508`、`validation_data_accessed=false`、`inference_uses_ground_truth=false`，命令仅绑定冻结 V113
+  checkpoint，`CUDA_VISIBLE_DEVICES=0`。同一 parser 对既有 V99/V109 原始 official stdout 回放得到精确 REC/Mask
+  hits `5572/4797/5690/4976` 与 `5551/4834/5689/4974`，证明解析口径与既有结果一致。
+- 单卡一次性 runner `scripts/run_v113_official_serial.sh` SHA-256
+  `fb890f612a29236474ce504fbf1183201098908cd41636afd8510f80fc352d0a`，mode `0555`，`bash -n` 通过；它绑定
+  artifact/parity/preflight/official-driver/model/runtime 全部 SHA，要求系统恰好一张物理 GPU 且无计算进程，并拒绝
+  output、claim、driver log 或 exit receipt 预先存在。下一动作只有一次：执行该 runner，不再改参数或重跑。
+
+#### 14.163 V113 唯一一次 official 结果、Pareto 判定与权重保留（2026-08-15）
+
+- 9,508 样本 official 完成，runner exit `0`，GPU 回到 1 MiB。result/stdout/claim/driver/exit SHA-256 分别为
+  `bdee0579c41e13b1c45f9822a316ee58d1f19534b7970fa7f05e5011ff8b088b`、
+  `e60b3f6ec758a303ab55b9c137266d3b27634f11bbdb134cf139164d5878111d`、
+  `f6dfbdd8da27aa807b54fc26c6a755ec9db32ceb8d5b14efd1f17a3c01b02cd9`、
+  `24a6cf5ae7e376be387be9106536a69e0b0b6a24170fc0c247bc8eed250bebb9`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，全部 mode `0444`。
+  样本数、无 GT inference、protected artifacts、完整 Python manifest 前后均严格相等。
+- V113 REC：overall hits `5547/4835`，即 `58.3403%/50.8519%`；unique 为
+  `1260/1419=88.7949%`、`1148/1419=80.9020%`；multiple 为
+  `4287/8089=52.9979%`、`3687/8089=45.5804%`。@0.50 比 V109 多 **1 hit**，成为当前 official 最好；
+  @0.25 比 V99 少 25 hits，未达到预注册 59% 门。
+- V113 Mask：overall hits `5689/4974`，即 `59.8338%/52.3138%`，mIoU `45.9226%`；unique
+  `90.2044%/80.1268%`，multiple `54.5061%/47.4348%`。三项均超过用户给定 MCLN baseline
+  `58.70%/50.70%/44.72%`，但分别比 V99 少 `1/2` hits、mIoU 低 `0.0076` percentage point，因此
+  Mask official 最好仍是 V99。
+- official Pareto 对比：
+
+| 版本 | REC@0.25 | REC@0.50 | Mask@0.25 | Mask@0.50 | Mask mIoU |
+|---|---:|---:|---:|---:|---:|
+| V99 | **58.6033% (5572)** | 50.4523% (4797) | **59.8443% (5690)** | **52.3349% (4976)** | **45.9303%** |
+| V109 | 58.3824% (5551) | 50.8414% (4834) | 59.8338% (5689) | 52.3138% (4974) | 45.9224% |
+| V113 | 58.3403% (5547) | **50.8519% (4835)** | 59.8338% (5689) | 52.3138% (4974) | 45.9226% |
+
+- 保留判定：V99 是 REC@0.25 与三项 Mask 最好；V113 是 REC@0.50 最好；V109 在 REC 两阈值间仍是
+  non-dominated 中间点，且用户明确要求保留。因此三个权重及 V108 parent/geometry 依赖全部保留。
+  当前远程 output 共 12 个 `.pth`，其中 11 个是此前已审计保留集，新增 V113 已由新 @0.50 最好证明有用；
+  **本轮没有删除任何权重**，避免把 Pareto 链或依赖误判为无用。
+- 结论：V113 的 train-OOF 风险稳定性收益没有迁移到 validation @0.25，说明剩余瓶颈不是运行时不一致，而是
+  train/validation 的 proposal 风险校准分布偏移；继续在同一 OOF cache 上调整 margin/lambda 不再可信。下一步应换
+  与现有 OOF 调参正交、可由训练标签学习并冻结的泛化信号，而不是再次消费 validation 或重跑 V113。
+
+#### 14.164 REC 主目标的 V114 预注册：语言条件空间关系注意力（2026-08-15）
+
+- 用户进一步明确后续主要看 REC，因此主目标固定为 REC@0.25/@0.50；Mask 仅作为最终候选的非明显退化安全约束。
+  `analyze-results` 原始 official 对比显示：
+
+| 版本 | overall@0.25/@0.50 | unique@0.25/@0.50 | multiple@0.25/@0.50 |
+|---|---|---|---|
+| V99 | 5572/4797 | 1261/1143 | 4311/3654 |
+| V109 | 5551/4834 | 1260/1151 | 4291/3683 |
+| V113 | 5547/4835 | 1260/1148 | 4287/3687 |
+
+- **观察**：V109→V113 在同一 train OOF baseline 上由 `+72/+246` 变为 `+78/+240`，即 @0.25 预期增加
+  6 hits；official 却由 `5551/4834` 变为 `5547/4835`，即 `-4/+1`。@0.25 的 4-hit 回撤全部来自
+  multiple，unique 不变。**解释**：风险 margin 只控制是否切换，不能补足多实例表达所需的候选间显式空间关系；
+  同一 cache 上继续调整 lambda/margin 会加重 selection overfit。**含义**：下一候选必须改网络表示而非再调后处理。
+- V114 固定为一个可迁移网络模块：对 16 个 REC query candidates 计算 3D pairwise location（距离、垂直/水平方向），
+  以冻结的 64D `target_text_proj` 条件化四头空间注意力，再接 FFN；query/variant heads、V95 双阈值 graded-listwise
+  objective、12 epochs、seed 0、V99 固定 Pareto margin `0.13312220573425293` 全部不变。空间坐标来自通用的
+  `center_x/y/z_norm`，不含 ScanRefer unique/multiple 标签或 validation 信息，因此同样可用于 Nr3D/Sr3D。
+- 在运行前冻结的单次 architecture-screen gates：相对同一 V108 parent+geometry baseline，OOF delta 至少
+  `+110/+220`；五个 scene-disjoint folds 两阈值均严格正；scene bootstrap 下界至少 `+65/+165`；corrected
+  下界至少 `+35/+115`，regular 至少 `+8/+25`；switch rate 不超过 13%。固定门相对 V108/V113 要求 @0.25
+  至少多约 40/32 train hits，只有满足后才允许多 seed 稳定性、full-fit、parity；本轮不访问 validation、不生成权重。
+- 模型 `models/rec_language_spatial_context.py` SHA-256
+  `e26d2880d7c787531feeb49c2b1ecb0021bedf2bc801a04af761f1b0a127acfe`；OOF 程序
+  `scripts/run_v114_meshsp_language_spatial_oof.py` SHA
+  `4ee9fa146d9215745eaa997230727e144230a5bb2ecb4c56f32f1c9a6eb11a66`，均 mode `0444`；单卡 runner
+  `scripts/run_v114_meshsp_language_spatial_oof_serial.sh` SHA
+  `bbb1319a9f417a0ef7ca917335aec7e659b343a907c1484f64b5e00207706488`，mode `0555`。runner 绑定全部
+  cache/receipt、V108 report、parent/geometry/backbone、hierarchy/V95/V99/V108 与复用空间层 SHA，要求恰好一张空闲 GPU。
+- `py_compile` 与新模块/既有 V113 边界回归通过：**11/11 passed**；测试覆盖输出 shape、padding、有限值、空间坐标
+  与语言条件确实影响 logits，以及冻结 hidden width。GPU0 空闲，V114 输出均不存在，远程 `.pth` 仍为 12 个。
+
+#### 14.165 V114 OOF 结果：显式关系信号有效但无界替换主上下文失败（2026-08-15）
+
+- 完整 36,665-row/562-scene 五折 OOF 正常完成，result/log/exit SHA-256 为
+  `72413c5955e9b92ad5318452547b6212d4d02c980d7c2fb399de6b873994ac65`、
+  `b9e576ee14c8c15254a3b4e470dde28cffae18ca9bdcde8771b924b80191c628`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`；执行 exit `0`，
+  report promotion `passed=false`。protected artifacts/cache metadata 前后完全一致，validation 未访问，GPU 回到 1 MiB。
+- REC OOF 为 `+54/+216`，五折 `(+8,+61)/(+3,+27)/(+21,+46)/(+20,+49)/(+2,+33)`；总体
+  bootstrap 下界仅 `+15/+157`。corrected 为 `+28/+144`、下界 `-4/+97`；regular 为 `+26/+72`、
+  下界 `+4/+38`。相对 V113，regular 略增 `+5/+4`，但 corrected 大幅下降，说明 pairwise language-spatial
+  signal 本身有信息，却不能直接替代原 contextual anchor。
+- V114 切换 9,365 行（25.5421%），其中 query changes 8,433；fix/break 在 @0.25 为 `203/149`，大量
+  9,013 neutral switches。除五折严格正与 regular@0.50 下界外，冻结的 delta、总体/子群下界和 13% switch
+  ceiling 均失败。**判定**：禁止 full-fit、禁止 validation、禁止生成 `.pth`；远程权重仍为 12 个。
+- **下一实验**：保留 fold-local V99 标准 contextual hierarchy 作为冻结 anchor，只训练有界的语言空间残差 adapter；
+  零初始化 delta heads 要求初始 logits 与 V99 bit-exact，固定 `tanh(delta)*0.25` 限制纠正幅度，并学习 reliability
+  gate。该改变检验“关系信号应作小修正而非主排序替代”，不是在 V114 结果上扫描 margin。
+
+#### 14.166 V115 预注册：冻结 V99 anchor 的有界语言空间残差适配器（2026-08-15）
+
+- 每个 scene-disjoint fold 先以完全不变的 V99/V95 流程训练 anchor，随后永久冻结 anchor 参数并强制 eval；V115
+  adapter 对 anchor contextual embedding 做目标语言条件的 3D spatial attention，以 reliability gate 融合，query/
+  variant 两个 delta heads 均零初始化。初始输出必须与 anchor logits bit-exact，最终改变量由固定
+  `0.25*tanh(delta)` 逐 logit 有界；anchor 在 adapter backward 中禁止产生 gradient。
+- 训练只优化 adapter，仍用 V95 graded-listwise objective、12 epochs、seed 0、固定 V99 Pareto margin，无参数 sweep。
+  运行前冻结 promotion gates：OOF delta 至少 `+105/+225`；五折两阈值严格正；总体 bootstrap 下界至少
+  `+60/+170`；corrected 至少 `+35/+115`，regular 至少 `+8/+25`；switch rate 不超过 13%。只有全部通过才允许
+  多 seed 稳定性，当前 screen 不生成权重、不访问 validation。
+- 模型 `models/rec_anchored_spatial_adapter.py` SHA-256
+  `2ca6cc3657661401aae708192a0d8c5c2d157abc198d2324c296073e691a3b4e`；OOF 程序
+  `scripts/run_v115_meshsp_anchored_spatial_adapter_oof.py` SHA
+  `dfbe142a44339137c977375cca77afce17fd8b515dcdde2184d7f3126d02ca4b`，均 mode `0444`；runner
+  `scripts/run_v115_meshsp_anchored_spatial_adapter_oof_serial.sh` SHA
+  `fb750aac7bc3e68069281fd901c9338fea1fccc19ef941b16d62fe65709be255`，mode `0555`，绑定 V99 anchor
+  implementation、空间层、V95/V108、caches/receipts 与全部 protected artifact SHA。
+- 初次测试唯一失败是理论 0.25 bound 在 float32 相减中略高于打印值，模型未改，只把断言容差冻结为
+  `0.250001`；随后 `py_compile` 与 V114/V115/V113 相关回归 **14/14 passed**。覆盖 initial exact-anchor、
+  residual bound、padding、anchor 无 gradient 及空间/语言路径。GPU0 空闲，V115 输出不存在，`.pth` 仍为 12。
+
+#### 14.167 V115 首次运行的真实工厂类型失败与不覆盖重跑（2026-08-15）
+
+- 首次 V115 在第 0 折训练前退出，exit `1`；原因是 adapter 的类型保护误把 V99 的 Pareto **策略名**当成其底层
+  网络类。V99 `fit_v97` 实际返回 `ContextualHierarchicalQueryVariantReranker`，Pareto 约束位于预测策略层；原单测
+  使用了结构等价但不是工厂真实返回类型的 `ParetoContextualHierarchicalReranker`，因此漏掉该接口差异。
+- 失败发生在任何 fold adapter 训练、report 或权重写入前。失败 log/exit SHA-256 为
+  `35cea51c63b8a450d8b280432ec08b18ee00df7db13544f474a6970fc2dac39a` / 
+  `4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865`；原文件保留，未删除或覆盖。
+- 修复后的 anchor 校验要求真实 hierarchy 基类、单层 `TransformerEncoder query_context` 与 hidden width 128；测试改用
+  V99 工厂实际使用的 V97 contextual 类。模型/test SHA-256 更新为
+  `45cc25d9209d1300f5c6f5ff2f9620acefdf47e8166451504aa7fdfb37c9b0cd` / 
+  `e94421ae6c28714bf45a2c3c1c24a50dfdab91a4b56954cf2819939d37795a51`；`py_compile` 与相关回归
+  **14/14 passed**。算法、残差尺度、训练目标、seed 和所有 promotion gates 均未改变。
+- 为保留失败证据，重跑使用新文件名 `v115r1_*`；runner SHA-256
+  `148f99f1c54b9acdb5a364aae2df15bb66e608ba4141d5a5a657122927fb0bb4`，mode `0555`，不覆盖首次失败回执。
+
+#### 14.168 V115r1 OOF 结果：@0.50 强增益但 @0.25 安全性未过门（2026-08-15）
+
+- 完整 36,665-row/562-scene 五折 OOF 正常完成，result/log/exit SHA-256 为
+  `cae35808390c5f8c86b5ed3eeb73219ac226a20c7be091e36986fa25cf5f423f`、
+  `b86e584ba87d6370b7da237fe65b6cccc4973e914bb0ebe284540952bf2ef774`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`；
+  report promotion `passed=false`。protected artifacts/cache metadata 未变，validation 未访问，GPU 回到 1 MiB，`.pth` 为 12。
+- REC OOF 为 `+75/+263`；五折为 `(+5,+65)/(+13,+32)/(+20,+48)/(+25,+58)/(+12,+60)`，两阈值
+  每折都严格为正。总体 bootstrap 下界为 `+35/+199`；corrected 为 `+55/+193`、下界 `+21/+143`；regular
+  为 `+20/+70`、下界 `-1/+34`。
+- 适配器切换 4,321/36,665（`11.7851%`），显著低于 V114 的 25.5421% 且满足 13% ceiling；@0.25
+  fixes/breaks 为 `199/124`，@0.50 为 `504/241`。冻结 anchor + 有界残差因此验证了“控制切换”的结构假设，
+  但 @0.25 delta `75<105`、总体下界 `35<60`、corrected 下界 `21<35`、regular 下界 `-1<8`，未过安全门。
+- **判定**：禁止 multi-seed/full-fit/validation，未生成任何 V115 权重。V115 对 @0.50 已超过预注册门（delta
+  `263>=225`、下界 `199>=170`，子群也通过），下一候选只允许加强 @0.25 优先级与错误切换安全性，同时保留
+  正的 @0.50 Pareto 约束；不从 validation 选择参数。
+
+#### 14.169 V116 预注册：归一化 4:1 的 REC@0.25 主阈值后处理（2026-08-15）
+
+- V115 网络、fold-local V99 anchor、训练目标、12 epochs/seed 0、residual scale 0.25、margin 与双 head
+  Pareto 正增益约束全部不变；唯一算法变量是 hierarchical proposal selector 的阈值权重由 `2:1` 改为归一化
+  `2.4:0.6`（比例 `4:1`、权重和仍为 `3.0`）。因此原固定 margin 仍处于同一 utility 尺度，同时更优先保护
+  用户明确主看的 REC@0.25；不扫描其他比例。
+- V116 绑定 V115r1 report SHA `cae35808...f423f` 作为 protocol-design evidence，但仍只对相同 train cache 做
+  scene-disjoint OOF，`validation_data_accessed=false`。promotion gates 原样保持 `+105/+225`、五折双阈值严格正、
+  总体下界 `+60/+170`、corrected `+35/+115`、regular `+8/+25`、switch rate `<=13%`；@0.50 不因
+  @0.25 主目标而放宽。
+- OOF 程序 `scripts/run_v116_meshsp_primary025_policy_oof.py` SHA-256
+  `340d214b80f4616c8ee3fd7c3c04071b11472389e84abb3ffd1db6a7ed671a3b`，mode `0444`；runner
+  `scripts/run_v116_meshsp_primary025_policy_oof_serial.sh` SHA-256
+  `e32c9a6013232fa61a2db765df130975b6f3b0ba9b1f9ba843c226e41ac6015d`，mode `0555`；policy test SHA
+  `50c2a7fea0f85c5bd0e0c7358c61094262f82653e8c34027cb6dc1443de740d2`。
+- 新 selector 测试先暴露并修复 report exclusive-write 分支的一行缩进错误；该错误在静态/测试阶段发现，未启动训练、
+  未产生任何 V116 output。修复后 `py_compile`、runner `bash -n` 与相关回归 **16/16 passed**；测试证明标准
+  2:1 与 V116 4:1 在构造样本上产生预期不同选择、padding 不可被选择、权重和与比例均固定。
+
+#### 14.170 V116 OOF 结果：提高 @0.25 utility 权重没有修复概率误校准（2026-08-15）
+
+- 完整五折 OOF 正常结束，result/log/exit SHA-256 为
+  `18fddfca24719062cc83b6b8e1c11183b04bb4e1b09da263d7e8b0db938ccdb9`、
+  `832287a7bb199a04a19719b8bbfcd88324e44145e826645fe3c9fb36f7e92429`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`；validation 未访问、GPU 回到 1 MiB、`.pth` 仍为 12。
+- REC OOF 为 `+72/+264`，五折 `(+5,+68)/(+13,+30)/(+20,+49)/(+24,+59)/(+10,+58)`；总体
+  bootstrap 下界 `+33/+199`。corrected 为 `+54/+193`、下界 `+21/+142`；regular 为 `+18/+71`、
+  下界 `-3/+35`。@0.25 的 delta/总体与两个子群下界仍失败，其余门通过。
+- V116 切换 4,607（12.5651%），相对 V115 多 286；@0.25 fixes/breaks 从 `199/124` 变为 `201/129`，
+  即只多 2 fixes 却多 5 breaks，净增益反而少 3；@0.50 从 `+263` 微增为 `+264`。因为所有 fold 的
+  anchor/adapter 末轮 loss 与 V115 逐值相同，该退化可严格归因于 4:1 后处理，而非训练随机性。
+- **判定**：禁止 full-fit/validation，不再试其他 utility 比例。证据说明 @0.25 的主要瓶颈是概率 head 的绝对校准，
+  不是 2:1 排序权重；下一候选恢复标准 V115 selector，并直接训练绝对双阈值概率。
+
+#### 14.171 V117 预注册：V115 有界残差的双阈值绝对概率校准（2026-08-15）
+
+- 结构、fold-local V99 frozen anchor、residual scale 0.25、标准 2:1 proposal selector、Pareto margin、seed/epochs
+  全部恢复并固定为 V115。唯一算法改动是在原 V95 graded-listwise loss 上，以系数 `1.0` 加入 query/variant
+  pointwise BCE：直接以候选真实 `IoU>0.25`、`IoU>0.50` 为目标，阈值项按归一化 `2:1` 加权；padding 严格屏蔽。
+  该辅助项训练绝对 hit probability，使“proposal 相对 baseline 的正 head gain”有可校准含义，而不是继续调后处理。
+- V117 绑定 V115/V116 train-only reports 作为 protocol-design evidence；不读取 validation、不扫描 loss coefficient 或
+  threshold weight。promotion gates 与 V115 完全一致：`+105/+225`、五折双正、总体下界 `+60/+170`、corrected
+  `+35/+115`、regular `+8/+25`、switch rate `<=13%`。
+- OOF 程序 `scripts/run_v117_meshsp_calibrated_adapter_oof.py` SHA-256
+  `b9729032fb3771092ee0d51d88e589050b4092e9ede6b60f499fe5d4b3035f65`，mode `0444`；runner
+  `scripts/run_v117_meshsp_calibrated_adapter_oof_serial.sh` SHA
+  `737b61f87e24464fe21f225592bb7c61b38f102a6432a70bb23bc825094dfb98`，mode `0555`；calibration test
+  SHA `31274c26d3519069236c684a5b248ec44c7775c4cb1b9ff659737d73fe5949bc`。
+- `py_compile`、runner `bash -n` 与相关回归 **18/18 passed**；新增测试证明阈值正确的绝对概率得到更低损失，loss
+  有限且 query/variant 两级均可反向传播。V117 尚未启动，输出不存在，GPU0 空闲。
+
+#### 14.172 V117 OOF 结果：绝对 BCE 不能替代相对 switch-risk 校准（2026-08-15）
+
+- 完整五折 OOF 正常结束，result/log/exit SHA-256 为
+  `6e43afe461745ba4c65956d39f4e2fed7c62fd17d59a4641118549b1e1fc6c00`、
+  `38c10c964e385a00bf76472bda41744a31c09117d48cfde7e1ffbe936b4f9d1b`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`；validation 未访问、GPU 回到 1 MiB、`.pth` 仍为 12。
+- REC OOF 为 `+70/+243`；五折 `(+3,+53)/(+12,+33)/(+18,+45)/(+29,+56)/(+8,+56)`；总体
+  bootstrap 下界 `+31/+180`。corrected 为 `+50/+173`、下界 `+17/+123`；regular 为 `+20/+70`、
+  下界 `-1/+34`。@0.25 delta/总体与两个子群下界失败；@0.50 和 switch-rate 门通过。
+- V117 切换 4,672（12.7424%）；@0.25 fixes/breaks `196/126`，@0.50 `482/239`。相对 V115，简单
+  absolute BCE 增加 351 switches，却令净增益从 `+75/+263` 降到 `+70/+243`；说明单候选绝对 hit probability
+  并不足以判断 proposal 相对 baseline 的 fix/break 风险。
+- **判定**：禁止 full-fit/validation，不生成权重。V114--V117 已分别排除“无界替换 contextual anchor”“单纯提高
+  @0.25 utility 权重”“简单绝对阈值 BCE”。下一方向必须训练 **proposal-vs-baseline 成对 signed gain/risk**，并在每个
+  outer scene fold 内用独立 scene-disjoint calibration 产生训练样本，避免把同一模型的 in-sample proposal 当作安全标签；
+  在该 nested protocol 固化前不再消费 GPU 或继续调同一 OOF 阈值。
+
+#### 14.173 V118 预注册：nested scene-disjoint proposal-vs-baseline signed risk（2026-08-15）
+
+- 每个 outer held fold 固定选择 `(held+1)%5` 作为完整 inner calibration fold；inner proposal model 只在其余三个
+  scene folds 上拟合，因此 inner risk 标签中的 proposal 对该场景严格 OOF。随后 risk head 在 inner calibration 的
+  V115-Pareto switches 上训练，outer V115 proposal model 再用四个 outer-train folds 从头拟合，最终在 outer held fold
+  应用冻结 risk head。inner-fit、inner-calibration、outer-held 三组 scene 两两不交，禁止 in-sample proposal 安全标签。
+- risk head 是可跨 ScanRefer/Nr3D/Sr3D 使用的 `23→32→2` MLP，仅输入推理可得的 proposal/baseline 双阈值概率、
+  head/aggregate gain、原始候选得分差、query/variant change、中心/尺寸差、query/variant auxiliary 差；单测确认更改
+  `candidate_ious` 不会改变特征。IoU 只生成 inner training targets：每阈值 fix=`+1`、break=`-4`、neutral=`0`；
+  固定 event weight 4 的 Huber、200 epochs、lr/weight decay `1e-3`，无 grid。outer 接受条件为原 V115 Pareto 门与
+  两个预测 signed-risk 均严格 `>0`。
+- promotion gates 不变：OOF `+105/+225`，五折双阈值严格正，总体 bootstrap 下界 `+60/+170`，corrected
+  `+35/+115`、regular `+8/+25`，switch rate `<=13%`；只在全部通过后允许稳定性/full-fit，当前不访问 validation、
+  不生成权重。
+- 模型 `models/rec_pairwise_switch_risk.py` SHA-256
+  `15b93e0c7978e461c73221c0142070641c51bf252633f0d8fbacff47ee65cffd`，OOF 程序
+  `scripts/run_v118_meshsp_nested_pairwise_risk_oof.py` SHA
+  `a08bb024e7596e259bac556ae9493d3805f3e581d7995cfdee5b89a1553ce649`，均 mode `0444`；单卡 runner
+  `scripts/run_v118_meshsp_nested_pairwise_risk_oof_serial.sh` SHA
+  `e332f32fa30800b75ac8d7659025ed3d21ad732be9ae8cbff1ea0a9d2f977b7c`，mode `0555`；test SHA
+  `5cf94c9c31d23a25504b8dd885cda67586dcc491bd44774d32539d7af72d4b07`。
+- `py_compile`、runner `bash -n` 与相关回归 **21/21 passed**。额外 GPU synthetic fit/predict smoke 完成 200 epochs，
+  score shape/finite 与 receipt 均通过，final loss `0.0946329`；这是随机合成数据，不构成结果选择。V118 output 不存在，
+  GPU0 空闲，远程 `.pth` 仍为 12。
+
+#### 14.174 V118 OOF 结果：成对风险提高 switch 精度但正收益门过度保守（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `8611a9bd24ab6e4d09e05dc37833f8e5d9dfc34e4c1be647ec66ecd4f10958da`、
+  `dae9c8772e5f1998544106a771bebe6e54b36d6f3992b1c824717af192ad4dd9`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`；validation 未访问、GPU 回到 1 MiB、`.pth` 仍为 12。
+- 每折 inner calibration 均含两个阈值的 fix/break/neutral，risk head final loss 为 0.3486--0.4815；V115 base
+  switches `700/863/905/1071/782` 被保留为 `378/454/519/427/312`，总计 2,090/4,321（48.37%）。
+- REC OOF `+63/+202`，五折 `(+4,+51)/(+11,+25)/(+14,+44)/(+25,+55)/(+9,+27)`；总体 bootstrap
+  下界 `+34/+155`。corrected `+43/+146`、下界 `+20/+109`；regular `+20/+56`、下界 `+4/+30`。
+  除五折双正、regular@0.50 与 switch ceiling 外，冻结 promotion floors 未通过。
+- 相对 V115，@0.25 breaks/fixes 从 `124/199` 降至 `58/121`，每 switch 净收益率从 1.74% 提高到 3.01%；
+  @0.50 从 `241/504` 降至 `121/323`，净收益率从 6.09% 提高到 9.67%。因此 nested pairwise risk 有真实
+  精度价值，但要求 score `>0` 把 neutral-like 安全切换也拒绝过多，绝对 delta 不足。
+- **判定**：禁止 full-fit/validation，不生成权重。下一单次消融不改变任何 inner/outer 训练、特征、target、loss 或
+  seed，只把 safety veto 语义从“预测正收益”改为“预测不是 break”：以 break=`-4` 与 neutral=`0` 的数学中点
+  `-2` 为固定边界；该值由 target 编码推出，不对 OOF 扫描。
+
+#### 14.175 V119 预注册：signed-risk break/neutral midpoint veto（2026-08-15）
+
+- V118 的 nested scene split、V115 proposal、23→32→2 risk head、+1/−4/0 target、event-weighted Huber、
+  200 epochs 与全部输入完全不变。唯一算法差异为 outer gate：原 V115 Pareto switch 仅在任一阈值 risk score
+  `<=(-4+0)/2=-2` 时被判为更接近 break 并 veto；两个 score 均 `>-2` 即视为 not-break。固定 midpoint 不扫描。
+- promotion gates 继续保持 `+105/+225`、五折双正、总体下界 `+60/+170`、corrected `+35/+115`、regular
+  `+8/+25`、switch `<=13%`；绑定 V118 report SHA `8611a9bd...958da` 为 protocol-design evidence，不访问 validation。
+- OOF 程序 `scripts/run_v119_meshsp_nested_break_veto_oof.py` SHA-256
+  `65938d1678f1ef53d5759f13feb187975b71ec1da302f43063432269f220b9a2`，mode `0444`；runner
+  `scripts/run_v119_meshsp_nested_break_veto_oof_serial.sh` SHA
+  `07c1e7436e490db5f213d7ef39cbffb2942e8ed2e6c58cb8d2a1657ca63c1d66`，mode `0555`；midpoint test
+  SHA `20c4ec835459eaccd0f58b7be1ab3184168c25f053bd67424cac791103ab622a`。
+- `py_compile`、runner `bash -n` 与相关回归 **22/22 passed**；测试把 break cost 4、中点 −2 及推导关系全部冻结。
+  V119 output 不存在，GPU0 空闲，远程 `.pth` 仍为 12。
+
+#### 14.176 V119 OOF 结果：连续 signed-risk 的中点仍不能可靠区分 break（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `731d110af0c8954d2b6ff5a5e8930c9b4897eaf4f71d96a89c720c7bbbd2ee8a`、
+  `6992a845d57d74b5f598d970a31276f2381c6d85ee551c702d13c42ed312a51d`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`；validation 未访问、GPU 回到 1 MiB、`.pth` 仍为 12。
+- REC OOF 为 `+71/+256`，五折 `(+5,+65)/(+11,+30)/(+20,+48)/(+23,+56)/(+12,+57)`；总体
+  bootstrap 下界为 `+32/+193`。corrected 为 `+52/+187`、下界 `+18/+137`；regular 为 `+19/+69`、
+  下界 `-2/+33`。@0.50 与 switch ceiling 通过，但 @0.25 delta、总体及两个子群下界仍未过预注册门。
+- V119 保留 4,309/4,321 个 V115 switches，只 veto 12 个，行为几乎退化回 V115；固定中点虽然不含 OOF
+  threshold sweep，却说明 Huber 连续回归分数的数值位置没有稳定对应 break/neutral 的语义边界。
+- **判定**：禁止 full-fit/validation，不生成权重；停止继续搜索该连续 risk score 的阈值。下一候选保留完全相同的
+  nested scene-disjoint protocol 和部署特征，但直接把每个阈值的结果建模为 break/neutral/fix 三分类，以固定 argmax
+  语义消除连续 target 尺度与 veto 阈值之间的错配。
+
+#### 14.177 V120 预注册：nested break/neutral/fix outcome classifier（2026-08-15）
+
+- scene split、fold-local V115 proposal、23D proposal-vs-baseline 部署特征均与 V118/V119 相同；inner proposal
+  继续只在三个 scene folds 拟合，并在独立 inner calibration fold 产生标签，outer held scenes 从不参与模型或
+  classifier 训练。IoU 仍只用于 inner training label，推理特征不含 IoU、unique/multiple 或 validation 信息。
+- risk head 改为固定 `23→32→(2×3)` 分类器，每个 REC 阈值的 class order 为 break/neutral/fix；用加权
+  cross-entropy 训练 200 epochs，lr/weight decay 均为 `1e-3`。event weight 固定为 4、break cost 固定为 4，
+  因此三类权重预先推导为 `(16,1,4)`。outer gate 不使用阈值：V115 Pareto switch 只有在两个阈值的 argmax
+  都不是 break 时才接受；不做 grid/threshold sweep。
+- promotion gates 不变：REC OOF `+105/+225`，五折双正，总体 bootstrap 下界 `+60/+170`，corrected
+  `+35/+115`、regular `+8/+25`，switch `<=13%`。V119 result SHA `731d110a...d2ee8a` 被绑定为
+  protocol-design evidence；当前 screen 不访问 validation、不生成 `.pth`，全部门通过前禁止稳定性/full-fit。
+- 模型 `models/rec_pairwise_switch_classifier.py` SHA-256
+  `b650cd738e004a3d2febba0bcf23d852bc1ca1fb9e845bfe1530dd466a2bf3cc`；OOF 程序
+  `scripts/run_v120_meshsp_nested_outcome_classifier_oof.py` SHA
+  `4b98efd48aca8b9da63eb0b412adf0713d21b022f0ddf144a9f653d0a8330e1b`，均 mode `0444`；单卡 runner
+  `scripts/run_v120_meshsp_nested_outcome_classifier_oof_serial.sh` SHA
+  `6f7601e482674677887c81e29adec2d46acc5ec42843c96254d5054a967373c4`，mode `0555`；test SHA
+  `4c4a69e7504e4397efa188bb9c3b00f1ac6c647d16dcd8cf54e8673664077cc5`。
+- `py_compile`、runner `bash -n` 与 V115--V120 定向回归 **14/14 passed**；测试覆盖输出 `[N,2,3]`、有限值与
+  backward、四种双阈值 fix/break/neutral 标签及冻结权重 `(16,1,4)`。V120 output 不存在，GPU0 空闲，
+  远程 `.pth` 仍为 12；V109 权重保持不动。
+
+#### 14.178 V120 OOF 结果：23D 手工差分特征不足以区分安全修复与危险切换（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `bd8272d8c5337b60136f3d74dd50233c0a8c0e82b8f17287daf8505cd96afd87`、
+  `f4e5f6ea325c8107da763869a47553670a657badc773c194cf572acdd87bee77`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`；protected artifacts/cache metadata 前后严格相等，validation 未访问，GPU 回到 1 MiB，
+  远程 `.pth` 仍为 12。
+- 五折分别保留 V115 switches `500/700`、`709/863`、`764/905`、`902/1071`、`624/782`，总计
+  3,499/4,321（80.98%）；各 inner calibration fold 在两个阈值均含 break/neutral/fix 三类，classifier final
+  loss 为 0.4318--0.5476，无标签缺失或训练崩溃。
+- REC OOF 为 `+52/+190`，五折 `(+4,+32)/(+10,+32)/(+11,+45)/(+19,+42)/(+8,+39)`；总体
+  bootstrap 下界 `+28/+147`。corrected 为 `+41/+134`、下界 `+21/+101`；regular 为 `+11/+56`、
+  下界 `-3/+29`。仅五折双正、regular@0.50 和 switch ceiling 通过，其余冻结 promotion floors 均失败。
+- @0.25 为 95 fixes/43 breaks，@0.50 为 281/91。相对 V115，classifier 去掉 822 switches，虽去掉
+  81/150 个 breaks，却同时丢失 104/223 个 fixes，净 delta 从 `+75/+263` 降到 `+52/+190`；相对更保守的
+  V118 也分别少 `11/12` hits。因此改变 gate 语义并未解决判别瓶颈。
+- **判定**：禁止 full-fit/validation，不生成权重；停止在 V118--V120 的 23D 手工差分特征上调整 regression/classifier
+  threshold、class weight 或接受规则。下一候选必须提升网络表示：使用 proposal/baseline 的 contextual object
+  embedding、目标语言表示与相对 3D 几何构造 learned pairwise critic，再沿用 nested scene-disjoint 训练与固定
+  train-only promotion gates，以检验“缺少语义判别信息”而非继续优化同一后处理。
+
+#### 14.179 V121 预注册：全候选 contextual semantic hit critic（2026-08-15）
+
+- V121 保留 V115 的 fold-local V99 frozen anchor、有界 language-spatial adapter、proposal selector 和 Pareto 门，
+  也保留 V118--V120 的 nested scene split：inner proposal 仅在三个 folds 拟合，完整的第四个 inner calibration
+  fold 训练 critic，outer held fold 始终与二者 scene-disjoint。V120 result SHA `bd8272d8...afd87` 被绑定为
+  protocol-design evidence；validation 不访问，当前不生成权重。
+- 与 V118--V120 只在约 650--965 个已选 switch 上训练不同，V121 对 inner calibration 中**所有有效的 16×7
+  候选**学习 candidate hit probability。每个候选输入 fold-local V115 的 128D contextual query embedding、128D
+  variant embedding、64D target-text mean，以及 16D 通用几何/rank auxiliary；共享 projection 后融合候选、语言
+  乘性交互和 query/variant 差异，由 `128` hidden head 输出 `IoU>.25`、`IoU>.50` 两个 logits。标签只参与
+  inner BCE；推理输入不含 IoU、unique/multiple 或数据集专用标识，能迁移到 Nr3D/Sr3D 的同类候选表示。
+- critic 使用不加 class weight 的 BCE、12 epochs、batch 8192、AdamW lr/weight decay `1e-3`，不做参数或阈值
+  sweep。outer 接受规则唯一固定为：先满足原 V115 Pareto gate，再要求 critic 的
+  `P(proposal hit@.25)-P(baseline hit@.25)>=0`；@.50 critic 作为联合表示的辅助监督但不增加第二个 veto，避免已知
+  @.50 强增益掩盖用户明确优先的 @.25。正式 promotion gates 仍为 `+105/+225`、五折双正、总体 bootstrap
+  下界 `+60/+170`、corrected `+35/+115`、regular `+8/+25`、switch `<=13%`，任一失败即禁止 full-fit/validation。
+- 模型 `models/rec_semantic_candidate_critic.py` SHA-256
+  `d16798f49c94a9fd36b03e22002dff1a0bdbf7120bb1760badc721426e0d5a6f`；OOF 程序
+  `scripts/run_v121_meshsp_nested_semantic_critic_oof.py` SHA
+  `1517e0170ac1a103fa86b3d6423076b1081e79fae8ddc87267e90e4372ee33dc`，均 mode `0444`；单卡 runner
+  `scripts/run_v121_meshsp_nested_semantic_critic_oof_serial.sh` SHA
+  `4a2e8de3411831f85168248fa94e2a5beb2f6c9d71b7189df2e787384bad0362`，mode `0555`；test SHA
+  `415faa6046592d500e7dfdb91ff6c16d2b202cb9d17edc2190718709ed16ef62`。
+- `py_compile`、runner `bash -n` 与 V115--V121 定向回归 **19/19 passed**。真实 V115 interface 测试证明输出
+  tensor contract 正确，并证明任意修改 `candidate_ious` 不会改变 inference components；10 万候选 GPU synthetic
+  fit/predict 完成 12 epochs，final loss `0.543630`，概率 shape `(893,16,7,2)`、finite/range
+  `[0.04514,0.97852]` 均通过。该烟测为随机合成数据，不参与结果选择。GPU0 空闲，V121 outputs 不存在，
+  `.pth` 仍为 12；V99/V109/V113 及全部依赖保持不动。
+
+#### 14.180 V121 OOF 结果：全候选绝对命中学习仍未形成 baseline-relative 判别（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `af29255b71e19b41879e287abfeb99b368b9fb9eec81cfb5377045bf950ded0d`、
+  `650a660b2fd28d141c28a59cfc8805dacc3b2a53cd7fe107f44b6083264c08d0`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`；protected artifacts/cache metadata 前后严格相等，validation 未访问，GPU 回到 1 MiB，
+  `.pth` 仍为 12。
+- 每折 critic 使用 768,456--836,081 个有效候选，@.25 正例约占 88%--89%，12-epoch BCE final loss
+  0.0251--0.0295；训练稳定。五折分别保留 V115 switches `383/700`、`557/863`、`444/905`、
+  `718/1071`、`389/782`，总计 2,491/4,321（57.65%）。
+- REC OOF 为 `+72/+185`，五折 `(+4,+44)/(+12,+30)/(+14,+33)/(+26,+45)/(+16,+33)`；总体
+  bootstrap 下界 `+45/+142`。corrected 为 `+52/+128`、下界 `+31/+95`；regular 为 `+20/+57`、
+  下界 `+3/+31`。五折双正、regular@.50 与 switch ceiling 通过，但 delta、总体及其余子群门均失败。
+- @.25 为 141 fixes/69 breaks，@.50 为 290/105。相对 V115，V121 去掉 1,830 switches；@.25 虽去掉
+  55 breaks，却也丢失 58 fixes，净 delta `75→72`；@.50 去掉 136 breaks、同时丢失 214 fixes，净 delta
+  `263→185`。绝对 candidate BCE 在高度正例化的候选总体上 loss 很低，但 proposal 与强 baseline 的局部概率排序
+  仍不可靠，复现了 V117“绝对命中概率不能替代相对 switch 判断”的结论。
+- **判定**：禁止 full-fit/validation，不生成权重；不扫描 semantic probability difference threshold。V121 证明
+  contextual/variant/language 表示与全候选训练基础设施可用，下一候选只改变监督问题：从同一 inner calibration 中
+  构造 V115-Pareto hard candidate 与 baseline 的相对 fix/break 事件，使用共享语义 encoder 直接训练 pairwise
+  utility classifier；neutral 不主导 loss，推理以固定 pairwise logit 符号判定，不回退到绝对 BCE。
+
+#### 14.181 V122 预注册：V115-Pareto hard-pair semantic utility critic（2026-08-15）
+
+- nested scene split、fold-local V115 proposal、128D contextual query/128D variant/64D language/16D geometry-rank
+  inputs 与全部 protected artifacts 沿用 V121；V121 report SHA `af29255b...ded0d` 绑定为 protocol-design evidence。
+  唯一研究变量是把 absolute candidate hit BCE 改为 candidate-vs-baseline 的相对事件监督，不改变 V115 网络、selector、
+  margin、seed 或任何 promotion gate。
+- 在 inner calibration 上先为**每个有效候选**计算其相对同一行 baseline 的 V115 双 head gains；只有满足原 V99/V115
+  Pareto 条件（两 head gain 严格正、`2*g025+g050>=0.1331222057`）的 hard candidate 才进入 pair pool。每阈值
+  candidate 与 baseline 命中状态不同才形成监督事件：candidate 修复 baseline 为 fix=`1`，candidate 破坏 baseline 为
+  break=`0`；neutral 在该阈值完全不进入 loss，且不使用 class weight。由此扩大到所有 policy-relevant hard pairs，
+  同时避免 V121 中约 88%--89% 的绝对正例掩盖局部相对差异。
+- critic 用共享语义 candidate encoder 分别编码 candidate/baseline，再融合二者、signed/absolute/product difference 与
+  V115 model gains，由 128-hidden head 输出双阈值 fix-vs-break logits。固定 50 epochs、batch 1024、AdamW
+  lr/weight decay `1e-3`；无 grid/threshold sweep。outer gate 唯一为原 V115 Pareto acceptance 且
+  `pairwise_logit025>=0`，即固定的 fix-vs-break decision boundary；@.50 仅作辅助相对监督，正式 @.50 promotion 门不放宽。
+- promotion gates 原样保持：REC OOF `+105/+225`，五折双正，总体 bootstrap 下界 `+60/+170`，corrected
+  `+35/+115`、regular `+8/+25`，switch `<=13%`；全部通过前禁止稳定性/full-fit/validation，不生成权重。
+- 模型 `models/rec_semantic_pairwise_utility.py` SHA-256
+  `181f19f041c9a652550442710c010a01d6065da03c3cfaa726172235a8a6676c`；OOF 程序
+  `scripts/run_v122_meshsp_nested_semantic_pairwise_oof.py` SHA
+  `429ba348623f966ab1c5813bec37bd2a0f52191b508a979e9883bcbec6b49a84`，均 mode `0444`；runner
+  `scripts/run_v122_meshsp_nested_semantic_pairwise_oof_serial.sh` SHA
+  `bfaa83e1ba659335a9a3fb86166207afd65288df1d0af2d9d4fcfe65b78fd1a3`，mode `0555`；test SHA
+  `bcdc5f76e49db5a2a44c2a3feda3d040791856116bc940b059d76090151f57ff`。
+- `py_compile`、runner `bash -n` 与 V115--V122 定向回归 **22/22 passed**。100-pair GPU synthetic end-to-end
+  smoke 含每阈值 50 fixes/50 breaks，50 epochs 后 loss `0.002205`，预测 shape `(100,2)`、finite，@.25
+  positive rate 精确 0.5；随机合成 smoke 不参与结果选择。GPU0 空闲，V122 outputs 不存在，`.pth` 仍为 12。
+
+#### 14.182 V122 OOF 结果：hard-pair 监督有稳定正信号，但任意 pair fusion 泛化不足（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `95fad62c6b1e8df313292dcf88f07c3d3bfde33a395c05d254162b7f4a9b2321`、
+  `28702d7337ae831611290821278d5da5cc5e678ad589de2230dab708a03140c1`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`、`deployable=false`。protected artifacts 与 cache metadata 前后严格相等，validation 未访问；
+  实验输出目录 `.pth` 仍为 12，V99/V109/V113 权重均保留，V122 未生成或删除权重。
+- 五折 hard-pair 训练分别包含 6,506/8,576/9,588/5,879/6,943 个 event pairs；50-epoch loss 从
+  `0.4985/0.4708/0.4580/0.4659/0.4323` 降至 `0.0020/0.0032/0.0113/0.0080/0.0108`。critic
+  仅接受 V115 switches `318/700`、`332/863`、`229/905`、`478/1071`、`278/782`，总计
+  1,635/4,321（37.84%，全体 sample switch rate 4.46%）。
+- REC OOF 为 `+57/+137`，五折 `(+8,+31)/(+7,+19)/(+7,+19)/(+15,+36)/(+20,+32)`；总体
+  bootstrap 下界 `+32/+100`。corrected 为 `+38/+81`、下界 `+17/+50`，且 fold 1 的 @.25 为 `-1`；
+  regular 为 `+19/+56`、下界 `+6/+38`。五折总体双正和 switch ceiling 通过，但 delta、总体下界、corrected
+  与 regular@.25 门均失败。
+- @.25 为 122 fixes/65 breaks，@.50 为 230/93。与 V121 的 `+72/+185` 相比，直接相对监督进一步减少
+  856 switches，却把净增益降为 `+57/+137`；训练 loss 接近零而外折只保留 37.8% 的基础切换，说明任意
+  candidate/baseline pair fusion 能记忆 inner hard events，却没有学到足够可迁移的候选排序。该结果仍比随机或负增益稳定：
+  五折总体均双正，证明 hard-pair 事件监督本身有有效信号。
+- **判定**：禁止 full-fit/validation，不生成权重，不扫描 epoch、hidden size 或 pairwise logit threshold。下一候选保留
+  V122 数据、nested split、监督标签与全部冻结门，仅把任意 pair fusion 改为反对称 Bradley--Terry 结构：同一个低容量
+  semantic scorer 分别产生 candidate/baseline utility，再以严格的 `s(candidate)-s(baseline)` 形成双阈值 logits。
+  这样强制交换输入时符号翻转并约束可传递排序，直接针对 V122 的 pair memorization/generalization 缺口。
+
+#### 14.183 V123 预注册：反对称 shared-utility hard-pair ranker（2026-08-15）
+
+- V123 绑定 V122 result SHA `95fad62c...9b2321` 为唯一 protocol-design evidence；沿用同一 nested scene split、
+  V115 proposal、V122 的全 hard-candidate pair pool、fix/break event mask、50 epochs、batch 1024、AdamW
+  lr/weight decay `1e-3`、无 class weight。validation 不访问，当前不生成权重。
+- 唯一研究变量是 critic 结构。V121 的 query/variant/text/aux projection 和 64D candidate representation 保持不变，
+  但移除 V122 的 322D 任意 pair fusion 与 128-hidden classifier；共享无 bias 的线性 utility head 分别输出
+  `s(candidate)`、`s(baseline)`，最终 logits 固定为
+  `s(candidate)-s(baseline)+softplus(scale)*V115_model_gain`。每阈值 scale 从 `1.0` 初始化且始终为正。
+  因此交换 candidate/baseline 并翻转 model gain 时 logits 必须严格变号，强制可传递、低容量排序。
+- outer 接受规则仍只有原 V115 Pareto gate 且 `antisymmetric_logit025>=0`；@.50 只作辅助监督，不引入第二 veto，
+  不扫描 threshold。promotion gates 原样保持：REC OOF `+105/+225`，五折双正，总体 bootstrap 下界
+  `+60/+170`，corrected `+35/+115`、regular `+8/+25`，switch `<=13%`；全部通过前禁止稳定性、full-fit
+  和 validation。
+- 模型 `models/rec_semantic_antisymmetric_utility.py` SHA-256
+  `21f49b070bf72af67a33c0087246c8367955b1ef531f5b8cc83b242a12c8499b`；OOF 程序
+  `scripts/run_v123_meshsp_nested_semantic_antisymmetric_oof.py` SHA
+  `0592dcbff468dee5e6ebbd20758c31f5c217188d64edc37290f733101b0c9ac2`，均 mode `0444`；runner
+  `scripts/run_v123_meshsp_nested_semantic_antisymmetric_oof_serial.sh` SHA
+  `8f097ace6343504eefe965cc99fdc5d40e3055fd1ffc05b7670120519c4dcf6b`，mode `0555`；test SHA
+  `d487ffa9b3af466b3ac47b3e7c6b7e482fa1213535c96af6a3bea2b0ce95a19f`。
+- `py_compile`、runner `bash -n` 与 V116--V123 定向回归 **23/23 passed**。100-pair GPU synthetic
+  fit 的 loss `0.697874→0.001976`，输出 `(100,2)`、finite、两阈值 positive rate 均为 0.5；训练后输入交换
+  的最大反对称误差精确 `0.0`，gain scales `0.99036/0.98974` 且为正。该随机合成 smoke 不参与结果选择。
+  GPU0 空闲，V123 outputs 不存在，实验输出目录 `.pth` 仍为 12；V99/V109/V113 保持不动。
+
+#### 14.184 V123 OOF 结果：反对称约束缓解过度 veto，但单头接受仍未达到门槛（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `be05e2e5ac077c19852981dcc1280ff18a27bfe5253cc2900a9ca6c272155b2d`、
+  `ad4cec90e9fe9b773860152c96ccb99ab0aaa76f9928025539505b261009a18f`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`、`deployable=false`。protected artifacts/cache metadata 前后严格相等，validation 未访问；
+  实验输出目录 `.pth` 仍为 12，V99/V109/V113 保持不动，V123 未生成或删除权重。
+- critic 分别接受 V115 switches `309/700`、`457/863`、`346/905`、`617/1071`、`324/782`，总计
+  2,053/4,321（47.51%，全体 sample switch rate 5.60%），比 V122 多保留 418 switches；各折 50-epoch
+  final loss `0.00214/0.00354/0.01130/0.00795/0.01121`。
+- REC OOF 为 `+74/+179`，五折 `(+5,+32)/(+12,+27)/(+12,+33)/(+27,+45)/(+18,+42)`；总体
+  bootstrap 下界 `+45/+138`。corrected 为 `+49/+113`、下界 `+24/+78`，fold 1 @.25 为 `-5`；regular
+  为 `+25/+66`、下界 `+10/+44`。五折总体双正、regular 双阈值和 switch ceiling 通过，但 pooled delta、
+  总体下界及 corrected 门失败。
+- @.25 为 134 fixes/60 breaks，@.50 为 266/87。相对 V122 的 `+57/+137`，反对称结构提升 `+17/+42`；
+  相对 V115 的 `199-124=+75`，V123 去掉 65 fixes 与 64 breaks，@.25 只少 1 个净 hit，证明结构约束
+  基本解决了 V122 的无差别过度 veto，但没有进一步识别足够的 @.25 breaks。@.50 仍比 V115 的 `+263` 少 84 hits，
+  说明仅以 @.25 logit 决策没有利用训练中的 @.50 fix/break 辅助头。
+- **判定**：禁止 full-fit/validation，不生成权重，不扫描阈值或训练超参。下一候选不改模型、数据或训练，只把固定
+  outer sign gate 从 `logit025>=0` 改为 learned-Pareto：`logit025>=0 AND logit050>=0`。该零阈值双头交集与
+  V115 原始双 head Pareto 语义一致，检验 @.50 事件头能否过滤 V123 留下的共同 breaks；仍使用全部冻结 promotion gates。
+
+#### 14.185 V124 预注册：双阈值 learned-Pareto sign gate（2026-08-15）
+
+- V124 绑定 V123 result SHA `be05e2e5...55b2d` 为唯一 protocol-design evidence。V115 proposal、V122 hard-pair
+  event population、V123 反对称模型、nested scene split、50 epochs、batch 1024、AdamW lr/weight decay
+  `1e-3`、seed 与 promotion gates 全部逐字节/逐参数保持；模型仍为
+  `models/rec_semantic_antisymmetric_utility.py` SHA
+  `21f49b070bf72af67a33c0087246c8367955b1ef531f5b8cc83b242a12c8499b`，不新增模型文件或权重。
+- 唯一变量是 outer acceptance：原 V115 Pareto acceptance 之后，同时要求固定零阈值
+  `antisymmetric_logit025>=0 AND antisymmetric_logit050>=0`。不调整零阈值、不做 OR/加权和/grid 比较；@.50
+  头从 V122 起一直使用真实 fix/break 事件联合训练，因此该交集是 learned utility 对 V115 双 head Pareto 语义的直接延伸。
+- promotion gates 不变：REC OOF `+105/+225`，五折双正，总体 bootstrap 下界 `+60/+170`，corrected
+  `+35/+115`、regular `+8/+25`，switch `<=13%`；全部通过前禁止稳定性/full-fit/validation，不生成权重。
+- OOF 程序 `scripts/run_v124_meshsp_nested_semantic_learned_pareto_oof.py` SHA-256
+  `a9f18cf7ae164be991ca3e981ae3ca6cf71f23de1aa82549e5670a5998befc32`，mode `0444`；runner
+  `scripts/run_v124_meshsp_nested_semantic_learned_pareto_oof_serial.sh` SHA
+  `90c106b3da1c8d8ddc6bfa0aa40d22d0578695fca93eb061eb5eefd6acab1b66`，mode `0555`；test SHA
+  `14bda885b4d69b7d6274e4b24c2198b8bf473d53abdbb74390f03b8207d5b3b6`，mode `0444`。
+- `py_compile`、runner `bash -n` 与 V116--V124 定向回归 **27/27 passed**；新增测试覆盖 `++/00/+−/−+`
+  四种 utility 符号及 baseline veto，只有 `++/00` 被接受。V123 模型 GPU smoke 和严格反对称证据直接复用；GPU0
+  空闲，V124 outputs 不存在，实验输出目录 `.pth` 仍为 12，V99/V109/V113 不动。
+
+#### 14.186 V124 OOF 结果：@.50 硬交集同时删除 fixes，不能替代单头 gate（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `cf430277b6e5f3c2f45ef8622fcb6b66df3022fa24d9252fb584c5c4377bc172`、
+  `35ccb6a341e01a3a85a4ba05271cc98988772d08d05b39a058c5a1ad6ed497b4`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`、`deployable=false`。protected artifacts/cache metadata 前后严格相等，validation 未访问；
+  实验输出目录 `.pth` 仍为 12，V99/V109/V113 不动，V124 未生成或删除权重。
+- 五折训练 state SHA 与 V123 逐折完全一致，证明唯一变量是 acceptance。双头交集分别接受 V115 switches
+  `201/700`、`247/863`、`210/905`、`350/1071`、`227/782`，总计 1,235/4,321（28.58%，全体
+  sample switch rate 3.37%），比 V123 少 818 switches。
+- REC OOF 为 `+65/+156`，五折 `(+7,+27)/(+12,+25)/(+8,+27)/(+20,+36)/(+18,+41)`；总体 bootstrap
+  下界 `+40/+120`。corrected 为 `+44/+95`、下界 `+21/+64`，fold 1 @.25 为 `-2`；regular 为
+  `+21/+61`、下界 `+9/+41`。总体五折双正、regular 双阈值和 switch ceiling 通过，其余主要门失败。
+- @.25 为 115 fixes/50 breaks，@.50 为 223/67。相对 V123，@.50 sign veto 确实去掉 10/20 个
+  @.25/@.50 breaks，但同时去掉 19/43 个 fixes，净 delta 分别 `74→65`、`179→156`。因此 @.50 head
+  对共同 breaks 有信号但不足以支撑硬交集；继续做 OR、加权和或非零阈值将构成同一 OOF 上的 gate sweep，禁止。
+- **判定**：禁止 full-fit/validation，不生成权重；停止围绕 V115 单一 proposal 做 semantic veto/gate 调整。
+  V115 固定 proposal 本身只有 `199-124=+75` 的 @.25 净增益，V123 已用反对称 scorer 达到 `134-60=+74`，
+  说明后处理 veto 已逼近该 proposal policy 的净上限。下一结构方向必须扩大 outer decision space：复用 V123 在所有
+  hard candidates 上训练的可传递 utility，直接在每行全部 V115-Pareto 候选中 argmax，再与 baseline 比较，而不是只审查
+  V115 已选的一个 proposal；这样才可能引入新 fixes 并超过 `+75` 的固定-proposal ceiling。
+
+#### 14.187 V125 预注册：全 V115-Pareto hard-candidate utility argmax（2026-08-15）
+
+- V125 绑定 V123/V124 result SHA `be05e2e5...55b2d`、`cf430277...bc172` 为直接设计证据；沿用同一
+  nested scene split、fold-local V115 adapter、inner calibration hard-pair population、V123 反对称 shared-utility
+  模型、50 epochs、batch 1024、AdamW lr/weight decay `1e-3`、seed 与全部 promotion gates。validation
+  不访问，当前不生成权重。
+- 唯一研究变量是 outer decision space。每个 outer-held 样本枚举所有 valid nonbaseline candidate，并严格要求
+  V115 双 head gains 均为正且 `2*g025+g050>=0.1331222057`；用 V123 模型逐一计算 candidate-minus-baseline
+  双阈值 utility，在所有合格候选中以 `logit025` 最大者为 proposal，平局固定取最低 flat candidate index。只有该行
+  最大 `logit025>=0` 才接受，否则回退 baseline。`logit050` 继续作为联合训练头，不作新 hard veto；不扫描阈值、
+  top-k、加权和或其他 gate。
+- inference 输入只包含冻结的 query/variant/text/geometry-rank 表示与 V115 model gains；候选枚举和排序不读取
+  `candidate_ious`、unique/corrected 标签或 validation。与 V123 的固定单 proposal gate 相比，本实验可选择 V115
+  未选中的其他 Pareto 候选，因此有机会引入新 fixes、突破固定 proposal 的 `+75` @.25 净增益上限。
+- promotion gates 原样保持：REC OOF `+105/+225`，五折双正，总体 bootstrap 下界 `+60/+170`，corrected
+  `+35/+115`、regular `+8/+25`，switch `<=13%`；全部通过前禁止稳定性/full-fit/validation，不生成权重。
+- 复用模型 `models/rec_semantic_antisymmetric_utility.py` SHA-256
+  `21f49b070bf72af67a33c0087246c8367955b1ef531f5b8cc83b242a12c8499b`；OOF 程序
+  `scripts/run_v125_meshsp_nested_semantic_all_candidate_oof.py` SHA
+  `6cee94ab0ef3e06da6c22a412304ab33877c19517f3412b232f238a48d08e9a0`，mode `0444`；runner
+  `scripts/run_v125_meshsp_nested_semantic_all_candidate_oof_serial.sh` SHA
+  `ea2c8b76c1de5e0acd5ebbeaacc8b9e6f7b59caacd02edbbfdddaf63004b845a`，mode `0555`；test SHA
+  `d07d9335444a306fdbd1692860323bc03654af485b3d388def74667df6a7f0aa`，mode `0444`。
+- `py_compile`、runner `bash -n` 与 V116--V125 定向回归 **31/31 passed**；新增测试构造同一行两个合格候选，
+  验证选择 utility 更高但不是 V115 原 proposal 的候选，并验证另一行在最大 utility 为负时严格回退 baseline。
+  GPU0 空闲，V125 outputs 不存在，V99/V109/V113 权重保持不动。
+
+#### 14.188 V125 OOF 结果：全候选 argmax 放大中性切换，净增益低于固定 proposal（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `b52c96f7a641a069714dc36bf6cc2dbe055b6937693a441291bc0b1fc0e1806b`、
+  `fc3fd380ae7a96eac29a390474cde38440ed13a3c3e11e6ad06373bd4fb91420`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`、`deployable=false`。protected artifacts/cache metadata 前后严格相等，validation 未访问；
+  实验输出总 `.pth` 仍为 12，V125 未生成或删除权重。
+- 五折共评估 400,095 个 all-hard-candidate pairs，24,261 行至少有一个候选；最终接受 13,662 次切换，
+  switch rate `37.2617%`，其中 19,940 行超出 V115 原固定 proposal 接受集合，23,482 行的 utility argmax
+  与 V115 proposal 不同。所有被选候选仍满足冻结 Pareto/margin 条件，margin violation 和非正 head gain 均为 0。
+- REC OOF 仅为 `+31/+99`，五折 `(+0,+11)/(+2,+30)/(+10,+27)/(+15,+15)/(+4,+16)`；总体
+  bootstrap 下界 `-3/+45`。corrected 为 `+21/+75`、下界 `-7/+33`；regular 为 `+10/+24`、
+  下界 `-9/-9`。@.25 首折为 0，且 delta、bootstrap、subgroup 与 switch rate 门全部失败。
+- @.25 为 186 fixes/155 breaks，另有 13,321 neutral switches；@.50 为 400/301，另有 12,961 neutral
+  switches。相对 V115 固定 proposal 的 `+75/+263`，V125 扩张为三倍以上切换却降到 `+31/+99`；相对
+  V123 的 `+74/+179` 也显著下降。共享 utility 在 inner-held hard events 上能排序，但把它当作每行 100 余候选的
+  全局 maximum 会产生明显 winner's curse：大量候选因估计噪声取得极端高分，真实效果主要为中性且新增 breaks 接近 fixes。
+- **判定**：禁止 full-fit/validation，不生成权重，不对本次 utility logits 做事后阈值/top-k/switch-budget 扫描。
+  扩大候选空间本身不是缺失环节；下一方向必须先解决 candidate-set-size 偏差和最大值选择噪声。若继续使用 all-candidate，
+  应在新的 nested 预注册实验中训练 listwise/choice-aware selector，使 baseline 与整组候选共同归一化，并显式加入 abstain
+  选项，而不是把独立 pairwise logits 直接取最大值。
+
+#### 14.189 V126 预注册：listwise candidate-set normalization + baseline abstain（2026-08-15）
+
+- V126 绑定 V125 result SHA `b52c96f7...e1806b` 为直接设计证据；nested scene split、fold-local V115
+  adapter、all-hard-candidate 枚举、V123 反对称 shared utility、seed、50 epochs、AdamW lr/weight decay
+  `1e-3` 与全部 promotion gates 保持。validation 不访问，当前不生成权重。
+- 唯一研究变量是 inner-calibration 训练目标。每个样本把全部 V115-Pareto hard candidates 与一个 score 固定为 0
+  的 baseline abstain 动作放入同一 listwise softmax。对每个阈值，若 baseline miss 且存在 eligible fix，则所有 fix
+  actions 构成可接受正集合，最小化其总 softmax 概率的负对数；否则 baseline 是唯一正动作，所有候选（含 neutral 和
+  break）都被作为负动作。双阈值 loss 等权平均，不使用 class weight。
+- outer inference 不变：枚举所有 valid nonbaseline 且双 head gain 严格正、
+  `2*g025+g050>=0.1331222057` 的候选，按 `logit025` argmax，平局取最低 flat index；只有最大值相对
+  baseline score `0` 非负才切换。`logit050` 仅为联合训练头，不新增 hard veto；不扫描温度、阈值、top-k、
+  switch budget 或 logit 组合。inference 不访问 IoU、unique/corrected 或 validation。
+- 该目标直接针对 V125 的 winner's curse：候选数越多，softmax denominator 对全部非目标动作的累计惩罚越强；
+  baseline-only 行要求所有候选共同低于显式 abstain，而不是仅在 event pairs 上学习局部符号。
+- promotion gates 不变：REC OOF `+105/+225`，五折双正，总体 bootstrap 下界 `+60/+170`，corrected
+  `+35/+115`、regular `+8/+25`，switch `<=13%`；全部通过前禁止稳定性/full-fit/validation，不生成权重。
+- 复用模型 `models/rec_semantic_antisymmetric_utility.py` SHA-256
+  `21f49b070bf72af67a33c0087246c8367955b1ef531f5b8cc83b242a12c8499b`；OOF 程序
+  `scripts/run_v126_meshsp_nested_semantic_listwise_oof.py` SHA
+  `97b17c9bbb56b2654a10c12e7cb72db507528a5a21d0e7b39b928d8d0b750ded`，mode `0444`；runner
+  `scripts/run_v126_meshsp_nested_semantic_listwise_oof_serial.sh` SHA
+  `1fe9c7c4aee9251a4cafb3b2a5b5bd966ce96312a6a9c7f322356cd3f5051e34`，mode `0555`；test SHA
+  `a219e29e3243377541f192dcb091fceb88be1c0ff1c11d49bd112f16766dda64`，mode `0444`。
+- `py_compile`、runner `bash -n` 与 V116--V126 定向回归 **36/36 passed**。128-row GPU synthetic
+  end-to-end smoke 含 64 fix-target/64 baseline-target 行，listwise loss `0.755524→0.011911`，最终恰好接受
+  64 行，验证 dense indexed scatter 的梯度回传与 baseline abstain 生效；随机合成 smoke 不参与结果选择。
+  GPU0 已释放，V126 outputs 不存在，实验输出 `.pth` 仍为 12。
+
+#### 14.190 V126 OOF 结果：listwise abstain 修复 precision，但等权行先验导致过度保守（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `899a884cdd362e13f9d1772e53bd8cca01af9bf849d66417eee33df6fd7e8c53`、
+  `40aad6d2dcb56d668f09bb9a2f1a93b1b7c326841f8600a79d08ea6ffb68df9a`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`、`deployable=false`。protected artifacts/cache metadata 前后严格相等，validation 未访问；
+  `.pth` 仍为 12，V126 未生成或删除权重。
+- 五折接受 `9/40/34/41/18` 次切换，总计仅 142/36,665（`0.3873%`）；对应 fold-local inner
+  @.25 fix-target 行仅 `54/89/96/84/58`，而 baseline-target 行均约 7,000。五折 listwise final loss
+  `0.000736/0.001928/0.002439/0.000686/0.000970`，显示拟合稳定但稀有 fix prior 被等权行平均严重压制。
+- REC OOF 为 `+24/+17`，五折 `(+3,+5)/(+2,+4)/(+4,+0)/(+12,+6)/(+3,+2)`；总体
+  bootstrap 下界 `+10/+3`。corrected 为 `+18/+11`、下界 `+6/-1`；regular 为 `+6/+6`、
+  下界 `0/-2`。@.25 五折全正且 bootstrap 下界为正、switch ceiling 通过，但 delta、@.50 严格五折及
+  promotion 下界均失败。
+- @.25 为 38 fixes/14 breaks/90 neutral switches，event precision `73.08%`；@.50 为 39/22/81。
+  相对 V125 的 13,662 switches 和 `+31/+99`，V126 把 winner's curse 大幅压住，以约 1/96 的切换数获得
+  `+24` @.25，证明 candidate-set normalization 与显式 abstain 是正确结构；问题由“过度选择”转为“fix-target
+  行先验过低”。
+- **判定**：禁止 full-fit/validation，不生成权重，不对 logits 做阈值或温度扫描。下一实验保留 V126 的模型、
+  candidate sets、positive-set 定义、baseline score 0 与 inference 原样，只在训练 loss 中做封闭式 prior correction：
+  每阈值 baseline-target 行 weight=1，fix-target 行 weight=`N_baseline/(4*N_fix)`，其中 4 直接复用冻结的
+  false-positive cost。这样 weighted baseline 总量仍为 fix 总量的 4 倍，无自由超参或 OOF sweep。
+
+#### 14.191 V127 预注册：false-positive-cost prior-corrected listwise abstain（2026-08-15）
+
+- V127 绑定 V126 result SHA `899a884c...e8c53` 为直接设计证据；模型、nested scene split、fold-local
+  V115 adapter、all-hard-candidate sets、fix-only positive sets、baseline score `0`、50 epochs、row batch 512、
+  AdamW lr/weight decay `1e-3`、outer argmax/zero gate 与 promotion gates 全部保持。validation 不访问，当前不生成权重。
+- 唯一变量是 inner listwise 行权重。每阈值 baseline-target 行固定 weight `1`；fix-target 行固定 weight
+  `N_baseline/(4*N_fix)`，计数仅来自该 outer fold 的 inner calibration。于是 baseline-target 总权重严格为
+  fix-target 总权重的 4 倍；常数 4 直接复用冻结诊断中的 false-positive cost，不新增可调超参、阈值或 grid。
+- candidate softmax、positive mass 与 inference 完全沿用 V126：训练时 baseline miss 且存在 eligible fix 才以所有 fixes
+  为正集合，否则 baseline 是唯一正动作；推理按所有 V115-Pareto candidates 的 `logit025` argmax，最大值非负才切换。
+  `logit050` 仅联合训练，不 hard veto；不访问 IoU、unique/corrected 或 validation。
+- promotion gates 不变：REC OOF `+105/+225`，五折双正，总体 bootstrap 下界 `+60/+170`，corrected
+  `+35/+115`、regular `+8/+25`，switch `<=13%`；全部通过前禁止稳定性/full-fit/validation，不生成权重。
+- 复用模型 `models/rec_semantic_antisymmetric_utility.py` SHA-256
+  `21f49b070bf72af67a33c0087246c8367955b1ef531f5b8cc83b242a12c8499b`；OOF 程序
+  `scripts/run_v127_meshsp_nested_semantic_prior_corrected_oof.py` SHA
+  `0da18187a7690ad9e5d57feedbc6bb9ef69fe723dd228ee7969e1f5c4277fe12`，mode `0444`；runner
+  `scripts/run_v127_meshsp_nested_semantic_prior_corrected_oof_serial.sh` SHA
+  `2338843fa5b76f0d2048746582455268a789d50bbba655619bab1bc756f04039`，mode `0555`；test SHA
+  `430d53b2c7383b626e2dacef5fd21d8636790afe89224bb4175134f4b8cb0fbf`，mode `0444`。
+- `py_compile`、runner `bash -n` 与 V116--V127 定向回归 **41/41 passed**。128-row GPU synthetic smoke
+  含 16 fix/112 baseline rows，closed-form fix weight 精确 `112/(4*16)=1.75`，listwise loss
+  `0.881189→0.011561`，最终恰好接受 16 行；随机合成 smoke 不参与结果选择。GPU0 已释放，V127 outputs
+  不存在，`.pth` 仍为 12。
+
+#### 14.192 V127 OOF 结果：prior correction 未释放 recall，且 @.25 净增益下降（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `ad1fe06606eb696462a08877f314050e0a0bf6bb9780df1d149897fcfcb1904a`、
+  `bb56b15a75d5c1c40b0c76dae79d5c0abf03d181c349c05fbe6e530cd5645fdc`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`、`deployable=false`。protected artifacts/cache metadata 前后严格相等，validation 未访问；
+  `.pth` 仍为 12，V127 未生成或删除权重。
+- 五折 fix-target weights @.25 为 `32.53/21.31/19.19/21.65/30.30`，@.50 为
+  `11.32/8.20/8.39/11.18/10.11`；接受 switches `15/29/48/52/42`，总计 186（`0.5073%`），
+  只比 V126 多 44，说明闭式 prior correction 并未显著改变强 baseline softmax 的决策边界。
+- REC OOF 为 `+21/+21`，五折 `(+2,+5)/(+5,+3)/(+2,+4)/(+7,+7)/(+5,+2)`；总体
+  bootstrap 下界 `+9/+8`。corrected 为 `+12/+13`、下界 `+2/+2`；regular 为 `+9/+8`、
+  下界 `+2/0`。总体五折双正和 switch ceiling 通过，但所有 delta/bootstrap promotion 门失败。
+- @.25 为 37 fixes/16 breaks/133 neutral，净增益反而低于 V126 的 38/14=`+24`；@.50 为 44/23=`+21`。
+  加权增加的选择主要是 neutral，并新增 2 个 @.25 breaks，没有带来更多 fixes。继续改变 cost 将成为同一 OOF 上的权重
+  sweep，禁止。
+- **判定**：禁止 full-fit/validation，不生成权重；停止调整 listwise prior/temperature/threshold。下一结构保留未加权
+  V126 作为高精度 **rescue**，同时把 V115 的原 proposal/acceptance 设为不可替换主路径：V115 已接受的行原样保留，
+  仅在 V115 abstain 行允许 V126 的全候选 listwise 选择新增切换。该 union 不牺牲 V115 的 `+75/+263`，并把
+  V126 的精度用于补充 fixes；最大切换约 `(4321+142)/36665=12.17%`，天然低于 13% ceiling。
+
+#### 14.193 V128 预注册：V115-protected primary + V126 listwise rescue（2026-08-15）
+
+- V128 绑定 V126/V127 result SHA `899a884c...e8c53`、`ad1fe066...1904a` 为设计证据；明确回退到 V126
+  **未加权** listwise 训练。nested split、fold-local V115、all-hard-candidate sets、fix/baseline positive sets、
+  shared utility、baseline score 0、50 epochs、row batch 512、AdamW lr/weight decay `1e-3`、seed 与 promotion
+  gates 全部保持；validation 不访问，当前不生成权重。
+- 唯一变量是 outer policy composition。V115 `base_accepted=true` 的行严格保留其原 proposal、head gains 和 acceptance，
+  listwise 无权替换或 veto；仅在 V115 `base_accepted=false` 的行，运行 V126 all-candidate `logit025` argmax，最大值
+  非负才新增 rescue，否则 baseline。`logit050` 仍只联合训练；无阈值、温度、cost、top-k 或 switch-budget sweep。
+- 该 union 直接组合 V115 的 recall 与 V126 的 precision。V115 OOF switches 为 4,321；V126 全部 raw accepts 仅 142，
+  因而即使完全不重叠，V128 switches 上界 4,463/36,665=`12.1724%`，仍低于冻结 `13%` ceiling；实现同时断言
+  每个 V115 accepted identity 不变、rescue 只能发生在 V115 abstention。
+- promotion gates 不变：REC OOF `+105/+225`，五折双正，总体 bootstrap 下界 `+60/+170`，corrected
+  `+35/+115`、regular `+8/+25`，switch `<=13%`；全部通过前禁止稳定性/full-fit/validation，不生成权重。
+- 复用模型 `models/rec_semantic_antisymmetric_utility.py` SHA-256
+  `21f49b070bf72af67a33c0087246c8367955b1ef531f5b8cc83b242a12c8499b`；OOF 程序
+  `scripts/run_v128_meshsp_nested_semantic_protected_rescue_oof.py` SHA
+  `3464f6fed7e3e174915f8296ff43145f7ffaa6168230bdd222589544b961be7c`，mode `0444`；runner
+  `scripts/run_v128_meshsp_nested_semantic_protected_rescue_oof_serial.sh` SHA
+  `33885a22d9eb80ab1b21d35d5f49c0f1ff20f56841fd15246da03235ee156237`，mode `0555`；test SHA
+  `04f17ee6a2b7f9d6ba72285b36dfd12aac2b22f90c4fdc969dd292ae743932cd`，mode `0444`。
+- `py_compile`、runner `bash -n` 与 V116--V128 定向回归 **46/46 passed**。新增 synthetic contract 同时覆盖：
+  V115 accepted 行即使 listwise 更偏好其他候选也保留 V115、V115 abstain+positive utility 新增 rescue、V115
+  abstain+negative utility 回退 baseline。V126 的 listwise GPU 收敛 smoke 直接复用；GPU0 空闲，V128 outputs
+  不存在，`.pth` 仍为 12。
+
+#### 14.194 V128 OOF 结果：V126 高精度 fixes 与 V115 重叠，abstain 补集无增量价值（2026-08-15）
+
+- 完整 nested 五折正常完成，result/log/exit SHA-256 为
+  `3b90a175a2fa12c7dd10de210175582d2e50568631ea9c94d27c4cb3f8edd452`、
+  `be3916fd3d4ba9581679d029993c5b45109d0de5b07da2ef1a31fa0fc7ee8c43`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`，
+  report `passed=false`、`deployable=false`。protected artifacts/cache metadata 前后严格相等，validation 未访问；
+  `.pth` 仍为 12，V128 未生成或删除权重。
+- V126 training state SHA 五折逐折完全复现，证明唯一变量确为 outer composition。V115 原 4,321 switches 全部身份不变，
+  listwise raw accepts `9/40/34/41/18` 中只有 `2/6/7/14/5` 位于 V115 abstain 补集，最终新增 34，
+  总 switches 4,355（`11.8778%`）；V115 identity violation、margin violation、非正 head gain 均为 0。
+- REC OOF 为 `+69/+258`，五折 `(+4,+64)/(+10,+32)/(+19,+45)/(+25,+58)/(+11,+59)`；总体
+  bootstrap 下界 `+30/+194`。corrected 为 `+51/+191`、下界 `+17/+141`；regular 为 `+18/+67`、
+  下界 `-3/+31`。五折双正、@.50 delta/总体/corrected/regular 和 switch ceiling 通过，但 @.25 delta、总体与
+  subgroup 门失败。
+- @.25 为 199 fixes/130 breaks=`+69`；与 V115 的 199/124=`+75` 比较，新增 34 rescues **没有新增 fix**，
+  只增加 6 breaks 与 28 neutral。@.50 为 506/248=`+258`，也比 V115 `+263` 少 5。由此可知 V126 的高精度
+  fix signal 完全落在 V115 已接受区域；abstain 补集没有可叠加净收益。
+- **判定**：禁止 full-fit/validation，不生成权重；停止 V115/V126 proposal、veto、union、阈值、prior 或候选集合的
+  后处理组合。V115 固定 proposal `+75` 仍是该 reranker family 的最佳 @.25 OOF，连续 V121--V128 已覆盖绝对
+  critic、pairwise、反对称、双头 gate、全候选 argmax、listwise abstain、prior correction 与 protected rescue，均未超过。
+  下一阶段必须回到跨数据集可泛化的网络/表示模块，改善 proposal/query 本身，而不是继续在同一缓存上重排。
+
+#### 14.195 V129 预注册：Text-conditioned Directed Box-Relation Graph Adapter（2026-08-15）
+
+- V129 绑定 V128 result SHA `3b90a175...d452` 和 V115r1 result SHA `cae35808...f423f` 为设计证据。
+  V115 已证明冻结 V99 上的有界关系适配可得到 `+75/+263`，但它的关系编码只含中心距离/方向五维，@.25
+  regular bootstrap 下界仍为 `-1`；V128 又证明同一 proposal 上继续叠加 critic/rescue 没有增量。因此本轮不改
+  threshold、margin、proposal policy、loss prior 或候选集合，而把唯一研究变量固定为 **query 表示中的有向 box
+  relation message**，直接加强多实例候选间的空间/语义竞争。
+- 每个 query pair `(i,j)` 构造 19D 通用有向边：signed/absolute center delta、按两框平均尺度归一的 delta、
+  log size ratio、3D/水平距离、冻结 64D query projection cosine、两端 target-text cosine 及其差、3D box IoU。
+  边编码由冻结 64D target-text 表示作 FiLM 条件化，并与 V99 anchor query context 共同进入 4-head directed
+  attention；self edge 与 padding edge 严格屏蔽。reliability gate 融合 relation message，query/variant delta heads
+  仍为零初始化，部署 logits 初始与 V99 bit-exact，最终逐 logit residual 仍固定为 `0.25*tanh(delta)`。
+- 输入只来自既有可部署 query embedding、文本 embedding、归一化 box center/size 与 target cosine；不读 dataset 名、
+  ScanRefer unique/multiple 标志、GT、scene ID 或 validation。关系定义对 query permutation 等变，并可原样用于
+  Nr3D/Sr3D，因而这是网络表示实验而不是数据集特化后处理。
+- fold-local V99 anchor、V95 graded-listwise objective、12 epochs、hidden 128、dropout 0.1、AdamW learning rate/
+  weight decay、seed 0、V99 Pareto margin 与双 head positive-gain policy 全部沿用 V115，不做结构/超参 grid。
+  promotion gates 仍为 REC OOF `+105/+225`、五折双正、总体 bootstrap 下界 `+60/+170`、corrected
+  `+35/+115`、regular `+8/+25`、switch `<=13%`；全部通过前禁止 full-fit、validation 与权重生成。
+- 模型 `models/rec_box_relation_adapter.py` SHA-256
+  `b20bfd625f0f9ba437efe3e152bdc134d7b3f3426c9c4397e5f1cbb332fe72da`，OOF 程序
+  `scripts/run_v129_meshsp_box_relation_adapter_oof.py` SHA
+  `bf0bff490760daa227671c5e38b365cfb6d3aeebe3c5b645981a539f572627e0`，测试 SHA
+  `eff523e27f8bec84d75eee3490b1df9a10d6084900dd4852c266463da65c1b15`，三者 mode `0444`；单卡 runner
+  `scripts/run_v129_meshsp_box_relation_adapter_oof_serial.sh` SHA
+  `adfd9a6e2b9df2dd3394a4c1f956f3fa95ea5f742ee2c4120498e63dd6adb9a0`，mode `0555`。
+- `py_compile`、runner `bash -n` 与 V114/V115/V129 定向回归 **12/12 passed**。GPU contract 覆盖零头
+  初始化后的 24-step 优化，确认 edge encoder 在第二步后获得非零有限梯度且最终 loss 低于初值 75%；另覆盖
+  relation 反对称坐标、padding、query permutation 等变、文本/box 路径、残差上界和 anchor 无梯度。GPU0 已释放，
+  V129 outputs 不存在，validation 未访问，远程 `.pth` 仍为 12。
+
+#### 14.196 V129 OOF 结果：box-relation 表示稳定但未改善主阈值（2026-08-15）
+
+- 完整 36,665-row/562-scene 五折正常完成，result/log/exit SHA-256 为
+  `f962733c8ea7a071e709711e83e2f61fa018a5efe804232f173c98609a0a602f`、
+  `29cee57065f5bf15c6445b334f93de3be13748b5887fb75811895119b6cd99a7`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`；
+  report `passed=false`、`deployable=false`。protected artifacts/cache metadata 前后严格相等，validation 未访问；
+  `.pth` 仍为 12，V129 未生成或删除权重。
+- REC OOF 为 `+65/+258`，五折 `(+0,+60)/(+11,+27)/(+19,+45)/(+27,+65)/(+8,+61)`；总体
+  bootstrap 下界 `+26/+196`。corrected 为 `+46/+181`、下界 `+13/+131`，其中 fold1 @.25=`-16`；
+  regular 为 `+19/+77`、下界 `-2/+44`。@.50 delta/五折/总体/子群门全部通过，但 @.25 的 delta、
+  严格五折、总体与两个子群下界均失败。
+- 接受 4,366/36,665 次切换（`11.9078%`），满足 13% ceiling；@.25 fixes/breaks=`193/128`，
+  @.50=`501/243`。五折 adapter final loss 均比各自 V99 anchor 低约 `0.0126--0.0142`，证明边表示可优化且
+  数值稳定；但相对 V115 的 `+75/+263` 反而少 `10/5` hits，显式 size/IoU/semantic pair edge 没有提高
+  未见场景的 @.25 switch precision。
+- **判定**：禁止 full-fit/validation，不生成权重；不再扩展空间 edge 维度、head 数或 residual scale。
+  V129 的失败把主瓶颈进一步缩小到 cross-modal candidate identity：现有 64D unit query/text embeddings 在 hierarchy
+  输入前逐维 z-score，V99/V115/V129 的普通 MLP/attention 没有显式保留单位球的乘积/差异结构。下一网络实验固定恢复
+  fold-local normalization 前的 query/text 表示，显式编码 product/absolute-difference/cosine 与候选集合竞争；仍以
+  冻结 V99 anchor 和有界零初始化 residual 隔离，不改 proposal policy 或后处理。
+
+#### 14.197 V130 预注册：Hyperspherical Query-Text Semantic Interaction Adapter（2026-08-15）
+
+- V130 绑定 V129 result SHA `f962733c...602f` 为直接设计证据；空间 relation、box edge、V99 anchor、proposal 与
+  Pareto policy 均不改。唯一研究变量是 cross-modal candidate identity 表示：adapter 保存每个 fold 的 V99
+  `query_features` mean/std 为只读 buffers，在 forward 内精确反演标准化，再分别 L2-normalize 原始 64D query/text，
+  显式拼接 query、text、逐维 product、absolute difference、9D main/modifier/pronoun/relation/other/default/
+  contrastive/rank evidence 和 cosine，共 266D。
+- 266D 表示经 `266→128` encoder 和一层 4-head permutation-equivariant set Transformer，让同一描述下的 16 个
+  candidate 直接在保留单位球几何的语义空间中竞争。它只读取冻结模型的推理输出，不读类别规则、dataset 名、GT、
+  scene ID、unique/multiple 或 validation；同一接口可用于 ScanRefer/Nr3D/Sr3D。
+- 与 V115/V129 相同，fold-local V99 anchor 永久 eval/frozen，semantic reliability gate 后接零初始化 query/variant
+  delta heads，step0 logits 必须 bit-exact；修正仍固定为 `0.25*tanh(delta)`。V95 graded-listwise objective、12 epochs、
+  hidden128、dropout0.1、AdamW learning rate/weight decay、seed0、V99 margin 与双 head positive-gain policy 全不变，
+  不做 normalization、结构、residual、margin 或阈值 grid。
+- promotion gates 不变：REC OOF `+105/+225`、五折双正、总体 bootstrap 下界 `+60/+170`、corrected
+  `+35/+115`、regular `+8/+25`、switch `<=13%`；全门通过前禁止 full-fit、validation 与权重生成。
+- 模型 `models/rec_hyperspherical_semantic_adapter.py` SHA-256
+  `d1db38703b39733fddecec5e12f3e2813978dcc41dc9dd7cd7d263980cab19ff`，OOF 程序
+  `scripts/run_v130_meshsp_hyperspherical_semantic_adapter_oof.py` SHA
+  `d06c09bd4b17198cc2f057778600205a590af99bff4296233a1958d99483a785`，测试 SHA
+  `376ce0750a5a5a453011f946dd5d8cfef49992879344ec02532d68ea71059b03`，三者 mode `0444`；单卡 runner
+  `scripts/run_v130_meshsp_hyperspherical_semantic_adapter_oof_serial.sh` SHA
+  `fa64865fadc3c0609370db53b8deae73a386c7d3f90a2f6e6435900704017183`，mode `0555`。
+- `py_compile`、runner `bash -n` 与 V115/V129/V130 定向回归 **15/15 passed**。覆盖 normalization 精确反演、
+  单位范数/product/difference/cosine、padding、query permutation 等变、语义路径敏感性、残差上界、anchor 无梯度，
+  以及 GPU 24-step 零头启动后 semantic encoder 获得非零有限梯度并显著降低目标 loss。GPU0 空闲，V130 outputs
+  不存在，validation 未访问，远程 `.pth` 仍为 12。
+
+#### 14.198 V130 OOF 结果：单位球语义交互有增益，但单路径仍停在 V115 上限（2026-08-15）
+
+- 完整五折正常完成，result/log/exit SHA-256 为
+  `563e55b6d2fc9000e9dee841e6a5894aff18a7980e00682861e9aee4a6572e64`、
+  `2e6fa4f68cd77169da0f4246dbfce983b11af383c6ce5a8c939369ffff3e2640`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`；
+  report `passed=false`、`deployable=false`。protected artifacts/cache metadata 未变，validation 未访问，
+  `.pth` 仍为 12，V130 未生成或删除权重。
+- REC OOF 为 `+73/+260`，五折 `(+4,+64)/(+14,+29)/(+21,+51)/(+23,+60)/(+11,+56)`，两阈值
+  五折均严格正；总体 bootstrap 下界 `+35/+197`。corrected 为 `+54/+191`、下界 `+23/+141`，但 fold1
+  @.25=`-6`；regular 为 `+19/+69`、下界 `-1/+33`。@.50 全门通过，@.25 delta、总体与两个子群下界失败。
+- 接受 4,290 次切换（`11.7005%`）；@.25 fixes/breaks=`196/123`，@.50=`502/242`。相对 V129
+  `+65/+258`，V130 以更少的 76 次切换增加 `+8/+2`，证明 normalization 反演后的显式 hyperspherical
+  product/difference 是正信号；但相对 V115 `+75/+263` 仍少 `2/3`，单独语义 set branch 没突破当前上限。
+- **判定**：禁止 full-fit/validation，不生成权重；不调 semantic dimension、normalization、residual 或 margin。
+  下一唯一结构检验保留 V115 的语言条件 5D center-relation attention，同时并联 V130 的 hyperspherical semantic
+  set branch，用共享有界 residual heads 联合训练；若两路径仍不能超过 `+105/+225`，即停止缓存 adapter 家族并转入
+  主 MCLN decoder/query 表示的训练期模块，不再组合 gate/threshold。
+
+#### 14.199 V131 预注册：Dual Hyperspherical-Semantic + Language-Spatial Adapter（2026-08-15）
+
+- V131 绑定 V115r1/V130 result SHA `cae35808...f423f`、`563e55b6...2e64` 为设计证据，是缓存 adapter
+  家族最后一次结构检验。它不组合两个已训练模型、不融合 OOF prediction、不改 policy；每折仍先拟合同一 V99 anchor，
+  然后从零联合训练一个网络内双路径 adapter。
+- spatial path 精确采用 V115 的 4-head、目标文本条件 5D center-relation attention；semantic path 精确采用 V130 的
+  fold-normalization 反演、266D unit query/text product/absolute-difference/cosine 表示与一层 4-head set Transformer。
+  两路分别形成相对 frozen anchor context 的 residual，由一个 `5*128→128→2` reliability gate 联合融合，再由共享
+  query/variant delta heads输出。gate bias 固定 `-2`、delta heads 零初始化，step0 与 V99 bit-exact，最终 logit
+  修正仍固定 `±0.25`。
+- 输入、mask 与模块均 query-permutation equivariant；只读冻结 query/text/center/score 表示和 fold-local normalization，
+  不读 dataset、GT、unique/multiple、scene ID 或 validation，可迁移到 Nr3D/Sr3D。V95 objective、12 epochs、hidden128、
+  dropout0.1、AdamW lr/wd、seed0、V99 margin 与 Pareto positive-gain policy 全不变，不扫描 branch weight 或 gate。
+- promotion gates 原样：REC OOF `+105/+225`、五折双正、总体 bootstrap 下界 `+60/+170`、corrected
+  `+35/+115`、regular `+8/+25`、switch `<=13%`；全门通过前禁止 full-fit、validation 与权重生成。若失败，停止
+  V114--V131 cache-adapter/critic family，下一步只能改主 MCLN decoder/query 训练表示。
+- 模型 `models/rec_dual_semantic_spatial_adapter.py` SHA-256
+  `d33007979fa77930b3364cd0fe9fee36fcf6cf528497c8701578e67b773118d5`，OOF 程序
+  `scripts/run_v131_meshsp_dual_semantic_spatial_adapter_oof.py` SHA
+  `0899c3b3f9df3bc7ae6ebf2a0264e56173fae5bc9722da28cd83ea31093083d9`，测试 SHA
+  `a46b3a44ab3bcd7eb90b3d1001edaeec55c4f281fdcbe84e6e10355e92d0cb7b`，三者 mode `0444`；runner
+  `scripts/run_v131_meshsp_dual_semantic_spatial_adapter_oof_serial.sh` SHA
+  `d072fefbc8a6961fd02a595005a8810f91eaef761e871cb6730150f27c958ba1`，mode `0555`。
+- `py_compile`、runner `bash -n` 与 V115/V130/V131 定向回归 **15/15 passed**；GPU contract 证明零头启动后
+  spatial/semantic 两路均获得非零有限梯度并降低目标 loss，另覆盖双路敏感性、normalization 恢复、padding、query
+  permutation、残差上界和 anchor 无梯度。GPU0 空闲，V131 outputs 不存在，validation 未访问，`.pth` 仍为 12。
+
+#### 14.200 V131 OOF 结果：双路径无互补增益，停止 cache-adapter 家族（2026-08-15）
+
+- 完整五折正常完成，result/log/exit SHA-256 为
+  `e993c70a6f2d6f841dfff52eb31e631d7e826dee4380154419dfffc1e1394611`、
+  `a8e8947de6f0eafad00bb8c98129fcfc47ce479550299ba75293479221631b0e`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`，均 mode `0444`，exit `0`；
+  report `passed=false`、`deployable=false`。protected artifacts/cache metadata 前后完全一致，validation 未访问，
+  `.pth` 仍为 12，V131 未生成或删除权重。
+- REC OOF 为 `+66/+258`，五折 `(+3,+61)/(+14,+26)/(+21,+50)/(+22,+67)/(+6,+54)`；总体
+  bootstrap 下界 `+28/+193`。corrected 为 `+46/+184`、下界 `+14/+133`，fold1 @.25=`-10`；regular
+  为 `+20/+74`、下界 `-1/+37`。仅 @.50 和 switch 门通过，@.25 delta/总体/两个子群门全部失败。
+- 接受 4,352 次切换（`11.8696%`）；@.25 fixes/breaks=`197/131`，@.50=`503/245`。相对 V115
+  `+75/+263` 少 `9/5`，相对 V130 `+73/+260` 少 `7/2`；联合训练没有形成互补，空间路径主要重现同一批
+  @.50 fixes，同时增加 @.25 breaks。
+- **判定**：禁止 full-fit/validation，不生成权重。按 14.199 的事先约束，正式停止 V114--V131 的
+  frozen-cache adapter、critic、proposal、gate、listwise 与组合路线；不再消费同一缓存做后处理式结构搜索。
+  后续必须回到主 MCLN：在 decoder/query feature 进入 box、mask 与 contrastive projection 前加入零初始化、可回退的
+  训练期 cross-modal module，使 query/box/mask 表示本身改变；先做冻结父权重的真实 train smoke 与 held-train 门，
+  通过后才允许完整训练/validation。
+
+#### 14.201 V132 预注册：Final-Decoder Cross-Modal Query Adapter（2026-08-15）
+
+- V132 直接执行 14.200 的路线切换，不再读取 V99--V131 cache 或训练后 reranker。初始化父权重固定为 epoch71
+  `mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth`，SHA-256
+  `3e44f4bdad3bd66ad82102032e1cb0241de57d147c0aa1d3eff9736926ef2208`；父文件只读保护，V109 及现有
+  12 个 `.pth` 均不改动。
+- 新 `DecoderQueryTextAdapter` 只插在最后一个 MCLN decoder layer 输出与 final box head、64D contrastive REC
+  projection、`x_query` mask projection 之间，因此同一 query residual 同时改变 box、REC 与 query-specific mask。
+  模块以 query 对 text tokens 的 4-head cross-attention、逐维 query/text product 与 absolute difference、上一层
+  center/log-size 的 scene-wise 标准化几何编码、以及 4-head permutation-equivariant candidate set attention 构造
+  residual；不读取 dataset 名、GT、unique/multiple、scene ID 规则或 validation，可原样用于 Nr3D/Sr3D。
+- residual 输出层 weight/bias 全零初始化，部署为 `query + 0.25*tanh(delta)`，故 step0 与 epoch71 query
+  bit-exact，逐维修改严格不超过 `0.25`。父网络全程 `eval` 且 `requires_grad=False`，仅训练
+  `decoder_query_adapter.*`，AdamW lr=`3e-4`、hidden=`288`、dropout=`0.1`、seed=`0`；smoke 使用单张
+  A100、batch=`8`、2 epochs。
+- 为禁止早期读取 ScanRefer validation，`--debug_train_holdout` 在 ScanRefer train annotations 内按
+  `SHA256(scene_id) mod 5` 做 scene-level 固定划分：bucket0 留出，其余训练，各取 128 rows；两个 subset scene
+  严格不相交，held copy 禁止点云与检测框 augmentation。先用零 adapter 读取同一 held-train subset 建立父基线，
+  再训练 2 epochs；两步均设置 `expected_eval_sample_count=128`，不构造 val dataset。
+- promotion gates：checkpoint missing keys 必须精确等于 `decoder_query_adapter.*`；optimizer/train mode 必须只覆盖
+  adapter；训练和评估无 NaN/Inf，最终 loss 低于首个 epoch，residual mean 必须非零且 max `<=0.25`；相对零
+  adapter held-train 父基线，REC@0.25 与 @0.50 各最多下降 1 hit、mask mIoU 最多下降 1.0 point。全部通过才允许
+  单卡 full-train/official validation；否则停止 V132，不用 validation 调参。
+- 核心 source SHA-256：`models/mcln.py`=`4dd162b4886fad77c931db63742f5f1a916de8951bfa6eb9fecc19d5cba172a1`，
+  `main_utils.py`=`25fb79e850bbdf865d6921b9f5425a3b1a001840142cbaa22b1465becae9e777`，
+  `train_dist_mod.py`=`5baf4aedae024ff4818f37927014876d4754aa32c16c1e7acc128a050e85740e`，
+  `src/joint_det_dataset.py`=`b6d785448a82743c9c367cc46e49021c8e1a08743e03dff32fdaf6086a515040`，
+  test=`1ea8d85c8abc18891e440de440009f1b8d4b11638f713276a7d6d9273b7ffc22`，runner=
+  `b5eb3117d7624d99a7d7f7c4e384364054aa4c7f7005b9f49eb241c0fa3bff9b`；source/test mode `0444`，runner
+  mode `0555`。`py_compile`、runner `bash -n`、V132 GPU contract **3/3 passed**，既有 checkpoint/retention/
+  finite-training/optimizer/dataset contract 回归 **60/60 passed**。
+- 首次 baseline 仅进入 CPU train-annotation 预处理，约 3 分钟仍未加载模型、未占用 GPU、未产生指标或权重，因原实现
+  在 scene 取样前解析全部 36,665 条文本而主动终止。结果盲态下只做等价的计算优化：将同一
+  `SHA256(scene_id) mod 5` partition 前移到 `load_scanrefer_annos` 的 scene-graph parsing 之前，使 train/held
+  各只解析固定的 128 rows；数据集合、顺序、门槛和所有模型/训练超参不变。终止后 GPU 回到 1 MiB，V132 `.pth`
+  为 0，现有权重仍为 12。
+- 过滤优化后的首次 baseline 在模型加载安全契约处按设计 fail-closed：adapter 30 个 missing keys 精确正确，但 epoch71
+  还含 9 个冻结 `source_choice_selector.*` keys，而首版 runner 未实例化该父模块，故全部被报告为 unexpected 并在任何
+  forward/metric 前停止。读取 checkpoint `config` 后，runner 恢复父训练时完全相同的 selector：sources=
+  `default,default_rank_blend_contrastive010`、hidden=288、min-IoU-gap=0.03，并启用原有
+  `eval_use_selector_choice_scores`；selector 保持 eval/frozen，V132 唯一 trainable 模块仍是 adapter。该修正只恢复父
+  checkpoint 的既有网络结构，不改变研究变量、数据或门槛；失败 run 未产生指标/权重，现有 `.pth` 仍为 12。
+- 恢复父 selector 后的 baseline 在首个 held forward 前打印出 `holdout=128 examples/1 scenes`，揭示 ScanRefer
+  train JSON 按 scene 聚集，partition 后直接取前 128 rows 虽满足 scene-disjoint，却不能形成有意义的跨场景门。
+  在任何 metric 输出前再次 fail-closed；将每个固定 hash partition 内的 records 改为按排序 scene ID round-robin
+  interleave，再由同一 `overfit=128` 截断。这样不改变 partition 成员或模型超参，但确保尽可能多 scene 覆盖；dataset
+  contract 继续 **4/4 passed**。该 run 未生成权重，停止后 GPU 回到 1 MiB，现有 `.pth` 仍为 12。
+
+#### 14.202 V132 零残差 held-train 父基线（2026-08-15）
+
+- 修正后的 baseline 正常 exit `0`：held-train 固定为 128 rows、120 scenes，和 train partition scene overlap=`0`；
+  checkpoint 契约确认仅有 `decoder_query_adapter.*` 30 个新 keys，optimizer 只含 adapter 1,502,208 params，epoch71
+  parent 与冻结 selector 完整加载。screen log/exit SHA-256 为
+  `ffb5752f711ccae5a0b9d43008ff425c195bf036f0e46956f3c4b971c3d76c4e`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`。
+- 零 residual held-train REC position Top-1：Acc@0.25=`124/128=96.875%`，Acc@0.50=`117/128=91.40625%`；
+  unique=`21/21=100%`、`20/21=95.2381%`，multiple=`103/107=96.2617%`、`97/107=90.6542%`。
+  selector 128/128 选择 default，故 learned-selector 数值与 position head 相同。
+- mask held-train：Acc@0.25=`120/128=93.75%`，Acc@0.50=`113/128=88.28125%`，mIoU=
+  `74.9070808437%`。这是 train split 上用于网络 smoke 的局部安全基线，不与 9,508-row official validation 指标混用。
+  baseline 未生成任何权重；远程 `.pth` 仍为 12，GPU 已释放。下一步按 14.201 固定配置运行 2-epoch adapter-only
+  smoke，并与这些 raw hit counts 作盲态门判断。
+
+#### 14.203 V132 adapter-only smoke 结果与权重清理（2026-08-15）
+
+- smoke 正常 exit `0`，train/held 各 128 rows、128/120 scenes、scene overlap=`0`；checkpoint 仅缺 adapter
+  30 keys，实际 trainable=`1,502,208`，其余 parent/selector 均 eval/frozen。epoch-average train loss 从
+  `10.5204` 降至 `10.4463`，无 NaN/Inf/OOM。
+- epoch1 held REC 为 `123/116`，epoch2 回到零残差父基线 `124/117`；epoch2 unique=`21/21,20/21`，
+  multiple=`103/107,97/107`。mask epoch2 为 `120/128`、`112/128`、mIoU=`75.0524923847%`：相对父基线
+  @.25 `0 hit`、@.50 `-1 hit`、mIoU `+0.1454115410 point`，全部满足预注册门。
+- epoch2 adapter 30 tensors 严格重载成功；deterministic synthetic contract 上 output weight/bias L1=
+  `120.01036/0.44038`，residual abs mean=`0.0209651`、max=`0.0996920 < 0.25`，全有限，证明模块已离开
+  零初始化且有界。screen log/exit、epoch1/2 receipt、epoch2 full checkpoint SHA-256 分别为
+  `d8b5f637dbd9a3897d5426bcffcd416b4c6953817f33601b1fa6d711d950995e`、
+  `9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa`、
+  `b52b3e0a6fd5e49c4680b2fdc311cab2eb0ead9b91d7d4ba3fc02dde164d2422`、
+  `63adbe9cfb6a4b9ce38f0f606e6626c0ecd7893ee8fa3e574af3ee19ccd12021`、
+  `debc82126d5c8f0c3148e1b2db7cfbe3aaf1c363072fc93b07f78229bf70be45`。
+- 为落实只留可恢复最佳权重，将 epoch2 adapter 抽成只读 artifact
+  `v132_smoke_adapter_epoch2.pth`（6,018,443 bytes，SHA
+  `29903a3ec1cc9b646df933a79e953dc0d3f76160d6406cf7c9d0b83e4e95292d`），包含 parent/source/full-smoke
+  fingerprints、30 tensors、配置、metrics 与 loss，重新加载逐 tensor exact。随后删除 smoke 专属两份 617 MB
+  full-checkpoint inode 的 8 个 hard-link 名称，目录从约 1.2 GB 降至 5.9 MB；删除目标全部位于该 V132 smoke
+  timestamp 目录，原 12 个最佳/保留权重（包括 V109）未动。当前 `.pth` 为 13：原 12 + compact V132 smoke。
+- **判定：全部 gate passed**，允许一次正式 full-train/official validation；smoke 的局部高准确率不作为 official
+  最好指标，当前正式最好仍为 V99 REC@.25=`58.6033%`、V113 REC@.50=`50.8519%`。
+
+#### 14.204 V132 单卡正式训练预注册（2026-08-15）
+
+- 唯一 A100 上从同一 protected epoch71 parent 重新零初始化 adapter，使用完整 ScanRefer train，冻结所有 parent 与
+  selector；V132 结构/hidden/heads/dropout/max-delta/lr/seed 均与 smoke 完全相同，不从 smoke 小样本权重续训。
+  单卡 batch=`8`、4 epochs、每 epoch 一次固定 9,508-row official validation；不做 lr、epoch、source、threshold 或
+  postprocess grid。预计每 epoch train+validation 约 60 分钟。
+- checkpoint retention 只按 REC@.25、REC@.50、mask@.25、mask@.50、mask mIoU 原始指标保留 hard links；完成后按
+  inode 去重并只留非支配最佳正式权重，V109 永久保留。若出现 NaN/Inf/OOM、非 adapter 参数可训练、样本数非
+  `36,665/9,508` 或 parent/source fingerprint 漂移，立即 fail-closed。
+- 正式主判据优先 REC：与 epoch71 raw parent/当前 V99、V113 official best 同时报告；若网络 checkpoint 产生新最好，
+  再对其运行一次固定、未重拟合的 V99 policy 兼容性评测。validation 只用于报告/保留，不据此更改 V132 超参。
+
+#### 14.205 交接文档归档与续写规则（2026-08-15）
+
+- 远程 `/tmp/mcln_repo/docs/REC_3DRES_OPTIMIZATION_LOG.md` 继续作为唯一 canonical handoff；后续实验设计、运行状态、
+  指标、审计和权重清理记录只在该远程文档末尾续写。
+- 2026-08-15 将 canonical handoff、`SOURCE_MOE_RERANK_DESIGN.md` 以及 `refine-logs/` 中当前/历史计划与追踪快照
+  合并为一个本地总文档，保存到 `C:\Users\gb\Desktop\document\MCLN_实验交接总文档.md`。该文件仅为归档快照，
+  不作为后续续写源；远程 canonical 的旧 `.bak` 副本因已被当前文档继承，不重复并入本地总文档。
+- 本地归档不包含 SSH 密码或其他明文凭据；连接凭据仍仅使用现有安全辅助脚本读取，不写入交接材料。
+
+#### 14.206 V132 单卡正式训练已启动（2026-08-15）
+
+- 启动前唯一 A100 40GB 空闲、无 compute process、无同名 formal screen/输出目录；protected parent、V132 runner
+  SHA-256 分别复核为 `3e44f4bdad3bd66ad82102032e1cb0241de57d147c0aa1d3eff9736926ef2208`、
+  `b5eb3117d7624d99a7d7f7c4e384364054aa4c7f7005b9f49eb241c0fa3bff9b`，已有 `.pth=13`（含永久保护
+  V109 和 compact V132 smoke），未删除或覆盖任何权重。`bash -n`、单 GPU 和输出不存在检查均通过。
+- `2026-08-15 13:40:54 CST` 在 detached screen `mcln_v132_formal` 启动。显式覆盖 runner formal 默认值为
+  `MAX_EPOCH=4`、`VAL_FREQ=1`、`BATCH_SIZE=8`、`PRINT_FREQ=100`、`MASTER_PORT=5132`；其余结构、
+  optimizer、adapter lr=`3e-4`、seed=`0` 与 14.204 预注册不变，从 protected epoch71 parent 重新零初始化
+  adapter，不读取 smoke adapter 权重。
+- run 目录：`/root/autodl-tmp/DATA_ROOT/output/network_v132_decoder_query_adapter/
+  v132_decoder_query_adapter_formal_e1_e4_b8x1/scanrefer/v132_decoder_query_adapter_formal_e1_e4_b8x1/1786772458/`；
+  `config.json` SHA-256=`268830a4117fa6f5a64d6f7d8858ae2ed917adeb9c8bae05ed80f4a30542cb15`。screen log 为
+  `/tmp/v132_formal_20260815_screen.log`，最终 exit marker 为 `/tmp/v132_formal_20260815.exit`。
+- 全量数据构建完成并严格打印 train=`36,665`、official validation=`9,508`；adapter-only trainable 参数
+  `1,502,208`，父 checkpoint 契约仅缺预期的 adapter 30 keys，epoch71 成功加载。epoch1 已推进到
+  `100/4583`，稳定约 `1.6 batch/s`，GPU 约 6.1GB、利用率 84%，无 OOM/NaN/Inf/traceback。按当前速度估计
+  每个 train epoch 约 46--48 分钟，之后执行一次固定 official validation；当前尚无正式指标或新权重。
+- 后续只在 epoch receipt 或异常时检查；每次验证必须核对 9,508 sample、REC overall/unique/multiple、Mask
+  overall/unique/multiple 与 mIoU。训练完成前不更改超参；结束后按 inode/metric receipt 只保留非支配最佳正式权重，
+  V109 永久保留。
+
+#### 14.207 V132 epoch1 完整正式回执：未超过现有最好（2026-08-15）
+
+- epoch1 全量训练于 `2026-08-15 14:36:59 CST` 完成，严格为 `4,583` batches，随后完成固定的
+  `9,508`-row official validation；receipt schema=`mcln-retrain-metrics-v1`、sample_count=`9,508`，
+  SHA-256=`c6ec67e1d88f4195bf967f39caa61a91123e9f6233315215b4d9a3d58b178dcd`。Unique=`1,419`、
+  Multiple=`8,089`，REC 与 Mask 两档的 subgroup hits 均严格加和到 overall，回执通过完整性审计。
+- REC learned-selector 与 fixed-default 恰好相同：overall @.25/@.50 为
+  `5504/4391 = 57.888094%/46.182162%`；Unique 为
+  `1244/1054 = 87.667371%/74.277660%`；Multiple 为
+  `4260/3337 = 52.664112%/41.253554%`。相对 V99 @.25 最好少 `68` hits、`-0.715187pp`；
+  相对 V113 @.50 最好少 `444` hits、`-4.669752pp`，两项均未刷新正式最好，也未达到 59%/49% 目标。
+- 同一 query 选择的 Mask overall @.25/@.50/mIoU 为
+  `5669/9508 = 59.623475%`、`4660/9508 = 49.011359%`、`41.698857%`；Unique 为
+  `1276/1030 = 89.922481%/72.586328%`，Multiple 为
+  `4393/3630 = 54.308320%/44.875757%`。相对 V99 Mask 最好分别为 `-21/-316` hits、mIoU
+  `-4.231403pp`；@.25 仍高于用户 baseline，但 @.50 与 mIoU 明显低于 baseline，epoch1 不具备保留优先级。
+- epoch1 checkpoint SHA-256=`8179f199a27b4498efb44545eac95b797ce65ba7f171454a9f2f9b885f1c9bcd`，大小
+  `617,227,079` bytes。`ckpt_epoch_1`、`epoch_last` 与五个 metric-best 名称均为同一 inode
+  `6484398810` 的 7 个 hard links，物理只占一份；尚未删除，作为活动训练的恢复点。日志中的唯一宽泛
+  `inf` 匹配来自配置字段 `confidence`，严格错误正则确认无 Traceback/OOM/NaN/Inf/Killed/RuntimeError。
+- epoch2 已自动开始，正式配置和超参不变。继续完整运行至 epoch4，逐轮只读比较；只有出现新正式网络最好时才按
+  14.204 对该 checkpoint 运行一次冻结 V99 compatibility policy，不用 validation 调参。
+
+#### 14.208 V132 epoch1 的只读瓶颈定位（2026-08-15）
+
+- 同一完整验证中，fixed-default=`57.888%/46.182%`，rank-blend source=`57.836%/46.119%`，
+  两源 oracle 也只有 `58.014%/46.287%`；冻结 selector 的 source 占比为 default=`100%`，fix/break
+  均为 `0`。因此当前 source pair 最多只提供约 `12/10` hits 的可见 headroom，继续训练或调该 selector
+  不能解释距 59%/49% 的主缺口。
+- 与之相反，同一 V132 checkpoint 的 position query Top-1/Top-5/Top-10 为
+  @.25=`57.888%/66.113%/69.363%`、@.50=`46.182%/57.446%/61.064%`；semantic query 的 Top-5
+  也为 `66.449%/57.762%`。这证明满足目标的候选框已大量存在，主要瓶颈是 256 queries 内的 target-query
+  排序，而不是候选框召回或两种 source 的路由。
+- V132 adapter 同时改动 final box head、contrastive query ranking 和 query-specific mask embedding；标准检测/分割
+  loss 不能直接保证 validation Top-1 的安全排序。epoch1 未改善 Top-1 且 REC/Mask 都低于现有最好，说明这种
+  full-query residual 至少在第一轮没有把候选召回转成目标 query 选择。后续仍按预注册跑完四轮；若全程不胜，
+  下一网络变量必须把“关系感知 target-query ranking”与 box/mask 表征解耦，并优先利用可跨 ScanRefer/Nr3D/Sr3D
+  的 target/attribute/relation-anchor 结构，不再重复同类全 query 扰动或只调 source 阈值。
+
+#### 14.209 V132 后续与 V133 score-only SACR-Lite 备用计划冻结（2026-08-15）
+
+- 在 V132 活动训练期间只完成远程只读设计，不改源码、不占第二张 GPU。`experiment-plan` 的最新与不可变计划位于
+  `refine-logs/EXPERIMENT_PLAN.md`、`refine-logs/EXPERIMENT_PLAN_20260815_150630.md`，内容 SHA-256 均为
+  `60a389b7edec9b062e6cce35df88c1439762e0ac474b0b2d97f6c44846f2154f`；对应 tracker 最新/不可变副本 SHA-256
+  均为 `ca32137b7f05c7b632c966ffed089c3851ebb413b149402eb3fcecca0505b4b9`。根级 `MANIFEST.md` 新建并登记四份
+  输出，SHA-256=`4832a1f7fdad266f6b5db5554ee249bec6837ccc65bbb2235e16b737f6f61a35`；全部文件只在远程，桌面归档未更新。
+- 计划冻结两个 claim：一是用 target/attribute/relation-anchor 结构把 V132 已证明存在的 Top-K headroom 转成
+  Top-1；二是 score-only 与 parse-aware fallback 保持候选 box/mask 表征，并复用到 ScanRefer/Nr3D/Sr3D。
+  anti-claim 明确排除更多候选、validation 阈值搜索、ScanRefer 专用规则或更大训练预算。
+- 若 V132 四轮未达标，V133 只新增独立 bounded structured-score residual，复用现有 `StructuredSlotBuilder`/
+  `SACRHead` 的 target、attribute、relation-anchor 几何；父 query/box/mask/selector 冻结，无有效结构行 exact
+  fallback。监督使用当前 train batch 全 queries 的连续 3D IoU listwise target；有 Mask GT 时只加固定 0.25
+  mask-quality 项，Nr3D/Sr3D 无 mask 时自然退化为 box-only，不引入数据集阈值分支。
+- 执行门严格串行：先完成 V132 4/4 receipts；V133 step-0 identity/contract；128-row、120-scene-disjoint smoke
+  两阈值均 `fix >= break`；随后单卡 seed0、最多四轮完整 ScanRefer。正式成功必须同一结果 REC hits
+  `>=5610/4659`，Mask 至少保持用户 baseline `58.70%/50.70%/44.72%`；只有主结果通过才运行 relation 删除实验
+  与 Nr3D/Sr3D transfer interface。禁止重复 V80--V131 safety-loss/阈值组合。
+- `15:10 CST` 前后 V132 epoch2 已推进至 `1800/4583`，screen 仍在、strict errors=`0`；当前计划只是
+  failover preregistration，不改变 V132 任何训练状态或判据。
+
+#### 14.210 V132 epoch2 完整正式回执：继续退化，最佳权重未变（2026-08-15）
+
+- epoch2 全量训练与固定 `9,508`-row official validation 于 `2026-08-15 15:51:37 CST` 完成；receipt
+  `eval_metrics_epoch_2.json` SHA-256=`f2bc0addf325a8b65a89b4c741df3301453ef033417edea44be659d0f600f0ec`、
+  schema=`mcln-retrain-metrics-v1`、sample_count=`9,508`。Unique=`1,419`、Multiple=`8,089`，REC 与 Mask
+  两档 subgroup sample/hits 均严格加和到 overall，完整性审计通过。
+- REC overall @.25/@.50 为 `5493/4383 = 57.772402%/46.098023%`；Unique 为
+  `1239/1057 = 87.315011%/74.489077%`；Multiple 为
+  `4254/3326 = 52.589937%/41.117567%`。相对 epoch1 再少 `11/8` hits；相对 V99 @.25 最好少
+  `79` hits、`-0.830879pp`，相对 V113 @.50 最好少 `452` hits、`-4.753891pp`。距 59% @.25
+  门槛 `5610` hits 仍少 `117`，未产生网络最好。
+- 同一 query 选择的 Mask overall @.25/@.50/mIoU 为
+  `5657/4635 = 59.497265%/48.748422%`、`41.500175%`；Unique 为
+  `1275/1031 = 89.852008%/72.656801%`，Multiple 为
+  `4382/3604 = 54.172333%/44.554333%`。相对 epoch1 再少 `12/25` hits；相对 V99 Mask 最好分别少
+  `33/341` hits、`-0.347076/-3.586454pp`，mIoU 低 `4.430125pp`。@.25 仍略高于用户 baseline，
+  @.50 与 mIoU 仍明显低于 baseline。
+- epoch2 checkpoint SHA-256=`097ef272d372331c1358c32d57b579e3b601ce267f86aec60d370715606e56ed`，大小
+  `617,227,079` bytes；`ckpt_epoch_2` 与 `ckpt_epoch_last` 为 inode `6484398811` 的 2 个 hard links。
+  五个 metric-best 别名仍全部指向 epoch1 inode `6484398810`，说明 retention 未误把退化的 epoch2 标为最好。
+  活动训练期间不删除任何恢复点；V99、V113、永久 V109 等既有 protected 权重不受影响。
+- epoch3 已自动开始，唯一 A100 正常使用，strict errors=`0`；`/root/autodl-tmp` 尚余约 `2.6GB`，按当前每轮
+  物理 checkpoint `617MB` 估算可完成剩余两轮，但必须继续监控磁盘。V132 仍按预注册完整跑至 epoch4，不据
+  epoch2 改超参；若剩余两轮均不胜，执行 14.209 已冻结的 V133 score-only SACR-Lite 方案。
+
+#### 14.211 V133 score-only SACR-Lite 只读落点审计（2026-08-15）
+
+- V132 epoch3 活动训练期间没有修改任何源码，只读确认 V133 无需重写结构化语言前端。现有
+  `models/structured_slots.py` SHA-256=`78f5c2e3a1e794ebf8876f24126c67fbb0c404707d065f55847ea7d2b2ef3281`
+  已完成 target/attribute/relation/anchor span pooling；`models/sacr_head.py`
+  SHA-256=`a92b98d13c3219015dad09a58ce9c7bf557634db7a605cc19614479e735c1bc4` 已实现 target/attribute
+  compatibility、anchor shortlist、11-D 相对几何和 relation-anchor composition。两者均无
+  ScanRefer/Nr3D/Sr3D 名称分支。
+- 已有 train/val 三数据集结构合同回执 SHA-256 分别为
+  `e58e2412d5473b0022c0b5b4bfcfbda6355e99b543fadde6bd4fdbbcf13e12fe`、
+  `792eb1580ea1c75b1dbcc7345dd4a13c453e9f2f2bfdf68e8ad632005ed8a5e3`，总结果均 `pass=true`。
+  SACR 可用行 train/val 分别为 ScanRefer `35,997/36,665`、`9,336/9,508`，Nr3D
+  `32,545/32,919`、`7,824/7,899`，Sr3D `65,846/65,846`、`17,726/17,726`；三数据集 target
+  offset/token 有效率与有效 relation-anchor pair 对齐率均为 `100%`。这给出真实跨数据集输入合同，
+  不是 ScanRefer 专用规则。
+- 现有 `source_choice_adapter.py` 已能构造 `default + SACR residual`，但此前 V50 把 SACR 绑定到四源
+  joint-query mixer 与上游 V49 selection；其队列因缺少 `selected_v49_formal_config.json` fail-closed，
+  `experiment_output/v50_sacr/` 没有正式 metrics/checkpoint。因此 V133 不是重复一个已有 SACR 正式失败结果，
+  而是删除未实际验证的四源/mask-calibration 耦合，只验证结构化 score residual 本身。
+- V133 最小实现差额现已定位：新增互斥的 `sacr_score_only_train_only`/独立 lr 与 checkpoint contract；仅训练
+  `structured_slot_builder + sacr_head + bounded scale`；对结构有效行直接输出
+  `default_score + bounded structured residual`，无结构行逐元素 exact fallback 到 frozen default；用所有
+  256 queries 的连续 box-IoU listwise target，ScanRefer 有 mask GT 时固定加入 `0.25` mask-quality 项。
+  父 query/box/mask、V99 parent source 和 selector 全部冻结，不通过 selector 二选一，也不修改 candidate box
+  或 mask embedding。
+- epoch3 当前约 `453/4583`、strict errors=`0`，V132 formal 完成前只保留上述实施地图，不落代码。V132
+  若 4/4 不胜，按 14.209 的 identity/contract、scene-disjoint smoke、单卡 formal 顺序实施；避免训练期源码
+  漂移，也避免复用 V50 未完成的上游依赖。
+
+#### 14.212 用户指定持久路径恢复（2026-08-15）
+
+- 只读路径审计确认实际仓库为 `/home/gb/new butd/butd_detr-main/MCLN-main`，临时别名
+  `/tmp/mcln_repo` 正确解析到该目录，但用户指定的 `/home/gb/butd/mcln` 原先不存在。依赖 `/tmp` 别名会在
+  服务器重启后留下恢复风险，也不满足本目标约定的代码与交接路径。
+- 已新建空的持久父目录 `/home/gb/butd`，并建立可逆符号链接
+  `/home/gb/butd/mcln -> /home/gb/new butd/butd_detr-main/MCLN-main`；没有移动、复制或覆盖仓库文件。
+  `readlink -f /home/gb/butd/mcln` 已严格等于实际仓库路径。经新路径读取 canonical handoff 的 SHA-256
+  仍为 `f2ee876c825f3aa28fd004b5d11537e2be64d912b35eca094b00869c6e78889e`、mode=`0444`，证明两条路径
+  访问同一文件而非副本。
+- 后续所有源码、实验计划和交接续写统一优先使用 `/home/gb/butd/mcln`；`/tmp/mcln_repo` 仅保留兼容旧命令，
+  不再作为唯一恢复入口。建链时 V132 epoch3 约 `1204/4583`，唯一 A100 正常、strict errors=`0`、正式回执
+  仍为 2/4，未修改活动训练或权重。
+
+#### 14.213 V133 无 Git 源码恢复门（2026-08-15）
+
+- 经持久路径执行 `git rev-parse --show-toplevel`，实际仓库没有 `.git`，所以 V133 不能把 Git 当作源码回退机制。
+  当前已有 `.v132_parent/`，但只覆盖 V132 的四个旧父文件，不能完整恢复 V133 预计新增的 score-only/loss/runner
+  改动。V133 首次源码修改前必须建立独立 `.v133_parent/`，不得覆盖 `.v132_parent/` 或散落的历史 `.bak`。
+- 已只读冻结 V133 touch-set 基线 SHA-256：`main_utils.py=25fb79e8...e9e777`、
+  `train_dist_mod.py=5baf4aed...e85740e`、`models/mcln.py=4dd162b4...a172a1`、
+  `models/losses.py=d4274b04...af7c6e`、`models/source_choice_adapter.py=dc32c6ad...9b11fbb`、
+  `models/source_moe.py=f09b2c5a...62fbd3`、`models/structured_slots.py=78f5c2e3...ef3281`、
+  `models/sacr_head.py=a92b98d1...c1bc4`、`src/joint_det_dataset.py=b6d78544...515040`、
+  `scripts/train_scanrefer_joint_query_quality.sh=5b083a9a...306df6`。十个文件合计约 `1,012KB`，当前磁盘可安全
+  容纳一份逐路径副本。
+- 门禁顺序冻结为：V132 4/4 正式结束；重新计算十个 SHA 并与本节逐一相等；创建保留相对路径、mode、mtime 的
+  `.v133_parent/`；生成 SHA/mode manifest 并将快照置为 `0444`；以逐文件 checksum 证明可恢复；此后才允许
+  解锁并修改 V133 touch-set。任一 SHA 漂移、快照不完整或恢复校验失败均 fail-closed，不启动 V133。
+- `16:06:55 CST` V132 epoch3 约 `1481/4583`，单 A100 约 20.7GB、strict errors=`0`、磁盘仍余约
+  `2.6GB`。本节仅记录恢复门和只读 fingerprint，没有创建快照、修改源码或清理权重。
+
+#### 14.214 V133 score-only 唯一数学合同与部署链冻结（2026-08-15）
+
+- 对 query `i` 定义 frozen parent 分数 `s_i=default_score_i`；SACR 读取 detached final query、detached box、
+  detached parent score，以及由 detached text feature 进入可学习 slot-pooling 后得到的 target/attribute/
+  relation/anchor slots，输出 raw structured score `r_i`。唯一部署式冻结为
+  `score_i = s_i + valid * 0.25 * tanh(a) * tanh(r_i)`，其中 `a` 为唯一标量 gate，初始化为 `0`。
+  因而 step-0 对全部行与 parent bitwise identity，任意训练时刻每个 query 的绝对残差严格小于 `0.25`；无
+  target/有效结构行 `valid=0`，逐元素精确回退到 `s_i`，不允许阈值或数据集分支。
+- 训练只在 structured-valid 行激活。box 主损失为所有 256 queries 上的连续 3D IoU listwise KL：
+  `KL(softmax(IoU_box/tau) || softmax(score/tau))`，固定 `tau=0.1`；若 batch 提供 GT point mask，再加
+  `0.25 * KL(softmax(IoU_mask/tau) || softmax(score/tau))`。不使用 validation threshold label、
+  ScanRefer 专用 subgroup 或 hard-coded 0.25/0.50 tier，Nr3D/Sr3D 无 mask 时自然退化为同一个 box-only
+  objective。父分数、box、query/text encoder 参数均冻结；只有 slot builder、SACR head 和 gate 可训练。
+- 只读部署审计确认 `src/grounding_evaluator.py` 在 `eval_use_selector_choice_scores=true` 时，REC Top-1 与
+  `_resolve_learned_mask_queries` 均读取同一个 `end_points['selected_source_scores']`。V133 在所有既有
+  selector/reranker 结束后把上述 score 写为最终 `selected_source_scores`，因此 box 与 mask 必然选择同一
+  query；不会改 candidate box、`last_pred_masks`、`sp_last_pred_masks` 或 adaptive mask weight。
+- 实施后的固定验证合同为：scale=`0` 全行 score bitwise identity；invalid 行训练后仍 bitwise parent；
+  `abs(delta)<0.25` 且 finite；trainable parameter 名单只含三类新模块；parent 参数梯度/optimizer state 均为空；
+  连续 box-IoU listwise 在无 mask batch 可反传，ScanRefer mask 项权重精确为 `0.25`；checkpoint missing keys
+  精确等于新模块；REC 与 mask evaluator 的 chosen query 逐行相同。上述合同通过后才进入 128-row/
+  120-scene-disjoint smoke，不用 validation 调参数。
+- `16:10:33 CST` V132 epoch3 约 `1837/4583`（40%），唯一 GPU compute PID=`170211`、显存约
+  `20.7GB`、strict errors=`0`、正式回执仍为 2/4。本节仍为只读冻结，没有修改活动源码或权重。
+
+#### 14.215 V133 scene-disjoint smoke 数据门复核（2026-08-15）
+
+- 现有 `--debug --debug_train_holdout` 已在 `train_dist_mod.py::get_datasets` 强制从 `split='train'` 构造两个
+  独立 `Joint3DDataset`，训练/holdout 均严格 `128` rows，随后对 `scan_id` 集合执行 overlap fail-closed；
+  holdout 同时关闭 `augment_det` 和 dataset augment。若缺 `--debug`、任一侧非 128 行或场景相交都会立即报错。
+- `src/joint_det_dataset.py` 的分区只对 ScanRefer train annotation 按稳定 SHA-256 scene hash 切分，再按场景
+  轮转取样，避免前 128 行被单一长场景占满。V132 已修复后的真实 smoke launcher 记录为
+  `train=128 examples/128 scenes; holdout=128 examples/120 scenes; overlap=0`；这与 14.209 预注册的
+  `128-row / 120-scene-disjoint` holdout 完全一致，且没有读取 official 9,508-row validation。
+- V133 smoke 因而直接复用该入口与 `EXPECTED_EVAL_SAMPLE_COUNT=128`，不得使用普通 `--debug`（其旧路径会把
+  split 切到 validation），也不需要新增或修改数据分区代码。smoke 只检查 identity/finite/bound、optimizer
+  coverage 和 holdout 两阈值 `fix >= break`；其指标不能作为正式 ScanRefer 结果或用于调 max-delta/tau。
+- `16:15:27 CST` V132 epoch3 约 `2307/4583`（50%），strict errors=`0`、GPU/磁盘正常、正式回执仍为
+  2/4。本节仅复用已运行的数据合同证据，没有触发新的评测、修改源码或删除权重。
+
+#### 14.216 新网络 checkpoint 的冻结 V99 compatibility 边界（2026-08-15）
+
+- 受保护 V99 hierarchy artifact 仍位于
+  `/root/autodl-tmp/DATA_ROOT/output/rec_reranker/e71_top16/v99_artifacts/pareto_contextual_h128_seed0_fullfit.pth`，
+  SHA-256=`9752990c393fa6e45173a9dd129c4de4bb740924094dcbbec2f3121cbf39d1f2`、mode=`0444`；原一次性
+  claim 已存在，SHA-256=`e2ca7a1762b21470de76e8050f117e1358ed665f6ad71c3993fb28b535bdbab4`、mode=`0444`。
+  parent/geometry artifact SHA 分别为 `f06f8972...c17269b`、`835c25be...263b6f`，均绑定 epoch71 backbone
+  SHA `3e44f4bd...ef2208`。
+- `train_dist_mod.py::validate_rec_reranker_provenance` 会严格比较 runtime `checkpoint_path` SHA 与 artifact
+  中的 checkpoint fingerprint；geometry/hierarchy 又逐层绑定 parent artifact。因此即使 V133 只多出 SACR
+  参数，直接把 checkpoint 路径替换为 V133 也会按设计 fail-closed。禁止删除旧 claim、修改 artifact 或绕过
+  provenance 后把结果伪装成原 V99 official。
+- V133 的 score-only 合同冻结 parent query/box/mask 参数与输出，所以若其产生新的 network best，兼容审计先在
+  36,665-row train-only cache 上证明：除允许的新 SACR state keys 外所有 checkpoint tensor 与 epoch71 逐键
+  bitwise 相同；V99 parent/geometry/hierarchy 的全部 runtime input feature、candidate identity 与 mask evidence
+  逐行 bitwise 相同。只有两项都通过，才可签发一个显式的 cross-checkpoint compatibility certificate。
+- 如需真正重跑 official，必须新建独立 compatibility runner/output/claim：保留原 V99 三个 artifact 不变；用上条
+  certificate 代替单一文件 SHA 相等，但继续验证其余 model-input/backbone-config/protected-file/code-tree 合同；
+  消费一次 9,508-row validation 并明确标成“V133 checkpoint 上冻结 V99 兼容复测”，不得覆盖旧 V99 结果。
+  若不把 V133 score 注入 V99 feature，理论上应逐样本复现旧 V99 选择；若想融合 V133 与 V99 score，则输入分布
+  已改变，不属于未重拟合 compatibility，未经新的 train-only 方案与预注册不得运行。
+- 因此 compatibility 仍只在 V132/V133 产生新 network best 后触发，当前不占 GPU、不消费 validation。审计时
+  V132 epoch3 约 `2907/4583`（63%），strict errors=`0`、正式回执仍为 2/4，未修改源码或权重。
+
+#### 14.217 V132 四轮结论与可恢复清理（2026-08-15）
+
+- V132 `v132_decoder_query_adapter_formal_e1_e4_b8x1` 已完整产生 4 个 `9,508`-sample 回执。REC
+  @.25/@.50 hits 依次为 epoch1 `5504/4391`、epoch2 `5493/4383`、epoch3 `5488/4355`、
+  epoch4 `5495/4366`；V132 内部最好仍是 epoch1 的 `57.8881%/46.1822%`，未超过 V99
+  `58.6033%` 或 V113 `50.8519%`，更未达到目标 `59%/49%`。
+- 同一四轮 Mask hits 依次为 `5669/4660`、`5657/4635`、`5650/4628`、`5669/4661`，mIoU
+  依次为 `41.6989%/41.5002%/41.5477%/41.7353%`。即使 V132 最好的 mask@.25 仍高于用户
+  baseline `58.70%`，mask@.50 与 mIoU 都明显低于 `50.70%/44.72%`；因此 full decoder-query
+  residual 被判定为同时损害 REC 与 mask 的失败方向。
+- 清理前以 epoch71 parent 重建 epoch1/epoch4：全部模型状态逐张量 bitwise equal。只读 compact manifest
+  SHA-256=`98b3637d6886e92401cd0b71d540a7479927e95a42cf5f3dfd68ea8b76357e94`，两个 adapter delta
+  SHA-256=`a8758e35...a70`、`a1e45b93...39ba`，各约 `6.02MB`。完成审计后才删除 V132 完整非最佳
+  checkpoint hard links；V99、V113 与用户指定永久保留的 V109 均未触碰。
+
+#### 14.218 V133 review1/review2 实施与审查结论（2026-08-15）
+
+- V133 实现为独立 SACR structured-score refiner：冻结 parent query/box/mask/selector，只训练
+  `structured_slot_builder + sacr_head + sacr_score_gate` 共 `920,930` 参数；部署残差固定 bounded
+  为 `<0.25`。ScanRefer 使用 box-IoU listwise 加固定 `0.25` mask-IoU 项，Nr3D/Sr3D 只使用同一
+  box objective，不含 validation threshold 或数据集专用后处理。
+- review1 源码快照位于 `.v133_review1/`，manifest/tar SHA-256=`40c1df13...c775`/
+  `6a8c4f62...8d166`；review2 快照位于 `.v133_review2/`，对应 SHA-256=`eb362103...e078`/
+  `6984c67a...7307`。两轮审查修复了 ScanRefer-only mask supervision、DDP 全局 example normalization、
+  zero-valid-rank、runner 固定配置、scene-disjoint smoke 与 score-state checkpoint exactness。
+- review2 cross-dataset/DDP 契约曾通过，但第二轮独立审查发现它仍不能签发正式 gate：历史 run 没有启动时
+  source/parent binding，gate 来源集合过窄；训练后 checkpoint 只校验 SACR keys 而非完整 model state；回执
+  存在 `exists()+replace()+chmod` 的 no-clobber/可写窗口，且 baseline/smoke/formal 使用不同 GPU 锁。
+  因此 review2 数值 smoke 虽为 `124/117` hits 且有限，仍明确作废为正式来源证据，未启动 formal。
+- review2 两张 smoke 完整 checkpoint 清理前均以 epoch71 parent + 21 个 SACR tensors 重建，`1,165`
+  个 model state 全部 bitwise equal；compact manifest SHA-256=`8bc4ee3be22ea4b4248406d3d76e3d582eb2be8e48640bda760391fd69be7ca3`。
+  审计后只删除该 smoke 目录的 8 个 hard-link 名称，保留 logs/config/metrics/compact recovery。
+
+#### 14.219 V133 review3 严格来源门与动态验证（2026-08-15）
+
+- review3 改为启动前不可变 binding：绑定 parent path/SHA、固定 batch/lr/tau/max-delta/mask-weight、
+  `nproc=1`、launch log 和当前源码。来源清单递归覆盖当前 repo 的 `304` 个 `.py` 文件加唯一 runner，排除
+  `.v*` 快照、Git/cache；明确覆盖 `sacr_head.py`、`structured_slots.py`、selector adapter、dataset/evaluator。
+  `--repo-root` 必须与执行脚本真实根目录相同，run config 与 launch log 必须互相指向同一 run directory。
+- 回执发布改为同目录 temp、写前 `fchmod(0444)+fsync`、`os.link` 原子 create-if-absent 与 directory fsync；
+  重复路径和错误 repo root 的负向测试都以非零退出。三个运行模式共用一个 `v133_gpu.lock`，runner 硬编码
+  单 GPU、`nproc=1` 和正式最多 4 epoch。训练后 V133 checkpoint 要求完整 current/checkpoint model keys、
+  shape、dtype 与 load missing/unexpected 全部 exact，不再只检查 SACR 子树。
+- 零门控 identity 将冻结审计从 5 项扩为 7 项，新增 decoder query 与 parent selector scores。实际 128-row
+  identity 固定/新分数均为 `124/128`（@.25）和 `117/128`（@.50），Mask=`120/128`、`113/128`、
+  mIoU=`0.7490708084`；gate=`0`、residual=`0`、`7/7` tensor audit pass。
+- 真实 scene-disjoint smoke 记录 `train=128 examples/128 scenes; holdout=128 examples/120 scenes; overlap=0`。
+  epoch1/2 REC 都为 `124/117`，Mask 都为 `120/113`、mIoU=`0.7490676212`，两阈值均
+  `fix=break=0`；gate 约从 `-0.0046` 到 `-0.0094`，最大残差约 `0.0023 < 0.25`。
+- 相关静态回归为 `73 passed`。新 cross-dataset/DDP contract receipt SHA-256=
+  `46a741f16048b9a13800f40761ffc731848df24caf9b29d52818fc8fc190814b`、mode=`0444`；最终 fail-closed
+  smoke gate SHA-256=`80400e5ae0b37f499587a703576b2befec8a36194830d946557a4971616e29c7`、mode=`0444`，
+  build 后又独立 verify 通过。
+- 完整 review3 来源快照 `.v133_review3/SOURCE_MANIFEST.json`/`source_tree.tar` SHA-256=
+  `d078ca4b...3aab`/`25380b19...42a`，归档中 304 个来源逐文件 hash 复核通过。两张 smoke checkpoint
+  也以 parent + 21 SACR tensors 对 `1,165` states bitwise 重建；compact manifest SHA-256=
+  `9ff8b0b8...d8e4`，delta SHA-256=`72124ae8...a8f3`/`f2569844...f398`。随后只删除 8 个完整
+  hard-link 名称，释放约 `1.22GB`，gate 再验证仍通过。
+
+#### 14.220 V133 review3 正式运行启动（2026-08-15）
+
+- 正式 runner 已在单 GPU 上启动：experiment=`v133_sacr_score_refiner_review3_formal_e1_e4_b8x1`，run id
+  `1786797601`，固定 `batch=8`、seed=`0`、`nproc=1`、epoch `1..4`、每轮完整 `9,508`-row validation。
+  启动前 gate 再验证 SHA 不变并通过；正式 launch binding SHA-256=
+  `210480793bf9be0b261fda6c936659c734d6e7492d8b56bbf5566f6a084d1c5f`、mode=`0444`。
+- 当前阶段为完整 ScanRefer 文本/结构化数据预处理，worker CPU 约 `100%`、RSS 约 `15GB`，尚未进入 GPU
+  train step、未生成正式 receipt，不能据此声称有新结果。后续必须逐轮检查 sample_count/hits、REC 与 Mask
+  五项、gate/residual finite/bound、checkpoint retention 和磁盘；未完成 4 轮或未取得充分失败证据前不改配置。

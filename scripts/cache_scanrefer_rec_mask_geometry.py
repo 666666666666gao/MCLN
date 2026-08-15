@@ -562,12 +562,18 @@ def _load_and_validate_audit_selection(
         raise ValueError("audit selection SHA-256 is not authoritative")
     if not isinstance(selection, dict):
         raise ValueError("audit selection must contain an object")
+    audit_batch_size = selection.get("cache_extraction_batch_size")
+    if (not isinstance(audit_batch_size, int)
+            or isinstance(audit_batch_size, bool)
+            or audit_batch_size <= 0):
+        raise ValueError("audit selection batch provenance is invalid")
+    if (not portable_provenance
+            and audit_batch_size != PRODUCTION_BATCH_SIZE):
+        raise ValueError("audit selection batch provenance is not authoritative")
     if (selection.get("panel_schema_version")
             != "rec-mask-geometry-audit-panel-v1"
             or selection.get("population_estimate") is not False
-            or selection.get("sample_count") != 256
-            or selection.get("cache_extraction_batch_size")
-            != PRODUCTION_BATCH_SIZE):
+            or selection.get("sample_count") != 256):
         raise ValueError("audit selection panel provenance is invalid")
     if selection.get("checkpoint_sha256") != checkpoint_sha256:
         raise ValueError("audit checkpoint provenance does not match")
@@ -625,7 +631,7 @@ def _load_and_validate_audit_selection(
         "split": "train",
         "checkpoint_sha256": checkpoint_sha256,
         "checkpoint_epoch": checkpoint_epoch,
-        "cache_extraction_batch_size": PRODUCTION_BATCH_SIZE,
+        "cache_extraction_batch_size": audit_batch_size,
         "candidate_rule": {
             "topk_per_source": PRODUCTION_TOPK_PER_SOURCE,
             "max_candidates": PRODUCTION_MAX_CANDIDATES,

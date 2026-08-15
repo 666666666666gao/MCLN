@@ -30,6 +30,8 @@ from .source_choice_adapter import (
 from .source_choice_selector import SourceChoiceSelector
 from .source_moe import SourceMoE
 from .mask_fusion import (
+    BoundaryAwareSuperpointGraphMaskRefiner,
+    EvidenceGeometryQuerySuperpointMaskRefiner,
     QueryMaskFusionCalibrator,
     apply_query_mask_calibration,
     apply_query_superpoint_mask_residual,
@@ -138,6 +140,114 @@ class FFN(nn.Module):
         return output
 
 
+class DecoderQueryTextAdapter(nn.Module):
+    """Zero-initialized cross-modal residual for final decoder queries."""
+
+    def __init__(self, d_model=288, hidden_dim=288, num_heads=4,
+                 dropout=0.1, max_delta=0.25):
+        super().__init__()
+        if d_model <= 0 or hidden_dim <= 0:
+            raise ValueError("adapter dimensions must be positive")
+        if num_heads <= 0:
+            raise ValueError("adapter num_heads must be positive")
+        if d_model % num_heads != 0 or hidden_dim % num_heads != 0:
+            raise ValueError(
+                "adapter d_model and hidden_dim must be divisible by num_heads"
+            )
+        if not math.isfinite(float(max_delta)) or float(max_delta) <= 0.0:
+            raise ValueError("adapter max_delta must be finite and positive")
+
+        self.max_delta = float(max_delta)
+        self.query_norm = nn.LayerNorm(d_model)
+        self.text_norm = nn.LayerNorm(d_model)
+        self.text_attention = nn.MultiheadAttention(
+            d_model, num_heads, dropout=dropout, batch_first=True
+        )
+        self.geometry_encoder = nn.Sequential(
+            nn.Linear(6, hidden_dim),
+            nn.GELU(),
+            nn.LayerNorm(hidden_dim),
+        )
+        self.semantic_encoder = nn.Sequential(
+            nn.Linear(4 * d_model + hidden_dim, hidden_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.LayerNorm(hidden_dim),
+        )
+        self.set_norm = nn.LayerNorm(hidden_dim)
+        self.set_attention = nn.MultiheadAttention(
+            hidden_dim, num_heads, dropout=dropout, batch_first=True
+        )
+        self.set_dropout = nn.Dropout(dropout)
+        self.ffn_norm = nn.LayerNorm(hidden_dim)
+        self.ffn = nn.Sequential(
+            nn.Linear(hidden_dim, 2 * hidden_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(2 * hidden_dim, hidden_dim),
+            nn.Dropout(dropout),
+        )
+        self.output = nn.Linear(hidden_dim, d_model)
+        nn.init.zeros_(self.output.weight)
+        nn.init.zeros_(self.output.bias)
+
+    @staticmethod
+    def _normalized_geometry(centers, sizes):
+        if centers.ndim != 3 or sizes.ndim != 3:
+            raise ValueError("adapter centers and sizes must be rank-three")
+        if centers.shape != sizes.shape or centers.shape[-1] != 3:
+            raise ValueError("adapter centers and sizes must have shape [B, Q, 3]")
+        geometry = torch.cat(
+            [centers, sizes.clamp(min=1e-4).log()], dim=-1
+        )
+        mean = geometry.mean(dim=1, keepdim=True)
+        variance = geometry.var(dim=1, keepdim=True, unbiased=False)
+        return (geometry - mean) * torch.rsqrt(variance + 1e-6)
+
+    def forward(self, query, text_feats, text_padding_mask, centers, sizes):
+        if query.ndim != 3 or text_feats.ndim != 3:
+            raise ValueError("adapter query and text features must be rank-three")
+        if query.shape[0] != text_feats.shape[0]:
+            raise ValueError("adapter query/text batch sizes must match")
+        if query.shape[-1] != text_feats.shape[-1]:
+            raise ValueError("adapter query/text feature dimensions must match")
+        if text_padding_mask.shape != text_feats.shape[:2]:
+            raise ValueError("adapter text padding mask shape is invalid")
+
+        padding_mask = text_padding_mask.bool()
+        if padding_mask.all(dim=1).any():
+            padding_mask = padding_mask.clone()
+            padding_mask[padding_mask.all(dim=1), 0] = False
+
+        normalized_query = self.query_norm(query)
+        normalized_text = self.text_norm(text_feats)
+        text_message, _ = self.text_attention(
+            normalized_query,
+            normalized_text,
+            normalized_text,
+            key_padding_mask=padding_mask,
+            need_weights=False,
+        )
+        geometry = self.geometry_encoder(
+            self._normalized_geometry(centers, sizes)
+        )
+        semantic = self.semantic_encoder(torch.cat([
+            normalized_query,
+            text_message,
+            normalized_query * text_message,
+            (normalized_query - text_message).abs(),
+            geometry,
+        ], dim=-1))
+        set_input = self.set_norm(semantic)
+        set_message, _ = self.set_attention(
+            set_input, set_input, set_input, need_weights=False
+        )
+        hidden = semantic + self.set_dropout(set_message)
+        hidden = hidden + self.ffn(self.ffn_norm(hidden))
+        residual = self.max_delta * torch.tanh(self.output(hidden))
+        return query + residual, residual
+
+
 
 class MCLN(nn.Module):
     """
@@ -191,6 +301,14 @@ class MCLN(nn.Module):
                  query_mask_fusion_dropout=0.0,
                  query_mask_fusion_max_delta=0.25,
                  query_mask_fusion_detach_inputs=True,
+                 use_egqs_mask_refiner=False,
+                 egqs_mask_refiner_arch="egqs",
+                 egqs_mask_refiner_hidden_dim=32,
+                 egqs_mask_refiner_max_delta=2.0,
+                 egqs_mask_refiner_components="all",
+                 egqs_mask_refiner_graph_mode="bilateral",
+                 egqs_mask_refiner_neighbor_count=8,
+                 egqs_mask_refiner_detach_inputs=True,
                  use_joint_query_quality_reranker=False,
                  joint_query_quality_hidden_dim=128,
                  joint_query_quality_heads=4,
@@ -199,6 +317,37 @@ class MCLN(nn.Module):
                  joint_query_quality_max_delta=1.25,
                  joint_query_quality_mask_weight=0.25,
                  joint_query_quality_score_weight=1.0,
+                 joint_query_quality_direct_residual_scale=1.0,
+                 joint_query_quality_use_metric_aligned_utility=False,
+                 joint_query_quality_preserve_parent_score=False,
+                 joint_query_quality_candidate_promotion_margin=0.0,
+                 joint_query_quality_use_parent_transition_advantage=False,
+                 joint_query_quality_use_decomposed_transition_advantage=False,
+                 joint_query_quality_use_setwise_tier_advantage=False,
+                 joint_query_quality_use_decoupled_setwise_heads=False,
+                 joint_query_quality_use_factorized_setwise_safety=False,
+                 joint_query_quality_use_factorized_setwise_risk_bound=False,
+                 joint_query_quality_use_setwise_safety_veto_gate=False,
+                 joint_query_quality_use_cost_calibrated_setwise_risk_bound=False,
+                  joint_query_quality_use_setwise_safety_slack_quantile_bound=False,
+                  joint_query_quality_use_setwise_safety_slack_pairwise_order=False,
+                  joint_query_quality_use_proposal_conditioned_safety=False,
+                  joint_query_quality_use_parent_referenced_safety=False,
+                  joint_query_quality_use_coupled_safe_repair_witness=False,
+                  joint_query_quality_use_bidirectional_coupled_boundary=False,
+                  joint_query_quality_use_centered_coupled_separation=False,
+                  joint_query_quality_use_hazard_conditioned_coupled_separation=False,
+                  joint_query_quality_use_monotonic_box_safety_folding=False,
+                  joint_query_quality_use_same_candidate_branchwise_witness=False,
+                  joint_query_quality_use_parent_non_degradation_certificate=False,
+                  joint_query_quality_use_criterion_responsible_hazard_attribution=False,
+                  joint_query_quality_use_independent_joint_hazard_certificate=False,
+                  joint_query_quality_use_frozen_raw_joint_hazard_features=False,
+                 joint_query_quality_use_factorized_hit_advantage=False,
+                 joint_query_quality_use_factorized_nested_dominance=False,
+                 joint_query_quality_factorized_hit_break_cost=4.0,
+                 joint_query_quality_parent_transition_break_cost=4.0,
+                 joint_query_quality_parent_transition_candidate_top_k=0,
                  joint_query_quality_use_mask_calibration=False,
                  joint_query_quality_max_mask_alpha_delta=1.0,
                  joint_query_quality_max_mask_logit_bias=2.0,
@@ -213,13 +362,21 @@ class MCLN(nn.Module):
                  joint_query_quality_max_source_mix_delta=1.0,
                  joint_query_quality_source_mix_temperature=0.5,
                  joint_query_quality_detach_inputs=True,
+                 use_decoder_query_adapter=False,
+                 decoder_query_adapter_hidden_dim=288,
+                 decoder_query_adapter_heads=4,
+                 decoder_query_adapter_dropout=0.1,
+                 decoder_query_adapter_max_delta=0.25,
                  use_sacr_source=False,
+                 use_sacr_score_refiner=False,
+                 sacr_score_max_delta=0.25,
                  sacr_hidden_dim=288,
                  sacr_max_pairs=3,
                  sacr_top_m_targets=32,
                  sacr_top_k_anchors=16,
                  sacr_geo_dim=16,
                  sacr_min_parse_confidence=0.0,
+                 sacr_score_contract_audit=False,
                  sacr_residual_scale_init=0.1):
         """Initialize layers."""
         super().__init__()
@@ -234,9 +391,460 @@ class MCLN(nn.Module):
         self.use_query_mask_fusion_calibrator = bool(
             use_query_mask_fusion_calibrator
         )
+        self.use_egqs_mask_refiner = bool(use_egqs_mask_refiner)
         self.use_joint_query_quality_reranker = bool(
             use_joint_query_quality_reranker
         )
+        self.use_decoder_query_adapter = bool(use_decoder_query_adapter)
+        if not isinstance(
+                joint_query_quality_preserve_parent_score, bool):
+            raise ValueError(
+                "joint_query_quality_preserve_parent_score must be boolean"
+            )
+        self.joint_query_quality_preserve_parent_score = (
+            joint_query_quality_preserve_parent_score
+        )
+        if (not isinstance(joint_query_quality_candidate_promotion_margin,
+                           (int, float))
+                or isinstance(
+                    joint_query_quality_candidate_promotion_margin, bool
+                )
+                or not math.isfinite(float(
+                    joint_query_quality_candidate_promotion_margin
+                ))
+                or float(
+                    joint_query_quality_candidate_promotion_margin
+                ) < 0.0):
+            raise ValueError(
+                "joint query candidate promotion margin must be finite and "
+                "non-negative"
+            )
+        self.joint_query_quality_candidate_promotion_margin = float(
+            joint_query_quality_candidate_promotion_margin
+        )
+        if (self.joint_query_quality_candidate_promotion_margin > 0.0
+                and not self.joint_query_quality_preserve_parent_score):
+            raise ValueError(
+                "candidate promotion margin requires preserved parent score"
+            )
+        if not isinstance(
+                joint_query_quality_use_parent_transition_advantage, bool):
+            raise ValueError(
+                "joint query parent transition advantage must be boolean"
+            )
+        self.joint_query_quality_use_parent_transition_advantage = (
+            joint_query_quality_use_parent_transition_advantage
+        )
+        if not isinstance(
+                joint_query_quality_use_decomposed_transition_advantage,
+                bool):
+            raise ValueError(
+                "joint query decomposed transition advantage must be boolean"
+            )
+        self.joint_query_quality_use_decomposed_transition_advantage = (
+            joint_query_quality_use_decomposed_transition_advantage
+        )
+        if not isinstance(
+                joint_query_quality_use_setwise_tier_advantage, bool):
+            raise ValueError(
+                "joint query setwise tier advantage must be boolean"
+            )
+        self.joint_query_quality_use_setwise_tier_advantage = (
+            joint_query_quality_use_setwise_tier_advantage
+        )
+        if not isinstance(
+                joint_query_quality_use_decoupled_setwise_heads, bool):
+            raise ValueError(
+                "joint query decoupled setwise heads must be boolean"
+            )
+        self.joint_query_quality_use_decoupled_setwise_heads = (
+            joint_query_quality_use_decoupled_setwise_heads
+        )
+        if (self.joint_query_quality_use_decoupled_setwise_heads
+                and not self.joint_query_quality_use_setwise_tier_advantage):
+            raise ValueError(
+                "decoupled setwise heads require setwise tier advantage"
+            )
+        if not isinstance(
+                joint_query_quality_use_factorized_setwise_safety, bool):
+            raise ValueError(
+                "joint query factorized setwise safety must be boolean"
+            )
+        self.joint_query_quality_use_factorized_setwise_safety = (
+            joint_query_quality_use_factorized_setwise_safety
+        )
+        if (self.joint_query_quality_use_factorized_setwise_safety
+                and not self.joint_query_quality_use_decoupled_setwise_heads):
+            raise ValueError(
+                "factorized setwise safety requires decoupled setwise heads"
+            )
+        if not isinstance(
+                joint_query_quality_use_factorized_setwise_risk_bound, bool):
+            raise ValueError(
+                "joint query factorized setwise risk bound must be boolean"
+            )
+        self.joint_query_quality_use_factorized_setwise_risk_bound = (
+            joint_query_quality_use_factorized_setwise_risk_bound
+        )
+        if (self.joint_query_quality_use_factorized_setwise_risk_bound
+                and not self.joint_query_quality_use_factorized_setwise_safety):
+            raise ValueError(
+                "factorized setwise risk bound requires factorized safety"
+            )
+        if not isinstance(
+                joint_query_quality_use_setwise_safety_veto_gate, bool):
+            raise ValueError(
+                "joint query setwise safety veto gate must be boolean"
+            )
+        self.joint_query_quality_use_setwise_safety_veto_gate = (
+            joint_query_quality_use_setwise_safety_veto_gate
+        )
+        if (self.joint_query_quality_use_setwise_safety_veto_gate
+                and not self.joint_query_quality_use_decoupled_setwise_heads):
+            raise ValueError(
+                "setwise safety veto gate requires decoupled setwise heads"
+            )
+        if not isinstance(
+                joint_query_quality_use_cost_calibrated_setwise_risk_bound,
+                bool):
+            raise ValueError(
+                "joint query cost-calibrated risk bound must be boolean"
+            )
+        self.joint_query_quality_use_cost_calibrated_setwise_risk_bound = (
+            joint_query_quality_use_cost_calibrated_setwise_risk_bound
+        )
+        if (self.joint_query_quality_use_cost_calibrated_setwise_risk_bound
+                and not self.joint_query_quality_use_factorized_setwise_risk_bound):
+            raise ValueError(
+                "cost-calibrated risk bound requires factorized risk bound"
+            )
+        if not isinstance(
+                joint_query_quality_use_setwise_safety_slack_quantile_bound,
+                bool):
+            raise ValueError(
+                "joint query safety-slack quantile bound must be boolean"
+            )
+        self.joint_query_quality_use_setwise_safety_slack_quantile_bound = (
+            joint_query_quality_use_setwise_safety_slack_quantile_bound
+        )
+        if (self.joint_query_quality_use_setwise_safety_slack_quantile_bound
+                and not self.joint_query_quality_use_factorized_setwise_risk_bound):
+            raise ValueError(
+                "safety-slack quantile bound requires factorized risk bound"
+            )
+        if (self.joint_query_quality_use_setwise_safety_slack_quantile_bound
+                and self.joint_query_quality_use_cost_calibrated_setwise_risk_bound):
+            raise ValueError(
+                "safety-slack quantile bound and cost-calibrated risk bound "
+                "are mutually exclusive"
+            )
+        if not isinstance(
+                joint_query_quality_use_setwise_safety_slack_pairwise_order,
+                bool):
+            raise ValueError(
+                "joint query safety-slack pairwise order must be boolean"
+            )
+        self.joint_query_quality_use_setwise_safety_slack_pairwise_order = (
+            joint_query_quality_use_setwise_safety_slack_pairwise_order
+        )
+        if (self.joint_query_quality_use_setwise_safety_slack_pairwise_order
+                and not self.joint_query_quality_use_setwise_safety_slack_quantile_bound):
+            raise ValueError(
+                "safety-slack pairwise order requires slack quantile bound"
+            )
+        if not isinstance(
+                joint_query_quality_use_proposal_conditioned_safety, bool):
+            raise ValueError(
+                "joint query proposal-conditioned safety must be boolean"
+            )
+        self.joint_query_quality_use_proposal_conditioned_safety = (
+            joint_query_quality_use_proposal_conditioned_safety
+        )
+        if (self.joint_query_quality_use_proposal_conditioned_safety
+                and not self.joint_query_quality_use_setwise_safety_slack_pairwise_order):
+            raise ValueError(
+                "proposal-conditioned safety requires safety-slack pairwise "
+                "order"
+            )
+        if (self.joint_query_quality_use_proposal_conditioned_safety
+                and not self.joint_query_quality_use_setwise_safety_veto_gate):
+            raise ValueError(
+                "proposal-conditioned safety requires the safety veto gate"
+            )
+        if not isinstance(
+                joint_query_quality_use_parent_referenced_safety, bool):
+            raise ValueError(
+                "joint query parent-referenced safety must be boolean"
+            )
+        self.joint_query_quality_use_parent_referenced_safety = (
+            joint_query_quality_use_parent_referenced_safety
+        )
+        if (self.joint_query_quality_use_parent_referenced_safety
+                and not self.joint_query_quality_use_setwise_safety_slack_pairwise_order):
+            raise ValueError(
+                "parent-referenced safety requires safety-slack pairwise "
+                "order"
+            )
+        if (self.joint_query_quality_use_parent_referenced_safety
+                and self.joint_query_quality_use_proposal_conditioned_safety):
+            raise ValueError(
+                "parent-referenced and proposal-conditioned safety are "
+                "mutually exclusive"
+            )
+        if not isinstance(
+                joint_query_quality_use_coupled_safe_repair_witness, bool):
+            raise ValueError(
+                "joint query coupled safe-repair witness must be boolean"
+            )
+        self.joint_query_quality_use_coupled_safe_repair_witness = (
+            joint_query_quality_use_coupled_safe_repair_witness
+        )
+        if (self.joint_query_quality_use_coupled_safe_repair_witness
+                and not self.joint_query_quality_use_parent_referenced_safety):
+            raise ValueError(
+                "coupled safe-repair witness requires parent-referenced "
+                "safety"
+            )
+        if not isinstance(
+                joint_query_quality_use_bidirectional_coupled_boundary, bool):
+            raise ValueError(
+                "joint query bidirectional coupled boundary must be boolean"
+            )
+        self.joint_query_quality_use_bidirectional_coupled_boundary = (
+            joint_query_quality_use_bidirectional_coupled_boundary
+        )
+        if (self.joint_query_quality_use_bidirectional_coupled_boundary
+                and not self.joint_query_quality_use_coupled_safe_repair_witness):
+            raise ValueError(
+                "bidirectional coupled boundary requires coupled "
+                "safe-repair witness"
+            )
+        if not isinstance(
+                joint_query_quality_use_centered_coupled_separation, bool):
+            raise ValueError(
+                "joint query centered coupled separation must be boolean"
+            )
+        self.joint_query_quality_use_centered_coupled_separation = (
+            joint_query_quality_use_centered_coupled_separation
+        )
+        if (self.joint_query_quality_use_centered_coupled_separation
+                and not self.joint_query_quality_use_bidirectional_coupled_boundary):
+            raise ValueError(
+                "centered coupled separation requires bidirectional "
+                "coupled boundary"
+            )
+        if not isinstance(
+                joint_query_quality_use_hazard_conditioned_coupled_separation,
+                bool):
+            raise ValueError(
+                "joint query hazard-conditioned coupled separation must be "
+                "boolean"
+            )
+        self.joint_query_quality_use_hazard_conditioned_coupled_separation = (
+            joint_query_quality_use_hazard_conditioned_coupled_separation
+        )
+        if (self.joint_query_quality_use_hazard_conditioned_coupled_separation
+                and not self.joint_query_quality_use_centered_coupled_separation):
+            raise ValueError(
+                "hazard-conditioned coupled separation requires centered "
+                "coupled separation"
+            )
+        if not isinstance(
+                joint_query_quality_use_monotonic_box_safety_folding, bool):
+            raise ValueError(
+                "joint query monotonic box-safety folding must be boolean"
+            )
+        self.joint_query_quality_use_monotonic_box_safety_folding = (
+            joint_query_quality_use_monotonic_box_safety_folding
+        )
+        if (self.joint_query_quality_use_monotonic_box_safety_folding
+                and not self.joint_query_quality_use_hazard_conditioned_coupled_separation):
+            raise ValueError(
+                "monotonic box-safety folding requires hazard-conditioned "
+                "coupled separation"
+            )
+        if not isinstance(
+                joint_query_quality_use_same_candidate_branchwise_witness,
+                bool):
+            raise ValueError(
+                "joint query same-candidate branchwise witness must be boolean"
+            )
+        self.joint_query_quality_use_same_candidate_branchwise_witness = (
+            joint_query_quality_use_same_candidate_branchwise_witness
+        )
+        if (self.joint_query_quality_use_same_candidate_branchwise_witness
+                and not self.joint_query_quality_use_monotonic_box_safety_folding):
+            raise ValueError(
+                "same-candidate branchwise witness requires monotonic "
+                "box-safety folding"
+            )
+        if not isinstance(
+                joint_query_quality_use_parent_non_degradation_certificate,
+                bool):
+            raise ValueError(
+                "joint query parent non-degradation certificate must be "
+                "boolean"
+            )
+        self.joint_query_quality_use_parent_non_degradation_certificate = (
+            joint_query_quality_use_parent_non_degradation_certificate
+        )
+        if (self.joint_query_quality_use_parent_non_degradation_certificate
+                and not self.joint_query_quality_use_same_candidate_branchwise_witness):
+            raise ValueError(
+                "parent non-degradation certificate requires same-candidate "
+                "branchwise witness"
+            )
+        if not isinstance(
+                joint_query_quality_use_criterion_responsible_hazard_attribution,
+                bool):
+            raise ValueError(
+                "joint query criterion-responsible hazard attribution must be "
+                "boolean"
+            )
+        self.joint_query_quality_use_criterion_responsible_hazard_attribution = (
+            joint_query_quality_use_criterion_responsible_hazard_attribution
+        )
+        if (self.joint_query_quality_use_criterion_responsible_hazard_attribution
+                and not self.joint_query_quality_use_parent_non_degradation_certificate):
+            raise ValueError(
+                "criterion-responsible hazard attribution requires parent "
+                "non-degradation certificate"
+            )
+        if not isinstance(
+                joint_query_quality_use_independent_joint_hazard_certificate,
+                bool):
+            raise ValueError(
+                "joint query independent joint-hazard certificate must be "
+                "boolean"
+            )
+        self.joint_query_quality_use_independent_joint_hazard_certificate = (
+            joint_query_quality_use_independent_joint_hazard_certificate
+        )
+        if (self.joint_query_quality_use_independent_joint_hazard_certificate
+                and not self.joint_query_quality_use_parent_non_degradation_certificate):
+            raise ValueError(
+                "independent joint-hazard certificate requires parent "
+                "non-degradation certificate"
+            )
+        if (self.joint_query_quality_use_independent_joint_hazard_certificate
+                and self.joint_query_quality_use_criterion_responsible_hazard_attribution):
+            raise ValueError(
+                "independent joint-hazard certificate and criterion-"
+                "responsible attribution are mutually exclusive"
+            )
+        if not isinstance(
+                joint_query_quality_use_frozen_raw_joint_hazard_features,
+                bool):
+            raise ValueError(
+                "joint query frozen raw joint-hazard features must be boolean"
+            )
+        self.joint_query_quality_use_frozen_raw_joint_hazard_features = (
+            joint_query_quality_use_frozen_raw_joint_hazard_features
+        )
+        if (self.joint_query_quality_use_frozen_raw_joint_hazard_features
+                and not self.joint_query_quality_use_independent_joint_hazard_certificate):
+            raise ValueError(
+                "frozen raw joint-hazard features require independent "
+                "joint-hazard certificate"
+            )
+        if not isinstance(
+                joint_query_quality_use_factorized_hit_advantage, bool):
+            raise ValueError(
+                "joint query factorized hit advantage must be boolean"
+            )
+        self.joint_query_quality_use_factorized_hit_advantage = (
+            joint_query_quality_use_factorized_hit_advantage
+        )
+        if not isinstance(
+                joint_query_quality_use_factorized_nested_dominance, bool):
+            raise ValueError(
+                "joint query factorized nested dominance must be boolean"
+            )
+        self.joint_query_quality_use_factorized_nested_dominance = (
+            joint_query_quality_use_factorized_nested_dominance
+        )
+        if (self.joint_query_quality_use_factorized_nested_dominance
+                and not self.joint_query_quality_use_factorized_hit_advantage):
+            raise ValueError(
+                "joint query factorized nested dominance requires "
+                "factorized hit advantage"
+            )
+        if (not isinstance(joint_query_quality_factorized_hit_break_cost,
+                           (int, float))
+                or isinstance(joint_query_quality_factorized_hit_break_cost,
+                              bool)
+                or not math.isfinite(float(
+                    joint_query_quality_factorized_hit_break_cost
+                ))
+                or float(joint_query_quality_factorized_hit_break_cost) <= 0):
+            raise ValueError(
+                "joint query factorized hit break cost must be positive"
+            )
+        self.joint_query_quality_factorized_hit_break_cost = float(
+            joint_query_quality_factorized_hit_break_cost
+        )
+        if sum((
+                self.joint_query_quality_use_parent_transition_advantage,
+                self.joint_query_quality_use_decomposed_transition_advantage,
+                self.joint_query_quality_use_setwise_tier_advantage,
+                self.joint_query_quality_use_factorized_hit_advantage,
+        )) > 1:
+            raise ValueError(
+                "transition advantage modes are mutually exclusive"
+            )
+        if (not isinstance(joint_query_quality_parent_transition_break_cost,
+                           (int, float))
+                or isinstance(
+                    joint_query_quality_parent_transition_break_cost, bool
+                )
+                or not math.isfinite(float(
+                    joint_query_quality_parent_transition_break_cost
+                ))
+                or float(
+                    joint_query_quality_parent_transition_break_cost
+                ) <= 0.0):
+            raise ValueError(
+                "joint query parent transition break cost must be finite "
+                "and positive"
+            )
+        self.joint_query_quality_parent_transition_break_cost = float(
+            joint_query_quality_parent_transition_break_cost
+        )
+        if (not isinstance(
+                joint_query_quality_parent_transition_candidate_top_k, int)
+                or isinstance(
+                    joint_query_quality_parent_transition_candidate_top_k,
+                    bool,
+                )
+                or joint_query_quality_parent_transition_candidate_top_k < 0):
+            raise ValueError(
+                "joint query parent transition candidate top k must be "
+                "non-negative int"
+            )
+        self.joint_query_quality_parent_transition_candidate_top_k = int(
+            joint_query_quality_parent_transition_candidate_top_k
+        )
+        if (self.joint_query_quality_use_parent_transition_advantage
+                and not self.joint_query_quality_preserve_parent_score):
+            raise ValueError(
+                "parent transition advantage requires preserved parent score"
+            )
+        if (self.joint_query_quality_use_decomposed_transition_advantage
+                and not self.joint_query_quality_preserve_parent_score):
+            raise ValueError(
+                "decomposed transition advantage requires preserved parent "
+                "score"
+            )
+        if (self.joint_query_quality_use_setwise_tier_advantage
+                and not self.joint_query_quality_preserve_parent_score):
+            raise ValueError(
+                "setwise tier advantage requires preserved parent score"
+            )
+        if (self.joint_query_quality_use_factorized_hit_advantage
+                and not self.joint_query_quality_preserve_parent_score):
+            raise ValueError(
+                "factorized hit advantage requires preserved parent score"
+            )
         if not isinstance(joint_query_quality_use_mask_calibration, bool):
             raise ValueError(
                 "joint_query_quality_use_mask_calibration must be boolean"
@@ -326,6 +934,33 @@ class MCLN(nn.Module):
             else self.source_choice_selector_sources
         )
         self.use_sacr_source = bool(use_sacr_source)
+        self.use_sacr_score_refiner = bool(use_sacr_score_refiner)
+        self.sacr_score_contract_audit = bool(
+            sacr_score_contract_audit
+        )
+        if self.sacr_score_contract_audit and not self.use_sacr_score_refiner:
+            raise ValueError(
+                "SACR score contract audit requires score refinement"
+            )
+        if self.use_sacr_source and self.use_sacr_score_refiner:
+            raise ValueError(
+                "SACR source mixing and score-only refinement are exclusive"
+            )
+        if self.use_sacr_score_refiner and not (
+                self.use_source_moe or self.use_source_choice_selector):
+            raise ValueError(
+                "SACR score refinement requires a parent score arbiter"
+            )
+        if (
+            not isinstance(sacr_score_max_delta, (float, int))
+            or isinstance(sacr_score_max_delta, bool)
+            or not math.isfinite(float(sacr_score_max_delta))
+            or not 0.0 < float(sacr_score_max_delta) <= 0.25
+        ):
+            raise ValueError(
+                "sacr_score_max_delta must be finite and in (0,0.25]"
+            )
+        self.sacr_score_max_delta = float(sacr_score_max_delta)
         self.sacr_min_parse_confidence = float(
             sacr_min_parse_confidence
         )
@@ -361,6 +996,11 @@ class MCLN(nn.Module):
             raise ValueError(
                 "joint query quality reranking requires SourceMoE or the "
                 "source-choice selector"
+            )
+        if (self.joint_query_quality_preserve_parent_score
+                and not self.use_joint_query_quality_reranker):
+            raise ValueError(
+                "parent score preservation requires joint query quality"
             )
         if (self.use_joint_query_quality_reranker
                 and not contrastive_align_loss):
@@ -531,6 +1171,17 @@ class MCLN(nn.Module):
                 compute_sem_scores=True
             ))
 
+        self.decoder_query_adapter = (
+            DecoderQueryTextAdapter(
+                d_model=d_model,
+                hidden_dim=decoder_query_adapter_hidden_dim,
+                num_heads=decoder_query_adapter_heads,
+                dropout=decoder_query_adapter_dropout,
+                max_delta=decoder_query_adapter_max_delta,
+            )
+            if self.use_decoder_query_adapter else None
+        )
+
         # Extra layers for contrastive losses
         if contrastive_align_loss:
             self.contrastive_align_projection_image = nn.Sequential(
@@ -605,6 +1256,34 @@ class MCLN(nn.Module):
         else:
             self.query_mask_fusion_calibrator = None
 
+        if self.use_egqs_mask_refiner:
+            if egqs_mask_refiner_arch == "egqs":
+                self.egqs_mask_refiner = (
+                    EvidenceGeometryQuerySuperpointMaskRefiner(
+                        d_model=d_model,
+                        hidden_dim=egqs_mask_refiner_hidden_dim,
+                        max_delta=egqs_mask_refiner_max_delta,
+                        components=egqs_mask_refiner_components,
+                        detach_inputs=egqs_mask_refiner_detach_inputs,
+                    )
+                )
+            elif egqs_mask_refiner_arch == "graph":
+                self.egqs_mask_refiner = (
+                    BoundaryAwareSuperpointGraphMaskRefiner(
+                        d_model=d_model,
+                        neighbor_count=egqs_mask_refiner_neighbor_count,
+                        max_delta=egqs_mask_refiner_max_delta,
+                        graph_mode=egqs_mask_refiner_graph_mode,
+                        detach_inputs=egqs_mask_refiner_detach_inputs,
+                    )
+                )
+            else:
+                raise ValueError(
+                    "egqs_mask_refiner_arch must be 'egqs' or 'graph'"
+                )
+        else:
+            self.egqs_mask_refiner = None
+
         if self.use_sacr_source:
             if (
                 not isinstance(sacr_residual_scale_init, (float, int))
@@ -615,6 +1294,7 @@ class MCLN(nn.Module):
                 raise ValueError(
                     "sacr_residual_scale_init must be finite and in [-1,1]"
                 )
+        if self.use_sacr_source or self.use_sacr_score_refiner:
             self.structured_slot_builder = StructuredSlotBuilder(
                 d_model=d_model,
                 pooling="attention",
@@ -627,13 +1307,20 @@ class MCLN(nn.Module):
                 top_k_anchors=sacr_top_k_anchors,
                 geo_dim=sacr_geo_dim,
             )
+        else:
+            self.structured_slot_builder = None
+            self.sacr_head = None
+
+        if self.use_sacr_source:
             self.sacr_residual_scale = nn.Parameter(torch.tensor([
                 float(sacr_residual_scale_init)
             ]))
         else:
-            self.structured_slot_builder = None
-            self.sacr_head = None
             self.sacr_residual_scale = None
+        self.sacr_score_gate = (
+            nn.Parameter(torch.zeros(1))
+            if self.use_sacr_score_refiner else None
+        )
 
         if self.use_joint_query_quality_reranker:
             self.joint_query_quality_reranker = JointQueryQualityReranker(
@@ -645,6 +1332,99 @@ class MCLN(nn.Module):
                 max_delta=joint_query_quality_max_delta,
                 mask_weight=joint_query_quality_mask_weight,
                 quality_score_weight=joint_query_quality_score_weight,
+                direct_residual_scale=(
+                    joint_query_quality_direct_residual_scale
+                ),
+                use_metric_aligned_utility=(
+                    joint_query_quality_use_metric_aligned_utility
+                ),
+                preserve_parent_score=(
+                    self.joint_query_quality_preserve_parent_score
+                ),
+                candidate_promotion_margin=(
+                    self.joint_query_quality_candidate_promotion_margin
+                ),
+                use_parent_transition_advantage=(
+                    self.joint_query_quality_use_parent_transition_advantage
+                ),
+                use_decomposed_transition_advantage=(
+                    self.joint_query_quality_use_decomposed_transition_advantage
+                ),
+                use_setwise_tier_advantage=(
+                    self.joint_query_quality_use_setwise_tier_advantage
+                ),
+                use_decoupled_setwise_heads=(
+                    self.joint_query_quality_use_decoupled_setwise_heads
+                ),
+                use_factorized_setwise_safety=(
+                    self.joint_query_quality_use_factorized_setwise_safety
+                ),
+                use_factorized_setwise_risk_bound=(
+                    self.joint_query_quality_use_factorized_setwise_risk_bound
+                ),
+                use_setwise_safety_veto_gate=(
+                    self.joint_query_quality_use_setwise_safety_veto_gate
+                ),
+                use_cost_calibrated_setwise_risk_bound=(
+                    self.joint_query_quality_use_cost_calibrated_setwise_risk_bound
+                ),
+                use_setwise_safety_slack_quantile_bound=(
+                    self.joint_query_quality_use_setwise_safety_slack_quantile_bound
+                ),
+                use_setwise_safety_slack_pairwise_order=(
+                    self.joint_query_quality_use_setwise_safety_slack_pairwise_order
+                ),
+                use_proposal_conditioned_safety=(
+                    self.joint_query_quality_use_proposal_conditioned_safety
+                ),
+                use_parent_referenced_safety=(
+                    self.joint_query_quality_use_parent_referenced_safety
+                ),
+                use_coupled_safe_repair_witness=(
+                    self.joint_query_quality_use_coupled_safe_repair_witness
+                ),
+                use_bidirectional_coupled_boundary=(
+                    self.joint_query_quality_use_bidirectional_coupled_boundary
+                ),
+                use_centered_coupled_separation=(
+                    self.joint_query_quality_use_centered_coupled_separation
+                ),
+                use_hazard_conditioned_coupled_separation=(
+                    self.joint_query_quality_use_hazard_conditioned_coupled_separation
+                ),
+                use_monotonic_box_safety_folding=(
+                    self.joint_query_quality_use_monotonic_box_safety_folding
+                ),
+                use_same_candidate_branchwise_witness=(
+                    self.joint_query_quality_use_same_candidate_branchwise_witness
+                ),
+                use_parent_non_degradation_certificate=(
+                    self.joint_query_quality_use_parent_non_degradation_certificate
+                ),
+                use_criterion_responsible_hazard_attribution=(
+                    self.joint_query_quality_use_criterion_responsible_hazard_attribution
+                ),
+                use_independent_joint_hazard_certificate=(
+                    self.joint_query_quality_use_independent_joint_hazard_certificate
+                ),
+                use_frozen_raw_joint_hazard_features=(
+                    self.joint_query_quality_use_frozen_raw_joint_hazard_features
+                ),
+                use_factorized_hit_advantage=(
+                    self.joint_query_quality_use_factorized_hit_advantage
+                ),
+                use_factorized_nested_dominance=(
+                    self.joint_query_quality_use_factorized_nested_dominance
+                ),
+                factorized_hit_break_cost=(
+                    self.joint_query_quality_factorized_hit_break_cost
+                ),
+                parent_transition_break_cost=(
+                    self.joint_query_quality_parent_transition_break_cost
+                ),
+                parent_transition_candidate_top_k=(
+                    self.joint_query_quality_parent_transition_candidate_top_k
+                ),
                 detach_inputs=joint_query_quality_detach_inputs,
                 use_mask_calibration=(
                     self.joint_query_quality_use_mask_calibration
@@ -963,6 +1743,21 @@ class MCLN(nn.Module):
                 ),
                 detected_mask=detected_mask if self.butd else None
             )  # (B, V, F)
+            if (i == self.num_decoder_layers - 1
+                    and self.decoder_query_adapter is not None):
+                query, adapter_residual = self.decoder_query_adapter(
+                    query,
+                    text_feats,
+                    text_padding_mask,
+                    base_xyz,
+                    base_size,
+                )
+                end_points['decoder_query_adapter_abs_residual_mean'] = (
+                    adapter_residual.detach().abs().mean()
+                )
+                end_points['decoder_query_adapter_abs_residual_max'] = (
+                    adapter_residual.detach().abs().amax()
+                )
             # step project
             if self.contrastive_align_loss:
                 proj_query = F.normalize(
@@ -987,7 +1782,9 @@ class MCLN(nn.Module):
         if self.source_moe_gate_use_evidence_features:
             end_points["source_moe_gate_candidate_feats"] = query_last
 
-        if getattr(self, 'sacr_head', None) is not None:
+        decoder_query_last = query_last
+
+        if self.use_sacr_source:
             slots = end_points.get('structured_slots')
             if slots is None:
                 raise ValueError(
@@ -1380,11 +2177,266 @@ class MCLN(nn.Module):
                     selector_out[
                         "joint_query_quality_{}".format(key)
                     ] = value
+                for key, value in summarize_joint_query_residual(
+                        joint_out["learned_residual"],
+                        joint_out["valid_mask"],
+                ).items():
+                    selector_out[
+                        "joint_query_quality_learned_{}".format(key)
+                    ] = value
+                if getattr(
+                        self,
+                        "joint_query_quality_preserve_parent_score",
+                        False,
+                ):
+                    row = torch.arange(
+                        parent_scores.shape[0], device=parent_scores.device
+                    )
+                    parent = joint_out["baseline_indices"]
+                    selector_out[
+                        "joint_query_quality_parent_score_drift_abs_max"
+                    ] = (
+                        joint_out["scores"][row, parent]
+                        - parent_scores[row, parent]
+                    ).detach().abs().amax()
+                    selector_out[
+                        "joint_query_quality_candidate_promotion_margin"
+                    ] = parent_scores.new_tensor(
+                        getattr(
+                            self,
+                            "joint_query_quality_candidate_promotion_margin",
+                            0.0,
+                        )
+                    )
+                if "parent_transition_advantage" in joint_out:
+                    transition_values = joint_out[
+                        "parent_transition_advantage"
+                    ].detach()[joint_out["valid_mask"]]
+                    selector_out[
+                        "joint_query_quality_transition_advantage_abs_mean"
+                    ] = transition_values.abs().mean()
+                    selector_out[
+                        "joint_query_quality_transition_advantage_abs_max"
+                    ] = transition_values.abs().amax()
                 selector_out["selected_source_scores"] = joint_out["scores"]
             end_points.update(selector_out)
             end_points["source_choice_source_scores"] = source_choice_batch[
                 "source_scores"
             ]
+
+        if self.use_sacr_score_refiner:
+            contract_keys = (
+                "last_center",
+                "last_pred_size",
+                "last_pred_masks",
+                "sp_last_pred_masks",
+                "adaptive_weights",
+            )
+            contract_snapshot = None
+            if self.sacr_score_contract_audit:
+                missing_contract = [
+                    key for key in contract_keys if key not in end_points
+                ]
+                if missing_contract:
+                    raise ValueError(
+                        "SACR identity audit is missing frozen outputs: "
+                        + ", ".join(missing_contract)
+                    )
+
+                def clone_tensor_tree(value):
+                    if torch.is_tensor(value):
+                        return value.detach().clone()
+                    if isinstance(value, list):
+                        return [clone_tensor_tree(item) for item in value]
+                    if isinstance(value, tuple):
+                        return tuple(clone_tensor_tree(item) for item in value)
+                    if isinstance(value, dict):
+                        return {
+                            key: clone_tensor_tree(item)
+                            for key, item in value.items()
+                        }
+                    return value
+
+                contract_snapshot = {
+                    key: clone_tensor_tree(end_points[key])
+                    for key in contract_keys
+                }
+            slots = end_points.get("structured_slots")
+            parent_scores = end_points.get("selected_source_scores")
+            if slots is None or parent_scores is None:
+                raise ValueError(
+                    "SACR score refinement requires structured slots and "
+                    "parent scores"
+                )
+            if self.sacr_score_contract_audit:
+                contract_snapshot.update({
+                    "decoder_query_last": clone_tensor_tree(
+                        decoder_query_last
+                    ),
+                    "selected_source_scores": clone_tensor_tree(
+                        parent_scores
+                    ),
+                })
+            candidate_valid = source_choice_batch["valid_mask"]
+            if (
+                not isinstance(parent_scores, torch.Tensor)
+                or parent_scores.shape != candidate_valid.shape
+                or candidate_valid.dtype != torch.bool
+            ):
+                raise ValueError(
+                    "SACR parent scores and candidate validity must align"
+                )
+            candidate_boxes = torch.cat((
+                end_points["last_center"],
+                end_points["last_pred_size"].clamp(min=1e-6),
+            ), dim=-1)
+            global_only, weak_generic = build_decomposition_masks(
+                inputs,
+                slots,
+                min_parse_confidence=self.sacr_min_parse_confidence,
+            )
+            sacr_out = self.sacr_head(
+                query_feats=decoder_query_last,
+                pred_boxes=candidate_boxes,
+                base_scores=parent_scores,
+                slot_dict=slots,
+                global_only_mask=global_only,
+                weak_generic_target_mask=weak_generic,
+            )
+            raw_scores = sacr_out["structured_scores"]
+            structured_valid = sacr_out[
+                "structured_valid_mask"
+            ]
+            apply_mask = (
+                structured_valid.unsqueeze(1) & candidate_valid
+            )
+            gate = self.sacr_score_gate.tanh()
+            residual = (
+                self.sacr_score_max_delta
+                * gate
+                * raw_scores.tanh()
+            )
+            refined_scores = torch.where(
+                apply_mask,
+                parent_scores + residual,
+                parent_scores,
+            )
+            if self.sacr_score_contract_audit:
+                if not torch.equal(gate, torch.zeros_like(gate)):
+                    raise ValueError(
+                        "SACR identity audit requires an exact zero gate"
+                    )
+                if not torch.equal(refined_scores, parent_scores):
+                    raise ValueError(
+                        "zero-gate SACR scores are not bitwise parent-identical"
+                    )
+
+                def tensor_tree_equal(left, right):
+                    if torch.is_tensor(left) or torch.is_tensor(right):
+                        return (
+                            torch.is_tensor(left)
+                            and torch.is_tensor(right)
+                            and torch.equal(left, right)
+                        )
+                    if isinstance(left, (list, tuple)):
+                        return (
+                            isinstance(right, type(left))
+                            and len(left) == len(right)
+                            and all(
+                                tensor_tree_equal(a, b)
+                                for a, b in zip(left, right)
+                            )
+                        )
+                    if isinstance(left, dict):
+                        return (
+                            isinstance(right, dict)
+                            and set(left) == set(right)
+                            and all(
+                                tensor_tree_equal(left[key], right[key])
+                                for key in left
+                            )
+                        )
+                    return left == right
+
+                changed_contract = [
+                    key for key in contract_keys
+                    if not tensor_tree_equal(
+                        contract_snapshot[key], end_points[key]
+                    )
+                ]
+                if not tensor_tree_equal(
+                        contract_snapshot["decoder_query_last"],
+                        decoder_query_last):
+                    changed_contract.append("decoder_query_last")
+                if not tensor_tree_equal(
+                        contract_snapshot["selected_source_scores"],
+                        parent_scores):
+                    changed_contract.append("selected_source_scores")
+                if changed_contract:
+                    raise ValueError(
+                        "SACR score branch mutated frozen box/mask tensors: "
+                        + ", ".join(changed_contract)
+                    )
+                end_points["sacr_score_contract_audit_pass"] = (
+                    parent_scores.new_tensor(1.0)
+                )
+                end_points["sacr_score_contract_audit_tensor_count"] = (
+                    parent_scores.new_tensor(float(len(contract_keys) + 2))
+                )
+            active_count = apply_mask.float().sum().clamp(min=1.0)
+            active_residual = residual.masked_fill(~apply_mask, 0.0)
+            end_points["sacr_score_parent_scores"] = parent_scores
+            end_points["sacr_score_refiner_scores"] = refined_scores
+            end_points["sacr_score_valid_mask"] = apply_mask
+            end_points["sacr_score_structured_valid_mask"] = (
+                structured_valid
+            )
+            end_points["sacr_score_raw_scores"] = raw_scores
+            end_points["sacr_score_residual"] = active_residual
+            end_points["sacr_score_gate_value"] = gate.detach().reshape(())
+            end_points["sacr_score_residual_abs_mean"] = (
+                active_residual.detach().abs().sum() / active_count
+            )
+            end_points["sacr_score_residual_abs_max"] = (
+                active_residual.detach().abs().amax()
+            )
+            end_points["sacr_score_structured_valid_ratio"] = (
+                structured_valid.float().mean().detach()
+            )
+            end_points["sacr_score_relation_active_ratio"] = sacr_out[
+                "relation_active_ratio"
+            ].detach()
+            end_points["selected_source_scores"] = refined_scores
+
+        # The V105/V106 refiners are intentionally the final mask-only operation.  They are
+        # placed after every REC arbiter/reranker score has been finalized and
+        # cannot modify a REC score, rank, source choice, or query index.
+        if self.egqs_mask_refiner is not None:
+            mask_boxes = torch.cat((
+                end_points['last_center'],
+                end_points['last_pred_size'].clamp(min=1e-4),
+            ), dim=-1)
+            egqs_out = self.egqs_mask_refiner(
+                query_last,
+                super_features,
+                super_xyz_list,
+                mask_boxes,
+                end_points['last_pred_masks'],
+                end_points['sp_last_pred_masks'],
+                end_points['adaptive_weights'],
+            )
+            prediction_masks, sp_pred_masks = (
+                apply_query_superpoint_mask_residual(
+                    end_points['last_pred_masks'],
+                    end_points['sp_last_pred_masks'],
+                    egqs_out['residuals'],
+                )
+            )
+            end_points['last_pred_masks'] = prediction_masks
+            end_points['sp_last_pred_masks'] = sp_pred_masks
+            for name, value in egqs_out.items():
+                if name != 'residuals':
+                    end_points['egqs_mask_refiner_' + name] = value
 
         return end_points
 

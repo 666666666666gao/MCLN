@@ -14,10 +14,127 @@ MASK_SOURCE_NAMES = ("text", "query", "fused")
 JOINT_MASK_SCHEMA_VERSION = "rec-joint-box-mask-v1"
 MASK_LOGIT_THRESHOLDS = (-1.0, -0.5, 0.0, 0.5, 1.0)
 MASK_POLICY_COUNT = len(MASK_SOURCE_NAMES) * len(MASK_LOGIT_THRESHOLDS)
+MASK_POLICY_FEATURE_SCHEMA_VERSION = "rec-mask-policy-features-v1"
 LEGACY_MASK_POLICY_INDEX = (
     MASK_SOURCE_NAMES.index("fused") * len(MASK_LOGIT_THRESHOLDS)
     + MASK_LOGIT_THRESHOLDS.index(0.0)
 )
+
+
+def build_mask_policy_feature_names():
+    """Return the fixed, dataset-agnostic inference feature schema."""
+    names = []
+    for source in MASK_SOURCE_NAMES:
+        for statistic in (
+                "logit_mean", "logit_std", "logit_min", "logit_max",
+                "probability_mean", "confidence_mean", "entropy_mean"):
+            names.append("{}_{}".format(source, statistic))
+    for source in MASK_SOURCE_NAMES:
+        for threshold in MASK_LOGIT_THRESHOLDS:
+            names.append("{}_foreground_at_{:+.1f}".format(source, threshold))
+    for left, right in (("text", "query"), ("text", "fused"),
+                        ("query", "fused")):
+        for threshold in MASK_LOGIT_THRESHOLDS:
+            names.append(
+                "{}_{}_agreement_at_{:+.1f}".format(left, right, threshold)
+            )
+    names.append("fusion_text_weight")
+    if len(names) != 52 or len(set(names)) != len(names):
+        raise RuntimeError("mask policy feature schema is inconsistent")
+    return names
+
+
+def compute_mask_policy_inference_features(
+        text_logits, query_logits, alpha, valid_mask,
+        logit_thresholds=MASK_LOGIT_THRESHOLDS):
+    """Build query-level mask statistics without labels or ground truth."""
+    if (not isinstance(text_logits, torch.Tensor)
+            or not isinstance(query_logits, torch.Tensor)
+            or text_logits.shape != query_logits.shape
+            or text_logits.dim() != 3 or text_logits.numel() == 0):
+        raise ValueError("mask logits must share non-empty shape [B,K,S]")
+    if (not text_logits.is_floating_point()
+            or not query_logits.is_floating_point()):
+        raise TypeError("mask logits must be floating point")
+    if (text_logits.device != query_logits.device
+            or not bool(torch.isfinite(text_logits).all().item())
+            or not bool(torch.isfinite(query_logits).all().item())):
+        raise ValueError("mask logits must be finite on one device")
+    batch_size, query_count, _superpoint_count = text_logits.shape
+    if (not isinstance(valid_mask, torch.Tensor)
+            or valid_mask.dtype != torch.bool
+            or valid_mask.shape != (batch_size, query_count)
+            or valid_mask.device != text_logits.device
+            or not bool(valid_mask.any(dim=1).all().item())):
+        raise ValueError("valid_mask must cover at least one query per row")
+    thresholds = torch.as_tensor(
+        logit_thresholds, device=text_logits.device, dtype=text_logits.dtype
+    )
+    expected_thresholds = torch.tensor(
+        MASK_LOGIT_THRESHOLDS,
+        device=text_logits.device,
+        dtype=text_logits.dtype,
+    )
+    if (thresholds.dim() != 1
+            or not torch.equal(thresholds, expected_thresholds)):
+        raise ValueError("mask policy thresholds differ from frozen schema")
+
+    fusion_weight = _normalized_alpha(
+        alpha, batch_size, query_count, text_logits
+    )
+    if fusion_weight.shape == (batch_size, query_count, 1):
+        fusion_feature = fusion_weight
+    elif fusion_weight.shape == (batch_size, 1, 1):
+        fusion_feature = fusion_weight.expand(-1, query_count, -1)
+    elif fusion_weight.shape == (batch_size, query_count):
+        fusion_feature = fusion_weight.unsqueeze(-1)
+    else:
+        raise RuntimeError("fusion weight shape differs from mask contract")
+    fused_logits = fuse_mask_logits(text_logits, query_logits, fusion_weight)
+    sources = torch.stack((text_logits, query_logits, fused_logits), dim=2)
+    probabilities = sources.sigmoid()
+    epsilon = torch.finfo(probabilities.dtype).eps
+    safe_probabilities = probabilities.clamp(
+        min=epsilon, max=1.0 - epsilon
+    )
+    entropy = -(
+        safe_probabilities * safe_probabilities.log()
+        + (1.0 - safe_probabilities)
+        * (1.0 - safe_probabilities).log()
+    )
+    statistics = torch.stack((
+        sources.mean(dim=-1),
+        sources.std(dim=-1, unbiased=False),
+        sources.amin(dim=-1),
+        sources.amax(dim=-1),
+        probabilities.mean(dim=-1),
+        (2.0 * (probabilities - 0.5).abs()).mean(dim=-1),
+        entropy.mean(dim=-1),
+    ), dim=-1).reshape(batch_size, query_count, -1)
+    binary = sources.unsqueeze(-1) > thresholds.reshape(1, 1, 1, 1, -1)
+    foreground = binary.to(text_logits.dtype).mean(dim=3).reshape(
+        batch_size, query_count, -1
+    )
+    agreements = []
+    for left, right in ((0, 1), (0, 2), (1, 2)):
+        agreements.append(
+            binary[:, :, left].eq(binary[:, :, right])
+            .to(text_logits.dtype).mean(dim=2)
+        )
+    agreement = torch.cat(agreements, dim=-1)
+    features = torch.cat((
+        statistics,
+        foreground,
+        agreement,
+        fusion_feature.to(text_logits.dtype),
+    ), dim=-1)
+    if features.shape[-1] != len(build_mask_policy_feature_names()):
+        raise RuntimeError("mask policy feature dimension drifted")
+    if not bool(torch.isfinite(features).all().item()):
+        raise RuntimeError("mask policy features must be finite")
+    return torch.where(
+        valid_mask.unsqueeze(-1), features, torch.zeros_like(features)
+    ).contiguous()
 
 
 class JointBoxMaskAdapter(nn.Module):

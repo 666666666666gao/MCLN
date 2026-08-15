@@ -16,6 +16,7 @@ NUM_WORKERS="${NUM_WORKERS:-4}"
 DATALOADER_PREFETCH_FACTOR="${DATALOADER_PREFETCH_FACTOR:-1}"
 CPU_THREADS_PER_PROCESS="${CPU_THREADS_PER_PROCESS:-1}"
 PERSISTENT_TRAIN_WORKERS="${PERSISTENT_TRAIN_WORKERS:-0}"
+AUGMENT_DET="${AUGMENT_DET:-1}"
 START_EPOCH="${START_EPOCH:-1}"
 MAX_EPOCH="${MAX_EPOCH:-5}"
 VAL_FREQ="${VAL_FREQ:-1}"
@@ -30,6 +31,37 @@ JOINT_QUERY_QUALITY_DROPOUT="${JOINT_QUERY_QUALITY_DROPOUT:-0.1}"
 JOINT_QUERY_QUALITY_MAX_DELTA="${JOINT_QUERY_QUALITY_MAX_DELTA:-1.25}"
 JOINT_QUERY_QUALITY_MASK_WEIGHT="${JOINT_QUERY_QUALITY_MASK_WEIGHT:-0.25}"
 JOINT_QUERY_QUALITY_SCORE_WEIGHT="${JOINT_QUERY_QUALITY_SCORE_WEIGHT:-1.0}"
+JOINT_QUERY_QUALITY_DIRECT_RESIDUAL_SCALE="${JOINT_QUERY_QUALITY_DIRECT_RESIDUAL_SCALE:-1.0}"
+JOINT_QUERY_QUALITY_USE_METRIC_ALIGNED_UTILITY="${JOINT_QUERY_QUALITY_USE_METRIC_ALIGNED_UTILITY:-0}"
+JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE="${JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE:-0}"
+JOINT_QUERY_QUALITY_CANDIDATE_PROMOTION_MARGIN="${JOINT_QUERY_QUALITY_CANDIDATE_PROMOTION_MARGIN:-0.0}"
+JOINT_QUERY_QUALITY_USE_PARENT_TRANSITION_ADVANTAGE="${JOINT_QUERY_QUALITY_USE_PARENT_TRANSITION_ADVANTAGE:-0}"
+JOINT_QUERY_QUALITY_USE_DECOMPOSED_TRANSITION_ADVANTAGE="${JOINT_QUERY_QUALITY_USE_DECOMPOSED_TRANSITION_ADVANTAGE:-0}"
+JOINT_QUERY_QUALITY_USE_SETWISE_TIER_ADVANTAGE="${JOINT_QUERY_QUALITY_USE_SETWISE_TIER_ADVANTAGE:-0}"
+JOINT_QUERY_QUALITY_USE_DECOUPLED_SETWISE_HEADS="${JOINT_QUERY_QUALITY_USE_DECOUPLED_SETWISE_HEADS:-0}"
+JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_SAFETY="${JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_SAFETY:-0}"
+JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_RISK_BOUND="${JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_RISK_BOUND:-0}"
+JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_VETO_GATE="${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_VETO_GATE:-0}"
+JOINT_QUERY_QUALITY_USE_COST_CALIBRATED_SETWISE_RISK_BOUND="${JOINT_QUERY_QUALITY_USE_COST_CALIBRATED_SETWISE_RISK_BOUND:-0}"
+JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_QUANTILE_BOUND="${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_QUANTILE_BOUND:-0}"
+JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_PAIRWISE_ORDER="${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_PAIRWISE_ORDER:-0}"
+JOINT_QUERY_QUALITY_USE_PROPOSAL_CONDITIONED_SAFETY="${JOINT_QUERY_QUALITY_USE_PROPOSAL_CONDITIONED_SAFETY:-0}"
+JOINT_QUERY_QUALITY_USE_PARENT_REFERENCED_SAFETY="${JOINT_QUERY_QUALITY_USE_PARENT_REFERENCED_SAFETY:-0}"
+JOINT_QUERY_QUALITY_USE_COUPLED_SAFE_REPAIR_WITNESS="${JOINT_QUERY_QUALITY_USE_COUPLED_SAFE_REPAIR_WITNESS:-0}"
+JOINT_QUERY_QUALITY_USE_BIDIRECTIONAL_COUPLED_BOUNDARY="${JOINT_QUERY_QUALITY_USE_BIDIRECTIONAL_COUPLED_BOUNDARY:-0}"
+JOINT_QUERY_QUALITY_USE_CENTERED_COUPLED_SEPARATION="${JOINT_QUERY_QUALITY_USE_CENTERED_COUPLED_SEPARATION:-0}"
+JOINT_QUERY_QUALITY_USE_HAZARD_CONDITIONED_COUPLED_SEPARATION="${JOINT_QUERY_QUALITY_USE_HAZARD_CONDITIONED_COUPLED_SEPARATION:-0}"
+JOINT_QUERY_QUALITY_USE_MONOTONIC_BOX_SAFETY_FOLDING="${JOINT_QUERY_QUALITY_USE_MONOTONIC_BOX_SAFETY_FOLDING:-0}"
+JOINT_QUERY_QUALITY_USE_SAME_CANDIDATE_BRANCHWISE_WITNESS="${JOINT_QUERY_QUALITY_USE_SAME_CANDIDATE_BRANCHWISE_WITNESS:-0}"
+JOINT_QUERY_QUALITY_USE_PARENT_NON_DEGRADATION_CERTIFICATE="${JOINT_QUERY_QUALITY_USE_PARENT_NON_DEGRADATION_CERTIFICATE:-0}"
+JOINT_QUERY_QUALITY_USE_CRITERION_RESPONSIBLE_HAZARD_ATTRIBUTION="${JOINT_QUERY_QUALITY_USE_CRITERION_RESPONSIBLE_HAZARD_ATTRIBUTION:-0}"
+JOINT_QUERY_QUALITY_USE_INDEPENDENT_JOINT_HAZARD_CERTIFICATE="${JOINT_QUERY_QUALITY_USE_INDEPENDENT_JOINT_HAZARD_CERTIFICATE:-0}"
+JOINT_QUERY_QUALITY_USE_FROZEN_RAW_JOINT_HAZARD_FEATURES="${JOINT_QUERY_QUALITY_USE_FROZEN_RAW_JOINT_HAZARD_FEATURES:-0}"
+JOINT_QUERY_QUALITY_USE_FACTORIZED_HIT_ADVANTAGE="${JOINT_QUERY_QUALITY_USE_FACTORIZED_HIT_ADVANTAGE:-0}"
+JOINT_QUERY_QUALITY_USE_FACTORIZED_NESTED_DOMINANCE="${JOINT_QUERY_QUALITY_USE_FACTORIZED_NESTED_DOMINANCE:-0}"
+JOINT_QUERY_QUALITY_FACTORIZED_HIT_BREAK_COST="${JOINT_QUERY_QUALITY_FACTORIZED_HIT_BREAK_COST:-4.0}"
+JOINT_QUERY_QUALITY_PARENT_TRANSITION_BREAK_COST="${JOINT_QUERY_QUALITY_PARENT_TRANSITION_BREAK_COST:-4.0}"
+JOINT_QUERY_QUALITY_PARENT_TRANSITION_CANDIDATE_TOP_K="${JOINT_QUERY_QUALITY_PARENT_TRANSITION_CANDIDATE_TOP_K:-0}"
 JOINT_QUERY_QUALITY_USE_MASK_CALIBRATION="${JOINT_QUERY_QUALITY_USE_MASK_CALIBRATION:-0}"
 JOINT_QUERY_QUALITY_USE_SOURCE_MASK_EVIDENCE="${JOINT_QUERY_QUALITY_USE_SOURCE_MASK_EVIDENCE:-0}"
 JOINT_QUERY_QUALITY_USE_GATE_EVIDENCE="${JOINT_QUERY_QUALITY_USE_GATE_EVIDENCE:-0}"
@@ -48,6 +80,26 @@ JOINT_QUERY_QUALITY_TEMPERATURE="${JOINT_QUERY_QUALITY_TEMPERATURE:-0.25}"
 JOINT_QUERY_QUALITY_AUX_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_AUX_LOSS_WEIGHT:-1.0}"
 JOINT_QUERY_QUALITY_ANCHOR_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_ANCHOR_LOSS_WEIGHT:-0.5}"
 JOINT_QUERY_QUALITY_ANCHOR_MARGIN="${JOINT_QUERY_QUALITY_ANCHOR_MARGIN:-0.05}"
+JOINT_QUERY_QUALITY_BIDIRECTIONAL_ANCHOR="${JOINT_QUERY_QUALITY_BIDIRECTIONAL_ANCHOR:-0}"
+JOINT_QUERY_QUALITY_ANCHOR_MARGIN_050="${JOINT_QUERY_QUALITY_ANCHOR_MARGIN_050:-0.10}"
+JOINT_QUERY_QUALITY_METRIC_UTILITY_TEMPERATURE="${JOINT_QUERY_QUALITY_METRIC_UTILITY_TEMPERATURE:-0.05}"
+JOINT_QUERY_QUALITY_PAIRWISE_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_PAIRWISE_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_LISTWISE_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_LISTWISE_LOSS_WEIGHT:-1.0}"
+JOINT_QUERY_QUALITY_TRANSITION_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_TRANSITION_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_SETWISE_REPAIR_BOUNDARY_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_SETWISE_REPAIR_BOUNDARY_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_SETWISE_NEGATIVE_TAIL_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_SETWISE_NEGATIVE_TAIL_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_SETWISE_RANK_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_SETWISE_RANK_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_SETWISE_DENSE_SAFETY_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_SETWISE_DENSE_SAFETY_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_SETWISE_BALANCED_SAFETY_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_SETWISE_BALANCED_SAFETY_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_SAFETY_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_SAFETY_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_RISK_BOUND_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_RISK_BOUND_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_FACTORIZED_HIT_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_FACTORIZED_HIT_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_FACTORIZED_PAIR_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_FACTORIZED_PAIR_LOSS_WEIGHT:-0.0}"
+JOINT_QUERY_QUALITY_TRANSITION_BREAK_COST="${JOINT_QUERY_QUALITY_TRANSITION_BREAK_COST:-4.0}"
+JOINT_QUERY_QUALITY_TRANSITION_NEUTRAL_WEIGHT="${JOINT_QUERY_QUALITY_TRANSITION_NEUTRAL_WEIGHT:-0.25}"
+JOINT_QUERY_QUALITY_DEPLOY_CANDIDATE_TOP_K="${JOINT_QUERY_QUALITY_DEPLOY_CANDIDATE_TOP_K:-0}"
+JOINT_QUERY_QUALITY_SOURCE_CANDIDATE_TOP_K="${JOINT_QUERY_QUALITY_SOURCE_CANDIDATE_TOP_K:-0}"
+JOINT_QUERY_QUALITY_ORACLE_CANDIDATE_TOP_K="${JOINT_QUERY_QUALITY_ORACLE_CANDIDATE_TOP_K:-0}"
 JOINT_QUERY_QUALITY_SOURCE_MIX_LOSS_WEIGHT="${JOINT_QUERY_QUALITY_SOURCE_MIX_LOSS_WEIGHT:-0.0}"
 JOINT_QUERY_QUALITY_SOURCE_MIX_ALIGNMENT_TEMPERATURE="${JOINT_QUERY_QUALITY_SOURCE_MIX_ALIGNMENT_TEMPERATURE:-0.25}"
 JOINT_QUERY_QUALITY_SOURCE_MIX_QUERY_FOCUS_WEIGHT="${JOINT_QUERY_QUALITY_SOURCE_MIX_QUERY_FOCUS_WEIGHT:-0.0}"
@@ -115,6 +167,14 @@ if [[ ! "${NPROC_PER_NODE}" =~ ^[1-9][0-9]*$ ]]; then
 fi
 if (( NPROC_PER_NODE > ${#VISIBLE_GPU_IDS[@]} )); then
   echo "NPROC_PER_NODE cannot exceed visible GPU count" >&2
+  exit 2
+fi
+
+AUGMENT_DET_ARGS=()
+if [[ "${AUGMENT_DET}" == "1" ]]; then
+  AUGMENT_DET_ARGS=(--augment_det)
+elif [[ "${AUGMENT_DET}" != "0" ]]; then
+  echo "AUGMENT_DET must be 0 or 1" >&2
   exit 2
 fi
 
@@ -226,6 +286,356 @@ elif [[ "${JOINT_QUERY_QUALITY_USE_SOURCE_DISTRIBUTION_RELIABILITY}" != "0" ]]; 
   exit 2
 fi
 
+METRIC_UTILITY_ARGS=()
+if [[ "${JOINT_QUERY_QUALITY_USE_METRIC_ALIGNED_UTILITY}" == "1" ]]; then
+  METRIC_UTILITY_ARGS=(
+    --joint_query_quality_use_metric_aligned_utility
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_METRIC_ALIGNED_UTILITY}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_METRIC_ALIGNED_UTILITY must be 0 or 1" >&2
+  exit 2
+fi
+
+PARENT_SCORE_ARGS=()
+if [[ "${JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE}" == "1" ]]; then
+  PARENT_SCORE_ARGS=(--joint_query_quality_preserve_parent_score)
+elif [[ "${JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE}" != "1"       && "${JOINT_QUERY_QUALITY_CANDIDATE_PROMOTION_MARGIN}" != "0"       && "${JOINT_QUERY_QUALITY_CANDIDATE_PROMOTION_MARGIN}" != "0.0" ]]; then
+  echo "candidate promotion margin requires preserved parent score" >&2
+  exit 2
+fi
+
+PARENT_TRANSITION_ARGS=()
+if [[ "${JOINT_QUERY_QUALITY_USE_PARENT_TRANSITION_ADVANTAGE}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE}" != "1" ]]; then
+    echo "parent transition advantage requires preserved parent score" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS=(
+    --joint_query_quality_use_parent_transition_advantage
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_PARENT_TRANSITION_ADVANTAGE}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_PARENT_TRANSITION_ADVANTAGE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_DECOMPOSED_TRANSITION_ADVANTAGE}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE}" != "1" ]]; then
+    echo "decomposed transition advantage requires preserved parent score" >&2
+    exit 2
+  fi
+  if [[ "${JOINT_QUERY_QUALITY_USE_PARENT_TRANSITION_ADVANTAGE}" == "1" ]]; then
+    echo "transition advantage modes are exclusive" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_decomposed_transition_advantage
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_DECOMPOSED_TRANSITION_ADVANTAGE}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_DECOMPOSED_TRANSITION_ADVANTAGE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_TIER_ADVANTAGE}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE}" != "1" ]]; then
+    echo "setwise tier advantage requires preserved parent score" >&2
+    exit 2
+  fi
+  if [[ "${JOINT_QUERY_QUALITY_USE_PARENT_TRANSITION_ADVANTAGE}" == "1"       || "${JOINT_QUERY_QUALITY_USE_DECOMPOSED_TRANSITION_ADVANTAGE}" == "1" ]]; then
+    echo "transition advantage modes are exclusive" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_setwise_tier_advantage
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_TIER_ADVANTAGE}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_SETWISE_TIER_ADVANTAGE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_DECOUPLED_SETWISE_HEADS}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_TIER_ADVANTAGE}" != "1" ]]; then
+    echo "decoupled setwise heads require setwise tier advantage" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_decoupled_setwise_heads
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_DECOUPLED_SETWISE_HEADS}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_DECOUPLED_SETWISE_HEADS must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_SAFETY}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_DECOUPLED_SETWISE_HEADS}" != "1" ]]; then
+    echo "factorized setwise safety requires decoupled setwise heads" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_factorized_setwise_safety
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_SAFETY}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_SAFETY must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_RISK_BOUND}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_SAFETY}" != "1" ]]; then
+    echo "factorized setwise risk bound requires factorized safety" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_factorized_setwise_risk_bound
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_RISK_BOUND}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_RISK_BOUND must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_VETO_GATE}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_DECOUPLED_SETWISE_HEADS}" != "1" ]]; then
+    echo "setwise safety veto gate requires decoupled setwise heads" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_setwise_safety_veto_gate
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_VETO_GATE}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_VETO_GATE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_COST_CALIBRATED_SETWISE_RISK_BOUND}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_RISK_BOUND}" != "1" ]]; then
+    echo "cost-calibrated risk bound requires factorized risk bound" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_cost_calibrated_setwise_risk_bound
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_COST_CALIBRATED_SETWISE_RISK_BOUND}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_COST_CALIBRATED_SETWISE_RISK_BOUND must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_QUANTILE_BOUND}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_SETWISE_RISK_BOUND}" != "1" ]]; then
+    echo "safety-slack quantile bound requires factorized risk bound" >&2
+    exit 2
+  fi
+  if [[ "${JOINT_QUERY_QUALITY_USE_COST_CALIBRATED_SETWISE_RISK_BOUND}" == "1" ]]; then
+    echo "safety-slack quantile bound and cost calibration are exclusive" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_setwise_safety_slack_quantile_bound
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_QUANTILE_BOUND}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_QUANTILE_BOUND must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_PAIRWISE_ORDER}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_QUANTILE_BOUND}" != "1" ]]; then
+    echo "safety-slack pairwise order requires slack quantile bound" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_setwise_safety_slack_pairwise_order
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_PAIRWISE_ORDER}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_PAIRWISE_ORDER must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_PROPOSAL_CONDITIONED_SAFETY}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_PAIRWISE_ORDER}" != "1" ]]; then
+    echo "proposal-conditioned safety requires safety-slack pairwise order" >&2
+    exit 2
+  fi
+  if [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_VETO_GATE}" != "1" ]]; then
+    echo "proposal-conditioned safety requires the safety veto gate" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_proposal_conditioned_safety
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_PROPOSAL_CONDITIONED_SAFETY}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_PROPOSAL_CONDITIONED_SAFETY must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_PARENT_REFERENCED_SAFETY}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_SETWISE_SAFETY_SLACK_PAIRWISE_ORDER}" != "1" ]]; then
+    echo "parent-referenced safety requires safety-slack pairwise order" >&2
+    exit 2
+  fi
+  if [[ "${JOINT_QUERY_QUALITY_USE_PROPOSAL_CONDITIONED_SAFETY}" == "1" ]]; then
+    echo "parent-referenced and proposal-conditioned safety are exclusive" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_parent_referenced_safety
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_PARENT_REFERENCED_SAFETY}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_PARENT_REFERENCED_SAFETY must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_COUPLED_SAFE_REPAIR_WITNESS}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_PARENT_REFERENCED_SAFETY}" != "1" ]]; then
+    echo "coupled safe-repair witness requires parent-referenced safety" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_coupled_safe_repair_witness
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_COUPLED_SAFE_REPAIR_WITNESS}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_COUPLED_SAFE_REPAIR_WITNESS must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_BIDIRECTIONAL_COUPLED_BOUNDARY}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_COUPLED_SAFE_REPAIR_WITNESS}" != "1" ]]; then
+    echo "bidirectional coupled boundary requires coupled safe-repair witness" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_bidirectional_coupled_boundary
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_BIDIRECTIONAL_COUPLED_BOUNDARY}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_BIDIRECTIONAL_COUPLED_BOUNDARY must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_CENTERED_COUPLED_SEPARATION}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_BIDIRECTIONAL_COUPLED_BOUNDARY}" != "1" ]]; then
+    echo "centered coupled separation requires bidirectional boundary" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_centered_coupled_separation
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_CENTERED_COUPLED_SEPARATION}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_CENTERED_COUPLED_SEPARATION must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_HAZARD_CONDITIONED_COUPLED_SEPARATION}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_CENTERED_COUPLED_SEPARATION}" != "1" ]]; then
+    echo "hazard-conditioned separation requires centered separation" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_hazard_conditioned_coupled_separation
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_HAZARD_CONDITIONED_COUPLED_SEPARATION}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_HAZARD_CONDITIONED_COUPLED_SEPARATION must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_MONOTONIC_BOX_SAFETY_FOLDING}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_HAZARD_CONDITIONED_COUPLED_SEPARATION}" != "1" ]]; then
+    echo "monotonic box-safety folding requires hazard-conditioned separation" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_monotonic_box_safety_folding
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_MONOTONIC_BOX_SAFETY_FOLDING}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_MONOTONIC_BOX_SAFETY_FOLDING must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_SAME_CANDIDATE_BRANCHWISE_WITNESS}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_MONOTONIC_BOX_SAFETY_FOLDING}" != "1" ]]; then
+    echo "same-candidate branchwise witness requires monotonic box-safety folding" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_same_candidate_branchwise_witness
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_SAME_CANDIDATE_BRANCHWISE_WITNESS}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_SAME_CANDIDATE_BRANCHWISE_WITNESS must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_PARENT_NON_DEGRADATION_CERTIFICATE}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_SAME_CANDIDATE_BRANCHWISE_WITNESS}" != "1" ]]; then
+    echo "parent non-degradation certificate requires same-candidate branchwise witness" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_parent_non_degradation_certificate
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_PARENT_NON_DEGRADATION_CERTIFICATE}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_PARENT_NON_DEGRADATION_CERTIFICATE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_CRITERION_RESPONSIBLE_HAZARD_ATTRIBUTION}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_PARENT_NON_DEGRADATION_CERTIFICATE}" != "1" ]]; then
+    echo "criterion-responsible hazard attribution requires parent non-degradation certificate" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_criterion_responsible_hazard_attribution
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_CRITERION_RESPONSIBLE_HAZARD_ATTRIBUTION}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_CRITERION_RESPONSIBLE_HAZARD_ATTRIBUTION must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_INDEPENDENT_JOINT_HAZARD_CERTIFICATE}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_PARENT_NON_DEGRADATION_CERTIFICATE}" != "1" ]]; then
+    echo "independent joint-hazard certificate requires parent non-degradation certificate" >&2
+    exit 2
+  fi
+  if [[ "${JOINT_QUERY_QUALITY_USE_CRITERION_RESPONSIBLE_HAZARD_ATTRIBUTION}" == "1" ]]; then
+    echo "independent joint-hazard certificate and criterion-responsible attribution are exclusive" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_independent_joint_hazard_certificate
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_INDEPENDENT_JOINT_HAZARD_CERTIFICATE}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_INDEPENDENT_JOINT_HAZARD_CERTIFICATE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_FROZEN_RAW_JOINT_HAZARD_FEATURES}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_INDEPENDENT_JOINT_HAZARD_CERTIFICATE}" != "1" ]]; then
+    echo "frozen raw joint-hazard features require independent joint-hazard certificate" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_frozen_raw_joint_hazard_features
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_FROZEN_RAW_JOINT_HAZARD_FEATURES}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_FROZEN_RAW_JOINT_HAZARD_FEATURES must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_HIT_ADVANTAGE}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_PRESERVE_PARENT_SCORE}" != "1" ]]; then
+    echo "factorized hit advantage requires preserved parent score" >&2
+    exit 2
+  fi
+  if [[ "${JOINT_QUERY_QUALITY_USE_PARENT_TRANSITION_ADVANTAGE}" == "1"       || "${JOINT_QUERY_QUALITY_USE_DECOMPOSED_TRANSITION_ADVANTAGE}" == "1"       || "${JOINT_QUERY_QUALITY_USE_SETWISE_TIER_ADVANTAGE}" == "1" ]]; then
+    echo "transition advantage modes are exclusive" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_factorized_hit_advantage
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_HIT_ADVANTAGE}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_FACTORIZED_HIT_ADVANTAGE must be 0 or 1" >&2
+  exit 2
+fi
+if [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_NESTED_DOMINANCE}" == "1" ]]; then
+  if [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_HIT_ADVANTAGE}" != "1" ]]; then
+    echo "factorized nested dominance requires factorized hit advantage" >&2
+    exit 2
+  fi
+  PARENT_TRANSITION_ARGS+=(
+    --joint_query_quality_use_factorized_nested_dominance
+  )
+elif [[ "${JOINT_QUERY_QUALITY_USE_FACTORIZED_NESTED_DOMINANCE}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_USE_FACTORIZED_NESTED_DOMINANCE must be 0 or 1" >&2
+  exit 2
+fi
+
+BIDIRECTIONAL_ANCHOR_ARGS=()
+if [[ "${JOINT_QUERY_QUALITY_BIDIRECTIONAL_ANCHOR}" == "1" ]]; then
+  BIDIRECTIONAL_ANCHOR_ARGS=(
+    --joint_query_quality_bidirectional_anchor
+  )
+elif [[ "${JOINT_QUERY_QUALITY_BIDIRECTIONAL_ANCHOR}" != "0" ]]; then
+  echo "JOINT_QUERY_QUALITY_BIDIRECTIONAL_ANCHOR must be 0 or 1" >&2
+  exit 2
+fi
+
 JOINT_SOURCE_NAME_ARGS=()
 if [[ -n "${JOINT_QUERY_QUALITY_SOURCE_NAMES}" ]]; then
   JOINT_SOURCE_NAME_ARGS=(
@@ -316,7 +726,7 @@ esac
   --log_dir "${LOG_DIR}" \
   --lr_decay_epochs 50 75 \
   --pp_checkpoint "${PP_CHECKPOINT}" \
-  "${STAGE_ARGS[@]}" --self_attend --augment_det \
+  "${STAGE_ARGS[@]}" --self_attend "${AUGMENT_DET_ARGS[@]}" \
   --checkpoint_path "${CHECKPOINT_PATH}" \
   --start_epoch "${START_EPOCH}" --max_epoch "${MAX_EPOCH}" \
   --model MCLN --exp "${EXP}" \
@@ -336,6 +746,14 @@ esac
   --joint_query_quality_max_delta "${JOINT_QUERY_QUALITY_MAX_DELTA}" \
   --joint_query_quality_mask_weight "${JOINT_QUERY_QUALITY_MASK_WEIGHT}" \
   --joint_query_quality_score_weight "${JOINT_QUERY_QUALITY_SCORE_WEIGHT}" \
+  --joint_query_quality_direct_residual_scale "${JOINT_QUERY_QUALITY_DIRECT_RESIDUAL_SCALE}" \
+  "${METRIC_UTILITY_ARGS[@]}" \
+  "${PARENT_SCORE_ARGS[@]}" \
+  "${PARENT_TRANSITION_ARGS[@]}" \
+  --joint_query_quality_candidate_promotion_margin "${JOINT_QUERY_QUALITY_CANDIDATE_PROMOTION_MARGIN}" \
+  --joint_query_quality_factorized_hit_break_cost "${JOINT_QUERY_QUALITY_FACTORIZED_HIT_BREAK_COST}" \
+  --joint_query_quality_parent_transition_break_cost "${JOINT_QUERY_QUALITY_PARENT_TRANSITION_BREAK_COST}" \
+  --joint_query_quality_parent_transition_candidate_top_k "${JOINT_QUERY_QUALITY_PARENT_TRANSITION_CANDIDATE_TOP_K}" \
   --joint_query_quality_max_mask_alpha_delta "${JOINT_QUERY_QUALITY_MAX_MASK_ALPHA_DELTA}" \
   --joint_query_quality_max_mask_logit_bias "${JOINT_QUERY_QUALITY_MAX_MASK_LOGIT_BIAS}" \
   "${MASK_CALIBRATION_ARGS[@]}" \
@@ -354,6 +772,26 @@ esac
   --joint_query_quality_aux_loss_weight "${JOINT_QUERY_QUALITY_AUX_LOSS_WEIGHT}" \
   --joint_query_quality_anchor_loss_weight "${JOINT_QUERY_QUALITY_ANCHOR_LOSS_WEIGHT}" \
   --joint_query_quality_anchor_margin "${JOINT_QUERY_QUALITY_ANCHOR_MARGIN}" \
+  "${BIDIRECTIONAL_ANCHOR_ARGS[@]}" \
+  --joint_query_quality_anchor_margin_050 "${JOINT_QUERY_QUALITY_ANCHOR_MARGIN_050}" \
+  --joint_query_quality_metric_utility_temperature "${JOINT_QUERY_QUALITY_METRIC_UTILITY_TEMPERATURE}" \
+  --joint_query_quality_pairwise_loss_weight "${JOINT_QUERY_QUALITY_PAIRWISE_LOSS_WEIGHT}" \
+  --joint_query_quality_listwise_loss_weight "${JOINT_QUERY_QUALITY_LISTWISE_LOSS_WEIGHT}" \
+  --joint_query_quality_transition_loss_weight "${JOINT_QUERY_QUALITY_TRANSITION_LOSS_WEIGHT}" \
+  --joint_query_quality_setwise_repair_boundary_loss_weight "${JOINT_QUERY_QUALITY_SETWISE_REPAIR_BOUNDARY_LOSS_WEIGHT}" \
+  --joint_query_quality_setwise_negative_tail_loss_weight "${JOINT_QUERY_QUALITY_SETWISE_NEGATIVE_TAIL_LOSS_WEIGHT}" \
+  --joint_query_quality_setwise_rank_loss_weight "${JOINT_QUERY_QUALITY_SETWISE_RANK_LOSS_WEIGHT}" \
+  --joint_query_quality_setwise_dense_safety_loss_weight "${JOINT_QUERY_QUALITY_SETWISE_DENSE_SAFETY_LOSS_WEIGHT}" \
+  --joint_query_quality_setwise_balanced_safety_loss_weight "${JOINT_QUERY_QUALITY_SETWISE_BALANCED_SAFETY_LOSS_WEIGHT}" \
+  --joint_query_quality_setwise_factorized_safety_loss_weight "${JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_SAFETY_LOSS_WEIGHT}" \
+  --joint_query_quality_setwise_factorized_risk_bound_loss_weight "${JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_RISK_BOUND_LOSS_WEIGHT}" \
+  --joint_query_quality_factorized_hit_loss_weight "${JOINT_QUERY_QUALITY_FACTORIZED_HIT_LOSS_WEIGHT}" \
+  --joint_query_quality_factorized_pair_loss_weight "${JOINT_QUERY_QUALITY_FACTORIZED_PAIR_LOSS_WEIGHT}" \
+  --joint_query_quality_transition_break_cost "${JOINT_QUERY_QUALITY_TRANSITION_BREAK_COST}" \
+  --joint_query_quality_transition_neutral_weight "${JOINT_QUERY_QUALITY_TRANSITION_NEUTRAL_WEIGHT}" \
+  --joint_query_quality_deploy_candidate_top_k "${JOINT_QUERY_QUALITY_DEPLOY_CANDIDATE_TOP_K}" \
+  --joint_query_quality_source_candidate_top_k "${JOINT_QUERY_QUALITY_SOURCE_CANDIDATE_TOP_K}" \
+  --joint_query_quality_oracle_candidate_top_k "${JOINT_QUERY_QUALITY_ORACLE_CANDIDATE_TOP_K}" \
   --joint_query_quality_source_mix_loss_weight "${JOINT_QUERY_QUALITY_SOURCE_MIX_LOSS_WEIGHT}" \
   --joint_query_quality_source_mix_alignment_temperature "${JOINT_QUERY_QUALITY_SOURCE_MIX_ALIGNMENT_TEMPERATURE}" \
   --joint_query_quality_source_mix_query_focus_weight "${JOINT_QUERY_QUALITY_SOURCE_MIX_QUERY_FOCUS_WEIGHT}" \

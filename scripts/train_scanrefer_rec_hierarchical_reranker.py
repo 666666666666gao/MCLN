@@ -486,12 +486,17 @@ def _one_hot_flat(indices, batch_size, device):
 def materialize_hierarchical_rows(
         rows, parent, geometry_model, geometry_artifact,
         batch_size=HIERARCHICAL_MATERIALIZATION_BATCH_SIZE,
-        device="cuda:0", require_contiguous=True):
+        device="cuda:0", require_contiguous=True,
+        artifact_validator=None):
     """Materialize deployable hierarchy inputs plus detached train labels."""
     _validate_joined_row_order(
         rows, require_contiguous=require_contiguous
     )
-    _validate_materialization_artifact(geometry_artifact)
+    if artifact_validator is None:
+        artifact_validator = _validate_materialization_artifact
+    if not callable(artifact_validator):
+        raise TypeError("artifact_validator must be callable")
+    artifact_validator(geometry_artifact)
     if (not isinstance(batch_size, int) or isinstance(batch_size, bool)
             or batch_size <= 0):
         raise ValueError("materialization batch_size must be positive")

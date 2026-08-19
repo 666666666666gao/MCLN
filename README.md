@@ -124,6 +124,19 @@ ScanNetv2
 |:---:|:---:|:---:|:---:|:---:|
 |ScanRefer/mcln| 57.17 |45.53 | 44.72 |[GoogleDrive](https://drive.google.com/file/d/1oBUWrTEj3kYyx-DT0HAvAcDUQe4nQgYz)
 
+### V99 frozen post-processing system
+
+V99 is the frozen ScanRefer query/variant reranker used by our best
+`REC@0.25` single system. It reaches `58.6033%/50.4523%` REC at IoU
+`0.25/0.50`, with `59.8443%/52.3349%` Mask accuracy and `45.9303%` Mask
+mIoU. The backbone is not retrained by V99; its core contribution is a
+contextual 16-query x 7-variant hierarchy with a fixed Pareto safety gate.
+
+See [V99 architecture and code map](docs/V99_ARCHITECTURE.md) and the
+[sealed best-result record](docs/archive/V99_REC025_BEST_ARCHIVE.md). Large
+weights, datasets, caches and experiment outputs are intentionally not stored
+in this repository.
+
 
 ## 4. Training
 

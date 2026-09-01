@@ -1,11 +1,15 @@
 import csv
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 import torch
 
-from main_utils import joint_det_structured_collate
+from main_utils import (
+    _requires_joint_det_structured_collate,
+    joint_det_structured_collate,
+)
 from models.joint_query_quality import (
     JointQueryQualityReranker,
     compute_joint_query_quality_loss,
@@ -373,6 +377,33 @@ def test_structured_collate_preserves_variable_span_lists():
     collated = joint_det_structured_collate([first, second])
     assert collated["point_clouds"].shape == (2, 2, 3)
     assert [len(row) for row in collated["entity_spans"]] == [0, 2]
+
+
+@pytest.mark.parametrize(
+    "enabled_flag",
+    [
+        "use_sacr_source",
+        "use_sacr_score_refiner",
+        "use_parent_relative_text_verifier",
+    ],
+)
+def test_structured_consumers_select_variable_length_collate(enabled_flag):
+    args = SimpleNamespace(
+        use_sacr_source=False,
+        use_sacr_score_refiner=False,
+        use_parent_relative_text_verifier=False,
+    )
+    setattr(args, enabled_flag, True)
+    assert _requires_joint_det_structured_collate(args) is True
+
+
+def test_unstructured_runs_keep_default_collate():
+    args = SimpleNamespace(
+        use_sacr_source=False,
+        use_sacr_score_refiner=False,
+        use_parent_relative_text_verifier=False,
+    )
+    assert _requires_joint_det_structured_collate(args) is False
 
 
 @pytest.mark.parametrize(

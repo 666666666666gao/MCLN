@@ -41,10 +41,24 @@ class SharedAliasParameterModel(torch.nn.Module):
         self.source_choice_selector = torch.nn.Linear(1, 1)
 
 
+class ParentRelativeVerifierToyMCLN(ToyMCLN):
+    def __init__(self):
+        super().__init__()
+        self.structured_slot_builder = torch.nn.Linear(2, 2)
+        self.sacr_head = torch.nn.Linear(2, 2)
+        self.parent_relative_text_verifier = torch.nn.Linear(2, 2)
+
+
 def optimizer_args(**overrides):
     values = {
         "source_choice_selector_train_only": False,
         "use_source_choice_selector": False,
+        "use_parent_relative_text_verifier": False,
+        "parent_relative_text_verifier_train_only": False,
+        "parent_relative_text_verifier_counterfactual_training": False,
+        "parent_relative_text_verifier_detach_inputs": False,
+        "parent_relative_text_verifier_lr": 3e-4,
+        "eval": False,
         "frozen": False,
         "small_lr": False,
         "source_choice_selector_lr": 7e-4,
@@ -67,6 +81,9 @@ def test_parameter_classification_uses_only_exact_top_level_prefixes():
     assert parameter_group_name(
         "module.joint_query_quality_reranker.residual_head.weight"
     ) == "selector"
+    assert parameter_group_name(
+        "module.parent_relative_text_verifier.action_head.weight"
+    ) == "selector"
     assert parameter_group_name("module.backbone_net.stem.weight") == "backbone"
     assert parameter_group_name("module.text_encoder.layer.weight") == (
         "frozen_text"
@@ -80,6 +97,16 @@ def test_parameter_classification_uses_only_exact_top_level_prefixes():
     assert parameter_group_name("decoder.x_mask.weight") == "decoder"
     assert parameter_group_name("backbone_network.weight") == "decoder"
     assert parameter_group_name("text_encoder_extra.weight") == "decoder"
+
+
+def test_parent_relative_text_verifier_cli_defaults_are_disabled(monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["train_dist_mod.py"])
+    args = parse_option()
+    assert args.use_parent_relative_text_verifier is False
+    assert args.parent_relative_text_verifier_train_only is False
+    assert (
+        args.parent_relative_text_verifier_counterfactual_training is False
+    )
 
 
 def test_complete_innovation_groups_are_disjoint_and_use_requested_lrs():
@@ -262,6 +289,82 @@ def test_selector_only_optimizer_keeps_legacy_three_group_layout():
         id(parameter) for parameter in model.source_choice_selector.parameters()
     }
     assert all(parameter.requires_grad for parameter in selected)
+
+
+def test_parent_relative_text_verifier_requires_train_only_during_training():
+    model = ToyMCLN()
+
+    with pytest.raises(
+            ValueError,
+            match="requires parent_relative_text_verifier_train_only"):
+        BaseTrainTester.get_optimizer(
+            optimizer_args(
+                use_parent_relative_text_verifier=True,
+                parent_relative_text_verifier_train_only=False,
+                eval=False,
+            ),
+            model,
+        )
+
+
+def test_counterfactual_parent_training_requires_verifier_train_only_mode():
+    model = ToyMCLN()
+
+    with pytest.raises(ValueError, match="counterfactual Parent supervision"):
+        BaseTrainTester.get_optimizer(
+            optimizer_args(
+                use_parent_relative_text_verifier=True,
+                parent_relative_text_verifier_train_only=False,
+                parent_relative_text_verifier_counterfactual_training=True,
+            ),
+            model,
+        )
+
+
+def test_parent_relative_text_verifier_optimizer_confines_trainable_parameters():
+    model = ParentRelativeVerifierToyMCLN()
+
+    optimizer = BaseTrainTester.get_optimizer(
+        optimizer_args(
+            use_parent_relative_text_verifier=True,
+            parent_relative_text_verifier_train_only=True,
+        ),
+        model,
+    )
+
+    expected_prefixes = (
+        "structured_slot_builder.",
+        "sacr_head.",
+        "parent_relative_text_verifier.",
+    )
+    expected = {
+        id(parameter)
+        for name, parameter in model.named_parameters()
+        if name.startswith(expected_prefixes)
+    }
+    selected = {
+        id(parameter) for parameter in optimizer.param_groups[0]["params"]
+    }
+    assert selected == expected
+    assert optimizer.param_groups[0]["lr"] == pytest.approx(3e-4)
+    assert all(
+        parameter.requires_grad == (id(parameter) in expected)
+        for parameter in model.parameters()
+    )
+
+
+def test_parent_relative_text_verifier_rejects_detached_train_only_inputs():
+    model = ParentRelativeVerifierToyMCLN()
+
+    with pytest.raises(ValueError, match="requires attached"):
+        BaseTrainTester.get_optimizer(
+            optimizer_args(
+                use_parent_relative_text_verifier=True,
+                parent_relative_text_verifier_train_only=True,
+                parent_relative_text_verifier_detach_inputs=True,
+            ),
+            model,
+        )
 
 
 def test_frozen_optimizer_keeps_legacy_three_group_layout():

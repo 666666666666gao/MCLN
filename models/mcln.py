@@ -9,6 +9,7 @@
 # Licensed under the MIT License.
 # ------------------------------------------------------------------------
 from .mcln_attention import MultiheadAttention
+import hashlib
 import numpy as np
 import math
 import torch
@@ -28,6 +29,14 @@ from .source_choice_adapter import (
     compute_default_source_scores,
 )
 from .source_choice_selector import SourceChoiceSelector
+from .rec_candidate_adapter import build_full_rec_query_state
+from .parent_relative_text_verifier import (
+    ParentRelativeTextVerifier,
+    apply_discrete_parent_relative_selection,
+    build_counterfactual_parent_views,
+    build_parent_relative_detector_valid,
+    build_parent_relative_text_verifier_batch,
+)
 from .source_moe import SourceMoE
 from .mask_fusion import (
     BoundaryAwareSuperpointGraphMaskRefiner,
@@ -45,6 +54,14 @@ from .joint_query_quality import (
 )
 from .structured_slots import StructuredSlotBuilder
 from .sacr_head import SACRHead
+from .sacr_parent_relative import (
+    SACRParentRelativeGate,
+    apply_parent_relative_sacr_refinement,
+)
+from .sacr_relation_counterfactual import (
+    apply_relation_counterfactual_refinement,
+    compute_relation_text_affinities,
+)
 from .structured_source import (
     apply_authoritative_coverage,
     build_decomposition_masks,
@@ -53,6 +70,43 @@ from .structured_source import (
 from utils.scatter_util import deterministic_scatter_mean_dim0
 import pointnet2_utils
 import einops
+
+
+def _sha256_open_file(handle):
+    digest = hashlib.sha256()
+    while True:
+        chunk = handle.read(1024 * 1024)
+        if not chunk:
+            break
+        digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _load_pointnet_checkpoint_payload(path, expected_sha256=""):
+    expected_sha256 = str(expected_sha256 or "").lower()
+    if not expected_sha256:
+        return torch.load(path, map_location="cpu")
+    if (len(expected_sha256) != 64
+            or any(character not in "0123456789abcdef"
+                   for character in expected_sha256)):
+        raise ValueError("pointnet checkpoint SHA-256 must be 64 hex digits")
+    with open(path, "rb") as handle:
+        observed_before = _sha256_open_file(handle)
+        if observed_before != expected_sha256:
+            raise ValueError(
+                "pointnet checkpoint SHA-256 mismatch: {} != {}".format(
+                    observed_before, expected_sha256
+                )
+            )
+        handle.seek(0)
+        payload = torch.load(handle, map_location="cpu")
+        handle.seek(0)
+        observed_after = _sha256_open_file(handle)
+    if observed_after != observed_before:
+        raise RuntimeError("pointnet checkpoint changed while loading")
+    return payload
+
+
 def calc_pairwise_locs(obj_centers,  eps=1e-10):
 
     pairwise_locs = einops.repeat(obj_centers, 'b l d -> b l 1 d') \
@@ -369,7 +423,16 @@ class MCLN(nn.Module):
                  decoder_query_adapter_max_delta=0.25,
                  use_sacr_source=False,
                  use_sacr_score_refiner=False,
+                 sacr_score_use_parent_relative_abstention=False,
+                 sacr_score_use_relation_counterfactual=False,
+                 sacr_score_parent_gate_hidden_dim=32,
                  sacr_score_max_delta=0.25,
+                 sacr_score_promotion_margin=0.01,
+                 sacr_counterfactual_parent_top_k=16,
+                 sacr_counterfactual_target_tolerance=0.05,
+                 sacr_counterfactual_attribute_tolerance=0.05,
+                 sacr_counterfactual_relation_scale=4.0,
+                 sacr_counterfactual_deployment_threshold=0.05,
                  sacr_hidden_dim=288,
                  sacr_max_pairs=3,
                  sacr_top_m_targets=32,
@@ -377,7 +440,22 @@ class MCLN(nn.Module):
                  sacr_geo_dim=16,
                  sacr_min_parse_confidence=0.0,
                  sacr_score_contract_audit=False,
-                 sacr_residual_scale_init=0.1):
+                 sacr_residual_scale_init=0.1,
+                 use_parent_relative_text_verifier=False,
+                 parent_relative_text_verifier_top_k=5,
+                 parent_relative_text_verifier_max_candidates=10,
+                 parent_relative_text_verifier_hidden_dim=256,
+                 parent_relative_text_verifier_heads=4,
+                 parent_relative_text_verifier_dropout=0.1,
+                 parent_relative_text_verifier_max_parent_score_gap=0.25,
+                 parent_relative_text_verifier_promotion_margin=1e-4,
+                 parent_relative_text_verifier_min_parse_confidence=0.5,
+                 parent_relative_text_verifier_min_anchor_mass=0.5,
+                 parent_relative_text_verifier_promotion_epsilon=1e-4,
+                 parent_relative_text_verifier_detach_inputs=True,
+                 parent_relative_text_verifier_filter_non_gt_boxes=False,
+                 parent_relative_text_verifier_counterfactual_training=False,
+                 pointnet_ckpt_sha256=""):
         """Initialize layers."""
         super().__init__()
 
@@ -935,6 +1013,130 @@ class MCLN(nn.Module):
         )
         self.use_sacr_source = bool(use_sacr_source)
         self.use_sacr_score_refiner = bool(use_sacr_score_refiner)
+        self.use_parent_relative_text_verifier = bool(
+            use_parent_relative_text_verifier
+        )
+        self.parent_relative_text_verifier_filter_non_gt_boxes = bool(
+            parent_relative_text_verifier_filter_non_gt_boxes
+        )
+        self.parent_relative_text_verifier_counterfactual_training = bool(
+            parent_relative_text_verifier_counterfactual_training
+        )
+        if (self.parent_relative_text_verifier_counterfactual_training
+                and not self.use_parent_relative_text_verifier):
+            raise ValueError(
+                "counterfactual Parent training requires the verifier"
+            )
+        for name, value in (
+                ("parent_relative_text_verifier_top_k",
+                 parent_relative_text_verifier_top_k),
+                ("parent_relative_text_verifier_max_candidates",
+                 parent_relative_text_verifier_max_candidates)):
+            if (not isinstance(value, int) or isinstance(value, bool)
+                    or value < 1):
+                raise ValueError("{} must be a positive integer".format(name))
+        if (
+                not isinstance(
+                    parent_relative_text_verifier_promotion_epsilon,
+                    (int, float),
+                )
+                or isinstance(
+                    parent_relative_text_verifier_promotion_epsilon, bool
+                )
+                or not math.isfinite(float(
+                    parent_relative_text_verifier_promotion_epsilon
+                ))
+                or not 1e-8 <= float(
+                    parent_relative_text_verifier_promotion_epsilon
+                ) <= 1e-2):
+            raise ValueError(
+                "parent_relative_text_verifier_promotion_epsilon must be "
+                "finite and in [1e-8,1e-2]"
+            )
+        self.parent_relative_text_verifier_top_k = int(
+            parent_relative_text_verifier_top_k
+        )
+        self.parent_relative_text_verifier_max_candidates = int(
+            parent_relative_text_verifier_max_candidates
+        )
+        self.parent_relative_text_verifier_promotion_epsilon = float(
+            parent_relative_text_verifier_promotion_epsilon
+        )
+        if self.use_parent_relative_text_verifier:
+            if not self.parent_relative_text_verifier_filter_non_gt_boxes:
+                raise ValueError(
+                    "parent-relative text verification requires the formal "
+                    "butd_cls detector-overlap filter"
+                )
+            if not self.use_source_choice_selector or self.use_source_moe:
+                raise ValueError(
+                    "parent-relative text verification requires the exact "
+                    "V99 source-choice parent and rejects SourceMoE"
+                )
+            if not contrastive_align_loss:
+                raise ValueError(
+                    "parent-relative text verification requires contrastive "
+                    "candidate features"
+                )
+            incompatible = (
+                self.use_joint_query_quality_reranker,
+                self.use_decoder_query_adapter,
+                self.use_sacr_source,
+                self.use_sacr_score_refiner,
+            )
+            if any(incompatible):
+                raise ValueError(
+                    "parent-relative text verification is an isolated final "
+                    "REC selector and cannot be combined with query/SACR "
+                    "score branches"
+                )
+            if (
+                    self.parent_relative_text_verifier_top_k < 1
+                    or self.parent_relative_text_verifier_max_candidates < 2
+                    or 2 * self.parent_relative_text_verifier_top_k
+                    > self.parent_relative_text_verifier_max_candidates):
+                raise ValueError(
+                    "parent-relative verifier Top-K/candidate bounds are "
+                    "invalid"
+                )
+        if not isinstance(
+                sacr_score_use_parent_relative_abstention, bool):
+            raise ValueError(
+                "sacr_score_use_parent_relative_abstention must be boolean"
+            )
+        self.sacr_score_use_parent_relative_abstention = (
+            sacr_score_use_parent_relative_abstention
+        )
+        if not isinstance(sacr_score_use_relation_counterfactual, bool):
+            raise ValueError(
+                "sacr_score_use_relation_counterfactual must be boolean"
+            )
+        self.sacr_score_use_relation_counterfactual = (
+            sacr_score_use_relation_counterfactual
+        )
+        if (
+                self.sacr_score_use_parent_relative_abstention
+                and self.sacr_score_use_relation_counterfactual):
+            raise ValueError(
+                "parent-relative and relation-counterfactual SACR are "
+                "mutually exclusive"
+            )
+        if (
+                (
+                    self.sacr_score_use_parent_relative_abstention
+                    or self.sacr_score_use_relation_counterfactual
+                )
+                and not self.use_sacr_score_refiner):
+            raise ValueError(
+                "SACR deployment variants require score refinement"
+            )
+        if (
+                not isinstance(sacr_score_parent_gate_hidden_dim, int)
+                or isinstance(sacr_score_parent_gate_hidden_dim, bool)
+                or sacr_score_parent_gate_hidden_dim < 1):
+            raise ValueError(
+                "sacr_score_parent_gate_hidden_dim must be positive"
+            )
         self.sacr_score_contract_audit = bool(
             sacr_score_contract_audit
         )
@@ -961,6 +1163,59 @@ class MCLN(nn.Module):
                 "sacr_score_max_delta must be finite and in (0,0.25]"
             )
         self.sacr_score_max_delta = float(sacr_score_max_delta)
+        if (
+                not isinstance(sacr_score_promotion_margin, (float, int))
+                or isinstance(sacr_score_promotion_margin, bool)
+                or not math.isfinite(float(sacr_score_promotion_margin))
+                or not 0.0 <= float(sacr_score_promotion_margin)
+                < self.sacr_score_max_delta):
+            raise ValueError(
+                "sacr_score_promotion_margin must be finite and in "
+                "[0,max_delta)"
+            )
+        self.sacr_score_promotion_margin = float(
+            sacr_score_promotion_margin
+        )
+        if (
+                not isinstance(sacr_counterfactual_parent_top_k, int)
+                or isinstance(sacr_counterfactual_parent_top_k, bool)
+                or sacr_counterfactual_parent_top_k < 1):
+            raise ValueError(
+                "sacr_counterfactual_parent_top_k must be positive"
+            )
+        self.sacr_counterfactual_parent_top_k = int(
+            sacr_counterfactual_parent_top_k
+        )
+        for name, value, positive in (
+                ("target_tolerance",
+                 sacr_counterfactual_target_tolerance, False),
+                ("attribute_tolerance",
+                 sacr_counterfactual_attribute_tolerance, False),
+                ("relation_scale",
+                 sacr_counterfactual_relation_scale, True),
+                ("deployment_threshold",
+                 sacr_counterfactual_deployment_threshold, False)):
+            if (
+                    not isinstance(value, (int, float))
+                    or isinstance(value, bool)
+                    or not math.isfinite(float(value))
+                    or float(value) < 0.0
+                    or (positive and float(value) == 0.0)):
+                raise ValueError(
+                    "invalid SACR counterfactual {}".format(name)
+                )
+        self.sacr_counterfactual_target_tolerance = float(
+            sacr_counterfactual_target_tolerance
+        )
+        self.sacr_counterfactual_attribute_tolerance = float(
+            sacr_counterfactual_attribute_tolerance
+        )
+        self.sacr_counterfactual_relation_scale = float(
+            sacr_counterfactual_relation_scale
+        )
+        self.sacr_counterfactual_deployment_threshold = float(
+            sacr_counterfactual_deployment_threshold
+        )
         self.sacr_min_parse_confidence = float(
             sacr_min_parse_confidence
         )
@@ -1076,9 +1331,12 @@ class MCLN(nn.Module):
             width=1
         )
         if input_feature_dim == 3 and pointnet_ckpt is not None:
-            self.backbone_net.load_state_dict(torch.load(
-                pointnet_ckpt, map_location="cpu"
-            ), strict=False)
+            self.backbone_net.load_state_dict(
+                _load_pointnet_checkpoint_payload(
+                    pointnet_ckpt, pointnet_ckpt_sha256
+                ),
+                strict=False,
+            )
 
         # Text Encoder
         # # (1) online
@@ -1294,7 +1552,8 @@ class MCLN(nn.Module):
                 raise ValueError(
                     "sacr_residual_scale_init must be finite and in [-1,1]"
                 )
-        if self.use_sacr_source or self.use_sacr_score_refiner:
+        if (self.use_sacr_source or self.use_sacr_score_refiner
+                or self.use_parent_relative_text_verifier):
             self.structured_slot_builder = StructuredSlotBuilder(
                 d_model=d_model,
                 pooling="attention",
@@ -1319,7 +1578,44 @@ class MCLN(nn.Module):
             self.sacr_residual_scale = None
         self.sacr_score_gate = (
             nn.Parameter(torch.zeros(1))
-            if self.use_sacr_score_refiner else None
+            if (
+                self.use_sacr_score_refiner
+                and not self.sacr_score_use_parent_relative_abstention
+            ) else None
+        )
+        self.sacr_parent_relative_gate = (
+            SACRParentRelativeGate(
+                hidden_dim=sacr_score_parent_gate_hidden_dim,
+                top_k_anchors=sacr_top_k_anchors,
+            )
+            if self.sacr_score_use_parent_relative_abstention else None
+        )
+        self.parent_relative_text_verifier = (
+            ParentRelativeTextVerifier(
+                query_dim=d_model,
+                base_feature_dim=2 * 64 + 24,
+                slot_dim=d_model,
+                hidden_dim=parent_relative_text_verifier_hidden_dim,
+                num_heads=parent_relative_text_verifier_heads,
+                dropout=parent_relative_text_verifier_dropout,
+                max_parent_score_gap=(
+                    parent_relative_text_verifier_max_parent_score_gap
+                ),
+                promotion_margin=(
+                    parent_relative_text_verifier_promotion_margin
+                ),
+                min_parse_confidence=(
+                    parent_relative_text_verifier_min_parse_confidence
+                ),
+                min_anchor_mass=(
+                    parent_relative_text_verifier_min_anchor_mass
+                ),
+                detach_inputs=parent_relative_text_verifier_detach_inputs,
+                counterfactual_training=(
+                    self.parent_relative_text_verifier_counterfactual_training
+                ),
+            )
+            if self.use_parent_relative_text_verifier else None
         )
 
         if self.use_joint_query_quality_reranker:
@@ -1491,8 +1787,8 @@ class MCLN(nn.Module):
             inputs['text'],
             padding="longest",
             return_tensors="pt",
-            return_offsets_mapping=self.use_sacr_source,
-            return_special_tokens_mask=self.use_sacr_source,
+            return_offsets_mapping=(self.structured_slot_builder is not None),
+            return_special_tokens_mask=(self.structured_slot_builder is not None),
         ).to(inputs['point_clouds'].device)
         
         encoded_text = self.text_encoder(
@@ -2224,6 +2520,126 @@ class MCLN(nn.Module):
                 "source_scores"
             ]
 
+        if self.parent_relative_text_verifier is not None:
+            slots = end_points.get("structured_slots")
+            parent_scores = end_points.get("selected_source_scores")
+            if slots is None or parent_scores is None:
+                raise ValueError(
+                    "parent-relative text verification requires structured "
+                    "slots and parent scores"
+                )
+            candidate_boxes = torch.cat((
+                end_points["last_center"],
+                end_points["last_pred_size"].clamp(min=1e-6),
+            ), dim=-1)
+            candidate_valid = build_parent_relative_detector_valid(
+                candidate_boxes, inputs
+            )
+            verifier_sacr_scores = parent_scores.masked_fill(
+                ~candidate_valid, torch.finfo(parent_scores.dtype).min
+            )
+            no_deployable_candidate = ~candidate_valid.any(dim=1)
+            if no_deployable_candidate.any():
+                verifier_sacr_scores = verifier_sacr_scores.clone()
+                verifier_sacr_scores[no_deployable_candidate] = parent_scores[
+                    no_deployable_candidate
+                ]
+            global_only, weak_generic = build_decomposition_masks(
+                inputs,
+                slots,
+                min_parse_confidence=self.sacr_min_parse_confidence,
+            )
+            verifier_sacr = self.sacr_head(
+                query_feats=decoder_query_last,
+                pred_boxes=candidate_boxes,
+                base_scores=verifier_sacr_scores,
+                slot_dict=slots,
+                global_only_mask=global_only,
+                weak_generic_target_mask=weak_generic,
+            )
+            verifier_parent_scores = parent_scores
+            if (self.training
+                    and self.parent_relative_text_verifier_counterfactual_training):
+                verifier_parent_scores = (
+                    parent_scores.detach().requires_grad_(True)
+                )
+            verifier_batch = build_parent_relative_text_verifier_batch(
+                build_full_rec_query_state(end_points, inputs),
+                decoder_query_last,
+                verifier_parent_scores,
+                candidate_valid,
+                slots,
+                sacr_outputs=verifier_sacr,
+                topk_per_source=self.parent_relative_text_verifier_top_k,
+                max_candidates=(
+                    self.parent_relative_text_verifier_max_candidates
+                ),
+            )
+            if (self.training
+                    and self.parent_relative_text_verifier_counterfactual_training):
+                verifier_batch["default_scores"].retain_grad()
+            verifier_out = self.parent_relative_text_verifier(verifier_batch)
+            if (self.training
+                    and self.parent_relative_text_verifier_counterfactual_training):
+                counterfactual_batch = build_counterfactual_parent_views(
+                    verifier_batch, verifier_out
+                )
+                if counterfactual_batch is not None:
+                    counterfactual_batch["default_scores"].retain_grad()
+                    end_points[
+                        "parent_relative_text_verifier_counterfactual_batch"
+                    ] = counterfactual_batch
+                    end_points[
+                        "parent_relative_text_verifier_counterfactual_outputs"
+                    ] = self.parent_relative_text_verifier(
+                        counterfactual_batch
+                    )
+            refined_scores = apply_discrete_parent_relative_selection(
+                parent_scores,
+                verifier_out["selected_query_indices"],
+                verifier_out["parent_query_indices"],
+                verifier_out["switch_mask"],
+                promotion_epsilon=(
+                    self.parent_relative_text_verifier_promotion_epsilon
+                ),
+            )
+            end_points["parent_relative_text_verifier_batch"] = verifier_batch
+            end_points["parent_relative_text_verifier_outputs"] = verifier_out
+            end_points["parent_relative_text_verifier_parent_scores"] = (
+                parent_scores
+            )
+            end_points["parent_relative_text_verifier_scores"] = refined_scores
+            end_points["parent_relative_text_verifier_switch_ratio"] = (
+                verifier_out["switch_mask"].float().mean().detach()
+            )
+            end_points[
+                "parent_relative_text_verifier_feasible_candidate_ratio"
+            ] = verifier_out["feasible_mask"].float().mean().detach()
+            end_points[
+                "parent_relative_text_verifier_reliable_row_ratio"
+            ] = verifier_out[
+                "deterministic_reliable_rows"
+            ].float().mean().detach()
+            non_parent = verifier_out["non_parent_mask"].float()
+            non_parent_count = non_parent.sum().clamp(min=1.0)
+            end_points[
+                "parent_relative_text_verifier_eligible_candidate_ratio"
+            ] = (
+                verifier_out["eligible_mask"].float() * non_parent
+            ).sum().div(non_parent_count).detach()
+            end_points[
+                "parent_relative_text_verifier_fallback_ratio"
+            ] = (
+                ~verifier_out["switch_mask"].bool()
+            ).float().mean().detach()
+            end_points[
+                "parent_relative_text_verifier_deployable_row_ratio"
+            ] = verifier_batch["deployable_rows"].float().mean().detach()
+            end_points[
+                "parent_relative_text_verifier_detector_candidate_ratio"
+            ] = candidate_valid.float().mean().detach()
+            end_points["selected_source_scores"] = refined_scores
+
         if self.use_sacr_score_refiner:
             contract_keys = (
                 "last_center",
@@ -2307,29 +2723,146 @@ class MCLN(nn.Module):
             structured_valid = sacr_out[
                 "structured_valid_mask"
             ]
-            apply_mask = (
-                structured_valid.unsqueeze(1) & candidate_valid
-            )
-            gate = self.sacr_score_gate.tanh()
-            residual = (
-                self.sacr_score_max_delta
-                * gate
-                * raw_scores.tanh()
-            )
-            refined_scores = torch.where(
-                apply_mask,
-                parent_scores + residual,
-                parent_scores,
-            )
+            gate = None
+            parent_relative_out = None
+            relation_counterfactual_out = None
+            relation_text = None
+            if self.sacr_score_use_relation_counterfactual:
+                relation_text = compute_relation_text_affinities(
+                    end_points, inputs
+                )
+                relation_counterfactual_out = (
+                    apply_relation_counterfactual_refinement(
+                        relation_scores=sacr_out[
+                            "relation_anchor_scores"
+                        ],
+                        geometry_signatures=sacr_out[
+                            "relation_geometry_signatures"
+                        ],
+                        relation_candidate_mask=sacr_out[
+                            "relation_candidate_mask"
+                        ],
+                        target_affinity=relation_text[
+                            "target_affinity"
+                        ],
+                        attribute_affinity=relation_text[
+                            "attribute_affinity"
+                        ],
+                        attribute_present=relation_text[
+                            "attribute_present"
+                        ],
+                        parent_scores=parent_scores,
+                        candidate_valid=candidate_valid,
+                        structured_valid_mask=structured_valid,
+                        parse_confidence=slots["parse_confidence"],
+                        anchor_top1_mass=sacr_out[
+                            "anchor_top1_mass"
+                        ],
+                        max_delta=self.sacr_score_max_delta,
+                        promotion_margin=self.sacr_score_promotion_margin,
+                        parent_top_k=(
+                            self.sacr_counterfactual_parent_top_k
+                        ),
+                        target_tolerance=(
+                            self.sacr_counterfactual_target_tolerance
+                        ),
+                        attribute_tolerance=(
+                            self.sacr_counterfactual_attribute_tolerance
+                        ),
+                        relation_scale=(
+                            self.sacr_counterfactual_relation_scale
+                        ),
+                        deployment_threshold=(
+                            self.sacr_counterfactual_deployment_threshold
+                        ),
+                    )
+                )
+                apply_mask = (
+                    structured_valid.unsqueeze(1)
+                    & candidate_valid
+                    & sacr_out["relation_candidate_mask"]
+                )
+                residual = relation_counterfactual_out["residual"]
+                refined_scores = relation_counterfactual_out["scores"]
+            elif self.sacr_score_use_parent_relative_abstention:
+                parent_relative_gate_out = self.sacr_parent_relative_gate(
+                    raw_scores=raw_scores,
+                    parent_scores=parent_scores,
+                    candidate_valid=candidate_valid,
+                    structured_valid_mask=structured_valid,
+                    parse_confidence=slots["parse_confidence"],
+                    anchor_top1_mass=sacr_out["anchor_top1_mass"],
+                    anchor_entropy=sacr_out["anchor_entropy"],
+                    relation_active_ratio=sacr_out[
+                        "relation_active_ratio_per_sample"
+                    ],
+                    max_delta=self.sacr_score_max_delta,
+                    promotion_margin=self.sacr_score_promotion_margin,
+                )
+                parent_relative_out = apply_parent_relative_sacr_refinement(
+                    raw_scores=raw_scores,
+                    parent_scores=parent_scores,
+                    candidate_valid=candidate_valid,
+                    structured_valid_mask=structured_valid,
+                    sample_gate=parent_relative_gate_out["sample_gate"],
+                    max_delta=self.sacr_score_max_delta,
+                    promotion_margin=self.sacr_score_promotion_margin,
+                )
+                apply_mask = parent_relative_out["apply_mask"]
+                residual = parent_relative_out["residual"]
+                refined_scores = parent_relative_out["scores"]
+            else:
+                gate = self.sacr_score_gate.tanh()
+                apply_mask = (
+                    structured_valid.unsqueeze(1) & candidate_valid
+                )
+                residual = (
+                    self.sacr_score_max_delta
+                    * gate
+                    * raw_scores.tanh()
+                )
+                refined_scores = torch.where(
+                    apply_mask,
+                    parent_scores + residual,
+                    parent_scores,
+                )
             if self.sacr_score_contract_audit:
-                if not torch.equal(gate, torch.zeros_like(gate)):
-                    raise ValueError(
-                        "SACR identity audit requires an exact zero gate"
+                if (
+                        self.sacr_score_use_parent_relative_abstention
+                        or self.sacr_score_use_relation_counterfactual):
+                    deployment_out = (
+                        parent_relative_out
+                        if parent_relative_out is not None
+                        else relation_counterfactual_out
                     )
-                if not torch.equal(refined_scores, parent_scores):
-                    raise ValueError(
-                        "zero-gate SACR scores are not bitwise parent-identical"
+                    parent_indices = deployment_out["parent_indices"]
+                    parent_refined = torch.gather(
+                        refined_scores, 1, parent_indices.unsqueeze(1)
                     )
+                    parent_original = torch.gather(
+                        parent_scores, 1, parent_indices.unsqueeze(1)
+                    )
+                    parent_residual = torch.gather(
+                        residual, 1, parent_indices.unsqueeze(1)
+                    )
+                    if (
+                            not torch.equal(parent_refined, parent_original)
+                            or not torch.equal(
+                                parent_residual,
+                                torch.zeros_like(parent_residual))):
+                        raise ValueError(
+                            "score-only SACR changed its parent score"
+                        )
+                else:
+                    if not torch.equal(gate, torch.zeros_like(gate)):
+                        raise ValueError(
+                            "SACR identity audit requires an exact zero gate"
+                        )
+                    if not torch.equal(refined_scores, parent_scores):
+                        raise ValueError(
+                            "zero-gate SACR scores are not bitwise "
+                            "parent-identical"
+                        )
 
                 def tensor_tree_equal(left, right):
                     if torch.is_tensor(left) or torch.is_tensor(right):
@@ -2388,12 +2921,24 @@ class MCLN(nn.Module):
             end_points["sacr_score_parent_scores"] = parent_scores
             end_points["sacr_score_refiner_scores"] = refined_scores
             end_points["sacr_score_valid_mask"] = apply_mask
+            end_points["sacr_score_candidate_valid_mask"] = candidate_valid
             end_points["sacr_score_structured_valid_mask"] = (
                 structured_valid
             )
             end_points["sacr_score_raw_scores"] = raw_scores
             end_points["sacr_score_residual"] = active_residual
-            end_points["sacr_score_gate_value"] = gate.detach().reshape(())
+            gate_diagnostic = (
+                parent_relative_out["sample_gate"].mean()
+                if parent_relative_out is not None
+                else (
+                    relation_counterfactual_out["reliability"].mean()
+                    if relation_counterfactual_out is not None
+                    else gate.reshape(())
+                )
+            )
+            end_points["sacr_score_gate_value"] = (
+                gate_diagnostic.detach().reshape(())
+            )
             end_points["sacr_score_residual_abs_mean"] = (
                 active_residual.detach().abs().sum() / active_count
             )
@@ -2406,6 +2951,132 @@ class MCLN(nn.Module):
             end_points["sacr_score_relation_active_ratio"] = sacr_out[
                 "relation_active_ratio"
             ].detach()
+            if parent_relative_out is not None:
+                end_points["sacr_score_relative_raw_scores"] = (
+                    parent_relative_out["relative_raw_scores"]
+                )
+                end_points["sacr_score_sample_gate"] = parent_relative_out[
+                    "sample_gate"
+                ]
+                end_points["sacr_score_parent_indices"] = (
+                    parent_relative_out["parent_indices"]
+                )
+                end_points["sacr_score_feasible_candidate_mask"] = (
+                    parent_relative_out["feasible_candidate_mask"]
+                )
+                end_points["sacr_score_promotion_budget"] = (
+                    parent_relative_out["promotion_budget"]
+                )
+                end_points["sacr_score_sample_gate_mean"] = (
+                    parent_relative_out["sample_gate"].detach().mean()
+                )
+                end_points["sacr_score_sample_gate_max"] = (
+                    parent_relative_out["sample_gate"].detach().amax()
+                )
+                gate_logits = parent_relative_gate_out["gate_logits"]
+                end_points["sacr_score_gate_logit_mean"] = (
+                    gate_logits.detach().mean()
+                )
+                end_points["sacr_score_gate_logit_min"] = (
+                    gate_logits.detach().amin()
+                )
+                end_points["sacr_score_gate_logit_max"] = (
+                    gate_logits.detach().amax()
+                )
+                end_points["sacr_score_feasible_candidate_ratio"] = (
+                    parent_relative_out["feasible_candidate_mask"]
+                    .float().mean().detach()
+                )
+                parent_indices = parent_relative_out["parent_indices"]
+                parent_drift = torch.gather(
+                    refined_scores - parent_scores,
+                    1,
+                    parent_indices.unsqueeze(1),
+                )
+                end_points["sacr_score_parent_drift_abs_max"] = (
+                    parent_drift.detach().abs().amax()
+                )
+                active_candidates = (
+                    parent_relative_out["feasible_candidate_mask"]
+                    & structured_valid.unsqueeze(1)
+                )
+                active_candidate_count = (
+                    active_candidates.float().sum().clamp(min=1.0)
+                )
+                end_points["sacr_score_residual_saturation_ratio"] = (
+                    (
+                        active_residual.detach().abs()
+                        >= 0.95 * self.sacr_score_max_delta
+                    ).float().masked_fill(~active_candidates, 0.0).sum()
+                    / active_candidate_count
+                )
+                end_points["sacr_score_gate_active_ratio"] = (
+                    parent_relative_gate_out["active_rows"]
+                    .float().mean().detach()
+                )
+                for feature_index, feature_name in enumerate(
+                        SACRParentRelativeGate.FEATURE_NAMES):
+                    end_points[
+                        "sacr_score_gate_feature_{}_mean".format(
+                            feature_name
+                        )
+                    ] = parent_relative_gate_out["features"][
+                        :, feature_index
+                    ].detach().mean()
+            if relation_counterfactual_out is not None:
+                end_points["sacr_score_relation_scores"] = sacr_out[
+                    "relation_anchor_scores"
+                ]
+                end_points["sacr_score_relation_geometry_signatures"] = (
+                    sacr_out["relation_geometry_signatures"]
+                )
+                end_points["sacr_score_relation_candidate_mask"] = (
+                    sacr_out["relation_candidate_mask"]
+                )
+                end_points["sacr_score_target_affinity"] = relation_text[
+                    "target_affinity"
+                ]
+                end_points["sacr_score_attribute_affinity"] = relation_text[
+                    "attribute_affinity"
+                ]
+                end_points["sacr_score_attribute_present"] = relation_text[
+                    "attribute_present"
+                ]
+                end_points["sacr_score_parent_indices"] = (
+                    relation_counterfactual_out["parent_indices"]
+                )
+                end_points["sacr_score_feasible_candidate_mask"] = (
+                    relation_counterfactual_out["proposal_mask"]
+                )
+                end_points["sacr_score_counterfactual_proposal_mask"] = (
+                    relation_counterfactual_out["proposal_mask"]
+                )
+                end_points["sacr_score_counterfactual_promotion_mask"] = (
+                    relation_counterfactual_out["promotion_mask"]
+                )
+                end_points["sacr_score_counterfactual_reliability_mean"] = (
+                    relation_counterfactual_out["reliability"]
+                    .detach().mean()
+                )
+                end_points["sacr_score_counterfactual_proposal_ratio"] = (
+                    relation_counterfactual_out["proposal_mask"]
+                    .float().mean().detach()
+                )
+                end_points["sacr_score_counterfactual_promotion_ratio"] = (
+                    relation_counterfactual_out["promotion_mask"]
+                    .float().mean().detach()
+                )
+                parent_indices = relation_counterfactual_out[
+                    "parent_indices"
+                ]
+                parent_drift = torch.gather(
+                    refined_scores - parent_scores,
+                    1,
+                    parent_indices.unsqueeze(1),
+                )
+                end_points["sacr_score_parent_drift_abs_max"] = (
+                    parent_drift.detach().abs().amax()
+                )
             end_points["selected_source_scores"] = refined_scores
 
         # The V105/V106 refiners are intentionally the final mask-only operation.  They are

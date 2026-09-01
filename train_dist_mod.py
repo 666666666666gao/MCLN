@@ -11,6 +11,7 @@
 """Main script for language modulation."""
 
 import contextlib
+import copy
 import hashlib
 import io
 import math
@@ -23,7 +24,9 @@ import torch
 import torch.distributed as dist
 
 from main_utils import (
+    build_parent_relative_text_verifier_audit_diagnostics,
     build_source_moe_gate_decision_diagnostics,
+    fpr_scene_sample_identity_digest,
     parse_option,
     prepare_source_moe_gate_checkpoint_config,
     save_source_choice_diagnostics_receipt,
@@ -37,6 +40,10 @@ from models import APCalculator, parse_predictions, parse_groundtruths
 from models.rec_candidate_adapter import (
     FEATURE_SCHEMA_VERSION,
     build_rec_candidate_batch,
+)
+from models.rec_evaluator_filter import build_detector_overlap_valid
+from models.density_aware_target_box_audit import (
+    DensityAwareTargetBoxAuditAccumulator,
 )
 from models.rec_reranker import blend_candidate_scores
 from models.rec_geometry_reranker import (
@@ -82,6 +89,211 @@ PARETO_CONTEXTUAL_ARTIFACT_SCHEMAS = frozenset({
     V101_ARTIFACT_SCHEMA,
     V109_ARTIFACT_SCHEMA,
 })
+
+FPR_SCENE_DISJOINT_FOLD_COUNT = 5
+FPR_SCENE_DISJOINT_TOTAL_SCENES = 511
+FPR_SCENE_DISJOINT_TOTAL_SAMPLES = 32919
+FPR_SCENE_DISJOINT_SPLITS = {
+    0: {"fit_scenes": 402, "holdout_scenes": 109,
+        "fit_samples": 25790, "holdout_samples": 7129},
+    1: {"fit_scenes": 400, "holdout_scenes": 111,
+        "fit_samples": 25578, "holdout_samples": 7341},
+    2: {"fit_scenes": 408, "holdout_scenes": 103,
+        "fit_samples": 26590, "holdout_samples": 6329},
+    3: {"fit_scenes": 417, "holdout_scenes": 94,
+        "fit_samples": 26714, "holdout_samples": 6205},
+    4: {"fit_scenes": 417, "holdout_scenes": 94,
+        "fit_samples": 27004, "holdout_samples": 5915},
+}
+
+
+class FPRSceneDisjointDatasetView(object):
+    """Attach immutable source-row identities to one dataset partition."""
+
+    def __init__(self, dataset, sample_ids):
+        if len(dataset) != len(sample_ids):
+            raise ValueError("FPR scene view identities must align with data")
+        self._dataset = dataset
+        self._sample_ids = tuple(sample_ids)
+
+    def __len__(self):
+        return len(self._dataset)
+
+    def __getitem__(self, index):
+        item = self._dataset[index]
+        if not isinstance(item, dict):
+            raise ValueError("FPR scene dataset item must be a dict")
+        item = dict(item)
+        item["fpr_scene_audit_sample_index"] = np.int64(
+            self._sample_ids[index]
+        )
+        return item
+
+    def __getattr__(self, name):
+        if name in ("_dataset", "_sample_ids"):
+            raise AttributeError(name)
+        return getattr(self._dataset, name)
+
+
+class DensityTargetBoxSceneDatasetView(object):
+    """Attach immutable source-row identities for the density audit."""
+
+    def __init__(self, dataset, sample_ids):
+        if len(dataset) != len(sample_ids):
+            raise ValueError("density scene identities must align with data")
+        self._dataset = dataset
+        self._sample_ids = tuple(sample_ids)
+
+    def __len__(self):
+        return len(self._dataset)
+
+    def __getitem__(self, index):
+        item = self._dataset[index]
+        if not isinstance(item, dict):
+            raise ValueError("density scene dataset item must be a dict")
+        item = dict(item)
+        item["density_scene_audit_sample_index"] = np.int64(
+            self._sample_ids[index]
+        )
+        return item
+
+    def __getattr__(self, name):
+        if name in ("_dataset", "_sample_ids"):
+            raise AttributeError(name)
+        return getattr(self._dataset, name)
+
+
+def fpr_scene_disjoint_fold(scan_id):
+    """Map one immutable scene id to its preregistered Nr3D fold."""
+    if not isinstance(scan_id, str) or not scan_id:
+        raise ValueError("FPR scene-disjoint audit requires string scan ids")
+    return int(hashlib.sha256(scan_id.encode("utf-8")).hexdigest()[:8], 16) % 5
+
+
+def build_fpr_scene_disjoint_dataset_views(base_dataset, fold,
+                                             expected_counts):
+    """Create disjoint train/holdout annotation views of Nr3D train data."""
+    if fold not in FPR_SCENE_DISJOINT_SPLITS:
+        raise ValueError("FPR scene-disjoint fold must be in [0, 4]")
+    if not isinstance(expected_counts, dict):
+        raise ValueError("FPR scene-disjoint expected counts are required")
+    canonical = FPR_SCENE_DISJOINT_SPLITS[fold]
+    if expected_counts != canonical:
+        raise ValueError(
+            "FPR scene-disjoint expected counts drifted: {} != {}".format(
+                expected_counts, canonical
+            )
+        )
+    annotations = getattr(base_dataset, "annos", None)
+    if not isinstance(annotations, list) or not annotations:
+        raise ValueError("FPR scene-disjoint base annotations are missing")
+    if getattr(base_dataset, "split", None) != "train":
+        raise ValueError("FPR scene-disjoint base must use the train split")
+
+    all_scenes = set()
+    fit_annotations = []
+    holdout_annotations = []
+    fit_scenes = set()
+    holdout_scenes = set()
+    fit_sample_ids = []
+    holdout_sample_ids = []
+    for sample_id, annotation in enumerate(annotations):
+        if not isinstance(annotation, dict):
+            raise ValueError("FPR scene-disjoint annotation must be a dict")
+        if annotation.get("dataset") != "nr3d":
+            raise ValueError("FPR scene-disjoint audit accepts only Nr3D")
+        scan_id = annotation.get("scan_id")
+        assigned_fold = fpr_scene_disjoint_fold(scan_id)
+        all_scenes.add(scan_id)
+        if assigned_fold == fold:
+            holdout_annotations.append(annotation)
+            holdout_sample_ids.append(sample_id)
+            holdout_scenes.add(scan_id)
+        else:
+            fit_annotations.append(annotation)
+            fit_sample_ids.append(sample_id)
+            fit_scenes.add(scan_id)
+
+    if len(annotations) != FPR_SCENE_DISJOINT_TOTAL_SAMPLES:
+        raise ValueError(
+            "Nr3D train sample count drifted: {} != {}".format(
+                len(annotations), FPR_SCENE_DISJOINT_TOTAL_SAMPLES
+            )
+        )
+    if len(all_scenes) != FPR_SCENE_DISJOINT_TOTAL_SCENES:
+        raise ValueError(
+            "Nr3D train scene count drifted: {} != {}".format(
+                len(all_scenes), FPR_SCENE_DISJOINT_TOTAL_SCENES
+            )
+        )
+    observed = {
+        "fit_scenes": len(fit_scenes),
+        "holdout_scenes": len(holdout_scenes),
+        "fit_samples": len(fit_annotations),
+        "holdout_samples": len(holdout_annotations),
+    }
+    if observed != canonical:
+        raise ValueError(
+            "Nr3D scene-disjoint split drifted: {} != {}".format(
+                observed, canonical
+            )
+        )
+    if fit_scenes.intersection(holdout_scenes):
+        raise ValueError("FPR fit and holdout scenes overlap")
+    if fit_scenes.union(holdout_scenes) != all_scenes:
+        raise ValueError("FPR scene partition is incomplete")
+
+    fit_dataset = copy.copy(base_dataset)
+    holdout_dataset = copy.copy(base_dataset)
+    fit_dataset.annos = fit_annotations
+    holdout_dataset.annos = holdout_annotations
+    for dataset in (fit_dataset, holdout_dataset):
+        dataset.dataset_dict = {"nr3d": 1}
+        dataset.joint_det = False
+        dataset.augment_det = False
+        dataset.overfit = False
+    fit_dataset.augment = True
+    holdout_dataset.augment = False
+    fit_dataset = FPRSceneDisjointDatasetView(
+        fit_dataset, fit_sample_ids
+    )
+    holdout_dataset = FPRSceneDisjointDatasetView(
+        holdout_dataset, holdout_sample_ids
+    )
+    return fit_dataset, holdout_dataset, {
+        "schema": "mcln-fpr-tv-nr3d-scene-fold-v1",
+        "fold": fold,
+        "fold_count": FPR_SCENE_DISJOINT_FOLD_COUNT,
+        "hash": "sha256-prefix32-mod5",
+        "total_scenes": len(all_scenes),
+        "total_samples": len(annotations),
+        "fit_sample_identity_sha256": (
+            fpr_scene_sample_identity_digest(fit_sample_ids)
+        ),
+        "holdout_sample_identity_sha256": (
+            fpr_scene_sample_identity_digest(holdout_sample_ids)
+        ),
+        **observed
+    }
+
+
+def build_density_target_box_scene_dataset_views(
+        base_dataset, fold, expected_counts):
+    """Reuse the frozen Nr3D split with density-specific row identities."""
+    fit_view, holdout_view, metadata = (
+        build_fpr_scene_disjoint_dataset_views(
+            base_dataset, fold, expected_counts
+        )
+    )
+    fit_dataset = DensityTargetBoxSceneDatasetView(
+        fit_view._dataset, fit_view._sample_ids
+    )
+    holdout_dataset = DensityTargetBoxSceneDatasetView(
+        holdout_view._dataset, holdout_view._sample_ids
+    )
+    metadata = dict(metadata)
+    metadata["schema"] = "mcln-density-target-box-nr3d-scene-fold-v1"
+    return fit_dataset, holdout_dataset, metadata
 
 
 _PARENT_RUNTIME_COMPATIBILITY = {
@@ -1200,8 +1412,7 @@ def validate_rec_geometry_runtime_outputs(outputs):
         raise ValueError("geometry runtime tensors must share the same device")
     if scores.shape[1] != 112:
         raise ValueError("flat geometry axis must contain 112 candidates")
-    if not bool(valid.any(dim=1).all().item()):
-        raise ValueError("every row needs at least one valid geometry candidate")
+    nonempty_rows = valid.any(dim=1)
     if not bool(torch.isfinite(scores[valid]).all().item()):
         raise ValueError("valid geometry scores must be finite")
     if not bool(torch.isneginf(scores[~valid]).all().item()):
@@ -1217,7 +1428,7 @@ def validate_rec_geometry_runtime_outputs(outputs):
             or bool((fallback >= scores.shape[1]).any().item())):
         raise ValueError("geometry fallback index is out of range")
     fallback_valid = torch.gather(valid, 1, fallback.unsqueeze(1)).squeeze(1)
-    if not bool(fallback_valid.all().item()):
+    if not bool(fallback_valid[nonempty_rows].all().item()):
         raise ValueError("geometry fallback index must identify a valid candidate")
     if (bool(torch.isnan(parent_scores).any().item())
             or bool(torch.isposinf(parent_scores).any().item())
@@ -1283,10 +1494,11 @@ def validate_rec_geometry_runtime_outputs(outputs):
         if not torch.equal(threshold, expected_thresholds):
             raise ValueError("joint mask threshold payload is inconsistent")
         selected_valid = valid.gather(1, selected.unsqueeze(1)).squeeze(1)
-        if not bool(selected_valid.all().item()):
+        if not bool(selected_valid[nonempty_rows].all().item()):
             raise ValueError("joint mask selected flat candidate must be valid")
-        stable_top = scores.argmax(dim=1)
-        if not torch.equal(selected, stable_top):
+        stable_top = scores[nonempty_rows].argmax(dim=1)
+        if not torch.equal(
+                selected[nonempty_rows], stable_top):
             raise ValueError("joint mask selected flat index must match final score")
     return outputs
 
@@ -1469,11 +1681,15 @@ def _build_rec_hierarchical_runtime_batch(
     regressed_variant = geometry_artifact.get("regressed_variant_index")
     if (regressed_variant != 0
             or not torch.equal(
-                variant_valid[:, :, regressed_variant], query_valid
-            )):
+                query_valid, parent_state["candidate_valid"])):
         raise ValueError("hierarchical query validity source changed")
     structured = raw_features.reshape(batch_size, 16, 7, 179)
-    query_features = structured[:, :, regressed_variant, :152]
+    query_features = candidate_batch.get("features")
+    if (not isinstance(query_features, torch.Tensor)
+            or query_features.dtype != torch.float32
+            or tuple(query_features.shape) != (batch_size, 16, 152)
+            or query_features.device != raw_features.device):
+        raise ValueError("hierarchical base query features are malformed")
     repeated_query_features = query_features.unsqueeze(2).expand(
         -1, -1, 7, -1
     )
@@ -1492,19 +1708,12 @@ def _build_rec_hierarchical_runtime_batch(
     )
 
     default_scores = candidate_batch.get("default_scores")
-    default_top1_query_index = candidate_batch.get(
-        "default_top1_query_index"
-    )
     parent_scores = parent_state["compact_scores"].float()
     query_indices = parent_state["query_indices"]
     if (not isinstance(default_scores, torch.Tensor)
             or default_scores.dtype != torch.float32
             or tuple(default_scores.shape) != (batch_size, 16)
             or default_scores.device != raw_features.device
-            or not isinstance(default_top1_query_index, torch.Tensor)
-            or default_top1_query_index.dtype != torch.long
-            or tuple(default_top1_query_index.shape) != (batch_size,)
-            or default_top1_query_index.device != raw_features.device
             or not bool(torch.isfinite(
                 default_scores[query_valid]
             ).all().item())):
@@ -1515,9 +1724,13 @@ def _build_rec_hierarchical_runtime_batch(
     parent_rank = _stable_masked_rank_normalize(
         parent_scores, query_valid
     )
-    default_top1 = query_indices.eq(
-        default_top1_query_index.unsqueeze(1)
-    ) & query_valid
+    default_state = build_deployed_parent_state(
+        default_scores,
+        query_indices,
+        query_valid,
+        parent_state["query_scores"].shape[1],
+    )
+    default_top1 = default_state["parent_top1_mask"]
     parent_top1 = parent_state["parent_top1_mask"] & query_valid
     if (not bool(default_top1.sum(dim=1).eq(1).all().item())
             or not bool(parent_top1.sum(dim=1).eq(1).all().item())):
@@ -1613,10 +1826,47 @@ def _build_rec_geometry_runtime_outputs_float32(
     geometry_batch = build_rec_mask_geometry_candidates(
         end_points, inputs, candidate_batch, variant_config=variant_config
     )
-    geometry_features, geometry_valid = (
+    geometry_features, raw_geometry_valid = (
         _validate_geometry_artifact_runtime_schema(
             geometry_artifact, candidate_batch, geometry_batch
         )
+    )
+    filter_non_gt_boxes = geometry_artifact.get(
+        "filter_non_gt_boxes", False
+    )
+    if not isinstance(filter_non_gt_boxes, bool):
+        raise ValueError("geometry evaluator filtering flag must be boolean")
+    if filter_non_gt_boxes:
+        detected_boxes = inputs.get("det_boxes")
+        detected_valid = inputs.get("det_bbox_label_mask")
+        if (not isinstance(detected_boxes, torch.Tensor)
+                or not isinstance(detected_valid, torch.Tensor)):
+            raise ValueError(
+                "GT geometry filtering needs deployable detector inputs"
+            )
+        evaluator_geometry_valid = build_detector_overlap_valid(
+            geometry_batch["boxes"],
+            raw_geometry_valid,
+            detected_boxes,
+            detected_valid.bool(),
+            iou_threshold=0.25,
+        )
+    else:
+        evaluator_geometry_valid = raw_geometry_valid
+    evaluator_nonempty = evaluator_geometry_valid.reshape(
+        evaluator_geometry_valid.shape[0], -1
+    ).any(dim=1)
+    geometry_valid = torch.where(
+        evaluator_nonempty.reshape(-1, 1, 1),
+        evaluator_geometry_valid,
+        raw_geometry_valid,
+    )
+    evaluator_query_valid = geometry_valid.any(dim=2)
+    parent_state = build_deployed_parent_state(
+        parent_state["compact_scores"],
+        parent_state["query_indices"],
+        evaluator_query_valid,
+        parent_state["query_scores"].shape[1],
     )
     model_inputs = build_rec_geometry_model_inputs(
         candidate_batch["features"].float(),
@@ -1868,18 +2118,36 @@ def _build_rec_geometry_runtime_outputs_float32(
         )
         flat_scores = joint_policy["scores"]
     fallback_positions = []
+    fallback_variants = []
+    regressed_variant = int(geometry_artifact["regressed_variant_index"])
+    variant_priority = [regressed_variant] + [
+        index for index in range(geometry_valid.shape[2])
+        if index != regressed_variant
+    ]
     for row_mask in parent_state["parent_top1_mask"]:
         positions = row_mask.nonzero(as_tuple=False).reshape(-1)
         if positions.numel() != 1:
             raise ValueError("canonical parent Top-1 needs one compact position")
         fallback_positions.append(int(positions[0].item()))
+    for batch_index, compact_position in enumerate(fallback_positions):
+        valid_variants = geometry_valid[batch_index, compact_position]
+        fallback_variants.append(next(
+            index for index in variant_priority
+            if bool(valid_variants[index].item())
+        ))
     fallback = torch.tensor(
         fallback_positions,
         dtype=torch.long,
         device=flat_valid.device,
-    ) * geometry_valid.shape[2] + int(
-        geometry_artifact["regressed_variant_index"]
+    ) * geometry_valid.shape[2] + torch.tensor(
+        fallback_variants,
+        dtype=torch.long,
+        device=flat_valid.device,
     )
+    flat_valid = evaluator_geometry_valid.reshape(
+        evaluator_geometry_valid.shape[0], -1
+    )
+    flat_scores = flat_scores.masked_fill(~flat_valid, -float("inf"))
     outputs = {
         "rec_reranker_scores": parent_state["query_scores"],
         "rec_geometry_runtime_mode": "flat_geometry_axis",
@@ -2342,12 +2610,200 @@ class TrainTester(BaseTrainTester):
             dataset_dict['scannet'] = 10
         print('Loading datasets:', sorted(list(dataset_dict.keys())))
 
+        if bool(getattr(
+                args,
+                'density_aware_target_box_scene_disjoint_audit',
+                False,
+        )):
+            if args.eval or args.debug or args.eval_train:
+                raise ValueError(
+                    "density scene audit is a train-lifecycle audit mode"
+                )
+            if list(args.dataset) != ['nr3d'] or args.test_dataset != 'nr3d':
+                raise ValueError("density scene audit requires Nr3D only")
+            if not args.joint_det or not args.butd_cls:
+                raise ValueError(
+                    "density scene audit preserves joint_det+butd_cls"
+                )
+            if args.butd or args.butd_gt:
+                raise ValueError("density scene audit rejects butd/butd_gt")
+            role = getattr(
+                args, 'density_aware_target_box_scene_disjoint_role', None
+            )
+            if role not in ('parent', 'control', 'method'):
+                raise ValueError("density scene audit role is invalid")
+            fold = int(getattr(
+                args, 'density_aware_target_box_scene_disjoint_fold', -1
+            ))
+            if fold != 2:
+                raise ValueError("density scene audit is preregistered to fold 2")
+            expected_counts = {
+                "fit_scenes": getattr(
+                    args,
+                    'density_aware_target_box_scene_disjoint_expected_fit_scenes',
+                    -1,
+                ),
+                "holdout_scenes": getattr(
+                    args,
+                    'density_aware_target_box_scene_disjoint_expected_holdout_scenes',
+                    -1,
+                ),
+                "fit_samples": getattr(
+                    args,
+                    'density_aware_target_box_scene_disjoint_expected_fit_samples',
+                    -1,
+                ),
+                "holdout_samples": getattr(
+                    args,
+                    'density_aware_target_box_scene_disjoint_expected_holdout_samples',
+                    -1,
+                ),
+            }
+            base_dataset = Joint3DDataset(
+                dataset_dict={'nr3d': 1},
+                test_dataset='nr3d',
+                split='train',
+                use_color=args.use_color,
+                use_height=args.use_height,
+                overfit=False,
+                data_path=args.data_root,
+                detect_intermediate=args.detect_intermediate,
+                use_multiview=args.use_multiview,
+                butd=args.butd,
+                butd_gt=args.butd_gt,
+                butd_cls=args.butd_cls,
+                augment_det=False,
+                skip_missing_superpoints=args.skip_missing_superpoints,
+                use_sacr_source=False,
+                legacy_scene_graph_cache_path='',
+                legacy_scene_graph_cache_strict=False,
+                legacy_scene_graph_cache_expected_target_selection='',
+                legacy_scene_graph_cache_expected_sha256='',
+            )
+            train_dataset, test_dataset, metadata = (
+                build_density_target_box_scene_dataset_views(
+                    base_dataset, fold, expected_counts
+                )
+            )
+            args.density_aware_target_box_scene_disjoint_split_metadata = (
+                metadata
+            )
+            holdout_samples = metadata['holdout_samples']
+            if (
+                    args.expected_eval_sample_count is not None
+                    and args.expected_eval_sample_count != holdout_samples):
+                raise ValueError(
+                    "density held-out expected sample count drifted"
+                )
+            args.expected_eval_sample_count = holdout_samples
+            print(
+                "Density Nr3D scene-disjoint fold {} role {}: fit={}/{}; "
+                "holdout={}/{}; overlap=0; dataset_scope=nr3d-only".format(
+                    fold,
+                    role,
+                    metadata['fit_samples'], metadata['fit_scenes'],
+                    metadata['holdout_samples'], metadata['holdout_scenes'],
+                )
+            )
+            return train_dataset, test_dataset
+
+        if bool(getattr(args, 'fpr_scene_disjoint_audit', False)):
+            if args.eval or args.debug or args.eval_train:
+                raise ValueError(
+                    "FPR scene-disjoint audit is a train-then-holdout mode"
+                )
+            if list(args.dataset) != ['nr3d'] or args.test_dataset != 'nr3d':
+                raise ValueError(
+                    "FPR scene-disjoint audit requires Nr3D only"
+                )
+            if not args.joint_det or not args.butd_cls:
+                raise ValueError(
+                    "FPR scene-disjoint audit preserves joint_det+butd_cls"
+                )
+            if args.butd or args.butd_gt:
+                raise ValueError(
+                    "FPR scene-disjoint audit rejects butd/butd_gt"
+                )
+            fold = int(getattr(args, 'fpr_scene_disjoint_fold', -1))
+            expected_counts = {
+                "fit_scenes": getattr(
+                    args, 'fpr_scene_disjoint_expected_fit_scenes', -1
+                ),
+                "holdout_scenes": getattr(
+                    args, 'fpr_scene_disjoint_expected_holdout_scenes', -1
+                ),
+                "fit_samples": getattr(
+                    args, 'fpr_scene_disjoint_expected_fit_samples', -1
+                ),
+                "holdout_samples": getattr(
+                    args, 'fpr_scene_disjoint_expected_holdout_samples', -1
+                ),
+            }
+            base_dataset = Joint3DDataset(
+                dataset_dict={'nr3d': 1},
+                test_dataset='nr3d',
+                split='train',
+                use_color=args.use_color,
+                use_height=args.use_height,
+                overfit=False,
+                data_path=args.data_root,
+                detect_intermediate=args.detect_intermediate,
+                use_multiview=args.use_multiview,
+                butd=args.butd,
+                butd_gt=args.butd_gt,
+                butd_cls=args.butd_cls,
+                augment_det=False,
+                skip_missing_superpoints=args.skip_missing_superpoints,
+                use_sacr_source=True,
+                legacy_scene_graph_cache_path=getattr(
+                    args, 'legacy_scene_graph_cache', ''),
+                legacy_scene_graph_cache_strict=getattr(
+                    args, 'legacy_scene_graph_cache_strict', False),
+                legacy_scene_graph_cache_expected_target_selection=getattr(
+                    args,
+                    'legacy_scene_graph_cache_expected_target_selection',
+                    '',
+                ),
+                legacy_scene_graph_cache_expected_sha256=getattr(
+                    args, 'legacy_scene_graph_cache_expected_sha256', ''),
+            )
+            train_dataset, test_dataset, metadata = (
+                build_fpr_scene_disjoint_dataset_views(
+                    base_dataset, fold, expected_counts
+                )
+            )
+            args.fpr_scene_disjoint_split_metadata = metadata
+            holdout_samples = metadata['holdout_samples']
+            if (
+                    args.expected_eval_sample_count is not None
+                    and args.expected_eval_sample_count != holdout_samples):
+                raise ValueError(
+                    "FPR held-out expected sample count drifted"
+                )
+            args.expected_eval_sample_count = holdout_samples
+            print(
+                "FPR Nr3D scene-disjoint fold {}: fit={}/{}; "
+                "holdout={}/{}; overlap=0".format(
+                    fold,
+                    metadata['fit_samples'], metadata['fit_scenes'],
+                    metadata['holdout_samples'],
+                    metadata['holdout_scenes'],
+                )
+            )
+            return train_dataset, test_dataset
+
         debug_train_holdout = bool(getattr(args, 'debug_train_holdout', False))
         if debug_train_holdout:
             if not args.debug:
                 raise ValueError("debug_train_holdout requires --debug")
+            debug_dataset_dict = {args.test_dataset: 1}
+            if args.joint_det:
+                print(
+                    "Debug train holdout excludes auxiliary detection data; "
+                    "formal joint_det remains enabled"
+                )
             shared_kwargs = dict(
-                dataset_dict=dataset_dict,
+                dataset_dict=debug_dataset_dict,
                 test_dataset=args.test_dataset,
                 split='train',
                 use_color=args.use_color,
@@ -2364,7 +2820,21 @@ class TrainTester(BaseTrainTester):
                 use_sacr_source=(
                     getattr(args, 'use_sacr_source', False)
                     or getattr(args, 'use_sacr_score_refiner', False)
+                    or getattr(
+                        args, 'use_parent_relative_text_verifier', False
+                    )
                 ),
+                legacy_scene_graph_cache_path=getattr(
+                    args, 'legacy_scene_graph_cache', ''),
+                legacy_scene_graph_cache_strict=getattr(
+                    args, 'legacy_scene_graph_cache_strict', False),
+                legacy_scene_graph_cache_expected_target_selection=getattr(
+                    args,
+                    'legacy_scene_graph_cache_expected_target_selection',
+                    '',
+                ),
+                legacy_scene_graph_cache_expected_sha256=getattr(
+                    args, 'legacy_scene_graph_cache_expected_sha256', ''),
             )
             train_dataset = Joint3DDataset(
                 **dict(
@@ -2433,7 +2903,21 @@ class TrainTester(BaseTrainTester):
                 use_sacr_source=(
                     getattr(args, 'use_sacr_source', False)
                     or getattr(args, 'use_sacr_score_refiner', False)
+                    or getattr(
+                        args, 'use_parent_relative_text_verifier', False
+                    )
                 ),
+                legacy_scene_graph_cache_path=getattr(
+                    args, 'legacy_scene_graph_cache', ''),
+                legacy_scene_graph_cache_strict=getattr(
+                    args, 'legacy_scene_graph_cache_strict', False),
+                legacy_scene_graph_cache_expected_target_selection=getattr(
+                    args,
+                    'legacy_scene_graph_cache_expected_target_selection',
+                    '',
+                ),
+                legacy_scene_graph_cache_expected_sha256=getattr(
+                    args, 'legacy_scene_graph_cache_expected_sha256', ''),
             )
         
         test_dataset = Joint3DDataset(
@@ -2453,7 +2937,21 @@ class TrainTester(BaseTrainTester):
             use_sacr_source=(
                 getattr(args, 'use_sacr_source', False)
                 or getattr(args, 'use_sacr_score_refiner', False)
+                or getattr(
+                    args, 'use_parent_relative_text_verifier', False
+                )
             ),
+            legacy_scene_graph_cache_path=getattr(
+                args, 'legacy_scene_graph_cache', ''),
+            legacy_scene_graph_cache_strict=getattr(
+                args, 'legacy_scene_graph_cache_strict', False),
+            legacy_scene_graph_cache_expected_target_selection=getattr(
+                args,
+                'legacy_scene_graph_cache_expected_target_selection',
+                '',
+            ),
+            legacy_scene_graph_cache_expected_sha256=getattr(
+                args, 'legacy_scene_graph_cache_expected_sha256', ''),
         )
         return train_dataset, test_dataset
 
@@ -2481,6 +2979,9 @@ class TrainTester(BaseTrainTester):
             contrastive_align_loss=args.use_contrastive_align,
             butd=args.butd or args.butd_gt or args.butd_cls,
             pointnet_ckpt=args.pp_checkpoint,
+            pointnet_ckpt_sha256=getattr(
+                args, 'pp_checkpoint_sha256', ''
+            ),
             data_path = args.data_root,
             self_attend=args.self_attend,
             use_source_choice_selector=args.use_source_choice_selector,
@@ -2818,8 +3319,35 @@ class TrainTester(BaseTrainTester):
             use_sacr_score_refiner=getattr(
                 args, 'use_sacr_score_refiner', False
             ),
+            sacr_score_use_parent_relative_abstention=getattr(
+                args, 'sacr_score_use_parent_relative_abstention', False
+            ),
+            sacr_score_use_relation_counterfactual=getattr(
+                args, 'sacr_score_use_relation_counterfactual', False
+            ),
+            sacr_score_parent_gate_hidden_dim=getattr(
+                args, 'sacr_score_parent_gate_hidden_dim', 32
+            ),
             sacr_score_max_delta=getattr(
                 args, 'sacr_score_max_delta', 0.25
+            ),
+            sacr_score_promotion_margin=getattr(
+                args, 'sacr_score_promotion_margin', 0.01
+            ),
+            sacr_counterfactual_parent_top_k=getattr(
+                args, 'sacr_counterfactual_parent_top_k', 16
+            ),
+            sacr_counterfactual_target_tolerance=getattr(
+                args, 'sacr_counterfactual_target_tolerance', 0.05
+            ),
+            sacr_counterfactual_attribute_tolerance=getattr(
+                args, 'sacr_counterfactual_attribute_tolerance', 0.05
+            ),
+            sacr_counterfactual_relation_scale=getattr(
+                args, 'sacr_counterfactual_relation_scale', 4.0
+            ),
+            sacr_counterfactual_deployment_threshold=getattr(
+                args, 'sacr_counterfactual_deployment_threshold', 0.05
             ),
             sacr_hidden_dim=getattr(args, 'sacr_hidden_dim', 288),
             sacr_max_pairs=getattr(args, 'sacr_max_pairs', 3),
@@ -2834,6 +3362,62 @@ class TrainTester(BaseTrainTester):
             ),
             sacr_residual_scale_init=getattr(
                 args, 'sacr_residual_scale_init', 0.1
+            ),
+            use_parent_relative_text_verifier=getattr(
+                args, 'use_parent_relative_text_verifier', False
+            ),
+            parent_relative_text_verifier_top_k=getattr(
+                args, 'parent_relative_text_verifier_top_k', 5
+            ),
+            parent_relative_text_verifier_max_candidates=getattr(
+                args, 'parent_relative_text_verifier_max_candidates', 10
+            ),
+            parent_relative_text_verifier_hidden_dim=getattr(
+                args, 'parent_relative_text_verifier_hidden_dim', 256
+            ),
+            parent_relative_text_verifier_heads=getattr(
+                args, 'parent_relative_text_verifier_heads', 4
+            ),
+            parent_relative_text_verifier_dropout=getattr(
+                args, 'parent_relative_text_verifier_dropout', 0.1
+            ),
+            parent_relative_text_verifier_max_parent_score_gap=getattr(
+                args,
+                'parent_relative_text_verifier_max_parent_score_gap',
+                0.25,
+            ),
+            parent_relative_text_verifier_promotion_margin=getattr(
+                args,
+                'parent_relative_text_verifier_promotion_margin',
+                1e-4,
+            ),
+            parent_relative_text_verifier_min_parse_confidence=getattr(
+                args,
+                'parent_relative_text_verifier_min_parse_confidence',
+                0.5,
+            ),
+            parent_relative_text_verifier_min_anchor_mass=getattr(
+                args,
+                'parent_relative_text_verifier_min_anchor_mass',
+                0.5,
+            ),
+            parent_relative_text_verifier_promotion_epsilon=getattr(
+                args,
+                'parent_relative_text_verifier_promotion_epsilon',
+                1e-4,
+            ),
+            parent_relative_text_verifier_detach_inputs=getattr(
+                args,
+                'parent_relative_text_verifier_detach_inputs',
+                True,
+            ),
+            parent_relative_text_verifier_filter_non_gt_boxes=bool(
+                getattr(args, 'butd_cls', False)
+            ),
+            parent_relative_text_verifier_counterfactual_training=getattr(
+                args,
+                'parent_relative_text_verifier_counterfactual_training',
+                False,
             ),
         )
         # params =  sum(p.numel() for p in model.parameters() if p.requires_grad) / 1e6
@@ -2903,7 +3487,17 @@ class TrainTester(BaseTrainTester):
             prefixes = ['proposal_']  # only proposal
         prefixes += [f'{i}head_' for i in range(args.num_decoder_layers - 1)]
 
-        evaluator = self._build_grounding_evaluator(args, prefixes)
+        density_scene_audit = bool(getattr(
+            args, 'density_aware_target_box_scene_disjoint_audit', False
+        ))
+        density_accumulator = (
+            DensityAwareTargetBoxAuditAccumulator()
+            if density_scene_audit else None
+        )
+        evaluator = (
+            None if density_scene_audit
+            else self._build_grounding_evaluator(args, prefixes)
+        )
 
         # NOTE Main eval branch
         test_loader = tqdm(test_loader, ascii=True)
@@ -2913,6 +3507,8 @@ class TrainTester(BaseTrainTester):
                 batch_idx, batch_data, test_loader, model, stat_dict,
                 criterion, set_criterion, args
             )
+            if density_accumulator is not None:
+                density_accumulator.update(end_points)
             if evaluator is not None:
                 for prefix in prefixes:
                     # note only consider the last layer
@@ -2921,6 +3517,22 @@ class TrainTester(BaseTrainTester):
 
                     # evaluation
                     evaluator.evaluate(end_points, prefix)      
+
+        if density_accumulator is not None:
+            metadata = getattr(
+                args,
+                'density_aware_target_box_scene_disjoint_split_metadata',
+                None,
+            )
+            if not isinstance(metadata, dict):
+                raise ValueError("density scene split metadata is missing")
+            metrics = density_accumulator.finalize(
+                expected_sample_count=metadata['holdout_samples'],
+                expected_identity_sha256=metadata[
+                    'holdout_sample_identity_sha256'
+                ],
+            )
+            return {"density_aware_target_box_scene_audit": metrics}
 
         evaluator.synchronize_between_processes()
         if dist.get_rank() == 0:
@@ -2978,11 +3590,24 @@ class TrainTester(BaseTrainTester):
                             save_source_choice_diagnostics_receipt(
                                 args.log_dir, epoch, diagnostics
                             )
-                    return evaluator.export_retrain_metrics(
+                    metrics = evaluator.export_retrain_metrics(
                         expected_sample_count=getattr(
                             args, 'expected_eval_sample_count', None
                         )
                     )
+                    if bool(getattr(
+                            args, 'fpr_scene_disjoint_audit', False)):
+                        metrics[
+                            'parent_relative_text_verifier_scene_audit'
+                        ] = (
+                            build_parent_relative_text_verifier_audit_diagnostics(
+                                stat_dict,
+                                getattr(
+                                    args, 'expected_eval_sample_count', None
+                                ),
+                            )
+                        )
+                    return metrics
         return None
     
     # BRIEF Scannet detection evalution

@@ -7,6 +7,7 @@ import torch
 
 from tensorboardX import SummaryWriter  # tensorboard --logdir=./output/tensorboard --port 3090
 
+
 class TensorBoard():
     def __init__(self, out_dir, distributed_rank):
 
@@ -23,10 +24,10 @@ class TensorBoard():
 
         if distributed_rank == 0:
             self.tensorboard_writer = {
-                "train": SummaryWriter(os.path.join('tensorboard_output/', "tensorboard/train")),   # TODO root
-                "val": SummaryWriter(os.path.join('tensorboard_output/', "tensorboard/val"))
+                "train": SummaryWriter(os.path.join(out_dir, "tensorboard/train")),
+                "val": SummaryWriter(os.path.join(out_dir, "tensorboard/val"))
             }
-    
+
     def dump_tensorboard(self, phase, timestamp):
         log = {
             # phase:[value]
@@ -44,7 +45,7 @@ class TensorBoard():
                     self.item[phase][val],
                     timestamp
                 )
-        
+
         # lr
         if phase == "train_lr":
             for val in log["learning_rate"]:
@@ -53,8 +54,7 @@ class TensorBoard():
                     self.item[phase][val],
                     timestamp
                 )
-        
-        # val loss
+
         if phase == "val_loss":
             for val in log["loss"]:
                 self.tensorboard_writer["val"].add_scalar(
@@ -63,7 +63,6 @@ class TensorBoard():
                     timestamp
                 )
 
-        # val score
         if phase == "val_score":
             for val in log["score"]:
                 self.tensorboard_writer["val"].add_scalar(

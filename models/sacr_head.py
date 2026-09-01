@@ -94,7 +94,12 @@ class SACRHead(nn.Module):
             top_indices = torch.topk(
                 base_scores + target_attr_scores, top_count, dim=1
             ).indices
-            relation_scores, anchor_probs = self._relation_scores(
+            (
+                relation_scores,
+                anchor_probs,
+                relation_geometry,
+                relation_candidate_mask,
+            ) = self._relation_scores(
                 query_feats,
                 pred_boxes,
                 top_indices,
@@ -105,6 +110,10 @@ class SACRHead(nn.Module):
             valid_values = structured_valid.float().unsqueeze(1)
             target_attr_scores = target_attr_scores * valid_values
             relation_scores = relation_scores * valid_values
+            relation_geometry = relation_geometry * valid_values.unsqueeze(-1)
+            relation_candidate_mask = (
+                relation_candidate_mask & structured_valid.unsqueeze(1)
+            )
             structured_scores = target_attr_scores + relation_scores
 
             slot_mask = slot_dict["slot_mask"].to(device=device).bool()
@@ -118,14 +127,20 @@ class SACRHead(nn.Module):
             anchor_top1_mass = (
                 anchor_probs.max(dim=-1).values * slot_mask.float()
             ).sum(dim=1) / active
+            relation_active_per_sample = slot_mask.float().mean(dim=1)
         return {
             "structured_scores": structured_scores,
             "target_attr_scores": target_attr_scores,
             "relation_anchor_scores": relation_scores,
+            "relation_geometry_signatures": relation_geometry,
+            "relation_candidate_mask": relation_candidate_mask,
             "structured_valid_mask": structured_valid,
             "anchor_entropy": anchor_entropy,
             "anchor_top1_mass": anchor_top1_mass,
             "relation_active_ratio": slot_mask.float().mean(),
+            "relation_active_ratio_per_sample": (
+                relation_active_per_sample
+            ),
         }
 
     def _relation_scores(self, query_feats, boxes, top_indices, rel_slots,
@@ -178,12 +193,12 @@ class SACRHead(nn.Module):
         relation_feats = rel_slots[:, :, None, None, :].expand(
             -1, -1, target_count, anchor_count, -1
         )
+        geometry = self._pair_geometry(
+            target_boxes[:, None, :, None, :],
+            anchor_boxes[:, :, None, :, :],
+        )
         inputs = [target_feats, anchor_feats, relation_feats]
         if self.geo_encoder is not None:
-            geometry = self._pair_geometry(
-                target_boxes[:, None, :, None, :],
-                anchor_boxes[:, :, None, :, :],
-            )
             inputs.append(self.geo_encoder(geometry))
         relation_logits = self.relation_mlp(
             torch.cat(inputs, dim=-1)
@@ -196,7 +211,31 @@ class SACRHead(nn.Module):
         ).sum(dim=1)
         result = query_feats.new_zeros(batch_size, query_count)
         result.scatter_(1, top_indices, target_relation)
-        return result, anchor_probs
+        # Keep the anchor distribution fixed while changing the target query.
+        # This is the geometry signature used to mine relation-specific
+        # counterfactuals, not a dataset Unique/Multiple annotation.
+        weighted_geometry = (
+            geometry.tanh() * anchor_probs[:, :, None, :, None]
+        ).sum(dim=3)
+        active_pairs = slot_mask.float().sum(dim=1).clamp(min=1.0)
+        target_geometry = (
+            weighted_geometry * slot_mask[:, :, None, None].float()
+        ).sum(dim=1) / active_pairs[:, None, None]
+        geometry_result = query_feats.new_zeros(
+            batch_size, query_count, geometry.shape[-1]
+        )
+        geometry_result.scatter_(
+            1,
+            top_indices.unsqueeze(-1).expand(-1, -1, geometry.shape[-1]),
+            target_geometry,
+        )
+        candidate_mask = torch.zeros(
+            batch_size, query_count, dtype=torch.bool,
+            device=query_feats.device,
+        )
+        candidate_mask.scatter_(1, top_indices, True)
+        candidate_mask = candidate_mask & slot_mask.any(dim=1).unsqueeze(1)
+        return result, anchor_probs, geometry_result, candidate_mask
 
     @staticmethod
     def _pair_geometry(first, second):

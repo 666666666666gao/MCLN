@@ -20,3 +20,4 @@
 | 2026-09-01 23:03 | /handoff | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | formal CEGD-MCLN unified-network decision, G0--G7 execution gates, evidence boundaries, and paper result separation |
 | 2026-09-01 23:40 | /codebase-design + /monitor-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | minimal CEGD direct-scorer seam plus machine50630 E15 non-plateau receipt and collector root-cause fix |
 | 2026-09-02 01:50 | /monitor-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | machine35608 complete E15 non-plateau evidence, orphan collector cleanup, and E20 sparse monitoring schedule |
+| 2026-09-02 02:50 | /monitor-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | machine50630 E20 best-primary refresh, no-decay decision, and E25 sparse-monitor schedule |

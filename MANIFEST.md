@@ -11,3 +11,4 @@
 | 2026-09-01 18:46 | /idea-creator | idea-stage/IDEA_CANDIDATES_20260901_184655.md | ideation | timestamped orthogonal method candidates after A-V4 terminal failure |
 | 2026-09-01 18:46 | /idea-creator | idea-stage/IDEA_CANDIDATES.md | ideation | latest orthogonal method-candidate pointer; no experiment authorized |
 | 2026-09-01 19:20 | /handoff | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | continued server-integrated master with cross-dataset generalization assessment and release state |
+| 2026-09-01 19:33 | /novelty-check | idea-stage/NOVELTY_CHECK_EDG_20260901.md | ideation | strict 2024--2026 prior-work audit; EDG narrowed to conditional candidate-pair evidence-necessity hypothesis |

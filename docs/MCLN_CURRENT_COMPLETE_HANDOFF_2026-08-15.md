@@ -12722,3 +12722,39 @@ launcher。它们保留历史 SHA/路径门禁，用于复现实验谱系；由�
 - 服务器镜像：`/home/gb/new butd/butd_detr-main/MCLN-main/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`。
 
 三份交接文档必须逐字节一致。当前没有活动训练、没有待衰减学习率的 run，也没有获得新 Nr3D/Sr3D 长训授权。
+
+### 20.11 下一候选的严格查新终态：EDG 不能按原叙事继续（2026-09-01 19:33 CST）
+
+已完成 2024--2026 公开论文多检索式查新，并由独立 GPT-5.5 xhigh reviewer 复核。完整报告位于
+`idea-stage/NOVELTY_CHECK_EDG_20260901.md`。原 Evidence-Deficit Grounding（EDG）只能判为
+**CONDITIONAL，接近 NO-GO**：
+
+- candidate-local 高分辨率点重读与 proposal refinement 已被 PV-Ground、TSP3D、3D-SPS 等覆盖；
+- same-class distractor contrast 已被 EG-3DVG、TransRefer3D、CORE-3DVG 等直接覆盖；
+- target/attribute/relation/anchor clause 分解已被 EDA、G3-LQ、ViewSRD、ORD 等覆盖；
+- 三数据集统一主 scorer、无 post-hoc reranker 是工程合同，不是新颖性贡献；
+- 因此 C1--C3/C5 均不得在论文中作为独立创新点。
+
+唯一可能保留的窄假设改称 **Candidate-pair Counterfactual Evidence Necessity Supervision（CENS）**：
+对固定 GT--hard-negative candidate pair，只有当某 evidence expert 对区分这一候选对具有真实必要性时，移除
+该 expert 才应显著降低 GT-vs-negative margin；移除无区分力 expert 时，正负排序应保持。推理仍是完整
+evidence 的一次主 scorer 前向，不使用 gate、threshold、Parent switch 或 post-hoc reranker。
+
+CENS 与 Multi-Attribute Interactions Matter 的 counterfactual causal attention、普通 branch dropout 和
+margin regularization 高度接近，当前不能直接启动完整训练。若人工决定做唯一证伪实验，必须使用新的、未消费的
+Nr3D train-only scene-disjoint mini-fold，在不访问 7,899 formal validation 的条件下固定比较：
+
+```text
+C1-C3 concat
+C1-C3 + random branch dropout / ordinary counterfactual loss
+C1-C3 + CENS
+```
+
+只训练小 evidence heads 或冻结 V99 主干，总预算不超过 2 GPU 小时，只看单次前向 Top-1。CENS 必须同时满足：
+相对 concat `>=+0.8pp` Acc@0.25、proposal-present ranking failures 净修复至少 `3%`、原本容易/已正确样本
+下降 `<0.2pp`，且优于 random dropout/普通 counterfactual 对照。任一失败即将 CENS 判为普通 regularizer 并
+永久封存，不进入完整 Nr3D、Sr3D 或 ScanRefer 重训。
+
+本节没有授权 GPU 实验。当前 GPU 仍被独立 ScanRefer ablation queue 占用；Nr3D/Sr3D 没有活动 trainer，
+Sr3D 最新 E27/E28 分别为 `0.68379781/0.57835947` 与 `0.68362857/0.58010832`，均低于受保护 E26
+weight-average `12139/17726=68.4813%`。因此不存在需要继续等待或衰减 LR 的 Nr3D/Sr3D run。

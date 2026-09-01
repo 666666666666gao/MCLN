@@ -55,3 +55,12 @@
 1. 十个候选中是否存在高于“把已有模块接到 MCLN”的真实技术差异？
 2. 若新颖性均有限，哪一个仍最直接对应现有失败证据、最值得做一次有界诊断？
 3. 能否把候选重构为一个更小、可证伪、三数据集共用的统一机制？
+
+## 2026-09-01 独立查新结论
+
+完整报告见 `idea-stage/NOVELTY_CHECK_EDG_20260901.md`。结论为 **CONDITIONAL，接近 NO-GO**：
+
+- A--J 中的局部点重读、同类干扰物对比、文本子句/anchor 分解与统一单次 scorer 均已有直接近邻，不能单独写成创新；
+- 唯一可能保留的是 `candidate-pair-specific counterfactual evidence necessity supervision`：在固定 GT--困难负样本对上，监督移除真正必要的 evidence 会降低 margin，而移除无区分力 evidence 不改变排序；
+- 该机制必须用新的 train-only scene-disjoint mini-fold，对比同特征 concat 与 random branch dropout/普通 counterfactual loss；没有 `+0.8pp`、至少 `3%` ranking-failure 净修复且易样本退化小于 `0.2pp`，立即封存；
+- 当前只完成查新和证伪合同，**没有授权 GPU 实验**。

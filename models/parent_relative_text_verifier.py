@@ -11,6 +11,20 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
+def prepare_counterfactual_parent_score_axis(
+        parent_scores, module_training, counterfactual_training):
+    """Create the train-only differentiable score axis without unfreezing V99."""
+    if not isinstance(parent_scores, torch.Tensor):
+        raise ValueError("parent scores must be a tensor")
+    if not isinstance(module_training, bool):
+        raise ValueError("module_training must be boolean")
+    if not isinstance(counterfactual_training, bool):
+        raise ValueError("counterfactual_training must be boolean")
+    if module_training and counterfactual_training:
+        return parent_scores.detach().requires_grad_(True)
+    return parent_scores
+
 STRUCTURED_EVIDENCE_DIM = 15
 PAIR_GEOMETRY_DIM = 12
 ROW_RELIABILITY_DIM = 7

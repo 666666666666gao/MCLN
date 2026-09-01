@@ -100,6 +100,13 @@ score axis is a non-leaf gathered tensor; the audit read its `.grad` without
 retaining that gradient first. The frozen log remains at `0/2806`, and the
 original root contains no training receipt, decision, or generated weight.
 
+The zero-step proof must not rely on the initial tqdm line alone. The verifier
+must reject any positive `N/2806` counter and must also bind the old source
+closure proving the failure is input-independent: verifier-only mode left the
+MCLN root in eval mode, the training-only differentiable score-axis branch was
+therefore unreachable, the compact gathered score was not retained, and the
+unconditional post-backward check preceded every `optimizer.step()`.
+
 The original root must never be deleted, renamed, reused, or completed in
 place. A recovery attempt is permitted only when a reviewed verifier proves,
 from exact file SHA-256 values and the old runtime closure, that the failure
@@ -108,11 +115,18 @@ must use a new trust root, launcher identity, experiment name, and one-shot
 audit root. It must snapshot the reviewed failure-evidence manifest and verify
 the old failure both before and after execution.
 
-The only scientific-code correction permitted by this recovery is to retain
-the actual and counterfactual score-axis gradients before backward. It must not
-change the A-V4 model, losses, trainable groups, data, E57 input, batch count,
-learning rates, candidate rules, mechanism gates, or permanent prohibition on
-long training.
+The only scientific-code corrections permitted by this recovery are to:
+
+1. activate the MCLN root training semantic required to build the already
+   specified actual/CF score axes, while keeping every frozen child module in
+   eval mode and only the three allowlisted modules in train mode;
+2. create the actual audit score axis as a detached differentiable leaf before
+   verifier/loss forward, without unfreezing or modifying the V99 Parent;
+3. retain the actual and counterfactual score-axis gradients before backward.
+
+These corrections must not change the A-V4 heads or losses, trainable groups,
+data, E57 input, batch count, learning rates, candidate rules, mechanism gates,
+deployment/default-off behavior, or permanent prohibition on long training.
 
 ## 7. Permanent exclusions
 

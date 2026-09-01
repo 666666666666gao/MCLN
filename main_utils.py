@@ -7236,6 +7236,18 @@ class BaseTrainTester:
         model.eval()
         unwrapped = model.module if hasattr(model, "module") else model
         if parent_relative_text_verifier_only:
+            if bool(getattr(
+                    args,
+                    "parent_relative_text_verifier_counterfactual_training",
+                    False,
+            )):
+                # Only the MCLN root training bit controls construction of the
+                # differentiable actual score leaf and the training-only
+                # counterfactual views.  Do not call train() here: every frozen
+                # child must remain in eval mode for exact V99 Parent behavior.
+                unwrapped.training = True
+                if model is not unwrapped:
+                    model.training = True
             for module_name in (
                     "structured_slot_builder", "sacr_head",
                     "parent_relative_text_verifier"):

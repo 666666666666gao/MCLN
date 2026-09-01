@@ -36,6 +36,7 @@ from .parent_relative_text_verifier import (
     build_counterfactual_parent_views,
     build_parent_relative_detector_valid,
     build_parent_relative_text_verifier_batch,
+    prepare_counterfactual_parent_score_axis,
 )
 from .source_moe import SourceMoE
 from .mask_fusion import (
@@ -2557,12 +2558,13 @@ class MCLN(nn.Module):
                 global_only_mask=global_only,
                 weak_generic_target_mask=weak_generic,
             )
-            verifier_parent_scores = parent_scores
-            if (self.training
-                    and self.parent_relative_text_verifier_counterfactual_training):
-                verifier_parent_scores = (
-                    parent_scores.detach().requires_grad_(True)
-                )
+            verifier_parent_scores = prepare_counterfactual_parent_score_axis(
+                parent_scores,
+                module_training=bool(self.training),
+                counterfactual_training=bool(
+                    self.parent_relative_text_verifier_counterfactual_training
+                ),
+            )
             verifier_batch = build_parent_relative_text_verifier_batch(
                 build_full_rec_query_state(end_points, inputs),
                 decoder_query_last,

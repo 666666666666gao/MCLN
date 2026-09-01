@@ -150,6 +150,59 @@ def test_counterfactual_gradient_audit_retains_nonleaf_actual_score_axis():
     assert counterfactual_axis.grad.abs().sum().item() > 0.0
 
 
+def test_counterfactual_verifier_only_mode_enables_root_training_semantics_only():
+    import main_utils
+
+    class ModeProbe(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.frozen_backbone = torch.nn.Sequential(
+                torch.nn.Linear(2, 2), torch.nn.Dropout(p=0.5)
+            )
+            self.structured_slot_builder = torch.nn.Linear(2, 2)
+            self.sacr_head = torch.nn.Linear(2, 2)
+            self.parent_relative_text_verifier = torch.nn.Linear(2, 2)
+
+    model = ModeProbe().train()
+    args = types.SimpleNamespace(
+        parent_relative_text_verifier_train_only=True,
+        parent_relative_text_verifier_counterfactual_training=True,
+    )
+    main_utils.BaseTrainTester._set_source_moe_train_mode(model, args)
+
+    # MCLN.forward uses only the root training bit to create differentiable
+    # actual/CF score axes.  Frozen children must remain in eval mode.
+    assert model.training is True
+    assert model.frozen_backbone.training is False
+    assert all(not child.training for child in model.frozen_backbone.modules())
+    assert model.structured_slot_builder.training is True
+    assert model.sacr_head.training is True
+    assert model.parent_relative_text_verifier.training is True
+
+
+def test_legacy_verifier_only_mode_keeps_root_in_eval_without_counterfactuals():
+    import main_utils
+
+    class ModeProbe(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.frozen_backbone = torch.nn.Dropout(p=0.5)
+            self.structured_slot_builder = torch.nn.Linear(2, 2)
+            self.sacr_head = torch.nn.Linear(2, 2)
+            self.parent_relative_text_verifier = torch.nn.Linear(2, 2)
+
+    model = ModeProbe().train()
+    args = types.SimpleNamespace(
+        parent_relative_text_verifier_train_only=True,
+        parent_relative_text_verifier_counterfactual_training=False,
+    )
+    main_utils.BaseTrainTester._set_source_moe_train_mode(model, args)
+
+    assert model.training is False
+    assert model.frozen_backbone.training is False
+    assert model.parent_relative_text_verifier.training is True
+
+
 def test_spec_permanently_excludes_unrelated_routes_and_long_training():
     source = SPEC.read_text(encoding="utf-8")
     for fragment in (

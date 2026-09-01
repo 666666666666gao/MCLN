@@ -74,6 +74,18 @@ def test_zero_step_proof_requires_first_batch_progress_counter():
         )
 
 
+def test_zero_step_proof_rejects_any_later_positive_progress_counter():
+    verifier = _load_verifier()
+    combined_log = (
+        _failed_launch_log()
+        + b"  1%|          | 1/2806 [00:11<08:00,  5.84it/s]\n"
+    )
+    with pytest.raises(ValueError, match="positive progress"):
+        verifier._verify_zero_step_control_flow(
+            _failed_main_source(), combined_log
+        )
+
+
 def test_frozen_failure_evidence_declares_no_training_artifacts():
     evidence = json.loads(EVIDENCE_PATH.read_text(encoding="utf-8"))
     assert evidence["schema"] == (

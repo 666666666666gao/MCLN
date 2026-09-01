@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import pathlib
+import re
 import stat
 import sys
 
@@ -123,6 +124,7 @@ def _verify_code_snapshot(root, runtime_manifest_raw):
             expected_mode="0444",
             expected_owner="65532:65532",
         )
+    return records
 
 
 def _verify_zero_step_control_flow(main_raw, launch_raw):
@@ -150,11 +152,64 @@ def _verify_zero_step_control_flow(main_raw, launch_raw):
     for fragment in required_log_fragments:
         if fragment not in launch_text:
             raise ValueError("failed launch log lacks marker: " + fragment)
+    if re.search(r"(?<![0-9])(?:[1-9][0-9]*)/2806", launch_text):
+        raise ValueError("failed launch contains positive progress")
     for forbidden in (
             "Train: [58]", "train_audit_receipt_epoch_58.json",
             "bounded_audit_receipt=validated", "optimizer_step_count"):
         if forbidden in launch_text:
             raise ValueError("failed launch unexpectedly progressed: " + forbidden)
+
+
+def _verify_first_batch_failure_is_input_independent(
+        main_raw, mcln_raw, verifier_raw):
+    """Prove the frozen bug must fail on the first yielded training batch."""
+    main_text = main_raw.decode("utf-8")
+    mcln_text = mcln_raw.decode("utf-8")
+    verifier_text = verifier_raw.decode("utf-8")
+
+    mode_start = main_text.index("    def _set_source_moe_train_mode(")
+    mode_end = main_text.index("    def train_one_epoch(", mode_start)
+    mode_text = main_text[mode_start:mode_end]
+    required_mode_fragments = (
+        "model.eval()",
+        "if parent_relative_text_verifier_only:",
+        '"structured_slot_builder", "sacr_head",',
+        '"parent_relative_text_verifier"',
+        "module.train()",
+    )
+    if any(fragment not in mode_text for fragment in required_mode_fragments):
+        raise ValueError("failed train-mode contract changed")
+    if "unwrapped.training = True" in mode_text:
+        raise ValueError("failed train mode unexpectedly enabled MCLN root")
+
+    required_mcln_fragments = (
+        "verifier_parent_scores = parent_scores",
+        "if (self.training",
+        "and self.parent_relative_text_verifier_counterfactual_training):",
+        "parent_scores.detach().requires_grad_(True)",
+        "verifier_batch[\"default_scores\"].retain_grad()",
+    )
+    if any(fragment not in mcln_text for fragment in required_mcln_fragments):
+        raise ValueError("failed MCLN score-axis contract changed")
+
+    build_start = verifier_text.index(
+        "def build_parent_relative_text_verifier_batch("
+    )
+    build_end = verifier_text.index(
+        "def build_counterfactual_parent_views(", build_start
+    )
+    build_text = verifier_text[build_start:build_end]
+    if (
+            '\"default_scores\": _gather_query_values(' not in build_text
+            or "retain_grad()" in build_text):
+        raise ValueError("failed compact score-axis construction changed")
+
+    # The fixed config enables the audit flag.  The frozen train-mode code
+    # leaves MCLN.training false, so its only detach/requires_grad/retain branch
+    # is unreachable.  The compact score is a gather result and is never
+    # retained; the unconditional post-backward grad check therefore raises on
+    # the first yielded batch, before the first optimizer.step().
 
 
 def verify_failed_attempt(evidence_path, expected_evidence_sha256,
@@ -214,7 +269,9 @@ def verify_failed_attempt(evidence_path, expected_evidence_sha256,
             or set(input_files) != expected_input_files):
         raise ValueError("failed input-snapshot file set changed")
     runtime_manifest_raw = raw_by_relative[RUNTIME_MANIFEST_RELATIVE_PATH]
-    _verify_code_snapshot(root / "code_snapshot", runtime_manifest_raw)
+    runtime_records = _verify_code_snapshot(
+        root / "code_snapshot", runtime_manifest_raw
+    )
 
     non_snapshot_files, _ = _walk_regular_files(
         root, skipped_top_level=("code_snapshot", "input_snapshot")
@@ -276,6 +333,27 @@ def verify_failed_attempt(evidence_path, expected_evidence_sha256,
     _verify_zero_step_control_flow(
         raw_by_relative["code_snapshot/main_utils.py"],
         raw_by_relative["runtime_output/launch.log"],
+    )
+    mcln_record = runtime_records["models/mcln.py"]
+    verifier_record = runtime_records[
+        "models/parent_relative_text_verifier.py"
+    ]
+    _verify_first_batch_failure_is_input_independent(
+        raw_by_relative["code_snapshot/main_utils.py"],
+        _read_regular(
+            root / "code_snapshot/models/mcln.py",
+            mcln_record.get("sha256"),
+            expected_size=mcln_record.get("size"),
+            expected_mode="0444",
+            expected_owner="65532:65532",
+        ),
+        _read_regular(
+            root / "code_snapshot/models/parent_relative_text_verifier.py",
+            verifier_record.get("sha256"),
+            expected_size=verifier_record.get("size"),
+            expected_mode="0444",
+            expected_owner="65532:65532",
+        ),
     )
     needle_root = str(root).encode("utf-8")
     needle_exp = evidence["experiment"].encode("utf-8")

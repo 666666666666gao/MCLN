@@ -12983,3 +12983,50 @@ GitHub。
 scheduler。只评估 held-out train scenes，不访问正式 `7899` 行；仅当 fixed 的 REC@0.25 为正、REC@0.50
 非负且 view-dependent 子集改善时，才允许进入完整 Nr3D 以及后续 Sr3D/ScanRefer 同架构验证。旧章节七、
 章节八、E0--E7、baseline 公平复现、parser/spaCy sidecar 与已封存 Gate/Relation-CF/Density 路线均不恢复。
+
+
+### 20.17 Nr3D 视角增强修复的配对审计预注册与稀疏轮询（2026-09-01 22:18 CST）
+
+在 §20.15 已确认数据缺陷、§20.16 已完成源码发布后，本轮只推进可验证的下一步，没有把“修复 2,155 行”
+直接包装为 REC 提升。旧 `refine-logs/EXPERIMENT_PLAN.md` 仍是 2026-08-15 的 V132/V133 路线，已超过
+24 小时且与用户后续封存 Gate/旧矩阵的决定冲突，因此按输出版本协议保留旧时间戳历史，并由新的
+Nr3D view-augmentation old-vs-fixed 配对审计替换 fixed pointer。
+
+新计划、tracker 与 split census 已发布到 GitHub main commit
+`57aecb2f7dc10264fb4e62a9545ba4898b61c87c`：
+
+- `refine-logs/EXPERIMENT_PLAN_20260901_220626.md` 与 fixed latest；
+- `refine-logs/EXPERIMENT_TRACKER_20260901_220626.md` 与 fixed latest；
+- `refine-logs/VIEW_AUG_PAIR_SPLIT_CENSUS_20260901_221116.json`；
+- `MANIFEST.md` 的五条对应记录。
+
+split 在观察 counts 和任何模型指标前固定为：
+
+```text
+salt = MCLN-NR3D-VIEW-AUG-PAIR-V1-20260901
+fold = int(sha256(salt + NUL + scan_id)[:8], 16) % 5
+holdout_fold = 0
+```
+
+随后只读 Nr3D train census 得到：
+
+| Partition | Scenes | Rows | View-dependent rows | Old allow→fixed block | Sample identity SHA256 |
+|---|---:|---:|---:|---:|---|
+| Fit | `404` | `25,768` | `9,589` | `1,693` | `1cd8a48e...4f16ff` |
+| Holdout | `107` | `7,151` | `2,718` | `462` | `8ea53150...231967` |
+
+scene overlap=0、scene union=511、row union=32,919；修复影响数 `1,693+462=2,155` 与 §20.15 原始审计
+完全一致。输入 `nr3d_train_scans.txt` 与 `nr3d.csv` SHA256 分别为
+`df7d2823...d27508` 与 `5de4f1b4...996a67`。这些 counts 只补齐预注册身份，不允许更换 salt/fold。
+
+唯一科学门固定为：fixed 相对 old 的 held-out train Overall REC@0.25 hits 严格增加、REC@0.50
+非负，且 view-dependent REC@0.25 hits 严格增加；两角色必须使用同一受保护 E57、相同 row/batch/step、
+optimizer 和 scheduler，正式 7,899-row access=0、持久生成权重=0。任一门失败即只保留数据一致性修复，
+不允许扫描 split、词表、LR、epoch 或增强概率。该计划不是 baseline 公平复现，也不恢复旧章节七/八、
+E0--E7、FPR/A-V4、Relation-CF、Density 或 parser/spaCy。
+
+本轮没有写 GPU launcher 或训练循环。新 split 公共 seam 尚未由用户明确确认，按 TDD 规范不能先写假想测试
+再倒推接口；同时两张 GPU 仍被独立 ScanRefer 队列占用。为遵守稀疏轮询要求，已安排两次只读一次性采集：
+`2026-09-01 23:35 CST` 检查 `05_rapf_no_query_quality` E15，`2026-09-02 01:15 CST` 检查
+`12_sacr_no_pairwise_geometry` E15。采集只读取 trainer 句柄和最新完整 JSON，不自动改变 LR、scheduler、
+进程或权重。两行 E5→E10 均明显上升，因此在新完整验证证据出现前继续保持原 LR。

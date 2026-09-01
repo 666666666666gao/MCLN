@@ -131,16 +131,16 @@ readonly SOURCE_CHECKPOINT="${OUTPUT_ROOT}/control/tier_hard_query_e57_e58_e62_p
 readonly SOURCE_CHECKPOINT_SHA256="fe1e2047b3c4d5ed0aae3569418abff5a65f5608edcb7f34d01ffab1ee1f6655"
 readonly GROUPFREE_CHECKPOINT="${DATA_ROOT%/}/gf_detector_l6o256.pth"
 readonly GROUPFREE_SHA256="9ff3e25070bf48a0b70240e098a89be6bfd26a92af863e71698a0737fc6e54f2"
-readonly DATA_MANIFEST="${OUTPUT_ROOT}/control/fpr_tv_audit/nr3d_train_input_manifest_v1.json"
-readonly DATA_MANIFEST_SHA256="ce0e287856363fce2c6cb119617798ff98470aaba331d8239fbc32ffcdc93259"
-readonly RUNTIME_MANIFEST="${SOURCE_ROOT}/scripts/fpr_tv_counterfactual_parent_runtime_manifest_v1.json"
-readonly RUNTIME_MANIFEST_SHA256="20b8cc58afbab752dc10bb8674dbe9ed9adbe01779a0b028292b63d3903c6418"
-readonly REQUIRED_TRAIN_ENTRY_SHA256="a4ba1d95e1c09391aebd9ed80644dfdaca54ff3599711050b7b08d00f884cceb"
-readonly REQUIRED_MAIN_UTILS_SHA256="8c6a331c60aca82bd6b9eefc98235d746fb4cb0fddb3dd8af3820683f6319a7a"
+readonly DATA_MANIFEST="${SOURCE_ROOT}/scripts/nr3d_fpr_tv_av4_train_only_data_manifest_v2.json"
+readonly DATA_MANIFEST_SHA256="155e2233efbe5c312c19c6dc709ce8c564c601d50e73d6907a3702f000d9d173"
+readonly RUNTIME_MANIFEST="${SOURCE_ROOT}/scripts/fpr_tv_counterfactual_parent_runtime_manifest_v2.json"
+readonly RUNTIME_MANIFEST_SHA256="76ac589281f4b89fb9ec71e3d1916957a6cb8eb6e3ba6ef8add8a746b65e6bdf"
+readonly REQUIRED_TRAIN_ENTRY_SHA256="add7ad10e5a91248ccf1c593a280df73b6a19c2cdc3b53b898ce2f64be628c64"
+readonly REQUIRED_MAIN_UTILS_SHA256="11505f8787b93202e7038c6a71de87cf4a2dc85f9ef5e8ba92b67b7c43a4b5c0"
 readonly REQUIRED_LOSSES_SHA256="54a74ba522d57d74e934f60a6f8a8becdbe0f188ab99c948ea55c436fbd9fe36"
 readonly REQUIRED_VERIFIER_SHA256="744b714c339a823c76739685f7d7cea3be0381dad4c7d0d00f4f02c08e58e32a"
 readonly REQUIRED_VERIFIER_TEST_SHA256="ed484753a7ba41f8cdcd1cf5ff63112cd4aae3a648db7c7d4780f783a9664cdc"
-readonly REQUIRED_SPEC_SHA256="f67c54d7030abbc09beaa8619ae51f52654cdd9bb1bcc7cd448564ed1a3e761c"
+readonly REQUIRED_SPEC_SHA256="befba370c82b549b0545c1977fac88b578de8f012f4a86943c58d1dd19e10246"
 readonly REQUIRED_MODEL_SHA256="5a605328a6d12d610a479ec40f039f91708edcd6c3ce5d559ea4e1494026952c"
 readonly REQUIRED_SELECTOR_SHA256="61211cea91de4c3f3c11e44bc5ff035711307f3381d5a4069d4ab7842bee17dc"
 readonly REQUIRED_DATASET_SHA256="800bac2caf9b7a319bdc200f60386000e4e374a559d9581113a8eb57d525f9f0"
@@ -252,7 +252,7 @@ if hashlib.sha256(raw).hexdigest() != expected_sha:
     raise SystemExit("runtime manifest SHA-256 mismatch")
 manifest = json.loads(raw.decode("utf-8"))
 if manifest.get("schema") != (
-        "mcln-fpr-tv-counterfactual-parent-reviewed-runtime-v1"):
+        "mcln-fpr-tv-counterfactual-parent-reviewed-runtime-v2"):
     raise SystemExit("unexpected runtime manifest schema")
 records = manifest.get("files")
 if not isinstance(records, dict) or len(records) != manifest.get("file_count"):
@@ -391,11 +391,9 @@ manifest_path = os.environ["DATA_MANIFEST_ENV"]
 expected_sha = os.environ["DATA_MANIFEST_SHA_ENV"]
 expected_sources = [
     "train_v3scans.pkl",
-    "val_v3scans.pkl",
     "refer_it_3d/nr3d.csv",
     "roberta-base",
     "superpoints/train",
-    "superpoints/val",
     "group_free_pred_bboxes/group_free_pred_bboxes_train",
 ]
 
@@ -423,7 +421,7 @@ with open(manifest_path, "rb") as handle:
 if hashlib.sha256(raw).hexdigest() != expected_sha:
     raise SystemExit("dataset manifest SHA changed")
 manifest = json.loads(raw.decode("utf-8"))
-if manifest.get("schema") != "mcln-nr3d-fpr-tv-audit-data-manifest-v1":
+if manifest.get("schema") != "mcln-nr3d-fpr-tv-av4-train-only-data-manifest-v2":
     raise SystemExit("dataset manifest schema changed")
 if manifest.get("data_root") != root:
     raise SystemExit("dataset manifest root changed")
@@ -641,8 +639,8 @@ mkdir "${INPUT_ROOT}" "${RUNTIME_OUTPUT}" "${RUNTIME_HOME}" \
   "${CODE_SNAPSHOT}"
 readonly RESUME_SNAPSHOT="${INPUT_ROOT}/protected_e57.pth"
 readonly GROUPFREE_SNAPSHOT="${INPUT_ROOT}/gf_detector_l6o256.pth"
-readonly DATA_MANIFEST_SNAPSHOT="${INPUT_ROOT}/nr3d_train_input_manifest_v1.json"
-readonly RUNTIME_MANIFEST_SNAPSHOT="${INPUT_ROOT}/fpr_tv_counterfactual_parent_runtime_manifest_v1.json"
+readonly DATA_MANIFEST_SNAPSHOT="${INPUT_ROOT}/nr3d_fpr_tv_av4_train_only_data_manifest_v2.json"
+readonly RUNTIME_MANIFEST_SNAPSHOT="${INPUT_ROOT}/fpr_tv_counterfactual_parent_runtime_manifest_v2.json"
 verify_or_copy_runtime_closure copy "${SOURCE_ROOT}" "${CODE_SNAPSHOT}"
 verify_or_copy_runtime_closure verify-snapshot "${CODE_SNAPSHOT}"
 copy_independent_input "${SOURCE_CHECKPOINT}" "${RESUME_SNAPSHOT}" \

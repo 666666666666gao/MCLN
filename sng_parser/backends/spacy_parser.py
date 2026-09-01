@@ -19,12 +19,123 @@ from .. import database
 from ..parser import Parser
 from .backend import ParserBackend
 import json
+import os
 
 from tkinter import _flatten
 
 from src.scannet_classes import SCANNET_OBJECTS, UNIQUE_SR3D_OBJECTS, SR3D_OBJECTS, REL_ALIASES, VIEW_DEP_RELS
 
 __all__ = ['SpacyParser']
+
+
+DEFAULT_TARGET_SELECTION = 'first_object'
+CONSERVATIVE_SYNTAX_TARGET_SELECTION = 'conservative_syntax_v1'
+SUPPORTED_TARGET_SELECTIONS = frozenset({
+    DEFAULT_TARGET_SELECTION,
+    CONSERVATIVE_SYNTAX_TARGET_SELECTION,
+})
+_COMMAND_LEMMAS = frozenset({
+    'choose', 'find', 'identify', 'locate', 'pick', 'select',
+})
+_GENERIC_SUBJECTS = frozenset({
+    'i', 'it', 'one', 'there', 'they', 'we', 'you',
+})
+_SCENE_BACKGROUNDS = frozenset({'ceiling', 'floor', 'room', 'wall'})
+_FOCUS_DEPS = frozenset({
+    'attr', 'dobj', 'obj', 'oprd', 'nsubj', 'nsubjpass',
+})
+_ANCHOR_DEPS = frozenset({'obl', 'pobj'})
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.realpath(__file__)
+)))
+_MAPPING_FULL2RIO27_PATH = os.path.join(
+    _PROJECT_ROOT, 'mapping_full2rio27.json'
+)
+
+
+def _default_main_entity_index(entities):
+    for index, entity in enumerate(entities):
+        if (entity['head_type'] == 'Object'
+                and entity['lemma_head'] not in ('wall', 'floor')):
+            return index
+    return None
+
+
+def _conservative_syntax_main_entity_index(
+        doc, entity_chunks, entities, baseline_index):
+    """Select a likely referent using raw syntax only.
+
+    This intentionally abstains to the legacy first-object decision unless a
+    high-confidence imperative, inversion, or copular construction is found.
+    Dataset labels, object ids, scene geometry, and manual annotations are not
+    accepted by this function.
+    """
+    if baseline_index is None:
+        return None
+    current_chunk = entity_chunks[baseline_index]
+    current = entities[baseline_index]
+    roots = [token for token in doc if token.dep_ == 'ROOT']
+    root_lemma = roots[0].lemma_.lower() if roots else ''
+
+    if root_lemma in _COMMAND_LEMMAS:
+        has_referential_one = any(
+            token.lemma_.lower() == 'one' and token.dep_ in _FOCUS_DEPS
+            for token in doc
+        )
+        if not has_referential_one:
+            for index, (chunk, entity) in enumerate(zip(
+                    entity_chunks, entities)):
+                if (chunk.root.dep_ in ('attr', 'dobj', 'obj', 'oprd')
+                        and entity['head_type'] == 'Object'
+                        and entity['lemma_head'] not in _SCENE_BACKGROUNDS):
+                    return index
+
+    focus = [
+        (index, chunk, entity)
+        for index, (chunk, entity) in enumerate(zip(entity_chunks, entities))
+        if (chunk.root.dep_ in _FOCUS_DEPS
+            and entity['head_type'] == 'Object')
+    ]
+    if not focus:
+        return baseline_index
+
+    if current_chunk.root.dep_ in _ANCHOR_DEPS:
+        for index, chunk, entity in focus:
+            if (chunk.root.i > current_chunk.root.i
+                    and entity['lemma_head'] not in _SCENE_BACKGROUNDS):
+                return index
+
+    if root_lemma == 'be':
+        non_generic = [
+            (index, chunk, entity)
+            for index, chunk, entity in focus
+            if (chunk.root.lemma_.lower() not in _GENERIC_SUBJECTS
+                and entity['lemma_head'] not in _SCENE_BACKGROUNDS)
+        ]
+        if non_generic and (
+                current_chunk.root.dep_ in _ANCHOR_DEPS
+                or current['lemma_head'] in _SCENE_BACKGROUNDS):
+            non_generic.sort(key=lambda item: (
+                item[1].root.dep_ not in ('nsubj', 'nsubjpass', 'attr'),
+                item[1].root.i,
+            ))
+            return non_generic[0][0]
+
+    return baseline_index
+
+
+def _select_main_entity_index(
+        doc, entity_chunks, entities, target_selection):
+    if target_selection not in SUPPORTED_TARGET_SELECTIONS:
+        raise ValueError(
+            'unsupported target_selection: {}'.format(target_selection)
+        )
+    baseline_index = _default_main_entity_index(entities)
+    if target_selection == DEFAULT_TARGET_SELECTION:
+        return baseline_index
+    return _conservative_syntax_main_entity_index(
+        doc, entity_chunks, entities, baseline_index
+    )
 
 @Parser.register_backend
 class SpacyParser(ParserBackend):
@@ -63,7 +174,8 @@ class SpacyParser(ParserBackend):
         
         # note object class
         # 1. mapping_full2rio27.json 
-        self.mapping_full2rio27 = json.load(open("mapping_full2rio27.json", "r"))
+        with open(_MAPPING_FULL2RIO27_PATH, "r") as mapping_handle:
+            self.mapping_full2rio27 = json.load(mapping_handle)
         self.obj_cls = list(self.mapping_full2rio27.keys())
         # 2. src/scannet_classes.py 
         self.obj_cls = self.obj_cls + SCANNET_OBJECTS + UNIQUE_SR3D_OBJECTS + SR3D_OBJECTS
@@ -72,7 +184,8 @@ class SpacyParser(ParserBackend):
     ##############################
     # BRIEF Main parsing process #
     ##############################
-    def parse(self, sentence, return_doc=False):
+    def parse(self, sentence, return_doc=False,
+              target_selection=DEFAULT_TARGET_SELECTION):
         doc = self.nlp(sentence)
 
         # STEP 1. Parse entities and their modifiers, stord in [entities]
@@ -170,16 +283,15 @@ class SpacyParser(ParserBackend):
         main_entity_id = 0
         tmp_entity_chunks = []
         tmp_entity = []
-        for idx, entity in enumerate(filter_entity_chunks):
-            # main entity
-            if (main_entity == None) and (filter_entities[idx]['head_type']=='Object') \
-                and filter_entities[idx]['lemma_head'] not in ['wall', 'floor']:
-                filter_entities[idx]['ent_id'] = 0
-                main_entity = filter_entities[idx]
-                main_entity_id = idx
-                tmp_entity_chunks.append(entity)
-                tmp_entity.append(filter_entities[idx])
-                break
+        selected_main_index = _select_main_entity_index(
+            doc, filter_entity_chunks, filter_entities, target_selection
+        )
+        if selected_main_index is not None:
+            filter_entities[selected_main_index]['ent_id'] = 0
+            main_entity = filter_entities[selected_main_index]
+            main_entity_id = selected_main_index
+            tmp_entity_chunks.append(filter_entity_chunks[selected_main_index])
+            tmp_entity.append(filter_entities[selected_main_index])
 
         for idx, entity in enumerate(filter_entity_chunks):
             # mark as occupied
@@ -647,27 +759,9 @@ def find_char_span_by_token_idx(id, doc):
     the input idx of the word 'chair' is 1
     the output char span is [4,9]
     '''
-    doc_text = doc.text + ' ABCDEF'
-    token_list = doc_text.split()
-    
-    token_text = doc[id].text
-    # # NOTE !!! If an exception is triggered here, it is usually due to a typo in the input text. 
-    # You can correct the input text manually or comment this line.
-    assert token_text in token_list[id]     
-    if token_text != token_list[id]:
-        return []
-    
-    # new sentence
-    # eg. the chair is ...
-    # eg. chair is on ...
-    # eg. is on the ...
-    new_sen = ' '.join(token_list[id:])
-
-    # start
-    char_star = doc_text.find(new_sen)
-    # lenth
-    lenth_ = len(token_text)
-    # end
-    char_end = char_star + lenth_
-
-    return [char_star, char_end]
+    token = doc[id]
+    char_start = token.idx
+    char_end = char_start + len(token.text)
+    if doc.text[char_start:char_end] != token.text:
+        raise ValueError("spaCy token character offset is inconsistent")
+    return [char_start, char_end]

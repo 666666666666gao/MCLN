@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Cache deterministic full-dataset ScanRefer REC geometry sidecars."""
+"""Cache deterministic full-dataset REC geometry sidecars."""
 
 import argparse
 import copy
@@ -24,6 +24,7 @@ from models.rec_candidate_adapter import (
     attach_candidate_targets,
     build_rec_candidate_batch,
 )
+from models.rec_evaluator_filter import build_detector_overlap_valid
 from models.rec_mask_geometry import (
     DEFAULT_REC_MASK_GEOMETRY_VARIANTS,
     MASK_GEOMETRY_SCHEMA_VERSION,
@@ -227,20 +228,55 @@ def _validated_annotation_snapshot(data_root, split):
     return snapshot
 
 
+def _canonical_dataset_annotation_sha256(dataset):
+    """Bind a dataset-only cache to the ordered live annotation identities."""
+    annos = getattr(dataset, "annos", None)
+    if not isinstance(annos, list) or not annos:
+        raise ValueError("dataset annotations are unavailable")
+    identities = []
+    for index, annotation in enumerate(annos):
+        if not isinstance(annotation, dict):
+            raise ValueError("dataset annotation {} is malformed".format(index))
+        try:
+            identities.append({
+                "dataset_index": index,
+                "scan_id": str(annotation["scan_id"]),
+                "target_id": int(annotation["target_id"]),
+                "utterance": str(annotation.get(
+                    "utterance", annotation.get("description", "")
+                )),
+            })
+        except (KeyError, TypeError, ValueError) as error:
+            raise ValueError(
+                "dataset annotation {} identity is invalid: {}".format(
+                    index, error
+                )
+            )
+    return canonical_json_sha256(identities)
+
+
 def _build_validated_dataset(
-        config, split, data_root, dataset_builder=None):
+        config, split, data_root, dataset_name="scanrefer",
+        portable_provenance=False, dataset_builder=None):
     if dataset_builder is None:
         dataset_builder = _build_dataset
-    before = _validated_annotation_snapshot(data_root, split)
-    dataset = dataset_builder(config, split)
-    after = _validated_annotation_snapshot(data_root, split)
-    if (before["sha256"] != after["sha256"]
-            or before["identity"] != after["identity"]
-            or before["path"] != after["path"]):
-        raise ValueError(
-            "annotation JSON changed during dataset construction"
-        )
-    return dataset, before["sha256"]
+    if not portable_provenance:
+        before = _validated_annotation_snapshot(data_root, split)
+        dataset = dataset_builder(config, split)
+        after = _validated_annotation_snapshot(data_root, split)
+        if (before["sha256"] != after["sha256"]
+                or before["identity"] != after["identity"]
+                or before["path"] != after["path"]):
+            raise ValueError(
+                "annotation JSON changed during dataset construction"
+            )
+        return dataset, before["sha256"]
+    dataset = dataset_builder(config, split, dataset_name)
+    before = _canonical_dataset_annotation_sha256(dataset)
+    after = _canonical_dataset_annotation_sha256(dataset)
+    if before != after:
+        raise ValueError("dataset annotation identities changed in memory")
+    return dataset, before
 
 
 def parse_args(argv=None):
@@ -251,6 +287,12 @@ def parse_args(argv=None):
         )
     )
     parser.add_argument("--split", choices=("train", "val"), required=True)
+    parser.add_argument(
+        "--dataset",
+        choices=("scanrefer", "nr3d", "sr3d"),
+        default="scanrefer",
+        help="dataset-only source; non-ScanRefer use requires portable provenance",
+    )
     parser.add_argument("--data-root", required=True)
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--base-cache", required=True)
@@ -262,6 +304,14 @@ def parse_args(argv=None):
         help=(
             "Bind extraction to the supplied checkpoint and complete caches "
             "instead of the protected epoch-71 snapshot."
+        ),
+    )
+    parser.add_argument(
+        "--allow-butd-cls",
+        action="store_true",
+        help=(
+            "Permit the baseline-compatible GT proposal / predicted-class "
+            "input contract for portable Nr3D or Sr3D extraction."
         ),
     )
     parser.add_argument(
@@ -313,6 +363,12 @@ def parse_args(argv=None):
         parser.error(
             "--audit-train-cache requires --portable-provenance"
         )
+    if args.allow_butd_cls and (
+            not args.portable_provenance
+            or args.dataset not in ("nr3d", "sr3d")):
+        parser.error(
+            "--allow-butd-cls requires portable Nr3D or Sr3D provenance"
+        )
     if args.portable_provenance:
         if args.audit_train_cache is None:
             if args.split == "train":
@@ -321,6 +377,8 @@ def parse_args(argv=None):
                 parser.error(
                     "portable val extraction requires --audit-train-cache"
                 )
+    elif args.dataset != "scanrefer":
+        parser.error("non-ScanRefer geometry requires --portable-provenance")
     return args
 
 
@@ -419,7 +477,8 @@ def _backbone_config_from_config(config):
 def validate_source_provenance(
         split, base_binding, base_manifest, checkpoint_sha256,
         checkpoint_epoch, config, source_dataset_size, data_root,
-        portable_provenance=False):
+        portable_provenance=False, dataset_name="scanrefer",
+        allow_butd_cls=False):
     """Reject any source other than the approved complete production inputs."""
     if split not in EXPECTED_DATASET_SIZES:
         raise ValueError("split must be train or val")
@@ -468,7 +527,18 @@ def validate_source_provenance(
     if resolved_data_root != resolved_declared_root:
         raise ValueError("live data root does not match base cache data root")
 
-    expected_size = EXPECTED_DATASET_SIZES[split]
+    if portable_provenance:
+        declared_dataset = str(base_manifest.get("dataset", "scanrefer"))
+        if declared_dataset != dataset_name:
+            raise ValueError("base cache dataset does not match requested dataset")
+        expected_size = base_manifest.get("dataset_size")
+        if (not isinstance(expected_size, int)
+                or isinstance(expected_size, bool) or expected_size <= 0):
+            raise ValueError("portable base cache dataset size is invalid")
+    else:
+        if dataset_name != "scanrefer":
+            raise ValueError("authoritative provenance is ScanRefer-only")
+        expected_size = EXPECTED_DATASET_SIZES[split]
     manifest_sizes = (
         base_manifest.get("sample_count"),
         base_manifest.get("dataset_size"),
@@ -490,12 +560,20 @@ def validate_source_provenance(
             "current dataset is not the approved full source dataset"
         )
 
-    expected_shards = EXPECTED_BASE_SHARD_COUNTS[split]
-    if (not isinstance(base_binding.get("shards"), list)
-            or len(base_binding["shards"]) != expected_shards
-            or not isinstance(base_manifest.get("shards"), list)
-            or len(base_manifest["shards"]) != expected_shards):
-        raise ValueError("base cache shard count is not the approved source")
+    if portable_provenance:
+        if (not isinstance(base_binding.get("shards"), list)
+                or not base_binding["shards"]
+                or not isinstance(base_manifest.get("shards"), list)
+                or len(base_binding["shards"])
+                != len(base_manifest["shards"])):
+            raise ValueError("portable base cache shard binding is invalid")
+    else:
+        expected_shards = EXPECTED_BASE_SHARD_COUNTS[split]
+        if (not isinstance(base_binding.get("shards"), list)
+                or len(base_binding["shards"]) != expected_shards
+                or not isinstance(base_manifest.get("shards"), list)
+                or len(base_manifest["shards"]) != expected_shards):
+            raise ValueError("base cache shard count is not the approved source")
     expected_rule = {
         "topk_per_source": PRODUCTION_TOPK_PER_SOURCE,
         "max_candidates": PRODUCTION_MAX_CANDIDATES,
@@ -522,7 +600,7 @@ def validate_source_provenance(
         "use_height": False,
         "use_multiview": False,
         "butd_gt": False,
-        "butd_cls": False,
+        "butd_cls": bool(allow_butd_cls),
     }
     if (
             any(model_inputs.get(key) is not value
@@ -556,7 +634,7 @@ def validate_source_provenance(
 def _load_and_validate_audit_selection(
         selection, audit_sha256, data_root, split, base_binding,
         checkpoint_sha256, checkpoint_epoch, portable_provenance=False,
-        audit_train_cache=None):
+        audit_train_cache=None, dataset_name="scanrefer"):
     if (not portable_provenance
             and audit_sha256 != EXPECTED_AUDIT_SELECTION_SHA256):
         raise ValueError("audit selection SHA-256 is not authoritative")
@@ -604,12 +682,12 @@ def _load_and_validate_audit_selection(
         )
         if (not isinstance(train_manifest, dict)
                 or train_manifest.get("split") != "train"
+                or str(train_manifest.get("dataset", "scanrefer"))
+                != dataset_name
                 or train_manifest.get("sample_count")
-                != EXPECTED_DATASET_SIZES["train"]
+                != train_manifest.get("dataset_size")
                 or train_manifest.get("dataset_size")
-                != EXPECTED_DATASET_SIZES["train"]
-                or train_manifest.get("source_dataset_size")
-                != EXPECTED_DATASET_SIZES["train"]
+                != train_manifest.get("source_dataset_size")
                 or train_manifest.get("checkpoint_sha256")
                 != checkpoint_sha256
                 or train_manifest.get("checkpoint_epoch")
@@ -649,6 +727,11 @@ def _load_and_validate_audit_selection(
             raise ValueError(
                 "audit selection provenance {} does not match".format(key)
             )
+    if portable_provenance:
+        if (str(selection.get("provenance", {}).get(
+                "dataset", "scanrefer")) != dataset_name
+                or selection.get("sample_count") != 256):
+            raise ValueError("portable audit dataset/sample provenance changed")
     try:
         audit_data_root = Path(
             provenance["data_root"]
@@ -700,6 +783,8 @@ def build_geometry_immutable_metadata(
         portable_provenance=bool(getattr(
             args, "portable_provenance", False
         )),
+        dataset_name=str(getattr(args, "dataset", "scanrefer")),
+        allow_butd_cls=bool(getattr(args, "allow_butd_cls", False)),
     )
     checkpoint_path = Path(checkpoint_path).expanduser().resolve()
     if not checkpoint_path.is_file():
@@ -712,7 +797,8 @@ def build_geometry_immutable_metadata(
         annotation_sha256 = _validated_annotation_snapshot(
             data_root, args.split
         )["sha256"]
-    if annotation_sha256 != EXPECTED_ANNOTATION_SHA256[args.split]:
+    if (not bool(getattr(args, "portable_provenance", False))
+            and annotation_sha256 != EXPECTED_ANNOTATION_SHA256[args.split]):
         raise ValueError(
             "annotation JSON SHA-256 is not authoritative for {}".format(
                 args.split
@@ -734,6 +820,7 @@ def build_geometry_immutable_metadata(
             args, "portable_provenance", False
         )),
         audit_train_cache=getattr(args, "audit_train_cache", None),
+        dataset_name=str(getattr(args, "dataset", "scanrefer")),
     )
     variants = [
         dict(value) for value in DEFAULT_REC_MASK_GEOMETRY_VARIANTS
@@ -766,7 +853,7 @@ def build_geometry_immutable_metadata(
             "panel": str(audit_path),
             "sha256": audit_sha256,
         },
-        "filter_non_gt_boxes": False,
+        "filter_non_gt_boxes": bool(getattr(config, "butd_cls", False)),
     }
     if set(metadata) != set(GEOMETRY_IMMUTABLE_METADATA_FIELDS):
         raise RuntimeError("geometry immutable metadata fields drifted")
@@ -935,10 +1022,39 @@ def _cpu_tensor(value, dtype):
     return tensor.contiguous().clone()
 
 
+def build_evaluator_valid(geometry, inputs, filter_non_gt_boxes):
+    """Build the exact deployable evaluator-valid geometry mask."""
+    if type(filter_non_gt_boxes) is not bool:
+        raise TypeError("filter_non_gt_boxes must be boolean")
+    if not isinstance(geometry, dict) or not isinstance(inputs, dict):
+        raise TypeError("geometry and inputs must be mappings")
+    geometry_valid = geometry.get("valid_mask")
+    geometry_boxes = geometry.get("boxes")
+    if (not isinstance(geometry_valid, torch.Tensor)
+            or geometry_valid.dtype != torch.bool
+            or not isinstance(geometry_boxes, torch.Tensor)
+            or geometry_boxes.shape[:-1] != geometry_valid.shape):
+        raise ValueError("geometry evaluator tensors are malformed")
+    if not filter_non_gt_boxes:
+        return geometry_valid.clone()
+    detected_boxes = inputs.get("det_boxes")
+    detected_valid = inputs.get("det_bbox_label_mask")
+    if not isinstance(detected_valid, torch.Tensor):
+        raise ValueError("detector validity is missing from deployable inputs")
+    return build_detector_overlap_valid(
+        geometry_boxes,
+        geometry_valid,
+        detected_boxes,
+        detected_valid.bool(),
+        iou_threshold=0.25,
+    )
+
+
 def build_geometry_rows(
         dataset_indices, batch_data, targeted_candidates,
         targeted_geometry, base_rows_by_index, rejection_codes,
-        parity_check=assert_candidate_cache_parity, manifest=None):
+        parity_check=assert_candidate_cache_parity, manifest=None,
+        evaluator_valid=None):
     """Parity-check and serialize one targeted geometry batch."""
     dataset_indices = [int(value) for value in dataset_indices]
     base_rows = _base_rows_for_indices(
@@ -983,6 +1099,18 @@ def build_geometry_rows(
     cpu_features = _cpu_tensor(features, torch.float32)
     cpu_ious = _cpu_tensor(geometry_ious, torch.float32)
     cpu_rejections = _cpu_tensor(rejection_codes, torch.int16)
+    if evaluator_valid is None:
+        cpu_evaluator_valid = cpu_valid.clone()
+    else:
+        if (not isinstance(evaluator_valid, torch.Tensor)
+                or evaluator_valid.dtype != torch.bool
+                or evaluator_valid.shape != valid.shape
+                or evaluator_valid.device != valid.device
+                or bool((evaluator_valid & ~valid).any().item())):
+            raise ValueError(
+                "evaluator validity must be a geometry-valid boolean tensor"
+            )
+        cpu_evaluator_valid = _cpu_tensor(evaluator_valid, torch.bool)
 
     rows = []
     for batch_index, base_row in enumerate(base_rows):
@@ -991,6 +1119,9 @@ def build_geometry_rows(
         )
         geometry_boxes = cpu_boxes[batch_index].contiguous().clone()
         geometry_valid = cpu_valid[batch_index].contiguous().clone()
+        row_evaluator_valid = cpu_evaluator_valid[
+            batch_index
+        ].contiguous().clone()
         geometry_features = cpu_features[batch_index].contiguous().clone()
         row_ious = cpu_ious[batch_index].contiguous().clone()
         row_rejections = cpu_rejections[batch_index].contiguous().clone()
@@ -1022,7 +1153,7 @@ def build_geometry_rows(
             "candidate_valid": candidate_valid,
             "geometry_boxes": geometry_boxes.contiguous(),
             "geometry_valid": geometry_valid.contiguous(),
-            "evaluator_valid": geometry_valid.clone().contiguous(),
+            "evaluator_valid": row_evaluator_valid.contiguous(),
             "geometry_features": geometry_features.contiguous(),
             "geometry_ious": row_ious.contiguous(),
             "source_rejection_codes": row_rejections.contiguous(),
@@ -1087,6 +1218,15 @@ def extract_geometry_batch(
     _require_deployable_payload(geometry, "geometry builder")
     _validate_geometry_schema(geometry)
     rejection_codes = rejection_projector(geometry)
+    filter_non_gt_boxes = (
+        manifest.get("filter_non_gt_boxes", False)
+        if isinstance(manifest, dict) else False
+    )
+    evaluator_valid = build_evaluator_valid(
+        geometry,
+        inputs,
+        filter_non_gt_boxes=filter_non_gt_boxes,
+    )
 
     # Ground-truth-bearing batch_data is deliberately introduced only after
     # both deployable builders and their diagnostics have completed.
@@ -1109,6 +1249,7 @@ def extract_geometry_batch(
         rejection_codes=rejection_codes,
         parity_check=parity_check,
         manifest=manifest,
+        evaluator_valid=evaluator_valid,
     )
 
 
@@ -1313,7 +1454,7 @@ def _validate_dataset_order(dataset, base_rows):
         raise ValueError("current dataset length does not match base rows")
     annos = getattr(dataset, "annos", None)
     if not isinstance(annos, list) or len(annos) != len(base_rows):
-        raise ValueError("ScanRefer dataset annotations are unavailable")
+        raise ValueError("dataset annotations are unavailable")
     for index, (annotation, base_row) in enumerate(zip(annos, base_rows)):
         if base_row.get("dataset_index") != index:
             raise ValueError("base cache dataset indices are not sequential")
@@ -1375,7 +1516,13 @@ def run_extraction(args):
         base_cache, args.split
     )
     dataset, annotation_sha256 = _build_validated_dataset(
-        config, args.split, data_root
+        config,
+        args.split,
+        data_root,
+        dataset_name=str(getattr(args, "dataset", "scanrefer")),
+        portable_provenance=bool(getattr(
+            args, "portable_provenance", False
+        )),
     )
     _validate_dataset_order(dataset, base_rows)
     validate_source_provenance(
@@ -1390,6 +1537,8 @@ def run_extraction(args):
         portable_provenance=bool(getattr(
             args, "portable_provenance", False
         )),
+        dataset_name=str(getattr(args, "dataset", "scanrefer")),
+        allow_butd_cls=bool(getattr(args, "allow_butd_cls", False)),
     )
     metadata = build_geometry_immutable_metadata(
         args,

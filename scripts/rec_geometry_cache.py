@@ -990,8 +990,11 @@ def _validate_geometry_row(row, manifest, base_row=None,
         raise ValueError(
             "geometry evaluator validity must equal geometry validity"
         )
-    if not bool(evaluator_valid.any().item()):
-        raise ValueError("geometry row needs at least one evaluator candidate")
+    if (not manifest["filter_non_gt_boxes"]
+            and not bool(evaluator_valid.any().item())):
+        raise ValueError(
+            "unfiltered geometry row needs an evaluator candidate"
+        )
 
     for key, value in (
             ("geometry boxes", geometry_boxes),

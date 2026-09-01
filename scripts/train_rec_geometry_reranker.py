@@ -93,6 +93,9 @@ GEOMETRY_ARTIFACT_VERSION = 2
 GEOMETRY_SCORE_MODE = "parent-flat-rank-blend-v1"
 GEOMETRY_TIE_POLICY = "score-desc-flat-index-asc-v1"
 EVALUATOR_FILTER_POLICY = "evaluator-valid-no-gt-filter-v1"
+FILTERED_EVALUATOR_FILTER_POLICY = (
+    "evaluator-valid-detector-overlap025-filter-v1"
+)
 TARGET_IOU_POLICY = "root_only"
 GRAD_CLIP_NORM = 1.0
 PARENT_INFERENCE_LOCAL_BATCH_SIZE = 12
@@ -472,7 +475,9 @@ def _parent_score_cache_signature(model, artifact, device=None):
     }
 
 
-def _validate_batch_row(row):
+def _validate_batch_row(row, require_evaluator_valid=True):
+    if not isinstance(require_evaluator_valid, bool):
+        raise ValueError("require_evaluator_valid must be boolean")
     base, geometry = _joined_identity(row)
     _require_tensor(
         base.get("features"),
@@ -530,7 +535,8 @@ def _validate_batch_row(row):
     evaluator_valid = geometry["evaluator_valid"]
     if bool((evaluator_valid & ~geometry["geometry_valid"]).any().item()):
         raise ValueError("evaluator validity exceeds geometry validity")
-    if not bool(evaluator_valid.any().item()):
+    if (require_evaluator_valid
+            and not bool(evaluator_valid.any().item())):
         raise ValueError("joined row has no evaluator-valid geometry")
     return base, geometry
 
@@ -754,7 +760,10 @@ def materialize_parent_scores(
             "rows": {},
         }
     ordered = sorted(
-        (_validate_batch_row(row) for row in rows),
+        (
+            _validate_batch_row(row, require_evaluator_valid=False)
+            for row in rows
+        ),
         key=lambda pair: pair[0]["dataset_index"],
     )
     indices = [pair[0]["dataset_index"] for pair in ordered]
@@ -807,22 +816,29 @@ def build_geometry_training_batch(rows, parent):
     base_features = torch.stack([row["features"] for row in base_rows])
     base_valid = torch.stack([row["valid_mask"] for row in base_rows])
     query_indices = torch.stack([row["query_indices"] for row in base_rows])
-    compact_scores = _cached_parent_compact_scores(
-        model, artifact, base_rows
-    )
-    parent_state = build_deployed_parent_state(
-        compact_scores,
-        query_indices,
-        base_valid,
-        DEPLOYED_QUERY_COUNT,
-    )
-
     geometry_features = torch.stack([
         row["geometry_features"] for row in geometry_rows
     ])
     evaluator_valid = torch.stack([
         row["evaluator_valid"] for row in geometry_rows
     ])
+    evaluator_query_valid = evaluator_valid.any(dim=2)
+    if (evaluator_query_valid.shape != base_valid.shape
+            or bool((evaluator_query_valid & ~base_valid).any().item())
+            or not bool(evaluator_query_valid.any(dim=1).all().item())):
+        raise ValueError(
+            "evaluator query validity is inconsistent with the base cache"
+        )
+    compact_scores = _cached_parent_compact_scores(
+        model, artifact, base_rows
+    )
+    parent_state = build_deployed_parent_state(
+        compact_scores,
+        query_indices,
+        evaluator_query_valid,
+        DEPLOYED_QUERY_COUNT,
+    )
+
     flat = build_rec_geometry_model_inputs(
         base_features,
         geometry_features,
@@ -927,7 +943,7 @@ def _validate_normalization(mean, std):
         raise ValueError("geometry feature normalization is invalid")
 
 
-def _parent_flat_indices(parent_state, regressed_variant_index):
+def _parent_flat_indices(parent_state, geometry_valid, regressed_variant_index):
     query_indices = parent_state["query_indices"]
     candidate_valid = parent_state["candidate_valid"]
     top1 = parent_state["top1_query_index"]
@@ -937,9 +953,34 @@ def _parent_flat_indices(parent_state, regressed_variant_index):
     if not bool(matches.any(dim=1).all().item()):
         raise ValueError("deployed parent Top-1 is absent from compact candidates")
     compact_positions = matches.to(torch.int64).argmax(dim=1)
-    return (
-        compact_positions * GEOMETRY_VARIANT_COUNT
-        + int(regressed_variant_index)
+    if (not isinstance(geometry_valid, torch.Tensor)
+            or geometry_valid.dtype != torch.bool
+            or tuple(geometry_valid.shape) != (
+                query_indices.shape[0],
+                query_indices.shape[1],
+                GEOMETRY_VARIANT_COUNT,
+            )
+            or geometry_valid.device != query_indices.device):
+        raise ValueError("parent geometry validity has an invalid contract")
+    if not torch.equal(geometry_valid.any(dim=2), candidate_valid):
+        raise ValueError(
+            "parent geometry validity must match candidate validity"
+        )
+    variant_priority = [int(regressed_variant_index)] + [
+        index for index in range(GEOMETRY_VARIANT_COUNT)
+        if index != int(regressed_variant_index)
+    ]
+    selected_variants = []
+    for batch_index, compact_position in enumerate(compact_positions.tolist()):
+        valid_variants = geometry_valid[batch_index, compact_position]
+        selected_variants.append(next(
+            index for index in variant_priority
+            if bool(valid_variants[index].item())
+        ))
+    return compact_positions * GEOMETRY_VARIANT_COUNT + torch.tensor(
+        selected_variants,
+        dtype=torch.long,
+        device=compact_positions.device,
     )
 
 
@@ -1039,7 +1080,13 @@ def evaluate_geometry_blends(
                 for key, value in batch["parent_state"].items()
             }
             parent_indices = _parent_flat_indices(
-                parent_state, regressed_variant_index
+                parent_state,
+                valid.reshape(
+                    valid.shape[0],
+                    GEOMETRY_CANDIDATE_COUNT,
+                    GEOMETRY_VARIANT_COUNT,
+                ),
+                regressed_variant_index,
             )
             parent_ious = torch.gather(
                 ious, 1, parent_indices.unsqueeze(1)
@@ -1366,8 +1413,11 @@ def _validate_manifest_provenance(base_manifest, geometry_manifest):
             or not _is_exact_int(
                 geometry_manifest.get("regressed_variant_index"), 0)):
         raise ValueError("geometry manifest variants are invalid")
-    if geometry_manifest.get("filter_non_gt_boxes") is not False:
-        raise ValueError("geometry training requires filter_non_gt_boxes=False")
+    filter_non_gt_boxes = geometry_manifest.get("filter_non_gt_boxes")
+    if not isinstance(filter_non_gt_boxes, bool):
+        raise ValueError(
+            "geometry training filter_non_gt_boxes must be boolean"
+        )
     min_points = geometry_manifest.get("min_points")
     max_fraction = geometry_manifest.get("max_point_fraction")
     if (not isinstance(min_points, int) or isinstance(min_points, bool)
@@ -1402,7 +1452,8 @@ def _validate_manifest_provenance(base_manifest, geometry_manifest):
             or set(model_inputs) != set(MODEL_INPUT_KEYS)
             or any(not isinstance(model_inputs[key], bool)
                    for key in MODEL_INPUT_KEYS)
-            or model_inputs["butd_gt"] or model_inputs["butd_cls"]
+            or model_inputs["butd_gt"]
+            or model_inputs["butd_cls"] is not filter_non_gt_boxes
             or not _has_supported_backbone_config(backbone)
             or backbone.get("num_target") != DEPLOYED_QUERY_COUNT):
         raise ValueError("training model provenance is invalid")
@@ -1575,7 +1626,8 @@ def _validate_training_args(value, scene_split, model_config):
 
 
 def _validate_parent_inference_contract(
-        value, content_sha256, scene_split, training_args):
+        value, content_sha256, scene_split, training_args,
+        filter_non_gt_boxes):
     if (not isinstance(value, dict)
             or set(value) != set(PARENT_INFERENCE_CONTRACT_FIELDS)):
         raise ValueError("parent inference contract fields do not match schema")
@@ -1628,8 +1680,14 @@ def _validate_parent_inference_contract(
                      or device_index < 0))):
         raise ValueError("parent inference contract device is invalid")
     row_count = value.get("row_count")
-    if (not isinstance(row_count, int) or isinstance(row_count, bool)
-            or row_count <= 0 or row_count != scene_split["sample_count"]):
+    scene_sample_count = scene_split["sample_count"]
+    if (not isinstance(filter_non_gt_boxes, bool)
+            or not isinstance(row_count, int)
+            or isinstance(row_count, bool)
+            or row_count <= 0
+            or row_count < scene_sample_count
+            or (not filter_non_gt_boxes
+                and row_count != scene_sample_count)):
         raise ValueError("parent inference contract sample count is invalid")
     try:
         training_device = torch.device(training_args["device"])
@@ -1685,8 +1743,14 @@ def build_geometry_artifact(
         _sealed_parent_materialization_metadata(parent)
     )
     _validate_scene_split(scene_split)
-    if parent_inference_contract["row_count"] != scene_split["sample_count"]:
-        raise ValueError("parent materialization row count differs from train split")
+    base_sample_count = base_manifest["sample_count"]
+    scene_sample_count = scene_split["sample_count"]
+    if parent_inference_contract["row_count"] != base_sample_count:
+        raise ValueError("parent materialization row count differs from base cache")
+    if (scene_sample_count > base_sample_count
+            or (not geometry_manifest["filter_non_gt_boxes"]
+                and scene_sample_count != base_sample_count)):
+        raise ValueError("geometry train split sample count is invalid")
     _strict_int(epoch, "geometry artifact epoch", minimum=1)
     if (not isinstance(geometry_weight, (float, int))
             or isinstance(geometry_weight, bool)
@@ -1707,6 +1771,11 @@ def build_geometry_artifact(
         list(base_manifest["feature_names"])
         + list(geometry_manifest["geometry_feature_names"])
         + ["parent_score", "parent_is_deployed_top1"]
+    )
+    filter_non_gt_boxes = geometry_manifest["filter_non_gt_boxes"]
+    evaluator_filter_policy = (
+        FILTERED_EVALUATOR_FILTER_POLICY
+        if filter_non_gt_boxes else EVALUATOR_FILTER_POLICY
     )
     artifact = {
         "artifact_version": GEOMETRY_ARTIFACT_VERSION,
@@ -1744,8 +1813,8 @@ def build_geometry_artifact(
         "score_mode": GEOMETRY_SCORE_MODE,
         "geometry_weight": weight,
         "target_iou_policy": TARGET_IOU_POLICY,
-        "evaluator_filter_policy": EVALUATOR_FILTER_POLICY,
-        "filter_non_gt_boxes": False,
+        "evaluator_filter_policy": evaluator_filter_policy,
+        "filter_non_gt_boxes": filter_non_gt_boxes,
         "train_parent_score_content_sha256": parent_score_content_sha256,
         "train_base_cache_content_digest": binding["content_sha256"],
         "train_base_cache_manifest_digest": binding["manifest_sha256"],
@@ -1895,10 +1964,17 @@ def validate_geometry_artifact(artifact, parent=None, base_manifest=None,
             or artifact.get("target_iou_policy")
             != provenance.get("target_iou_policy")):
         raise ValueError("geometry and parent artifact provenance differs")
-    if (not isinstance(artifact["model_inputs"], dict)
+    filter_non_gt_boxes = artifact.get("filter_non_gt_boxes")
+    expected_evaluator_filter_policy = (
+        FILTERED_EVALUATOR_FILTER_POLICY
+        if filter_non_gt_boxes is True else EVALUATOR_FILTER_POLICY
+    )
+    if (not isinstance(filter_non_gt_boxes, bool)
+            or not isinstance(artifact["model_inputs"], dict)
             or set(artifact["model_inputs"]) != set(MODEL_INPUT_KEYS)
             or artifact["model_inputs"]["butd_gt"]
             or artifact["model_inputs"]["butd_cls"]
+            is not filter_non_gt_boxes
             or not _has_supported_backbone_config(
                 artifact["backbone_config"]
             )
@@ -1916,8 +1992,7 @@ def validate_geometry_artifact(artifact, parent=None, base_manifest=None,
             or geometry_weight not in DEFAULT_GEOMETRY_WEIGHTS
             or artifact.get("target_iou_policy") != TARGET_IOU_POLICY
             or artifact.get("evaluator_filter_policy")
-            != EVALUATOR_FILTER_POLICY
-            or artifact.get("filter_non_gt_boxes") is not False):
+            != expected_evaluator_filter_policy):
         raise ValueError("geometry artifact score or evaluator policy is invalid")
     digest_fields = (
         "train_base_cache_content_digest",
@@ -1953,6 +2028,7 @@ def validate_geometry_artifact(artifact, parent=None, base_manifest=None,
         artifact.get("train_parent_score_content_sha256"),
         artifact["scene_split"],
         artifact["training_args"],
+        artifact["filter_non_gt_boxes"],
     )
     parent_inference_contract = artifact["parent_inference_contract"]
     _validate_authoritative_parent_inference(
@@ -2016,11 +2092,14 @@ def validate_geometry_artifact(artifact, parent=None, base_manifest=None,
         binding = _validate_manifest_provenance(
             base_manifest, geometry_manifest
         )
-        if artifact["scene_split"]["sample_count"] != base_manifest[
-                "sample_count"]:
-            raise ValueError(
-                "geometry artifact scene sample count differs from train cache"
-            )
+        base_sample_count = base_manifest["sample_count"]
+        scene_sample_count = artifact["scene_split"]["sample_count"]
+        if parent_inference_contract["row_count"] != base_sample_count:
+            raise ValueError("parent materialization row count differs from base cache")
+        if (scene_sample_count > base_sample_count
+                or (not artifact["filter_non_gt_boxes"]
+                    and scene_sample_count != base_sample_count)):
+            raise ValueError("geometry artifact scene sample count differs from train cache")
         expected_context = {
             "train_base_cache_content_digest": binding["content_sha256"],
             "train_base_cache_manifest_digest": binding["manifest_sha256"],
@@ -2456,6 +2535,38 @@ def fit_and_save_geometry_model(
     return artifact
 
 
+def select_evaluator_eligible_rows(rows, filter_non_gt_boxes):
+    """Exclude irrecoverable filtered rows from scorer fitting."""
+    if type(filter_non_gt_boxes) is not bool:
+        raise TypeError("filter_non_gt_boxes must be boolean")
+    if not isinstance(rows, (list, tuple)) or not rows:
+        raise ValueError("geometry training rows must be nonempty")
+    eligible = []
+    for row in rows:
+        geometry = row.get("geometry") if isinstance(row, dict) else None
+        evaluator_valid = (
+            geometry.get("evaluator_valid")
+            if isinstance(geometry, dict) else None
+        )
+        if (not isinstance(evaluator_valid, torch.Tensor)
+                or evaluator_valid.dtype != torch.bool):
+            raise ValueError(
+                "geometry training row lacks evaluator validity"
+            )
+        row_is_eligible = bool(evaluator_valid.any().item())
+        if not filter_non_gt_boxes and not row_is_eligible:
+            raise ValueError(
+                "unfiltered geometry training row cannot be evaluator-empty"
+            )
+        if row_is_eligible:
+            eligible.append(row)
+    if not eligible:
+        raise ValueError("no evaluator-eligible geometry training rows remain")
+    if len(eligible) == len(rows):
+        return rows
+    return eligible
+
+
 def train_geometry_reranker(
         base_cache, geometry_cache, parent_artifact_path, output,
         split_seed=0, model_seed=0, hidden_dim=256, dropout=0.1,
@@ -2487,6 +2598,10 @@ def train_geometry_reranker(
             base_cache, geometry_cache, parent_artifact_path
         )
     )
+    eligible_joined = select_evaluator_eligible_rows(
+        joined,
+        geometry_manifest["filter_non_gt_boxes"],
+    )
     base_digest = geometry_manifest["base_cache_binding"]["content_sha256"]
     _validate_authoritative_parent_inference(
         base_digest,
@@ -2494,9 +2609,11 @@ def train_geometry_reranker(
         resolved_device.index,
         _parent_matmul_allow_tf32(resolved_device),
     )
-    materialize_parent_scores(joined, parent, device=resolved_device)
+    materialize_parent_scores(
+        joined, parent, device=resolved_device
+    )
     fit_rows, calibration_rows = deterministic_scene_split(
-        joined,
+        eligible_joined,
         seed=split_seed,
         calibration_fraction=calibration_fraction,
     )

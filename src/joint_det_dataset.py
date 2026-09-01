@@ -33,6 +33,11 @@ from data.model_util_scannet import ScannetDatasetConfig
 from data.scannet_utils import read_label_mapping
 from src.visual_data_handlers import Scan
 from .scannet_classes import REL_ALIASES, VIEW_DEP_RELS
+from .legacy_scene_graph_cache import (
+    apply_legacy_scene_graph_cache,
+    legacy_scene_graph_cache_key,
+    load_legacy_scene_graph_cache,
+)
 from .structured_annotations import (
     build_scanrefer_structured_lookup,
     build_structured_annotation,
@@ -84,6 +89,10 @@ class Joint3DDataset(Dataset):
                  butd=False, butd_gt=False, butd_cls=False, augment_det=False,
                  wo_obj_name="None", skip_missing_superpoints=False,
                  use_sacr_source=False,
+                 legacy_scene_graph_cache_path=None,
+                 legacy_scene_graph_cache_strict=False,
+                 legacy_scene_graph_cache_expected_target_selection=None,
+                 legacy_scene_graph_cache_expected_sha256=None,
                  scanrefer_debug_scene_partition=None):
         """Initialize dataset (here for ReferIt3D utterances)."""
         self.dataset_dict = dataset_dict
@@ -110,6 +119,43 @@ class Joint3DDataset(Dataset):
         self.wo_obj_name = wo_obj_name
         self.skip_missing_superpoints = bool(skip_missing_superpoints)
         self.use_sacr_source = bool(use_sacr_source)
+        self.legacy_scene_graph_cache_path = (
+            str(legacy_scene_graph_cache_path or "")
+        )
+        self.legacy_scene_graph_cache_strict = bool(
+            legacy_scene_graph_cache_strict
+        )
+        self.legacy_scene_graph_cache_expected_target_selection = str(
+            legacy_scene_graph_cache_expected_target_selection or ""
+        )
+        self.legacy_scene_graph_cache_expected_sha256 = str(
+            legacy_scene_graph_cache_expected_sha256 or ""
+        )
+        if (self.legacy_scene_graph_cache_strict
+                and not self.legacy_scene_graph_cache_path):
+            raise ValueError(
+                "legacy_scene_graph_cache_strict requires a cache path"
+            )
+        if self.legacy_scene_graph_cache_path and self.use_sacr_source:
+            raise ValueError(
+                "legacy scene-graph cache cannot be combined with SACR"
+            )
+        self._legacy_scene_graph_cache = None
+        self.legacy_scene_graph_cache_manifest = None
+        if self.legacy_scene_graph_cache_path:
+            (self._legacy_scene_graph_cache,
+             self.legacy_scene_graph_cache_manifest) = (
+                load_legacy_scene_graph_cache(
+                    self.legacy_scene_graph_cache_path,
+                    expected_target_selection=(
+                        self.legacy_scene_graph_cache_expected_target_selection
+                        or None
+                    ),
+                    expected_bundle_sha256=(
+                        self.legacy_scene_graph_cache_expected_sha256 or None
+                    ),
+                )
+            )
         if scanrefer_debug_scene_partition not in (None, 'train', 'holdout'):
             raise ValueError(
                 "scanrefer_debug_scene_partition must be train, holdout, or None"
@@ -209,6 +255,10 @@ class Joint3DDataset(Dataset):
                     #with open(file_name, 'rb') as file:
                         #_annos = pickle.load(file)
                     self.annos += (_annos * cnt)
+
+        # All annotations own deep-copied graph records after load_annos.
+        # Release the large lookup before DataLoader workers are created.
+        self._legacy_scene_graph_cache = None
 
         if self.visualization_superpoint:
             wandb = _load_wandb()
@@ -327,6 +377,27 @@ class Joint3DDataset(Dataset):
                 anno, source_text, anno.get('utterance', '')
             )
 
+    def _scene_graph_parse(self, annos):
+        cached_datasets = None
+        if self.legacy_scene_graph_cache_manifest is not None:
+            cached_datasets = set(
+                self.legacy_scene_graph_cache_manifest.get(
+                    "records_by_dataset", {}
+                )
+            )
+        stats = Scene_graph_parse(
+            annos,
+            legacy_cache=self._legacy_scene_graph_cache,
+            legacy_cache_strict=self.legacy_scene_graph_cache_strict,
+            legacy_cache_datasets=cached_datasets,
+        )
+        if self._legacy_scene_graph_cache is not None:
+            print(
+                "Legacy scene-graph cache hits={} fallbacks={}".format(
+                    stats["cache_hits"], stats["online_fallbacks"]
+                )
+            )
+
     def load_sr3d_annos(self, dset='sr3d'):
         """Load annotations of sr3d/sr3d+."""
         if self.use_sacr_source:
@@ -360,7 +431,7 @@ class Joint3DDataset(Dataset):
             if self.overfit:
                 annos = annos[:128]
             # text decoupling
-            Scene_graph_parse(annos)
+            self._scene_graph_parse(annos)
 
         return annos
 
@@ -400,7 +471,7 @@ class Joint3DDataset(Dataset):
                 annos.append(anno)
         if self.overfit:
             annos = annos[:128]
-        Scene_graph_parse(annos)
+        self._scene_graph_parse(annos)
         self._realign_structured_annotations(annos)
         return annos
 
@@ -440,7 +511,7 @@ class Joint3DDataset(Dataset):
         
         if self.overfit:
             annos = annos[:128]
-        Scene_graph_parse(annos)
+        self._scene_graph_parse(annos)
 
         # Add distractor info
         for anno in annos:
@@ -493,7 +564,7 @@ class Joint3DDataset(Dataset):
                 annos.append(anno)
         if self.overfit:
             annos = annos[:128]
-        Scene_graph_parse(annos)
+        self._scene_graph_parse(annos)
         self._realign_structured_annotations(annos)
         for anno in annos:
             anno['distractor_ids'] = [
@@ -602,7 +673,7 @@ class Joint3DDataset(Dataset):
         ###########################
         # STEP 2. text decoupling #
         ###########################
-        Scene_graph_parse(annos)
+        self._scene_graph_parse(annos)
         if self.use_sacr_source:
             self._realign_structured_annotations(annos)
 
@@ -1340,7 +1411,7 @@ class Joint3DDataset(Dataset):
             "auxi_box":auxi_box.astype(np.float32),
             "relation": (
                 self._find_rel(anno['utterance'])
-                if anno['dataset'].startswith('sr3d')
+                if anno['dataset'] != 'scannet'
                 else "none"
             ),
             "target_name": scan.get_object_instance_label(
@@ -1717,9 +1788,32 @@ def unpickle_data(file_name, python2_to_3=False):
 #########################
 # BRIEF Text decoupling #
 #########################
-def Scene_graph_parse(annos):
+def Scene_graph_parse(
+        annos, legacy_cache=None, legacy_cache_strict=False,
+        legacy_cache_datasets=None, target_selection='first_object'):
     print('Begin text decoupling......')
+    cache_hits = 0
+    online_fallbacks = 0
+    strict_datasets = (
+        None if legacy_cache_datasets is None
+        else frozenset(legacy_cache_datasets)
+    )
     for anno in annos:
+        if legacy_cache is not None:
+            if apply_legacy_scene_graph_cache(anno, legacy_cache):
+                cache_hits += 1
+                continue
+            if (legacy_cache_strict and (
+                    strict_datasets is None
+                    or anno.get("dataset") in strict_datasets)):
+                key = legacy_scene_graph_cache_key(
+                    anno.get("dataset"), anno.get("utterance")
+                )
+                raise KeyError(
+                    "legacy scene-graph cache miss for dataset={} key={}"
+                    .format(anno.get("dataset"), key)
+                )
+        online_fallbacks += 1
         caption = ' '.join(anno['utterance'].replace(',', ' , ').split())
 
         # some error or typo in ScanRefer.
@@ -1785,7 +1879,9 @@ def Scene_graph_parse(annos):
         anno['utterance'] = caption
 
         # text parsing
-        graph_node, graph_edge = sng_parser.parse(caption)
+        graph_node, graph_edge = sng_parser.parse(
+            caption, target_selection=target_selection
+        )
 
         # NOTE If no node is parsed, add "this is an object ." at the beginning of the sentence
         if (len(graph_node) < 1) or \
@@ -1794,7 +1890,9 @@ def Scene_graph_parse(annos):
             anno['utterance'] = caption
 
             # parse again
-            graph_node, graph_edge = sng_parser.parse(caption)
+            graph_node, graph_edge = sng_parser.parse(
+                caption, target_selection=target_selection
+            )
 
         # node and edge
         anno["graph_node"] = graph_node
@@ -1809,3 +1907,7 @@ def Scene_graph_parse(annos):
         anno["auxi_entity"] = auxi_entity
     
     print('End text decoupling!')
+    return {
+        "cache_hits": cache_hits,
+        "online_fallbacks": online_fallbacks,
+    }

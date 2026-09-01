@@ -20,8 +20,10 @@ and
 [`DENSITY_AWARE_TARGET_BOX_SCENE_AUDIT_SPEC_2026-09-01.md`](DENSITY_AWARE_TARGET_BOX_SCENE_AUDIT_SPEC_2026-09-01.md).
 
 The A-V4 counterfactual-parent code is released as an audit-only mechanism.
-No 100-microbatch audit, full validation, or long training result is claimed by
-this source release.
+Its bounded path does not construct a validation dataset or DataLoader and is
+bound to the reviewed train-only data/runtime manifests under `scripts/`.
+No 100-microbatch audit, formal validation, or long-training result is claimed
+by this source release.
 
 ![image](https://github.com/qzp2018/MCLN/blob/main/data/fig.png)
 ## 0. Installation

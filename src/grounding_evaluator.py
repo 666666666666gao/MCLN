@@ -22,6 +22,7 @@ from models.rec_geometry_reranker import (
     stable_flat_descending_indices,
     stable_query_descending_order,
 )
+from models.rec_evaluator_filter import build_detector_overlap_valid
 import utils.misc as misc
 import numpy as np
 
@@ -396,111 +397,206 @@ class GroundingEvaluator:
         }
 
     def export_source_choice_diagnostics(self, expected_sample_count=None):
-        """Export the gate candidate-set oracle without changing metrics v1."""
-        oracle_keys = {
-            'hits025': ('source_choice', 'gate_candidate_oracle', 0.25, 1),
-            'hits050': ('source_choice', 'gate_candidate_oracle', 0.5, 1),
-        }
-        headroom_keys = {
-            'hits025': (
-                'source_choice_effect', 0.25, 'gate_oracle_headroom'
+        """Export candidate-set oracles without changing metrics v1."""
+        specifications = (
+            (
+                'gate_candidate_oracle',
+                'gate_oracle_headroom',
+                'gate candidate-set oracle',
             ),
-            'hits050': (
-                'source_choice_effect', 0.5, 'gate_oracle_headroom'
+            (
+                'sacr_feasible_oracle',
+                'sacr_feasible_oracle_headroom',
+                'SACR feasible oracle',
             ),
-        }
-        mean_iou_key = (
-            'source_choice_mean_iou', 'gate_candidate_oracle'
         )
-        required_keys = (
-            list(oracle_keys.values())
-            + list(headroom_keys.values())
-            + [mean_iou_key]
-        )
-        present = [
-            key in self.dets or key in self.gts for key in required_keys
-        ]
-        if not any(present):
+        payload = {'schema': 'mcln-source-choice-diagnostics-v1'}
+        sample_counts = []
+        for oracle_name, headroom_name, label in specifications:
+            oracle_keys = {
+                'hits025': ('source_choice', oracle_name, 0.25, 1),
+                'hits050': ('source_choice', oracle_name, 0.5, 1),
+            }
+            headroom_keys = {
+                'hits025': (
+                    'source_choice_effect', 0.25, headroom_name
+                ),
+                'hits050': (
+                    'source_choice_effect', 0.5, headroom_name
+                ),
+            }
+            mean_iou_key = ('source_choice_mean_iou', oracle_name)
+            extra_keys = []
+            if oracle_name == 'sacr_feasible_oracle':
+                extra_keys.extend([
+                    ('source_choice', 'sacr_parent', 0.25, 1),
+                    ('source_choice', 'sacr_parent', 0.5, 1),
+                    ('source_choice_mean_iou', 'sacr_parent'),
+                ])
+                for threshold in (0.25, 0.5):
+                    extra_keys.extend([
+                        ('source_choice_effect', threshold, effect_name)
+                        for effect_name in (
+                            'sacr_parent_fix',
+                            'sacr_parent_break',
+                            'sacr_parent_kept_correct',
+                            'sacr_parent_kept_wrong',
+                        )
+                    ])
+            required_keys = (
+                list(oracle_keys.values())
+                + list(headroom_keys.values())
+                + [mean_iou_key]
+                + extra_keys
+            )
+            present = [
+                key in self.dets or key in self.gts for key in required_keys
+            ]
+            if not any(present):
+                continue
+            if not all(
+                    key in self.dets and key in self.gts
+                    for key in required_keys):
+                raise ValueError('{} diagnostics are incomplete'.format(label))
+            denominators = [
+                self._retrain_integer_counter(
+                    self.gts[key], '{} denominator {}'.format(label, key)
+                )
+                for key in required_keys
+            ]
+            if len(set(denominators)) != 1 or denominators[0] <= 0:
+                raise ValueError(
+                    '{} diagnostics must share one positive denominator'
+                    .format(label)
+                )
+            sample_count = denominators[0]
+            sample_counts.append(sample_count)
+            oracle_hits = {
+                name: self._retrain_integer_counter(
+                    self.dets[key], '{} {}'.format(label, name)
+                )
+                for name, key in oracle_keys.items()
+            }
+            headroom_hits = {
+                name: self._retrain_integer_counter(
+                    self.dets[key], '{} headroom {}'.format(label, name)
+                )
+                for name, key in headroom_keys.items()
+            }
+            if any(
+                    value < 0 or value > sample_count
+                    for value in list(oracle_hits.values())
+                    + list(headroom_hits.values())):
+                raise ValueError('{} hits are out of range'.format(label))
+            if oracle_hits['hits050'] > oracle_hits['hits025']:
+                raise ValueError(
+                    '{} hits050 cannot exceed hits025'.format(label)
+                )
+            try:
+                iou_sum = float(self.dets[mean_iou_key])
+            except (TypeError, ValueError, OverflowError):
+                raise ValueError('{} iou_sum must be finite'.format(label))
+            if (
+                    not math.isfinite(iou_sum)
+                    or iou_sum < 0.0
+                    or iou_sum > float(sample_count)):
+                raise ValueError('{} iou_sum is out of range'.format(label))
+            payload[oracle_name] = {
+                'hits025': oracle_hits['hits025'],
+                'hits050': oracle_hits['hits050'],
+                'iou_sum': iou_sum,
+                'miou': iou_sum / sample_count,
+            }
+            payload[headroom_name] = {
+                'hits025': headroom_hits['hits025'],
+                'hits050': headroom_hits['hits050'],
+                'rate025': headroom_hits['hits025'] / float(sample_count),
+                'rate050': headroom_hits['hits050'] / float(sample_count),
+            }
+            if oracle_name == 'sacr_feasible_oracle':
+                parent_hits = {
+                    'hits025': self._retrain_integer_counter(
+                        self.dets[(
+                            'source_choice', 'sacr_parent', 0.25, 1
+                        )],
+                        'SACR parent hits025',
+                    ),
+                    'hits050': self._retrain_integer_counter(
+                        self.dets[(
+                            'source_choice', 'sacr_parent', 0.5, 1
+                        )],
+                        'SACR parent hits050',
+                    ),
+                }
+                parent_iou_sum = float(self.dets[(
+                    'source_choice_mean_iou', 'sacr_parent'
+                )])
+                if (
+                        any(
+                            value < 0 or value > sample_count
+                            for value in parent_hits.values()
+                        )
+                        or parent_hits['hits050'] > parent_hits['hits025']
+                        or not math.isfinite(parent_iou_sum)
+                        or not 0.0 <= parent_iou_sum <= sample_count):
+                    raise ValueError('SACR parent diagnostics are invalid')
+                payload['sacr_parent'] = {
+                    **parent_hits,
+                    'iou_sum': parent_iou_sum,
+                    'miou': parent_iou_sum / sample_count,
+                }
+                payload['sacr_parent_effects'] = {}
+                for threshold, label_suffix in (
+                        (0.25, '025'), (0.5, '050')):
+                    payload['sacr_parent_effects'][label_suffix] = {
+                        effect_name: self._retrain_integer_counter(
+                            self.dets[(
+                                'source_choice_effect',
+                                threshold,
+                                effect_name,
+                            )],
+                            'SACR parent {} {}'.format(
+                                label_suffix, effect_name
+                            ),
+                        )
+                        for effect_name in (
+                            'sacr_parent_fix',
+                            'sacr_parent_break',
+                            'sacr_parent_kept_correct',
+                            'sacr_parent_kept_wrong',
+                        )
+                    }
+                    effect_values = payload[
+                        'sacr_parent_effects'
+                    ][label_suffix]
+                    if (
+                            any(
+                                value < 0 or value > sample_count
+                                for value in effect_values.values()
+                            )
+                            or sum(effect_values.values()) != sample_count):
+                        raise ValueError(
+                            'SACR parent effects must partition all samples'
+                        )
+        if not sample_counts:
             return None
-        if not all(
-                key in self.dets and key in self.gts
-                for key in required_keys):
+        if len(set(sample_counts)) != 1:
             raise ValueError(
-                'gate candidate-set oracle diagnostics are incomplete'
+                'source-choice diagnostics have different sample counts'
             )
-
-        denominators = [
-            self._retrain_integer_counter(
-                self.gts[key], 'gate diagnostic denominator {}'.format(key)
-            )
-            for key in required_keys
-        ]
-        if len(set(denominators)) != 1 or denominators[0] <= 0:
-            raise ValueError(
-                'gate candidate-set oracle diagnostics must share one '
-                'positive denominator'
-            )
-        sample_count = denominators[0]
+        sample_count = sample_counts[0]
         if expected_sample_count is not None:
             expected_sample_count = self._retrain_integer_counter(
                 expected_sample_count, 'expected_sample_count'
             )
             if expected_sample_count != sample_count:
                 raise ValueError(
-                    'expected {} samples but gate diagnostics contain {}'.format(
+                    'expected {} samples but diagnostics contain {}'.format(
                         expected_sample_count, sample_count
                     )
                 )
-
-        oracle_hits = {
-            name: self._retrain_integer_counter(
-                self.dets[key], 'gate candidate oracle {}'.format(name)
-            )
-            for name, key in oracle_keys.items()
-        }
-        headroom_hits = {
-            name: self._retrain_integer_counter(
-                self.dets[key], 'gate oracle headroom {}'.format(name)
-            )
-            for name, key in headroom_keys.items()
-        }
-        if any(
-                value < 0 or value > sample_count
-                for value in list(oracle_hits.values())
-                + list(headroom_hits.values())):
-            raise ValueError('gate diagnostic hits are out of range')
-        if oracle_hits['hits050'] > oracle_hits['hits025']:
-            raise ValueError(
-                'gate candidate oracle hits050 cannot exceed hits025'
-            )
-        try:
-            iou_sum = float(self.dets[mean_iou_key])
-        except (TypeError, ValueError, OverflowError):
-            raise ValueError('gate candidate oracle iou_sum must be finite')
-        if (
-                not math.isfinite(iou_sum)
-                or iou_sum < 0.0
-                or iou_sum > float(sample_count)):
-            raise ValueError(
-                'gate candidate oracle iou_sum is out of range'
-            )
-
-        return {
-            'schema': 'mcln-source-choice-diagnostics-v1',
-            'sample_count': sample_count,
-            'gate_candidate_oracle': {
-                'hits025': oracle_hits['hits025'],
-                'hits050': oracle_hits['hits050'],
-                'iou_sum': iou_sum,
-                'miou': iou_sum / sample_count,
-            },
-            'gate_oracle_headroom': {
-                'hits025': headroom_hits['hits025'],
-                'hits050': headroom_hits['hits050'],
-                'rate025': headroom_hits['hits025'] / float(sample_count),
-                'rate050': headroom_hits['hits050'] / float(sample_count),
-            },
-        }
+        payload['sample_count'] = sample_count
+        return payload
 
     def print_stats(self):
         """Print accumulated accuracies."""
@@ -636,7 +732,12 @@ class GroundingEvaluator:
                         'selector_kept_correct',
                         'selector_kept_wrong',
                         'oracle_headroom',
-                        'gate_oracle_headroom']:
+                        'gate_oracle_headroom',
+                        'sacr_parent_fix',
+                        'sacr_parent_break',
+                        'sacr_parent_kept_correct',
+                        'sacr_parent_kept_wrong',
+                        'sacr_feasible_oracle_headroom']:
                     key = ('source_choice_effect', threshold, effect_name)
                     if key not in self.gts:
                         continue
@@ -811,10 +912,7 @@ class GroundingEvaluator:
             raise ValueError(
                 'geometry candidate tensors must share the prediction device'
             )
-        if not bool(valid.any(dim=1).all().item()):
-            raise ValueError(
-                'every geometry row needs at least one valid candidate'
-            )
+        nonempty_rows = valid.any(dim=1)
         if not bool(torch.isfinite(scores[valid]).all().item()):
             raise ValueError('valid geometry scores must be finite')
         valid_boxes = boxes[valid]
@@ -829,7 +927,7 @@ class GroundingEvaluator:
         fallback_valid = torch.gather(
             valid, 1, fallback.unsqueeze(1)
         ).squeeze(1)
-        if not bool(fallback_valid.all().item()):
+        if not bool(fallback_valid[nonempty_rows].all().item()):
             raise ValueError(
                 'geometry fallback index must identify a valid candidate'
             )
@@ -1247,6 +1345,49 @@ class GroundingEvaluator:
                     raise ValueError(
                         'gate oracle candidates must be valid detector queries'
                     )
+        sacr_feasible_mask = end_points.get(
+            'sacr_score_feasible_candidate_mask'
+        )
+        sacr_parent_indices = end_points.get('sacr_score_parent_indices')
+        sacr_structured_valid = end_points.get(
+            'sacr_score_structured_valid_mask'
+        )
+        sacr_parent_scores = end_points.get('sacr_score_parent_scores')
+        sacr_values = (
+            sacr_feasible_mask,
+            sacr_parent_indices,
+            sacr_structured_valid,
+            sacr_parent_scores,
+        )
+        if any(value is not None for value in sacr_values):
+            if not all(value is not None for value in sacr_values):
+                raise ValueError(
+                    'SACR feasible oracle diagnostics are incomplete'
+                )
+            batch_size, num_queries = pred_bbox.shape[:2]
+            if (
+                    not isinstance(sacr_feasible_mask, torch.Tensor)
+                    or sacr_feasible_mask.dtype != torch.bool
+                    or sacr_feasible_mask.shape != pred_bbox.shape[:2]
+                    or sacr_feasible_mask.device != pred_bbox.device
+                    or not isinstance(sacr_parent_indices, torch.Tensor)
+                    or sacr_parent_indices.dtype != torch.long
+                    or sacr_parent_indices.shape != (batch_size,)
+                    or sacr_parent_indices.device != pred_bbox.device
+                    or bool((sacr_parent_indices < 0).any().item())
+                    or bool((sacr_parent_indices >= num_queries).any().item())
+                    or not isinstance(
+                        sacr_structured_valid, torch.Tensor
+                    )
+                    or sacr_structured_valid.dtype != torch.bool
+                    or sacr_structured_valid.shape != (batch_size,)
+                    or sacr_structured_valid.device != pred_bbox.device
+                    or not isinstance(sacr_parent_scores, torch.Tensor)
+                    or sacr_parent_scores.shape != pred_bbox.shape[:2]
+                    or sacr_parent_scores.device != pred_bbox.device):
+                raise ValueError(
+                    'SACR feasible oracle tensors do not align with queries'
+                )
 
         for bid in range(len(gt_bboxes)):
             num_obj = int(end_points['box_label_mask'][bid].sum())
@@ -1255,6 +1396,8 @@ class GroundingEvaluator:
             source_ious = []
             source_iou_by_name = {}
             gate_oracle_iou = None
+            sacr_feasible_oracle_iou = None
+            sacr_parent_iou = None
 
             for source_name in source_names:
                 if source_name not in source_scores:
@@ -1301,6 +1444,35 @@ class GroundingEvaluator:
                     'source_choice_mean_iou',
                     'gate_candidate_oracle',
                     gate_oracle_iou.item(),
+                )
+
+            if sacr_feasible_mask is not None:
+                sacr_parent_iou = self._top1_iou_for_scores(
+                    sacr_parent_scores[bid], pred_bbox[bid], gt_bbox
+                )
+                self._record_source_choice_iou(
+                    'sacr_parent', sacr_parent_iou
+                )
+                self._record_counter(
+                    'source_choice_mean_iou',
+                    'sacr_parent',
+                    sacr_parent_iou.item(),
+                )
+                sacr_oracle_mask = (
+                    sacr_feasible_mask[bid].clone()
+                    & sacr_structured_valid[bid]
+                )
+                sacr_oracle_mask[sacr_parent_indices[bid]] = True
+                sacr_feasible_oracle_iou = self._oracle_iou_for_query_mask(
+                    sacr_oracle_mask, pred_bbox[bid], gt_bbox
+                )
+                self._record_source_choice_iou(
+                    'sacr_feasible_oracle', sacr_feasible_oracle_iou
+                )
+                self._record_counter(
+                    'source_choice_mean_iou',
+                    'sacr_feasible_oracle',
+                    sacr_feasible_oracle_iou.item(),
                 )
 
             if 'selected_source_scores' in end_points:
@@ -1390,6 +1562,40 @@ class GroundingEvaluator:
                                 threshold,
                                 'gate_oracle_headroom',
                                 (not default_ok) and gate_oracle_ok,
+                            )
+                        if sacr_feasible_oracle_iou is not None:
+                            sacr_parent_ok = bool(
+                                (sacr_parent_iou > threshold).item()
+                            )
+                            sacr_oracle_ok = bool(
+                                (
+                                    sacr_feasible_oracle_iou > threshold
+                                ).item()
+                            )
+                            self._record_effect(
+                                threshold,
+                                'sacr_feasible_oracle_headroom',
+                                (not sacr_parent_ok) and sacr_oracle_ok,
+                            )
+                            self._record_effect(
+                                threshold,
+                                'sacr_parent_fix',
+                                (not sacr_parent_ok) and selected_ok,
+                            )
+                            self._record_effect(
+                                threshold,
+                                'sacr_parent_break',
+                                sacr_parent_ok and (not selected_ok),
+                            )
+                            self._record_effect(
+                                threshold,
+                                'sacr_parent_kept_correct',
+                                sacr_parent_ok and selected_ok,
+                            )
+                            self._record_effect(
+                                threshold,
+                                'sacr_parent_kept_wrong',
+                                (not sacr_parent_ok) and (not selected_ok),
                             )
                         if candidate_iou is not None:
                             candidate_ok = bool(
@@ -1490,28 +1696,39 @@ class GroundingEvaluator:
                 )
             row_valid = candidate_valid[bid].clone()
             if self.filter_non_gt_boxes:
-                detected_boxes = end_points['all_detected_boxes'][bid][
-                    end_points['all_detected_bbox_label_mask'][bid].bool()
-                ]
-                surviving_filter = torch.zeros_like(row_valid)
-                valid_indices = row_valid.nonzero(
-                    as_tuple=False
-                ).reshape(-1)
-                if detected_boxes.numel() and valid_indices.numel():
-                    detector_ious, _ = _iou3d_par(
-                        box_cxcyczwhd_to_xyzxyz(detected_boxes),
-                        box_cxcyczwhd_to_xyzxyz(
-                            candidate_boxes[bid, valid_indices]
-                        ),
-                    )
-                    surviving_filter[valid_indices] = (
-                        detector_ious.max(0)[0] > 0.25
-                    )
-                row_valid &= surviving_filter
+                row_valid = build_detector_overlap_valid(
+                    candidate_boxes[bid:bid + 1],
+                    row_valid.unsqueeze(0),
+                    end_points['all_detected_boxes'][bid:bid + 1],
+                    end_points[
+                        'all_detected_bbox_label_mask'
+                    ][bid:bid + 1].bool(),
+                    iou_threshold=0.25,
+                )[0]
             if not bool(row_valid.any().item()):
-                raise ValueError(
-                    'position filtering left no valid candidate'
+                if (axis_mode != "default_query_axis"
+                        and not self.filter_non_gt_boxes):
+                    raise ValueError(
+                        'position geometry filtering left no valid candidate'
+                    )
+                miss_count = (
+                    1 if prefix == 'last_' and self.only_root else num_obj
                 )
+                missed = torch.zeros(
+                    miss_count, dtype=torch.bool, device=gt_bboxes.device
+                )
+                for threshold in self.thresholds:
+                    for topk in self.topks:
+                        key = (prefix, threshold, topk, 'bbs')
+                        self.gts[key] += miss_count
+                        if (
+                                prefix == 'last_'
+                                and topk == 1
+                                and self.only_root):
+                            self._record_position_subgroups(
+                                end_points, bid, threshold, missed
+                            )
+                continue
             ranking_valid = row_valid.unsqueeze(0).expand_as(scores)
 
             top = self._position_top_indices(

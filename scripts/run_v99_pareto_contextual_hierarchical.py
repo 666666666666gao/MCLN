@@ -7,6 +7,7 @@ import hashlib
 import json
 import math
 import os
+from functools import partial
 from pathlib import Path
 
 import torch
@@ -33,6 +34,9 @@ from scripts.train_scanrefer_rec_hierarchical_reranker import (
     materialize_hierarchical_rows,
     split_residual_joined_rows,
 )
+from scripts.train_scanrefer_rec_selective_residual import (
+    _validate_materialization_artifact,
+)
 
 
 V97_SOURCE_SHA256 = (
@@ -41,6 +45,33 @@ V97_SOURCE_SHA256 = (
 V97_MARGIN = 0.13312220573425293
 MIN_DELTA_025 = 65
 MIN_DELTA_050 = 68
+
+
+def build_materialization_artifact_validator(
+        portable_dataset_contract, protected_before):
+    """Bind geometry validation to this dataset-specific artifact chain."""
+    if not portable_dataset_contract:
+        return None
+    if not isinstance(protected_before, dict):
+        raise ValueError("protected artifact identities must be an object")
+    expected = {}
+    for label in ("backbone", "parent"):
+        identity = protected_before.get(label)
+        sha256 = identity.get("sha256") if isinstance(identity, dict) else None
+        if (not isinstance(sha256, str)
+                or len(sha256) != 64
+                or any(character not in "0123456789abcdef"
+                       for character in sha256)):
+            raise ValueError(
+                "protected {} SHA-256 is invalid".format(label)
+            )
+        expected[label] = sha256
+    return partial(
+        _validate_materialization_artifact,
+        expected_backbone_sha256=expected["backbone"],
+        expected_parent_artifact_sha256=expected["parent"],
+        require_geometry_weight_one=False,
+    )
 
 
 def fit_v97(records, device):
@@ -197,6 +228,29 @@ def acceptance_gate(diagnostics):
 def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--v97-source", required=True)
+    parser.add_argument(
+        "--dataset", choices=("scanrefer", "nr3d", "sr3d"),
+        default="scanrefer",
+    )
+    parser.add_argument("--backbone-checkpoint")
+    parser.add_argument(
+        "--portable-dataset-contract",
+        action="store_true",
+        help=(
+            "retain the exact V99 16x7 model/policy while binding OOF "
+            "evidence to a new dataset-specific backbone"
+        ),
+    )
+    parser.add_argument(
+        "--backbone-joint-training",
+        action="store_true",
+        help="record that the frozen backbone used auxiliary ScanNet training rows",
+    )
+    parser.add_argument(
+        "--inference-uses-ground-truth",
+        action="store_true",
+        help="record GT proposals with predicted classes at deployment",
+    )
     parser.add_argument("--base-cache", required=True)
     parser.add_argument("--geometry-cache", required=True)
     parser.add_argument("--parent-artifact", required=True)
@@ -204,6 +258,18 @@ def main(argv=None):
     parser.add_argument("--output", required=True)
     parser.add_argument("--device", default="cuda:0", choices=("cuda:0",))
     args = parser.parse_args(argv)
+    if args.portable_dataset_contract:
+        if not args.backbone_checkpoint:
+            parser.error(
+                "--portable-dataset-contract requires --backbone-checkpoint"
+            )
+    elif (args.backbone_checkpoint is not None
+          or args.dataset != "scanrefer"
+          or args.backbone_joint_training
+          or args.inference_uses_ground_truth):
+        parser.error(
+            "dataset/backbone overrides require --portable-dataset-contract"
+        )
     output = Path(args.output).expanduser().absolute()
     if output.exists():
         raise FileExistsError(str(output))
@@ -212,8 +278,13 @@ def main(argv=None):
     if hashlib.sha256(source_path.read_bytes()).hexdigest() != V97_SOURCE_SHA256:
         raise ValueError("V97 source SHA-256 changed")
 
+    protected_backbone = (
+        Path(args.backbone_checkpoint).expanduser().resolve()
+        if args.portable_dataset_contract
+        else Path(AUTHORITATIVE_BACKBONE_PATH).resolve()
+    )
     protected_paths = {
-        "backbone": Path(AUTHORITATIVE_BACKBONE_PATH).resolve(),
+        "backbone": protected_backbone,
         "parent": Path(args.parent_artifact).expanduser().resolve(),
         "geometry": Path(args.geometry_artifact).expanduser().resolve(),
     }
@@ -222,12 +293,26 @@ def main(argv=None):
         Path(args.base_cache), Path(args.geometry_cache),
         Path(args.parent_artifact), Path(args.geometry_artifact),
         device=args.device,
+        portable_provenance=args.portable_dataset_contract,
+        expected_backbone_sha256=(
+            protected_before["backbone"]["sha256"]
+            if args.portable_dataset_contract else None
+        ),
+        expected_dataset=(
+            args.dataset if args.portable_dataset_contract else None
+        ),
     )
-    split = split_residual_joined_rows(loaded["joined_rows"])
+    split = split_residual_joined_rows(
+        loaded["joined_rows"],
+        portable_provenance=args.portable_dataset_contract,
+    )
     records = materialize_hierarchical_rows(
         split["fit_rows"], loaded["parent"], loaded["geometry_model"],
         loaded["geometry_artifact"], device=args.device,
         require_contiguous=False,
+        artifact_validator=build_materialization_artifact_validator(
+            args.portable_dataset_contract, protected_before
+        ),
     )
     scene_folds = build_hierarchical_scene_folds([
         record["scan_id"] for record in records
@@ -338,6 +423,25 @@ def main(argv=None):
         "protected_before": protected_before,
         "protected_after": protected_after,
     }
+    if args.portable_dataset_contract:
+        report["dataset_contract"] = {
+            "dataset": args.dataset,
+            "reranker_dataset_only": True,
+            "dataset_only": True,
+            "joint_training": False,
+            "backbone_training_dataset_only": not args.backbone_joint_training,
+            "backbone_joint_training": args.backbone_joint_training,
+            "inference_uses_ground_truth": args.inference_uses_ground_truth,
+            "backbone_checkpoint": str(protected_backbone),
+            "backbone_sha256": protected_before["backbone"]["sha256"],
+            "query_count": 16,
+            "variant_count": 7,
+            "flat_candidate_count": 112,
+            "method": "V99-contextual-pareto-16x7",
+            "v99_script_sha256": hashlib.sha256(
+                Path(__file__).resolve().read_bytes()
+            ).hexdigest(),
+        }
     payload = json.dumps(
         report, sort_keys=True, ensure_ascii=True,
         separators=(",", ":"), allow_nan=False,

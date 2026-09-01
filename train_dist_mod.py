@@ -27,6 +27,7 @@ from main_utils import (
     build_parent_relative_text_verifier_audit_diagnostics,
     build_source_moe_gate_decision_diagnostics,
     fpr_scene_sample_identity_digest,
+    is_counterfactual_parent_bounded_audit,
     parse_option,
     prepare_source_moe_gate_checkpoint_config,
     save_source_choice_diagnostics_receipt,
@@ -2919,6 +2920,18 @@ class TrainTester(BaseTrainTester):
                 legacy_scene_graph_cache_expected_sha256=getattr(
                     args, 'legacy_scene_graph_cache_expected_sha256', ''),
             )
+
+        if is_counterfactual_parent_bounded_audit(args):
+            if args.eval or args.debug or args.eval_train:
+                raise ValueError(
+                    "counterfactual Parent bounded audit requires the exact "
+                    "Nr3D training split"
+                )
+            print(
+                "Counterfactual Parent bounded audit: validation dataset "
+                "construction disabled"
+            )
+            return train_dataset, None
         
         test_dataset = Joint3DDataset(
             dataset_dict=dataset_dict,

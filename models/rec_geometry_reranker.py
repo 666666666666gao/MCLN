@@ -274,10 +274,9 @@ def _validate_parent_prior_inputs(parent_state, geometry_valid,
         raise ValueError("valid parent compact_scores must be finite")
     if bool((geometry_valid & ~candidate_valid.unsqueeze(2)).any().item()):
         raise ValueError("padded parent candidates cannot have valid geometry")
-    if not torch.equal(
-            geometry_valid[:, :, regressed_variant_index], candidate_valid):
+    if not torch.equal(geometry_valid.any(dim=2), candidate_valid):
         raise ValueError(
-            "the regressed geometry variant must match candidate_valid"
+            "geometry query validity must exactly match candidate_valid"
         )
     num_queries = query_scores.shape[1]
     expected_indices = torch.arange(

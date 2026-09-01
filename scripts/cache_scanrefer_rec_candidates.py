@@ -236,6 +236,15 @@ def parse_args(argv=None):
         description="Cache deterministic ScanRefer REC reranker candidates."
     )
     parser.add_argument("--split", choices=("train", "val"), required=True)
+    parser.add_argument(
+        "--dataset",
+        choices=("scanrefer", "nr3d", "sr3d"),
+        default="scanrefer",
+        help=(
+            "language grounding dataset to cache; each cache remains "
+            "dataset-only"
+        ),
+    )
     parser.add_argument("--data-root", required=True)
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--output-dir", required=True)
@@ -403,12 +412,17 @@ def _prepare_model_config(checkpoint, data_root):
     return config
 
 
-def _build_dataset(config, split):
+def _build_dataset(config, split, dataset_name="scanrefer"):
     from src.joint_det_dataset import Joint3DDataset
 
+    if dataset_name not in ("scanrefer", "nr3d", "sr3d"):
+        raise ValueError("unsupported REC cache dataset: {}".format(
+            dataset_name
+        ))
+
     dataset = Joint3DDataset(
-        dataset_dict={"scanrefer": 1},
-        test_dataset="scanrefer",
+        dataset_dict={dataset_name: 1},
+        test_dataset=dataset_name,
         split=split,
         use_color=bool(config.use_color),
         use_height=bool(config.use_height),
@@ -501,9 +515,7 @@ def _cache_metadata(args, fingerprint, checkpoint, config, dataset_size,
             config.source_choice_selector_hidden_dim
         ),
     }
-    checkpoint_config = checkpoint.get("config")
-    if (hasattr(checkpoint_config, "use_source_moe")
-            or bool(getattr(config, "use_source_moe", False))):
+    if bool(getattr(config, "use_source_moe", False)):
         backbone_config.update({
             "use_source_moe": bool(config.use_source_moe),
             "source_moe_shared_source": str(
@@ -557,6 +569,7 @@ def _cache_metadata(args, fingerprint, checkpoint, config, dataset_size,
         "checkpoint_sha256": fingerprint,
         "checkpoint_epoch": int(checkpoint.get("epoch", -1)),
         "split": args.split,
+        "dataset": str(getattr(args, "dataset", "scanrefer")),
         "data_root": str(Path(config.data_root).expanduser().resolve()),
         "candidate_rule": {
             "topk_per_source": TOPK_PER_SOURCE,
@@ -631,7 +644,7 @@ def run_extraction(args):
         raise ValueError("checkpoint must contain a dictionary")
     checkpoint_epoch = int(checkpoint.get("epoch", -1))
     config = _prepare_model_config(checkpoint, data_root)
-    dataset = _build_dataset(config, args.split)
+    dataset = _build_dataset(config, args.split, args.dataset)
     source_dataset_size = len(dataset)
     dataset_size = min(
         source_dataset_size,

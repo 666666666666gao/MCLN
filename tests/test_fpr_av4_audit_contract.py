@@ -5,9 +5,13 @@ import json
 import pathlib
 import re
 import subprocess
+import types
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+TRAIN_ONLY_DATA_MANIFEST = (
+    ROOT / "scripts" / "nr3d_fpr_tv_av4_train_only_data_manifest_v2.json"
+)
 LAUNCHER = ROOT / "scripts" / (
     "run_nr3d_fpr_tv_counterfactual_parent_audit.sh"
 )
@@ -115,3 +119,125 @@ def test_spec_permanently_excludes_unrelated_routes_and_long_training():
         "strictly above 68.9%",
     ):
         assert fragment in source
+
+
+def test_train_only_data_manifest_excludes_validation_sources():
+    manifest = json.loads(TRAIN_ONLY_DATA_MANIFEST.read_text())
+    assert manifest["schema"] == (
+        "mcln-nr3d-fpr-tv-av4-train-only-data-manifest-v2"
+    )
+    assert "val_v3scans.pkl" not in manifest["sources"]
+    assert "superpoints/val" not in manifest["sources"]
+    paths = [row["path"] for row in manifest["files"]]
+    assert "val_v3scans.pkl" not in paths
+    assert not any(path.startswith("superpoints/val/") for path in paths)
+    assert manifest["file_count"] == len(paths)
+    assert manifest["total_size"] == sum(
+        row["size"] for row in manifest["files"]
+    )
+
+
+def test_bounded_counterfactual_loader_does_not_build_test_loader(monkeypatch):
+    import main_utils
+
+    class DummyDataset(object):
+        pass
+
+    class DummyTrainer(main_utils.BaseTrainTester):
+        @staticmethod
+        def get_datasets(_args):
+            return DummyDataset(), None
+
+    constructed = []
+    monkeypatch.setattr(
+        main_utils,
+        "DistributedSampler",
+        lambda dataset, shuffle=True: (dataset, shuffle),
+    )
+    monkeypatch.setattr(
+        main_utils,
+        "DataLoader",
+        lambda dataset, **_kwargs: constructed.append(dataset) or dataset,
+    )
+    args = types.SimpleNamespace(
+        num_workers=0,
+        dataloader_prefetch_factor=2,
+        eval=False,
+        hard_example_replay_manifest="",
+        hard_example_replay_manifest_sha256="",
+        batch_size=16,
+        rng_seed=0,
+        persistent_train_workers=False,
+        fpr_scene_disjoint_audit=False,
+        parent_relative_text_verifier_counterfactual_training=True,
+        max_train_batches=100,
+    )
+    trainer = object.__new__(DummyTrainer)
+    train_loader, test_loader = trainer.get_loaders(args)
+    assert len(constructed) == 1
+    assert train_loader is constructed[0]
+    assert test_loader is None
+
+
+def test_bounded_counterfactual_main_logging_accepts_missing_test_loader():
+    import main_utils
+
+    args = types.SimpleNamespace(
+        parent_relative_text_verifier_counterfactual_training=True,
+        max_train_batches=100,
+    )
+    assert main_utils._optional_test_dataset_size(args, None) is None
+
+    args.parent_relative_text_verifier_counterfactual_training = False
+    try:
+        main_utils._optional_test_dataset_size(args, None)
+    except ValueError as error:
+        assert "bounded train-only audit" in str(error)
+    else:
+        raise AssertionError("non-audit path accepted a missing test loader")
+
+
+def test_bounded_counterfactual_dataset_skips_validation_construction(
+        monkeypatch):
+    import train_dist_mod
+
+    calls = []
+
+    class DummyDataset(object):
+        def __init__(self, **kwargs):
+            calls.append(kwargs["split"])
+
+    monkeypatch.setattr(train_dist_mod, "Joint3DDataset", DummyDataset)
+    args = types.SimpleNamespace(
+        dataset=["nr3d"],
+        test_dataset="nr3d",
+        joint_det=True,
+        density_aware_target_box_scene_disjoint_audit=False,
+        fpr_scene_disjoint_audit=False,
+        eval=False,
+        debug=False,
+        eval_train=False,
+        use_color=True,
+        use_height=False,
+        data_root="/data",
+        detect_intermediate=True,
+        use_multiview=False,
+        butd=False,
+        butd_gt=False,
+        butd_cls=True,
+        augment_det=False,
+        skip_missing_superpoints=True,
+        use_sacr_source=False,
+        use_sacr_score_refiner=False,
+        use_parent_relative_text_verifier=True,
+        legacy_scene_graph_cache="",
+        legacy_scene_graph_cache_strict=False,
+        legacy_scene_graph_cache_expected_target_selection="",
+        legacy_scene_graph_cache_expected_sha256="",
+        parent_relative_text_verifier_counterfactual_training=True,
+        max_train_batches=100,
+    )
+    train_dataset, test_dataset = train_dist_mod.TrainTester.get_datasets(args)
+    assert calls == ["train"]
+    assert train_dataset is not None
+    assert test_dataset is None

@@ -37,6 +37,7 @@ from models.rec_selective_residual import (
 )
 from scripts.rec_geometry_cache import canonical_json_sha256
 from scripts.train_rec_geometry_reranker import (
+    DEFAULT_GEOMETRY_WEIGHTS,
     AUTHORITATIVE_SPLIT_SEED0,
     FLAT_GEOMETRY_CANDIDATE_COUNT,
     GEOMETRY_CANDIDATE_COUNT,
@@ -208,9 +209,67 @@ def _require_authoritative_inputs(
         raise ValueError("geometry artifact provenance mismatch")
 
 
+def _require_portable_dataset_inputs(
+        joined_rows, base_manifest, geometry_manifest, parent,
+        geometry_model, geometry_artifact, parent_sha, geometry_sha,
+        expected_backbone_sha256, expected_dataset):
+    """Validate a new dataset-specific chain without weakening V99 constants."""
+    if (not isinstance(expected_backbone_sha256, str)
+            or len(expected_backbone_sha256) != 64
+            or any(character not in "0123456789abcdef"
+                   for character in expected_backbone_sha256)):
+        raise ValueError("portable backbone SHA-256 is invalid")
+    if expected_dataset not in ("scanrefer", "nr3d", "sr3d"):
+        raise ValueError("portable dataset is invalid")
+    if not isinstance(joined_rows, list) or not joined_rows:
+        raise ValueError("joined training rows must be a nonempty list")
+    if (not isinstance(base_manifest, dict)
+            or not isinstance(geometry_manifest, dict)
+            or base_manifest.get("split") != "train"
+            or geometry_manifest.get("split") != "train"):
+        raise ValueError("portable residual fitting requires train manifests")
+    if (base_manifest.get("sample_count") != len(joined_rows)
+            or geometry_manifest.get("sample_count") != len(joined_rows)
+            or base_manifest.get("sample_count")
+            != base_manifest.get("dataset_size")
+            or base_manifest.get("dataset_size")
+            != base_manifest.get("source_dataset_size")):
+        raise ValueError("portable train cache is incomplete")
+    if str(base_manifest.get("dataset", "scanrefer")) != expected_dataset:
+        raise ValueError("portable train cache dataset mismatch")
+    base_binding = geometry_manifest.get("base_cache_binding", {})
+    if (base_manifest.get("checkpoint_sha256")
+            != expected_backbone_sha256
+            or geometry_manifest.get("checkpoint_sha256")
+            != expected_backbone_sha256
+            or not _is_sha256(base_binding.get("content_sha256"))
+            or not _is_sha256(geometry_manifest.get(
+                "cache_content_digest"
+            ))
+            or not _is_sha256(geometry_manifest.get(
+                "immutable_metadata_digest"
+            ))):
+        raise ValueError("portable cache provenance mismatch")
+    parent_model = _parent_model(parent)
+    if getattr(parent_model, "_artifact_sha256", None) != parent_sha:
+        raise ValueError("portable parent artifact SHA-256 mismatch")
+    if getattr(geometry_model, "_artifact_sha256", None) != geometry_sha:
+        raise ValueError("portable geometry artifact SHA-256 mismatch")
+    weight = geometry_artifact.get("geometry_weight") if isinstance(
+        geometry_artifact, dict
+    ) else None
+    if (not isinstance(weight, (int, float)) or isinstance(weight, bool)
+            or not 0.0 <= float(weight) <= 1.0
+            or geometry_artifact.get("checkpoint_sha256")
+            != expected_backbone_sha256
+            or geometry_artifact.get("parent_artifact_sha256") != parent_sha):
+        raise ValueError("portable geometry artifact provenance mismatch")
+
+
 def load_residual_training_inputs(
         base_cache, geometry_cache, parent_artifact_path,
-        geometry_artifact_path, device="cuda:0"):
+        geometry_artifact_path, device="cuda:0", portable_provenance=False,
+        expected_backbone_sha256=None, expected_dataset=None):
     """Stable-load exactly the four approved train-only inputs."""
     base_path = _validate_train_only_path(base_cache, "base cache")
     geometry_path = _validate_train_only_path(
@@ -224,10 +283,11 @@ def load_residual_training_inputs(
     )
     parent_sha = _stable_file_sha256(parent_path)
     geometry_sha = _stable_file_sha256(geometry_artifact_path)
-    if parent_sha != AUTHORITATIVE_PARENT_ARTIFACT_SHA256:
-        raise ValueError("parent artifact file is not the approved snapshot")
-    if geometry_sha != AUTHORITATIVE_GEOMETRY_ARTIFACT_SHA256:
-        raise ValueError("geometry artifact file is not the approved snapshot")
+    if not portable_provenance:
+        if parent_sha != AUTHORITATIVE_PARENT_ARTIFACT_SHA256:
+            raise ValueError("parent artifact file is not the approved snapshot")
+        if geometry_sha != AUTHORITATIVE_GEOMETRY_ARTIFACT_SHA256:
+            raise ValueError("geometry artifact file is not the approved snapshot")
 
     joined, base_manifest, geometry_manifest, parent = (
         load_geometry_training_data(base_path, geometry_path, parent_path)
@@ -239,24 +299,45 @@ def load_residual_training_inputs(
         base_manifest=base_manifest,
         geometry_manifest=geometry_manifest,
     )
-    _require_authoritative_inputs(
-        joined,
-        base_manifest,
-        geometry_manifest,
-        parent,
-        geometry_model,
-        geometry_artifact,
-        parent_sha,
-        geometry_sha,
-    )
-    return {
-        "joined_rows": joined,
-        "base_manifest": base_manifest,
-        "geometry_manifest": geometry_manifest,
-        "parent": parent,
-        "geometry_model": geometry_model,
-        "geometry_artifact": geometry_artifact,
-        "input_sha256": {
+    if portable_provenance:
+        _require_portable_dataset_inputs(
+            joined,
+            base_manifest,
+            geometry_manifest,
+            parent,
+            geometry_model,
+            geometry_artifact,
+            parent_sha,
+            geometry_sha,
+            expected_backbone_sha256,
+            expected_dataset,
+        )
+        input_sha256 = {
+            "backbone": expected_backbone_sha256,
+            "parent": parent_sha,
+            "geometry": geometry_sha,
+            "base_cache_content": geometry_manifest[
+                "base_cache_binding"
+            ]["content_sha256"],
+            "geometry_cache_content": geometry_manifest[
+                "cache_content_digest"
+            ],
+            "geometry_metadata": geometry_manifest[
+                "immutable_metadata_digest"
+            ],
+        }
+    else:
+        _require_authoritative_inputs(
+            joined,
+            base_manifest,
+            geometry_manifest,
+            parent,
+            geometry_model,
+            geometry_artifact,
+            parent_sha,
+            geometry_sha,
+        )
+        input_sha256 = {
             "backbone": AUTHORITATIVE_BACKBONE_SHA256,
             "parent": parent_sha,
             "geometry": geometry_sha,
@@ -265,7 +346,15 @@ def load_residual_training_inputs(
                 AUTHORITATIVE_GEOMETRY_CACHE_CONTENT_SHA256
             ),
             "geometry_metadata": AUTHORITATIVE_GEOMETRY_METADATA_SHA256,
-        },
+        }
+    return {
+        "joined_rows": joined,
+        "base_manifest": base_manifest,
+        "geometry_manifest": geometry_manifest,
+        "parent": parent,
+        "geometry_model": geometry_model,
+        "geometry_artifact": geometry_artifact,
+        "input_sha256": input_sha256,
         "validation_data_accessed": False,
     }
 
@@ -305,9 +394,27 @@ def _validate_joined_row_order(rows, require_contiguous=True):
             raise ValueError("joined scan identity mismatch")
 
 
-def _validate_materialization_artifact(artifact):
+def _validate_materialization_artifact(
+        artifact,
+        expected_backbone_sha256=AUTHORITATIVE_BACKBONE_SHA256,
+        expected_parent_artifact_sha256=(
+            AUTHORITATIVE_PARENT_ARTIFACT_SHA256
+        ),
+        require_geometry_weight_one=True):
     if not isinstance(artifact, dict):
         raise ValueError("geometry artifact must be an object")
+    if not isinstance(require_geometry_weight_one, bool):
+        raise TypeError("geometry weight policy must be boolean")
+    for label, value in (
+            ("backbone", expected_backbone_sha256),
+            ("parent", expected_parent_artifact_sha256)):
+        if (not isinstance(value, str)
+                or len(value) != 64
+                or any(character not in "0123456789abcdef"
+                       for character in value)):
+            raise ValueError(
+                "expected {} artifact SHA-256 is invalid".format(label)
+            )
     mean = artifact.get("feature_mean")
     std = artifact.get("feature_std")
     names = artifact.get("feature_names")
@@ -331,14 +438,21 @@ def _validate_materialization_artifact(artifact):
     if (artifact.get("input_dim") != GEOMETRY_INPUT_DIM
             or artifact.get("regressed_variant_index") != 0
             or artifact.get("checkpoint_sha256")
-            != AUTHORITATIVE_BACKBONE_SHA256
+            != expected_backbone_sha256
             or artifact.get("parent_artifact_sha256")
-            != AUTHORITATIVE_PARENT_ARTIFACT_SHA256):
+            != expected_parent_artifact_sha256):
         raise ValueError("geometry artifact contract is invalid")
     weight = artifact.get("geometry_weight")
-    if (not isinstance(weight, (float, int)) or isinstance(weight, bool)
-            or float(weight) != 1.0):
+    if not isinstance(weight, (float, int)) or isinstance(weight, bool):
+        raise ValueError("geometry weight must be numeric")
+    weight = float(weight)
+    if require_geometry_weight_one and weight != 1.0:
         raise ValueError("approved geometry weight must be exactly 1.0")
+    if (not require_geometry_weight_one
+            and weight not in DEFAULT_GEOMETRY_WEIGHTS):
+        raise ValueError(
+            "portable geometry weight must use the trainer grid"
+        )
 
 
 def _validate_geometry_outputs(outputs, batch_size, device, valid):
@@ -1391,12 +1505,12 @@ def canonical_residual_joined_identity_sha256(joined_rows):
     return digest.hexdigest()
 
 
-def split_residual_joined_rows(joined_rows):
-    """Split authoritative joined identities before feature materialization."""
+def split_residual_joined_rows(joined_rows, portable_provenance=False):
+    """Split joined identities before feature materialization."""
     if not isinstance(joined_rows, (list, tuple)) or not joined_rows:
         raise ValueError("joined residual rows must be a nonempty sequence")
     expected_sample_count = AUTHORITATIVE_SPLIT_SEED0["sample_count"]
-    if len(joined_rows) != expected_sample_count:
+    if not portable_provenance and len(joined_rows) != expected_sample_count:
         raise ValueError("authoritative joined residual row count changed")
     scene_ids = []
     for expected_index, row in enumerate(joined_rows):
@@ -1418,12 +1532,36 @@ def split_residual_joined_rows(joined_rows):
             raise ValueError("joined residual scan identity changed")
         scene_ids.append(scan_id)
 
+    if portable_provenance:
+        eligible_rows = []
+        eligible_scene_ids = []
+        for row, scan_id in zip(joined_rows, scene_ids):
+            evaluator_valid = row["geometry"].get("evaluator_valid")
+            if (not isinstance(evaluator_valid, torch.Tensor)
+                    or evaluator_valid.dtype != torch.bool):
+                raise ValueError(
+                    "portable residual row lacks evaluator validity"
+                )
+            if bool(evaluator_valid.any().item()):
+                eligible_rows.append(row)
+                eligible_scene_ids.append(scan_id)
+        if not eligible_rows:
+            raise ValueError(
+                "portable residual split has no evaluator-eligible rows"
+            )
+        joined_rows = eligible_rows
+        scene_ids = eligible_scene_ids
+
     scenes = sorted(set(scene_ids))
-    if len(scenes) != AUTHORITATIVE_SPLIT_SEED0["scene_count"]:
+    if len(scenes) < 2:
+        raise ValueError("joined residual split requires at least two scenes")
+    if (not portable_provenance
+            and len(scenes) != AUTHORITATIVE_SPLIT_SEED0["scene_count"]):
         raise ValueError("authoritative joined residual scene count changed")
     shuffled = list(scenes)
     random.Random(0).shuffle(shuffled)
     calibration_count = int(round(len(scenes) * 0.10))
+    calibration_count = max(1, min(calibration_count, len(scenes) - 1))
     calibration_scenes = set(shuffled[:calibration_count])
     fit_rows = [
         row for row, scan_id in zip(joined_rows, scene_ids)
@@ -1453,7 +1591,7 @@ def split_residual_joined_rows(joined_rows):
             "calibration": calibration_scene_list,
         }),
     }
-    if metadata != AUTHORITATIVE_SPLIT_SEED0:
+    if not portable_provenance and metadata != AUTHORITATIVE_SPLIT_SEED0:
         raise ValueError("authoritative residual joined-row split changed")
     return {
         "fit_rows": fit_rows,

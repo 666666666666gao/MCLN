@@ -20,6 +20,9 @@ training.
   selector, and all other parameters remain frozen.
 - The counterfactual flag is explicitly enabled. Deployment selection remains
   the actual V99 Parent; counterfactual views are training-only.
+- The validation dataset and validation DataLoader must not be constructed.
+  The train-only data manifest must exclude `val_v3scans.pkl` and
+  `superpoints/val`.
 - No validation/evaluation, checkpoint save, retention, LR scan, threshold
   search, or downstream launch is allowed.
 
@@ -37,10 +40,12 @@ non-writable trust path. It must:
 2. hold the shared GPU0 lock for the complete preflight/formal lifetime;
 3. build independent-inode E57, GroupFree, data-manifest, and full runtime-code
    snapshots;
-4. verify the complete runtime manifest before and after execution;
-5. execute from the code snapshot under a clean environment, Landlock write
+4. bind the data snapshot to the reviewed train-only v2 manifest and reject
+   any validation source or inventory row;
+5. verify the complete runtime manifest before and after execution;
+6. execute from the code snapshot under a clean environment, Landlock write
    allowlist, no-new-privileges, and empty capability sets; and
-6. preserve fail-closed process-group supervision for TERM/HUP/INT/KILL parent
+7. preserve fail-closed process-group supervision for TERM/HUP/INT/KILL parent
    failures.
 
 The formal process may write only its one-shot runtime output/home and the

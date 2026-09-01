@@ -134,6 +134,27 @@ def _requires_joint_det_structured_collate(args):
     ))
 
 
+def is_counterfactual_parent_bounded_audit(args):
+    """Return whether the exact bounded A-V4 train-only path is active."""
+    return (
+        bool(getattr(
+            args,
+            "parent_relative_text_verifier_counterfactual_training",
+            False,
+        ))
+        and int(getattr(args, "max_train_batches", 0)) > 0
+    )
+
+
+def _optional_test_dataset_size(args, test_loader):
+    """Return the test size, or None only for the bounded train-only audit."""
+    if test_loader is None:
+        if not is_counterfactual_parent_bounded_audit(args):
+            raise ValueError("only the bounded train-only audit may omit test")
+        return None
+    return len(test_loader.dataset)
+
+
 def save_eval_metrics_receipt(log_dir, epoch, metrics):
     """Atomically persist the exact evaluator counters for one checkpoint."""
     if metrics is None:
@@ -4952,7 +4973,14 @@ class BaseTrainTester:
             np.random.seed(np.random.get_state()[1][0] + worker_id)
 
         # Datasets
+        train_only_audit = is_counterfactual_parent_bounded_audit(args)
         train_dataset, test_dataset = self.get_datasets(args)
+        if train_only_audit:
+            if args.eval or train_dataset is None or test_dataset is not None:
+                raise ValueError(
+                    "counterfactual Parent bounded audit must construct only "
+                    "the training dataset"
+                )
         
         # Samplers and loaders
         g = torch.Generator()
@@ -5023,24 +5051,29 @@ class BaseTrainTester:
                 **multiprocessing_loader_args
             )
         
-        test_sampler = DistributedSampler(test_dataset, shuffle=False)
-        test_loader = DataLoader(
-            test_dataset,
-            batch_size=args.batch_size,
-            shuffle=False,
-            num_workers=args.num_workers,
-            worker_init_fn=seed_worker,
-            pin_memory=True,
-            sampler=test_sampler,
-            drop_last=False,
-            generator=g,
-            collate_fn=(
-                joint_det_structured_collate
-                if _requires_joint_det_structured_collate(args)
-                else None
-            ),
-            **multiprocessing_loader_args
-        )
+        if train_only_audit:
+            test_loader = None
+        else:
+            if test_dataset is None:
+                raise ValueError("non-audit runs require a test dataset")
+            test_sampler = DistributedSampler(test_dataset, shuffle=False)
+            test_loader = DataLoader(
+                test_dataset,
+                batch_size=args.batch_size,
+                shuffle=False,
+                num_workers=args.num_workers,
+                worker_init_fn=seed_worker,
+                pin_memory=True,
+                sampler=test_sampler,
+                drop_last=False,
+                generator=g,
+                collate_fn=(
+                    joint_det_structured_collate
+                    if _requires_joint_det_structured_collate(args)
+                    else None
+                ),
+                **multiprocessing_loader_args
+            )
         return train_loader, test_loader
 
     @staticmethod
@@ -5948,8 +5981,14 @@ class BaseTrainTester:
                     optimizer_steps_per_epoch,
                 )
             )
-        n_data = len(test_loader.dataset)
-        self.logger.info(f"length of testing dataset: {n_data}")
+        n_data = _optional_test_dataset_size(args, test_loader)
+        if n_data is None:
+            self.logger.info(
+                "testing dataset disabled for counterfactual Parent bounded "
+                "audit"
+            )
+        else:
+            self.logger.info(f"length of testing dataset: {n_data}")
 
         # Get model
         model = self.get_model(args)

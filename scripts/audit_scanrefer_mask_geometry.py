@@ -809,6 +809,12 @@ def parse_args(argv=None):
         description="Audit ScanRefer mask-derived REC geometry on train data."
     )
     parser.add_argument("--data-root", required=True)
+    parser.add_argument(
+        "--dataset",
+        choices=("scanrefer", "nr3d", "sr3d"),
+        default="scanrefer",
+        help="dataset-only annotation source used by the candidate cache",
+    )
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--train-cache", required=True)
     parser.add_argument("--output-dir", required=True)
@@ -1156,6 +1162,13 @@ def _run_audit_to_staging(args, output_dir, started_at):
     manifest, panel_records = load_train_cache_panel_records(
         train_cache, expected_checkpoint_sha256=fingerprint
     )
+    manifest_dataset = str(manifest.get("dataset", "scanrefer"))
+    if manifest_dataset != args.dataset:
+        raise ValueError(
+            "train cache dataset {} does not match requested {}".format(
+                manifest_dataset, args.dataset
+            )
+        )
     panel = select_baseline_stratified_panel(
         panel_records,
         scene_count=args.scene_count,
@@ -1175,6 +1188,7 @@ def _run_audit_to_staging(args, output_dir, started_at):
     )
     common_provenance = {
         "panel_schema_version": PANEL_SCHEMA_VERSION,
+        "dataset": args.dataset,
         "split": "train",
         "population_estimate": False,
         "checkpoint": str(checkpoint_path),
@@ -1238,7 +1252,7 @@ def _run_audit_to_staging(args, output_dir, started_at):
     config = _prepare_model_config(
         checkpoint, _normalized_data_root(data_root)
     )
-    dataset = _build_dataset(config, "train")
+    dataset = _build_dataset(config, "train", args.dataset)
     if max(dataset_indices) >= len(dataset):
         raise ValueError("selected dataset index exceeds current train dataset")
     replay_indices = {

@@ -17,7 +17,10 @@ from pathlib import Path
 import torch
 from torch.nn.utils import clip_grad_norm_
 
-from models.rec_geometry_reranker import build_flat_parent_prior
+from models.rec_geometry_reranker import (
+    build_deployed_parent_state,
+    build_flat_parent_prior,
+)
 from models.rec_hierarchical_reranker import (
     HIERARCHICAL_FALSE_POSITIVE_COSTS,
     QUERY_AUX_BINARY_DIM,
@@ -582,10 +585,9 @@ def materialize_hierarchical_rows(
                 "regressed_variant_index"
             ]
             if not torch.equal(
-                    variant_valid[:, :, regressed_variant_index],
-                    query_valid):
+                    query_valid, parent_state["candidate_valid"]):
                 raise ValueError(
-                    "regressed variant no longer defines query validity"
+                    "hierarchical query validity differs from parent state"
                 )
 
             parent_prior = build_flat_parent_prior(
@@ -631,13 +633,13 @@ def materialize_hierarchical_rows(
                 parent_scores, query_valid
             )
             query_indices = parent_state["query_indices"]
-            default_top1_indices = torch.tensor([
-                int(row["base"]["default_top1_query_index"])
-                for row in row_batch
-            ], dtype=torch.long, device=resolved_device)
-            default_top1 = query_indices.eq(
-                default_top1_indices.unsqueeze(1)
-            ) & query_valid
+            default_state = build_deployed_parent_state(
+                default_scores,
+                query_indices,
+                query_valid,
+                parent_state["query_scores"].shape[1],
+            )
+            default_top1 = default_state["parent_top1_mask"]
             parent_top1 = parent_state["parent_top1_mask"] & query_valid
             if (not bool(default_top1.sum(dim=1).eq(1).all().item())
                     or not bool(parent_top1.sum(dim=1).eq(1).all().item())):
@@ -646,9 +648,14 @@ def materialize_hierarchical_rows(
             structured_raw = raw_features.reshape(
                 current_size, QUERY_COUNT, VARIANT_COUNT, GEOMETRY_INPUT_DIM
             )
-            query_features = structured_raw[
-                :, :, regressed_variant_index, :QUERY_FEATURE_DIM
-            ]
+            query_features = torch.stack([
+                row["base"]["features"] for row in row_batch
+            ]).to(resolved_device, dtype=torch.float32)
+            if query_features.shape != (
+                    current_size, QUERY_COUNT, QUERY_FEATURE_DIM):
+                raise ValueError(
+                    "base query features changed hierarchical shape"
+                )
             expected_query_features = query_features.unsqueeze(2).expand(
                 -1, -1, VARIANT_COUNT, -1
             )

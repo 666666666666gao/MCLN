@@ -21,6 +21,9 @@ from models.rec_pareto_contextual_hierarchy import (
     V99_DROPOUT,
     V99_HIDDEN_DIM,
 )
+from scripts.run_v99_pareto_contextual_hierarchical import (
+    build_materialization_artifact_validator,
+)
 from scripts.train_scanrefer_rec_hierarchical_reranker import (
     AUTHORITATIVE_BACKBONE_PATH,
     _normalization_sha256,
@@ -79,25 +82,60 @@ def _fit_model(records, statistics, device):
         v95.HierarchicalQueryVariantReranker = original
 
 
-def _validate_oof_result(path):
-    if _sha256(path) != V99_RESULT_SHA256:
+def _materialize_fit_rows(
+        split, loaded, device, portable_dataset_contract,
+        protected_before):
+    return materialize_hierarchical_rows(
+        split["fit_rows"], loaded["parent"], loaded["geometry_model"],
+        loaded["geometry_artifact"], device=device,
+        require_contiguous=False,
+        artifact_validator=build_materialization_artifact_validator(
+            portable_dataset_contract, protected_before
+        ),
+    )
+
+
+def _validate_oof_result(
+        path, expected_sha256=V99_RESULT_SHA256,
+        portable_dataset_contract=False, dataset="scanrefer"):
+    if _sha256(path) != expected_sha256:
         raise ValueError("V99 result SHA-256 changed")
     result = json.loads(Path(path).read_text(encoding="ascii"))
     oof = result.get("oof")
     diagnostics = oof.get("diagnostics") if isinstance(oof, dict) else None
     predicates = oof.get("predicates") if isinstance(oof, dict) else None
-    if (result.get("schema")
+    common_invalid = (
+        result.get("schema")
             != "rec-pareto-contextual-hierarchical-train-only-v1"
-            or result.get("validation_data_accessed") is not False
+        or result.get("validation_data_accessed") is not False
             or result.get("contaminated_calibration_accessed") is not False
             or not isinstance(oof, dict) or oof.get("passed") is not True
             or not isinstance(predicates, dict)
             or not predicates or not all(predicates.values())
             or not isinstance(diagnostics, dict)
-            or diagnostics.get("delta_hits025") != 175
+            or result.get("protected_before") != result.get("protected_after")
+    )
+    if common_invalid:
+        raise ValueError("V99 OOF result does not satisfy frozen gate")
+    if portable_dataset_contract:
+        contract = result.get("dataset_contract")
+        if (not isinstance(contract, dict)
+                or contract.get("dataset") != dataset
+                or contract.get("dataset_only") is not True
+                or contract.get("joint_training") is not False
+                or contract.get("query_count") != 16
+                or contract.get("variant_count") != 7
+                or contract.get("flat_candidate_count") != 112
+                or contract.get("method") != "V99-contextual-pareto-16x7"
+                or not _is_sha256(contract.get("backbone_sha256"))
+                or not _is_sha256(contract.get("v99_script_sha256"))):
+            raise ValueError("portable V99 dataset contract is invalid")
+        for key in ("delta_hits025", "delta_hits050", "switches"):
+            if type(diagnostics.get(key)) is not int:
+                raise ValueError("portable V99 OOF diagnostics are invalid")
+    elif (diagnostics.get("delta_hits025") != 175
             or diagnostics.get("delta_hits050") != 474
-            or diagnostics.get("switches") != 5186
-            or result.get("protected_before") != result.get("protected_after")):
+            or diagnostics.get("switches") != 5186):
         raise ValueError("V99 OOF result does not satisfy frozen gate")
     return result
 
@@ -178,8 +216,10 @@ def validate_v99_artifact(
             "row_count", "scene_count", "scene_fold_sha256",
             "deployable_rows_sha256", "candidate_iou_sha256",
             "normalization_sha256", "final_epoch", "model_state_sha256",
-        } or fit.get("row_count") != 33040
-            or fit.get("scene_count") != 506
+        } or type(fit.get("row_count")) is not int
+            or fit.get("row_count") <= 0
+            or type(fit.get("scene_count")) is not int
+            or fit.get("scene_count") <= 0
             or fit.get("normalization_sha256") != normalization["sha256"]
             or any(not _is_sha256(fit.get(name)) for name in (
                 "scene_fold_sha256", "deployable_rows_sha256",
@@ -187,19 +227,42 @@ def validate_v99_artifact(
                 "model_state_sha256"))):
         raise ValueError("V99 fit evidence is invalid")
     evidence = artifact.get("oof_evidence")
-    if (not isinstance(evidence, dict) or evidence != {
-            "path": evidence.get("path"),
-            "sha256": V99_RESULT_SHA256,
-            "script_sha256": V99_SCRIPT_SHA256,
-            "switches": 5186,
-            "delta_hits025": 175,
-            "delta_hits050": 474,
-            "bootstrap025_lower_bound_95": 132,
-            "bootstrap050_lower_bound_95": 385,
-            "all_folds_positive": True,
-        } or not isinstance(evidence.get("path"), str)
-            or not Path(evidence["path"]).is_absolute()):
+    expected_evidence_fields = {
+        "path", "sha256", "script_sha256", "switches",
+        "delta_hits025", "delta_hits050",
+        "bootstrap025_lower_bound_95", "bootstrap050_lower_bound_95",
+        "all_folds_positive",
+    }
+    if (not isinstance(evidence, dict)
+            or set(evidence) != expected_evidence_fields
+            or not isinstance(evidence.get("path"), str)
+            or not Path(evidence["path"]).is_absolute()
+            or not _is_sha256(evidence.get("sha256"))
+            or not _is_sha256(evidence.get("script_sha256"))
+            or any(type(evidence.get(name)) is not int for name in (
+                "switches", "delta_hits025", "delta_hits050",
+                "bootstrap025_lower_bound_95",
+                "bootstrap050_lower_bound_95",
+            ))
+            or evidence.get("switches") < 0
+            or evidence.get("all_folds_positive") is not True):
         raise ValueError("V99 OOF evidence is invalid")
+    authoritative_evidence = evidence.get("sha256") == V99_RESULT_SHA256
+    if authoritative_evidence:
+        if (evidence.get("script_sha256") != V99_SCRIPT_SHA256
+                or evidence.get("switches") != 5186
+                or evidence.get("delta_hits025") != 175
+                or evidence.get("delta_hits050") != 474
+                or evidence.get("bootstrap025_lower_bound_95") != 132
+                or evidence.get("bootstrap050_lower_bound_95") != 385
+                or fit.get("row_count") != 33040
+                or fit.get("scene_count") != 506):
+            raise ValueError("authoritative V99 evidence is invalid")
+    elif (evidence.get("delta_hits025") <= 0
+            or evidence.get("delta_hits050") <= 0
+            or evidence.get("bootstrap025_lower_bound_95") <= 0
+            or evidence.get("bootstrap050_lower_bound_95") <= 0):
+        raise ValueError("portable V99 OOF evidence is not positive")
     state = artifact.get("model_state_dict")
     if (not isinstance(state, dict) or not state
             or any(not isinstance(value, torch.Tensor)
@@ -287,6 +350,12 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--v99-result", required=True)
     parser.add_argument("--v99-script", required=True)
+    parser.add_argument(
+        "--dataset", choices=("scanrefer", "nr3d", "sr3d"),
+        default="scanrefer",
+    )
+    parser.add_argument("--backbone-checkpoint")
+    parser.add_argument("--portable-dataset-contract", action="store_true")
     parser.add_argument("--base-cache", required=True)
     parser.add_argument("--geometry-cache", required=True)
     parser.add_argument("--parent-artifact", required=True)
@@ -295,15 +364,46 @@ def main(argv=None):
     parser.add_argument("--receipt-output", required=True)
     parser.add_argument("--device", default="cuda:0", choices=("cuda:0",))
     args = parser.parse_args(argv)
+    if args.portable_dataset_contract:
+        if not args.backbone_checkpoint:
+            parser.error(
+                "--portable-dataset-contract requires --backbone-checkpoint"
+            )
+    elif args.backbone_checkpoint is not None or args.dataset != "scanrefer":
+        parser.error(
+            "dataset/backbone overrides require --portable-dataset-contract"
+        )
     artifact_output = Path(args.artifact_output).expanduser().absolute()
     receipt_output = Path(args.receipt_output).expanduser().absolute()
     if artifact_output.exists() or receipt_output.exists():
         raise FileExistsError("V99 artifact or receipt output already exists")
-    if _sha256(args.v99_script) != V99_SCRIPT_SHA256:
+    expected_script_sha256 = (
+        _sha256(args.v99_script)
+        if args.portable_dataset_contract else V99_SCRIPT_SHA256
+    )
+    if _sha256(args.v99_script) != expected_script_sha256:
         raise ValueError("V99 experiment script SHA-256 changed")
-    result = _validate_oof_result(args.v99_result)
+    expected_result_sha256 = (
+        _sha256(args.v99_result)
+        if args.portable_dataset_contract else V99_RESULT_SHA256
+    )
+    result = _validate_oof_result(
+        args.v99_result,
+        expected_sha256=expected_result_sha256,
+        portable_dataset_contract=args.portable_dataset_contract,
+        dataset=args.dataset,
+    )
+    if (args.portable_dataset_contract
+            and result["dataset_contract"]["v99_script_sha256"]
+            != expected_script_sha256):
+        raise ValueError("portable V99 OOF script binding changed")
+    protected_backbone = (
+        Path(args.backbone_checkpoint).expanduser().resolve()
+        if args.portable_dataset_contract
+        else Path(AUTHORITATIVE_BACKBONE_PATH).resolve()
+    )
     protected_paths = {
-        "backbone": Path(AUTHORITATIVE_BACKBONE_PATH).resolve(),
+        "backbone": protected_backbone,
         "parent": Path(args.parent_artifact).expanduser().resolve(),
         "geometry": Path(args.geometry_artifact).expanduser().resolve(),
     }
@@ -312,14 +412,24 @@ def main(argv=None):
         Path(args.base_cache), Path(args.geometry_cache),
         Path(args.parent_artifact), Path(args.geometry_artifact),
         device=args.device,
+        portable_provenance=args.portable_dataset_contract,
+        expected_backbone_sha256=(
+            protected_before["backbone"]["sha256"]
+            if args.portable_dataset_contract else None
+        ),
+        expected_dataset=(
+            args.dataset if args.portable_dataset_contract else None
+        ),
     )
     if loaded["input_sha256"] != result["input_sha256"]:
         raise ValueError("V99 live input provenance differs from OOF")
-    split = split_residual_joined_rows(loaded["joined_rows"])
-    records = materialize_hierarchical_rows(
-        split["fit_rows"], loaded["parent"], loaded["geometry_model"],
-        loaded["geometry_artifact"], device=args.device,
-        require_contiguous=False,
+    split = split_residual_joined_rows(
+        loaded["joined_rows"],
+        portable_provenance=args.portable_dataset_contract,
+    )
+    records = _materialize_fit_rows(
+        split, loaded, args.device, args.portable_dataset_contract,
+        protected_before,
     )
     normalization = fit_hierarchical_normalization(records)
     model, epochs = _fit_model(records, normalization, args.device)
@@ -391,8 +501,8 @@ def main(argv=None):
         },
         "oof_evidence": {
             "path": str(Path(args.v99_result).expanduser().absolute()),
-            "sha256": V99_RESULT_SHA256,
-            "script_sha256": V99_SCRIPT_SHA256,
+            "sha256": expected_result_sha256,
+            "script_sha256": expected_script_sha256,
             "switches": diagnostics["switches"],
             "delta_hits025": diagnostics["delta_hits025"],
             "delta_hits050": diagnostics["delta_hits050"],
@@ -444,7 +554,7 @@ def main(argv=None):
             "mode": stat.S_IMODE(artifact_output.stat().st_mode),
             "size": artifact_output.stat().st_size,
         },
-        "oof_result_sha256": V99_RESULT_SHA256,
+        "oof_result_sha256": expected_result_sha256,
         "validation_data_accessed": False,
         "protected_before": protected_before,
         "protected_after": protected_after,

@@ -12169,7 +12169,7 @@ Sr3D 的正式最好没有因本次 Nr3D monitor 事件改变，仍为
 | `EXPERIMENT_AUDIT.md` | `6ab386d8...17e3` | 结果口径、数据隔离、权重保护条款 | 审计源；WARN 不得被省略为 PASS |
 | 远端旧 `FPR_TV_SPEC_2026-08-31.md` | `429effed...bd4` | 16.15.8--16.15.16 | 历史 v1 合同；已由当前扩展版取代 |
 | 当前 `FPR_TV_SPEC_2026-08-31.md` | `7000ff92...71ae` | 16.15.8--16.15.17 | FPR-TV v1/v2/v3 与 A-V4 当前机制合同 |
-| `FPR_TV_COUNTERFACTUAL_PARENT_AUDIT_SPEC_2026-09-01.md` | `f67c54d7...e761c` | 16.15.17、18.2--18.4 | A-V4 exact-100 前置审计合同；不授权长训或正式验证 |
+| `FPR_TV_COUNTERFACTUAL_PARENT_AUDIT_SPEC_2026-09-01.md` | `befba370...10246` | 16.15.17、18.2--18.4、19 | A-V4 exact-100 train-only 前置审计合同；不构造验证集，不授权长训或正式验证 |
 | `DENSITY_AWARE_TARGET_BOX_SPEC_2026-08-31.md` | `945a23a7...d7e` | 16.15.14 | 100-batch auxiliary 审计合同 |
 | `DENSITY_AWARE_TARGET_BOX_SCENE_AUDIT_SPEC_2026-09-01.md` | `bcd1d89c...e424` | 16.15.15 | 三角色 scene-disjoint 因果审计合同 |
 | `refine-logs/EXPERIMENT_PLAN*.md` | 见 17.4 | 14.215--14.223、16.15 | 历史计划，不得重新激活已失败路线 |
@@ -12250,7 +12250,7 @@ protected checkpoint；任何已经失败或被用户排除的计划都不能凭
 三份发布后必须逐字节 SHA256 一致。以后新增实验先写原始 receipt/decision，再更新本总文档；不得另建一份
 相互竞争的“最新总结”。
 
-## 18. 最新代码冻结、A-V4 前置审计实现与三端发布（2026-09-01）
+## 18. 最新代码冻结、A-V4 前置审计实现与三端发布（中间版本；以第 19 章为准）
 
 ### 18.1 本次代码发布边界
 
@@ -12340,3 +12340,116 @@ ScanRefer 的提升来自真正互补的 Parent/Geometry/Query/Mask-derived sour
 
 三份主文档必须逐字节一致。GitHub 保留各独立规范、runtime manifest、build receipt 与测试；本主文档负责
 统一结论、时间线、来源索引和冲突优先级，不替代原始不可变实验 artifact。
+
+## 19. 最终发布修订：运行时源码闭包与真正 train-only A-V4（2026-09-01）
+
+### 19.1 为什么 PR #4 不是最终发布
+
+PR #4 已把 A-V4 机制代码、launcher、规范和交接文档合入 GitHub `main`，merge commit 为
+`5e388f92c00dfe164b16ae73376f1a8a4c63b8fa`。它是完整性审计前的中间版本。
+
+后续独立审计发现三个发布级问题。第一，GitHub 中的 `src/joint_det_dataset.py` 和
+`src/grounding_evaluator.py` 不是 runtime manifest 锁定的正式字节，前者还缺少当前训练入口传入的 cache 参数。
+
+第二，旧路径虽然不执行 validation，却仍在 `get_loaders()` 中构造验证 dataset 和 DataLoader；旧数据清单也含
+`val_v3scans.pkl` 与 `superpoints/val`。因此旧版不能严格声称 `formal_validation_accessed=false`。
+
+第三，第一次 no-validation 修订把 `test_loader` 正确设为 `None` 后，`BaseTrainTester.main()` 仍无条件执行
+`len(test_loader.dataset)`。这会使正式 A-V4 bounded audit 在首个训练 batch 之前崩溃。该问题由独立完整性复审
+发现，随后增加 `_optional_test_dataset_size()`：只有 exact bounded train-only A-V4 可以缺失 test loader，其他
+路径仍 fail closed；A-V4 只记录“testing dataset disabled”，不再解引用空 loader。
+
+这些问题不会产生虚假的已完成实验，因为 A-V4 one-shot 尚未运行；但它们会破坏未来审计的运行身份和
+train-only 证据，所以必须在代码发布完成前修正。
+
+### 19.2 最新源码同步边界
+
+最终发布以 A-V4 reviewed runtime manifest 为来源，在 GitHub 完整文件树上同步 66 个确有语义差异或缺失的
+`.py/.sh/.md` 文件。Linux `.so/.o`、egg-info、checkpoint、日志和 TensorBoard 不进入源码提交。
+
+GitHub 对这 66 个同步文件以及原有 `main_utils.py`、`train_dist_mod.py` 共 68 个源码条目按 Git blob 字节与
+reviewed Linux runtime SHA 对齐；这不等于把整个 371-file Linux 运行时（其中含编译扩展和构建产物）逐字节放入
+GitHub。完整 371-file bytewise closure 只在远端只读 runtime snapshot 中核验，GitHub 发布的是可审查源码闭包。
+
+关键同步文件包括 `src/joint_det_dataset.py`、`src/grounding_evaluator.py`、
+`src/legacy_scene_graph_cache.py`、`models/rec_evaluator_filter.py`、hard-replay/tier auxiliary 和历史 V99 launcher。
+
+正式 dataset/evaluator 身份已恢复为：
+
+```text
+src/joint_det_dataset.py  SHA256 800bac2caf9b7a319bdc200f60386000e4e374a559d9581113a8eb57d525f9f0
+src/grounding_evaluator.py SHA256 0173b31a7a818f872c210b01a4e5d17601c4e5f10ec8d97f78c7e537fa44e062
+src/legacy_scene_graph_cache.py SHA256 aa4c5949ba017a9f8a44f63caf73669717428eb9725e458027f3053de4d0e749
+```
+
+### 19.3 真正的 no-validation 实现
+
+`main_utils.py` 新增 bounded A-V4 train-only 判定。该模式要求 train dataset 存在、test dataset 为 `None`，
+只构造一个训练 DataLoader；若出现 eval、缺失 train dataset 或任何 test dataset，立即 fail closed。
+
+`train_dist_mod.py` 在完成训练集构造后立即返回 `(train_dataset, None)`。它不再实例化 validation dataset，
+并显式拒绝 `eval/debug/eval_train`。
+
+新的数据清单为 `nr3d_fpr_tv_av4_train_only_data_manifest_v2.json`。它从旧清单中删除
+`val_v3scans.pkl`、`superpoints/val` 及对应文件行，保留训练 pickle、Nr3D CSV、RoBERTa、train superpoint 和 GF train。
+
+清单的固定事实为：
+
+```text
+schema     = mcln-nr3d-fpr-tv-av4-train-only-data-manifest-v2
+file_count = 2420
+total_size = 10,593,197,424 bytes
+SHA256     = 155e2233efbe5c312c19c6dc709ce8c564c601d50e73d6907a3702f000d9d173
+validation source rows = 0
+```
+
+### 19.4 Runtime manifest v2 与验证证据
+
+`fpr_tv_counterfactual_parent_runtime_manifest_v2.json` 绑定更新后的 `main_utils.py` 与
+`train_dist_mod.py`。完整闭包仍为 371 文件，合计 106,114,031 bytes，SHA256 为
+`f09e490789680a8e7105cb1167f6f6f025a9a83a8998657eda3c9e1b4c9ab807`。其中最终
+`main_utils.py` 的 SHA256 为 `b40c6f6ca83ec68f655feb820de788f7398b0e71574cf73a9f6b22b137fba47e`。
+
+远端只读验证逐文件哈希了上述 371 个运行时文件和 2,420 个训练数据文件，二者均通过。launcher 的 Bash
+语法与 6 段 Python heredoc 均通过；核心文件兼容 Python 3.7。
+
+最终聚焦回归为 `77 passed in 3.13s`。新增用例实际调用 loader/dataset 构造路径，证明 A-V4 模式只构造训练集和
+一个训练 DataLoader，并验证 bounded audit 可安全处理 `test_loader=None`、普通路径则拒绝空 test loader；另有
+清单测试证明 validation source 与 inventory 均为零。
+
+### 19.5 当前实验状态没有被发布动作改变
+
+本次只修代码、清单、测试和文档，没有执行 A-V4 preflight 后的 backbone，没有启动训练、评估或正式
+7,899-row validation，也没有生成 receipt、decision 或 checkpoint。
+
+当前正式最好仍为：ScanRefer `5572/9508 = 58.6033%`；Nr3D `4475/7899 = 56.6527%`；Sr3D
+`12139/17726 = 68.4813%`。Nr3D 目标仍为至少 4740 hits，Sr3D 目标仍为至少 12214 hits。
+
+最新诊断仍指向两类正交失败。第一类是候选已在 Top-2/Top-5/Top-16，但长句、同类干扰、属性、关系、
+否定和视角组合使 Top-1 排序选错；第二类是小体积、低点数目标本身没有合格 proposal。
+
+Nr3D 最低场景集中在多个同类实例、13+ token 描述和点数不超过约 227 的目标。`mouse`、`soap dish`、
+`bottle`、`book`、`toilet paper` 等小物体尤其困难。Sr3D 因显式 anchor 更可靠，但关系模块短训仍未刷新 E26。
+
+因此，A-V4 仍只是待运行的 100-microbatch 机制审计，不能写成指标提升。即使未来 density gate 通过，decision
+也必须保持 `long_training_authorized=false`，不得自动启动 fold4、正式验证、Sr3D 或长训。
+
+### 19.6 命名遗留与解释边界
+
+runtime closure 中保留部分 density/tier 名称和静态安全组件。这些是历史审计基础设施与信任路径，不表示
+Density-Aware loss 被 A-V4 启用，也不授权已封存的 density 路线复活。
+
+A-V4 训练 argv 仍明确排除 density target-box、proposal refiner、relation-CF、SACR deployment、dataset ID、
+Unique/Multiple 输入、GT anchor sidecar 和 validation threshold sweep。
+
+### 19.7 最终发布位置
+
+- GitHub：`https://github.com/666666666666gao/MCLN`；PR #4 是中间版本。PR #5 的发布链为源码闭包提交
+  `057fce03cdb4ac701f4144f312566bee6af1d0ae`、发布记录提交 `688b02e85c4df7cecad5b46c556c8891b8ba4d11`，以及
+  最终空 test-loader 修复提交 `5a9cdd49cc73ade1f30971b1c97dc8c417fe5513`：
+  `https://github.com/666666666666gao/MCLN/pull/5`；
+- 本地：`C:\Users\gb\Desktop\document\MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`；
+- 远端：`/home/gb/new butd/butd_detr-main/MCLN-main/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`。
+
+最终发布后，GitHub `docs/`、本地和远端主文档必须逐字节 SHA256 一致。以后仍以本文件为唯一综合叙事，
+原始 spec、manifest、receipt、decision 和测试继续作为不可变证据。

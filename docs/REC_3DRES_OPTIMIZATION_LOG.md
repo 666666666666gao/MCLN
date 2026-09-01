@@ -9691,3 +9691,26 @@ V101 不改网络结构、损失或部署选择规则，只把训练域覆盖扩
 - 当前阶段为完整 ScanRefer 文本/结构化数据预处理，worker CPU 约 `100%`、RSS 约 `15GB`，尚未进入 GPU
   train step、未生成正式 receipt，不能据此声称有新结果。后续必须逐轮检查 sample_count/hits、REC 与 Mask
   五项、gate/residual finite/bound、checkpoint retention 和磁盘；未完成 4 轮或未取得充分失败证据前不改配置。
+
+## 15. Nr3D A-V4 Fold-4 scene-disjoint 终态（2026-09-01）
+
+唯一预注册 Fold-4 已完整结束。训练从受保护 E57 恢复，完整消费 `27004` 个 fit 样本并执行
+`1688/1688` optimizer steps；随后只评估 `5915` 个 held-out train-scene 样本，未访问正式 7899-row validation。
+
+模型切换 `805` 条。REC@0.25 从 Parent `5661` hits 降到 `5641`，fix/break=`38/58`，净 `-20`；
+REC@0.50 从 `5011` 降到 `4860`，fix/break=`108/259`，净 `-151`。两项门禁均失败。
+
+训练本身完整且数值有效：actual/CF selected-score gradient L1 分别为 `0.0208565252` 和
+`0.0220884040`，nonfinite 均为 `0`；fit identity、receipt/metrics SHA 和 runtime/data postflight 全部通过。
+
+本轮没有生成 `.pth`，screen、GPU 进程和全局锁均已清理。decision 固定
+`audit_only=true`、`formal_validation_accessed=false`、`long_training_authorized=false`。
+
+结论：A-V4 的 CF Parent 增加了正向监督密度，但没有提高未见场景上的安全切换精度。该路线封存，禁止在
+Fold-4 或正式集上继续搜索 threshold、margin、Top-K、loss、LR 或 epoch，也不得自动转入长训或 Sr3D。
+
+```text
+receipt  = 53062ce3110bc5d0f7a2ab9273797a764f06d3234a340b7819d997308abe2605
+metrics  = 97baf04157af257210b8973bdffffc57c1df09331db5fd9505cb005ff07b2781
+decision = a1c93a71ce62e0c96d02e65241579d520294bf4b868ceccd7178fe9248fd5109
+```

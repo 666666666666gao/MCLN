@@ -1,12 +1,12 @@
 # MCLN 完整实验、代码与优化交接文档
 
-更新时间：2026-09-01 15:20（Asia/Shanghai；A-V4 Counterfactual-Parent 唯一 100-batch recovery 审计已通过，未做正式验证、未保存权重）
+更新时间：2026-09-01 18:15（Asia/Shanghai；A-V4 Fold-4 scene-disjoint 审计已完整结束并判负，未做正式 7,899-row 验证、未保存权重）
 文档性质：单文件完整交接；前半部分是当前结论与执行指南，后半部分保留 V1--V133 全量时间线。  
 安全说明：文档不包含 SSH 密码、API key 或其他明文凭据。远程连接使用用户现有安全配置。
 
-> **阅读优先级（2026-09-01 15:20）**：第 20 章是当前唯一有效的终态快照，覆盖本文件前部仍保留的
+> **阅读优先级（2026-09-01 18:15）**：第 20 章是当前唯一有效的终态快照，覆盖本文件前部仍保留的
 > V133“正在运行”、A-V4“尚未启动”等历史时态。旧章节保留是为了完整审计，不表示对应任务仍在运行。
-> 当前没有 Nr3D/Sr3D 正式训练；只有 Nr3D official REC monitor v3 在后台监控正式回执。
+> A-V4 Fold-4 已完整训练和评估但未过门禁，路线现已封存。当前没有 Nr3D/Sr3D 正式训练。
 
 ## 0. 一页结论
 
@@ -39,6 +39,9 @@
 - 对“实验七/实验八”的排除按名称和内容同时生效：即使后续文档编号变化，也不得重新引入其旧方法、训练顺序、对照要求或结论；旧 E0--E7 矩阵同样不采用。
 - 后续只围绕现有 V99 总体架构开展单一变量、短周期、可审计实验，直接服务于
   Nr3D 至少 `4740/7899` 与 Sr3D 至少 `12214/17726` 的硬目标。
+- A-V4 Fold-4 已完整消费 `27004` 个 fit 样本、执行 `1688` 个 optimizer steps，并评估 `5915` 个
+  held-out train-scene 样本。它在 @0.25 净 `-20 hits`、@0.50 净 `-151 hits`，不是训练未完成，
+  而是候选切换精度不足；该路线不得继续调参、正式验证或长训。
 
 ## 1. 目标、验收口径与不可破坏约束
 
@@ -12588,3 +12591,60 @@ A-V4 机制门通过后，只允许**独立评审**是否预注册一个尚未�
 `FPR_TV_COUNTERFACTUAL_PARENT_AUDIT_SPEC_2026-09-01.md`、runtime/data manifest、receipt、decision、
 `V99_ARCHITECTURE.md`、`REC_3DRES_OPTIMIZATION_LOG.md` 和历史 `docs/superpowers/` 计划保留为原始证据；
 后续接手者先读本章，再按 SHA 回查原件，不从旧历史章节恢复已封存路线。
+
+### 20.8 A-V4 Fold-4 终态：完整运行，但科学门禁失败（2026-09-01 18:12 CST）
+
+Fold-4 是 A-V4 唯一预注册的 scene-disjoint 短审计。它从受保护 E57 独立恢复，只训练 allowlist 内的
+FPR 模块；未访问 Nr3D 正式 7,899-row validation，未保存新权重，也未启动 Sr3D 或长训。
+
+训练和评估生命周期完整结束：
+
+| 合同 | 实际结果 |
+|---|---:|
+| Fit 样本 | `27004`，row-identity SHA 与冻结 split 一致 |
+| Optimizer steps | `1688/1688` |
+| Held-out train-scene 样本 | `5915` |
+| Epoch | 从受保护 E57 恢复，执行 E58 |
+| Nonfinite | actual=`0`，counterfactual=`0` |
+| Actual selected-score gradient L1 | `0.0208565252` |
+| Counterfactual selected-score gradient L1 | `0.0220884040` |
+| 新 `.pth` | `0` |
+| Formal validation accessed | `false` |
+
+模型实际执行了 `805` 次候选切换。两阈值结果如下：
+
+| Held-out 指标 | Parent | A-V4 selected | Fix / Break | 净 hits | 结论 |
+|---|---:|---:|---:|---:|---|
+| REC@0.25 | `5661/5915 = 95.7058%` | `5641/5915 = 95.3677%` | `38 / 58` | `-20` | `fix <= break`，失败 |
+| REC@0.50 | `5011/5915 = 84.7168%` | `4860/5915 = 82.1640%` | `108 / 259` | `-151` | 净负收益，失败 |
+
+这不是 under-switch：805 次切换约占 `13.61%`。问题是错误切换明显多于有效修复，尤其 @0.50 的
+break 是 fix 的 2.40 倍。@0.25 transition precision 约 `39.58%`，@0.50 约 `29.43%`，不足以保护 Parent。
+
+反事实 Parent 确实提高了训练监督密度。训练期 CF positive-row ratio 均值约 `12.65%`，actual 约
+`6.11%`；两条 score axis 都收到非零梯度，且无非有限值。因此失败不能归因于 CF 分支未执行或梯度断开。
+
+真正失败点是**监督密度增加没有转化为可靠部署决策**。模型学会了更频繁地提出候选，但 break-risk 与
+action utility 仍不能在未见场景中充分分离。当前 eligible/fallback 机制没有把切换控制到高精度区间。
+
+独立审计确认：receipt 与 metrics 原始字节 SHA 均与 decision 绑定；算术关系独立复算通过；runtime closure
+`373` 文件、data manifest `2420` 文件均通过 postflight；screen 已退出，GPU/全局锁释放，错误日志计数为 0。
+
+不可变终态证据：
+
+```text
+receipt SHA256  = 53062ce3110bc5d0f7a2ab9273797a764f06d3234a340b7819d997308abe2605
+metrics SHA256  = 97baf04157af257210b8973bdffffc57c1df09331db5fd9505cb005ff07b2781
+decision SHA256 = a1c93a71ce62e0c96d02e65241579d520294bf4b868ceccd7178fe9248fd5109
+launcher SHA256 = 1fdf9caaec11e0c8d5dd9de109edbc133de316336c91e361135717a537b4b01e
+runtime manifest= 575fe4e15e9a6380ebe3d05c71d30d5d8292e36a135b3d42e881cc158c0cdb1b
+config SHA256   = aaf4d8edc59e99e056f294b4c031467d2570fb43a879099261b4048054ce4177
+```
+
+decision 固定为 `fold_gate_pass=false`、`audit_only=true`、`formal_validation_accessed=false`、
+`long_training_authorized=false`。A-V4 至此封存：不得在 Fold-4 上扫阈值、margin、Top-K、loss、LR 或 epoch，
+不得运行正式 7,899-row 验证，也不得以该路线为 Sr3D/长训前置。
+
+本次结论进一步强化现有诊断：Nr3D 的主要矛盾不是“候选数量不足”或“训练尚未结束”，而是未见场景上的
+文本条件安全排序仍不可靠。下一方案必须与 A-V4 正交，并先证明高精度 abstention 或独立 proposal 改善；
+不能只增加反事实样本、放宽 gate 或提高切换率。

@@ -12,3 +12,8 @@
 | 2026-09-01 18:46 | /idea-creator | idea-stage/IDEA_CANDIDATES.md | ideation | latest orthogonal method-candidate pointer; no experiment authorized |
 | 2026-09-01 19:20 | /handoff | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | continued server-integrated master with cross-dataset generalization assessment and release state |
 | 2026-09-01 19:33 | /novelty-check | idea-stage/NOVELTY_CHECK_EDG_20260901.md | ideation | strict 2024--2026 prior-work audit; EDG narrowed to conditional candidate-pair evidence-necessity hypothesis |
+| 2026-09-01 22:06 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260901_220626.md | implementation | timestamped paired causal audit for the confirmed Nr3D view-augmentation label fix |
+| 2026-09-01 22:06 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest paired-audit plan; supersedes stale V132/V133 fixed pointer without deleting its timestamped history |
+| 2026-09-01 22:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_220626.md | implementation | timestamped VA0--VA4 execution tracker |
+| 2026-09-01 22:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest VA0--VA4 tracker pointer |
+| 2026-09-01 22:11 | /experiment-plan | refine-logs/VIEW_AUG_PAIR_SPLIT_CENSUS_20260901_221116.json | implementation | frozen salted Nr3D train-only split census with data and sample-identity hashes |

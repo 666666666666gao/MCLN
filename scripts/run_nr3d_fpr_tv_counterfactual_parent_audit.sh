@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly TRUST_ROOT="/root/mcln_density_audit_trust/v1"
+readonly TRUST_ROOT="/root/mcln_fpr_av4_audit_trust/v1"
 readonly TRUSTED_STATIC_EXEC_PATH="${TRUST_ROOT}/mcln_fpr_audit_static_exec.x86_64"
 readonly TRUSTED_STATIC_SOURCE_PATH="${TRUST_ROOT}/mcln_fpr_audit_static_exec.c"
 readonly TRUSTED_LAUNCHER_PATH="${TRUST_ROOT}/run_nr3d_fpr_tv_density_audit.sh"
-readonly TRUSTED_STATIC_EXEC_SHA256="ade6898cfb4bcdaf165f706f37bfd6479f43f03108b6230d213d87a67b00ca37"
+readonly TRUSTED_STATIC_EXEC_SHA256="2eafbf471810ddf04ccfcc8ba568dbe1fb03d56658b5bd87e073d6c5051f6773"
 readonly TRUSTED_STATIC_SOURCE_SHA256="0bf6cfcfb015a91474579ba0c0f186c49c6a38695601d904d3216724cc67dcdc"
 [[ "${MCLN_FPR_TRUSTED_CLEAN_ENV:-}" == "1" ]] || {
   echo "launcher must be entered through the reviewed static executor" >&2
@@ -121,8 +121,8 @@ terminate_formal_group() {
 }
 trap terminate_formal_group HUP INT TERM
 
-readonly ROOT_DIR="/root/autodl-tmp/mcln_density_target_box_review_20260901"
-readonly SOURCE_ROOT="/root/autodl-tmp/mcln_density_target_box_review_20260901"
+readonly ROOT_DIR="/root/autodl-tmp/mcln_fpr_av4_audit_review_20260901"
+readonly SOURCE_ROOT="/root/autodl-tmp/mcln_fpr_av4_audit_review_20260901"
 readonly DATA_ROOT="/root/autodl-tmp/DATA_ROOT/"
 readonly PYTHON_BIN="/root/miniconda3/envs/bdetr/bin/python"
 readonly DATASET="nr3d"
@@ -133,15 +133,15 @@ readonly GROUPFREE_CHECKPOINT="${DATA_ROOT%/}/gf_detector_l6o256.pth"
 readonly GROUPFREE_SHA256="9ff3e25070bf48a0b70240e098a89be6bfd26a92af863e71698a0737fc6e54f2"
 readonly DATA_MANIFEST="${OUTPUT_ROOT}/control/fpr_tv_audit/nr3d_train_input_manifest_v1.json"
 readonly DATA_MANIFEST_SHA256="ce0e287856363fce2c6cb119617798ff98470aaba331d8239fbc32ffcdc93259"
-readonly RUNTIME_MANIFEST="${SOURCE_ROOT}/scripts/density_aware_target_box_runtime_manifest_v1.json"
-readonly RUNTIME_MANIFEST_SHA256="b25ddeee706da141bad1d307d4de335ddd4d4f088309c1c24c19c6699779f7de"
-readonly REQUIRED_TRAIN_ENTRY_SHA256="8cf3d4629703e1592a26e894699c74c0fa876a4e462a98fd15f2bcad245d3341"
-readonly REQUIRED_MAIN_UTILS_SHA256="30118dda129c61c4f467e99cae8ccdff3c5ee5bee096c28b02629656ee917955"
-readonly REQUIRED_LOSSES_SHA256="0b6f46726b232772c8d98967ccddde12aa2cea16d93ef028e0ecca2ba8c1e642"
-readonly REQUIRED_AUXILIARY_SHA256="0f70400f84569b08ba3a377b93e1b5a0d499ce495fb0c1e8588f00ce7ed01bd3"
-readonly REQUIRED_AUXILIARY_TEST_SHA256="d5e8b3990d5c0bd4f9499816e191591e0bc7b4abde4fbddf49dc2bea13495e24"
-readonly REQUIRED_SPEC_SHA256="945a23a7192715f839110d2185524104fa1445993d7b2e82ad7eceffee49cd7e"
-readonly REQUIRED_MODEL_SHA256="9852ddcdc32d1477dc832c5ed7d59065fd048e88531eecf4f3ebd7d1073737d5"
+readonly RUNTIME_MANIFEST="${SOURCE_ROOT}/scripts/fpr_tv_counterfactual_parent_runtime_manifest_v1.json"
+readonly RUNTIME_MANIFEST_SHA256="20b8cc58afbab752dc10bb8674dbe9ed9adbe01779a0b028292b63d3903c6418"
+readonly REQUIRED_TRAIN_ENTRY_SHA256="a4ba1d95e1c09391aebd9ed80644dfdaca54ff3599711050b7b08d00f884cceb"
+readonly REQUIRED_MAIN_UTILS_SHA256="8c6a331c60aca82bd6b9eefc98235d746fb4cb0fddb3dd8af3820683f6319a7a"
+readonly REQUIRED_LOSSES_SHA256="54a74ba522d57d74e934f60a6f8a8becdbe0f188ab99c948ea55c436fbd9fe36"
+readonly REQUIRED_VERIFIER_SHA256="744b714c339a823c76739685f7d7cea3be0381dad4c7d0d00f4f02c08e58e32a"
+readonly REQUIRED_VERIFIER_TEST_SHA256="ed484753a7ba41f8cdcd1cf5ff63112cd4aae3a648db7c7d4780f783a9664cdc"
+readonly REQUIRED_SPEC_SHA256="f67c54d7030abbc09beaa8619ae51f52654cdd9bb1bcc7cd448564ed1a3e761c"
+readonly REQUIRED_MODEL_SHA256="5a605328a6d12d610a479ec40f039f91708edcd6c3ce5d559ea4e1494026952c"
 readonly REQUIRED_SELECTOR_SHA256="61211cea91de4c3f3c11e44bc5ff035711307f3381d5a4069d4ab7842bee17dc"
 readonly REQUIRED_DATASET_SHA256="800bac2caf9b7a319bdc200f60386000e4e374a559d9581113a8eb57d525f9f0"
 readonly REQUIRED_SNAPSHOT_EXECUTOR_SHA256="839b6d8479b94e610288723219b0149203dde89ab0a85a6dd3bd9d4776d04c88"
@@ -149,13 +149,12 @@ readonly REQUIRED_RESUME_EPOCH=57
 readonly AUDIT_EPOCH=58
 readonly AUDIT_BATCHES=100
 readonly BATCH_SIZE=16
-readonly LOSS_WEIGHT="1.0"
 readonly EXPECTED_EVAL_SAMPLE_COUNT=7899
-readonly MASTER_PORT=5417
+readonly MASTER_PORT=5427
 readonly MIN_FREE_GB=6
 readonly SNAPSHOT_OWNER_UID=65532
 readonly SNAPSHOT_OWNER_GID=65532
-readonly EXP="nr3d_v99_density_target_box_audit_e58_b100_b16x1_w1"
+readonly EXP="nr3d_v99_fpr_tv_av4_counterfactual_parent_audit_e58_b100_b16x1"
 readonly AUDIT_ROOT="${OUTPUT_ROOT}/audit/${EXP}_one_shot"
 readonly LOCK_FILE="/root/autodl-tmp/mcln_v99_backbone_gpu0.lock"
 
@@ -204,12 +203,12 @@ require_fixed_inputs() {
     "${REQUIRED_MAIN_UTILS_SHA256}" "main_utils"
   require_sha256 "${ROOT_DIR}/models/losses.py" \
     "${REQUIRED_LOSSES_SHA256}" "loss implementation"
-  require_sha256 "${ROOT_DIR}/models/density_aware_target_box.py" \
-    "${REQUIRED_AUXILIARY_SHA256}" "density auxiliary"
-  require_sha256 "${ROOT_DIR}/tests/test_density_aware_target_box.py" \
-    "${REQUIRED_AUXILIARY_TEST_SHA256}" "density auxiliary tests"
-  require_sha256 "${ROOT_DIR}/DENSITY_AWARE_TARGET_BOX_SPEC_2026-08-31.md" \
-    "${REQUIRED_SPEC_SHA256}" "density auxiliary specification"
+  require_sha256 "${ROOT_DIR}/models/parent_relative_text_verifier.py" \
+    "${REQUIRED_VERIFIER_SHA256}" "Parent-relative verifier"
+  require_sha256 "${ROOT_DIR}/tests/test_parent_relative_text_verifier.py" \
+    "${REQUIRED_VERIFIER_TEST_SHA256}" "Parent-relative verifier tests"
+  require_sha256 "${ROOT_DIR}/FPR_TV_COUNTERFACTUAL_PARENT_AUDIT_SPEC_2026-09-01.md" \
+    "${REQUIRED_SPEC_SHA256}" "counterfactual Parent audit specification"
   require_sha256 "${ROOT_DIR}/models/mcln.py" \
     "${REQUIRED_MODEL_SHA256}" "MCLN model"
   require_sha256 "${ROOT_DIR}/models/source_choice_selector.py" \
@@ -253,7 +252,7 @@ if hashlib.sha256(raw).hexdigest() != expected_sha:
     raise SystemExit("runtime manifest SHA-256 mismatch")
 manifest = json.loads(raw.decode("utf-8"))
 if manifest.get("schema") != (
-        "mcln-density-aware-target-box-reviewed-runtime-v1"):
+        "mcln-fpr-tv-counterfactual-parent-reviewed-runtime-v1"):
     raise SystemExit("unexpected runtime manifest schema")
 records = manifest.get("files")
 if not isinstance(records, dict) or len(records) != manifest.get("file_count"):
@@ -578,7 +577,10 @@ run_default_off_regression() {
     PATH="${PATH}" PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH="${SOURCE_ROOT}:${SOURCE_ROOT}/pointnet2" \
     "${PYTHON_BIN}" -m pytest -q -p no:cacheprovider \
-      tests/test_density_aware_target_box.py
+      tests/test_parent_relative_text_verifier.py \
+      tests/test_mcln_training_groups.py \
+      tests/test_fpr_scene_disjoint_audit.py \
+      tests/test_fpr_av4_audit_contract.py
 }
 
 check_resources() {
@@ -640,7 +642,7 @@ mkdir "${INPUT_ROOT}" "${RUNTIME_OUTPUT}" "${RUNTIME_HOME}" \
 readonly RESUME_SNAPSHOT="${INPUT_ROOT}/protected_e57.pth"
 readonly GROUPFREE_SNAPSHOT="${INPUT_ROOT}/gf_detector_l6o256.pth"
 readonly DATA_MANIFEST_SNAPSHOT="${INPUT_ROOT}/nr3d_train_input_manifest_v1.json"
-readonly RUNTIME_MANIFEST_SNAPSHOT="${INPUT_ROOT}/density_aware_target_box_runtime_manifest_v1.json"
+readonly RUNTIME_MANIFEST_SNAPSHOT="${INPUT_ROOT}/fpr_tv_counterfactual_parent_runtime_manifest_v1.json"
 verify_or_copy_runtime_closure copy "${SOURCE_ROOT}" "${CODE_SNAPSHOT}"
 verify_or_copy_runtime_closure verify-snapshot "${CODE_SNAPSHOT}"
 copy_independent_input "${SOURCE_CHECKPOINT}" "${RESUME_SNAPSHOT}" \
@@ -675,8 +677,6 @@ train_args=(
   --lr_backbone 1e-3 --lr 1e-4 --lr_decay_epochs 150 --warmup-epoch -1
   --dataset "${DATASET}" --test_dataset "${DATASET}"
   --joint_det --butd_cls
-  --density_aware_target_box_loss_weight "${LOSS_WEIGHT}"
-  --density_aware_target_box_checkpoint_sha256 "${SOURCE_CHECKPOINT_SHA256}"
   --max_train_batches "${AUDIT_BATCHES}"
   --gradient_accumulation_steps 1
   --local_rank 0
@@ -687,7 +687,7 @@ train_args=(
   --self_attend --skip_missing_superpoints
   --checkpoint_path "${RESUME_SNAPSHOT}"
   --resume_lr_scale 1.0
-  --start_epoch 1 --max_epoch "${AUDIT_EPOCH}"
+  --start_epoch "${AUDIT_EPOCH}" --max_epoch "${AUDIT_EPOCH}"
   --model MCLN --exp "${EXP}"
   --use_source_choice_selector --eval_use_selector_choice_scores
   --source_choice_selector_sources default,default_rank_blend_contrastive010
@@ -697,6 +697,23 @@ train_args=(
   --source_choice_selector_loss_weight 0.5
   --source_choice_selector_choice_target precision_gain_default_sourcewise_focal_bce
   --source_choice_selector_min_iou_gap 0.03
+  --use_parent_relative_text_verifier
+  --parent_relative_text_verifier_train_only
+  --parent_relative_text_verifier_counterfactual_training
+  --parent_relative_text_verifier_top_k 5
+  --parent_relative_text_verifier_max_candidates 10
+  --parent_relative_text_verifier_hidden_dim 256
+  --parent_relative_text_verifier_heads 4
+  --parent_relative_text_verifier_dropout 0.1
+  --parent_relative_text_verifier_max_parent_score_gap 0.25
+  --parent_relative_text_verifier_promotion_margin 0.0001
+  --parent_relative_text_verifier_min_parse_confidence 0.5
+  --parent_relative_text_verifier_min_anchor_mass 0.5
+  --parent_relative_text_verifier_promotion_epsilon 0.0001
+  --parent_relative_text_verifier_lr 0.0003
+  --parent_relative_text_verifier_loss_weight 1.0
+  --parent_relative_text_verifier_positive_margin 0.25
+  --parent_relative_text_verifier_neutral_margin 0.25
   --expected_eval_sample_count "${EXPECTED_EVAL_SAMPLE_COUNT}"
 )
 full_command=(
@@ -760,14 +777,15 @@ paths = {
     "train_entry": os.path.join(code_root, "train_dist_mod.py"),
     "main_utils": os.path.join(code_root, "main_utils.py"),
     "losses": os.path.join(code_root, "models", "losses.py"),
-    "density_auxiliary": os.path.join(
-        code_root, "models", "density_aware_target_box.py"
+    "parent_relative_text_verifier": os.path.join(
+        code_root, "models", "parent_relative_text_verifier.py"
     ),
-    "density_auxiliary_tests": os.path.join(
-        review_root, "tests", "test_density_aware_target_box.py"
+    "parent_relative_text_verifier_tests": os.path.join(
+        review_root, "tests", "test_parent_relative_text_verifier.py"
     ),
-    "density_spec": os.path.join(
-        review_root, "DENSITY_AWARE_TARGET_BOX_SPEC_2026-08-31.md"
+    "counterfactual_parent_audit_spec": os.path.join(
+        review_root,
+        "FPR_TV_COUNTERFACTUAL_PARENT_AUDIT_SPEC_2026-09-01.md",
     ),
     "model": os.path.join(code_root, "models", "mcln.py"),
     "source_choice_selector": os.path.join(
@@ -786,7 +804,7 @@ paths = {
     "train_command": os.path.realpath(command),
 }
 payload = {
-    "schema": "mcln-density-target-box-pre-audit-v1",
+    "schema": "mcln-fpr-tv-counterfactual-parent-pre-audit-v1",
     "code_snapshot_root": os.path.realpath(code_root),
     "review_root": os.path.realpath(review_root),
     "paths": paths,
@@ -856,7 +874,7 @@ if find "${AUDIT_ROOT}" -path "${INPUT_ROOT}" -prune -o -type f \
 fi
 
 readonly RECEIPT="${receipts[0]}"
-readonly DECISION="${AUDIT_ROOT}/density_decision.json"
+readonly DECISION="${AUDIT_ROOT}/counterfactual_parent_decision.json"
 /usr/bin/env -i \
   PATH="${PATH}" PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 \
   "${PYTHON_BIN}" - "${RECEIPT}" "${RESUME_SNAPSHOT}" \
@@ -895,18 +913,25 @@ def sha256_file(path):
             digest.update(chunk)
     return digest.hexdigest()
 
+def finite_number(value):
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(float(value))
+    )
+
 receipt, receipt_sha = load_json_with_sha(receipt_path)
 pre, pre_sha = load_json_with_sha(pre_path)
-if pre.get("schema") != "mcln-density-target-box-pre-audit-v1":
+if pre.get("schema") != "mcln-fpr-tv-counterfactual-parent-pre-audit-v1":
     raise SystemExit("unexpected pre-audit provenance schema")
 expected_path_keys = {
     "launcher",
     "train_entry",
     "main_utils",
     "losses",
-    "density_auxiliary",
-    "density_auxiliary_tests",
-    "density_spec",
+    "parent_relative_text_verifier",
+    "parent_relative_text_verifier_tests",
+    "counterfactual_parent_audit_spec",
     "model",
     "source_choice_selector",
     "dataset",
@@ -938,94 +963,165 @@ fixed_hashes = {
 for name, expected in fixed_hashes.items():
     if current.get(name) != expected:
         raise SystemExit("fixed artifact SHA mismatch: {}".format(name))
+
 if receipt.get("schema") != "mcln-train-loss-epoch-v1":
     raise SystemExit("unexpected bounded-audit receipt schema")
-if receipt.get("epoch") != 58:
-    raise SystemExit("bounded audit did not run E58")
-if receipt.get("max_train_batches") != audit_batches:
-    raise SystemExit("bounded audit max_train_batches changed")
-if receipt.get("batch_count") != audit_batches:
-    raise SystemExit("bounded audit did not process exactly 100 batches")
+expected_scalars = {
+    "epoch": 58,
+    "max_train_batches": audit_batches,
+    "batch_count": audit_batches,
+    "optimizer_step_count": audit_batches,
+    "sample_count": audit_batches * batch_size,
+    "audit_only": True,
+    "formal_validation_accessed": False,
+    "long_training_authorized": False,
+}
+for name, expected in expected_scalars.items():
+    if receipt.get(name) != expected:
+        raise SystemExit("bounded receipt {} changed".format(name))
 if os.path.realpath(receipt.get("checkpoint_path", "")) != os.path.realpath(
         checkpoint_path):
     raise SystemExit("bounded audit resumed a different checkpoint")
-if receipt.get("checkpoint_sha256") != expected_checkpoint_sha:
-    raise SystemExit("bounded audit did not consume the protected checkpoint")
-if receipt.get("checkpoint_epoch") != 57:
-    raise SystemExit("bounded audit did not consume checkpoint-internal E57")
 for section in ("loss_means", "stat_means"):
     values = receipt.get(section)
     if not isinstance(values, dict) or not values:
         raise SystemExit("missing {}".format(section))
-    if any(
-            not isinstance(value, (int, float))
-            or isinstance(value, bool)
-            or not math.isfinite(float(value))
-            for value in values.values()):
+    if any(not finite_number(value) for value in values.values()):
         raise SystemExit("non-finite value in {}".format(section))
 
-names = (
-    "grad_norm",
-    "density_aware_target_box_loss",
-    "density_aware_target_box_active_row_ratio",
-    "density_aware_target_box_active_row_count",
-    "density_aware_target_box_referring_row_count",
-    "density_aware_target_box_target_point_count_mean",
-    "density_aware_target_box_sparsity_weight_mean",
-    "density_aware_target_box_center_l1",
-    "density_aware_target_box_size_l1",
-)
+state = receipt.get("state_integrity")
+outputs = receipt.get("output_integrity")
+if (
+        not isinstance(state, dict)
+        or state.get("frozen_exact") is not True
+        or state.get("trainable_changed") is not True):
+    raise SystemExit("frozen/trainable state integrity failed")
+if (
+        not isinstance(outputs, dict)
+        or outputs.get("exact") is not True):
+    raise SystemExit("frozen output sentinel integrity failed")
+for partition in ("frozen", "trainable"):
+    before = state.get("before", {}).get(partition, {})
+    after = state.get("after", {}).get(partition, {})
+    if not all(
+            isinstance(record.get("sha256"), str)
+            and len(record["sha256"]) == 64
+            for record in (before, after)):
+        raise SystemExit("state integrity hashes are incomplete")
+if (
+        state["before"]["frozen"]["sha256"]
+        != state["after"]["frozen"]["sha256"]
+        or state["before"]["trainable"]["sha256"]
+        == state["after"]["trainable"]["sha256"]):
+    raise SystemExit("state integrity hashes contradict flags")
+if (
+        outputs.get("before", {}).get("combined_sha256")
+        != outputs.get("after", {}).get("combined_sha256")):
+    raise SystemExit("output sentinel hashes contradict exact flag")
+
 stats = receipt["stat_means"]
-missing = [name for name in names if name not in stats]
+required_suffixes = (
+    "sample_count",
+    "supervised_candidate_count",
+    "positive_candidate_count",
+    "positive_row_count",
+    "fix_pair_count",
+    "break_pair_count",
+    "neutral_pair_count",
+    "nonfinite_count",
+    "transition_utility_loss",
+    "risk_loss",
+    "selected_score_gradient_l1",
+)
+required = ["grad_norm", "parent_relative_text_verifier_counterfactual_view_count"]
+for prefix in (
+        "parent_relative_text_verifier_actual_",
+        "parent_relative_text_verifier_counterfactual_",
+):
+    required.extend(prefix + suffix for suffix in required_suffixes)
+missing = [name for name in required if name not in stats]
 if missing:
-    raise SystemExit("missing density audit stats: {}".format(
+    raise SystemExit("missing counterfactual audit stats: {}".format(
         ",".join(missing)
     ))
-observed = {name: float(stats[name]) for name in names}
+observed = {name: float(stats[name]) for name in required}
+actual_prefix = "parent_relative_text_verifier_actual_"
+counterfactual_prefix = "parent_relative_text_verifier_counterfactual_"
+actual_samples = observed[actual_prefix + "sample_count"]
+counterfactual_samples = observed[counterfactual_prefix + "sample_count"]
+actual_positive_rows = observed[actual_prefix + "positive_row_count"]
+counterfactual_positive_rows = observed[
+    counterfactual_prefix + "positive_row_count"
+]
+actual_positive_ratio = (
+    actual_positive_rows / actual_samples if actual_samples > 0.0 else 0.0
+)
+counterfactual_positive_ratio = (
+    counterfactual_positive_rows / counterfactual_samples
+    if counterfactual_samples > 0.0 else 0.0
+)
 checks = {
-    "finite_gradient": observed["grad_norm"] > 0.0,
-    "nonzero_auxiliary_loss": (
-        observed["density_aware_target_box_loss"] > 0.0
+    "global_gradient_nonzero": observed["grad_norm"] > 0.0,
+    "actual_score_gradient_nonzero": (
+        observed[actual_prefix + "selected_score_gradient_l1"] > 0.0
     ),
-    "nonzero_active_row_ratio": (
-        observed["density_aware_target_box_active_row_ratio"] > 0.0
+    "counterfactual_score_gradient_nonzero": (
+        observed[
+            counterfactual_prefix + "selected_score_gradient_l1"
+        ] > 0.0
     ),
-    "nonzero_active_row_count": (
-        observed["density_aware_target_box_active_row_count"] > 0.0
+    "actual_nonfinite_zero": (
+        observed[actual_prefix + "nonfinite_count"] == 0.0
     ),
-    "referring_rows_present": (
-        observed["density_aware_target_box_referring_row_count"] > 0.0
+    "counterfactual_nonfinite_zero": (
+        observed[counterfactual_prefix + "nonfinite_count"] == 0.0
     ),
-    "active_point_mean_in_contract": (
-        0.0 < observed[
-            "density_aware_target_box_target_point_count_mean"
-        ] < 256.0
+    "actual_supervision_present": (
+        actual_samples > 0.0
+        and observed[actual_prefix + "supervised_candidate_count"] > 0.0
     ),
-    "sparsity_weight_in_contract": (
-        0.0 < observed[
-            "density_aware_target_box_sparsity_weight_mean"
-        ] < 1.0
+    "counterfactual_supervision_present": (
+        counterfactual_samples > 0.0
+        and observed[
+            counterfactual_prefix + "supervised_candidate_count"
+        ] > 0.0
     ),
-    "center_loss_nonnegative": (
-        observed["density_aware_target_box_center_l1"] >= 0.0
+    "counterfactual_views_present": (
+        observed[
+            "parent_relative_text_verifier_counterfactual_view_count"
+        ] > 0.0
     ),
-    "size_loss_nonnegative": (
-        observed["density_aware_target_box_size_l1"] >= 0.0
+    "positive_density_doubled": (
+        counterfactual_positive_rows > 0.0
+        and counterfactual_positive_ratio
+        >= 2.0 * actual_positive_ratio
     ),
+    "counterfactual_fix_present": (
+        observed[counterfactual_prefix + "fix_pair_count"] > 0.0
+    ),
+    "counterfactual_break_present": (
+        observed[counterfactual_prefix + "break_pair_count"] > 0.0
+    ),
+    "frozen_state_exact": state["frozen_exact"] is True,
+    "trainable_state_changed": state["trainable_changed"] is True,
+    "frozen_output_exact": outputs["exact"] is True,
 }
 passed = all(checks.values())
 decision = {
-    "schema": "mcln-density-aware-target-box-audit-v1",
+    "schema": "mcln-fpr-tv-counterfactual-parent-audit-v1",
     "audit_only": True,
+    "formal_validation_accessed": False,
     "long_training_authorized": False,
-    "next_step_if_passed": "scene_disjoint_short_audit_only",
+    "next_step_if_passed": "independent_scene_disjoint_review_only",
     "audit_batches": audit_batches,
-    "sample_slots": audit_batches * batch_size,
-    "loss_weight": 1.0,
-    "default_off_regression_passed": True,
-    "density_gate_passed": passed,
+    "sample_count": audit_batches * batch_size,
+    "counterfactual_density_gate_passed": passed,
     "checks": checks,
     "observed": observed,
+    "actual_positive_row_ratio": actual_positive_ratio,
+    "counterfactual_positive_row_ratio": counterfactual_positive_ratio,
+    "state_integrity": state,
+    "output_integrity": outputs,
     "receipt": os.path.realpath(receipt_path),
     "receipt_sha256": receipt_sha,
     "checkpoint": os.path.realpath(checkpoint_path),
@@ -1035,6 +1131,8 @@ decision = {
     "data_manifest_sha256": expected_data_manifest_sha,
     "runtime_manifest_sha256": expected_runtime_manifest_sha,
     "launcher_sha256": expected_launcher_sha,
+    "static_executor_sha256": expected_static_executor_sha,
+    "static_source_sha256": expected_static_source_sha,
     "code_snapshot_root": pre.get("code_snapshot_root"),
     "pre_audit_provenance": os.path.realpath(pre_path),
     "pre_audit_provenance_sha256": pre_sha,
@@ -1047,14 +1145,36 @@ with open(temporary, "w", encoding="utf-8") as handle:
     handle.flush()
     os.fsync(handle.fileno())
 os.replace(temporary, decision_path)
+directory_fd = os.open(
+    os.path.dirname(decision_path),
+    os.O_RDONLY | getattr(os, "O_DIRECTORY", 0),
+)
+try:
+    os.fsync(directory_fd)
+finally:
+    os.close(directory_fd)
 print("bounded_audit_receipt=validated")
-print("density_gate_passed={}".format(str(passed).lower()))
+print("counterfactual_density_gate_passed={}".format(str(passed).lower()))
 print("long_training_authorized=false")
 PY
 
 chmod 0444 "${RECEIPT}" "${DECISION}" "${LAUNCH_LOG}"
 echo "audit_receipt=${RECEIPT}"
 echo "audit_receipt_sha256=$(sha256sum "${RECEIPT}" | awk '{print $1}')"
-echo "density_decision=${DECISION}"
-echo "density_decision_sha256=$(sha256sum "${DECISION}" | awk '{print $1}')"
+echo "counterfactual_parent_decision=${DECISION}"
+echo "counterfactual_parent_decision_sha256=$(sha256sum "${DECISION}" | awk '{print $1}')"
 echo "approval_status=pending_independent_scene_disjoint_review"
+if ! /usr/bin/env -i PATH="${PATH}" PYTHONNOUSERSITE=1 \
+    PYTHONDONTWRITEBYTECODE=1 "${PYTHON_BIN}" - "${DECISION}" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], "r", encoding="utf-8") as handle:
+    decision = json.load(handle)
+if decision.get("counterfactual_density_gate_passed") is not True:
+    raise SystemExit(1)
+PY
+then
+  echo "counterfactual Parent density gate failed" >&2
+  exit 20
+fi

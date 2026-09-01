@@ -41,6 +41,24 @@ from .source_moe import (
     compute_source_moe_ranking_loss,
 )
 from .joint_query_quality import compute_joint_query_quality_loss
+from .sacr_relation_counterfactual import (
+    compute_relation_counterfactual_loss,
+    compute_relation_text_affinities,
+)
+from .relation_counterfactual_auxiliary import (
+    compute_relation_counterfactual_auxiliary_loss,
+    resolve_train_only_relation_anchors,
+)
+from .tier_hard_query_auxiliary import (
+    compute_tier_hard_query_auxiliary_loss,
+)
+from .rec_candidate_adapter import attach_candidate_targets
+from .parent_relative_text_verifier import (
+    compute_parent_relative_text_verifier_loss,
+)
+from .density_aware_target_box import (
+    compute_density_aware_target_box_loss,
+)
 
 
 def build_source_moe_grounding_sample_mask(end_points, batch_size, device):
@@ -61,6 +79,37 @@ def build_source_moe_grounding_sample_mask(end_points, batch_size, device):
         dtype=torch.bool,
         device=device,
     )
+
+
+def _expand_parent_relative_target_rows(
+        end_points, source_rows, actual_batch_size):
+    """Align root-target tensors with training-only Parent view rows."""
+    if (not isinstance(source_rows, torch.Tensor)
+            or source_rows.dim() != 1
+            or source_rows.dtype != torch.long
+            or source_rows.numel() == 0):
+        raise ValueError(
+            "counterfactual source rows must be a non-empty long vector"
+        )
+    if (not isinstance(actual_batch_size, int)
+            or isinstance(actual_batch_size, bool)
+            or actual_batch_size < 1):
+        raise ValueError("actual Parent batch size must be positive")
+    if (bool((source_rows < 0).any().item())
+            or bool((source_rows >= actual_batch_size).any().item())):
+        raise ValueError("counterfactual source rows are out of range")
+    expanded = dict(end_points)
+    for target_key in ("center_label", "size_gts", "box_label_mask"):
+        target_value = end_points.get(target_key)
+        if (not isinstance(target_value, torch.Tensor)
+                or target_value.shape[0] != actual_batch_size):
+            raise ValueError(
+                "{} must align with actual Parent rows".format(target_key)
+            )
+        expanded[target_key] = target_value.index_select(
+            0, source_rows.to(device=target_value.device)
+        )
+    return expanded
 
 
 def build_sacr_score_mask_supervision_mask(
@@ -229,6 +278,426 @@ def compute_sacr_score_refiner_listwise_loss(
         "box_target_mean": (global_stats[4] / active_count).detach(),
         "mask_target_mean": (
             global_stats[6] / mask_active_count
+        ).detach(),
+    }
+
+
+def compute_sacr_score_parent_relative_loss(
+        scores, parent_scores, relative_raw_scores, sample_gate,
+        parent_indices, feasible_candidate_mask,
+        box_ious, valid_mask, structured_valid_mask, sample_mask=None,
+        mask_ious=None, mask_supervision_mask=None, temperature=0.1,
+        mask_weight=0.25, max_delta=0.25, min_box_advantage=0.03,
+        promotion_margin=0.01, mask_tolerance=0.02, raw_margin=0.1,
+        dense_weight=0.25, preserve_weight=1.0, gate_weight=0.05,
+        saturation_weight=0.05):
+    """Train only feasible, parent-relative SACR ranking repairs.
+
+    Positive supervision is restricted to candidates that can overtake the
+    frozen parent inside the deployment residual budget.  Rows without such a
+    candidate are trained to abstain and preserve the parent ranking.
+    """
+    matrix_tensors = (
+        parent_scores, relative_raw_scores, box_ious,
+    )
+    if (
+            not isinstance(scores, torch.Tensor)
+            or scores.dim() != 2
+            or any(
+                not isinstance(value, torch.Tensor)
+                or value.shape != scores.shape
+                for value in matrix_tensors
+            )
+            or not isinstance(valid_mask, torch.Tensor)
+            or valid_mask.dtype != torch.bool
+            or valid_mask.shape != scores.shape
+            or not isinstance(feasible_candidate_mask, torch.Tensor)
+            or feasible_candidate_mask.dtype != torch.bool
+            or feasible_candidate_mask.shape != scores.shape
+            or not isinstance(structured_valid_mask, torch.Tensor)
+            or structured_valid_mask.dtype != torch.bool
+            or structured_valid_mask.shape != (scores.shape[0],)
+            or not isinstance(sample_gate, torch.Tensor)
+            or sample_gate.shape != (scores.shape[0],)
+            or not isinstance(parent_indices, torch.Tensor)
+            or parent_indices.shape != (scores.shape[0],)
+            or parent_indices.dtype != torch.long
+    ):
+        raise ValueError(
+            "parent-relative SACR supervision tensors must align as [B,Q], "
+            "and [B]"
+        )
+    tensors = (
+        scores, parent_scores, relative_raw_scores, sample_gate,
+        parent_indices, feasible_candidate_mask, box_ious,
+        valid_mask, structured_valid_mask,
+    )
+    if any(value.device != scores.device for value in tensors):
+        raise ValueError(
+            "parent-relative SACR supervision tensors must share a device"
+        )
+    if bool(
+            ((parent_indices < 0) | (parent_indices >= scores.shape[1]))
+            .any().item()):
+        raise ValueError("parent-relative SACR parent indices are out of range")
+    if mask_ious is not None and (
+            not isinstance(mask_ious, torch.Tensor)
+            or mask_ious.shape != scores.shape
+            or mask_ious.device != scores.device):
+        raise ValueError("parent-relative SACR mask IoUs must align with scores")
+    if sample_mask is None:
+        sample_mask = torch.ones_like(structured_valid_mask)
+    if mask_supervision_mask is None:
+        mask_supervision_mask = torch.ones_like(structured_valid_mask)
+    for name, value in (
+            ("sample_mask", sample_mask),
+            ("mask_supervision_mask", mask_supervision_mask)):
+        if (
+                not isinstance(value, torch.Tensor)
+                or value.dtype != torch.bool
+                or value.shape != structured_valid_mask.shape
+                or value.device != scores.device):
+            raise ValueError(
+                "parent-relative SACR {} must be bool [B]".format(name)
+            )
+    scalar_constraints = (
+        ("temperature", temperature, 0.0, None, False),
+        ("mask_weight", mask_weight, 0.0, None, True),
+        ("max_delta", max_delta, 0.0, 0.25, False),
+        ("min_box_advantage", min_box_advantage, 0.0, None, True),
+        ("promotion_margin", promotion_margin, 0.0, None, True),
+        ("mask_tolerance", mask_tolerance, 0.0, None, True),
+        ("raw_margin", raw_margin, 0.0, None, True),
+        ("dense_weight", dense_weight, 0.0, None, True),
+        ("preserve_weight", preserve_weight, 0.0, None, True),
+        ("gate_weight", gate_weight, 0.0, None, True),
+        ("saturation_weight", saturation_weight, 0.0, None, True),
+    )
+    for name, value, lower, upper, inclusive_lower in scalar_constraints:
+        try:
+            numeric = float(value)
+            valid = math.isfinite(numeric)
+            valid = valid and (
+                numeric >= lower if inclusive_lower else numeric > lower
+            )
+            valid = valid and (upper is None or numeric <= upper)
+        except (TypeError, ValueError, OverflowError):
+            valid = False
+        if not valid:
+            raise ValueError(
+                "parent-relative SACR {} has an invalid value".format(name)
+            )
+    if float(promotion_margin) >= float(max_delta):
+        raise ValueError(
+            "parent-relative SACR promotion margin must be below max_delta"
+        )
+
+    batch_size, query_count = scores.shape
+    query_indices = torch.arange(
+        query_count, device=scores.device
+    ).unsqueeze(0)
+    parent_mask = query_indices == parent_indices.unsqueeze(1)
+    required_parent_rows = sample_mask & structured_valid_mask
+    missing_parent = (
+        required_parent_rows & ~(valid_mask & parent_mask).any(dim=1)
+    )
+    if bool(missing_parent.any().item()):
+        raise ValueError(
+            "every supervised parent-relative SACR row must retain its "
+            "parent query"
+        )
+    supervised_rows = (
+        sample_mask & structured_valid_mask & valid_mask.any(dim=1)
+    )
+    candidate_mask = (
+        valid_mask & feasible_candidate_mask & ~parent_mask
+        & supervised_rows.unsqueeze(1)
+    )
+
+    parent_box_iou = torch.gather(
+        box_ious.float(), 1, parent_indices.unsqueeze(1)
+    )
+    box_advantage = box_ious.float() - parent_box_iou
+    parent_score = torch.gather(
+        parent_scores.float(), 1, parent_indices.unsqueeze(1)
+    )
+    promotion_cost = (
+        parent_score - parent_scores.float() + float(promotion_margin)
+    )
+    budget_feasible = promotion_cost < float(max_delta)
+
+    mask_advantage = torch.zeros_like(box_advantage)
+    mask_safe = torch.ones_like(candidate_mask)
+    mask_rows = mask_supervision_mask & supervised_rows
+    if mask_ious is not None:
+        parent_mask_iou = torch.gather(
+            mask_ious.float(), 1, parent_indices.unsqueeze(1)
+        )
+        mask_advantage = mask_ious.float() - parent_mask_iou
+        mask_safe = (
+            ~mask_rows.unsqueeze(1)
+            | (mask_advantage >= -float(mask_tolerance))
+        )
+
+    box_utility = (
+        (box_ious.float() > 0.25).float()
+        + 2.0 * (box_ious.float() > 0.50).float()
+        + 0.5 * box_ious.float()
+    )
+    parent_box_utility = torch.gather(
+        box_utility, 1, parent_indices.unsqueeze(1)
+    )
+    box_utility_advantage = box_utility - parent_box_utility
+    threshold_repair = (
+        ((box_ious.float() > 0.25) & (parent_box_iou <= 0.25))
+        | ((box_ious.float() > 0.50) & (parent_box_iou <= 0.50))
+    )
+    teacher_advantage = box_utility_advantage + (
+        float(mask_weight)
+        * mask_advantage
+        * mask_rows.float().unsqueeze(1)
+    )
+    repair_candidates = (
+        candidate_mask & budget_feasible
+        & (
+            threshold_repair
+            | (box_advantage >= float(min_box_advantage))
+        )
+        & (teacher_advantage > 0.0)
+        & mask_safe
+    )
+    repair_rows = supervised_rows & repair_candidates.any(dim=1)
+    preserve_rows = (
+        supervised_rows & ~repair_rows & candidate_mask.any(dim=1)
+    )
+    teacher_indices = teacher_advantage.masked_fill(
+        ~repair_candidates, torch.finfo(torch.float32).min
+    ).argmax(dim=1)
+
+    positive_mask = repair_candidates
+    negative_mask = candidate_mask & ~repair_candidates
+    # V133 only consumed the structured score through tanh, so its raw score
+    # scale is intentionally unconstrained and may be very large.  Keep every
+    # V134 objective in the same bounded deployment space; applying squared
+    # margins or listwise softmax directly to inherited raw values can produce
+    # losses around 1e30 before the first optimizer step.
+    relative_prediction = relative_raw_scores.float().tanh()
+    positive_raw_loss = F.relu(
+        float(raw_margin) - relative_prediction
+    ).square()
+    negative_raw_loss = F.relu(
+        float(raw_margin) + relative_prediction
+    ).square()
+
+    dense_advantage = teacher_advantage
+    if mask_ious is not None:
+        unsafe = mask_rows.unsqueeze(1) & ~mask_safe
+        dense_advantage = torch.where(
+            unsafe,
+            torch.minimum(
+                dense_advantage,
+                dense_advantage.new_full(
+                    dense_advantage.shape, -float(mask_tolerance)
+                ),
+            ),
+            dense_advantage,
+        )
+    dense_target = (
+        dense_advantage / float(temperature)
+    ).clamp(min=-0.8, max=0.8)
+    dense_rows = F.smooth_l1_loss(
+        relative_prediction,
+        dense_target,
+        reduction="none",
+    )
+    listwise_mask = valid_mask & (
+        parent_mask | feasible_candidate_mask
+    ) & supervised_rows.unsqueeze(1)
+    listwise_target = F.softmax(
+        (teacher_advantage / float(temperature)).masked_fill(
+            ~listwise_mask, -1e4
+        ),
+        dim=1,
+    )
+    listwise_prediction = F.log_softmax(
+        (relative_prediction / float(temperature)).masked_fill(
+            ~listwise_mask, -1e4
+        ),
+        dim=1,
+    )
+    feasible_rank_rows = F.kl_div(
+        listwise_prediction,
+        listwise_target,
+        reduction="none",
+    ).sum(dim=1)
+
+    deployed_parent_score = torch.gather(
+        scores.float(), 1, parent_indices.unsqueeze(1)
+    ).squeeze(1)
+    deployed_teacher_score = torch.gather(
+        scores.float(), 1, teacher_indices.unsqueeze(1)
+    ).squeeze(1)
+    promotion_shortfall = F.relu(
+        deployed_parent_score + float(promotion_margin)
+        - deployed_teacher_score
+    )
+    promotion_overshoot = F.relu(
+        deployed_teacher_score
+        - deployed_parent_score
+        - 2.0 * float(promotion_margin)
+    )
+    promotion_rows = (
+        promotion_shortfall.square() + promotion_overshoot.square()
+    )
+    non_parent_score = scores.float().masked_fill(
+        ~candidate_mask, torch.finfo(torch.float32).min
+    ).amax(dim=1)
+    preserve_rows_loss = F.relu(
+        non_parent_score - deployed_parent_score
+    )
+    open_gate_rows = F.relu(
+        sample_gate.new_tensor(0.5) - sample_gate.float()
+    ).square()
+    close_gate_rows = sample_gate.float().square()
+    deployed_residual = scores.float() - parent_scores.float()
+    saturation_rows = F.relu(
+        deployed_residual.abs() / float(max_delta) - 0.90
+    ).square()
+
+    count_masks = (
+        positive_mask,
+        negative_mask,
+        repair_rows,
+        preserve_rows,
+        candidate_mask,
+        supervised_rows,
+    )
+    local_counts = torch.stack([
+        mask.float().sum() for mask in count_masks
+    ]).detach()
+    local_stats = torch.stack((
+        supervised_rows.float().sum(),
+        scores.new_tensor(float(batch_size)),
+        repair_candidates.float().sum(),
+        candidate_mask.float().sum(),
+        (parent_box_iou.squeeze(1) * supervised_rows.float()).sum(),
+        (
+            torch.gather(
+                box_advantage, 1, teacher_indices.unsqueeze(1)
+            ).squeeze(1) * repair_rows.float()
+        ).sum(),
+        (sample_gate.float() * repair_rows.float()).sum(),
+        (sample_gate.float() * preserve_rows.float()).sum(),
+        (
+            candidate_mask & mask_rows.unsqueeze(1) & ~mask_safe
+        ).float().sum(),
+        (supervised_rows & mask_supervision_mask).float().sum(),
+    )).detach()
+    global_values = torch.cat((local_counts, local_stats)).clone()
+    world_size = 1
+    if is_dist_avail_and_initialized():
+        dist.all_reduce(global_values)
+        world_size = dist.get_world_size()
+    global_counts = global_values[:len(local_counts)]
+
+    def exact_mean(values, mask, count):
+        if not bool((count > 0).item()):
+            return values.sum() * 0.0
+        return (
+            torch.where(mask, values, torch.zeros_like(values)).sum()
+            * float(world_size) / count
+        )
+
+    positive_loss = exact_mean(
+        positive_raw_loss, positive_mask, global_counts[0]
+    )
+    negative_loss = exact_mean(
+        negative_raw_loss, negative_mask, global_counts[1]
+    )
+    active_class_count = int(bool((global_counts[0] > 0).item())) + int(
+        bool((global_counts[1] > 0).item())
+    )
+    relative_loss = (
+        (positive_loss + negative_loss) / float(active_class_count)
+        if active_class_count else scores.sum() * 0.0
+    )
+    promotion_loss = exact_mean(
+        promotion_rows, repair_rows, global_counts[2]
+    )
+    preserve_loss = exact_mean(
+        preserve_rows_loss, preserve_rows, global_counts[3]
+    )
+    dense_loss = exact_mean(
+        dense_rows, candidate_mask, global_counts[4]
+    )
+    feasible_rank_loss = exact_mean(
+        feasible_rank_rows, repair_rows, global_counts[2]
+    )
+    saturation_loss = exact_mean(
+        saturation_rows, candidate_mask, global_counts[4]
+    )
+    open_gate_loss = exact_mean(
+        open_gate_rows, repair_rows, global_counts[2]
+    )
+    close_gate_loss = exact_mean(
+        close_gate_rows, preserve_rows, global_counts[3]
+    )
+    active_gate_count = int(bool((global_counts[2] > 0).item())) + int(
+        bool((global_counts[3] > 0).item())
+    )
+    abstention_loss = (
+        (open_gate_loss + close_gate_loss) / float(active_gate_count)
+        if active_gate_count else scores.sum() * 0.0
+    )
+    loss = (
+        relative_loss
+        + feasible_rank_loss
+        + promotion_loss
+        + float(preserve_weight) * preserve_loss
+        + float(dense_weight) * dense_loss
+        + float(gate_weight) * abstention_loss
+        + float(saturation_weight) * saturation_loss
+    )
+
+    stats = global_values[len(local_counts):]
+    total_rows = stats[1].clamp(min=1.0)
+    supervised_count = stats[0].clamp(min=1.0)
+    repair_row_count = global_counts[2].clamp(min=1.0)
+    preserve_row_count = global_counts[3].clamp(min=1.0)
+    candidate_count = stats[3].clamp(min=1.0)
+    return {
+        "loss": loss,
+        "relative_classification_loss": relative_loss.detach(),
+        "feasible_rank_loss": feasible_rank_loss.detach(),
+        "promotion_loss": promotion_loss.detach(),
+        "preserve_loss": preserve_loss.detach(),
+        "dense_advantage_loss": dense_loss.detach(),
+        "abstention_loss": abstention_loss.detach(),
+        "saturation_loss": saturation_loss.detach(),
+        "supervised_row_ratio": (stats[0] / total_rows).detach(),
+        "mask_supervised_row_ratio": (
+            stats[9] / total_rows
+        ).detach(),
+        "repairable_row_ratio": (
+            global_counts[2] / total_rows
+        ).detach(),
+        "repair_candidate_ratio": (
+            stats[2] / candidate_count
+        ).detach(),
+        "parent_box_iou_mean": (
+            stats[4] / supervised_count
+        ).detach(),
+        "teacher_box_advantage_mean": (
+            stats[5] / repair_row_count
+        ).detach(),
+        "repair_sample_gate_mean": (
+            stats[6] / repair_row_count
+        ).detach(),
+        "preserve_sample_gate_mean": (
+            stats[7] / preserve_row_count
+        ).detach(),
+        "mask_unsafe_candidate_ratio": (
+            stats[8] / candidate_count
         ).detach(),
     }
 
@@ -1354,9 +1823,55 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                            sacr_score_refiner_loss_weight=0.0,
                            sacr_score_temperature=0.1,
                            sacr_score_mask_weight=0.25,
+                           sacr_score_use_parent_relative_abstention=False,
+                           sacr_score_use_relation_counterfactual=False,
+                           sacr_score_max_delta=0.25,
+                           sacr_score_min_box_advantage=0.03,
+                           sacr_score_promotion_margin=0.01,
+                           sacr_score_mask_tolerance=0.02,
+                           sacr_score_raw_margin=0.1,
+                           sacr_score_dense_weight=0.25,
+                           sacr_score_preserve_weight=1.0,
+                           sacr_score_gate_weight=0.05,
+                           sacr_score_saturation_weight=0.05,
+                           sacr_counterfactual_parent_top_k=16,
+                           sacr_counterfactual_target_tolerance=0.05,
+                           sacr_counterfactual_attribute_tolerance=0.05,
+                           sacr_counterfactual_geometry_threshold=0.08,
+                           sacr_counterfactual_iou_gap=0.10,
+                           sacr_counterfactual_correct_iou_threshold=0.25,
+                           sacr_counterfactual_pair_margin=0.25,
+                           sacr_counterfactual_max_negatives=4,
+                           relation_counterfactual_aux_loss_weight=0.0,
+                           relation_counterfactual_aux_parent_top_k=32,
+                           relation_counterfactual_aux_target_tolerance=0.10,
+                           relation_counterfactual_aux_attribute_tolerance=0.10,
+                           relation_counterfactual_aux_geometry_threshold=0.08,
+                           relation_counterfactual_aux_correct_iou_threshold=0.25,
+                           relation_counterfactual_aux_pair_margin=0.05,
+                           relation_counterfactual_aux_max_negatives=8,
+                           relation_counterfactual_aux_target_confidence_floor=0.05,
+                           relation_counterfactual_aux_attribute_confidence_floor=0.02,
+                           relation_counterfactual_aux_acc025_pair_weight=2.0,
+                           tier_hard_query_aux_loss_weight=0.0,
+                           tier_hard_query_aux_candidate_top_k=128,
+                           tier_hard_query_aux_max_negatives=8,
+                           tier_hard_query_aux_target_tolerance=0.15,
+                           tier_hard_query_aux_target_confidence_floor=0.01,
+                           tier_hard_query_aux_pair_margin=0.05,
+                           tier_hard_query_aux_preserve_weight=0.25,
+                           tier_hard_query_aux_acc025_pair_weight=2.0,
+                           parent_relative_text_verifier_loss_weight=0.0,
+                           parent_relative_text_verifier_positive_margin=0.25,
+                           parent_relative_text_verifier_neutral_margin=0.25,
                            query_mask_fusion_train_only=False,
                            joint_query_quality_train_only=False,
-                           sacr_score_refiner_train_only=False):
+                           sacr_score_refiner_train_only=False,
+                           parent_relative_text_verifier_train_only=False,
+                           parent_relative_text_verifier_counterfactual_training=False,
+                           relation_counterfactual_aux_conservative_anchor_set=False,
+                           density_aware_target_box_loss_weight=0.0,
+                           density_scene_audit_return_match_indices=False):
     """Compute Hungarian matching loss containing CE, bbox and giou."""
     for scale_name, scale in (
             ("mask_loss_scale", mask_loss_scale),
@@ -1429,6 +1944,67 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
             ("sacr_score_refiner_loss_weight",
              sacr_score_refiner_loss_weight),
             ("sacr_score_mask_weight", sacr_score_mask_weight),
+            ("sacr_score_min_box_advantage",
+             sacr_score_min_box_advantage),
+            ("sacr_score_promotion_margin",
+             sacr_score_promotion_margin),
+            ("sacr_score_mask_tolerance", sacr_score_mask_tolerance),
+            ("sacr_score_raw_margin", sacr_score_raw_margin),
+            ("sacr_score_dense_weight", sacr_score_dense_weight),
+            ("sacr_score_preserve_weight", sacr_score_preserve_weight),
+            ("sacr_score_gate_weight", sacr_score_gate_weight),
+            ("sacr_score_saturation_weight",
+             sacr_score_saturation_weight),
+            ("sacr_counterfactual_target_tolerance",
+             sacr_counterfactual_target_tolerance),
+            ("sacr_counterfactual_attribute_tolerance",
+             sacr_counterfactual_attribute_tolerance),
+            ("sacr_counterfactual_geometry_threshold",
+             sacr_counterfactual_geometry_threshold),
+            ("sacr_counterfactual_iou_gap",
+             sacr_counterfactual_iou_gap),
+            ("sacr_counterfactual_correct_iou_threshold",
+             sacr_counterfactual_correct_iou_threshold),
+            ("sacr_counterfactual_pair_margin",
+             sacr_counterfactual_pair_margin),
+            ("relation_counterfactual_aux_loss_weight",
+             relation_counterfactual_aux_loss_weight),
+            ("relation_counterfactual_aux_target_tolerance",
+             relation_counterfactual_aux_target_tolerance),
+            ("relation_counterfactual_aux_attribute_tolerance",
+             relation_counterfactual_aux_attribute_tolerance),
+            ("relation_counterfactual_aux_geometry_threshold",
+             relation_counterfactual_aux_geometry_threshold),
+            ("relation_counterfactual_aux_correct_iou_threshold",
+             relation_counterfactual_aux_correct_iou_threshold),
+            ("relation_counterfactual_aux_pair_margin",
+             relation_counterfactual_aux_pair_margin),
+            ("relation_counterfactual_aux_target_confidence_floor",
+             relation_counterfactual_aux_target_confidence_floor),
+            ("relation_counterfactual_aux_attribute_confidence_floor",
+             relation_counterfactual_aux_attribute_confidence_floor),
+            ("relation_counterfactual_aux_acc025_pair_weight",
+             relation_counterfactual_aux_acc025_pair_weight),
+            ("tier_hard_query_aux_loss_weight",
+             tier_hard_query_aux_loss_weight),
+            ("tier_hard_query_aux_target_tolerance",
+             tier_hard_query_aux_target_tolerance),
+            ("tier_hard_query_aux_target_confidence_floor",
+             tier_hard_query_aux_target_confidence_floor),
+            ("tier_hard_query_aux_pair_margin",
+             tier_hard_query_aux_pair_margin),
+            ("tier_hard_query_aux_preserve_weight",
+             tier_hard_query_aux_preserve_weight),
+            ("tier_hard_query_aux_acc025_pair_weight",
+             tier_hard_query_aux_acc025_pair_weight),
+            ("parent_relative_text_verifier_loss_weight",
+             parent_relative_text_verifier_loss_weight),
+            ("parent_relative_text_verifier_positive_margin",
+             parent_relative_text_verifier_positive_margin),
+            ("parent_relative_text_verifier_neutral_margin",
+             parent_relative_text_verifier_neutral_margin),
+            ("density_aware_target_box_loss_weight",
+             density_aware_target_box_loss_weight),
             ("consistency_loss_scale", consistency_loss_scale)):
         try:
             is_valid = math.isfinite(scale) and scale >= 0
@@ -1438,6 +2014,88 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
             raise ValueError(
                 f"{scale_name} must be a finite non-negative number"
             )
+    if not isinstance(sacr_score_use_parent_relative_abstention, bool):
+        raise ValueError(
+            "sacr_score_use_parent_relative_abstention must be boolean"
+        )
+    if not isinstance(sacr_score_use_relation_counterfactual, bool):
+        raise ValueError(
+            "sacr_score_use_relation_counterfactual must be boolean"
+        )
+    if (
+            sacr_score_use_parent_relative_abstention
+            and sacr_score_use_relation_counterfactual):
+        raise ValueError(
+            "SACR deployment variants are mutually exclusive"
+        )
+    for name, value in (
+            ("sacr_counterfactual_parent_top_k",
+             sacr_counterfactual_parent_top_k),
+            ("sacr_counterfactual_max_negatives",
+             sacr_counterfactual_max_negatives)):
+        if not isinstance(value, int) or isinstance(value, bool) or value < 1:
+            raise ValueError("{} must be positive".format(name))
+    for name, value in (
+            ("relation_counterfactual_aux_parent_top_k",
+             relation_counterfactual_aux_parent_top_k),
+            ("relation_counterfactual_aux_max_negatives",
+             relation_counterfactual_aux_max_negatives),
+            ("tier_hard_query_aux_candidate_top_k",
+             tier_hard_query_aux_candidate_top_k),
+            ("tier_hard_query_aux_max_negatives",
+             tier_hard_query_aux_max_negatives)):
+        if (
+                not isinstance(value, int)
+                or isinstance(value, bool)
+                or not 1 <= value <= 4096):
+            raise ValueError("{} must be in [1, 4096]".format(name))
+    for name, value, upper in (
+            ("relation_counterfactual_aux_loss_weight",
+             relation_counterfactual_aux_loss_weight, 10.0),
+            ("relation_counterfactual_aux_target_tolerance",
+             relation_counterfactual_aux_target_tolerance, 1.0),
+            ("relation_counterfactual_aux_attribute_tolerance",
+             relation_counterfactual_aux_attribute_tolerance, 1.0),
+            ("relation_counterfactual_aux_geometry_threshold",
+             relation_counterfactual_aux_geometry_threshold, 2.0),
+            ("relation_counterfactual_aux_correct_iou_threshold",
+             relation_counterfactual_aux_correct_iou_threshold, 1.0),
+            ("relation_counterfactual_aux_pair_margin",
+             relation_counterfactual_aux_pair_margin, 1.0),
+            ("relation_counterfactual_aux_target_confidence_floor",
+             relation_counterfactual_aux_target_confidence_floor, 1.0),
+            ("relation_counterfactual_aux_attribute_confidence_floor",
+             relation_counterfactual_aux_attribute_confidence_floor, 1.0),
+            ("relation_counterfactual_aux_acc025_pair_weight",
+             relation_counterfactual_aux_acc025_pair_weight, 10.0),
+            ("tier_hard_query_aux_loss_weight",
+             tier_hard_query_aux_loss_weight, 10.0),
+            ("tier_hard_query_aux_target_tolerance",
+             tier_hard_query_aux_target_tolerance, 1.0),
+            ("tier_hard_query_aux_target_confidence_floor",
+             tier_hard_query_aux_target_confidence_floor, 1.0),
+            ("tier_hard_query_aux_pair_margin",
+             tier_hard_query_aux_pair_margin, 1.0),
+            ("tier_hard_query_aux_preserve_weight",
+             tier_hard_query_aux_preserve_weight, 1.0),
+            ("tier_hard_query_aux_acc025_pair_weight",
+             tier_hard_query_aux_acc025_pair_weight, 10.0),
+            ("parent_relative_text_verifier_loss_weight",
+             parent_relative_text_verifier_loss_weight, 10.0),
+            ("parent_relative_text_verifier_positive_margin",
+             parent_relative_text_verifier_positive_margin, 1.0),
+            ("parent_relative_text_verifier_neutral_margin",
+             parent_relative_text_verifier_neutral_margin, 1.0)):
+        lower = 1.0 if name.endswith("acc025_pair_weight") else 0.0
+        if not lower <= float(value) <= upper:
+            raise ValueError(
+                "{} must be in [{}, {}]".format(name, lower, upper)
+            )
+    if not isinstance(
+            relation_counterfactual_aux_conservative_anchor_set, bool):
+        raise ValueError(
+            "relation_counterfactual_aux_conservative_anchor_set must be bool"
+        )
     if not isinstance(
             joint_query_quality_use_metric_aligned_utility, bool):
         raise ValueError(
@@ -1583,6 +2241,15 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
     auxi_entity_positive_map = end_points['auxi_entity_positive_map']
     auxi_box = end_points['auxi_box']
     source_choice_loss = torch.tensor(0.0, device=gt_bbox.device)
+    relation_counterfactual_aux_loss = torch.tensor(
+        0.0, device=gt_bbox.device
+    )
+    tier_hard_query_aux_loss = torch.tensor(
+        0.0, device=gt_bbox.device
+    )
+    parent_relative_text_verifier_loss = torch.tensor(
+        0.0, device=gt_bbox.device
+    )
     source_moe_rank_loss = torch.tensor(0.0, device=gt_bbox.device)
     source_moe_box_rank_loss = torch.tensor(0.0, device=gt_bbox.device)
     source_moe_mask_rank_loss = torch.tensor(0.0, device=gt_bbox.device)
@@ -1645,11 +2312,215 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
     if sum(bool(value) for value in (
             query_mask_fusion_train_only,
             joint_query_quality_train_only,
-            sacr_score_refiner_train_only)) > 1:
+            sacr_score_refiner_train_only,
+            parent_relative_text_verifier_train_only)) > 1:
         raise ValueError(
-            "query-mask-fusion, joint-query-quality, and SACR-score-only "
+            "query-mask-fusion, joint-query-quality, SACR-score-only, and "
+            "parent-relative-verifier-only "
             "modes are mutually exclusive"
         )
+    if density_aware_target_box_loss_weight > 0 and any((
+            query_mask_fusion_train_only,
+            joint_query_quality_train_only,
+            sacr_score_refiner_train_only,
+            parent_relative_text_verifier_train_only)):
+        raise ValueError(
+            "density-aware target-box supervision requires full training mode"
+        )
+
+    if parent_relative_text_verifier_train_only:
+        if parent_relative_text_verifier_loss_weight <= 0:
+            raise ValueError(
+                "parent-relative-verifier-only mode requires a positive "
+                "loss weight"
+            )
+        required = (
+            "parent_relative_text_verifier_batch",
+            "parent_relative_text_verifier_outputs",
+            "parent_relative_text_verifier_parent_scores",
+            "parent_relative_text_verifier_scores",
+        )
+        missing = [key for key in required if key not in end_points]
+        if missing:
+            raise ValueError(
+                "parent-relative verifier inputs are missing: "
+                + ", ".join(missing)
+            )
+        verifier_batch = end_points[
+            "parent_relative_text_verifier_batch"
+        ]
+        targeted_batch = attach_candidate_targets(
+            verifier_batch, end_points, root_only=True
+        )
+        actual_sample_mask = build_source_moe_grounding_sample_mask(
+            end_points,
+            targeted_batch["candidate_ious"].shape[0],
+            targeted_batch["candidate_ious"].device,
+        )
+        actual_supervision = compute_parent_relative_text_verifier_loss(
+            end_points["parent_relative_text_verifier_outputs"],
+            targeted_batch["candidate_ious"],
+            positive_margin=float(
+                parent_relative_text_verifier_positive_margin
+            ),
+            neutral_margin=float(
+                parent_relative_text_verifier_neutral_margin
+            ),
+            sample_mask=actual_sample_mask,
+            counterfactual_training=(
+                parent_relative_text_verifier_counterfactual_training
+            ),
+        )
+        supervision = actual_supervision
+        counterfactual_supervision = None
+        counterfactual_view_kind = None
+        if parent_relative_text_verifier_counterfactual_training:
+            counterfactual_required = (
+                "parent_relative_text_verifier_counterfactual_batch",
+                "parent_relative_text_verifier_counterfactual_outputs",
+            )
+            counterfactual_present = [
+                key in end_points for key in counterfactual_required
+            ]
+            if any(counterfactual_present) and not all(
+                    counterfactual_present):
+                raise ValueError(
+                    "counterfactual Parent batch and outputs must be present "
+                    "together"
+                )
+            if all(counterfactual_present):
+                counterfactual_batch = end_points[
+                    "parent_relative_text_verifier_counterfactual_batch"
+                ]
+                source_rows = counterfactual_batch.get(
+                    "counterfactual_source_rows"
+                )
+                counterfactual_target_points = (
+                    _expand_parent_relative_target_rows(
+                        end_points,
+                        source_rows,
+                        actual_sample_mask.shape[0],
+                    )
+                )
+                targeted_counterfactual_batch = attach_candidate_targets(
+                    counterfactual_batch,
+                    counterfactual_target_points,
+                    root_only=True,
+                )
+                counterfactual_supervision = (
+                    compute_parent_relative_text_verifier_loss(
+                        end_points[
+                            "parent_relative_text_verifier_counterfactual_outputs"
+                        ],
+                        targeted_counterfactual_batch["candidate_ious"],
+                        positive_margin=float(
+                            parent_relative_text_verifier_positive_margin
+                        ),
+                        neutral_margin=float(
+                            parent_relative_text_verifier_neutral_margin
+                        ),
+                        sample_mask=actual_sample_mask.index_select(
+                            0, source_rows
+                        ),
+                        counterfactual_training=True,
+                    )
+                )
+                counterfactual_view_kind = counterfactual_batch.get(
+                    "counterfactual_view_kind"
+                )
+                supervision = {
+                    "loss": 0.5 * (
+                        actual_supervision["loss"]
+                        + counterfactual_supervision["loss"]
+                    ),
+                    "stats": actual_supervision["stats"],
+                }
+            else:
+                counterfactual_supervision = {
+                    "loss": actual_supervision["loss"] * 0.0,
+                    "stats": {
+                        key: value * 0.0
+                        for key, value in actual_supervision["stats"].items()
+                    },
+                }
+        loss = (
+            float(parent_relative_text_verifier_loss_weight)
+            * supervision["loss"]
+        ).reshape(())
+        zero = loss * 0.0
+        zero_keys = (
+            "loss_ce", "loss_bbox", "loss_giou",
+            "query_points_generation_loss", "loss_sem_align",
+            "loss_mask", "loss_dice", "sp_loss_mask", "sp_loss_dice",
+            "corresponding_loss_mask", "corresponding_loss_dice",
+            "adaptive_weight_loss_mask", "adaptive_weight_loss_dice",
+            "source_choice_loss", "moe_balance_loss",
+            "source_moe_rank_loss", "source_moe_box_rank_loss",
+            "source_moe_mask_rank_loss", "source_moe_anchor_loss",
+            "source_moe_gate_loss", "source_moe_gate_box_loss",
+            "source_moe_gate_mask_loss", "source_moe_gate_decision_loss",
+            "joint_query_quality_loss", "joint_query_quality_listwise_loss",
+            "joint_query_quality_aux_loss", "joint_query_quality_anchor_loss",
+            "joint_query_quality_transition_loss",
+            "joint_query_quality_factorized_hit_loss",
+            "joint_query_quality_factorized_pair_loss",
+            "sacr_score_loss", "relation_counterfactual_aux_loss",
+            "tier_hard_query_aux_loss",
+        )
+        for key in zero_keys:
+            end_points[key] = zero
+        end_points["parent_relative_text_verifier_loss"] = supervision[
+            "loss"
+        ]
+        for key, value in supervision["stats"].items():
+            end_points[
+                "parent_relative_text_verifier_{}".format(key)
+            ] = value
+        if counterfactual_supervision is not None:
+            for key, value in actual_supervision["stats"].items():
+                end_points[
+                    "parent_relative_text_verifier_actual_{}".format(key)
+                ] = value
+            for key, value in counterfactual_supervision["stats"].items():
+                end_points[
+                    "parent_relative_text_verifier_counterfactual_{}".format(
+                        key
+                    )
+                ] = value
+            if counterfactual_view_kind is None:
+                view_count = actual_supervision["loss"].detach() * 0.0
+                text_view_ratio = view_count
+                loo_view_ratio = view_count
+            else:
+                if (not isinstance(counterfactual_view_kind, torch.Tensor)
+                        or counterfactual_view_kind.dim() != 1
+                        or counterfactual_view_kind.shape != source_rows.shape
+                        or bool(((counterfactual_view_kind < 0)
+                                 | (counterfactual_view_kind > 1)).any().item())):
+                    raise ValueError(
+                        "counterfactual view kinds must align with source rows"
+                    )
+                view_count = counterfactual_view_kind.new_tensor(
+                    float(counterfactual_view_kind.numel()),
+                    dtype=torch.float32,
+                )
+                text_view_ratio = (
+                    counterfactual_view_kind == 0
+                ).float().mean()
+                loo_view_ratio = (
+                    counterfactual_view_kind == 1
+                ).float().mean()
+            end_points[
+                "parent_relative_text_verifier_counterfactual_view_count"
+            ] = view_count
+            end_points[
+                "parent_relative_text_verifier_counterfactual_text_view_ratio"
+            ] = text_view_ratio
+            end_points[
+                "parent_relative_text_verifier_counterfactual_loo_view_ratio"
+            ] = loo_view_ratio
+        end_points["loss"] = loss
+        return loss, end_points
 
     if sacr_score_refiner_train_only:
         if sacr_score_refiner_loss_weight <= 0:
@@ -1659,8 +2530,27 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         required = (
             "last_center", "last_pred_size", "selected_source_scores",
             "sacr_score_refiner_scores", "sacr_score_valid_mask",
+            "sacr_score_candidate_valid_mask",
             "sacr_score_structured_valid_mask",
         )
+        if sacr_score_use_relation_counterfactual:
+            required = required + (
+                "sacr_score_parent_scores",
+                "sacr_score_relation_scores",
+                "sacr_score_relation_geometry_signatures",
+                "sacr_score_relation_candidate_mask",
+                "sacr_score_target_affinity",
+                "sacr_score_attribute_affinity",
+                "sacr_score_attribute_present",
+            )
+        elif sacr_score_use_parent_relative_abstention:
+            required = required + (
+                "sacr_score_parent_scores",
+                "sacr_score_relative_raw_scores",
+                "sacr_score_sample_gate",
+                "sacr_score_parent_indices",
+                "sacr_score_feasible_candidate_mask",
+            )
         missing = [key for key in required if key not in end_points]
         if missing:
             raise ValueError(
@@ -1718,17 +2608,95 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                     end_points["superpoints"],
                     grounding_gt_valid,
                 )
-        supervision = compute_sacr_score_refiner_listwise_loss(
-            scores=scores,
-            box_ious=box_ious,
-            mask_ious=mask_ious,
-            valid_mask=valid_mask,
-            structured_valid_mask=structured_valid,
-            sample_mask=sample_mask,
-            mask_supervision_mask=mask_supervision_mask,
-            temperature=float(sacr_score_temperature),
-            mask_weight=float(sacr_score_mask_weight),
-        )
+        if sacr_score_use_relation_counterfactual:
+            supervision = compute_relation_counterfactual_loss(
+                relation_scores=end_points[
+                    "sacr_score_relation_scores"
+                ],
+                geometry_signatures=end_points[
+                    "sacr_score_relation_geometry_signatures"
+                ],
+                relation_candidate_mask=end_points[
+                    "sacr_score_relation_candidate_mask"
+                ],
+                target_affinity=end_points[
+                    "sacr_score_target_affinity"
+                ],
+                attribute_affinity=end_points[
+                    "sacr_score_attribute_affinity"
+                ],
+                attribute_present=end_points[
+                    "sacr_score_attribute_present"
+                ],
+                parent_scores=end_points["sacr_score_parent_scores"],
+                candidate_valid=end_points[
+                    "sacr_score_candidate_valid_mask"
+                ],
+                structured_valid_mask=structured_valid,
+                box_ious=box_ious,
+                sample_mask=sample_mask,
+                mask_ious=mask_ious,
+                mask_supervision_mask=mask_supervision_mask,
+                parent_top_k=int(sacr_counterfactual_parent_top_k),
+                target_tolerance=float(
+                    sacr_counterfactual_target_tolerance
+                ),
+                attribute_tolerance=float(
+                    sacr_counterfactual_attribute_tolerance
+                ),
+                geometry_threshold=float(
+                    sacr_counterfactual_geometry_threshold
+                ),
+                iou_gap=float(sacr_counterfactual_iou_gap),
+                correct_iou_threshold=float(
+                    sacr_counterfactual_correct_iou_threshold
+                ),
+                pair_margin=float(sacr_counterfactual_pair_margin),
+                max_negatives=int(sacr_counterfactual_max_negatives),
+                mask_tolerance=float(sacr_score_mask_tolerance),
+            )
+        elif sacr_score_use_parent_relative_abstention:
+            supervision = compute_sacr_score_parent_relative_loss(
+                scores=scores,
+                parent_scores=end_points["sacr_score_parent_scores"],
+                relative_raw_scores=end_points[
+                    "sacr_score_relative_raw_scores"
+                ],
+                sample_gate=end_points["sacr_score_sample_gate"],
+                parent_indices=end_points["sacr_score_parent_indices"],
+                feasible_candidate_mask=end_points[
+                    "sacr_score_feasible_candidate_mask"
+                ],
+                box_ious=box_ious,
+                mask_ious=mask_ious,
+                valid_mask=valid_mask,
+                structured_valid_mask=structured_valid,
+                sample_mask=sample_mask,
+                mask_supervision_mask=mask_supervision_mask,
+                temperature=float(sacr_score_temperature),
+                mask_weight=float(sacr_score_mask_weight),
+                max_delta=float(sacr_score_max_delta),
+                min_box_advantage=float(sacr_score_min_box_advantage),
+                promotion_margin=float(sacr_score_promotion_margin),
+                mask_tolerance=float(sacr_score_mask_tolerance),
+                raw_margin=float(sacr_score_raw_margin),
+                dense_weight=float(sacr_score_dense_weight),
+                preserve_weight=float(sacr_score_preserve_weight),
+                gate_weight=float(sacr_score_gate_weight),
+                saturation_weight=float(sacr_score_saturation_weight),
+            )
+        else:
+            supervision = compute_sacr_score_refiner_listwise_loss(
+                scores=scores,
+                box_ious=box_ious,
+                mask_ious=mask_ious,
+                valid_mask=valid_mask,
+                structured_valid_mask=structured_valid,
+                sample_mask=sample_mask,
+                mask_supervision_mask=mask_supervision_mask,
+                temperature=float(sacr_score_temperature),
+                mask_weight=float(sacr_score_mask_weight),
+            )
         loss = (
             float(sacr_score_refiner_loss_weight) * supervision["loss"]
         ).reshape(())
@@ -2216,6 +3184,7 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         return loss, end_points
 
     loss_ce, loss_bbox, loss_giou, loss_sem_align, loss_mask, loss_dice, sp_loss_mask,sp_loss_dice,corresponding_loss_mask,adaptive_weight_loss_mask, adaptive_weight_loss_dice,corresponding_loss_dice= 0, 0, 0, 0, 0, 0 ,0 ,0,0,0,0,0
+    last_match_indices = None
     #loss_ce, loss_bbox, loss_giou, loss_sem_align, loss_mask, loss_dice = 0, 0, 0, 0, 0, 0 
     for prefix in prefixes:
         output = {}
@@ -2243,7 +3212,9 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                 output['super_xyz_list']=end_points['super_xyz_list']
 
         # NOTE Compute all the requested losses, forward
-        losses, _ = set_criterion(output, target)
+        losses, match_indices = set_criterion(output, target)
+        if prefix == 'last_':
+            last_match_indices = match_indices
         for loss_key in losses.keys():
             end_points[f'{prefix}_{loss_key}'] = losses[loss_key]
         loss_ce += losses.get('loss_ce', 0)
@@ -2260,6 +3231,32 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         
         if 'proj_tokens' in end_points:
             loss_sem_align += losses['loss_sem_align']
+
+    if density_scene_audit_return_match_indices:
+        if last_match_indices is None:
+            raise RuntimeError("density scene audit Hungarian matches are missing")
+        end_points["density_scene_audit_last_match_indices"] = (
+            last_match_indices
+        )
+
+    density_aware_target_box_loss = None
+    if density_aware_target_box_loss_weight > 0:
+        if last_match_indices is None:
+            raise RuntimeError("final-layer Hungarian assignments are missing")
+        density_stats = compute_density_aware_target_box_loss(
+            pred_boxes=torch.cat(
+                [end_points['last_center'], end_points['last_pred_size']],
+                dim=-1,
+            ),
+            targets=target,
+            match_indices=last_match_indices,
+            point_instance_label=end_points['point_instance_label'],
+            sample_datasets=end_points.get('sample_dataset'),
+        )
+        density_aware_target_box_loss = density_stats[
+            'density_aware_target_box_loss'
+        ]
+        end_points.update(density_stats)
 
     if 'seeds_obj_cls_logits' in end_points.keys():
         query_points_generation_loss = compute_points_obj_cls_loss_hard_topk(
@@ -2297,6 +3294,220 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         )
         for key, value in source_choice_stats.items():
             end_points[key] = value
+
+    if relation_counterfactual_aux_loss_weight > 0:
+        required = (
+            "last_center", "last_pred_size", "last_sem_cls_scores",
+            "selected_source_scores", "all_bboxes", "all_class_ids",
+            "all_bbox_label_mask", "target_id", "relation",
+            "sample_dataset",
+        )
+        missing = [key for key in required if key not in end_points]
+        if missing:
+            raise ValueError(
+                "relation counterfactual auxiliary inputs are missing: "
+                + ", ".join(missing)
+            )
+        deployed_scores = end_points["selected_source_scores"]
+        candidate_boxes = torch.cat((
+            end_points["last_center"],
+            end_points["last_pred_size"].clamp(min=1e-6),
+        ), dim=-1)
+        if (
+                not isinstance(deployed_scores, torch.Tensor)
+                or deployed_scores.shape != candidate_boxes.shape[:2]):
+            raise ValueError(
+                "relation auxiliary deployed scores must align with boxes"
+            )
+        candidate_valid = torch.ones_like(
+            deployed_scores, dtype=torch.bool
+        )
+        grounding_gt_valid = torch.zeros_like(
+            box_label_mask, dtype=torch.bool
+        )
+        grounding_gt_valid[:, 0] = box_label_mask[:, 0].bool()
+        if not bool(grounding_gt_valid[:, 0].all().item()):
+            raise ValueError(
+                "relation auxiliary requires the root GT in slot zero"
+            )
+        sample_mask = build_source_moe_grounding_sample_mask(
+            end_points, deployed_scores.shape[0], deployed_scores.device
+        )
+        affinities = compute_relation_text_affinities(
+            end_points, end_points
+        )
+        with torch.no_grad():
+            box_ious = compute_query_box_ious(
+                candidate_boxes.detach(),
+                gt_bbox.detach(),
+                grounding_gt_valid,
+            )
+            anchor_text_present = (
+                auxi_entity_positive_map[:, 0].detach().gt(0).any(dim=1)
+            )
+            relation_text_present = (
+                rel_positive_map[:, 0].detach().gt(0).any(dim=1)
+            )
+            anchor_resolution = resolve_train_only_relation_anchors(
+                pseudo_anchor_boxes=auxi_box,
+                gt_boxes=gt_bbox.detach(),
+                gt_valid=box_label_mask.detach().bool(),
+                scene_boxes=end_points["all_bboxes"].detach(),
+                scene_class_ids=end_points["all_class_ids"].detach(),
+                scene_valid=end_points[
+                    "all_bbox_label_mask"
+                ].detach().bool(),
+                target_ids=end_points["target_id"].detach(),
+                sample_datasets=end_points["sample_dataset"],
+                conservative_anchor_set=bool(
+                    relation_counterfactual_aux_conservative_anchor_set
+                ),
+            )
+        end_points[
+            "relation_counterfactual_aux_exact_gt_anchor_ratio"
+        ] = anchor_resolution["exact_gt_ratio"]
+        end_points[
+            "relation_counterfactual_aux_unique_pseudo_anchor_ratio"
+        ] = anchor_resolution["unique_pseudo_ratio"]
+        end_points[
+            "relation_counterfactual_aux_conservative_anchor_set_ratio"
+        ] = anchor_resolution["conservative_anchor_set_ratio"]
+        end_points[
+            "relation_counterfactual_aux_anchor_candidate_count_mean"
+        ] = anchor_resolution["anchor_candidate_count_mean"]
+        auxiliary = compute_relation_counterfactual_auxiliary_loss(
+            deployed_scores=deployed_scores,
+            candidate_boxes=candidate_boxes,
+            candidate_valid=candidate_valid,
+            box_ious=box_ious,
+            target_boxes=gt_bbox[:, 0].detach(),
+            anchor_boxes=anchor_resolution["anchor_boxes"],
+            anchor_valid=anchor_resolution["anchor_valid_mask"],
+            conservative_rows=anchor_resolution[
+                "conservative_row_mask"
+            ],
+            anchor_reliable=anchor_resolution["reliable_mask"],
+            relation_labels=end_points["relation"],
+            target_affinity=affinities["target_affinity"],
+            attribute_affinity=affinities["attribute_affinity"],
+            attribute_present=affinities["attribute_present"],
+            anchor_text_present=anchor_text_present,
+            relation_text_present=relation_text_present,
+            sample_mask=sample_mask,
+            parent_top_k=int(relation_counterfactual_aux_parent_top_k),
+            target_tolerance=float(
+                relation_counterfactual_aux_target_tolerance
+            ),
+            attribute_tolerance=float(
+                relation_counterfactual_aux_attribute_tolerance
+            ),
+            geometry_threshold=float(
+                relation_counterfactual_aux_geometry_threshold
+            ),
+            correct_iou_threshold=float(
+                relation_counterfactual_aux_correct_iou_threshold
+            ),
+            pair_margin=float(relation_counterfactual_aux_pair_margin),
+            max_negatives=int(relation_counterfactual_aux_max_negatives),
+            target_confidence_floor=float(
+                relation_counterfactual_aux_target_confidence_floor
+            ),
+            attribute_confidence_floor=float(
+                relation_counterfactual_aux_attribute_confidence_floor
+            ),
+            acc025_pair_weight=float(
+                relation_counterfactual_aux_acc025_pair_weight
+            ),
+        )
+        relation_counterfactual_aux_loss = auxiliary["loss"]
+        for key, value in auxiliary.items():
+            if key != "loss":
+                end_points[
+                    "relation_counterfactual_aux_{}".format(key)
+                ] = value
+
+    if tier_hard_query_aux_loss_weight > 0:
+        required = (
+            "last_center", "last_pred_size", "last_sem_cls_scores",
+            "selected_source_scores", "positive_map",
+            "all_detected_boxes", "all_detected_bbox_label_mask",
+        )
+        missing = [key for key in required if key not in end_points]
+        if missing:
+            raise ValueError(
+                "tier hard-query auxiliary inputs are missing: "
+                + ", ".join(missing)
+            )
+        deployed_scores = end_points["selected_source_scores"]
+        candidate_boxes = torch.cat((
+            end_points["last_center"],
+            end_points["last_pred_size"].clamp(min=1e-6),
+        ), dim=-1)
+        if (
+                not isinstance(deployed_scores, torch.Tensor)
+                or deployed_scores.shape != candidate_boxes.shape[:2]):
+            raise ValueError(
+                "tier hard-query deployed scores must align with boxes"
+            )
+        grounding_gt_valid = torch.zeros_like(
+            box_label_mask, dtype=torch.bool
+        )
+        grounding_gt_valid[:, 0] = box_label_mask[:, 0].bool()
+        if not bool(grounding_gt_valid[:, 0].all().item()):
+            raise ValueError(
+                "tier hard-query auxiliary requires root GT in slot zero"
+            )
+        sample_mask = build_source_moe_grounding_sample_mask(
+            end_points, deployed_scores.shape[0], deployed_scores.device
+        )
+        affinities = compute_relation_text_affinities(
+            end_points, end_points
+        )
+        with torch.no_grad():
+            # Import lazily because rec_evaluator_filter itself imports the
+            # box IoU helpers from this module.  The shared function is the
+            # formal butd_cls evaluator contract, not an approximation.
+            from .rec_evaluator_filter import build_detector_overlap_valid
+            candidate_valid = build_detector_overlap_valid(
+                candidate_boxes.detach(),
+                torch.ones_like(deployed_scores, dtype=torch.bool),
+                end_points["all_detected_boxes"].detach(),
+                end_points[
+                    "all_detected_bbox_label_mask"
+                ].detach().bool(),
+                iou_threshold=0.25,
+            )
+            box_ious = compute_query_box_ious(
+                candidate_boxes.detach(),
+                gt_bbox.detach(),
+                grounding_gt_valid,
+            )
+        tier_auxiliary = compute_tier_hard_query_auxiliary_loss(
+            deployed_scores=deployed_scores,
+            box_ious=box_ious,
+            target_affinity=affinities["target_affinity"],
+            candidate_valid=candidate_valid,
+            sample_mask=sample_mask,
+            candidate_top_k=int(tier_hard_query_aux_candidate_top_k),
+            max_negatives=int(tier_hard_query_aux_max_negatives),
+            target_tolerance=float(
+                tier_hard_query_aux_target_tolerance
+            ),
+            target_confidence_floor=float(
+                tier_hard_query_aux_target_confidence_floor
+            ),
+            pair_margin=float(tier_hard_query_aux_pair_margin),
+            preserve_weight=float(tier_hard_query_aux_preserve_weight),
+            acc025_pair_weight=float(
+                tier_hard_query_aux_acc025_pair_weight
+            ),
+        )
+        tier_hard_query_aux_loss = tier_auxiliary["loss"]
+        for key, value in tier_auxiliary.items():
+            if key != "loss":
+                end_points[
+                    "tier_hard_query_aux_{}".format(key)
+                ] = value
 
     if (
             (source_moe_rank_loss_weight > 0
@@ -2867,6 +4078,10 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         + mask_loss_scale * supervised_mask_loss
         + consistency_loss_scale * corresponding_consistency_loss
         + source_choice_selector_loss_weight * source_choice_loss
+        + relation_counterfactual_aux_loss_weight
+        * relation_counterfactual_aux_loss
+        + tier_hard_query_aux_loss_weight
+        * tier_hard_query_aux_loss
         + source_moe_balance_loss_weight * moe_balance_loss
         + source_moe_rank_loss_weight * source_moe_rank_loss
         + source_moe_gate_loss_weight * source_moe_gate_loss
@@ -2881,6 +4096,12 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         * joint_query_quality_candidate_lovasz_loss_weight
         * joint_query_quality_candidate_lovasz_loss
     )
+    if density_aware_target_box_loss_weight > 0:
+        loss = (
+            loss
+            + density_aware_target_box_loss_weight
+            * density_aware_target_box_loss
+        )
     if isinstance(loss, torch.Tensor) and loss.numel() == 1:
         loss = loss.reshape(())
     end_points['loss_ce'] = loss_ce
@@ -2898,6 +4119,10 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
     end_points['adaptive_weight_loss_mask']=adaptive_weight_loss_mask
     end_points['adaptive_weight_loss_dice']=adaptive_weight_loss_dice
     end_points['source_choice_loss'] = source_choice_loss
+    end_points[
+        'relation_counterfactual_aux_loss'
+    ] = relation_counterfactual_aux_loss
+    end_points['tier_hard_query_aux_loss'] = tier_hard_query_aux_loss
     end_points['moe_balance_loss'] = moe_balance_loss
     end_points['source_moe_rank_loss'] = source_moe_rank_loss
     end_points['source_moe_box_rank_loss'] = source_moe_box_rank_loss

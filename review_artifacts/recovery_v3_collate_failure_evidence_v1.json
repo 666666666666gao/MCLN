@@ -1,0 +1,116 @@
+{
+  "schema": "mcln-fpr-tv-density-audit-failure-evidence-v1",
+  "root": "/root/autodl-tmp/DATA_ROOT/output/network_v99_baseline_gt/nr3d/audit/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3",
+  "root_mode": "0700",
+  "experiment": "nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3",
+  "runtime_timestamp": "1788147434",
+  "failure_stage": "dataloader_collate_before_first_batch_yield",
+  "optimizer_steps": 0,
+  "receipts": 0,
+  "weights": 0,
+  "first_batch_replay": {
+    "script": {
+      "path": "/root/autodl-tmp/DATA_ROOT/output/network_v99_baseline_gt/nr3d/control/fpr_tv_audit/replay_recovery_v3_first_batch_v1.py",
+      "mode": "0444",
+      "owner": "0:0",
+      "sha256": "6733b921c2bb6fe41a3781b08562df4252315a7ec693dee366058a90eeb78957",
+      "size": 9278
+    },
+    "receipt": {
+      "path": "/root/autodl-tmp/DATA_ROOT/output/network_v99_baseline_gt/nr3d/control/fpr_tv_audit/recovery_v3_first_batch_replay_receipt_v1.json",
+      "mode": "0444",
+      "owner": "0:0",
+      "sha256": "418d3381c5a6348b3a469c6457bcff7a148ce36ec3b15ea7910cadfcc12596a5",
+      "size": 4094
+    },
+    "conclusion": "first_batch_fails_before_training_loop_body"
+  },
+  "directories": [
+    "runtime_output",
+    "runtime_output/nr3d",
+    "runtime_output/nr3d/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3",
+    "runtime_output/nr3d/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3/1788147434",
+    "runtime_output/nr3d/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3/1788147434/tensorboard",
+    "runtime_output/nr3d/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3/1788147434/tensorboard/train",
+    "runtime_output/nr3d/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3/1788147434/tensorboard/val",
+    "runtime_output/runtime_home",
+    "runtime_output/runtime_home/.nv",
+    "runtime_output/runtime_home/.nv/ComputeCache",
+    "runtime_output/runtime_home/hf",
+    "runtime_output/runtime_home/torch",
+    "runtime_output/runtime_home/xdg"
+  ],
+  "files": {
+    "consumed_provenance.json": {
+      "mode": "0444",
+      "owner": "0:0",
+      "sha256": "7b9f6e05b9ad80e809270336ef0964a6d3983372e5d3c5bd729c1cf77c914180",
+      "size": 8544
+    },
+    "formal_command.json": {
+      "mode": "0444",
+      "owner": "0:0",
+      "sha256": "54c5ef1697f0ab7d7b69892504d0421439d4ee330422c566777c5510dbb739a6",
+      "size": 6886
+    },
+    "runtime_output/launch.log": {
+      "line_count": 58,
+      "mode": "0600",
+      "owner": "0:0",
+      "sha256": "8c39ec7271051ed8f8149735cee328af49da6b20cccbdca0c0d64eebf6f453c1",
+      "size": 24593
+    },
+    "runtime_output/nr3d/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3/1788147434/config.json": {
+      "mode": "0600",
+      "owner": "0:0",
+      "sha256": "9c04246f7de1a0314def0feb8520338a55c60908cb7558d2fb9e3b45f0af291b",
+      "size": 14650
+    },
+    "runtime_output/nr3d/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3/1788147434/log.txt": {
+      "line_count": 5,
+      "mode": "0600",
+      "owner": "0:0",
+      "sha256": "9ac7298628e6c97cb1526df4a75662d52aa35caa80be405ea040fce4aa47cce8",
+      "size": 14540
+    },
+    "runtime_output/nr3d/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3/1788147434/tensorboard/train/events.out.tfevents.1788147434.autodl-container-c7cb4299a4-24929f53": {
+      "mode": "0600",
+      "owner": "0:0",
+      "sha256": "78a12bc231c24294544ecfb9382a15002fa39dfbe9a08498fc3d2c6ef6adb7f3",
+      "size": 40
+    },
+    "runtime_output/nr3d/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3/1788147434/tensorboard/val/events.out.tfevents.1788147434.autodl-container-c7cb4299a4-24929f53": {
+      "mode": "0600",
+      "owner": "0:0",
+      "sha256": "6708c1bbb32f99ef71021fb7b2bcb61ceb300fb9979e3a7f4ade58dba684eb7c",
+      "size": 40
+    }
+  },
+  "snapshot_manifests": {
+    "code": {
+      "path": "consumed_snapshot/code/CODE_MANIFEST.json",
+      "sha256": "63ea6ea0509144129882198a91f7af0ff6fac6bc4a84030a2402fe1c6a100823"
+    },
+    "inputs": {
+      "path": "consumed_snapshot/inputs/INPUT_MANIFEST.json",
+      "sha256": "7eac4a1686916780a9c7171522c1dbefb03653f95849ae367a6bf33836ec46b5"
+    }
+  },
+  "required_trace_fragments": [
+    "for batch_idx, batch_data in enumerate(train_loader):",
+    "return self.collate_fn(data)",
+    "RuntimeError: each element in list of batch should be of equal size"
+  ],
+  "required_pre_failure_fragments": [
+    "length of training dataset: 44909",
+    "gradient accumulation: 1 micro-batches/step; 100 requested, 100 effective, 0 dropped; 100 optimizer steps per epoch",
+    "length of testing dataset: 7899",
+    "=> loaded successfully '/root/autodl-tmp/DATA_ROOT/output/network_v99_baseline_gt/nr3d/audit/nr3d_fpr_tv_e57_e58_b100_b16x1_recovery_v3/consumed_snapshot/inputs/e57_checkpoint.pth' (epoch 57)"
+  ],
+  "forbidden_fragments": [
+    "Train: [58]",
+    "train_audit_receipt_epoch_58.json",
+    "audit_complete=true",
+    "bounded_train_audit"
+  ]
+}

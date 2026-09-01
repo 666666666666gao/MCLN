@@ -27,7 +27,9 @@ def parameter_group_name(name):
     name = bare_parameter_name(name)
     if (name.startswith("source_choice_selector.")
             or name.startswith("source_moe.")
-            or name.startswith("joint_query_quality_reranker.")):
+            or name.startswith("joint_query_quality_reranker.")
+            or name.startswith("sacr_parent_relative_gate.")
+            or name.startswith("parent_relative_text_verifier.")):
         return "selector"
     if name.startswith("backbone_net."):
         return "backbone"

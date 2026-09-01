@@ -2,6 +2,22 @@ Multi-branch Collaborative Learning Network for 3D Visual Grounding
 =========
 :tada::tada::tada:
 This is a PyTorch implementation of MCLN proposed by our paper ["Multi-branch Collaborative Learning Network for 3D Visual Grounding"].**(ECCV2024)**
+
+## Latest reviewed extensions (2026-09-01)
+
+This branch also contains the reviewed Nr3D/Sr3D research extensions for
+parent-relative text verification, relation counterfactual training,
+density-aware target-box auditing, and the formal REC monitor v3.
+
+The consolidated experiment history, current best metrics, failed directions,
+hard targets, and execution restrictions are recorded in
+[`docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`](docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md).
+The machine-checkable method contracts are in
+[`FPR_TV_SPEC_2026-08-31.md`](FPR_TV_SPEC_2026-08-31.md),
+[`DENSITY_AWARE_TARGET_BOX_SPEC_2026-08-31.md`](DENSITY_AWARE_TARGET_BOX_SPEC_2026-08-31.md),
+and
+[`DENSITY_AWARE_TARGET_BOX_SCENE_AUDIT_SPEC_2026-09-01.md`](DENSITY_AWARE_TARGET_BOX_SCENE_AUDIT_SPEC_2026-09-01.md).
+
 ![image](https://github.com/qzp2018/MCLN/blob/main/data/fig.png)
 ## 0. Installation
 

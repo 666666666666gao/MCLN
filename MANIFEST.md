@@ -17,3 +17,4 @@
 | 2026-09-01 22:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_220626.md | implementation | timestamped VA0--VA4 execution tracker |
 | 2026-09-01 22:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest VA0--VA4 tracker pointer |
 | 2026-09-01 22:11 | /experiment-plan | refine-logs/VIEW_AUG_PAIR_SPLIT_CENSUS_20260901_221116.json | implementation | frozen salted Nr3D train-only split census with data and sample-identity hashes |
+| 2026-09-01 23:03 | /handoff | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | formal CEGD-MCLN unified-network decision, G0--G7 execution gates, evidence boundaries, and paper result separation |

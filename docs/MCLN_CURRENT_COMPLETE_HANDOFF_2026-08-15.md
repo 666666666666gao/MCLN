@@ -13030,3 +13030,191 @@ E0--E7、FPR/A-V4、Relation-CF、Density 或 parser/spaCy。
 `2026-09-01 23:35 CST` 检查 `05_rapf_no_query_quality` E15，`2026-09-02 01:15 CST` 检查
 `12_sacr_no_pairwise_geometry` E15。采集只读取 trainer 句柄和最新完整 JSON，不自动改变 LR、scheduler、
 进程或权重。两行 E5→E10 均明显上升，因此在新完整验证证据出现前继续保持原 LR。
+
+
+### 20.18 论文主线正式转向统一 CEGD-MCLN（2026-09-01）
+
+本节记录用户在 §20.17 之后确认的新方法决策，并覆盖旧章节中“继续围绕 Parent/Gate 做局部修补”的下一步建议；
+它不修改 §20.1 的受保护正式指标，也不把尚未训练的结构写成已有结果。当前投稿风险有三点：ScanRefer V99 的
+系统结果同时包含 Parent、Geometry、Query Variant、Pareto Gate 与 mesh-derived superpoint 修复，核心网络
+贡献需要单列；Nr3D 最好仍为 `4475/7899=56.6527%`，距严格 `>60.0%` 目标差 `265 hits`；Sr3D
+`12139/17726=68.4813%` 只略高于旧 `68.4%`，距严格 `>68.9%` 目标差 `75 hits`。因此论文主线正式改为：
+
+> 使用同一主网络在 ScanRefer、Nr3D、Sr3D 内部直接完成候选理解、候选竞争、质量排序与必要的框精修；
+> V99 仅作为统一主网络之上的 ScanRefer joint REC/RES system extension。
+
+#### 20.18.1 统一架构最低合同与结果分层
+
+三个数据集允许分别训练权重，但必须使用相同模块、张量接口和最终决策逻辑；不得输入 dataset ID、
+Unique/Multiple、GT-derived anchor sidecar，不得使用数据集专属 threshold、validation 后处理、parser/spaCy
+sidecar 或测试期专属 reranking。Top-K、图层数、attention heads、evidence branches、soft-anchor 逻辑、
+quality utility、loss 形式和推理路径必须固定一致；总 epoch、batch size、基础 LR 与是否存在 Mask GT 可以随
+训练资源和监督形式变化。第一轮分别训练三个数据集验证结构，不直接混合；若三套独立实验均通过，再考虑
+scene/dataset-balanced、模型不可见 dataset identity 的联合预训练。
+
+论文结果必须拆成两层：
+
+| 层级 | 必须报告的内容 |
+|---|---|
+| Network-only 主表 | Base MCLN、Node Evidence、Edge/Soft Anchor、Evidence-complete Scoring、Local Refiner 与完整统一网络在三个数据集上的逐模块增量 |
+| ScanRefer 系统表 | Unified network、Parent/Geometry、V99 与 meshSP correction 的逐步增量 |
+
+候选来源、detected/GT box 协议、Acc@0.25/0.50、是否使用额外 2D 输入和 test-time reranking 必须分别说明，
+防止把不同 3DVG 协议下的数字放在同一列比较。
+
+#### 20.18.2 当前泛化失败的证据归因
+
+Nr3D 的 Top-2/Top-5/Top-16 oracle 分别为 `61.6787%/69.0974%/80.3013%`；`2068` 条属于正确
+候选已在 Top-16 但 Top-1 排错，`1556` 条属于 Top-16 proposal failure。达到 60% 只需从 2068 条 ranking
+failure 中净修复约 `12.8%`，所以第一优先级是主网络内部的同类实例与长句消歧，而不是扩大 Gate 切换率。
+现有 Nr3D Default 与 `Default+0.1 Contrastive Rank` 分别为 `54.1208%/53.6903%`，两 Source oracle
+仅 `54.1588%`，完美 selector 也只多 3 hits，证明“再训练一个 Source Gate”没有足够互补候选可利用。
+
+Sr3D 的关系语言较模板化，Anchor 和 predicate 更可靠；Nr3D 自由表达包含更多长句、多关系、多 Anchor、
+视角依赖、属性关系混合、否定与序数。硬解析一个 Anchor 容易在 Nr3D 传播错误，这也解释了 Relation-CF 在
+Sr3D 曾出现有限正收益、却未形成稳定跨数据集提升。小体积、低点数类别（如 soap dish、toilet paper、
+bottle、book、bag、picture）则构成三数据集共同的第二瓶颈，必须与“正确候选已存在但排错”分开诊断。
+
+#### 20.18.3 CEGD-MCLN：Candidate-Edge Grounding Decoder
+
+统一主网络暂命名为 **CEGD-MCLN（Candidate-Edge Grounding Decoder MCLN）**。主路径固定为：
+
+```text
+PointNet++ / RoBERTa / detected boxes
+        -> MCLN multimodal encoder
+        -> 256 decoder queries + base box/query/token features
+        -> fixed Top-K candidate set (initial K=32)
+        -> candidate node evidence
+         + candidate-pair edge evidence / latent soft anchors
+         + local evidence (第二阶段单独加入)
+        -> 2-layer candidate-set graph transformer
+        -> evidence-complete direct quality scorer
+        -> P(IoU>.25), P(IoU>.50), continuous IoU
+        -> direct final-query selection
+        -> optional box refinement and same-query mask
+```
+
+该结构删除“先选 Parent、再判断是否切换、再用有界 residual 覆盖”的最终决策。A-V4 已产生 805 次切换但
+在未见场景得到 `-20 hits@0.25/-151 hits@0.50`，说明覆盖动作本身可学、可靠选择仍未学到；因此不再以
+under-switch/over-switch 的 Gate 调参作为主路线。
+
+#### 20.18.4 候选级文本重新对齐（Node Evidence）
+
+对每个候选 `q_i` 独立重新读取原始 token `T`，而不是把一张全局句向量广播给全部 Query：
+
+```text
+h_node_i = CrossAttn(q_i, T, T)
+e_i = MLP[q_i, h_node_i, q_i*h_node_i, abs(q_i-h_node_i), box_i]
+```
+
+这样每个候选可分别关注 target category、color、shape、ordinal 与 relation phrase；同类椅子之间不再仅依赖
+接近相同的全局文本分数。这里不能把“增加 cross-attention”单独包装为创新，论文叙事必须强调实体候选与
+关系边分别从 raw tokens 获取候选条件证据。
+
+#### 20.18.5 候选对关系重对齐与 Latent Anchor Marginalization
+
+对目标候选 `i` 与潜在 Anchor `j` 构造相对几何：中心差、3D/XY 距离、尺度比、3D IoU、高差及已有证据可
+计算的 support/contact；再由 `[q_i,q_j,q_i-q_j,q_i*q_j,phi_ij]` 形成 pair query，并让每个 pair 独立读取
+原始文本。Anchor 不由外部 parser 硬选，而是在 Top-K 候选集合中作为潜变量：
+
+```text
+pi_ij = softmax_j f_anchor(q_j, T)
+R_i   = logsumexp_j(log(pi_ij) + f_rel(h_edge_ij, phi_ij))
+```
+
+Sr3D 明确关系可使分布自然集中；Nr3D Anchor 不确定时保留多个解释；无关系表达时由 presence weight 抑制
+关系分支，避免噪声边反压实体证据。该方法边界是 candidate-pair raw-text re-grounding 与 latent-anchor
+marginalization，不依赖 GT anchor、硬 parser 或手工关系 sidecar。
+
+#### 20.18.6 视角等变关系几何
+
+§20.15 已确认旧增强漏判 2,155 条 Nr3D train 表达并完成最小修复，但尚无 REC 因果证据。网络层面候选方案
+是在 room/global、candidate-local、anchor-local 与 text-predicted viewpoint 四类 frame 中计算 pair geometry，
+由文本预测 soft view weights 后融合。数据增强合同保持：view-dependent 表达禁止未同步文本的 90-degree
+rotation/mirror；view-independent 表达允许旋转，并对增强前后映射后的候选分布施加一致性约束。第一步仍是
+完成已预注册的 G0 old-vs-fixed 配对审计，不以网络结构掩盖数据错误。
+
+#### 20.18.7 Evidence-complete Direct Ranking
+
+实体、关系、局部与 base 证据直接形成最终候选质量分数，而不是对 Parent 做自由残差：
+
+```text
+S_i = w_b log P_base_i + w_e log P_entity_i
+    + w_r log P_relation_i + w_l log P_local_i
+```
+
+`w_e/w_r/w_l` 由原始文本预测 presence weights。可验证的分歧惩罚只作为独立消融候选，不在首版实现中
+默认加入；首版采用最简单的加权 log-evidence 与 direct argmax。双阈值质量头沿用已验证的单调约束：
+
+```text
+P25_i = sigmoid(z1_i)
+P50_i = P25_i * sigmoid(z2_i)
+IoU_i = sigmoid(z3_i)
+U_i   = 2*P25_i + P50_i + 0.5*IoU_i
+```
+
+训练 label utility 为 `IoU + 2*I(IoU>.25) + I(IoU>.50)`，在固定候选集合上做 soft-listwise ranking。
+同类困难负样本仅取与 GT 同类、当前高分且文本属性/关系不匹配的候选；它是必要训练技术，不作为主创新。
+
+#### 20.18.8 Candidate-set Graph 与局部框精修的解耦
+
+首版 Candidate Graph 使用 `K=32`、hidden `288`、2 层、4 heads、dropout `0.1`，每个 target 仅保留 8 个
+soft top-M anchor 以控制 pair 数量；这些值在第一个新 split 训练前冻结，不能按正式 validation 单独调节。
+图节点包含 query、node/local evidence、base score 与 box；边包含 pair text evidence、relative geometry 与
+same-class similarity。最终所有候选直接竞争。
+
+局部框精修必须在 direct scorer 单独通过后再做。先补齐 `Top-16/32/64/Full-256/Detector-proposal oracle`，
+只有 Full-256 对稀疏小目标仍明显缺框，才实现 Local Refiner。候选实现只对 Top-8 query 在预测框、1.5x 与
+2.0x 扩张框读取原始点、较早 PointNet++ 特征和 superpoint，预测 `delta center/delta size/IoU quality`。
+排序与 proposal refiner 先分别训练和验收，二者都为正才组合；第一阶段不修改 Mask。
+
+#### 20.18.9 训练阶段与唯一变量
+
+阶段一冻结 PointNet++、RoBERTa、前四层 Decoder、Box Head 与 Mask Head，只训练 Node Evidence、Pair Edge、
+Soft Anchor、Candidate Graph 与 Direct Quality Head；新模块初始 LR `1e-4`，最终 scorer 初始化为 step-0
+复现 base score。阶段一通过后，阶段二仅解冻最后两层 Decoder，LR `1e-5`，新模块继续 `1e-4`。Local
+Refiner 在第三阶段独立训练。不得一次性联改 ranking、proposal、mask 与 backbone。
+
+固定执行门为：
+
+| Gate | 唯一变量 | 数据与晋级条件 |
+|---|---|---|
+| G0 | old-vs-fixed Nr3D view augmentation | 已冻结 7,151 held-out train rows；@.25 正、@.50 非负、view-dependent @.25 正 |
+| G1 | Candidate-Edge Direct Scorer | 新未消费 Nr3D scene split；@.25 至少 +0.8pp、@.50 非负、easy 下降 <0.2pp |
+| G2 | 仅解冻最后两层 Decoder | 另一未消费 split；指标超过 G1，不以 loss 下降代替 |
+| G3 | Full-256 oracle 与必要时 Local Refiner | proposal-failure 子集；sparse quartile oracle +3pp、overall oracle +1pp |
+| G4 | 组合已单独通过的 G2+G3 | Nr3D 正式严格 `>60.0%`（至少 4740/7899） |
+| G5 | 完全相同结构和决策 | Sr3D 严格 `>68.9%`（至少 12214/17726），不换 K/head/threshold |
+| G6 | 完全相同结构和决策 | ScanRefer network-only 正提升且 Mask 不退化 |
+| G7 | 新主网络之上的 V99 扩展 | ScanRefer 保持或刷新现有 Pareto |
+
+该 G0--G7 是本节新主网络的顺序门，不等同于已由用户排除的旧“实验七/实验八”或旧 E0--E7 矩阵；旧
+baseline 公平复现、A-V4/FPR Gate、Counterfactual Parent、Density Gate、Relation-CF 扫参仍保持封存。
+
+#### 20.18.10 相关工作边界与论文创新口径
+
+CVF 官方开放页面已核对用户给出的五项近邻：EG-3DVG 使用 expression/geometry-aware decoder、PECA、GMA
+与 expression-aware contrastive learning；ORD 显式解耦实体与相对关系并采用 anchor-centric geometry；
+ViewSRD 对多 Anchor 描述做 structured multi-view decomposition；PV-Ground 用 text-guided point-voxel
+interaction 缓解激进点采样的局部细节损失；TSP3D 使用 text-guided sparse voxel pruning 与 completion-based
+addition。因此单独的 cross-attention、relation decomposition、hard-negative mining 或 local point/voxel
+refinement 均不能作为本工作的主要新颖性。
+
+论文主张收敛为三点：
+
+1. **Candidate-Pair Text Re-grounding**：目标候选与每个潜在 Anchor pair 分别从 raw tokens 提取条件证据；
+2. **Latent-Anchor Evidence Marginalization**：Anchor 作为候选集潜变量，在多个视角 frame 的关系证据上软边缘化；
+3. **Evidence-Complete Direct Query Ranking**：实体、关系与局部几何证据直接形成最终候选排名，删除 Parent switch、全局 Gate 和有界 residual。
+
+相关工作入口：
+
+- EG-3DVG: https://openaccess.thecvf.com/content/CVPR2026/html/Park_EG-3DVG_Expression_and_Geometry_Aware_Grounding_Decoder_for_3D_Visual_CVPR_2026_paper.html
+- ORD: https://openaccess.thecvf.com/content/CVPR2026/html/Huang_ORD_Object-Relation_Decoupling_for_Generalized_3D_Visual_Grounding_CVPR_2026_paper.html
+- ViewSRD: https://openaccess.thecvf.com/content/ICCV2025/html/Huang_ViewSRD_3D_Visual_Grounding_via_Structured_Multi-View_Decomposition_ICCV_2025_paper.html
+- PV-Ground: https://openaccess.thecvf.com/content/CVPR2026/html/Shang_PV-Ground_Text-Guided_Point-Voxel_Interaction_for_3D_Visual_Grounding_CVPR_2026_paper.html
+- TSP3D: https://openaccess.thecvf.com/content/CVPR2025/html/Guo_Text-guided_Sparse_Voxel_Pruning_for_Efficient_3D_Visual_Grounding_CVPR_2025_paper.html
+
+截至本节写入时，CEGD-MCLN 仍是已冻结的实现/实验合同，不是已完成网络，也没有产生新的 Nr3D、Sr3D 或
+ScanRefer 指标。下一项可执行工作仍是 G0：先完成视角增强修复配对因果审计；G0 通过后才建立 Candidate-
+Edge Direct Scorer 的最小 public seam 和测试。两张 GPU 上现有 ScanRefer 消融不属于 CEGD-MCLN，不能拿其
+E15 中间值替代 G1 证据。

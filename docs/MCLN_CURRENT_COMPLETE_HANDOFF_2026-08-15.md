@@ -12348,19 +12348,28 @@ ScanRefer 的提升来自真正互补的 Parent/Geometry/Query/Mask-derived sour
 PR #4 已把 A-V4 机制代码、launcher、规范和交接文档合入 GitHub `main`，merge commit 为
 `5e388f92c00dfe164b16ae73376f1a8a4c63b8fa`。它是完整性审计前的中间版本。
 
-后续独立审计发现两个发布级问题。第一，GitHub 中的 `src/joint_det_dataset.py` 和
+后续独立审计发现三个发布级问题。第一，GitHub 中的 `src/joint_det_dataset.py` 和
 `src/grounding_evaluator.py` 不是 runtime manifest 锁定的正式字节，前者还缺少当前训练入口传入的 cache 参数。
 
 第二，旧路径虽然不执行 validation，却仍在 `get_loaders()` 中构造验证 dataset 和 DataLoader；旧数据清单也含
 `val_v3scans.pkl` 与 `superpoints/val`。因此旧版不能严格声称 `formal_validation_accessed=false`。
 
-这两个问题不会产生虚假的已完成实验，因为 A-V4 one-shot 尚未运行；但它们会破坏未来审计的运行身份和
+第三，第一次 no-validation 修订把 `test_loader` 正确设为 `None` 后，`BaseTrainTester.main()` 仍无条件执行
+`len(test_loader.dataset)`。这会使正式 A-V4 bounded audit 在首个训练 batch 之前崩溃。该问题由独立完整性复审
+发现，随后增加 `_optional_test_dataset_size()`：只有 exact bounded train-only A-V4 可以缺失 test loader，其他
+路径仍 fail closed；A-V4 只记录“testing dataset disabled”，不再解引用空 loader。
+
+这些问题不会产生虚假的已完成实验，因为 A-V4 one-shot 尚未运行；但它们会破坏未来审计的运行身份和
 train-only 证据，所以必须在代码发布完成前修正。
 
 ### 19.2 最新源码同步边界
 
 最终发布以 A-V4 reviewed runtime manifest 为来源，在 GitHub 完整文件树上同步 66 个确有语义差异或缺失的
 `.py/.sh/.md` 文件。Linux `.so/.o`、egg-info、checkpoint、日志和 TensorBoard 不进入源码提交。
+
+GitHub 对这 66 个同步文件以及原有 `main_utils.py`、`train_dist_mod.py` 共 68 个源码条目按 Git blob 字节与
+reviewed Linux runtime SHA 对齐；这不等于把整个 371-file Linux 运行时（其中含编译扩展和构建产物）逐字节放入
+GitHub。完整 371-file bytewise closure 只在远端只读 runtime snapshot 中核验，GitHub 发布的是可审查源码闭包。
 
 关键同步文件包括 `src/joint_det_dataset.py`、`src/grounding_evaluator.py`、
 `src/legacy_scene_graph_cache.py`、`models/rec_evaluator_filter.py`、hard-replay/tier auxiliary 和历史 V99 launcher。
@@ -12397,14 +12406,16 @@ validation source rows = 0
 ### 19.4 Runtime manifest v2 与验证证据
 
 `fpr_tv_counterfactual_parent_runtime_manifest_v2.json` 绑定更新后的 `main_utils.py` 与
-`train_dist_mod.py`。完整闭包仍为 371 文件，合计 106,113,460 bytes，SHA256 为
-`76ac589281f4b89fb9ec71e3d1916957a6cb8eb6e3ba6ef8add8a746b65e6bdf`。
+`train_dist_mod.py`。完整闭包仍为 371 文件，合计 106,114,031 bytes，SHA256 为
+`f09e490789680a8e7105cb1167f6f6f025a9a83a8998657eda3c9e1b4c9ab807`。其中最终
+`main_utils.py` 的 SHA256 为 `b40c6f6ca83ec68f655feb820de788f7398b0e71574cf73a9f6b22b137fba47e`。
 
 远端只读验证逐文件哈希了上述 371 个运行时文件和 2,420 个训练数据文件，二者均通过。launcher 的 Bash
 语法与 6 段 Python heredoc 均通过；核心文件兼容 Python 3.7。
 
-聚焦回归为 `76 passed in 3.17s`。新增用例实际调用 loader/dataset 构造路径，证明 A-V4 模式只构造训练集和
-一个训练 DataLoader；另有清单测试证明 validation source 与 inventory 均为零。
+最终聚焦回归为 `77 passed in 3.13s`。新增用例实际调用 loader/dataset 构造路径，证明 A-V4 模式只构造训练集和
+一个训练 DataLoader，并验证 bounded audit 可安全处理 `test_loader=None`、普通路径则拒绝空 test loader；另有
+清单测试证明 validation source 与 inventory 均为零。
 
 ### 19.5 当前实验状态没有被发布动作改变
 
@@ -12433,8 +12444,10 @@ Unique/Multiple 输入、GT anchor sidecar 和 validation threshold sweep。
 
 ### 19.7 最终发布位置
 
-- GitHub：`https://github.com/666666666666gao/MCLN`；PR #4 是中间版本，最终修订为 commit
-  `057fce03cdb4ac701f4144f312566bee6af1d0ae` 与 PR #5：`https://github.com/666666666666gao/MCLN/pull/5`；
+- GitHub：`https://github.com/666666666666gao/MCLN`；PR #4 是中间版本。PR #5 的发布链为源码闭包提交
+  `057fce03cdb4ac701f4144f312566bee6af1d0ae`、发布记录提交 `688b02e85c4df7cecad5b46c556c8891b8ba4d11`，以及
+  最终空 test-loader 修复提交 `5a9cdd49cc73ade1f30971b1c97dc8c417fe5513`：
+  `https://github.com/666666666666gao/MCLN/pull/5`；
 - 本地：`C:\Users\gb\Desktop\document\MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`；
 - 远端：`/home/gb/new butd/butd_detr-main/MCLN-main/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`。
 

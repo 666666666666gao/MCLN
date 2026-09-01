@@ -12849,3 +12849,52 @@ Nr3D/Sr3D 严格目标，本轮没有修改其 LR、进程、权重或输出。
 `experiment-plan` 固定一个未消费 train-scene split、单一机制和不超过 2 GPU 小时的可证伪审计；实际运行
 才使用 `run-experiment`/`monitor-experiment`。不得由本节恢复 baseline 公平复现、旧章节七/八、E0--E7、
 FPR/A-V4、CENS、Relation-CF 或 Density-Aware 路线。
+
+### 20.14 自然同目标多描述路线的严格查新终态（2026-09-01 20:50 CST）
+
+已按 20.13 的前置条件完成多检索式文献核验和独立 GPT-5.5 xhigh reviewer 审查。完整公开报告写入
+`idea-stage/NOVELTY_CHECK_SIBLING_DISAGREEMENT_20260901.md`；完整 reviewer prompt/response 保存在本地
+`.aris/traces/novelty-check/2026-09-01_run01/`，按 trace 协议不提交 Git。
+
+原候选 Natural Sibling Disagreement Regularization（NSDR）包含两部分：
+
+1. 对齐同一 `(scene_id,target_id)` 下多个描述在同一候选集合上的 score distribution；
+2. 将一条 sibling 描述暴露出的高分错误实例广播为同目标其他描述的共享 hard negative。
+
+严格查新终态为：**NSDR 不得作为下一代 MCLN 的主创新继续实现。** 第一部分与 Chen 等人 2021/2022 年
+synonymous referring-expression contrastive learning 的核心思想直接重叠，把 feature-space consistency 移到
+3D candidate-score space 只是实现位置变化。第二部分只剩一个窄差异：负例来自同目标其他描述暴露的错误
+instance ID，再广播给全组；但它仍很容易被归类为把普通 hard-negative sampler 从 row-level 改为 group-level。
+独立评审总体新颖性仅为 `4/10, CAUTION`。
+
+若未来只为证伪保留第二部分，名称与定位必须收缩为 **Disagreement-conditioned Group Hard-negative
+Margin（DGHM）**。设同目标描述组为 `G=(s,t)`，描述 `q` 对场景实例 `i` 的分数为 `z_q(i)`：
+
+```text
+H_q      = TopM_{i != t} z_q(i)
+rho_G(i) = (1 / |G|) sum_{q in G} 1[i in H_q]
+N_G      = {i != t : 0 < rho_G(i) < 1}
+L_DGHM   = sum_{q in G} sum_{i in N_G} max(0, m + z_q(i) - z_q(t))
+```
+
+这只能表述为一个 training-only、group-conditioned hard-negative regularizer，不能声称新的 contrastive-learning
+范式。无生成文本、无 parser/spaCy、无推理 sidecar、单次 forward 和三数据集统一执行仍是系统合同，不是
+独立新颖性；Sr3D 描述又是模板生成，不能把三数据集统一称为 natural siblings。
+
+任何未来 DGHM 证伪实验都必须在新的 Nr3D train-only scene-disjoint split 上，以相同 backbone、seed、
+candidate set、训练步数、负例数量和辅助 loss 总权重同时比较：Base、C1-only、per-row HNM、same-class HNM、
+random sibling broadcast、Chen-style synonymous contrastive adaptation、DGHM-only 与 C1+DGHM。出现以下任一
+情况立即 ABANDON：DGHM 不超过 per-row/same-class HNM；组合不超过两个单项；改善不集中于已诊断的
+Multiple/Hard same-class ranking failures；partial-sibling disagreement 不下降；consensus-wrong 上升；或只有
+auxiliary loss 改善而 held-out Top-1 REC@0.25 不改善。
+
+本节没有修改模型、loss、sampler、dataset、launcher 或推理代码，也没有启动 GPU。虽然当前数据字段已经足以
+实现训练期 `(scene,target)` 分组、Top-5 candidate 与场景 instance box 映射，但在新颖性不足时直接写 sampler
+和 loss 只会产生一个缺少论文价值的常规 HNM 变体。当前主路线因此判为 **NO-GO**；窄 DGHM 仅作为低优先级
+候选存档，不占用当前独立 ScanRefer ablation 的 GPU，也不触发 Nr3D/Sr3D/ScanRefer 重训。
+
+`20:41 CST` 只读训练现场仍为：Nr3D/Sr3D 无活动 trainer，没有可衰减 LR；独立 ScanRefer
+`05_rapf_no_query_quality` 已保存 E10 最好 `last__bbs_acc0.25_top1=0.3871476651` 后进入 E11。该值只是独立
+ablation row，不替代受保护 ScanRefer V99/V113 正式最好，也没有证据允许改变该 run 的学习率。当前正式最好与
+严格目标保持不变：Nr3D `4475/7899=56.6527%`，距至少 `4740` 还差 `265 hits`；Sr3D
+`12139/17726=68.4813%`，距至少 `12214` 还差 `75 hits`。

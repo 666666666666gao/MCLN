@@ -12942,3 +12942,44 @@ train/test 分别恰好有 `2155/482` 行由“允许”改为“禁止”，反
 训练。待资源释放后，只允许先做同起点、同 train-scene split、同 batch/step 的 old-vs-fixed 短审计；不访问
 7,899-row formal validation，不搜新词表、LR、epoch 或增强概率。fixed 必须在 held-out train scenes 的
 REC@0.25 为正、REC@0.50 非负且 view-dependent 子集明确改善，才允许进入三数据集同架构训练验证。
+
+
+### 20.16 最新源码发布闭环、三端续写与 21:50 训练状态（2026-09-01）
+
+本节严格接续服务器现有 §20.15，而不是另建交接文件。续写前，服务器、本地桌面和 GitHub 工作树中的主交接
+均为 `1013823 bytes`、SHA256
+`49fa3c661cef0419195187a9d329caddbf6b64c3c0330ea23f4fdf39ebb10313`，因此不存在需要人工拼接的分叉。
+
+当前源码权威仍是 GitHub `https://github.com/666666666666gao/MCLN` 的 `main`。Nr3D 视角文本增强修复、
+回归测试和此前漏传的服务器合同测试已经发布到 commit
+`5213822f84711697af73511697d913f21865fcff`；本地发布工作树与远端 `main` 精确一致。发布内容不含
+checkpoint、数据集、cache、训练日志、SSH 配置、密钥或 askpass 文件。
+
+服务器 `/home/gb/new butd/butd_detr-main/MCLN-main` 仍是非 Git 的运行镜像。只读复核没有发现
+`2026-09-01 21:12:42 CST` 之后新增的 MCLN source/test/script 文件；其中
+`src/joint_det_dataset.py` 仍是修复前字节，而不是比 GitHub 更新的实现。它没有被热替换，是因为两台 GPU
+正在运行彼此独立的 ScanRefer 消融队列；这避免活动进程的源码身份被中途改变。后续 Nr3D 新审计启动前，
+必须从 GitHub 固定提交构造新的隔离运行树，不能在活动目录上临时打补丁，也不能用服务器旧源码反向覆盖
+GitHub。
+
+`2026-09-01 21:50 CST` 的只读训练现场如下：
+
+- Nr3D 与 Sr3D 均无活动 `train_dist_mod.py` trainer，因此没有可提前衰减的学习率；受保护正式最好仍为
+  Nr3D `4475/7899=56.6527%`（REC@0.25）和 `3759/7899=47.5883%`（REC@0.50），Sr3D
+  `12139/17726=68.4813%`（REC@0.25）和 `10335/17726=58.3042%`（REC@0.50）。相对严格目标
+  `4740/7899` 与 `12214/17726`，仍分别差 `265` 和 `75 hits`。
+- 独立 ScanRefer 行 `05_rapf_no_query_quality` 的 BBS Top-1 从 E5 的
+  `0.3294068/0.1669121` 上升到 E10 的 `0.3871477/0.2125578`（@0.25/@0.50），E5→E10
+  @0.25 为 `+5.7741pp`；它已进入 E13，下一次固定验证在 E15。
+- 另一独立 ScanRefer 行 `12_sacr_no_pairwise_geometry` 的 BBS Top-1 从 E5 的
+  `0.2901767`（@0.25）上升到 E10 的 `0.3874632/0.2072991`（@0.25/@0.50），E5→E10
+  @0.25 为 `+9.7287pp`；同轮 BBF 为 `0.3951409/0.2189735`。它随后进入 E11。
+- 两行在 E5→E10 都是明显上升而非平台期，故本轮没有提前衰减 LR，也没有改训练进程、scheduler、权重或
+  队列。这些值属于独立 ScanRefer 消融的早期中间结果，不能替代 V99/V113 正式最好，也不能用来声明新
+  MCLN 跨数据集指标。
+
+下一项 MCLN 因果验证仍保持最小范围：等 GPU 释放后，从同一受保护 Nr3D E57 起点建立 old-vs-fixed 两个
+不可变代码快照，在一个新的、未消费的 train-scene split 上使用完全相同的 batches、steps、optimizer 和
+scheduler。只评估 held-out train scenes，不访问正式 `7899` 行；仅当 fixed 的 REC@0.25 为正、REC@0.50
+非负且 view-dependent 子集改善时，才允许进入完整 Nr3D 以及后续 Sr3D/ScanRefer 同架构验证。旧章节七、
+章节八、E0--E7、baseline 公平复现、parser/spaCy sidecar 与已封存 Gate/Relation-CF/Density 路线均不恢复。

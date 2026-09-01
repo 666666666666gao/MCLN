@@ -9,7 +9,36 @@ from models.parent_relative_text_verifier import (
     build_parent_relative_detector_valid,
     build_parent_relative_text_verifier_batch,
     compute_parent_relative_text_verifier_loss,
+    prepare_counterfactual_parent_score_axis,
 )
+
+
+def test_counterfactual_parent_score_axis_is_a_leaf_for_frozen_parent_scores():
+    frozen_parent_scores = torch.tensor([[0.8, 0.2]], requires_grad=False)
+
+    audit_axis = prepare_counterfactual_parent_score_axis(
+        frozen_parent_scores,
+        module_training=True,
+        counterfactual_training=True,
+    )
+    assert audit_axis is not frozen_parent_scores
+    assert audit_axis.is_leaf
+    assert audit_axis.requires_grad
+    assert torch.equal(audit_axis, frozen_parent_scores)
+
+    legacy_axis = prepare_counterfactual_parent_score_axis(
+        frozen_parent_scores,
+        module_training=False,
+        counterfactual_training=True,
+    )
+    assert legacy_axis is frozen_parent_scores
+
+    default_off_axis = prepare_counterfactual_parent_score_axis(
+        frozen_parent_scores,
+        module_training=True,
+        counterfactual_training=False,
+    )
+    assert default_off_axis is frozen_parent_scores
 
 
 def _fixture(relation_required=False, anchor_mass=0.8,

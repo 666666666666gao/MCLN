@@ -12169,6 +12169,7 @@ Sr3D 的正式最好没有因本次 Nr3D monitor 事件改变，仍为
 | `EXPERIMENT_AUDIT.md` | `6ab386d8...17e3` | 结果口径、数据隔离、权重保护条款 | 审计源；WARN 不得被省略为 PASS |
 | 远端旧 `FPR_TV_SPEC_2026-08-31.md` | `429effed...bd4` | 16.15.8--16.15.16 | 历史 v1 合同；已由当前扩展版取代 |
 | 当前 `FPR_TV_SPEC_2026-08-31.md` | `7000ff92...71ae` | 16.15.8--16.15.17 | FPR-TV v1/v2/v3 与 A-V4 当前机制合同 |
+| `FPR_TV_COUNTERFACTUAL_PARENT_AUDIT_SPEC_2026-09-01.md` | `f67c54d7...e761c` | 16.15.17、18.2--18.4 | A-V4 exact-100 前置审计合同；不授权长训或正式验证 |
 | `DENSITY_AWARE_TARGET_BOX_SPEC_2026-08-31.md` | `945a23a7...d7e` | 16.15.14 | 100-batch auxiliary 审计合同 |
 | `DENSITY_AWARE_TARGET_BOX_SCENE_AUDIT_SPEC_2026-09-01.md` | `bcd1d89c...e424` | 16.15.15 | 三角色 scene-disjoint 因果审计合同 |
 | `refine-logs/EXPERIMENT_PLAN*.md` | 见 17.4 | 14.215--14.223、16.15 | 历史计划，不得重新激活已失败路线 |
@@ -12248,3 +12249,94 @@ protected checkpoint；任何已经失败或被用户排除的计划都不能凭
 
 三份发布后必须逐字节 SHA256 一致。以后新增实验先写原始 receipt/decision，再更新本总文档；不得另建一份
 相互竞争的“最新总结”。
+
+## 18. 最新代码冻结、A-V4 前置审计实现与三端发布（2026-09-01）
+
+### 18.1 本次代码发布边界
+
+本次发布以研究分支固定点 `71e526c` 为源，不删除 GitHub `main` 已有源码、历史实验文件或文档。
+发布采用“在完整 `main` 文件树上覆盖 68 个受审路径”的方式，最终实际变化集中在 11 个文件。
+
+新增内容包括 A-V4 前置审计规范、runtime manifest、静态入口二进制与 build receipt、bounded launcher、
+合同测试，以及 `main_utils.py` 中的 exact-100 train-only 审计生命周期。
+
+以下状态必须与“正式实验完成”区分：代码已实现、已审查、已具备 fail-closed 启动条件；但 A-V4 的
+100-microbatch 审计尚未运行，因此没有新 REC、没有新 checkpoint，也没有 long-training 授权。
+
+### 18.2 A-V4 bounded audit 的真实合同
+
+唯一允许的 A-V4 前置运行仍是：从受保护 Nr3D E57 full-state 开始，仅运行 E58 的 100 个 microbatch，
+`B16×A1`、单 rank、train-only、no-validation、no-checkpoint-save。
+
+审计只训练 FPR-TV verifier 参数组。V99 Parent、检测器、文本编码器、mask 分支及其余冻结状态必须精确不变；
+同一首批输入的冻结输出 sentinel 也必须逐值一致。
+
+receipt 必须证明 100 个 microbatch、100 个 optimizer step 和 1,600 个样本槽位；必须分别记录 actual 与
+counterfactual 的样本、正例、fix/break/neutral、风险、utility、非有限数和 selected-score 梯度。
+
+只有 counterfactual positive-row density 至少达到 actual 的两倍，同时存在 fix 与 break、两条 score axis
+梯度非零、全部数值有限、冻结状态和输出精确一致时，density gate 才能通过。
+
+无论 gate 成败，decision 都固定写入 `audit_only=true`、`formal_validation_accessed=false` 和
+`long_training_authorized=false`。通过仅允许独立讨论未消费的 scene-disjoint 短审计，不得自动启动 fold4、
+7,899-row 正式验证、Sr3D 实验或长训。
+
+### 18.3 发布前发现并关闭的 launcher 完整性问题
+
+发布前的最终只读审查发现，早期 launcher 的一个 Python heredoc 被截断文本污染。该问题会让 `bash -n`
+表面通过，但 preflight 在 Python 解析阶段必然失败。
+
+同一截断还吞掉了数据 manifest 尾部校验、E57 checkpoint 合同校验，以及独立输入快照的 copy/verify helper。
+若不修复，backbone 会在占用 one-shot root 后失败。
+
+固定点 `71e526c` 已恢复全部逻辑：dataset inventory/size/mode/SHA 校验、独立 inode 输入快照、0444/owner
+复验，以及同一打开文件上的 `SHA -> torch.load -> exact E57/V99/optimizer -> SHA` 检查。
+
+decision 采用临时文件写入、文件 `fsync`、原子替换和父目录 `fsync`。这样即使 gate 失败，
+`long_training_authorized=false` 的终态也具有崩溃持久性。
+
+另一个边界是合法的“零 counterfactual view”。旧代码会在计算 positive ratio 时除零；当前实现将零分母
+安全映射为 ratio 0，使 supervision gate 失败、持久写入 decision，然后以状态 20 结束，而不是异常崩溃。
+
+### 18.4 验证证据与尚未发生的动作
+
+修复后的 launcher 通过 Bash 语法检查；其中 6 段 Python heredoc 均由远端 Python 3.7 编译通过。
+相关回归为 `68 passed in 3.16s`。
+
+Standards/Correctness 与 Spec 两个独立审查轴均对 `71e526c` 给出 PASS。审查确认训练 argv、
+100×B16×A1、no-val/no-save、runtime manifest、静态入口和 Landlock 合同未因修复漂移。
+
+截至本节写入时，A-V4 one-shot audit root 仍不存在；GPU 上没有训练进程。本次发布没有执行 preflight 之后的
+backbone，也没有生成 receipt、decision、权重或正式指标。
+
+### 18.5 当前三数据集结论保持不变
+
+| 数据集/任务 | 当前正式最好 | 严格目标 | 当前差距与结论 |
+|---|---:|---:|---|
+| ScanRefer 双阶段 REC@0.25 | `5572/9508 = 58.6033%` | `59.00%` | 差 38 hits；Mask 三项与 REC@0.50 已达标 |
+| Nr3D REC@0.25 | `4475/7899 = 56.6527%` | `>60.0%`，至少 `4740/7899` | 差 265 hits；E59 已结束但低于 E57，不是未训练完 |
+| Sr3D REC@0.25 | `12139/17726 = 68.4813%` | `>68.9%`，至少 `12214/17726` | 差 75 hits；旧 68.4 目标已作废 |
+
+ScanRefer 的提升来自真正互补的 Parent/Geometry/Query/Mask-derived source、V99 层级选择与 mesh-superpoint
+纠错。Nr3D/Sr3D 的主要瓶颈仍是同类实例文本消歧、可靠 Anchor 组合与小目标 Proposal 覆盖。
+
+因此，当前仍不能声称 A-V4 已改善 Nr3D 或 Sr3D。它只是针对“正确候选已在 Top-K、但实际 Parent 下正监督
+密度不足”这一问题的机制修正与审计实现。
+
+### 18.6 永久排除项与下一步门禁
+
+继续永久执行用户决定：不做 baseline 公平复现；不执行、继承、改名或引用原建议第七节；不借鉴原建议
+第八节及 E0--E7 实验矩阵。
+
+下一步只有在代码三端 SHA 一致、静态 preflight 通过、one-shot root 仍未消费且 GPU/全局锁空闲时，才可讨论
+一次 100-microbatch backbone。任何失败都封存 A-V4，不允许用调阈值或重复运行选择结果。
+
+### 18.7 本次统一发布位置
+
+- GitHub：`https://github.com/666666666666gao/MCLN`，发布分支
+  `agent/mcln-latest-20260901-v2`，合并后以 `main` 为权威源码；
+- 本地主文档：`C:\Users\gb\Desktop\document\MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`；
+- 远端主文档：`/home/gb/new butd/butd_detr-main/MCLN-main/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`。
+
+三份主文档必须逐字节一致。GitHub 保留各独立规范、runtime manifest、build receipt 与测试；本主文档负责
+统一结论、时间线、来源索引和冲突优先级，不替代原始不可变实验 artifact。

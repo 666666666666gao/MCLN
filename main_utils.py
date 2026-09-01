@@ -5764,8 +5764,49 @@ class BaseTrainTester:
         density_scene_audit = bool(getattr(
             args, "density_aware_target_box_scene_disjoint_audit", False
         ))
+        counterfactual_parent_audit = bool(getattr(
+            args,
+            "parent_relative_text_verifier_counterfactual_training",
+            False,
+        )) and max_train_batches > 0
         if fpr_scene_audit and density_scene_audit:
             raise ValueError("FPR and density scene audits are mutually exclusive")
+        if counterfactual_parent_audit:
+            if fpr_scene_audit or density_scene_audit:
+                raise ValueError(
+                    "counterfactual Parent audit is a standalone bounded audit"
+                )
+            if (
+                    args.eval
+                    or max_train_batches != 100
+                    or args.batch_size != 16
+                    or gradient_accumulation_steps != 1
+                    or drop_incomplete_accumulation_group
+                    or args.start_epoch != 58
+                    or args.max_epoch != 58
+                    or getattr(args, "checkpoint_metric_retention", False)
+                    or list(args.dataset) != ["nr3d"]
+                    or args.test_dataset != "nr3d"
+                    or not args.joint_det
+                    or not args.butd_cls
+                    or args.butd
+                    or args.butd_gt
+                    or not getattr(
+                        args, "use_parent_relative_text_verifier", False
+                    )
+                    or not getattr(
+                        args,
+                        "parent_relative_text_verifier_train_only",
+                        False,
+                    )):
+                raise ValueError(
+                    "counterfactual Parent audit requires Nr3D E58, "
+                    "B16 x A1, exact 100 batches, and verifier-only training"
+                )
+            if dist.is_initialized() and dist.get_world_size() != 1:
+                raise ValueError(
+                    "counterfactual Parent audit requires one formal rank"
+                )
         if fpr_scene_audit:
             if args.eval or max_train_batches != 0:
                 raise ValueError(
@@ -5963,6 +6004,13 @@ class BaseTrainTester:
         fpr_audit_sentinel_batch = None
         fpr_audit_before_state = None
         fpr_audit_before_outputs = None
+        counterfactual_audit_before_state = None
+        self._counterfactual_audit_sentinel_batch = None
+        self._counterfactual_audit_before_outputs = None
+        if counterfactual_parent_audit:
+            counterfactual_audit_before_state = (
+                capture_fpr_audit_model_state(model)
+            )
         if fpr_scene_audit:
             if args.start_epoch != 58:
                 raise ValueError(
@@ -6043,6 +6091,53 @@ class BaseTrainTester:
                 criterion, set_criterion,
                 optimizer, scheduler, args
             )
+
+            if counterfactual_parent_audit:
+                sentinel_batch = self._counterfactual_audit_sentinel_batch
+                before_outputs = self._counterfactual_audit_before_outputs
+                if sentinel_batch is None or before_outputs is None:
+                    raise ValueError(
+                        "counterfactual Parent audit sentinel is missing"
+                    )
+                after_outputs = self._capture_fpr_audit_sentinel(
+                    model, copy.deepcopy(sentinel_batch)
+                )
+                after_state = capture_fpr_audit_model_state(model)
+                state_integrity = {
+                    "before": counterfactual_audit_before_state,
+                    "after": after_state,
+                    "frozen_exact": (
+                        counterfactual_audit_before_state["frozen"]["sha256"]
+                        == after_state["frozen"]["sha256"]
+                    ),
+                    "trainable_changed": (
+                        counterfactual_audit_before_state["trainable"][
+                            "sha256"
+                        ] != after_state["trainable"]["sha256"]
+                    ),
+                }
+                output_integrity = {
+                    "before": before_outputs,
+                    "after": after_outputs,
+                    "exact": (
+                        before_outputs["combined_sha256"]
+                        == after_outputs["combined_sha256"]
+                    ),
+                }
+                if not state_integrity["frozen_exact"]:
+                    raise ValueError(
+                        "counterfactual Parent audit changed frozen state"
+                    )
+                if not state_integrity["trainable_changed"]:
+                    raise ValueError(
+                        "counterfactual Parent audit did not update verifier"
+                    )
+                if not output_integrity["exact"]:
+                    raise ValueError(
+                        "counterfactual Parent audit changed frozen outputs"
+                    )
+                train_receipt["state_integrity"] = state_integrity
+                train_receipt["output_integrity"] = output_integrity
 
             if fpr_scene_audit:
                 split_metadata = getattr(
@@ -6219,6 +6314,20 @@ class BaseTrainTester:
                     "max_train_batches": int(max_train_batches),
                     "checkpoint_path": args.checkpoint_path,
                 })
+                if counterfactual_parent_audit:
+                    if (
+                            train_receipt.get("batch_count") != 100
+                            or train_receipt.get("optimizer_step_count") != 100
+                            or train_receipt.get("sample_count") != 1600):
+                        raise ValueError(
+                            "counterfactual Parent audit did not consume "
+                            "exact 100 x B16"
+                        )
+                    train_receipt.update({
+                        "audit_only": True,
+                        "formal_validation_accessed": False,
+                        "long_training_authorized": False,
+                    })
                 if (
                         float(getattr(
                             args,
@@ -7267,6 +7376,11 @@ class BaseTrainTester:
         )
         total_batches = accumulation_plan["effective_batch_count"]
         self._set_source_moe_train_mode(model, args)
+        counterfactual_parent_audit = bool(getattr(
+            args,
+            "parent_relative_text_verifier_counterfactual_training",
+            False,
+        )) and max_train_batches > 0
 
         # Loop over batches
         train_loader = tqdm(train_loader, ascii=True)
@@ -7281,6 +7395,19 @@ class BaseTrainTester:
                 raise ValueError(
                     "training batch lacks a positive point-cloud batch axis"
                 )
+            if counterfactual_parent_audit and batch_idx == 0:
+                self._counterfactual_audit_sentinel_batch = copy.deepcopy(
+                    batch_data
+                )
+                self._counterfactual_audit_before_outputs = (
+                    self._capture_fpr_audit_sentinel(
+                        model,
+                        copy.deepcopy(
+                            self._counterfactual_audit_sentinel_batch
+                        ),
+                    )
+                )
+                self._set_source_moe_train_mode(model, args)
             processed_sample_count += int(point_clouds.shape[0])
             fpr_identity_audit = bool(getattr(
                 args, "fpr_scene_disjoint_audit", False
@@ -7529,6 +7656,9 @@ class BaseTrainTester:
                 for key in sorted(stat_dict.keys())
             },
         }
+        if counterfactual_parent_audit:
+            receipt["optimizer_step_count"] = optimizer_step_count
+            receipt["sample_count"] = processed_sample_count
         if (
                 bool(getattr(args, "fpr_scene_disjoint_audit", False))
                 or bool(getattr(

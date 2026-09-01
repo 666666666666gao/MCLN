@@ -14,9 +14,14 @@ hard targets, and execution restrictions are recorded in
 [`docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`](docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md).
 The machine-checkable method contracts are in
 [`FPR_TV_SPEC_2026-08-31.md`](FPR_TV_SPEC_2026-08-31.md),
+[`FPR_TV_COUNTERFACTUAL_PARENT_AUDIT_SPEC_2026-09-01.md`](FPR_TV_COUNTERFACTUAL_PARENT_AUDIT_SPEC_2026-09-01.md),
 [`DENSITY_AWARE_TARGET_BOX_SPEC_2026-08-31.md`](DENSITY_AWARE_TARGET_BOX_SPEC_2026-08-31.md),
 and
 [`DENSITY_AWARE_TARGET_BOX_SCENE_AUDIT_SPEC_2026-09-01.md`](DENSITY_AWARE_TARGET_BOX_SCENE_AUDIT_SPEC_2026-09-01.md).
+
+The A-V4 counterfactual-parent code is released as an audit-only mechanism.
+No 100-microbatch audit, full validation, or long training result is claimed by
+this source release.
 
 ![image](https://github.com/qzp2018/MCLN/blob/main/data/fig.png)
 ## 0. Installation

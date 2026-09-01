@@ -12433,7 +12433,8 @@ Unique/Multiple 输入、GT anchor sidecar 和 validation threshold sweep。
 
 ### 19.7 最终发布位置
 
-- GitHub：`https://github.com/666666666666gao/MCLN`；PR #4 是中间版本，最终修订以随后合入 `main` 的发布 PR 为准；
+- GitHub：`https://github.com/666666666666gao/MCLN`；PR #4 是中间版本，最终修订为 commit
+  `057fce03cdb4ac701f4144f312566bee6af1d0ae` 与 PR #5：`https://github.com/666666666666gao/MCLN/pull/5`；
 - 本地：`C:\Users\gb\Desktop\document\MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`；
 - 远端：`/home/gb/new butd/butd_detr-main/MCLN-main/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`。
 

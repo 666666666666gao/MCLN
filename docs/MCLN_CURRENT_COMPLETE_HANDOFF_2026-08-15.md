@@ -1,10 +1,10 @@
 # MCLN 完整实验、代码与优化交接文档
 
-更新时间：2026-09-01 18:15（Asia/Shanghai；A-V4 Fold-4 scene-disjoint 审计已完整结束并判负，未做正式 7,899-row 验证、未保存权重）
+更新时间：2026-09-01 19:20（Asia/Shanghai；A-V4 已封存，补充跨数据集泛化判断、服务器遗留 Sr3D 复现脚本与下一步边界）
 文档性质：单文件完整交接；前半部分是当前结论与执行指南，后半部分保留 V1--V133 全量时间线。  
 安全说明：文档不包含 SSH 密码、API key 或其他明文凭据。远程连接使用用户现有安全配置。
 
-> **阅读优先级（2026-09-01 18:15）**：第 20 章是当前唯一有效的终态快照，覆盖本文件前部仍保留的
+> **阅读优先级（2026-09-01 19:20）**：第 20 章是当前唯一有效的终态快照，覆盖本文件前部仍保留的
 > V133“正在运行”、A-V4“尚未启动”等历史时态。旧章节保留是为了完整审计，不表示对应任务仍在运行。
 > A-V4 Fold-4 已完整训练和评估但未过门禁，路线现已封存。当前没有 Nr3D/Sr3D 正式训练。
 
@@ -23,15 +23,14 @@
   `49.00%`。
 - V132（final-decoder cross-modal query adapter）完整 4 轮均失败；最佳仍是第 1 轮，且 REC 与
   Mask 都未超过现有保护结果。失败完整权重在 bitwise 可重建后已清理，只保留 compact delta/manifest。
-- V133（SACR structured score refiner）正在进行 4 轮正式训练。第 1/2 轮 REC 分别为
-  `56.6365/44.5204` 与 `56.2894/43.8999`，均明显失败；第 2 轮 Mask 虽比第 1 轮微升到
-  `59.2659/48.6432/41.4346 mIoU`，仍远低于 V99。核心问题不是越界，而是 global gate 与 raw
-  score 几乎整行饱和：验证 residual mean/max 从 `0.2087/0.2097` 升到 `0.2402/0.2416`，
-  已逼近 `<0.25` 上限。第 3 轮已经开始；运行期间不得改源码、配置或删除活动 checkpoint。
-- 当前代码已同步到 GitHub 分支 `agent/sync-remote-mcln-source`，提交
-  `8a251607051b1adbea3fe0cdc8d4407aecb5398f`；PR
-  `https://github.com/666666666666gao/MCLN/pull/1` 已按用户明确要求合并进 `main`，merge commit=
-  `d273446207c9c5ef6b7cc64210137b768617c62b`。权重、输出目录、预训练模型和大文件均未上传。
+- V133（SACR structured score refiner）已经结束且不再运行。已审计轮次 REC 为
+  `56.6365/44.5204` 与 `56.2894/43.8999`，均明显失败；其 global gate 与 raw score 整行饱和，
+  residual mean/max 从 `0.2087/0.2097` 升至 `0.2402/0.2416`，逼近 `<0.25` 上限。旧章节中的
+  “正在训练”“第 3 轮开始”只保留为历史时间线，不得据此恢复任务。
+- 当前源码与小型证据统一发布到 `https://github.com/666666666666gao/MCLN` 的 `main`；A-V4
+  Fold-4 终局代码、结果与 result-to-claim 证据至少已发布到 `f73407d`。本轮继续补入服务器遗留的
+  Sr3D 冻结 launcher、权重平均 builder、主交接文档和方法候选清单。权重、输出目录、预训练模型、
+  缓存和大文件均不上传。
 - **后续实验范围已永久冻结**：不再补跑任何所谓 baseline 公平复现，不执行
   detector-pretrained/global48/150--240 epoch 对照，也不把它作为新方法的前置条件或差距解释方案。
 - **不参照原建议第七节**：其中按 ScanRefer/Nr3D/Sr3D 分别规定的旧执行顺序、旧前置步骤和旧路线选择，均不进入当前实施计划或论文证据链。
@@ -42,6 +41,9 @@
 - A-V4 Fold-4 已完整消费 `27004` 个 fit 样本、执行 `1688` 个 optimizer steps，并评估 `5915` 个
   held-out train-scene 样本。它在 @0.25 净 `-20 hits`、@0.50 净 `-151 hits`，不是训练未完成，
   而是候选切换精度不足；该路线不得继续调参、正式验证或长训。
+- 当前正式最好与新硬目标：Nr3D `4475/7899=56.6527%`，必须严格超过 `60.0%`（至少
+  `4740/7899`）；Sr3D `12139/17726=68.4813%`，必须严格超过 `68.9%`（至少 `12214/17726`）。
+  当前没有活动中的 Nr3D/Sr3D 训练，不能把任一差距解释成“还没训练完”。
 
 ## 1. 目标、验收口径与不可破坏约束
 
@@ -12560,7 +12562,8 @@ decision 永久记录 `audit_only=true`、`formal_validation_accessed=false`、
 ### 20.5 当前代码与发布状态
 
 本地权威仓库为 `C:\Users\gb\.codex_publish_mcln_20260901_v2`，分支
-`agent/av4-gradient-audit-recovery-20260901`，相对 GitHub `main` 增加四个 recovery 修复提交：
+`agent/av4-scene-fold4-prereg-20260901`。A-V4 recovery、Fold-4 正式短审计及 result-to-claim 已并入
+GitHub `main`；本轮开始前的权威提交为 `f73407d`。四个 recovery 修复提交均已包含：
 
 ```text
 4f3ab10 Repair A-V4 gradient audit and add zero-step recovery
@@ -12569,21 +12572,21 @@ fc3429f Bind A-V4 recovery proof to verifier-only runtime
 dc5fddd Correct A-V4 runtime manifest size
 ```
 
-本章写入后应把 master 文档、源码与小型审计文本推送到
+本轮继续把 master 文档、服务器遗漏的 Sr3D 冻结复现脚本与小型方法候选文本推送到
 `https://github.com/666666666666gao/MCLN`。禁止上传 `.pth/.pt/.ckpt`、训练数据、缓存、归档、SSH 凭据或
-大模型文件。服务器正式 repo 与本地/GitHub 的 master 文档必须逐字节一致。
+大模型文件。服务器、本地与 GitHub 的 master 文档必须逐字节一致。
 
-### 20.6 下一步边界
+### 20.6 A-V4 终态后的下一步边界
 
-A-V4 机制门通过后，只允许**独立评审**是否预注册一个尚未消费的 scene-disjoint 短审计。该评审必须固定：
+A-V4 Fold-4 已消费并失败，不能再以“机制门通过”为前提继续。下一步只允许先对**与 A-V4 正交的新假设**做
+独立新颖性和可证伪性评审；没有自动授权任何 GPU 任务。若人工决定继续，必须满足：
 
-- 从受保护 E57 独立开始；只训练三个 allowlisted FPR 模块；actual/CF 训练开启，部署仍只用 actual Parent；
-- 一个完整 fit epoch、自然尾批、完整 row-identity SHA；只评估 held-out train scenes；不接触 7,899 正式集；
-- 必须至少一次 switch，且 `fix025 > break025`、`fix050 >= break050`；失败立即封存；
-- 不得自动消费 fold4。若后续确需使用任何未消费场景，必须先形成新的固定 spec、launcher、运行时清单、
-  one-shot 根与双轴审查结论，再由独立启动动作执行；
-- 不做 threshold/margin/Top-K/loss/LR/epoch 扫描，不复活 Density-Aware、Relation-CF、SACR deployment、
-  baseline 公平复现、章节七/八或 E0--E7。
+- 不使用已消费 Fold-4 做阈值、margin、Top-K、loss、LR 或 epoch 调整；
+- 使用新的未消费 scene-disjoint split，先形成固定 spec、launcher、运行时清单、one-shot 根和双轴审查；
+- 仍从受保护 E57 独立开始，只评估 held-out train scenes，不接触 7,899 正式集，不自动保存/晋升权重；
+- 晋级必须同时满足 @0.25 正增益、@0.50 非劣、`fix > break` 与 Parent fallback；失败立即封存；
+- 不复活 A-V4/FPR Gate、Density-Aware、Relation-CF 扫参、SACR deployment、baseline 公平复现、章节七/八
+  或 E0--E7。
 
 ### 20.7 单文件交接原则
 
@@ -12648,3 +12651,74 @@ decision 固定为 `fold_gate_pass=false`、`audit_only=true`、`formal_validati
 本次结论进一步强化现有诊断：Nr3D 的主要矛盾不是“候选数量不足”或“训练尚未结束”，而是未见场景上的
 文本条件安全排序仍不可靠。下一方案必须与 A-V4 正交，并先证明高精度 abstention 或独立 proposal 改善；
 不能只增加反事实样本、放宽 gate 或提高切换率。
+
+### 20.9 为什么 ScanRefer 表现较好，而 Nr3D/Sr3D 泛化不足（2026-09-01 19:20 CST）
+
+当前证据支持一个需要在论文中明确承认的结论：**现有系统具备代码和接口层面的跨数据集可迁移性，但尚未证明
+性能层面的跨数据集泛化性。** 同一总体架构能够在 ScanRefer、Nr3D、Sr3D 上运行，不等于同一新增模块会在三个
+数据集上都产生正收益。
+
+ScanRefer 的较好结果来自完整系统的共同作用，而不能全部归因于一个语言推理模块：
+
+- V99 的 Parent、Geometry、Query Variant 与 Mask-derived Geometry 确实提供了互补候选；选择器有真实的
+  “不同来源中选对一个”的空间。
+- mesh-derived superpoint 修复属于几何/数据管线纠错，对旧 V99 带来 REC `+20/+152 hits` 和 Mask
+  `+14/+314 hits`，Mask mIoU 提升约 `4.1656pp`。因此 ScanRefer 的最终增益同时包含网络、多源排序和
+  几何输入质量改善。
+- ScanRefer 当前最好为 REC@0.25 `5572/9508=58.6033%`、REC@0.50 `4835/9508=50.8519%`
+  （分别来自 V99/V113），Mask 三项最好为 `59.8443/52.3349/45.9303`。这证明完整系统在 ScanRefer
+  有效，但不能单独证明 FPR、Relation-CF 或 A-V4 具有跨数据集普适性。
+
+Nr3D 的数据结构与 ScanRefer 不同，现有模块的关键前提没有成立：
+
+- Nr3D Default 与第二 Source 几乎同序，两 Source oracle 相对 Default 只增加 `3 hits`。没有真正互补的
+  Source 时，再复杂的 selector/gate 也无法凭空创造大量正确候选。
+- Nr3D Top-2/Top-5/Top-16 oracle 为 `61.6787%/69.0974%/80.3013%`，说明大量正确候选已在前几名，
+  主要错误是同类实例、长句、属性、视角和多参照物条件下的 Top-1 消歧，而不是简单的全局重打分。
+- 已统计 `2068` 条 ranking failure 和 `1556` 条 proposal failure。前者需要真正的候选级语言证据，后者
+  需要局部 proposal 改善；把两类错误压进一个 Gate 或 residual loss 会互相污染。
+- A-V4 已完整训练并产生 `805` 次切换，但 @0.25 净 `-20`、@0.50 净 `-151`。因此 Nr3D 低指标
+  不是训练未完成，而是 learned switching 在未见场景中没有达到保护 Parent 所需的精度。
+
+Sr3D 的情况介于两者之间。它具有模板化关系和较可靠的显式 anchor，Relation-CF 曾得到小幅正收益，说明
+结构化关系模块在 anchor 可靠时更容易工作；但正式最好 `12139/17726=68.4813%` 只略高于旧 `68.4%`
+口径，仍低于当前严格 `>68.9%` 目标。其提升还依赖低学习率延续和权重平均，不能声称单个关系模块带来
+显著、稳定的泛化提升。
+
+对“是否需要重新训练 ScanRefer”的回答是：**如果下一模块要作为三数据集统一论文方法，最终必须在
+ScanRefer 上用同一模块重新训练/评估；但不应现在就盲目重训。** 正确顺序是先在新的、未消费的 Nr3D
+scene-disjoint split 上证明模块有正向因果价值，再依次做 Sr3D 与 ScanRefer 同架构验证。否则每次 Nr3D
+失败都重训 ScanRefer，只会消耗算力，不能证明泛化。
+
+统一架构的最低合同如下：
+
+1. 三个数据集使用相同模块、张量接口和决策逻辑；允许分别训练权重，但不允许输入 dataset ID、
+   Unique/Multiple 标签或 GT-derived anchor sidecar。
+2. 新模块默认关闭时必须保持现有 V99 路径；在新 Nr3D split 上必须同时满足 @0.25 正增益、@0.50
+   非劣、`fix > break` 和无证据时精确回退 Parent。
+3. Nr3D 门通过后才做 Sr3D 同构短审计；二者都通过后，再重训/评估 ScanRefer，确认其 REC 与 Mask
+   Pareto 结果不退化。任何一个数据集失败，都不能写成“三数据集泛化提升”。
+4. A-V4/FPR Gate、Counterfactual Parent、Density-Aware Target Box、Relation-CF 扫参、旧 Section 7/8、
+   E0--E7 和 baseline 公平复现均保持封存，不因本节重新开放。
+
+### 20.10 下一方法候选与本轮代码/文档整合状态
+
+仓库新增 `idea-stage/IDEA_CANDIDATES.md` 与时间戳副本，记录十个与 A-V4 正交的候选方向及其已知近邻。
+它们当前只是**候选清单**，不是最终方法，也没有授权 GPU 实验。初步文献地图表明 EG-3DVG、ORD、
+ViewSRD、TSP3D、CFA 等工作已覆盖许多直接的同类消歧、关系分解和局部点重读思路；后续必须先做独立
+新颖性评审，再选一个最小、可证伪、三数据集共用的机制。
+
+本轮从服务器旧工程中只读找回并纳入 GitHub 的是 12 个此前未发布的 Sr3D 冻结复现脚本：包括
+detector-pretrained/global24、plateau/official schedule、E26--E29 权重平均、Relation-CF 审计与 E27--E28
+launcher。它们保留历史 SHA/路径门禁，用于复现实验谱系；由于其固定的是当时服务器代码 SHA，**不得把它们
+直接当作当前 A-V4 代码树的可运行入口**。服务器较旧的 `main_utils.py`、`train_dist_mod.py` 和模型源码没有
+反向覆盖 GitHub 新版本。
+
+发布权威顺序固定为：
+
+- 源码：GitHub `https://github.com/666666666666gao/MCLN` 的 `main`；
+- 完整叙事：`docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`；
+- 本地镜像：`C:\Users\gb\Desktop\document\MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`；
+- 服务器镜像：`/home/gb/new butd/butd_detr-main/MCLN-main/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`。
+
+三份交接文档必须逐字节一致。当前没有活动训练、没有待衰减学习率的 run，也没有获得新 Nr3D/Sr3D 长训授权。

@@ -8,3 +8,6 @@
 | 2026-08-15 15:06 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest experiment-plan pointer and execution order |
 | 2026-08-15 15:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260815_150630.md | implementation | immutable V132/V133 execution tracker |
 | 2026-08-15 15:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest execution tracker pointer |
+| 2026-09-01 18:46 | /idea-creator | idea-stage/IDEA_CANDIDATES_20260901_184655.md | ideation | timestamped orthogonal method candidates after A-V4 terminal failure |
+| 2026-09-01 18:46 | /idea-creator | idea-stage/IDEA_CANDIDATES.md | ideation | latest orthogonal method-candidate pointer; no experiment authorized |
+| 2026-09-01 19:20 | /handoff | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | continued server-integrated master with cross-dataset generalization assessment and release state |

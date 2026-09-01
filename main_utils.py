@@ -155,6 +155,45 @@ def _optional_test_dataset_size(args, test_loader):
     return len(test_loader.dataset)
 
 
+def prepare_parent_relative_text_verifier_score_gradient_audit(end_points):
+    """Retain the two A-V4 score axes before backward for audit evidence."""
+    actual_verifier_batch = end_points.get(
+        "parent_relative_text_verifier_batch"
+    )
+    actual_score_axis = (
+        actual_verifier_batch.get("default_scores")
+        if isinstance(actual_verifier_batch, dict) else None
+    )
+    if not torch.is_tensor(actual_score_axis):
+        raise ValueError("actual Parent score-gradient audit is missing")
+    if not actual_score_axis.requires_grad:
+        raise ValueError(
+            "actual Parent score-gradient audit does not require gradients"
+        )
+    actual_score_axis.retain_grad()
+
+    counterfactual_verifier_batch = end_points.get(
+        "parent_relative_text_verifier_counterfactual_batch"
+    )
+    if counterfactual_verifier_batch is None:
+        return actual_score_axis, None
+    counterfactual_score_axis = (
+        counterfactual_verifier_batch.get("default_scores")
+        if isinstance(counterfactual_verifier_batch, dict) else None
+    )
+    if not torch.is_tensor(counterfactual_score_axis):
+        raise ValueError(
+            "counterfactual Parent score-gradient audit is missing"
+        )
+    if not counterfactual_score_axis.requires_grad:
+        raise ValueError(
+            "counterfactual Parent score-gradient audit does not require "
+            "gradients"
+        )
+    counterfactual_score_axis.retain_grad()
+    return actual_score_axis, counterfactual_score_axis
+
+
 def save_eval_metrics_receipt(log_dir, epoch, metrics):
     """Atomically persist the exact evaluator counters for one checkpoint."""
     if metrics is None:
@@ -7513,6 +7552,17 @@ class BaseTrainTester:
                     loss, end_points, optimizer
                 )
 
+                score_gradient_audit_axes = None
+                if getattr(
+                        args,
+                        "parent_relative_text_verifier_counterfactual_training",
+                        False):
+                    score_gradient_audit_axes = (
+                        prepare_parent_relative_text_verifier_score_gradient_audit(
+                            end_points
+                        )
+                    )
+
                 (
                     loss / float(accumulation_group_size)
                 ).backward()
@@ -7521,13 +7571,7 @@ class BaseTrainTester:
                         args,
                         "parent_relative_text_verifier_counterfactual_training",
                         False):
-                    actual_verifier_batch = end_points.get(
-                        "parent_relative_text_verifier_batch"
-                    )
-                    actual_score_axis = (
-                        actual_verifier_batch.get("default_scores")
-                        if isinstance(actual_verifier_batch, dict) else None
-                    )
+                    actual_score_axis = score_gradient_audit_axes[0]
                     if (not torch.is_tensor(actual_score_axis)
                             or actual_score_axis.grad is None):
                         raise ValueError(
@@ -7541,22 +7585,12 @@ class BaseTrainTester:
                         raise ValueError(
                             "actual Parent score gradient must be finite"
                         )
-                    counterfactual_verifier_batch = end_points.get(
-                        "parent_relative_text_verifier_counterfactual_batch"
-                    )
-                    if counterfactual_verifier_batch is None:
+                    counterfactual_score_axis = score_gradient_audit_axes[1]
+                    if counterfactual_score_axis is None:
                         counterfactual_score_gradient_l1 = (
                             actual_score_gradient_l1 * 0.0
                         )
                     else:
-                        counterfactual_score_axis = (
-                            counterfactual_verifier_batch.get(
-                                "default_scores"
-                            )
-                            if isinstance(
-                                counterfactual_verifier_batch, dict
-                            ) else None
-                        )
                         if (not torch.is_tensor(counterfactual_score_axis)
                                 or counterfactual_score_axis.grad is None):
                             raise ValueError(

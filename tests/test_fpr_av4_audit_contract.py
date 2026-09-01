@@ -7,6 +7,8 @@ import re
 import subprocess
 import types
 
+import torch
+
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TRAIN_ONLY_DATA_MANIFEST = (
@@ -39,12 +41,14 @@ def _train_args(source):
 def test_static_entry_build_receipt_matches_reviewed_binary():
     receipt = json.loads(BUILD_RECEIPT.read_text(encoding="utf-8"))
     assert receipt["schema"] == (
-        "mcln-fpr-tv-av4-counterfactual-parent-static-build-v1"
+        "mcln-fpr-tv-av4-counterfactual-parent-recovery-static-build-v2"
     )
     assert receipt["artifact_mode"] == "0755"
     assert receipt["artifact_sha256"] == _sha256(EXECUTOR)
     assert receipt["artifact_size"] == EXECUTOR.stat().st_size
-    assert receipt["trust_root"] == "/root/mcln_fpr_av4_audit_trust/v1"
+    assert receipt["trust_root"] == (
+        "/root/mcln_fpr_av4_audit_recovery_trust/v1"
+    )
     assert receipt["shared_gpu_lock"] == (
         "/root/autodl-tmp/mcln_v99_backbone_gpu0.lock"
     )
@@ -85,6 +89,9 @@ def test_launcher_is_exact_bounded_counterfactual_parent_audit():
         assert fragment not in args
     assert 'readonly AUDIT_BATCHES=100' in source
     assert 'readonly BATCH_SIZE=16' in source
+    assert "verify_failed_attempt\nverify_or_copy_runtime_closure" in source
+    assert "counterfactual_parent_audit_recovery_v1" in source
+    assert "nr3d_fpr_tv_av4_failed_attempt_evidence_v1.json" in source
     assert 'long_training_authorized": False' in source
     assert 'exit 20' in source
     assert "-name 'eval_metrics*.json'" in source
@@ -106,6 +113,41 @@ def test_main_bounded_path_records_exact_training_and_sentinels():
     )
     for fragment in required:
         assert fragment in source
+
+
+def test_counterfactual_gradient_audit_retains_nonleaf_actual_score_axis():
+    import main_utils
+
+    source_scores = torch.tensor(
+        [[0.2, 0.7, 0.4]], dtype=torch.float32, requires_grad=True
+    )
+    query_indices = torch.tensor([[1, 2]], dtype=torch.long)
+    actual_scores = source_scores.gather(1, query_indices)
+    counterfactual_scores = actual_scores.detach().clone().requires_grad_(True)
+    end_points = {
+        "parent_relative_text_verifier_batch": {
+            "default_scores": actual_scores,
+        },
+        "parent_relative_text_verifier_counterfactual_batch": {
+            "default_scores": counterfactual_scores,
+        },
+    }
+
+    actual_axis, counterfactual_axis = (
+        main_utils.prepare_parent_relative_text_verifier_score_gradient_audit(
+            end_points
+        )
+    )
+    (actual_axis.square().sum() + counterfactual_axis.square().sum()).backward()
+
+    assert not actual_axis.is_leaf
+    assert actual_axis.grad is not None
+    assert torch.isfinite(actual_axis.grad).all()
+    assert actual_axis.grad.abs().sum().item() > 0.0
+    assert counterfactual_axis.is_leaf
+    assert counterfactual_axis.grad is not None
+    assert torch.isfinite(counterfactual_axis.grad).all()
+    assert counterfactual_axis.grad.abs().sum().item() > 0.0
 
 
 def test_spec_permanently_excludes_unrelated_routes_and_long_training():

@@ -92,7 +92,29 @@ The decision is durable and always records
 `long_training_authorized=false`. A pass only permits an independent review of
 whether a future unconsumed scene-disjoint fold should be preregistered.
 
-## 6. Permanent exclusions
+## 6. Failed first attempt and one-shot recovery
+
+The first formal attempt consumed its original one-shot root and failed on the
+first batch after `backward()` but before `optimizer.step()`. The actual Parent
+score axis is a non-leaf gathered tensor; the audit read its `.grad` without
+retaining that gradient first. The frozen log remains at `0/2806`, and the
+original root contains no training receipt, decision, or generated weight.
+
+The original root must never be deleted, renamed, reused, or completed in
+place. A recovery attempt is permitted only when a reviewed verifier proves,
+from exact file SHA-256 values and the old runtime closure, that the failure
+was zero-step, pre-optimizer, non-evaluating, and weight-free. The recovery
+must use a new trust root, launcher identity, experiment name, and one-shot
+audit root. It must snapshot the reviewed failure-evidence manifest and verify
+the old failure both before and after execution.
+
+The only scientific-code correction permitted by this recovery is to retain
+the actual and counterfactual score-axis gradients before backward. It must not
+change the A-V4 model, losses, trainable groups, data, E57 input, batch count,
+learning rates, candidate rules, mechanism gates, or permanent prohibition on
+long training.
+
+## 7. Permanent exclusions
 
 This audit must not introduce or revive:
 

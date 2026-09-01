@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly TRUST_ROOT="/root/mcln_fpr_av4_audit_trust/v1"
+readonly TRUST_ROOT="/root/mcln_fpr_av4_audit_recovery_trust/v1"
 readonly TRUSTED_STATIC_EXEC_PATH="${TRUST_ROOT}/mcln_fpr_audit_static_exec.x86_64"
 readonly TRUSTED_STATIC_SOURCE_PATH="${TRUST_ROOT}/mcln_fpr_audit_static_exec.c"
 readonly TRUSTED_LAUNCHER_PATH="${TRUST_ROOT}/run_nr3d_fpr_tv_density_audit.sh"
-readonly TRUSTED_STATIC_EXEC_SHA256="2eafbf471810ddf04ccfcc8ba568dbe1fb03d56658b5bd87e073d6c5051f6773"
+readonly TRUSTED_STATIC_EXEC_SHA256="ce523f32e8ad477301940a07123618fbdc5463ea0d2d1a8a5c31232515761f0c"
 readonly TRUSTED_STATIC_SOURCE_SHA256="0bf6cfcfb015a91474579ba0c0f186c49c6a38695601d904d3216724cc67dcdc"
 [[ "${MCLN_FPR_TRUSTED_CLEAN_ENV:-}" == "1" ]] || {
   echo "launcher must be entered through the reviewed static executor" >&2
@@ -121,8 +121,8 @@ terminate_formal_group() {
 }
 trap terminate_formal_group HUP INT TERM
 
-readonly ROOT_DIR="/root/autodl-tmp/mcln_fpr_av4_audit_review_20260901"
-readonly SOURCE_ROOT="/root/autodl-tmp/mcln_fpr_av4_audit_review_20260901"
+readonly ROOT_DIR="/root/autodl-tmp/mcln_fpr_av4_audit_recovery_review_20260901"
+readonly SOURCE_ROOT="/root/autodl-tmp/mcln_fpr_av4_audit_recovery_review_20260901"
 readonly DATA_ROOT="/root/autodl-tmp/DATA_ROOT/"
 readonly PYTHON_BIN="/root/miniconda3/envs/bdetr/bin/python"
 readonly DATASET="nr3d"
@@ -134,27 +134,32 @@ readonly GROUPFREE_SHA256="9ff3e25070bf48a0b70240e098a89be6bfd26a92af863e71698a0
 readonly DATA_MANIFEST="${SOURCE_ROOT}/scripts/nr3d_fpr_tv_av4_train_only_data_manifest_v2.json"
 readonly DATA_MANIFEST_SHA256="155e2233efbe5c312c19c6dc709ce8c564c601d50e73d6907a3702f000d9d173"
 readonly RUNTIME_MANIFEST="${SOURCE_ROOT}/scripts/fpr_tv_counterfactual_parent_runtime_manifest_v2.json"
-readonly RUNTIME_MANIFEST_SHA256="f09e490789680a8e7105cb1167f6f6f025a9a83a8998657eda3c9e1b4c9ab807"
+readonly RUNTIME_MANIFEST_SHA256="61c9af378e6be02d97af5be293ac33f11fe8592f5168a7b3c12b6efb19bc24e7"
 readonly REQUIRED_TRAIN_ENTRY_SHA256="add7ad10e5a91248ccf1c593a280df73b6a19c2cdc3b53b898ce2f64be628c64"
-readonly REQUIRED_MAIN_UTILS_SHA256="b40c6f6ca83ec68f655feb820de788f7398b0e71574cf73a9f6b22b137fba47e"
+readonly REQUIRED_MAIN_UTILS_SHA256="04c17dcca259f08139d3b5b6ce4d637d3bb1d38f932dbea5305debca40841c95"
 readonly REQUIRED_LOSSES_SHA256="54a74ba522d57d74e934f60a6f8a8becdbe0f188ab99c948ea55c436fbd9fe36"
 readonly REQUIRED_VERIFIER_SHA256="744b714c339a823c76739685f7d7cea3be0381dad4c7d0d00f4f02c08e58e32a"
 readonly REQUIRED_VERIFIER_TEST_SHA256="ed484753a7ba41f8cdcd1cf5ff63112cd4aae3a648db7c7d4780f783a9664cdc"
-readonly REQUIRED_SPEC_SHA256="befba370c82b549b0545c1977fac88b578de8f012f4a86943c58d1dd19e10246"
+readonly REQUIRED_SPEC_SHA256="e9d7670c0efc378e10ad225bbbc61249609850a1e4ec2512c572fbbea28e6f6a"
 readonly REQUIRED_MODEL_SHA256="5a605328a6d12d610a479ec40f039f91708edcd6c3ce5d559ea4e1494026952c"
 readonly REQUIRED_SELECTOR_SHA256="61211cea91de4c3f3c11e44bc5ff035711307f3381d5a4069d4ab7842bee17dc"
 readonly REQUIRED_DATASET_SHA256="800bac2caf9b7a319bdc200f60386000e4e374a559d9581113a8eb57d525f9f0"
 readonly REQUIRED_SNAPSHOT_EXECUTOR_SHA256="839b6d8479b94e610288723219b0149203dde89ab0a85a6dd3bd9d4776d04c88"
+readonly REQUIRED_FAILURE_VERIFIER_SHA256="d062dea7e7cdf6a212903455d0acb369434285d3487afe56ec17f7271a39eefb"
+readonly FAILURE_VERIFIER="${SOURCE_ROOT}/scripts/verify_nr3d_fpr_tv_av4_failed_attempt.py"
+readonly FAILURE_EVIDENCE="${SOURCE_ROOT}/scripts/nr3d_fpr_tv_av4_failed_attempt_evidence_v1.json"
+readonly FAILURE_EVIDENCE_SHA256="8e34634492ca7204ec016ff0671861f3d757a0d952cf147db8e9738fa3046152"
+readonly ORIGINAL_AUDIT_ROOT="${OUTPUT_ROOT}/audit/nr3d_v99_fpr_tv_av4_counterfactual_parent_audit_e58_b100_b16x1_one_shot"
 readonly REQUIRED_RESUME_EPOCH=57
 readonly AUDIT_EPOCH=58
 readonly AUDIT_BATCHES=100
 readonly BATCH_SIZE=16
 readonly EXPECTED_EVAL_SAMPLE_COUNT=7899
-readonly MASTER_PORT=5427
+readonly MASTER_PORT=5429
 readonly MIN_FREE_GB=6
 readonly SNAPSHOT_OWNER_UID=65532
 readonly SNAPSHOT_OWNER_GID=65532
-readonly EXP="nr3d_v99_fpr_tv_av4_counterfactual_parent_audit_e58_b100_b16x1"
+readonly EXP="nr3d_v99_fpr_tv_av4_counterfactual_parent_audit_recovery_v1_e58_b100_b16x1"
 readonly AUDIT_ROOT="${OUTPUT_ROOT}/audit/${EXP}_one_shot"
 readonly LOCK_FILE="/root/autodl-tmp/mcln_v99_backbone_gpu0.lock"
 
@@ -217,6 +222,10 @@ require_fixed_inputs() {
     "${REQUIRED_DATASET_SHA256}" "dataset implementation"
   require_sha256 "${ROOT_DIR}/scripts/mcln_density_audit_snapshot_exec.py" \
     "${REQUIRED_SNAPSHOT_EXECUTOR_SHA256}" "capability-drop executor"
+  require_sha256 "${FAILURE_VERIFIER}" \
+    "${REQUIRED_FAILURE_VERIFIER_SHA256}" "failed-attempt verifier"
+  require_sha256 "${FAILURE_EVIDENCE}" \
+    "${FAILURE_EVIDENCE_SHA256}" "failed-attempt evidence"
   require_sha256 "${SOURCE_CHECKPOINT}" \
     "${SOURCE_CHECKPOINT_SHA256}" "protected E57 checkpoint"
   require_sha256 "${GROUPFREE_CHECKPOINT}" \
@@ -225,6 +234,14 @@ require_fixed_inputs() {
     "${DATA_MANIFEST_SHA256}" "Nr3D data manifest"
   require_sha256 "${RUNTIME_MANIFEST}" \
     "${RUNTIME_MANIFEST_SHA256}" "reviewed runtime manifest"
+}
+
+verify_failed_attempt() {
+  /usr/bin/env -i \
+    PATH="${PATH}" PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 \
+    "${PYTHON_BIN}" "${FAILURE_VERIFIER}" \
+    "${FAILURE_EVIDENCE}" "${FAILURE_EVIDENCE_SHA256}" \
+    "${ORIGINAL_AUDIT_ROOT}"
 }
 
 verify_or_copy_runtime_closure() {
@@ -598,6 +615,7 @@ check_resources() {
 }
 
 require_fixed_inputs
+verify_failed_attempt
 verify_or_copy_runtime_closure verify-source "${SOURCE_ROOT}"
 verify_dataset_manifest "${DATA_MANIFEST}" "${DATA_MANIFEST_SHA256}"
 verify_checkpoint_contract
@@ -641,6 +659,7 @@ readonly RESUME_SNAPSHOT="${INPUT_ROOT}/protected_e57.pth"
 readonly GROUPFREE_SNAPSHOT="${INPUT_ROOT}/gf_detector_l6o256.pth"
 readonly DATA_MANIFEST_SNAPSHOT="${INPUT_ROOT}/nr3d_fpr_tv_av4_train_only_data_manifest_v2.json"
 readonly RUNTIME_MANIFEST_SNAPSHOT="${INPUT_ROOT}/fpr_tv_counterfactual_parent_runtime_manifest_v2.json"
+readonly FAILURE_EVIDENCE_SNAPSHOT="${INPUT_ROOT}/nr3d_fpr_tv_av4_failed_attempt_evidence_v1.json"
 verify_or_copy_runtime_closure copy "${SOURCE_ROOT}" "${CODE_SNAPSHOT}"
 verify_or_copy_runtime_closure verify-snapshot "${CODE_SNAPSHOT}"
 copy_independent_input "${SOURCE_CHECKPOINT}" "${RESUME_SNAPSHOT}" \
@@ -651,6 +670,8 @@ copy_independent_input "${DATA_MANIFEST}" "${DATA_MANIFEST_SNAPSHOT}" \
   "${DATA_MANIFEST_SHA256}" "data manifest"
 copy_independent_input "${RUNTIME_MANIFEST}" "${RUNTIME_MANIFEST_SNAPSHOT}" \
   "${RUNTIME_MANIFEST_SHA256}" "runtime manifest"
+copy_independent_input "${FAILURE_EVIDENCE}" "${FAILURE_EVIDENCE_SNAPSHOT}" \
+  "${FAILURE_EVIDENCE_SHA256}" "failed-attempt evidence"
 chown "${SNAPSHOT_OWNER_UID}:${SNAPSHOT_OWNER_GID}" "${INPUT_ROOT}"
 chmod 0555 "${INPUT_ROOT}"
 mkdir "${RUNTIME_HOME}/hf" "${RUNTIME_HOME}/xdg" "${RUNTIME_HOME}/torch"
@@ -743,6 +764,7 @@ readonly PRE_AUDIT="${AUDIT_ROOT}/pre_audit_provenance.json"
   "${SOURCE_ROOT}" "${LAUNCHER_PATH}" "${COMMAND_FILE}" \
   "${RESUME_SNAPSHOT}" "${GROUPFREE_SNAPSHOT}" \
   "${DATA_MANIFEST_SNAPSHOT}" "${RUNTIME_MANIFEST_SNAPSHOT}" \
+  "${FAILURE_EVIDENCE_SNAPSHOT}" \
   "${TRUSTED_STATIC_EXEC_PATH}" "${TRUSTED_STATIC_SOURCE_PATH}" <<'PY'
 import hashlib
 import json
@@ -759,6 +781,7 @@ import sys
     groupfree,
     data_manifest,
     runtime_manifest,
+    failure_evidence,
     static_executor,
     static_source,
 ) = sys.argv[1:]
@@ -797,12 +820,16 @@ paths = {
     "groupfree_checkpoint": os.path.realpath(groupfree),
     "data_manifest": os.path.realpath(data_manifest),
     "runtime_manifest": os.path.realpath(runtime_manifest),
+    "failed_attempt_verifier": os.path.join(
+        code_root, "scripts", "verify_nr3d_fpr_tv_av4_failed_attempt.py"
+    ),
+    "failed_attempt_evidence": os.path.realpath(failure_evidence),
     "static_executor": os.path.realpath(static_executor),
     "static_source": os.path.realpath(static_source),
     "train_command": os.path.realpath(command),
 }
 payload = {
-    "schema": "mcln-fpr-tv-counterfactual-parent-pre-audit-v1",
+    "schema": "mcln-fpr-tv-counterfactual-parent-recovery-pre-audit-v2",
     "code_snapshot_root": os.path.realpath(code_root),
     "review_root": os.path.realpath(review_root),
     "paths": paths,
@@ -840,6 +867,10 @@ verify_independent_input "${DATA_MANIFEST}" "${DATA_MANIFEST_SNAPSHOT}" \
 verify_independent_input "${RUNTIME_MANIFEST}" \
   "${RUNTIME_MANIFEST_SNAPSHOT}" "${RUNTIME_MANIFEST_SHA256}" \
   "runtime manifest"
+verify_independent_input "${FAILURE_EVIDENCE}" \
+  "${FAILURE_EVIDENCE_SNAPSHOT}" "${FAILURE_EVIDENCE_SHA256}" \
+  "failed-attempt evidence"
+verify_failed_attempt
 verify_dataset_manifest "${DATA_MANIFEST_SNAPSHOT}" \
   "${DATA_MANIFEST_SHA256}"
 verify_or_copy_runtime_closure verify-source "${SOURCE_ROOT}"
@@ -880,7 +911,9 @@ readonly DECISION="${AUDIT_ROOT}/counterfactual_parent_decision.json"
   "${BATCH_SIZE}" "${SOURCE_CHECKPOINT_SHA256}" \
   "${GROUPFREE_SHA256}" "${DATA_MANIFEST_SHA256}" \
   "${RUNTIME_MANIFEST_SHA256}" "${LAUNCHER_START_SHA256}" \
-  "${TRUSTED_STATIC_EXEC_SHA256}" "${TRUSTED_STATIC_SOURCE_SHA256}" <<'PY'
+  "${TRUSTED_STATIC_EXEC_SHA256}" "${TRUSTED_STATIC_SOURCE_SHA256}" \
+  "${FAILURE_EVIDENCE_SHA256}" \
+  "${REQUIRED_FAILURE_VERIFIER_SHA256}" <<'PY'
 import hashlib
 import json
 import math
@@ -897,7 +930,9 @@ audit_batches, batch_size = (int(value) for value in sys.argv[5:7])
     expected_launcher_sha,
     expected_static_executor_sha,
     expected_static_source_sha,
-) = sys.argv[7:14]
+    expected_failure_evidence_sha,
+    expected_failure_verifier_sha,
+) = sys.argv[7:16]
 
 def load_json_with_sha(path):
     with open(path, "rb") as handle:
@@ -920,7 +955,8 @@ def finite_number(value):
 
 receipt, receipt_sha = load_json_with_sha(receipt_path)
 pre, pre_sha = load_json_with_sha(pre_path)
-if pre.get("schema") != "mcln-fpr-tv-counterfactual-parent-pre-audit-v1":
+if pre.get("schema") != (
+        "mcln-fpr-tv-counterfactual-parent-recovery-pre-audit-v2"):
     raise SystemExit("unexpected pre-audit provenance schema")
 expected_path_keys = {
     "launcher",
@@ -938,6 +974,8 @@ expected_path_keys = {
     "groupfree_checkpoint",
     "data_manifest",
     "runtime_manifest",
+    "failed_attempt_verifier",
+    "failed_attempt_evidence",
     "static_executor",
     "static_source",
     "train_command",
@@ -957,6 +995,8 @@ fixed_hashes = {
     "launcher": expected_launcher_sha,
     "static_executor": expected_static_executor_sha,
     "static_source": expected_static_source_sha,
+    "failed_attempt_verifier": expected_failure_verifier_sha,
+    "failed_attempt_evidence": expected_failure_evidence_sha,
 }
 for name, expected in fixed_hashes.items():
     if current.get(name) != expected:
@@ -1106,7 +1146,7 @@ checks = {
 }
 passed = all(checks.values())
 decision = {
-    "schema": "mcln-fpr-tv-counterfactual-parent-audit-v1",
+    "schema": "mcln-fpr-tv-counterfactual-parent-audit-recovery-v2",
     "audit_only": True,
     "formal_validation_accessed": False,
     "long_training_authorized": False,
@@ -1128,6 +1168,10 @@ decision = {
     "groupfree_checkpoint_sha256": expected_groupfree_sha,
     "data_manifest_sha256": expected_data_manifest_sha,
     "runtime_manifest_sha256": expected_runtime_manifest_sha,
+    "failed_attempt_evidence": pre["paths"]["failed_attempt_evidence"],
+    "failed_attempt_evidence_sha256": expected_failure_evidence_sha,
+    "failed_attempt_verifier_sha256": expected_failure_verifier_sha,
+    "recovery_from_optimizer_steps": 0,
     "launcher_sha256": expected_launcher_sha,
     "static_executor_sha256": expected_static_executor_sha,
     "static_source_sha256": expected_static_source_sha,

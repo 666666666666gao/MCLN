@@ -12796,3 +12796,56 @@ self-distillation 或既有 relation-CF 冒充。
   目标，本轮没有修改其 LR、进程或文件；
 - 当前硬目标继续按用户后续更新执行：Nr3D 至少 `4740/7899`（严格 `>60.0%`），Sr3D 至少
   `12214/17726`（严格 `>68.9%`）。现有最好分别还差 265 与 75 hits。
+
+### 20.13 最新代码补齐、三端事实源与自然同目标多描述审计（2026-09-01 20:27 CST）
+
+本轮继续沿用服务器已整合到 20.12 的本文件，没有新建第二份主交接文档。先对本地发布仓库、GitHub
+`main` 与服务器运行镜像做只读审计：审计开始时，本地最新提交和 GitHub `main` 均为
+`0d4d80998a63f239e880d9ea6f840bf0f65a914a`，工作树无已修改文件；服务器目录不是 Git 工作树，不能用
+服务器 `git status` 判断新旧。
+
+服务器镜像共有 480 个 `.py/.sh/.yaml/.yml` 文件，本地仓库跟踪 474 个同类源码文件。公共文件的原始
+SHA 有 367 个不同，但去除 Windows/Linux `CRLF/LF` 差异后只剩 24 个真正不同；这 24 个服务器文件的
+修改时间均不晚于 2026-08-26，而本地对应版本已在 2026-09-01 的发布提交中更新。因此服务器是运行镜像，
+不是比 GitHub 更新的源码主线；不得用服务器旧 `main_utils.py`、`models/mcln.py`、`train_dist_mod.py`
+等文件反向覆盖 GitHub。
+
+服务器独有的 69 个源码后缀文件中，65 个属于 `.v132_parent/.v133_parent` 备份或
+`experiment_output/v51_bmq_rank` 历史启动脚本，不纳入当前主线。剩余 4 个是与当前正式代码直接配套、此前
+漏传的单元测试，本轮补入仓库：
+
+- `tests/test_dataset_v99_pipeline_contract.py`：V99 数据集管线、artifact、official receipt 与 cleanup 合同；
+- `tests/test_rec_evaluator_filter.py`：检测候选 overlap filter 的形状、有效性和错误输入合同；
+- `tests/test_sacr_relation_counterfactual.py`：Relation-CF 开关、可训练路径、部署和监督合同；
+- `tests/test_scanrefer_debug_train_holdout.py`：ScanRefer debug train/holdout scene 隔离。
+
+四个测试在服务器原始 `bdetr` 环境中为 `23 passed in 4.03s`；待提交 staged tree 在隔离 `/tmp`
+源码归档中补入服务器已有的 PointNet2 编译扩展后再次得到 `23 passed in 3.94s`。Windows 本地旧 Conda
+环境因缺少 `transformers` 在 pytest 收集阶段中止，不是断言失败，也没有据此增加 fallback、兼容层或额外
+异常分支。本轮没有修改模型、loss、dataset、训练 launcher 或推理路径；代码变化只补齐这 4 个既有测试。
+
+同时完成了一个不访问正式 validation、只读训练标注的可行性审计。普通训练数据中的
+`(scene_id, target_id)` 已天然形成同一目标的多描述组：
+
+| 数据集 | Train rows | 同目标组 | 多描述覆盖 | 描述/线索多样性 |
+|---|---:|---:|---:|---:|
+| Nr3D | `32919` | `4664` | `32919/32919 = 100%` | `4112/4664 = 88.1647%` 组在空间/颜色/形状/目标线索上有差异 |
+| Sr3D | `65846` | `6993` | `65846/65846 = 100%` | `5576/6993 = 79.7369%` 组在关系/粗关系/anchor 上有差异 |
+| ScanRefer | `36665` | `7875` | `36618/36665 = 99.8718%` | 每组最多 5 条自然描述，重复文本仅 4 行 |
+
+这只证明三数据集都具备用**相同训练机制**利用自然多描述监督的输入条件，不是 REC 提升证据。它不需要
+dataset ID、Unique/Multiple 标签、spaCy sidecar、GT-derived anchor sidecar，也不改变单描述推理路径。
+独立方法评审暂时把 `Target-ID Listwise Sibling Consistency` 与
+`Sibling-Inconsistent Distractor Penalty` 列为信息价值较高的两个候选：前者约束同一目标不同描述下的
+Top-K 候选分布，后者用同目标描述间不一致的错误赢家构造训练期 hard negative。二者仍可能分别被解释为
+普通 consistency distillation 或 hard-negative mining，故当前**没有选定最终方法、没有新增实现、没有授权
+GPU mini-fold**；必须先完成严格查新与重复性/新颖性边界审计。
+
+`20:27 CST` 训练现场仍无 Nr3D/Sr3D trainer，也没有可提前衰减的学习率。独立 ScanRefer ablation
+`05_rapf_no_query_quality` 已结束 E10 验证并进入 E11，日志到 `E11 1000/2027`；它不属于当前
+Nr3D/Sr3D 严格目标，本轮没有修改其 LR、进程、权重或输出。
+
+后续建议技能与顺序：先使用 `novelty-check` 对上述自然多描述候选做正式查新；只有候选通过后，再使用
+`experiment-plan` 固定一个未消费 train-scene split、单一机制和不超过 2 GPU 小时的可证伪审计；实际运行
+才使用 `run-experiment`/`monitor-experiment`。不得由本节恢复 baseline 公平复现、旧章节七/八、E0--E7、
+FPR/A-V4、CENS、Relation-CF 或 Density-Aware 路线。

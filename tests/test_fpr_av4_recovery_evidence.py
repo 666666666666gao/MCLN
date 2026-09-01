@@ -86,6 +86,51 @@ def test_zero_step_proof_rejects_any_later_positive_progress_counter():
         )
 
 
+def test_failed_runtime_selection_requires_verifier_only_counterfactual_flags():
+    verifier = _load_verifier()
+    config = {
+        "use_parent_relative_text_verifier": True,
+        "parent_relative_text_verifier_train_only": True,
+        "parent_relative_text_verifier_counterfactual_training": True,
+    }
+    command = " ".join((
+        "python train_dist_mod.py",
+        "--use_parent_relative_text_verifier",
+        "--parent_relative_text_verifier_train_only",
+        "--parent_relative_text_verifier_counterfactual_training",
+    ))
+    verifier._verify_failed_runtime_selection(config, command)
+
+    for missing in tuple(config):
+        changed = dict(config)
+        changed.pop(missing)
+        with pytest.raises(ValueError, match="verifier-only config"):
+            verifier._verify_failed_runtime_selection(changed, command)
+    for missing in tuple(command.split()[2:]):
+        changed = " ".join(
+            token for token in command.split() if token != missing
+        )
+        with pytest.raises(ValueError, match="verifier-only command"):
+            verifier._verify_failed_runtime_selection(config, changed)
+
+
+def test_failed_train_mode_selection_must_precede_sentinel_and_forward():
+    verifier = _load_verifier()
+    mode_call = "        self._set_source_moe_train_mode(model, args)\n"
+    sentinel = "        self._capture_fpr_audit_sentinel(\n"
+    forward = "        end_points = model(inputs)\n"
+    prefix = "class BaseTrainTester(object):\n    def train_one_epoch(self):\n"
+    suffix = "    # BRIEF eval\n"
+    verifier._verify_train_mode_selected_before_forward(
+        prefix + mode_call + sentinel + mode_call + forward + suffix
+    )
+
+    with pytest.raises(ValueError, match="not selected before forward"):
+        verifier._verify_train_mode_selected_before_forward(
+            prefix + mode_call + sentinel + forward + mode_call + suffix
+        )
+
+
 def test_frozen_failure_evidence_declares_no_training_artifacts():
     evidence = json.loads(EVIDENCE_PATH.read_text(encoding="utf-8"))
     assert evidence["schema"] == (

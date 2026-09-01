@@ -161,6 +161,52 @@ def _verify_zero_step_control_flow(main_raw, launch_raw):
             raise ValueError("failed launch unexpectedly progressed: " + forbidden)
 
 
+def _verify_failed_runtime_selection(config, command_text):
+    """Bind the frozen failure to the verifier-only counterfactual branch."""
+    if not isinstance(config, dict):
+        raise ValueError("failed config must be an object")
+    required_config = {
+        "use_parent_relative_text_verifier": True,
+        "parent_relative_text_verifier_train_only": True,
+        "parent_relative_text_verifier_counterfactual_training": True,
+    }
+    for key, expected in required_config.items():
+        if config.get(key) != expected:
+            raise ValueError("failed verifier-only config changed: " + key)
+    if not isinstance(command_text, str):
+        raise ValueError("failed command must be text")
+    for fragment in (
+            "--use_parent_relative_text_verifier",
+            "--parent_relative_text_verifier_train_only",
+            "--parent_relative_text_verifier_counterfactual_training"):
+        if fragment not in command_text.split():
+            raise ValueError(
+                "failed verifier-only command changed: " + fragment
+            )
+
+
+def _verify_train_mode_selected_before_forward(main_text):
+    """Prove the verifier-only mode setter ran before sentinel and train forward."""
+    train_start = main_text.index("    def train_one_epoch(")
+    train_end = main_text.index("    # BRIEF eval", train_start)
+    train_text = main_text[train_start:train_end]
+    mode_call = "self._set_source_moe_train_mode(model, args)"
+    call_positions = [
+        match.start() for match in re.finditer(re.escape(mode_call), train_text)
+    ]
+    sentinel_position = train_text.index(
+        "self._capture_fpr_audit_sentinel("
+    )
+    forward_position = train_text.index("end_points = model(inputs)")
+    if (
+            len(call_positions) < 2
+            or not call_positions[0] < sentinel_position
+            or not sentinel_position < call_positions[1] < forward_position):
+        raise ValueError(
+            "failed verifier-only train mode was not selected before forward"
+        )
+
+
 def _verify_first_batch_failure_is_input_independent(
         main_raw, mcln_raw, verifier_raw):
     """Prove the frozen bug must fail on the first yielded training batch."""
@@ -182,6 +228,7 @@ def _verify_first_batch_failure_is_input_independent(
         raise ValueError("failed train-mode contract changed")
     if "unwrapped.training = True" in mode_text:
         raise ValueError("failed train mode unexpectedly enabled MCLN root")
+    _verify_train_mode_selected_before_forward(main_text)
 
     required_mcln_fragments = (
         "verifier_parent_scores = parent_scores",
@@ -322,6 +369,7 @@ def verify_failed_attempt(evidence_path, expected_evidence_sha256,
         raise ValueError("failed pre-audit provenance changed")
 
     command_text = raw_by_relative["train_command.txt"].decode("utf-8")
+    _verify_failed_runtime_selection(config, command_text)
     for fragment in (
             "--max_train_batches 100", "--start_epoch 58", "--max_epoch 58",
             "--parent_relative_text_verifier_counterfactual_training"):

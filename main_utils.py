@@ -146,6 +146,15 @@ def is_counterfactual_parent_bounded_audit(args):
     )
 
 
+def _optional_test_dataset_size(args, test_loader):
+    """Return the test size, or None only for the bounded train-only audit."""
+    if test_loader is None:
+        if not is_counterfactual_parent_bounded_audit(args):
+            raise ValueError("only the bounded train-only audit may omit test")
+        return None
+    return len(test_loader.dataset)
+
+
 def save_eval_metrics_receipt(log_dir, epoch, metrics):
     """Atomically persist the exact evaluator counters for one checkpoint."""
     if metrics is None:
@@ -5972,8 +5981,14 @@ class BaseTrainTester:
                     optimizer_steps_per_epoch,
                 )
             )
-        n_data = len(test_loader.dataset)
-        self.logger.info(f"length of testing dataset: {n_data}")
+        n_data = _optional_test_dataset_size(args, test_loader)
+        if n_data is None:
+            self.logger.info(
+                "testing dataset disabled for counterfactual Parent bounded "
+                "audit"
+            )
+        else:
+            self.logger.info(f"length of testing dataset: {n_data}")
 
         # Get model
         model = self.get_model(args)

@@ -179,6 +179,24 @@ def test_bounded_counterfactual_loader_does_not_build_test_loader(monkeypatch):
     assert test_loader is None
 
 
+def test_bounded_counterfactual_main_logging_accepts_missing_test_loader():
+    import main_utils
+
+    args = types.SimpleNamespace(
+        parent_relative_text_verifier_counterfactual_training=True,
+        max_train_batches=100,
+    )
+    assert main_utils._optional_test_dataset_size(args, None) is None
+
+    args.parent_relative_text_verifier_counterfactual_training = False
+    try:
+        main_utils._optional_test_dataset_size(args, None)
+    except ValueError as error:
+        assert "bounded train-only audit" in str(error)
+    else:
+        raise AssertionError("non-audit path accepted a missing test loader")
+
+
 def test_bounded_counterfactual_dataset_skips_validation_construction(
         monkeypatch):
     import train_dist_mod

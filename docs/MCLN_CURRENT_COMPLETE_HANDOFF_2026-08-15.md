@@ -12898,3 +12898,47 @@ auxiliary loss 改善而 held-out Top-1 REC@0.25 不改善。
 ablation row，不替代受保护 ScanRefer V99/V113 正式最好，也没有证据允许改变该 run 的学习率。当前正式最好与
 严格目标保持不变：Nr3D `4475/7899=56.6527%`，距至少 `4740` 还差 `265 hits`；Sr3D
 `12139/17726=68.4813%`，距至少 `12214` 还差 `75 hits`。
+
+### 20.15 Nr3D 视角文本增强错配：已确认并最小修复（2026-09-01 21:14 CST）
+
+在继续排查“为什么 ScanRefer 较好而 Nr3D 明显低于目标”时，确认了一个独立于 Gate、parser 和新网络模块的
+真实训练数据缺陷。`src/joint_det_dataset.py::_augment_nr3d()` 原实现使用大小写敏感的
+`' ' + rel + ' '` 子串匹配，且只在 utterance 末尾补空格；`_is_view_dep()` 又直接对原字符串调用
+`split()`。因此以下真实 Nr3D 表达没有被识别为 view-dependent：
+
+```text
+Facing the whiteboard, choose the lamp on the right.
+Looking at the books, choose the book on the left.
+The chair is on the left.
+```
+
+这些样本会错误进入随机 `90-degree rotation + axis flip` 分支，而文本中的 left/right/front/facing/looking
+语义没有同步变换，形成可重复的文本--场景监督错配。该问题不是词表是否足够大的假设：只使用原代码已有的
+十个视角词，对原始 Nr3D CSV 与正式 train/test scene split 做只读审计即得到：
+
+| Split | Rows | 旧实现禁止大旋转 | 同词表规范化后禁止 | 旧实现漏检 | 漏检占全部行 | 漏检占含视角词行 |
+|---|---:|---:|---:|---:|---:|---:|
+| Train | `32919` | `10152` | `12307` | `2155` | `6.5464%` | `17.5104%` |
+| Test diagnostic | `7899` | `2223` | `2705` | `482` | `6.1020%` | `17.8189%` |
+
+最小修复仅做两件事：`_is_view_dep()` 用 `re.findall('[a-z]+', utterance.lower())` 生成英文词 token；
+`_augment_nr3d()` 精确复用该判断并取反。没有扩充词表、没有 parser/spaCy、没有 dataset-sidecar、没有新增
+fallback/try-except/兼容层，也没有修改网络、loss、候选、推理或 Sr3D 的 `VIEW_DEP_RELS` 路径。修复后
+train/test 分别恰好有 `2155/482` 行由“允许”改为“禁止”，反向变化均为 `0`。
+
+回归闭环：
+
+1. 新测试 `tests/test_nr3d_view_augmentation.py` 在旧实现上稳定得到 `3 failed, 2 passed in 2.33s`；
+2. 同一测试对补丁后的单一隔离源码树得到 `5 passed in 2.47s`；
+3. 补丁后的完整相关集合
+   `dataset V99 + REC filter + Relation-CF + ScanRefer holdout + dataset contract + SACR structured + new test`
+   得到 `51 passed in 3.45s`；
+4. 第一次把新测试与服务器旧源码混在同一 pytest 进程的组合因 Python 模块缓存看见旧函数，不作为绿灯；
+   最终结果来自当前 GitHub HEAD 归档覆盖补丁后的单一源码树。
+
+这项修复保持 ScanRefer/Nr3D/Sr3D 网络架构完全一致，只纠正 Nr3D/ScanRefer 自然语言增强的文本边界判断；
+它有望改善 Nr3D view-dependent 与同类消歧样本，但当前尚无 REC 提升证据，不能把 `2155` 条受影响训练行直接
+换算为命中数。两台已登记 GPU 当前分别运行独立 ScanRefer 消融，故没有热替换服务器源码，也没有启动 Nr3D
+训练。待资源释放后，只允许先做同起点、同 train-scene split、同 batch/step 的 old-vs-fixed 短审计；不访问
+7,899-row formal validation，不搜新词表、LR、epoch 或增强概率。fixed 必须在 held-out train scenes 的
+REC@0.25 为正、REC@0.50 非负且 view-dependent 子集明确改善，才允许进入三数据集同架构训练验证。

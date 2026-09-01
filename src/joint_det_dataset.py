@@ -20,6 +20,7 @@ import json
 import multiprocessing as mp
 import os
 import random
+import re
 from six.moves import cPickle
 
 import numpy as np
@@ -1492,7 +1493,7 @@ class Joint3DDataset(Dataset):
             'front', 'behind', 'back', 'left', 'right', 'facing',
             'leftmost', 'rightmost', 'looking', 'across'
         ]
-        words = set(utterance.split())
+        words = set(re.findall(r'[a-z]+', utterance.lower()))
         return any(rel in words for rel in rels)
     
     @staticmethod
@@ -1509,15 +1510,7 @@ class Joint3DDataset(Dataset):
     @staticmethod
     def _augment_nr3d(utterance):
         """Check whether to augment based on nr3d utterance."""
-        rels = [
-            'front', 'behind', 'back', 'left', 'right', 'facing',
-            'leftmost', 'rightmost', 'looking', 'across'
-        ]
-        augment = True
-        for rel in rels:
-            if ' ' + rel + ' ' in (utterance + ' '):
-                augment = False
-        return augment
+        return not Joint3DDataset._is_view_dep(utterance)
 
     # def _visualize_scene(self, anno, point_cloud, og_color, all_bboxes):
     #     target_id = anno['target_id']

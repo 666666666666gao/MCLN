@@ -13218,3 +13218,96 @@ refinement 均不能作为本工作的主要新颖性。
 ScanRefer 指标。下一项可执行工作仍是 G0：先完成视角增强修复配对因果审计；G0 通过后才建立 Candidate-
 Edge Direct Scorer 的最小 public seam 和测试。两张 GPU 上现有 ScanRefer 消融不属于 CEGD-MCLN，不能拿其
 E15 中间值替代 G1 证据。
+
+
+### 20.19 CEGD-MCLN 代码 seam 审计与 ScanRefer E15 只读回执（2026-09-01 23:40 CST）
+
+#### 20.19.1 最小代码 seam
+
+对当前 GitHub 源码做只读调用链审计后，CEGD 首版不应复用 `DecoderQueryTextAdapter` 的外部 interface。
+该旧 module 已经包含 query-to-token attention、geometry encoder 与 query-set attention，内部计算与 Node
+Evidence 有相似处；但它在最后一层 Decoder 内、最终 box head 之前直接修改完整 288D Query，并通过
+`max_delta*tanh(...)` 输出有界 residual。V132 已证明这个 seam 会同时改变 Box、64D contrastive query 与
+Mask query，因此不符合新主线的 direct-ranking 合同。
+
+新 module 应是一个 in-process deep module，唯一外部 interface 固定为：
+
+```python
+CandidateEdgeDirectScorer.forward(
+    query_features,       # [B, Q, 288]，最后一层 Decoder 原始 Query
+    text_features,        # [B, L, 288]，原始 text memory
+    text_padding_mask,    # [B, L]
+    candidate_boxes,      # [B, Q, 6]，last_center + last_pred_size
+    base_scores,          # [B, Q]，当前 default source score
+) -> dict
+```
+
+Top-K gathering、node cross-attention、pair geometry、latent-anchor distribution、candidate graph 与 monotonic
+quality heads 都封装在 module implementation 内，不向调用者暴露更多浅层 interface，也不创建 parser、
+Anchor adapter 或 dataset adapter。首版 `Q=256/K=32/anchor top-M=8` 固定；输入不含 dataset ID、
+Unique/Multiple、Mask、GT Anchor 或结构化 sidecar。
+
+module seam 放在 `models/mcln.py` 最后一层 `prediction_heads[i]` 已经生成 `last_center/last_pred_size` 之后，
+且在所有旧 REC selector/reranker 之前。它只读 `decoder_query_last`，不覆盖 `query_last`，所以阶段 G1 的 Box、
+Mask、contrastive projection 与 Hungarian matching 保持原样；只有显式启用 CEGD 的 evaluator 使用新分数。
+这满足删除测试：若删除 module，调用端只恢复 base scores，不会把 pair/graph/evidence 逻辑散落回 MCLN forward、
+evaluator 和 loss。
+
+首版返回值只保留训练和部署真正需要的字段：
+
+```text
+candidate_indices [B,K]
+candidate_mask    [B,Q]
+entity_logits     [B,K]
+relation_logits   [B,K]
+p25               [B,K]
+p50               [B,K]，结构上保证 p50<=p25
+pred_iou          [B,K]
+scores            [B,K]，直接 final utility
+anchor_weights    [B,K,M]，只用于 loss/诊断
+```
+
+`MCLN.forward()` 负责把结果发布为 `cegd_*` keys；`models/losses.py` 新增一个 CEGD listwise/quality loss 入口；
+`src/grounding_evaluator.py::_resolve_position_candidates()` 在独立 `eval_use_cegd_scores` 开关下按
+`candidate_indices` gather 同一组 last boxes。Mask selection 将最终 K-axis index 映射回原 Query index，保持
+Box 与 Mask 同 Query。首版不写 fallback、不复用 `selected_source_scores`/`moe_valid_mask` 的旧命名，也不把
+CEGD 接到 SourceMoE/SACR/Parent verifier 后面，避免旧 Gate 语义重新进入新主线。
+
+代码改动顺序固定为：先实现并测试纯 module interface；再接 MCLN 输出；再接 loss；最后接 evaluator。G0 未
+通过前不实现该 module；Local Refiner、四 frame view fusion、decoder 解冻与 Mask 改造不进入同一个首版提交。
+
+#### 20.19.2 machine50630 E15 完整证据与 LR 决策
+
+`05_rapf_no_query_quality` 的 E15 已在服务器 `eval_epoch_15.log` 与 `best_primary.json` 中确认完整。三次同口径
+Top-1 如下：
+
+| Epoch | BBS @0.25 | BBS @0.50 | BBF @0.25 | BBF @0.50 |
+|---:|---:|---:|---:|---:|
+| 5 | `32.9407%` | `16.6912%` | `34.8023%` | `18.4161%` |
+| 10 | `38.7148%` | `21.2558%` | `40.0084%` | `22.3812%` |
+| 15 | `46.0034%` | `27.7030%` | `46.3715%` | `28.7127%` |
+
+E10→E15 的 BBS @0.25/@0.50 继续增长 `+7.2886pp/+6.4472pp`，E5→E15 的 @0.25 累计增长
+`+13.0627pp`；`best_primary.json` 已把 E15 登记为当前该消融最好，精确 score 为
+`0.4600336558687421`。训练在采集时已进入 E16，配置仍为 `lr=1e-4`、`lr_decay_epochs=55,60`，没有 NaN/OOM
+或进程退出证据。该轨迹明显不属于平台期，所以本轮没有提前衰减 LR。
+
+这些是独立 ScanRefer 消融的早期中间值，不替代 ScanRefer V99/V113 正式最好，也不构成 CEGD、Nr3D 或
+Sr3D 证据。
+
+第一次 Windows 定时采集返回 `LastTaskResult=1`，根因已复现：SSH 每次连接输出 known-host warning，
+PowerShell 在全局 `ErrorActionPreference=Stop` 下把该 stderr 当成 terminating `NativeCommandError`，在远端
+SSH 实际退出码可用前终止，因而没有生成文件。该风险已有真实回执，不是假设性 edge case。最小修复只在
+SSH native command 期间临时使用 `Continue` 并以 `$LASTEXITCODE` 判定成功，同时让采集器读取运行时真实
+存在的 `eval_epoch_*.log`，而不是只等待未生成的 `eval_metrics_epoch_*.json`。修复后脚本 PowerShell AST
+解析通过，SHA256 为 `3d487de2f5a3b7d638f476615bee37cdea761c39ca35973c100a129b991b19d7`。
+
+原始只读输出与结构化决定回执保存在：
+
+```text
+C:\Users\gb\.codex\tmp\mcln_50630_e15_20260901.txt
+C:\Users\gb\.codex\tmp\mcln_50630_e15_receipt_20260901.txt
+```
+
+已完成的 `Codex_MCLN_50630_E15_20260901` 任务在证据落盘后删除；machine35608 的 E15 一次性任务仍固定在
+`2026-09-02 01:15 CST`，将使用同一已修复脚本。此前不追加高频 SSH 轮询。

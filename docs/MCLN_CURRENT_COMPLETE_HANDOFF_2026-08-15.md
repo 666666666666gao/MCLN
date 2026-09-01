@@ -1,8 +1,12 @@
 # MCLN 完整实验、代码与优化交接文档
 
-更新时间：2026-09-01（Asia/Shanghai；已固定后续实验排除项与跨数据集硬目标，并完成 Nr3D official REC monitor v3 纠偏）  
+更新时间：2026-09-01 15:20（Asia/Shanghai；A-V4 Counterfactual-Parent 唯一 100-batch recovery 审计已通过，未做正式验证、未保存权重）
 文档性质：单文件完整交接；前半部分是当前结论与执行指南，后半部分保留 V1--V133 全量时间线。  
 安全说明：文档不包含 SSH 密码、API key 或其他明文凭据。远程连接使用用户现有安全配置。
+
+> **阅读优先级（2026-09-01 15:20）**：第 20 章是当前唯一有效的终态快照，覆盖本文件前部仍保留的
+> V133“正在运行”、A-V4“尚未启动”等历史时态。旧章节保留是为了完整审计，不表示对应任务仍在运行。
+> 当前没有 Nr3D/Sr3D 正式训练；只有 Nr3D official REC monitor v3 在后台监控正式回执。
 
 ## 0. 一页结论
 
@@ -12453,3 +12457,134 @@ Unique/Multiple 输入、GT anchor sidecar 和 validation threshold sweep。
 
 最终发布后，GitHub `docs/`、本地和远端主文档必须逐字节 SHA256 一致。以后仍以本文件为唯一综合叙事，
 原始 spec、manifest、receipt、decision 和测试继续作为不可变证据。
+
+## 20. 2026-09-01 终态更新：A-V4 机制审计通过、正式指标未刷新
+
+### 20.1 当前最好指标与硬目标
+
+本轮是 **train-only 机制审计**，没有访问正式验证集，因此三个数据集的公开最好值均未改变：
+
+| 数据集 | 当前正式最好 REC@0.25 | REC@0.50 | 当前硬目标 | 仍缺 |
+|---|---:|---:|---:|---:|
+| ScanRefer | `5572/9508 = 58.6033%` | V99 同系统 `4797/9508 = 50.4523%`；全局最好 V113 `4835/9508 = 50.8519%` | REC@0.25 `>=5610/9508 = 59.00%` | 38 hits |
+| Nr3D | `4475/7899 = 56.6527%` | `3759/7899 = 47.5883%` | 严格 `>60.0%`，操作门槛 `>=4740/7899` | 265 hits |
+| Sr3D | `12139/17726 = 68.4813%` | `10335/17726 = 58.3042%` | 严格 `>68.9%`，操作门槛 `>=12214/17726` | 75 hits |
+
+ScanRefer V99 的三项 Mask 最好仍为 `59.8443% / 52.3349% / 45.9303% mIoU`，均高于用户给出的
+`58.70% / 50.70% / 44.72%` baseline。Nr3D 最新 E59 已完成而非“尚未训练完”，结果
+`4400/7899 = 55.7033%`，低于 E57 最好；Sr3D relation-CF E27/E28 也均低于受保护 E26。
+
+### 20.2 为什么 Nr3D/Sr3D 仍比预期低
+
+当前证据把错误拆成两类，不能再用一个全局 gate 或同一种 loss 混合解释：
+
+1. **排序失败**：Nr3D 的正确框经常已经在 Top-K，但文本条件 Top-1 选错。Top-2/Top-5/Top-16 oracle
+   为 `61.6787% / 69.0974% / 80.3013%`；共有 2,068 条“Top-1 错但 Top-16 有正确候选”。
+2. **Proposal 失败**：另有 1,556 条连 Top-16 都没有正确候选。小体积、低点数目标无法靠 rerank 修复。
+3. **长句与同类干扰**：Nr3D 13+ token Top-1 约 `49.19%`；同类干扰物至少 5 个时约 `45.56%`。
+   颜色、形状、否定、视角和多个参照物的组合使候选间消歧不稳定。
+4. **稀疏小物体**：Nr3D 最稀疏点数 Q1 Top-1 `41.343%`，最稠密 Q4 `61.258%`；`mouse`、
+   `soap dish`、`bottle`、`book`、`toilet paper` 等类别最明显。
+5. **Sr3D 的关系边界**：Sr3D 有显式 anchor，整体优于 Nr3D，但 `back/right/front` 关系仍低，约
+   `42.86% / 50.00% / 53.16%`；最稀疏 Q1 约 `52.456%`，最稠密 Q4 `70.470%`。
+
+代表性低指标场景保持：Nr3D `scene0100_00`、`scene0606_00`、`scene0693_00`、`scene0678_00`、
+`scene0458_00`；Sr3D `scene0553_00`、`scene0084_01`、`scene0690_01`。其中 Nr3D `scene0653_00`
+和 Sr3D `scene0207_02` 有大量“候选存在但排序错误”的可修复样本，分别约 58 与 161 条。
+
+### 20.3 已封存的负结果
+
+- FPR-TV v3 fold3：844 次切换；@0.25 fix/break=`23/38`，净 `-15`；@0.50=`104/283`，净
+  `-179`。路线判负，不在该 fold 上扫 margin、Top-K、loss、LR 或 epoch。
+- Density-Aware Target Box：scene-disjoint 对照在 @0.50 和 matched IoU 有提升，但 @0.25 overall
+  `-10 hits`，不能解决主目标，路线封存且不与 A-V4 组合复活。
+- Sr3D relation-CF：E27/E28 均未刷新 E26，停止继续降 LR、延长 epoch 或调关系阈值。
+- Nr3D E58/E59 hard replay：均未刷新 E57，证明当前分支已经平台，不是“等训练完自然上涨”。
+- 永久排除 baseline 公平复现、原章节/实验七、原章节/实验八及旧 E0--E7 矩阵。
+
+### 20.4 A-V4 Counterfactual-Parent 的唯一 100-batch recovery 结果
+
+首次 one-shot 在第一个 batch 的 backward 后、optimizer step 前因 score-gradient 审计缺失而安全失败；固定证据证明
+`optimizer_steps=0`、无 receipt/decision/权重。修复只做三件事：在 verifier-only+CF 路径打开 MCLN 根
+training bit 但保持冻结子模块 eval；把 actual Parent score axis 构造成 detached differentiable leaf；在 backward
+前 retain actual/CF 两条 score-axis 梯度。科学配置、候选规则、loss、E57、数据和门槛没有改变。
+
+2026-09-01 15:09--15:18，唯一 recovery 通过固定静态入口执行：
+
+```text
+epoch=58
+batch_count=100
+optimizer_step_count=100
+sample_count=1600
+formal_validation_accessed=false
+generated_checkpoint_count=0
+```
+
+关键观测：
+
+| 项目 | 结果 |
+|---|---:|
+| Actual positive-row ratio | `0.0416667` |
+| Counterfactual positive-row ratio | `0.1269394`（约为 actual 的 3.05 倍） |
+| Actual selected-score gradient L1 | `0.00185942` |
+| CF selected-score gradient L1 | `0.00185261` |
+| Global clipped grad norm | `5.419588` |
+| Actual fix/break/neutral pairs per batch | `0.92 / 2.36 / 15.04` |
+| CF fix/break/neutral pairs per batch | `1.74 / 1.79 / 15.49` |
+| CF views per batch | `10.3` |
+| Actual/CF nonfinite count | `0 / 0` |
+| Frozen tensors | `1144` tensors、`149,670,851` elements，SHA 前后完全一致 |
+| Trainable tensors | `52` tensors、`2,510,441` elements，SHA 确实改变 |
+
+所有 13 项机制检查均为 true，`counterfactual_density_gate_passed=true`。A-V4 证明了 counterfactual Parent
+能显著提高正向修复监督密度，同时 actual/CF 两条 score 轴均收到真实梯度；但这仍不是 REC 提升证据。
+
+不可变证据：
+
+```text
+receipt SHA256  = 717cea9e3a34f66610526586ce13022846f06830cfeda5b36c2802b6408c0b4e
+decision SHA256 = aa492439073c60eec8b4cea34538715cc10934f65d53f5f7787e7824b3caec51
+E57 SHA256      = fe1e2047b3c4d5ed0aae3569418abff5a65f5608edcb7f34d01ffab1ee1f6655
+GF SHA256       = 9ff3e25070bf48a0b70240e098a89be6bfd26a92af863e71698a0737fc6e54f2
+launcher SHA256 = 9519c1a11ee295eaa052b191cb6c1213bcda434bad84adc3a222106bf71e802c
+runtime manifest= 7c65debaf544857d129d9d242f9d9d17496db3f647292725b9c67ba5a2d7d825
+```
+
+decision 永久记录 `audit_only=true`、`formal_validation_accessed=false`、
+`long_training_authorized=false`，下一状态仅为 `independent_scene_disjoint_review_only`。它不自动授权 fold4、
+7,899-row 正式验证、Sr3D 或长训。
+
+### 20.5 当前代码与发布状态
+
+本地权威仓库为 `C:\Users\gb\.codex_publish_mcln_20260901_v2`，分支
+`agent/av4-gradient-audit-recovery-20260901`，相对 GitHub `main` 增加四个 recovery 修复提交：
+
+```text
+4f3ab10 Repair A-V4 gradient audit and add zero-step recovery
+5f0ebff Make A-V4 counterfactual audit formally reachable
+fc3429f Bind A-V4 recovery proof to verifier-only runtime
+dc5fddd Correct A-V4 runtime manifest size
+```
+
+本章写入后应把 master 文档、源码与小型审计文本推送到
+`https://github.com/666666666666gao/MCLN`。禁止上传 `.pth/.pt/.ckpt`、训练数据、缓存、归档、SSH 凭据或
+大模型文件。服务器正式 repo 与本地/GitHub 的 master 文档必须逐字节一致。
+
+### 20.6 下一步边界
+
+A-V4 机制门通过后，只允许**独立评审**是否预注册一个尚未消费的 scene-disjoint 短审计。该评审必须固定：
+
+- 从受保护 E57 独立开始；只训练三个 allowlisted FPR 模块；actual/CF 训练开启，部署仍只用 actual Parent；
+- 一个完整 fit epoch、自然尾批、完整 row-identity SHA；只评估 held-out train scenes；不接触 7,899 正式集；
+- 必须至少一次 switch，且 `fix025 > break025`、`fix050 >= break050`；失败立即封存；
+- 不得自动消费 fold4。若后续确需使用任何未消费场景，必须先形成新的固定 spec、launcher、运行时清单、
+  one-shot 根与双轴审查结论，再由独立启动动作执行；
+- 不做 threshold/margin/Top-K/loss/LR/epoch 扫描，不复活 Density-Aware、Relation-CF、SACR deployment、
+  baseline 公平复现、章节七/八或 E0--E7。
+
+### 20.7 单文件交接原则
+
+本文件继续作为唯一完整叙事。仓库中的 `FPR_TV_SPEC_2026-08-31.md`、
+`FPR_TV_COUNTERFACTUAL_PARENT_AUDIT_SPEC_2026-09-01.md`、runtime/data manifest、receipt、decision、
+`V99_ARCHITECTURE.md`、`REC_3DRES_OPTIMIZATION_LOG.md` 和历史 `docs/superpowers/` 计划保留为原始证据；
+后续接手者先读本章，再按 SHA 回查原件，不从旧历史章节恢复已封存路线。

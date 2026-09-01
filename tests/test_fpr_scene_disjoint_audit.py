@@ -156,6 +156,45 @@ def test_legacy_scene_audit_rejects_counterfactual_training():
         _canonical_fpr_scene_disjoint_config_receipt(args)
 
 
+def test_av4_scene_audit_has_distinct_counterfactual_config(monkeypatch):
+    legacy_args = _fixed_config_args()
+    legacy = _canonical_fpr_scene_disjoint_config_receipt(legacy_args)
+
+    av4_args = _fixed_config_args()
+    av4_args.parent_relative_text_verifier_counterfactual_training = True
+    av4_args.fpr_scene_disjoint_av4_audit = True
+    av4 = _canonical_fpr_scene_disjoint_config_receipt(av4_args)
+
+    assert av4["schema"] == "mcln-fpr-tv-av4-scene-fold-config-v1"
+    assert av4["sha256"] != legacy["sha256"]
+    assert av4["fixed_values"][
+        "parent_relative_text_verifier_counterfactual_training"
+    ] is True
+    assert av4["values"]["fpr_scene_disjoint_av4_audit"] is True
+    assert av4["values"][
+        "parent_relative_text_verifier_counterfactual_training"
+    ] is True
+
+    monkeypatch.setattr(
+        main_utils, "FPR_SCENE_DISJOINT_AV4_CONFIG_SHA256", av4["sha256"]
+    )
+    assert build_fpr_scene_disjoint_config_receipt(av4_args) == av4
+
+
+def test_av4_scene_audit_requires_both_explicit_flags():
+    only_counterfactual = _fixed_config_args()
+    only_counterfactual.parent_relative_text_verifier_counterfactual_training = (
+        True
+    )
+    with pytest.raises(ValueError, match="requires explicit A-V4 audit"):
+        _canonical_fpr_scene_disjoint_config_receipt(only_counterfactual)
+
+    only_av4 = _fixed_config_args()
+    only_av4.fpr_scene_disjoint_av4_audit = True
+    with pytest.raises(ValueError, match="requires counterfactual Parent"):
+        _canonical_fpr_scene_disjoint_config_receipt(only_av4)
+
+
 def test_scene_sample_identity_digest_rejects_duplicate_coverage():
     assert fpr_scene_sample_identity_digest([2, 0, 1]) == (
         fpr_scene_sample_identity_digest([0, 1, 2])
@@ -175,6 +214,38 @@ def test_scene_audit_checkpoint_load_binds_same_fd_sha_and_epoch(
     )
     args = SimpleNamespace(
         fpr_scene_disjoint_audit=True,
+        restore_e57_lr_to_initial=False,
+        fpr_scene_disjoint_checkpoint_sha256=checkpoint_sha256,
+        checkpoint_path=str(checkpoint_path),
+    )
+
+    checkpoint = _load_checkpoint_payload(args)
+
+    assert checkpoint["epoch"] == 57
+    assert args.fpr_scene_disjoint_consumed_checkpoint_sha256 == (
+        checkpoint_sha256
+    )
+    assert args.fpr_scene_disjoint_consumed_checkpoint_epoch == 57
+
+
+def test_av4_scene_audit_uses_its_reviewed_e57_identity(
+        monkeypatch, tmp_path):
+    checkpoint_path = tmp_path / "protected-av4-e57.pth"
+    torch.save({"epoch": 57, "model": {}}, str(checkpoint_path))
+    checkpoint_sha256 = hashlib.sha256(checkpoint_path.read_bytes()).hexdigest()
+    monkeypatch.setattr(
+        main_utils,
+        "FPR_SCENE_DISJOINT_AV4_E57_SHA256",
+        checkpoint_sha256,
+    )
+    monkeypatch.setattr(
+        main_utils,
+        "FPR_SCENE_DISJOINT_E57_SHA256",
+        "0" * 64,
+    )
+    args = SimpleNamespace(
+        fpr_scene_disjoint_audit=True,
+        fpr_scene_disjoint_av4_audit=True,
         restore_e57_lr_to_initial=False,
         fpr_scene_disjoint_checkpoint_sha256=checkpoint_sha256,
         checkpoint_path=str(checkpoint_path),

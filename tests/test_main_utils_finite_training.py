@@ -146,6 +146,10 @@ def test_train_one_epoch_returns_exact_finite_loss_means():
             "python_loss": 3.0,
             "total_loss": 2.0,
         },
+        "stat_means": {
+            "mask_loss": 4.0,
+            "python_loss": 3.0,
+        },
     }
     assert optimizer.step_calls == 2
     assert scheduler.step_calls == 2
@@ -174,6 +178,39 @@ def test_train_one_epoch_accepts_one_element_endpoint_loss_tensor():
     }
     assert optimizer.step_calls == 1
     assert scheduler.step_calls == 1
+
+
+def test_av4_scene_receipt_records_exact_optimizer_steps():
+    model = _ScalarModel()
+    optimizer = _CountingSGD(model.parameters())
+    scheduler = _CountingScheduler()
+    args = _args()
+    args.fpr_scene_disjoint_audit = True
+    args.fpr_scene_disjoint_av4_audit = True
+    args.gradient_accumulation_steps = 1
+    args.max_train_batches = 0
+    args.drop_incomplete_accumulation_group = False
+    batches = []
+    for index, value in enumerate((1.0, 3.0)):
+        batch = _batch(value)
+        batch["fpr_scene_audit_sample_index"] = torch.tensor([index])
+        batches.append(batch)
+
+    def criterion(end_points, *_args, **_kwargs):
+        loss = end_points["prediction"]
+        return loss, dict(end_points, loss=loss)
+
+    receipt = _tester().train_one_epoch(
+        58, batches, model, criterion, None, optimizer, scheduler, args,
+    )
+
+    assert receipt["batch_count"] == 2
+    assert receipt["optimizer_step_count"] == 2
+    assert receipt["sample_count"] == 2
+    assert receipt["sample_identity_count"] == 2
+    assert receipt["sample_identity_unique_count"] == 2
+    assert optimizer.step_calls == 2
+    assert scheduler.step_calls == 2
 
 
 @pytest.mark.parametrize("endpoint_loss", [

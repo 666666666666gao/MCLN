@@ -60,8 +60,14 @@ DENSITY_TARGET_BOX_SCENE_AUDIT_E57_SHA256 = (
 FPR_SCENE_DISJOINT_E57_SHA256 = (
     "76aa6cd49ca20a34e78509465f1185b1b9040e60807ad327d6b0876aeb6edba1"
 )
+FPR_SCENE_DISJOINT_AV4_E57_SHA256 = (
+    "fe1e2047b3c4d5ed0aae3569418abff5a65f5608edcb7f34d01ffab1ee1f6655"
+)
 FPR_SCENE_DISJOINT_CONFIG_SHA256 = (
     "f193d6ab0bbadba2a2e3331bb73d53d78ba1d5abf49dbe662c62eec0bb701c35"
+)
+FPR_SCENE_DISJOINT_AV4_CONFIG_SHA256 = (
+    "aaf4d8edc59e99e056f294b4c031467d2570fb43a879099261b4048054ce4177"
 )
 CHECKPOINT_RETENTION_METRICS = (
     "rec_acc025",
@@ -476,6 +482,7 @@ _FPR_SCENE_DISJOINT_DYNAMIC_CONFIG_FIELDS = frozenset({
     # audit explicitly rejects it below, then excludes the false default from
     # the historical canonical byte stream so consumed folds remain exact.
     "parent_relative_text_verifier_counterfactual_training",
+    "fpr_scene_disjoint_av4_audit",
 })
 
 
@@ -502,12 +509,20 @@ def _canonical_fpr_scene_disjoint_config_receipt(args):
         raise ValueError("FPR scene audit config requires test_dataset=nr3d")
     if str(getattr(args, "legacy_scene_graph_cache", "") or ""):
         raise ValueError("FPR scene audit config requires online raw parsing")
-    if getattr(
-            args,
-            "parent_relative_text_verifier_counterfactual_training",
-            False):
+    counterfactual_training = bool(getattr(
+        args, "parent_relative_text_verifier_counterfactual_training", False
+    ))
+    av4_audit = bool(getattr(
+        args, "fpr_scene_disjoint_av4_audit", False
+    ))
+    if counterfactual_training and not av4_audit:
         raise ValueError(
+            "counterfactual Parent training requires explicit A-V4 audit; "
             "legacy FPR scene audits forbid counterfactual Parent training"
+        )
+    if av4_audit and not counterfactual_training:
+        raise ValueError(
+            "A-V4 scene audit requires counterfactual Parent training"
         )
     fixed_values = {}
     for name, expected in _FPR_SCENE_DISJOINT_FIXED_CONFIG:
@@ -526,11 +541,23 @@ def _canonical_fpr_scene_disjoint_config_receipt(args):
     values["dataset"] = ["nr3d"]
     values["test_dataset"] = "nr3d"
     values["legacy_scene_graph_cache"] = ""
+    if av4_audit:
+        fixed_values[
+            "parent_relative_text_verifier_counterfactual_training"
+        ] = True
+        fixed_values["fpr_scene_disjoint_av4_audit"] = True
+        values[
+            "parent_relative_text_verifier_counterfactual_training"
+        ] = True
+        values["fpr_scene_disjoint_av4_audit"] = True
     encoded = json.dumps(
         values, sort_keys=True, separators=(",", ":")
     ).encode("utf-8")
     return {
-        "schema": "mcln-fpr-tv-five-fold-config-v2",
+        "schema": (
+            "mcln-fpr-tv-av4-scene-fold-config-v1" if av4_audit
+            else "mcln-fpr-tv-five-fold-config-v2"
+        ),
         "sha256": hashlib.sha256(encoded).hexdigest(),
         "fixed_values": fixed_values,
         "values": values,
@@ -540,11 +567,16 @@ def _canonical_fpr_scene_disjoint_config_receipt(args):
 def build_fpr_scene_disjoint_config_receipt(args):
     """Validate the one preregistered config shared by all five folds."""
     receipt = _canonical_fpr_scene_disjoint_config_receipt(args)
-    if receipt["sha256"] != FPR_SCENE_DISJOINT_CONFIG_SHA256:
+    expected_sha256 = (
+        FPR_SCENE_DISJOINT_AV4_CONFIG_SHA256
+        if receipt["schema"] == "mcln-fpr-tv-av4-scene-fold-config-v1"
+        else FPR_SCENE_DISJOINT_CONFIG_SHA256
+    )
+    if receipt["sha256"] != expected_sha256:
         raise ValueError(
             "FPR scene audit configuration SHA-256 drifted: {} != {}"
             .format(
-                receipt["sha256"], FPR_SCENE_DISJOINT_CONFIG_SHA256
+                receipt["sha256"], expected_sha256
             )
         )
     return receipt
@@ -1370,6 +1402,13 @@ def parse_option():
         help=(
             'train FPR-TV on four deterministic Nr3D train-scene folds and '
             'evaluate only the held-out train-scene fold'
+        ),
+    )
+    parser.add_argument(
+        '--fpr_scene_disjoint_av4_audit', action='store_true', default=False,
+        help=(
+            'use the separately preregistered A-V4 counterfactual-Parent '
+            'contract for an FPR scene-disjoint audit'
         ),
     )
     parser.add_argument('--fpr_scene_disjoint_fold', type=int, default=-1)
@@ -3385,7 +3424,12 @@ def _load_checkpoint_payload(args):
         expected_sha256 = str(getattr(
             args, "fpr_scene_disjoint_checkpoint_sha256", ""
         ) or "").lower()
-        if expected_sha256 != FPR_SCENE_DISJOINT_E57_SHA256:
+        required_sha256 = (
+            FPR_SCENE_DISJOINT_AV4_E57_SHA256
+            if bool(getattr(args, "fpr_scene_disjoint_av4_audit", False))
+            else FPR_SCENE_DISJOINT_E57_SHA256
+        )
+        if expected_sha256 != required_sha256:
             raise ValueError(
                 "FPR scene audit requires the protected E57 SHA-256"
             )
@@ -6306,6 +6350,9 @@ class BaseTrainTester:
                             )
                 if generated_weights:
                     failures.append("unexpected_checkpoint_output")
+                av4_scene_audit = bool(getattr(
+                    args, "fpr_scene_disjoint_av4_audit", False
+                ))
                 receipt = {
                     "schema": FPR_SCENE_AUDIT_SCHEMA,
                     "epoch": int(epoch),
@@ -6332,11 +6379,20 @@ class BaseTrainTester:
                     "fold_gate_pass": not failures,
                     "gate_failures": failures,
                     "next_stage": (
-                        "await_all_five_folds"
-                        if not failures else "method_correction_only"
+                        (
+                            "independent_review_only"
+                            if not failures else "method_sealed"
+                        )
+                        if av4_scene_audit else (
+                            "await_all_five_folds"
+                            if not failures else "method_correction_only"
+                        )
                     ),
                     "long_training_authorized": False,
                 }
+                if av4_scene_audit:
+                    receipt["audit_only"] = True
+                    receipt["formal_validation_accessed"] = False
                 if dist.get_rank() == 0:
                     save_eval_metrics_receipt(args.log_dir, epoch, metrics)
                     receipt_path = os.path.join(
@@ -7759,6 +7815,9 @@ class BaseTrainTester:
             receipt["sample_identity_sha256"] = (
                 fpr_scene_sample_identity_digest(processed_sample_ids)
             )
+            if bool(getattr(
+                    args, "fpr_scene_disjoint_av4_audit", False)):
+                receipt["optimizer_step_count"] = optimizer_step_count
             if bool(getattr(
                     args,
                     "density_aware_target_box_scene_disjoint_audit",

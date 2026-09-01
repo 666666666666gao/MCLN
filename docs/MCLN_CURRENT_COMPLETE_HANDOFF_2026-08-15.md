@@ -12758,3 +12758,41 @@ C1-C3 + CENS
 本节没有授权 GPU 实验。当前 GPU 仍被独立 ScanRefer ablation queue 占用；Nr3D/Sr3D 没有活动 trainer，
 Sr3D 最新 E27/E28 分别为 `0.68379781/0.57835947` 与 `0.68362857/0.58010832`，均低于受保护 E26
 weight-average `12139/17726=68.4813%`。因此不存在需要继续等待或衰减 LR 的 Nr3D/Sr3D run。
+
+### 20.12 CENS 代码级可实现性审计与 20:02 训练现场（2026-09-01）
+
+本轮没有为了保留新方法名称而直接写 CENS。对当前代码的实际张量和监督来源逐项核验后，CENS 在现有
+输入合同下缺少独立、可审计的 evidence-necessity target：
+
+1. `models/sacr_head.py` 只产生 `target_attr_scores` 与 `relation_anchor_scores` 两类模型预测，并将两者相加为
+   `structured_scores`。`models/parent_relative_text_verifier.py::_structured_evidence()` 只是把这些模型输出及
+   relation geometry signature 拼接成特征；它们不是 GT 定义的“哪类证据对某个候选对必要”标签。
+2. 若再用上述模型自身的分数判断某支路是否必要，训练目标会退化为 self-distillation；若随机移除支路，则只是
+   ordinary branch dropout。这两种实现都不满足 20.11 查新后保留的 C4 定义。
+3. 现有 `build_counterfactual_parent_views()` 改变的是 Parent 身份/score axis，不是 leave-one-evidence-out
+   intervention；不能把它改名解释成 CENS。
+4. 唯一有外部几何依据的 relation 监督已经由 `relation_counterfactual_auxiliary.py` 实现：它用 train-only
+   target/anchor geometry 挖 relation-inconsistent hard negatives。Sr3D E27/E28 已实测均低于受保护 E26；
+   Nr3D 又没有可靠显式 anchor。复制该 loss 再增加 evidence dropout 不会形成新的独立监督。
+5. Nr3D/Sr3D 标注不提供可直接定义候选级颜色、形状等 attribute necessity 的完整真值。为补齐标签而引入
+   人工规则、模型伪标签或 GT-derived anchor sidecar，会分别落入启发式、自蒸馏或已禁止输入合同。
+
+因此当前 CENS 合同判为 **code-level NO-GO**：不新增代码、不启动 mini-fold、不消费 GPU。只有未来获得与模型
+预测独立的 candidate-pair evidence-necessity 标注或等价可验证监督时，才允许重新立项；不能用普通 dropout、
+self-distillation 或既有 relation-CF 冒充。
+
+数据入口也再次核对：当前 ScanRefer、Nr3D、Sr3D 正式最好均读取原始标注并在线调用 legacy
+`Scene_graph_parse`，不是直接使用 `nr3d_spacy.csv/sr3d_spacy.csv`。spaCy sidecar 含预分解及部分人工/GT
+派生字段，直接替换会改变输入合同；而 raw-only conservative parser 的唯一 Nr3D 正式评估为
+`4352/7899`，比当前受保护最好 `4475/7899` 少 123 hits，故解析路径仍保持封存。
+
+`2026-09-01 20:02 CST` 远端现场为：
+
+- Nr3D 与 Sr3D 均无活动 `train_dist_mod.py` trainer，故没有可提前衰减的学习率；
+- Sr3D official monitor 存活，但最新回执仍是 E27/E28，受保护最好仍为 E26 weight-average
+  `12139/17726=68.4813%`；
+- 唯一 GPU trainer 是另一个项目队列的 ScanRefer `05_rapf_no_query_quality`。它在 E10 以
+  `lr_base=1e-4`、`lr_pointnet=1e-3` 完成训练，验证到 `200/397`；该 run 不属于当前 Nr3D/Sr3D
+  目标，本轮没有修改其 LR、进程或文件；
+- 当前硬目标继续按用户后续更新执行：Nr3D 至少 `4740/7899`（严格 `>60.0%`），Sr3D 至少
+  `12214/17726`（严格 `>68.9%`）。现有最好分别还差 265 与 75 hits。

@@ -13583,3 +13583,53 @@ E35→E40 的 BBS @0.25/@0.50 增长 `+0.4417pp/+1.1885pp`，BBF @0.25/@0.50 为
 ```text
 C:\Users\gb\.codex\tmp\mcln_50630_e40_receipt_20260902.txt
 ```
+
+
+### 20.29 停止旧 ScanRefer 队列并切换到 Nr3D G0（2026-09-02 17:13 CST）
+
+用户明确要求停止旧任务并切换到 Nr3D/Sr3D 达标主线。两条仍在运行的 ScanRefer 消融因此不再继续到
+E55/E60，也不再作为 CEGD 或跨数据集消融证据。停止前先核验了进程组身份和当前最好权重，随后仅向对应
+进程组发送 `SIGTERM`；两端均正常退出，没有使用 `SIGKILL`，也没有删除日志或 checkpoint。未来 E45/E35
+监控任务同时删除，避免停止后继续产生无效轮询。
+
+停止时保留状态如下：
+
+| 机器 / 旧实验 | 最后完整节点 | BBS @0.25 / @0.50 | BBF @0.25 / @0.50 | 保留权重 SHA-256 |
+|---|---:|---:|---:|---|
+| machine50630 / `05_rapf_no_query_quality` | E40 | `50.0947% / 34.7602%` | `50.2419% / 35.3071%` | `7fa994d307014f1815ca7948e2fe94d9c22f7693b800c4b876449852244f1a0a` |
+| machine35608 / `12_sacr_no_pairwise_geometry` | E30 | `49.1376% / 31.8784%` | `48.8641% / 32.0993%` | `41fa9c5331d0e4cea8eaaf70256b905cdc537c4be48b996c083a24bc22969432` |
+
+对应终止进程组分别为 machine50630 `PGID 711701`、machine35608 `PGID 622459`。停止后两端
+`train_dist_mod.py` 进程数均为 0；两张 A100 40GB 的显存占用均为 `1 MiB`、利用率为 0%，说明旧队列已
+真正释放，而不是只停掉外层 launcher。
+
+#### 20.29.1 为什么尚未直接启动 G0
+
+GPU 释放后立即执行了 G0 输入闭包核验，发现两项确定性阻塞：
+
+1. 预注册要求的 Nr3D 最好 E57 权重
+   `official_best_rec025_epoch_57_0p56652741.pth`，SHA-256
+   `76aa6cd49ca20a34e78509465f1185b1b9040e60807ad327d6b0876aeb6edba1`，在两台当前实例的约定目录及
+   `/root`、`/home` 定点搜索中均不存在；
+2. 两台机器当前 `/home/gb/new butd/butd_detr-main/MCLN-main` 是为旧 ScanRefer 队列保留的非 Git
+   运行镜像，`train_dist_mod.py`、`main_utils.py` 和 `src/joint_det_dataset.py` 的 SHA 在两端均不一致。
+
+Nr3D CSV 与 GroupFree 初始化在两端存在，GPU 也已经空闲，但缺失锁定权重时改用任意 ScanRefer/Sr3D
+checkpoint，会破坏“同一 Nr3D E57 起点、old/fixed 唯一变量”的配对因果合同；直接在两份不同源码上各跑
+一边同样不可比较。因此本轮没有用替代权重或服务器旧代码强行占卡，G0 保持 `formal validation access=0`、
+`generated persistent weight=0`。
+
+当前切换状态是：
+
+```text
+旧 ScanRefer 队列 = 已停止
+两张 GPU = 已释放
+G0 frozen split = PASS（25768 fit / 7151 holdout）
+G0 source/checkpoint closure = BLOCKED（缺少 SHA 76aa6c...6edba1 的可访问副本）
+CEGD 实现/训练 = 尚未启动，仍严格等待 G0 决策
+```
+
+解除阻塞只需要提供上述受保护 Nr3D 权重的有效服务器路径或重新挂载原 Nr3D 输出盘。权重到位后，应先把
+同一权威代码闭包复制为 old/fixed 两个只读快照，并验证唯一源码差异精确等于提交 `5213822` 的
+`src/joint_det_dataset.py` 修复；然后才运行一次冻结的 VA1/VA2 配对审计。不得改用其他 checkpoint、重新选
+salt/fold，或访问 7,899-row formal validation 绕过该门。

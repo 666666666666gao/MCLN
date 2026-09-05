@@ -335,7 +335,9 @@ class BiEncoderLayer(nn.Module):
         """Forward pass, feats (B, N, F), masks (B, N), diff N for V/L."""
         # STEP 1. Self attention for vision
         if self.self_attention_visual is not None:
-            global_feats=torch.max(text_feats,dim=1)[0]
+            global_feats = text_feats.masked_fill(
+                text_padding_mask.unsqueeze(-1), -float('inf')
+            ).max(dim=1)[0]
             vis_feats = self.self_attention_visual(
                 vis_feats,
                 vis_feats,
@@ -477,7 +479,9 @@ class BiDecoderLayer(nn.Module):
         query_pos = query_pos.transpose(0, 1)
 
         # step 1. self-attention
-        global_feats=torch.max(lang_feats,dim=1)[0]
+        global_feats = lang_feats.masked_fill(
+            text_key_padding_mask.unsqueeze(-1), -float('inf')
+        ).max(dim=1)[0]
         query2=self.self_attn(
                 (query + query_pos).transpose(0, 1),
                 (query + query_pos).transpose(0, 1),

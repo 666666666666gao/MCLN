@@ -14746,3 +14746,47 @@ R1的Box候选未更新，说明严格下降主要是改选与GT重叠较低的�
 不复活Source Selector、FPR/A-V4、Density Gate、alpha扫描或已取消的baseline长训。
 本轮属于实质进展：R1完整失败结果封存、M2条件Mask短板进一步定位；三数据集目标仍active、
 未达成，正式Nr3D仍4475/3759，ScanRefer/Sr3D保护指标保持不变。
+
+
+### 20.46 M3原生Mask监督/梯度完成：索引连接正常，继续隔离superpoint邻域读取（2026-09-05 19:43 CST）
+
+M3 controller exit0；16条预先选定fit表达/16场景，CSV顺序与原P2/R1场景划分不变，
+4个B4 forward、8次autograd.grad、零optimizer/权重写入/验证行。模型eval、无增强、
+seed0，保留实际requires_grad和原生计算图，没有注入新leaf或替换Hungarian索引。
+计时27.473553秒不含dataset初始化，峰值allocated 7398736384 bytes。
+612源码/36数据/保护checkpoint前后校验通过，全部parameter/buffer相等、.grad未积累。
+
+16/16条raw Query Mask的直接非零梯度支持集等于实际单个matched Query。合法Box>.5
+共有104个Query，其中88个没有直接Mask梯度；这符合一对一匹配，并非索引bug。
+不能据此直接加多正例监督：历史V44候选Mask监督已经存在，要结合其目标冲突和失败记录。
+16个matched Box均>.5，但matched raw Mask只有10个>.5。matched Query与native REC/Mask
+选择9/16一致、7/16不同；这是小批训练数据，不能外推验证成功率。
+
+x_query六个参数、x_mask六个参数、rel_encoder四个参数在全部4批都有非零Mask梯度；
+最终Decoder Query、共享seed投影均连通。末层Box head的24个参数与此Mask loss不直接连通，
+但仍受原grounding loss训练，不能说Box没有梯度。matched Query两种梯度余弦6/16为负，
+范围[-.166484,.141356]；eval模式小样本不证明整体训练冲突，不据此扫loss权重/梯度修正。
+Query投影与SP特征的原einsum逐元素重建raw Query logits通过。
+
+302个多数前景SP中66个所取邻居没有目标seed中心，其中35个集中在fit row15。
+这里仍是seed中心身份代理，不是感受野覆盖。M3只保存计数，未保存实际邻居ID/距离，
+因此还不能说明66个是空球还是邻居属于其他实例。
+实际super_grouper为radius=.2、nsample=2的ball query，并非KNN；
+CUDA按seed索引顺序取半径内前两个、只有一个时重复首个。C++输出初值为0，
+半径内全无seed时两个索引仍为0，随后读取seed0特征并加相对坐标编码。
+这是源码行为，尚未由M3量化真实前景受影响比例，不能直接归因为baseline差距。
+
+M3代码/预注册已推cb9fd44；终态报告docs/NR3D_MASK_SUPERVISION_PROBE_RESULT_2026-09-05.md，
+完整receipt/summary/log/exit在refine-logs/mask_supervision_probe_20260905_v1/。
+receipt SHA b6b7b1d7903f766c0f54f576c33641d89d60e455d0e5b5159db0680d1bba163f。
+CPU2测试通过、远端Py3.7编译通过。19:25:58无M3/R1/M2进程、GPU1MiB/0%。
+
+下一项M4只使用相同16条fit行/输入hash，记录实际球邻居/最近邻居索引与距离，
+比较原球查询和直接最近2个seed，保留rel_encoder/maxpool/权重/Query评分/阈值。
+先用当前CUDA扩展合成样例核验空球行为，再做8个eval forward；无训练/验证/扫K或半径。
+需要逐元素确认Box、评分、Query、共享投影与采样未变。它是预训练分布下的推理干预，
+即使16行Mask升高也不替换保护模型；若确认真实前景局部读取问题，后续需同起点、
+同数据、同更新步数的原grouper训练控制组。M4代码已实现，CPU2测试1.28秒通过，
+Py3.7编译通过，input manifest SHA8c5d1b718a33b42cf84639d3782259f31a548638acbf29a6be42065eb5923bbc，
+尚未启动GPU。这不同于已失败V48/V105的冻结Mask残差头，也未证明训练优于原网络。
+三数据集目标仍active未达成，Nr3D保护仍4475/3759，ScanRefer/Sr3D原结果保持。

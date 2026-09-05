@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 19:04 CST. Detailed evidence: master §§20.37–20.45.
+Updated: 2026-09-05 19:43 CST. Detailed evidence: master §§20.37–20.46.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -10,6 +10,8 @@ Updated: 2026-09-05 19:04 CST. Detailed evidence: master §§20.37–20.45.
 | P1 official-path diagnostic | Complete; native row/CSV/source/weight checks PASS | Current-source REC4478/3763 differs slightly from history4475/3759; no promotion. Full256 misses426; legal candidates exist for2995 current errors. Mask/CSV/SP analyses complete |
 | R1 reference-memory four-arm screen | Complete;6687 updates per arm and6172 holdout rows; integrity PASS | All three object_pair screens FAIL; PR#9 sealed, no Decoder or control promotion |
 | M2 native Mask-branch diagnosis | Complete;7899 rows,zero updates; native/source/data/state checks PASS |767/828 majority-label-pass failures also lack passing raw Masks; inspect Mask learning/alignment before fusion changes |
+
+| M3 native Mask supervision/gradient probe | Complete;16 fit rows,4 forwards,8 gradient probes,zero updates | Native matched-Query indices and gradients correct;66/302 majority SP neighborhoods lack target seed centers; locality still needs distances |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -36,4 +38,6 @@ CPU Mask-target audit complete (zero model forwards/updates): majority GT-label 
 
 M2 native Mask-branch diagnostic COMPLETE, controller/analysis exit0,7899 rows,717.419s. Fixed828 majority-label-pass cases split767 bothrawbranchesfail +61 eitherrawbranchpasses; requiring a legal Box>.5 reduces passes to40. Direct raw-Query replacement at native Mask selection gives+4/-4 hits and only+0.0044pp mIoU, not adopted. All source/data/state/native checks pass; aggregates equalP1. Last11 rows have explicitly retained Box numeric/raw-size differences, unchanged Query identities/Mask IoUs, cause not isolated. Report `docs/NR3D_MASK_BRANCH_DIAGNOSTIC_RESULT_2026-09-05.md` and full terminal evidence. No new model or formal best.
 
-Next bounded work is a training-data-only audit of actual Hungarian-matched Query Mask supervision, gradients and feature projection/SP representation. Code already uses the matched Query index; a simple indexing bug is not established. This follow-up is not implemented or running yet. This diagnostic does not justify a new Mask head, fusion-weight sweep, failed R1 Decoder change or canceled long baseline run; the next structural experiment needs a concrete mechanism and matched control. Protected three-benchmark objective remains active/unmet.
+M3 COMPLETE with original Hungarian indices/native autograd, no indexing or disconnected Mask-projection bug. Good legal Box Queries104, direct Mask gradient absent on88; normal one-to-one objective, not automatic evidence for extra labels. All16 matched Boxes>.5,10 matched raw Masks>.5. M3 receipt b6b7b1d7903f766c0f54f576c33641d89d60e455d0e5b5159db0680d1bba163f. Report docs/NR3D_MASK_SUPERVISION_PROBE_RESULT_2026-09-05.md.
+
+M4 next compares actual original ball-query neighborhoods with nearest-two on the same16 fit input hashes; code and CPU2 tests PASS, GPU not started. Existing ball query takes the first2 in radius.2 and leaves seed0 indices on empty neighborhoods. Real foreground empty-neighborhood frequency is not established yet. No fusion/threshold sweep or protected-model change. A subsequent locality training trial needs an original-grouper matched control, not just16-row inference gains. R1/P2 remain sealed and the three-benchmark objective active/unmet.

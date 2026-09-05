@@ -14277,3 +14277,50 @@ pair文本、几何、null与最终score均收到有限非零梯度。仅对分�
 这只证明接入/梯度成立，未评估随机头准确率。P2训练合同与训练尚待独立实施；后续必须同候选、
 同数据/步数，排除无合格框正例，并同时报告相对global控制及受保护模型的修复/破坏。
 Sr3D与ScanRefer受保护结果未被更新，原目标继续未完成。
+
+
+### 20.38 独立P2关系读出对照已登记并启动（2026-09-05 14:31 CST）
+
+这接续用户后续提出的候选对关系方案，不改写G0 FAIL或恢复已封存的增强性能路线。
+P2合同先于split counts/新头训练结果推送：PR #8 commit `bf2a6b5`；
+计划`docs/NR3D_PAIR_READOUT_P2_PLAN_2026-09-05.md`，固定实现
+`scripts/nr3d_pair_readout_contract.py`。runner在`bf2548d`，汇总脚本在`8c290d7`。
+
+固定salt `MCLN-NR3D-PAIR-READOUT-V1-20260905`，sha256(salt+NUL+scene)前8位mod5、fold0留出。
+随后只读census得到fit 413 scenes / 26,747 rows，SHA
+`428529560b2448b703b93d0ddf8f0189d67926f08af37d950c81fa62e8c5cb0e`；
+holdout 98 scenes / 6,172 rows，SHA
+`9779029dda18400db707833707835d6146c0f7978bff9ec5f3abebfa79562256`。场景无交集、并集32,919行。
+这仅是新头留出；原checkpoint已见过这些train scenes，不能称为全系统新场景泛化。
+
+两组读取同一次冻结骨干forward：保护平均权重不变、fixed_source不变、augment=False、eval模式；
+相同288维Query、text_memory、final box、合法Default Top32及完整合法记忆+null。
+共同空间层加载原最后一层权重，其他共有模块seed9一致。只训练global/pair两头，batch4、
+AdamW lr=1e-4 / wd=1e-4 / clip=1，无scheduler/dropout；完整单轮6,687批，随后6,172行1,543批一次评估。
+目标分布仅在合法且root IoU>.25候选上按IoU分配；未覆盖行不造正例，整批未覆盖则两组共同跳过更新。
+final scalar logit是唯一新决策分数；不混base residual/gate。保存两份最终addon头，不覆盖保护权重。
+
+机制筛选：pair-global总体@.25净增、@.50非负，且raw token>=13与distractor>=2两组@.25净增。
+实用筛选：pair-protected总体@.25净增、@.50非负，Mask mIoU不低于原Mask选择。
+两门及完整性均通过才可进入有限Decoder实验；单seed短测不是显著性或正式验证证明。
+不做中途holdout、选择epoch或阈值/LR扫描。代码决定的formal_promotion始终False。
+
+CPU合同测试5项通过（0.06 s）；首次CPU准备发现scripts为namespace package，修正其附加路径
+构造后重新执行，错误阶段未启动GPU、未更新参数；没有新增兼容fallback。
+输入manifest `PAIR_READOUT_TRAIN_INPUT_20260905.json` SHA
+`7a6d276f4c9bd745bc5d28fd7e7b12803a6a9dd485c2cddd7ae1d1d7aa701535`，绑定全部运行源码和既有P1回执。
+
+单批GPU检查通过：固定首批fit IDs [11305,5872,16239,8063]均覆盖；global/pair loss
+3.25405/3.25867，梯度范数9.07508/9.22525。只有backward，0更新、0权重、0留出，
+峰值torch分配1,674,411,008 bytes。完整文本/场景初始化耗时约9分钟，单批阶段4.009秒。
+回执`PAIR_READOUT_TRAIN_SMOKE_20260905.json`及`PAIR_READOUT_TRAIN_PREFLIGHT_20260905.json`在PR #8。
+
+14:28:37 CST取得共享GPU锁并启动完整任务：screen `9428.mcln_p2_global_pair_train`，Python PID9430。
+远端addon `PAIR/pair_readout_train_v1`，日志`training.log`，结果仅写新`results/`。
+启动回执`PAIR_READOUT_TRAIN_LAUNCH_20260905.json`。此时正在初始化，尚无完成指标。
+粗估约1小时；计划14:40首次读取100批吞吐后更新ETA，再按完成窗口检查，不高频轮询。
+
+终局汇总脚本`summarize_nr3d_pair_readout.py`要求complete回执与逐行文件SHA一致，才输出
+过滤前后Top16/32/64/256、四类覆盖/排序失败、条件Mask质量与对象可用性代理。它不读取半程结果选模型。
+PR #7描述已用identity实证纠正raw轴解读，代码仍9eb9442、draft未合并；P2未采用该pooling补丁。
+所有正式三数据集最佳指标仍沿用§20.37之前受保护结果，本轮目标未完成。

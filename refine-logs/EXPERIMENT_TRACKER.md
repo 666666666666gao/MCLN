@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 16:56 CST. Detailed evidence: master §§20.37–20.41.
+Updated: 2026-09-05 17:35 CST. Detailed evidence: master §§20.37–20.42.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -18,7 +18,7 @@ represent the official validation failure distribution.
 Raw P2 results and independent checks are in PR #8:
 `refine-logs/p2_readout_v1_20260905/`. On the server, both final addon heads are
 archived at `/root/autodl-tmp/mcln_g0_view_pair_20260905/pair_readout_train_v1/results/`.
-P2 and the separate P1 native evaluation have ended; GPU is idle. No protected model
+P2 and the separate P1 native evaluation have ended; GPU now runs R1. No protected model
 was replaced, no P2 formal validation ran, and the three-benchmark objective
 is still incomplete. Nr3D protected REC remains 4475/3759 on 7899 rows.
 
@@ -28,4 +28,4 @@ numerical inputs changed by the continuous worker RNG. G0's auxiliary logging
 defect did not affect its independently checked per-row decision.
 
 Completed P1 report: `docs/NR3D_OFFICIAL_CANDIDATE_AUDIT_RESULT_2026-09-05.md`.
-Next: inspect existing object-feature reference memory on training inputs before specifying another single-change relation trial. P2 v1 remains sealed; no new training started. The raw-token field label correction is authoritative in `enrichment.json`.
+Existing Decoder object-memory input audit completed on four fit rows: 190 object slots, 38 covered by Queries, 155 correct predicted classes; not GT text-anchor recall. R1 four-arm reference-memory/readout control started at 17:35 after all CPU and real-fit zero-update checks passed. Fixed primary object_pair; all three advancement screens required. Draft PR #9 holds the pinned plan, implementation and receipts. No R1 result yet; P2 v1 remains sealed. The P1 raw-token field label correction is authoritative in `enrichment.json`.

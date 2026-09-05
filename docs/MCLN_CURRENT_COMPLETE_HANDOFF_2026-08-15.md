@@ -14502,3 +14502,67 @@ lossless gzip1468026bytes，SHA `3d63076f4de2aff1cfb37bd589a20cc2cac433ef477c908
 receipt SHA `dbd5add98282a632e6648251046c73e3892c170910909917f2476b882e3393cf`；
 independent_verification SHA `e1151ec616caa56a62067558f80d86bc8ea8bf8f5beacad53562e48a76d16cdd`。
 模型保护边界、ScanRefer/Sr3D最好与三数据集目标未改变；目前没有GPU作业运行。
+
+
+### 20.42 对象记忆接口已核实，R1四组固定对照通过预检并启动（2026-09-05 17:35 CST）
+
+承接§20.41，不重启已失败的P2 v1，也不将本节写成新正式指标。
+原P2 fit行0/1/3/4的一次冻结forward，实际截取最后Decoder收到的
+detected_feats/detected_mask，与既有对象分支重建结果逐元素相同。
+288D由128D框位置和160D预测类别编码组成，不是独立对象外观池化。
+butd_cls保留原协议允许的实例框输入；GT类别仅用于forward后的准确性审计，
+没有新增GT anchor或GT类别前向输入，不能称为GT-object-free。
+四场景66/31/36/57，共190对象槽；Full256 Query覆盖12/5/7/14，共38；
+目标Top32覆盖8/4/7/13，共32。预测类别正确155，错误35。
+这是对象可用性代理，不是文字参照物的GT recall，更不证明新头有效。
+审计controller.exit=0，零更新、零holdout/official行，保护参数/缓冲区逐项未变。
+报告：docs/NR3D_OBJECT_REFERENCE_INPUT_AUDIT_2026-09-05.md；
+receipt SHA 59a8c6faa1dc8e8cfe5a217b9025f30e2758af5da3bde8eb07cdba40ddfd4fc4。
+
+R1只更换可读取的参照记忆轴，保持原目标Query轴与现有评分函数。
+四臂固定为query_global、query_pair、object_global、object_pair；
+后者预先指定为唯一primary，其余为对照，不允许事后挑一个对照替代失败primary。
+记忆对比在各自readout内参数严格相同：global347953、pair931729；
+global与pair之间仍有参数量差异，不能声称容量匹配消融。
+全四臂共享每批一次保护骨干forward、合法Default Top32、五维中心几何，
+一个未校准最终logit，无Gate/新增Loss/框或Mask更新。
+对象记忆使用实际Decoder既有对象特征/框/有效mask；Query记忆使用完整合法Query。
+
+复用P2既定split与训练配方：26747行/413 fit场景，6172行/98 holdout场景，
+一轮、B4、四worker、无增强、初始化seed9、loader0、eval1000，
+AdamW1e-4、wd1e-4、clip1、dropout0、无scheduler，最终步统一评估。
+holdout只对新增头留出，冻结骨干见过这些train场景；不是全系统新场景泛化。
+监督仍为合法候选IoU>.25的IoU加权listwise CE；无合格框的行不提供排序正例。
+评估按P1已核实的原生mask-before-sort与float64 Mask算术统一，
+不能把Query读出函数等价写成旧P2历史总体数值必然逐项相同。
+
+三个推进门槛预先固定：object_pair相对query_pair及object_global都须
+总体/CSV原始tokens>=13/2+干扰物的REC@.25净增，整体@.50不降；
+另须相对保护输出整体@.25净增、@.50不降、原生保护Mask mIoU不降。
+还须source/state/order/update/原生REC逐行检查通过。即使通过也不是正式晋升，
+只允许下一项有限Decoder实验；失败即封存。所有四臂与修复/破坏均须报告。
+场景整簇bootstrap2000次、seed20260905，用表达数加权；报告记忆效应、
+读出效应、交互项和primary-parent，区间不得更改既定判定门槛。
+
+验证：4项接口CPU测试、2项决策合同测试、1项场景bootstrap测试通过；
+Py3.7编译与两侧split身份SHA通过。实际fit batch行11305/5872/16239/8063
+零更新backward通过，四臂梯度范数约8.04–9.23，loss均有限；
+两种Query读出都与旧实现实际张量输出一致，保护state逐项未变。
+预检真实forward/backward4.50秒，另有全train文本初始化耗时；未评分holdout。
+
+17:35:34启动原始R1训练进程：screen13979 mcln_r1_reference_train，
+外层bash13980、controller13981、Python13983。唯一GPU锁仍为
+/root/autodl-tmp/mcln_v99_backbone_gpu0.lock；启动前GPU1MiB/0%。
+隔离目录/root/autodl-tmp/mcln_reference_memory_train_20260905_v1，
+training.log、train.exit、results/receipt.json为原始进度/终态入口。
+input manifest SHA 83c9d918264e9f1af310fec988e1ede3df7b2439f9ee1dfc9c5737a228710296。
+保护checkpoint及612文件源码仍沿用§20.41锁定版本，不覆盖原源码或权重。
+预计60–75分钟，首个100批里程碑后按实测修正ETA，临近完成再轮询；
+无中间holdout/正式验证，也不依据训练loss切换臂或选择epoch。
+
+独立草稿PR #9：https://github.com/666666666666gao/MCLN/pull/9；
+预注册实现0d51bb7，合同manifest b103cec，固定统计与CPU验证eb01e58；
+详细计划docs/NR3D_REFERENCE_MEMORY_R1_PLAN_2026-09-05.md与
+refine-logs/reference_memory_v1_20260905/证据位于该分支。
+本节状态仅为已启动，没有R1训练结果。Nr3D保护正式4475/3759、
+ScanRefer/Sr3D保护最好不变；三数据集目标仍active且未达到。

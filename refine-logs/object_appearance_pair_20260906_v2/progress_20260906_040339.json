@@ -1,0 +1,33 @@
+{
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "input_manifest.json",
+    "native_preflight_receipt.json",
+    "crop_audit_receipt.json",
+    "protected_baseline_rows.json",
+    "prepare_inputs.py",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "preflight.json"
+  ],
+  "gpu": "10363 MiB, 0 %",
+  "log_tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'lm_head.decoder.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'lm_head.decoder.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "OBJECT APPEARANCE PAIR PREFLIGHT {\"native\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"decoder.5.cross_d.in_proj_weight\": 0.2445789873600006, \"decoder.5.cross_d.in_proj_bias\": 0.05095686763525009, \"decoder.5.cross_d.out_proj.weight\": 0.19631361961364746, \"decoder.5.cross_d.out_proj.bias\": 0.08057138323783875, \"decoder.5.norm_d.weight\": 0.13104672729969025, \"decoder.5.norm_d.bias\": 0.08013705164194107}}, \"appearance\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"decoder.5.cross_d.in_proj_weight\": 0.2445789873600006, \"decoder.5.cross_d.in_proj_bias\": 0.05095686763525009, \"decoder.5.cross_d.out_proj.weight\": 0.19631361961364746, \"decoder.5.cross_d.out_proj.bias\": 0.08057138323783875, \"decoder.5.norm_d.weight\": 0.13104672729969025, \"decoder.5.norm_d.bias\": 0.08013705164194107, \"appearance.point_encoder.0.weight\": 0.0, \"appearance.point_encoder.0.bias\": 0.0, \"appearance.point_encoder.2.weight\": 0.0, \"appearance.point_encoder.2.bias\": 0.0, \"appearance.output.weight\": 0.11207383126020432}}, \"optimizer_steps\": 0, \"zero_outputs_and_shared_gradients_identical\": true, \"trainable_parameters\": {\"native\": 333504, \"appearance\": 374976}, \"learning_rate\": 1e-05, \"weight_decay\": 0.0005, \"clip_norm\": 0.1}"
+  ],
+  "process": "24914 /root/miniconda3/envs/bdetr/bin/python -u scripts/run_nr3d_object_appearance_pair.py --manifest /root/autodl-tmp/mcln_object_appearance_pair_20260906_v2/input_manifest.json",
+  "process_exit": 0,
+  "time_cst": "2026-09-06T04:03:39.146597+08:00"
+}

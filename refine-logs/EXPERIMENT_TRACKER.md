@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-06 03:45 CST. Detailed evidence: master §§20.37–20.65.
+Updated: 2026-09-06 04:06 CST. Detailed evidence: master §§20.37–20.66.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -18,7 +18,7 @@ Updated: 2026-09-06 03:45 CST. Detailed evidence: master §§20.37–20.65.
 | L1 last text-attention key evidence | Complete; 6687 updates per arm; integrity PASS, quality FAIL | REC25 net0 versus both; no formal validation, control promotion or continuation |
 | Point-detail to superpoint Mask | Complete;1024 updates per arm,6172 endpoint; integrity PASS, quality FAIL | detail-native mIoU+.01507pp, detail-start-.09230pp; no continuation or formal promotion |
 | C1 candidate Mask memory reading | Complete;1024 updates/arm,6172 terminal rows; integrity PASS, quality FAIL | memory-native mIoU+0.00134pp, memory-start-0.03621pp; protected formal results unchanged |
-| Raw object point appearance | Native16-row/12-forward preflight PASS;0 updates | Last Query/both semantic paths and native REC loss connected;1024-step paired plan fixed, runner/checks pending |
+| Raw object point appearance | Native preflight PASS;paired v2 launched04:00:37 | 04:03:39 PID24914,first-fit outputs/shared gradients equal;initial6172 evaluation pending;333504/374976 trainable parameters |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -101,3 +101,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-06 03:45 CST authoritative update: object appearance native preflight complete/controller0. Zero-start exact, early Query/sampling/Text Mask/alpha invariant, last Query/Box/semantic/Query Mask paths connected and all5 addon REC gradients finite/nonzero.0 updates/formal rows; no quality claim. Matched object-attention training plan fixed, implementation pending. Master§20.65; goal active.
+
+
+2026-09-06 04:06 CST authoritative update: object appearance paired v2 live after original-Py3.7 compile/7 tests/612 source/724 input checks. V1 preparation stopped on an arithmetic parameter-count error; actual six shared tensors333504 and appearance total374976 verified, no scope/budget change.04:03:39 PID24914,first-fit loss/shared gradients exactly equal, initial evaluation pending. Observer04:20:37 then240s. No terminal or formal result. Master§20.66; goal active.

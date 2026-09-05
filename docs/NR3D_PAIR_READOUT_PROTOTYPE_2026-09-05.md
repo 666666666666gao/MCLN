@@ -1,7 +1,9 @@
 # Minimal candidate-pair relation readout prototype
 
 This is an isolated readout prototype. Its first supervised paired experiment
-was registered and launched on 2026-09-05; no completed result is claimed here. It is not connected to `MCLN.forward`,
+completed on 2026-09-05 and failed both registered P2 screens. See
+[the result report](NR3D_PAIR_READOUT_P2_RESULT_2026-09-05.md). This variant
+is archived and does not advance to Decoder training or formal promotion. It is not connected to `MCLN.forward`,
 the production evaluator. The G0/P1 jobs have now completed. It provides a concrete
 implementation of the user's narrower P2 mechanism comparison, replacing the
 earlier CEGD draft with multiple simultaneous evidence branches.

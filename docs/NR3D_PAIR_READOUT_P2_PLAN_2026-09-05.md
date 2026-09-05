@@ -111,3 +111,11 @@ They do not change the registered screening gates or establish generalization
 to scenes unseen by the backbone. A CPU regression with unequal scene sizes
 checks the weighting and the separate protected Mask path. The running trainer
 and its immutable input manifest are unchanged.
+
+
+## Terminal state
+
+Completed and independently verified. Both registered screens failed; the
+variant does not advance to Decoder training or formal promotion. See
+[the complete P2 result](NR3D_PAIR_READOUT_P2_RESULT_2026-09-05.md). The original
+contract and gates above are unchanged.

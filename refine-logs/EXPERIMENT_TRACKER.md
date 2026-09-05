@@ -1,11 +1,15 @@
 # MCLN Nr3D 视角增强修复审计 Tracker
 
-Updated: 2026-09-02 17:13 CST
+Updated: 2026-09-05
 
-| Run ID | Milestone | Purpose | System / Variant | Split | Metrics | Priority | Status | Notes |
-|---|---|---|---|---|---|---|---|---|
-| VA0 | B0 | 冻结新 salted split 与代码差异 | CPU closure | Nr3D train only | counts/SHA/overlap/diff | MUST | SPLIT PASS / SOURCE INPUT BLOCKED | 404/107 scenes，25768/7151 rows，overlap0；两台 GPU 已释放，但预注册 E57 SHA `76aa6c...6edba1` 均不存在，现有服务器源码 SHA 也不一致，不能伪造 old/fixed 闭包 |
-| VA1 | B1 | 旧增强谓词配对角色 | old snapshot, E57→E58 | salted fit→holdout train | REC .25/.50 + view-dependent | MUST | BLOCKED BY VA0 INPUT | 旧 ScanRefer 队列已按用户指令正常停止；等待受保护 E57 权重的可访问路径后再启动 |
-| VA2 | B1 | 修复增强谓词配对角色 | fixed snapshot, E57→E58 | same salted fit→holdout train | same metrics | MUST | BLOCKED BY VA0/VA1 | rows/batches/steps 必须与 VA1 相同；不得改用其他权重 |
-| VA3 | B2 | 机械比较并作一次性决策 | no-GPU comparator | VA1 vs VA2 | hit deltas/gates | MUST | PENDING | 禁止阈值、salt、fold、LR、epoch 扫描 |
-| VA4 | B2 | 完整 Nr3D 同架构验证 | fixed only | formal 7,899 | REC@0.25/@0.50 | CONDITIONAL | NOT AUTHORIZED | 仅 VA3 全门 PASS 后授权 |
+执行合同：master §20.30（修订 eval-only 起点；固定 split/门不变）。
+
+| Run | Purpose | Status | Evidence / next action |
+|---|---|---|---|
+| VA0 | 原实例输入、两源码快照、零更新 smoke | INPUT FOUND / PREPARING SMOKE | SHA 76aa6c...6edba1 精确匹配；没有 optimizer/scheduler，已在新指标前修订为匹配的新 AdamW |
+| VA1 | old 完整一轮 fit + heldout | NOT STARTED | 25,768 fit rows / 1611 steps / 7,151 heldout rows |
+| VA2 | fixed 同一合同 | NOT STARTED | 串行跟随 VA1，实际 row order 必须完全相同 |
+| VA3 | 一次性机械决策 | PENDING | Overall .25 正、.50 非负、view-dependent .25 正 |
+| G1 | Candidate-Edge Direct Scorer | WAITING G0 | 未部署或训练；未提交草稿保留在独立旧 worktree |
+
+正式 7,899-row evaluation=0；持久生成模型权重=0；ScanRefer/Sr3D 受保护模型不变。

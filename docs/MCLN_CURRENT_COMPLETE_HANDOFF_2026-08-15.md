@@ -13633,3 +13633,62 @@ CEGD 实现/训练 = 尚未启动，仍严格等待 G0 决策
 同一权威代码闭包复制为 old/fixed 两个只读快照，并验证唯一源码差异精确等于提交 `5213822` 的
 `src/joint_det_dataset.py` 修复；然后才运行一次冻结的 VA1/VA2 配对审计。不得改用其他 checkpoint、重新选
 salt/fold，或访问 7,899-row formal validation 绕过该门。
+
+
+### 20.30 G0 原实例输入恢复与 full-state 合同纠错（2026-09-05）
+
+重新连接原 `33476` 实例后，确认 A100 40GB 空闲，旧 trainer 不存在；数据盘可用约 4.6 GB。
+§20.29 的“找不到 E57”只适用于当时两台替代实例，不能继续推断原数据盘也缺失。原实例现有：
+
+```text
+/root/autodl-tmp/DATA_ROOT/output/network_v99_baseline_gt/nr3d/control/official_rec_monitor/
+  official_best_rec025_epoch_57_0p56652741.pth
+bytes = 599090977
+SHA256 = 76aa6cd49ca20a34e78509465f1185b1b9040e60807ad327d6b0876aeb6edba1
+```
+
+该 SHA 与预注册完全一致，但实际 payload 只有 `config/save_path/model/epoch/evaluation_only/
+weight_average_provenance`，`evaluation_only=true`，**不存在 optimizer 和 scheduler**。它是原 E57
+`fe1e2047...1f6655` 的 0.75 与 E69 `1e01d162...173421` 的 0.25 权重平均，不能根据文件名或 `epoch=57`
+把它当成 E57 full-state。§20.17/B1 的“从这个 SHA 恢复 full-state”因此是不可执行的事实错误。
+
+#### 20.30.1 在任何新 heldout 指标前修订唯一合同
+
+仍使用相同受保护平均权重和 §20.17 冻结的 salt、fold、25,768/7,151 rows，不替换 checkpoint 或 split。
+两角色改为相同的新 AdamW，初始 moments 全空，四个既有参数组 decoder/backbone/mask_head/selector 的 LR
+固定为 `1e-5/1e-4/1e-5/1.25e-5`，weight decay `5e-4`、clip norm `.1`；单轮内不衰减 LR。
+这组值沿用原 E57 衰减后的四组 LR，不根据新指标选择。RoBERTa 保持既有冻结状态。
+
+old/fixed 各执行完整一个 fit epoch，B16、保留 8-row 尾批，恰好 `1611` 次 optimizer updates；相同 seed0、
+DistributedSampler epoch58、相同实测 row-order SHA；关闭 cuDNN benchmark，开启 deterministic。
+两边串行运行，无提前终止或扫描。验证前统一重新 seed1000，holdout 关闭增强。
+由于两个训练分支消费随机数不同，这仍是匹配 sampler 的端到端数据管线因果比较，不声称逐点训练噪声相同。
+
+比较名称是“受保护平均权重 + 新优化器的一轮配对审计”，不是原训练 E58 full-state 续跑。
+E57/E69 已见完整 train，故留出场景只对本轮更新互斥，不能声称从零未见场景泛化。
+科学门沿用原合同：Overall @.25 hits 严格正、@.50 非负，view-dependent @.25 严格正；失败不扫描
+LR/epoch/salt/fold/增强概率。后续主线按更新的 §20.18/20.19：G0 通过后准备 G1，绝不由工程 smoke
+直接跳到完整 Nr3D 或正式 7,899-row 评估。
+
+#### 20.30.2 最小实现与保护范围
+
+新入口只使用 `scripts/run_nr3d_view_pair_role.py` 与独立合同/比较脚本，复用既有模型、loss、训练循环和
+REC evaluator。它构造且只构造 Nr3D `split=train`，随后按冻结 IDs 分成 fit/holdout，不调用通用
+`main()`、正式 validation 构造函数或任何 checkpoint 保存函数。运行时逐行确认 CSV→dataset 的 scene/target
+身份；训练回执包含完整样本集合、实际顺序 SHA、steps、允许大变换行数和实际旋转/翻转行数。
+
+两个角色的 view-dependent 分组统一来自原始 CSV 上的固定新谓词，以免修复 `_is_view_dep` 同时改变指标分母。
+最终 REC 复用既有 selector score 与 `butd_cls` box-overlap 过滤口径。正式三数据集最好指标仍以 §20.1 为准，
+本节没有任何新 REC 结果。当前网络架构与 CEGD 计划继续引用 §20.18/20.19，不重复记录。
+
+本地 `.codex_mcln_cegd_20260902` 存在未提交 CEGD 草稿；已保留原样，新 G0 在独立 worktree 开发，未把
+该草稿混进 old/fixed 快照。两快照训练相关源码唯一差异必须精确等于 `5213822` 的 dataset 修复；另复用
+原实例的 PointNet++ native extension，记录 SHA。原实例正式运行目录不被源码覆盖。
+
+先执行两角色各一个 fit batch 的真实 forward/loss/backward smoke，optimizer steps=0、holdout batches=0；
+通过后才启动完整配对。初始预计完整配对需 3–5 A100 GPU-hours，以实测百步速度修正终点检查时间。
+本节写入时仅合同单元测试 `6/6` 通过，尚未启动 smoke 或配对训练。
+
+原实例 master 只更新到 §20.8，已先按原始字节备份到本地
+`.codex/tmp/MCLN_HANDOFF_remote_33476_before_20260905.md`，再由包含历史续写的 GitHub/Desktop 权威版本
+续写本节并同步，避免因原服务器版本落后而丢失 §20.9–20.29。

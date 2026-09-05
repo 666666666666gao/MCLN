@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-06 05:28 CST. Detailed evidence: master §§20.37–20.69.
+Updated: 2026-09-06 05:59 CST. Detailed evidence: master §§20.37–20.70.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -21,6 +21,7 @@ Updated: 2026-09-06 05:28 CST. Detailed evidence: master §§20.37–20.69.
 | Raw object point appearance | Complete;1024 updates/arm,6172 endpoint; integrity PASS,quality FAIL | REC25/50 net versus native +2/+8, versus start -1/+31;formal results unchanged |
 | Sr3D object input audit | Full1018 scans/34865 slots;old positive-size contract FAIL on2 real single-point objects | Minimal zero-axis fix:7 original-environment tests +actual152-slot CPU probe PASS;0 GPU/optimizer/Sr training |
 | Sparse local-memory runtime | Independent original-Torch environment +synthetic GPU kernel checks PASS | No dataset/native model/optimizer;actual point-voxel memory remains unimplemented |
+| Sparse point memory | Native16-row preflight PASS | 267936 parameters;actual point/voxel/SP path,0 updates;paired learning preparation next |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -115,3 +116,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-06 05:28 CST authoritative update: sparse runtime v3 preparation PASS with unchanged original package inventory;v1 CA andv2 path-check failures retained. Pinned spconv2.3.6/cumm0.4.11 CPU imports and original-Torch GPU dense-reference/gradient/inverse-index checks PASS on80 synthetic voxels.0 dataset/native MCLN/optimizer,no actual sparse-memory training. O1 sealedFAIL and formal protected results unchanged. Master§20.69;goal active.
+
+
+2026-09-06 05:59 CST authoritative update: actual sparse point memory native preflight PASS;3 CPU tests,16 fit scans/12 native forwards,zero-start exact andall17 tensors connected afterfixed perturbation.0 updates/holdout/formal. Same800000 sampled points preserved via2cm voxel inverse mapping;2.02GiB Torch allocator peak. Master§20.70;goal active.

@@ -1,0 +1,156 @@
+{
+  "cumm": "0.4.11",
+  "data_files_verified": 36,
+  "gpu_forwards": 0,
+  "manifest_sha256": "8c15d1ef9dd2c6c2c85fffd548d7acc34880f61cc9e512e133ecf11d9c01cdc2",
+  "native_model_forwards": 0,
+  "optimizer_steps": 0,
+  "parameter_count": 267936,
+  "parameter_tensors": 17,
+  "parameters": {
+    "coarse.0.weight": {
+      "numel": 110592,
+      "shape": [
+        64,
+        3,
+        3,
+        3,
+        64
+      ]
+    },
+    "coarse.1.bias": {
+      "numel": 64,
+      "shape": [
+        64
+      ]
+    },
+    "coarse.1.weight": {
+      "numel": 64,
+      "shape": [
+        64
+      ]
+    },
+    "down.0.weight": {
+      "numel": 55296,
+      "shape": [
+        64,
+        3,
+        3,
+        3,
+        32
+      ]
+    },
+    "down.1.bias": {
+      "numel": 64,
+      "shape": [
+        64
+      ]
+    },
+    "down.1.weight": {
+      "numel": 64,
+      "shape": [
+        64
+      ]
+    },
+    "fine.0.weight": {
+      "numel": 27648,
+      "shape": [
+        32,
+        3,
+        3,
+        3,
+        32
+      ]
+    },
+    "fine.1.bias": {
+      "numel": 32,
+      "shape": [
+        32
+      ]
+    },
+    "fine.1.weight": {
+      "numel": 32,
+      "shape": [
+        32
+      ]
+    },
+    "output.weight": {
+      "numel": 18432,
+      "shape": [
+        288,
+        64
+      ]
+    },
+    "point_encoder.0.bias": {
+      "numel": 32,
+      "shape": [
+        32
+      ]
+    },
+    "point_encoder.0.weight": {
+      "numel": 192,
+      "shape": [
+        32,
+        6
+      ]
+    },
+    "point_encoder.1.bias": {
+      "numel": 32,
+      "shape": [
+        32
+      ]
+    },
+    "point_encoder.1.weight": {
+      "numel": 32,
+      "shape": [
+        32
+      ]
+    },
+    "up.0.weight": {
+      "numel": 55296,
+      "shape": [
+        32,
+        3,
+        3,
+        3,
+        64
+      ]
+    },
+    "up.1.bias": {
+      "numel": 32,
+      "shape": [
+        32
+      ]
+    },
+    "up.1.weight": {
+      "numel": 32,
+      "shape": [
+        32
+      ]
+    }
+  },
+  "parent_and_runtime_receipts_verified": true,
+  "prefix": "/root/autodl-tmp/mcln_sparse_runtime_20260906_v3/venv",
+  "pytest_exit": 0,
+  "pytest_python": "/root/miniconda3/envs/bdetr/bin/python",
+  "python": "3.7.11 (default, Jul 27 2021, 14:32:16) \n[GCC 7.5.0]",
+  "schema": "mcln-sparse-point-cpu-preflight-v1",
+  "source_files_verified": 612,
+  "spconv": "2.3.6",
+  "status": "pass",
+  "tests": [
+    {
+      "outcome": "passed",
+      "test": "test_every_point_keeps_an_inverse_id_and_its_actual_rgb"
+    },
+    {
+      "outcome": "passed",
+      "test": "test_point_order_only_permutes_the_inverse_map_and_continuous_features"
+    },
+    {
+      "outcome": "passed",
+      "test": "test_points_sharing_a_cell_retain_distinct_continuous_offsets_and_rgb"
+    }
+  ],
+  "torch": "1.10.2+cu111"
+}

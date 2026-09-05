@@ -1,0 +1,573 @@
+{
+  "controller.exit": {
+    "bytes": 2,
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "exit": "0",
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "cpu_check.py",
+    "input_manifest.json",
+    "m3_receipt.json",
+    "__pycache__",
+    "tests.xml",
+    "pytest.txt",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "receipt.json",
+    "controller.exit"
+  ],
+  "gpu": "1 MiB, 0 %\n",
+  "gpu_exit": 0,
+  "log_tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.dense.bias', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.decoder.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "SPARSE POINT PREFLIGHT {\"fit_row_ids\": [0, 1, 3, 4], \"zero_output_gradient_norm\": 12.132936477661133, \"perturbed_mask_gradient_norms\": [0.0006768150487914681, 0.0011845016852021217, 0.00022821890888735652, 0.00031408548238687217, 0.0134505033493042, 0.0005993446102365851, 0.0004651143681257963, 0.0055632819421589375, 0.00012791974586434662, 0.00012112513650208712, 0.008487620390951633, 0.00011447957513155416, 0.0001273870002478361, 0.009482893161475658, 0.0002593635581433773, 0.0002978188858833164, 12.03738784790039], \"fixed_perturbation_raw_query_mask_max_abs_delta\": 0.060611724853515625, \"native_no_grad_forward_seconds\": 0.376051664352417, \"zero_addon_autograd_forward_seconds\": 0.6110727787017822, \"perturbed_addon_autograd_forward_seconds\": 0.40334200859069824}",
+    "SPARSE POINT PREFLIGHT {\"fit_row_ids\": [5, 6, 8, 10], \"zero_output_gradient_norm\": 17.457378387451172, \"perturbed_mask_gradient_norms\": [0.0008959156111814082, 0.0016255545197054744, 0.000530449440702796, 0.0004977168864570558, 0.015775538980960846, 0.0006468661013059318, 0.0005603096797131002, 0.0046124085783958435, 0.00010878029570449144, 0.00012062849418725818, 0.007926722057163715, 0.00013659153773915023, 0.000153676766785793, 0.011112657375633717, 0.00045412572217173874, 0.0004964412655681372, 17.442176818847656], \"fixed_perturbation_raw_query_mask_max_abs_delta\": 0.04953193664550781, \"native_no_grad_forward_seconds\": 0.25818490982055664, \"zero_addon_autograd_forward_seconds\": 0.409146785736084, \"perturbed_addon_autograd_forward_seconds\": 0.4057438373565674}",
+    "SPARSE POINT PREFLIGHT {\"fit_row_ids\": [12, 13, 15, 16], \"zero_output_gradient_norm\": 9.714229583740234, \"perturbed_mask_gradient_norms\": [0.0012598810717463493, 0.0016127078561112285, 0.00037682458059862256, 0.00039834636845625937, 0.01451935339719057, 0.0004259554552845657, 0.0003611120337154716, 0.006896221544593573, 0.00012359375250525773, 0.00013420692994259298, 0.009922659955918789, 0.0001240017736563459, 0.00014495424693450332, 0.01154056191444397, 0.00034813195816241205, 0.00032629756606183946, 9.712698936462402], \"fixed_perturbation_raw_query_mask_max_abs_delta\": 0.05985069274902344, \"native_no_grad_forward_seconds\": 0.259723424911499, \"zero_addon_autograd_forward_seconds\": 0.41248273849487305, \"perturbed_addon_autograd_forward_seconds\": 0.4180586338043213}",
+    "SPARSE POINT PREFLIGHT {\"fit_row_ids\": [17, 18, 19, 21], \"zero_output_gradient_norm\": 4.345418930053711, \"perturbed_mask_gradient_norms\": [0.0003268592990934849, 0.0006481867749243975, 0.00016237804084084928, 0.00016174469783436507, 0.004924302455037832, 0.00026439924840815365, 0.00015122444892767817, 0.0034158260095864534, 6.725143612129614e-05, 6.820052658440545e-05, 0.004974127281457186, 7.897280738689005e-05, 7.412103877868503e-05, 0.004851276986300945, 0.00011694534623529762, 0.00011650976375676692, 4.319591522216797], \"fixed_perturbation_raw_query_mask_max_abs_delta\": 0.049900054931640625, \"native_no_grad_forward_seconds\": 0.26024556159973145, \"zero_addon_autograd_forward_seconds\": 0.4136009216308594, \"perturbed_addon_autograd_forward_seconds\": 0.42020463943481445}",
+    "SPARSE POINT PREFLIGHT COMPLETE {\"schema\": \"mcln-sparse-point-preflight-v1\", \"status\": \"complete\", \"manifest_sha256\": \"8c15d1ef9dd2c6c2c85fffd548d7acc34880f61cc9e512e133ecf11d9c01cdc2\", \"fit_rows\": 16, \"fit_scenes\": 16, \"native_forwards\": 12, \"optimizer_steps\": 0, \"checkpoint_writes\": 0, \"formal_rows\": 0, \"holdout_rows\": 0, \"parameters\": 267936, \"parameter_shapes\": {\"point_encoder.0.weight\": [32, 6], \"point_encoder.0.bias\": [32], \"point_encoder.1.weight\": [32], \"point_encoder.1.bias\": [32], \"fine.0.weight\": [32, 3, 3, 3, 32], \"fine.1.weight\": [32], \"fine.1.bias\": [32], \"down.0.weight\": [64, 3, 3, 3, 32], \"down.1.weight\": [64], \"down.1.bias\": [64], \"coarse.0.weight\": [64, 3, 3, 3, 64], \"coarse.1.weight\": [64], \"coarse.1.bias\": [64], \"up.0.weight\": [32, 3, 3, 3, 64], \"up.1.weight\": [32], \"up.1.bias\": [32], \"output.weight\": [288, 64]}, \"voxel_size_m\": 0.02, \"point_mapping_records\": [{\"fit_row_id\": 0, \"scan_id\": \"scene0525_00\", \"point_cloud_sha256\": \"7eff0893f0ee8792244dcaac1e0e992dca7b1d47ce5b6de97414f11d25529d50\", \"points\": 50000, \"occupied_voxels\": 46025, \"grid_shape_xyz\": [230, 281, 164], \"superpoints\": 2970, \"max_points_in_voxel\": 5, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 7.152557373046875e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 1, \"scan_id\": \"scene0265_00\", \"point_cloud_sha256\": \"087045d48ee49d5cc3de95c3ef0a6974f5bdf31603a4c5041b2321bbf0a936c2\", \"points\": 50000, \"occupied_voxels\": 23138, \"grid_shape_xyz\": [100, 125, 108], \"superpoints\": 618, \"max_points_in_voxel\": 19, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 3.5762786865234375e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 3, \"scan_id\": \"scene0668_00\", \"point_cloud_sha256\": \"9e580bb972aaabcf5c37f551ff74000b9d410cbc81d637995f45e17e91aa5774\", \"points\": 50000, \"occupied_voxels\": 44240, \"grid_shape_xyz\": [216, 452, 112], \"superpoints\": 1137, \"max_points_in_voxel\": 5, \"voxels_spanning_multiple_superpoints\": 1081, \"points_in_multi_superpoint_voxels\": 2447, \"max_xyz_reconstruction_error_m\": 1.430511474609375e-06, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 4, \"scan_id\": \"scene0505_00\", \"point_cloud_sha256\": \"3250e777078516173da0c9b86342bf0ea0d075bdcc2d561d9d891708f8564e9c\", \"points\": 50000, \"occupied_voxels\": 46629, \"grid_shape_xyz\": [290, 283, 155], \"superpoints\": 3649, \"max_points_in_voxel\": 5, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 7.152557373046875e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 5, \"scan_id\": \"scene0262_00\", \"point_cloud_sha256\": \"29f0b4e783eb6f4a8c14690347f93a99a1dbd66d3e0d369fa60c0b4d948eb434\", \"points\": 50000, \"occupied_voxels\": 43632, \"grid_shape_xyz\": [213, 339, 141], \"superpoints\": 1798, \"max_points_in_voxel\": 5, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 7.152557373046875e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 6, \"scan_id\": \"scene0074_00\", \"point_cloud_sha256\": \"e582db27cd1356db5537d7970267c1469234c68a292c9b36506161f3e0898849\", \"points\": 50000, \"occupied_voxels\": 35981, \"grid_shape_xyz\": [72, 147, 142], \"superpoints\": 791, \"max_points_in_voxel\": 8, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 3.5762786865234375e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 8, \"scan_id\": \"scene0138_00\", \"point_cloud_sha256\": \"4a31ff11bac27490032bde6e937f042cba6a57faad4ecbd344571178c60798f4\", \"points\": 50000, \"occupied_voxels\": 46643, \"grid_shape_xyz\": [318, 410, 156], \"superpoints\": 3612, \"max_points_in_voxel\": 5, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 1.430511474609375e-06, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 10, \"scan_id\": \"scene0147_00\", \"point_cloud_sha256\": \"cf832e816a226e7802bb25d1a7f907da3e863f9a22629722bdc52f57b924d6a0\", \"points\": 50000, \"occupied_voxels\": 43242, \"grid_shape_xyz\": [271, 297, 92], \"superpoints\": 1744, \"max_points_in_voxel\": 7, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 7.152557373046875e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 12, \"scan_id\": \"scene0296_00\", \"point_cloud_sha256\": \"f4339661567ec983ee8479f7f675b14bef83083d178abcfdfafbf69467d81f37\", \"points\": 50000, \"occupied_voxels\": 44890, \"grid_shape_xyz\": [304, 322, 144], \"superpoints\": 2425, \"max_points_in_voxel\": 6, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 7.152557373046875e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 13, \"scan_id\": \"scene0404_00\", \"point_cloud_sha256\": \"7da531c8bd679a610cb416c32fc7268ea1cebc9f6fb1dbe0c59257c3e6ef1f2e\", \"points\": 50000, \"occupied_voxels\": 43327, \"grid_shape_xyz\": [143, 172, 141], \"superpoints\": 1715, \"max_points_in_voxel\": 6, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 3.5762786865234375e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 15, \"scan_id\": \"scene0592_00\", \"point_cloud_sha256\": \"d2045fdc64a17837eda0aeceb8598f3313a418921eb61b76c72fe0fbf4fa8c61\", \"points\": 50000, \"occupied_voxels\": 47379, \"grid_shape_xyz\": [394, 435, 142], \"superpoints\": 4827, \"max_points_in_voxel\": 4, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 1.430511474609375e-06, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 16, \"scan_id\": \"scene0413_00\", \"point_cloud_sha256\": \"daf4f0b681c42ba830410554a7755dcdc675e39e27be60a83b97d33f66b31ed6\", \"points\": 50000, \"occupied_voxels\": 39404, \"grid_shape_xyz\": [224, 202, 123], \"superpoints\": 563, \"max_points_in_voxel\": 7, \"voxels_spanning_multiple_superpoints\": 1773, \"points_in_multi_superpoint_voxels\": 4283, \"max_xyz_reconstruction_error_m\": 7.152557373046875e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 17, \"scan_id\": \"scene0059_00\", \"point_cloud_sha256\": \"33ffbc9d203b80227ce1adf1f6082d74a4fbc140cda87d0bd07a33f6536f0fc4\", \"points\": 50000, \"occupied_voxels\": 46670, \"grid_shape_xyz\": [254, 408, 137], \"superpoints\": 2222, \"max_points_in_voxel\": 5, \"voxels_spanning_multiple_superpoints\": 727, \"points_in_multi_superpoint_voxels\": 1543, \"max_xyz_reconstruction_error_m\": 9.5367431640625e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 18, \"scan_id\": \"scene0522_00\", \"point_cloud_sha256\": \"776d02f93c83cc986c91981360fa7fe9ce03dea5d761e24490de6a7a79812b9f\", \"points\": 50000, \"occupied_voxels\": 40354, \"grid_shape_xyz\": [165, 227, 133], \"superpoints\": 1248, \"max_points_in_voxel\": 6, \"voxels_spanning_multiple_superpoints\": 0, \"points_in_multi_superpoint_voxels\": 0, \"max_xyz_reconstruction_error_m\": 7.152557373046875e-07, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 19, \"scan_id\": \"scene0247_00\", \"point_cloud_sha256\": \"26dcb25dd1fb0ac744047346dabe11a9c0367d8d0b9c98b087a1002b71e4aa95\", \"points\": 50000, \"occupied_voxels\": 47102, \"grid_shape_xyz\": [264, 468, 144], \"superpoints\": 2309, \"max_points_in_voxel\": 4, \"voxels_spanning_multiple_superpoints\": 608, \"points_in_multi_superpoint_voxels\": 1282, \"max_xyz_reconstruction_error_m\": 1.430511474609375e-06, \"actual_point_rgb_preserved\": true}, {\"fit_row_id\": 21, \"scan_id\": \"scene0324_00\", \"point_cloud_sha256\": \"6f3f6b2ba3e38fc544b6dc701835989880122c4cda5985873bbc0406f9ba03e4\", \"points\": 50000, \"occupied_voxels\": 42130, \"grid_shape_xyz\": [230, 264, 122], \"superpoints\": 749, \"max_points_in_voxel\": 6, \"voxels_spanning_multiple_superpoints\": 1435, \"points_in_multi_superpoint_voxels\": 3397, \"max_xyz_reconstruction_error_m\": 7.152557373046875e-07, \"actual_point_rgb_preserved\": true}], \"pointnet_sa1_features_used_by_new_branch\": false, \"zero_start_identity\": true, \"fixed_perturbation_rec_unchanged\": true, \"native_mask_loss_connected\": true, \"frozen_state_inputs_and_addon_restored\": true, \"batches\": [{\"fit_row_ids\": [0, 1, 3, 4], \"zero_output_gradient_norm\": 12.132936477661133, \"perturbed_mask_gradient_norms\": [0.0006768150487914681, 0.0011845016852021217, 0.00022821890888735652, 0.00031408548238687217, 0.0134505033493042, 0.0005993446102365851, 0.0004651143681257963, 0.0055632819421589375, 0.00012791974586434662, 0.00012112513650208712, 0.008487620390951633, 0.00011447957513155416, 0.0001273870002478361, 0.009482893161475658, 0.0002593635581433773, 0.0002978188858833164, 12.03738784790039], \"fixed_perturbation_raw_query_mask_max_abs_delta\": 0.060611724853515625, \"native_no_grad_forward_seconds\": 0.376051664352417, \"zero_addon_autograd_forward_seconds\": 0.6110727787017822, \"perturbed_addon_autograd_forward_seconds\": 0.40334200859069824}, {\"fit_row_ids\": [5, 6, 8, 10], \"zero_output_gradient_norm\": 17.457378387451172, \"perturbed_mask_gradient_norms\": [0.0008959156111814082, 0.0016255545197054744, 0.000530449440702796, 0.0004977168864570558, 0.015775538980960846, 0.0006468661013059318, 0.0005603096797131002, 0.0046124085783958435, 0.00010878029570449144, 0.00012062849418725818, 0.007926722057163715, 0.00013659153773915023, 0.000153676766785793, 0.011112657375633717, 0.00045412572217173874, 0.0004964412655681372, 17.442176818847656], \"fixed_perturbation_raw_query_mask_max_abs_delta\": 0.04953193664550781, \"native_no_grad_forward_seconds\": 0.25818490982055664, \"zero_addon_autograd_forward_seconds\": 0.409146785736084, \"perturbed_addon_autograd_forward_seconds\": 0.4057438373565674}, {\"fit_row_ids\": [12, 13, 15, 16], \"zero_output_gradient_norm\": 9.714229583740234, \"perturbed_mask_gradient_norms\": [0.0012598810717463493, 0.0016127078561112285, 0.00037682458059862256, 0.00039834636845625937, 0.01451935339719057, 0.0004259554552845657, 0.0003611120337154716, 0.006896221544593573, 0.00012359375250525773, 0.00013420692994259298, 0.009922659955918789, 0.0001240017736563459, 0.00014495424693450332, 0.01154056191444397, 0.00034813195816241205, 0.00032629756606183946, 9.712698936462402], \"fixed_perturbation_raw_query_mask_max_abs_delta\": 0.05985069274902344, \"native_no_grad_forward_seconds\": 0.259723424911499, \"zero_addon_autograd_forward_seconds\": 0.41248273849487305, \"perturbed_addon_autograd_forward_seconds\": 0.4180586338043213}, {\"fit_row_ids\": [17, 18, 19, 21], \"zero_output_gradient_norm\": 4.345418930053711, \"perturbed_mask_gradient_norms\": [0.0003268592990934849, 0.0006481867749243975, 0.00016237804084084928, 0.00016174469783436507, 0.004924302455037832, 0.00026439924840815365, 0.00015122444892767817, 0.0034158260095864534, 6.725143612129614e-05, 6.820052658440545e-05, 0.004974127281457186, 7.897280738689005e-05, 7.412103877868503e-05, 0.004851276986300945, 0.00011694534623529762, 0.00011650976375676692, 4.319591522216797], \"fixed_perturbation_raw_query_mask_max_abs_delta\": 0.049900054931640625, \"native_no_grad_forward_seconds\": 0.26024556159973145, \"zero_addon_autograd_forward_seconds\": 0.4136009216308594, \"perturbed_addon_autograd_forward_seconds\": 0.42020463943481445}], \"peak_allocated_bytes\": 2170812416, \"elapsed_seconds_excluding_dataset_init\": 33.6682391166687, \"quality_screen_executed\": false, \"runtime\": {\"python\": \"3.7.11 (default, Jul 27 2021, 14:32:16) \\n[GCC 7.5.0]\", \"prefix\": \"/root/autodl-tmp/mcln_sparse_runtime_20260906_v3/venv\", \"torch\": \"1.10.2+cu111\", \"spconv\": \"2.3.6\", \"cumm\": \"0.4.11\", \"gpu\": \"NVIDIA A100-PCIE-40GB\", \"matmul_tf32\": true, \"cudnn_tf32\": true}}"
+  ],
+  "process": "",
+  "process_exit": 1,
+  "receipt": {
+    "batches": [
+      {
+        "fit_row_ids": [
+          0,
+          1,
+          3,
+          4
+        ],
+        "fixed_perturbation_raw_query_mask_max_abs_delta": 0.060611724853515625,
+        "native_no_grad_forward_seconds": 0.376051664352417,
+        "perturbed_addon_autograd_forward_seconds": 0.40334200859069824,
+        "perturbed_mask_gradient_norms": [
+          0.0006768150487914681,
+          0.0011845016852021217,
+          0.00022821890888735652,
+          0.00031408548238687217,
+          0.0134505033493042,
+          0.0005993446102365851,
+          0.0004651143681257963,
+          0.0055632819421589375,
+          0.00012791974586434662,
+          0.00012112513650208712,
+          0.008487620390951633,
+          0.00011447957513155416,
+          0.0001273870002478361,
+          0.009482893161475658,
+          0.0002593635581433773,
+          0.0002978188858833164,
+          12.03738784790039
+        ],
+        "zero_addon_autograd_forward_seconds": 0.6110727787017822,
+        "zero_output_gradient_norm": 12.132936477661133
+      },
+      {
+        "fit_row_ids": [
+          5,
+          6,
+          8,
+          10
+        ],
+        "fixed_perturbation_raw_query_mask_max_abs_delta": 0.04953193664550781,
+        "native_no_grad_forward_seconds": 0.25818490982055664,
+        "perturbed_addon_autograd_forward_seconds": 0.4057438373565674,
+        "perturbed_mask_gradient_norms": [
+          0.0008959156111814082,
+          0.0016255545197054744,
+          0.000530449440702796,
+          0.0004977168864570558,
+          0.015775538980960846,
+          0.0006468661013059318,
+          0.0005603096797131002,
+          0.0046124085783958435,
+          0.00010878029570449144,
+          0.00012062849418725818,
+          0.007926722057163715,
+          0.00013659153773915023,
+          0.000153676766785793,
+          0.011112657375633717,
+          0.00045412572217173874,
+          0.0004964412655681372,
+          17.442176818847656
+        ],
+        "zero_addon_autograd_forward_seconds": 0.409146785736084,
+        "zero_output_gradient_norm": 17.457378387451172
+      },
+      {
+        "fit_row_ids": [
+          12,
+          13,
+          15,
+          16
+        ],
+        "fixed_perturbation_raw_query_mask_max_abs_delta": 0.05985069274902344,
+        "native_no_grad_forward_seconds": 0.259723424911499,
+        "perturbed_addon_autograd_forward_seconds": 0.4180586338043213,
+        "perturbed_mask_gradient_norms": [
+          0.0012598810717463493,
+          0.0016127078561112285,
+          0.00037682458059862256,
+          0.00039834636845625937,
+          0.01451935339719057,
+          0.0004259554552845657,
+          0.0003611120337154716,
+          0.006896221544593573,
+          0.00012359375250525773,
+          0.00013420692994259298,
+          0.009922659955918789,
+          0.0001240017736563459,
+          0.00014495424693450332,
+          0.01154056191444397,
+          0.00034813195816241205,
+          0.00032629756606183946,
+          9.712698936462402
+        ],
+        "zero_addon_autograd_forward_seconds": 0.41248273849487305,
+        "zero_output_gradient_norm": 9.714229583740234
+      },
+      {
+        "fit_row_ids": [
+          17,
+          18,
+          19,
+          21
+        ],
+        "fixed_perturbation_raw_query_mask_max_abs_delta": 0.049900054931640625,
+        "native_no_grad_forward_seconds": 0.26024556159973145,
+        "perturbed_addon_autograd_forward_seconds": 0.42020463943481445,
+        "perturbed_mask_gradient_norms": [
+          0.0003268592990934849,
+          0.0006481867749243975,
+          0.00016237804084084928,
+          0.00016174469783436507,
+          0.004924302455037832,
+          0.00026439924840815365,
+          0.00015122444892767817,
+          0.0034158260095864534,
+          6.725143612129614e-05,
+          6.820052658440545e-05,
+          0.004974127281457186,
+          7.897280738689005e-05,
+          7.412103877868503e-05,
+          0.004851276986300945,
+          0.00011694534623529762,
+          0.00011650976375676692,
+          4.319591522216797
+        ],
+        "zero_addon_autograd_forward_seconds": 0.4136009216308594,
+        "zero_output_gradient_norm": 4.345418930053711
+      }
+    ],
+    "checkpoint_writes": 0,
+    "elapsed_seconds_excluding_dataset_init": 33.6682391166687,
+    "fit_rows": 16,
+    "fit_scenes": 16,
+    "fixed_perturbation_rec_unchanged": true,
+    "formal_rows": 0,
+    "frozen_state_inputs_and_addon_restored": true,
+    "holdout_rows": 0,
+    "manifest_sha256": "8c15d1ef9dd2c6c2c85fffd548d7acc34880f61cc9e512e133ecf11d9c01cdc2",
+    "native_forwards": 12,
+    "native_mask_loss_connected": true,
+    "optimizer_steps": 0,
+    "parameter_shapes": {
+      "coarse.0.weight": [
+        64,
+        3,
+        3,
+        3,
+        64
+      ],
+      "coarse.1.bias": [
+        64
+      ],
+      "coarse.1.weight": [
+        64
+      ],
+      "down.0.weight": [
+        64,
+        3,
+        3,
+        3,
+        32
+      ],
+      "down.1.bias": [
+        64
+      ],
+      "down.1.weight": [
+        64
+      ],
+      "fine.0.weight": [
+        32,
+        3,
+        3,
+        3,
+        32
+      ],
+      "fine.1.bias": [
+        32
+      ],
+      "fine.1.weight": [
+        32
+      ],
+      "output.weight": [
+        288,
+        64
+      ],
+      "point_encoder.0.bias": [
+        32
+      ],
+      "point_encoder.0.weight": [
+        32,
+        6
+      ],
+      "point_encoder.1.bias": [
+        32
+      ],
+      "point_encoder.1.weight": [
+        32
+      ],
+      "up.0.weight": [
+        32,
+        3,
+        3,
+        3,
+        64
+      ],
+      "up.1.bias": [
+        32
+      ],
+      "up.1.weight": [
+        32
+      ]
+    },
+    "parameters": 267936,
+    "peak_allocated_bytes": 2170812416,
+    "point_mapping_records": [
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 0,
+        "grid_shape_xyz": [
+          230,
+          281,
+          164
+        ],
+        "max_points_in_voxel": 5,
+        "max_xyz_reconstruction_error_m": 7.152557373046875e-07,
+        "occupied_voxels": 46025,
+        "point_cloud_sha256": "7eff0893f0ee8792244dcaac1e0e992dca7b1d47ce5b6de97414f11d25529d50",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0525_00",
+        "superpoints": 2970,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 1,
+        "grid_shape_xyz": [
+          100,
+          125,
+          108
+        ],
+        "max_points_in_voxel": 19,
+        "max_xyz_reconstruction_error_m": 3.5762786865234375e-07,
+        "occupied_voxels": 23138,
+        "point_cloud_sha256": "087045d48ee49d5cc3de95c3ef0a6974f5bdf31603a4c5041b2321bbf0a936c2",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0265_00",
+        "superpoints": 618,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 3,
+        "grid_shape_xyz": [
+          216,
+          452,
+          112
+        ],
+        "max_points_in_voxel": 5,
+        "max_xyz_reconstruction_error_m": 1.430511474609375e-06,
+        "occupied_voxels": 44240,
+        "point_cloud_sha256": "9e580bb972aaabcf5c37f551ff74000b9d410cbc81d637995f45e17e91aa5774",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 2447,
+        "scan_id": "scene0668_00",
+        "superpoints": 1137,
+        "voxels_spanning_multiple_superpoints": 1081
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 4,
+        "grid_shape_xyz": [
+          290,
+          283,
+          155
+        ],
+        "max_points_in_voxel": 5,
+        "max_xyz_reconstruction_error_m": 7.152557373046875e-07,
+        "occupied_voxels": 46629,
+        "point_cloud_sha256": "3250e777078516173da0c9b86342bf0ea0d075bdcc2d561d9d891708f8564e9c",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0505_00",
+        "superpoints": 3649,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 5,
+        "grid_shape_xyz": [
+          213,
+          339,
+          141
+        ],
+        "max_points_in_voxel": 5,
+        "max_xyz_reconstruction_error_m": 7.152557373046875e-07,
+        "occupied_voxels": 43632,
+        "point_cloud_sha256": "29f0b4e783eb6f4a8c14690347f93a99a1dbd66d3e0d369fa60c0b4d948eb434",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0262_00",
+        "superpoints": 1798,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 6,
+        "grid_shape_xyz": [
+          72,
+          147,
+          142
+        ],
+        "max_points_in_voxel": 8,
+        "max_xyz_reconstruction_error_m": 3.5762786865234375e-07,
+        "occupied_voxels": 35981,
+        "point_cloud_sha256": "e582db27cd1356db5537d7970267c1469234c68a292c9b36506161f3e0898849",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0074_00",
+        "superpoints": 791,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 8,
+        "grid_shape_xyz": [
+          318,
+          410,
+          156
+        ],
+        "max_points_in_voxel": 5,
+        "max_xyz_reconstruction_error_m": 1.430511474609375e-06,
+        "occupied_voxels": 46643,
+        "point_cloud_sha256": "4a31ff11bac27490032bde6e937f042cba6a57faad4ecbd344571178c60798f4",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0138_00",
+        "superpoints": 3612,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 10,
+        "grid_shape_xyz": [
+          271,
+          297,
+          92
+        ],
+        "max_points_in_voxel": 7,
+        "max_xyz_reconstruction_error_m": 7.152557373046875e-07,
+        "occupied_voxels": 43242,
+        "point_cloud_sha256": "cf832e816a226e7802bb25d1a7f907da3e863f9a22629722bdc52f57b924d6a0",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0147_00",
+        "superpoints": 1744,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 12,
+        "grid_shape_xyz": [
+          304,
+          322,
+          144
+        ],
+        "max_points_in_voxel": 6,
+        "max_xyz_reconstruction_error_m": 7.152557373046875e-07,
+        "occupied_voxels": 44890,
+        "point_cloud_sha256": "f4339661567ec983ee8479f7f675b14bef83083d178abcfdfafbf69467d81f37",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0296_00",
+        "superpoints": 2425,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 13,
+        "grid_shape_xyz": [
+          143,
+          172,
+          141
+        ],
+        "max_points_in_voxel": 6,
+        "max_xyz_reconstruction_error_m": 3.5762786865234375e-07,
+        "occupied_voxels": 43327,
+        "point_cloud_sha256": "7da531c8bd679a610cb416c32fc7268ea1cebc9f6fb1dbe0c59257c3e6ef1f2e",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0404_00",
+        "superpoints": 1715,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 15,
+        "grid_shape_xyz": [
+          394,
+          435,
+          142
+        ],
+        "max_points_in_voxel": 4,
+        "max_xyz_reconstruction_error_m": 1.430511474609375e-06,
+        "occupied_voxels": 47379,
+        "point_cloud_sha256": "d2045fdc64a17837eda0aeceb8598f3313a418921eb61b76c72fe0fbf4fa8c61",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0592_00",
+        "superpoints": 4827,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 16,
+        "grid_shape_xyz": [
+          224,
+          202,
+          123
+        ],
+        "max_points_in_voxel": 7,
+        "max_xyz_reconstruction_error_m": 7.152557373046875e-07,
+        "occupied_voxels": 39404,
+        "point_cloud_sha256": "daf4f0b681c42ba830410554a7755dcdc675e39e27be60a83b97d33f66b31ed6",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 4283,
+        "scan_id": "scene0413_00",
+        "superpoints": 563,
+        "voxels_spanning_multiple_superpoints": 1773
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 17,
+        "grid_shape_xyz": [
+          254,
+          408,
+          137
+        ],
+        "max_points_in_voxel": 5,
+        "max_xyz_reconstruction_error_m": 9.5367431640625e-07,
+        "occupied_voxels": 46670,
+        "point_cloud_sha256": "33ffbc9d203b80227ce1adf1f6082d74a4fbc140cda87d0bd07a33f6536f0fc4",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 1543,
+        "scan_id": "scene0059_00",
+        "superpoints": 2222,
+        "voxels_spanning_multiple_superpoints": 727
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 18,
+        "grid_shape_xyz": [
+          165,
+          227,
+          133
+        ],
+        "max_points_in_voxel": 6,
+        "max_xyz_reconstruction_error_m": 7.152557373046875e-07,
+        "occupied_voxels": 40354,
+        "point_cloud_sha256": "776d02f93c83cc986c91981360fa7fe9ce03dea5d761e24490de6a7a79812b9f",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 0,
+        "scan_id": "scene0522_00",
+        "superpoints": 1248,
+        "voxels_spanning_multiple_superpoints": 0
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 19,
+        "grid_shape_xyz": [
+          264,
+          468,
+          144
+        ],
+        "max_points_in_voxel": 4,
+        "max_xyz_reconstruction_error_m": 1.430511474609375e-06,
+        "occupied_voxels": 47102,
+        "point_cloud_sha256": "26dcb25dd1fb0ac744047346dabe11a9c0367d8d0b9c98b087a1002b71e4aa95",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 1282,
+        "scan_id": "scene0247_00",
+        "superpoints": 2309,
+        "voxels_spanning_multiple_superpoints": 608
+      },
+      {
+        "actual_point_rgb_preserved": true,
+        "fit_row_id": 21,
+        "grid_shape_xyz": [
+          230,
+          264,
+          122
+        ],
+        "max_points_in_voxel": 6,
+        "max_xyz_reconstruction_error_m": 7.152557373046875e-07,
+        "occupied_voxels": 42130,
+        "point_cloud_sha256": "6f3f6b2ba3e38fc544b6dc701835989880122c4cda5985873bbc0406f9ba03e4",
+        "points": 50000,
+        "points_in_multi_superpoint_voxels": 3397,
+        "scan_id": "scene0324_00",
+        "superpoints": 749,
+        "voxels_spanning_multiple_superpoints": 1435
+      }
+    ],
+    "pointnet_sa1_features_used_by_new_branch": false,
+    "quality_screen_executed": false,
+    "runtime": {
+      "cudnn_tf32": true,
+      "cumm": "0.4.11",
+      "gpu": "NVIDIA A100-PCIE-40GB",
+      "matmul_tf32": true,
+      "prefix": "/root/autodl-tmp/mcln_sparse_runtime_20260906_v3/venv",
+      "python": "3.7.11 (default, Jul 27 2021, 14:32:16) \n[GCC 7.5.0]",
+      "spconv": "2.3.6",
+      "torch": "1.10.2+cu111"
+    },
+    "schema": "mcln-sparse-point-preflight-v1",
+    "status": "complete",
+    "voxel_size_m": 0.02,
+    "zero_start_identity": true
+  },
+  "receipt.json": {
+    "bytes": 11537,
+    "sha256": "3e6a308f1a476ec37c79125373d49d1fb0ce1540f38cbb8b40586ecaa384afda"
+  },
+  "run.log": {
+    "bytes": 15492,
+    "sha256": "9d40cc57773cf6bda045e826db1308ce6a3a6b59c0e646d0e6dee0a82191a110"
+  },
+  "time_cst": "2026-09-06T05:57:19.741698+08:00"
+}

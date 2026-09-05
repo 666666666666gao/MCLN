@@ -1,6 +1,6 @@
 # MCLN Nr3D 视角增强修复审计 Tracker
 
-Updated: 2026-09-05 10:24 CST
+Updated: 2026-09-05 10:52 CST
 
 执行合同：master §20.30（修订 eval-only 起点；固定 split/门不变）。
 
@@ -17,3 +17,5 @@ Updated: 2026-09-05 10:24 CST
 现场：screen `mcln_g0_pair_20260905`，old PID3409；固定输出 `/root/autodl-tmp/mcln_g0_view_pair_20260905/results`。
 
 P1 Query identity trace：commit `0ade888`；screen `mcln_padding_identity_after_g0` PID4216，flock4223等待完整G0配对；四条fit、0更新，v2结果待运行。详情master20.33。
+
+P1 REC/Mask选择路径CPU反例PASS；四条fit完整候选诊断已按commit8664e73排在G0后，screen mcln_candidate_contract_after_g0 PID4706。真实回执待运行，正式指标未更新。P2草稿接口审计见master20.34。

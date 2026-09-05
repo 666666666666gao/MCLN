@@ -13884,3 +13884,56 @@ log = /root/autodl-tmp/mcln_g0_view_pair_20260905/padding_identity.log
 `6041c62028a458854467258e3c30585aa5b7eb500e20526287725eb559e858f9`。
 完整三文件部署清单：`refine-logs/PADDING_IDENTITY_INPUT_20260905.json`。
 训练到科学门的实际判定仍由 `decide_nr3d_view_pair.py` 完成；本次不增加新的REC/Mask指标声明。
+
+
+### 20.34 REC/Mask选择路径反例已复现；完整候选诊断就绪（2026-09-05 10:52 CST）
+
+本轮没有读取新的G0训练结果，仍按§20.33登记的11:15只读检查执行；G0合同与两角色源码均未改。
+新增证据来自冻结源码的CPU evaluator，不使用Nr3D/ScanRefer/Sr3D数据：REC位置评估会调用检测框重叠过滤，
+Mask learned-query选择只读取可选 `moe_valid_mask`；SourceChoiceSelector本身不发布该mask。
+
+`scripts/audit_rec_mask_selection.py` 用真实evaluator运行三个合成对照，记录到：
+无过滤时REC/Mask均选Query0；只启用REC重叠过滤时REC选Query1、Mask仍选Query0；显式共享valid mask时均选1。
+这证明两路径可以选出不同Query，尚未测Nr3D发生率，也不证明把同一过滤强加给Mask会改善指标。
+CPU回执为 `refine-logs/REC_MASK_SELECTION_COUNTEREXAMPLE_20260905.json`，绑定evaluator SHA
+`b77376d16f0210ae18f067655552a806040614d7a21385477ffdb48590775af8`；benchmark rows=0、更新=0。
+
+相应地，§20.33排队的padding identity v2里“selected fused Mask”应读作**REC所选Query条件下的Mask**，
+不能当作正式Mask evaluator所选结果。其冻结输入与队列不修改，v1/v2已有证据继续保留。
+
+#### 20.34.1 一次真实前向的候选与输出合同审计
+
+主分支提交 `8664e73457a5086029e0932f21ea2528f0ef0124` 新增
+`scripts/nr3d_candidate_contract.py`，并给原四条fit脚本增加 `--candidate-contract-only` 入口。
+只执行原模型一次forward，随后用GT做只读诊断，GT不进入新网络输入。记录包括：
+
+- Default与protected Selector各自过滤前/后的Top-16/32/64/256 oracle、实际可用候选数和原Query索引；
+- 当前evaluator实际REC选择、实际Mask选择，以及REC Query和框oracle Query条件下的Box/Mask IoU；
+- 目标在5万输入点中的点数，分别保留原始全集与合法候选下的框oracle；
+- 全256、完整合法Query、合法Default Top-32覆盖的检测对象slot集合。
+
+最后一项只是潜在Anchor可用性的代理，此接口没有可靠的文本Anchor真值映射，回执固定标记
+`is_text_anchor_ground_truth=False`。四条fit诊断也不能代替7899条正式验证的失败分布。
+真实场景回执尚未产生；不会以合成反例的IoU解释当前正式Mask差距。
+
+服务器CPU的3项oracle边界测试和2项seed对齐测试共5项通过，涵盖Top-16截断与Full-256覆盖的区别、
+过滤丢失、空合法集合与严格阈值；三个evaluator反例中的诊断读出均与实际evaluator选择/Mask IoU一致。
+Python3.7语法和bash语法检查通过，生产模型及evaluator源码没有修改。
+
+```text
+screen = mcln_candidate_contract_after_g0 (PID4706)
+source = /root/autodl-tmp/mcln_g0_view_pair_20260905/candidate_contract
+output = /root/autodl-tmp/mcln_g0_view_pair_20260905/candidate_contract_receipt.json
+log = /root/autodl-tmp/mcln_g0_view_pair_20260905/candidate_contract.log
+```
+
+入口与G0/padding任务共用同一GPU锁，且要求完整G0 decision存在；两个P1小诊断均排在G0后，彼此串行。
+仍是相同fit IDs `[0,1,3,4]`、无增强、1次forward、0更新、0持久权重、0正式验证。
+部署文件与Git blob逐字节相同，清单为 `refine-logs/CANDIDATE_CONTRACT_INPUT_20260905.json`。
+
+#### 20.34.2 P2草稿的具体接口差异
+
+对保留的未提交CEGD草稿只读审计确认：Anchor来自目标Top-K、forward无合法候选mask、训练将Top-K全标valid、
+全行不合格时仍计算listwise目标，且包含独立node/entity/presence路径。这些部分不能直接沿用到§20.31收缩首版。
+root-only GT对齐与原Query索引scatter已有正确处理，须保留。具体位置与最小控制约束见
+`refine-logs/CEGD_DRAFT_INTERFACE_AUDIT_20260905.md`；该草稿工作区未改，G1模块尚未实现或训练。

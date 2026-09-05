@@ -13834,3 +13834,53 @@ old PID3409、当前角色进程、GPU状态及固定 `results/old.log` 尾部�
 `/root/autodl-tmp/mcln_g0_view_pair_20260905/first_milestone.txt`。它不修改参数、进程或权重，也不递归
 搜索日志。下次恢复先读取该文件和当前真实进程，根据训练百步速度估算 old/fixed 终点，再在结束前几分钟
 检查；不连续短轮询。10:03:51 的 old PID3409 仍存活，数据初始化尚未结束。
+
+
+### 20.33 G0 已进入实际更新；P1 Query 身份对齐诊断排在完整配对之后（2026-09-05 10:24 CST）
+
+一次性速度回执 `first_milestone.txt` 在 `10:18:51 CST` 记录 old PID3409 存活、
+`266/1611` steps、训练耗时 `13:24`。前266步平均约 `3.02 s/step`，批次瞬时速度约1.7–5.2秒波动，
+不能把早期约2秒/步直接外推到整轮。按当前累计速度，old fit 约在11:26结束，随后还有7151-row heldout；
+整对仍保留3–5 A100小时预算。下一次只读检查登记在11:15附近，先看真实进度再修正终点，
+不根据 loss 或中途精度改变合同。到本次记录为止，还没有 old/fixed 科学结果。
+11:15的只读检查已由screen `mcln_g0_old_finish_window`（PID4311，collector PID4313）登记，
+执行 `collect_old_completion_window.py`，只写固定 `old_completion_window.txt`；无循环轮询。
+
+#### 20.33.1 只读 P1 诊断的新增记录项
+
+主分支提交 `0ade888971b3b61526a27718b0ce00fbec2e4d6d` 更新
+`scripts/audit_nr3d_padding_scene.py` 为 v2。仍固定四条 fit IDs `[0,1,3,4]`、同一份输入、
+同一个受保护 checkpoint 和五次 forward，没有训练或新增模型分支。v1 回执保留原样。
+
+代码确认 `_generate_queries` 位于 cross-encoder 之后，对1024 seed的 `sigmoid(objectness)` 做Top-256。
+因此同一个 Query 轴序号不能保证对应同一个输入点；v2 用 `seed_inds` 和 `query_points_sample_inds`
+恢复物理输入点ID，并记录：
+
+- Query集合增删、换序、共有seed对齐后的Box/score/合法性/逐层Decoder变化；
+- 最终选中seed与6D框、融合Mask logits、二值超点和输入点Mask的变化；
+- 视觉backbone、有效文本投影、逐层cross-encoder和seed logits的变化；
+- KPS cutoff并列数、sigmoid饱和值数量，以及SWA文本分割读出的选中token。
+
+这些记录用于区分顺序变化与真实候选变化，尚没有 v2 实测结果，不能声称已找到整网padding的全部原因。
+候选换序/增删对齐的两个行为测试在本地和远端CPU均通过；加上G0合同测试，本地共8项通过；
+Python3.7语法和远端bash语法检查通过。PR #7仍保持Draft，不合入G0或ScanRefer受保护推理。
+
+#### 20.33.2 串行队列与精确文件身份
+
+```text
+screen = mcln_padding_identity_after_g0 (PID4216)
+waiter = flock PID4223, locks_lock_inode_wait（已实测，未启动第二个GPU模型）
+source = /root/autodl-tmp/mcln_g0_view_pair_20260905/padding_identity
+model source = inputs_v3/fixed_source（冻结目录未改）
+output = /root/autodl-tmp/mcln_g0_view_pair_20260905/padding_identity_receipt.json
+log = /root/autodl-tmp/mcln_g0_view_pair_20260905/padding_identity.log
+```
+
+入口 `scripts/run_nr3d_padding_identity_after_g0.sh` 等待与G0相同的GPU锁，取得锁后必须存在
+完整配对 `results/decision.json` 且GPU空闲，才执行这四条fit诊断。G0若工程中断且没有decision，
+该入口退出，不自动补跑训练或读取正式验证。诊断不依赖G0科学门通过，也不会修改G0统计。
+
+部署直接取Git blob字节，避免再次出现Windows归档行尾差异。实际脚本SHA：
+`6041c62028a458854467258e3c30585aa5b7eb500e20526287725eb559e858f9`。
+完整三文件部署清单：`refine-logs/PADDING_IDENTITY_INPUT_20260905.json`。
+训练到科学门的实际判定仍由 `decide_nr3d_view_pair.py` 完成；本次不增加新的REC/Mask指标声明。

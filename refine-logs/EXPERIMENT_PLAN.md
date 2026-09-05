@@ -1,7 +1,8 @@
 > **2026-09-05 生效修订**：下文 full-state/E57→E58 描述保留为历史预注册，已由 master §20.30
 > 的 payload 实证纠错覆盖。锁定 SHA 是 eval-only E57/E69 平均权重，无 optimizer/scheduler。
 > 当前唯一执行合同是同权重、同新 AdamW、四组 LR 1e-5/1e-4/1e-5/1.25e-5、完整 1611 steps，
-> 其余 split 和科学门不变；通过后的下一步按 master §20.18 为 G1 准备。尚未执行 GPU 配对。
+> 其余 split 和科学门不变；通过后的下一步按 master §20.18 为 G1 准备。G0已运行，当前进度见master §20.33与Tracker。
+> 此holdout只排除新增更新，底层checkpoint已见过完整train；不称为整个系统从未见过的新场景。
 
 # MCLN Nr3D 视角文本增强修复的配对因果审计计划
 

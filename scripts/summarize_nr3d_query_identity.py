@@ -29,6 +29,17 @@ def summarize(directory):
     for key in ('hits025', 'hits050', 'iou_sum'):
         assert native[key] == receipt['summary']['mask_' + key]
     paired = [r for r in rows if r['rec_selection'] is not None]
+    different = [r for r in paired if r['rec_selection']['query'] != r['mask_selection']['query']]
+    def before_query(row):
+        return row['score_profiles']['protected_selector']['before_filter']['top_query']
+    def after_query(row):
+        return row['score_profiles']['protected_selector']['after_filter']['top_query']
+    selection_paths = {
+        'mask_equals_before_filter_top_rows': sum(r['mask_selection']['query'] == before_query(r) for r in rows),
+        'filter_changes_top_rows_including_no_legal_query': sum(before_query(r) != after_query(r) for r in rows),
+        'different_query_rows_with_changed_filter_top': sum(before_query(r) != after_query(r) for r in different),
+        'different_query_indices_do_not_prove_different_physical_instances': True,
+    }
     old = [r['mask_selection']['mask_iou'] for r in paired]
     new = [r['rec_selection']['mask_iou'] for r in paired]
     changes = {}
@@ -45,13 +56,15 @@ def summarize(directory):
         'new_forwards': 0, 'optimizer_steps': 0, 'deployment_changed': False,
         'native_all_rows': native,
         'rows_without_legal_rec_query': [r['id'] for r in rows if r['rec_selection'] is None],
-        'different_query_rows': sum(r['rec_selection']['query'] != r['mask_selection']['query']
-                                    for r in paired),
+        'different_query_rows': len(different),
+        'selection_path_diagnostic': selection_paths,
         'paired_native_mask': metrics(old), 'paired_rec_query_mask': metrics(new),
         'paired_mask_changes': changes,
         'paired_miou_delta_pp': 100 * (metrics(new)['mean_iou'] - metrics(old)['mean_iou']),
         'interpretation': 'Existing validation-output diagnostic, not a trained method result. '
                           'The row without a legal REC Query has no replacement Mask defined. '
+                          'All differing Query selections coincide with a changed REC filter top; '
+                          'this does not establish a missing shared-identity representation. '
                           'Do not convert this into a deployed fallback or a validation-tuned selector.'}
 
 

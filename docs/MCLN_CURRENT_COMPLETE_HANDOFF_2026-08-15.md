@@ -15123,3 +15123,50 @@ observer 在 22:31:14 观察到 2816 步，尚无终态回执。observer 计划 
 当完成。本轮未更改运行中的 L1 文件、参数或数据，未读取/部署中间权重。
 Nr3D 受保护正式 4475/3759、Sr3D 12139/10335 和 ScanRefer 保护结果全部不变。
 整体 goal active；局部 Mask 准备、旧输出诊断与 CPU 通过均不等于 REC 总目标达成。
+
+
+### 20.56 任务查询已有能力与选择路径进一步定位；L1 接近更新终点（2026-09-05 23:40 CST）
+
+上一目标轮完成模块/CPU 验证/推送，属于 progress。本轮增加了影响后续 C 设计的代码
+证据，完成 B 的服务器输入核验，并实际复查同一个 L1 训练进程；不是仅重复状态或计划。
+
+23:18 的隔离 CPU 核验通过：冻结源 612 文件、M3 所用 36 数据文件、parent、M3 回执
+及全部已列附件 SHA 一致；CPU 测试使用的 deterministic scatter 文件与冻结 runtime
+完全一致。预检所用整数张量 isfinite 在原 PyTorch 1.10.2 中可执行。耗时 24.21 秒，
+0 GPU forward / 0 optimizer 更新。准备清单仍为 74103cf7...aad2a，未修改已封存
+预检文件；原生 16 行 CUDA/梯度预检仍待 L1 完成后执行。
+证据 refine-logs/point_detail_preflight_20260905_v1/input_readiness.json。
+
+进一步收紧 §20.55 中 533 条 REC/Mask Query 差异的解释：全部 7899 行的 Mask Query
+均等于 protected_selector 过滤前第一名；534 行过滤前后第一名变化，其中 1 行没有
+合法 REC Query。其余 533 行恰好就是全部有合法 REC Query 的索引差异。
+原生 Mask 使用同一 selected_source_scores 的 argmax，但没有 REC 的 detector
+重叠过滤。因此这首先定位到候选选择路径，不能直接证明网络没有共享身份表示。
+保存字段也不足以逐条证明原 Mask Query 必然被过滤，或不同 Query 一定是不同物理
+实例。先前 +47/+27 Mask 净命中及 +0.2884171pp 配对 mIoU 不变，仍仅是旧输出反事实
+诊断；没有改变 evaluator 或把规则变化计入新网络收益。
+
+核对 models/mcln.py、models/modules.py、models/losses.py 与冻结源码 SHA 完全一致：
+Box 与 Query Mask 原本共享最后层 Decoder 表示，已有独立 Box MLP 和三层 x_query。
+SetCriterion 一次 Hungarian 匹配将同一索引交给 Box/Mask loss；这不是两任务分别
+匹配的问题。matcher 的 Mask 成本读取广播 Text Mask，没有显式比较各 Query Mask
+质量，但这不足以直接要求修改 matcher；本轮保持原生损失和监督。
+固定任务常量加在已有带 bias 投影前可被第一层 bias 重参数化。未来 C 的必要增量应是
+候选在输出前实际读取不同空间/局部记忆并得到任务更新，而不能仅加几个常量或重复已有
+共享/投影。C 此轮未实现，仍在 B 的独立实验之后；不预先宣称解决了梯度冲突。
+详细审计 docs/NR3D_TASK_QUERY_ARCHITECTURE_AUDIT_2026-09-05.md。
+
+23:35 observer 实查 PID18450 live、6144 步；23:37:24 新归档实查 6272/6687 步，
+每臂已见 25088 行，GPU 9733 MiB / 41%。最近每 128 步耗时 148.29/148.23/148.15 秒。
+当时仍无 receipt.json 或 controller.exit，尚无终态质量结论。更新预计 23:45–23:50
+结束，随后两臂仍需完整留出评估；以真实回执为准。已有 observer 每 240 秒观察，不重启训练。
+
+归档脚本同时出现一项实际监控问题：旧宽泛 pgrep 除 PID18450 外还匹配到只读 observer
+PID19665，因为其命令字符串包含训练脚本路径。已将本地 collector 改为匹配完整训练
+启动命令；23:37 复查只返回 PID18450。23:35 主 observer 始终使用 ps -p18450，
+因此此前那次 live 判断有效。修复仅限观测脚本，未修改 L1 模型、数据或更新设置。
+保留 progress_20260905_233602.json 与 progress_20260905_233724.json 的前后证据。
+
+下一步读取 L1 原定终态并复算双对照筛选；通过才执行隔离的原生正式配对，失败则封存
+该路线。B 准备完成但尚无质量结果，C 未启动，Sr3D 仍需新的受保护权重备份位置。
+正式保护成绩不变，整体 goal active，三数据集 REC 目标仍未完成。

@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 23:10 CST. Detailed evidence: master §§20.37–20.55.
+Updated: 2026-09-05 23:40 CST. Detailed evidence: master §§20.37–20.56.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -15,7 +15,7 @@ Updated: 2026-09-05 23:10 CST. Detailed evidence: master §§20.37–20.55.
 
 | M4 Mask neighborhood intervention | Complete;16 fit rows,8 forwards,zero updates |31 majority SPs read distant seed0 on empty balls; nearest-two mean Mask +2.2877pp but6 rows worsen. Proceed only to matched learning screen |
 | M5 existing Mask projection training | Complete;both1024-step arms and6172 terminal rows; integrity PASS, fixed quality FAIL |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
-| L1 last text-attention key evidence | Last observer at 22:31 CST: PID18450,2816/6687 updates; no endpoint then | Fixed run unchanged; next observer scheduled23:35 then240s |
+| L1 last text-attention key evidence | 23:37 CST exact-command check: PID18450 live,6272/6687 updates; no endpoint | Finish fixed updates and both holdout evaluations; observer240s |
 | Point-detail to superpoint Mask | 4 CPU tests PASS; native 16-fit-row preflight staged and Python3.7 compiled | GPU not executed; run after L1, then define independent learning screen |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
@@ -69,3 +69,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-05 23:10 CST progress: point-based local-detail residual and isolated native preflight are prepared; 54,144 parameters, 4 synthetic CPU tests pass, no voxel installation or GPU preflight. M2 cached-output identity diagnosis finds533 differing REC/Mask selections among7898 legal-REC rows; forcing existing REC-query Masks gives+47/+27 hits and+0.2884171pp mIoU on that paired subset, with17/9 breaks. Diagnostic only; no evaluator change or formal best. Identified Sr3D backup candidates were exhausted at22:27; new backup location remains needed. L1 fixed run and protected results unchanged. See master§20.55 and docs/NR3D_POINT_DETAIL_MEMORY_PLAN_2026-09-05.md. Overall goal active.
+
+
+2026-09-05 23:40 CST progress + verified wait: native task audit confirms shared Decoder identity, separate existing projections and shared Hungarian indices. All533 differing REC/Mask Query selections coincide with REC pre/post-filter top changes; do not claim these prove missing shared representations. Paired historical-output deltas unchanged, evaluator unchanged. Local-detail input readiness PASS (612 source/36 data files and matching scatter); no GPU preflight. L1 actual PID18450 has6272/6687 updates at23:37, no endpoint. Collector full-command matching corrected an observed false match to its observer. See master§20.56 and docs/NR3D_TASK_QUERY_ARCHITECTURE_AUDIT_2026-09-05.md. Goal active.

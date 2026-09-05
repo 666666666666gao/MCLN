@@ -1,0 +1,24 @@
+{
+  "files": [
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "baseline_rows.json"
+  ],
+  "gpu": "9733 MiB, 40 %\n",
+  "gpu_exit": 0,
+  "log_tail": [
+    "L1 TRAIN {\"step\": 5760, \"rows_seen\": 23040, \"arms\": {\"text\": {\"loss\": 14.194971084594727, \"gradient_norm_before_clip\": 0.025118939578533173, \"weight_norm\": 0.9845146536827087}, \"position\": {\"loss\": 14.196977615356445, \"gradient_norm_before_clip\": 0.0008276721928268671, \"weight_norm\": 0.7813267111778259}}, \"elapsed_seconds\": 7658.661429405212}",
+    "L1 TRAIN {\"step\": 5888, \"rows_seen\": 23552, \"arms\": {\"text\": {\"loss\": 12.15412425994873, \"gradient_norm_before_clip\": 0.018201258033514023, \"weight_norm\": 0.9959127306938171}, \"position\": {\"loss\": 12.156357765197754, \"gradient_norm_before_clip\": 0.0009522156906314194, \"weight_norm\": 0.793479323387146}}, \"elapsed_seconds\": 7806.633127689362}",
+    "L1 TRAIN {\"step\": 6016, \"rows_seen\": 24064, \"arms\": {\"text\": {\"loss\": 15.696314811706543, \"gradient_norm_before_clip\": 0.02274022065103054, \"weight_norm\": 1.0141736268997192}, \"position\": {\"loss\": 15.698472023010254, \"gradient_norm_before_clip\": 0.0008824402466416359, \"weight_norm\": 0.8109042644500732}}, \"elapsed_seconds\": 7954.921118021011}",
+    "L1 TRAIN {\"step\": 6144, \"rows_seen\": 24576, \"arms\": {\"text\": {\"loss\": 15.213851928710938, \"gradient_norm_before_clip\": 0.030620165169239044, \"weight_norm\": 1.0396755933761597}, \"position\": {\"loss\": 15.20750904083252, \"gradient_norm_before_clip\": 0.0011632343521341681, \"weight_norm\": 0.8287930488586426}}, \"elapsed_seconds\": 8103.154821395874}"
+  ],
+  "process": "18450 /root/miniconda3/envs/bdetr/bin/python /root/autodl-tmp/mcln_text_position_l1_20260905_v2/scripts/run_nr3d_text_position_l1.py --manifest /root/autodl-tmp/mcln_text_position_l1_20260905_v2/input_manifest.json --stage train\n19665 /root/miniconda3/envs/bdetr/bin/python -u -c import datetime,json,subprocess,time from pathlib import Path directory=Path('/root/autodl-tmp/mcln_text_position_l1_20260905_v2/train') timezone=datetime.timezone(datetime.timedelta(hours=8)) next_observation=datetime.datetime(2026,9,5,23,35,tzinfo=timezone) initial=True while True:     command=subprocess.run(['ps','-p','18450','-o','args='],stdout=subprocess.PIPE,universal_newlines=True)     alive=command.returncode==0 and 'mcln_text_position_l1_20260905_v2/scripts/run_nr3d_text_position_l1.py' in command.stdout     lines=(directory/'run.log').read_text().splitlines()     events=[line for line in lines if line.startswith(('L1 TRAIN ','L1 EVAL ','L1 COMPLETE '))]     receipt=(directory/'receipt.json').exists()     now=datetime.datetime.now(timezone)     print(json.dumps({'observed_cst':now.isoformat(),'training_pid':18450,'training_pid_live':alive,                       'latest_event':events[-1],'receipt_exists':receipt,                       'controller_exit_exists':(directory/'controller.exit').exists(),                       'next_observation_cst':next_observation.isoformat() if initial else (now+datetime.timedelta(seconds=240)).isoformat()}),flush=True)     if receipt:         break     if not alive:         raise SystemExit(2)     if initial:         time.sleep(max(0,(next_observation-now).total_seconds()))         initial=False     else:         time.sleep(240) \n",
+  "process_exit": 0,
+  "run.log": {
+    "bytes": 18018,
+    "sha256": "c39545e76026e460f5e590b1068a1632a272542f47dc56ed4db4e2d47d43c644"
+  },
+  "stage": "train",
+  "time_cst": "2026-09-05T23:36:02.988835+08:00"
+}

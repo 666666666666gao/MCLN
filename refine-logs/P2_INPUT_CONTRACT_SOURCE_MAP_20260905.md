@@ -28,3 +28,21 @@ adapter mask为`[True,True]`，REC对象重叠mask为`[False,True]`；无共享M
 script SHA `6c4af3a514621f5c94eac4c6127f45157c1e26a460f8c5cef3947614d6e4bab1`。
 实际执行的adapter与filter文件原始字节SHA均与当前本地源文件一致，未做源码替换。
 这不量化受保护Nr3D的影响频率，也不支持直接改变正式Mask过滤规则。
+
+## 训练框扰动与过滤的额外约束（2026-09-05）
+
+`Joint3DDataset._get_target_boxes:1112–1113`与`_get_scene_objects:1152–1153`在train且augment开启时，
+分别对中心和尺寸乘独立的`[.95,1.05)`随机量；`butd_cls`随后将scene对象框作为提议框。
+两个取框函数与原MCLN固定提交的AST相同，见`BOX_JITTER_UPSTREAM_SOURCE_AUDIT_20260905.json`，
+不能据此归因为新增模块引入的问题。
+
+CPU探针实际调用这两个函数与当前过滤器，以中心`[5,0,0]`、尺寸`[.1,.1,.1]`的合成对象、
+seed0、64次扰动为例，把每次root GT自身作为候选：关闭增强时64个均保留；开启增强时45个
+未通过提议框IoU>.25过滤。两处框中心最大差为`.41901398`。这是合成机制反例，**45/64不是Nr3D发生率**。
+回执为`TARGET_PROPOSAL_JITTER_COUNTEREXAMPLE_20260905.json`；原G0代码及增强策略未修改。
+
+因此，首轮冻结候选读出比较应把候选产生时的模型模式和augmentation一并登记并在两组保持一致，
+不能只让同名mask或过滤函数相同。若使用eval、augment=False的冻结候选，且root实例确实存在于
+有效对象提议中，则它与root GT来自同一框：任意IoU>.25正确候选必然与至少一个有效提议IoU>.25。
+这个条件下Full-256正确候选不会被该过滤删除；若实测违反，应先检查root提议存在性、框阶段和映射。
+该条件命题不等于已核验全部真实行，也不授权在G0中同时修正框扰动。

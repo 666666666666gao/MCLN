@@ -6,6 +6,47 @@ import hashlib
 import json
 from pathlib import Path
 
+import numpy as np
+
+
+def scene_cluster_intervals(rows, resamples=2000):
+    """Paired percentage-point differences with whole-scene resampling.
+
+    A sampled scene retains all its expressions. The reported estimand remains
+    expression-weighted accuracy, not an unweighted average of scene accuracy.
+    These descriptive intervals do not alter the registered screening gates.
+    """
+    scenes = sorted({row["scan_id"] for row in rows})
+    scene_index = {scene: index for index, scene in enumerate(scenes)}
+    counts = np.zeros(len(scenes), dtype=np.float64)
+    differences = np.zeros((len(scenes), 6), dtype=np.float64)
+    for row in rows:
+        index = scene_index[row["scan_id"]]
+        counts[index] += 1
+        for offset, reference in [(0, "global"), (3, "protected")]:
+            for column, threshold in enumerate([.25, .5]):
+                differences[index, offset + column] += (
+                    int(row["scores"]["pair"]["box_iou"] > threshold)
+                    - int(row["scores"][reference]["box_iou"] > threshold))
+            reference_mask = (row["protected_mask_iou"] if reference == "protected"
+                              else row["scores"][reference]["mask_iou"])
+            differences[index, offset + 2] += row["scores"]["pair"]["mask_iou"] - reference_mask
+    rng = np.random.RandomState(20260905)
+    multiplicities = rng.multinomial(len(scenes), np.full(len(scenes), 1.0 / len(scenes)),
+                                    size=resamples)
+    bootstrap = 100 * (multiplicities @ differences) / (multiplicities @ counts)[:, None]
+    limits = np.percentile(bootstrap, [2.5, 97.5], axis=0)
+    estimates = 100 * differences.sum(axis=0) / counts.sum()
+    result = {"unit": "percentage_points", "method": "paired_whole_scene_percentile_bootstrap",
+              "scenes": len(scenes), "rows": len(rows), "resamples": resamples,
+              "seed": 20260905, "screening_gates_changed": False}
+    for offset, reference in [(0, "global"), (3, "protected")]:
+        result["pair_minus_" + reference] = {
+            metric: {"estimate": float(estimates[offset + column]),
+                     "percentile_95_interval": limits[:, offset + column].tolist()}
+            for column, metric in enumerate(["rec025", "rec050", "mask_mean_iou"])}
+    return result
+
 
 def summarize(rows):
     def metrics(members):
@@ -76,7 +117,8 @@ def summarize(rows):
             "coverage": coverage, "protected_rec_failures025": failure,
             "zero_legal_rows": sum(r["legal_queries"] == 0 for r in rows),
             "fewer_than_32_legal_rows": sum(r["legal_queries"] < 32 for r in rows),
-            "mask_conditioned_diagnostics": masks, "object_availability_proxy": availability}
+            "mask_conditioned_diagnostics": masks, "object_availability_proxy": availability,
+            "scene_cluster_uncertainty": scene_cluster_intervals(rows)}
 
 
 def main():

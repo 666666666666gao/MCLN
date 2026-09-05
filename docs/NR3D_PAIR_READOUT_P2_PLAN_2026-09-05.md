@@ -96,3 +96,18 @@ It schedules 6,687 fit batches and 1,543 holdout batches. Receipts are under
 `refine-logs/PAIR_READOUT_TRAIN_{INPUT,CPU,PREFLIGHT,SMOKE,LAUNCH}_20260905.json`.
 No completed training or held-out result was available at launch. Protected
 benchmark metrics are unchanged.
+
+## Descriptive uncertainty prepared while training runs
+
+Before reading any P2 holdout results, the completed-result summarizer adds
+2,000 paired whole-scene bootstrap resamples (seed 20260905) for pair minus
+global and pair minus protected: REC@.25, REC@.50 and mean Mask IoU. It retains
+all expressions of each sampled scene and reports the expression-weighted
+metric; it does not average scene accuracies equally. Protected Mask uses its
+actual Mask selection, which can differ from its REC Query.
+
+The percentile intervals are descriptive for this single seed and checkpoint.
+They do not change the registered screening gates or establish generalization
+to scenes unseen by the backbone. A CPU regression with unequal scene sizes
+checks the weighting and the separate protected Mask path. The running trainer
+and its immutable input manifest are unchanged.

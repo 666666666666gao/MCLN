@@ -14135,3 +14135,33 @@ state中Encoder/Decoder的`cross_d`分别有12/24个张量。`butd_cls`数据路
 这项开发准备不以G0科学通过为前提。G0/P1实际运行顺序保持不变，GPU训练对照的split、
 候选产生方式、loss/决策分数和更新步数仍待P1回执齐备后冻结；不把原型开发视为G1实验通过。
 这收窄旧文档“G0通过后准备G1”的等待边界，不恢复旧CEGD多分支组合或已取消实验。
+
+
+#### 20.36.6 最小关系读出原型已推送Draft PR（2026-09-05 12:40 CST）
+
+独立工作区`.codex_mcln_pair_readout_20260905`、分支`codex/pair-relation-readout-20260905`，
+提交`73fb6e967099354ae9498e0d407789979f1916bf`，已推送并核实Draft PR #8处于open/draft：
+https://github.com/666666666666gao/MCLN/pull/8 。该PR尚未合并；G0/P1运行源码、保护权重和队列均未改。
+
+`CandidateEdgeDirectScorer`只实现两个关系读出：global直接调用现有条件空间注意力，
+pair让每个目标—记忆Query对从完整文本中读取自己的上下文。两组共用5维几何、原有
+log-sigmoid调制、合法完整Query记忆、显式无关系状态和单个最终logit头；同一目标Top-K
+由调用者提供，分数scatter回原Query轴，不加入节点分支、Source Selector或Parent回退。
+
+CPU合成测试10项全部通过（1.43 s），覆盖旧公式等价性、固定输入特征的padding屏蔽、
+目标Top-K之外的记忆作用、非法Query屏蔽、Query置换和分数映射、候选对专属token读取、
+最终得分梯度以及288维/32目标/256记忆的真实接口尺寸。另从受保护E57平均权重严格加载
+最后一层空间注意力到两组，共享初始张量逐项一致；pair文本分支、几何调制与null状态的
+梯度仍非零且有限。global/pair原型参数分别为347953/931729，不是参数量相同的对照。
+
+完整设计和边界见PR内`docs/NR3D_PAIR_READOUT_PROTOTYPE_2026-09-05.md`；CPU组合回执为
+`refine-logs/PAIR_READOUT_PROTOTYPE_CPU_20260905.json`，1971 bytes，SHA
+`1f99b5a9484993da3832ce7edb8a4991d728596d70a56c7c6d0e866f89068c8f`。
+远端独立副本位于`PAIR/pair_readout_prototype_v1/`，CUDA不可见，optimizer steps=0，
+benchmark rows=0，新checkpoint=0。原型未接入主网络、loss、训练launcher或evaluator。
+
+当前实现是最终框后的旧条件公式对照，不是重建完整旧Decoder；两组同用最终Query/Box，
+未将旧Decoder的位置嵌入或前层框阶段差异归入新关系证据。固定特征的padding测试不能证明
+上游整网padding不变性，单次soft Anchor聚合也不能证明多参照AND/NOT推理已解决。
+GPU短对照仍等待G0终态和P1真实候选回执后冻结数据、初始化、loss与唯一决策路径。
+13:35 CST的G0 fixed单次完成窗口检查保持原定安排；本节没有新增训练状态轮询。

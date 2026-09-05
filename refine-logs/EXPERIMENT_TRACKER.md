@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 M5 terminal. Detailed evidence: master §§20.37–20.50.
+Updated: 2026-09-05 21:24 CST. Detailed evidence: master §§20.37–20.52.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -52,3 +52,9 @@ M5 launched20:00:27, screen17183.mcln_m5_mask_locality, isolated directory /root
 
 
 M5 terminal authoritative update: fixed quality FAIL, integrity PASS, controllerexit0; no formal promotion. Full report docs/NR3D_MASK_NEIGHBORHOOD_M5_RESULT_2026-09-05.md. L1 CPU7 tests and terminal summary4 tests PASS; actual M3 nested receipt reader corrected beforeGPU and archived. L1 real-fit preflight next, no L1 training result yet.
+
+
+L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tensor identity/gradient/state/data checks passed. v1's ordered-key verifier error is archived and corrected without changing the mechanism or experiment contract. Paired training launched21:13:24, screen mcln_l1_train, /root/autodl-tmp/mcln_text_position_l1_20260905_v2/train/. Start evaluation and actual training throughput still need collection; no terminal quality result. M5 remains failed at Mask25 despite positive mean-IoU evidence; full REC/three-benchmark goal stays open.
+
+
+21:24 L1 v2 authoritative live state: PID18450, GPU9703MiB, baseline1600/6172, zero optimizer updates so far; latest50 B16 batches112.975s, baseline ETA21:35. Next inspect near21:33–21:35 and use actual training throughput for terminal ETA. ScanRefer four protected artifact hashes and0444 modes PASS. Sr3D CSV/train/val inputs present; documented protected/candidate/E26/E29 files absent on this instance and backup location requested. Read-only report docs/THREE_BENCHMARK_ARTIFACT_READINESS_2026-09-05.md. No new formal benchmark result; full goal remains active.

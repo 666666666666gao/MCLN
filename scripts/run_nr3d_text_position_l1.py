@@ -112,7 +112,7 @@ def main():
                                    filter_non_gt_boxes=True, eval_use_selector_choice_scores=True)
 
     def verify_state():
-        assert list(model.state_dict()) == list(initial_state)
+        assert set(model.state_dict()) == set(initial_state)
         for name, value in model.state_dict().items():
             assert torch.equal(value.detach().cpu(), initial_state[name]), name
         assert all(parameter.grad is None for parameter in model.parameters())
@@ -232,6 +232,7 @@ def main():
                    'rows': 16, 'fit_scenes': 16, 'forwards': forwards, 'optimizer_steps': 0,
                    'zero_start_identity': True, 'native_loss_connected': True,
                    'frozen_state_unchanged': True, 'inputs_identical_to_m3': True,
+                   'checkpoint_key_order_matches_model': list(model.state_dict()) == list(initial_state),
                    'source_data_and_parent_checkpoint_unchanged': True,
                    'formal_rows': 0, 'holdout_rows': 0, 'manifest_sha256': file_sha(options.manifest),
                    'parameters_per_arm': 82944, 'batches': batches,

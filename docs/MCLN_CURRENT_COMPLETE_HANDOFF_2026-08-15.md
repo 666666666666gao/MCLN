@@ -14934,3 +14934,63 @@ GPU启动前本地真实receipt检查发现M3按batches/rows嵌套，已修正L1
 实际16行输入hash映射/编译/7测试复查通过，修正前0GPU/0更新。
 当前L1冻结manifest SHA 1eb6f194daf25a43bb1d8c63f12e3edc80db407f0d6e8182faac98b578a0b858，1026数据文件。
 已推送fdfb882包含对象审计终态和L1代码/计划/CPU证据；L1下一步是真实16行零更新预检，未有训练收益。
+
+
+### 20.51 L1真实预检PASS并启动完整配对训练；M5结论补充（2026-09-05 21:13 CST）
+
+L1 v1已完成4批/20forward/各项零初始化与梯度检查，但末尾误以字典插入顺序验证
+模型状态而exit1；没有optimizer更新。改为完整参数名集合与每个同名tensor值严格比较，
+在独立v2目录重跑相同16行，现已exit0，所有原模型参数/buffer、612源码/1026数据/
+保护权重前后检查PASS，input SHA与M3一致。receipt明确记录checkpoint key order不同，
+而状态数值完全相等；v1原日志及CPU前置receipt读取修正历史均保留，未改科学合同。
+
+原native loss与grounding/Mask分量均能给两臂82944参数产生finite/nonzero梯度；
+零初始化最终Query/Box/selector分数/raw Query Mask严格复现，固定.001对角干预
+确实改变这些输出且保持finite，然后恢复零参数，0更新/0holdout/0formal。
+v2预检receipt SHA ba8d31f3ac71d1f4bfd88314cb7627b660a8948cf96ed89d5162508a711814c3；耗时33.944秒（不含dataset初始化）。
+冻结manifest SHA 354c680b44ac799a1c6d573aebfd8653b474e9a0cda8ae71818a76ac237a3746。
+
+
+配对训练于21:13:24启动，screen mcln_l1_train，活动目录
+/root/autodl-tmp/mcln_text_position_l1_20260905_v2/train/。
+先评估6172行原始零起点，再在26747 fit/413场景同batch4、同seed0各6687更新，
+最后完整6172模块留出/98 backbone已见场景评价。首段实际训练吞吐尚待观测，
+不把启动当作已经更新或质量通过。固定双控制门槛、LR/步数/损失按L1原计划不变。
+报告docs/NR3D_TEXT_POSITION_L1_PREFLIGHT_RESULT_2026-09-05.md。
+
+M5结论补充：最近邻分组未训练时mIoU已比native高1.23914993pp，
+而两臂短训相对各自起点mIoU分别-.12018578pp(native)/-.07001553pp(nearest)。
+终态最近邻对native起点的均值增益95% scene区间为[+.2502,+2.5021]pp，
+因此不能把门槛FAIL笼统解释成“没有任何分割收益”；失败在Mask25净-17且训练没有追加均值收益。
+固定终态仍不晋级。M5此次REC起点6005/5306，旧P2/R1缓存6005/5312，
+尚未建立跨运行输入/输出逐行一致性，比较都使用M5本次配对起点，不混合口径。
+
+当前属于progress：M5已完整归档，L1已完成可复验机制预检并进入固定配对运行；
+完整Nr3D>60、Sr3D>68.9与ScanRefer保护目标仍未完成，无新正式最好。
+
+
+### 20.52 L1更新前对照1600/6172；ScanRefer保护链与Sr3D恢复条件实查（2026-09-05 21:24 CST）
+
+L1完整文本预处理已结束，PID18450正常进入baseline评估；21:24:07快照中
+GPU9703MiB，日志到100个B16批次/1600行，尚无optimizer更新和终态receipt。
+50/100批elapsed分别113.3972/226.3723秒，最近50批112.9751秒。
+按该阶段实测吞吐，386批更新前对照预计约21:35结束；接近21:33–21:35再查看，
+随后在首段真实训练更新后估计6687步/臂的剩余时间。当前不能根据Mask短训或
+CPU/梯度PASS声称Nr3D REC目标已完成；训练与双控制门槛不变。
+
+为推进完整三数据集目标，另做了0GPU/0更新的工件检查：
+ScanRefer epoch71 backbone、Parent、Geometry、V99四文件均存在，SHA与既有
+保护记录全部一致，mode均0444。原工件没有被修改；这次未执行ScanRefer正式评估。
+Sr3D CSV存在（83572原始行），train/val场景缓存存在；正式用val_v3scans.pkl
+（2107695498字节），最初泛查的test_v3scans.pkl不存在并不是正式输入缺失。
+当前33476实例上，Sr3D受保护平均权重、平均candidate原件和E26/E29父权重
+在文档对应路径均缺失，control/evaluation/backbone子目录也不在；
+DATA_ROOT/output内的.pth清单没有Sr3D工件。当前挂载存储根目录也未提供归档线索。
+没有据此断言外部备份或另一实例不存在。已在Nr3D继续运行时询问Sr3D备份路径/实例，
+等待补充恢复位置；不借任意权重替代，也不重启已取消的长baseline。
+
+报告docs/THREE_BENCHMARK_ARTIFACT_READINESS_2026-09-05.md；
+原始只读证据refine-logs/sr3d_readiness*_20260905.json、
+sr3d_archive_locator_20260905.json和scanrefer_protected_chain_20260905.json。
+本轮仍属progress，整体goal active；正式Nr3D4475/3759、Sr3D历史12139/10335
+和ScanRefer原最好没有新增结果。当前唯一GPU任务为L1 v2，P2/R1/M5终态保持封存。

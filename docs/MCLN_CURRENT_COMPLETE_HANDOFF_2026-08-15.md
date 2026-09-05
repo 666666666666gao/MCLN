@@ -14386,3 +14386,51 @@ pair SHA `fdc5f8faaedd5155fe326eff0851e20b931d8a714d5e6c8469adc0c0c28c4113`，�
 下一步先补齐用户P1要求的正式输出路径固定诊断：核对保护权重与实际评估源码/协议，再测过滤前后
 Full256覆盖与条件Mask质量。这是对保护模型的只读诊断，未启动新的formal运行，不推广失败P2头，
 不重开G0增强路线、长baseline、FPR/A-V4或旧Gate/回放扫描。正式三基准最佳指标保持原值；总体目标未完成。
+
+
+### 20.40 P1正式输出路径诊断已启动；找到主指标与Source诊断的过滤差异（2026-09-05 16:34 CST）
+
+P2 v1维持失败封存，不加载两个新头。本节是受保护平均权重的只读P1复现/诊断，
+不恢复G0→G1性能路线，也不是baseline重训。正式最好仍为4475/3759，未产生新正式结果。
+
+找回原平均权重one-shot评估的命令、305字段config、完整metric receipt、decision与源码hash。
+历史同一次receipt中，主REC position_subgroups合计4475/3759，
+但position.learned_selector与fixed_default均4271/3705。
+源码确认：主REC先做detector-overlap合法性过滤再排序；Source诊断直接unfiltered argmax。
+因此不能混用这些计数，也不能把差异全部笼统归于root_only（正式路径本身也only_root=True）。
+它尚未解释另一份4275缓存结果的全部差异。Mask则沿实际未做该REC过滤的Query选择路径记录。
+
+有界搜索没有找回历史核心mcln/main_utils/train_entry/losses的精确字节；
+本次使用既有inputs_v3/fixed_source的612文件冻结快照，全部SHA审计，模型原目录未改。
+evaluator与selector按LF归一化匹配历史hash，但核心源码不同。
+所以必须称为“当前冻结源码的历史配置复现检查”，即使总指标相同也不声称历史源码一致。
+
+执行目录：`/root/autodl-tmp/mcln_official_candidate_audit_20260905_v1`。
+screen `mcln_official_candidate_audit_20260905_v1`，controller PID11977，Python11988。
+16:29:34启动；16:33:11实际已完成83/494批，GPU13765MiB/71%，约1.30秒/批，
+预计16:42完成，下一有意义检查16:40附近。其余12027/12107/12187/12267为DataLoader workers。
+不提前反复查询同一进度。
+
+原生TrainTester.main --eval、B16、4workers、prefetch2、单rank、原生loss/size clamp/过滤/
+REC与Mask evaluator均保持。cuDNN enabled/benchmark/deterministic都为True，与历史入口一致。
+测试先发现standalone parse默认local_rank=1，而历史distributed launcher注入0；
+在GPU/数据集构建之前被config guard阻止。明确补入--local_rank 0后，305字段逐一一致，
+仅checkpoint同SHA别名、日志目录与exp不同。该准备错误与修正均保留，无benchmark读数、无更新。
+候选诊断6项CPU测试通过（1.49s），后处理错误分类1项通过（0.01s）。
+最终输入manifest为input_manifest_v2.json，SHA
+`333b363d1da8667f5dce80bd4fea9bceed19e4b8b7c1c68e40f76554f21edd65`。
+627个验证相关数据文件已记录实际大小/SHA；没有可供逐文件对照的历史全量data SHA。
+
+逐行记录过滤前后Top16/32/64/256、实际REC/Mask Query、正确框条件Mask与Full Mask oracle，
+以及四层FPS、fp2 seed、KPS中属于root目标的采样中心数。中心数不是感受野覆盖；
+Query seed落在目标内也不等价于证明Query的物理实例身份。
+对象槽覆盖仍是潜在Anchor可用性代理，不是真实文本Anchor标注召回。
+辅助诊断按native mask-before-sort排序，Mask使用与NumPy一致的float64整数计数除法。
+完整评估后必须逐行聚合匹配主REC和native Mask回执，再单独报告是否复现历史五项指标。
+所有参数/缓冲区在评估前后与保护checkpoint逐项相等；零optimizer step，零权重写入。
+源码、数据、输出口径不一致时如实报告，不以分数择取另一次运行。
+
+固定方案：`docs/NR3D_OFFICIAL_CANDIDATE_AUDIT_PLAN_2026-09-05.md`；
+代码与准备证据已于运行前推送main `02131e8`。
+运行/终局证据目录：`refine-logs/official_candidate_audit_20260905_v1/`。
+本节只报告已启动与首批状态，未宣布复现成功或得到完整错误分布。

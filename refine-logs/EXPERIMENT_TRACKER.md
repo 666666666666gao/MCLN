@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 19:43 CST. Detailed evidence: master §§20.37–20.46.
+Updated: 2026-09-05 20:08 CST. Detailed evidence: master §§20.37–20.48.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -12,6 +12,9 @@ Updated: 2026-09-05 19:43 CST. Detailed evidence: master §§20.37–20.46.
 | M2 native Mask-branch diagnosis | Complete;7899 rows,zero updates; native/source/data/state checks PASS |767/828 majority-label-pass failures also lack passing raw Masks; inspect Mask learning/alignment before fusion changes |
 
 | M3 native Mask supervision/gradient probe | Complete;16 fit rows,4 forwards,8 gradient probes,zero updates | Native matched-Query indices and gradients correct;66/302 majority SP neighborhoods lack target seed centers; locality still needs distances |
+
+| M4 Mask neighborhood intervention | Complete;16 fit rows,8 forwards,zero updates |31 majority SPs read distant seed0 on empty balls; nearest-two mean Mask +2.2877pp but6 rows worsen. Proceed only to matched learning screen |
+| M5 existing Mask projection training | Running;native gradient preflight PASS,baseline1600/6172 at20:08; terminal pending |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -40,4 +43,6 @@ M2 native Mask-branch diagnostic COMPLETE, controller/analysis exit0,7899 rows,7
 
 M3 COMPLETE with original Hungarian indices/native autograd, no indexing or disconnected Mask-projection bug. Good legal Box Queries104, direct Mask gradient absent on88; normal one-to-one objective, not automatic evidence for extra labels. All16 matched Boxes>.5,10 matched raw Masks>.5. M3 receipt b6b7b1d7903f766c0f54f576c33641d89d60e455d0e5b5159db0680d1bba163f. Report docs/NR3D_MASK_SUPERVISION_PROBE_RESULT_2026-09-05.md.
 
-M4 next compares actual original ball-query neighborhoods with nearest-two on the same16 fit input hashes; code and CPU2 tests PASS, GPU not started. Existing ball query takes the first2 in radius.2 and leaves seed0 indices on empty neighborhoods. Real foreground empty-neighborhood frequency is not established yet. No fusion/threshold sweep or protected-model change. A subsequent locality training trial needs an original-grouper matched control, not just16-row inference gains. R1/P2 remain sealed and the three-benchmark objective active/unmet.
+M4 COMPLETE: actual majority foreground empty balls31/302, original seed0 distances3.09–6.16m versus nearest.200–.285m. Target-seed-free neighborhoods66→19. Frozen16-row fusion mIoU+.0228774 and .50+1;6 improve/6 worsen/4 unchanged. Grounding and M3 identity PASS; no promotion. Original upstream shares the grouping behavior. Full report/receipt published0a3a93c.
+
+M5 launched20:00:27, screen17183.mcln_m5_mask_locality, isolated directory /root/autodl-tmp/mcln_mask_neighborhood_m5_20260905_v1. CPU2 tests PASS, data724 files pinned; real two-arm gradient preflight PASS (1348960 parameters,16 tensors), initial holdout1600/6172 at20:08. PID17187 active, GPU10553MiB/30%; no optimizer updates yet. Baseline ETA20:23, whole-run estimate21:00–21:30 pending training throughput; next check near20:23–20:26. It first evaluates both start arms, trains existing16 Mask parameter tensors on2048 fit rows for1024 updates per arm, then evaluates full6172 module-holdout rows. Fixed nearest endpoint must beat both terminal native and protected start mIoU by.002, with neither Mask threshold declining; grounding/input/Query identity required. This cannot improve frozen REC or complete the three-benchmark goal. No new formal metrics. R1/P2 remain sealed.

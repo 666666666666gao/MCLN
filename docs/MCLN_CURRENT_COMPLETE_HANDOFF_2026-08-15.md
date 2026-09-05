@@ -14790,3 +14790,85 @@ CPU2测试通过、远端Py3.7编译通过。19:25:58无M3/R1/M2进程、GPU1MiB
 Py3.7编译通过，input manifest SHA8c5d1b718a33b42cf84639d3782259f31a548638acbf29a6be42065eb5923bbc，
 尚未启动GPU。这不同于已失败V48/V105的冻结Mask残差头，也未证明训练优于原网络。
 三数据集目标仍active未达成，Nr3D保护仍4475/3759，ScanRefer/Sr3D原结果保持。
+
+
+### 20.47 M4确认真实前景读取远处seed0；M5原Mask投影短训对照已启动（2026-09-05 20:03 CST）
+
+M4 controller exit0，16条固定fit输入与M3逐条point hash一致，native全部raw Query Mask IoU
+与M3精确一致。8个forward、零训练/验证/存权重；计时28.661461秒不含数据初始化，
+最大allocated1676728832 bytes。源码/36数据/保护状态前后通过，原grouper已恢复。
+实际CUDA扩展合成样例确认按索引取球内前2个，以及空球返回[0,0]；
+扩展SHA19bf15db9a58b605d49e9241906038a459c737a48065fc6c17e00a38bae5f839。
+16条seed_xyz均与input[seed_inds]逐元素相等，未观察到此前怀疑的seed索引错位。
+
+| SP群体 | 实际占用数量 | .2半径空球 | 原邻居无目标seed中心 | 最近2邻居无目标seed中心 |
+|---|---:|---:|---:|---:|
+| 全场景有效SP | 32370 | 1641 | 32009 | 31912 |
+| 含任意目标点 | 459 | 43 | 156 | 96 |
+| 多数点属于目标 | 302 | 31 | 66 | 19 |
+
+31个多数前景空球读取seed0的距离3.092–6.160米、中位4.209米，最近seed实际仅
+.200–.285米、中位.222米。最近2邻居恢复48个前景SP的目标seed中心（空球25/非空23），
+损失1个，净恢复47。仍是seed中心代理，非感受野覆盖；全场景背景SP无目标seed本属正常。
+22/31空球集中于fit row15，不能把SP计数当独立场景泛化率。
+检查上游9744a4ed219062d448ed0dba587eeb864491f158也有相同.2/2球查询、rel_encoder、
+maxpool流程。这是原架构已有局限，不能归因于新增模块或直接解释低于原论文的全部差距。
+
+固定16条表达的native选中fusion Mask mIoU60.38935749%→62.67710096%，+2.28774347pp；
+.25为16→16，.50为10→11（修1破0）。raw Query均值60.49106961%→62.79548704%；
+固定原matched Query raw Mask60.11613701%→62.67462739%；Full256 raw Mask oracle
+62.70907992%→66.44301835%仅为GT诊断。Hungarian匹配16/16未变。
+Box、最终Decoder Query、seed投影、source scores、REC/Mask选中Query逐元素不变。
+融合Mask逐行6升6降4不变；row19 +.31046、row15 +.13772贡献集中，row21 -.06907。
+text分支均值虽升，两个阈值各损1条。因此不能把16条平均增益称正式Nr3D改善或直接采用。
+
+M4 receipt7515376 bytes SHA666873594228925127da50e96180f9a5292266c757c0f66237192c4957d855b9，
+包含完整SP/seed坐标、原/近邻ID距离、全部Query Mask质量，原log/exit/summary均保留。
+报告docs/NR3D_MASK_NEIGHBORHOOD_PROBE_RESULT_2026-09-05.md及
+refine-logs/mask_neighborhood_probe_20260905_v1/；代码/结果已推main 0a3a93c。
+
+M5已于20:00:27在独立screen17183.mcln_m5_mask_locality启动，启动前GPU无计算进程。
+目录/root/autodl-tmp/mcln_mask_neighborhood_m5_20260905_v1，原GPU0 lock保护，
+先真实梯度preflight和两臂step0完整留出，再训练；当前仅确认启动，尚无终态指标。
+CPU2测试1.26秒通过，Py3.7编译通过，724数据文件已锁hash。
+input manifest SHAabc46c2e543ec05ade30523f83cbded0689d7d88def07ca8dd06b4f79ba439c1。
+固定P2/R1划分中前2048 fit表达来自262场景；完整holdout6172行/98场景，fit/holdout场景不交。
+底层保护checkpoint已见过这些训练场景，只能称Mask模块留出，不能称全系统新场景验证。
+
+两臂同起点、相同batch4输入、无增强、epoch0/1固定shuffle、各1024次更新。
+只训练现有x_query/x_mask/rel_encoder共16个参数张量，其余参数/buffer全冻结，model.eval；
+fresh AdamW固定LR1e-5，采用checkpoint保存的weight_decay/clip_norm并在preflight记录。
+两臂分别为原ball和最近2邻居，原loss/Hungarian/融合/阈值不变，不增加新Mask头。
+固定终态最近邻臂须同时比训练后原球控制、训练前保护原球的mIoU至少高.002绝对IoU
+（.2pp），并且Mask@.25/@.50命中均不减；REC与输入hash/Query身份必须从开始到终态精确相同。
+程序将保存模块权重及optimizer到独立目录，绝不替换保护完整权重或上传权重到GitHub。
+CPU终态判定3测试已通过，包括均值上升但严格命中损失必须FAIL；报告配对scene bootstrap。
+计划docs/NR3D_MASK_NEIGHBORHOOD_M5_PLAN_2026-09-05.md，训练/汇总脚本均已推main。
+不以早期epoch选模，不扫lr/K/半径，不因本次Mask试验复活R1/P2或已取消baseline长训。
+
+M5不可能提升冻结REC路径，其作用是检验分割几何读取能否学成稳定改进；
+Nr3D REC>60与Sr3D更稳定超过baseline仍待解决，ScanRefer保护结果保持。
+正式Nr3D仍4475/3759 on7899，未有新的三数据集正式结果。
+本轮为实质进展，整个目标仍active未达成；M5需要后续读取终态并执行固定判定。
+
+
+### 20.48 M5真实梯度预检通过，更新前对照1600/6172进行中（2026-09-05 20:08 CST观测）
+
+20:04:21已取得preflight.json，SHA8fa15d2400ed2eba012493e240a1ce4981cfb24147532c1d651ce72ca0e97c08。
+两臂16个现有参数张量（共1,348,960参数）梯度全部finite/nonzero；原模型参数/buffer相等，
+定位张量相等，预检零optimizer step。实测保存配置weight_decay=.0005、clip_norm=.1，
+LR固定1e-5；两臂初始loss16.18368149/15.68259430仅为预检loss，非正式指标。
+
+20:08:14服务器进程17187仍活跃，GPU10553MiB/30%，无controller.exit或receipt终态。
+原始日志step0留出baseline到100个B16批次/1600行；50批时elapsed151.326s，
+100批301.046s，最近50批用149.720s。还未开始优化器更新。
+据该阶段吞吐，386批完整更新前对照预计20:23左右完成；两臂1024更新加终态完整对照
+暂估21:00–21:30结束，尚无训练吞吐可精确估时。下一次在接近20:23–20:26阶段切换查看，
+有实际训练step耗时后再校准，不重复分钟级轮询、不根据途中Mask分数改计划。
+当前完整任务未结束，未有M5终态质量PASS/FAIL、正式验证或模型晋级。
+
+启动/两次live快照/梯度preflight及原始run快照在
+refine-logs/mask_neighborhood_m5_20260905_v1/。CPU终态判定3测试通过，
+analysis_cpu_tests.json记录汇总脚本/测试SHA；nearest分支的均值上升但严格命中受损，
+以及均值不足.002的样例均正确判FAIL。终态将比两个既定控制并报告scene聚类bootstrap，
+无论成功失败都保留逐行修复/破坏，保护Nr3D4475/3759及另外两数据集原工件不变。

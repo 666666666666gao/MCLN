@@ -14994,3 +14994,33 @@ DATA_ROOT/output内的.pth清单没有Sr3D工件。当前挂载存储根目录�
 sr3d_archive_locator_20260905.json和scanrefer_protected_chain_20260905.json。
 本轮仍属progress，整体goal active；正式Nr3D4475/3759、Sr3D历史12139/10335
 和ScanRefer原最好没有新增结果。当前唯一GPU任务为L1 v2，P2/R1/M5终态保持封存。
+
+
+### 20.53 L1两臂已记录384更新；完整起点对齐与终态加载入口（2026-09-05 21:41 CST实查）
+
+上一目标轮属于progress；本轮新增了已执行的起点对齐证据和可用终态加载代码，
+并通过当前PID18450确认训练仍在运行。21:35已生成完整baseline_rows.json；
+21:41:19日志记录两臂128/256/384步，分别累计elapsed1011.278/1158.323/1307.950秒，
+各训练过1536行。最近两段128更新耗时147.045/149.627秒，每次配对更新约1.149–1.169秒。
+仍按各6687步终态执行，不根据途中loss更改LR、步数或门槛。当前GPU9731MiB，
+无controller.exit或终态receipt，不能把日志步数当作完整训练已结束。
+按当前吞吐估算剩余6303更新约121–123分钟，训练结束暂估23:43–23:46 CST，
+加终态6172行两臂评估，完整结果暂估9月6日00:05–00:20；实际阶段速度可能变化。
+下一次优先接近阶段结束或必要的中程运行诊断查看，不进行分钟级质量轮询。
+
+已只读取得L1完整零起点，在6172行逐条比较M5本次native起点：ID/scene相同，
+点云输入SHA、选中REC Query/Box IoU、选中Mask Query/Mask IoU均无差异。
+这只证明已保存字段的相等，没有读取任何训练后结果，也没有测所有未保存Query张量
+或token输入。L1 baseline SHA
+035a9f3c90cfe4ff5faaed1beeabc3093fd6c7941a2adbee30bf7b9e2b1faec6。
+旧P2/R1缓存的6条严格REC差异尚未定位；它不替代L1本次固定配对起点。
+
+新增scripts/load_nr3d_l1_terminal.py：按终态receipt的artifact SHA、position模式、
+6687步与parent SHA加载冻结CPU位置矩阵；它不判断指标或授予晋级。
+原因是两个L1文件的矩阵形状完全相同，而text/position含义不同，不能只按shape载入。
+服务器实际Py3.7/Torch1.10.2下5项CPU合成工件测试通过（1.15s）：输出往返相等/
+冻结、拒绝text控制、未完成步数、不同parent、错误digest。0 GPU/0真实更新，
+未改L1活动目录或冻结科学合同。完整说明docs/NR3D_L1_ENDPOINT_HANDLING_2026-09-05.md。
+
+当前没有新的Nr3D/Sr3D/ScanRefer正式指标。Sr3D备份位置问题仍待补充，
+但Nr3D训练可继续，整体goal active；不能因辅助代码测试通过而宣称三数据集目标完成。

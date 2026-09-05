@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 21:24 CST. Detailed evidence: master §§20.37–20.52.
+Updated: 2026-09-05 21:41 CST. Detailed evidence: master §§20.37–20.53.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -58,3 +58,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 21:24 L1 v2 authoritative live state: PID18450, GPU9703MiB, baseline1600/6172, zero optimizer updates so far; latest50 B16 batches112.975s, baseline ETA21:35. Next inspect near21:33–21:35 and use actual training throughput for terminal ETA. ScanRefer four protected artifact hashes and0444 modes PASS. Sr3D CSV/train/val inputs present; documented protected/candidate/E26/E29 files absent on this instance and backup location requested. Read-only report docs/THREE_BENCHMARK_ARTIFACT_READINESS_2026-09-05.md. No new formal benchmark result; full goal remains active.
+
+
+21:41 authoritative L1 state: PID18450 live, both arms logged384/6687 updates,1536 fit rows; recent128-step intervals147.045/149.627s. Training ETA23:43–23:46 and terminal completion estimate2026-09-06 00:05–00:20 CST, pending actual throughput. Full6172 L1 zero-start records exactly match M5 native start for point hashes and selected REC/Mask identities/IoUs; no trained endpoint read. New terminal position-state reader passed5 CPU synthetic tests and does not authorize promotion. Full goal active; Sr3D backup location pending.

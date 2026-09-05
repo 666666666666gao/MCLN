@@ -31,6 +31,8 @@ def main():
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--masked-layer-source", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--candidate-contract-only", action="store_true",
+                        help="One unmodified forward for full-query and REC/Mask diagnostics")
     opt = parser.parse_args()
     import numpy as np
     import torch
@@ -78,6 +80,30 @@ def main():
     inputs = TrainTester._get_inputs(batch)
     inputs["train"] = False
     tokenizer = model.tokenizer
+    if opt.candidate_contract_only:
+        from src.grounding_evaluator import GroundingEvaluator
+        from scripts.nr3d_candidate_contract import diagnose_root_candidates
+        with torch.no_grad():
+            outputs = model(inputs)
+            outputs.update(batch)
+            evaluator = GroundingEvaluator(
+                only_root=True, prefixes=["last_"], topks=[1],
+                filter_non_gt_boxes=True, eval_use_selector_choice_scores=True)
+            rows = diagnose_root_candidates(outputs, evaluator)
+        for row, source_id in zip(rows, row_ids):
+            row.update(fit_row_id=source_id, scan_id=raw_rows[source_id]["scan_id"],
+                       target_id=int(raw_rows[source_id]["target_id"]))
+        result = {"schema": "mcln-four-fit-candidate-contract-v1",
+                  "checkpoint_sha256": CHECKPOINT_SHA, "script_sha256": file_sha(__file__),
+                  "candidate_contract_sha256": file_sha(Path(__file__).with_name("nr3d_candidate_contract.py")),
+                  "fit_row_ids": row_ids, "rows": rows, "forward_count": 1,
+                  "optimizer_steps": 0, "weights_written": 0,
+                  "formal_validation_evaluated": False, "augmentation": False}
+        with opt.output.open("x") as stream:
+            json.dump(result, stream, indent=2, sort_keys=True, allow_nan=False)
+            stream.write("\n")
+        print(json.dumps(result, indent=2), flush=True)
+        return
     trace = {}
 
     def tensor_hook(name):

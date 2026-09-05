@@ -13766,3 +13766,62 @@ padding 干预，观察最终 Query、Box、Mask 与分数变化，再单独决�
 第二次 old smoke 已通过 raw census 和全部模型 tensor 严格加载；四 optimizer 参数组 tensor 数为
 `625/48/58/9`，LR 与 §20.30 相符，目前进程在 Nr3D train 数据加载/既有文本解析阶段。
 正式 old/fixed 完整训练尚未启动；不得把正在进行的 smoke 当成配对指标。
+
+
+### 20.32 G0 两角色 smoke 通过、完整配对启动；整网 padding 检查尚未闭合（2026-09-05 10:01 CST）
+
+old/fixed 两次 fit-only smoke 均通过 strict model load、真实 loss 和 backward。两边首批 loss 均为
+`17.0258121490`，optimizer steps=0、heldout batches=0、weights=0；这只是工程通过，不是修复收益。
+
+G0 首次正式 launcher 在任何训练前被源码 hash 门停止：Windows `git archive` 按工作区行尾设置导出了
+CRLF，而旧 dataset 通过 Git blob 导出为 LF，导致 fixed 文件实际 hash `6f166ea5...d7ae8b` 与预注册的
+Git blob `4a8edacf...bc77e` 不同。不能直接放宽 checksum；已经保留原 `inputs_v2`，另建 `inputs_v3`，
+只把 fixed dataset 的 CRLF 还原为 Git LF。校验了前后 AST 完全相同、Python 通用换行后字节完全相同，
+其余 611 文件逐字节未变，因此复用既有零更新 smoke。新 old/fixed 的唯一源码差异现精确对应 `5213822`。
+此事件在 optimizer=0、正式验证=0 时关闭，未重跑或挑选任何训练结果。
+
+当前正式入口和现场：
+
+```text
+screen       = mcln_g0_pair_20260905
+screen PID   = 3399
+old PID      = 3409（10:00:53 核验存活，运行约62秒）
+source root  = /root/autodl-tmp/mcln_g0_view_pair_20260905/inputs_v3
+output root  = /root/autodl-tmp/mcln_g0_view_pair_20260905/results
+pair log     = /root/autodl-tmp/mcln_g0_view_pair_20260905/pair.log
+checkpoint   = §20.30 的 SHA 76aa6c...6edba1
+```
+
+`pair.log` 已给出 `matched source/smoke/GPU checks PASS`；old 进程通过模型加载和四 optimizer 组校验，
+正在加载 train 数据/执行既有文本解析。随后串行执行 old 的完整 1,611-step 更新和 7,151-row heldout，
+再执行 fixed 相同合同，最后运行 `decide_nr3d_view_pair.py`。新模块/Mask 修改/正式7899评估/模型保存均不在
+此入口中。初估配对需3–5小时，取得首100步速度后修正完成检查时间；不因训练 loss 单独调整任何配置。
+
+#### 20.32.1 固定四条 fit 样本的真实整网 padding 干预
+
+完成了 `scripts/audit_nr3d_padding_scene.py`，固定 G0 fit IDs `[0,1,3,4]`、同一份点云和检测输入，
+模型 eval，原始/原始重复/追加16 padding/masked/masked+16 padding 共五次 forward。
+原始重复的 Box、score、Mask logits 和候选有效性均逐值不变，排除了普通重复执行噪声。
+
+但 masked pooling **尚未恢复整网输出不变性**：
+
+| 条件对 | 4条最终 Query index 改变数 | 全 Query Box 最大绝对差 | score 最大绝对差 | 合法候选 bit 改变数 |
+|---|---:|---:|---:|---:|
+| original vs repeat | `0` | `0` | `0` | `0` |
+| original vs +16 pad | `0` | `8.415747` | `.00153406` | `18` |
+| masked vs masked+16 pad | `0` | `5.237526` | `.00164041` | `24` |
+
+此表的 Box 差是**完整 Query 轴的最大值**，不是选中框误差或 IoU；Query index 相同也不自动证明选中物体
+身份相同，因为 Query 采样/排序本身可能变化。该初次脚本尚未记录 query seed IDs 或按物理候选对齐，
+因此不能把这些大差值直接解释成实际目标框移动，更不能据此断言 padding 导致多少 REC 失败。
+Mask logits 也仍变化，说明两处局部测试通过不足以证明完整推理路径已正确。
+
+下一次 padding 诊断需在**同一四条 fit 输入**补采每层有效 token、KPS seed/Query identity、按同 seed
+对齐的候选框和最终选中框/Mask，区分候选换序、数值敏感和仍存在的 padding 读出；不根据这四条样本
+优化任何 REC 阈值或结构。相关新风险之一是文本分割路径的 `src_weight.softmax(1)` 后才应用 padding mask，
+尚未做因果隔离，因此目前仅记为待查项，不同时修改。
+
+独立 masked-pooling 分支继续保持 Draft PR [#7](https://github.com/666666666666gao/MCLN/pull/7)，不合并
+或替换受保护 ScanRefer 推理。此轮没有新的三数据集指标，G0 科学结果仍待完整回执。
+完整整网回执为 `refine-logs/PADDING_SCENE_INTERVENTION_20260905.json`，其中绑定了实际脚本和 masked
+layer 的 SHA；局部 CPU 回执仍引用 §20.31。

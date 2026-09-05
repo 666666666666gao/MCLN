@@ -17,7 +17,7 @@ for role in ('old', 'fixed'):
     assert smoke['backward'] and smoke['optimizer_steps'] == 0
     assert smoke['heldout_batches'] == 0 and smoke['weights_written'] == 0
     preflights[role] = json.loads((root / ('smoke_v2_' + role) / 'preflight.json').read_text())
-    manifests[role] = json.loads((root / 'inputs_v2' / (role + '_source') / 'g0_source_manifest.json').read_text())['files']
+    manifests[role] = json.loads((root / 'inputs_v3' / (role + '_source') / 'g0_source_manifest.json').read_text())['files']
 assert set(manifests['old']) == set(manifests['fixed'])
 assert [k for k in manifests['old'] if manifests['old'][k] != manifests['fixed'][k]] == ['src/joint_det_dataset.py']
 assert manifests['old']['src/joint_det_dataset.py'] == '800bac2caf9b7a319bdc200f60386000e4e374a559d9581113a8eb57d525f9f0'
@@ -34,7 +34,7 @@ export CUDA_VISIBLE_DEVICES=0 RANK=0 WORLD_SIZE=1 LOCAL_RANK=0
 export MASTER_ADDR=127.0.0.1 MASTER_PORT=29572
 mkdir "$PAIR_ROOT/results"
 for ROLE in old fixed; do
-  cd "$PAIR_ROOT/inputs_v2/${ROLE}_source"
+  cd "$PAIR_ROOT/inputs_v3/${ROLE}_source"
   "$PYTHON" -u scripts/run_nr3d_view_pair_role.py \
     --role "$ROLE" --checkpoint "$CHECKPOINT" \
     --output "$PAIR_ROOT/results/$ROLE" \

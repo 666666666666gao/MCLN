@@ -21,6 +21,8 @@ def main():
     import torch
     from src.grounding_evaluator import GroundingEvaluator
     from scripts.nr3d_candidate_contract import diagnose_root_candidates
+    from models.source_choice_adapter import build_mcln_source_choice_batch
+    from models.rec_evaluator_filter import build_detector_overlap_valid
 
     class CapturingEvaluator(GroundingEvaluator):
         def _position_top_indices(self, scores, valid, axis_mode, max_topk):
@@ -39,7 +41,8 @@ def main():
         end_points = {
             "last_center": torch.tensor([[[10., 0., 0.], [0., 0., 0.]]]),
             "last_pred_size": torch.ones(1, 2, 3),
-            "last_sem_cls_scores": torch.zeros(1, 2, 2),
+            "last_sem_cls_scores": torch.tensor([[[4., 0.], [3., 0.]]]),
+            "last_proj_queries": torch.zeros(1, 2, 64),
             "selected_source_scores": torch.tensor([[.9, .8]]),
             "center_label": torch.zeros(1, 1, 3), "size_gts": torch.ones(1, 1, 3),
             "box_label_mask": torch.ones(1, 1, dtype=torch.bool),
@@ -54,6 +57,21 @@ def main():
         for key in ("modify_positive_map", "pron_positive_map", "other_entity_map",
                     "auxi_entity_positive_map", "rel_positive_map"):
             end_points[key] = torch.zeros_like(positive)
+        adapter_inputs = {key: end_points[key] for key in (
+            "positive_map", "modify_positive_map", "pron_positive_map",
+            "other_entity_map", "rel_positive_map")}
+        adapter_inputs.update(det_boxes=end_points["all_detected_boxes"],
+                              det_bbox_label_mask=end_points["all_detected_bbox_label_mask"])
+        adapter_batch = build_mcln_source_choice_batch(
+            end_points, adapter_inputs, source_names=("default",))
+        overlap_valid = build_detector_overlap_valid(
+            adapter_batch["candidate_boxes"], adapter_batch["valid_mask"],
+            adapter_inputs["det_boxes"], adapter_inputs["det_bbox_label_mask"])
+        assert adapter_batch["valid_mask"].tolist() == [[True, True]]
+        assert overlap_valid.tolist() == [[False, True]]
+        adapter_top = adapter_batch["source_scores"]["default"].masked_fill(
+            ~adapter_batch["valid_mask"], -float("inf")).argmax(-1)
+        assert int(adapter_top[0]) == 0
         if explicit_valid:
             end_points["moe_valid_mask"] = torch.tensor([[False, True]])
         evaluator = CapturingEvaluator(
@@ -68,6 +86,9 @@ def main():
         assert contract["mask_selection"]["mask_iou"] == evaluator.dets["mask_pos"]
         return {
             "filter_non_gt_boxes": filter_boxes, "explicit_moe_valid_mask": explicit_valid,
+            "source_choice_adapter_valid": adapter_batch["valid_mask"].tolist(),
+            "detector_overlap_valid": overlap_valid.tolist(),
+            "adapter_default_top_query": int(adapter_top[0]),
             "rec_query": evaluator.rec_query, "mask_query": evaluator.mask_query,
             "rec_hit025": evaluator.dets[("last_", .25, 1, "bbs")],
             "evaluator_mask_iou": float(evaluator.dets["mask_pos"]),
@@ -86,10 +107,12 @@ def main():
     assert cases["rec_overlap_filter_only"]["mask_iou_at_rec_query"] == 1.
     assert cases["explicit_shared_validity"]["rec_query"] == cases["explicit_shared_validity"]["mask_query"] == 1
     evaluator_source = Path(inspect.getfile(GroundingEvaluator))
-    result = {"schema": "mcln-rec-mask-selection-counterexample-v2",
+    result = {"schema": "mcln-rec-mask-selection-counterexample-v3",
               "synthetic_only": True, "benchmark_rows": 0, "optimizer_steps": 0,
               "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               "candidate_contract_sha256": hashlib.sha256(Path(inspect.getfile(diagnose_root_candidates)).read_bytes()).hexdigest(),
+              "source_choice_adapter_sha256": hashlib.sha256(Path(inspect.getfile(build_mcln_source_choice_batch)).read_bytes()).hexdigest(),
+              "rec_evaluator_filter_sha256": hashlib.sha256(Path(inspect.getfile(build_detector_overlap_valid)).read_bytes()).hexdigest(),
               "evaluator_sha256": hashlib.sha256(evaluator_source.read_bytes()).hexdigest(),
               "evaluator_source": str(evaluator_source), "cases": cases}
     with opt.output.open("x") as stream:

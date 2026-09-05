@@ -13997,3 +13997,25 @@ REC/Mask过滤分离本身并非新增Selector独有问题；仍按§20.34先测
 
 上述探针与三个结构化回执已推送main提交`4d7a34613bfefe223268a5a61b3c7b7c8b1abf60`。
 后续仍先读取完整G0配对和排队的两个P1真实前向回执，再确定P2；受保护正式指标未更新。
+
+
+#### 20.35.4 合法mask同名但语义不同；P2准确接入位置（2026-09-05 11:32 CST）
+
+进一步确认 `build_mcln_source_choice_batch()` 当前向Selector传入的 `valid_mask` 是全True，
+没有调用REC对象重叠过滤。因此新读出不能直接复用该字段并宣称训练／部署候选集合相同。
+`TrainTester._get_inputs()` 已把相同对象框及mask传入 `det_boxes/det_bbox_label_mask`，
+P2可复用现有 `build_detector_overlap_valid`，不需要将root目标GT交给网络。
+
+CPU反例v3实际调用adapter、过滤函数及REC/Mask evaluator：adapter允许两个候选，REC只允许第二个；
+此时REC选Query1，Mask仍可选Query0。全部断言和原候选诊断／实际evaluator一致性检查通过，
+benchmark rows=0、updates=0。新增回执
+`refine-logs/REC_MASK_SELECTION_COUNTEREXAMPLE_V3_20260905.json`，v2回执保留；
+脚本SHA `6c4af3a514621f5c94eac4c6127f45157c1e26a460f8c5cef3947614d6e4bab1`。
+这是集合语义差异的机制证据，仍不量化真实Nr3D损失，也不直接改变正式Mask规则。
+
+P2输入位置审计另见 `refine-logs/P2_INPUT_CONTRACT_SOURCE_MAP_20260905.md`：
+两组均取Mask投影前的288维 `decoder_query_last`、cross-encoder后的288维 `text_memory`，
+共同使用最终预测框阶段的5维几何；保留 `center_i-center_j` 符号及现有文本序列。
+现有Selector的 `text_feats` 是cross-encoder之前的文本，64维 `proj_tokens` 也不是同一表征，
+不能在新旧两组间混用。现有Decoder通过6维位置嵌入读取框尺寸，不能把“显式关系向量只含中心”
+写成“整个注意力不读取尺寸”。这些是后续同条件对照的接入约束，未修改G0或实现P2网络。

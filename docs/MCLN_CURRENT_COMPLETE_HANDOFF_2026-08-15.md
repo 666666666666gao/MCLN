@@ -14019,3 +14019,95 @@ P2输入位置审计另见 `refine-logs/P2_INPUT_CONTRACT_SOURCE_MAP_20260905.md
 现有Selector的 `text_feats` 是cross-encoder之前的文本，64维 `proj_tokens` 也不是同一表征，
 不能在新旧两组间混用。现有Decoder通过6维位置嵌入读取框尺寸，不能把“显式关系向量只含中心”
 写成“整个注意力不读取尺寸”。这些是后续同条件对照的接入约束，未修改G0或实现P2网络。
+
+
+### 20.36 G0旧组完成训练；候选框增强与日志口径补充（2026-09-05）
+
+#### 20.36.1 候选GT与对象提议的独立框扰动
+
+当前`_get_target_boxes`与`_get_scene_objects`在train且augment开启时，分别对中心与尺寸乘独立
+`[.95,1.05)`随机量；`butd_cls`随后使用scene对象框作为提议。这两个函数与原MCLN固定提交
+`9744a4ed219062d448ed0dba587eeb864491f158`的AST相同，是继承机制，不能归为新模块引入。
+来源回执：`refine-logs/BOX_JITTER_UPSTREAM_SOURCE_AUDIT_20260905.json`。
+
+CPU脚本`scripts/audit_target_proposal_box_jitter.py`实际调用当前数据集取框函数和过滤器：
+对中心`[5,0,0]`、尺寸`[.1,.1,.1]`的合成对象，seed0共64次，以每次root GT自身作为候选，
+关闭增强时64个均保留；开启增强时45个未通过提议框IoU>.25过滤，框中心最大差`.41901398`。
+**45/64是合成反例，不是Nr3D发生率**。benchmark rows=0、updates=0，当前G0未修改增强。
+回执：`refine-logs/TARGET_PROPOSAL_JITTER_COUNTEREXAMPLE_20260905.json`；脚本SHA
+`606eebed5eb445d35f63fb36cebee77e69b5dd16dc4073200e2a364d79c5adfc`。
+
+P2必须共同登记候选产生时的模型模式与augmentation，不能只令两组过滤函数相同。
+若eval、augment=False，且root实例存在于有效对象提议中，则root GT和该提议来自同一框：
+IoU>.25正确候选必与至少一个提议IoU>.25，因而不会被该过滤删除。这个条件命题尚未核验全部
+真实数据行；若Full-256实测出现删除正确框，应先查root提议存在性、框阶段和映射。
+源图与该约束已随main提交`c70706f98d783c338a1572458b0a1f9a3048ddd1`推送。
+
+#### 20.36.2 旧组训练回执与辅助日志纠错
+
+11:47:40实际trainer PID3409存活，旧组已完成`1611/1611`步、`25768`行，训练耗时
+`5418.0233 s`（约90分18秒）。训练样本身份SHA仍为冻结fit SHA；实际顺序SHA为
+`a789a4a815618cbe6afdfd04074cf52810eae6065dbf7f6dbcbb4dfd3828ce36`，待fixed完成后严格配对比较。
+old记录允许大旋转`16432`行，实际大变换`15399`行；这不是错误监督或REC修复计数。
+11:46日志已完成heldout `300/447` batch，11:47尚无最终receipt和pair decision；fixed未启动。
+P1的flock PID4223、4713均实测`locks_lock_inode_wait`，没有另起GPU模型。
+
+检查中发现此次新增G0 runner每个评估batch向`_main_eval_branch`传入新的`{}`，该函数却用
+累计batch编号除统计量，导致日志中的loss/source-choice均值约缩小为当前batch值的1/N。
+这些中间打印值不能当作heldout准确率，更不能当作正式Nr3D指标。公共runner已改为在循环外
+创建并复用`eval_stats`，Python3.7语法检查通过；此改动只修日志累计。
+
+正在运行的两份冻结runner没有改动，以保持old/fixed源码匹配和postflight哈希检查。
+两组科学比较通过独立`PairEvaluator`逐行保存`hit025/hit050`，不读取该统计字典；因此本次
+配对最终REC结果不受日志累计错误影响。最终以完整两角色receipt和机械decision为准。
+
+#### 20.36.3 old完整评估完成，fixed已启动（2026-09-05 11:57 CST）
+
+11:50一次性collector仍记录old评估进程；11:51:56实际检查确认old正常结束，fixed PID5716已启动。
+old完整7,151-row回执已下载，逐项验证role/status、保护checkpoint、fit/holdout身份SHA、
+1611步、7151行、2718个固定view-dependent标签、双阈值命中单调性及源manifest SHA，全部通过。
+完整回执SHA `8ec9ab521291586a235034e1b6f71750dac893a17660c6fb828a55bdb4f994d3`，806,538 bytes，
+公开文件为`refine-logs/G0_OLD_RECEIPT_20260905.json`，独立核验摘要为
+`refine-logs/G0_OLD_RECEIPT_VERIFICATION_20260905.json`。
+
+以下只属于**底层checkpoint已见过的train场景上的增量留出审计**，不是7,899-row正式Nr3D：
+
+| old审计组 | 行数 | hits@.25 | hits@.50 |
+|---|---:|---:|---:|
+| overall | 7151 | 6805 | 5839 |
+| 固定raw view-dependent | 2718 | 2618 | 2226 |
+| 固定raw view-independent | 4433 | 4187 | 3613 |
+
+old训练加评估/终检耗时`6323.9414 s`；未保存新权重，未构造正式validation。
+11:57:31再次核实fixed PID5716存活，已通过strict load和相同四组新AdamW检查。
+按old实测90分钟训练、15分钟评估及初始化时间，fixed预计约13:40–13:50结束；下一次单次
+collector登记为`13:35 CST`，screen `mcln_g0_fixed_finish_window` PID6281，Python PID6282，
+脚本`collect_fixed_completion_window.py`，输出`fixed_completion_window.txt`，均在PAIR根目录。
+两角色不改参数、不提前停止；科学门仍待完整fixed回执，P1队列随后自动串行运行。
+
+#### 20.36.4 生效口径更正：实际fit增强干预为253行（2026-09-05 12:04 CST）
+
+old回执产生后，通过实际执行源重新核实文本处理链，发现旧`_is_view_dep`与旧`_augment_nr3d`
+并不是同一实现；更不能把raw CSV上的统计直接当作经过`Scene_graph_parse`后的增强暴露量。
+本次未改变任何G0源码、split、标签分组或科学门，属于执行口径核实。
+
+| 统计层级 | fit 25768行 | holdout 7151行 | 完整train合计 |
+|---|---:|---:|---:|
+| raw CSV：旧view标签漏判、新标签命中 | 1580 | 429 | 2009 |
+| raw CSV：旧增强允许、新增强禁止 | 1693 | 462 | 2155 |
+| **经过实际文本清洗和必要parser前缀后：旧增强允许、新增强禁止** | **253** | **72** | **325** |
+
+因此，前文的2,155行是raw输入上的潜在增强规则差异；它不是当前完整训练路径中的实际干预量，
+也不是旧view标签函数的漏判总数。G0的holdout关闭增强，实际训练干预只涉及fit的253行；
+holdout72行只表示若开启增强时的潜在差异，不能计作本次真实训练扰动或REC修复数量。
+
+CPU审计直接提取冻结源码中的文本清洗语句及两套真实增强方法。仅53行对parser可能追加的
+`This is an object . `前缀敏感，对这些行调用同环境真实parser，实际追加前缀2行。
+重算old fit允许增强`16432`行，与真实训练记录**精确一致**；fixed fit预期允许`16179`行，
+待其完整training回执继续交叉核验。没有访问正式validation或更新模型。
+
+脚本：`scripts/audit_view_predicate_after_text_normalization.py`，SHA
+`8384050888a9894ae4ca37dedeff8e9dd90117432f38b94989dd38fd2f144708`；回执：
+`refine-logs/VIEW_PREDICATE_AFTER_NORMALIZATION_20260905.json`，SHA
+`f50981ff61f59a90d39b769abd40e2a6b32ab4bab4d46fa6f403c09ef48dfe30`。
+该结果收窄增强修复的实际作用范围，不支持提前判断G0通过或失败，更不等价于新网络或正式指标收益。

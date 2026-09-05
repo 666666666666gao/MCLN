@@ -1,8 +1,13 @@
 > **2026-09-05 生效修订**：下文 full-state/E57→E58 描述保留为历史预注册，已由 master §20.30
 > 的 payload 实证纠错覆盖。锁定 SHA 是 eval-only E57/E69 平均权重，无 optimizer/scheduler。
 > 当前唯一执行合同是同权重、同新 AdamW、四组 LR 1e-5/1e-4/1e-5/1.25e-5、完整 1611 steps，
-> 其余 split 和科学门不变；通过后的下一步按 master §20.18 为 G1 准备。G0已运行，当前进度见master §20.35与Tracker。
+> 其余 split 和科学门不变；通过后的下一步按 master §20.18 为 G1 准备。G0 old已完成、fixed运行中，当前进度见master §20.36与Tracker。
 > 此holdout只排除新增更新，底层checkpoint已见过完整train；不称为整个系统从未见过的新场景。
+
+> **2026-09-05 执行口径核实（old回执产生后）**：下文2,155行是raw CSV上的旧增强允许→新增强禁止，
+> 经当前实际文本清洗与必要parser前缀后是325行（fit253、holdout72）。G0 holdout关闭增强，
+> 因而实际训练干预为253行。old允许增强16,432行与源码重算精确一致；fixed预期16,179行待完成核验。
+> 该核实未改变G0参数、分组或科学门，详见master §20.36.4；不要再把6.5464%的raw差异当作实际干预比例。
 
 # MCLN Nr3D 视角文本增强修复的配对因果审计计划
 

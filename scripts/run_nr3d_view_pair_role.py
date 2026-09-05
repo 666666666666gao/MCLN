@@ -269,10 +269,11 @@ def main():
     torch.manual_seed(1000)
     torch.cuda.manual_seed_all(1000)
     model.eval()
+    eval_stats = {}
     with torch.no_grad():
         for index, batch in enumerate(loaders["holdout"]):
-            _, outputs = tester._main_eval_branch(
-                index, batch, loaders["holdout"], model, {}, criterion, set_criterion, args
+            eval_stats, outputs = tester._main_eval_branch(
+                index, batch, loaders["holdout"], model, eval_stats, criterion, set_criterion, args
             )
             evaluator.evaluate_bbox_by_pos_align(outputs, "last_")
     rows = [row_results[index] for index in sorted(row_results)]

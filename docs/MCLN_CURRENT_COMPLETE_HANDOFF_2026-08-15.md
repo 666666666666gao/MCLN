@@ -15236,3 +15236,36 @@ B是Mask证据筛选，冻结REC不能单独完成Nr3D>60%目标。后续C必须
 读取，不只添加可被bias吸收的常量；对象外观仍应来自真实点，不能用GT Mask清洗。
 Sr3D受保护权重仍缺新的备份位置；不替换任意权重、不恢复已取消长周期baseline。
 ScanRefer保留，Nr3D4475/3759、Sr3D12139/10335正式结果不变，整体goal active。
+
+
+### 20.58 B 配对起点完整复现并开始学习；任务查询接入归因补充（2026-09-06 01:24 CST）
+
+上一轮为 progress：L1封存、点细节预检完成、B配对已启动并推送。本轮继续同一
+PID21638，没有重启。B全部6172条起点评估完成；逐行核验两臂零初始化输出完全一致，
+与M5 native的输入点hash、grounding hash、REC/Mask Query和IoU也完全一致。
+复现REC6005/5306、Mask5767/5057、mIoU68.881519715%；不是新方法提升。
+起点文件SHA884d72879a7a9485309ec9dadc588357a8ea69dbe847854e4af6934a4eef84ef。
+证据 refine-logs/point_detail_pair_20260906_v1/baseline_identity.json。
+
+新记录允许在同一6172条模块留出起点上检查选择路径：133条REC/Mask Query不同。
+固定已有REC Query读取同一融合Mask，@.25修复3/破坏16/净-13；@.50修复3/破坏12/
+净-9；mIoU -0.153471988pp。这里主干见过全部98个场景，不能当正式验证结果。
+它与此前7898行正式输入反事实的正变化方向不同；集合不同，不应拼接，也不能宣称
+统一输出Query的规则自动等同于新的身份表征收益。当前evaluator未改，0新forward。
+起点合法最佳Box>.5集合5931行，对应Query融合Mask mIoU71.188117542%；分母不同，
+不可直接拿来和全6172行均值作提升比较。详细 baseline_query_identity.json。
+
+本轮还核对两个接入边界：原ClsAgnosticPredictHead同时有中心、尺寸、soft-token
+分类子头。contrastive投影在prediction head之前已由Decoder Query生成；仅替换
+整个Box头的输入会改变一份语义评分，却保留另一份，不能叫只改变几何。原中心回归
+仍以cluster_xyz为基准，前层框仅作为下一层位置输入，后续任务更新须保持坐标语义。
+当前B增加的superpoint特征同时进入Query Mask、Text Mask及alpha路径；条件Query
+的mask_iou字段同样是融合结果，不能单独归因于原始Query Mask改善。
+说明 docs/NR3D_TASK_QUERY_INSERTION_AUDIT_2026-09-06.md。C尚未接入，B清单不变。
+
+01:23:10实查PID21638 live、每臂384/1024次更新，最近64步88.07秒。
+起点之后没有读取中间留出质量；按原预算继续，训练结束后评估一次完整终态。
+训练结束暂估01:36–01:40，完整终态暂估02:00–02:10 CST，以后续实际回执为准。
+现有observer自01:11起每240秒查看并保存原进程日志；不按loss变化延训或调门槛。
+独立终态artifact核验脚本已准备，实际16/19张量、optimizer和native重现性待完成后
+检查，不能把准备当作已通过。正式成绩不变，Sr3D权重备份缺口不变，整体goal active。

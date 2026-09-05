@@ -1,0 +1,31 @@
+{
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "input_manifest.json",
+    "detail_preflight_receipt.json",
+    "prepare_inputs.py",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "preflight.json"
+  ],
+  "gpu": "10559 MiB, 48 %",
+  "log_tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "POINT DETAIL PAIR PREFLIGHT {\"native\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"rel_encoder.0.weight\": 0.13723599910736084, \"rel_encoder.0.bias\": 1.1106524467468262, \"rel_encoder.2.weight\": 2.371427536010742, \"rel_encoder.2.bias\": 1.878521203994751, \"x_mask.0.weight\": 5.399118423461914, \"x_mask.0.bias\": 0.44919854402542114, \"x_mask.2.weight\": 6.808021545410156, \"x_mask.2.bias\": 0.9735933542251587, \"x_mask.4.weight\": 6.586859703063965, \"x_mask.4.bias\": 1.878521203994751, \"x_query.0.weight\": 1.0664376020431519, \"x_query.0.bias\": 0.06220626085996628, \"x_query.2.weight\": 0.9692898988723755, \"x_query.2.bias\": 0.07664259523153305, \"x_query.4.weight\": 1.1690175533294678, \"x_query.4.bias\": 0.08711637556552887}}, \"detail\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"rel_encoder.0.weight\": 0.13723599910736084, \"rel_encoder.0.bias\": 1.1106524467468262, \"rel_encoder.2.weight\": 2.371427536010742, \"rel_encoder.2.bias\": 1.878521203994751, \"x_mask.0.weight\": 5.399119853973389, \"x_mask.0.bias\": 0.44919833540916443, \"x_mask.2.weight\": 6.80802583694458, \"x_mask.2.bias\": 0.9735934734344482, \"x_mask.4.weight\": 6.586864948272705, \"x_mask.4.bias\": 1.878521203994751, \"x_query.0.weight\": 1.0664376020431519, \"x_query.0.bias\": 0.06220626085996628, \"x_query.2.weight\": 0.9692898988723755, \"x_query.2.bias\": 0.07664259523153305, \"x_query.4.weight\": 1.1690175533294678, \"x_query.4.bias\": 0.08711637556552887, \"point_detail.point_encoder.0.weight\": 0.0, \"point_detail.point_encoder.0.bias\": 0.0, \"point_detail.output.weight\": 4.5419511795043945}}, \"optimizer_steps\": 0, \"trainable_parameters\": {\"native\": 1348960, \"detail\": 1403104}, \"learning_rate\": 1e-05, \"weight_decay\": 0.0005, \"clip_norm\": 0.1, \"fit_rows\": 2048, \"fit_scenes\": 262, \"holdout_rows\": 6172, \"holdout_scenes\": 98, \"identical_grounding\": true, \"frozen_state_unchanged\": true}"
+  ],
+  "process": "21638 /root/miniconda3/envs/bdetr/bin/python -u scripts/run_nr3d_point_detail_pair.py --manifest /root/autodl-tmp/mcln_point_detail_pair_20260906_v1/input_manifest.json",
+  "process_exit": 0,
+  "time_cst": "2026-09-06T00:50:29.353753+08:00"
+}

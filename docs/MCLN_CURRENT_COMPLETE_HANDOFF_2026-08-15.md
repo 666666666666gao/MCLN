@@ -15170,3 +15170,69 @@ PID19665，因为其命令字符串包含训练脚本路径。已将本地 colle
 下一步读取 L1 原定终态并复算双对照筛选；通过才执行隔离的原生正式配对，失败则封存
 该路线。B 准备完成但尚无质量结果，C 未启动，Sr3D 仍需新的受保护权重备份位置。
 正式保护成绩不变，整体 goal active，三数据集 REC 目标仍未完成。
+
+
+### 20.57 L1 完整终态未通过；点细节原生预检通过并启动独立配对（2026-09-06 00:50 CST）
+
+本轮取得两个实际终态，完成独立 artifact 核验，并启动用户新路线的单项短训，属于
+progress。正式保护成绩没有变化，不能把以下模块留出结果计入三数据集主表。
+
+L1 两臂各 6687 次更新完成，controller.exit=0，00:08 已确认训练进程退出。
+完整 6172 行、98 个训练场景模块留出结果如下；冻结主干以前见过这些场景。
+
+| L1 输出 | REC hits@.25/.50 | Mask hits@.25/.50 | Mask mIoU |
+|---|---:|---:|---:|
+| 受保护起点 | 6005 / 5306 | 5767 / 5057 | 68.881519715% |
+| 终态 text-key | 6005 / 5308 | 5766 / 5053 | 68.877019645% |
+| 终态 position-key | 6005 / 5307 | 5767 / 5057 | 68.877936727% |
+
+position 相对起点 REC25 修复0/破坏0，REC50修复1/破坏0，Mask25修复0/破坏0，
+Mask50修复1/破坏1，mIoU -0.003582988pp；相对终态text，REC25修复2/破坏2，
+REC50修复12/破坏13，Mask25修复1/破坏0，Mask50修复7/破坏3，mIoU+0.000917082pp。
+两项固定筛选均 FAIL：没有达到相对两对照各净增10个REC25，且严格指标出现退化。
+仅3行相对起点改变REC Query，不支持此次局部Key注入带来有效候选消歧。
+
+训练完整性与实际序列化 artifact 独立检查 PASS：26747行恰好一次、两个矩阵及
+optimizer moments有限、每臂6687步、parent/冻结参数和buffer不变。耗时9929.20秒
+不含数据集初始化；峰值CUDA allocation 6,214,786,560字节。完成回执
+e27c990915f728780f7f4bd99dfff054780fd9a9add9f27ab8ca1abe9fb26621。
+详见 docs/NR3D_TEXT_POSITION_L1_RESULT_2026-09-06.md 及
+refine-logs/text_position_l1_20260905_v2/train/。L1封存，不运行条件正式入口、
+不升级text控制、不续训或扫描此版本设置；不将失败外推成所有空间文本交互无效。
+
+点细节原生预检于00:09:34启动，00:13:41确认完成/退出码0/释放GPU：16条fit、
+16场景、12次forward、0更新/0checkpoint写入/0留出行。真实SA1为B×128×2048；
+零残差严格复现Query、seed、框、分数、原始Query/Text Mask和alpha。
+固定.001扰动使Mask logits改变，新增3张量梯度均有限非零，REC张量保持相同。
+输入、冻结状态和新增模块恢复初始，原生CUDA重合采样点插值检查通过。
+耗时31.4054秒不含数据集初始化，峰值allocation1,833,081,344字节。
+预检回执76cbec3ba81e7f62fa6d79918959131a095068997ded1b22eeec365286a0761d。
+这只是实现/梯度证据，尚未证明质量收益。不同grad模式的计时不能直接当部署开销比。
+详见 docs/NR3D_POINT_DETAIL_PREFLIGHT_RESULT_2026-09-06.md。
+
+下一项B配对的计划与验收代码已在读取其训练后留出结果前固定：native保留原生读取，
+detail增加SA1插值到同一50k点、点内坐标/RGB编码、真实SP成员平均的54,144参数残差。
+两臂均训练现有x_query/x_mask/rel_encoder的16张量1,348,960参数；detail共19张量
+1,403,104参数。所有其余参数和buffer冻结；原邻域、候选、Box、Query、损失不变。
+这不是等参数容量对照，不能把可能的增益全部归因于分辨率；也不是体素主干替换。
+
+固定2048fit/262场景，6172holdout/98主干已见场景，两臂同batch、无增强、B4、
+2epoch共1024更新，fresh AdamW lr1e-5/wd.0005/clip.1；起点和终点B16评估，
+不中途按质量挑点。B终点相对native终点与受保护起点均须Mask mIoU至少+.002，
+两个Mask命中阈值均不退化，并要求REC/输入/Query/冻结状态完全一致。
+另记录当前合法REC Query Mask，以及起点合法最佳Box>.5固定行中的对应Query Mask；
+后者仅为GT条件诊断，不进入训练或部署。报告修复/破坏与2000次scene聚类bootstrap。
+
+新入口 scripts/run_nr3d_point_detail_pair.py，复算
+scripts/summarize_nr3d_point_detail_pair.py，本地5个验收测试PASS，服务器原Py3.7
+再次5个PASS；612源码/724数据/parent核验26.42秒，无GPU更新。清单SHA
+9c690081d23d255ca2cccf77f79961997ab2f9a6d65e04a2d3508150738fae81。
+00:47:13 CST 已启动screen mcln_point_detail_pair，隔离目录
+/root/autodl-tmp/mcln_point_detail_pair_20260906_v1，独占既有GPU锁。
+启动时尚无新终态，先进行零更新梯度检查及起点评估；ETA依实际日志更新。
+固定方案 docs/NR3D_POINT_DETAIL_PAIR_PLAN_2026-09-06.md。
+
+B是Mask证据筛选，冻结REC不能单独完成Nr3D>60%目标。后续C必须带来实际任务记忆
+读取，不只添加可被bias吸收的常量；对象外观仍应来自真实点，不能用GT Mask清洗。
+Sr3D受保护权重仍缺新的备份位置；不替换任意权重、不恢复已取消长周期baseline。
+ScanRefer保留，Nr3D4475/3759、Sr3D12139/10335正式结果不变，整体goal active。

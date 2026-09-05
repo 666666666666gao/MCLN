@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 23:40 CST. Detailed evidence: master §§20.37–20.56.
+Updated: 2026-09-06 00:50 CST. Detailed evidence: master §§20.37–20.57.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -15,8 +15,8 @@ Updated: 2026-09-05 23:40 CST. Detailed evidence: master §§20.37–20.56.
 
 | M4 Mask neighborhood intervention | Complete;16 fit rows,8 forwards,zero updates |31 majority SPs read distant seed0 on empty balls; nearest-two mean Mask +2.2877pp but6 rows worsen. Proceed only to matched learning screen |
 | M5 existing Mask projection training | Complete;both1024-step arms and6172 terminal rows; integrity PASS, fixed quality FAIL |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
-| L1 last text-attention key evidence | 23:37 CST exact-command check: PID18450 live,6272/6687 updates; no endpoint | Finish fixed updates and both holdout evaluations; observer240s |
-| Point-detail to superpoint Mask | 4 CPU tests PASS; native 16-fit-row preflight staged and Python3.7 compiled | GPU not executed; run after L1, then define independent learning screen |
+| L1 last text-attention key evidence | Complete; 6687 updates per arm; integrity PASS, quality FAIL | REC25 net0 versus both; no formal validation, control promotion or continuation |
+| Point-detail to superpoint Mask | Native preflight PASS; matched pair launched00:47, real two-arm gradient preflight PASS | 00:50 PID21638 live in baseline, GPU10559MiB; both1024 updates fixed, no quality result |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -72,3 +72,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-05 23:40 CST progress + verified wait: native task audit confirms shared Decoder identity, separate existing projections and shared Hungarian indices. All533 differing REC/Mask Query selections coincide with REC pre/post-filter top changes; do not claim these prove missing shared representations. Paired historical-output deltas unchanged, evaluator unchanged. Local-detail input readiness PASS (612 source/36 data files and matching scatter); no GPU preflight. L1 actual PID18450 has6272/6687 updates at23:37, no endpoint. Collector full-command matching corrected an observed false match to its observer. See master§20.56 and docs/NR3D_TASK_QUERY_ARCHITECTURE_AUDIT_2026-09-05.md. Goal active.
+
+
+2026-09-06 00:50 CST authoritative update: L1 complete and sealed FAIL; position REC6005/5307, Mask5767/5057, mIoU68.877936727% on6172 backbone-seen module-holdout rows. Integrity and actual optimizer/artifact checks PASS. Point-detail native16-row GPU preflight PASS with exact zero identity and connected Mask gradients. Independent native/detail Mask learning pair launched00:47:13, manifest9c690081...fae81;2048 fit/262 scenes,6172 holdout/98 scenes,1024 updates per arm. Both train original16 Mask tensors;detail adds54144 parameters, no equal-capacity claim. Fixed primary gate and conditional Query Mask diagnostics registered before results. Full goal active, formal protection unchanged. See master§20.57 and three new2026-09-06 reports/plans.

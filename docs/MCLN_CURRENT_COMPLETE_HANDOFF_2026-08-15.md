@@ -15341,3 +15341,37 @@ C1 receipt 02e27807057b24054a5e6b5ba3b0dcdfa9e052a87883852bbe79afc4b1ba9214；�
 
 下一步固定C1学习控制和预算后再训练；接入PASS不等于质量PASS。本阶段Mask读出仍不能
 提升冻结REC，正式Nr3D/Sr3D目标未完成、ScanRefer保护结果不变，Sr保护权重仍缺。
+
+
+### 20.61 C1固定Mask Query学习对照启动，入口梯度PASS（2026-09-06 02:37 CST）
+
+B FAIL与C1原生预检PASS已封存并推送main c5bafee。继续最新用户路线，C1独立验证
+候选Mask Query读取原生SP记忆；不加载B失败权重，不改主干/共享身份/Box/Mask选择规则。
+
+固定计划docs/NR3D_MASK_QUERY_PAIR_PLAN_2026-09-06.md。两臂只训练原x_query：
+native6张量/664,992参数；memory再加预检过的74,880参数/8张量，合计739,872。
+原x_mask、rel_encoder、全部视觉/文本、Text Mask、alpha及REC路径冻结，buffer不更新。
+这是结构增量对照，不是等参数对照；Mask-only阶段不能自己完成REC目标，也尚未
+合并原REC/Mask的最终实例选择。新的任务嵌入、Box任务读取及多模块组合没有一起加入。
+
+同2048fit/262scenes，2epoch/B4，各1024更新；freshAdamW1e-5/wd.0005/clip.1，
+无增强、种子0/1、workers0。6172holdout/98个主干已见训练场景，B16/seed1000，
+仅起终评估。memory须相对终点native及保护起点均mIoU+.002且双Mask阈值不下降，
+才通过固定筛选；完整性优先，失败封存，不调门槛或自动续训。
+
+除既有逐行输入/REC/Query/合法框核对，新增Text Mask/alpha哈希的两臂及起终核对，
+逐fit batch记录实际模型输入点Tensor哈希和行ID，解决B/M5跨运行诊断缺少记录的问题；
+不能追溯补齐旧训练输入。终态保留固定REC Query和起点好框Query的融合Mask诊断。
+
+输入清单30beb42fd22565ba49f9ee68d21f097a34eb59d3e6bcb2327916edcb0c3a2380，
+612源码/724数据/parent全hash通过；原Py3.7环境编译及6项质量/身份summary测试PASS。
+入口scripts/run_nr3d_mask_query_pair.py；复算scripts/summarize_nr3d_mask_query_pair.py。
+
+02:32:29独占原GPU锁启动，远端/root/autodl-tmp/mcln_mask_query_pair_20260906_v1，
+screen mcln_mask_query_pair；02:35:59实查PID23307、GPU10549MiB/38%，起点评估中。
+实际首个fit batch梯度预检PASS/0更新：两臂loss16.183681488相同，共有6张量梯度相同；
+新增输出矩阵梯度范数.303010643，其他新增参数初始零梯度符合零输出机制。
+没有终态质量结果。预计完整起点约02:52–02:58，observer首查02:52:29，随后240秒。
+总时长待真实训练速度更新；不按中途质量改变预算。
+
+正式Nr3D/Sr3D/ScanRefer成绩与保护权重未更新；三数据集目标active，Sr保护备份仍缺。

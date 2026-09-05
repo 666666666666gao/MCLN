@@ -1,0 +1,31 @@
+{
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "input_manifest.json",
+    "memory_preflight_receipt.json",
+    "prepare_inputs.py",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "preflight.json"
+  ],
+  "gpu": "10549 MiB, 38 %",
+  "log_tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.layer_norm.weight', 'lm_head.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.bias']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.layer_norm.weight', 'lm_head.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.bias']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "MASK QUERY PAIR PREFLIGHT {\"native\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"x_query.0.weight\": 1.0664376020431519, \"x_query.0.bias\": 0.06220626085996628, \"x_query.2.weight\": 0.9692898988723755, \"x_query.2.bias\": 0.07664259523153305, \"x_query.4.weight\": 1.1690175533294678, \"x_query.4.bias\": 0.08711637556552887}}, \"memory\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"x_query.0.weight\": 1.0664376020431519, \"x_query.0.bias\": 0.06220626085996628, \"x_query.2.weight\": 0.9692898988723755, \"x_query.2.bias\": 0.07664259523153305, \"x_query.4.weight\": 1.1690175533294678, \"x_query.4.bias\": 0.08711637556552887, \"mask_query.query_norm.weight\": 0.0, \"mask_query.query_norm.bias\": 0.0, \"mask_query.memory_norm.weight\": 0.0, \"mask_query.memory_norm.bias\": 0.0, \"mask_query.query_projection.weight\": 0.0, \"mask_query.key_projection.weight\": 0.0, \"mask_query.value_projection.weight\": 0.0, \"mask_query.output.weight\": 0.30301064252853394}}, \"optimizer_steps\": 0, \"trainable_parameters\": {\"native\": 664992, \"memory\": 739872}, \"learning_rate\": 1e-05, \"weight_decay\": 0.0005, \"clip_norm\": 0.1, \"fit_rows\": 2048, \"fit_scenes\": 262, \"holdout_rows\": 6172, \"holdout_scenes\": 98, \"identical_grounding\": true, \"frozen_state_unchanged\": true}"
+  ],
+  "process": "23307 /root/miniconda3/envs/bdetr/bin/python -u scripts/run_nr3d_mask_query_pair.py --manifest /root/autodl-tmp/mcln_mask_query_pair_20260906_v1/input_manifest.json",
+  "process_exit": 0,
+  "time_cst": "2026-09-06T02:35:59.598493+08:00"
+}

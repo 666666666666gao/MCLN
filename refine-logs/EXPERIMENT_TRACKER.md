@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 20:08 CST. Detailed evidence: master §§20.37–20.48.
+Updated: 2026-09-05 20:43 CST. Detailed evidence: master §§20.37–20.49.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -14,7 +14,7 @@ Updated: 2026-09-05 20:08 CST. Detailed evidence: master §§20.37–20.48.
 | M3 native Mask supervision/gradient probe | Complete;16 fit rows,4 forwards,8 gradient probes,zero updates | Native matched-Query indices and gradients correct;66/302 majority SP neighborhoods lack target seed centers; locality still needs distances |
 
 | M4 Mask neighborhood intervention | Complete;16 fit rows,8 forwards,zero updates |31 majority SPs read distant seed0 on empty balls; nearest-two mean Mask +2.2877pp but6 rows worsen. Proceed only to matched learning screen |
-| M5 existing Mask projection training | Running;native gradient preflight PASS,baseline1600/6172 at20:08; terminal pending |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
+| M5 existing Mask projection training | Running;both arms1024/1024 at20:43; full terminal evaluation pending |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -46,3 +46,6 @@ M3 COMPLETE with original Hungarian indices/native autograd, no indexing or disc
 M4 COMPLETE: actual majority foreground empty balls31/302, original seed0 distances3.09–6.16m versus nearest.200–.285m. Target-seed-free neighborhoods66→19. Frozen16-row fusion mIoU+.0228774 and .50+1;6 improve/6 worsen/4 unchanged. Grounding and M3 identity PASS; no promotion. Original upstream shares the grouping behavior. Full report/receipt published0a3a93c.
 
 M5 launched20:00:27, screen17183.mcln_m5_mask_locality, isolated directory /root/autodl-tmp/mcln_mask_neighborhood_m5_20260905_v1. CPU2 tests PASS, data724 files pinned; real two-arm gradient preflight PASS (1348960 parameters,16 tensors), initial holdout1600/6172 at20:08. PID17187 active, GPU10553MiB/30%; no optimizer updates yet. Baseline ETA20:23, whole-run estimate21:00–21:30 pending training throughput; next check near20:23–20:26. It first evaluates both start arms, trains existing16 Mask parameter tensors on2048 fit rows for1024 updates per arm, then evaluates full6172 module-holdout rows. Fixed nearest endpoint must beat both terminal native and protected start mIoU by.002, with neither Mask threshold declining; grounding/input/Query identity required. This cannot improve frozen REC or complete the three-benchmark goal. No new formal metrics. R1/P2 remain sealed.
+
+
+20:43 authoritative update: M5 has finished both1024-step trajectories; native PID17187 remains active in terminal evaluation, estimated completion21:03. Earlier20:08 baseline progress above is historical. Object point input CPU audit COMPLETE/exit0:683 slots,0 empty raw crops,8 empty seed RoIs,123 crops with instance fraction<.5. Input/source/data identity PASS, no new performance result. L1 position-key versus text-key mechanism registered in docs/NR3D_TEXT_POSITION_L1_PLAN_2026-09-05.md; code/test preparation, no training or quality result yet. Original REC/three-benchmark objective remains open.

@@ -1,0 +1,95 @@
+{
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "manifest_base.json",
+    "prepare_inputs.py",
+    "controller.sh",
+    "input_manifest.json",
+    "cpu_receipt.json",
+    "run.log",
+    "launch.json",
+    "preflight.json",
+    "baseline_rows.json"
+  ],
+  "gpu": "10607 MiB, 0 %\n",
+  "gpu_exit": 0,
+  "log_tail": [
+    "M5 TRAIN {\"step\": 832, \"epoch\": 1, \"arms\": {\"native\": {\"loss\": 14.87777042388916, \"gradient_norm_before_clip\": 7.3792219161987305}, \"nearest\": {\"loss\": 15.045300483703613, \"gradient_norm_before_clip\": 7.992616653442383}}, \"elapsed_seconds\": 2150.1179530620575}",
+    "M5 TRAIN {\"step\": 896, \"epoch\": 1, \"arms\": {\"native\": {\"loss\": 18.165090560913086, \"gradient_norm_before_clip\": 6.253526210784912}, \"nearest\": {\"loss\": 17.956148147583008, \"gradient_norm_before_clip\": 7.367936611175537}}, \"elapsed_seconds\": 2227.5461246967316}",
+    "M5 TRAIN {\"step\": 960, \"epoch\": 1, \"arms\": {\"native\": {\"loss\": 17.623310089111328, \"gradient_norm_before_clip\": 11.997957229614258}, \"nearest\": {\"loss\": 17.311813354492188, \"gradient_norm_before_clip\": 11.630766868591309}}, \"elapsed_seconds\": 2304.19783616066}",
+    "M5 TRAIN {\"step\": 1024, \"epoch\": 1, \"arms\": {\"native\": {\"loss\": 16.276094436645508, \"gradient_norm_before_clip\": 10.187056541442871}, \"nearest\": {\"loss\": 16.391597747802734, \"gradient_norm_before_clip\": 11.056621551513672}}, \"elapsed_seconds\": 2380.8152890205383}"
+  ],
+  "preflight": {
+    "clip_norm": 0.1,
+    "fit_rows": 2048,
+    "fit_scenes": 262,
+    "frozen_state_unchanged": true,
+    "holdout_rows": 6172,
+    "holdout_scenes": 98,
+    "identical_grounding": true,
+    "learning_rate": 1e-05,
+    "optimizer_steps": 0,
+    "trainable_parameters": 1348960,
+    "weight_decay": 0.0005
+  },
+  "preflight.json": {
+    "bytes": 1642,
+    "sha256": "8fa15d2400ed2eba012493e240a1ce4981cfb24147532c1d651ce72ca0e97c08"
+  },
+  "process": "17187 /root/miniconda3/envs/bdetr/bin/python /root/autodl-tmp/mcln_mask_neighborhood_m5_20260905_v1/scripts/run_nr3d_mask_neighborhood_m5.py --manifest /root/autodl-tmp/mcln_mask_neighborhood_m5_20260905_v1/input_manifest.json\n",
+  "process_exit": 0,
+  "recent_events": [
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 6.253526210784912,
+          "loss": 18.165090560913086
+        },
+        "nearest": {
+          "gradient_norm_before_clip": 7.367936611175537,
+          "loss": 17.956148147583008
+        }
+      },
+      "elapsed_seconds": 2227.5461246967316,
+      "epoch": 1,
+      "step": 896
+    },
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 11.997957229614258,
+          "loss": 17.623310089111328
+        },
+        "nearest": {
+          "gradient_norm_before_clip": 11.630766868591309,
+          "loss": 17.311813354492188
+        }
+      },
+      "elapsed_seconds": 2304.19783616066,
+      "epoch": 1,
+      "step": 960
+    },
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 10.187056541442871,
+          "loss": 16.276094436645508
+        },
+        "nearest": {
+          "gradient_norm_before_clip": 11.056621551513672,
+          "loss": 16.391597747802734
+        }
+      },
+      "elapsed_seconds": 2380.8152890205383,
+      "epoch": 1,
+      "step": 1024
+    }
+  ],
+  "run.log": {
+    "bytes": 8052,
+    "sha256": "6d9507d6328f28127a68792f27c83e5c4e25b6ebffed1a70fc110ba154946e79"
+  },
+  "time_cst": "2026-09-05T20:43:04.049848+08:00"
+}

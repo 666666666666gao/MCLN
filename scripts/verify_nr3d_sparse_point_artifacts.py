@@ -1,4 +1,4 @@
-"""Independent CPU checks of the completed V2 parameters and AdamW artifacts."""
+"""Independent CPU checks of the completed V3 parameters and AdamW artifacts."""
 
 import argparse
 import hashlib
@@ -20,7 +20,7 @@ def verify(directory):
     m = json.loads((directory / 'input_manifest.json').read_text())
     r = json.loads((directory / 'receipt.json').read_text())
     assert (directory / 'controller.exit').read_text().strip() == '0'
-    assert r['schema'] == 'mcln-nr3d-sparse-point-pair-v2' and r['status'] == 'complete'
+    assert r['schema'] == 'mcln-nr3d-sparse-point-pair-v3' and r['status'] == 'complete'
     assert r['optimizer_steps_per_arm'] == 6687 and r['formal_rows'] == 0
     assert file_sha(directory / 'input_manifest.json') == r['manifest_sha256']
     for name, digest in m['files'].items():

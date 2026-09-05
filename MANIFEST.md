@@ -45,3 +45,8 @@
 | 2026-09-06 07:08 | /diagnosing-bugs | docs/NR3D_SPARSE_FULL_START_PROBE_PLAN_2026-09-06.md | implementation | V2 startup failure and full initialization diagnostic;0 updates |
 | 2026-09-06 07:08 | /diagnosing-bugs | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | V2 startup failure and full initialization diagnostic;0 updates |
 | 2026-09-06 07:08 | /diagnosing-bugs | refine-logs/EXPERIMENT_TRACKER.md | implementation | V2 startup failure and full initialization diagnostic;0 updates |
+| 2026-09-06 07:19 | /diagnosing-bugs + /run-experiment | docs/NR3D_SPARSE_STARTUP_GRADIENT_RESULT_2026-09-06.md | implementation | native numerical parity correction,V3 launch;scientific gate unchanged |
+| 2026-09-06 07:19 | /diagnosing-bugs + /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | native numerical parity correction,V3 launch;scientific gate unchanged |
+| 2026-09-06 07:19 | /diagnosing-bugs + /run-experiment | docs/NR3D_SPARSE_POINT_PAIR_PLAN_2026-09-06.md | implementation | native numerical parity correction,V3 launch;scientific gate unchanged |
+| 2026-09-06 07:19 | /diagnosing-bugs + /run-experiment | refine-logs/sparse_point_pair_20260906_v3/EXPERIMENT_PLAN.md | implementation | native numerical parity correction,V3 launch;scientific gate unchanged |
+| 2026-09-06 07:19 | /diagnosing-bugs + /run-experiment | refine-logs/EXPERIMENT_TRACKER.md | implementation | native numerical parity correction,V3 launch;scientific gate unchanged |

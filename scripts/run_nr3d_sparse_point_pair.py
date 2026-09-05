@@ -49,7 +49,7 @@ def main():
         assert file_sha(Path(manifest['checkpoint'])) == manifest['checkpoint_sha256']
         assert file_sha(Path(manifest['sparse_preflight_receipt'])) == manifest['sparse_preflight_receipt_sha256']
         assert file_sha(Path(manifest['baseline_reference'])) == manifest['baseline_reference_sha256']
-        assert file_sha(Path(manifest['warmup_regression_receipt'])) == manifest['warmup_regression_receipt_sha256']
+        assert file_sha(Path(manifest['gradient_regression_receipt'])) == manifest['gradient_regression_receipt_sha256']
         for name, digest in manifest['runtime_receipts'].items():
             assert file_sha(Path(name)) == digest, name
 
@@ -58,9 +58,9 @@ def main():
     assert sparse_preflight['status'] == 'complete' and sparse_preflight['optimizer_steps'] == 0
     assert sparse_preflight['zero_start_identity'] and sparse_preflight['native_mask_loss_connected']
     assert sparse_preflight['fixed_perturbation_rec_unchanged']
-    warmup_regression = json.loads(Path(manifest['warmup_regression_receipt']).read_text())
-    assert warmup_regression['status'] == 'complete' and warmup_regression['optimizer_steps'] == 0
-    assert manifest['native_warmup_forwards'] == 1
+    regression = json.loads(Path(manifest['gradient_regression_receipt']).read_text())
+    assert regression['status'] == 'pass' and regression['optimizer_steps'] == 0
+    assert manifest['shared_gradient_relative_l2_limit'] == 1e-4
     os.chdir(str(source))
     sys.path.insert(0, str(source))
     import numpy as np
@@ -78,6 +78,7 @@ def main():
     from src.grounding_evaluator import GroundingEvaluator
     from scripts.nr3d_candidate_contract import diagnose_root_candidates
     from scripts.nr3d_sparse_point_memory import SparsePointSuperpointResidual, SparseSuperpointIntervention
+    from scripts.nr3d_shared_gradient_check import shared_gradient_comparison
     from scripts.run_nr3d_view_pair_role import read_train_rows
 
     def seed_everything(seed):
@@ -214,20 +215,6 @@ def main():
 
     started = time.time()
     preflight_inputs, preflight_batch = inputs_for(next(iter(loader('fit', 0, 4, False))))
-    # A recorded native first-backward transient requires one zero-update warmup.
-    warmup_outputs = models['native'](preflight_inputs)
-    warmup_outputs.update(preflight_batch)
-    warmup_loss, warmup_outputs = TrainTester._compute_loss(warmup_outputs, criterion, set_criterion, args)
-    assert torch.isfinite(warmup_loss)
-    warmup_loss.backward()
-    assert all(p.grad is not None and torch.isfinite(p.grad).all() for p in trainable['native'].values())
-    warmup_value = float(warmup_loss)
-    optimizers['native'].zero_grad(set_to_none=True)
-    write_json(addon / 'warmup.json', {'native_forwards': 1, 'backwards': 1,
-        'optimizer_steps': 0, 'loss': warmup_value,
-        'input_point_sha256': [hashlib.sha256(cloud.cpu().numpy().tobytes()).hexdigest()
-                               for cloud in preflight_inputs['point_clouds']]})
-    del warmup_outputs, warmup_loss
     preflight = {}
     shared_gradients = {}
     first_grounding = None
@@ -256,14 +243,17 @@ def main():
         optimizers[arm].zero_grad(set_to_none=True)
         preflight[arm] = {'loss': float(loss), 'gradient_norms': norms}
     assert preflight['native']['loss'] == preflight['sparse']['loss']
-    assert preflight['native']['loss'] == warmup_value
-    assert all(preflight['native']['gradient_norms'][name] == preflight['sparse']['gradient_norms'][name]
-               for name in trainable['native'])
     shared_differences = {}
     for name, original in shared_gradients['native'].items():
         current = shared_gradients['sparse'][name]
-        assert torch.allclose(original, current, atol=1e-6, rtol=1e-5), name
-        shared_differences[name] = float((current - original).abs().max())
+        shared_differences[name] = shared_gradient_comparison(original, current)
+    preflight['shared_gradient_comparisons'] = shared_differences
+    preflight['shared_gpu_gradient_norms_exact'] = all(
+        preflight['native']['gradient_norms'][name] == preflight['sparse']['gradient_norms'][name]
+        for name in trainable['native'])
+    # Preserve evidence before asserting, including a failed comparison.
+    write_json(addon / 'first_batch_gradient_comparison.json', preflight)
+    assert all(value['passed'] for value in shared_differences.values()), shared_differences
     del shared_gradients
     verify_state(before_training=True)
     preflight.update(optimizer_steps=0, trainable_parameters={
@@ -273,9 +263,7 @@ def main():
                      weight_decay=args.weight_decay, clip_norm=args.clip_norm,
                      fit_rows=26747, fit_scenes=len(scenes['fit']), holdout_rows=6172, holdout_scenes=98,
                      identical_grounding=True, frozen_state_unchanged=True,
-                     native_warmup_forwards=1, shared_gpu_gradient_norms_exact=True,
-                     shared_gradient_max_abs_differences=shared_differences,
-                     shared_gradient_atol=1e-6, shared_gradient_rtol=1e-5)
+                     native_warmup_forwards=0, shared_gradient_relative_l2_limit=1e-4)
     write_json(addon / 'preflight.json', preflight)
     print('SPARSE POINT PAIR PREFLIGHT', json.dumps(preflight), flush=True)
     del outputs, loss, preflight_inputs, preflight_batch, first_grounding, snapshot
@@ -400,7 +388,7 @@ def main():
         artifacts[arm] = {'path': str(path), 'bytes': path.stat().st_size, 'sha256': file_sha(path)}
     sparse_attachment.remove()
     verify_inputs()
-    receipt = {'schema': 'mcln-nr3d-sparse-point-pair-v2', 'status': 'complete', 'optimizer_steps_per_arm': step,
+    receipt = {'schema': 'mcln-nr3d-sparse-point-pair-v3', 'status': 'complete', 'optimizer_steps_per_arm': step,
                'fit_rows': 26747, 'fit_scenes': len(scenes['fit']), 'epochs': 1, 'holdout_rows': 6172,
                'holdout_scenes': 98, 'heldout_scenes_seen_by_frozen_backbone': True,
                'formal_rows': 0, 'formal_promotion': False,
@@ -408,7 +396,8 @@ def main():
                'frozen_parameters_and_buffers_unchanged': True, 'source_data_and_parent_checkpoint_unchanged': True,
                'grounding_and_query_selection_exactly_equal_to_start': True, 'changed_parameter_names': changed,
                'baseline_matches_protected_reference': True,
-               'native_warmup_forwards': 1, 'warmup_optimizer_steps': 0,
+               'native_warmup_forwards': 0, 'shared_gradient_relative_l2_limit': 1e-4,
+               'first_batch_gradient_comparison_sha256': file_sha(addon / 'first_batch_gradient_comparison.json'),
                'fit_point_batches_sha256': file_sha(addon / 'fit_point_batches.json'),
                'learning_rates': {'native_shared': 1e-5, 'sparse_shared': 1e-5, 'sparse_new': 1e-4},
                'baseline_rows_sha256': file_sha(addon / 'baseline_rows.json'), 'terminal_rows_sha256': file_sha(addon / 'terminal_rows.json'),

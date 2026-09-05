@@ -36,7 +36,10 @@ def diagnose_root_candidates(end_points, evaluator):
     assert not evaluator.eval_use_rec_reranker_scores
     assert not evaluator.eval_use_rec_geometry_reranker_scores
     assert not evaluator.eval_use_rec_joint_box_mask
-    boxes = torch.cat([end_points["last_center"], end_points["last_pred_size"]], -1)
+    # _main_eval_branch clamps prediction sizes before the formal evaluator.
+    # This read-only forward bypasses that branch and must use the same boxes.
+    raw_sizes = end_points["last_pred_size"]
+    boxes = torch.cat([end_points["last_center"], raw_sizes.clamp(min=1e-6)], -1)
     all_valid = torch.ones(boxes.shape[:2], dtype=torch.bool, device=boxes.device)
     filtered = build_detector_overlap_valid(
         boxes, all_valid, end_points["all_detected_boxes"],
@@ -85,6 +88,8 @@ def diagnose_root_candidates(end_points, evaluator):
             for name, indices in candidate_sets.items()}
         rows.append({
             "score_profiles": profiles,
+            "raw_nonpositive_size_query_count": int((raw_sizes[row] <= 0).any(-1).sum()),
+            "raw_prediction_size_min": float(raw_sizes[row].min()),
             "root_target_input_points": int(target_mask.sum()),
             "rec_selection": query_quality(rec_query),
             "mask_selection": query_quality(mask_query),

@@ -14193,3 +14193,87 @@ cross-encoder之后的`text_memory`，调用现有REC对象重叠过滤，再按
 现有runner在评估前已专门重置seed1000（源码明确注释两组训练增强消耗不同RNG），
 该事实不改变253的规则统计、G0的样本顺序合同或已登记的科学门，也不据此重跑G0。
 本节未新增训练状态轮询，下一次完成窗口检查仍为13:35 CST。
+
+
+### 20.37 G0终局、P1结果及最小关系读出接入验证（2026-09-05 14:08 CST）
+
+本节覆盖§20.36的运行中状态。G0、padding identity、候选诊断v2、关系读出四行GPU探针均已结束；
+13:27:47 CST确认任务进程退出、GPU空闲。正式7,899-row指标未更新，未产生已训练的新关系头。
+
+#### 20.37.1 G0按原科学门FAIL，完整性PASS
+
+两组各完成25,768 fit表达、1,611更新；实际顺序SHA均为
+`a789a4a815618cbe6afdfd04074cf52810eae6065dbf7f6dbcbb4dfd3828ce36`。
+fixed增强允许16,179，与规范化文本重算精确一致；old为16,432。fixed训练2,720.05 s、总计3,174.20 s；
+old训练5,418.02 s、总计6,323.94 s。耗时差没有被解释为模型或代码差异。
+终局再次逐一校验两树各612个源文件：均未改变，唯一允许的组间差异仍是已登记的数据谓词。
+
+| train-scene模块留出分组 | 行数 | old→fixed REC hits@.25 | 修复/破坏@.25 | old→fixed hits@.50 | 修复/破坏@.50 |
+|---|---:|---:|---:|---:|---:|
+| 全体 | 7151 | 6805→6816（+11） | 60/49 | 5839→5955（+116） | 296/180 |
+| raw view-dependent | 2718 | 2618→2618（0） | 20/20 | 2226→2270（+44） | 114/70 |
+| raw view-independent | 4433 | 4187→4198（+11） | 40/29 | 3613→3685（+72） | 182/110 |
+
+预注册要求view-dependent @.25严格增加，实际为0，因此科学门FAIL。机械决定保持
+`seal_performance_route_keep_data_fix`：保留数据修复，封存该增强性能路线；不修改门槛、不重跑选结果。
+这是底层checkpoint已经见过的train scenes上的新增更新留出审计，绝非正式验证或整个系统未见场景泛化。
+本节不把FAIL改写为原G0→G1通过。用户后续独立提出的P2关系机制对照另行登记，不借用G0成功名义。
+
+回执：`G0_FIXED_RECEIPT_20260905.json`（806408 bytes，SHA
+`ec9baeaacd21f25ce8fe4c691d60b93c8927ad0ee5c4de9316e4ff46349887e3`）；
+`G0_PAIR_DECISION_20260905.json`（SHA
+`bdc6ed1217c6033c26a85f33a549b848b62f89e756b1b28ffa0bb27f14ab0da9`）；
+独立重算逐行命中、修复/破坏、组别、顺序与源码的`G0_TERMINAL_VERIFICATION_20260905.json`（SHA
+`6d77b80e86963f729b08edccdc26978e1996096ccab010eee20444a5e69cbc3f`）。以上均在refine-logs。
+
+253仅指fit中增强许可直接改变的表达；worker随机流连续，不能称为仅253个数值训练输入改变。
+
+#### 20.37.2 padding：先对齐Query身份，再解释差异
+
+`PADDING_IDENTITY_RECEIPT_20260905.json`已完成（48739 bytes，SHA
+`ccb466fe36be62296bc701db62dd8d2edf8ef1b2d5bd701aeb68b63520edb643`），使用固定fit行0/1/3/4，
+原始、重复、追加16 padding、masked pooling、masked再追加padding共5次只读前向。
+重复对照为零。原始+padding的raw Query轴框最大差8.416，但同一physical seed集合保持256/256，
+四行Query排序改变29/25/85/44个位置；对齐后合法性位变化均为0。
+原始和masked两种路径，四行最终所选seed均未改变，所选框变化约1e-4，二值point/superpoint Mask变化均为0。
+这不支持把raw轴8.4解释为最终目标框移动8.4。全部Query对齐后仍有非零框差异，不能称为全网络不变。
+
+SWA token选择在两种池化路径中均会变化：原始[0,2,22,0]→[25,2,22,1]，masked为→[25,2,22,2]。
+没有发现四行KPS sigmoid饱和或截止并列（one_count均0、cutoff_equal_count均1）；不据此加入raw-logit KPS改动。
+Draft PR #7保持独立、未合并；masked pooling不等于完整padding修复，也没有正式REC收益结论。
+
+#### 20.37.3 候选诊断v1真实失败已定位，v2完成
+
+v1在重叠过滤前报负尺寸。直接forward可输出非正raw尺寸，而正式`_main_eval_branch`
+在main_utils.py:7874–7875先clamp(min=1e-6)。诊断绕过了该预处理；修复仅使诊断框采用相同clamp，
+未改模型或正式evaluator。新增raw尺寸0/-1回归测试，合计5项CPU测试通过（1.70 s），v1日志保留。
+
+v2一遍冻结前向，0更新、0权重、0正式验证。`CANDIDATE_CONTRACT_RECEIPT_V2_20260905.json`
+22317 bytes，SHA `10a235eefdd245f0a7cff04b87281cdf4831d59c5cc2695f5f18acde93d6729f`。
+
+| fit行 / 场景 | 非正raw尺寸Query数 | 合法Query数 | REC所选框IoU / MaskIoU | 全Query最好MaskIoU | 完整合法记忆覆盖对象数 / 对象总数 | Top32覆盖对象数 |
+|---|---:|---:|---:|---:|---:|---:|
+| 0 / scene0525_00 | 170 | 43 | .77238 / .65753 | .65753 | 12 / 66 | 8 |
+| 1 / scene0265_00 | 198 | 40 | .78336 / .35192 | .35751 | 5 / 31 | 4 |
+| 3 / scene0668_00 | 204 | 29 | .81222 / .82517 | .82517 | 7 / 36 | 7 |
+| 4 / scene0505_00 | 188 | 39 | .67381 / .68809 | .68809 | 14 / 57 | 13 |
+
+四行过滤前后Top16/32/64/256均含>.50正确框，实际REC与Mask选Query相同；不推广为7899行比例。
+全合法Query记忆比目标Top32覆盖更多对象，但仍仅覆盖5–14个对象；这是对象可用性代理，
+没有GT文本Anchor标签，不等于真实Anchor覆盖率。scene0265_00这一行框已好而最好Mask仅.358，
+说明至少此例无法靠换Query恢复高质量Mask；不能用四行估计全体分割差距成因。
+29个合法Query不足Top32是实际观察，compact无效槽必须由同一mask排除。
+
+#### 20.37.4 pair/global真实接入验证通过，尚未训练
+
+Draft PR #8新增launcher与回执。`audit_pair_readout_scene.py`在同四行、同一次冻结骨干前向后，
+读取实际288维Query与text_memory，运行global/pair两个未训练头；共有初始化逐张量相同，
+完整记忆数43/40/29/39、合法目标数32/32/29/32；适配输入未改变，骨干无梯度，
+pair文本、几何、null与最终score均收到有限非零梯度。仅对分数和求导，未执行优化器。
+
+`PAIR_READOUT_SCENE_RECEIPT_20260905.json`在PR #8 refine-logs，3935 bytes，SHA
+`fead3257a26b024b8187c8113ffce7eecd0f82833beee1b0507b9b42353f3d91`；
+输入manifest SHA `57c1c8a3e528c82fd7b3fa648e89efbf35cf45a69d0d5b339f1cd07a2d2782c5`。
+这只证明接入/梯度成立，未评估随机头准确率。P2训练合同与训练尚待独立实施；后续必须同候选、
+同数据/步数，排除无合格框正例，并同时报告相对global控制及受保护模型的修复/破坏。
+Sr3D与ScanRefer受保护结果未被更新，原目标继续未完成。

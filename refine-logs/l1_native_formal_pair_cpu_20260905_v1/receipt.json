@@ -1,0 +1,71 @@
+{
+  "cuda_visible_devices": "",
+  "files": {
+    "scripts/load_nr3d_l1_terminal.py": "09e44b647fbcdcef379788a728b07d0474b249fa78979e1656f5e197c0126ba7",
+    "scripts/nr3d_candidate_contract.py": "e0ab92f2f6a8008f1c92ed291684e003701fb6cf997d6c1c01f8e838563c7ac4",
+    "scripts/nr3d_text_position_key.py": "1231692f220547a050bb24c94524266944297f6345ae0648d4f0493697f54b09",
+    "scripts/run_nr3d_l1_native_formal_pair.py": "11a7bd0d6cc38be67d02a0f80d22deebe6dc7eb7db190372cf185fc484c7afc7",
+    "scripts/summarize_nr3d_text_position_l1.py": "03b1147756fb9cce3ef0b26e128eb07c2e4953a6eeb05863b686c27b79903aac",
+    "tests/test_nr3d_l1_native_formal_pair.py": "057a50c65730764130ed4f06accd00395654f34c6af6f8b3db73b4eeac0dbe78",
+    "tests/test_nr3d_text_position_l1_summary.py": "a1009f330b494d6de6fb8adf360970e96a40139914f905b43c4c6ab91f92f335"
+  },
+  "fixtures_are_synthetic": true,
+  "formal_evaluation_executed": false,
+  "gpu_forwards": 0,
+  "live_l1_training_files_modified": false,
+  "native_files": {
+    "main_utils.py": "3bd8394bf526914a5fa8a941a2a90ed5379753ea085661f2855cd176536da13d",
+    "src/grounding_evaluator.py": "b77376d16f0210ae18f067655552a806040614d7a21385477ffdb48590775af8",
+    "train_dist_mod.py": "242ab76549f928f85bfdc409c698c67b32748d2d21019a14ef24475f58356bfb"
+  },
+  "optimizer_steps": 0,
+  "pytest_exit": 0,
+  "python_version": "3.7.11 (default, Jul 27 2021, 14:32:16) \n[GCC 7.5.0]",
+  "schema": "mcln-l1-native-formal-pair-cpu-v1",
+  "tests": [
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_text_position_l1_summary.py::test_ten_net_rec25_hits_with_no_other_regression_pass"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_text_position_l1_summary.py::test_strict_rec_break_fails_even_with_enough_rec25_fixes"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_text_position_l1_summary.py::test_mask_quality_drop_without_threshold_changes_fails"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_text_position_l1_summary.py::test_nine_net_fixes_are_below_the_fixed_screen"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_text_position_l1_summary.py::test_complete_receipt_requires_both_paired_controls[10-10-True]"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_text_position_l1_summary.py::test_complete_receipt_requires_both_paired_controls[11-10-False]"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_text_position_l1_summary.py::test_complete_receipt_requires_both_paired_controls[10-11-False]"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_text_position_l1_summary.py::test_complete_receipt_rejects_changed_terminal_rows"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_l1_native_formal_pair.py::test_native_parity_preserves_distinct_rec_filter_and_mask_query"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_l1_native_formal_pair.py::test_native_parity_counts_a_row_with_no_legal_rec_candidate"
+    },
+    {
+      "outcome": "passed",
+      "test": "tests/test_nr3d_l1_native_formal_pair.py::test_native_parity_rejects_a_metric_from_the_other_arm"
+    }
+  ]
+}

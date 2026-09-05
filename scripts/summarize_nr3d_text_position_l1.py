@@ -59,20 +59,17 @@ def compare(reference, candidate, reference_arm):
                                 all(changes[name]['net'] >= 0 for name in names[1:]) and delta_mask >= 0}
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('train_directory', type=Path)
-    parser.add_argument('output', type=Path)
-    options = parser.parse_args()
-    receipt_raw = (options.train_directory/'receipt.json').read_bytes()
+def verify_terminal_run(train_directory):
+    """Recompute the registered paired screen from its pinned terminal rows."""
+    receipt_raw = (train_directory/'receipt.json').read_bytes()
     receipt = json.loads(receipt_raw)
-    manifest_raw = (options.train_directory.parent/'input_manifest.json').read_bytes()
+    manifest_raw = (train_directory.parent/'input_manifest.json').read_bytes()
     assert hashlib.sha256(manifest_raw).hexdigest() == receipt['manifest_sha256']
     manifest = json.loads(manifest_raw)
     assert receipt['status'] == 'complete' and receipt['optimizer_steps_per_arm'] == 6687
     assert receipt['frozen_parameters_and_buffers_unchanged'] and receipt['source_data_and_parent_checkpoint_unchanged']
-    baseline_raw = (options.train_directory/'baseline_rows.json').read_bytes()
-    terminal_raw = (options.train_directory/'terminal_rows.json').read_bytes()
+    baseline_raw = (train_directory/'baseline_rows.json').read_bytes()
+    terminal_raw = (train_directory/'terminal_rows.json').read_bytes()
     assert hashlib.sha256(baseline_raw).hexdigest() == receipt['baseline_rows_sha256']
     assert hashlib.sha256(terminal_raw).hexdigest() == receipt['terminal_rows_sha256']
     baseline, terminal = json.loads(baseline_raw), json.loads(terminal_raw)
@@ -88,6 +85,15 @@ if __name__ == '__main__':
                          'terminal_text':metrics(terminal,'text'), 'terminal_position':metrics(terminal,'position')},
               'comparisons':comparisons, 'fixed_screen_pass':all(value['fixed_screen_pass'] for value in comparisons.values()),
               'formal_rows':0, 'formal_promotion':False, 'heldout_backbone_has_seen_scenes':True}
+    return result
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('train_directory', type=Path)
+    parser.add_argument('output', type=Path)
+    options = parser.parse_args()
+    result = verify_terminal_run(options.train_directory)
     with options.output.open('x',encoding='utf-8') as stream:
         json.dump(result,stream,indent=2,sort_keys=True,allow_nan=False)
         stream.write('\n')

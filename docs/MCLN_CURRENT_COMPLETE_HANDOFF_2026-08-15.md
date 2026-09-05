@@ -15024,3 +15024,40 @@ sr3d_archive_locator_20260905.json和scanrefer_protected_chain_20260905.json。
 
 当前没有新的Nr3D/Sr3D/ScanRefer正式指标。Sr3D备份位置问题仍待补充，
 但Nr3D训练可继续，整体goal active；不能因辅助代码测试通过而宣称三数据集目标完成。
+
+
+### 20.54 L1 正式配对评估入口通过 CPU 检查；训练继续（2026-09-05 22:15 CST）
+
+上一目标轮属于 progress；本轮完成有条件的原生正式评估入口，而非等待中反复调整训练。
+22:06:41 实查 PID 18450 仍在运行，两臂已记录 1664 / 6687 步，各见过 6656 行；
+最近三个 128 步间隔为 151.361 / 151.475 / 152.614 秒。
+没有 controller.exit、终态 receipt 或终态权重，尚无训练效果结论。
+按当前吞吐，训练结束仍约 23:45 附近，完整终态约 9 月 6 日 00:05–00:20 CST；
+这是估算，不能据此宣布运行已结束。L1 活动目录、两组更新步数和固定筛选条件均未修改。
+
+新增 scripts/run_nr3d_l1_native_formal_pair.py。只有完整 L1 终态回执和逐行数据
+重新计算后通过原定双对照筛选，才允许读取对应 position 终态、构建正式验证集。
+原总结脚本的判断提取为 verify_terminal_run()，CLI 与原定门槛保持一致。
+未来正式清单必须绑定真实训练回执、训练清单、position 工件、parent、source、
+验证数据及原生历史 CLI/config。本轮没有创建可运行的正式清单，也没有执行正式 GPU forward。
+
+入口调用原生 TrainTester._main_eval_branch 和两个独立的原生 GroundingEvaluator。
+同一批输入先运行位置分支，移除临时附件后运行受保护模型；原生 epoch 继续统计后者。
+维持 B16、4 workers、7899 行、原生尺寸 clamp、合法性过滤和 REC/Mask 决策。
+特别记录 REC 和 Mask 各自选择的 Query；两者存在不同过滤路径，不能直接互相替代。
+每行还保存过滤前后 Top-16/32/64/256 覆盖、REC Query 条件下 Mask 质量和合法最佳框
+Query 条件下 Mask 质量。所有 oracle 只用于诊断，不进入 forward 或部署决策。
+记录将与各自原生 evaluator 的 REC hits、Mask hits、Mask IoU 总和核对，并输出 scene
+配对修复/破坏和 bootstrap；脚本本身不替换保护工件，也不把模块留出当作正式指标。
+
+服务器原有 Python 3.7.11 / PyTorch 1.10.2 环境中 11 项相关 CPU 测试通过（3.65 秒）：
+原固定筛选、完整合成回执的两对照判断与变更行拒绝、真实原生 evaluator 的 REC/Mask
+逐行计数对齐、REC 无合法候选，以及错用另一分支指标的拒绝。相关文件 Python 3.7 编译通过。
+测试样例均为合成数据，CUDA_VISIBLE_DEVICES 为空；0 GPU forward / 0 optimizer 更新。
+它验证评估入口的部分契约，不代表完整 GPU 评估已通过，也未读取训练中的 position 权重。
+证据：refine-logs/l1_native_formal_pair_cpu_20260905_v1/。
+实施说明：docs/NR3D_L1_NATIVE_FORMAL_PAIR_2026-09-05.md。
+
+下一步等待 L1 固定终态并审查回执；通过则进行隔离的原生正式配对，失败则封存本次路线。
+Nr3D/Sr3D 正式最好和 ScanRefer 保护结果均未更新；Sr3D 备份位置仍待补充。
+本轮属于 progress + 已实查的训练运行中，整体 goal active，三数据集目标尚未完成。

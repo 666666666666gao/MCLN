@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 21:41 CST. Detailed evidence: master §§20.37–20.53.
+Updated: 2026-09-05 22:15 CST. Detailed evidence: master §§20.37–20.54.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -15,6 +15,7 @@ Updated: 2026-09-05 21:41 CST. Detailed evidence: master §§20.37–20.53.
 
 | M4 Mask neighborhood intervention | Complete;16 fit rows,8 forwards,zero updates |31 majority SPs read distant seed0 on empty balls; nearest-two mean Mask +2.2877pp but6 rows worsen. Proceed only to matched learning screen |
 | M5 existing Mask projection training | Complete;both1024-step arms and6172 terminal rows; integrity PASS, fixed quality FAIL |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
+| L1 last text-attention key evidence | Running; PID 18450, both arms logged 1664 / 6687 updates at 22:06 CST | Await fixed endpoint and both terminal comparisons; native formal entry CPU checked, no new formal evaluation |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -61,3 +62,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 21:41 authoritative L1 state: PID18450 live, both arms logged384/6687 updates,1536 fit rows; recent128-step intervals147.045/149.627s. Training ETA23:43–23:46 and terminal completion estimate2026-09-06 00:05–00:20 CST, pending actual throughput. Full6172 L1 zero-start records exactly match M5 native start for point hashes and selected REC/Mask identities/IoUs; no trained endpoint read. New terminal position-state reader passed5 CPU synthetic tests and does not authorize promotion. Full goal active; Sr3D backup location pending.
+
+
+22:15 progress: the conditional native L1 formal-pair entry is implemented and passed 11 CPU tests in the frozen server environment. It reuses the unchanged terminal gate, native evaluation branch and separate native evaluators on identical batches, preserving REC/Mask selection paths and recording pre/post-filter coverage. Full GPU evaluation is untested and no trained artifact or eligible formal manifest was created. Last live check at 22:06:41 recorded both arms 1664 / 6687 updates (6656 rows); PID 18450 continues. See master §20.54 and docs/NR3D_L1_NATIVE_FORMAL_PAIR_2026-09-05.md. Overall goal active; Sr3D backup location remains pending.

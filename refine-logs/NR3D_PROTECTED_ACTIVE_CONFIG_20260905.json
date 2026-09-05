@@ -1,0 +1,130 @@
+{
+  "schema": "mcln-protected-active-config-v2",
+  "checkpoint_sha256": "76aa6cd49ca20a34e78509465f1185b1b9040e60807ad327d6b0876aeb6edba1",
+  "evaluation_only": true,
+  "config": {
+    "butd": false,
+    "butd_gt": false,
+    "butd_cls": true,
+    "joint_det": true,
+    "num_decoder_layers": 6,
+    "self_position_embedding": "loc_learned",
+    "self_attend": true,
+    "use_source_choice_selector": true,
+    "source_choice_selector_sources": "default,default_rank_blend_contrastive010",
+    "source_choice_selector_hidden_dim": 288,
+    "use_source_moe": false,
+    "use_sacr_source": false,
+    "use_joint_query_quality_reranker": false,
+    "use_decoder_query_adapter": false,
+    "use_query_mask_fusion_calibrator": false,
+    "model": "MCLN",
+    "num_target": 256,
+    "use_contrastive_align": true
+  },
+  "absent_config_fields": [
+    "num_queries",
+    "enc_layers",
+    "contrastive_align_loss",
+    "source_moe_sources"
+  ],
+  "state_tensor_counts": {
+    "source_choice_selector.": 9,
+    "source_moe.": 0,
+    "sacr_head.": 0,
+    "joint_query_quality_reranker.": 0,
+    "decoder_query_adapter.": 0,
+    "query_mask_fusion_calibrator.": 0,
+    "box_embeddings.": 9,
+    "class_embeddings.": 2,
+    "decoder_cross_d": 24,
+    "encoder_cross_d": 12
+  },
+  "top_level_state_tensor_counts": {
+    "backbone_net": 96,
+    "box_embeddings": 9,
+    "butd_class_embeddings": 1,
+    "class_embeddings": 2,
+    "contrastive_align_projection_image": 6,
+    "contrastive_align_projection_text": 6,
+    "cross_encoder": 144,
+    "decoder": 282,
+    "decoder_query_proj": 2,
+    "out_norm": 2,
+    "out_score": 4,
+    "points_obj_cls": 16,
+    "pos_embed": 9,
+    "prediction_heads": 252,
+    "proposal_head": 42,
+    "rel_encoder": 4,
+    "source_choice_selector": 9,
+    "swa_ffn_layers": 18,
+    "swa_layers": 18,
+    "text_encoder": 200,
+    "text_projector": 4,
+    "text_query_proj": 6,
+    "x_mask": 6,
+    "x_query": 6
+  },
+  "benchmark_rows": 0,
+  "optimizer_steps": 0,
+  "device": "cpu",
+  "factory_arguments_evaluated_from_frozen_ast": {
+    "num_queries": 256,
+    "num_decoder_layers": 6,
+    "self_position_embedding": "loc_learned",
+    "contrastive_align_loss": true,
+    "butd": true,
+    "self_attend": true,
+    "use_source_choice_selector": true,
+    "source_choice_selector_sources": "default,default_rank_blend_contrastive010"
+  },
+  "source_files": {
+    "train_dist_mod.py": {
+      "sha256": "242ab76549f928f85bfdc409c698c67b32748d2d21019a14ef24475f58356bfb",
+      "bytes": 165066,
+      "ast_matches_public_main_cc67d43": true
+    },
+    "models/source_choice_selector.py": {
+      "sha256": "5d10e9c513c3cac094c1fc16e4bcbfb8bf0cda2ef0dd5473e471b8c75a5009be",
+      "bytes": 11893,
+      "ast_matches_public_main_cc67d43": true
+    },
+    "src/joint_det_dataset.py": {
+      "sha256": "4a8edacf2c59c8ded76697153d96e8eb078b70146222c187e98b0e34f64bc77e",
+      "bytes": 75981,
+      "ast_matches_public_main_cc67d43": true
+    },
+    "models/mcln.py": {
+      "sha256": "1245cf56c7111611cdb8b842ace583371a4e1c21f0b6a226e6562ebb7e6ab73a",
+      "bytes": 146066,
+      "ast_matches_public_main_cc67d43": true
+    }
+  },
+  "active_path": {
+    "object_interaction_enabled": true,
+    "object_flag_expression": "args.butd or args.butd_gt or args.butd_cls",
+    "object_input": "scene instance ground-truth boxes with predicted classes (butd_cls path)",
+    "source_choice": "hard per-expression source argmax; chosen source supplies the full Query score vector",
+    "source_names": [
+      "default",
+      "default_rank_blend_contrastive010"
+    ],
+    "learned_source_mixture_enabled": false
+  },
+  "interpretation_limits": [
+    "Only the protected Nr3D checkpoint is audited; no other dataset configuration is inferred.",
+    "This is a configuration, state-key and source-code audit, not a new forward pass or accuracy result.",
+    "Raw butd=False does not disable object attention because butd_cls=True at the model factory.",
+    "An absent checkpoint argument is not interpreted as a disabled feature; constructor argument names can differ."
+  ],
+  "weight_average_provenance": {
+    "schema": "mcln-nr3d-v99-e57-e69-weight-average-v1",
+    "base_epoch": 57,
+    "base_sha256": "fe1e2047b3c4d5ed0aae3569418abff5a65f5608edcb7f34d01ffab1ee1f6655",
+    "base_weight": 0.75,
+    "other_epoch": 69,
+    "other_sha256": "1e01d162a58c903e7b469f6e51d23314753e40c1d33a4e3c0d06239b55173421",
+    "other_weight": 0.25
+  }
+}

@@ -14111,3 +14111,27 @@ CPU审计直接提取冻结源码中的文本清洗语句及两套真实增强�
 `refine-logs/VIEW_PREDICATE_AFTER_NORMALIZATION_20260905.json`，SHA
 `f50981ff61f59a90d39b769abd40e2a6b32ab4bab4d46fa6f403c09ef48dfe30`。
 该结果收窄增强修复的实际作用范围，不支持提前判断G0通过或失败，更不等价于新网络或正式指标收益。
+
+
+#### 20.36.5 受保护Nr3D实际启用的分支（2026-09-05 12:25 CST）
+
+CPU核对同一受保护checkpoint的config、state key与冻结模型构造器：原始参数
+`butd=False, butd_gt=False, butd_cls=True`，但`TrainTester.get_model`实际传入
+`butd=args.butd or args.butd_gt or args.butd_cls=True`。因此对象交互确实启用；
+state中Encoder/Decoder的`cross_d`分别有12/24个张量。`butd_cls`数据路径读取scene实例
+真值框与预测类别。不能只读单个`butd`字段就判断对象交叉注意力关闭。
+
+实际构造为256 Query、6层Decoder、`self_attend=True`、`loc_learned`和contrastive align。
+启用的是`SourceChoiceSelector`，两源为`default,default_rank_blend_contrastive010`：
+对每个表达取source-choice logits的argmax，再完整采用该源的Query分数向量。
+`use_source_moe=False`且state没有SourceMoE参数，故此受保护Nr3D分支不能描述为已启用连续MoE混合。
+这项核对仅覆盖Nr3D，不外推ScanRefer或Sr3D当前配置。
+
+回执`refine-logs/NR3D_PROTECTED_ACTIVE_CONFIG_20260905.json`（4444 bytes），SHA
+`0dc5ac54e0d8ff5b834dbe259dd712b6a1362fff3fee56c5740ff8115e7052b5`。
+四个相关源码与public main cc67d43的AST一致；未执行新前向或optimizer step。
+
+按用户最新的最小关系升级要求，独立分支可先完成关系读出原型与CPU机制检查；
+这项开发准备不以G0科学通过为前提。G0/P1实际运行顺序保持不变，GPU训练对照的split、
+候选产生方式、loss/决策分数和更新步数仍待P1回执齐备后冻结；不把原型开发视为G1实验通过。
+这收窄旧文档“G0通过后准备G1”的等待边界，不恢复旧CEGD多分支组合或已取消实验。

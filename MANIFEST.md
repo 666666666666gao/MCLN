@@ -21,3 +21,14 @@
 | 2026-09-01 23:40 | /codebase-design + /monitor-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | minimal CEGD direct-scorer seam plus machine50630 E15 non-plateau receipt and collector root-cause fix |
 | 2026-09-02 01:50 | /monitor-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | machine35608 complete E15 non-plateau evidence, orphan collector cleanup, and E20 sparse monitoring schedule |
 | 2026-09-02 02:50 | /monitor-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | handoff | machine50630 E20 best-primary refresh, no-decay decision, and E25 sparse-monitor schedule |
+| 2026-09-06 06:05 | /experiment-plan | docs/NR3D_SPARSE_POINT_PAIR_PLAN_2026-09-06.md | implementation | fixed sparse-point full-fit paired screen; historical G0 plan retained |
+| 2026-09-06 06:05 | /experiment-plan | refine-logs/sparse_point_pair_20260906_v1/EXPERIMENT_PLAN.md | implementation | fixed sparse-point full-fit paired screen; historical G0 plan retained |
+| 2026-09-06 06:05 | /experiment-plan | refine-logs/sparse_point_pair_20260906_v1/EXPERIMENT_PLAN_20260906_060516.md | implementation | fixed sparse-point full-fit paired screen; historical G0 plan retained |
+| 2026-09-06 06:05 | /experiment-plan | refine-logs/sparse_point_pair_20260906_v1/EXPERIMENT_TRACKER.md | implementation | fixed sparse-point full-fit paired screen; historical G0 plan retained |
+| 2026-09-06 06:05 | /experiment-plan | refine-logs/sparse_point_pair_20260906_v1/EXPERIMENT_TRACKER_20260906_060516.md | implementation | fixed sparse-point full-fit paired screen; historical G0 plan retained |
+| 2026-09-06 06:13 | /run-experiment | docs/NR3D_SPARSE_POINT_PAIR_LAUNCH_2026-09-06.md | implementation | sparse-point full-fit launch and protected-state boundary |
+| 2026-09-06 06:13 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | sparse-point full-fit launch and protected-state boundary |
+| 2026-09-06 06:13 | /run-experiment | refine-logs/sparse_point_pair_20260906_v1/EXPERIMENT_TRACKER.md | implementation | sparse-point full-fit launch and protected-state boundary |
+| 2026-09-06 06:13 | /run-experiment | refine-logs/sparse_point_pair_20260906_v1/EXPERIMENT_TRACKER_20260906_061341.md | implementation | sparse-point full-fit launch and protected-state boundary |
+| 2026-09-06 06:13 | /run-experiment | refine-logs/EXPERIMENT_TRACKER_20260906_061341.md | implementation | sparse-point full-fit launch and protected-state boundary |
+| 2026-09-06 06:13 | /run-experiment | refine-logs/EXPERIMENT_TRACKER.md | implementation | sparse-point full-fit launch and protected-state boundary |

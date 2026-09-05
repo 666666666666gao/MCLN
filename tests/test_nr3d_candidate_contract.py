@@ -26,6 +26,22 @@ def test_filter_loss_is_separate_from_raw_candidate_coverage():
     assert after["top_16"]["available"] == 1
 
 
+def test_filtered_ranking_uses_native_mask_before_sort_order():
+    from src.grounding_evaluator import GroundingEvaluator
+
+    scores = torch.ones(256)
+    valid = torch.arange(256) % 3 == 0
+    ious = torch.arange(256).double() / 256
+    native = GroundingEvaluator._position_top_indices(
+        scores.unsqueeze(0), valid.unsqueeze(0), "default_query_axis", 256)[0]
+    result = ranked_oracle_profile(scores, ious, valid)
+    assert result["top_query"] == int(native[0])
+    for count in (16, 32, 64, 256):
+        for suffix, threshold in (("025", .25), ("050", .5)):
+            assert result["top_{}".format(count)]["hit" + suffix] == bool(
+                (ious[native[:count]] > threshold).any())
+
+
 def test_empty_legal_set_has_no_query_and_thresholds_are_strict():
     scores, ious = torch.tensor([.9, .8]), torch.tensor([.25, .50])
     result = ranked_oracle_profile(scores, ious, torch.tensor([False, False]))

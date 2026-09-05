@@ -8,7 +8,8 @@ from models.source_choice_adapter import compute_default_source_scores
 
 
 def ranked_oracle_profile(scores, root_ious, valid):
-    order = scores.argsort(descending=True)
+    # Match GroundingEvaluator._position_top_indices: mask before sorting.
+    order = scores.masked_fill(~valid, -float("inf")).argsort(descending=True)
     order = order[valid[order]]
     profile = {"candidate_count": int(order.numel()), "top_query": None,
                "top_iou": None, "box_oracle_query": None, "box_oracle_iou": None}
@@ -64,8 +65,9 @@ def diagnose_root_candidates(end_points, evaluator):
         mask_query = int(mask_queries[row])
         target_mask = end_points["gt_masks"][row, 0].bool()
         predicted = point_masks[row].bool()
-        intersection = (predicted & target_mask.unsqueeze(0)).sum(-1).float()
-        union = (predicted | target_mask.unsqueeze(0)).sum(-1).float()
+        # Native Mask evaluation divides NumPy integer sums in float64.
+        intersection = (predicted & target_mask.unsqueeze(0)).sum(-1).double()
+        union = (predicted | target_mask.unsqueeze(0)).sum(-1).double()
         mask_ious = intersection / union
 
         def query_quality(index):
@@ -78,7 +80,8 @@ def diagnose_root_candidates(end_points, evaluator):
         detector_ious = _iou3d_par(
             box_cxcyczwhd_to_xyzxyz(end_points["all_detected_boxes"][row, detector_ids]),
             box_cxcyczwhd_to_xyzxyz(boxes[row]))[0]
-        default_order = score_sources["default"][row].argsort(descending=True)
+        default_order = score_sources["default"][row].masked_fill(
+            ~filtered[row], -float("inf")).argsort(descending=True)
         default_order = default_order[filtered[row, default_order]]
         candidate_sets = {"full_256": all_valid[row].nonzero().reshape(-1),
                           "valid_queries": filtered[row].nonzero().reshape(-1),

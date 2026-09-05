@@ -4,6 +4,7 @@ import argparse
 import ast
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -25,6 +26,7 @@ def main():
     manifest_path = args.addon / 'input_manifest.json'
     manifest = json.loads(manifest_path.read_text())
     source = Path(manifest['model_source'])
+    os.chdir(str(source))
     sys.path.insert(0, str(source))
     import torch
     import scripts

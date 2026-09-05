@@ -100,3 +100,7 @@ Use the existing GPU lock and an isolated experiment directory. Estimate
 roughly 60–75 minutes from the earlier P2 throughput, then update from the
 first logged fit milestone and poll near completion. Original model source,
 protected checkpoints, P2 v1 archives and ScanRefer/Sr3D results stay intact.
+
+## Terminal status, 2026-09-05 18:38 CST
+
+All four arms completed6687 updates and6172 holdout rows. Independent verification PASS; all three registered object_pair screens FAIL. No Decoder integration or formal promotion. See `NR3D_REFERENCE_MEMORY_R1_RESULT_2026-09-05.md` and sealed terminal evidence. The initial CPU verifier cwd error and corrected v2 are both retained; no model rerun.

@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-06 04:06 CST. Detailed evidence: master §§20.37–20.66.
+Updated: 2026-09-06 04:56 CST. Detailed evidence: master §§20.37–20.67.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -18,7 +18,8 @@ Updated: 2026-09-06 04:06 CST. Detailed evidence: master §§20.37–20.66.
 | L1 last text-attention key evidence | Complete; 6687 updates per arm; integrity PASS, quality FAIL | REC25 net0 versus both; no formal validation, control promotion or continuation |
 | Point-detail to superpoint Mask | Complete;1024 updates per arm,6172 endpoint; integrity PASS, quality FAIL | detail-native mIoU+.01507pp, detail-start-.09230pp; no continuation or formal promotion |
 | C1 candidate Mask memory reading | Complete;1024 updates/arm,6172 terminal rows; integrity PASS, quality FAIL | memory-native mIoU+0.00134pp, memory-start-0.03621pp; protected formal results unchanged |
-| Raw object point appearance | Native preflight PASS;paired v2 launched04:00:37 | 04:03:39 PID24914,first-fit outputs/shared gradients equal;initial6172 evaluation pending;333504/374976 trainable parameters |
+| Raw object point appearance | Both1024 updates complete;terminal evaluation live | 04:53:15 PID24914;full6172 baseline identity PASS;no terminal quality yet;running old module frozen |
+| Sr3D object input audit | Full1018 scans/34865 slots;old positive-size contract FAIL on2 real single-point objects | Minimal zero-axis fix:7 original-environment tests +actual152-slot CPU probe PASS;0 GPU/optimizer/Sr training |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -104,3 +105,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-06 04:06 CST authoritative update: object appearance paired v2 live after original-Py3.7 compile/7 tests/612 source/724 input checks. V1 preparation stopped on an arithmetic parameter-count error; actual six shared tensors333504 and appearance total374976 verified, no scope/budget change.04:03:39 PID24914,first-fit loss/shared gradients exactly equal, initial evaluation pending. Observer04:20:37 then240s. No terminal or formal result. Master§20.66; goal active.
+
+
+2026-09-06 04:56 CST authoritative update: Sr protocol verified65846/17726 effective expressions and1018/255 scans;physical spaces490/123. Official train/test disjoint. Prospective scan-ID module grouping would overlap130 spaces;physical-space grouping0,actual Sr module split not created. Full training crop audit0 empty/2 zero-size objects;old FAIL retained. Zero-axis normalization fix passed7 original-server tests andactual2-scan152-slot probe with150 exact positive inputs and2 finite connected singleton features. Current Nr pair old module unchanged;baseline6172 identity PASS,both1024 updates finished04:53:15,terminal running. Master§20.67;goal active,formal results unchanged.

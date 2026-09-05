@@ -118,3 +118,43 @@ def test_observed_scene0054_object79_point_survives_explicit_bounds_rounding():
     addon = ObjectPointAppearanceResidual()
     output = addon(points, box.reshape(1, 1, 6), torch.tensor([[True]]))
     assert output.shape == (1, 1, 288) and torch.count_nonzero(output) == 0
+
+
+def test_observed_sr_single_point_boxes_encode_zero_offsets_with_finite_gradients():
+    # Actual box geometry from the Sr3D input audit; RGB is synthetic for this unit test.
+    centers = torch.tensor([[.816723108291626, -2.2812161445617676, 1.655120611190796],
+                            [2.9449546337127686, -1.512393832206726, 1.2192981243133545]])
+    rgb = torch.tensor([[.1, .2, .3], [.3, .2, .1]])
+    points = torch.cat((centers, rgb), dim=-1).unsqueeze(1)
+    boxes = torch.cat((centers, torch.zeros_like(centers)), dim=-1).unsqueeze(1)
+    torch.manual_seed(23)
+    addon = ObjectPointAppearanceResidual()
+    captured = []
+    handle = addon.point_encoder[0].register_forward_pre_hook(lambda module, args: captured.append(args[0].detach().clone()))
+    with torch.no_grad():
+        addon.output.weight.copy_(torch.eye(288, 128) * .001)
+    output = addon(points, boxes, torch.ones(2, 1, dtype=torch.bool))
+    handle.remove()
+    assert len(captured) == 2
+    for index, local in enumerate(captured):
+        assert torch.count_nonzero(local[:, :3]) == 0
+        assert torch.equal(local[:, 3:], rgb[index:index + 1])
+    assert torch.isfinite(output).all()
+    (output * torch.randn_like(output)).sum().backward()
+    assert all(torch.isfinite(p.grad).all() and p.grad.norm() > 0 for p in addon.parameters())
+
+
+def test_positive_axes_keep_exact_original_normalization_including_thin_boxes():
+    centers = torch.tensor([[0., 0., 0.]])
+    sizes = torch.tensor([[2e-6, 2., 4.]])
+    xyz = torch.tensor([[-1e-6, -.5, -1.], [1e-6, .5, 1.]])
+    rgb = torch.tensor([[.1, .2, .3], [.3, .2, .1]])
+    points = torch.cat((xyz, rgb), dim=-1).unsqueeze(0)
+    box = torch.cat((centers, sizes), dim=-1).unsqueeze(0)
+    addon = ObjectPointAppearanceResidual()
+    captured = []
+    handle = addon.point_encoder[0].register_forward_pre_hook(lambda module, args: captured.append(args[0].detach().clone()))
+    addon(points, box, torch.ones(1, 1, dtype=torch.bool))
+    handle.remove()
+    expected = torch.cat(((xyz - centers) / (sizes * .5), rgb), dim=-1)
+    assert len(captured) == 1 and torch.equal(captured[0], expected)

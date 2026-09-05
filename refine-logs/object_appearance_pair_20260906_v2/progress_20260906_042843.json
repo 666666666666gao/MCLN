@@ -1,0 +1,37 @@
+{
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "input_manifest.json",
+    "native_preflight_receipt.json",
+    "crop_audit_receipt.json",
+    "protected_baseline_rows.json",
+    "prepare_inputs.py",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "preflight.json",
+    "baseline_rows.json",
+    "baseline_identity.json"
+  ],
+  "gpu": "10373 MiB, 71 %",
+  "log_tail": [
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "OBJECT APPEARANCE PAIR PREFLIGHT {\"native\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"decoder.5.cross_d.in_proj_weight\": 0.2445789873600006, \"decoder.5.cross_d.in_proj_bias\": 0.05095686763525009, \"decoder.5.cross_d.out_proj.weight\": 0.19631361961364746, \"decoder.5.cross_d.out_proj.bias\": 0.08057138323783875, \"decoder.5.norm_d.weight\": 0.13104672729969025, \"decoder.5.norm_d.bias\": 0.08013705164194107}}, \"appearance\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"decoder.5.cross_d.in_proj_weight\": 0.2445789873600006, \"decoder.5.cross_d.in_proj_bias\": 0.05095686763525009, \"decoder.5.cross_d.out_proj.weight\": 0.19631361961364746, \"decoder.5.cross_d.out_proj.bias\": 0.08057138323783875, \"decoder.5.norm_d.weight\": 0.13104672729969025, \"decoder.5.norm_d.bias\": 0.08013705164194107, \"appearance.point_encoder.0.weight\": 0.0, \"appearance.point_encoder.0.bias\": 0.0, \"appearance.point_encoder.2.weight\": 0.0, \"appearance.point_encoder.2.bias\": 0.0, \"appearance.output.weight\": 0.11207383126020432}}, \"optimizer_steps\": 0, \"zero_outputs_and_shared_gradients_identical\": true, \"trainable_parameters\": {\"native\": 333504, \"appearance\": 374976}, \"learning_rate\": 1e-05, \"weight_decay\": 0.0005, \"clip_norm\": 0.1}",
+    "OBJECT APPEARANCE PAIR EVAL {\"stage\": \"baseline\", \"batches\": 50, \"rows\": 800, \"elapsed_seconds\": 192.04653072357178}",
+    "OBJECT APPEARANCE PAIR EVAL {\"stage\": \"baseline\", \"batches\": 100, \"rows\": 1600, \"elapsed_seconds\": 380.6871864795685}",
+    "OBJECT APPEARANCE PAIR EVAL {\"stage\": \"baseline\", \"batches\": 150, \"rows\": 2400, \"elapsed_seconds\": 570.6899309158325}",
+    "OBJECT APPEARANCE PAIR EVAL {\"stage\": \"baseline\", \"batches\": 200, \"rows\": 3200, \"elapsed_seconds\": 761.0586607456207}",
+    "OBJECT APPEARANCE PAIR EVAL {\"stage\": \"baseline\", \"batches\": 250, \"rows\": 4000, \"elapsed_seconds\": 949.1964566707611}",
+    "OBJECT APPEARANCE PAIR EVAL {\"stage\": \"baseline\", \"batches\": 300, \"rows\": 4800, \"elapsed_seconds\": 1140.6304368972778}",
+    "OBJECT APPEARANCE PAIR EVAL {\"stage\": \"baseline\", \"batches\": 350, \"rows\": 5600, \"elapsed_seconds\": 1333.5723941326141}"
+  ],
+  "process": "24914 /root/miniconda3/envs/bdetr/bin/python -u scripts/run_nr3d_object_appearance_pair.py --manifest /root/autodl-tmp/mcln_object_appearance_pair_20260906_v2/input_manifest.json",
+  "process_exit": 0,
+  "time_cst": "2026-09-06T04:28:43.250737+08:00"
+}

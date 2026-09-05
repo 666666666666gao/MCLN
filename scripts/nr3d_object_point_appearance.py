@@ -30,12 +30,14 @@ class ObjectPointAppearanceResidual(nn.Module):
             for object_index in valid[batch_index].nonzero().flatten():
                 box = boxes[batch_index, object_index]
                 half_size = box[3:] * .5
-                assert (half_size > 0).all()
+                assert (half_size >= 0).all()
                 inside = box_crop_mask(points[:, :3], box)
                 crop = points[inside]
                 # Validate the full planned input set before native training.
                 assert crop.shape[0] > 0
-                local = torch.cat(((crop[:, :3] - box[:3]) / half_size, crop[:, 3:6]), dim=-1)
+                # Sr3D has single-point objects: a zero-extent axis has zero offset.
+                scale = half_size.masked_fill(half_size == 0, 1)
+                local = torch.cat(((crop[:, :3] - box[:3]) / scale, crop[:, 3:6]), dim=-1)
                 encoded = self.point_encoder(local)
                 pooled = torch.cat((encoded.mean(dim=0), encoded.max(dim=0).values))
                 residual[batch_index, object_index] = self.output(pooled)

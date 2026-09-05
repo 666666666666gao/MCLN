@@ -53,9 +53,26 @@ integration; it would not itself establish a new backbone contribution.
 The final scalar head produces uncalibrated candidate logits. They are
 scattered onto the original Query axis, with non-selected and invalid Queries
 excluded using `-inf`. There is no base-score residual, Source Selector, Parent
-fallback, probability interpretation, box update, mask update or GT input.
+fallback, probability interpretation, box update, mask update or root-target /
+annotated-anchor label input. The existing `butd_cls` proposal protocol remains
+the source of the detector-overlap legality mask.
 The primitive does not choose a winner when no target slot is valid; the
 experiment must settle that observed candidate contract before integration.
+
+`models/candidate_edge_adapter.py` now makes the shared input construction
+executable. It receives `decoder_query_last` explicitly, reads
+`end_points['text_memory']`, invokes the existing detector-overlap filter on
+the existing detector inputs, and selects Default Top-K after masking illegal
+Queries. The exact same returned dictionary can be passed to either readout.
+It does not reuse the SourceChoice adapter's all-true validity or its
+64-dimensional contrastive Query projection. If the compact selection includes
+invalid padding slots, the readout excludes their logits using the same mask.
+
+```python
+shared_inputs = build_candidate_edge_inputs(end_points, inputs, decoder_query_last)
+global_output = global_readout(**shared_inputs)
+pair_output = pair_readout(**shared_inputs)
+```
 
 ## Scope still awaiting the G0/P1 receipts
 
@@ -111,3 +128,19 @@ The global/pair prototypes contain **347,953 / 931,729 parameters**, respectivel
 the pair reader adds 583,776 parameters. The combined source/validation receipt
 is `refine-logs/PAIR_READOUT_PROTOTYPE_CPU_20260905.json`, SHA
 `1f99b5a9484993da3832ce7edb8a4991d728596d70a56c7c6d0e866f89068c8f`.
+
+The input adapter adds **3 passing CPU tests (0.04 s)** against the actual
+frozen MCLN Default scorer and overlap filter: filter-before-selection with
+full memory preservation, root-supervision independence and invalid compact
+slot exclusion. The receipt is
+`refine-logs/PAIR_READOUT_ADAPTER_CPU_20260905.json`, SHA
+`cbfd3e8f3c62b9ce415973df2b55f0e9188fa4f815a8f2c57f78becfade848e0`.
+
+`scripts/audit_pair_readout_scene.py` is prepared and Python 3.7 syntax-checked,
+but **has not run on the GPU yet**. After G0/P1 release the GPU, it will use the
+same four fixed fit rows, capture the 288-dimensional Query immediately before
+`x_query`, run one unchanged frozen backbone forward, and probe both readouts
+with the same actual features. It checks dimensions, shared initial state,
+input preservation and gradients, with zero optimizer steps and no evaluation
+of an untrained head's accuracy. It must acquire the existing shared GPU lock
+through its launcher; it does not manage that lock inside the Python script.

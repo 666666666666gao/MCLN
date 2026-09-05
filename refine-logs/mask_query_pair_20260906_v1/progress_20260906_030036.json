@@ -1,0 +1,34 @@
+{
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "input_manifest.json",
+    "memory_preflight_receipt.json",
+    "prepare_inputs.py",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "preflight.json",
+    "baseline_rows.json"
+  ],
+  "gpu": "10565 MiB, 69 %",
+  "log_tail": [
+    "End text decoupling!",
+    "MASK QUERY PAIR PREFLIGHT {\"native\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"x_query.0.weight\": 1.0664376020431519, \"x_query.0.bias\": 0.06220626085996628, \"x_query.2.weight\": 0.9692898988723755, \"x_query.2.bias\": 0.07664259523153305, \"x_query.4.weight\": 1.1690175533294678, \"x_query.4.bias\": 0.08711637556552887}}, \"memory\": {\"loss\": 16.18368148803711, \"gradient_norms\": {\"x_query.0.weight\": 1.0664376020431519, \"x_query.0.bias\": 0.06220626085996628, \"x_query.2.weight\": 0.9692898988723755, \"x_query.2.bias\": 0.07664259523153305, \"x_query.4.weight\": 1.1690175533294678, \"x_query.4.bias\": 0.08711637556552887, \"mask_query.query_norm.weight\": 0.0, \"mask_query.query_norm.bias\": 0.0, \"mask_query.memory_norm.weight\": 0.0, \"mask_query.memory_norm.bias\": 0.0, \"mask_query.query_projection.weight\": 0.0, \"mask_query.key_projection.weight\": 0.0, \"mask_query.value_projection.weight\": 0.0, \"mask_query.output.weight\": 0.30301064252853394}}, \"optimizer_steps\": 0, \"trainable_parameters\": {\"native\": 664992, \"memory\": 739872}, \"learning_rate\": 1e-05, \"weight_decay\": 0.0005, \"clip_norm\": 0.1, \"fit_rows\": 2048, \"fit_scenes\": 262, \"holdout_rows\": 6172, \"holdout_scenes\": 98, \"identical_grounding\": true, \"frozen_state_unchanged\": true}",
+    "MASK QUERY PAIR EVAL {\"stage\": \"baseline\", \"batches\": 50, \"rows\": 800, \"elapsed_seconds\": 165.64283156394958}",
+    "MASK QUERY PAIR EVAL {\"stage\": \"baseline\", \"batches\": 100, \"rows\": 1600, \"elapsed_seconds\": 328.86784267425537}",
+    "MASK QUERY PAIR EVAL {\"stage\": \"baseline\", \"batches\": 150, \"rows\": 2400, \"elapsed_seconds\": 489.2011082172394}",
+    "MASK QUERY PAIR EVAL {\"stage\": \"baseline\", \"batches\": 200, \"rows\": 3200, \"elapsed_seconds\": 649.6135075092316}",
+    "MASK QUERY PAIR EVAL {\"stage\": \"baseline\", \"batches\": 250, \"rows\": 4000, \"elapsed_seconds\": 808.5580530166626}",
+    "MASK QUERY PAIR EVAL {\"stage\": \"baseline\", \"batches\": 300, \"rows\": 4800, \"elapsed_seconds\": 968.5208053588867}",
+    "MASK QUERY PAIR EVAL {\"stage\": \"baseline\", \"batches\": 350, \"rows\": 5600, \"elapsed_seconds\": 1127.900836467743}",
+    "MASK QUERY PAIR TRAIN {\"step\": 64, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 15.423176765441895, \"gradient_norm_before_clip\": 2.07273006439209}, \"memory\": {\"loss\": 15.423134803771973, \"gradient_norm_before_clip\": 2.110570192337036}}, \"elapsed_seconds\": 1318.087815284729}",
+    "MASK QUERY PAIR TRAIN {\"step\": 128, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 13.590841293334961, \"gradient_norm_before_clip\": 0.6858246326446533}, \"memory\": {\"loss\": 13.59078598022461, \"gradient_norm_before_clip\": 0.6846022605895996}}, \"elapsed_seconds\": 1395.2078759670258}",
+    "MASK QUERY PAIR TRAIN {\"step\": 192, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 15.895752906799316, \"gradient_norm_before_clip\": 0.9202467203140259}, \"memory\": {\"loss\": 15.89538860321045, \"gradient_norm_before_clip\": 0.9296302199363708}}, \"elapsed_seconds\": 1471.9596116542816}"
+  ],
+  "process": "23307 /root/miniconda3/envs/bdetr/bin/python -u scripts/run_nr3d_mask_query_pair.py --manifest /root/autodl-tmp/mcln_mask_query_pair_20260906_v1/input_manifest.json",
+  "process_exit": 0,
+  "time_cst": "2026-09-06T03:00:36.085663+08:00"
+}

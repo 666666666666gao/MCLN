@@ -15375,3 +15375,36 @@ screen mcln_mask_query_pair；02:35:59实查PID23307、GPU10549MiB/38%，起点�
 总时长待真实训练速度更新；不按中途质量改变预算。
 
 正式Nr3D/Sr3D/ScanRefer成绩与保护权重未更新；三数据集目标active，Sr保护备份仍缺。
+
+
+### 20.62 C1完整起点复现并开始训练；真实对象外观原型与全场景裁剪审计（2026-09-06 03:05 CST）
+
+C1全部6172起点完成并独立逐行核对B原生起点PASS：点输入/框/得分/Query选择及全部
+记录IoU相同，两臂相同。REC6005/5306，Mask5767/5057，mIoU68.881519715%，仍是
+98个主干已见训练场景的模块留出。新的Text Mask/alpha hash已保存用于本次起终对照。
+baseline SHA12de36deeb06dd01a6cc3245fae114ad04200d6126896c05fcbf2b5ac5d62e72。
+03:04:39实查PID23307继续，两臂448/1024更新；以64步约77秒估计，更新约03:17
+完成，完整终态约03:38前后。固定预算/质量规则不变；尚无终态质量结论。
+
+等待C1期间独立实现对象点外观原型，向现有框位置+预测类别记忆补充真实框内彩色点。
+6→64→64点MLP、mean/max池化、128→288零输出投影，41,472参数/5张量；仅在
+最后Decoder的detected_feats加残差。前面场景编码/采样/前五层保留，非零时末层
+Query、语义分数、Box/Mask均允许变化，属于后续REC方向准备，不与C1组合运行。
+没有新的Gate、文本解析或GT实例清洗。4项原环境CPU合成测试PASS。
+
+固定16fit/16scenes/683槽的32次真实appearance CPU forward也PASS：点hash/框/
+裁剪点数相同，零输出一致，固定扰动产生有限外观，padding保持0，最终参数恢复。
+这仍0主模型forward/0GPU/0更新，未证明原生Decoder接入、泛化或指标收益。
+
+再审计全部511训练场景、16181有效对象槽，覆盖32919表达的固定无增强场景输入。
+当前getitem复制缓存orig_pc并拼接原RGB，不重采样；逐场景实测确认该输入合同。
+0非正尺寸槽，但scene0054_00对象79出现1个空裁剪，现原型非空合同尚未全部满足。
+数值诊断：该对象2个采样点；原float32 abs差<=半尺寸为0点，显式min/max为1点，
+float64原abs式仍0点；诊断扩1ULP可得2点，但不采用扩框。点16592的z差舍入超半尺寸
+约5.96e-8米而在显式边界内。下一步改为显式AABB比较并全量复核，未添加fallback。
+
+独立说明docs/NR3D_OBJECT_POINT_APPEARANCE_PROTOTYPE_2026-09-06.md及
+docs/NR3D_OBJECT_POINT_APPEARANCE_INPUT_RESULT_2026-09-06.md；完整合同计划
+docs/NR3D_ALL_OBJECT_CROP_INPUT_AUDIT_PLAN_2026-09-06.md。v1证据全部保留，
+包括057e5a30bcf71a4e62201abaa4be7c508e34917d88ff37a4a2404d2cff6a0511全量receipt。
+新代码未修改C1运行目录或保护权重；正式三数据集目标仍active，Sr保护权重仍缺。

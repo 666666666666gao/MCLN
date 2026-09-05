@@ -1,0 +1,40 @@
+{
+  "controller_exit": 0,
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "input_manifest.json",
+    "detail_preflight_receipt.json",
+    "prepare_inputs.py",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "preflight.json",
+    "baseline_rows.json",
+    "terminal_rows.json",
+    "native_mask_state.pt",
+    "detail_mask_state.pt",
+    "receipt.json",
+    "controller.exit"
+  ],
+  "gpu": "1 MiB, 0 %",
+  "log_tail": [
+    "POINT DETAIL PAIR TRAIN {\"step\": 832, \"epoch\": 1, \"arms\": {\"native\": {\"loss\": 14.881280899047852, \"gradient_norm_before_clip\": 7.3615217208862305}, \"detail\": {\"loss\": 14.8836088180542, \"gradient_norm_before_clip\": 8.031998634338379}}, \"elapsed_seconds\": 2563.096002101898}",
+    "POINT DETAIL PAIR TRAIN {\"step\": 896, \"epoch\": 1, \"arms\": {\"native\": {\"loss\": 18.16806411743164, \"gradient_norm_before_clip\": 6.276830196380615}, \"detail\": {\"loss\": 18.157350540161133, \"gradient_norm_before_clip\": 6.750094890594482}}, \"elapsed_seconds\": 2651.5885076522827}",
+    "POINT DETAIL PAIR TRAIN {\"step\": 960, \"epoch\": 1, \"arms\": {\"native\": {\"loss\": 17.622201919555664, \"gradient_norm_before_clip\": 12.022323608398438}, \"detail\": {\"loss\": 17.623910903930664, \"gradient_norm_before_clip\": 12.45439624786377}}, \"elapsed_seconds\": 2739.7917127609253}",
+    "POINT DETAIL PAIR TRAIN {\"step\": 1024, \"epoch\": 1, \"arms\": {\"native\": {\"loss\": 16.27561378479004, \"gradient_norm_before_clip\": 10.34277057647705}, \"detail\": {\"loss\": 16.283754348754883, \"gradient_norm_before_clip\": 12.804574012756348}}, \"elapsed_seconds\": 2828.2436711788177}",
+    "POINT DETAIL PAIR EVAL {\"stage\": \"terminal\", \"batches\": 50, \"rows\": 800, \"elapsed_seconds\": 3012.8639240264893}",
+    "POINT DETAIL PAIR EVAL {\"stage\": \"terminal\", \"batches\": 100, \"rows\": 1600, \"elapsed_seconds\": 3196.8052699565887}",
+    "POINT DETAIL PAIR EVAL {\"stage\": \"terminal\", \"batches\": 150, \"rows\": 2400, \"elapsed_seconds\": 3379.9698247909546}",
+    "POINT DETAIL PAIR EVAL {\"stage\": \"terminal\", \"batches\": 200, \"rows\": 3200, \"elapsed_seconds\": 3563.158007621765}",
+    "POINT DETAIL PAIR EVAL {\"stage\": \"terminal\", \"batches\": 250, \"rows\": 4000, \"elapsed_seconds\": 3745.27903008461}",
+    "POINT DETAIL PAIR EVAL {\"stage\": \"terminal\", \"batches\": 300, \"rows\": 4800, \"elapsed_seconds\": 3928.3748927116394}",
+    "POINT DETAIL PAIR EVAL {\"stage\": \"terminal\", \"batches\": 350, \"rows\": 5600, \"elapsed_seconds\": 4112.058660745621}",
+    "POINT DETAIL PAIR COMPLETE {\"schema\": \"mcln-nr3d-point-detail-pair-v1\", \"status\": \"complete\", \"optimizer_steps_per_arm\": 1024, \"fit_rows\": 2048, \"fit_scenes\": 262, \"epochs\": 2, \"holdout_rows\": 6172, \"holdout_scenes\": 98, \"heldout_scenes_seen_by_frozen_backbone\": true, \"formal_rows\": 0, \"formal_promotion\": false, \"fit_order_sha256\": \"904c1f93742c150de87c930ce1a2d4312f0cc429dc34d5e4ede0694845388dde\", \"frozen_parameters_and_buffers_unchanged\": true, \"source_data_and_parent_checkpoint_unchanged\": true, \"grounding_and_query_selection_exactly_equal_to_start\": true, \"changed_parameter_names\": {\"native\": [\"rel_encoder.0.weight\", \"rel_encoder.0.bias\", \"rel_encoder.2.weight\", \"rel_encoder.2.bias\", \"x_mask.0.weight\", \"x_mask.0.bias\", \"x_mask.2.weight\", \"x_mask.2.bias\", \"x_mask.4.weight\", \"x_mask.4.bias\", \"x_query.0.weight\", \"x_query.0.bias\", \"x_query.2.weight\", \"x_query.2.bias\", \"x_query.4.weight\", \"x_query.4.bias\"], \"detail\": [\"rel_encoder.0.weight\", \"rel_encoder.0.bias\", \"rel_encoder.2.weight\", \"rel_encoder.2.bias\", \"x_mask.0.weight\", \"x_mask.0.bias\", \"x_mask.2.weight\", \"x_mask.2.bias\", \"x_mask.4.weight\", \"x_mask.4.bias\", \"x_query.0.weight\", \"x_query.0.bias\", \"x_query.2.weight\", \"x_query.2.bias\", \"x_query.4.weight\", \"x_query.4.bias\", \"point_detail.point_encoder.0.weight\", \"point_detail.point_encoder.0.bias\", \"point_detail.output.weight\"]}, \"baseline_rows_sha256\": \"884d72879a7a9485309ec9dadc588357a8ea69dbe847854e4af6934a4eef84ef\", \"terminal_rows_sha256\": \"a55c74d8b6f02452e6e6bbcc88083065426764be9aa9022fe79e75d5df0ef776\", \"artifacts\": {\"native\": {\"path\": \"/root/autodl-tmp/mcln_point_detail_pair_20260906_v1/native_mask_state.pt\", \"bytes\": 16201173, \"sha256\": \"a68ae5cd01fdec3aa9a51609b7c263012893b4d23148c5a79c2fca2f1a3cb106\"}, \"detail\": {\"path\": \"/root/autodl-tmp/mcln_point_detail_pair_20260906_v1/detail_mask_state.pt\", \"bytes\": 16853498, \"sha256\": \"16ce4b986aaa5deb6615bd0d2ba9bb3dc258ff12701ff68fd73850c415a1a5a6\"}}, \"manifest_sha256\": \"9c690081d23d255ca2cccf77f79961997ab2f9a6d65e04a2d3508150738fae81\", \"elapsed_seconds\": 4269.779250621796, \"max_gpu_allocated_bytes\": 6881968640}"
+  ],
+  "process": "",
+  "process_exit": 1,
+  "time_cst": "2026-09-06T02:03:43.767015+08:00"
+}

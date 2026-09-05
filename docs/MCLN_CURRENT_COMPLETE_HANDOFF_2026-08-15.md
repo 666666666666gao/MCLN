@@ -15300,3 +15300,44 @@ docs/NR3D_MASK_QUERY_MEMORY_PROTOTYPE_2026-09-06.md。
 C1尚无真实模型预检、训练预算/质量判据或正式artifact；不将CPU测试通过写成网络有效。
 下一步先复算B完整终态并检查实际参数/optimizer，再决定后续正式配对或C1真实预检顺序。
 正式Nr3D/Sr3D/ScanRefer保护成绩不变，Sr3D权重备份仍缺，三数据集目标继续active。
+
+
+### 20.60 B 点细节配对封存FAIL；C1真实CUDA预检PASS（2026-09-06 02:24 CST）
+
+B两臂各1024次更新、完整6172行终态已完成，controller.exit=0，02:03确认GPU释放。
+该6172行仍来自98个主干已见训练场景，属于新增模块留出，不是正式验证。
+
+| 路径 | Mask hits@.25/.50 | Mask mIoU |
+|---|---:|---:|
+| 原保护native起点 | 5767/5057 | 68.881519715% |
+| native终点 | 5754/5051 | 68.774151333% |
+| detail终点 | 5754/5054 | 68.789220776% |
+
+REC全路径6005/5306、Query/框/输入不变。detail相对终点native仅+.015069442pp，
+Mask25修复0/破坏0、Mask50修复10/破坏7；mIoU场景bootstrap95%区间
+[-.016966427,+.050691868]pp含零。相对保护起点-.092298940pp，25修复8/破坏21，
+50修复46/破坏49。未同时达到原定两对照+.2pp和双阈值不退化，固定质量FAIL。
+两种条件Mask（固定REC Query、5931条起点合法好Box Query）也未超过保护起点。
+条件指标为融合Mask，不能冒充raw Query Mask；详细数值见独立终态报告。
+
+实际16/19张量artifact及optimizer有限性/1024步、名字/形状/parent hash均核验PASS；
+其他参数/buffer冻结。B receipt31f8d131941accb79589ec399fe5c6a241e1b2aef7d3bfe5ebf93875cba63883。
+已发现跨运行M5与B的native终点不是逐bit相同：16张量均有微小差异，最大.0009484。
+文件清单/行顺序相同且起点评估完全相同，但历史训练未保存实际fit点Tensor hash；
+自定义Grouping CUDA反向含atomicAdd，cudnn.deterministic不足以证明全部kernel确定。
+未定位此跨运行差异唯一原因；本轮内两臂共用实际batch的配对仍成立。
+
+封存本B版本，不续训/调门槛/正式验证，不升级native控制；失败不外推所有点/体素方案。
+docs/NR3D_POINT_DETAIL_PAIR_RESULT_2026-09-06.md及refine-logs/point_detail_pair_20260906_v1/
+保存完整逐行、bootstrap、实物检查；两份权重保留远端，原保护权重未覆盖。
+
+C1从原保护parent、原生SP特征独立启动真实预检，不加载B权重。02:21:18启动，现已
+controller.exit=0；16fit/16scenes、12CUDA forward、0更新/0checkpoint/0留出或正式行。
+零输出下全部快照一致；固定扰动后raw Query Mask改变，REC/Decoder Query/Text Mask/
+alpha仍一致。8个新增张量均观察到有限非零梯度，原生Mask loss连通，最终状态/输入恢复。
+74,880参数；峰值1695122432字节，计时29.329秒不含数据初始化，也不是部署开销比较。
+C1 receipt 02e27807057b24054a5e6b5ba3b0dcdfa9e052a87883852bbe79afc4b1ba9214；固定输入清单26542f87e372a22e2710418f767782fbb1a10bc7c0aa557f4c614dea9a65febf。
+结果docs/NR3D_MASK_QUERY_MEMORY_PREFLIGHT_RESULT_2026-09-06.md。
+
+下一步固定C1学习控制和预算后再训练；接入PASS不等于质量PASS。本阶段Mask读出仍不能
+提升冻结REC，正式Nr3D/Sr3D目标未完成、ScanRefer保护结果不变，Sr保护权重仍缺。

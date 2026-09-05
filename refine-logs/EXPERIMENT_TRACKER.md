@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-06 01:50 CST. Detailed evidence: master §§20.37–20.59.
+Updated: 2026-09-06 02:24 CST. Detailed evidence: master §§20.37–20.60.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -16,8 +16,8 @@ Updated: 2026-09-06 01:50 CST. Detailed evidence: master §§20.37–20.59.
 | M4 Mask neighborhood intervention | Complete;16 fit rows,8 forwards,zero updates |31 majority SPs read distant seed0 on empty balls; nearest-two mean Mask +2.2877pp but6 rows worsen. Proceed only to matched learning screen |
 | M5 existing Mask projection training | Complete;both1024-step arms and6172 terminal rows; integrity PASS, fixed quality FAIL |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
 | L1 last text-attention key evidence | Complete; 6687 updates per arm; integrity PASS, quality FAIL | REC25 net0 versus both; no formal validation, control promotion or continuation |
-| Point-detail to superpoint Mask | Both1024 updates complete;6172 start identity PASS | 01:47:29 PID21638 live, terminal 2400/6172; quality pending |
-| C1 candidate Mask memory reading | Isolated74880-parameter prototype;4 original-environment CPU tests PASS | No native/GPU preflight or training; wait for B endpoint |
+| Point-detail to superpoint Mask | Complete;1024 updates per arm,6172 endpoint; integrity PASS, quality FAIL | detail-native mIoU+.01507pp, detail-start-.09230pp; no continuation or formal promotion |
+| C1 candidate Mask memory reading | 4 CPU tests and16-row native CUDA preflight PASS | 12 forwards,0 updates; raw Query Mask intervention isolated; training/quality untested |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -82,3 +82,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-06 01:50 CST authoritative update: B both1024-step updates complete; 01:47:29 PID21638 continues in terminal evaluation 2400/6172. No terminal screen result. C1 candidate-specific SP memory readout implemented separately,74880 parameters,4 CPU synthetic tests PASS on original server Python/Torch;0 dataset/native/GPU forwards and0 optimizer steps. Box/identity path retained, no final selection change; native behavior untested. Master§20.59 and prototype doc. Goal active, protected formal results unchanged.
+
+
+2026-09-06 02:24 CST authoritative update: B complete/controller0, integrity PASS and fixed quality FAIL against both controls. Artifact/optimizer checks PASS; cross-run M5 native endpoint differs slightly, training point tensors not stored for cross-run comparison. C1 native16-row/12-forward preflight PASS with unchanged REC/Decoder Query/Text Mask/alpha, finite connected gradients, restored state and0 optimizer updates. Full reports and master§20.60. No new formal result, no training continuation, full goal active.

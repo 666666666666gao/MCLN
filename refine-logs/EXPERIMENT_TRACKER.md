@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-06 05:19 CST. Detailed evidence: master §§20.37–20.68.
+Updated: 2026-09-06 05:28 CST. Detailed evidence: master §§20.37–20.69.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -20,6 +20,7 @@ Updated: 2026-09-06 05:19 CST. Detailed evidence: master §§20.37–20.68.
 | C1 candidate Mask memory reading | Complete;1024 updates/arm,6172 terminal rows; integrity PASS, quality FAIL | memory-native mIoU+0.00134pp, memory-start-0.03621pp; protected formal results unchanged |
 | Raw object point appearance | Complete;1024 updates/arm,6172 endpoint; integrity PASS,quality FAIL | REC25/50 net versus native +2/+8, versus start -1/+31;formal results unchanged |
 | Sr3D object input audit | Full1018 scans/34865 slots;old positive-size contract FAIL on2 real single-point objects | Minimal zero-axis fix:7 original-environment tests +actual152-slot CPU probe PASS;0 GPU/optimizer/Sr training |
+| Sparse local-memory runtime | Independent original-Torch environment +synthetic GPU kernel checks PASS | No dataset/native model/optimizer;actual point-voxel memory remains unimplemented |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -111,3 +112,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-06 05:19 CST authoritative update: O1 complete/controller0;independent complete6172 row summary and actual weights/AdamW verification PASS. Fixed quality FAIL. Same original data/output protocol;no Sr zero-axis code injected into running trial,no formal promotion. Master§20.68;goal active.
+
+
+2026-09-06 05:28 CST authoritative update: sparse runtime v3 preparation PASS with unchanged original package inventory;v1 CA andv2 path-check failures retained. Pinned spconv2.3.6/cumm0.4.11 CPU imports and original-Torch GPU dense-reference/gradient/inverse-index checks PASS on80 synthetic voxels.0 dataset/native MCLN/optimizer,no actual sparse-memory training. O1 sealedFAIL and formal protected results unchanged. Master§20.69;goal active.

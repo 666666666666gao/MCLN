@@ -1,0 +1,43 @@
+{
+  "controller.exit": {
+    "bytes": 2,
+    "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  "exit": "1",
+  "files": [
+    "wheel_metadata.json",
+    "plan.md",
+    "prepare.py",
+    "controller.sh",
+    "input_manifest.json",
+    "run.log",
+    "launch.json",
+    "spconv_cu114-2.3.6-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "cumm_cu114-0.4.11-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "venv",
+    "controller.exit"
+  ],
+  "gpu": "10385 MiB, 21 %\n",
+  "gpu_exit": 0,
+  "log_tail": [
+    "Requirement already satisfied: certifi>=2017.4.17 in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages (from requests->ccimport>=0.4.0->spconv-cu114==2.3.6) (2024.8.30)",
+    "Requirement already satisfied: idna<4,>=2.5; python_version >= \"3\" in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages (from requests->ccimport>=0.4.0->spconv-cu114==2.3.6) (3.3)",
+    "Requirement already satisfied: urllib3<1.27,>=1.21.1 in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages (from requests->ccimport>=0.4.0->spconv-cu114==2.3.6) (1.26.9)",
+    "Requirement already satisfied: charset-normalizer~=2.0.0; python_version >= \"3\" in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages (from requests->ccimport>=0.4.0->spconv-cu114==2.3.6) (2.0.12)",
+    "Installing collected packages: pybind11, ninja, ccimport, fire, lark, portalocker, pccm, cumm-cu114, spconv-cu114",
+    "Successfully installed ccimport-0.4.4 cumm-cu114-0.4.11 fire-0.7.1 lark-1.1.9 ninja-1.11.1.4 pccm-0.4.16 portalocker-2.7.0 pybind11-2.13.6 spconv-cu114-2.3.6",
+    "Traceback (most recent call last):",
+    "  File \"prepare.py\", line 41, in <module>",
+    "    result=subprocess.run([python,'-c',check,str(venv)],capture_output=True,text=True,check=True)",
+    "  File \"/root/miniconda3/envs/bdetr/lib/python3.7/subprocess.py\", line 512, in run",
+    "    output=stdout, stderr=stderr)",
+    "subprocess.CalledProcessError: Command '['venv/bin/python', '-c', \"import json,sys,pkg_resources\\nimport numpy,torch,transformers\\nimport spconv.pytorch as sparse\\nimport spconv,cumm\\nassert torch.__version__=='1.10.2+cu111' and numpy.__version__=='1.21.5' and transformers.__version__=='4.17.0'\\nassert spconv.__version__=='2.3.6' and cumm.__version__=='0.4.11'\\nassert sys.prefix==sys.argv[1]\\nresult={'python':sys.version,'prefix':sys.prefix,'torch':torch.__version__,'numpy':numpy.__version__,\\n 'transformers':transformers.__version__,'spconv':spconv.__version__,'cumm':cumm.__version__,\\n 'torch_module_path':torch.__file__,'spconv_module_path':spconv.__file__,\\n 'installed_packages':{d.key:d.version for d in pkg_resources.working_set},\\n 'sparse_conv_class_available':sparse.SubMConv3d is not None}\\nprint('SPARSE_IMPORT_RECEIPT '+json.dumps(result))\\n\", 'venv']' returned non-zero exit status 1."
+  ],
+  "process": "",
+  "process_exit": 1,
+  "run.log": {
+    "bytes": 4208,
+    "sha256": "db8e4ac4a6b74a9e76ef3f99acd8314db1f8ac4e42d75facbf2ecebd6082fa90"
+  },
+  "time_cst": "2026-09-06T05:15:58.299515+08:00"
+}

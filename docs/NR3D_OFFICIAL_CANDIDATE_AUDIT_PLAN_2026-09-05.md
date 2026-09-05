@@ -74,3 +74,7 @@ remains a separate attribution question unless direct evidence supports it.
 
 The immediate deliverable is a closed official-path diagnosis. No failed P2
 variant advances to Decoder integration, and this audit cannot promote weights.
+
+## Terminal status, 2026-09-05
+
+Completed one native pass; row/identity/source/weight checks passed, while exact historical metric equality did not. See `NR3D_OFFICIAL_CANDIDATE_AUDIT_RESULT_2026-09-05.md`. No promotion or second score-selected reproduction run. Additional CPU-only superpoint bounds and CSV length metadata are sealed alongside the raw outputs; the normalized-length field mislabel is documented in `enrichment.json`.

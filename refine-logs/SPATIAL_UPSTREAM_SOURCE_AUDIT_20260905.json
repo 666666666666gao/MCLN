@@ -1,0 +1,62 @@
+{
+  "benchmark_evaluation": false,
+  "current_vs_original_mcln_ast_equal": {
+    "BiDecoderLayer": true,
+    "BiEncoderLayer": true,
+    "MultiHeadAttentionSpatial": true,
+    "calc_pairwise_locs": true
+  },
+  "fusion_default": {
+    "mcln": "cond",
+    "vil3dref": "mul"
+  },
+  "local_commit": "9f9dc27d43c8c4ecfdab7b830179138809315690",
+  "local_layer_sha256": "0444ef048acf9e2f760eb9661696a388b9969085eda83bcad0db70f4118c4831",
+  "new_network_implemented": false,
+  "observed_callsite": {
+    "mcln_distance_normalization": false,
+    "mcln_text_condition": "unmasked_max_pool",
+    "vil3dref_nr3d_configuration_distance_normalization": true,
+    "vil3dref_text_condition": "memory[:, 0]"
+  },
+  "original_mcln_vs_vil3dref_forward_ast_equal": true,
+  "original_mcln_vs_vil3dref_init_equal_after_fusion_default_alignment": true,
+  "schema": "mcln-spatial-upstream-source-audit-v1",
+  "sources": [
+    {
+      "commit": "82a95d9e41ecd9920d678823eda1b366947da204",
+      "path": "og3d_src/model/cmt_module.py",
+      "repo": "cshizhe/vil3dref",
+      "sha256": "3f1b182ddaa5e03a2ae958cd23855cfa03668c682972501cfe68feeba5fd944e",
+      "url": "https://github.com/cshizhe/vil3dref/blob/82a95d9e41ecd9920d678823eda1b366947da204/og3d_src/model/cmt_module.py"
+    },
+    {
+      "commit": "82a95d9e41ecd9920d678823eda1b366947da204",
+      "path": "og3d_src/model/referit3d_net.py",
+      "repo": "cshizhe/vil3dref",
+      "sha256": "12680582d069f957034b332d6dc78df162e24e095892d253518db738c3e2205f",
+      "url": "https://github.com/cshizhe/vil3dref/blob/82a95d9e41ecd9920d678823eda1b366947da204/og3d_src/model/referit3d_net.py"
+    },
+    {
+      "commit": "82a95d9e41ecd9920d678823eda1b366947da204",
+      "path": "og3d_src/configs/nr3d_gtlabelpcd_mix_model.yaml",
+      "repo": "cshizhe/vil3dref",
+      "sha256": "4f8468da4687a0eca392661031b4c6aacb364f44361131683b2185a3b21b31b5",
+      "url": "https://github.com/cshizhe/vil3dref/blob/82a95d9e41ecd9920d678823eda1b366947da204/og3d_src/configs/nr3d_gtlabelpcd_mix_model.yaml"
+    },
+    {
+      "commit": "9744a4ed219062d448ed0dba587eeb864491f158",
+      "path": "models/encoder_decoder_layers.py",
+      "repo": "qzp2018/MCLN",
+      "sha256": "6be03732f8067a6d6138d7a4f33378e7448df61ed9bda641db9c590160edd1d0",
+      "url": "https://github.com/qzp2018/MCLN/blob/9744a4ed219062d448ed0dba587eeb864491f158/models/encoder_decoder_layers.py"
+    },
+    {
+      "commit": "9744a4ed219062d448ed0dba587eeb864491f158",
+      "path": "src/grounding_evaluator.py",
+      "repo": "qzp2018/MCLN",
+      "sha256": "b020ecaa4c11e4765d5eb6b8b45f991c9c1501663e27a72a961b2261c4b364a7",
+      "url": "https://github.com/qzp2018/MCLN/blob/9744a4ed219062d448ed0dba587eeb864491f158/src/grounding_evaluator.py"
+    }
+  ]
+}

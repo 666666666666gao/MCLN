@@ -1,7 +1,7 @@
 # Minimal candidate-pair relation readout prototype
 
 This is an isolated, untrained prototype. It is not connected to `MCLN.forward`,
-the production evaluator, or the running G0/P1 jobs. It provides a concrete
+the production evaluator. The G0/P1 jobs have now completed. It provides a concrete
 implementation of the user's narrower P2 mechanism comparison, replacing the
 earlier CEGD draft with multiple simultaneous evidence branches.
 
@@ -74,7 +74,7 @@ global_output = global_readout(**shared_inputs)
 pair_output = pair_readout(**shared_inputs)
 ```
 
-## Scope still awaiting the G0/P1 receipts
+## Training scope still to be registered
 
 The prototype does not implement a training loss, new split, optimizer,
 training launcher or evaluator override. Before a paired GPU experiment,
@@ -86,8 +86,10 @@ as a correct answer. Root-target IoU labels belong outside `forward`.
 
 Both new readouts mask padding, but this only guarantees invariance for fixed
 input features. It does not fix or establish invariance of the upstream
-RoBERTa, seed selection, Encoder, Decoder or SWA. The already queued P1
-whole-model identity diagnostic remains necessary.
+RoBERTa, seed selection, Encoder, Decoder or SWA. The completed P1 identity diagnostic found Query reordering and SWA token
+changes under added padding; its four selected physical Queries and binary
+Masks stayed unchanged. This prototype does not establish whole-model
+padding invariance.
 
 A soft anchor distribution and a learned null state do not implement logical
 AND/NOT, prove multiple-anchor reasoning, or provide ground-truth anchor
@@ -136,11 +138,30 @@ slot exclusion. The receipt is
 `refine-logs/PAIR_READOUT_ADAPTER_CPU_20260905.json`, SHA
 `cbfd3e8f3c62b9ce415973df2b55f0e9188fa4f815a8f2c57f78becfade848e0`.
 
-`scripts/audit_pair_readout_scene.py` is prepared and Python 3.7 syntax-checked,
-but **has not run on the GPU yet**. After G0/P1 release the GPU, it will use the
-same four fixed fit rows, capture the 288-dimensional Query immediately before
-`x_query`, run one unchanged frozen backbone forward, and probe both readouts
-with the same actual features. It checks dimensions, shared initial state,
-input preservation and gradients, with zero optimizer steps and no evaluation
-of an untrained head's accuracy. It must acquire the existing shared GPU lock
-through its launcher; it does not manage that lock inside the Python script.
+## Real four-fit-row GPU integration
+
+`scripts/audit_pair_readout_scene.py` **passed** on the A100 after G0 and P1
+completed. The launcher acquired the shared GPU lock. It used fixed fit rows
+0/1/3/4 and one frozen protected-backbone forward, captured the actual
+288-dimensional Query before `x_query`, and passed the same adapted inputs to
+both readouts. Shared initial tensors were identical and inputs were unchanged.
+Legal full-memory counts were 43/40/29/39; legal target counts were 32/32/29/32.
+Finite nonzero derivatives reached pair text, geometric modulation, null state
+and the final score head; the backbone had no gradients.
+
+This was a score-derivative probe: **zero optimizer steps, zero weights written,
+no new-head accuracy and no formal validation**. It is not positive evidence of
+Nr3D improvement. Receipt: `refine-logs/PAIR_READOUT_SCENE_RECEIPT_20260905.json`,
+SHA `fead3257a26b024b8187c8113ffce7eecd0f82833beee1b0507b9b42353f3d91`.
+
+The separate P1 candidate audit found full legal memory covered only 5–14 of
+31–66 existing detector-object slots on those four rows. This is an object
+availability proxy, not annotated text-anchor recall. Full Query memory must
+not be described as guaranteed complete anchor evidence. One row had a selected
+box IoU of .783 but a full-Query best Mask IoU of .358; reranking alone cannot
+repair that example's Mask quality. These four rows do not estimate prevalence.
+
+G0's fixed augmentation completed but failed its preregistered view-dependent
+REC@.25 gate (zero net gain). Its augmentation performance route remains sealed.
+The user's later P2 relationship comparison is an independent experiment; it
+must not be reported as a promoted or successful G0 result.

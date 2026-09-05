@@ -15408,3 +15408,32 @@ docs/NR3D_OBJECT_POINT_APPEARANCE_INPUT_RESULT_2026-09-06.md；完整合同计�
 docs/NR3D_ALL_OBJECT_CROP_INPUT_AUDIT_PLAN_2026-09-06.md。v1证据全部保留，
 包括057e5a30bcf71a4e62201abaa4be7c508e34917d88ff37a4a2404d2cff6a0511全量receipt。
 新代码未修改C1运行目录或保护权重；正式三数据集目标仍active，Sr保护权重仍缺。
+
+
+### 20.63 对象裁剪显式边界修复与全量复核PASS；C1进入终态评估（2026-09-06 03:24 CST）
+
+v1对象外观及失败输入证据已推送7b3e371。新版本仅把框裁剪改为显式lower/upper比较，
+使用单一box_crop_mask供模块及审计调用。没有容差、扩框、替代点或fallback；保留
+非空/正尺寸合同。实测scene0054_00对象79的点16592纳入，另一原实例点仍在当前
+float32显式框外。5项原服务器CPU测试PASS，含该真实数值案例。
+
+全511场景/16181有效槽复核完成，controller.exit=0：0空裁剪、0非正轴；每场景
+点/框hash/对象索引相同，旧abs裁剪点数复算相同，新Torch predicate与NumPy显式
+边界逐点相同。注意这项比较式修改影响11697槽的边界成员，共新增16858次、移除
+4271次；新总数34211533包含框重叠，不是独立观测点数，不能说只修改了1个样本。
+只验证固定无增强Nr3D训练输入；0主模型/GPU forward、0更新、0正式验证行。
+receipt4b86d7119cf22866ed3830559949496cac3425facdc434955c68d6a165029a72。
+当前模块SHA4b3dadf6a25508a3453e81416e415b4262cd11fd044ab3324ab76b20d0b54f9b。
+详见docs/NR3D_OBJECT_CROP_BOUNDS_RECHECK_RESULT_2026-09-06.md，原v1全部保留。
+
+对象外观原生预检代码/计划独立staging，原Py3.7编译PASS；清单
+7451d43c0644a03888f73c919ceea0cc4bb11570bfd69215bec32c48e3b377e9。
+入口scripts/run_nr3d_object_appearance_native_preflight.py，计划
+docs/NR3D_OBJECT_APPEARANCE_NATIVE_PREFLIGHT_PLAN_2026-09-06.md。
+固定16fit/12forward/0更新，待检查末层Query/soft-token/contrastive路径及原生REC
+和完整loss梯度，前五层/采样/Text Mask/alpha应不变。尚未运行GPU、未定义学习质量
+结论；C1完成终态后按固定筛选决定任务顺序，不跳过可能需要的C1正式验证。
+
+C1已记录两臂各1024更新、1024个实际fit点Tensor batch哈希；03:20:52实查PID23307
+继续，终态800/6172行，预计约03:38完成。尚无终态质量或artifact实物核验结论。
+固定预算未更改，保护权重/正式三数据集指标未更新，完整目标继续active。

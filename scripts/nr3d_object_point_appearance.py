@@ -8,6 +8,12 @@ import torch
 from torch import nn
 
 
+def box_crop_mask(xyz, box):
+    """Use the explicit float32 AABB bounds supplied to this branch."""
+    half_size = box[3:] * .5
+    return ((xyz >= box[:3] - half_size) & (xyz <= box[:3] + half_size)).all(dim=-1)
+
+
 class ObjectPointAppearanceResidual(nn.Module):
     def __init__(self):
         super().__init__()
@@ -25,10 +31,9 @@ class ObjectPointAppearanceResidual(nn.Module):
                 box = boxes[batch_index, object_index]
                 half_size = box[3:] * .5
                 assert (half_size > 0).all()
-                inside = ((points[:, :3] - box[:3]).abs() <= half_size).all(dim=-1)
+                inside = box_crop_mask(points[:, :3], box)
                 crop = points[inside]
-                # The completed 683-slot input audit satisfies this contract.
-                # Audit larger inputs before training; never borrow other points.
+                # Validate the full planned input set before native training.
                 assert crop.shape[0] > 0
                 local = torch.cat(((crop[:, :3] - box[:3]) / half_size, crop[:, 3:6]), dim=-1)
                 encoded = self.point_encoder(local)

@@ -2,7 +2,7 @@ import torch
 from torch import nn
 
 from scripts.nr3d_object_point_appearance import (
-    LastDecoderObjectAppearanceIntervention, ObjectPointAppearanceResidual)
+    LastDecoderObjectAppearanceIntervention, ObjectPointAppearanceResidual, box_crop_mask)
 
 
 def example():
@@ -104,3 +104,17 @@ def test_attachment_changes_only_last_memory_and_restores_original_forward():
     attachment.remove()
     assert model.decoder[-1].forward == original
     assert all(torch.equal(a, b) for a, b in zip(baseline, model(inputs)))
+
+
+def test_observed_scene0054_object79_point_survives_explicit_bounds_rounding():
+    box = torch.tensor([1.9085190296173096, 1.097269892692566, 1.045587420463562,
+                        .002496254164725542, .044966574758291245, .002518296241760254])
+    xyz = torch.tensor([[1.9097671508789062, 1.119753122329712, 1.044328212738037],
+                        [1.907270908355713, 1.0747865438461304, 1.0468465089797974]])
+    legacy = ((xyz - box[:3]).abs() <= box[3:] * .5).all(dim=-1)
+    assert not legacy.any()
+    assert box_crop_mask(xyz, box).tolist() == [True, False]
+    points = torch.cat((xyz, torch.zeros_like(xyz)), dim=-1).unsqueeze(0)
+    addon = ObjectPointAppearanceResidual()
+    output = addon(points, box.reshape(1, 1, 6), torch.tensor([[True]]))
+    assert output.shape == (1, 1, 288) and torch.count_nonzero(output) == 0

@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-06 03:05 CST. Detailed evidence: master §§20.37–20.62.
+Updated: 2026-09-06 03:24 CST. Detailed evidence: master §§20.37–20.63.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -17,8 +17,8 @@ Updated: 2026-09-06 03:05 CST. Detailed evidence: master §§20.37–20.62.
 | M5 existing Mask projection training | Complete;both1024-step arms and6172 terminal rows; integrity PASS, fixed quality FAIL |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
 | L1 last text-attention key evidence | Complete; 6687 updates per arm; integrity PASS, quality FAIL | REC25 net0 versus both; no formal validation, control promotion or continuation |
 | Point-detail to superpoint Mask | Complete;1024 updates per arm,6172 endpoint; integrity PASS, quality FAIL | detail-native mIoU+.01507pp, detail-start-.09230pp; no continuation or formal promotion |
-| C1 candidate Mask memory reading | Complete6172 start identity PASS; training in progress | 03:04:39 PID23307,448/1024 updates per arm; terminal ETA03:38, quality pending |
-| Raw object point appearance | 41472-parameter prototype;4 CPU tests and16-row real CPU probe PASS | Full511-scene audit found1 empty crop from floating-point boundary comparison; correct predicate and recheck before native GPU work |
+| C1 candidate Mask memory reading | Both1024 updates complete, terminal evaluation | 03:20:52 PID23307,800/6172 terminal rows; quality pending |
+| Raw object point appearance | Explicit bounds fix;5 CPU tests and full511-scene input contract PASS | 0 empty/invalid-axis crops; native16-row preflight staged/Py3.7 compiled, not executed |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -92,3 +92,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-06 03:05 CST authoritative update: C1 complete6172 start reproduces protected B native; 03:04:39 both448/1024 updates. Raw object appearance prepared independently,4 CPU tests/32 real appearance-only forwards on683 slots PASS. Full511-scene/16181-slot input audit complete with1 empty crop; numeric diagnosis supports explicit bounds comparison, no fallback or expansion adopted. No native object-appearance GPU run or training. Master§20.62; protected formal results unchanged.
+
+
+2026-09-06 03:24 CST authoritative update: explicit AABB crop predicate passes all511 scenes/16181 slots with0 empties,0 nonpositive axes. Boundary membership changes11697 slots (+16858/-4271 memberships), all inputs/old counts unchanged.5 CPU tests PASS; native object appearance preflight staged and compiled only. C1 both1024 updates complete, 03:20:52 terminal800/6172; no quality result. Master§20.63. Goal active.

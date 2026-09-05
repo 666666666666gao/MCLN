@@ -1,0 +1,50 @@
+{
+  "files": {
+    "models/losses.py": {
+      "bytes": 188520,
+      "sha256": "cf720a782db7a34790bef4f86d79810f2fc33eeee25c14a48faecad19a714d35"
+    },
+    "models/mask_fusion.py": {
+      "bytes": 42734,
+      "sha256": "dceb8f83a71b5f2406fad1567511542cc5b985688e3641528a61e112c214d308"
+    },
+    "models/mcln.py": {
+      "bytes": 146066,
+      "sha256": "1245cf56c7111611cdb8b842ace583371a4e1c21f0b6a226e6562ebb7e6ab73a"
+    }
+  },
+  "findings": [
+    {
+      "file": "models/mcln.py",
+      "finding": "SWA text-token selection feeds prediction_head; sigmoid(pred_scores) gives one scalar text mixing weight per expression, shared across all256 Query masks.",
+      "lines": [
+        2144,
+        2165
+      ]
+    },
+    {
+      "file": "models/mask_fusion.py",
+      "finding": "Native fused logits are alpha*text+(1-alpha)*query, with scalar weight normalized by query_fusion_weight.",
+      "function": "fuse_query_mask_logits"
+    },
+    {
+      "file": "models/losses.py",
+      "finding": "The actual matched-query fusion already receives focal and Dice supervision.",
+      "lines": [
+        1463,
+        1474
+      ]
+    },
+    {
+      "file": "models/losses.py",
+      "finding": "Supervised text/query/fused mask terms and consistency terms all contribute in the protected configuration; fusion is not an untrained heuristic.",
+      "lines": [
+        4055,
+        4065
+      ]
+    }
+  ],
+  "interpretation": "This source evidence describes the active existing path. It does not by itself attribute validation failures to alpha, branch features, or a missing loss.",
+  "model_outputs_changed": false,
+  "schema": "mcln-m2-existing-fusion-source-note-v1"
+}

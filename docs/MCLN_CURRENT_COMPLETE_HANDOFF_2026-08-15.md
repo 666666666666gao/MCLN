@@ -14687,3 +14687,62 @@ controller SHA9e59429fb8c3db5837d3a539dd866f12800cfb80f58f8d81f52830b1f84b9c63�
 refine-logs/mask_branch_diagnostic_20260905_v1/。预计18:58–19:05完成，18:50先查
 初始化/吞吐，之后按240秒或近ETA查看原进程；未有M2分支结果，勿重复启动。
 当前Nr3D正式4475/3759、ScanRefer和Sr3D保护结果均不变；三数据集目标active且未完成。
+
+
+### 20.45 M2三路Mask终态：828条中767条原始分支也失败，单改融合缺乏依据（2026-09-05 19:04 CST）
+
+M2原始controller和CPU analysis均exit0；7899 val行/130场景，原生评估717.419秒。
+627数据文件与冻结612源码/保护checkpoint前后hash通过，全部参数/buffer不变，零更新/存权重；
+逐行重建fusion pointMask与原evaluator逐元素一致，float64点级IoU与native统计一致。
+原P1群体1105及154/123/828的身份/数量全部固定复用，不按新输出重分群体。
+
+| 固定群体 | 行数 | text Mask>.5 | 任一raw Query Mask>.5 | 任一原始分支>.5 | 两个原始分支均无>.5 |
+|---|---:|---:|---:|---:|---:|
+| 好Box但所有fusion Mask差 | 1105 | 12 | 53 | 62 | 1043 |
+| 最优SP并集本身<=.5 | 154 | 0 | 0 | 0 | 154 |
+| SP并集>.5但多数GT标签<=.5 | 123 | 0 | 1 | 1 | 122 |
+| 多数GT标签本身>.5 | 828 | 12 | 52 | 61 | 767 |
+
+这里raw Query命中是Full256的GT oracle，不能说成当前选中Query的部署准确率。
+828中49条仅Query过线、9条仅text、3条两者均过线；767/828=92.63%两路都缺合格形状。
+再限定同一个Query的合法Box IoU>.5，828只有29条Query过线、12条text、重叠1条，
+即任一路可过线40条、两路均不过788条；1105对应任一路41条、均不过1064条。
+所以融合损伤确实存在，但不能解释此群体的大部分错误；好Mask所在Query的框可能仍不对。
+两路各自不过线也不数学证明所有可能混合都不过线；本次未扫任何alpha或阈值。
+
+保持native Mask Query不变，7899行逐列比较：
+- text：4127/3172 hits .25/.50，mIoU35.58273509%；
+- raw Query：4198/3478，37.46368037%；
+- 原fusion：4194/3482，37.45928018%。
+若直接用raw Query替原fusion，.25修10破6净+4；.50修5破9净-4；mIoU仅+0.00440019pp。
+这不是改动后的正式结果，也没有采用该输出路径。Full256 raw Query oracle6016个.50，
+fusion5973，相差43个，不能据oracle宣称删除text分支会获得43个部署命中。
+alpha整体均值0.0504500/中位0.0453756；828群体均值0.0481796，模型已主要偏向Query。
+当前alpha来自SWA选中的text token预测头、每条表达一个标量；原融合已有focal/Dice监督。
+不能称融合未训练，不能把sigmoid混合权重直接称命中概率。源证据active_fusion_source_note.json。
+
+M2聚合数值与封存P1完全相同：REC4478/3763，Mask4194/3482，IoU sum2958.9085414748506。
+与历史保护4475/3759、37.43374912%仍不相同，不记成新最好；历史core源码未完整找回。
+逐行旧字段并非全部bitwise相等：仅末批11行id7888–7898的部分Box数值/原始负size计数不同；
+五类记录Query身份及全部记录Mask IoU均相同，最大记录Box-IoU绝对差0.0013219714。
+原因未隔离，p1_last_batch_comparison.json完整保留，未加容差掩盖也未重跑挑分数。
+完整receipt SHA9fb8a345f8823f21e474df41667622cf6d7b3d6a07ebd5aff9ffb5209c57a681；
+analysis SHA7c27ba0a463dc9eb0b7867ed650a4ae2d644ec4b4b2076bb242201e24204648a；
+rows36565615bytes SHA80b80b64b4e1d0310a7e7db0a37388f54377647fe22962beecd80d60ded47267；
+无损gzip2335582bytes SHA5a35056094e73b30f1d0060fb30dbd967a7487fc45fae1840f6d2edf6ef68f92。
+报告docs/NR3D_MASK_BRANCH_DIAGNOSTIC_RESULT_2026-09-05.md，证据
+refine-logs/mask_branch_diagnostic_20260905_v1/。19:01:06原R1/M2进程均无，GPU1MiB/0%。
+
+补充R1已封存输出的CPU区间诊断：相对object_global的381条.50破坏中377条仍>.25，
+2条(0,.25]、2条IoU0；相对query_pair为234=222+4+8，相对protected为193=181+4+8。
+R1的Box候选未更新，说明严格下降主要是改选与GT重叠较低的已有框，不能说回归器被训坏；
+>.25亦不直接证明两个框属于同一实例。PR#9新增该证据推送df68c4b，三项FAIL结论不变。
+
+下一步收缩为原生matched-Query Mask监督及特征连接的小批训练数据审计：
+比较实际Hungarian匹配Query、合法好框Query和native选中Query的Mask监督、梯度及投影/SP特征。
+代码已确认loss_masks按indices[bs][0]抽取raw Query Mask，未发现简单索引替换错误；
+需用真实训练batch核验有效监督与梯度，先不设计新RSA/Mask头或启动长训。
+这项下一步尚未实现/启动；不是已经取得新Mask训练结果。R1/P2不进入Decoder，
+不复活Source Selector、FPR/A-V4、Density Gate、alpha扫描或已取消的baseline长训。
+本轮属于实质进展：R1完整失败结果封存、M2条件Mask短板进一步定位；三数据集目标仍active、
+未达成，正式Nr3D仍4475/3759，ScanRefer/Sr3D保护指标保持不变。

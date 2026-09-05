@@ -59,6 +59,24 @@ variant under the fixed contract; it does not establish that all relation
 modeling or all object memories are ineffective. The better strict-threshold
 control is retained as diagnostic evidence, not promoted after the fact.
 
+## What the strict-threshold breaks actually contain
+
+Post-completion CPU analysis of the same sealed rows separates three observed
+IoU intervals. It does not change the decision or infer an object identity.
+
+| Reference | .50 breaks | New IoU in(.25,.50] | New IoU in(0,.25] | New IoU=0 |
+|---|---:|---:|---:|---:|
+| query_pair | 234 | 222 | 4 | 8 |
+| object_global | 381 | 377 | 2 | 2 |
+| protected | 193 | 181 | 4 | 8 |
+
+Thus377 of381 strict breaks against object_global still pass.25. The frozen
+Box candidates are unchanged, so this is chiefly selection of lower-overlap
+existing boxes under the stricter threshold, not evidence that the Box
+regressor itself deteriorated during R1. IoU>.25 alone still cannot prove
+that two candidate boxes refer to the same physical instance. Evidence:
+`refine-logs/reference_memory_v1_20260905/boundary_transition_analysis.json`.
+
 ## Scene-cluster uncertainty
 
 Paired whole-scene bootstrap:2000 resamples, seed20260905, expression-weighted

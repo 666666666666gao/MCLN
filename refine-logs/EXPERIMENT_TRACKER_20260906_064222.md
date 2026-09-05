@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-06 07:08 CST. Detailed evidence: master §§20.37–20.73.
+Updated: 2026-09-06 06:42 CST. Detailed evidence: master §§20.37–20.72.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -21,7 +21,7 @@ Updated: 2026-09-06 07:08 CST. Detailed evidence: master §§20.37–20.73.
 | Raw object point appearance | Complete;1024 updates/arm,6172 endpoint; integrity PASS,quality FAIL | REC25/50 net versus native +2/+8, versus start -1/+31;formal results unchanged |
 | Sr3D object input audit | Full1018 scans/34865 slots;old positive-size contract FAIL on2 real single-point objects | Minimal zero-axis fix:7 original-environment tests +actual152-slot CPU probe PASS;0 GPU/optimizer/Sr training |
 | Sparse local-memory runtime | Independent original-Torch environment +synthetic GPU kernel checks PASS | Runtime-only PASS;actual memory preflight/learning tracked separately |
-| Sparse point memory | V1/V2 startup gradient assertions failed; both 0 updates/holdout | Full-initialization five-backward diagnosis launched06:54; no V3 training |
+| Sparse point memory | V1 first-backward assertion exit,0 updates;diagnostic and warmup regression PASS;V2 launched06:37 | Same scientific setup;full-start check pending;manifestd0b67ec3 |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -125,6 +125,3 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-06 06:42 CST authoritative update: V1 controller1 before any optimizer/holdout;native first-backward differences diagnosed from5 forwards and independent gradient tensors.3-forward native warmup regression PASS without relaxing exact GPU norms. V2 same scientific setup launched06:37:32 PID27756 after8 tests/612 source/1026 input checks;full-start preflight pending. Master§20.72;goal active.
-
-
-2026-09-06 07:08 CST authoritative update: V2 controller1 still failed exact GPU gradient norms after warmup,0 updates/holdout. Full V2 initialization diagnostic launched06:54:01 PID28034,5 backwards/0 updates;next07:04. No new scientific endpoint or formal result. Master§20.73;goal active.

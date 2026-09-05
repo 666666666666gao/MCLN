@@ -87,7 +87,7 @@ def verify_terminal_run(directory):
     manifest_raw = (directory / 'input_manifest.json').read_bytes()
     assert hashlib.sha256(manifest_raw).hexdigest() == receipt['manifest_sha256']
     manifest = json.loads(manifest_raw)
-    assert receipt['schema'] == 'mcln-nr3d-sparse-point-pair-v1'
+    assert receipt['schema'] == 'mcln-nr3d-sparse-point-pair-v2'
     assert receipt['status'] == 'complete' and receipt['optimizer_steps_per_arm'] == 6687
     assert receipt['frozen_parameters_and_buffers_unchanged']
     assert receipt['source_data_and_parent_checkpoint_unchanged']
@@ -98,6 +98,7 @@ def verify_terminal_run(directory):
     assert len(fit_order) == 26747
     assert Counter(fit_order) == Counter(manifest['row_ids']['fit'])
     assert receipt['baseline_matches_protected_reference']
+    assert receipt['native_warmup_forwards'] == 1 and receipt['warmup_optimizer_steps'] == 0
     assert receipt['fit_rows'] == 26747 and receipt['fit_scenes'] == 413 and receipt['epochs'] == 1
     assert receipt['learning_rates'] == {'native_shared': 1e-5, 'sparse_shared': 1e-5, 'sparse_new': 1e-4}
     point_raw = (directory / 'fit_point_batches.json').read_bytes()

@@ -32,3 +32,16 @@
 | 2026-09-06 06:13 | /run-experiment | refine-logs/sparse_point_pair_20260906_v1/EXPERIMENT_TRACKER_20260906_061341.md | implementation | sparse-point full-fit launch and protected-state boundary |
 | 2026-09-06 06:13 | /run-experiment | refine-logs/EXPERIMENT_TRACKER_20260906_061341.md | implementation | sparse-point full-fit launch and protected-state boundary |
 | 2026-09-06 06:13 | /run-experiment | refine-logs/EXPERIMENT_TRACKER.md | implementation | sparse-point full-fit launch and protected-state boundary |
+| 2026-09-06 06:35 | /experiment-plan | refine-logs/sparse_point_pair_20260906_v2/EXPERIMENT_PLAN.md | implementation | V2 native warmup correction, original scientific gate unchanged |
+| 2026-09-06 06:35 | /experiment-plan | refine-logs/sparse_point_pair_20260906_v2/EXPERIMENT_PLAN_20260906_063528.md | implementation | V2 native warmup correction, original scientific gate unchanged |
+| 2026-09-06 06:35 | /experiment-plan | refine-logs/sparse_point_pair_20260906_v2/EXPERIMENT_TRACKER.md | implementation | V2 native warmup correction, original scientific gate unchanged |
+| 2026-09-06 06:35 | /experiment-plan | refine-logs/sparse_point_pair_20260906_v2/EXPERIMENT_TRACKER_20260906_063528.md | implementation | V2 native warmup correction, original scientific gate unchanged |
+| 2026-09-06 06:42 | /diagnosing-bugs + /run-experiment | docs/NR3D_SPARSE_STARTUP_GRADIENT_RESULT_2026-09-06.md | implementation | native startup gradient diagnosis and V2 warmup;scientific gate unchanged |
+| 2026-09-06 06:42 | /diagnosing-bugs + /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | native startup gradient diagnosis and V2 warmup;scientific gate unchanged |
+| 2026-09-06 06:42 | /diagnosing-bugs + /run-experiment | refine-logs/EXPERIMENT_TRACKER.md | implementation | native startup gradient diagnosis and V2 warmup;scientific gate unchanged |
+| 2026-09-06 06:42 | /diagnosing-bugs + /run-experiment | refine-logs/EXPERIMENT_TRACKER_20260906_064222.md | implementation | native startup gradient diagnosis and V2 warmup;scientific gate unchanged |
+| 2026-09-06 06:42 | /diagnosing-bugs + /run-experiment | refine-logs/sparse_point_pair_20260906_v2/EXPERIMENT_TRACKER.md | implementation | native startup gradient diagnosis and V2 warmup;scientific gate unchanged |
+| 2026-09-06 06:42 | /diagnosing-bugs + /run-experiment | refine-logs/sparse_point_pair_20260906_v2/EXPERIMENT_TRACKER_20260906_064222.md | implementation | native startup gradient diagnosis and V2 warmup;scientific gate unchanged |
+| 2026-09-06 07:08 | /diagnosing-bugs | docs/NR3D_SPARSE_FULL_START_PROBE_PLAN_2026-09-06.md | implementation | V2 startup failure and full initialization diagnostic;0 updates |
+| 2026-09-06 07:08 | /diagnosing-bugs | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | V2 startup failure and full initialization diagnostic;0 updates |
+| 2026-09-06 07:08 | /diagnosing-bugs | refine-logs/EXPERIMENT_TRACKER.md | implementation | V2 startup failure and full initialization diagnostic;0 updates |

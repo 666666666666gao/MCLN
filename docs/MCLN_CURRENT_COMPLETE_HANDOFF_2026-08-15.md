@@ -14165,3 +14165,31 @@ benchmark rows=0，新checkpoint=0。原型未接入主网络、loss、训练lau
 上游整网padding不变性，单次soft Anchor聚合也不能证明多参照AND/NOT推理已解决。
 GPU短对照仍等待G0终态和P1真实候选回执后冻结数据、初始化、loss与唯一决策路径。
 13:35 CST的G0 fixed单次完成窗口检查保持原定安排；本节没有新增训练状态轮询。
+
+
+#### 20.36.7 关系原型的实际输入适配已完成（2026-09-05 13:01 CST）
+
+Draft PR #8已更新到`f1cd01c6aad353fb3f6c80626358bb4bd03d845e`，仍为open/draft、未合并。
+新增`models/candidate_edge_adapter.py`显式接收Mask投影前的`decoder_query_last`，读取
+cross-encoder之后的`text_memory`，调用现有REC对象重叠过滤，再按Default选择目标Top-K；
+同一完整有效Query记忆与目标映射直接提供给两组。没有使用64维
+`source_choice_candidate_feats`或SourceChoice adapter的全True mask代替实际输入。
+
+新增3项CPU测试通过（0.04 s），实际调用冻结源中的Default评分函数和REC过滤器，验证
+过滤先于目标选择、完整参照记忆保留、root监督字段不影响前向输入，以及不足K个合法目标时
+无效compact位置仍被排除。回执`refine-logs/PAIR_READOUT_ADAPTER_CPU_20260905.json`，
+1788 bytes，SHA `cbfd3e8f3c62b9ce415973df2b55f0e9188fa4f815a8f2c57f78becfade848e0`。
+
+真实场景只读探针`scripts/audit_pair_readout_scene.py`已部署到
+`PAIR/pair_readout_adapter_v1/scripts/`并通过远端Python 3.7编译；6947 bytes，SHA
+`bd4c00e99e689342225093977a1a40a96df5b63fb3becb81e4109b2696f61e44`。
+它尚未运行或排入GPU队列，需在G0/P1完成后取得原共享GPU锁，再以同四条固定fit表达、
+一次冻结骨干前向检查实际288维Query接入、共享初始化、输入完整性和两个未训练读出。
+不评估未训练头准确率、不选择训练loss、不写权重，亦未修改已排队的P1输入。
+
+增强计数另补一个严格边界：§20.36.4的253限定为**fit中增强许可直接改变的表达数**。
+训练worker在初始化时设置随机种子，`__getitem__`不逐行重置；`_augment`的rotate两分支消耗
+不同数量的NumPy随机数。因此不能从253推出整个epoch仅253个数值输入发生变化。
+现有runner在评估前已专门重置seed1000（源码明确注释两组训练增强消耗不同RNG），
+该事实不改变253的规则统计、G0的样本顺序合同或已登记的科学门，也不据此重跑G0。
+本节未新增训练状态轮询，下一次完成窗口检查仍为13:35 CST。

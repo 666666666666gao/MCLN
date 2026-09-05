@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 17:44 CST. Detailed evidence: master §§20.37–20.42.
+Updated: 2026-09-05 18:19 CST. Detailed evidence: master §§20.37–20.43.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -31,3 +31,5 @@ Completed P1 report: `docs/NR3D_OFFICIAL_CANDIDATE_AUDIT_RESULT_2026-09-05.md`.
 Existing Decoder object-memory input audit completed on four fit rows: 190 object slots, 38 covered by Queries, 155 correct predicted classes; not GT text-anchor recall. R1 four-arm reference-memory/readout control started at 17:35 after all CPU and real-fit zero-update checks passed. Fixed primary object_pair; all three advancement screens required. Draft PR #9 holds the pinned plan, implementation and receipts. No R1 result yet; P2 v1 remains sealed. The P1 raw-token field label correction is authoritative in `enrichment.json`.
 
 R1 observed at 17:42:54: all four arms 200/6687 updates, 0.3905 s/batch. Estimated complete holdout 18:32–18:40 CST. Original terminal collector first checks at 18:28, then every 240 s; it reads no partial holdout and runs no GPU forward. Analysis root `/root/autodl-tmp/mcln_reference_memory_analysis_20260905_v1`, controller14569. Do not duplicate or relaunch either job.
+
+CPU Mask-target audit complete (zero model forwards/updates): majority GT-label point mIoU81.9564 versus optimal SP83.3750 on sealed val inputs. The1105 good-box/bad-fused-Mask cases split154 representation-limited +123 majority-label-limited +828 whose majority labels already pass. Do not call these model metrics or training-example counts. Next Mask diagnosis separates raw text/query/fused branches after the fixed R1 result; no new Mask architecture or threshold sweep. Report `docs/NR3D_MASK_SUPERVISION_AUDIT_2026-09-05.md`.

@@ -14578,3 +14578,44 @@ ScanRefer/Sr3D保护最好不变；三数据集目标仍active且未达到。
 98ece012ecd6004c459d20fb928958a5f62d874ca577d079dabd1d90314c9ab3。
 计划内7项CPU测试及真实fit预检、launch/progress/collector receipt均已进入PR #9。
 本补充没有新增性能结论，固定主候选和推进条件不变。
+
+
+### 20.43 Mask监督审计：154表示受限、123多数标签受限、828预测/融合待定位（2026-09-05 18:19 CST）
+
+R1等待期间完成独立CPU审计，不修改R1、保护权重或训练规则。
+冻结源码与本地models/mcln.py、models/losses.py、src/joint_det_dataset.py的AST一致；
+原作者仓库固定9744a4ed219062d448ed0dba587eeb864491f158。
+§4.3已有的文本Mask广播、consistency的原始logit>.5伪标签阈值，原作者实现也有，
+不能当作新增模块引入的缺陷。q_idx是SWA文本token索引，不是最终REC候选索引。
+在当前广播路径下，Hungarian的text-Mask成本对每个GT列在所有Query上恒定，
+不提供Query消歧证据；单独扫cost_masks不会创造候选Mask质量信息。
+Nr3D有效路径anchor_ids为空、root为标量，不存在root和anchor同时监督单一文本Mask的情形。
+
+将当前“superpoint内目标点比例严格>.5”标签规则应用于封存验证输入，
+7899表达/1213唯一(scene,target)/130场景，131个数据文件SHA全部匹配P1；
+逐行目标点数和原最优superpoint oracle全部复现，零模型forward/更新。
+多数标签展开点级Mask：7645/7291命中@.25/.50，mIoU81.956425%；
+GT最优SP并集：7843/7476，mIoU83.374977%。均非模型正式分数。
+153表达/23唯一目标的多数标签没有前景SP，其中146表达目标采样点<=227；
+这里统计的是验证输入上的标签构造，不得写成153条真实训练样本计数。
+多数规则与GT oracle之间的1.418553pp不是改监督的保证收益，也不是学习收益上界。
+
+对§20.41的1105条“存在合法box IoU>.5，但Full256 fused-Mask oracle<=.5”：
+- 154条（13.94%）：GT最优SP并集本身<=.5；
+- 123条（11.13%）：GT最优SP并集>.5，但多数GT标签Mask<=.5；
+- 828条（74.93%）：多数GT标签Mask已>.5，所有预测融合Mask仍<=.5。
+三类互斥且总和1105。951条可表示样本均有至少一个多数前景SP。
+828条不能由SP表示能力或硬标签构造单独解释；现有缓存只有融合预测，
+仍不能区分原始text/query分支质量不足与融合损伤，不直接启动新RSA/Mask头。
+R1完整终态收齐后，Mask下一项诊断先记录text、query、原融合三路在原阈值下的IoU，
+以及alpha和选中Query身份；不做阈值扫描或再建Source Selector。
+
+CPU首次启动因data_provenance路径多写results/而exit1，尚未统计；保留initial_path_error.txt。
+仅修正为原P1根目录清单后，18:06:59启动14937screen/14939controller/14940Python，
+18:08:35已读到controller_v2.exit=0及完整结果，数值代码/配置不变。两项CPU测试PASS。
+报告docs/NR3D_MASK_SUPERVISION_AUDIT_2026-09-05.md；证据
+refine-logs/mask_training_target_audit_20260905_v1/；result3855678bytes SHA
+79ce884363d1ae8e79590659b57d4544732003d5dde2f4e56ad4c938d3744d77。
+R1原始Python13983和CPU终态collector14569于17:49:21复核live，未重启/改动；
+继续原18:28首次检查、240秒间隔，预计18:32–18:40收完整结果。本节无R1新指标。
+三数据集保护结果与目标保持不变，目标active且未达到。

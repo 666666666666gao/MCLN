@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 14:35 CST. Detailed evidence: master §§20.37–20.38.
+Updated: 2026-09-05 14:40 CST. Detailed evidence: master §§20.37–20.38.
 
 | Run | Status | Evidence / next action |
 |---|---|---|
@@ -16,8 +16,10 @@ Updated: 2026-09-05 14:35 CST. Detailed evidence: master §§20.37–20.38.
 P2: screen `9428.mcln_p2_global_pair_train`, Python PID 9430, shared GPU lock
 `/root/autodl-tmp/mcln_v99_backbone_gpu0.lock`. Addon:
 `/root/autodl-tmp/mcln_g0_view_pair_20260905/pair_readout_train_v1`.
-Log `training.log`; results only in new `results/`. First throughput check is
-planned for 14:40 CST, followed by an updated ETA and completion-window checks.
+Log `training.log`; results only in new `results/`. At 14:40 both heads had 1,000 updates, 4,000 fit rows, 3,956 covered rows,
+and finite losses; fit elapsed 357.476 s. Expected fit end ~15:14, evaluation
+completion ~15:20–15:25. A read-only collector is scheduled for 15:18 CST
+(screen mcln_p2_completion_window_1518), with no polling while it waits.
 
 Fixed P2 split: 413 fit scenes / 26,747 rows (6,687 batches); 98 module-holdout
 scenes / 6,172 rows (1,543 batches). Input manifest SHA:

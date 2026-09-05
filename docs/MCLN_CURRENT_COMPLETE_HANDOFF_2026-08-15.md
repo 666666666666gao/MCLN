@@ -13692,3 +13692,77 @@ REC evaluator。它构造且只构造 Nr3D `split=train`，随后按冻结 IDs �
 原实例 master 只更新到 §20.8，已先按原始字节备份到本地
 `.codex/tmp/MCLN_HANDOFF_remote_33476_before_20260905.md`，再由包含历史续写的 GitHub/Desktop 权威版本
 续写本节并同步，避免因原服务器版本落后而丢失 §20.9–20.29。
+
+
+### 20.31 关系读出主线收缩与 padding 机制实证（2026-09-05）
+
+用户在本轮补充的代码级分析修订了 §20.18/20.19 的后续实现范围。已重新查阅原论文
+[附录 Table 9](https://arxiv.org/html/2407.05363v1#A1)：Nr3D baseline 的 REC 为 `59.82%/51.38%`，
+Mask 为 `58.35%/52.68%/46.09% mIoU`；Sr3D REC 为 `68.43%/57.30%`。
+因此当前 Sr3D REC@.25 比精确论文值只高约 `.0513pp`，不能声称稳定优势；Nr3D 的严格 Mask 差距也应纳入
+后续诊断。受保护项目指标已在 §15.2/20.1 记录，本节不重复。
+
+#### 20.31.1 对旧设计的必要纠正
+
+- 当前 `BiDecoderLayer` 已有 Query 空间 self-attention、Query→text、Query→detected objects 和
+  Query→visual 交互，不能继续叙述成“缺少 attention”。新结构只检验关系读出是否增加有效判别证据。
+- 缓存 Default `4275/7899` 与正式 `4475/7899` 输出路径不同；`2068` 可重排修复和 `1556` 覆盖失败
+  只属于缓存 Top-16 口径。后者不是 Full-256 缺框，前者也不全等于选错物体。§20.18 的 `265/2068`
+  只可作粗略空间估计，不能作为正式增益承诺。
+- 后续 P2/G1 目标集合采用目标分数 Top-K，Anchor 记忆来自更广的合法 Query 集合；不能把目标 Top-K
+  同时当成唯一 Anchor 池。先测 Anchor 覆盖，不把目标 oracle 冒充参照物覆盖。
+- 首个结构对照只比较既有 global-text-conditioned relation readout 与 candidate-pair/token-conditioned
+  readout；匹配起点、候选、fit 数据、steps 和最终评分路径。加入可学习 no-relation 状态；单个 soft-anchor
+  聚合不宣称已经解决多个 AND/NOT 关系。独立多关系槽只能在后续单独检验。
+- 轴对齐 6D 框没有物体正面朝向；首版不实现或声称已获得 candidate-local/anchor-local 朝向 frame。
+- 过滤前/后的 Top16/32/64/256 oracle、root 对齐、最终 Query 映射必须先核对。全错候选行不作为
+  “存在正确语义答案”的正例；连续质量可保留。单调 p50<=p25 不等价于校准。
+- 同时诊断选中 Query 和正确候选 Query 的 Mask，把错实例、同实例框不准、Top-K 截断和 Full-256
+  缺框分开。Local Refiner/RSA/Mask 改造只在对应证据支持后独立实施。
+
+当前优先序是 P0/G0 数据修复配对 → P1 padding/候选过滤/Anchor/Mask 诊断 → P2 单变量关系读出
+→ P3 最后层空间路径有限解冻/替换 → P4 独立局部几何 → P5 三数据集同结构验证。
+P1 只读工程诊断可与 G0 准备并行，P2 仍等待 G0 结果。多 seed 和按 scene 聚类的不确定性属于最终
+有效结构的论文证据；三数据集分别训练同结构称为跨基准有效性，不称未经微调的跨域泛化。
+
+#### 20.31.2 padding 风险已有局部因果证据，尚无 REC 结论
+
+源码确认两处全句池化没有屏蔽 padding：`BiEncoderLayer.forward` 的 `text_feats.max(1)` 和
+`BiDecoderLayer.forward` 的 `lang_feats.max(1)`。真实 tokenizer 使用 `padding="longest"`，
+RoBERTa 的 padding 位置仍产生非零 contextual hidden states，所以此处可能随批次最长句变化。
+
+本轮在 CPU 上加载受保护平均权重的完整文本编码器、投影层和第一层空间 attention 权重；固定 G0 fit
+中前 16 条原始表达，每条追加 16 个 padding token（attention mask=0），固定同一份合成 Query/几何，
+不运行实际场景点云、不训练、不读取正式验证指标。结果：
+
+| 检查 | 最大绝对变化 |
+|---|---:|
+| 有效 token 投影特征 | `7.39098e-6` |
+| 未屏蔽 padding 的全句 max pool | `1.4109883` |
+| 未屏蔽时空间 attention | `.07520771` |
+| 未屏蔽时空间 attention 输出 | `.07246888` |
+| masked max pool | `4.41074e-6` |
+| masked 空间 attention | `1.19209e-6` |
+| masked 空间 attention 输出 | `1.66893e-6` |
+
+`16/16` 表达均有 padding 赢得至少一个 max-pooling channel。有效 token 仅浮点级变化，而旧池化和
+空间输出出现明显变化，说明 padding 对关系调制的影响确实存在；**尚未测真实场景最终排名，也没有
+证据把 Nr3D 的 3pp 差距归于它**。可复现脚本为 `scripts/audit_nr3d_padding_pool.py`，完整 16-row
+回执为 `refine-logs/PADDING_POOL_INTERVENTION_20260905.json`。
+
+独立分支 `codex/masked-text-pooling-20260905`，提交 `9eb9442`，只将两处 max 前的 padding 置为
+负无穷，没有新参数、fallback、兼容开关或额外候选路径。两个行为测试对原代码均失败，对修复均通过：
+Encoder 的有效视觉/文本输出及 Decoder Query 输出在追加屏蔽 token 后保持容差内不变。
+该分支已推送，但未合并到 G0 冻结代码或受保护 ScanRefer 部署。下一步必须在固定 fit 样本做真实场景
+padding 干预，观察最终 Query、Box、Mask 与分数变化，再单独决定修复的模型评估范围。
+
+#### 20.31.3 G0 工程准备现场
+
+首个零更新 smoke 在模型构造前因 source archive 不含 git-ignored `data/class_embeddings3d.npy`
+而退出，optimizer steps=0，holdout batches=0。保留失败日志和原快照，第二份输入闭包复制原实例该静态
+资源（SHA `97ee6d4a7633229f6fba2580428887f5acf0603081bc06f65b5d8a0baf6fe5e5`），不改任何训练源码。
+两角色各 612 文件的 SHA 清单已验证，唯一差异仍为 `5213822` dataset 修复。
+
+第二次 old smoke 已通过 raw census 和全部模型 tensor 严格加载；四 optimizer 参数组 tensor 数为
+`625/48/58/9`，LR 与 §20.30 相符，目前进程在 Nr3D train 数据加载/既有文本解析阶段。
+正式 old/fixed 完整训练尚未启动；不得把正在进行的 smoke 当成配对指标。

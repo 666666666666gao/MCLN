@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 20:43 CST. Detailed evidence: master §§20.37–20.49.
+Updated: 2026-09-05 M5 terminal. Detailed evidence: master §§20.37–20.50.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -14,7 +14,7 @@ Updated: 2026-09-05 20:43 CST. Detailed evidence: master §§20.37–20.49.
 | M3 native Mask supervision/gradient probe | Complete;16 fit rows,4 forwards,8 gradient probes,zero updates | Native matched-Query indices and gradients correct;66/302 majority SP neighborhoods lack target seed centers; locality still needs distances |
 
 | M4 Mask neighborhood intervention | Complete;16 fit rows,8 forwards,zero updates |31 majority SPs read distant seed0 on empty balls; nearest-two mean Mask +2.2877pp but6 rows worsen. Proceed only to matched learning screen |
-| M5 existing Mask projection training | Running;both arms1024/1024 at20:43; full terminal evaluation pending |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
+| M5 existing Mask projection training | Complete;both1024-step arms and6172 terminal rows; integrity PASS, fixed quality FAIL |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -49,3 +49,6 @@ M5 launched20:00:27, screen17183.mcln_m5_mask_locality, isolated directory /root
 
 
 20:43 authoritative update: M5 has finished both1024-step trajectories; native PID17187 remains active in terminal evaluation, estimated completion21:03. Earlier20:08 baseline progress above is historical. Object point input CPU audit COMPLETE/exit0:683 slots,0 empty raw crops,8 empty seed RoIs,123 crops with instance fraction<.5. Input/source/data identity PASS, no new performance result. L1 position-key versus text-key mechanism registered in docs/NR3D_TEXT_POSITION_L1_PLAN_2026-09-05.md; code/test preparation, no training or quality result yet. Original REC/three-benchmark objective remains open.
+
+
+M5 terminal authoritative update: fixed quality FAIL, integrity PASS, controllerexit0; no formal promotion. Full report docs/NR3D_MASK_NEIGHBORHOOD_M5_RESULT_2026-09-05.md. L1 CPU7 tests and terminal summary4 tests PASS; actual M3 nested receipt reader corrected beforeGPU and archived. L1 real-fit preflight next, no L1 training result yet.

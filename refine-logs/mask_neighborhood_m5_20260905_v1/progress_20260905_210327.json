@@ -1,0 +1,90 @@
+{
+  "baseline_rows.json": {
+    "bytes": 2719572,
+    "sha256": "ba9968e48a3b39cac92802a94053eba90f8d11db70ebbfc0b1168273ccbd6f81"
+  },
+  "controller.exit": {
+    "bytes": 2,
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "exit": "0",
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "manifest_base.json",
+    "prepare_inputs.py",
+    "controller.sh",
+    "input_manifest.json",
+    "cpu_receipt.json",
+    "run.log",
+    "launch.json",
+    "preflight.json",
+    "baseline_rows.json",
+    "terminal_rows.json",
+    "native_mask_projection_state.pt",
+    "nearest_mask_projection_state.pt",
+    "receipt.json",
+    "controller.exit"
+  ],
+  "gpu": "1 MiB, 0 %\n",
+  "gpu_exit": 0,
+  "log_tail": [
+    "M5 EVAL {\"stage\": \"terminal\", \"batches\": 250, \"rows\": 4000, \"elapsed_seconds\": 3123.742997407913}",
+    "M5 EVAL {\"stage\": \"terminal\", \"batches\": 300, \"rows\": 4800, \"elapsed_seconds\": 3272.348217487335}",
+    "M5 EVAL {\"stage\": \"terminal\", \"batches\": 350, \"rows\": 5600, \"elapsed_seconds\": 3420.1145029067993}",
+    "M5 COMPLETE {\"schema\": \"mcln-nr3d-mask-neighborhood-m5-v1\", \"status\": \"complete\", \"optimizer_steps_per_arm\": 1024, \"fit_rows\": 2048, \"epochs\": 2, \"holdout_rows\": 6172, \"formal_rows\": 0, \"formal_promotion\": false, \"fit_order_sha256\": \"904c1f93742c150de87c930ce1a2d4312f0cc429dc34d5e4ede0694845388dde\", \"frozen_parameters_and_buffers_unchanged\": true, \"source_data_and_parent_checkpoint_unchanged\": true, \"grounding_and_query_selection_exactly_equal_to_start\": true, \"changed_parameter_names\": {\"native\": [\"rel_encoder.0.weight\", \"rel_encoder.0.bias\", \"rel_encoder.2.weight\", \"rel_encoder.2.bias\", \"x_mask.0.weight\", \"x_mask.0.bias\", \"x_mask.2.weight\", \"x_mask.2.bias\", \"x_mask.4.weight\", \"x_mask.4.bias\", \"x_query.0.weight\", \"x_query.0.bias\", \"x_query.2.weight\", \"x_query.2.bias\", \"x_query.4.weight\", \"x_query.4.bias\"], \"nearest\": [\"rel_encoder.0.weight\", \"rel_encoder.0.bias\", \"rel_encoder.2.weight\", \"rel_encoder.2.bias\", \"x_mask.0.weight\", \"x_mask.0.bias\", \"x_mask.2.weight\", \"x_mask.2.bias\", \"x_mask.4.weight\", \"x_mask.4.bias\", \"x_query.0.weight\", \"x_query.0.bias\", \"x_query.2.weight\", \"x_query.2.bias\", \"x_query.4.weight\", \"x_query.4.bias\"]}, \"baseline_rows_sha256\": \"ba9968e48a3b39cac92802a94053eba90f8d11db70ebbfc0b1168273ccbd6f81\", \"terminal_rows_sha256\": \"18a529911fe94d8f35c5f13621624bc8980d710c3a71d91215b2f121894a93d2\", \"artifacts\": {\"native\": {\"path\": \"/root/autodl-tmp/mcln_mask_neighborhood_m5_20260905_v1/native_mask_projection_state.pt\", \"bytes\": 16201173, \"sha256\": \"46ec0d5ebe44c7e94e46afe976126177897e7350c1c133b4051d0648931cd69d\"}, \"nearest\": {\"path\": \"/root/autodl-tmp/mcln_mask_neighborhood_m5_20260905_v1/nearest_mask_projection_state.pt\", \"bytes\": 16201173, \"sha256\": \"544058b298ae52fc00fc32acae66c4a994209c4660b57684aae124fdde9798a7\"}}, \"manifest_sha256\": \"abc46c2e543ec05ade30523f83cbded0689d7d88def07ca8dd06b4f79ba439c1\", \"elapsed_seconds\": 3552.0805883407593, \"max_gpu_allocated_bytes\": 6885751808}"
+  ],
+  "preflight": {
+    "clip_norm": 0.1,
+    "fit_rows": 2048,
+    "fit_scenes": 262,
+    "frozen_state_unchanged": true,
+    "holdout_rows": 6172,
+    "holdout_scenes": 98,
+    "identical_grounding": true,
+    "learning_rate": 1e-05,
+    "optimizer_steps": 0,
+    "trainable_parameters": 1348960,
+    "weight_decay": 0.0005
+  },
+  "preflight.json": {
+    "bytes": 1642,
+    "sha256": "8fa15d2400ed2eba012493e240a1ce4981cfb24147532c1d651ce72ca0e97c08"
+  },
+  "process": "",
+  "process_exit": 1,
+  "receipt.json": {
+    "bytes": 24600,
+    "sha256": "d6998a11c1ec9611bbbdd84beb8a753049a634dfe66e6da5f1d278d463b5d2d5"
+  },
+  "recent_events": [
+    {
+      "batches": 250,
+      "elapsed_seconds": 3123.742997407913,
+      "rows": 4000,
+      "stage": "terminal"
+    },
+    {
+      "batches": 300,
+      "elapsed_seconds": 3272.348217487335,
+      "rows": 4800,
+      "stage": "terminal"
+    },
+    {
+      "batches": 350,
+      "elapsed_seconds": 3420.1145029067993,
+      "rows": 5600,
+      "stage": "terminal"
+    }
+  ],
+  "run.log": {
+    "bytes": 10666,
+    "sha256": "7d80bd89792726f79ff8f7d0218e1d436dac553147d2dd81b5974714468e4dce"
+  },
+  "terminal_rows.json": {
+    "bytes": 2719729,
+    "sha256": "18a529911fe94d8f35c5f13621624bc8980d710c3a71d91215b2f121894a93d2"
+  },
+  "time_cst": "2026-09-05T21:03:27.843129+08:00"
+}

@@ -14910,3 +14910,27 @@ PECA.kp_linear定义后未使用；未进行其完整运行/论文复现实验�
 一epoch6687更新、AdamW1e-5/.0005/clip.1。终态位置臂对text控制和保护起点
 均需REC25至少+10净命中，REC50与两Mask阈值及mIoU不下降；无中途选epoch或扫参。
 L1尚未有训练结果；M5也还不能称为质量PASS/FAIL。
+
+
+### 20.50 M5完整终态与L1 CPU预检（2026-09-05，M5终态已取得）
+
+M5控制器exit0，两臂完整1024更新；6172行开始/终态、输入与定位身份、参数/buffer、
+原源码/数据/权重前后检查均通过。质量门槛FAIL，未有正式验证或受保护模型替换。
+
+baseline/native：REC 6005/5306，Mask 5767/5057，mIoU 68.88151972%。
+baseline/nearest：REC 6005/5306，Mask 5745/5143，mIoU 70.12066965%。
+terminal/native：REC 6005/5306，Mask 5753/5050，mIoU 68.76133394%。
+terminal/nearest：REC 6005/5306，Mask 5750/5139，mIoU 70.05065411%。
+terminal_nearest_minus_protected_start：mIoU +1.16913440pp；Mask25修复/破坏/净 31/48/-17；Mask50 190/108/82。
+terminal_nearest_minus_terminal_native：mIoU +1.28932018pp；Mask25修复/破坏/净 38/41/-3；Mask50 200/111/89。
+
+两项控制都要mIoU至少+.2pp且两Mask阈值不下降，事后未改门槛。
+该M5路线固定终态失败，封存两臂；不晋级native控制、nearest分组或早期epoch，不原样扫参续训。
+完整报告docs/NR3D_MASK_NEIGHBORHOOD_M5_RESULT_2026-09-05.md，逐行、scene聚类区间和receipt均归档。
+receipt SHA d6998a11c1ec9611bbbdd84beb8a753049a634dfe66e6da5f1d278d463b5d2d5。
+
+L1在实际Py3.7/Torch1.10.2环境7项注意力测试通过，4项固定终态判定测试通过。
+GPU启动前本地真实receipt检查发现M3按batches/rows嵌套，已修正L1读取；原CPU工件保留cpu_initial，
+实际16行输入hash映射/编译/7测试复查通过，修正前0GPU/0更新。
+当前L1冻结manifest SHA 1eb6f194daf25a43bb1d8c63f12e3edc80db407f0d6e8182faac98b578a0b858，1026数据文件。
+已推送fdfb882包含对象审计终态和L1代码/计划/CPU证据；L1下一步是真实16行零更新预检，未有训练收益。

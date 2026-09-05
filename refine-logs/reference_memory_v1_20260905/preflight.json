@@ -1,0 +1,76 @@
+{
+  "census": {
+    "fit": {
+      "identity_sha256": "428529560b2448b703b93d0ddf8f0189d67926f08af37d950c81fa62e8c5cb0e",
+      "rows": 26747,
+      "scenes": 413
+    },
+    "holdout": {
+      "identity_sha256": "9779029dda18400db707833707835d6146c0f7978bff9ec5f3abebfa79562256",
+      "rows": 6172,
+      "scenes": 98
+    }
+  },
+  "checkpoint_sha256": "76aa6cd49ca20a34e78509465f1185b1b9040e60807ad327d6b0876aeb6edba1",
+  "common_initial_state_equal": true,
+  "contract": {
+    "arms": {
+      "object_global": {
+        "memory": "object",
+        "readout": "global"
+      },
+      "object_pair": {
+        "memory": "object",
+        "readout": "pair"
+      },
+      "query_global": {
+        "memory": "query",
+        "readout": "global"
+      },
+      "query_pair": {
+        "memory": "query",
+        "readout": "pair"
+      }
+    },
+    "augmentation": false,
+    "backbone_frozen": true,
+    "batch_size": 4,
+    "checkpoint_selection": "last step only; no intermediate holdout",
+    "decision_score": "single uncalibrated scalar logit",
+    "empty_supervision_batch": "skip all four optimizer updates",
+    "epochs": 1,
+    "eval_seed": 1000,
+    "folds": 5,
+    "formal_validation": false,
+    "gradient_clip_norm": 1.0,
+    "holdout_fold": 0,
+    "init_seed": 9,
+    "loader_seed": 0,
+    "loss": "IoU-weighted listwise CE over valid candidates with root IoU > .25",
+    "lr": 0.0001,
+    "memory_comparison": "existing legal Queries versus existing butd_cls object inputs",
+    "num_workers": 4,
+    "optimizer": "AdamW",
+    "parameter_matching": "exact within each readout across memories; global/pair counts differ",
+    "previous_P2_variant_status": "failed and sealed; no inherited performance pass",
+    "primary_candidate": "object_pair",
+    "scheduler": null,
+    "schema": "mcln-nr3d-reference-memory-train-v1",
+    "split_salt": "MCLN-NR3D-PAIR-READOUT-V1-20260905",
+    "top_k": 32,
+    "uncovered_rows": "excluded from ranking loss; retained as evaluation misses",
+    "weight_decay": 0.0001,
+    "whole_system_unseen_scenes": false
+  },
+  "fit_batches": 6687,
+  "formal_validation_dataset_constructed": false,
+  "holdout_batches": 1543,
+  "input_manifest_sha256": "83c9d918264e9f1af310fec988e1ede3df7b2439f9ee1dfc9c5737a228710296",
+  "parameters_by_arm": {
+    "object_global": 347953,
+    "object_pair": 931729,
+    "query_global": 347953,
+    "query_pair": 931729
+  },
+  "schema": "mcln-nr3d-reference-memory-train-v1"
+}

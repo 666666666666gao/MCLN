@@ -15269,3 +15269,34 @@ PID21638，没有重启。B全部6172条起点评估完成；逐行核验两臂�
 现有observer自01:11起每240秒查看并保存原进程日志；不按loss变化延训或调门槛。
 独立终态artifact核验脚本已准备，实际16/19张量、optimizer和native重现性待完成后
 检查，不能把准备当作已通过。正式成绩不变，Sr3D权重备份缺口不变，整体goal active。
+
+
+### 20.59 B 更新已完成，终态评估继续；C1 候选 Mask 记忆读取原型通过 CPU 检查（2026-09-06 01:50 CST）
+
+上一轮完成起点复现和选择路径实测并推送，属于progress。本轮继续同一PID21638：
+01:39已记录两臂各1024次更新，elapsed2828.24秒；随后进入原定完整终态评估。
+01:47:29实查进程仍在，终态2400/6172行；尚无完成回执或质量结论，不延训/调门槛。
+以每800行约183秒估计，完整终态仍约02:00–02:10完成；observer每240秒继续观察。
+
+等待B期间新增隔离C1原型，未改运行中的B或任何保护权重。核对旧V48及后续Mask
+refiner后，没有重复其低秩逐对分数残差；C1先按候选框位置读取整个SP记忆集合，
+得到上下文后更新该候选的Mask Query，再调用原生点积writer。
+原生Box/身份Query分支保留；这是C中Mask任务读取的单项原型，不是已实现完整下一代
+联合架构，更不是新的REC提升。当前输入仍为原生SP特征，没有同时增加体素主干。
+
+模块 scripts/nr3d_mask_query_memory.py：两项LayerNorm、64维Q/K/V投影和零初始化
+输出矩阵，共74,880参数/8张量；空间项为按轴对齐候选半尺寸归一的固定距离偏置。
+没有硬裁剪或空邻域fallback，没有对象朝向来源；真实注意力是否过于集中仍需预检。
+attachment只包装_seg_seeds_prediction，捕获原SP中心，保留原writer；移除时恢复原方法，
+新增参数不进入parent state dict。未添加新的Selector或改变最终REC/Mask选择规则。
+
+在服务器原Py3.7.11/Torch1.10.2+cu111中4个CPU合成测试PASS：零输出一致/扰动后梯度、
+每候选位置对应、固定特征下坐标与索引变换、变长SP批次及writer恢复。
+0数据行、0原生模型forward、0GPUforward、0optimizer更新；固定权重扰动不是训练。
+实现SHA45b7d6ed8aeb07aa37c0a87ef4090648e4fa928abed71aabb02e6d9145833322。
+证据 refine-logs/mask_query_memory_cpu_20260906_v1/；说明
+docs/NR3D_MASK_QUERY_MEMORY_PROTOTYPE_2026-09-06.md。
+
+C1尚无真实模型预检、训练预算/质量判据或正式artifact；不将CPU测试通过写成网络有效。
+下一步先复算B完整终态并检查实际参数/optimizer，再决定后续正式配对或C1真实预检顺序。
+正式Nr3D/Sr3D/ScanRefer保护成绩不变，Sr3D权重备份仍缺，三数据集目标继续active。

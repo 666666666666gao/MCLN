@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-06 01:24 CST. Detailed evidence: master §§20.37–20.58.
+Updated: 2026-09-06 01:50 CST. Detailed evidence: master §§20.37–20.59.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -16,7 +16,8 @@ Updated: 2026-09-06 01:24 CST. Detailed evidence: master §§20.37–20.58.
 | M4 Mask neighborhood intervention | Complete;16 fit rows,8 forwards,zero updates |31 majority SPs read distant seed0 on empty balls; nearest-two mean Mask +2.2877pp but6 rows worsen. Proceed only to matched learning screen |
 | M5 existing Mask projection training | Complete;both1024-step arms and6172 terminal rows; integrity PASS, fixed quality FAIL |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
 | L1 last text-attention key evidence | Complete; 6687 updates per arm; integrity PASS, quality FAIL | REC25 net0 versus both; no formal validation, control promotion or continuation |
-| Point-detail to superpoint Mask | Native CUDA/paired gradient preflight PASS;6172 start rows exactly reproduce native control | 01:23:10 PID21638 live, 384/1024 updates per arm; terminal quality pending |
+| Point-detail to superpoint Mask | Both1024 updates complete;6172 start identity PASS | 01:47:29 PID21638 live, terminal 2400/6172; quality pending |
+| C1 candidate Mask memory reading | Isolated74880-parameter prototype;4 original-environment CPU tests PASS | No native/GPU preflight or training; wait for B endpoint |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -78,3 +79,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-06 01:24 CST authoritative update: B full6172 start identity PASS versus both zero-detail and archived M5 native, including point/grounding hashes and selected Query/IoUs. Existing REC Query substituted for Mask on these rows gives133 switches, -13/-9 hits and-0.153471988pp mIoU; cached counterfactual only, evaluator unchanged. Shared-SP B affects raw Query/Text/alpha paths, and whole Box head input changes token scores; C insertion boundaries documented. Last live 01:23:10: PID21638,384/1024 steps per arm, recent64 steps88.07s. Current run continues with240s observer; final ETA02:00–02:10, no terminal quality or formal promotion. Master§20.58; goal active.
+
+
+2026-09-06 01:50 CST authoritative update: B both1024-step updates complete; 01:47:29 PID21638 continues in terminal evaluation 2400/6172. No terminal screen result. C1 candidate-specific SP memory readout implemented separately,74880 parameters,4 CPU synthetic tests PASS on original server Python/Torch;0 dataset/native/GPU forwards and0 optimizer steps. Box/identity path retained, no final selection change; native behavior untested. Master§20.59 and prototype doc. Goal active, protected formal results unchanged.

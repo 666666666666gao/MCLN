@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-06 03:24 CST. Detailed evidence: master §§20.37–20.63.
+Updated: 2026-09-06 03:38 CST. Detailed evidence: master §§20.37–20.64.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -17,7 +17,7 @@ Updated: 2026-09-06 03:24 CST. Detailed evidence: master §§20.37–20.63.
 | M5 existing Mask projection training | Complete;both1024-step arms and6172 terminal rows; integrity PASS, fixed quality FAIL |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
 | L1 last text-attention key evidence | Complete; 6687 updates per arm; integrity PASS, quality FAIL | REC25 net0 versus both; no formal validation, control promotion or continuation |
 | Point-detail to superpoint Mask | Complete;1024 updates per arm,6172 endpoint; integrity PASS, quality FAIL | detail-native mIoU+.01507pp, detail-start-.09230pp; no continuation or formal promotion |
-| C1 candidate Mask memory reading | Both1024 updates complete, terminal evaluation | 03:20:52 PID23307,800/6172 terminal rows; quality pending |
+| C1 candidate Mask memory reading | Complete;1024 updates/arm,6172 terminal rows; integrity PASS, quality FAIL | memory-native mIoU+0.00134pp, memory-start-0.03621pp; protected formal results unchanged |
 | Raw object point appearance | Explicit bounds fix;5 CPU tests and full511-scene input contract PASS | 0 empty/invalid-axis crops; native16-row preflight staged/Py3.7 compiled, not executed |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
@@ -95,3 +95,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 2026-09-06 03:24 CST authoritative update: explicit AABB crop predicate passes all511 scenes/16181 slots with0 empties,0 nonpositive axes. Boundary membership changes11697 slots (+16858/-4271 memberships), all inputs/old counts unchanged.5 CPU tests PASS; native object appearance preflight staged and compiled only. C1 both1024 updates complete, 03:20:52 terminal800/6172; no quality result. Master§20.63. Goal active.
+
+
+2026-09-06 03:38 CST authoritative update: C1 complete/controller0; independent row-level summary and actual artifact/optimizer checks PASS. Fixed quality FAIL. Both arms1024 updates, all6172 endpoint rows, REC/Text Mask/alpha frozen. No formal validation or protected result promotion. Object appearance native preflight still staged only. Master§20.64; goal active.

@@ -14566,3 +14566,15 @@ input manifest SHA 83c9d918264e9f1af310fec988e1ede3df7b2439f9ee1dfc9c5737a228710
 refine-logs/reference_memory_v1_20260905/证据位于该分支。
 本节状态仅为已启动，没有R1训练结果。Nr3D保护正式4475/3759、
 ScanRefer/Sr3D保护最好不变；三数据集目标仍active且未达到。
+
+
+**20.42进度补充，2026-09-05 17:44 CST：**17:42:54首次吞吐检查已见四臂各200/6687更新，
+800 fit行、791有排序正例；200批78.1068秒，约0.3905秒/批，GPU3787MiB/71%。
+原始Python13983与四workers运行；据此预计fit约18:25，完整评估约18:32–18:40。
+17:44:01启动CPU终态分析screen14567/controller14569，位于
+/root/autodl-tmp/mcln_reference_memory_analysis_20260905_v1；首次仅检查train.exit的时间
+为18:28，随后240秒一次，只有train.exit=0才读完整holdout并生成analysis.json与verification.json。
+终态工具不执行新GPUforward或更新，不读部分holdout指标；analysis manifest SHA
+98ece012ecd6004c459d20fb928958a5f62d874ca577d079dabd1d90314c9ab3。
+计划内7项CPU测试及真实fit预检、launch/progress/collector receipt均已进入PR #9。
+本补充没有新增性能结论，固定主候选和推进条件不变。

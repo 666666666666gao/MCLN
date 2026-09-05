@@ -13825,3 +13825,12 @@ Mask logits 也仍变化，说明两处局部测试通过不足以证明完整�
 或替换受保护 ScanRefer 推理。此轮没有新的三数据集指标，G0 科学结果仍待完整回执。
 完整整网回执为 `refine-logs/PADDING_SCENE_INTERVENTION_20260905.json`，其中绑定了实际脚本和 masked
 layer 的 SHA；局部 CPU 回执仍引用 §20.31。
+
+
+#### 20.32.2 一次性速度检查已登记（2026-09-05 10:03:51 CST）
+
+已启动只读 collector screen `mcln_g0_first_milestone`，固定等待15分钟，于约 `10:18:51 CST` 读取
+old PID3409、当前角色进程、GPU状态及固定 `results/old.log` 尾部，写入
+`/root/autodl-tmp/mcln_g0_view_pair_20260905/first_milestone.txt`。它不修改参数、进程或权重，也不递归
+搜索日志。下次恢复先读取该文件和当前真实进程，根据训练百步速度估算 old/fixed 终点，再在结束前几分钟
+检查；不连续短轮询。10:03:51 的 old PID3409 仍存活，数据初始化尚未结束。

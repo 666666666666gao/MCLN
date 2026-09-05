@@ -13937,3 +13937,63 @@ log = /root/autodl-tmp/mcln_g0_view_pair_20260905/candidate_contract.log
 全行不合格时仍计算listwise目标，且包含独立node/entity/presence路径。这些部分不能直接沿用到§20.31收缩首版。
 root-only GT对齐与原Query索引scatter已有正确处理，须保留。具体位置与最小控制约束见
 `refine-logs/CEGD_DRAFT_INTERFACE_AUDIT_20260905.md`；该草稿工作区未改，G1模块尚未实现或训练。
+
+
+### 20.35 G0 进入后段；空间注意力来源与宽记忆控制组验证（2026-09-05 11:22 CST）
+
+11:15 一次性回执记录 old `1254/1611`；11:17:59 再核实实际 trainer PID3409 仍在更新，
+达到 `1304/1611`（81%），累计训练 `1:12:29`，平均约 `3.34 s/step`。四个同命令子进程
+PPID均为3409，是DataLoader workers，不是重复训练。尚无old训练/评估最终回执，fixed尚未启动，
+也无pair decision；训练中source-choice统计不能当作heldout或正式指标。
+
+按累计与最近速度，old fit约还需17–25分钟，之后评估447个heldout batch。下一次只读检查固定为
+`11:50 CST`，screen `mcln_g0_old_eval_window` PID5204，collector PID5205，脚本
+`collect_old_eval_window.py`，输出 `old_eval_window.txt`（均位于原PAIR根目录）。
+原G0和两个P1串行队列未重启或改参数；正式7899-row访问、持久生成权重仍为0。
+
+#### 20.35.1 原始代码对照纠正归因边界
+
+已固定原MCLN `qzp2018/MCLN@9744a4ed219062d448ed0dba587eeb864491f158` 和
+ViL3DRef `cshizhe/vil3dref@82a95d9e41ecd9920d678823eda1b366947da204`，逐文件保存URL和SHA。
+当前 `MultiHeadAttentionSpatial`、`calc_pairwise_locs`、`BiEncoderLayer`、`BiDecoderLayer`
+四个定义与[原MCLN层文件](https://github.com/qzp2018/MCLN/blob/9744a4ed219062d448ed0dba587eeb864491f158/models/encoder_decoder_layers.py)的AST均相同。
+因此未屏蔽padding的max-pooling、5维中心几何属于继承机制，不能认定为新增模块引入的缺陷，
+也不能仅凭它们解释当前模型低于论文的差距；这不证明完整网络、权重或训练协议相同。
+
+原MCLN空间注意力forward与[ViL3DRef实现](https://github.com/cshizhe/vil3dref/blob/82a95d9e41ecd9920d678823eda1b366947da204/og3d_src/model/cmt_module.py)的AST相同，
+构造器在对齐fusion默认值后相同。调用层仍有差异：ViL3DRef使用`memory[:,0]`作为文本条件，
+其Nr3D配置启用距离归一化；MCLN使用max-pooling且距离归一化未启用。P2不能顺手换掉这些设置，
+否则读出机制比较会混入文本摘要和几何尺度变化。
+
+[原MCLN evaluator](https://github.com/qzp2018/MCLN/blob/9744a4ed219062d448ed0dba587eeb864491f158/src/grounding_evaluator.py)也只在REC使用对象重叠过滤，Mask不使用同一过滤。
+原REC用0/1乘分数，当前REC则以合法候选进行排名；不能把两个协议细节混为完全相同。
+REC/Mask过滤分离本身并非新增Selector独有问题；仍按§20.34先测实际选择和条件Mask质量，
+不凭CPU反例直接统一正式Mask过滤。来源回执：`refine-logs/SPATIAL_UPSTREAM_SOURCE_AUDIT_20260905.json`。
+
+#### 20.35.2 现有空间类可直接承担Top-32目标／完整Query记忆的旧机制控制
+
+新增CPU探针 `scripts/audit_spatial_target_memory.py`，从受保护SHA `76aa6c...6edba1` 严格加载
+最后一层Decoder空间注意力权重（D288、8 heads）。合成B2、256 Query、240条有效记忆，取32目标：
+
+| 检查 | 实测最大绝对差 |
+|---|---:|
+| 完整256计算后取32行 vs 32目标直接读取256记忆：输出 | `0` |
+| 同上：注意力 | `0` |
+| 大幅改变被mask记忆的特征和位置：输出 | `0` |
+| 改变目标集合之外的有效记忆Query100：输出 | `3.90843606` |
+
+这确认现有类支持矩形目标／记忆接口，不必重写旧机制即可公平保留较宽Anchor记忆。
+它不证明关系识别有效，也未实现新scorer。回执为
+`refine-logs/SPATIAL_TARGET_MEMORY_PROBE_20260905.json`；CPU、benchmark rows=0、updates=0。
+
+#### 20.35.3 当前Anchor监督与目标槽位的实际边界
+
+当前普通Nr3D加载器将每行`anchor_ids/anchors`初始化为空，parser辅助实体没有可靠实例ID映射；
+因此不能直接宣称已有可用的GT Anchor监督。当前对象类别配置为485类，不是18类过滤。
+另对完整32,919条train CSV做CPU槽位统计：上限132，fit/holdout最大target ID分别93/68，
+两组`target_id >= 132`的行数均为0。当前没有以目标ID容量截断解释train小目标失败的证据，
+不增加容量分支；该统计也不证明所有参照物或几何候选均被覆盖。
+回执：`refine-logs/DETECTOR_SLOT_CENSUS_20260905.json`，正式validation rows=0。
+
+上述探针与三个结构化回执已推送main提交`4d7a34613bfefe223268a5a61b3c7b7c8b1abf60`。
+后续仍先读取完整G0配对和排队的两个P1真实前向回执，再确定P2；受保护正式指标未更新。

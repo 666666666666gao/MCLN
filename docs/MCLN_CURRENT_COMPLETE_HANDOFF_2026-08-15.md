@@ -14338,3 +14338,51 @@ GPU现场3,767 MiB/35%。此时距完整fit预计2,032.97 s，约15:14结束训�
 screen `mcln_p2_completion_window_1518`；采集器不改训练、不执行优化器、不调用GPU模型，亦不在等待中轮询。
 回执`PAIR_READOUT_TRAIN_PROGRESS_20260905_1440.json`在PR #8。
 下一步读取此完成窗口结果：完整receipt产生前不宣称结果，不依据中途holdout改配置。
+
+
+### 20.39 P2 v1终局失败：不进入Decoder联合训练（2026-09-05 15:36 CST）
+
+覆盖§20.38的运行状态。两头均完成6,687 AdamW更新、26,747行fit，其中26,483行有合格Top32；
+skipped batch=0。训练2402.461 s，训练+评估2995.545 s（均不含初始化）。两份最终addon头已归档，
+独立终局复核全部输入/源文件、保护checkpoint、最终头SHA、样本身份、步数、逐行算术与原决定PASS。
+进程已退出、GPU 1 MiB/0%；保护模型未改变。
+
+下面分母均为6172，是98个**底层模型已见过的train scenes**上的新头留出；不是7899条正式Nr3D。
+
+| 方法 | REC hits@.25 | REC hits@.50 | Mask hits@.25 | Mask hits@.50 | Mask mIoU |
+|---|---:|---:|---:|---:|---:|
+| protected | 6005 | 5312 | 5767 | 5056 | 68.8766% |
+| default | 6005 | 5312 | 5754 | 5046 | 68.7141% |
+| global | 6003 | 5514 | 5752 | 5044 | 68.6682% |
+| pair | 6002 | 5430 | 5751 | 5038 | 68.7242% |
+
+pair-global：@.25修复9/破坏10，净-1；@.50修复79/破坏163，净-84。
+长句1844行与2+干扰物2891行的@.25净变化均0，@.50分别-13/-46。
+pair-protected：@.25修复18/破坏21，净-3；@.50修复250/破坏132，净+118；Mask mIoU低0.1524百分点。
+global相对protected的@.50净+202更大，因此不能把pair相对parent的严格阈值收益归功于新的候选对文本机制。
+两项预注册筛选均FAIL，eligible_for_decoder_experiment=False，formal_promotion=False；
+本变体停止，不改门槛，不以降loss或@.50单项上涨宣称通过，不据此进入P3。
+
+训练期间、读取holdout结果之前加入了描述性场景聚类区间（2000次，seed20260905），未改变训练或门槛。
+CPU不等场景大小回归测试PASS。pair-global @.50差-1.3610百分点，95%区间[-2.1283,-0.6404]；
+@.25区间[-0.1688,0.1312]。单seed结果不证明所有候选对结构无效。
+
+该审计本身较容易：protected @.25为6005/6172=97.2942%，Full256 oracle为6147，合法Top32为6146。
+167条protected错误中：Top32内可修复141、正确框仅在更大合法集合1、被过滤排除0、Full256缺框25。
+无合法Query行=0，合法数不足32的行=1261。此分布不能替代正式验证的失败结构。
+完整合法Query覆盖64134/214964个按表达重复计数的对象槽（29.83%），Top32为34995（16.28%）；
+这是对象可用性代理，不是真实文本Anchor召回，也未证明它是本次负结果的原因。
+在5933条存在>.50合法框的表达中，712条（12.00%）的Full Query Mask oracle仍不超过.50。
+全Query Mask oracle mIoU=73.0316%；这些仍只是训练场景统计。
+
+完整报告：PR #8 `docs/NR3D_PAIR_READOUT_P2_RESULT_2026-09-05.md`。
+原始证据：`refine-logs/p2_readout_v1_20260905/`。
+receipt SHA `64e76c04cc8efd17f36792e6dc5823b0fb39378143fd7c4ad9afe6631e6096e0`；
+rows 7749422 bytes，SHA `bf5d9f22735542f51bd765ec3c37bfebfe4f5cb664290ca22037aab84197ee84`；
+independent_verification SHA `f91109fbec88ed16378aefa278cc59f8e6bafc3e64c25a37b69257b7862e7604`。
+两份头只在远端results中：global SHA `5fa07f065d0ea7b3841434cd34f6ecfcc72ed986551e017558e0b4ba007ed83e`，
+pair SHA `fdc5f8faaedd5155fe326eff0851e20b931d8a714d5e6c8469adc0c0c28c4113`，未推送模型权重。
+
+下一步先补齐用户P1要求的正式输出路径固定诊断：核对保护权重与实际评估源码/协议，再测过滤前后
+Full256覆盖与条件Mask质量。这是对保护模型的只读诊断，未启动新的formal运行，不推广失败P2头，
+不重开G0增强路线、长baseline、FPR/A-V4或旧Gate/回放扫描。正式三基准最佳指标保持原值；总体目标未完成。

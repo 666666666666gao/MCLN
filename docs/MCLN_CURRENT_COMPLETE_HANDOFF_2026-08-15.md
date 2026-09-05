@@ -14619,3 +14619,71 @@ refine-logs/mask_training_target_audit_20260905_v1/；result3855678bytes SHA
 R1原始Python13983和CPU终态collector14569于17:49:21复核live，未重启/改动；
 继续原18:28首次检查、240秒间隔，预计18:32–18:40收完整结果。本节无R1新指标。
 三数据集保护结果与目标保持不变，目标active且未达到。
+
+
+### 20.44 R1四组终态：完整性PASS、三项结构筛选FAIL；M2原生Mask分支诊断启动（2026-09-05 18:44 CST）
+
+原R1训练/评估正常exit0；18:32:14已完成6000/6172留出行，18:38:42全部结果已收齐。
+四组各6687次更新，26747 fit行、26483有合格监督，skip0；fit2482.013秒。
+仍为6172表达/98个train场景的新增头留出，底层保护模型见过这些场景；不是正式7899行，
+不是整个系统未见场景泛化。Query memory/global-pair为既定控制，不按结果换主候选。
+
+| 模式 | REC hits .25/.50 | Mask hits .25/.50 | Mask mIoU |
+|---|---:|---:|---:|
+| protected原输出 | 6005/5312 | 5767/5056 | 68.8765531% |
+| default原分数 | 6005/5312 | 5754/5046 | 68.7141129% |
+| query_global | 6003/5514 | 5752/5044 | 68.6682155% |
+| query_pair | 6002/5430 | 5751/5038 | 68.7241976% |
+| object_global | 5999/5665 | 5754/5047 | 68.7323140% |
+| object_pair固定主候选 | 6011/5336 | 5760/5048 | 68.7307705% |
+
+object_pair相对query_pair：.25修23破14净+9，.50修140破234净-94；
+长句.25净+2、2+干扰物净+1，但严格定位退化，memory screen FAIL。
+相对object_global：.25修18破6净+12，.50修52破381净-329；
+长句.25净+5、困难净+6，但readout screen FAIL。
+相对protected：.25修19破13净+6，.50修217破193净+24；
+Mask命中-7/-8、mIoU-0.1457826pp，practical screen FAIL；长句.25净0、困难净-1。
+三项False，eligible_for_decoder_experiment=False，formal_promotion=False。
+不能把相对protected的+6/+24写成结构通过，不能事后改推object_global控制组。
+
+2000次按scene成簇、表达加权配对bootstrap固定seed20260905：
+object_pair-query_pair的REC.50差-1.5230pp，95%区间[-2.4685,-0.7145]；
+object_pair-object_global为-5.3305pp，[-6.7879,-3.9680]；
+object_pair-protected的REC.25差+0.0972pp，[-0.0813,+0.2916]，Mask差-0.1458pp，
+[-0.3799,+0.0491]。完整六个效应/交互与所有分组留存，不按区间调整注册条件。
+object_global-query_global在.50净+151，但object_pair-query_pair净-94，
+说明增加现有object记忆没有验证这版pair读出；不扩展成所有关系建模均无效。
+
+完整性：6172 CSV身份/顺序/原始token数、四组更新/最终头SHA及有限性、保护state、
+无backbone梯度、冻结612源码/输入manifest、原evaluator逐行对应全部PASS。
+原定CPU分析成功，首次verifier因未切cwd、相对data/meta_data路径不存在而exit1；
+独立v2仅增加os.chdir(pinned_source)，用同一封存receipt和analysis核验PASS。
+原错误日志/exit1保留；未重训/重评/改决策，不能把终检执行错误写成训练失败。
+训练receipt SHA02cac2912e3bdc8a5aac5bb915209cc7a2d15947f40cfc59d38a004d0c97ce24；
+6172 raw rows 9334350bytes SHA3fddc3cf84b07d77049d9d35cd25339c3b90bd7a961feb95034e4030e3acc407；
+analysis SHAb211faf763042c7ce6736fa49dc0ce71a3c8ea098bbc51bf88700837cefe213c；
+verification SHA60f9ea7c032407b65d2e1602645670fd943b7836c64fe0525ea3a44bdfb12247。
+报告docs/NR3D_REFERENCE_MEMORY_R1_RESULT_2026-09-05.md；原始证据在PR#9
+refine-logs/reference_memory_v1_20260905/terminal/及verification_v2/；
+PR#9已更新标题为R1 screen failed并推送90861cd，保持draft/unmerged。
+四个最终头留在原R1结果目录，不替换保护权重；P2/R1这两版均封存，不进入Decoder。
+
+R1完成后按§20.43启动M2只读Mask分支诊断，18:43:03原始screen15553/
+controller15555/Python15557，screen名mcln_m2_mask_branches；目录
+/root/autodl-tmp/mcln_mask_branch_diagnostic_20260905_v1。
+保护checkpoint、冻结源码、原B16/4workers/7899 val行/排序过滤/原生阈值不变，
+无P2/R1新头、无optimizer或checkpoint保存。P1没有保存raw text/query分支IoU，
+补这项证据需要一次新forward；不是按分数重试历史复现，不据微小变化更新正式最好。
+观察器记录text/query/原fusion，在logit>0下恢复pointMask并逐元素核对原evaluator，
+记录实际alpha；native REC Query、native Mask Query、GT最佳合法Box Query分开，
+同时保留Full256及“合法且Box IoU>.5”的三路Mask oracle。所有oracle均使用GT。
+原P1的1105及154/123/828群体成员固定，绝不据新预测重新选群体；原P1逐行字段差异单列。
+原misnamed raw_token_count在M2更名normalized_token_count，实际长度仍以CSV为准。
+源/数据627文件/权重前后hash及全部参数buffer核验；不扫alpha、阈值或另建Gate。
+两项针对性CPU测试在原Py3.7/Torch1.10.2再次PASS，runner/analysis编译PASS。
+输入manifest SHAfd44d2abe72824eed0bad7426daa946836b42551446fc1d316a31366438bf113；
+controller SHA9e59429fb8c3db5837d3a539dd866f12800cfb80f58f8d81f52830b1f84b9c63。
+计划docs/NR3D_MASK_BRANCH_DIAGNOSTIC_PLAN_2026-09-05.md，证据
+refine-logs/mask_branch_diagnostic_20260905_v1/。预计18:58–19:05完成，18:50先查
+初始化/吞吐，之后按240秒或近ETA查看原进程；未有M2分支结果，勿重复启动。
+当前Nr3D正式4475/3759、ScanRefer和Sr3D保护结果均不变；三数据集目标active且未完成。

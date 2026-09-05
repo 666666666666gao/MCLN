@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 18:19 CST. Detailed evidence: master §§20.37–20.43.
+Updated: 2026-09-05 18:44 CST. Detailed evidence: master §§20.37–20.44.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -18,7 +18,7 @@ represent the official validation failure distribution.
 Raw P2 results and independent checks are in PR #8:
 `refine-logs/p2_readout_v1_20260905/`. On the server, both final addon heads are
 archived at `/root/autodl-tmp/mcln_g0_view_pair_20260905/pair_readout_train_v1/results/`.
-P2 and the separate P1 native evaluation have ended; GPU now runs R1. No protected model
+P2, P1 and R1 have ended; GPU now runs the read-only M2 Mask-branch diagnostic. No protected model
 was replaced, no P2 formal validation ran, and the three-benchmark objective
 is still incomplete. Nr3D protected REC remains 4475/3759 on 7899 rows.
 
@@ -28,8 +28,8 @@ numerical inputs changed by the continuous worker RNG. G0's auxiliary logging
 defect did not affect its independently checked per-row decision.
 
 Completed P1 report: `docs/NR3D_OFFICIAL_CANDIDATE_AUDIT_RESULT_2026-09-05.md`.
-Existing Decoder object-memory input audit completed on four fit rows: 190 object slots, 38 covered by Queries, 155 correct predicted classes; not GT text-anchor recall. R1 four-arm reference-memory/readout control started at 17:35 after all CPU and real-fit zero-update checks passed. Fixed primary object_pair; all three advancement screens required. Draft PR #9 holds the pinned plan, implementation and receipts. No R1 result yet; P2 v1 remains sealed. The P1 raw-token field label correction is authoritative in `enrichment.json`.
-
-R1 observed at 17:42:54: all four arms 200/6687 updates, 0.3905 s/batch. Estimated complete holdout 18:32–18:40 CST. Original terminal collector first checks at 18:28, then every 240 s; it reads no partial holdout and runs no GPU forward. Analysis root `/root/autodl-tmp/mcln_reference_memory_analysis_20260905_v1`, controller14569. Do not duplicate or relaunch either job.
+Existing Decoder object-memory input audit completed on four fit rows: 190 object slots, 38 covered by Queries, 155 correct predicted classes; not GT text-anchor recall. R1 completed all four arms6687 updates and6172 holdout rows. Independent verification PASS, all three object_pair screens FAIL. Its REC versus protected is+6/+24, Mask mIoU-0.1458pp; versus query_pair strict REC-94, versus object_global-329. PR#9 90861cd seals full results, bootstrap and original verifier cwd error/corrected v2. No control promotion or Decoder integration. Report `docs/NR3D_REFERENCE_MEMORY_R1_RESULT_2026-09-05.md`. P2 remains sealed; actual CSV lengths are used throughout R1.
 
 CPU Mask-target audit complete (zero model forwards/updates): majority GT-label point mIoU81.9564 versus optimal SP83.3750 on sealed val inputs. The1105 good-box/bad-fused-Mask cases split154 representation-limited +123 majority-label-limited +828 whose majority labels already pass. Do not call these model metrics or training-example counts. Next Mask diagnosis separates raw text/query/fused branches after the fixed R1 result; no new Mask architecture or threshold sweep. Report `docs/NR3D_MASK_SUPERVISION_AUDIT_2026-09-05.md`.
+
+M2 native Mask-branch diagnostic started18:43:03, originalscreen15553/controller15555/Python15557. Fixed7899 val rows, protected model and thresholds, zero updates. Records raw text/query/fused Mask quality, alpha and separate native REC/Mask/best-Box identities; fixed prior1105 and154/123/828 cohorts. No M2 result yet. First progress18:50; ETA18:58–19:05 and240s near-completion polls. Plan `docs/NR3D_MASK_BRANCH_DIAGNOSTIC_PLAN_2026-09-05.md`; input manifestfd44d2abe72824eed0bad7426daa946836b42551446fc1d316a31366438bf113. Do not duplicate the running observation.

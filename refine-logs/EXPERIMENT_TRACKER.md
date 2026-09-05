@@ -1,6 +1,6 @@
 # MCLN Nr3D experiment tracker
 
-Updated: 2026-09-05 22:15 CST. Detailed evidence: master §§20.37–20.54.
+Updated: 2026-09-05 23:10 CST. Detailed evidence: master §§20.37–20.55.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -15,7 +15,8 @@ Updated: 2026-09-05 22:15 CST. Detailed evidence: master §§20.37–20.54.
 
 | M4 Mask neighborhood intervention | Complete;16 fit rows,8 forwards,zero updates |31 majority SPs read distant seed0 on empty balls; nearest-two mean Mask +2.2877pp but6 rows worsen. Proceed only to matched learning screen |
 | M5 existing Mask projection training | Complete;both1024-step arms and6172 terminal rows; integrity PASS, fixed quality FAIL |2048 fit/262 scenes,6172 holdout/98 backbone-seen scenes;2 arms1024 steps each, no REC changes or formal promotion |
-| L1 last text-attention key evidence | Running; PID 18450, both arms logged 1664 / 6687 updates at 22:06 CST | Await fixed endpoint and both terminal comparisons; native formal entry CPU checked, no new formal evaluation |
+| L1 last text-attention key evidence | Last observer at 22:31 CST: PID18450,2816/6687 updates; no endpoint then | Fixed run unchanged; next observer scheduled23:35 then240s |
+| Point-detail to superpoint Mask | 4 CPU tests PASS; native 16-fit-row preflight staged and Python3.7 compiled | GPU not executed; run after L1, then define independent learning screen |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen
 backbone. Protected/global/pair REC hits are 6005/5312, 6003/5514, 6002/5430;
@@ -65,3 +66,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 
 22:15 progress: the conditional native L1 formal-pair entry is implemented and passed 11 CPU tests in the frozen server environment. It reuses the unchanged terminal gate, native evaluation branch and separate native evaluators on identical batches, preserving REC/Mask selection paths and recording pre/post-filter coverage. Full GPU evaluation is untested and no trained artifact or eligible formal manifest was created. Last live check at 22:06:41 recorded both arms 1664 / 6687 updates (6656 rows); PID 18450 continues. See master §20.54 and docs/NR3D_L1_NATIVE_FORMAL_PAIR_2026-09-05.md. Overall goal active; Sr3D backup location remains pending.
+
+
+2026-09-05 23:10 CST progress: point-based local-detail residual and isolated native preflight are prepared; 54,144 parameters, 4 synthetic CPU tests pass, no voxel installation or GPU preflight. M2 cached-output identity diagnosis finds533 differing REC/Mask selections among7898 legal-REC rows; forcing existing REC-query Masks gives+47/+27 hits and+0.2884171pp mIoU on that paired subset, with17/9 breaks. Diagnostic only; no evaluator change or formal best. Identified Sr3D backup candidates were exhausted at22:27; new backup location remains needed. L1 fixed run and protected results unchanged. See master§20.55 and docs/NR3D_POINT_DETAIL_MEMORY_PLAN_2026-09-05.md. Overall goal active.

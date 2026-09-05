@@ -15061,3 +15061,65 @@ Query 条件下 Mask 质量。所有 oracle 只用于诊断，不进入 forward 
 下一步等待 L1 固定终态并审查回执；通过则进行隔离的原生正式配对，失败则封存本次路线。
 Nr3D/Sr3D 正式最好和 ScanRefer 保护结果均未更新；Sr3D 备份位置仍待补充。
 本轮属于 progress + 已实查的训练运行中，整体 goal active，三数据集目标尚未完成。
+
+
+### 20.55 局部点细节模块完成 CPU 准备；共享身份诊断与 Sr3D 备份排查（2026-09-05 23:10 CST）
+
+本轮按用户最新结构建议推进：L1 维持既定两臂和终态门槛，随后先独立验证高分辨率
+局部信息，再独立检验共享身份的 Box/Mask 任务查询。本轮没有整体替换 PointNet++、
+安装稀疏体素环境、复活 P2/R1、添加任务 token 或改变正式选择规则。
+上一目标轮为 progress；本轮仍为 progress，三数据集正式目标尚未完成。
+
+新增 scripts/nr3d_point_detail_memory.py，54,144 参数。读取现有 SA1 的 2,048 个
+128 维特征，用原生三近邻插值映射回同一批 50,000 输入点，拼接相对 superpoint
+中心的 XYZ 和已有 RGB。点上 Linear(134,128)+ReLU 后，按真实 superpoint 成员
+确定性求均值，经零初始化无 bias 的 Linear(128,288) 产生局部残差，直接补到原生
+superpoint Mask 特征。保留粗特征和现有两种 Mask 头；暂不向对象记忆写外观，
+不改候选身份或 Box 输出。它是点特征控制分支，尚不是体素实现或已经有效的新模型。
+没有 GT 实例 Mask 清洗输入；插值 epsilon 沿用原 PointnetFPModule，因为 SA1
+锚点来自输入点，实际存在精确零距离。
+
+隔离服务器 CPU 目录中，Python 3.7.11 / PyTorch 1.10.2 下 4 项测试通过（1.31 秒）：
+零初始化与两阶段梯度、superpoint 成员局部性/缺号/点顺序、平移不变性、临时 hooks
+批次路由及移除后恢复父模型。CUDA 不可见；0 真实数据行、0 GPU forward、0 optimizer
+更新，只有合成梯度测试中的一次显式矩阵更新。CPU 插值替身仅用于 hooks 测试，不能
+宣称原生 CUDA 接入已验证。证据 refine-logs/point_detail_cpu_20260905_v1/。
+
+新增 scripts/run_nr3d_point_detail_preflight.py，准备沿 M3 相同 16 个 fit 场景/表达
+执行原生、零残差、固定 .001 矩形对角残差共 12 次 forward，检查点 SHA、完整零态
+输出、Mask 梯度、非零残差下 REC 不变，以及真实显存和耗时。36 个输入文件沿用 M3
+哈希，受保护 parent 和冻结源码 manifest 同原实验。该预检尚未执行，无训练/质量结果。
+原生 Python 3.7 编译通过，隔离清单 SHA256：
+74103cf7c92dfc62716ee7830386570c4c1bfed86f2cf000067be114a53aad2a。
+目录 /root/autodl-tmp/mcln_point_detail_preflight_20260905_v1；L1 完成后才允许 GPU 预检。
+说明 docs/NR3D_POINT_DETAIL_MEMORY_PLAN_2026-09-05.md，准备证据
+refine-logs/point_detail_preflight_20260905_v1/。真实 GPU 预检通过后，再固定独立训练对照。
+
+另新增只读 scripts/summarize_nr3d_query_identity.py，使用封存 M2 的 7,899 行。
+压缩/原始行哈希和原生逐行计数/IoU 累加严格核对；阈值使用 IoU > threshold。
+7,898 行有合法 REC Query，其中 533 行 REC 和 Mask 选择不同。固定读取 REC Query
+的已有融合 Mask，对同一 7,898 行：Mask@.25 修复64/破坏17/净+47，@.50 修复36/
+破坏9/净+27，mIoU +0.2884171 个百分点。余下一行没有合法 REC Query，不虚构其
+替换 Mask，也不增加部署 fallback。该结果是已有正式验证输出的反事实诊断，不能
+作为新的训练成绩、完整 7,899 行部署成绩或未见场景泛化证据；本轮未修改 evaluator。
+它支持共享身份研究，也显示直接强制同 Query 仍会破坏已有命中。
+证据 refine-logs/mask_branch_diagnostic_20260905_v1/query_identity_analysis.json。
+
+PV-Ground 官方代码只读核对到 262e2592589baec7bb83a0d46aae6542d4ccedfb。
+主干为 MeanVFE → VoxelBackBone8x → HeightCompression → VoxelSetAbstraction；
+其 Mask 仍有 QueryAndGroup(radius=.2,nsample=2)，因此换体素主干不自动消除当前
+superpoint 读取瓶颈。本次代码独立编写，未复制上游源码或变更 GPU 运行环境。
+
+Sr3D 22:27 额外备份排查完成：两个候选目录实际解析到已有 runtime/output；
+六个源码 tar 归档都不含 .pth/.pt；运行目录 ckpt_epoch_54.pth SHA 与已记录原始
+ScanRefer release 完全相同。日志备份无权重，本地 Desktop/Documents 文件名
+检查也未找到 MCLN/Sr3D 权重或命名备份。当前已识别候选已查完，仍需新的 Sr3D
+备份位置；不将其表述为所有外部备份均已丢失，不重复搜索同一别名。
+证据 refine-logs/sr3d_backup_candidate_verification_20260905.json。
+
+L1 的新归档 collector 回执为 22:19:15、PID18450、2304/6687 步；随后已有只读
+observer 在 22:31:14 观察到 2816 步，尚无终态回执。observer 计划 23:35 再查，
+随后每 240 秒观察；本轮没有额外高频训练轮询。仍须读取真实终态，不能把 ETA
+当完成。本轮未更改运行中的 L1 文件、参数或数据，未读取/部署中间权重。
+Nr3D 受保护正式 4475/3759、Sr3D 12139/10335 和 ScanRefer 保护结果全部不变。
+整体 goal active；局部 Mask 准备、旧输出诊断与 CPU 通过均不等于 REC 总目标达成。

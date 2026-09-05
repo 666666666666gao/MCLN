@@ -40,6 +40,20 @@ Do not substitute an arbitrary checkpoint or restart the canceled long baseline
 to bypass this missing artifact. No Sr3D trainer, validation, weight deletion
 or data change was performed in these checks.
 
+The additional search completed at 22:27 CST. The old source alias
+`/home/gb/butd/mcln` resolves to the same current runtime, and
+`DATA_ROOT_mcln_meshsp/output` resolves to the already searched DATA_ROOT/output.
+The log backup contains older Sr3D logs/configs, with no weight files. All six
+candidate source archives were opened read-only and contain no `.pth` or `.pt`
+members. The runtime's `pretained model/ckpt_epoch_54.pth` exactly matches the
+documented official ScanRefer release SHA256
+`a9930065996fce1d0dd5ee9fe00a120bdb3a2c88d158b7a3666717d842ac113d`;
+it is not the missing Sr3D protected artifact. A local Desktop/Documents
+filename search also found no MCLN/Sr3D weight or named backup archive.
+These checks close the currently identified backup candidates. Recovery still
+needs a new backup location; do not repeatedly search the same aliases.
+Evidence: `refine-logs/sr3d_backup_candidate_verification_20260905.json`.
+
 The complete goal remains Nr3D REC>60%, Sr3D REC>68.9%, with the protected
 ScanRefer result preserved. A passed input/gradient check, a module-holdout
 gain, or a Mask-only result does not satisfy those benchmark requirements.

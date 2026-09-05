@@ -80,3 +80,19 @@ and backward probe, zero updates, before launching the full fixed run. An actual
 nonfinite loss/gradient or identity failure stops the job; no automatic restart,
 parameter fallback or partial result promotion. Check launch once, use early
 logged throughput to estimate duration, then poll near the estimated finish.
+
+
+## Registered census and launch receipt
+
+After the contract commit `bf2a6b5`, the fixed salt produced 413 fit scenes /
+26,747 rows and 98 holdout scenes / 6,172 rows. Input manifest SHA:
+`7a6d276f4c9bd745bc5d28fd7e7b12803a6a9dd485c2cddd7ae1d1d7aa701535`.
+Five CPU contract tests passed in 0.06 s. The actual first-fit-batch GPU smoke
+passed with four covered rows, finite losses/gradients and zero updates.
+
+The full job started at **2026-09-05 14:28:37 CST**, screen
+`9428.mcln_p2_global_pair_train`, Python PID 9430, under the existing GPU lock.
+It schedules 6,687 fit batches and 1,543 holdout batches. Receipts are under
+`refine-logs/PAIR_READOUT_TRAIN_{INPUT,CPU,PREFLIGHT,SMOKE,LAUNCH}_20260905.json`.
+No completed training or held-out result was available at launch. Protected
+benchmark metrics are unchanged.

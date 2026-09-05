@@ -1,6 +1,7 @@
 # Minimal candidate-pair relation readout prototype
 
-This is an isolated, untrained prototype. It is not connected to `MCLN.forward`,
+This is an isolated readout prototype. Its first supervised paired experiment
+was registered and launched on 2026-09-05; no completed result is claimed here. It is not connected to `MCLN.forward`,
 the production evaluator. The G0/P1 jobs have now completed. It provides a concrete
 implementation of the user's narrower P2 mechanism comparison, replacing the
 earlier CEGD draft with multiple simultaneous evidence branches.
@@ -74,15 +75,15 @@ global_output = global_readout(**shared_inputs)
 pair_output = pair_readout(**shared_inputs)
 ```
 
-## Training scope still to be registered
+## Registered training comparison
 
-The prototype does not implement a training loss, new split, optimizer,
-training launcher or evaluator override. Before a paired GPU experiment,
-freeze the actual candidate-producing model mode and augmentation, legal
-candidate mapping, objective, sole decision score, common initialization and
-update count. Rows whose target candidate set contains no qualifying box must
-not be turned into positive ranking examples by labeling their best bad box
-as a correct answer. Root-target IoU labels belong outside `forward`.
+The independent P2 runner and fixed contract now implement one fit epoch of
+both addon heads on the same frozen backbone forward. See
+[the registered P2 plan](NR3D_PAIR_READOUT_P2_PLAN_2026-09-05.md) for the fixed
+split, positive-only listwise objective, initialization, sole decision score,
+optimizer, common update count and promotion screens. Uncovered rows are
+excluded from ranking supervision and remain part of evaluation. No production
+evaluator override or benchmark promotion is part of this experiment.
 
 Both new readouts mask padding, but this only guarantees invariance for fixed
 input features. It does not fix or establish invariance of the upstream

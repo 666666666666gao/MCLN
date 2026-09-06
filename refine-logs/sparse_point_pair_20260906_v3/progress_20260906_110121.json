@@ -1,0 +1,94 @@
+{
+  "controller_exit": 0,
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "prepare_inputs.py",
+    "input_manifest.json",
+    "sparse_preflight_receipt.json",
+    "__pycache__",
+    "tests.xml",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "first_batch_gradient_comparison.json",
+    "preflight.json",
+    "source_snapshot.zip",
+    "published_source_identity.json",
+    "README.md",
+    "baseline_rows.json",
+    "baseline_identity.json",
+    "baseline_independent_verification.json",
+    "fit_point_batches.json",
+    "terminal_rows.json",
+    "native_mask_state.pt",
+    "sparse_mask_state.pt",
+    "receipt.json",
+    "controller.exit"
+  ],
+  "gpu": "1 MiB, 0 %",
+  "latest_evaluation": [
+    {
+      "batches": 350,
+      "elapsed_seconds": 12696.864502191544,
+      "rows": 5600,
+      "stage": "terminal"
+    }
+  ],
+  "latest_training": [
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 3.7629191875457764,
+          "loss": 15.602444648742676
+        },
+        "sparse": {
+          "gradient_norm_before_clip": 9.309117317199707,
+          "loss": 15.462019920349121
+        }
+      },
+      "elapsed_seconds": 11212.728320121765,
+      "epoch": 0,
+      "sparse_output_weight_norm": 0.8555331230163574,
+      "step": 6592
+    },
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 6.064075469970703,
+          "loss": 15.86317253112793
+        },
+        "sparse": {
+          "gradient_norm_before_clip": 17.27880096435547,
+          "loss": 15.832605361938477
+        }
+      },
+      "elapsed_seconds": 11307.070293188095,
+      "epoch": 0,
+      "sparse_output_weight_norm": 0.8630514740943909,
+      "step": 6656
+    }
+  ],
+  "log_sha256": "4e963f3c8636018dd5f15da028efa7e9d45aa2bae166f1b52ccc3ae85763fc11",
+  "log_tail": [
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 50, \"rows\": 800, \"elapsed_seconds\": 11546.986359119415}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 100, \"rows\": 1600, \"elapsed_seconds\": 11739.0142121315}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 150, \"rows\": 2400, \"elapsed_seconds\": 11930.371500015259}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 200, \"rows\": 3200, \"elapsed_seconds\": 12122.050080299377}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 250, \"rows\": 4000, \"elapsed_seconds\": 12314.097424268723}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 300, \"rows\": 4800, \"elapsed_seconds\": 12505.879405260086}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 350, \"rows\": 5600, \"elapsed_seconds\": 12696.864502191544}",
+    "SPARSE POINT PAIR COMPLETE {\"schema\": \"mcln-nr3d-sparse-point-pair-v3\", \"status\": \"complete\", \"optimizer_steps_per_arm\": 6687, \"fit_rows\": 26747, \"fit_scenes\": 413, \"epochs\": 1, \"holdout_rows\": 6172, \"holdout_scenes\": 98, \"heldout_scenes_seen_by_frozen_backbone\": true, \"formal_rows\": 0, \"formal_promotion\": false, \"fit_order_sha256\": \"e69ee42cf57350730428d96b872cf24ebcf0370cc4ad7084d1160ef4d665ef38\", \"frozen_parameters_and_buffers_unchanged\": true, \"source_data_and_parent_checkpoint_unchanged\": true, \"grounding_and_query_selection_exactly_equal_to_start\": true, \"changed_parameter_names\": {\"native\": [\"rel_encoder.0.weight\", \"rel_encoder.0.bias\", \"rel_encoder.2.weight\", \"rel_encoder.2.bias\", \"x_mask.0.weight\", \"x_mask.0.bias\", \"x_mask.2.weight\", \"x_mask.2.bias\", \"x_mask.4.weight\", \"x_mask.4.bias\", \"x_query.0.weight\", \"x_query.0.bias\", \"x_query.2.weight\", \"x_query.2.bias\", \"x_query.4.weight\", \"x_query.4.bias\"], \"sparse\": [\"rel_encoder.0.weight\", \"rel_encoder.0.bias\", \"rel_encoder.2.weight\", \"rel_encoder.2.bias\", \"x_mask.0.weight\", \"x_mask.0.bias\", \"x_mask.2.weight\", \"x_mask.2.bias\", \"x_mask.4.weight\", \"x_mask.4.bias\", \"x_query.0.weight\", \"x_query.0.bias\", \"x_query.2.weight\", \"x_query.2.bias\", \"x_query.4.weight\", \"x_query.4.bias\", \"sparse_point.point_encoder.0.weight\", \"sparse_point.point_encoder.0.bias\", \"sparse_point.point_encoder.1.weight\", \"sparse_point.point_encoder.1.bias\", \"sparse_point.fine.0.weight\", \"sparse_point.fine.1.weight\", \"sparse_point.fine.1.bias\", \"sparse_point.down.0.weight\", \"sparse_point.down.1.weight\", \"sparse_point.down.1.bias\", \"sparse_point.coarse.0.weight\", \"sparse_point.coarse.1.weight\", \"sparse_point.coarse.1.bias\", \"sparse_point.up.0.weight\", \"sparse_point.up.1.weight\", \"sparse_point.up.1.bias\", \"sparse_point.output.weight\"]}, \"baseline_matches_protected_reference\": true, \"native_warmup_forwards\": 0, \"shared_gradient_relative_l2_limit\": 0.0001, \"first_batch_gradient_comparison_sha256\": \"97db21457078492cb05e65bcbaecb6bfc7236849798622a4ab01194d97e35a52\", \"fit_point_batches_sha256\": \"e8cacc9597fc3c71e80bf6d8eb4a46e05c5b5210c4bfd03c8c5cd1dca29ba733\", \"learning_rates\": {\"native_shared\": 1e-05, \"sparse_shared\": 1e-05, \"sparse_new\": 0.0001}, \"baseline_rows_sha256\": \"5f02c1bb8fd20c94c103cda35c44fcee1709b12aed97bbf1ee6ecc6408c8f2b1\", \"terminal_rows_sha256\": \"243a36a4748be73f9f2afcb5204c457f92c18aa3760e12ecc6e65a5b572b915d\", \"artifacts\": {\"native\": {\"path\": \"/root/autodl-tmp/mcln_sparse_point_pair_20260906_v3/native_mask_state.pt\", \"bytes\": 16201173, \"sha256\": \"c3dfab6f4f7d2843bec501eaa319d34316f90e82e44c5012e050e4db7f23a6ac\"}, \"sparse\": {\"path\": \"/root/autodl-tmp/mcln_sparse_point_pair_20260906_v3/sparse_mask_state.pt\", \"bytes\": 19431804, \"sha256\": \"6c5170c6405a37c45cea6973b9e7d6d4a24d3b58b07ac8d6b135c031bb710692\"}}, \"manifest_sha256\": \"ade6fe609cbadf0930e4f82f4f7031495450197637e2013aca5ef7b0441ff09e\", \"elapsed_seconds\": 12862.266688585281, \"max_gpu_allocated_bytes\": 6833019904, \"runtime\": {\"prefix\": \"/root/autodl-tmp/mcln_sparse_runtime_20260906_v3/venv\", \"torch\": \"1.10.2+cu111\", \"spconv\": \"2.3.6\", \"cumm\": \"0.4.11\", \"matmul_tf32\": true, \"cudnn_tf32\": true}}"
+  ],
+  "process": "",
+  "process_exit": 1,
+  "runtime_estimate": {
+    "estimated_complete_cst": "2026-09-06T11:26:49.179773+08:00",
+    "remaining_seconds": 1527.8072663856192,
+    "seconds_per_paired_step": 1.4740933291614056,
+    "terminal_evaluation_seconds": 1482.1103731816156
+  },
+  "time_cst": "2026-09-06T11:01:21.372507+08:00"
+}

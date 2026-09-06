@@ -16197,3 +16197,68 @@ scripts/run_scanrefer_joint_readout_pair.py已准备：同起点同参数范围�
 scanrefer_teacher_transfer_20260906_v3、scanrefer_joint_pair_preparation_20260906_v1；
 更新计划：refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md。
 理论依据仅取Rank-DETR原论文§3.3及EG-3DVG官方方法描述，不据此承诺移植收益或SOTA。
+
+
+### 20.82 旧Nr稀疏Mask终态FAIL，Scan原生/教师诊断通过并启动接续训练（2026-09-06 11:33 CST）
+
+本节接续§20.81，指标和转数据集顺序仍按§20.79：ScanRefer REC至少5572/4797，
+Scan Mask至少58.70/50.70/44.72%；达到后尽快Nr/Sr REC，不等待59/51。Nr/Sr Mask
+不进入当前晋级要求。下面开发数据均为主干见过的训练场景，不能用于宣称新场景泛化。
+
+旧Nr稀疏局部记忆V3已完整结束，每臂6687更新，6172终点行。Mask起点5767/5057、
+mIoU68.8815197%；native5760/5005、68.5737824%；sparse5747/4983、68.4339099%。
+sparse相对起点-20/-74、mIoU-0.4476098pp，相对native-13/-22、-0.1398725pp。
+固定质量筛选FAIL；权重、optimizer步数/有限性及逐行统计独立复核PASS。REC和Query
+选择始终冻结一致，无NrMask正式验证、追加训练或通过声明。旧artifact只封存。
+
+Scan原生16-row V1在零更新前向/梯度后，因原evaluator检查全部raw size非负而退出。
+已有size head是无约束MLP，rec_candidate_adapter本来就将部署候选size截至1e-6；
+此次仅新增scripts/scanrefer_rec_evaluation.py，在评估副本使用相同候选表示，训练
+loss和原始预测不改。CPU实际V99权重检查确认所有部署输出逐位不变。V2于11:12:20
+通过同16行B12+4完整预检：两次主干前向、0更新，旧V99/新连接/原evaluator一致，
+联合梯度连通而detached边界正确，全部保护状态不变；峰值3627.78MiB。此为工程PASS，
+不是新质量结果。V3教师队列因依赖V1失败而退出，未运行512行，不算科学FAIL。
+
+冻结教师V4于11:20:49完成512条预先固定的Scan fit表达，0更新/0正式行：
+
+|输出或诊断候选|hits@0.25|hits@0.50|
+|---|---:|---:|
+|原生Default部署选择|491|461|
+|V99教师最终框|494|471|
+|教师变体的原始Query框|495|457|
+|GT Hungarian root匹配|511|499|
+|原生Full256 GT oracle|511|501|
+
+教师相对原生修复/破坏为4/1和17/7，净+3/+10；相对原Query框的几何变化严格阈值
+净+14。它比Hungarian框IoU好200行、差220行，相对GT匹配的阈值命中净-17/-28。
+这说明教师能补部署选择，但不能直接替代GT监督；GT匹配/oracle不是可部署准确率。
+276行按几何建立的当前Query对应与原变体Query编号不同，5行教师过0.5而对应原框
+不过；不能只模仿分数就宣称已经迁移框收益。512行中499行包含共20570个raw负尺寸
+Query，但原生选中和Hungarian root选中均为0个；评估副本未改变这些选中框。
+教师rows SHA 1d723738b51cf545fff083893ab38e3a55710e561cd70300c616147d9b7c4279。
+
+据此锁定首轮为GT监督的既有可学习读出联合接续对照，不用错误教师覆盖GT、不新增
+伪标签或固定Query编号目标。教师学生方案没有被否定，也尚未实现；本轮不称为新
+局部视觉信息、原生学生内化、完全取消后处理或完整可微端到端。推理继续保留原
+几何变体及固定Pareto规则，更新后的核心与读出权重统一保存为新系统。
+
+11:29:54已实际启动screen32515.mcln_scanrefer_joint_pair_v1，目录
+/root/autodl-tmp/mcln_scanrefer_joint_readout_pair_20260906_v1。加载已核验E71、Parent、
+Geometry、V99四份预训练权重，同参数量detached/joint两臂；仅最后Decoder和预测头
+2159702参数及读出544396参数更新。原生GT loss加三项读出loss均值，core LR1e-6、
+readout LR1e-5、AdamW、clip0.1，B12、seed0、无增强、每臂2482步/一次fit遍历。
+实际锁定fit29778行/456物理空间，holdout6887行/106物理空间，无物理空间交叉。
+未增加ScanNet检测行；保留完整36665注释完成原parser和unique/multi构造后划分。
+先评估两臂相同起点，再训练、保存完整fit终点、评估终点；不挑中间epoch或延长预算。
+
+manifest SHA 5789add2a88e14cc37dcc4879b9f6d949d4c938bcfc3393424263da05557a1a9，
+controller SHA 4eb6308cde8a4e2c798125ed34c41b9d2f89f22cbd0ef69e255522204b423ae2。
+启动不等于已完成optimizer更新；本节只有launch证据，实际首步另按日志记录。
+首轮观察定于11:42，此后240秒，达到首个>=64步日志后按实测ETA安排终点前五分钟。
+预估配对训练含开发评估2–5 GPU小时，尚非实测。新结果正式9508验证尚未启动。
+原保护Scan/Nr/Sr正式指标不变，整体goal继续active。
+
+证据：refine-logs/sparse_point_pair_20260906_v3/summary.json、artifact_verification.json；
+scanrefer_evaluation_view_cpu_20260906_v1；scanrefer_joint_native_probe_20260906_v2；
+scanrefer_teacher_transfer_20260906_v4/receipt.json、rows.json、training_decision.json；
+scanrefer_joint_readout_pair_20260906_v1/launch.json、input_manifest.json。

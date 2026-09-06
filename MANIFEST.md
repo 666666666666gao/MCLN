@@ -77,3 +77,11 @@
 | 2026-09-06 10:49 | /run-experiment | refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md | implementation | ScanRefer teacher diagnostic queued;paired trainer prepared;zero updates |
 | 2026-09-06 10:49 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | ScanRefer teacher diagnostic queued;paired trainer prepared;zero updates |
 | 2026-09-06 10:49 | /run-experiment | refine-logs/scanrefer_teacher_transfer_20260906_v3/queue.json | implementation | ScanRefer teacher diagnostic queued;paired trainer prepared;zero updates |
+| 2026-09-06 11:33 | /run-experiment | scripts/audit_scanrefer_v99_teacher_transfer.py | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
+| 2026-09-06 11:33 | /run-experiment | scripts/probe_scanrefer_joint_readout_native.py | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
+| 2026-09-06 11:33 | /run-experiment | scripts/run_scanrefer_joint_readout_pair.py | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
+| 2026-09-06 11:33 | /run-experiment | scripts/scanrefer_rec_evaluation.py | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
+| 2026-09-06 11:33 | /run-experiment | refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
+| 2026-09-06 11:33 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
+| 2026-09-06 11:33 | /run-experiment | refine-logs/scanrefer_joint_readout_pair_20260906_v1/launch.json | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
+| 2026-09-06 11:33 | /run-experiment | refine-logs/scanrefer_teacher_transfer_20260906_v4/training_decision.json | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |

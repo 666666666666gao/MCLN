@@ -122,3 +122,23 @@ EG-3DVG提出几何一致视觉聚合。它们不证明本项目的缩小版本�
 当前ScanRefer达到SOTA的证据。
 来源：https://arxiv.org/html/2310.08854 ，
 https://openaccess.thecvf.com/content/CVPR2026/html/Park_EG-3DVG_Expression_and_Geometry_Aware_Grounding_Decoder_for_3D_Visual_CVPR_2026_paper.html 。
+
+
+## 执行更新（2026-09-06 11:33 CST，取代上文排队/准备状态）
+
+原生V1为负尺寸预检查失败，0更新；以既有REC候选size>=1e-6表示构造评估副本后，
+V2完整原生16行预检11:12:20 PASS。原始loss输入不变，固定V99部署输出逐位一致。
+教师V3因旧依赖失败退出，V4于11:20:49完成512行：native491/461、teacher494/471、
+teacher原Query495/457、GT Hungarian511/499。教师有净收益也有破坏，原Query框与
+变体收益不可混称纯排序收益。训练决策详见scanrefer_teacher_transfer_20260906_v4/
+training_decision.json：采用已准备的GT联合读出接续对照，未实现教师学生蒸馏。
+
+实际fit29778/456物理空间、holdout6887/106物理空间，无交叉。每臂固定2482步，
+末批6行。11:29:54启动screen32515；launch不代表已经更新优化器。先原生解析及
+6887行两臂相同起点评估，再一次fit训练、保存统一终点、终点评估。两臂模型eval模式
+固定buffers，更新最后Decoder/预测头及原读出；推理保留离散几何/Pareto，非完全
+无后处理学生。首观测11:42，此后240秒，>=64步后按实测ETA安排结束前五分钟。
+旧NrMask稀疏V3已终态FAIL封存，不再占用GPU或追加正式验证。Scan/Nr/Sr正式成绩未变。
+
+当前输入和源码：scanrefer_joint_readout_pair_20260906_v1/input_manifest.json；
+启动：同目录launch.json。正式资格仍按上文固定终点REC对照，正式晋级仍按§20.79。

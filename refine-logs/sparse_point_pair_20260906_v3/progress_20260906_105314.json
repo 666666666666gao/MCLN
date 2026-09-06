@@ -1,0 +1,88 @@
+{
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "prepare_inputs.py",
+    "input_manifest.json",
+    "sparse_preflight_receipt.json",
+    "__pycache__",
+    "tests.xml",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "first_batch_gradient_comparison.json",
+    "preflight.json",
+    "source_snapshot.zip",
+    "published_source_identity.json",
+    "README.md",
+    "baseline_rows.json",
+    "baseline_identity.json",
+    "baseline_independent_verification.json",
+    "fit_point_batches.json"
+  ],
+  "gpu": "10857 MiB, 61 %",
+  "latest_evaluation": [
+    {
+      "batches": 300,
+      "elapsed_seconds": 12505.879405260086,
+      "rows": 4800,
+      "stage": "terminal"
+    }
+  ],
+  "latest_training": [
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 3.7629191875457764,
+          "loss": 15.602444648742676
+        },
+        "sparse": {
+          "gradient_norm_before_clip": 9.309117317199707,
+          "loss": 15.462019920349121
+        }
+      },
+      "elapsed_seconds": 11212.728320121765,
+      "epoch": 0,
+      "sparse_output_weight_norm": 0.8555331230163574,
+      "step": 6592
+    },
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 6.064075469970703,
+          "loss": 15.86317253112793
+        },
+        "sparse": {
+          "gradient_norm_before_clip": 17.27880096435547,
+          "loss": 15.832605361938477
+        }
+      },
+      "elapsed_seconds": 11307.070293188095,
+      "epoch": 0,
+      "sparse_output_weight_norm": 0.8630514740943909,
+      "step": 6656
+    }
+  ],
+  "log_sha256": "82111130db2312e12324d0a1bd5f462f15d80a17b5914e1444664f0c7a436211",
+  "log_tail": [
+    "SPARSE POINT PAIR TRAIN {\"step\": 6592, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 15.602444648742676, \"gradient_norm_before_clip\": 3.7629191875457764}, \"sparse\": {\"loss\": 15.462019920349121, \"gradient_norm_before_clip\": 9.309117317199707}}, \"sparse_output_weight_norm\": 0.8555331230163574, \"elapsed_seconds\": 11212.728320121765}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 6656, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 15.86317253112793, \"gradient_norm_before_clip\": 6.064075469970703}, \"sparse\": {\"loss\": 15.832605361938477, \"gradient_norm_before_clip\": 17.27880096435547}}, \"sparse_output_weight_norm\": 0.8630514740943909, \"elapsed_seconds\": 11307.070293188095}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 50, \"rows\": 800, \"elapsed_seconds\": 11546.986359119415}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 100, \"rows\": 1600, \"elapsed_seconds\": 11739.0142121315}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 150, \"rows\": 2400, \"elapsed_seconds\": 11930.371500015259}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 200, \"rows\": 3200, \"elapsed_seconds\": 12122.050080299377}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 250, \"rows\": 4000, \"elapsed_seconds\": 12314.097424268723}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"terminal\", \"batches\": 300, \"rows\": 4800, \"elapsed_seconds\": 12505.879405260086}"
+  ],
+  "process": "28416 /root/autodl-tmp/mcln_sparse_runtime_20260906_v3/venv/bin/python -u scripts/run_nr3d_sparse_point_pair.py --manifest /root/autodl-tmp/mcln_sparse_point_pair_20260906_v3/input_manifest.json",
+  "process_exit": 0,
+  "runtime_estimate": {
+    "estimated_complete_cst": "2026-09-06T11:18:42.702490+08:00",
+    "remaining_seconds": 1527.8072663856192,
+    "seconds_per_paired_step": 1.4740933291614056,
+    "terminal_evaluation_seconds": 1482.1103731816156
+  },
+  "time_cst": "2026-09-06T10:53:14.895224+08:00"
+}

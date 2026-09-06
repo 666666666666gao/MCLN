@@ -1,0 +1,38 @@
+{
+  "all_postprocessing_removed": false,
+  "fixed_run": {
+    "batch_size": 12,
+    "core_lr": 1e-06,
+    "epochs": 1,
+    "fit_rows": 29778,
+    "formal_rows": 0,
+    "holdout_rows": 6887,
+    "no_automatic_extension": true,
+    "readout_lr": 1e-05,
+    "seed": 0,
+    "steps_per_arm": 2482
+  },
+  "inference_rule": "Existing V99 geometry variants and fixed Pareto rule with the jointly saved updated weights.",
+  "new_visual_evidence_added": false,
+  "promotion": "One fixed terminal formal ScanRefer evaluation only after the preregistered development REC comparison passes; then REC >= 5572/4797 of 9508 and Scan Mask >= 58.70/50.70/44.72 percent. Proceed to Nr3D/Sr3D REC without waiting for 59/51.",
+  "raw_extent_audit": {
+    "all_negative_size_queries": 20570,
+    "hungarian_root_selected_negative_size": 0,
+    "native_selected_negative_size": 0,
+    "rows_with_negative_size_queries": 499
+  },
+  "reason": [
+    "The frozen teacher improves deployed native selection by 3/10 hits on 512 previously seen fit rows, while also causing 1/7 damages.",
+    "Teacher hits are 494/471 versus GT Hungarian root matches 511/499; this is supervision availability, not deployable oracle accuracy.",
+    "Teacher is better than the Hungarian box on 200 rows and worse on 220; its outputs must not replace GT indiscriminately.",
+    "Teacher geometry adds 14 strict-threshold net hits versus its source raw query box; score imitation alone does not reproduce that change.",
+    "Warm-start all four verified components and test the already prepared GT-supervised joint-vs-detached gradient boundary first, without new pseudo labels or frozen query-index targets."
+  ],
+  "route": "joint_readout_control",
+  "schema": "mcln-scanrefer-teacher-informed-training-decision-v1",
+  "teacher_hypothesis_not_rejected": true,
+  "teacher_receipt_sha256": "ce4ceabdae2d1ab77760d7316176eaba1d49159a21be6f5dae8b5e19c8883222",
+  "teacher_rows_sha256": "1d723738b51cf545fff083893ab38e3a55710e561cd70300c616147d9b7c4279",
+  "teacher_student_distillation_implemented": false,
+  "time_cst": "2026-09-06T11:29:34.071948+08:00"
+}

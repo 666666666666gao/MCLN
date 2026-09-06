@@ -1,0 +1,34 @@
+{
+  "checks": [
+    {
+      "command": "/root/miniconda3/envs/bdetr/bin/python -m py_compile scripts/evaluate_scanrefer_joint_readout_official.py scripts/scanrefer_joint_readout.py scripts/scanrefer_rec_evaluation.py tests/test_evaluate_scanrefer_joint_readout_official.py",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": "/root/miniconda3/envs/bdetr/bin/python scripts/evaluate_scanrefer_joint_readout_official.py --help",
+      "exit_code": 0,
+      "output": "usage: evaluate_scanrefer_joint_readout_official.py [-h] --manifest MANIFEST\n\noptional arguments:\n  -h, --help           show this help message and exit\n  --manifest MANIFEST\n"
+    },
+    {
+      "command": "/root/miniconda3/envs/bdetr/bin/python -m pytest -q tests/test_evaluate_scanrefer_joint_readout_official.py",
+      "exit_code": 0,
+      "output": "............                                                             [100%]\n12 passed in 0.61s\n"
+    }
+  ],
+  "files": {
+    "scripts/evaluate_scanrefer_joint_readout_official.py": "1db92a16531f99fdd90b5c53ee725271fa45d5db6503c54d9453119cb8a0ddfc",
+    "scripts/scanrefer_joint_readout.py": "e919c3dde724543fbee8f08cb77f8295863667399a9dbd84c8fba550f2f50335",
+    "scripts/scanrefer_rec_evaluation.py": "b74a5ccedbcc6337f66abd07fdff0d7eac08bc71ab4782502e266bd6cf47c709",
+    "tests/test_evaluate_scanrefer_joint_readout_official.py": "97c428033979df206c939d1244b038a39d1c63a3df49c1d21d655bc5f486efa7"
+  },
+  "formal_job_launched": false,
+  "formal_manifest_created": false,
+  "formal_rows": 0,
+  "gpu_forwards": 0,
+  "limits": "Synthetic promotion/receipt tests and original Python compilation only; trained endpoint does not yet exist.",
+  "optimizer_steps": 0,
+  "schema": "mcln-scanrefer-joint-official-preparation-v1",
+  "status": "cpu_checks_pass",
+  "time_cst": "2026-09-06T12:12:08.334644+08:00"
+}

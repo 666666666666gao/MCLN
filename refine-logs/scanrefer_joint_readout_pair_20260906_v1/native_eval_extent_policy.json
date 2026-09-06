@@ -1,0 +1,40 @@
+{
+  "excerpt": [
+    {
+      "line": 7869,
+      "text": "            end_points[key] = batch_data[key]"
+    },
+    {
+      "line": 7870,
+      "text": "        _, end_points = self._compute_loss("
+    },
+    {
+      "line": 7871,
+      "text": "            end_points, criterion, set_criterion, args"
+    },
+    {
+      "line": 7872,
+      "text": "        )"
+    },
+    {
+      "line": 7873,
+      "text": "        for key in end_points:"
+    },
+    {
+      "line": 7874,
+      "text": "            if 'pred_size' in key:"
+    },
+    {
+      "line": 7875,
+      "text": "                end_points[key] = torch.clamp(end_points[key], min=1e-6)"
+    }
+  ],
+  "formal_rows": 0,
+  "gpu_forwards": 0,
+  "interpretation": "The original native evaluation wrapper already floors prediction extents. The custom V1 probe omitted this wrapper step; the evaluation copy restores the existing policy.",
+  "optimizer_steps": 0,
+  "sha256": "3bd8394bf526914a5fa8a941a2a90ed5379753ea085661f2855cd176536da13d",
+  "source": "/root/autodl-tmp/mcln_g0_view_pair_20260905/inputs_v3/fixed_source/main_utils.py",
+  "status": "verified",
+  "time_cst": "2026-09-06T12:17:54.243106+08:00"
+}

@@ -85,3 +85,9 @@
 | 2026-09-06 11:33 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
 | 2026-09-06 11:33 | /run-experiment | refine-logs/scanrefer_joint_readout_pair_20260906_v1/launch.json | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
 | 2026-09-06 11:33 | /run-experiment | refine-logs/scanrefer_teacher_transfer_20260906_v4/training_decision.json | implementation | Native/teacher checks complete;ScanRefer paired continuation launched |
+| 2026-09-06 12:23 | /run-experiment | scripts/evaluate_scanrefer_joint_readout_official.py | implementation | ScanRefer actual updates verified;conditional formal entry prepared |
+| 2026-09-06 12:23 | /run-experiment | tests/test_evaluate_scanrefer_joint_readout_official.py | implementation | ScanRefer actual updates verified;conditional formal entry prepared |
+| 2026-09-06 12:23 | /run-experiment | refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md | implementation | ScanRefer actual updates verified;conditional formal entry prepared |
+| 2026-09-06 12:23 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | ScanRefer actual updates verified;conditional formal entry prepared |
+| 2026-09-06 12:23 | /run-experiment | refine-logs/scanrefer_joint_readout_pair_20260906_v1/baseline_verification.json | implementation | ScanRefer actual updates verified;conditional formal entry prepared |
+| 2026-09-06 12:23 | /run-experiment | refine-logs/scanrefer_joint_readout_pair_20260906_v1/terminal_observation_schedule.json | implementation | ScanRefer actual updates verified;conditional formal entry prepared |

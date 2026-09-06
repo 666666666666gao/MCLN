@@ -16262,3 +16262,43 @@ controller SHA 4eb6308cde8a4e2c798125ed34c41b9d2f89f22cbd0ef69e255522204b423ae2�
 scanrefer_evaluation_view_cpu_20260906_v1；scanrefer_joint_native_probe_20260906_v2；
 scanrefer_teacher_transfer_20260906_v4/receipt.json、rows.json、training_decision.json；
 scanrefer_joint_readout_pair_20260906_v1/launch.json、input_manifest.json。
+
+
+### 20.83 ScanRefer已完成起点复核并进入实际更新，正式入口已准备（2026-09-06 12:23 CST）
+
+本轮前一goal turn属于实质进展：启动实际ScanRefer任务并完成教师诊断。最新真实
+观察为12:15:03，原PID32521仍在运行，detached/joint均64/2482更新；不是仅启动队列。
+此前6887行起点评估两臂逐行、点SHA和输出完全一致，REC6688/6323，Mask6515/5829，
+mIoU70.45046757074657%。该留出为主干见过的训练场景，非正式9508行成绩。
+独立本地复核行顺序/106物理空间/阈值命中PASS；Python3.13与原3.7的mIoU末位
+差8.5265e-14pp，以现有浮点评估比较方式记录，命中数精确一致，未改变质量门槛。
+
+观察器曾将SCANREFER JOINT EVAL COMPLETE误认成进度JSON，在本地解析阶段退出。
+仅修正为匹配EVAL加JSON起始花括号，原训练未停止、未重启。恢复观察确认首步及
+64步均已实际完成。前64次配对更新266.009秒，即4.1564秒/次；起点评估1796.17秒。
+按12:15观察加剩余训练与同长度终点评估估计15:32:30完成，含日志发出到观察的延迟。
+终态观察session35333已安排15:27:30首次查询，其后240秒；不额外轮询或中途改预算。
+
+对§20.82预检尺寸问题补充更准确定位：冻结源main_utils.py的_main_eval_branch
+第7873–7875行本来就在loss之后将所有pred_size截至1e-6。V1定制预检跳过该原生
+包装步骤，因此触发底层evaluator断言；现有评估副本是在恢复原入口的既有行为。
+它没有修复一个新发现的正式模型缺陷，也没有改变既有REC尺寸规则。冻结文件SHA
+3bd8394bf526914a5fa8a941a2a90ed5379753ea085661f2855cd176536da13d已对清单核验。
+
+新增scripts/evaluate_scanrefer_joint_readout_official.py，仅供固定joint终点通过开发
+REC对照后使用。读取统一checkpoint中的原生model与更新readout，严格加载；原V99
+与新系统共用原get_loaders、B12/2workers、同一9508条输入，记录REC和原semantic
+Mask evaluator逐行结果。历史V99线5572/4797与同输入原V99 REC同时保护；ScanMask
+底线58.70/50.70/44.72%，59/51不是晋级门槛，Nr/SrMask没有新增门槛。
+终点资格由真实开发rows和hash重新计算，不能只信receipt中的pass；不选中间epoch。
+12:12:08原Python3.7编译/CLI与12项CPU测试PASS，覆盖严格IoU阈值、每项Scan底线、
+不以59/51阻止晋级、拒绝把开发行当正式行、拒绝伪报通过或变更checkpoint。
+此为合成/入口检查，0GPU/0正式行；训练终点尚不存在，未创建正式manifest或启动验证。
+入口SHA 1db92a16531f99fdd90b5c53ee725271fa45d5db6503c54d9453119cb8a0ddfc。
+
+训练配置、当前架构及三数据集指标要求继续按§20.79–20.82，受保护正式结果均未变。
+下一步收取固定终点并独立复核；通过开发对照才运行上述正式比较。达到Scan正式
+底线及Mask底线后尽快Nr/Sr REC，整体goal仍active，不能用本轮启动/开发分数宣布完成。
+证据：refine-logs/scanrefer_joint_readout_pair_20260906_v1/baseline_verification.json、progress_20260906_121503.json、
+native_eval_extent_policy.json、terminal_observation_schedule.json；
+refine-logs/scanrefer_joint_official_preparation_20260906_v1/receipt.json。

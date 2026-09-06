@@ -142,3 +142,17 @@ training_decision.json：采用已准备的GT联合读出接续对照，未实�
 
 当前输入和源码：scanrefer_joint_readout_pair_20260906_v1/input_manifest.json；
 启动：同目录launch.json。正式资格仍按上文固定终点REC对照，正式晋级仍按§20.79。
+
+
+## 首段执行与正式入口（2026-09-06 12:23 CST）
+
+12:15:03原PID32521确认两臂64/2482更新。6887行起点评估完整一致，REC6688/6323、
+Mask6515/5829、mIoU70.45046757074657%；只是主干见过的开发数据。独立行/点/命中
+复核PASS。4.1564秒/配对更新、1796.17秒/开发评估，估计终态15:32:30，观察安排
+15:27:30后每240秒。观察器仅修复日志前缀匹配，未重启训练。
+
+正式入口scripts/evaluate_scanrefer_joint_readout_official.py已完成原Python3.7
+编译/CLI和12项CPU测试，无正式数据运行。仅固定joint终点通过预注册开发REC比较
+才启动；原V99与更新统一checkpoint共享原生9508行loader及输入，报告REC/Mask，
+晋级需同时守住历史V99、同输入V99 REC和ScanMask论文线。无需59/51，无Nr/SrMask门。
+尺寸评估副本恢复原_main_eval_branch已有clamp步骤，不改变正式尺寸规则。

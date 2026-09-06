@@ -16806,3 +16806,18 @@ Nr/Sr准备期合同也仍使用原DATA_ROOT，后续需明确数据版本并验
 接续plan SHA`667867ea9222c4c3a15632ae4f7487dcaadb0c1c0566d3a21e2768531283ca4c`；实际启动记录SHA`2915ab68e05a162500e350ff222c12c144001055f05a37e234ac13a50b16593e`；源码及记录位于`refine-logs/scanrefer_local_visual_mesh_acceptance_queue_20260906_v1/`。后续不要手工重复执行本轮正式审计或native条件入口；先读取此worker的实际状态和decision。观察超时不代表GPU任务终止。
 
 磁盘清理沿用§20.97两轮累计9.529GiB；23:27实查服务器剩余10839310336 bytes（约10.095GiB），四个失败终点已退休，六个受保护文件均在。当前仍只计划保存两臂各一个终点。整体三数据集目标未达成，goal保持active。
+
+
+### 20.100 独立逐级选择诊断准备及后续研究范围（2026-09-07 00:24 CST）
+
+本节落实用户最新分析中的逐级诊断需求。当前正确mesh配对训练、终态审计、唯一9508正式评估和§20.99条件接续保持原设置；没有向在跑快照加入新结构或启动第二份训练。本次没有查询训练进度，仍按§20.98的01:13/01:14首次观察计划执行。
+
+新增`scripts/trace_scanrefer_readout_stages.py`只读取已完成JointRecReadout forward的输出：原生选择→Parent→应用geometry有效性后的Parent→Geometry→V99未裁决提议→Pareto最终选择。原生Query索引必须由原evaluator提供；复用实际部署的排序和policy函数，要求全部最终分数与该forward的runtime逐元素完全一致。保存Top16映射、合法变体、全局Query槽位、variant编号、各阶段框与Pareto预测增益；不把槽位编号视为跨forward稳定的实例身份，不让GT进入选择。
+
+**已完成的验证仅为CPU单元测试：** 原bdetr环境6项全部通过，覆盖并列分数的全局编号排序、geometry有效性引起的Parent变化、V99通过/否决、argmax不变但分数变化时拒绝、输入不变及无梯度。回执`refine-logs/scanrefer_stage_trace_preparation_20260907_v1/receipt.json`，SHA`4c9c09bb88a43cdac796d17c19e1dcf2e3ecdd8af70d0df8629f9031b2c73ed9`。9个依赖完成源码绑定：8个逐字节一致；train_dist_mod仅有此前原生factory接入差异，本诊断涉及的3个读出函数AST一致，完整差异保存在runtime_diff.txt。没有修改冻结源码。
+
+**尚未完成：** 实际场景逐级forward、逐级修复/破坏统计、152/179维归一化输入分布比较。旧rows/native_rows没有中间选择，不能从它们补造这些结果。后续独立运行须绑定实际权重、mesh版本、表达/root身份及point SHA，再在选择之后计算GT指标。当前仅已有原生→最终聚合差异，不足以把全部退化归因为旧读出不兼容。
+
+后续仍先读本轮真实Scan终态：达到§20.79底线即尽快进入Nr/Sr REC，不等待59/51，也不以Nr/Sr Mask增加门槛。若未通过，先定位逐级损失，再决定是否比较固定64点预算的中心读取与范围分组读取；边界分布/质量对齐和冻结旧读出兼容约束均未实施。8组×8只代表64个读取槽，需另报重复点及有效独立点数；空区域表示缺少观测，不能预设为错误框。
+
+本次实查服务器剩余10839162880 bytes（约10.095GiB）；未新增或删除权重，继续保留当前两臂终点与既有受保护权重。整体三数据集目标仍未达成。

@@ -1,0 +1,383 @@
+Prepared618sourcefiles; original native and live Scan sources unchanged
+...........F...................................................          [100%]
+=================================== FAILURES ===================================
+______________ test_range_reader_can_initialize_from_the_old_core ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff97f9f63d0>
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-1981/test_range_reader_can_initiali0')
+
+    def test_range_reader_can_initialize_from_the_old_core(monkeypatch, tmp_path):
+        model = LocalToy()
+        initial_local = {name: value.clone() for name, value in model.state_dict().items()
+                         if name in local_visual_state_keys(model.state_dict())}
+        saved = {name: value.clone() + 1 for name, value in model.state_dict().items()
+                 if name not in initial_local}
+        path = tmp_path / 'old_core.pt'
+        torch.save({'epoch': 57, 'model': saved}, str(path))
+        args = native_args(monkeypatch, path)
+        args.candidate_local_visual_variant = 'extent'
+        args.model_only_initialization = True
+        args.checkpoint_start_epoch = 1
+>       load_checkpoint(args, model, None, None)
+
+tests/test_candidate_local_visual_training.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = Namespace(ap_iou_thresholds=[0.25, 0.5], augment_det=False, batch_size=8, bn_momentum=0.1, butd=False, butd_cls=False,...rue, use_source_moe=False, val_freq=5, warmup_epoch=-1, warmup_multiplier=100, weight_decay=0.0005, wo_obj_name='None')
+model = LocalToy(
+  (module): Module(
+    (decoder): ModuleList(
+      (0): Linear(in_features=2, out_features=2, bias=True)
+ ...ures=2, out_features=2, bias=True)
+    (source_choice_selector): Linear(in_features=2, out_features=2, bias=True)
+  )
+)
+optimizer = None, scheduler = None, optimizer_steps_per_epoch = None
+
+    def load_checkpoint(args, model, optimizer, scheduler,
+                        optimizer_steps_per_epoch=None):
+        """Load from checkpoint."""
+        print("=> loading checkpoint '{}'".format(args.checkpoint_path))
+    
+        checkpoint = _load_checkpoint_payload(args)
+        resume_lr_scale = _validated_resume_lr_scale(args, checkpoint)
+        restore_e57_lr = _validated_e57_lr_restore(args, checkpoint)
+        validate_query_mask_fusion_resume_checkpoint_contract(args, checkpoint)
+        validate_source_moe_resume_checkpoint_contract(args, checkpoint)
+        validate_source_moe_gate_checkpoint_contract(model, checkpoint)
+        requested_start_epoch = getattr(args, "start_epoch", 1)
+        gate_optimizer_resume = bool(getattr(
+            args, "source_moe_gate_resume_optimizer", False
+        ))
+        query_optimizer_resume = bool(getattr(
+            args, "query_mask_fusion_resume_optimizer", False
+        ))
+        try:
+            args.start_epoch = int(checkpoint['epoch']) + 1
+        except Exception:
+            args.start_epoch = 0
+        if (
+                (
+                    getattr(args, "source_choice_selector_train_only", False)
+                    or getattr(args, "source_moe_train_only", False)
+                    or getattr(args, "source_moe_gate_train_only", False)
+                    or getattr(args, "query_mask_fusion_train_only", False)
+                    or getattr(args, "egqs_mask_refiner_train_only", False)
+                    or getattr(args, "joint_query_quality_train_only", False)
+                    or getattr(args, "decoder_query_adapter_train_only", False)
+                    or getattr(args, "sacr_score_refiner_train_only", False)
+                    or getattr(
+                        args, "parent_relative_text_verifier_train_only", False
+                    )
+                )
+                and not args.eval
+                and not gate_optimizer_resume
+                and not query_optimizer_resume):
+            args.start_epoch = requested_start_epoch
+        if ((gate_optimizer_resume or query_optimizer_resume)
+                and requested_start_epoch != args.start_epoch):
+            resume_label = (
+                "gate" if gate_optimizer_resume else "query-mask fusion"
+            )
+            raise ValueError(
+                "{} optimizer resume must start at checkpoint epoch + 1 "
+                "(expected {}, requested {})".format(
+                    resume_label, args.start_epoch, requested_start_epoch
+                )
+            )
+        checkpoint_start_epoch = getattr(args, "checkpoint_start_epoch", None)
+        if ((gate_optimizer_resume or query_optimizer_resume)
+                and checkpoint_start_epoch is not None):
+            raise ValueError(
+                "optimizer resume cannot override checkpoint_start_epoch"
+            )
+        if checkpoint_start_epoch is not None:
+            if checkpoint_start_epoch < 0:
+                raise ValueError("checkpoint_start_epoch must be non-negative")
+            args.start_epoch = checkpoint_start_epoch
+            print(
+                "=> overriding checkpoint epoch; first requested epoch is {}".format(
+                    args.start_epoch
+                )
+            )
+        model_only_initialization = bool(getattr(
+            args, "model_only_initialization", False
+        ))
+        if model_only_initialization:
+            if args.eval:
+                raise ValueError("model-only initialization is training-only")
+            if checkpoint_start_epoch is None:
+                raise ValueError(
+                    "model-only initialization requires --checkpoint_start_epoch"
+                )
+            if gate_optimizer_resume or query_optimizer_resume:
+                raise ValueError(
+                    "model-only initialization cannot resume an optimizer"
+                )
+        current_state = model.state_dict()
+        checkpoint_state = checkpoint['model']
+        if (getattr(args, 'use_candidate_local_visual', False)
+                or local_visual_state_keys(checkpoint_state)):
+            validate_local_visual_checkpoint(
+                current_state, checkpoint_state, model_only_initialization,
+                current_variant=getattr(args, 'candidate_local_visual_variant', 'local'),
+                saved_variant=_checkpoint_config_value(
+                    checkpoint.get('config', {}), 'candidate_local_visual_variant', 'local'),
+            )
+        score_state_prefixes = (
+            "structured_slot_builder.",
+            "sacr_head.",
+            "sacr_score_gate",
+            "sacr_parent_relative_gate.",
+        )
+    
+        def canonical_state_name(name):
+            return name[7:] if name.startswith("module.") else name
+    
+        parent_relative_text_verifier_eval = (
+            getattr(args, "eval", False)
+            and getattr(args, "use_parent_relative_text_verifier", False)
+        )
+        if parent_relative_text_verifier_eval:
+            current_full_state = {
+                canonical_state_name(key): value
+                for key, value in current_state.items()
+            }
+            checkpoint_full_state = {
+                canonical_state_name(key): value
+                for key, value in checkpoint_state.items()
+            }
+            if set(current_full_state) != set(checkpoint_full_state):
+                raise ValueError(
+                    "trained parent-relative verifier checkpoint is not an exact "
+                    "full model: missing={}, unexpected={}".format(
+                        sorted(set(current_full_state) - set(checkpoint_full_state)),
+                        sorted(set(checkpoint_full_state) - set(current_full_state)),
+                    )
+                )
+            incompatible_full_tensors = []
+            for name in sorted(current_full_state):
+                current_value = current_full_state[name]
+                saved_value = checkpoint_full_state[name]
+                if (
+                        not hasattr(current_value, "shape")
+                        or not hasattr(saved_value, "shape")
+                        or current_value.shape != saved_value.shape
+                        or current_value.dtype != saved_value.dtype):
+                    incompatible_full_tensors.append(name)
+            if incompatible_full_tensors:
+                raise ValueError(
+                    "trained parent-relative verifier checkpoint full model "
+                    "tensors differ in shape/dtype: "
+                    + ", ".join(incompatible_full_tensors)
+                )
+    
+        def is_score_state(name):
+            canonical = canonical_state_name(name)
+            return any(
+                canonical.startswith(prefix) for prefix in score_state_prefixes
+            )
+    
+        current_score_state = {
+            canonical_state_name(key): (key, value)
+            for key, value in current_state.items() if is_score_state(key)
+        }
+        checkpoint_score_state = {
+            canonical_state_name(key): (key, value)
+            for key, value in checkpoint_state.items() if is_score_state(key)
+        }
+        checkpoint_has_trained_score_refiner = (
+            "sacr_score_gate" in checkpoint_score_state
+            or any(
+                name.startswith("sacr_parent_relative_gate.")
+                for name in checkpoint_score_state
+            )
+        )
+        checkpoint_config = checkpoint.get("config", {})
+        if isinstance(checkpoint_config, dict):
+            checkpoint_uses_parent_relative_sacr = (
+                checkpoint_config.get(
+                    "sacr_score_use_parent_relative_abstention", False
+                ) is True
+            )
+        else:
+            checkpoint_uses_parent_relative_sacr = (
+                getattr(
+                    checkpoint_config,
+                    "sacr_score_use_parent_relative_abstention",
+                    False,
+                ) is True
+            )
+        converting_v133_to_parent_relative = (
+            getattr(args, "sacr_score_refiner_train_only", False)
+            and getattr(
+                args, "sacr_score_use_parent_relative_abstention", False
+            )
+            and checkpoint_has_trained_score_refiner
+            and "sacr_score_gate" in checkpoint_score_state
+            and not checkpoint_uses_parent_relative_sacr
+        )
+        discarded_legacy_score_state = (
+            {"sacr_score_gate"}
+            if converting_v133_to_parent_relative else set()
+        )
+        expected_new_parent_gate_state = {
+            name for name in current_score_state
+            if name.startswith("sacr_parent_relative_gate.")
+        } if converting_v133_to_parent_relative else set()
+        expected_new_parent_gate_load_keys = {
+            current_score_state[name][0]
+            for name in expected_new_parent_gate_state
+        }
+        if (
+                getattr(args, "use_sacr_score_refiner", False)
+                and checkpoint_has_trained_score_refiner):
+            expected_score_state = (
+                (set(checkpoint_score_state) - discarded_legacy_score_state)
+                | expected_new_parent_gate_state
+            )
+            if set(current_score_state) != expected_score_state:
+                raise ValueError(
+                    "trained SACR score checkpoint state is not exact: "
+                    "missing={}, unexpected={}".format(
+                        sorted(set(current_score_state) - set(checkpoint_score_state)),
+                        sorted(set(checkpoint_score_state) - set(current_score_state)),
+                    )
+                )
+            incompatible_score_tensors = []
+            for name in sorted(
+                    set(current_score_state) & set(checkpoint_score_state)):
+                current_value = current_score_state[name][1]
+                saved_value = checkpoint_score_state[name][1]
+                if (
+                        not hasattr(current_value, "shape")
+                        or not hasattr(saved_value, "shape")
+                        or current_value.shape != saved_value.shape
+                        or current_value.dtype != saved_value.dtype):
+                    incompatible_score_tensors.append(name)
+            if incompatible_score_tensors:
+                raise ValueError(
+                    "trained SACR score checkpoint tensors differ in shape/dtype: "
+                    + ", ".join(incompatible_score_tensors)
+                )
+            current_full_state = {
+                canonical_state_name(key): (key, value)
+                for key, value in current_state.items()
+            }
+            checkpoint_full_state = {
+                canonical_state_name(key): (key, value)
+                for key, value in checkpoint_state.items()
+            }
+            expected_full_state = (
+                (set(checkpoint_full_state) - discarded_legacy_score_state)
+                | expected_new_parent_gate_state
+            )
+            if set(current_full_state) != expected_full_state:
+                raise ValueError(
+                    "trained SACR checkpoint full model state is not exact: "
+                    "missing={}, unexpected={}".format(
+                        sorted(set(current_full_state) - set(checkpoint_full_state)),
+                        sorted(set(checkpoint_full_state) - set(current_full_state)),
+                    )
+                )
+            incompatible_full_tensors = []
+            for name in sorted(
+                    set(current_full_state) & set(checkpoint_full_state)):
+                current_value = current_full_state[name][1]
+                saved_value = checkpoint_full_state[name][1]
+                if (
+                        not hasattr(current_value, "shape")
+                        or not hasattr(saved_value, "shape")
+                        or current_value.shape != saved_value.shape
+                        or current_value.dtype != saved_value.dtype):
+                    incompatible_full_tensors.append(name)
+            if incompatible_full_tensors:
+                raise ValueError(
+                    "trained SACR checkpoint full model tensors differ in "
+                    "shape/dtype: " + ", ".join(incompatible_full_tensors)
+                )
+        if converting_v133_to_parent_relative:
+            checkpoint_state = {
+                key: value for key, value in checkpoint_state.items()
+                if canonical_state_name(key) != "sacr_score_gate"
+            }
+        for key, value in list(checkpoint_state.items()):
+            if (
+                key in current_state
+                and hasattr(value, "shape")
+                and hasattr(current_state[key], "shape")
+                and len(value.shape) > 0
+                and len(value.shape) == len(current_state[key].shape)
+                and value.shape[1:] == current_state[key].shape[1:]
+                and value.shape[0] != current_state[key].shape[0]
+            ):
+                resized_value = current_state[key].clone()
+                rows = min(value.shape[0], current_state[key].shape[0])
+                resized_value[:rows] = value[:rows]
+                checkpoint_state[key] = resized_value
+                print(
+                    "=> partially loaded checkpoint parameter '{}': {} -> {}".format(
+                        key, tuple(value.shape), tuple(current_state[key].shape)
+                    )
+                )
+        mismatched_keys = [
+            key for key, value in checkpoint_state.items()
+            if (
+                key in current_state
+                and hasattr(value, "shape")
+                and hasattr(current_state[key], "shape")
+                and value.shape != current_state[key].shape
+            )
+        ]
+        if mismatched_keys:
+            checkpoint_state = {
+                key: value for key, value in checkpoint_state.items()
+                if key not in mismatched_keys
+            }
+            print(
+                "=> skipped checkpoint parameters with mismatched shapes: {}".format(
+                    ", ".join(mismatched_keys)
+                )
+            )
+        incompatible = model.load_state_dict(checkpoint_state, strict=False)
+        if (
+                getattr(args, "eval", False)
+                and getattr(args, "use_parent_relative_text_verifier", False)
+                and (
+                    incompatible.missing_keys
+                    or incompatible.unexpected_keys
+                )):
+            raise ValueError(
+                "trained parent-relative verifier checkpoint did not load as an "
+                "exact full model: missing={}, unexpected={}".format(
+                    sorted(incompatible.missing_keys),
+                    sorted(incompatible.unexpected_keys),
+                )
+            )
+        if model_only_initialization:
+            loaded_keys = set(checkpoint_state).intersection(current_state)
+            loaded_backbone_keys = {
+                key for key in loaded_keys
+                if key.startswith("module.backbone_net.")
+            }
+            if len(loaded_backbone_keys) < 90:
+                raise ValueError(
+                    "model-only initialization loaded only {} backbone tensors; "
+>                   "expected at least 90".format(len(loaded_backbone_keys))
+                )
+E               ValueError: model-only initialization loaded only 2 backbone tensors; expected at least 90
+
+main_utils.py:4274: ValueError
+----------------------------- Captured stdout call -----------------------------
+=> loading checkpoint '/tmp/pytest-of-root/pytest-1981/test_range_reader_can_initiali0/old_core.pt'
+=> overriding checkpoint epoch; first requested epoch is 1
+=============================== warnings summary ===============================
+tests/test_main_utils_source_choice_checkpoint.py::test_checkpoint_migrates_gradual_warmup_after_scheduler_state[cosine]
+tests/test_main_utils_source_choice_checkpoint.py::test_checkpoint_migrates_gradual_warmup_after_scheduler_state[multistep]
+  /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/optim/lr_scheduler.py:154: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+    warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_candidate_local_visual_training.py::test_range_reader_can_initialize_from_the_old_core
+1 failed, 62 passed, 2 warnings in 2.61s

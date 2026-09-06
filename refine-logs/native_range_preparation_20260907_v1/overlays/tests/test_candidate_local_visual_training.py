@@ -135,6 +135,24 @@ def test_same_shape_reader_cannot_resume_under_another_computation(
     assert all(torch.equal(value, before[name]) for name, value in model.state_dict().items())
 
 
+def test_range_reader_can_initialize_from_the_old_core(monkeypatch, tmp_path):
+    model = LocalToy()
+    initial_local = {name: value.clone() for name, value in model.state_dict().items()
+                     if name in local_visual_state_keys(model.state_dict())}
+    saved = {name: value.clone() + 1 for name, value in model.state_dict().items()
+             if name not in initial_local}
+    path = tmp_path / 'old_core.pt'
+    torch.save({'epoch': 57, 'model': saved}, str(path))
+    args = native_args(monkeypatch, path)
+    args.candidate_local_visual_variant = 'extent'
+    args.model_only_initialization = True
+    args.checkpoint_start_epoch = 1
+    load_checkpoint(args, model, None, None)
+    assert args.start_epoch == 1
+    assert all(torch.equal(model.state_dict()[name], value) for name, value in saved.items())
+    assert all(torch.equal(model.state_dict()[name], value) for name, value in initial_local.items())
+
+
 @pytest.mark.parametrize('variant', ['local', 'extent'])
 def test_native_resume_restores_all_five_optimizer_groups(monkeypatch, tmp_path, variant):
     original = LocalToy()

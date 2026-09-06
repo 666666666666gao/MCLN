@@ -114,3 +114,4 @@
 | 2026-09-07 02:07 | direct continuation | refine-logs/scanrefer_stage_diagnostic_20260907_v1/launch.json | diagnostic | Actual Scan negative formal result, independent stage diagnostic1536rows;no new training |
 | 2026-09-07 02:27 CST | direct continuation | refine-logs/scanrefer_stage_diagnostic_20260907_v1/diagnostic_result/independent_audit.json | diagnostic | Actual9508 stages audited,formalFAIL preserved;fixed64-point extent preflight next |
 | 2026-09-07 03:06 CST | direct continuation | refine-logs/scanrefer_range_pair_20260907_v1/launch.json | experiment | Real range preflightPASS;paired47112 baseline12;queue47242;no new formal result |
+| 2026-09-07 03:29 CST | continuation | refine-logs/native_range_preparation_20260907_v2/receipt.json | preparation | Native extent CPU62PASS;real weights/load only;Scan pair and queue continue |

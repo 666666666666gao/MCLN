@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 03:06 CST. §20.104:range reader real preflightPASS;pair47112 observedbaseline12/6887;posttraining47242 queued. Formal protected results unchanged.
+Updated: 2026-09-07 03:29 CST. §20.105:native extent CPU62PASS and actual pretrained Nr/Sr loading verified;no native GPU/preflight/training. Original Scan pair47112/queue47242 remain live.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |
 | ScanRefer matched center/extent range reading | CPU3PASS;real16train preflightPASS;pair47112 baseline12/6887 | Same145008params and64slots;2482updates/arm pending;queue47242 audits then fixed9508 protected/center/extent;no new metrics |
 | ScanRefer corrected-mesh final and stage diagnostic | Formal5543/4722 vs5570/4797 FAIL;diagnostic9508 complete,auditPASS | Parent widens@0.25 loss;Geometry turns@0.50 +6 to−89;Top16 oracle+42/+82;next fixed64-point extent control;Nr/Sr not launched |
 | G0 augmentation pair | Complete; integrity PASS, scientific FAIL | Keep data fix; original G0→G1 performance route sealed |

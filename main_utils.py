@@ -826,6 +826,8 @@ def parse_option():
     parser.add_argument('--model', type=str, default='BeaUTyDETR')
     parser.add_argument('--use_candidate_local_visual', action='store_true', default=False)
     parser.add_argument('--candidate_local_visual_lr', type=float, default=1e-4)
+    parser.add_argument('--candidate_local_visual_variant', choices=['local', 'center', 'extent'],
+                        default='local')
 
     # Loss
     parser.add_argument('--query_points_obj_topk', default=4, type=int)
@@ -4025,7 +4027,10 @@ def load_checkpoint(args, model, optimizer, scheduler,
     if (getattr(args, 'use_candidate_local_visual', False)
             or local_visual_state_keys(checkpoint_state)):
         validate_local_visual_checkpoint(
-            current_state, checkpoint_state, model_only_initialization
+            current_state, checkpoint_state, model_only_initialization,
+            current_variant=getattr(args, 'candidate_local_visual_variant', 'local'),
+            saved_variant=_checkpoint_config_value(
+                checkpoint.get('config', {}), 'candidate_local_visual_variant', 'local'),
         )
     score_state_prefixes = (
         "structured_slot_builder.",

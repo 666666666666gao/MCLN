@@ -1,0 +1,57 @@
+{
+  "arms": {
+    "control": "center nearest64 within common RoI, grouped by octants",
+    "local": "extent up to8 unique points per octant,64 slots"
+  },
+  "batch_size": 12,
+  "candidate_predeclared": "local_v99 extent;no validation arm or epoch selection",
+  "checkpoint_policy": "one final endpoint per arm",
+  "core_learning_rate": 1e-06,
+  "epochs": 1,
+  "exclusions": [
+    "no new Gate",
+    "no quality distribution",
+    "no BCT loss",
+    "no parser change",
+    "no validation-specific rules"
+  ],
+  "fit_rows": 29778,
+  "formal_evaluation": "one fixed9508-row triplet:protected_v99,center_v99,local_v99;native and full-system REC plus Mask",
+  "frozen_readouts": [
+    "Parent",
+    "Geometry",
+    "V99"
+  ],
+  "loss": "native_gt_only",
+  "module_holdout_backbone_seen": true,
+  "module_holdout_rows": 6887,
+  "preflight_receipt_sha256": "66be800428c618e57ce3d571724da6390df9c5cfa6a5f23238f8b19a38995608",
+  "pretrained_start": "protected E71;identical fresh zero-output region modules,not failed endpoints",
+  "promotion": {
+    "advance_to_nr_sr_when_protected_gates_pass": true,
+    "also_no_lower_than_same_run_protected": true,
+    "historical_scan_rec_hits": [
+      5572,
+      4797
+    ],
+    "nr3d_sr3d_mask_gate": false,
+    "scan_mask_paper_percent": [
+      58.7,
+      50.7,
+      44.72
+    ],
+    "stretch59_51_not_required": true
+  },
+  "question": "Does distributed spatial evidence improve REC compared with center sampling under the same regional readout?",
+  "reader_learning_rate": 0.0001,
+  "reader_per_arm": {
+    "minimum_half_extent_m": 0.05,
+    "point_budget_slots": 64,
+    "readout": "point attention within region then query-conditioned region attention",
+    "regions": 8,
+    "trainable_parameters": 145008,
+    "window_half_extent_multiplier": 1.5
+  },
+  "schema": "mcln-scanrefer-range-plan-v1",
+  "steps_per_arm": 2482
+}

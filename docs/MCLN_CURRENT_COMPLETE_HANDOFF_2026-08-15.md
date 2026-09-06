@@ -16548,3 +16548,31 @@ decoder/backbone/mask_head/selector/local分别含625/48/58/9/10个参数张量�
 继续预约19:24，非本次CPU接入的性能评价。Scan正式通过后，需用真实Nr/Sr输入
 做原生GPU/映射/梯度预检，再确定接续短训配置；未运行旧240/140epoch队列。
 目前没有新增三数据集正式成绩，整体goal仍active。
+
+
+### 20.93 Nr/Sr原生joint_det样本范围实测，固定预检输入（2026-09-06 18:11 CST）
+
+18:06:51完成CPU标注审计，使用20.92的616文件隔离源、真实train/val扫描对象标签和
+原生load_annos筛选，只跳过语言图字段构建。Nr语言32919行加11990检测行=44909；
+Sr语言65846行加11990检测行=77836。单卡B12/drop_last分别3742/6486更新，余5/4行。
+正式验证仍为7899/17726语言行，不混入检测。辅助检测是1199基础行重复10次；
+实际train扫描1201个，原加载器按已有规则排除两条检测索引。train/val的1201/312
+个扫描没有缺superpoint，加入检测后的Nr/Sr训练与各自验证既无扫描ID交集，也无
+按下划线前缀划分的物理空间交集。没有改变旧模块留出集被主干见过的证据性质。
+
+为实际GPU预检固定每数据集12个不同扫描的首条语言表达，加4条基础检测提示，
+共32条原始输入清单；按native顺序选取，不读模型输出。清单SHA
+3ff6ec4c359e2b00924073891cd5e6e3a6af33976e2bb963f4a01215978d2a45。
+本次点样本构造/GPU前向/优化器更新/checkpoint写入均0；扫描pickle只记录size/mtime，
+CSV与split文件计算SHA。本次审计用时52.76秒，不是Nr/Sr训练或性能结果。
+
+说明：docs/NR_SR_NATIVE_DATA_PREFLIGHT_2026-09-06.md；
+证据：refine-logs/native_joint_annotation_audit_20260906_v1。
+Scan正式通过后仍需实际数据GPU/原生训练模式/增强/候选过滤/梯度预检。本次只是固定
+输入范围，未预先宣称通过，也未启动Nr/Sr或采用旧长期训练预算。
+
+磁盘方面，后续Nr/Sr可直接沿用现有checkpoint_metric_retention，并将
+checkpoint_retention_metrics设为rec_acc025 rec_acc050：本run内latest加两项REC
+最好最多三个不同epoch，别名为hardlink，不额外为Mask保留权重；写新文件完成后
+才删不保留旧epoch。无新增清理代码，受保护历史与当前Scan待评端点继续保留。
+当前Scan仍按19:24后240秒观察；没有在本次准备中查询或改变GPU训练。goal active。

@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 03:39 CST. §20.106:range baseline6887 exactly equal;actual64/2482 updates/arm observed03:36:41;estimated fit end~05:30;queue240s remains live.
+Updated: 2026-09-07 03:53 CST. §20.107:conditional native range GPU preflight queue48128 armed,3testsPASS;waits original Scan formal queue47242;no native GPU started.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Native range conditional GPU preflight | Queue48128 live;3condition testsPASS | Waits fixed Scan formal promotion+audit;negative stops;positive runs16rows+2steps each;no native training started |
 | Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |
 | ScanRefer matched center/extent range reading | CPU3PASS;real16train preflightPASS;pair47112 baseline12/6887 | Same145008params and64slots;2482updates/arm pending;queue47242 audits then fixed9508 protected/center/extent;no new metrics |
 | ScanRefer corrected-mesh final and stage diagnostic | Formal5543/4722 vs5570/4797 FAIL;diagnostic9508 complete,auditPASS | Parent widens@0.25 loss;Geometry turns@0.50 +6 to−89;Top16 oracle+42/+82;next fixed64-point extent control;Nr/Sr not launched |

@@ -1,0 +1,91 @@
+{
+  "disk": {
+    "free": 9370222592,
+    "total": 53687091200,
+    "used": 44316868608
+  },
+  "files": {
+    "queue.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "unit_tests.txt": {
+      "bytes": 98,
+      "sha256": "20a13ad4b34409de2f55808835ad5c4e627977339b4feeeb2094ff79f04738f7"
+    },
+    "upstream_observations.jsonl": {
+      "bytes": 405,
+      "sha256": "fc8740f6cc8f81a33a0c959dcdb38b26e42ca94bcc41c86984ff520d4b6d4062"
+    }
+  },
+  "gpu": "664861, [Not Found], 8736 MiB\n",
+  "last_upstream_observation": {
+    "native_gpu_started": false,
+    "process": "   PID STAT     ELAPSED COMMAND\n 47242 Ss         47:12 SCREEN -dmS mcln_scanrefer_range_posttraining_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_range_posttraining_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_range_posttraining_20260907_v1/queue.log 2>&1\n",
+    "time_cst": "2026-09-07T03:48:56.915372+08:00",
+    "upstream_screen_pid": 47242
+  },
+  "latest_training_observation": {
+    "progress": {
+      "SCANREFER RANGE EVAL": {
+        "elapsed_seconds": 1719.580694437027,
+        "rows": 6144,
+        "stage": "baseline",
+        "total": 6887
+      },
+      "SCANREFER RANGE EVAL COMPLETE": {
+        "elapsed_seconds": 1929.631061553955,
+        "metrics": {
+          "control": {
+            "mask_hits025": 6511,
+            "mask_hits050": 6097,
+            "mask_miou": 77.8108607870114,
+            "rec_hits025": 6684,
+            "rec_hits050": 6426,
+            "rows": 6887
+          },
+          "local": {
+            "mask_hits025": 6511,
+            "mask_hits050": 6097,
+            "mask_miou": 77.8108607870114,
+            "rec_hits025": 6684,
+            "rec_hits050": 6426,
+            "rows": 6887
+          }
+        },
+        "stage": "baseline"
+      },
+      "SCANREFER RANGE TRAIN": {
+        "arms": {
+          "control": {
+            "gradient_norm_before_clip": 1.8652534484863281,
+            "loss": 10.141722679138184,
+            "native_loss": 10.141722679138184
+          },
+          "local": {
+            "gradient_norm_before_clip": 2.237308979034424,
+            "loss": 10.118311882019043,
+            "native_loss": 10.118311882019043
+          }
+        },
+        "elapsed_seconds": 739.367550611496,
+        "estimated_training_remaining_seconds": 6429.031904926524,
+        "since_previous_report_seconds": 184.39321660995483,
+        "step": 256,
+        "total": 2482
+      }
+    },
+    "screen_live": true,
+    "screen_pid": 47112,
+    "time_cst": "2026-09-07T03:48:12.742852+08:00"
+  },
+  "native_preflight_directory_exists": false,
+  "native_preflight_started": false,
+  "native_training_started": false,
+  "processes": "   PID STAT     ELAPSED COMMAND\n 47112 Ss         56:54 SCREEN -dmS mcln_scanrefer_range_pair_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_range_pair_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_range_pair_20260907_v1/run.log 2>&1\n 47242 Ss         49:21 SCREEN -dmS mcln_scanrefer_range_posttraining_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_range_posttraining_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_range_posttraining_20260907_v1/queue.log 2>&1\n 48128 Ss         02:11 SCREEN -dmS mcln_native_range_preflight_queue_v1 bash -c exec bash /root/autodl-tmp/mcln_native_range_preflight_queue_20260907_v1/controller.sh > /root/autodl-tmp/mcln_native_range_preflight_queue_20260907_v1/queue.log 2>&1\n",
+  "queue_controller_exit_exists": false,
+  "schema": "mcln-native-range-queue-armed-v1",
+  "status": "armed_waiting_for_scan",
+  "tests_passed": 3,
+  "time_cst": "2026-09-07T03:51:06.263108+08:00"
+}

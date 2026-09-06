@@ -16946,3 +16946,16 @@ local相对同次保护控制：REC@0.25修复37、破坏64，净−27；@0.50�
 原posttraining screen47242在本次记录时也确认存活，继续240秒轮询、完成原定终态和正式接续。无新的Nr/Sr GPU任务。后续本地深查优先安排在估计fit终点前数分钟（约05:25），远端队列期间仍按240秒保留原进程观察；如队列记录终止/异常，则按实际状态提前处理。本轮是完成基线证据检查后的已核验等待，主目标仍active，正式成绩及上一轮CPU接入结论均保持原口径。
 
 baseline_rows SHA`415d8b321702f693fb8597fbcf5f23d1bd61e935a656e406b2c656c48f4dd455`；baseline_row_check SHA`9184fefbdb54dd1ab103f39461d849cb0a43c3b463b6ad2f1065c1d0c0c70e65`。
+
+
+### 20.107 ScanRefer通过后自动接续原生范围GPU预检（2026-09-07 03:53 CST）
+
+本轮将§20.105已准备的GPU预检从手动入口改为实际后台条件接续。03:48:54启动screen`48128.mcln_native_range_preflight_queue_v1`，03:51:06核验其存活、3项原环境CPU条件测试通过，第一条观察明确读取原posttraining screen47242的实际进程。测试使用明确标注的合成临时文件，只验证“不改选center”“无需达到59/51”“两臂输入身份必须一致”，不能作为任何实验精度。三份screen47112/47242/48128在本次文档写入前再次核实存活。
+
+**唯一实际接续链。** 47112完成当前Scan训练及终态模块评估；47242执行原定独立审计、固定三组9508正式评估及正式审计；48128每240秒等待47242完整退出，随后核对上游manifest、正式receipt/audit SHA、9508逐条指标及输入对应，只对预先指定extent的原有晋级条件做判断。未通过则写`scanrefer_not_promoted`并结束，不分配Nr/Sr GPU；通过则使用同一GPU锁运行已有范围原生预检，每数据集16条真实训练输入、2次临时更新，结果须再次核验。它不会直接宣称Nr/Sr训练完成，也没有新建正式训练任务。
+
+该接续沿用已通过CPU加载检查的618文件原生快照、锁定Nr3D预训练权重、正确mesh数据与原生butd_cls协议；已有ScanRefer训练参数、损失、候选、更新步数及运行源码均未改。GPU预检目前尚未开始，其目录本次检查仍不存在。若启动成功，回执记录实际子进程PID与父queue PID；预检失败保留exit与日志，不自动重试或跳过。当前源码移除被替代的`launch_native_candidate_range_preflight.py`手动启动入口，历史版本仍在§20.105的归档中；后续应检查48128，不能再运行旧手动入口造成重复接续。
+
+最近上游观察03:48:12为每臂256/2482更新，elapsed739.37秒、估计剩余6429.03秒，实际吞吐仍与§20.106接近，fit约05:30结束的估计不变。03:51:06磁盘剩余9370222592 bytes（8.727GiB），本轮没有新增权重文件。正式成绩未更新，目标仍active。
+
+接续manifest SHA`80bbb51dd32f7bbb41bd929f2b5cfd92915234f5ba7307a4da4227332659b796`；armed回执SHA`044fa0afa84a339ccd8b9f423012cc29470a8fdc3eb7dc29238b0ef25da38e87`。目录`/root/autodl-tmp/mcln_native_range_preflight_queue_20260907_v1`；后续预检目标目录仍是`/root/autodl-tmp/mcln_native_range_preflight_20260907_v1`。

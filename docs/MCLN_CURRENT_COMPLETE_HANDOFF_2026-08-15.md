@@ -16649,3 +16649,76 @@ screen39696.mcln_scanrefer_local_visual_official_v1，Python39702，flock39701�
 观测源SHA bb48fd8bd205455c922688b499367b7203b2201dc1ef1b287657c2b5c0984e58。
 受保护正式成绩未更新。只有真实Scan正式底线通过才启动已准备的Nr/Sr GPU预检
 和训练；新模块没有因“integrity PASS”而被宣布有效。整体goal继续active。
+
+
+### 20.96 Scan入口误用旧superpoint路径：9508条结果、根因与修正复核（2026-09-06 20:42 CST）
+
+本节记录固定端点的实际9508条验证结果。事后查明入口使用旧mixed superpoint输入，不满足历史最好所用meshsp协议，不能作为该协议的正式晋级证据。训练已于20.95完成，本次优化器更新和权重写入均为0；两个模型读取相同9508条表达和相同采样点。controller退出0；实际终态时间为`2026-09-06T20:06:17.732332+08:00`，评估用时1508.56秒，Torch峰值20181.01MiB。
+
+| 完整系统 | REC hits@0.25 / @0.50 | REC Acc@0.25 / @0.50 | Mask hits@0.25 / @0.50 | Mask mIoU |
+|---|---:|---:|---:|---:|
+| 受保护V99配对控制 | 5550 / 4646 | 58.371897% / 48.864114% | 5679 / 4663 | 41.77629089% |
+| 候选局部读取＋原V99 | 5535 / 4605 | 58.214135% / 48.432899% | 5679 / 4648 | 41.72951370% |
+
+原生REC由同一个forward在V99前单独计算，未拼入其他版本Mask：
+
+| 原生网络 | REC hits@0.25 / @0.50 | REC Acc@0.25 / @0.50 |
+|---|---:|---:|
+| 原核心直接输出 | 5514 / 4407 | 57.993269% / 46.350442% |
+| 局部读取核心直接输出 | 5512 / 4433 | 57.972234% / 46.623896% |
+
+局部完整系统相对配对受保护系统逐行变化：
+
+| 指标 | 修复 | 破坏 | 净变化 |
+|---|---:|---:|---:|
+| mask025 | 27 | 27 | +0 |
+| mask050 | 26 | 41 | -15 |
+| rec025 | 53 | 68 | -15 |
+| rec050 | 112 | 153 | -41 |
+
+原生REC净变化为-2/+26，单独保存在审计的`native_local_minus_protected`。
+按141个物理空间、2000次seed0 bootstrap，完整系统REC差异95%区间：@0.25[-0.408378,0.108172]pp；@0.50[-0.802471,-0.070472]pp。区间用于诊断，不新增晋级门槛。
+
+旧输入上的数值门判断：**FAIL**；正确数据版本的晋级尚待重评。Scan REC必须同时达到历史5572/4797与本次配对控制；Scan Mask必须达到论文58.70/50.70/44.72%。59/51为争取目标，Nr/Sr Mask不设门槛。
+
+- `rec025_historical_v99`: **FAIL**。
+- `rec025_paired_protected`: **FAIL**。
+- `rec050_historical_v99`: **FAIL**。
+- `rec050_paired_protected`: **FAIL**。
+- `scan_mask025_paper`: **PASS**。
+- `scan_mask050_paper`: **FAIL**。
+- `scan_mask_miou_paper`: **FAIL**。
+
+20:23真实数据根目录审计确认：v1的CLI使用/root/autodl-tmp/DATA_ROOT/，而历史最好使用
+/root/autodl-tmp/DATA_ROOT_mcln_meshsp/。两套val共312个同名superpoint文件，其中106个SHA相同、
+206个SHA不同，与§14.126–14.128已知mixed/fallback修复一致。历史只读receipt再次读取，
+包含5572/4797、5690/4976及mIoU45.930260%。本次控制5550/4646和mIoU41.776291%接近
+修复前的旧记录，不能把这部分差距归给新模块。独立审计PASS只证明实际输入和输出自洽，
+不代表该次运行使用了要求保护的数据协议。
+
+当前Scan局部训练入口同样继承旧builder默认data_root；此前开发留出负结果仍对应其真实
+旧输入实验，不改写为成功，但也不作为正确mesh数据训练后的效果证据。canonical训练与
+评估入口已要求manifest显式data_root，逐文件校验superpoint；历史冻结builder和旧run源码
+保留不改。后续Scan训练需使用修复后的train1201/val312文件，并重新完成实际输入预检。
+
+v2修正启动在native dataset tokenizer阶段退出1：原加载器直接拼data_path与roberta-base/，
+传入目录缺少结尾/。该失败发生在模型构造/预测前，优化器和权重写入均0；日志原样保留。
+已按真实接口要求修正，并补回归检查。v3于20:37:39启动，原环境30项测试全部通过；
+真实tokenizer加载和train1201/val312文件SHA校验通过。data-root view中除superpoints外的
+顶层输入均与旧目录指向同一inode；只修正数据版本，不改权重、阈值、候选规则或更新步数。
+
+v3=/root/autodl-tmp/mcln_scanrefer_local_visual_official_20260906_v3；
+screen40891.mcln_scanrefer_local_visual_official_v3，Python40897，flock40896。
+20:39:46已核对真实进程和首批12/9508。manifest SHA
+e2b0350fb67ce7e57193394f730cb173161a9706cbd134ed405d071411923fb9。
+旧v1的实际评估耗时1508.56秒，据此估计v3约21:05结束；Windows观察器29956、会话90838
+将于21:02检查，之后240秒。当前没有正确mesh协议的终态或新最好结果。
+
+Nr/Sr暂不启动，旧条件启动器仍指向v1失败receipt，须在真实v3验收后更新。
+Nr/Sr准备期合同也仍使用原DATA_ROOT，后续需明确数据版本并验证，不能声称Scan的目录
+修复已经带来Nr/Sr REC收益。两个Scan端点权重继续保留待复核，不在此时清理。
+整体三数据集目标保持active。
+
+独立CPU审计重新计算了完整系统与原生REC、逐行输入身份、修复/破坏和晋级条件；复核614个源码文件、正式入口、训练审计和本次local及四份保护artifact的SHA。本次正式运行内部还校验全部模型state和V99参数未变化。它不补充缺失的逐行GT实例身份，因此IoU区间转移不能单独解释为选错实例或框回归原因。
+
+正式receipt SHA`7a662cbc263af6b2a1415d04938dbe46667b29514568d9483c21ebfbbce1ba13`；独立审计SHA`cd6417ab582f96f3f4cd2fe130da4af00e1cd08ec0f9c464a8e431bbbd73c3a3`。全部逐行记录与protocol位于`refine-logs/scanrefer_local_visual_official_20260906_v1/result/`。验收器已在原Python3.7/Torch1.10.2环境通过23项单元测试；该测试记录本身不是正式成绩。

@@ -78,6 +78,7 @@ def main():
     from scripts.scanrefer_joint_readout import JointRecReadout
     from models.candidate_local_visual import CandidateLocalVisual
     from scripts.scanrefer_rec_evaluation import rec_evaluation_view
+    from scripts.scanrefer_data_contract import set_scanrefer_data_root, verify_scanrefer_superpoints
 
     def seed_everything(seed):
         random.seed(seed)
@@ -91,8 +92,12 @@ def main():
     torch.backends.cuda.matmul.allow_tf32 = True
     torch.backends.cudnn.allow_tf32 = True
     command = build_authoritative_command(directory / 'unused_official_output')
+    command = set_scanrefer_data_root(command, manifest['data_root'])
+    for split_name in ['train', 'val']:
+        verify_scanrefer_superpoints(manifest['data_root'], split_name, manifest['superpoint_files'][split_name])
     sys.argv = [sys.argv[0]] + command[command.index('train_dist_mod.py') + 1:]
     args = parse_option()
+    assert args.data_root == manifest['data_root']
     assert args.dataset == ['scanrefer'] and args.test_dataset == 'scanrefer'
     assert args.butd and not args.butd_cls and not args.butd_gt
     assert args.use_color and not args.use_height and not args.use_multiview

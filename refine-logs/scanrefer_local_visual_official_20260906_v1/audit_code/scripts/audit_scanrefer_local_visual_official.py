@@ -8,7 +8,6 @@ from pathlib import Path
 
 from scripts.audit_scanrefer_joint_readout_pair import compare, file_sha, metrics
 from scripts.evaluate_scanrefer_local_visual_official import promotion_check
-from scripts.scanrefer_data_contract import verify_scanrefer_superpoints
 
 
 ARMS = ['protected_v99', 'local_v99']
@@ -48,7 +47,7 @@ def audit_rows(directory):
     manifest = json.loads((directory / 'input_manifest.json').read_text())
     protocol = json.loads((result / 'protocol.json').read_text())
     assert (directory / 'controller.exit').read_text().strip() == '0'
-    assert receipt['schema'] == 'mcln-scanrefer-local-visual-official-v2'
+    assert receipt['schema'] == 'mcln-scanrefer-local-visual-official-v1'
     assert receipt['status'] == 'complete'
     assert receipt['formal_rows'] == manifest['formal_rows'] == protocol['rows'] == 9508
     assert receipt['optimizer_steps'] == receipt['checkpoint_writes'] == 0
@@ -62,11 +61,6 @@ def audit_rows(directory):
     assert manifest['scan_mask_paper_floor_percent'] == [58.70, 50.70, 44.72]
     assert not manifest['nr3d_sr3d_mask_gate']
     assert protocol['native_loader_and_worker_seeding']
-    assert receipt['data_root'] == protocol['data_root'] == manifest['data_root']
-    command = protocol['authoritative_base_command']
-    assert command[command.index('--data_root') + 1] == manifest['data_root']
-    assert receipt['superpoint_inputs'] == protocol['superpoint_inputs']
-    assert receipt['superpoint_inputs']['files_verified'] == len(manifest['val_superpoint_files']) == 312
     identities = protocol['identities']
     assert len(identities) == 9508
     records = json.loads((result / 'rows.json').read_text())
@@ -126,11 +120,7 @@ def audit_inputs(directory):
     for name, item in artifacts.items():
         assert Path(item['path']).stat().st_size == item['bytes'], name
         assert file_sha(item['path']) == item['sha256'], name
-    data_inputs = verify_scanrefer_superpoints(manifest['data_root'], 'val', manifest['val_superpoint_files'])
-    receipt = json.loads((directory / 'result/receipt.json').read_text())
-    assert data_inputs == receipt['superpoint_inputs']
     return {'source_files_verified': len(source_files),
-            'superpoint_inputs_verified_after_evaluation': data_inputs,
             'source_manifest_sha256': train_manifest['source_manifest_sha256'],
             'manifest_sha256': file_sha(directory / 'input_manifest.json'),
             'training_audit_sha256': manifest['training_audit_sha256'],
@@ -144,7 +134,7 @@ def main():
     option = parser.parse_args()
     result = audit_rows(option.directory)
     result['inputs'] = audit_inputs(option.directory)
-    result['schema'] = 'mcln-scanrefer-local-visual-official-audit-v2'
+    result['schema'] = 'mcln-scanrefer-local-visual-official-audit-v1'
     result['time_cst'] = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat()
     result['audit_script_sha256'] = file_sha(__file__)
     result['gpu_forwards'] = result['optimizer_steps'] = result['checkpoint_writes'] = 0

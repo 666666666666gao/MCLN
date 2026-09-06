@@ -105,3 +105,4 @@
 | 2026-09-06 18:11 | /run-experiment | docs/NR_SR_NATIVE_DATA_PREFLIGHT_2026-09-06.md | data audit | §20.93 actual native joint counts and32 fixed preflight inputs;0 GPU/updates;existing REC checkpoint retention documented |
 | 2026-09-06 18:27 | /run-experiment | scripts/run_native_candidate_local_preflight.py | preparation | §20.94 actual64 native CPU point samples PASS;conditional GPU entry prepared;no GPU/updates/checkpoints |
 | 2026-09-06 19:46 | /run-experiment | refine-logs/scanrefer_local_visual_pair_20260906_v1/independent_audit.json | result | §20.95 actual2482/6887 integrity PASS,development REC negative;fixed9508 formal evaluation launched,not promoted |
+| 2026-09-06 20:42 | /run-experiment | refine-logs/scanrefer_local_visual_official_20260906_v1/result/independent_audit.json | result | §20.96 actual9508 paired Scan result,independent integrity PASS;fixed promotion FAIL |

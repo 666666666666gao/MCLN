@@ -82,7 +82,6 @@ def main():
     option = parser.parse_args()
     directory = option.manifest.parent
     manifest = json.loads(option.manifest.read_text())
-    assert manifest['schema'] == 'mcln-scanrefer-local-visual-official-input-v2'
     training = Path(manifest['training_directory'])
     assert file_sha(training / 'receipt.json') == manifest['training_receipt_sha256']
     receipt, train_manifest = verify_training_endpoint(training)
@@ -111,7 +110,6 @@ def main():
     from scripts.scanrefer_joint_readout import JointRecReadout
     from models.candidate_local_visual import CandidateLocalVisual
     from scripts.scanrefer_rec_evaluation import rec_evaluation_view
-    from scripts.scanrefer_data_contract import set_scanrefer_data_root, verify_scanrefer_superpoints
 
     random.seed(0)
     np.random.seed(0)
@@ -124,11 +122,8 @@ def main():
     torch.distributed.init_process_group(backend='nccl',
         init_method=(result_directory / 'distributed_init').as_uri(), world_size=1, rank=0)
     command = build_authoritative_command(result_directory / 'original_cli_reference')
-    command = set_scanrefer_data_root(command, manifest['data_root'])
-    data_inputs = verify_scanrefer_superpoints(manifest['data_root'], 'val', manifest['val_superpoint_files'])
     sys.argv = [sys.argv[0]] + command[command.index('train_dist_mod.py') + 1:]
     args = parse_option()
-    assert args.data_root == manifest['data_root']
     assert args.eval and not args.eval_train and not args.debug
     assert args.dataset == ['scanrefer'] and args.test_dataset == 'scanrefer'
     assert args.batch_size == 12 and args.num_workers == 2
@@ -143,7 +138,6 @@ def main():
     write_json(result_directory / 'protocol.json', {'authoritative_base_command': command,
         'identities': identity, 'rows': 9508, 'workers': 2, 'batch_size': 12,
         'native_loader_and_worker_seeding': True, 'formal_checkpoint_arm': 'local',
-        'data_root': args.data_root, 'superpoint_inputs': data_inputs,
         'historical_protected_rec_hits': [5572, 4797], 'scan_mask_paper_percent': [58.70, 50.70, 44.72]})
     protected_payload = torch.load(train_manifest['artifacts']['backbone']['path'], map_location='cpu')
     protected_state = {name[7:]: value for name, value in protected_payload['model'].items()}
@@ -272,14 +266,13 @@ def main():
             for key in ['row_id', 'scan_id', 'point_sha256']:
                 assert native_row[key] == system_row[key]
     write_json(result_directory / 'native_rows.json', native_records)
-    result = {'schema': 'mcln-scanrefer-local-visual-official-v2', 'status': 'complete',
+    result = {'schema': 'mcln-scanrefer-local-visual-official-v1', 'status': 'complete',
         'time_cst': datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
         'formal_rows': 9508, 'optimizer_steps': 0, 'checkpoint_writes': 0,
         'metrics': metrics, 'native_rec_metrics': native_metrics,
         'native_rows_sha256': file_sha(result_directory / 'native_rows.json'),
         'promotion': promotion_check(metrics['protected_v99'], metrics['local_v99']),
         'manifest_sha256': file_sha(option.manifest), 'trained_checkpoint': receipt['checkpoints']['local'],
-        'data_root': args.data_root, 'superpoint_inputs': data_inputs,
         'rows_sha256': file_sha(result_directory / 'rows.json'), 'all_model_states_unchanged': True,
         'native_evaluators_match_row_metrics': True,
         'evaluation_extent_policy': 'existing rec_candidate_adapter floor at 1e-6',

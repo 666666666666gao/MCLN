@@ -1,0 +1,29 @@
+20:23真实数据根目录审计确认：v1的CLI使用/root/autodl-tmp/DATA_ROOT/，而历史最好使用
+/root/autodl-tmp/DATA_ROOT_mcln_meshsp/。两套val共312个同名superpoint文件，其中106个SHA相同、
+206个SHA不同，与§14.126–14.128已知mixed/fallback修复一致。历史只读receipt再次读取，
+包含5572/4797、5690/4976及mIoU45.930260%。本次控制5550/4646和mIoU41.776291%接近
+修复前的旧记录，不能把这部分差距归给新模块。独立审计PASS只证明实际输入和输出自洽，
+不代表该次运行使用了要求保护的数据协议。
+
+当前Scan局部训练入口同样继承旧builder默认data_root；此前开发留出负结果仍对应其真实
+旧输入实验，不改写为成功，但也不作为正确mesh数据训练后的效果证据。canonical训练与
+评估入口已要求manifest显式data_root，逐文件校验superpoint；历史冻结builder和旧run源码
+保留不改。后续Scan训练需使用修复后的train1201/val312文件，并重新完成实际输入预检。
+
+v2修正启动在native dataset tokenizer阶段退出1：原加载器直接拼data_path与roberta-base/，
+传入目录缺少结尾/。该失败发生在模型构造/预测前，优化器和权重写入均0；日志原样保留。
+已按真实接口要求修正，并补回归检查。v3于20:37:39启动，原环境30项测试全部通过；
+真实tokenizer加载和train1201/val312文件SHA校验通过。data-root view中除superpoints外的
+顶层输入均与旧目录指向同一inode；只修正数据版本，不改权重、阈值、候选规则或更新步数。
+
+v3=/root/autodl-tmp/mcln_scanrefer_local_visual_official_20260906_v3；
+screen40891.mcln_scanrefer_local_visual_official_v3，Python40897，flock40896。
+20:39:46已核对真实进程和首批12/9508。manifest SHA
+e2b0350fb67ce7e57193394f730cb173161a9706cbd134ed405d071411923fb9。
+旧v1的实际评估耗时1508.56秒，据此估计v3约21:05结束；Windows观察器29956、会话90838
+将于21:02检查，之后240秒。当前没有正确mesh协议的终态或新最好结果。
+
+Nr/Sr暂不启动，旧条件启动器仍指向v1失败receipt，须在真实v3验收后更新。
+Nr/Sr准备期合同也仍使用原DATA_ROOT，后续需明确数据版本并验证，不能声称Scan的目录
+修复已经带来Nr/Sr REC收益。两个Scan端点权重继续保留待复核，不在此时清理。
+整体三数据集目标保持active。

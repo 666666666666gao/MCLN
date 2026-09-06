@@ -1,0 +1,85 @@
+{
+  "time_cst": "2026-09-06T20:20:04.202221+08:00",
+  "process_live": false,
+  "process": "   PID STAT     ELAPSED COMMAND\n",
+  "progress": {
+    "SCANREFER LOCAL VISUAL OFFICIAL": {
+      "rows": 9216,
+      "total": 9508,
+      "elapsed_seconds": 1460.9493701457977,
+      "estimated_remaining_seconds": 46.28876042562641
+    },
+    "SCANREFER LOCAL VISUAL OFFICIAL COMPLETE": {
+      "schema": "mcln-scanrefer-local-visual-official-v1",
+      "status": "complete",
+      "time_cst": "2026-09-06T20:06:17.732332+08:00",
+      "formal_rows": 9508,
+      "optimizer_steps": 0,
+      "checkpoint_writes": 0,
+      "metrics": {
+        "protected_v99": {
+          "rows": 9508,
+          "mask_miou": 41.776290889522535,
+          "rec_hits025": 5550,
+          "mask_hits025": 5679,
+          "rec_hits050": 4646,
+          "mask_hits050": 4663
+        },
+        "local_v99": {
+          "rows": 9508,
+          "mask_miou": 41.729513697121256,
+          "rec_hits025": 5535,
+          "mask_hits025": 5679,
+          "rec_hits050": 4605,
+          "mask_hits050": 4648
+        }
+      },
+      "native_rec_metrics": {
+        "protected_v99": {
+          "rows": 9508,
+          "rec_hits025": 5514,
+          "rec_hits050": 4407
+        },
+        "local_v99": {
+          "rows": 9508,
+          "rec_hits025": 5512,
+          "rec_hits050": 4433
+        }
+      },
+      "native_rows_sha256": "ec53efde30409725af26f8558158dab9dfb219f37d7978d78c37e803acab2165",
+      "promotion": {
+        "checks": {
+          "rec025_historical_v99": false,
+          "rec050_historical_v99": false,
+          "rec025_paired_protected": false,
+          "rec050_paired_protected": false,
+          "scan_mask025_paper": true,
+          "scan_mask050_paper": false,
+          "scan_mask_miou_paper": false
+        },
+        "advance_to_nr3d_sr3d_rec": false,
+        "stretch_goals_are_not_promotion_gates": true,
+        "nr3d_sr3d_mask_not_a_promotion_gate": true
+      },
+      "manifest_sha256": "53bc72f64be73c92e8e4b74ba7a1430b063262dcd28c9825fd03ecceb8053a3f",
+      "trained_checkpoint": {
+        "bytes": 620352201,
+        "path": "/root/autodl-tmp/mcln_scanrefer_local_visual_pair_20260906_v1/local_local_visual_state.pt",
+        "sha256": "4c6d41c49a21d73e3174828c20abec2703efb18df285a27594d21f423741b986"
+      },
+      "rows_sha256": "563fddb57f7a0ae1c03962b52b237a9fbe7a5ea5bc467db995dd90024a8491a4",
+      "all_model_states_unchanged": true,
+      "native_evaluators_match_row_metrics": true,
+      "evaluation_extent_policy": "existing rec_candidate_adapter floor at 1e-6",
+      "elapsed_seconds": 1508.5620324611664,
+      "max_gpu_mib": 20181.0146484375
+    }
+  },
+  "downloaded": {
+    "controller.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "result/receipt.json": "7a662cbc263af6b2a1415d04938dbe46667b29514568d9483c21ebfbbce1ba13",
+    "result/rows.json": "563fddb57f7a0ae1c03962b52b237a9fbe7a5ea5bc467db995dd90024a8491a4",
+    "result/native_rows.json": "ec53efde30409725af26f8558158dab9dfb219f37d7978d78c37e803acab2165"
+  },
+  "disk_bytes_report": "Filesystem       1B-blocks        Used  Available Use% Mounted on\n/dev/sdb       53687091200 44070404096 9616687104  83% /root/autodl-tmp\n"
+}

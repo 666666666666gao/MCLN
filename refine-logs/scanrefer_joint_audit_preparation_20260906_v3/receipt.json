@@ -1,0 +1,30 @@
+{
+  "checks": [
+    {
+      "command": "/root/miniconda3/envs/bdetr/bin/python -m py_compile scripts/audit_scanrefer_joint_readout_pair.py tests/test_audit_scanrefer_joint_readout_pair.py",
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": "/root/miniconda3/envs/bdetr/bin/python -m pytest -q tests/test_audit_scanrefer_joint_readout_pair.py",
+      "exit_code": 0,
+      "output": ".....                                                                    [100%]\n5 passed in 0.08s\n"
+    },
+    {
+      "command": "/root/miniconda3/envs/bdetr/bin/python probe_metadata.py",
+      "exit_code": 0,
+      "output": "{\"geometry\": {\"artifact_version\": \"int\", \"backbone_config\": \"dict\", \"base_cache_schema_version\": \"int\", \"base_feature_schema_version\": \"str\", \"calibration_metrics\": \"dict\", \"candidate_rule\": \"dict\", \"checkpoint_epoch\": \"int\", \"checkpoint_sha256\": \"str\", \"epoch\": \"int\", \"evaluator_filter_policy\": \"str\", \"feature_mean\": \"Tensor\", \"feature_names\": \"list\", \"feature_std\": \"Tensor\", \"filter_non_gt_boxes\": \"bool\", \"flat_parent_prior_version\": \"str\", \"geometry_cache_schema_version\": \"int\", \"geometry_schema_version\": \"str\", \"geometry_weight\": \"float\", \"input_dim\": \"int\", \"max_point_fraction\": \"float\", \"min_points\": \"int\", \"model_config\": \"dict\", \"model_inputs\": \"dict\", \"model_schema_version\": \"str\", \"num_queries\": \"int\", \"parent_artifact_sha256\": \"str\", \"parent_inference_contract\": \"dict\", \"parent_provenance\": \"dict\", \"regressed_variant_index\": \"int\", \"scene_split\": \"dict\", \"score_mode\": \"str\", \"target_iou_policy\": \"str\", \"tie_policy\": \"str\", \"train_base_cache_content_digest\": \"str\", \"train_base_cache_manifest_digest\": \"str\", \"train_geometry_cache_content_digest\": \"str\", \"train_geometry_immutable_metadata_digest\": \"str\", \"train_parent_score_content_sha256\": \"str\", \"training_args\": \"dict\", \"variant_configs\": \"list\", \"variant_names\": \"list\"}, \"parent\": {\"adapter_schema_version\": \"str\", \"artifact_version\": \"int\", \"backbone_config\": \"dict\", \"calibration_metrics\": \"dict\", \"candidate_rule\": \"dict\", \"checkpoint_sha256\": \"str\", \"epoch\": \"int\", \"feature_mean\": \"Tensor\", \"feature_names\": \"list\", \"feature_std\": \"Tensor\", \"input_dim\": \"int\", \"model_config\": \"dict\", \"model_inputs\": \"dict\", \"reranker_weight\": \"float\", \"score_mode\": \"str\", \"target_iou_policy\": \"str\", \"training_args\": \"dict\"}, \"v99\": {\"deployable\": \"bool\", \"feature_names\": \"dict\", \"fit\": \"dict\", \"input_sha256\": \"dict\", \"model_config\": \"dict\", \"normalization\": \"dict\", \"normalization_sha256\": \"str\", \"oof_evidence\": \"dict\", \"policy\": \"dict\", \"schema\": \"str\", \"training_contract\": \"dict\", \"validation_data_accessed\": \"bool\", \"version\": \"int\"}}\n"
+    }
+  ],
+  "files": {
+    "scripts/audit_scanrefer_joint_readout_pair.py": "fd61f16afd46dab3cf80219fdc6f95dfa3830ee47b8910990e4bac6d7e41ee45",
+    "tests/test_audit_scanrefer_joint_readout_pair.py": "09593ce0858b9c80f38f20ad9883b94e132e6b5cd99ef3d165763bc6c6c15810"
+  },
+  "formal_rows": 0,
+  "gpu_forwards": 0,
+  "optimizer_steps": 0,
+  "schema": "mcln-scanrefer-joint-audit-preparation-v1",
+  "status": "cpu_checks_pass",
+  "time_cst": "2026-09-06T14:12:45.155478+08:00",
+  "trained_checkpoint_audited": false
+}

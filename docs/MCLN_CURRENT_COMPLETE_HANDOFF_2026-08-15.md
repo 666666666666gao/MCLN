@@ -16412,3 +16412,39 @@ refine-logs/scanrefer_joint_readout_pair_20260906_v1/。整体goal仍active。
 refine-logs/weight_cleanup_20260906_v1/cleanup_plan.json、actions.jsonl、receipt.json。
 后续共用已有只读初始化文件；训练期间保留实际恢复点，已封存失败任务先完成审计
 再清理无用全量权重，不按文件名中的best/epoch简单批量删除。
+
+
+### 20.88 Scan候选局部视觉读取已实现，原生预检中（2026-09-06 16:33 CST）
+
+新增models/candidate_local_visual.py，并在最后BiDecoderLayer的cross_v输出、norm_v
+之前接入残差；默认不启用，原权重严格加载后再为候选臂安装模块。每Query读取原始
+50000点中的64个局部XYZ/RGB，以既有three_nn/interpolate取得128维SA1特征，结合
+相对位置进入144维4头注意力。Query此前已读取文本/对象，保持原全局视觉路径。
+零输出投影用于保留初始化行为；它不是体素主干、末端重评分或新的Selector。
+非正预测尺寸已有实际证据：仅邻域半尺度下限0.05米，不改原框/loss/evaluator。
+32 Query分块避免整块B12×256×50000×3距离临时量。
+
+原Python3.7/Torch1.10完成4项CPU测试：轴尺度影响局部点选择、非正尺度不改原框、
+零输出及后续梯度进入点/Q/K/V、点置换不改变聚合而视觉变化影响输出。它们不是REC
+性能证据。614文件隔离源码的manifest SHA为
+c23d4e240ff25954f715af033b1e894390ff41aa67e74d673ed5f2e2c7f306cc，
+父源码仍为dcf333b0e1868a7eeaafaf7f0a7abdb664a34dda65966defc1ad244ce762b15d。
+
+预检V1仅部署脚本换行转义错误，未初始化GPU模型；V2在原生数据加载中缺少manifest
+split_salt，退出1，0参数更新。补入既定scanrefer_joint_readout_v1后，V3于16:27:27
+启动；16:32:27 PID36760仍实际存活，正在原数据集完整文本解析，尚未取得前向/梯度
+终态。三版文件和失败记录保留，未把启动错误算成科学负结果，也未更新旧权重。
+
+新计划在本轮指标前固定于refine-logs/SCANREFER_CANDIDATE_LOCAL_VISUAL_PLAN_2026-09-06.md。
+两臂均更新原最后Decoder/Box-token头、原生GT loss；local另外训练新增局部分支。
+旧核心LR1e-6、新分支1e-4，AdamW/clip0.1，读出和其余核心冻结；不继续上轮联合辅助
+loss。沿用29778/6887物理场景划分，B12一次fit遍历2482步/臂，同数据/顺序。预检
+仅16条fit以及2步一次性内存更新，若通过则重新加载E71开始训练，不沿用预检状态。
+首轮不等参数量，若有效仍需容量控制消融。
+
+新结构终点固定作6887开发诊断及一次9508正式配对；开发不挑epoch，也不把预训练
+见过的开发场景严格不退化当作泛化门。该规则在本轮质量前固定，不改变§20.86等旧
+实验的失败判定。正式晋级仍为§20.79用户REC/ScanMask底线，不增加Nr/SrMask门槛。
+scripts/evaluate_scanrefer_local_visual_official.py在本地及原Python3.7完成12项测试
+与编译/入口检查，增加同一前向的原生REC与完整V99分别记录；尚未正式运行。
+当前没有新的训练终点或正式分数，整体goal仍active。原生预检通过后立即固定训练。

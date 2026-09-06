@@ -77,3 +77,28 @@ LR1e-6、新分支LR1e-4，检查新输出投影及第二步的point/query/key/v
 此次两个配置的加载预检使用兼容的Nr受保护权重。Sr历史最好权重仍未恢复，
 这不代表已经测得Nr到Sr的迁移效果。当前Scan运行源码和配置保持20.88的固定版本。
 
+## 修复数据版本后的真实CPU复核：2026-09-06 20:57:34 CST
+
+Scan正式入口误用旧superpoint目录的发现记录于主交接§20.96。此前本页预检同样使用
+`/root/autodl-tmp/DATA_ROOT/`；新的待运行入口显式使用
+`/root/autodl-tmp/DATA_ROOT_mcln_meshsp/`，并在运行前核对train1201、val312个
+superpoint文件SHA及其他输入与原目录的inode对应。修复后的Scan运行仍使用固定614文件
+模型源码；原生Nr/Sr模型源码仍是既定616文件，本次修改的是外部预检入口与数据绑定。
+
+原Python3.7/Torch1.10.2环境重新完成32条固定记录、两种增强状态共64份实际样本，
+耗时88.24秒。原始表达/场景身份由原生标注加载器核对；64份采样点SHA、已记录对象
+数量、视角标记、token map形状与旧预检逐条一致。没有宣称逐元素比较了完整token map。
+新的superpoint逐点SHA和数量已保存；没有把superpoint内容描述成与旧目录相同。
+GPU前向、优化器更新、完整权重写入均为0，尚未取得新的Nr/Sr定位成绩。
+
+证据：`refine-logs/native_local_preflight_preparation_20260906_v2/receipt.json`，SHA
+`5ce8796009e8e425114985bde51a7b5b4560f2593d13fe73fe919a5c74929e0e`。
+新的GPU入口SHA为
+`7884281f250ce42d8bce5ebc7599a96301ec214a5376ce8de0af89cb496d2d0e`。
+CPU检查实际调用了同一入口的数据校验、参数构建和原生数据构造函数。
+
+`launch_conditional.py`现已另外准备在v2目录，读取Scan修复版v3的真实9508条结果与独立
+审计，并重算原REC/Scan Mask门槛；只在通过后启动计划的14次GPU前向和4次一次性更新。
+它尚未执行。旧预检/旧条件启动器留档，不作为正确数据版本的通过证据。
+正式Nr/Sr训练预算仍待GPU预检后锁定；保留原生joint_det、butd_cls协议和REC保留规则，
+Nr/Sr Mask继续不设晋级门。目录修复的REC收益尚未测量。

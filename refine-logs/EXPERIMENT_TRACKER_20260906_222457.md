@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-06 22:27 CST. Acceptance: §20.79; corrected-data Scan result and repeat: §20.97.
+Updated: 2026-09-06 22:24 CST. Acceptance: §20.79; corrected-data Scan result and repeat: §20.97.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -28,11 +28,11 @@ Updated: 2026-09-06 22:27 CST. Acceptance: §20.79; corrected-data Scan result a
 | ScanRefer candidate local visual | Old-root endpoint sealed negative;correct-mesh16-row preflight PASS;new fixed2482/arm pair launched from E71 | Terminal and new formal metrics pending;see20.97 |
 | ScanRefer local visual official | Correct mesh v3 complete9508;independent audit PASS;local5549/4744 vs protected5570/4797 | REC promotion FAIL;ScanMask floors PASS;see20.97 |
 | ScanRefer local visual endpoint audit | Old2482-step states audited before retirement;two failed weights deleted22:21 with logs/rows/proof retained | New mesh audit entry12CPUtests PASS;new trained endpoint pending;see20.97 |
-| Weight storage cleanup | Complete14 explicit actions across two receipts;9.529GiB cumulative freed;10.10GiB free at22:21 | Ten duplicate copies share originals;four failed endpoints retired after audits;all logs/rows and six protected hashes retained |
+| Weight storage cleanup | Complete12 explicit actions;8.37535GiB freed;10.2176GiB free | Ten identical copies now share readonly originals;two sealed failed full endpoints deleted;protected hashes and all evidence retained |
 | Nr/Sr warm-start interface | CPU actual-weight strict loading and synthetic candidate filtering PASS | Weights-only Nr initialization needs fresh optimizer;butd_cls filtering differs from Scan metadata;no GPU/data/quality claim |
 | Nr/Sr candidate-local native entry | Opt-in native factory/loader/optimizer added;55 original-environment checks PASS;real Nr weights load1154-state local model in both protocols | CPU integration only;fresh optimizer;zero native model updates/formal rows;Scan promotion and real-data GPU preflight still required |
 | Nr/Sr native annotation/input audit | Actual CPU loaders:44909/77836 joint train rows;7899/17726 language val;B12 gives3742/6486 updates;32 fixed preflight inputs | No train/val physical-space overlap;0 point samples/GPU/updates/checkpoints;Scan formal and real GPU preflight remain pending |
-| Nr/Sr native real-input CPU probe | Correct-mesh32 records/64 actual samples PASS20:57;all64 old/new pointSHA equal;input metadata boundaries recorded | GPU0/updates0/checkpoints0;v2 GPU entry prepared;Scan v3 REC failed so conditional GPU launch not executed;see20.97 |
+| Nr/Sr native real-input CPU probe | Actual32 fixed records/64 point samples through native parsing,augmentation,collate and butd_cls input;PASS18:22;GPU entry prepared | GPU0/updates0/checkpoints0;conditional launch recomputes actual Scan9508 promotion before14 forwards/4 disposable steps;not a training endpoint |
 | Sparse point memory | Complete6687 updates/arm;integrity PASS, fixed quality FAIL | Sparse-start Mask-20/-74,mIoU-0.4476098pp;no NrMask formal or continuation |
 
 P2's 6,172-row, 98-scene holdout is from train scenes already seen by the frozen

@@ -67,3 +67,8 @@
 | 2026-09-06 09:27 | /experiment-plan | docs/SCANREFER_REC_FIRST_TRAINING_SCOPE_2026-09-06.md | decision | ScanRefer REC priority;Nr/Sr Mask suspended;pretrained chain CPU audit |
 | 2026-09-06 09:27 | /experiment-plan | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | decision | ScanRefer REC priority;Nr/Sr Mask suspended;pretrained chain CPU audit |
 | 2026-09-06 09:27 | /experiment-plan | refine-logs/scanrefer_warm_start_audit_20260906_v1/receipt.json | decision | ScanRefer REC priority;Nr/Sr Mask suspended;pretrained chain CPU audit |
+| 2026-09-06 10:08 | /run-experiment | scripts/scanrefer_joint_readout.py | implementation | pretrained ScanRefer joint readout;CPU gradient PASS;native probe queued |
+| 2026-09-06 10:08 | /run-experiment | scripts/probe_scanrefer_joint_readout_native.py | implementation | pretrained ScanRefer joint readout;CPU gradient PASS;native probe queued |
+| 2026-09-06 10:08 | /run-experiment | refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md | implementation | pretrained ScanRefer joint readout;CPU gradient PASS;native probe queued |
+| 2026-09-06 10:08 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | pretrained ScanRefer joint readout;CPU gradient PASS;native probe queued |
+| 2026-09-06 10:08 | /run-experiment | refine-logs/scanrefer_joint_readout_cpu_20260906_v1/receipt.json | implementation | pretrained ScanRefer joint readout;CPU gradient PASS;native probe queued |

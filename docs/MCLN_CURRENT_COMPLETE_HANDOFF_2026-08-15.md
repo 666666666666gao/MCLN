@@ -16103,3 +16103,45 @@ Nr3D优先及三个数据集Mask均作硬门槛的排队安排。历史实验原
 
 详细当前合同见docs/SCANREFER_REC_FIRST_TRAINING_SCOPE_2026-09-06.md。受保护正式结果
 不变；新ScanRefer训练和Nr/Sr REC达标均未完成，整体目标继续active。
+
+
+### 20.80 ScanRefer已有读出的联合训练实现、CPU梯度证据及原生预检队列（2026-09-06 10:08 CST）
+
+优先级仍按§20.79：ScanRefer REC争取59/51，达到V99同系统5572/4797及Scan Mask论文
+底线即转Nr3D/Sr3D REC；Nr/Sr Mask不作门槛。main已验证1a3953dc579c2e58167065352aaf269ac072cbcf。
+
+09:35:47原Py3.7.11/Torch1.10.2 CPU实测三份保护读出权重：2条合成输入下，直接张量路径
+与冻结运行路径全部输出逐位一致。最终geometry scores与Parent rank scores均requires_grad=False；
+连续输出加原监督后，Parent10、Geometry10、V9922张量及视觉预测叶子均有有限非零梯度。
+0真实数据、0主网络/GPU forward、0更新，不能据此宣称端到端REC有效。
+
+新增scripts/scanrefer_joint_readout.py，复用原Parent/Geometry/V99参数、归一化和候选规则，
+在排名/选择之前接受在线损失。三模块共42张量544396参数；GT只进入loss。无合格候选的行
+不强制生成排名正例，仍保留Parent/Geometry连续质量与阈值监督。新模块不改旧冻结入口。
+这属于已有系统的联合训练实现，保留Mask阈值取点、框变体和Pareto规则，不称为取消所有后处理。
+
+09:44:33新增模块CPU检查PASS：真实权重+合成输入的detached/joint前向及loss一致，
+detached切断到视觉预测的梯度，joint的42张量和全部视觉叶子梯度有限非零；无覆盖行没有
+排名正例、仍有质量loss；包含当前读出参数与元数据的内存checkpoint往返一致。0 optimizer。
+模块原始SHA e919c3dde724543fbee8f08cb77f8295863667399a9dbd84c8fba550f2f50335。
+
+首轮计划见refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md：相同E71/
+读出起点，核心仅decoder.5/prediction_heads.5及42读出张量更新；detached与joint的唯一
+连接差别是读出loss是否回传核心。新AdamW核心1e-6/读出1e-5，wd5e-4，clip0.1，原生
+GT loss加三份读出loss均值。seed0/B12/eval模式保持buffers，无增强，无额外检测样本，
+每臂一次fit遍历。实际fit/holdout按物理空间hash划分，清单须预检后冻结；主干和旧读出
+已经见过开发holdout，不能写成新场景泛化。尚未启动该训练、没有任何新质量结果。
+
+09:58:06原生GPU预检已排队，flock进程30779等待现有独占锁，native命令尚非训练：
+16条实际ScanRefer fit表达，B12+4，0更新/0正式行。脚本原环境编译和--help均通过。
+它将检查E71严格加载、两路径原生输出/evaluator相同、真实读出到最后Decoder的梯度及显存。
+目录/root/autodl-tmp/mcln_scanrefer_joint_native_probe_20260906_v1；manifest SHA
+520409842380474aa138a60025826e5d8030ad51cf12d5cc10947e5b6c28423d，controller SHA
+b069b494957c46bc0b146e3d7999c3ed1b3bf1429d09bc19c15a150b0b04f43a。
+
+已启动本地观察session64873，11:03首查，之后240秒；旧Nr Mask观察session35941仍按
+10:53安排运行，旧GPU任务和已冻结科学标准未改。新预检在旧任务释放GPU后自动执行。
+Nr Mask即使成功也不追加正式Mask评估。ScanRefer原生检查尚无结果，不提前报告训练启动。
+证据位于refine-logs/scanrefer_readout_gradient_probe_20260906_v1、
+scanrefer_joint_readout_cpu_20260906_v1、scanrefer_joint_native_probe_20260906_v1。
+受保护正式结果未变，整体目标继续active。

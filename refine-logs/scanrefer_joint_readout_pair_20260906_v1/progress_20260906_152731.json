@@ -1,0 +1,73 @@
+{
+  "files": [
+    "scripts",
+    "input_manifest.json",
+    "native_probe_receipt.json",
+    "split_protocol.json",
+    "teacher_receipt.json",
+    "training_decision.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "protocol.json",
+    "baseline_rows.json",
+    "baseline_metrics.json",
+    "fit_point_batches.json",
+    "detached_joint_state.pt",
+    "joint_joint_state.pt",
+    "fit_complete.json"
+  ],
+  "latest_evaluation": {
+    "elapsed_seconds": 1654.721494436264,
+    "rows": 6144,
+    "stage": "terminal",
+    "total": 6887
+  },
+  "latest_training": {
+    "arms": {
+      "detached": {
+        "gradient_norm_before_clip": 4.776315212249756,
+        "loss": 14.217561721801758,
+        "native_loss": 10.650420188903809,
+        "readout_loss": 10.701422691345215,
+        "readout_stats": {
+          "geometry_covered_rows": 6,
+          "geometry_loss": 4.126151084899902,
+          "hierarchy_covered_queries": 84,
+          "hierarchy_loss": 4.2657694816589355,
+          "parent_covered_rows": 6,
+          "parent_loss": 2.309502124786377
+        }
+      },
+      "joint": {
+        "gradient_norm_before_clip": 8.542055130004883,
+        "loss": 14.016972541809082,
+        "native_loss": 10.652429580688477,
+        "readout_loss": 10.0936279296875,
+        "readout_stats": {
+          "geometry_covered_rows": 6,
+          "geometry_loss": 3.3835079669952393,
+          "hierarchy_covered_queries": 84,
+          "hierarchy_loss": 4.255551815032959,
+          "parent_covered_rows": 6,
+          "parent_loss": 2.45456862449646
+        }
+      }
+    },
+    "elapsed_seconds": 10369.01177930832,
+    "estimated_training_remaining_seconds": 0.0,
+    "since_previous_report_seconds": 213.80993747711182,
+    "step": 2482,
+    "total": 2482
+  },
+  "log_tail": [
+    "SCANREFER JOINT EVAL {\"stage\": \"terminal\", \"rows\": 12, \"total\": 6887, \"elapsed_seconds\": 3.254793882369995}",
+    "SCANREFER JOINT EVAL {\"stage\": \"terminal\", \"rows\": 1536, \"total\": 6887, \"elapsed_seconds\": 414.30551505088806}",
+    "SCANREFER JOINT EVAL {\"stage\": \"terminal\", \"rows\": 3072, \"total\": 6887, \"elapsed_seconds\": 828.7436957359314}",
+    "SCANREFER JOINT EVAL {\"stage\": \"terminal\", \"rows\": 4608, \"total\": 6887, \"elapsed_seconds\": 1242.8013501167297}",
+    "SCANREFER JOINT EVAL {\"stage\": \"terminal\", \"rows\": 6144, \"total\": 6887, \"elapsed_seconds\": 1654.721494436264}"
+  ],
+  "process": "32521 /root/miniconda3/envs/bdetr/bin/python -u scripts/run_scanrefer_joint_readout_pair.py --manifest /root/autodl-tmp/mcln_scanrefer_joint_readout_pair_20260906_v1/input_manifest.json",
+  "process_check_exit": 0,
+  "time_cst": "2026-09-06T15:27:31.068896+08:00"
+}

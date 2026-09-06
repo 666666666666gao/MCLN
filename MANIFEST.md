@@ -96,3 +96,4 @@
 | 2026-09-06 13:06 | /run-experiment | refine-logs/cross_dataset_warm_start_20260906_v1/receipt.json | evidence | Nr/Sr weight and candidate-interface readiness;no GPU or new training |
 | 2026-09-06 13:06 | /run-experiment | refine-logs/cross_dataset_warm_start_20260906_v1/check.py | evidence | Nr/Sr weight and candidate-interface readiness;no GPU or new training |
 | 2026-09-06 14:20 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | §20.85 fixed Scan endpoint audit prepared;no new result |
+| 2026-09-06 15:59 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | §20.86 fixed Scan FAIL and§20.87 requested weight cleanup;protected results retained |

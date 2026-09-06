@@ -16302,3 +16302,36 @@ Mask evaluator逐行结果。历史V99线5572/4797与同输入原V99 REC同时�
 证据：refine-logs/scanrefer_joint_readout_pair_20260906_v1/baseline_verification.json、progress_20260906_121503.json、
 native_eval_extent_policy.json、terminal_observation_schedule.json；
 refine-logs/scanrefer_joint_official_preparation_20260906_v1/receipt.json。
+
+
+### 20.84 等待Scan终点期间的Nr/Sr权重与候选接口核验（2026-09-06 13:06 CST）
+
+13:03:33原Python3.7 CPU核验PASS，未查询GPU训练进度、未运行真实数据或新训练。
+当前Scan原任务和15:27:30终态观察计划保持§20.83；其最近实际训练观察仍为12:15
+的64/2482，不能把CPU检查时间当作新训练进度。
+
+核验Nr保护平均权重76aa6cd49ca20a34e78509465f1185b1b9040e60807ad327d6b0876aeb6edba1
+与Scan E71：1144个模型状态张量的名称、形状、dtype一致。实际构造Nr3D和Sr3D配置
+的MCLN，在CPU严格加载Nr权重并逐张量验证相等；模型参数149634941。该检查只证明
+权重/接口可加载，未恢复Sr历史checkpoint，未证明迁移质量，也未测试训练中的新Scan
+终点。Nr平均checkpoint标记evaluation_only=True，且没有optimizer/scheduler；将来
+只能按权重初始化建立新optimizer，不能伪称恢复旧训练状态。
+
+两项协议差别必须在后续Nr/Sr实例化时明确记录：原生Nr/Sr启用butd_cls及Selector
+部署输出，而Scan原生使用butd且不启用Selector部署输出；新V99读出比较时，各自原生
+基线不能混用。另原geometry artifact的filter_non_gt_boxes=False，但Nr/Sr原
+GroundingEvaluator按butd_cls启用对象重叠过滤。不能将Scan元数据直接拷贝后就宣称
+Nr/Sr候选协议已对齐。
+
+用实际三份Scan读出权重、2条合成输入核验现有过滤实现：仅在内存派生副本设
+filter_non_gt_boxes=True，提供对象框后分别排除106/86个变体；剩余非空候选掩码与
+现有build_detector_overlap_valid完全一致，geometry监督valid mask与运行时valid
+一致，非法变体最终分数为-inf。原artifact未写入、模型0更新。这是合成接口证据，
+不等于Nr/Sr真实候选覆盖；TopK截断及最终Query映射仍应在正式转数据集时的训练行
+原生预检中核验。当前Scan配置/规则未改变，也没有增加新的fallback。
+
+后续采用已核验权重初始化、按对应输入协议派生可训练实例及候选过滤；先做训练行
+原生检查，再按固定预算训练。此次历史eval_argv仅用于重建CPU模型配置，其旧
+max_epoch240等字段不是新训练日程，不恢复已取消的长期baseline项目。Scan晋级
+条件和Nr/SrMask不入门的要求仍按§20.79。整体goal仍active。
+证据：refine-logs/cross_dataset_warm_start_20260906_v1/check.py、receipt.json、execution.json及nr_contract.json。

@@ -156,3 +156,15 @@ Mask6515/5829、mIoU70.45046757074657%；只是主干见过的开发数据。独
 才启动；原V99与更新统一checkpoint共享原生9508行loader及输入，报告REC/Mask，
 晋级需同时守住历史V99、同输入V99 REC和ScanMask论文线。无需59/51，无Nr/SrMask门。
 尺寸评估副本恢复原_main_eval_branch已有clamp步骤，不改变正式尺寸规则。
+
+
+## Nr/Sr接续接口检查（2026-09-06 13:06 CST）
+
+13:03:33 CPU核验：Nr平均权重可严格加载到Nr/Sr模型配置，与Scan E71模型状态
+名称/形状/dtype一致；不代表Sr保护权重恢复或跨数据集质量。Nr平均权重没有优化器，
+后续新建优化器进行权重初始化。原生Nr/Sr使用butd_cls过滤及Selector输出；比较时
+不得套用Scan原生Default口径。派生Nr/Sr几何实例需要显式启用对应对象过滤；实际
+读出权重的两条合成输入已验证监督valid mask与运行时合法候选一致。真实TopK覆盖
+及Query映射留待转数据集原生预检。没有启动Nr/Sr或改变当前Scan任务。
+历史eval_argv用于CPU配置重建，旧240epoch字段不作为新训练日程。证据见
+refine-logs/cross_dataset_warm_start_20260906_v1/receipt.json。

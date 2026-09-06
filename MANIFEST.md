@@ -91,3 +91,7 @@
 | 2026-09-06 12:23 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | ScanRefer actual updates verified;conditional formal entry prepared |
 | 2026-09-06 12:23 | /run-experiment | refine-logs/scanrefer_joint_readout_pair_20260906_v1/baseline_verification.json | implementation | ScanRefer actual updates verified;conditional formal entry prepared |
 | 2026-09-06 12:23 | /run-experiment | refine-logs/scanrefer_joint_readout_pair_20260906_v1/terminal_observation_schedule.json | implementation | ScanRefer actual updates verified;conditional formal entry prepared |
+| 2026-09-06 13:06 | /run-experiment | refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md | evidence | Nr/Sr weight and candidate-interface readiness;no GPU or new training |
+| 2026-09-06 13:06 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | Nr/Sr weight and candidate-interface readiness;no GPU or new training |
+| 2026-09-06 13:06 | /run-experiment | refine-logs/cross_dataset_warm_start_20260906_v1/receipt.json | evidence | Nr/Sr weight and candidate-interface readiness;no GPU or new training |
+| 2026-09-06 13:06 | /run-experiment | refine-logs/cross_dataset_warm_start_20260906_v1/check.py | evidence | Nr/Sr weight and candidate-interface readiness;no GPU or new training |

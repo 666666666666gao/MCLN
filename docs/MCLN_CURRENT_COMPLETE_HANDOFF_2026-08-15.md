@@ -16335,3 +16335,26 @@ filter_non_gt_boxes=True，提供对象框后分别排除106/86个变体；剩�
 max_epoch240等字段不是新训练日程，不恢复已取消的长期baseline项目。Scan晋级
 条件和Nr/SrMask不入门的要求仍按§20.79。整体goal仍active。
 证据：refine-logs/cross_dataset_warm_start_20260906_v1/check.py、receipt.json、execution.json及nr_contract.json。
+
+
+### 20.85 Scan固定终点独立复核准备（2026-09-06 14:20 CST）
+
+14:12:45原Python3.7 CPU完成终点审计工具准备，5项逐行统计/物理场景聚类测试PASS，
+三份真实预训练评分器的元数据相等及归一化修改检出检查PASS。脚本为
+scripts/audit_scanrefer_joint_readout_pair.py；适用于终点质量PASS或FAIL，不以
+训练日志声明替代实际checkpoint、优化器、完整2482步fit遍历及6887逐行输出复核。
+统计joint相对起点和detached的REC/Mask修复破坏及REC IoU区间转移，按106个物理
+场景、seed0、2000次重采样给出区间；区间仅作诊断，不改变预注册晋级规则。
+现有行输出仅有flat variant位置，不能用其推断选错实例还是同实例框边界错误。
+
+前两次仅审计准备失败：JSON不能序列化原artifact的feature_mean/std及V99嵌套
+normalization Tensor。现按实际嵌套值和Tensor dtype/数值严格比较，旧准备脚本
+与失败记录保留。另真实native probe已确认decoder.5.norm1的weight/bias均无梯度，
+审计要求它们保持原值；其余108个参与更新的参数张量检查实际优化器终点步数。
+这些修改未进入当前训练源码，没有GPU前向或优化器更新，尚未审计真实训练终点。
+
+14:17再次确认本地终点观察器35333仍存活，等待15:27:30首次取回结果，随后240秒
+间隔。未提前查询训练进度；最近实际GPU观测仍是§20.83的12:15两臂64/2482。
+终点后先独立审计，满足已固定REC筛选才进入已准备的9508-row Scan正式比较；
+正式底线达标后立即Nr/Sr REC，不等59/51。整体goal保持active。
+证据：refine-logs/scanrefer_joint_audit_preparation_20260906_v1至v3，v3/receipt.json。

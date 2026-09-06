@@ -101,3 +101,4 @@
 | 2026-09-06 16:44 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | §20.89 native preflight PASS and fixed Scan local visual pair launched;no formal improvement yet |
 | 2026-09-06 17:10 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | §20.90 independent local-visual endpoint audit prepared;actual endpoint and formal evaluation pending |
 | 2026-09-06 17:25 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | §20.91 actual128-step local visual training;6887-row baseline parity;terminal check scheduled19:24 |
+| 2026-09-06 17:52 | /run-experiment | docs/CANDIDATE_LOCAL_VISUAL_NATIVE_TRAINING_2026-09-06.md | implementation | §20.92 optional native candidate-local model/loading/optimizer;55 CPU checks and real Nr weight initialization PASS;no Nr/Sr training |

@@ -16520,3 +16520,31 @@ baseline_rows SHA348847d90aa4a685a9412cb738febec80b89378892615a1da8c9d45f64378c2
 其脚本SHAa04a347a699b468fe860d1abec35c1c5f8ad29d5384fba0c1842db8d8e4c17bf，
 仍只观察既有PID36968。固定终点独立审计、9508正式比较及随后Nr/Sr规则沿§20.88，
 未修改训练配置或性能门槛。新正式结果仍未产生，保护权重和整体active目标不变。
+
+
+### 20.92 同一局部结构接入原生训练，Nr/Sr加载CPU验证PASS（2026-09-06 17:52 CST）
+
+新增默认关闭的use_candidate_local_visual，以及candidate_local_visual_lr。原生
+TrainTester在MCLN六层模型构造末尾安装同一CandidateLocalVisual；保留Scan实验相同
+插入位置和145008参数。新参数独立分组，并保留完整名称，使旧核心可用较小LR。
+原加载器存在自动部分载入/跳过shape不符的路径，因此对局部模型先验证完整state：
+旧核心model-only初始化仅允许缺少新增10张量，完整局部模型严格匹配；未开启结构
+却加载局部权重也拒绝。没有改变原匹配、候选过滤或决策方式。
+
+17:45:13原Python3.7/Torch1.10.2完成55项加载/优化器回归检查，含小型实际AdamW
+五组恢复检查。随后用真实Nr平均权重通过Nr3D/Sr3D配置的原生load_checkpoint：
+两者1144个原state张量逐位保留，新10张量保持初始化，输出投影为零；真实模型
+优化器/调度器保持全新，起始epoch1。总参数149779949，state共1154。优化器
+decoder/backbone/mask_head/selector/local分别含625/48/58/9/10个参数张量；
+这是可训练参数覆盖，不是实际有梯度/已更新数量。GPU前向、真实数据行、真实模型
+更新及完整模型权重写入均为0。Sr检查使用Nr预训练输入，不代表Sr历史最好权重恢复。
+
+说明：docs/CANDIDATE_LOCAL_VISUAL_NATIVE_TRAINING_2026-09-06.md；
+证据：refine-logs/candidate_local_native_preparation_20260906_v1。
+新的616文件隔离源位于/root/autodl-tmp/mcln_candidate_local_native_preparation_
+20260906_v1/model_source，manifest SHA
+4af68cad46b52c9e250de17872a193485d75529378db983ad037779232e500fc。
+没有复制预训练权重，当前Scan训练仍使用原614文件源和固定设置；观察器41352
+继续预约19:24，非本次CPU接入的性能评价。Scan正式通过后，需用真实Nr/Sr输入
+做原生GPU/映射/梯度预检，再确定接续短训配置；未运行旧240/140epoch队列。
+目前没有新增三数据集正式成绩，整体goal仍active。

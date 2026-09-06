@@ -98,3 +98,4 @@
 | 2026-09-06 14:20 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | §20.85 fixed Scan endpoint audit prepared;no new result |
 | 2026-09-06 15:59 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | §20.86 fixed Scan FAIL and§20.87 requested weight cleanup;protected results retained |
 | 2026-09-06 16:33 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | §20.88 candidate local visual code and fixed Scan plan;native preflight pending |
+| 2026-09-06 16:44 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | §20.89 native preflight PASS and fixed Scan local visual pair launched;no formal improvement yet |

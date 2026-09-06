@@ -1,0 +1,289 @@
+{
+  "comparisons": {
+    "control_minus_baseline": {
+      "bootstrap": {
+        "draws": 2000,
+        "intervals_95_percent_pp": {
+          "mask025": [
+            -0.18697940749345848,
+            0.1636806821557332
+          ],
+          "mask050": [
+            -0.46924858654708296,
+            0.15799354307684782
+          ],
+          "mask_miou": [
+            -0.1896936964159444,
+            0.14686217841463609
+          ],
+          "rec025": [
+            -0.35945901885639575,
+            0.04266837103579783
+          ],
+          "rec050": [
+            -0.6445244719078496,
+            0.3172302243918294
+          ]
+        },
+        "is_promotion_gate": false,
+        "seed": 0,
+        "unit": "physical_space"
+      },
+      "effects": {
+        "mask025": {
+          "damage": 13,
+          "net": -1,
+          "repair": 12
+        },
+        "mask050": {
+          "damage": 36,
+          "net": -10,
+          "repair": 26
+        },
+        "rec025": {
+          "damage": 25,
+          "net": -10,
+          "repair": 15
+        },
+        "rec050": {
+          "damage": 78,
+          "net": -10,
+          "repair": 68
+        }
+      },
+      "mask_miou_delta_pp": -0.021569186995258015,
+      "physical_spaces": 106,
+      "rec_iou_transition_counts": [
+        [
+          188,
+          8,
+          7
+        ],
+        [
+          11,
+          186,
+          61
+        ],
+        [
+          14,
+          64,
+          6348
+        ]
+      ],
+      "rows": 6887,
+      "selected_instance_identity_available": false,
+      "transition_bands": [
+        "[0,0.25]",
+        "(0.25,0.50]",
+        "(0.50,1]"
+      ]
+    },
+    "local_minus_baseline": {
+      "bootstrap": {
+        "draws": 2000,
+        "intervals_95_percent_pp": {
+          "mask025": [
+            -0.17614867723613503,
+            0.15873130430001098
+          ],
+          "mask050": [
+            -0.4401348906530733,
+            0.14450989482462875
+          ],
+          "mask_miou": [
+            -0.18552462144606274,
+            0.14301323803861204
+          ],
+          "rec025": [
+            -0.3781324400340255,
+            0.01410393136893392
+          ],
+          "rec050": [
+            -0.6411261074588606,
+            0.24647751797985176
+          ]
+        },
+        "is_promotion_gate": false,
+        "seed": 0,
+        "unit": "physical_space"
+      },
+      "effects": {
+        "mask025": {
+          "damage": 12,
+          "net": -1,
+          "repair": 11
+        },
+        "mask050": {
+          "damage": 34,
+          "net": -10,
+          "repair": 24
+        },
+        "rec025": {
+          "damage": 28,
+          "net": -12,
+          "repair": 16
+        },
+        "rec050": {
+          "damage": 74,
+          "net": -13,
+          "repair": 61
+        }
+      },
+      "mask_miou_delta_pp": -0.024022110482060263,
+      "physical_spaces": 106,
+      "rec_iou_transition_counts": [
+        [
+          187,
+          9,
+          7
+        ],
+        [
+          14,
+          190,
+          54
+        ],
+        [
+          14,
+          60,
+          6352
+        ]
+      ],
+      "rows": 6887,
+      "selected_instance_identity_available": false,
+      "transition_bands": [
+        "[0,0.25]",
+        "(0.25,0.50]",
+        "(0.50,1]"
+      ]
+    },
+    "local_minus_control": {
+      "bootstrap": {
+        "draws": 2000,
+        "intervals_95_percent_pp": {
+          "mask025": [
+            -0.042106298339273304,
+            0.044689908119197506
+          ],
+          "mask050": [
+            -0.07102550593967848,
+            0.07331458958262443
+          ],
+          "mask_miou": [
+            -0.03574439672324333,
+            0.032231397139586976
+          ],
+          "rec025": [
+            -0.16702048608058132,
+            0.10735790234935601
+          ],
+          "rec050": [
+            -0.27664671793009127,
+            0.19241504766738451
+          ]
+        },
+        "is_promotion_gate": false,
+        "seed": 0,
+        "unit": "physical_space"
+      },
+      "effects": {
+        "mask025": {
+          "damage": 1,
+          "net": 0,
+          "repair": 1
+        },
+        "mask050": {
+          "damage": 3,
+          "net": 0,
+          "repair": 3
+        },
+        "rec025": {
+          "damage": 8,
+          "net": -2,
+          "repair": 6
+        },
+        "rec050": {
+          "damage": 19,
+          "net": -3,
+          "repair": 16
+        }
+      },
+      "mask_miou_delta_pp": -0.002452923486802315,
+      "physical_spaces": 106,
+      "rec_iou_transition_counts": [
+        [
+          207,
+          4,
+          2
+        ],
+        [
+          7,
+          237,
+          14
+        ],
+        [
+          1,
+          18,
+          6397
+        ]
+      ],
+      "rows": 6887,
+      "selected_instance_identity_available": false,
+      "transition_bands": [
+        "[0,0.25]",
+        "(0.25,0.50]",
+        "(0.50,1]"
+      ]
+    }
+  },
+  "formal_manifest_sha256": "2f19968db34b4b876d91b20460cbeb1efb2d816ab35c700281870cfd6fd8bd97",
+  "formal_process": "   PID STAT     ELAPSED COMMAND\n 50454 S+         01:33 flock -x /root/autodl-tmp/mcln_v99_backbone_gpu0.lock /root/miniconda3/envs/bdetr/bin/python -u scripts/evaluate_scanrefer_range_official.py --manifest /root/autodl-tmp/mcln_scanrefer_range_official_20260907_v1/input_manifest.json\n",
+  "formal_process_pid": 50454,
+  "formal_results_obtained": false,
+  "goal_complete": false,
+  "integrity_pass": true,
+  "module_metrics": {
+    "baseline": {
+      "control": {
+        "mask_hits025": 6511,
+        "mask_hits050": 6097,
+        "mask_miou": 77.81086078701139,
+        "rec_hits025": 6684,
+        "rec_hits050": 6426,
+        "rows": 6887
+      },
+      "local": {
+        "mask_hits025": 6511,
+        "mask_hits050": 6097,
+        "mask_miou": 77.81086078701139,
+        "rec_hits025": 6684,
+        "rec_hits050": 6426,
+        "rows": 6887
+      }
+    },
+    "terminal": {
+      "control": {
+        "mask_hits025": 6510,
+        "mask_hits050": 6087,
+        "mask_miou": 77.78929160001616,
+        "rec_hits025": 6674,
+        "rec_hits050": 6416,
+        "rows": 6887
+      },
+      "local": {
+        "mask_hits025": 6510,
+        "mask_hits050": 6087,
+        "mask_miou": 77.78683867652937,
+        "rec_hits025": 6672,
+        "rec_hits050": 6413,
+        "rows": 6887
+      }
+    }
+  },
+  "module_nonregression": false,
+  "nr3d_sr3d_training_started": false,
+  "schema": "mcln-range-terminal-collection-v1",
+  "time_cst": "2026-09-07T06:10:06.029257+08:00",
+  "training_exit": 0,
+  "training_independent_audit_sha256": "66bce72d4ad6ae6be31fa6c56fbf76081c81c3137595ddf228f6b6d3a2606c2f",
+  "training_receipt_sha256": "8b970acd782a48b65db814e87ef94018729f810ff493f0503b680b453f5df660"
+}

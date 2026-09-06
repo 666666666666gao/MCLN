@@ -16029,3 +16029,20 @@ Nr3D/Sr3D/ScanRefer受保护结果未更新，原整体目标仍active。
 代码与检查入口见scripts/run_nr3d_sparse_point_pair.py、summarize_nr3d_sparse_point_pair.py、
 verify_nr3d_sparse_point_artifacts.py。原始字节源码归档和完整回执位于
 refine-logs/sparse_point_pair_20260906_v3/；V1/V2失败及数值检查修订证据保留。
+
+
+### 20.77 Sr3D官方公开checkpoint来源补查（2026-09-06 08:18 CST）
+
+原论文官方仓库实际refs仅main，SHA9744a4ed219062d448ed0dba587eeb864491f158。
+固定提交README的Models仅列ScanRefer；当前Releases页没有release。issue5可见2024
+Hugging Face上传讨论没有具体模型仓库链接，当前关联论文页模型数为0。issue正文来自
+旧网页缓存、关联列表也不涵盖未链接模型，因此只结论为本次已查来源未找到Sr完整权重。
+详见docs/SR3D_PUBLIC_CHECKPOINT_LOOKUP_2026-09-06.md及同名refine-logs来源回执。
+
+未下载模型、联系作者、重扫已检查备份或启动Sr训练。历史Sr受保护权重尚未恢复，路径
+缺失最近实际观察仍是04:15；本次公开搜索不能充当服务器状态复查。未来官方权重若可得，
+须与历史受保护checkpoint身份分开记录，不能将取得另一模型写成恢复原SHA。
+
+08:15本地V3观察会话仍有效，未增加GPU服务器轮询。最近实测仍是§20.76的07:53:40，
+两臂各192/6687；约10:53再次查询，终态初估10:58，之后240秒。没有新终态质量或正式
+指标，没有改变正在运行实验的结构、步数或验收标准；整体目标继续active。

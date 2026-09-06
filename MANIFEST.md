@@ -54,3 +54,6 @@
 | 2026-09-06 07:58 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | exact6172baseline and actualpaired192updates;terminalpending |
 | 2026-09-06 07:58 | /run-experiment | refine-logs/EXPERIMENT_TRACKER.md | implementation | exact6172baseline and actualpaired192updates;terminalpending |
 | 2026-09-06 07:58 | /run-experiment | refine-logs/sparse_point_pair_20260906_v3/baseline_independent_verification.json | implementation | exact6172baseline and actualpaired192updates;terminalpending |
+| 2026-09-06 08:18 | research | docs/SR3D_PUBLIC_CHECKPOINT_LOOKUP_2026-09-06.md | evidence | bounded official Sr3D checkpoint lookup; no restore or model run |
+| 2026-09-06 08:18 | research | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | bounded official Sr3D checkpoint lookup; no restore or model run |
+| 2026-09-06 08:18 | research | refine-logs/sr3d_public_checkpoint_search_20260906/lookup.json | evidence | bounded official Sr3D checkpoint lookup; no restore or model run |

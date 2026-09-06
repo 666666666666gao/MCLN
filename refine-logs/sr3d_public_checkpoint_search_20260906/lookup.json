@@ -1,0 +1,38 @@
+{
+  "checked_at": "2026-09-06 08:18 CST",
+  "scope": "bounded public-source lookup; no checkpoint download, model run, or author contact",
+  "official_refs_command": "git ls-remote https://github.com/qzp2018/MCLN.git refs/heads/* refs/tags/*",
+  "official_refs_stdout": "9744a4ed219062d448ed0dba587eeb864491f158\trefs/heads/main\n",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/qzp2018/MCLN/9744a4ed219062d448ed0dba587eeb864491f158/README.md",
+      "observed": "Models table has one ScanRefer/mcln row. Nr3D and Sr3D train/test scripts are documented without corresponding model download rows."
+    },
+    {
+      "url": "https://github.com/qzp2018/MCLN/releases",
+      "observed": "Web tool page crawled today states there are no releases."
+    },
+    {
+      "url": "https://github.com/qzp2018/MCLN/issues/5",
+      "observed": "Visible 2024 discussion proposes Hugging Face upload; no concrete model repository URL in visible comments.",
+      "limit": "Issue body/comments were served from an older web cache; issue closure does not establish that an upload exists."
+    },
+    {
+      "url": "https://huggingface.co/papers/2407.05363",
+      "observed": "Web tool page crawled today lists zero models citing this paper.",
+      "limit": "Does not cover unlinked models or private repositories."
+    },
+    {
+      "url": "https://github.com/qzp2018/MCLN/issues/12",
+      "observed": "Visible experiment-details discussion concerns compute and duration, without a checkpoint link.",
+      "limit": "Older web cache; not an exhaustive search of private or external files."
+    }
+  ],
+  "api_attempts": "GitHub releases/issues/branches API opens were rejected by the web tool; no API absence conclusion or access workaround used.",
+  "result": "no usable Sr3D checkpoint URL found in checked sources",
+  "protected_sr3d_checkpoint_restored": false,
+  "protected_sr3d_path_last_remote_check": "2026-09-06 04:15 CST; absent then, not rechecked by this lookup",
+  "checkpoint_downloads": 0,
+  "optimizer_updates": 0,
+  "gpu_forwards": 0
+}

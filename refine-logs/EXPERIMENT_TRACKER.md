@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 03:29 CST. §20.105:native extent CPU62PASS and actual pretrained Nr/Sr loading verified;no native GPU/preflight/training. Original Scan pair47112/queue47242 remain live.
+Updated: 2026-09-07 03:39 CST. §20.106:range baseline6887 exactly equal;actual64/2482 updates/arm observed03:36:41;estimated fit end~05:30;queue240s remains live.
 
 | Experiment | Current state | Decision |
 |---|---|---|

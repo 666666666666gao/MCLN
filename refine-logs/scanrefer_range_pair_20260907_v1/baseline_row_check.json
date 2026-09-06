@@ -1,0 +1,88 @@
+{
+  "both_arms_rows_exactly_equal": true,
+  "files": {
+    "baseline_metrics.json": {
+      "bytes": 287,
+      "sha256": "eef6a67c52794aa4e72c330acacf1814fdcb613217e4c6ab76e954ca69389187"
+    },
+    "baseline_rows.json": {
+      "bytes": 3925031,
+      "sha256": "415d8b321702f693fb8597fbcf5f23d1bd61e935a656e406b2c656c48f4dd455"
+    },
+    "protocol.json": {
+      "bytes": 258338,
+      "sha256": "9666a507910084e5e2c91e6f64daf20f00d015d57363e95cf8c091811256bcac"
+    }
+  },
+  "first_training_observation": {
+    "process": "   PID STAT     ELAPSED COMMAND\n 47112 Ss         42:30 SCREEN -dmS mcln_scanrefer_range_pair_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_range_pair_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_range_pair_20260907_v1/run.log 2>&1\n",
+    "progress": {
+      "SCANREFER RANGE EVAL": {
+        "elapsed_seconds": 1719.580694437027,
+        "rows": 6144,
+        "stage": "baseline",
+        "total": 6887
+      },
+      "SCANREFER RANGE EVAL COMPLETE": {
+        "elapsed_seconds": 1929.631061553955,
+        "metrics": {
+          "control": {
+            "mask_hits025": 6511,
+            "mask_hits050": 6097,
+            "mask_miou": 77.8108607870114,
+            "rec_hits025": 6684,
+            "rec_hits050": 6426,
+            "rows": 6887
+          },
+          "local": {
+            "mask_hits025": 6511,
+            "mask_hits050": 6097,
+            "mask_miou": 77.8108607870114,
+            "rec_hits025": 6684,
+            "rec_hits050": 6426,
+            "rows": 6887
+          }
+        },
+        "stage": "baseline"
+      },
+      "SCANREFER RANGE TRAIN": {
+        "arms": {
+          "control": {
+            "gradient_norm_before_clip": 1.1477986574172974,
+            "loss": 10.222272872924805,
+            "native_loss": 10.222272872924805
+          },
+          "local": {
+            "gradient_norm_before_clip": 1.1761505603790283,
+            "loss": 10.22238826751709,
+            "native_loss": 10.22238826751709
+          }
+        },
+        "elapsed_seconds": 184.90164279937744,
+        "estimated_training_remaining_seconds": 6985.815192013979,
+        "since_previous_report_seconds": 181.88748025894165,
+        "step": 64,
+        "total": 2482
+      }
+    },
+    "screen_live": true,
+    "time_cst": "2026-09-07T03:36:41.656636+08:00"
+  },
+  "formal_rows": 0,
+  "limits": "Checks saved baseline row identity and metric counts; not a new IoU-from-box audit, terminal audit, or formal result.",
+  "matches_previous_correct_mesh_initial_metrics": true,
+  "module_holdout_physical_spaces": 106,
+  "module_holdout_rows": 6887,
+  "processes_reverified": "   PID STAT     ELAPSED COMMAND\n 47112 Ss         45:01 SCREEN -dmS mcln_scanrefer_range_pair_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_range_pair_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_range_pair_20260907_v1/run.log 2>&1\n 47242 Ss         37:28 SCREEN -dmS mcln_scanrefer_range_posttraining_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_range_posttraining_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_range_posttraining_20260907_v1/queue.log 2>&1\n",
+  "row_metrics_recomputed": {
+    "mask_hits025": 6511,
+    "mask_hits050": 6097,
+    "mask_miou": 77.81086078701108,
+    "rec_hits025": 6684,
+    "rec_hits050": 6426,
+    "rows": 6887
+  },
+  "schema": "mcln-scanrefer-range-baseline-row-check-v1",
+  "status": "pass",
+  "time_cst": "2026-09-07T03:39:12.780697+08:00"
+}

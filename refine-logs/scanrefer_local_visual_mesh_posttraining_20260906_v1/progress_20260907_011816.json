@@ -1,0 +1,314 @@
+{
+  "time_cst": "2026-09-07T01:18:16.054952+08:00",
+  "queue_process_live": false,
+  "queue_process": "   PID STAT     ELAPSED COMMAND\n",
+  "training_progress": {
+    "SCANREFER LOCAL VISUAL EVAL": {
+      "stage": "terminal",
+      "rows": 6144,
+      "total": 6887,
+      "elapsed_seconds": 1614.066211938858
+    },
+    "SCANREFER LOCAL VISUAL EVAL COMPLETE": {
+      "stage": "terminal",
+      "metrics": {
+        "control": {
+          "rows": 6887,
+          "mask_miou": 77.79712060398462,
+          "rec_hits025": 6679,
+          "mask_hits025": 6509,
+          "rec_hits050": 6449,
+          "mask_hits050": 6096
+        },
+        "local": {
+          "rows": 6887,
+          "mask_miou": 77.78201654973745,
+          "rec_hits025": 6670,
+          "mask_hits025": 6509,
+          "rec_hits050": 6405,
+          "mask_hits050": 6085
+        }
+      },
+      "elapsed_seconds": 1808.4075014591217
+    },
+    "SCANREFER LOCAL VISUAL TRAIN": {
+      "step": 2482,
+      "total": 2482,
+      "arms": {
+        "control": {
+          "loss": 11.066193580627441,
+          "native_loss": 11.066193580627441,
+          "gradient_norm_before_clip": 1.351205825805664
+        },
+        "local": {
+          "loss": 11.034651756286621,
+          "native_loss": 11.034651756286621,
+          "gradient_norm_before_clip": 1.4739692211151123
+        }
+      },
+      "elapsed_seconds": 6540.238711357117,
+      "since_previous_report_seconds": 131.24580645561218,
+      "estimated_training_remaining_seconds": 0.0
+    },
+    "SCANREFER LOCAL VISUAL PAIR COMPLETE": {
+      "schema": "mcln-scanrefer-local-visual-pair-v1",
+      "status": "complete",
+      "data_root": "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+      "superpoint_files_sha256": "d52d50ad34869d9b0f7c942da0e8fb1caf7de52481cd4f136b72381236d1ae2f",
+      "time_cst": "2026-09-07T01:16:33.744895+08:00",
+      "steps_per_arm": 2482,
+      "fit_rows": 29778,
+      "holdout_rows": 6887,
+      "previous_pretraining_has_seen_development_holdout": true,
+      "formal_rows": 0,
+      "baseline_metrics": {
+        "control": {
+          "rows": 6887,
+          "mask_miou": 77.8108607870114,
+          "rec_hits025": 6684,
+          "mask_hits025": 6511,
+          "rec_hits050": 6426,
+          "mask_hits050": 6097
+        },
+        "local": {
+          "rows": 6887,
+          "mask_miou": 77.8108607870114,
+          "rec_hits025": 6684,
+          "mask_hits025": 6511,
+          "rec_hits050": 6426,
+          "mask_hits050": 6097
+        }
+      },
+      "terminal_metrics": {
+        "control": {
+          "rows": 6887,
+          "mask_miou": 77.79712060398462,
+          "rec_hits025": 6679,
+          "mask_hits025": 6509,
+          "rec_hits050": 6449,
+          "mask_hits050": 6096
+        },
+        "local": {
+          "rows": 6887,
+          "mask_miou": 77.78201654973745,
+          "rec_hits025": 6670,
+          "mask_hits025": 6509,
+          "rec_hits050": 6405,
+          "mask_hits050": 6085
+        }
+      },
+      "local_rec_effects": {
+        "baseline": {
+          "0.25": {
+            "repair": 15,
+            "damage": 29,
+            "net": -14
+          },
+          "0.5": {
+            "repair": 67,
+            "damage": 88,
+            "net": -21
+          }
+        },
+        "control": {
+          "0.25": {
+            "repair": 17,
+            "damage": 26,
+            "net": -9
+          },
+          "0.5": {
+            "repair": 45,
+            "damage": 89,
+            "net": -44
+          }
+        }
+      },
+      "development_dual_rec_nonregression": false,
+      "fixed_endpoint_ready_for_official_evaluation": true,
+      "readouts_unchanged": true,
+      "changed_core_tensors": {
+        "control": [
+          "decoder.5.self_attn.w_qs.weight",
+          "decoder.5.self_attn.w_qs.bias",
+          "decoder.5.self_attn.w_ks.weight",
+          "decoder.5.self_attn.w_ks.bias",
+          "decoder.5.self_attn.w_vs.weight",
+          "decoder.5.self_attn.w_vs.bias",
+          "decoder.5.self_attn.fc.weight",
+          "decoder.5.self_attn.fc.bias",
+          "decoder.5.self_attn.layer_norm.weight",
+          "decoder.5.self_attn.layer_norm.bias",
+          "decoder.5.self_attn.lang_cond_fc.weight",
+          "decoder.5.self_attn.lang_cond_fc.bias",
+          "decoder.5.cross_l.in_proj_weight",
+          "decoder.5.cross_l.in_proj_bias",
+          "decoder.5.cross_l.out_proj.weight",
+          "decoder.5.cross_l.out_proj.bias",
+          "decoder.5.norm_l.weight",
+          "decoder.5.norm_l.bias",
+          "decoder.5.cross_d.in_proj_weight",
+          "decoder.5.cross_d.in_proj_bias",
+          "decoder.5.cross_d.out_proj.weight",
+          "decoder.5.cross_d.out_proj.bias",
+          "decoder.5.norm_d.weight",
+          "decoder.5.norm_d.bias",
+          "decoder.5.cross_v.in_proj_weight",
+          "decoder.5.cross_v.in_proj_bias",
+          "decoder.5.cross_v.out_proj.weight",
+          "decoder.5.cross_v.out_proj.bias",
+          "decoder.5.norm_v.weight",
+          "decoder.5.norm_v.bias",
+          "decoder.5.ffn.0.weight",
+          "decoder.5.ffn.0.bias",
+          "decoder.5.ffn.3.weight",
+          "decoder.5.ffn.3.bias",
+          "decoder.5.norm2.weight",
+          "decoder.5.norm2.bias",
+          "decoder.5.self_posembed.position_embedding_head.0.weight",
+          "decoder.5.self_posembed.position_embedding_head.0.bias",
+          "decoder.5.self_posembed.position_embedding_head.1.weight",
+          "decoder.5.self_posembed.position_embedding_head.1.bias",
+          "decoder.5.self_posembed.position_embedding_head.3.weight",
+          "decoder.5.self_posembed.position_embedding_head.3.bias",
+          "prediction_heads.5.center_residual_head.net.0.weight",
+          "prediction_heads.5.center_residual_head.net.1.weight",
+          "prediction_heads.5.center_residual_head.net.1.bias",
+          "prediction_heads.5.center_residual_head.net.4.weight",
+          "prediction_heads.5.center_residual_head.net.5.weight",
+          "prediction_heads.5.center_residual_head.net.5.bias",
+          "prediction_heads.5.center_residual_head.net.8.weight",
+          "prediction_heads.5.center_residual_head.net.8.bias",
+          "prediction_heads.5.size_pred_head.net.0.weight",
+          "prediction_heads.5.size_pred_head.net.1.weight",
+          "prediction_heads.5.size_pred_head.net.1.bias",
+          "prediction_heads.5.size_pred_head.net.4.weight",
+          "prediction_heads.5.size_pred_head.net.5.weight",
+          "prediction_heads.5.size_pred_head.net.5.bias",
+          "prediction_heads.5.size_pred_head.net.8.weight",
+          "prediction_heads.5.size_pred_head.net.8.bias",
+          "prediction_heads.5.sem_cls_scores_head.net.0.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.1.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.1.bias",
+          "prediction_heads.5.sem_cls_scores_head.net.4.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.5.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.5.bias",
+          "prediction_heads.5.sem_cls_scores_head.net.8.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.8.bias"
+        ],
+        "local": [
+          "decoder.5.self_attn.w_qs.weight",
+          "decoder.5.self_attn.w_qs.bias",
+          "decoder.5.self_attn.w_ks.weight",
+          "decoder.5.self_attn.w_ks.bias",
+          "decoder.5.self_attn.w_vs.weight",
+          "decoder.5.self_attn.w_vs.bias",
+          "decoder.5.self_attn.fc.weight",
+          "decoder.5.self_attn.fc.bias",
+          "decoder.5.self_attn.layer_norm.weight",
+          "decoder.5.self_attn.layer_norm.bias",
+          "decoder.5.self_attn.lang_cond_fc.weight",
+          "decoder.5.self_attn.lang_cond_fc.bias",
+          "decoder.5.cross_l.in_proj_weight",
+          "decoder.5.cross_l.in_proj_bias",
+          "decoder.5.cross_l.out_proj.weight",
+          "decoder.5.cross_l.out_proj.bias",
+          "decoder.5.norm_l.weight",
+          "decoder.5.norm_l.bias",
+          "decoder.5.cross_d.in_proj_weight",
+          "decoder.5.cross_d.in_proj_bias",
+          "decoder.5.cross_d.out_proj.weight",
+          "decoder.5.cross_d.out_proj.bias",
+          "decoder.5.norm_d.weight",
+          "decoder.5.norm_d.bias",
+          "decoder.5.cross_v.in_proj_weight",
+          "decoder.5.cross_v.in_proj_bias",
+          "decoder.5.cross_v.out_proj.weight",
+          "decoder.5.cross_v.out_proj.bias",
+          "decoder.5.norm_v.weight",
+          "decoder.5.norm_v.bias",
+          "decoder.5.ffn.0.weight",
+          "decoder.5.ffn.0.bias",
+          "decoder.5.ffn.3.weight",
+          "decoder.5.ffn.3.bias",
+          "decoder.5.norm2.weight",
+          "decoder.5.norm2.bias",
+          "decoder.5.self_posembed.position_embedding_head.0.weight",
+          "decoder.5.self_posembed.position_embedding_head.0.bias",
+          "decoder.5.self_posembed.position_embedding_head.1.weight",
+          "decoder.5.self_posembed.position_embedding_head.1.bias",
+          "decoder.5.self_posembed.position_embedding_head.3.weight",
+          "decoder.5.self_posembed.position_embedding_head.3.bias",
+          "decoder.5.local_visual.point_encoder.0.weight",
+          "decoder.5.local_visual.point_encoder.0.bias",
+          "decoder.5.local_visual.query_projection.weight",
+          "decoder.5.local_visual.query_projection.bias",
+          "decoder.5.local_visual.key_projection.weight",
+          "decoder.5.local_visual.key_projection.bias",
+          "decoder.5.local_visual.value_projection.weight",
+          "decoder.5.local_visual.value_projection.bias",
+          "decoder.5.local_visual.output_projection.weight",
+          "decoder.5.local_visual.output_projection.bias",
+          "prediction_heads.5.center_residual_head.net.0.weight",
+          "prediction_heads.5.center_residual_head.net.1.weight",
+          "prediction_heads.5.center_residual_head.net.1.bias",
+          "prediction_heads.5.center_residual_head.net.4.weight",
+          "prediction_heads.5.center_residual_head.net.5.weight",
+          "prediction_heads.5.center_residual_head.net.5.bias",
+          "prediction_heads.5.center_residual_head.net.8.weight",
+          "prediction_heads.5.center_residual_head.net.8.bias",
+          "prediction_heads.5.size_pred_head.net.0.weight",
+          "prediction_heads.5.size_pred_head.net.1.weight",
+          "prediction_heads.5.size_pred_head.net.1.bias",
+          "prediction_heads.5.size_pred_head.net.4.weight",
+          "prediction_heads.5.size_pred_head.net.5.weight",
+          "prediction_heads.5.size_pred_head.net.5.bias",
+          "prediction_heads.5.size_pred_head.net.8.weight",
+          "prediction_heads.5.size_pred_head.net.8.bias",
+          "prediction_heads.5.sem_cls_scores_head.net.0.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.1.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.1.bias",
+          "prediction_heads.5.sem_cls_scores_head.net.4.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.5.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.5.bias",
+          "prediction_heads.5.sem_cls_scores_head.net.8.weight",
+          "prediction_heads.5.sem_cls_scores_head.net.8.bias"
+        ]
+      },
+      "frozen_core_parameters_and_buffers_unchanged_after_fit": true,
+      "checkpoints": {
+        "control": {
+          "path": "/root/autodl-tmp/mcln_scanrefer_local_visual_mesh_pair_20260906_v1/control_local_visual_state.pt",
+          "bytes": 618602343,
+          "sha256": "7fcff034b713e1d05a319c51dc53c54887897e5bd9da634980b587604676b7a8"
+        },
+        "local": {
+          "path": "/root/autodl-tmp/mcln_scanrefer_local_visual_mesh_pair_20260906_v1/local_local_visual_state.pt",
+          "bytes": 620352201,
+          "sha256": "5a5bdf0a7f1d13b68a104e31f3a0fcf63d644ceca0b6b697b9eae2140d737294"
+        }
+      },
+      "max_gpu_mib": 4579.06982421875,
+      "manifest_sha256": "3b87b7d1dff9641d9bbf6419119396abf5de5616342d741c45e622fd60c12413",
+      "evaluation_extent_policy": "existing rec_candidate_adapter floor at 1e-6;raw loss inputs unchanged",
+      "fit_batches_sha256": "15d99c6cc81310d453876fae619ed0e1b995dd76b18384c4032acc3534b90db7",
+      "baseline_rows_sha256": "415d8b321702f693fb8597fbcf5f23d1bd61e935a656e406b2c656c48f4dd455",
+      "terminal_rows_sha256": "dafec105bb58421cc64923eb4e7928dca4e3e87ae839f52fb6c93b9ca462df20"
+    }
+  },
+  "formal_launch_receipt_present": true,
+  "downloaded_sha256": {
+    "training/controller.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "training/receipt.json": "c0248a1928306ae73565a5d54c8eb1b56d68de01ca77b3aad1998138bdd075ef",
+    "training/fit_complete.json": "37df4b9070eb9949dc8b7435e15ccc89aa1d5e14d4ba1e54e4d291670f7a890b",
+    "training/terminal_metrics.json": "6eaa0128c3efc20ad32b02c0932e60606aeca61ae76396c2ca81dde4e7cd8add",
+    "training/independent_audit.json": "bb270b9ec04259ec20a587a0c9833f2c657abce74fc8f52bf9eeb5469fdc55c3",
+    "executed.json": "0c3a6b4a80b381cebb1147d93a85e9c356fdcf38e332d3b25c879f708c2d9d25",
+    "queue_controller.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "wait_progress.jsonl": "ef8db26960e1ce7c38b01199f75a5bc7e7c4364029aa5ac4d3fdffcf1a7fbe81",
+    "formal/launch.json": "0c3a6b4a80b381cebb1147d93a85e9c356fdcf38e332d3b25c879f708c2d9d25",
+    "formal/input_manifest.json": "967a3aee799dfeefd50209f056a4fd8ab7719687baf71bf31029a499964deca2",
+    "formal/controller.sh": "80c2a7829271a92afcfdcfedc3212fc39e66cde0a046ac7dda3bbe1201edd9b0",
+    "formal/data_inputs.json": "3433b7e06969b5dfd00a16b061918ad001c409cdd44dd1d7207d0ca5480276ed"
+  },
+  "queue_log_tail": "{\"time_cst\": \"2026-09-06T23:04:46.211280+08:00\", \"pid\": 43358, \"status\": \"waiting_near_measured_training_endpoint\", \"first_check_cst\": \"2026-09-07T01:13:08.483258+08:00\", \"training_screen_pid\": 42642, \"interval_seconds\": 240, \"queue_plan_sha256\": \"fa2ae0ce248660e0e0d8b27489ea6525b0b96d4bd4831167ae6009b8f9c79169\"}\n{\"time_cst\": \"2026-09-07T01:13:08.586787+08:00\", \"training_screen_live\": true, \"process\": \" 42642 SCREEN -dmS mcln_scanrefer_local_visual_mesh_pair_v1 bash -lc cd /root/autodl-tmp/mcln_scanrefer_local_visual_mesh_pair_20260906_v1 && bash controller.sh > run.log 2>&1\\n\", \"controller_exit_present\": false}\n{\"time_cst\": \"2026-09-07T01:17:08.690545+08:00\", \"training_screen_live\": false, \"process\": \"\", \"controller_exit_present\": true}\n{\"time_cst\": \"2026-09-07T01:17:25.752329+08:00\", \"screen_session\": [\"45123.mcln_scanrefer_mesh_official_v1\\t(09/07/26 01:17:25)\\t(Detached)\"], \"training_audit_sha256\": \"bb270b9ec04259ec20a587a0c9833f2c657abce74fc8f52bf9eeb5469fdc55c3\", \"manifest_sha256\": \"967a3aee799dfeefd50209f056a4fd8ab7719687baf71bf31029a499964deca2\", \"controller_sha256\": \"80c2a7829271a92afcfdcfedc3212fc39e66cde0a046ac7dda3bbe1201edd9b0\", \"command\": [\"screen\", \"-dmS\", \"mcln_scanrefer_mesh_official_v1\", \"bash\", \"-lc\", \"cd /root/autodl-tmp/mcln_scanrefer_local_visual_mesh_official_20260906_v1 && bash controller.sh > run.log 2>&1\"], \"formal_rows_planned\": 9508, \"optimizer_steps\": 0, \"checkpoint_writes\": 0, \"status\": \"formal evaluation launched;not a completed metric or promotion\"}"
+}

@@ -1,0 +1,40 @@
+{
+  "log_tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.dense.weight', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......"
+  ],
+  "process_family": [
+    [
+      "51683",
+      "1",
+      "Ss",
+      "03:50",
+      "SCREEN -dmS mcln_frozen_readout_probe_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_frozen_readout_probe_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_frozen_readout_probe_20260907_v1/run.log 2>&1"
+    ],
+    [
+      "51684",
+      "51683",
+      "Ss+",
+      "03:50",
+      "bash /root/autodl-tmp/mcln_scanrefer_frozen_readout_probe_20260907_v1/controller.sh"
+    ],
+    [
+      "51685",
+      "51684",
+      "S+",
+      "03:50",
+      "flock -x /root/autodl-tmp/mcln_v99_backbone_gpu0.lock /root/miniconda3/envs/bdetr/bin/python -u scripts/probe_scanrefer_frozen_readout_compatibility.py --manifest /root/autodl-tmp/mcln_scanrefer_frozen_readout_probe_20260907_v1/input_manifest.json"
+    ],
+    [
+      "51686",
+      "51685",
+      "Rl+",
+      "03:50",
+      "/root/miniconda3/envs/bdetr/bin/python -u scripts/probe_scanrefer_frozen_readout_compatibility.py --manifest /root/autodl-tmp/mcln_scanrefer_frozen_readout_probe_20260907_v1/input_manifest.json"
+    ]
+  ],
+  "time_cst": "2026-09-07T07:11:31.354340+08:00"
+}

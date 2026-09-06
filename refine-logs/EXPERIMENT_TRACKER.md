@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 06:57 CST. §20.111: fixed Scan range9508 formal+audit complete;extent5543/4740 vs5568/4794 protected;RECFAIL,MaskfloorsPASS;conditional native queue ended without GPU.
+Updated: 2026-09-07 07:24 CST. §20.112: frozen-readout16-row actual gradient+2steps/arm probePASS,not quality;retired2 failed range weights,+1.156GiB;new full pair not launched.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Frozen protected readout compatibility | Actual16train rows,6forwards,2disposable steps/arm PASS;readout metadata/core buffers unchanged | Engineering only;no range module,no formal rows,no new weights;fixed paired training still in preparation |
 | Native range conditional GPU preflight | Queue48128 exited0 at06:53;scanrefer_not_promoted | Native GPU preflight and Nr/Sr training never started;prepared integration not an experiment result |
 | Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |
 | ScanRefer matched center/extent range reading | Complete2482updates/arm+6887module+9508formal;integrityPASS,RECFAIL | System extent5543/4740 vs protected5568/4794 and center5555/4740;native5502/4419 vs5515/4411;no promotion or continuation |
@@ -32,7 +33,7 @@ Updated: 2026-09-07 06:57 CST. §20.111: fixed Scan range9508 formal+audit compl
 | ScanRefer candidate local visual | Correct-mesh6887 baseline independently verified;originalPID42648 at64/2482 per arm23:02;new initial REC6684/6426 | Terminal estimate09-07 01:18-01:21;fixed budget continues;see20.98 |
 | ScanRefer local visual official | Correct mesh v3 complete9508;independent audit PASS;local5549/4744 vs protected5570/4797 | REC promotion FAIL;ScanMask floors PASS;see20.97 |
 | ScanRefer local visual endpoint audit | Old2482-step states audited before retirement;two failed weights deleted22:21 with logs/rows/proof retained | New mesh audit entry12CPUtests PASS;new trained endpoint pending;see20.97 |
-| Weight storage cleanup | Complete14 explicit actions across two receipts;9.529GiB cumulative freed;10.10GiB free at22:21 | Ten duplicate copies share originals;four failed endpoints retired after audits;all logs/rows and six protected hashes retained |
+| Weight storage cleanup | Prior9.529GiB + current1.156GiB released;8.708GiB free at07:14 | Two failed range endpoints removed after full audit;all logs/rows and six protected hashes retained |
 | ScanRefer mesh post-training queue | Live waiting worker43358;CPU audit then fixed9508 formal launch after actual successful training exit | Firstcheck09-07 01:13:08 then240s;localobserver50584 at01:14:08;no Nr/Sr activation;see20.98 |
 | ScanRefer mesh formal acceptance queue | Localworker50808 and waitchild37596 verified live;waits existingcollector50584 | Actual formal terminal then independentCPU audit;only ScanPASS permits disposable Nr/Sr GPU preflight;session10701;see20.99 |
 | Nr/Sr warm-start interface | CPU actual-weight strict loading and synthetic candidate filtering PASS | Weights-only Nr initialization needs fresh optimizer;butd_cls filtering differs from Scan metadata;no GPU/data/quality claim |

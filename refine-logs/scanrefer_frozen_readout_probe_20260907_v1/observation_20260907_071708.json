@@ -1,0 +1,80 @@
+{
+  "controller_exit": "0",
+  "gradient_summaries": [
+    {
+      "batch": 0,
+      "detached_gradient_absent": true,
+      "frozen_connected_and_detached_runtime_equal": true,
+      "frozen_readout_gradient_norm": 6.742115772204523,
+      "frozen_readout_loss": 9.249773979187012,
+      "gradient_cosine": 0.325446595431941,
+      "native_gradient_norm": 0.822446885010524,
+      "native_loss": 9.118124961853027,
+      "readout_stats": {
+        "geometry_covered_rows": 12,
+        "geometry_loss": 2.433363199234009,
+        "hierarchy_covered_queries": 147,
+        "hierarchy_loss": 4.021033763885498,
+        "parent_covered_rows": 12,
+        "parent_loss": 2.795377016067505
+      },
+      "rows": 12
+    },
+    {
+      "batch": 1,
+      "detached_gradient_absent": true,
+      "frozen_connected_and_detached_runtime_equal": true,
+      "frozen_readout_gradient_norm": 9.790834206464913,
+      "frozen_readout_loss": 8.011531829833984,
+      "gradient_cosine": 0.42968580535062567,
+      "native_gradient_norm": 0.9963604242026949,
+      "native_loss": 9.7702054977417,
+      "readout_stats": {
+        "geometry_covered_rows": 4,
+        "geometry_loss": 0.6343387365341187,
+        "hierarchy_covered_queries": 64,
+        "hierarchy_loss": 4.716422080993652,
+        "parent_covered_rows": 4,
+        "parent_loss": 2.6607706546783447
+      },
+      "rows": 4
+    }
+  ],
+  "log_tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.dense.weight', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "FROZEN READOUT GRADIENT {\"batch\": 0, \"rows\": 12, \"native_loss\": 9.118124961853027, \"frozen_readout_loss\": 9.249773979187012, \"native_gradient_norm\": 0.822446885010524, \"frozen_readout_gradient_norm\": 6.742115772204523, \"gradient_cosine\": 0.325446595431941}",
+    "FROZEN READOUT GRADIENT {\"batch\": 1, \"rows\": 4, \"native_loss\": 9.7702054977417, \"frozen_readout_loss\": 8.011531829833984, \"native_gradient_norm\": 0.9963604242026949, \"frozen_readout_gradient_norm\": 9.790834206464913, \"gradient_cosine\": 0.42968580535062567}",
+    "FROZEN READOUT PROBE COMPLETE {\"schema\": \"mcln-frozen-readout-compatibility-probe-receipt-v1\", \"status\": \"pass\", \"time_cst\": \"2026-09-07T07:14:44.405965+08:00\", \"manifest_sha256\": \"1e5f0469e054a85278f3aa91c385c5e57755bd2b972f8e4207b142f89eab5b4b\", \"real_train_rows\": 16, \"formal_rows\": 0, \"backbone_forwards\": 6, \"disposable_optimizer_steps_per_arm\": 2, \"checkpoint_writes\": 0, \"new_network_modules\": 0, \"readout_frozen_and_unchanged\": true, \"frozen_core_and_buffers_unchanged\": true, \"data_inputs\": {\"split\": \"train\", \"files_verified\": 1201, \"resolved_directory\": \"/root/autodl-tmp/DATA_ROOT/superpoints_mesh_official/train\"}, \"python\": \"3.7.11 (default, Jul 27 2021, 14:32:16) \\n[GCC 7.5.0]\", \"torch\": \"1.10.2+cu111\", \"max_gpu_mib\": 3625.703125, \"elapsed_seconds\": 9.572334051132202, \"no_quality_or_generalization_conclusion\": true}"
+  ],
+  "process_family": [],
+  "receipt_summary": {
+    "backbone_forwards": 6,
+    "checkpoint_writes": 0,
+    "data_inputs": {
+      "files_verified": 1201,
+      "resolved_directory": "/root/autodl-tmp/DATA_ROOT/superpoints_mesh_official/train",
+      "split": "train"
+    },
+    "disposable_optimizer_steps_per_arm": 2,
+    "elapsed_seconds": 9.572334051132202,
+    "formal_rows": 0,
+    "frozen_core_and_buffers_unchanged": true,
+    "manifest_sha256": "1e5f0469e054a85278f3aa91c385c5e57755bd2b972f8e4207b142f89eab5b4b",
+    "max_gpu_mib": 3625.703125,
+    "new_network_modules": 0,
+    "no_quality_or_generalization_conclusion": true,
+    "python": "3.7.11 (default, Jul 27 2021, 14:32:16) \n[GCC 7.5.0]",
+    "readout_frozen_and_unchanged": true,
+    "real_train_rows": 16,
+    "schema": "mcln-frozen-readout-compatibility-probe-receipt-v1",
+    "status": "pass",
+    "time_cst": "2026-09-07T07:14:44.405965+08:00",
+    "torch": "1.10.2+cu111"
+  },
+  "time_cst": "2026-09-07T07:17:08.463472+08:00"
+}

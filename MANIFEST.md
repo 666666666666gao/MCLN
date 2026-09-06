@@ -57,3 +57,10 @@
 | 2026-09-06 08:18 | research | docs/SR3D_PUBLIC_CHECKPOINT_LOOKUP_2026-09-06.md | evidence | bounded official Sr3D checkpoint lookup; no restore or model run |
 | 2026-09-06 08:18 | research | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | bounded official Sr3D checkpoint lookup; no restore or model run |
 | 2026-09-06 08:18 | research | refine-logs/sr3d_public_checkpoint_search_20260906/lookup.json | evidence | bounded official Sr3D checkpoint lookup; no restore or model run |
+| 2026-09-06 08:39 | /run-experiment | scripts/nr3d_sparse_formal_state.py | implementation | conditional sparse native formal entry; CPU19 PASS, no formal/GPU run |
+| 2026-09-06 08:39 | /run-experiment | scripts/run_nr3d_sparse_native_formal.py | implementation | conditional sparse native formal entry; CPU19 PASS, no formal/GPU run |
+| 2026-09-06 08:39 | /run-experiment | tests/test_nr3d_sparse_formal_state.py | implementation | conditional sparse native formal entry; CPU19 PASS, no formal/GPU run |
+| 2026-09-06 08:39 | /run-experiment | tests/test_nr3d_sparse_native_formal.py | implementation | conditional sparse native formal entry; CPU19 PASS, no formal/GPU run |
+| 2026-09-06 08:39 | /run-experiment | docs/NR3D_SPARSE_NATIVE_FORMAL_PREPARATION_2026-09-06.md | implementation | conditional sparse native formal entry; CPU19 PASS, no formal/GPU run |
+| 2026-09-06 08:39 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | conditional sparse native formal entry; CPU19 PASS, no formal/GPU run |
+| 2026-09-06 08:39 | /run-experiment | refine-logs/sparse_native_formal_cpu_20260906_v2/receipt.json | implementation | conditional sparse native formal entry; CPU19 PASS, no formal/GPU run |

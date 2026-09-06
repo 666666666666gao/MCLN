@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-06 23:40 CST. Acceptance: §20.79; Scan mesh training/endpoint queue: §20.98; formal audit/native conditional continuation: §20.99.
+Updated: 2026-09-07 00:50 CST. Acceptance: §20.79; active Scan queues: §20.98/20.99; isolated diagnostic preparation: §20.100/20.101.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -200,3 +200,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 2026-09-06 23:40 CST: Master20.99 binds future formal CPU audit and native preflight to the current mesh repeat;actual local waiting worker verified. No new formal metrics or native GPU execution.
 
 2026-09-07 00:24 CST: Master20.100 records isolated readout-stage trace preparation,6 original-environment CPU tests;0 real stage rows/GPU updates. Corrected-mesh training and acceptance queues unchanged.
+
+2026-09-07 00:50 CST: Master20.101 records isolated real-forward diagnostic entry preparation,13 CPU tests and10 bound runtime imports. No GPU diagnostic launched;current Scan and acceptance queues unchanged.

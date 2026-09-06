@@ -110,3 +110,4 @@
 | 2026-09-06 23:12 | /run-experiment | refine-logs/scanrefer_local_visual_mesh_pair_20260906_v1/baseline_verification.json | run | §20.98 actual64 updates;paired6887 baseline PASS;post-training queue live |
 | 2026-09-06 23:40 | /monitor-experiment | refine-logs/scanrefer_local_visual_mesh_acceptance_queue_20260906_v1/launch.json | run | §20.99 actual live formal-audit/native conditional waiter;no new quality claim |
 | 2026-09-07 00:24 | direct implementation | refine-logs/scanrefer_stage_trace_preparation_20260907_v1/receipt.json | preparation | Six CPU stage-trace contract tests;no real metric or current-run change |
+| 2026-09-07 00:50 | direct implementation | refine-logs/scanrefer_stage_diagnostic_preparation_20260907_v2/receipt.json | preparation | Isolated stage diagnostic,13 CPU tests and10 runtime imports;0 scene forwards |

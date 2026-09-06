@@ -16821,3 +16821,18 @@ Nr/Sr准备期合同也仍使用原DATA_ROOT，后续需明确数据版本并验
 后续仍先读本轮真实Scan终态：达到§20.79底线即尽快进入Nr/Sr REC，不等待59/51，也不以Nr/Sr Mask增加门槛。若未通过，先定位逐级损失，再决定是否比较固定64点预算的中心读取与范围分组读取；边界分布/质量对齐和冻结旧读出兼容约束均未实施。8组×8只代表64个读取槽，需另报重复点及有效独立点数；空区域表示缺少观测，不能预设为错误框。
 
 本次实查服务器剩余10839162880 bytes（约10.095GiB）；未新增或删除权重，继续保留当前两臂终点与既有受保护权重。整体三数据集目标仍未达成。
+
+
+### 20.101 真实逐级诊断的独立入口准备（2026-09-07 00:50 CST）
+
+在§20.100纯读出helper之后，新增`diagnose_scanrefer_readout_stages.py`独立入口，从既有正式evaluator复制相同forward/选择流程，并复用其训练终点验证及指标函数。原`evaluate_scanrefer_local_visual_official.py`逐字未改，当前训练、formal及条件接续快照未改；本节没有GPU运行或新指标。
+
+新入口必须绑定已经完成、controller退出0且独立审计通过的正式参考结果及7个实际文件SHA，沿用其训练起点/终点、data_root、mesh文件表、loader和随机种子。逐行记录表达/root/point身份、6个阶段的Query槽位/variant/框/IoU、Top16候选与合法性、Pareto提议及增益；GT只在选择之后计算IoU。Parent152维和Geometry179维的实际归一化输入另记录合法候选计数、均值、RMS、极值。两臂合法候选总体可能不同，统计差异不能单独证明归一化或兼容性是根因。
+
+输出固定为独立`diagnostic_result/`，标记`formal_rows=0`、`diagnostic_rows=9508`、`used_for_promotion=false`。逐级修复/破坏使用原严格IoU阈值，并单列诊断重跑与参考正式结果之间的Query、变体和IoU差异；不能把重跑差异悄悄当成原正式指标。输入point身份不一致时拒绝汇总。同Query槽位而框不同，仍不等于已经证明同一语义实例。
+
+**实际准备验证：** 原bdetr环境13项CPU测试和direct-file CLI检查通过；10个运行依赖从隔离scripts及冻结model_source正确导入，CUDA隐藏。V1仅完成module-style CLI；V2显式固定运行时scripts搜索范围，避免从可变工作区导入。测试包括合法特征掩码、原forward不变、严格阈值修复/破坏、JSON排序往返、point/root不一致拒绝、参考预测漂移记录。没有实际场景forward。
+
+准备目录`refine-logs/scanrefer_stage_diagnostic_preparation_20260907_v2/`；测试回执SHA`c1d8b75a81d89aef8139c1e40e4e38b7862c8e4dde6d719e6bafde8962c84dcf`；运行依赖导入回执SHA`01db0b2711d63766809eb3ecf9232f5951916b4bc4e0e6ca27d8e45933bc29ef`。脚本来源、实际配置要求与未完成边界见该目录README。
+
+**下一步仍由当前Scan结果决定。** 此诊断尚未生成绑定当前结果的运行manifest，也未排队或启动；需要先取得现有formal及独立审计结果。Scan通过即优先接续Nr/Sr；若未通过，再用本入口定位逐级损失。没有新增权重或重复训练，本次也没有提前查询GPU训练进度。三数据集目标继续active。

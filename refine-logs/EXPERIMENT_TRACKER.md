@@ -1,12 +1,12 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 04:13 CST. §20.108: pinned range-reader primary-source audit; Scan pair 704/2482 last04:08, three screens live04:12; no runtime change or new metrics.
+Updated: 2026-09-07 05:37 CST. §20.109: both Scan range arms completed2482updates;two fixed checkpoints and fit-row coverage verified;terminal6887 evaluation running, no formal result.
 
 | Experiment | Current state | Decision |
 |---|---|---|
 | Native range conditional GPU preflight | Queue48128 live;3condition testsPASS | Waits fixed Scan formal promotion+audit;negative stops;positive runs16rows+2steps each;no native training started |
 | Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |
-| ScanRefer matched center/extent range reading | CPU3PASS;real16train preflightPASS;pair47112 baseline12/6887 | Same145008params and64slots;2482updates/arm pending;queue47242 audits then fixed9508 protected/center/extent;no new metrics |
+| ScanRefer matched center/extent range reading | Both2482updates complete;two620352201B endpoints SHA verified;terminal 12/6887 running | Same145008params/64slots;fixed9508 protected/center/extent still pending;no quality conclusion |
 | ScanRefer corrected-mesh final and stage diagnostic | Formal5543/4722 vs5570/4797 FAIL;diagnostic9508 complete,auditPASS | Parent widens@0.25 loss;Geometry turns@0.50 +6 to−89;Top16 oracle+42/+82;next fixed64-point extent control;Nr/Sr not launched |
 | G0 augmentation pair | Complete; integrity PASS, scientific FAIL | Keep data fix; original G0→G1 performance route sealed |
 | P1 four-row padding identity and candidate audit | Complete | Selected seeds/Masks stable in four padding interventions; full object-memory availability remains incomplete. PR #7 stays draft |

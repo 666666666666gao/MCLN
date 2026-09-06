@@ -17041,3 +17041,33 @@ Nr/Sr接续48128仍等待固定正式结果；只在ScanRefer历史REC5572/4797�
 **执行用户要求的无用权重清理。** 范围两臂及全部接续均已结束，完整训练/正式审计和逐行文件已收回并推送。07:14:14按确切路径退休control_range_visual_state.pt和local_range_visual_state.pt，各620352201 bytes，删除前核对其SHA、普通文件真实路径、单链接及无运行进程依赖；新probe的artifact列表确认只读取E71及三个旧读出。实际释放1240719360 allocated bytes（1.156GiB），磁盘余量由8109547520增加至9350262784 bytes（约8.708GiB）。六份受保护权重删除前后SHA均一致，全部日志、rows/native_rows、协议和审计保留。§20.109—20.111中的权重审计是删除前事实；两份失败range权重现已不存在，未来不能再声称它们仍可加载或重跑其权重审计。
 
 冻结读出probe receipt SHA`f55564f69dc99e6f2d563ae944363dc23eb0a0dc2bb26973285f47df7b8c53b3`；manifest SHA`1e5f0469e054a85278f3aa91c385c5e57755bd2b972f8e4207b142f89eab5b4b`；清理receipt SHA`dcfbc591383d619120262f432922c955a2c9938a35b3a41552292f7fc52882fd`。正式最好不变，Nr/Sr仍无新训练成绩，整体目标继续active。
+
+
+### 20.113 冻结读出GT配对已锁定并真实启动；按模块REC筛选接续唯一正式终点（2026-09-07 07:55 CST）
+
+本轮承接§20.112已通过的实际GPU梯度检查，所有新入口及manifest于运行前提交GitHub `49f2a54e2c3a6f301dc3bfc2565f1f6bedc661d8`。原Python3.7.11环境完成五个入口的导入/CLI检查、全部overlay AST、历史真实9508-row原生REC重算，以及晋级函数的历史线、同次保护线和Mask底线检查；这些只是工程验证，不是本轮精度结果。没有重建环境、增加模块或加载退休range权重。
+
+
+| 固定项目 | 本轮约定 |
+|---|---|
+| 起点 | 同一受保护E71；Parent/Geometry/V99实际权重与归一化元数据始终冻结 |
+| 两臂 | native_only；唯一候选frozen_gt |
+| 唯一差别 | frozen_gt允许GT读出辅助损失反传核心；native_only在同一读出输入处detach，仍保留完整原生GT损失 |
+| 更新范围 | 最后Decoder和最后预测头68个张量；probe已观测其中66个具有梯度，norm1两项无梯度 |
+| 优化预算 | 每臂1epoch、2482步、batch12；AdamW，核心LR1e-6、weight_decay0.0005、clip0.1；辅助权重固定1/3 |
+| 数据 | 正确mesh根目录，1201训练和312验证superpoint逐文件绑定；原29778fit/6887模块holdout划分；相同采样点，无新增增强 |
+| 输出与存储 | 两个固定fit终点，包含核心、冻结读出、optimizer；无中途epoch选优；正式评估不另写权重 |
+
+**真实启动。** 07:52:20 screen52529启动配对训练，07:52:22 screen52535启动终态接续，两者均为后台持久进程。07:53:17实查进程正常，GPU占用3029MiB，日志处于“Begin text decoupling”，尚未出现baseline预测或optimizer更新；不能把启动写成已完成训练。本次同步前再次确认两个screen存活。训练从正确数据完成两臂相同的零更新评估后才进入固定fit，fit结束先保存终点，再完成终态6887行。
+
+
+**评估与晋级预先固定。** 模块评估和正式评估都在同一次forward上保存原生REC与完整系统REC，保留逐行采样点身份；Mask使用原完整系统语义路径。终态CPU审计重算REC/Mask、修复/破坏、IoU区间转移，并检查冻结权重/元数据及66份optimizer状态的2482步。6887行仍是主干见过的训练场景，不是整个网络的新场景泛化集。只有frozen_gt的完整系统REC两项同时不低于零更新起点和native_only终点，才执行一次固定9508行正式评估；失败则记录module_rec_screen_not_passed并正常结束，不改选native_only，也不补扫epoch/权重。此规则与上一range协议不同，是本轮运行前新锁定的规则，不修改旧实验判定。
+
+
+正式三组固定为protected_v99、native_only_v99、frozen_gt_v99，唯一晋级候选是frozen_gt_v99。历史REC5572/4797及同次保护不退化均保留，ScanMask三项仍须达到58.70/50.70/44.72；59/51为努力方向，不增加为硬门。通过后尽快推进Nr/Sr REC；本轮队列不会在Scan未通过前启动Nr/Sr，Nr/Sr Mask不构成门槛。
+
+
+**研究边界。** 此实验检验固定旧读出是否能通过GT监督改善新核心的系统可用性，不声称已经证明接口不兼容是唯一根因。相比失败joint试验，本轮旧读出不会更新；相比range试验，本轮没有局部/范围分支。原候选构造、几何变体及Pareto规则仍保留，不能把本轮描述成取消后处理或新的主干架构。即使某一路指标变化，也必须区分原生能力、完整系统收益与同预算native_only控制。
+
+
+07:53:17实查磁盘剩余9349840896 bytes（约8.708GiB）。仅计划写两个固定终点，预计合计约1.2GiB，既有六份保护权重继续保留；本次未再删除其他权重。训练manifest SHA`eccc3b6037ca2e723100791b8907c826de8df69dd25dbf3ed8df59a75468a35b`，接续manifest SHA`d7e898ccd3904634ff18aed63abed2b417a9af2ad5ec1d40aa345a738edf902a`。本轮尚无新训练终态或正式成绩，整体目标继续active。

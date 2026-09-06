@@ -1,10 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 07:24 CST. §20.112: frozen-readout16-row actual gradient+2steps/arm probePASS,not quality;retired2 failed range weights,+1.156GiB;new full pair not launched.
+Updated: 2026-09-07 07:55 CST. §20.113: fixed frozen-readout GT pair live52529, postqueue52535;correctmesh,E71,no range module;no new quality result.
 
 | Experiment | Current state | Decision |
 |---|---|---|
-| Frozen protected readout compatibility | Actual16train rows,6forwards,2disposable steps/arm PASS;readout metadata/core buffers unchanged | Engineering only;no range module,no formal rows,no new weights;fixed paired training still in preparation |
+| Frozen protected readout compatibility | Actual GPU probePASS;fixed2482steps/arm pair launched07:52, screens52529/52535 | Frozen Parent/Geometry/V99, candidatefrozen_gt;6887 module REC nonregression versus baseline+native_only gates one9508 formal;no result yet |
 | Native range conditional GPU preflight | Queue48128 exited0 at06:53;scanrefer_not_promoted | Native GPU preflight and Nr/Sr training never started;prepared integration not an experiment result |
 | Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |
 | ScanRefer matched center/extent range reading | Complete2482updates/arm+6887module+9508formal;integrityPASS,RECFAIL | System extent5543/4740 vs protected5568/4794 and center5555/4740;native5502/4419 vs5515/4411;no promotion or continuation |

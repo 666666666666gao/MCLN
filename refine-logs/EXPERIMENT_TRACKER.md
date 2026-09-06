@@ -1,10 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 02:07 CST. Scan mesh repeat/formal sealed FAIL;actual stage diagnostic1536/9508 and observer49108: §20.102. Acceptance remains §20.79.
+Updated: 2026-09-07 02:27 CST. Corrected-mesh formal FAIL;full stage diagnostic and independent audit complete: §20.103. No GPU job active;next fixed64-point extent preflight not launched.
 
 | Experiment | Current state | Decision |
 |---|---|---|
-| ScanRefer corrected-mesh final and stage diagnostic | Formal5543/4722 vs protected5570/4797;integrityPASS,RECgateFAIL | Nr/Sr not launched;fixed-weight stage diagnostic45890 observed1536rows;collector49108/session6419 first02:20:58 then240s |
+| ScanRefer corrected-mesh final and stage diagnostic | Formal5543/4722 vs5570/4797 FAIL;diagnostic9508 complete,auditPASS | Parent widens@0.25 loss;Geometry turns@0.50 +6 to−89;Top16 oracle+42/+82;next fixed64-point extent control;Nr/Sr not launched |
 | G0 augmentation pair | Complete; integrity PASS, scientific FAIL | Keep data fix; original G0→G1 performance route sealed |
 | P1 four-row padding identity and candidate audit | Complete | Selected seeds/Masks stable in four padding interventions; full object-memory availability remains incomplete. PR #7 stays draft |
 | Independent P2 v1 | Complete; both heads 6,687 updates; terminal verification PASS | Pair-global REC -1/-84, pair-protected -3/+118 and lower Mask mIoU. Both fixed screens FAIL; do not advance this variant to P3 |
@@ -205,3 +205,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 2026-09-07 00:50 CST: Master20.101 records isolated real-forward diagnostic entry preparation,13 CPU tests and10 bound runtime imports. No GPU diagnostic launched;current Scan and acceptance queues unchanged.
 
 2026-09-07 02:07 CST: Master20.102 seals actual Scan mesh training/formal negative result and records running independent stage diagnostic;no native training or new method success.
+
+2026-09-07 02:27 CST: Stage terminal audited;formal remains sealed;extent preflight next,not yet started.

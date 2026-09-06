@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-06 23:12 CST. Acceptance: §20.79; Scan mesh actual64 updates and post-training queue: §20.98.
+Updated: 2026-09-06 23:40 CST. Acceptance: §20.79; Scan mesh training/endpoint queue: §20.98; formal audit/native conditional continuation: §20.99.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -30,6 +30,7 @@ Updated: 2026-09-06 23:12 CST. Acceptance: §20.79; Scan mesh actual64 updates a
 | ScanRefer local visual endpoint audit | Old2482-step states audited before retirement;two failed weights deleted22:21 with logs/rows/proof retained | New mesh audit entry12CPUtests PASS;new trained endpoint pending;see20.97 |
 | Weight storage cleanup | Complete14 explicit actions across two receipts;9.529GiB cumulative freed;10.10GiB free at22:21 | Ten duplicate copies share originals;four failed endpoints retired after audits;all logs/rows and six protected hashes retained |
 | ScanRefer mesh post-training queue | Live waiting worker43358;CPU audit then fixed9508 formal launch after actual successful training exit | Firstcheck09-07 01:13:08 then240s;localobserver50584 at01:14:08;no Nr/Sr activation;see20.98 |
+| ScanRefer mesh formal acceptance queue | Localworker50808 and waitchild37596 verified live;waits existingcollector50584 | Actual formal terminal then independentCPU audit;only ScanPASS permits disposable Nr/Sr GPU preflight;session10701;see20.99 |
 | Nr/Sr warm-start interface | CPU actual-weight strict loading and synthetic candidate filtering PASS | Weights-only Nr initialization needs fresh optimizer;butd_cls filtering differs from Scan metadata;no GPU/data/quality claim |
 | Nr/Sr candidate-local native entry | Opt-in native factory/loader/optimizer added;55 original-environment checks PASS;real Nr weights load1154-state local model in both protocols | CPU integration only;fresh optimizer;zero native model updates/formal rows;Scan promotion and real-data GPU preflight still required |
 | Nr/Sr native annotation/input audit | Actual CPU loaders:44909/77836 joint train rows;7899/17726 language val;B12 gives3742/6486 updates;32 fixed preflight inputs | No train/val physical-space overlap;0 point samples/GPU/updates/checkpoints;Scan formal and real GPU preflight remain pending |
@@ -195,3 +196,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 2026-09-06 22:24 CST: Master20.97 records corrected-mesh9508 failure,actual GPU preflight PASS and same-setting Scan training repeat launch. Nr/Sr not launched;goal active.
 
 2026-09-06 23:12 CST: Master20.98 records actual64-step Scan progress,independent6887 paired baseline PASS and verified live endpoint-audit/formal-launch queue. No new formal metric;goal active.
+
+2026-09-06 23:40 CST: Master20.99 binds future formal CPU audit and native preflight to the current mesh repeat;actual local waiting worker verified. No new formal metrics or native GPU execution.

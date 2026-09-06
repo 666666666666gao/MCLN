@@ -1,0 +1,87 @@
+{
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "prepare_inputs.py",
+    "input_manifest.json",
+    "sparse_preflight_receipt.json",
+    "__pycache__",
+    "tests.xml",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "first_batch_gradient_comparison.json",
+    "preflight.json",
+    "source_snapshot.zip",
+    "published_source_identity.json",
+    "README.md",
+    "baseline_rows.json",
+    "baseline_identity.json",
+    "baseline_independent_verification.json"
+  ],
+  "gpu": "10857 MiB, 25 %",
+  "latest_evaluation": [
+    {
+      "batches": 350,
+      "elapsed_seconds": 1344.7534170150757,
+      "rows": 5600,
+      "stage": "baseline"
+    }
+  ],
+  "latest_training": [
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 8.67061996459961,
+          "loss": 14.264262199401855
+        },
+        "sparse": {
+          "gradient_norm_before_clip": 6.8516526222229,
+          "loss": 14.261484146118164
+        }
+      },
+      "elapsed_seconds": 6372.768137216568,
+      "epoch": 0,
+      "sparse_output_weight_norm": 0.5542832612991333,
+      "step": 3328
+    },
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 3.9169504642486572,
+          "loss": 17.943822860717773
+        },
+        "sparse": {
+          "gradient_norm_before_clip": 4.683043956756592,
+          "loss": 17.926488876342773
+        }
+      },
+      "elapsed_seconds": 6467.6859562397,
+      "epoch": 0,
+      "sparse_output_weight_norm": 0.5560585260391235,
+      "step": 3392
+    }
+  ],
+  "log_sha256": "b5bdd69a51b40c924f48b91b09e534701a289b8077c8f1cba7eaf683f04438a4",
+  "log_tail": [
+    "SPARSE POINT PAIR TRAIN {\"step\": 2944, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 13.310249328613281, \"gradient_norm_before_clip\": 11.326544761657715}, \"sparse\": {\"loss\": 13.71029281616211, \"gradient_norm_before_clip\": 5.645453929901123}}, \"sparse_output_weight_norm\": 0.5136628150939941, \"elapsed_seconds\": 5808.189418792725}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 3008, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 17.050006866455078, \"gradient_norm_before_clip\": 7.30963659286499}, \"sparse\": {\"loss\": 17.011018753051758, \"gradient_norm_before_clip\": 11.241734504699707}}, \"sparse_output_weight_norm\": 0.5220130681991577, \"elapsed_seconds\": 5902.44544839859}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 3072, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 15.192096710205078, \"gradient_norm_before_clip\": 8.371503829956055}, \"sparse\": {\"loss\": 15.316149711608887, \"gradient_norm_before_clip\": 16.20990753173828}}, \"sparse_output_weight_norm\": 0.5303913950920105, \"elapsed_seconds\": 5996.673835515976}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 3136, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 16.30586051940918, \"gradient_norm_before_clip\": 7.180711269378662}, \"sparse\": {\"loss\": 16.327754974365234, \"gradient_norm_before_clip\": 11.729485511779785}}, \"sparse_output_weight_norm\": 0.5403455495834351, \"elapsed_seconds\": 6090.85654425621}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 3200, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 14.722391128540039, \"gradient_norm_before_clip\": 2.1886351108551025}, \"sparse\": {\"loss\": 14.744424819946289, \"gradient_norm_before_clip\": 5.219651222229004}}, \"sparse_output_weight_norm\": 0.5423805117607117, \"elapsed_seconds\": 6184.9542598724365}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 3264, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 17.1130428314209, \"gradient_norm_before_clip\": 8.605020523071289}, \"sparse\": {\"loss\": 16.8512020111084, \"gradient_norm_before_clip\": 11.527680397033691}}, \"sparse_output_weight_norm\": 0.5486833453178406, \"elapsed_seconds\": 6278.388247966766}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 3328, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 14.264262199401855, \"gradient_norm_before_clip\": 8.67061996459961}, \"sparse\": {\"loss\": 14.261484146118164, \"gradient_norm_before_clip\": 6.8516526222229}}, \"sparse_output_weight_norm\": 0.5542832612991333, \"elapsed_seconds\": 6372.768137216568}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 3392, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 17.943822860717773, \"gradient_norm_before_clip\": 3.9169504642486572}, \"sparse\": {\"loss\": 17.926488876342773, \"gradient_norm_before_clip\": 4.683043956756592}}, \"sparse_output_weight_norm\": 0.5560585260391235, \"elapsed_seconds\": 6467.6859562397}"
+  ],
+  "process": "28416 /root/autodl-tmp/mcln_sparse_runtime_20260906_v3/venv/bin/python -u scripts/run_nr3d_sparse_point_pair.py --manifest /root/autodl-tmp/mcln_sparse_point_pair_20260906_v3/input_manifest.json",
+  "process_exit": 0,
+  "runtime_estimate": {
+    "estimated_complete_cst": "2026-09-06T10:58:27.109619+08:00",
+    "remaining_seconds": 6368.894961950694,
+    "seconds_per_paired_step": 1.4830909222364426,
+    "terminal_evaluation_seconds": 1482.1103731816156
+  },
+  "time_cst": "2026-09-06T09:12:18.214657+08:00"
+}

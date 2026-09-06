@@ -16069,3 +16069,37 @@ evaluator；终态输出还包括两组修复/破坏、scene区间及固定条�
 docs/NR3D_SPARSE_NATIVE_FORMAL_PREPARATION_2026-09-06.md。REC冻结，本入口不能将Mask
 改善冒充Nr3D REC达标。08:20观察会话有效，最近实际GPU进度仍是07:53:40各192/6687；
 下次约10:53按既定估时查询。正式保护结果和整体active目标均不变。
+
+
+### 20.79 用户最新优先级：ScanRefer REC先行，达不退化线即转Nr3D/Sr3D（2026-09-06 09:27 CST）
+
+本节记录本次用户连续修订后的有效要求，覆盖较早ScanRefer@0.50目标49/50%、
+Nr3D优先及三个数据集Mask均作硬门槛的排队安排。历史实验原质量标准不追溯改判。
+
+- ScanRefer争取REC@0.25>59.0%、@0.50>51.0%；以同一受保护V99的5572/4797命中
+  （9508行，58.6033%/50.4523%）为新方案REC不退化线，不拼接其他版本单项最好。
+- ScanRefer Mask@0.25/@0.50/mIoU仍须不低于原MCLN的58.70/50.70/44.72%。
+- Nr3D与Sr3D只要求REC两阈值不低于原MCLN：分别59.82/51.38与68.43/57.30%。
+  两者Mask暂不优化，不作为本轮继续训练、正式REC评估或晋级门槛。
+- 所有新模块/网络改动/需要更新权重的方案先训练ScanRefer，优先加载已有预训练权重。
+  一旦ScanRefer通过REC不退化线及Mask底线，就尽快训练Nr3D/Sr3D，不等待59/51达成。
+- 保留原最好系统；59/51为争取目标而非已达SOTA声明。长期baseline重训仍不恢复。
+
+严格超过59/51对应5610/4850命中，相对V99分别还需净增38/53；这是两个阈值各自差值，
+不相加充当独立样本数。原论文baseline来自Table9/10的两位小数，不恢复不存在的精确命中数。
+
+09:17:20服务器CPU实查ScanRefer E71、Parent、Geometry、V99四份权重均存在，SHA/字节/
+0444权限与保护记录一致。E71 epoch71含optimizer/scheduler，可用于warm start；改变
+可训练参数集合时需要对应的新optimizer。0GPU forward、0更新、0正式评估、0保护权重写入。
+证据refine-logs/scanrefer_warm_start_audit_20260906_v1/receipt.json。E71单独不等于V99系统。
+
+当前后处理打分网络可复用，但旧运行合同frozen/eval/no_grad，Mask阈值选点、Top-K/rank、
+框变体和Pareto决策仍离散。正在确定最小训练内化方案；未实现或启动新ScanRefer训练，
+不会把搬入forward或普通蒸馏直接宣称为端到端新关系网络。保留mesh-derived superpoint修复。
+
+已启动Nr3D稀疏Mask V3最近实测09:12:18两臂3392/6687，预计约10:58终态。ScanRefer CPU
+准备期间可完成既定预算；实际ScanRefer GPU任务准备好时优先交接，若中断则明确未完成。
+无论原Mask筛选通过与否，不再自动按§20.78推进Nr3D Mask正式评估，不新增Nr/Sr Mask任务。
+
+详细当前合同见docs/SCANREFER_REC_FIRST_TRAINING_SCOPE_2026-09-06.md。受保护正式结果
+不变；新ScanRefer训练和Nr/Sr REC达标均未完成，整体目标继续active。

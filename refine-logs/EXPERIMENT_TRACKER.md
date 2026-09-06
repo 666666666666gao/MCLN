@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 03:53 CST. §20.107:conditional native range GPU preflight queue48128 armed,3testsPASS;waits original Scan formal queue47242;no native GPU started.
+Updated: 2026-09-07 04:13 CST. §20.108: pinned range-reader primary-source audit; Scan pair 704/2482 last04:08, three screens live04:12; no runtime change or new metrics.
 
 | Experiment | Current state | Decision |
 |---|---|---|

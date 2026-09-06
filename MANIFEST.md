@@ -103,3 +103,4 @@
 | 2026-09-06 17:25 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | evidence | §20.91 actual128-step local visual training;6887-row baseline parity;terminal check scheduled19:24 |
 | 2026-09-06 17:52 | /run-experiment | docs/CANDIDATE_LOCAL_VISUAL_NATIVE_TRAINING_2026-09-06.md | implementation | §20.92 optional native candidate-local model/loading/optimizer;55 CPU checks and real Nr weight initialization PASS;no Nr/Sr training |
 | 2026-09-06 18:11 | /run-experiment | docs/NR_SR_NATIVE_DATA_PREFLIGHT_2026-09-06.md | data audit | §20.93 actual native joint counts and32 fixed preflight inputs;0 GPU/updates;existing REC checkpoint retention documented |
+| 2026-09-06 18:27 | /run-experiment | scripts/run_native_candidate_local_preflight.py | preparation | §20.94 actual64 native CPU point samples PASS;conditional GPU entry prepared;no GPU/updates/checkpoints |

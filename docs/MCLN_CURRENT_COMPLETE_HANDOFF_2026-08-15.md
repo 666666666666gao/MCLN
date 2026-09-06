@@ -16576,3 +16576,31 @@ checkpoint_retention_metrics设为rec_acc025 rec_acc050：本run内latest加两�
 最好最多三个不同epoch，别名为hardlink，不额外为Mask保留权重；写新文件完成后
 才删不保留旧epoch。无新增清理代码，受保护历史与当前Scan待评端点继续保留。
 当前Scan仍按19:24后240秒观察；没有在本次准备中查询或改变GPU训练。goal active。
+
+
+### 20.94 Nr/Sr真实数据CPU预检通过，原生GPU预检入口就绪（2026-09-06 18:27 CST）
+
+18:22:08，原Python3.7/Torch1.10.2环境实际调用新入口的数据构造函数，
+完成20.93固定32个原始输入记录的无增强/训练增强取样，共64份真实点云样本，
+耗时87.81秒。每行50000点、XYZ/RGB6维、逐点superpoint、132对象槽；
+原生tokenizer、语言图解析和collate通过。各数据集12语言/4检测行两遍均与清单
+扫描ID和sample_dataset相符；butd_cls输入框和有效位逐位等于原生实例框/有效位。
+这一步GPU前向、优化器更新、完整checkpoint写入全部为0。
+
+新增scripts/run_native_candidate_local_preflight.py，SHA
+50de01790a7e3b2a389e3257959cd67f852175f2949b86fa52e88dfd2dd734b8。
+该GPU入口待Scan正式通过后执行：无增强eval比较新增零输出分支与原模型，
+实际记录原生合法过滤/selector分数/Query选择；训练模式第一批比较零输出一致性，
+然后每数据集两次一次性更新检查输出投影及第二步point/query/key/value权重梯度，
+同时检查冻结文本state。计划14前向/4一次性更新，完整checkpoint写入0。
+本地编译/help通过；原环境CPU检查已导入同一个文件。实际GPU梯度/候选检查尚未执行。
+
+证据refine-logs/native_local_preflight_preparation_20260906_v1；
+数据和说明见docs/NR_SR_NATIVE_DATA_PREFLIGHT_2026-09-06.md。
+条件启动helper已准备，须读取真实Scan正式receipt/controller退出码与9508逐行结果，
+重新计算固定晋级条件，再启动GPU预检；没有创建虚假正式结果或启动Nr/Sr训练。
+两个配置当前均以兼容Nr受保护权重做接口预检，Sr历史最好仍未恢复；正式训练预算、
+起点和效果另行固定/验证，不能把此小样本预检写成跨数据集结果。
+
+当前Scan沿用614文件固定源和20.88设置，观察器仍预约19:24后240秒。
+本次准备没有查询或改动GPU训练，没有新增正式成绩；goal active。

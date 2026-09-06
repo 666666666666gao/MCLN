@@ -1,12 +1,12 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 06:19 CST. §20.110: range2482-step endpoints+6887 terminal complete;integrityPASS,extent-baseline REC-12/-13 and extent-center-2/-3;fixed9508 formal three-arm eval live.
+Updated: 2026-09-07 06:57 CST. §20.111: fixed Scan range9508 formal+audit complete;extent5543/4740 vs5568/4794 protected;RECFAIL,MaskfloorsPASS;conditional native queue ended without GPU.
 
 | Experiment | Current state | Decision |
 |---|---|---|
-| Native range conditional GPU preflight | Queue48128 live;3condition testsPASS | Waits fixed Scan formal promotion+audit;negative stops;positive runs16rows+2steps each;no native training started |
+| Native range conditional GPU preflight | Queue48128 exited0 at06:53;scanrefer_not_promoted | Native GPU preflight and Nr/Sr training never started;prepared integration not an experiment result |
 | Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |
-| ScanRefer matched center/extent range reading | Complete2482updates/arm+6887terminal;independent integrityPASS,qualityFAIL | extent REC6672/6413 vs baseline6684/6426 and center6674/6416;fixed formal PID50454/50455 live;no promotion yet |
+| ScanRefer matched center/extent range reading | Complete2482updates/arm+6887module+9508formal;integrityPASS,RECFAIL | System extent5543/4740 vs protected5568/4794 and center5555/4740;native5502/4419 vs5515/4411;no promotion or continuation |
 | ScanRefer corrected-mesh final and stage diagnostic | Formal5543/4722 vs5570/4797 FAIL;diagnostic9508 complete,auditPASS | Parent widens@0.25 loss;Geometry turns@0.50 +6 to−89;Top16 oracle+42/+82;next fixed64-point extent control;Nr/Sr not launched |
 | G0 augmentation pair | Complete; integrity PASS, scientific FAIL | Keep data fix; original G0→G1 performance route sealed |
 | P1 four-row padding identity and candidate audit | Complete | Selected seeds/Masks stable in four padding interventions; full object-memory availability remains incomplete. PR #7 stays draft |

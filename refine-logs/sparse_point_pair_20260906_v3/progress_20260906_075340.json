@@ -1,0 +1,86 @@
+{
+  "files": [
+    "scripts",
+    "tests",
+    "docs",
+    "prepare_inputs.py",
+    "input_manifest.json",
+    "sparse_preflight_receipt.json",
+    "__pycache__",
+    "tests.xml",
+    "cpu_receipt.json",
+    "controller.sh",
+    "run.log",
+    "launch.json",
+    "first_batch_gradient_comparison.json",
+    "preflight.json",
+    "source_snapshot.zip",
+    "published_source_identity.json",
+    "README.md",
+    "baseline_rows.json",
+    "baseline_identity.json"
+  ],
+  "gpu": "10855 MiB, 0 %",
+  "latest_evaluation": [
+    {
+      "batches": 350,
+      "elapsed_seconds": 1344.7534170150757,
+      "rows": 5600,
+      "stage": "baseline"
+    }
+  ],
+  "latest_training": [
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 9.511544227600098,
+          "loss": 17.426347732543945
+        },
+        "sparse": {
+          "gradient_norm_before_clip": 12.65727424621582,
+          "loss": 17.472240447998047
+        }
+      },
+      "elapsed_seconds": 1672.5614759922028,
+      "epoch": 0,
+      "sparse_output_weight_norm": 0.08878538757562637,
+      "step": 128
+    },
+    {
+      "arms": {
+        "native": {
+          "gradient_norm_before_clip": 5.116520404815674,
+          "loss": 12.94576644897461
+        },
+        "sparse": {
+          "gradient_norm_before_clip": 8.78564167022705,
+          "loss": 12.988287925720215
+        }
+      },
+      "elapsed_seconds": 1767.0538363456726,
+      "epoch": 0,
+      "sparse_output_weight_norm": 0.10415036976337433,
+      "step": 192
+    }
+  ],
+  "log_sha256": "2f21262951b32c46c1d98da9e5aea718d7fe9f2fda02cd50b4e5be7558ff8b41",
+  "log_tail": [
+    "SPARSE POINT PAIR EVAL {\"stage\": \"baseline\", \"batches\": 150, \"rows\": 2400, \"elapsed_seconds\": 579.8187320232391}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"baseline\", \"batches\": 200, \"rows\": 3200, \"elapsed_seconds\": 771.2826828956604}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"baseline\", \"batches\": 250, \"rows\": 4000, \"elapsed_seconds\": 961.7359063625336}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"baseline\", \"batches\": 300, \"rows\": 4800, \"elapsed_seconds\": 1153.251715183258}",
+    "SPARSE POINT PAIR EVAL {\"stage\": \"baseline\", \"batches\": 350, \"rows\": 5600, \"elapsed_seconds\": 1344.7534170150757}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 64, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 15.558818817138672, \"gradient_norm_before_clip\": 5.430352210998535}, \"sparse\": {\"loss\": 15.556361198425293, \"gradient_norm_before_clip\": 9.872856140136719}}, \"sparse_output_weight_norm\": 0.07589729130268097, \"elapsed_seconds\": 1578.4607462882996}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 128, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 17.426347732543945, \"gradient_norm_before_clip\": 9.511544227600098}, \"sparse\": {\"loss\": 17.472240447998047, \"gradient_norm_before_clip\": 12.65727424621582}}, \"sparse_output_weight_norm\": 0.08878538757562637, \"elapsed_seconds\": 1672.5614759922028}",
+    "SPARSE POINT PAIR TRAIN {\"step\": 192, \"epoch\": 0, \"arms\": {\"native\": {\"loss\": 12.94576644897461, \"gradient_norm_before_clip\": 5.116520404815674}, \"sparse\": {\"loss\": 12.988287925720215, \"gradient_norm_before_clip\": 8.78564167022705}}, \"sparse_output_weight_norm\": 0.10415036976337433, \"elapsed_seconds\": 1767.0538363456726}"
+  ],
+  "process": "28416 /root/autodl-tmp/mcln_sparse_runtime_20260906_v3/venv/bin/python -u scripts/run_nr3d_sparse_point_pair.py --manifest /root/autodl-tmp/mcln_sparse_point_pair_20260906_v3/input_manifest.json",
+  "process_exit": 0,
+  "runtime_estimate": {
+    "estimated_complete_cst": "2026-09-06T10:58:12.261164+08:00",
+    "remaining_seconds": 11071.608505928281,
+    "seconds_per_paired_step": 1.4764431305229664,
+    "terminal_evaluation_seconds": 1482.1103731816156
+  },
+  "time_cst": "2026-09-06T07:53:40.652658+08:00"
+}

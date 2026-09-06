@@ -72,3 +72,8 @@
 | 2026-09-06 10:08 | /run-experiment | refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md | implementation | pretrained ScanRefer joint readout;CPU gradient PASS;native probe queued |
 | 2026-09-06 10:08 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | pretrained ScanRefer joint readout;CPU gradient PASS;native probe queued |
 | 2026-09-06 10:08 | /run-experiment | refine-logs/scanrefer_joint_readout_cpu_20260906_v1/receipt.json | implementation | pretrained ScanRefer joint readout;CPU gradient PASS;native probe queued |
+| 2026-09-06 10:49 | /run-experiment | scripts/audit_scanrefer_v99_teacher_transfer.py | implementation | ScanRefer teacher diagnostic queued;paired trainer prepared;zero updates |
+| 2026-09-06 10:49 | /run-experiment | scripts/run_scanrefer_joint_readout_pair.py | implementation | ScanRefer teacher diagnostic queued;paired trainer prepared;zero updates |
+| 2026-09-06 10:49 | /run-experiment | refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md | implementation | ScanRefer teacher diagnostic queued;paired trainer prepared;zero updates |
+| 2026-09-06 10:49 | /run-experiment | docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md | implementation | ScanRefer teacher diagnostic queued;paired trainer prepared;zero updates |
+| 2026-09-06 10:49 | /run-experiment | refine-logs/scanrefer_teacher_transfer_20260906_v3/queue.json | implementation | ScanRefer teacher diagnostic queued;paired trainer prepared;zero updates |

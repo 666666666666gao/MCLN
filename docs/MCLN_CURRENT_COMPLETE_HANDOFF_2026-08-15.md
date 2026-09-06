@@ -16145,3 +16145,55 @@ Nr Mask即使成功也不追加正式Mask评估。ScanRefer原生检查尚无结
 证据位于refine-logs/scanrefer_readout_gradient_probe_20260906_v1、
 scanrefer_joint_readout_cpu_20260906_v1、scanrefer_joint_native_probe_20260906_v1。
 受保护正式结果未变，整体目标继续active。
+
+
+### 20.81 教师内化的训练数据诊断与ScanRefer短程训练入口准备（2026-09-06 10:49 CST）
+
+用户最新补充区分近期V99性能接续与后续局部视觉结构研究，并倾向先评估训练期冻结
+E71+Parent+Geometry+V99教师。GT仍是主监督；学生对应不得永久绑定旧Query编号；
+排序收益与Mask-derived变体框收益必须分开。全部指标/转数据集顺序继续按§20.79，
+不因本次研究建议重新提高Nr/Sr Mask要求，也不等待59/51后才转Nr/Sr。
+
+本次代码检查：BiDecoderLayer.cross_v已在文本和对象交互之后，但Key/Value仍是
+1024个seed，attn_mask/key_padding_mask为None，没有显式候选框邻域读取。因此后续
+结构应在这条路径检验新增空间/细尺度视觉证据；当前JointRecReadout是复用已有评分
+模块的训练连接，不是新视觉主干、教师学生训练或完全取消后处理。
+
+新增scripts/audit_scanrefer_v99_teacher_transfer.py，只测冻结教师可迁移信息：512条
+ScanRefer fit表达，在预注册物理空间hash划分的fit行序列中等间隔选择，不按质量选样。
+保留所选扫描全部表达完成原distractor构造。比较原生Top1、原Hungarian root候选、
+Full256最高IoU、V99最终框、变体原Query框与按当前几何对应的学生框；GT只用于诊断。
+教师坏例保留为破坏，不把“比Top1好”误写成“比GT匹配监督好”。主干见过这些训练行，
+不是新场景泛化或学生训练有效性结果。
+
+10:36:05 CPU合成检查PASS：四条有明确含义的输入分别覆盖排序修复、几何变体新增
+覆盖、错误教师和原Query身份不同；重新排列Query后几何对应和质量统计不变。0真实行、
+0GPU/0更新。审计源码SHA f2e06b67a80e032ca53da6d2e90aaf304eca8dda08c5cf0da3b41954db734919。
+原权威ScanRefer命令CPU解析确认eval_use_selector_choice_scores=False，诊断因此采用
+实际Default原生读出，不混用Selector输出。v1本地脚本文本构造失败，v2入口假设被该
+检查否定，二者均在GPU任务启动前结束；不计作科学质量失败。
+
+10:36:19教师诊断v3已排队，screen31455.mcln_scanrefer_teacher_audit_v3，目录
+/root/autodl-tmp/mcln_scanrefer_teacher_transfer_20260906_v3。等待§20.80的16-row原生
+预检成功后再获取同一个GPU锁，依赖检查240秒，不与旧Nr任务或原生预检并发抢GPU。
+manifest SHA c3652827f01e452ad1560c748aa8b02401e5aa655d3edb5f2a75e60169a05005，controller
+SHA d4c1ddd1a19876ac25fb0f848f4a080486db0bb243f201115850c16801fb3061。0训练更新/0正式行。
+
+scripts/run_scanrefer_joint_readout_pair.py已准备：同起点同参数范围的detached/joint
+一次fit遍历，固定原生GT loss和读出连续监督、eval模式保留buffers。完整fit后先保存
+两臂统一checkpoint，再做终点评估，避免仅因尚在评估就没有完成fit的权重可留存。
+10:45:18原Python3.7编译和--help检查PASS，源码SHA
+8a1948b533d994ce846c5098e890f037d9a00d44fddab9449fba699b63ae79cf。
+这只是入口检查，没有该训练的GPU前向、optimizer、训练manifest或新质量结果。
+原计划在原生预检之后增加上述有限教师诊断，再明确实际接续路线并锁定训练输入，
+不是新增用户审批环节。教师方案尚未实现，不能用联合读出冒充推理无教师的学生。
+
+原生Scan预检观察session64873仍定于11:03，旧Nr稀疏Mask观察session35941定于10:53；
+本节未提前轮询GPU，也未更改旧固定训练预算。旧Nr V3的控制器只在终点评估之后
+保存权重，未发现可直接接收的中间权重，因此继续收尾；不追加NrMask正式验证。
+上述时刻是计划，不是终态或实时进度结论。受保护正式成绩不变，整体goal继续active。
+
+证据：refine-logs/scanrefer_teacher_transfer_cpu_20260906_v2、
+scanrefer_teacher_transfer_20260906_v3、scanrefer_joint_pair_preparation_20260906_v1；
+更新计划：refine-logs/SCANREFER_JOINT_READOUT_EXPERIMENT_PLAN_2026-09-06.md。
+理论依据仅取Rank-DETR原论文§3.3及EG-3DVG官方方法描述，不据此承诺移植收益或SOTA。

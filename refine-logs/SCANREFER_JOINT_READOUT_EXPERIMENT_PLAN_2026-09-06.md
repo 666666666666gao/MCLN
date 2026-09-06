@@ -73,9 +73,12 @@ Nr3D/Sr3D Mask 不进入后续门槛。未通过的方案不替换 ScanRefer 受
 2. 已排队：16 行 ScanRefer fit、B12+4 的原生 GPU 检查，验证严格加载、原输出/evaluator
    一致、真实读出梯度到最后一层 Decoder，并测量显存与耗时。0 更新。复用 GPU 独占锁，
    在旧 Nr3D Mask V3 释放后自动执行，未并发争抢 GPU。
-3. 预检通过后，锁定实际 fit/holdout 清单与训练 manifest，启动上述一次遍历配对训练。
-   目前尚未创建训练运行或优化器。暂估首轮训练与开发评估 2–5 GPU 小时，待预检及首段
-   真实步速修正；该范围不是已观测耗时。
+3. 原生预检通过后，先完成下述 512-row 冻结教师诊断，结合用户最新的教师路线建议
+   明确近期训练采用的路径，再锁定实际 fit/holdout 清单与训练 manifest。上述联合读出
+   是已准备好的性能接续对照，不自动等同于训练期教师或原生网络内化。
+   `scripts/run_scanrefer_joint_readout_pair.py` 已通过原 Python 3.7 的编译和入口检查；
+   尚未创建训练 manifest、启动训练或更新优化器。暂估一次遍历配对训练与开发评估
+   2–5 GPU 小时，待实际步速修正；该范围不是已观测耗时。
 4. 首段固定进度用于估时，随后接近预计结束前五分钟查询，再按 240 秒观察。中途指标
    只用于发现运行故障，不用于改变科学配置。
 5. 通过 ScanRefer 正式底线后，优先启动 Nr3D，再做 Sr3D。Sr3D 旧保护 checkpoint 当前
@@ -86,3 +89,36 @@ Nr3D/Sr3D Mask 不进入后续门槛。未通过的方案不替换 ScanRefer 受
 CPU 证据：`refine-logs/scanrefer_readout_gradient_probe_20260906_v1/`、
 `refine-logs/scanrefer_joint_readout_cpu_20260906_v1/`。
 GPU 队列证据：`refine-logs/scanrefer_joint_native_probe_20260906_v1/queue.json`。
+
+## 最新补充：先明确教师可迁移的收益
+
+用户最新建议优先评估冻结 E71+Parent+Geometry+V99 作为训练期教师，GT 为主监督，
+学生推理不依赖教师。这里明确区分：在线更新已有读出保留原几何规则；教师内化要求
+原生学生自己的分数和框恢复相应收益。将原模块移入 forward 不能替代后者的验证。
+
+为避免直接用较差教师框覆盖已有 GT 监督，固定读取 512 条 ScanRefer fit 表达：在
+上述 fit 行序列中等间隔取位置 `floor(k * fit_rows / 512)`，k=0..511，不按质量选样。
+保留各所选扫描的全部表达构造 distractor，然后取诊断表达；B12、无增强、0更新、
+0正式行。数据以前被 E71/V99 见过，仅解释教师信号，不证明学生或新场景泛化。
+
+逐行比较原生部署选择、原 Hungarian 的 root 匹配 Query、完整256框中最高IoU、
+V99选择的变体框及该变体的原始Query框。同时按当前框与教师框的几何重叠重建对应，
+记录教师框过线但对应学生框不过线的数量，避免将所有变体收益误称为排名收益。
+教师的错误、修复和破坏均保留，不先过滤成只有正收益的审计数据。
+
+10:36:19 已排入 `mcln_scanrefer_teacher_transfer_20260906_v3`，screen 31455，等待
+16-row 原生预检成功，然后获取同一 GPU 锁。依赖检查间隔240秒，最多512行；没有
+训练、没有自动启动正式评估。CPU合成检查通过错误教师记账、排序/几何收益分离、
+Query重新排列后几何对应不变。原入口检查确认 `eval_use_selector_choice_scores=False`，
+因此原生对照使用实际 Default 分数。v1/v2仅是部署准备错误，不是模型质量失败。
+
+候选局部视觉读取是后续独立结构研究：当前 `BiDecoderLayer.cross_v` 使用1024个
+seed作Key/Value，Query已受文本/对象交互影响，但没有显式候选框邻域读取。下一项
+结构应改变这里读取的空间证据，并单独比较原路径；本轮不把已有读出梯度接通当作
+新增局部视觉信息，也不同时修改主干、matcher和多套loss。
+
+论文依据只用于界定问题：Rank-DETR §3.3 将分类置信度与GIoU质量联系，并强调匹配；
+EG-3DVG提出几何一致视觉聚合。它们不证明本项目的缩小版本必然有效，也不提供
+当前ScanRefer达到SOTA的证据。
+来源：https://arxiv.org/html/2310.08854 ，
+https://openaccess.thecvf.com/content/CVPR2026/html/Park_EG-3DVG_Expression_and_Geometry_Aware_Grounding_Decoder_for_3D_Visual_CVPR_2026_paper.html 。

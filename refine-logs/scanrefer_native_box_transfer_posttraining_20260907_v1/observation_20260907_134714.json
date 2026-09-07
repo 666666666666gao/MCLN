@@ -1,0 +1,64 @@
+{
+  "time_cst": "2026-09-07T13:47:15.252206+08:00",
+  "hostname": "autodl-container-c7cb4299a4-24929f53",
+  "uid": 0,
+  "processes": "   PID   PPID STAT     ELAPSED COMMAND\n 58020      1 Ss         38:18 SCREEN -dmS mcln_native_box_transfer_pair_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/run.log 2>&1\n 58023  58022 Rl+        38:18 /root/miniconda3/envs/bdetr/bin/python -u scripts/run_scanrefer_native_box_transfer_pair.py --manifest /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/input_manifest.json\n 58294      1 Ss         22:03 SCREEN -dmS mcln_native_box_transfer_post_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_native_box_transfer_posttraining_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_native_box_transfer_posttraining_20260907_v1/run.log 2>&1\n 58296  58295 S+         22:03 /root/miniconda3/envs/bdetr/bin/python -u posttraining_queue.py --manifest /root/autodl-tmp/mcln_scanrefer_native_box_transfer_posttraining_20260907_v1/input_manifest.json\n",
+  "gpu": "0, 8361 MiB, 40960 MiB, 0 %\n",
+  "free_bytes": 9298870272,
+  "jobs": {
+    "training": {
+      "directory": "/root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1",
+      "files": [
+        "controller.sh",
+        "input_manifest.json",
+        "run.log",
+        "launch.json",
+        "launch_from_local.py",
+        "launch_observation.json",
+        "protocol.json",
+        "baseline_rows.json",
+        "baseline_metrics.json",
+        "baseline_native_metrics.json"
+      ],
+      "run.log": [
+        "Loading train files, take a breath!",
+        "Begin text decoupling......",
+        "End text decoupling!",
+        "SCANREFER NATIVE BOX TRANSFER EVAL {\"stage\": \"baseline\", \"rows\": 12, \"total\": 6887, \"elapsed_seconds\": 3.347123146057129}",
+        "SCANREFER NATIVE BOX TRANSFER EVAL {\"stage\": \"baseline\", \"rows\": 1536, \"total\": 6887, \"elapsed_seconds\": 407.4729652404785}",
+        "SCANREFER NATIVE BOX TRANSFER EVAL {\"stage\": \"baseline\", \"rows\": 3072, \"total\": 6887, \"elapsed_seconds\": 815.7190625667572}",
+        "SCANREFER NATIVE BOX TRANSFER EVAL {\"stage\": \"baseline\", \"rows\": 4608, \"total\": 6887, \"elapsed_seconds\": 1228.6713585853577}",
+        "SCANREFER NATIVE BOX TRANSFER EVAL {\"stage\": \"baseline\", \"rows\": 6144, \"total\": 6887, \"elapsed_seconds\": 1640.9109420776367}",
+        "SCANREFER NATIVE BOX TRANSFER EVAL COMPLETE {\"stage\": \"baseline\", \"metrics\": {\"gt_only\": {\"rows\": 6887, \"mask_miou\": 77.8108607870114, \"rec_hits025\": 6684, \"mask_hits025\": 6511, \"rec_hits050\": 6426, \"mask_hits050\": 6097}, \"gt_teacher_box\": {\"rows\": 6887, \"mask_miou\": 77.8108607870114, \"rec_hits025\": 6684, \"mask_hits025\": 6511, \"rec_hits050\": 6426, \"mask_hits050\": 6097}}, \"native_rec_metrics\": {\"gt_only\": {\"rows\": 6887, \"rec_hits025\": 6572, \"rec_hits050\": 5955}, \"gt_teacher_box\": {\"rows\": 6887, \"rec_hits025\": 6572, \"rec_hits050\": 5955}}, \"elapsed_seconds\": 1839.5246245861053}",
+        "SCANREFER NATIVE BOX TRANSFER TRAIN {\"step\": 1, \"total\": 2482, \"arms\": {\"gt_only\": {\"loss\": 10.820710182189941, \"native_loss\": 10.820710182189941, \"teacher_box_loss\": 0.6151773929595947, \"teacher_box_stats\": {\"student_query_indices\": [3, 1, 68, 1, 1, 0, 0, 2, 1, 0, 4, 3], \"student_root_ious\": [0.8685415983200073, 0.928810179233551, 0.769813060760498, 0.8567243218421936, 0.666067898273468, 0.8271936178207397, 0.9159438610076904, 0.5463019609451294, 0.803439736366272, 0.7271668910980225, 0.5074447393417358, 0.7063174843788147], \"teacher_root_ious\": [0.8588356375694275, 1.0, 0.0, 0.9529148936271667, 0.9555467963218689, 0.861701250076294, 0.9267375469207764, 0.5308854579925537, 0.9228572845458984, 0.7271668910980225, 0.46055206656455994, 0.9224641919136047], \"eligible\": [false, true, false, true, true, true, true, false, true, false, false, true], \"gain_weights\": [0.0, 0.07118982076644897, 0.0, 0.09619057178497314, 0.2894788980484009, 0.0345076322555542, 0.010793685913085938, 0.0, 0.11941754817962646, 0.0, 0.0, 0.21614670753479004], \"l1_per_row\": [0.06574578583240509, 0.03404659032821655, 2.6669397354125977, 0.047060277312994, 0.06945748627185822, 0.1612311601638794, 0.04974325746297836, 0.015246775932610035, 0.1179218664765358, 0.0, 0.1313081979751587, 0.06776993721723557], \"giou_per_row\": [0.09951752424240112, 0.07225549221038818, 1.8478505611419678, 0.10402601957321167, 0.32893896102905273, 0.28720539808273315, 0.15488696098327637, 0.0698278546333313, 0.24054694175720215, 0.0, 0.4677489995956421, 0.25552642345428467]}, \"gradient_norm_before_clip\": 0.570279061794281}, \"gt_teacher_box\": {\"loss\": 11.435887336730957, \"native_loss\": 10.820710182189941, \"teacher_box_loss\": 0.6151773929595947, \"teacher_box_stats\": {\"student_query_indices\": [3, 1, 68, 1, 1, 0, 0, 2, 1, 0, 4, 3], \"student_root_ious\": [0.8685415983200073, 0.928810179233551, 0.769813060760498, 0.8567243218421936, 0.666067898273468, 0.8271936178207397, 0.9159438610076904, 0.5463019609451294, 0.803439736366272, 0.7271668910980225, 0.5074447393417358, 0.7063174843788147], \"teacher_root_ious\": [0.8588356375694275, 1.0, 0.0, 0.9529148936271667, 0.9555467963218689, 0.861701250076294, 0.9267375469207764, 0.5308854579925537, 0.9228572845458984, 0.7271668910980225, 0.46055206656455994, 0.9224641919136047], \"eligible\": [false, true, false, true, true, true, true, false, true, false, false, true], \"gain_weights\": [0.0, 0.07118982076644897, 0.0, 0.09619057178497314, 0.2894788980484009, 0.0345076322555542, 0.010793685913085938, 0.0, 0.11941754817962646, 0.0, 0.0, 0.21614670753479004], \"l1_per_row\": [0.06574578583240509, 0.03404659032821655, 2.6669397354125977, 0.047060277312994, 0.06945748627185822, 0.1612311601638794, 0.04974325746297836, 0.015246775932610035, 0.1179218664765358, 0.0, 0.1313081979751587, 0.06776993721723557], \"giou_per_row\": [0.09951752424240112, 0.07225549221038818, 1.8478505611419678, 0.10402601957321167, 0.32893896102905273, 0.28720539808273315, 0.15488696098327637, 0.0698278546333313, 0.24054694175720215, 0.0, 0.4677489995956421, 0.25552642345428467]}, \"gradient_norm_before_clip\": 7.482344150543213}}, \"elapsed_seconds\": 3.433647871017456, \"since_previous_report_seconds\": 3.43365740776062, \"estimated_training_remaining_seconds\": 8518.880367994308}"
+      ]
+    },
+    "queue": {
+      "directory": "/root/autodl-tmp/mcln_scanrefer_native_box_transfer_posttraining_20260907_v1",
+      "files": [
+        "controller.sh",
+        "input_manifest.json",
+        "posttraining_queue.py",
+        "preparation.json",
+        "cpu_tests.txt",
+        "source_input_check.py",
+        "run.log",
+        "observation_schedule.json",
+        "launch.json",
+        "launch_from_local.py",
+        "handoff_sync.json",
+        "document_from_local.py",
+        "training_observations.jsonl",
+        "publication.json"
+      ],
+      "run.log": [
+        "NATIVE BOX TRANSFER QUEUE OBSERVED {\"time_cst\": \"2026-09-07T13:40:00.102883+08:00\", \"screen_pid\": 58020, \"stages\": [\"SCANREFER NATIVE BOX TRANSFER EVAL\"]}",
+        "NATIVE BOX TRANSFER QUEUE OBSERVED {\"time_cst\": \"2026-09-07T13:44:00.206786+08:00\", \"screen_pid\": 58020, \"stages\": [\"SCANREFER NATIVE BOX TRANSFER EVAL\"]}"
+      ],
+      "training_observations.jsonl": [
+        "{\"live_process\": \"   PID STAT     ELAPSED COMMAND\\n 58020 Ss         31:03 SCREEN -dmS mcln_native_box_transfer_pair_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/run.log 2>&1\\n\", \"progress\": {\"SCANREFER NATIVE BOX TRANSFER EVAL\": {\"elapsed_seconds\": 1228.6713585853577, \"rows\": 4608, \"stage\": \"baseline\", \"total\": 6887}}, \"screen_pid\": 58020, \"time_cst\": \"2026-09-07T13:40:00.102883+08:00\"}",
+        "{\"live_process\": \"   PID STAT     ELAPSED COMMAND\\n 58020 Ss         35:03 SCREEN -dmS mcln_native_box_transfer_pair_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/run.log 2>&1\\n\", \"progress\": {\"SCANREFER NATIVE BOX TRANSFER EVAL\": {\"elapsed_seconds\": 1640.9109420776367, \"rows\": 6144, \"stage\": \"baseline\", \"total\": 6887}}, \"screen_pid\": 58020, \"time_cst\": \"2026-09-07T13:44:00.206786+08:00\"}"
+      ]
+    }
+  }
+}

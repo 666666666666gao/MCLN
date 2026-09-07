@@ -1,11 +1,11 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T13:27:32.947084+08:00. Section20.123: trainingPID58023 baseline1536/6887;posttrainingqueuePID58296 live,firstcheck13:40 then240s;conditional singleformal9508+audit chained;no new formal.
+Updated: 2026-09-07T13:52:33.951206+08:00. Section20.125: baseline6887 exactly matches prior E71/mesh rows;actual trainPID58023 at64/2482 per arm;queue58296 live;no new formal.
 
 | Experiment | Current state | Decision |
 |---|---|---|
 | Native box transfer automatic continuation | Queue58294/Python58296 live;fixed source/data hashes verified;8 originalCPUtests PASS | Read controller audit once;only fixed moduleREC pass triggers9508 formal+audit;no candidate/epoch selection;Nr/Sr pendingScan |
-| Native teacher-box transfer | Actual16fit probe PASS;fixed pair started13:08 PID58023;only16box tensors/335814params | 2482/arm,29778fit/6887moduleholdout;CPU audit chained;formal entry prepared but not run;noNr/Sr |
+| Native teacher-box transfer | Baseline6887 exact prior parity;trainPID58023 at64/2482 per arm;only16box tensors | Fixed GT-only vs GT+teacher;native6572/5955 and system6684/6426 at start;terminal/conditional formal pending;noNr/Sr |
 | Correct-mesh teacher transfer | Same512fit rows;native491/461,teacher497/481;342GT-supported better teacher boxes | Input-version correction,not model gain;rawcandidate rows retained off Git with SHA;GT primary |
 | Native pretrained transfer input/load audit | E71/Nr schema1144 equal;actual E71 CPUload underNr/Sr configs1144/1144, freshoptimizer | No GPU/updates;future trained endpoint still needs explicit native format export and actual-data check afterScanpromotion |
 | Frozen protected readout compatibility | Completed2482/arm;terminal6887 and independent integrity audit PASS | Module REC screen FAIL: system vs baseline -2/+16,vs native_only +3/-7;no9508 formal or Nr/Sr training |

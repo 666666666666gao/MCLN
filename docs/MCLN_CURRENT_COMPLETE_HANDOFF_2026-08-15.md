@@ -17412,3 +17412,16 @@ source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a276
 保护Parent/Geometry/V99已按旧特征分布训练，不能直接改map破坏其契约。已有SourceMoE和joint/frozen_readout还包括quality/listwise目标，普通质量loss也不是新方向。下一步在固定fit实际输入检查map分布、两种排名及原生Top1被旧Top16保留情况，明确数值差异是否影响真实候选；不在正式集调map，也不把合成反例当新长训结果或授权。
 
 源码6文件与Git/本地/622快照核对：首次仅因losses及dataset的CRLF/LF原始SHA不同停在源检查，标准化内容完全一致；改用实际远端字节SHA后检查PASS，模型源码未改，初次日志保留。receipt SHA8fb6e1bcc7d5a44c5545faba0ca7691f4af79584a5cd21c886c517ca9c23aeef；报告NATIVE_REC_SCORE_CONTRACT_AUDIT_2026-09-07.md，归档refine-logs/native_score_contract_cpu_20260907_v1。Scan Mask几何固定版本仍封存，当前无训练等待，三数据集正式最好与目标未变。
+
+
+### 20.142 固定512条实际输入的评分与候选口径检查完成（2026-09-07T23:17:57.092776+08:00）
+
+沿20.141固定同一512条correct-mesh fit身份、382个训练场景，E71/622源码/B12/seed0不变。真实evaluator hook记录原生分数，另计算SourceChoice与适配器。旧教师缓存native_scores实际是适配器字段，本次点SHA、全部256框及适配器分数与该缓存逐行逐值一致；旧缓存仅聚合命中对齐不构成逐Query一致证据，本次才直接补齐。
+
+真实main非零token数1/2/3/4对应331/157/20/4行；非零值全1有468行，44行含0.5或1/3，两种default最大差0.32247820。但512条Top1 Query均一致，原生Top1全部在原Top16。原生/适配器命中同为491/461；原Top16与替换default的诊断Top16 oracle均508/495，Full256 oracle511/501。仅4条候选成员改变，每条替换一个Query，四条原生框均已过0.5，最佳连续IoU不变。无修复/破坏，没有证据把该口径差当作本样本主要候选损失，不改保护artifact特征或据此训练。
+
+纯CPU独立重构分项、候选集合及131072个框IoU，最大IoU差2.5424e-6、两阈值一致；原生与SourceChoice分数差最大1.1921e-7。Linux与Windows分析JSON语义逐值一致。四分片18,753,028B已收取。receipt SHAed2bd1a79699a32f5f626013ef054b3eb88f9d50ee45db46e73dce6823c7b8e7；analysis SHA253e8708f57955d3f927f21f5175bead4063cd39a7da9183d8cc74a2dc6a272c。详见SCANREFER_NATIVE_SCORE_FIT_RESULT_2026-09-07.md及native_score_fit_20260907_v1/v2归档。
+
+工程错误明确保留：首次清单路径预检停止；v1预算字段应为candidate_rule而非顶层，前向前停止。v2完成512前向、1144state/源码/权重/mesh后检、evaluator一致断言并落盘4分片后，最终receipt相对manifest路径错误。controller.exit=1不改写；CPU恢复已有数据，未重新前向，receipt注明恢复证据及缺失运行字段。一次恢复源码检查定位误差也保留；通用runner改为切换cwd前resolve绝对路径。峰值显存和完整耗时缺失，不补造。
+
+当前任务无活跃训练/等待，更新/checkpoint/正式行均0；本样本为主干已见fit，不是泛化指标。评分口径排查完成，不据此改map或扩至正式集找规则。已封存的Mask几何、原生教师框、冻结读出仍不重跑；后续转回需要新证据的原生REC候选判别与几何决策设计。Scan保持V99并争取59/51，Scan Mask底线不变，正式过线即Nr/Sr REC；完整三数据集目标尚未完成。

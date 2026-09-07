@@ -1,10 +1,11 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T22:36:28.183500+08:00. Section20.141: CPU score-definition counterexample complete;Mask geometry fixed trial sealed;no live training/formal/Nr/Sr.
+Updated: 2026-09-07T23:17:57.092776+08:00. Section20.142: fixed512 real-input score audit and independent CPU recount complete;no training/formal/Nr/Sr.
 
 | Experiment | Current state | Decision |
 |---|---|---|
-| Native default score definitions | Existing evaluator/SourceChoice agree;adapter changesTop1 in2/3synthetic token-count cases | Contract difference only;no rule change or metric gain;real fit prevalence remains to measure |
+| Native/adapter score actual fit audit | 512 fixed rows;actual evaluator and SourceChoice recorded;independent all256 score/IoU/candidate recount | Top1 disagreements 0;native Top1 excluded 0;no deployment or metric-gain claim;see20.142 |
+| Native default score definitions | Existing evaluator/SourceChoice agree;adapter changesTop1 in2/3synthetic token-count cases | Contract difference only;no rule change or metric gain;real fit prevalence now recorded in20.142 |
 | Mask geometry surrogate transfer | Saved6887 rows, no new inference;328soft50 repairs,306hard50 already correct | Same328hard net0/deployed−1;full soft+293 versus hard+5;no surrogate gain claim as REC |
 | Native Mask geometry complete source | 622-file preparation and6CPU checks retained | Candidate failed;no real endpoint export or Nr/Sr launch;source readiness is not promotion |
 | Native Mask geometry loss integration | 11CPU checks retained;default off;detection rows excluded | Fixed auxiliary training failed Scan screen;no Nr/Sr activation |

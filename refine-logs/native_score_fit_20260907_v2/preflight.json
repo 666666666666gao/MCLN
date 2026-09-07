@@ -1,0 +1,13 @@
+{
+  "uid": 0,
+  "host": "autodl-container-c7cb4299a4-24929f53",
+  "cwd": "/root",
+  "disk": {
+    "total": 53687091200,
+    "used": 43362930688,
+    "free": 10324160512
+  },
+  "gpu": "0, 1, 40960, 0\n",
+  "processes": "   PID   PPID COMMAND\n     1      0 bash /init/boot/boot.sh\n   711      1 /bin/supervisord -c /init/supervisor/supervisor.ini\n   726    711 /root/miniconda3/bin/python /root/miniconda3/bin/tensorboard --host 0.0.0.0 --port 6007 --logdir /root/tf-logs\n   728    711 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups\n   733    711 autopanel serve --work-dir=/root/autodl-tmp --cache-dir=/root/autodl-tmp\n   734    711 proxy -c /init/proxy/proxy.ini\n   735    711 /root/miniconda3/bin/python /root/miniconda3/bin/jupyter-lab --allow-root --config=/init/jupyter/jupyter_config.py\n   775    726 /root/miniconda3/lib/python3.8/site-packages/tensorboard_data_server/bin/server --logdir=/root/tf-logs --reload=5 --samples-per-plugin= --port=0 --port-file=/tmp/tensorboard_data_server_1wj05pme/port --die-after-stdin --error-file=/tmp/tensorboard_data_server_1wj05pme/startup_error\n 67824    728 sshd: root@notty\n 67835  67824 /usr/lib/openssh/sftp-server\n 67836  67824 /root/miniconda3/envs/bdetr/bin/python -c import os,socket,shutil,json,subprocess;print(json.dumps(dict(uid=os.getuid(),host=socket.gethostname(),cwd=os.getcwd(),disk=shutil.disk_usage('/root/autodl-tmp')._asdict(),gpu=subprocess.check_output(['nvidia-smi','--query-gpu=index,memory.used,memory.total,utilization.gpu','--format=csv,noheader,nounits']).decode(),processes=subprocess.check_output(['ps','-eo','pid,ppid,args']).decode())))\n 67838  67836 ps -eo pid,ppid,args\n",
+  "time_cst": "2026-09-07T22:59:27.945564+08:00"
+}

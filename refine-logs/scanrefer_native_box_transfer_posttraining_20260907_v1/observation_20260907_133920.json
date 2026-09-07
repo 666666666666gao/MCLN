@@ -1,0 +1,52 @@
+{
+  "time_cst": "2026-09-07T13:39:20.436900+08:00",
+  "hostname": "autodl-container-c7cb4299a4-24929f53",
+  "uid": 0,
+  "processes": "   PID   PPID STAT     ELAPSED COMMAND\n 58020      1 Ss         30:23 SCREEN -dmS mcln_native_box_transfer_pair_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/run.log 2>&1\n 58023  58022 Rl+        30:23 /root/miniconda3/envs/bdetr/bin/python -u scripts/run_scanrefer_native_box_transfer_pair.py --manifest /root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1/input_manifest.json\n 58294      1 Ss         14:08 SCREEN -dmS mcln_native_box_transfer_post_v1 bash -c exec bash /root/autodl-tmp/mcln_scanrefer_native_box_transfer_posttraining_20260907_v1/controller.sh > /root/autodl-tmp/mcln_scanrefer_native_box_transfer_posttraining_20260907_v1/run.log 2>&1\n 58296  58295 S+         14:08 /root/miniconda3/envs/bdetr/bin/python -u posttraining_queue.py --manifest /root/autodl-tmp/mcln_scanrefer_native_box_transfer_posttraining_20260907_v1/input_manifest.json\n",
+  "gpu": "0, 8337 MiB, 40960 MiB, 0 %\n",
+  "free_bytes": 9303691264,
+  "jobs": {
+    "training": {
+      "directory": "/root/autodl-tmp/mcln_scanrefer_native_box_transfer_pair_20260907_v1",
+      "files": [
+        "controller.sh",
+        "input_manifest.json",
+        "run.log",
+        "launch.json",
+        "launch_from_local.py",
+        "launch_observation.json",
+        "protocol.json"
+      ],
+      "run.log": [
+        "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.layer_norm.weight', 'lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.decoder.weight', 'lm_head.dense.weight', 'lm_head.dense.bias']",
+        "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+        "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+        "Loading train files, take a breath!",
+        "Begin text decoupling......",
+        "End text decoupling!",
+        "SCANREFER NATIVE BOX TRANSFER EVAL {\"stage\": \"baseline\", \"rows\": 12, \"total\": 6887, \"elapsed_seconds\": 3.347123146057129}",
+        "SCANREFER NATIVE BOX TRANSFER EVAL {\"stage\": \"baseline\", \"rows\": 1536, \"total\": 6887, \"elapsed_seconds\": 407.4729652404785}",
+        "SCANREFER NATIVE BOX TRANSFER EVAL {\"stage\": \"baseline\", \"rows\": 3072, \"total\": 6887, \"elapsed_seconds\": 815.7190625667572}",
+        "SCANREFER NATIVE BOX TRANSFER EVAL {\"stage\": \"baseline\", \"rows\": 4608, \"total\": 6887, \"elapsed_seconds\": 1228.6713585853577}"
+      ]
+    },
+    "queue": {
+      "directory": "/root/autodl-tmp/mcln_scanrefer_native_box_transfer_posttraining_20260907_v1",
+      "files": [
+        "controller.sh",
+        "input_manifest.json",
+        "posttraining_queue.py",
+        "preparation.json",
+        "cpu_tests.txt",
+        "source_input_check.py",
+        "run.log",
+        "observation_schedule.json",
+        "launch.json",
+        "launch_from_local.py",
+        "handoff_sync.json",
+        "document_from_local.py"
+      ],
+      "run.log": []
+    }
+  }
+}

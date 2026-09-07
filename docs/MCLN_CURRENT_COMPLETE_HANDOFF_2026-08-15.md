@@ -17209,3 +17209,25 @@ probe receipt SHA `ba1bc799d7cca35669eb3380ca389482452b5cfd9553964278d9c86d3c5b8
 提前准备`evaluate_scanrefer_native_box_transfer_official.py`及对应审计：读取完成且通过筛选的本轮receipt，加载E71再覆盖绑定的16项head参数，核对shape/dtype/完整state，然后使用原生9508loader和固定V99部署路径。原生REC单独记录，GT只在评估计数处使用。当前仅代码准备和原环境4项晋级规则CPU测试通过，未绑定未来checkpoint/receipt SHA，也未运行正式评估；不是宣称小终点已通过正式独立reload。训练目录及其已锁定代码没有改动。
 
 现行规则保持：候选正式Scan REC不少于5572/4797且不低于同次保护控制，Scan Mask不少于58.70/50.70/44.72；达到底线即接Nr/Sr REC，不等待59/51，也不加Nr/Sr Mask门。当前几何转移是性能衔接，不等于已解决Nr复杂语言泛化；三数据集整体目标仍未完成。
+
+
+### 20.123 固定终态与正式评估自动接续已上线（2026-09-07T13:27:32.947084+08:00）
+
+接续队列13:25:11实际启动：screen58294.mcln_native_box_transfer_post_v1，Python58296；原训练58020/58023保持运行。队列绑定本轮训练manifest、独立formal-preparation文件SHA、固定候选gt_teacher_box及同一mesh数据。312份val superpoint再次逐文件核对一致，未执行新正式forward。第一次观察安排13:40 CST，此后后台每240秒验证具体screen进程并读取日志，不重启训练。
+
+训练控制器已串联CPU独立审计，队列只读取这份审计，不重复执行会以独占方式写文件的审计脚本。若固定候选在模块系统REC任一阈值低于起点或GT-only控制，写出未通过决定且不运行正式评估；若通过，按实际终点SHA生成唯一9508正式manifest，加载E71+16参数终点，评估保护/控制/候选三臂并独立重算指标。正式条件通过后明确转入Nr/Sr REC接续检查，当前不提前启动Nr/Sr，也不替换候选或重选epoch。
+
+准备阶段发现根目录queue.py遮蔽Python标准库queue，pytest的Dash/requests插件导入报AttributeError。该队列当时尚未启动；仅将入口改名posttraining_queue.py并更新controller，随后原Python3.7环境8项queue/promotion测试全部通过。没有重建环境、增加fallback或修改运行训练源码。
+
+13:23:50实际训练检查：预处理结束，baseline已记录1536/6887行，elapsed407.47秒，两个原进程存活。按该已记录吞吐估计完整起点约1827秒，约13:47附近结束，实际以日志为准；尚无完整baseline指标或本轮更新记录。接续queue manifest SHA `c1760a8a6107ee1b8dbca5ba2fde536dfe60b501ec3e38f1358daa29c609e942`，脚本 SHA `3296c1cf1313b2e4d4fa2fb2a098a8514255bbac9d713aa6e354918acec6e07e`。当前仍无新的正式成绩。
+
+为保证远端项目入口可检查，本次把9份新增实验脚本和3份对应测试同步到远端MCLN-main的scripts/tests，逐文件字节核对；正在运行的614-file冻结来源和每轮overlay未改动。完整自动接续尚未走到终态，不能把队列启动或CPU测试视为晋级成功。
+
+
+### 20.124 只读检查教师目标与原生部署Query的对应范围（2026-09-07T13:32:36.893993+08:00）
+
+复用§20.120已核验的512条正确mesh fit输出，没有新增GPU、优化或正式数据。342条教师IoU高于GT root匹配框的有效样本中，原生部署Query与该GT匹配Query相同的仅172条；GT匹配框342条已过0.25、338条已过0.50，教师过线342/342。对应原生实际部署框为338/321命中，教师可修复原生4/21条，但可修复GT匹配框仅0/4条。全512条原生Query与GT root匹配Query相同248条。
+
+因此，342是具有连续几何改进的监督行数，不能当作342个可新增命中；当前GT匹配绑定的辅助项，大量作用于已过阈值的框，而且不总是原生部署选择的Query。共享回归头仍可能把改进传给其他Query，不能把170条Query编号不一致直接判为无效监督或不同物体；是否真正改善最终决策必须由固定终态验证。当前配对继续按原预算完成，不据此改loss或匹配。若后续原生提升不足，应优先检查训练匹配与实际选择之间的作用关系，不凭教师IoU均值上涨宣称转移成功。
+
+这是主干已见fit样本的机制范围说明，不是新场景结论，也不推导实例身份。结果SHA `037ab4bb999be1a3b9def0e4b26e6383b8ceab6b8e4551207b1f8e0eeabc8e29`；输入rows SHA仍为`69f377364985444bc4c45cd86da7d8db0fef6d1dfdec31ec8e38fd48df0d958b`。分析源码为`scripts/analyze_teacher_box_target_alignment.py`。

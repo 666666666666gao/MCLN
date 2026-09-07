@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T13:13:42.143305+08:00. Section20.122: native GT-only/teacher-box pair live PID58023,2482updates per arm planned;no terminal or formal yet;small-endpoint formal entry4CPUtests PASS.
+Updated: 2026-09-07T13:27:32.947084+08:00. Section20.123: trainingPID58023 baseline1536/6887;posttrainingqueuePID58296 live,firstcheck13:40 then240s;conditional singleformal9508+audit chained;no new formal.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Native box transfer automatic continuation | Queue58294/Python58296 live;fixed source/data hashes verified;8 originalCPUtests PASS | Read controller audit once;only fixed moduleREC pass triggers9508 formal+audit;no candidate/epoch selection;Nr/Sr pendingScan |
 | Native teacher-box transfer | Actual16fit probe PASS;fixed pair started13:08 PID58023;only16box tensors/335814params | 2482/arm,29778fit/6887moduleholdout;CPU audit chained;formal entry prepared but not run;noNr/Sr |
 | Correct-mesh teacher transfer | Same512fit rows;native491/461,teacher497/481;342GT-supported better teacher boxes | Input-version correction,not model gain;rawcandidate rows retained off Git with SHA;GT primary |
 | Native pretrained transfer input/load audit | E71/Nr schema1144 equal;actual E71 CPUload underNr/Sr configs1144/1144, freshoptimizer | No GPU/updates;future trained endpoint still needs explicit native format export and actual-data check afterScanpromotion |

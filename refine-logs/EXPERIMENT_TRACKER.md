@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T22:25:57.588002+08:00. Section20.140: Mask geometry pair complete, integrity PASS / fixed REC FAIL; no live training or formal/Nr/Sr continuation.
+Updated: 2026-09-07T22:36:28.183500+08:00. Section20.141: CPU score-definition counterexample complete;Mask geometry fixed trial sealed;no live training/formal/Nr/Sr.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Native default score definitions | Existing evaluator/SourceChoice agree;adapter changesTop1 in2/3synthetic token-count cases | Contract difference only;no rule change or metric gain;real fit prevalence remains to measure |
 | Mask geometry surrogate transfer | Saved6887 rows, no new inference;328soft50 repairs,306hard50 already correct | Same328hard net0/deployed−1;full soft+293 versus hard+5;no surrogate gain claim as REC |
 | Native Mask geometry complete source | 622-file preparation and6CPU checks retained | Candidate failed;no real endpoint export or Nr/Sr launch;source readiness is not promotion |
 | Native Mask geometry loss integration | 11CPU checks retained;default off;detection rows excluded | Fixed auxiliary training failed Scan screen;no Nr/Sr activation |

@@ -17401,3 +17401,14 @@ source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a276
 独立真实权重核验：84允许参数中82改变，各82份optimizer状态全部2482步；两项norm1无状态/0步。与E71重建1144项实际重载，冻结state/读出/元数据及1201份mesh核验通过。每份delta含optimizer约42.18MB，未下载完整权重。训练receipt SHA563804011c1439e751a6fd65dd93c33ce79565f0ae3229a59dbe42de9460b4ca；audit SHAed72ccbf012c1c6d906dbfdf898e93babc2a03194a7c4eda6a107b2e0a586a9c。fit/terminal大JSON以无损gzip归档Git，原JSON仍保留；分析SHA0921fed57fc39751a3c08130d9251088377d9e46886cd1023cdcaa3dd429afc8，详见SCANREFER_MASK_GEOMETRY_TERMINAL_RESULT_2026-09-07.md。
 
 该固定版本不重跑或扫权重/温度/分位数/LR/epoch，20.136—20.139的原生接口准备不构成晋级，失败终点不导出Nr/Sr。代码核对同时确认已失败joint/frozen_readout已经用root IoU监督合法Parent/Geometry及V99分层排序，不能将相同GT读出loss重新命名为新方案。下一步审计原生最终token聚合分数与匹配/分类/对比监督的实际对应，对照历史残差与读出，寻找新的REC信息或训练责任；暂不继续把Mask替代几何当主要REC路线。Scan正式过保护REC与原Mask底线即尽快Nr/Sr REC，完整三数据集目标不变且未完成。
+
+
+### 20.141 原生与候选适配器的default口径核对（2026-09-07T22:36:28.183500+08:00）
+
+沿20.140转回REC监督/读出检查。原生evaluator与SourceChoice default均将main正值置1；SourceChoice历史V4修复仍存在，不是未修复旧问题。Parent候选特征适配器保留输入main权重，dataset存在按token数归一化的构造，原生_get_inputs透传。故同名default并不保证同一数值口径。Hungarian分类成本使用main，position alignment使用原有分项权重，另外还有框/对比监督；不能写成原生完全没有关系或质量训练。
+
+原Python3.7/Torch1.10 CPU隔离执行现有源码表达式的1/2/4个main token合成例：原生两候选分数均约0.400/0.350、选A，SourceChoice一致；适配器依次0.400/0.350、0.200/0.300、0.100/0.275，后两例改选B。输入保持不变。仅证明该定义差异能改变排名；没有加载模型、真实数据、完整evaluator过滤或旧学习读出，GPU/更新/正式行均0，不证明任何指标收益。
+
+保护Parent/Geometry/V99已按旧特征分布训练，不能直接改map破坏其契约。已有SourceMoE和joint/frozen_readout还包括quality/listwise目标，普通质量loss也不是新方向。下一步在固定fit实际输入检查map分布、两种排名及原生Top1被旧Top16保留情况，明确数值差异是否影响真实候选；不在正式集调map，也不把合成反例当新长训结果或授权。
+
+源码6文件与Git/本地/622快照核对：首次仅因losses及dataset的CRLF/LF原始SHA不同停在源检查，标准化内容完全一致；改用实际远端字节SHA后检查PASS，模型源码未改，初次日志保留。receipt SHA8fb6e1bcc7d5a44c5545faba0ca7691f4af79584a5cd21c886c517ca9c23aeef；报告NATIVE_REC_SCORE_CONTRACT_AUDIT_2026-09-07.md，归档refine-logs/native_score_contract_cpu_20260907_v1。Scan Mask几何固定版本仍封存，当前无训练等待，三数据集正式最好与目标未变。

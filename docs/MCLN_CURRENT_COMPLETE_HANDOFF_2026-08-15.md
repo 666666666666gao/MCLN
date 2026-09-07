@@ -17598,3 +17598,12 @@ rows SHA612e11e5e2ba01372cd2345bd4c2685a93e9f4e2d6de80c7cc365a8a85615b7e，manif
 终态receipt、独立audit、两阶段metrics及exit证据已归档于refine-logs/scanrefer_object_appearance_pair_20260908_v1/terminal_completion；逐行框/Mask、fit点身份和两份固定终点仍在远端原实验目录，暂供已排队原生诊断读取，不提前删除。保护V99正式成绩仍为58.6033/50.4523，Mask59.8443/52.3349/45.9303，三数据集Goal未完成。当前数据盘空闲约7.32GB；待依赖读取结束再核验可清理的新失败终点，保留受保护权重和小型证据。
 
 下一步先读完整原生诊断的实际修复/破坏，核实与已保存完整系统逐行输出的区别，再决定新的机制；不复活已封存分支，不依据本次留出结果扫描超参。ScanRefer现行底线和达线即转Nr/Sr的要求不变。
+
+
+### 20.154 原生补诊断非正常中断后恢复，已完成的终态结果不变（2026-09-08T04:11:37.211506+08:00）
+
+04:09实时ps中原生评估及四条接续队列均不存在，screen只剩Dead套接字；未写native_queue.exit或receipt，native_evaluation目录为空，日志仅停在模型加载。退出原因未确定，不能宣称OOM、训练错误或评估自然完成。§20.153已完成的训练、完整V99留出结果和独立审计均保留有效。
+
+确认旧进程不存在、原生输出目录为空、625源及固定原生脚本SHA未变化后，保存原日志和空目录到native_interruption_20260908_0411，以相同脚本、相同三份权重和6887条输入恢复只读原生评估。04:10:45启动screen1124.mcln_os_appearance_native_resume_0411，发布前再次ps确认实际evaluator进程存活。没有重跑2482步训练，没有修改损失或候选选择。归档refine-logs/scanrefer_object_appearance_pair_20260908_v1/native_interruption_20260908_0411记录旧日志SHA、恢复脚本及实际进程证据。
+
+正式Scan、Nr/Sr缓存与probe的旧队列也已终止，尚未重新启动；既有module_rec_screen_pass=false已不满足它们的运行条件，因此不会绕过筛选生成新正式评估或Nr/Sr训练。原生诊断仅解释负结果，后续记录完整终态后再决定研究机制。当前无新正式成绩，三数据集完整Goal保持未完成。

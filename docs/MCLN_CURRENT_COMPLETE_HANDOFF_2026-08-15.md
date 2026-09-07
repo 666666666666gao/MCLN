@@ -17551,3 +17551,18 @@ rows SHA612e11e5e2ba01372cd2345bd4c2685a93e9f4e2d6de80c7cc365a8a85615b7e，manif
 本地独立重算通过：Nr48、Sr48、joint detection32比较，2784可用槽次。rows SHA612e11e5e2ba01372cd2345bd4c2685a93e9f4e2d6de80c7cc365a8a85615b7e与20.149相同，是固定种子与原字段一致的预期结果；新作业确实执行，独立日志/receipt/manifest记录新cache wrapper和input mapping路径。manifest SHA00d3d977d9351c0ff84c2b986ec7da1b0a336d0d282f0a15d6541c78be205346，receipt SHA741563c54a5549a07722807b1a76fdea4087d5dcd4c5c4cd05cf221fc52c471b，检查128.13s。归档refine-logs/referit3d_appearance_cache_loader_20260908_v1；0真实embedding、0模型forward/optimizer/正式行。真实G14缓存与MCLN零初始化/梯度检查、正式训练仍待Scan达线。
 
 03:05:12实查同一Scan主PID70238和四条接续队列全部存活，最新2112/2482更新/臂，累计6566.03s，剩余估计1150.30s，拟合ETA仍03:25附近。数据盘8880922624B、GPU占用19271MiB；瞬时GPU利用率0%不能据此判断停训，实际PID与日志进度继续。尚无终态收据、正式结果或Nr/Sr真实cache。运行中625源码与现有队列没有改动；新增训练映射只进入规范仓库供后续接续。保护门槛、预训练优先和三数据集完整Goal保持。
+
+
+### 20.151 ScanRefer外观配对完成固定拟合，终点评估已启动（2026-09-08T03:29:05.130985+08:00）
+
+同一PID70238已完成两臂各2482次更新，实际29778条fit表达恰好一次覆盖。本地独立检查2482个batch、29778个唯一row_id，并通过远端sha256sum复核两份已保存终点的SHA和文件大小。fit_complete.json记录训练含终点保存耗时7707.58s；训练器报告变化张量数{"appearance": 541, "control": 540}。这些是固定拟合完成和文件完整性证据，完整CPU参数冻结审计尚未执行，不能提前记为通过。
+
+终点文件：
+- appearance: 755219632B，SHA b6d04d3549e5accb200d447b85181d7c3e4ab93bed093c36b33f2a1ee223a4eb，/root/autodl-tmp/mcln_scanrefer_object_appearance_pair_20260908_v1/appearance_object_appearance_state.pt
+- control: 752760947B，SHA 089ece6aaf75be2d01c1a2c09ece5109954cb3be004e6d2db9e53e456f8a1c26，/root/autodl-tmp/mcln_scanrefer_object_appearance_pair_20260908_v1/control_object_appearance_state.pt
+
+终点按原协议保留模型、冻结readout、optimizer及manifest身份；不是权重平均、选epoch或重新起跑。没有把大权重下载到本地或上传Git，仅归档fit_complete、实际batch行/点SHA、baseline metrics、protocol和日志摘录。归档路径refine-logs/scanrefer_object_appearance_pair_20260908_v1/fit_completion。
+
+当前实际终态评估日志：SCANREFER OBJECT APPEARANCE EVAL {"stage": "terminal", "rows": 12, "total": 6887, "elapsed_seconds": 3.0074901580810547}。继续对同一6887-row模块留出集做两臂完整V99评估；该集合的场景已被原主干训练见过，不能称正式新场景成绩。尚无terminal receipt或新正式REC/Mask结果，独立审计、原生REC补评估和条件正式9508队列仍在等前置完成。
+
+观测时间2026-09-08T03:27:08.249941+08:00，同一主进程及四条接续队列存活，数据盘剩7370530816B。磁盘减少对应本次授权保存的两份固定终点；保护E71/Nr权重和旧有效系统不删除。Nr/Sr真实cache尚未生成。按此前零更新全系统评估约28min估计，终点评估仍需相近时间，具体以实际日志为准；不根据拟合loss判性能，也不提前晋级Nr/Sr。三数据集完整Goal及现有验收线保持。

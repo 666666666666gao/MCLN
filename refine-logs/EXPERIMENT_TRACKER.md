@@ -1,10 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T03:06:14.672650+08:00. Section20.150:disk cache wrapper and standard training input mapping passed CPU checks; synthetic markers only; Scan2112/2482 continues.
+Updated: 2026-09-08T03:29:05.130985+08:00. Section20.151:Scan paired2482-step fit saved and independently file-hashed; terminal V99 evaluation live; no new formal results.
 
 | Experiment | Current state | Decision |
 |---|---|---|
-| Pretrained native object appearance | Frozen source409 forwards;562-scene cache complete;16-row native parity/gradient PASS;Scan paired job launched | Same E71,2482 updates/arm planned;all multimodal encoder/Decoder/prediction heads;no completed REC gain;see20.143 |
+| Pretrained native object appearance | Scan paired2482 updates/arm complete;29778 fit rows;fixed endpoints saved;terminal6887-row V99 evaluation running | Independent audit/native REC/conditional formal pending;no metric-gain or promotion claim;see20.151 |
 | Native/adapter score actual fit audit | 512 fixed rows;actual evaluator and SourceChoice recorded;independent all256 score/IoU/candidate recount | Top1 disagreements 0;native Top1 excluded 0;no deployment or metric-gain claim;see20.142 |
 | Native default score definitions | Existing evaluator/SourceChoice agree;adapter changesTop1 in2/3synthetic token-count cases | Contract difference only;no rule change or metric gain;real fit prevalence now recorded in20.142 |
 | Mask geometry surrogate transfer | Saved6887 rows, no new inference;328soft50 repairs,306hard50 already correct | Same328hard net0/deployed−1;full soft+293 versus hard+5;no surrogate gain claim as REC |

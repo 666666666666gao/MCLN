@@ -1,10 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 13:06 CST. Sections20.119-121: failed frozen-readout endpoints safely removed;correct-mesh512 teacher audit and16-row native-box probe PASS;fixed GT-only/teacher-box pair staged,not launched;no new formal.
+Updated: 2026-09-07T13:13:42.143305+08:00. Section20.122: native GT-only/teacher-box pair live PID58023,2482updates per arm planned;no terminal or formal yet;small-endpoint formal entry4CPUtests PASS.
 
 | Experiment | Current state | Decision |
 |---|---|---|
-| Native teacher-box transfer | Actual16fit probe PASS;14eligible;only16box tensors/335814params update | 5CPUtests PASS;fixed2482/arm pair staged;GT-only versus GT+teacher geometry;no new formal or Sr/Nr training |
+| Native teacher-box transfer | Actual16fit probe PASS;fixed pair started13:08 PID58023;only16box tensors/335814params | 2482/arm,29778fit/6887moduleholdout;CPU audit chained;formal entry prepared but not run;noNr/Sr |
 | Correct-mesh teacher transfer | Same512fit rows;native491/461,teacher497/481;342GT-supported better teacher boxes | Input-version correction,not model gain;rawcandidate rows retained off Git with SHA;GT primary |
 | Native pretrained transfer input/load audit | E71/Nr schema1144 equal;actual E71 CPUload underNr/Sr configs1144/1144, freshoptimizer | No GPU/updates;future trained endpoint still needs explicit native format export and actual-data check afterScanpromotion |
 | Frozen protected readout compatibility | Completed2482/arm;terminal6887 and independent integrity audit PASS | Module REC screen FAIL: system vs baseline -2/+16,vs native_only +3/-7;no9508 formal or Nr/Sr training |

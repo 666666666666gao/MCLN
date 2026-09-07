@@ -17198,3 +17198,14 @@ mesh receipt SHA `bbed8b6a2804213e237e7ad0deaa956682e7a8cc2b4cca121cb4227cb56f36
 为节约磁盘，只保存两份16参数终点及optimizer，不重复保存冻结E71；训练脚本在终态前从磁盘终点+保护E71重建完整state并逐值核对，再执行终态forward。CPU独立审计接续检查2482更新、样本互斥、教师GT支持权重、16份optimizer状态、逐行指标及晋级决定。两份终点预计合计约8MB，实际以保存大小为准。原环境5项loss测试通过、全部新Python在3.7语法检查通过；当前训练仅staged，尚未启动，不能将准备状态称为新训练结果。
 
 probe receipt SHA `ba1bc799d7cca35669eb3380ca389482452b5cfd9553964278d9c86d3c5b84d6`；training manifest SHA `2e7b7fa65afd056c0ad98a9a92e974e563df6e104624abdb30cfaf4716e1e72a`。当前架构仍是原E71及已有任务头；推理可单独读取更新后的原生框，但尚未证明能达到V99保护线，不能宣称已去除后处理且性能保持。完整计划见`docs/SCANREFER_NATIVE_BOX_TRANSFER_PLAN_2026-09-07.md`。
+
+
+### 20.122 原生教师框转移固定配对已启动；小终点正式入口准备（2026-09-07T13:13:42.143305+08:00）
+
+13:08:58 CST实际启动记录：screen58020.mcln_native_box_transfer_pair_v1，实际Python58023，来源GitHub main `3c4db12cca4027cbe600e6c8e510df4979709997`；运行manifest SHA `2e7b7fa65afd056c0ad98a9a92e974e563df6e104624abdb30cfaf4716e1e72a`。起动前A100仅1MiB、磁盘剩余9304215552 bytes（约8.665GiB）。控制器顺序执行固定配对及CPU独立审计，无需保持本地连接。当前再次实际ps确认58023存活，精确日志和GPU状态见launch_observation.json；不按启动标记代替进程证据。
+
+本轮仍先做6887条一致起点评估，再完成2482更新/臂及完整终态。初始排程估计起点评估约35分钟、全轮约4小时，实际以本轮吞吐更新；没有因估计到时就重启。后续按阶段预计结束时间检查，长任务观察间隔240秒；本次没有新正式成绩或Nr/Sr训练。
+
+提前准备`evaluate_scanrefer_native_box_transfer_official.py`及对应审计：读取完成且通过筛选的本轮receipt，加载E71再覆盖绑定的16项head参数，核对shape/dtype/完整state，然后使用原生9508loader和固定V99部署路径。原生REC单独记录，GT只在评估计数处使用。当前仅代码准备和原环境4项晋级规则CPU测试通过，未绑定未来checkpoint/receipt SHA，也未运行正式评估；不是宣称小终点已通过正式独立reload。训练目录及其已锁定代码没有改动。
+
+现行规则保持：候选正式Scan REC不少于5572/4797且不低于同次保护控制，Scan Mask不少于58.70/50.70/44.72；达到底线即接Nr/Sr REC，不等待59/51，也不加Nr/Sr Mask门。当前几何转移是性能衔接，不等于已解决Nr复杂语言泛化；三数据集整体目标仍未完成。

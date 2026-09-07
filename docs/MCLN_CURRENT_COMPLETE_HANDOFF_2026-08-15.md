@@ -17786,3 +17786,66 @@ CPU清单SHA为`2ed19ee241fe3e1b3063e53c787d1aa8c8400d48e5868cc41b8f0154a0a4a250
 受保护ScanRefer仍58.6033/50.4523，Mask59.8443/52.3349/45.9303；Nr3D与Sr3D正式结果未变化。Scan正式达到同一V99 REC保护线及原MCLN Mask底线后尽快转Nr/Sr REC，仍不等待59/51伸展目标全部达到。
 
 证据为`refine-logs/pvground_runtime_20260908_v1/`、`pvground_train_fixtures_20260908_v1/v2`、`pvground_pretrained_forward_20260908_v1/v2`。原失败源、日志与退出码保留；v2前向receipt的终态为PASS，旧v1退出1不被覆盖。
+
+
+### 20.162 原生评分与完整预训练GT反向接口通过（2026-09-08T07:54:24.981879+08:00）
+
+2026-09-08 07:32:05 CST，固定四行输入的检查完整退出0。作者Evaluator、两次完整训练反向及AdamW更新均通过；07:50:39 CST的本地独立重计也通过。此项为训练接口证据，正式评估行数为0，不产生新的模型成绩。
+
+#### 原生输出规则
+
+固定PV-Ground提交`262e2592589baec7bb83a0d46aae6542d4ccedfb`的`main_utils.py:616–618`在损失计算后、Evaluator之前，对所有预测尺寸执行`clamp(min=1e-6)`。ScanRefer的`butd_cls=False`，不使用对象框重叠过滤。§20.161中197个包含非正尺寸的原始Query是1024个原始框中的统计，不能当作197条表达失败；也不能额外过滤这些框来替换作者协议。
+
+两个原生模式分别为soft-token position/bbs和contrastive/bbf。它们均读取“主实体＋修饰＋代词＋关系－其他实体”的位置图；主实体图二值化，其他图保留实际值。对比响应使用Query-token相似度、温度0.07和softmax，再补齐到256维。Mask分别使用各模式选择的Query，将Text Mask与该Query Mask按原alpha融合、sigmoid后以0.5阈值映射回原始50000点。
+
+本次实际执行完整作者GroundingEvaluator，并用显式评分、轴对齐框IoU及原始点Mask计算对照。两模式、两阈值、Top-1/5/10的12项REC计数及两项Mask IoU总和共14项，本地重新读取逐行结果重计后与Evaluator一致。四个训练样本不用于选择模式或声称准确率。
+
+#### 输入、完整训练和梯度
+
+使用同一fit列表的行0、173、237、455，四个不同物理场景，每批两行。新增监督独立存入`labels`，模型输入的点、检测框、预测类别、superpoint及文本与上一轮无GT输入fixture逐项SHA一致。GT Mask仅将二值int64存储改为bool，标签值不变；GT框、Mask和token标签在forward完成后才用于loss和Evaluator。
+
+从官方ScanRefer epoch81权重重新严格加载1234个state张量，沿用已验证的固定position_ids保存格式适配。完整SetCriterion和Hungarian损失保留中间层及最终层Box、soft-token、contrastive、Query/Text Mask路径。未加新Loss、Gate或读出器。
+
+| 检查项 | 实测结果 |
+|---|---:|
+| `requires_grad`参数张量 | 783 |
+| 可训练参数 | 27,959,611 |
+| 每步实际有梯度的参数张量 | 759 |
+| 每步无梯度的注册参数张量 | 24 |
+| 未改变的冻结RoBERTa参数张量 | 199 |
+| 改变的buffer张量 | 252 |
+| 第1步完整前向、反向、更新 | 9.15572秒 |
+| 第2步完整前向、反向、更新 | 1.29969秒 |
+| 两步最大allocated显存 | 5,084,949,504字节 |
+
+稀疏主干、双向编码器、Gumbel、Decoder、Box及Mask投影都有非零梯度。所有损失和实际梯度有限。AdamW的核心/主干LR均1e-5、weight_decay0.0005、clip0.1；裁剪前梯度范数为108.33858和154.37651。
+
+24个无有效loss梯度的注册参数在两步完全相同：三个`swa_layers.*.norm`的6个参数，其forward调用LayerNorm后未使用返回值；`text_query_proj`的6个参数没有被forward使用；六层`decoder.*.norm1`的12个参数未被当前BiDecoder路径使用。这些是固定上游的实际行为，本次不顺带修复或改变其网络。
+
+两步临时更新未保存checkpoint，随后释放模型。官方权重SHA仍为`6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3`。后续微调必须重新加载该原始权重，不能使用此两步状态作为起点。
+
+#### 来源与后续
+
+隔离环境spec仍为`966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c`，不重建、不升级保护环境。核验脚本SHA为`5fbc20943a9f9eb8c6494ca52bd742985ea61826b99f83eafd05dfb3cd2cc93d`，终态receipt SHA为`fe744df3c6f70d2b0e4539c560d55786fb0baac572763052839ed15609f0acb0`。
+
+完整证据位于`refine-logs/pvground_training_interface_20260908_v1/`，包括固定plan/spec/source、输入回执、原始日志及退出码、逐行评分接口、逐模块梯度和本地重计。此检查不替代6887条模块留出和9508条正式评估。
+
+下一步按`PVG_SCANREFER_FINETUNE_PLAN_2026-09-08.md`执行一次完整fit遍历的原生预训练微调控制。保护V99及Scan优先、Nr/Sr REC后续目标不变；直接采用外部完整预训练网络不作为本项目原创。
+
+### 20.163 从官方权重启动一次完整ScanRefer微调对照（2026-09-08T07:54:24.981879+08:00）
+
+训练于2026-09-08T07:44:23.484026+08:00在`screen mcln_pvg_scan_finetune_v1`启动，controller PID5874。固定源码和计划先校验SHA，使用既有GPU锁；隔离目录为`/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1`。不加载失败局部/范围权重，也不使用上一节两步临时状态。
+
+官方ScanRefer epoch81完整预训练重新加载。仅一次29778-row fit遍历，batch8、末批2、3723次更新，seed2027、两worker；原生训练/检测框增强开启。完整可训练主干、编码器、Decoder与REC/Mask路径使用原GT损失，RoBERTa按作者方式冻结。AdamW核心和主干LR均1e-5、weight_decay0.0005、clip0.1、固定LR，不做中间选优或额外遍历。
+
+先做batch8全反向容量检查并恢复所有state，再在原生模型上评估6887-row模块留出，最后完成fit与同集合终态评估。主输出固定bbs/position，bbf独立记录完整指标；沿用作者尺寸处理和候选规则，无Parent、Geometry、V99。保留每行Query、框、Mask IoU、全部256原框和两源分数，便于比较回归与选择变化。该集合场景已被预训练主干见过，不能作为正式新场景指标。
+
+最新实际观察为2026-09-08T07:53:39.987915+08:00：原controller和训练进程存活，尚无controller.exit。原始日志及该时刻目录清单归档于`observation_latest.json`，不把启动或数据加载写成训练完成。服务器剩余6234398720字节；GPU记录为`18633 MiB, 78 %`。
+
+实际batch8容量检查于2026-09-08T07:51:44.355184+08:00通过，峰值allocated显存16430513152字节，完整前向/反向22.76983秒，optimizer更新0次，随后恢复全部state与随机状态。固定输入核对通过：456个fit物理场景、106个holdout物理场景、四行参考输入完全一致。最新日志已进入训练前initial评估，完成1024/6887行，用时95.20秒；此时完整fit更新尚未开始。按该段速度估计本轮评估还需约9分钟，不能用首次容量检查耗时直接估计稳定训练速度。
+
+保存一个定期覆盖的latest恢复文件和固定terminal，仅记录可训练state/buffer增量、AdamW、随机状态和行序列，并绑定官方父权重SHA；不重复复制冻结RoBERTa。权重和大型逐行NPY不进Git，也不复制到Desktop。当前保护权重不删除。
+
+运行计划：`docs/PVG_SCANREFER_FINETUNE_PLAN_2026-09-08.md`。执行代码：`scripts/run_pvground_scanrefer_finetune.py`。不可变spec SHA为`824c02f99babac609b039fcce60698ddc9b061c5792cf4e4056edcee15386128`。证据：`refine-logs/pvground_scanrefer_finetune_20260908_v1/`。在实际batch8稳定计时前只给数小时量级估计；按180—300秒或接近ETA观察，不因网络检查超时重启原作业。
+
+这是一条外部完整预训练原生控制，不是本项目原创方法的成功结果。9508-row正式评估尚未启动，没有新正式指标。固定终点先与同起点bbs REC比较，再按预定协议评价正式Scan；只有正式满足同一V99的5572/4797及Scan Mask58.70/50.70/44.72底线后，才推进Nr3D/Sr3D REC，不等待59/51伸展目标全部达到。当前Goal仍active。

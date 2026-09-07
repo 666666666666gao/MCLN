@@ -1,0 +1,45 @@
+{
+  "time_cst": "2026-09-08T07:53:39.987915+08:00",
+  "state": {
+    "processes": [
+      "  5874   5873     556 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1/controller.py",
+      "  5875   5874     556 flock -n /root/autodl-tmp/mcln_v99_backbone_gpu0.lock /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1/spec.json",
+      "  5876   5875     556 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1/spec.json",
+      "  6237   5876     114 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1/spec.json",
+      "  6238   5876     114 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_v1/spec.json"
+    ],
+    "disk_free": 6234398720,
+    "gpu": "18633 MiB, 78 %\n"
+  },
+  "files": [
+    "spec.json",
+    "controller.py",
+    "preflight.json",
+    "train.py",
+    "plan.md",
+    "run.log",
+    "launch.json",
+    "imports.json",
+    "capacity.json",
+    "initial"
+  ],
+  "terminal": false,
+  "tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.layer_norm.bias', 'lm_head.layer_norm.weight', 'lm_head.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight', 'lm_head.dense.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "PVG_FINETUNE_DATASET_LOADING 2026-09-08T07:44:44.374423+08:00",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "PVG_FULL_DATASET_INPUTS_PASS {\"fit\": 29778, \"holdout\": 6887, \"physical_fit\": 456, \"physical_holdout\": 106, \"reference_rows\": 4}",
+    "PVG_BATCH8_CAPACITY_PASS {\"loss\": 13.594928741455078, \"grad_norm\": 75.08588409423828, \"seconds\": 22.769826889038086, \"rows\": [14307, 26871, 13547, 1622, 9672, 18692, 29949, 23417], \"loss_bbox\": 1.845493197441101, \"loss_giou\": 1.905082106590271, \"loss_ce\": 28.31406593322754, \"loss_sem_align\": 99.3739242553711, \"status\": \"pass\", \"optimizer_steps\": 0, \"batch_size\": 8, \"peak_allocated_bytes\": 16430513152, \"time_cst\": \"2026-09-08T07:51:44.355184+08:00\"}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 512, \"total\": 6887, \"seconds\": 48.468247175216675}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 1024, \"total\": 6887, \"seconds\": 95.196937084198}"
+  ],
+  "initial_files": [
+    "boxes.npy",
+    "scores.npy",
+    "rows.jsonl"
+  ]
+}

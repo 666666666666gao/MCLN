@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 08:02 CST. §20.113: frozen-readout pair52529 completed first baseline GPUbatch;postqueue52535 live;zero optimizer updates recorded,no quality result.
+Updated: 2026-09-07 08:17 CST. §20.114: Scanpair52529/post52535 live,baseline1536 logged;actual Nr/Sr nativeCPU model-only loadingPASS1144 tensors;no native training or new weights.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Native pretrained transfer input/load audit | E71/Nr schema1144 equal;actual E71 CPUload underNr/Sr configs1144/1144, freshoptimizer | No GPU/updates;future trained endpoint still needs explicit native format export and actual-data check afterScanpromotion |
 | Frozen protected readout compatibility | Actual GPU probePASS;fixed2482steps/arm pair launched07:52, screens52529/52535 | Frozen Parent/Geometry/V99, candidatefrozen_gt;6887 module REC nonregression versus baseline+native_only gates one9508 formal;no result yet |
 | Native range conditional GPU preflight | Queue48128 exited0 at06:53;scanrefer_not_promoted | Native GPU preflight and Nr/Sr training never started;prepared integration not an experiment result |
 | Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |

@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T02:24:27.284252+08:00. Section20.148: conditional1200-scene Nr/Sr frozen encoding queue live; waits actual Scan formal qualification; no new REC results.
+Updated: 2026-09-08T02:49:09.025188+08:00. Section20.149:128 full native sample comparisons and8 collations passed; marker inputs only, no new REC; Scan fixed training continues.
 
 | Experiment | Current state | Decision |
 |---|---|---|

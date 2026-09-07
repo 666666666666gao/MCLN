@@ -194,3 +194,29 @@ leave full-loader/model loading/gradient checks and training to complete.
 The queue does not automatically treat cache creation as dataset qualification.
 All scripts, fixed plan and preparation receipts are archived in
 `refine-logs/referit3d_openshape_cache_preparation_20260908_v1`.
+
+## Full native sample attachment check (2026-09-08)
+
+The CPU check completed with exit0 and was collected at02:47:37CST. It uses
+the same fixed twelve language and four detection rows for each benchmark,
+with seeds0/1 and native augmentation both enabled and disabled. Across128
+comparisons (256 actual `Joint3DDataset.__getitem__` calls), all37 original
+returned fields and Python/NumPy/Torch RNG states matched exactly. The counts
+are48 Nr3D,48 Sr3D and32 joint detection comparisons. Eight actual default
+collations produced appearance tensors of shape16x132x1280 and boolean masks.
+
+`attach_object_appearance` adds only `det_visual_features` and
+`det_visual_available` to a shallow copy of the native sample. It uses the
+existing original-slot scatter and does not alter augmented boxes, text,
+superpoints, masks or predicted class labels. Canonical scene-point hashes and
+the selected correct-mesh superpoint hashes were checked against the fixed
+input records. The source snapshot and annotation hashes were also verified.
+
+This closes the complete sample construction/collation portion of the earlier
+input audit. It used synthetic slot identity markers, not actual G14 features;
+the2784 available slot occurrences are indexing coverage, not semantic recall.
+Disk cache loading, standard training-input plumbing, real model zero-init
+parity and gradient checks remain before qualified Nr/Sr training. No model
+forward, optimizer step or formal evaluation occurred. The running Scan source
+and all its fixed queues remain unchanged. Evidence is archived in
+`refine-logs/referit3d_appearance_getitem_20260908_v1`.

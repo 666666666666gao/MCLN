@@ -17529,3 +17529,14 @@ cache_referit3d_openshape_objects.py沿用已经实际执行的Scan训练缓存�
 本地3项拒绝路径测试及实际bdetr同3项测试全部通过，两个入口--help通过；runtime spec仍fe8ac66b8f51ed0e179a279717d0d1c2213e9a6b463785ccaa6a6e5eaf2385ac，未改原conda或依赖、未重建环境。队列启动时cache未创建，新Nr/Sr编码0、MCLN forward0、optimizer0；完整G14新入口待实际执行。完成编码后仍需20.147约定的full-loader/model零初始化与真实梯度检查，再启动Nr/Sr训练，不能把缓存完成当REC过线。
 
 本轮不修改运行中Scan训练、原生补评估或正式评估文件，也不新增正式阈值。保护指标和完整Goal未变。代码/plan/CPU测试/配方比对/真实启动证据归档refine-logs/referit3d_openshape_cache_preparation_20260908_v1，完整接入约定详见REFERIT3D_PRETRAINED_APPEARANCE_INPUTS_2026-09-08.md。正式达线再推进Nr/Sr的顺序保持，不等待59/51冲刺目标，不恢复Nr/Sr Mask门槛。
+
+
+### 20.149 Nr/Sr完整原生取样与外观字段接入检查通过（2026-09-08T02:49:09.025188+08:00）
+
+02:43:45启动独立CPU PID72997，02:47:37收集audit.exit=0及PASS。复用此前不按性能选择的每数据集12条语言+4条检测记录，固定seed0/1，分别关闭/开启原生增强；共128组比较、实际256次Joint3DDataset.__getitem__调用。其中Nr48、Sr48、joint detection32；全部37个原有返回字段逐项dtype/值一致，Python/NumPy/Torch随机状态一致。8次实际default_collate均得到16x132x1280外观张量及bool可用性字段。检测动态表达仍由原生代码生成，没有静态替代；两次比较重置相同原注释和随机状态。
+
+新增attach_object_appearance只在原sample的浅拷贝上追加det_visual_features、det_visual_available，调用20.147原槽scatter；不修改原始文本、增强点、框、superpoint、Mask或预测类别。取样前核验canonical点SHA及所选正确mesh superpoint SHA，并核验625源文件、原CSV/划分身份。本次2784可用槽次是人工slot标记的索引检查，未读取真实G14embedding，不能当语义召回或预训练旋转不变证据。
+
+rows SHA612e11e5e2ba01372cd2345bd4c2685a93e9f4e2d6de80c7cc365a8a85615b7e，manifest SHAef0d6d75d5f3fd4defcf9ac9c828df27590a485cb5c17f5e8e556ef4633c04f2；本地独立逐行重算通过，CPU构造/检查127.73s。归档refine-logs/referit3d_appearance_getitem_20260908_v1保存源码、原固定样本、manifest、日志、逐行结果、收据。本次0模型forward/optimizer/正式行，属于完整取样与collation接入证据。实际磁盘cache读入、标准训练输入传递、真实模型零初始化一致与梯度仍待Scan正式达线后完成，Nr/Sr尚未训练。
+
+02:40:29实查Scan主PID70238及四个接续队列均存活，两臂1600/2482步，累计4983.53s，剩余估计2747s；拟合预计03:25后接既定终态全系统/原生/条件正式评估。GPU19271MiB、80%，数据盘8881594368B，尚无终态或新正式结果。02:47:37同一主PID仍存活。新增CPU工具位于独立目录，未改Scan运行中的625源码、优化器、门槛或队列；受保护权重未删，三数据集完整Goal未完成。

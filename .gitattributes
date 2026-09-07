@@ -1,4 +1,8 @@
 # Preserve recorded artifact bytes; Windows newline conversion changes evidence hashes.
+refine-logs/scanrefer_appearance_native_overlap_20260908_v1/** -text
+# Preserve the original upstream source and log whitespace for source provenance.
+refine-logs/pvground_pretrained_resources_20260908_v1/** -text -whitespace
+refine-logs/pvground_scan_checkpoint_inspection_20260908_v1/** -text
 refine-logs/native_local_preflight_preparation_20260906_v2/** -text
 refine-logs/scanrefer_local_visual_mesh_*_20260906_v1/** -text
 refine-logs/scanrefer_local_visual_official_20260906_v3/result/** -text
@@ -66,3 +70,5 @@ refine-logs/referit3d_appearance_cache_loader_20260908_v1/** -text
 refine-logs/referit3d_pretrained_appearance_probe_preparation_20260908_v1/** -text
 # Preserve the exact bytes of this existing source snapshot, including its legacy whitespace.
 refine-logs/referit3d_pretrained_appearance_probe_preparation_20260908_v1/source_overrides/train_dist_mod.py -whitespace
+# Keep the original PowerShell receipt bytes while accepting its CRLF line endings.
+refine-logs/pvground_scan_checkpoint_inspection_20260908_v1/local_transfer_cleanup.json whitespace=cr-at-eol

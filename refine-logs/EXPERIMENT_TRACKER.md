@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T05:22:26.262085+08:00. Section20.157:Scan native6887 endpoint evaluation and native/full-system transfer analysis complete; full-system appearance screen remains failed.
+Updated: 2026-09-08T06:07:47.478963+08:00. Sections20.158-20.159: saved native geometry attribution complete; full pretrained geometry resources inspected; no new formal model promotion.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -229,3 +229,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 2026-09-07 02:27 CST: Stage terminal audited;formal remains sealed;extent preflight next,not yet started.
 
 2026-09-07 03:06 CST: §20.104 records real range preflight and live paired-task/queue;no new formal improvement claimed.
+| Native appearance geometry attribution | CPU20661 selected boxes /762882 object comparisons; independent recount PASS | Same-root-overlap group contributes -44 of native strict -45 net vs control; geometric proxy only; see20.158 |
+| Full pretrained geometry resource audit | Six official PV-Ground checkpoint metadata/logs pinned; ScanRefer checkpoint acquisition recorded | External model resources, not project results; no current network replacement; see20.159 |

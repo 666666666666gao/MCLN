@@ -17518,3 +17518,14 @@ source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a276
 审计rows SHA dd9d534da9d61defb7e3df2e07712ecf0ceea414a0c9760cab55d2847c435c67，manifest SHA0dd3d752b5fc7811fd3123e22e7df8e21dfd14b4c38199d8f522e47449c39411；处理与最终重哈希25.671s不含场景加载。归档refine-logs/referit3d_appearance_augmentation_20260908_v1保留源码、逐行日志、收据、原固定样本和本地重算。0模型/GPU forward、0优化器、0正式验证行，属于接入正确性证据而非科学性能结果。
 
 02:09:19主Scan PID70238继续存活，最新日志1024/2482更新/臂，累计3193.80s、剩余估计4547s，拟合ETA仍约03:25。CPU审计70598、原生补评估70823、条件正式71123全部存活；数据盘剩8881631232B。控制loss9.50224、外观9.40304为单步训练值，不能当REC改进。固定训练、后续门槛和保护结果未改，完整三数据集Goal持续。
+
+
+### 20.148 Nr/Sr冻结外观编码入口与达线后接续准备（2026-09-08T02:24:27.284252+08:00）
+
+在Scan固定训练期间，完成1200训练场景的Nr/Sr G14编码入口准备及条件queue。02:22:51实际确认PID72673运行，目录/root/autodl-tmp/mcln_referit3d_openshape_cache_preparation_20260908_v1，plan SHA47002204c98b4384cf0b0d4813280e2afedf581bb6ad0090cd0590b4010748c6。它以240s间隔等待现有Scan正式queue.exit；前置失败、模块未晋级或正式未达线均不创建cache、不启动编码。必须正式decision/receipt/独立audit一致，9508行晋级标志为真，才取得同一GPU锁编码；编码子进程再次核验资格文件SHA。
+
+cache_referit3d_openshape_objects.py沿用已经实际执行的Scan训练缓存配方：384点最低要求、最多10000点、原始RGB、Z-up、场景与原始slot决定随机种子、重心/单位球归一化、冻结官方G14。裁剪归一化和采样代码块AST与原Scan实现完全相同；这只证明该代码块配方等价，不证明新入口完整运行或精度。Nr/Sr明确使用既定实例框和预测类别，保留背景点；输出compact特征连同原slot_ids，不能将compact行号作为实例编号，也不能宣称是纯预测框无GT输入设置。
+
+本地3项拒绝路径测试及实际bdetr同3项测试全部通过，两个入口--help通过；runtime spec仍fe8ac66b8f51ed0e179a279717d0d1c2213e9a6b463785ccaa6a6e5eaf2385ac，未改原conda或依赖、未重建环境。队列启动时cache未创建，新Nr/Sr编码0、MCLN forward0、optimizer0；完整G14新入口待实际执行。完成编码后仍需20.147约定的full-loader/model零初始化与真实梯度检查，再启动Nr/Sr训练，不能把缓存完成当REC过线。
+
+本轮不修改运行中Scan训练、原生补评估或正式评估文件，也不新增正式阈值。保护指标和完整Goal未变。代码/plan/CPU测试/配方比对/真实启动证据归档refine-logs/referit3d_openshape_cache_preparation_20260908_v1，完整接入约定详见REFERIT3D_PRETRAINED_APPEARANCE_INPUTS_2026-09-08.md。正式达线再推进Nr/Sr的顺序保持，不等待59/51冲刺目标，不恢复Nr/Sr Mask门槛。

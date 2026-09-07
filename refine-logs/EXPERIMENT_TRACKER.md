@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T02:11:15.655793+08:00. Section20.147: Scan pair1024/2482 live;168 native augmentation/slot checks PASS; pretrained feature/model evidence still pending.
+Updated: 2026-09-08T02:24:27.284252+08:00. Section20.148: conditional1200-scene Nr/Sr frozen encoding queue live; waits actual Scan formal qualification; no new REC results.
 
 | Experiment | Current state | Decision |
 |---|---|---|

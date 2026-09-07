@@ -162,3 +162,35 @@ checks remain required before Nr/Sr training. They must establish native
 zero-initialization parity and available-feature gradients; only REC evaluation
 can determine whether this two-observation design is useful. No inference
 target label or instance-mask cleanup may be introduced in those steps.
+
+## Conditional frozen encoding queue (2026-09-08)
+
+The train-cache entrypoint is now prepared and its conditional queue is live at
+`/root/autodl-tmp/mcln_referit3d_openshape_cache_preparation_20260908_v1`.
+PID72673 was confirmed at02:22:51CST. It waits240seconds between checks of the
+existing Scan formal `queue.exit`. Prior failure, module rejection or formal
+nonqualification does not create the cache or launch an encoder subprocess.
+Those three paths passed CPU tests locally and in the actual bdetr environment.
+
+After Scan qualification, it verifies agreement between the formal decision,
+receipt and independent audit and records their hashes. The actual encoder
+checks that qualification again, acquires the same GPU execution lock through
+its launcher and uses the unchanged official G14 runtime. It encodes the1200
+canonical training scenes, retaining original slot IDs, predicted classes,
+canonical boxes, per-crop counts and point/file hashes in the result.
+
+The crop normalization/sampling block has the same parsed Python syntax as the
+already executed Scan train-cache implementation. Both require at least384
+actual points, subsample above10000 using the scene/original-slot seed, retain
+RGB and Z-up orientation, and normalize around the crop centroid/unit radius.
+The meaningful input difference remains the protocol instance boxes in Nr/Sr.
+No target instance mask cleans either crop. This AST comparison proves recipe
+equivalence for that block, not encoder quality or complete execution.
+
+At preparation time both entrypoints passed actual bdetr `--help`; the new full
+encoder path has not run. The cache directory does not yet exist, no Nr/Sr
+embeddings or optimizer steps have occurred, and successful encoding will still
+leave full-loader/model loading/gradient checks and training to complete.
+The queue does not automatically treat cache creation as dataset qualification.
+All scripts, fixed plan and preparation receipts are archived in
+`refine-logs/referit3d_openshape_cache_preparation_20260908_v1`.

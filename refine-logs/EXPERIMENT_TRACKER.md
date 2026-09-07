@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 07:55 CST. §20.113: fixed frozen-readout GT pair live52529, postqueue52535;correctmesh,E71,no range module;no new quality result.
+Updated: 2026-09-07 08:02 CST. §20.113: frozen-readout pair52529 completed first baseline GPUbatch;postqueue52535 live;zero optimizer updates recorded,no quality result.
 
 | Experiment | Current state | Decision |
 |---|---|---|

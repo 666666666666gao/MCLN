@@ -68,3 +68,8 @@ The paired run has a persistent screen, GPU lock, log and terminal exit file.
 Its first observed timing determines a later poll near completion; do not
 duplicate a job because a transport call timed out. A full endpoint integrity
 audit and formal evaluator integration remain required before promotion.
+
+Native endpoint follow-up is now queued after the CPU audit. It captures actual
+GroundingEvaluator default-axis Top1 decisions for initial/control/appearance,
+checks the same6887 row identities and point hashes, and records repair/break.
+It does not train or consume formal validation. Runtime completion is pending.

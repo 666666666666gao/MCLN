@@ -17453,3 +17453,14 @@ source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a276
 终态CPU审计已准备并排入70596.mcln_os_appearance_audit_v1，240s间隔等原controller.exit；原任务非零退出则记录原错误，不重启。审计将重算两阈值修复/破坏、Mask、完整fit遍历、冻结state/readout和optimizer记录。当前是待执行审计，不宣称PASS。主训练代码、manifest和原plan.md均未修改；原冻结plan SHA仍由manifest绑定，并存本地frozen_plan.md。
 
 补充实现范围：配对runner保存的是完整V99逐行REC/Mask，未保存原生REC逐行决定；原生端点对照必须在终态另做只读评估，不能把当前V99行当原生结果。文档已澄清这项待办，不改变本次训练参数或晋级要求。阶段20.143代码已推送96dc33249cda9e4f9d1a157fa6cd4627b17d9ec1；本节同步实际容量、审计接续及原始日志。首次同步工具遇Windows默认GBK读tracker、以及远端旧constructor无新本地参数的两处差异，均在写入前停止；分别显式UTF8、按核验SHA仅改远端三个appearance位置解决，未覆盖其他canonical差异。真正运行的是已固定625文件源码。
+
+
+### 20.143.2 原生 REC 终态补评估已接续，训练进程持续运行（2026-09-08T01:10:58.023257+08:00）
+
+01:05:24实际PID70238仍存活，baseline已记录3072/6887、耗时749.86s，约4.10行/s；尚无终态或新正式指标。01:09:30再次确认同一训练PID存活，CPU审计等待进程70598存活。未启动重复训练，未修改原runner、625文件源码、manifest、冻结plan或超参数。
+
+为完成20.143.1明确的原生REC缺项，新增独立只读evaluate_scanrefer_object_appearance_native.py，并排入native_queue进程70823。它以240s间隔等现有audit_queue.exit，前置审计非零则记录错误；成功后获取原GPU锁，分别严格加载受保护E71初始和固定2482更新的control/appearance端点，复用同一训练集解析、6887行模块留出顺序、冻结scene/slot外观缓存和输入点SHA。原生选择由实际GroundingEvaluator的default_query_axis产生，关闭Parent/Geometry/V99选择开关；捕获实际Top1 Query，而不是用adapter二值main-map分数近似。逐行保存所选框、root框、Query编号、IoU，汇总与evaluator两阈值计数交叉核对，并报告相对起点/控制修复破坏。
+
+只读补评估不写权重、不做optimizer更新、不消费正式val，不追加损失；会核对模型state、端点文件和固定源码在运行前后不变。新的脚本已本地编译、远端bdetr --help入口通过，队列进程已实际确认；完整6887行推理尚未执行，不宣称数值正确或性能通过。原生评估即使完整系统候选未通过也保留为失败归因证据，不据此更换epoch或放松晋级线。正式9508行输入特征缓存及模型加载接入仍为后续任务；三数据集REC目标尚未达成。
+
+证据：refine-logs/scanrefer_object_appearance_pair_20260908_v1/{observe_04.json,native_evaluation_sources.json,native_queue_launch.json,native_queue.sh}。本节同步本地仓库、桌面和canonical远端交接文档，新增代码推送main。原生评估是既定训练计划的观测补齐，不是另一条新网络实验。

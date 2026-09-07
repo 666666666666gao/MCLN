@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T00:58:54.470064+08:00. Section20.143.1: full-scope batch12 capacity PASS; baseline1536/6887 observed; paired fitting pending baseline; CPU endpoint audit queued.
+Updated: 2026-09-08T01:10:58.023257+08:00. Section20.143.2: paired training live; baseline3072/6887 observed; CPU audit and native endpoint REC evaluation queued, neither terminal yet.
 
 | Experiment | Current state | Decision |
 |---|---|---|

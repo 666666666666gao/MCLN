@@ -17162,3 +17162,39 @@ ScanRefer使用受保护V99的逐级诊断stage_rows，不冒充精确历史正�
 | Nr3D | scene0164_00 | kitchen cabinet | top16_coverage | 0.000000 | 0.000000 |
 
 strict_overlap只在0.50阈值失败；top16_coverage不推断Full256缺框。静态图明确记录高处剖开/裁切和显示降采样，交互图保留全部50k点；所有PNG已解码检查，Chrome断网逐页验证通过，并实看PNG与交互截图。案例不是总体性能估计。可视化代码和小型来源/验证记录归档于`refine-logs/failure_visualizations_20260907_v1`；点云及图像在用户指定本地目录，不加入Git大文件。
+
+
+### 20.119 用户授权的失败终点清理：保护权重逐份复核（2026-09-07 12:31 CST）
+
+冻结读出两臂已自然结束，终态6887行、独立审计及未晋级决定均保留。核对实际进程和依赖后，仅删除本轮两份失败终点native_only/frozen_gt，各618602215 bytes，分别对应§20.116已登记SHA。释放allocated1237213184 bytes（约1.152GiB），剩余9332264960 bytes（约8.691GiB）。E71、Parent、Geometry、V99、Nr平均E57和Nr续训E57六份保护SHA在删除前后逐项一致。日志、行级结果、manifest和审计均未删除；Sr历史权重缺失不由本次清理造成。本轮清理receipt保留在`refine-logs/weight_cleanup_20260907_v2/receipt.json`。
+
+### 20.120 正确mesh上的教师几何转移可行性复核（2026-09-07 12:41 CST）
+
+发现旧512条teacher-transfer审计继承mixed DATA_ROOT。本次固定原512条fit身份，只纠正到mesh目录，并核对1201份训练superpoint、614份源码和四份保护artifact。无优化、无新权重、无正式评估。为检查对应关系，保留原生256框、Top16×7几何集合、最终部署教师选择和当次GT root Hungarian索引。教师forward没有GT目标；GT仅用于训练可行性诊断。
+
+| 同一512条fit表达 | REC@0.25/@0.50 hits |
+|---|---:|
+| 原生Default | 491/461 |
+| 正确mesh V99教师 | 497/481 |
+| 原生GT Hungarian root | 511/499 |
+| 原生Full256 oracle | 511/501 |
+| 教师变体所属Query的原框 | 495/457 |
+| 与教师框几何最接近的原生Query框 | 497/477 |
+
+独立NumPy重算所有保存框及选择有效性通过，512个原生/匹配记录相对旧审计在1e-6容差内一致，但149行教师Query或variant选择改变。正确mesh教师相对旧mixed教师494/471的差异是数据变化，不是网络提升。教师相对原生修复/破坏为7/1和23/3；仍低于GT Hungarian的511/499，不能替代GT。342行教师IoU>0.25且高于当前Hungarian root框，正IoU差均值0.137298。425个教师答案来自非原框变体，363行几何最近Query与变体来源编号不同；不应按历史Query编号永久绑定监督。
+
+这些仅是主干已见fit场景上的教师目标可行性，不是学生精度。原始rows27.38MB保留在远端和本地证据目录，Git记录路径与SHA，避免把大候选缓存加入源码仓库。
+
+mesh receipt SHA `bbed8b6a2804213e237e7ad0deaa956682e7a8cc2b4cca121cb4227cb56f3674`；rows SHA `69f377364985444bc4c45cd86da7d8db0fef6d1dfdec31ec8e38fd48df0d958b`；独立核验 SHA `95d4ffcefe2a0979c6b58bbcd860a82fda551a74e2366a0dbc457adeb5013bd3`。
+
+### 20.121 原生框转移实际梯度检查通过；固定配对准备完成（2026-09-07 13:06 CST）
+
+16条预先固定fit输入、两批12/4；14条有正教师收益。只允许最后center_residual_head和size_pred_head共16参数张量、335814参数更新。原生GT梯度范数0.680516/0.812899，辅助梯度7.484442/5.418529，均有限；两批点积为正，但不据16例推断总体梯度一致。gt_only与gt_teacher_box各在末批做两次一次性更新，16项参数改变，其余完整模型及教师/旧读出不变；last_sem_cls_scores、last_proj_queries、proj_tokens、last_pred_masks、sp_last_pred_masks逐值不变。没有保存probe权重，没有正式成绩。probe完成时间12:48:28，GPU峰值4317.93MiB。
+
+下一项是几何能力衔接实验，不是新MoE或完整DETRDistill复现：两臂均原生GT训练，候选臂增加冻结V99实际最终框的辅助回归；当次学生GT Hungarian绑定root，仅当教师IoU>0.25且优于当前匹配框才有正权重。辅助项以正IoU差加权，沿用5×(中心L1+0.2×尺寸L1)+GIoU，权重1；不复制教师分数、不固定Query编号。完整自然语言消歧仍待后续验证，本检查不替代三数据集目标。
+
+固定设置：正确mesh、相同E71、model.eval、lr1e-6、AdamW wd0.0005、clip0.1、B12、每臂一遍29778行即2482更新；两臂共用相同批次，6887模块留出仅做前后完整评估，主干曾见这些场景。原生REC与完整V99 REC分别记录；固定候选gt_teacher_box须在系统REC双阈值相对起点及gt_only都不退化，才做固定正式Scan验证，Scan通过现行底线后尽快转Nr/Sr。不等待59/51，不恢复Nr/Sr Mask门槛，不扫LR/权重/epoch。
+
+为节约磁盘，只保存两份16参数终点及optimizer，不重复保存冻结E71；训练脚本在终态前从磁盘终点+保护E71重建完整state并逐值核对，再执行终态forward。CPU独立审计接续检查2482更新、样本互斥、教师GT支持权重、16份optimizer状态、逐行指标及晋级决定。两份终点预计合计约8MB，实际以保存大小为准。原环境5项loss测试通过、全部新Python在3.7语法检查通过；当前训练仅staged，尚未启动，不能将准备状态称为新训练结果。
+
+probe receipt SHA `ba1bc799d7cca35669eb3380ca389482452b5cfd9553964278d9c86d3c5b84d6`；training manifest SHA `2e7b7fa65afd056c0ad98a9a92e974e563df6e104624abdb30cfaf4716e1e72a`。当前架构仍是原E71及已有任务头；推理可单独读取更新后的原生框，但尚未证明能达到V99保护线，不能宣称已去除后处理且性能保持。完整计划见`docs/SCANREFER_NATIVE_BOX_TRANSFER_PLAN_2026-09-07.md`。

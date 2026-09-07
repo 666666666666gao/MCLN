@@ -123,3 +123,42 @@ receipt and independent local recount are archived in
 `refine-logs/referit3d_joint_detection_slots_20260908_v1`; full region metadata
 stays outside Git. This completes scene/slot metadata coverage for the inspected
 joint recipe, not augmented feature binding or model/gradient validation.
+
+## Native augmentation and slot-binding check (2026-09-08)
+
+An isolated CPU check called native `_get_pc` and `_get_scene_objects` on the
+previously fixed32 Nr/Sr preflight annotations plus10 detection scenes with
+noncontiguous slots. Four fixed seeds per case produced168 geometry checks.
+All retained the canonical slot indices while changing point coordinates and
+boxes; original XYZ/RGB remained unchanged. The24 view-restricted checks kept
+Z rotation within5 degrees and did not enable the large-rotation flips.
+Other native small rotations, noise, scaling and box jitter were retained.
+
+`src/object_appearance_inputs.py` now supplies a compact-to-native-slot scatter
+function. It requires the compact slot IDs to equal the actual valid-mask
+indices, places available features at those indices, and leaves unavailable
+and padded slots zero. It does not compare augmented box coordinates with
+unaugmented cache boxes. The168 checks used synthetic slot-number markers to
+verify this indexing function, including all10 gap scenes.
+
+This is a targeted native geometry/identity check, not the complete dataset
+`__getitem__`, model forward or pretrained-feature invariance test. The ongoing
+Scan training source is unchanged and does not import this new helper.
+Receipts and source are archived in
+`refine-logs/referit3d_appearance_augmentation_20260908_v1`.
+
+For subsequent qualified Nr/Sr integration, use canonical frozen appearance as
+an explicitly separate visual observation associated with the same protocol
+instance slot, while the native point/box branch keeps its existing training
+augmentation. Canonical point/box hashes must be verified against the original
+scene before augmentation; transformed sample boxes are validated by slot
+identity, not claimed equal to cache coordinates. Validation uses the same
+canonical observation without training augmentation. This choice reuses the
+available pretrained encoder and preserves the original augmentation recipe;
+it is not a claim that the encoder itself is rotation-invariant.
+
+Actual frozen-feature encoding, full data-loader attachment and model/gradient
+checks remain required before Nr/Sr training. They must establish native
+zero-initialization parity and available-feature gradients; only REC evaluation
+can determine whether this two-observation design is useful. No inference
+target label or instance-mask cleanup may be introduced in those steps.

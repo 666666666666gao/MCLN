@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T01:59:03.642245+08:00. Section20.146: Scan pair640/2482 confirmed live; full1200-scene language/joint-detection slot metadata complete; no new formal metrics.
+Updated: 2026-09-08T02:11:15.655793+08:00. Section20.147: Scan pair1024/2482 live;168 native augmentation/slot checks PASS; pretrained feature/model evidence still pending.
 
 | Experiment | Current state | Decision |
 |---|---|---|

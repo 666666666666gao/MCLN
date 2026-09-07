@@ -17325,3 +17325,16 @@ summary SHA `d7db6f5f0a2da414dbe65769b8e3b240182534b401aec2430f1ec18ddcead1df`�
 新增`audit_scanrefer_mask_geometry_pair.py`独立NumPy重算训练L1/GIoU、soft/hard几何和完整REC/Mask、修复/破坏、模型delta与逐参数optimizer，末尾核验源码/1201个mesh superpoint及保护artifact。CPU四项检查通过（1.62秒），含持续/间歇/无梯度参数保存恢复和当前Query/空硬邻域，原Python3.7语法通过。此为准备完成，不是终态质量PASS。
 
 远端`/root/autodl-tmp/mcln_scanrefer_mask_geometry_pair_20260907_v1`已冻结源码和manifest，controller自动接终态CPU审计；尚未启动，无新权重/正式评估/NrSr训练。启动前再次检查实际GPU和磁盘。REC晋级线沿用已固定规则：完整系统两阈值相对起点和控制均不退化，才正式Scan；正式保护及Mask底线通过即Nr/Sr REC，不等59/51。最近实查GPU1MiB、盘余10503274496 bytes；无需额外清权重。完整目标未完成。
+
+
+### 20.135 Mask几何GT固定配对已启动，正式评估接续已排队（2026-09-07T18:42:19.871861+08:00）
+
+18:35:08 CST启动既定配对，screen62966 `mcln_mask_geometry_pair_v1`，实际Python62969；run `/root/autodl-tmp/mcln_scanrefer_mask_geometry_pair_20260907_v1`。启动前A100空闲、可用10503008256 bytes，保护权重未改变。训练源码已发布`1b66e32a15e614270476230349f5198c909c9ca8`，manifest SHA `15f46411069a7172a55373c5c13075b22bcb4146d39251e9fca2c37ed5867eb3`。未重启旧实验，也未改变当前固定lr/loss/2482预算。
+
+18:40:45实际两进程仍存活，尚在原生数据/文本解析，GPU3029MiB、0%采样时利用率；没有exit文件，尚无首批forward或optimizer计数证据，不能写成64步或已有新指标。预计起点评估约40分钟、全配对约4小时，需用实际后续速度更新。下一次有意义检查设19:10，后续远端轻量检查间隔240秒。
+
+适配84项delta的`evaluate_scanrefer_mask_geometry_official.py`和独立正式审计已准备，重建时核对真实模型named_parameters，不套用旧16框头。沿用同次保护/控制/固定候选三臂9508完整评估、原生与V99分开统计、历史5572/4797及同次保护、Scan Mask58.70/50.70/44.72底线。8项固定模块/正式晋级测试通过；312个正确mesh验证文件与所有接续源码SHA通过，只读准备没有GPU前向或正式行。
+
+18:39:57接续screen63082 `mcln_mask_geometry_queue_v1`、实际Python63084已启动，目录`/root/autodl-tmp/mcln_scanrefer_mask_geometry_posttraining_20260907_v1`。首查19:10，其后240秒。训练controller自动执行唯一终态CPU审计；接续读取现有审计，候选完整系统两阈值均不低于起点和native_gt才启动一次正式Scan。失败则封存并退出，不能改选控制。队列manifest SHA `92f6a68429bf552ba5f2734044b086385ad292d6559d064d19a245ba49667300`。
+
+目前正式评估0、Nr/Sr新训练0、终点权重0；训练源文件在接续准备后逐项核验未变。正式通过后仍需把84项实际终点接到Nr/Sr原生初始化，旧16项导出器不适用；这项准备不能当作已训练Nr/Sr。完整三数据集目标持续，当前没有性能成功结论。

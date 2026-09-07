@@ -4,6 +4,7 @@ Updated: 2026-09-07T18:42:19.871861+08:00. Section20.135: fixed Mask geometry pa
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Mask geometry84-core native initialization | 8CPU format tests and actual Nr/Sr native loaders PASS;1144state exact,84changed/1060preserved on synthetic fixture | Ready only for future formally promoted endpoint;GPU0/actualtraining0;temporary599MBfixture deleted |
 | Mask geometry GT supervision | 9CPU tests,16fit native gradients and2 disposable steps/arm PASS;84allowed/82changed;no checkpoint | Fixed pair LIVE Python62969 since18:35;18:40 data parsing,no updates verified;gated formal queue63084 live;4+8 CPU checks PASS;not a REC result |
 | Probability geometry prototype | Same16fit/251valid candidates;hard210/208,soft211/210;meanIoU slightly lower | Direct native gradients verified;no deployment replacement or trained quality result |
 | Hard Mask geometry gradient audit | 16fit,1144state unchanged,independent recount PASS | Pure Mask coordinates have no Mask autograd route;score statistics do;not full failure attribution |

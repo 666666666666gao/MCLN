@@ -17338,3 +17338,14 @@ summary SHA `d7db6f5f0a2da414dbe65769b8e3b240182534b401aec2430f1ec18ddcead1df`�
 18:39:57接续screen63082 `mcln_mask_geometry_queue_v1`、实际Python63084已启动，目录`/root/autodl-tmp/mcln_scanrefer_mask_geometry_posttraining_20260907_v1`。首查19:10，其后240秒。训练controller自动执行唯一终态CPU审计；接续读取现有审计，候选完整系统两阈值均不低于起点和native_gt才启动一次正式Scan。失败则封存并退出，不能改选控制。队列manifest SHA `92f6a68429bf552ba5f2734044b086385ad292d6559d064d19a245ba49667300`。
 
 目前正式评估0、Nr/Sr新训练0、终点权重0；训练源文件在接续准备后逐项核验未变。正式通过后仍需把84项实际终点接到Nr/Sr原生初始化，旧16项导出器不适用；这项准备不能当作已训练Nr/Sr。完整三数据集目标持续，当前没有性能成功结论。
+
+
+### 20.136 当前84项终点的Nr/Sr原生初始化准备通过（2026-09-07T18:51:16.882443+08:00）
+
+新增`export_mask_geometry_initialization.py`，仅在固定候选正式Scan晋级并重算审计后导出。以E71补全1144项，只覆盖当前84项core参数；明确包含注意力in_proj_weight/in_proj_bias，保留全部BN缓冲，不继承旧optimizer/scheduler。使用已有model_only_initialization，未改原生加载器或运行中的训练源。旧20.126的16项框头导出仍保留历史记录，当前不能使用。
+
+原环境8项格式检查通过（1.21秒）。以真实E71及明确标注的84项合成差值，18:47:38完成Nr/Sr实际原生模型工厂、优化器工厂和checkpoint加载：各1144项state逐值一致，84项真实named_parameters覆盖、1060项冻结state保留，optimizer为空、scheduler不变、start_epoch1。检查native source618文件。加载阶段6.83秒；本检查GPU前向0、训练更新0、正式行0，没有使用尚未产生的真实终点。
+
+临时599066465-byte完整fixture核对SHA及限定路径后已删除，剩余测试权重0。receipt SHA `73f5c9afb676035e4993d0077ea578b469e5507c3bf2962b4c3d3bb0ca5fc97a`，导出脚本SHA `048ca46542cc15fd020c46fc70c382428116dba163a4919d7b7a39e9f2f6c9a1`。归档`refine-logs/mask_geometry_initialization_preparation_20260907_v1`，入口与边界见`docs/MASK_GEOMETRY_NATIVE_INITIALIZATION_2026-09-07.md`。
+
+这完成的是可执行的跨数据集初始化接口，不证明跨数据集效果。Mask几何辅助是训练损失，初始化文件不会自动启用该损失；正式Scan通过后仍须绑定真实终点、Nr/Sr原生数据批次和训练监督，实际GPU梯度核验后启动。当前Scan固定训练及接续队列不改设置，按20.135的19:10/240秒计划观察；原生与V99性能分开、既有REC/ScanMask晋级线不变。完整目标未完成。

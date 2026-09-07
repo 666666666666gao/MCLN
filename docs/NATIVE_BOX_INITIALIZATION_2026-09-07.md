@@ -1,5 +1,7 @@
 # 原生框头终点到 Nr3D/Sr3D 的初始化准备
 
+历史记录：本页的16项教师框分支已经失败封存，不再作为当前接续入口。当前84项Mask几何训练终点使用[新的初始化接口](MASK_GEOMETRY_NATIVE_INITIALIZATION_2026-09-07.md)。下文保留当时的准备证据。
+
 当前 ScanRefer 两臂仍在固定训练。本页记录格式接续准备，不改变正式晋级规则，也不代表 Nr3D/Sr3D 已开始训练或取得新成绩。
 
 本轮终点仅保存16项框回归参数与优化器；原生 `main_utils.load_checkpoint` 读取完整 `checkpoint['model']`，键使用 `module.` 前缀。原有 `--model_only_initialization` 已支持跨数据集初始化，不需要修改加载器。

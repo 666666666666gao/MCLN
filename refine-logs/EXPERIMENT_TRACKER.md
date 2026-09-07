@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T01:43:55.650725+08:00. Section20.145: Scan pair512/2482 live; Nr/Sr1061-scene CPU slot export and checkpoint-shape check complete; no new formal metrics.
+Updated: 2026-09-08T01:59:03.642245+08:00. Section20.146: Scan pair640/2482 confirmed live; full1200-scene language/joint-detection slot metadata complete; no new formal metrics.
 
 | Experiment | Current state | Decision |
 |---|---|---|

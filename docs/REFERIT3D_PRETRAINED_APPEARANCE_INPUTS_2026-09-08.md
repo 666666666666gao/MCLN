@@ -92,3 +92,34 @@ After Scan qualification: encode/bind source features with original slot IDs,
 verify actual model loading and the chosen augmentation contract, then launch
 Nr/Sr REC training using available pretrained weights. The same architecture
 and output policy must be reported across datasets; Nr/Sr Mask remains waived.
+
+## Joint detection coverage completion (2026-09-08)
+
+The 1061-scene export above covers the two language training sets, not every
+input in the native `joint_det=True` recipe. Calling the unchanged native
+`load_scannet_annos` on actual serialized training scenes returns1199 detection
+rows/scenes. Their intersection with language scenes is1060, leaving139
+additional detection scenes. Language-only `scene0154_00` is retained; the full
+union is1200 scenes. No dataset row, native detection exclusion or repetition
+factor was changed to fit the cache.
+
+`extend_referit3d_joint_detection_slots.py` has completed the additional139
+scenes on CPU. It uses the same native `_get_scene_objects`, preserves original
+instance slots and predicted classes, and counts every sampled point inside
+each protocol AABB without target or instance-mask cleaning. The original1061
+records are identical except for an added `scannet` membership tag where
+applicable. It creates no embeddings, model predictions or training updates.
+
+The detection subset contains38304 valid slots,27017 meeting the same384-point
+encoding minimum;10 scenes have noncontiguous slots. These are object-slot
+counts, not language target coverage or REC gains. Nr/Sr language counts in the
+earlier table are unchanged. All1200 scenes have predicted-class records.
+
+Complete metadata is in
+`/root/autodl-tmp/mcln_referit3d_joint_detection_slots_20260908_v1/scene_slots.json`,
+SHA256 `11cc74f6a2f3aef4b3b94e4d892541e256a1943466ec56014f03f24e92ddcf73`.
+The original1061-scene artifact remains available. Source, native coverage
+receipt and independent local recount are archived in
+`refine-logs/referit3d_joint_detection_slots_20260908_v1`; full region metadata
+stays outside Git. This completes scene/slot metadata coverage for the inspected
+joint recipe, not augmented feature binding or model/gradient validation.

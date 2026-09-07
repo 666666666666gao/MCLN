@@ -17492,3 +17492,16 @@ source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a276
 尚待解决的实际接口：Nr/Sr原训练确有旋转/翻转、噪声、RGB扰动和对象框独立jitter；当前Scan外观配对明确无增强，不能把它的原始point/box SHA断言直接复制到增强输入，也不能未经验证声称缓存特征旋转不变。后续要明确canonical外观与增强几何是否为两个受控视图，或编码增强裁剪，并做真实输入和模型接入检查。当前未修改任何现有增强逻辑或数据划分。详见REFERIT3D_PRETRAINED_APPEARANCE_INPUTS_2026-09-08.md。
 
 01:42:20同一Scan PID70238已运行62分钟，实际记录512/2482更新/臂，累计1601.81s、约3.13s/步；第512步control loss9.16980、appearance9.43657，均有限。损失有波动，不能据此前几步低loss宣布精度改善；预计拟合仍在03:25—03:30完成。01:38:33实际核验训练和CPU审计70598/原生补评估70823/正式条件queue71123全部存活；正式流程仍未消费val。完整三数据集目标未完成，保护结果无更新。
+
+
+### 20.146 补齐Nr/Sr联合检测的139个额外场景；Scan固定配对持续（2026-09-08T01:59:03.642245+08:00）
+
+继续检查20.145发现：1061个场景是Nr/Sr语言训练集合的并集，不能直接当成joint_det完整输入集合。实际固定625文件源码的load_scannet_annos在原train_v3scans.pkl上返回1199行/1199场景，与语言集合交集1060；缺139个检测场景，另保留语言独有scene0154_00，两者并集1200。全部场景都有预测类别记录；未修改原检测行排除、重复因子、数据划分或训练配方。
+
+新增extend_referit3d_joint_detection_slots.py，仅CPU调用原_get_scene_objects补139场景。01:55:14启动PID72038，01:56:54已观察export.exit=0及完整receipt；原1061记录除添加scannet集合标签外全部不变。检测子集38304有效槽，27017槽满足既定384点编码要求，10个场景中间槽不连续；继续要求按真实slot_ids散射，不能假定前N槽连续。此为输入覆盖修复，不是REC/Anchor recall提升，不使用target_id或实例mask清洗框内点。
+
+完整1200场景metadata5975801字节，SHA11cc74f6a2f3aef4b3b94e4d892541e256a1943466ec56014f03f24e92ddcf73；远端/root/autodl-tmp/mcln_referit3d_joint_detection_slots_20260908_v1/scene_slots.json及本地临时副本。01:57:37本地独立重算集合差、逐槽长度/可用性/索引和原1061记录保持PASS。导出处理及最终重哈希30.816s，不含场景加载；0GPU/模型forward、0embedding、0optimizer、0正式行。原1061产物保留，全量几何元数据不进Git，source/manifest/receipt/log/recount归档referit3d_joint_detection_slots_20260908_v1。
+
+01:51:46主训练PID70238实际存活并记录640/2482更新/臂，累计2000.27s；预计拟合仍03:25—03:30结束，随后既定终点评估/CPU审计/原生补评估/条件正式9508。01:56:54再次核验同一主进程及70598、70823、71123三条接续队列均存活，没有重启训练。数据盘剩8.89GB、本地C约4.60GB，未删保护权重。最新正式指标未更新，loss波动不作质量判断。
+
+下一步仍先完成Scan固定配对及正式门槛；Nr/Sr后续接入需要解决增强输入与canonical外观之间的明确绑定，再做真实模型/梯度检查和预训练初始化。当前补齐的是原joint_det配方的场景/槽metadata，不能宣称Nr/Sr训练已就绪或已启动。用户要求的三数据集REC目标保持，Nr/Sr Mask继续豁免，完整Goal未完成。

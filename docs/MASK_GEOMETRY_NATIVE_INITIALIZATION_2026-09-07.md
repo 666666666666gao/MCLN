@@ -2,6 +2,8 @@
 
 本页对应当前`native_gt_mask_geometry`固定候选。它是后续训练接续的格式准备，不代表ScanRefer已经晋级，也不代表Nr3D/Sr3D已获得新结果。
 
+2026-09-07 22:06终态更新：该固定候选模块REC筛选失败，完整系统6677/6448低于起点的@.25及GT控制的@.25。本页代码及CPU准备仅作为历史可复用接口保留；失败终点不导出、不启动Nr/Sr。原生辅助默认关闭，未因代码准备通过而获得训练晋级。详见[终态报告](SCANREFER_MASK_GEOMETRY_TERMINAL_RESULT_2026-09-07.md)。
+
 当前Scan终点保存84项core参数和实际optimizer；原生`main_utils.load_checkpoint`需要完整、带`module.`前缀的模型state。新增`export_mask_geometry_initialization.py`以保护E71补齐1144项，只覆盖`decoder.5`、`prediction_heads.5`、`x_query`、`x_mask`、`rel_encoder`的84项参数。注意力的`in_proj_weight/in_proj_bias`明确包含在内，全部BN运行均值、方差和计数器保持E71值。导出不携带旧optimizer/scheduler，使用现有`--model_only_initialization`，无需改原生加载器。
 
 导出CLI先独立重算既有正式9508行及晋级条件，核对正式审计、输入与训练终点SHA；仅接受固定候选`native_gt_mask_geometry`、2482步和正确E71来源。不会根据控制臂更好而换成控制，也不重新运行正式评估。

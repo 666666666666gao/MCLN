@@ -1,0 +1,166 @@
+{
+  "comparisons": {
+    "candidate_vs_control": {
+      "all_rows": 6887,
+      "same_query_rows": 6708,
+      "changed_query_rows": 179,
+      "same_query_050": {
+        "soft_iou": {
+          "old_hits": 5538,
+          "new_hits": 5823,
+          "repair": 319,
+          "damage": 34,
+          "net": 285
+        },
+        "hard_iou": {
+          "old_hits": 5892,
+          "new_hits": 5900,
+          "repair": 34,
+          "damage": 26,
+          "net": 8
+        },
+        "rec_iou": {
+          "old_hits": 6275,
+          "new_hits": 6282,
+          "repair": 19,
+          "damage": 12,
+          "net": 7
+        }
+      },
+      "soft_repairs": {
+        "repair": {
+          "rows": 328,
+          "hard_effects": {
+            "old_hits": 306,
+            "new_hits": 306,
+            "repair": 1,
+            "damage": 1,
+            "net": 0
+          },
+          "deployed_effects": {
+            "old_hits": 298,
+            "new_hits": 297,
+            "repair": 0,
+            "damage": 1,
+            "net": -1
+          },
+          "old_hard_already_passed": 306
+        },
+        "damage": {
+          "rows": 35,
+          "hard_effects": {
+            "old_hits": 4,
+            "new_hits": 4,
+            "repair": 0,
+            "damage": 0,
+            "net": 0
+          },
+          "deployed_effects": {
+            "old_hits": 28,
+            "new_hits": 28,
+            "repair": 0,
+            "damage": 0,
+            "net": 0
+          },
+          "old_hard_already_passed": 4
+        }
+      }
+    },
+    "candidate_vs_baseline": {
+      "all_rows": 6887,
+      "same_query_rows": 5437,
+      "changed_query_rows": 1450,
+      "same_query_050": {
+        "soft_iou": {
+          "old_hits": 4695,
+          "new_hits": 4732,
+          "repair": 63,
+          "damage": 26,
+          "net": 37
+        },
+        "hard_iou": {
+          "old_hits": 4773,
+          "new_hits": 4778,
+          "repair": 18,
+          "damage": 13,
+          "net": 5
+        },
+        "rec_iou": {
+          "old_hits": 5066,
+          "new_hits": 5088,
+          "repair": 31,
+          "damage": 9,
+          "net": 22
+        }
+      },
+      "soft_repairs": {
+        "repair": {
+          "rows": 85,
+          "hard_effects": {
+            "old_hits": 65,
+            "new_hits": 65,
+            "repair": 0,
+            "damage": 0,
+            "net": 0
+          },
+          "deployed_effects": {
+            "old_hits": 73,
+            "new_hits": 74,
+            "repair": 1,
+            "damage": 0,
+            "net": 1
+          },
+          "old_hard_already_passed": 65
+        },
+        "damage": {
+          "rows": 35,
+          "hard_effects": {
+            "old_hits": 16,
+            "new_hits": 16,
+            "repair": 0,
+            "damage": 0,
+            "net": 0
+          },
+          "deployed_effects": {
+            "old_hits": 31,
+            "new_hits": 32,
+            "repair": 1,
+            "damage": 0,
+            "net": 1
+          },
+          "old_hard_already_passed": 16
+        }
+      }
+    }
+  },
+  "geometry_gap": {
+    "baseline": {
+      "valid_hard_rows": 6784,
+      "mean_abs_soft_hard_iou_gap": 0.08161112447748375,
+      "median_abs_soft_hard_iou_gap": 0.026000291109085083,
+      "mean_normalized_face_gap": 0.06610560296958944,
+      "median_normalized_face_gap": 0.008444962656468923,
+      "soft050_fail_hard050_pass": 372,
+      "soft050_pass_hard050_fail": 220
+    },
+    "control": {
+      "valid_hard_rows": 6788,
+      "mean_abs_soft_hard_iou_gap": 0.10403943061814894,
+      "median_abs_soft_hard_iou_gap": 0.031002551317214966,
+      "mean_normalized_face_gap": 0.10701883720126752,
+      "median_normalized_face_gap": 0.010877678836465163,
+      "soft050_fail_hard050_pass": 602,
+      "soft050_pass_hard050_fail": 205
+    },
+    "candidate": {
+      "valid_hard_rows": 6785,
+      "mean_abs_soft_hard_iou_gap": 0.07847700156147921,
+      "median_abs_soft_hard_iou_gap": 0.02616053819656372,
+      "mean_normalized_face_gap": 0.056571019724617956,
+      "median_normalized_face_gap": 0.00858295024262072,
+      "soft050_fail_hard050_pass": 327,
+      "soft050_pass_hard050_fail": 219
+    }
+  },
+  "output_sha256": "fc269bfc392d616b3d5f17807cd29019193764193adbe5d9796d72a1c0851e58"
+}

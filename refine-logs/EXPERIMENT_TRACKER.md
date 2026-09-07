@@ -1,13 +1,14 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T20:37:39.247422+08:00. Section20.139: complete native source packaging PASS;Scan fixed training ongoing, no terminal quality yet.
+Updated: 2026-09-07T22:25:57.588002+08:00. Section20.140: Mask geometry pair complete, integrity PASS / fixed REC FAIL; no live training or formal/Nr/Sr continuation.
 
 | Experiment | Current state | Decision |
 |---|---|---|
-| Native Mask geometry complete source | 622 files bound;normal CLI and7 module imports verified;6existing CPU criterion tests PASS | No package-path overlay or canonical overwrite;real endpoint/GPU training still conditional on Scan promotion |
-| Native Mask geometry loss integration | 11CPU checks PASS using actual native loss/Hungarian/SetCriterion on synthetic tensors;default off;ScanNet detection rows excluded | No GPU/dataset training or new weights;actual Nr/Sr entry only after formalScan promotion |
+| Mask geometry surrogate transfer | Saved6887 rows, no new inference;328soft50 repairs,306hard50 already correct | Same328hard net0/deployed−1;full soft+293 versus hard+5;no surrogate gain claim as REC |
+| Native Mask geometry complete source | 622-file preparation and6CPU checks retained | Candidate failed;no real endpoint export or Nr/Sr launch;source readiness is not promotion |
+| Native Mask geometry loss integration | 11CPU checks retained;default off;detection rows excluded | Fixed auxiliary training failed Scan screen;no Nr/Sr activation |
 | Mask geometry84-core native initialization | 8CPU format tests and actual Nr/Sr native loaders PASS;1144state exact,84changed/1060preserved on synthetic fixture | Ready only for future formally promoted endpoint;GPU0/actualtraining0;temporary599MBfixture deleted |
-| Mask geometry GT supervision | 9CPU tests,16fit native gradients and2 disposable steps/arm PASS;84allowed/82changed;no checkpoint | Baseline6887 exact/recount PASS;20:22 actual1216/2482 perarm,Python62969 live;queue63084 confirmed20:23;no new formal result |
+| Mask geometry GT supervision | Complete2482/arm and6887 terminal;integrity PASS, fixed REC FAIL | System6677/6448 vs6684/6426 and6679/6442;sealed,noformal/Nr/Sr |
 | Probability geometry prototype | Same16fit/251valid candidates;hard210/208,soft211/210;meanIoU slightly lower | Direct native gradients verified;no deployment replacement or trained quality result |
 | Hard Mask geometry gradient audit | 16fit,1144state unchanged,independent recount PASS | Pure Mask coordinates have no Mask autograd route;score statistics do;not full failure attribution |
 | Historical instance-overlap attribution | CPU complete;141 scenes,152128 stage records;6tests and independent recount PASS | Final50 net−72; root-max proxy subgroup−60; lost variant repairs dominate, no new method/formal result |

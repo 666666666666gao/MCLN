@@ -38,3 +38,19 @@ CUDA_VISIBLE_DEVICES= /root/miniconda3/envs/bdetr/bin/python \
 本次没有GPU前向、优化器更新、权重写入或正式评估，当前Scan运行文件逐项SHA保持不变。完整证据位于`refine-logs/mask_geometry_native_loss_cpu_20260907_v2`。这完成原生损失接入与CPU集成核验；正式Scan晋级后的真实84项终点导出、Nr/Sr真实数据GPU梯度与训练仍未执行。不得在当前运行中开启此新入口，否则会与专用配对循环重复计算辅助；后续原生训练使用该入口时仅由原生criterion加入一次。
 
 发布时发现旧canonical远端目录中的`models/losses.py`比Git当前版本缺少已有接口，因此本轮保留其原文件，未直接覆盖。新`main_utils.py`和`models/losses.py`已发布GitHub，并保存于已检查的远端`/root/autodl-tmp/mcln_mask_geometry_native_loss_cpu_20260907_v2`隔离目录。后续正式训练须绑定新源码快照及完整依赖，不能直接在旧canonical目录使用新CLI；当前Scan的冻结快照不受影响。
+
+## 完整原生源码快照
+
+上述隔离入口已进一步整理为完整的622文件源码目录：
+
+```text
+/root/autodl-tmp/mcln_native_mask_geometry_source_preparation_20260907_v1/model_source
+```
+
+以已核验的618文件原生依赖为基础，覆盖Git提交`9c7c9f44ecfdada79cddfcfedfe2cfd47957b935`中的`main_utils.py`、`models/losses.py`及当前辅助/测试文件。全部文件SHA记录在`native_source_manifest.json`，其SHA为`dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a27693030`。这是一份明确组成的快照，不声称其全部文件来自同一个Git提交。
+
+2026-09-07 20:34:41 CST在原Python3.7/Torch1.10环境完成普通入口检查：`train_dist_mod.py --help`成功；Nr3D/Sr3D参数分别构造实际原生criterion，当前辅助开启、旧local/extent关闭；7个关键模块均从新目录正常导入，无测试包`__path__`重写。该完整目录内的6项现有原生辅助集成测试通过，使用合成点云/Mask，不是6项新增实验。
+
+首次路径检查因Python命名空间把同一个`scripts`目录列出三次而失败；实际模块来源均在新快照内。仅将检查器从列表长度相等改为解析后的目录集合相等，未改变任何模型源码或增加兼容加载逻辑。初次日志、路径诊断与修正后的结果均保留。
+
+这一步没有GPU前向、优化器更新、新权重或正式评估；运行中Scan源码前后逐项不变。后续使用此完整目录绑定正式通过的真实84项初始化，再做实际Nr/Sr数据批次和训练预算核验。旧range预检仍属于失败extent版本，不能复用其启动入口；`nr_contract.json`中的历史评估参数（含`--eval`、旧E57路径和`max_epoch=240`）也不是获准的新训练命令。当前未启动Nr/Sr或恢复长期baseline重训。

@@ -1,0 +1,755 @@
+usage: train_dist_mod.py [-h] [--num_target NUM_TARGET] [--sampling SAMPLING]
+                         [--num_encoder_layers NUM_ENCODER_LAYERS]
+                         [--num_decoder_layers NUM_DECODER_LAYERS]
+                         [--self_position_embedding SELF_POSITION_EMBEDDING]
+                         [--self_attend] [--model MODEL]
+                         [--use_candidate_local_visual]
+                         [--candidate_local_visual_lr CANDIDATE_LOCAL_VISUAL_LR]
+                         [--candidate_local_visual_variant {local,center,extent}]
+                         [--query_points_obj_topk QUERY_POINTS_OBJ_TOPK]
+                         [--use_contrastive_align] [--use_soft_token_loss]
+                         [--detect_intermediate] [--joint_det]
+                         [--use_source_choice_selector]
+                         [--source_choice_selector_train_only]
+                         [--source_choice_selector_lr SOURCE_CHOICE_SELECTOR_LR]
+                         [--source_choice_selector_hidden_dim SOURCE_CHOICE_SELECTOR_HIDDEN_DIM]
+                         [--source_choice_selector_loss_weight SOURCE_CHOICE_SELECTOR_LOSS_WEIGHT]
+                         [--source_choice_selector_sources SOURCE_CHOICE_SELECTOR_SOURCES]
+                         [--source_choice_selector_default_source SOURCE_CHOICE_SELECTOR_DEFAULT_SOURCE]
+                         [--source_choice_selector_choice_target {precision_gain_default_sourcewise_focal_bce,precision_gain_default_ce}]
+                         [--source_choice_selector_min_iou_gap SOURCE_CHOICE_SELECTOR_MIN_IOU_GAP]
+                         [--use_source_moe] [--source_moe_train_only]
+                         [--source_moe_gate_train_only]
+                         [--source_moe_gate_new_heads_only]
+                         [--source_moe_gate_resume_optimizer]
+                         [--source_moe_shared_source SOURCE_MOE_SHARED_SOURCE]
+                         [--source_moe_top_k SOURCE_MOE_TOP_K]
+                         [--source_moe_balance_loss_weight SOURCE_MOE_BALANCE_LOSS_WEIGHT]
+                         [--source_moe_rank_loss_weight SOURCE_MOE_RANK_LOSS_WEIGHT]
+                         [--source_moe_mask_rank_loss_weight SOURCE_MOE_MASK_RANK_LOSS_WEIGHT]
+                         [--source_moe_rank_temperature SOURCE_MOE_RANK_TEMPERATURE]
+                         [--source_moe_anchor_loss_weight SOURCE_MOE_ANCHOR_LOSS_WEIGHT]
+                         [--source_moe_anchor_margin SOURCE_MOE_ANCHOR_MARGIN]
+                         [--source_moe_query_layers SOURCE_MOE_QUERY_LAYERS]
+                         [--source_moe_query_heads SOURCE_MOE_QUERY_HEADS]
+                         [--source_moe_query_dropout SOURCE_MOE_QUERY_DROPOUT]
+                         [--source_moe_query_max_delta SOURCE_MOE_QUERY_MAX_DELTA]
+                         [--source_moe_lr SOURCE_MOE_LR]
+                         [--source_moe_use_fallback_gate]
+                         [--source_moe_gate_hidden_dim SOURCE_MOE_GATE_HIDDEN_DIM]
+                         [--source_moe_gate_candidate_top_k SOURCE_MOE_GATE_CANDIDATE_TOP_K]
+                         [--source_moe_gate_break_cost SOURCE_MOE_GATE_BREAK_COST]
+                         [--source_moe_gate_decision_margin SOURCE_MOE_GATE_DECISION_MARGIN]
+                         [--source_moe_gate_mask_utility_weight SOURCE_MOE_GATE_MASK_UTILITY_WEIGHT]
+                         [--source_moe_gate_uncertainty_weight SOURCE_MOE_GATE_UNCERTAINTY_WEIGHT]
+                         [--source_moe_gate_use_evidence_features]
+                         [--source_moe_gate_context_layers SOURCE_MOE_GATE_CONTEXT_LAYERS]
+                         [--source_moe_gate_context_heads SOURCE_MOE_GATE_CONTEXT_HEADS]
+                         [--source_moe_gate_context_dropout SOURCE_MOE_GATE_CONTEXT_DROPOUT]
+                         [--source_moe_gate_action_mode {decision,expected_utility,direct_utility,hierarchical_utility,pairwise_verifier,topn_pairwise_verifier,topn_dual_evidence_verifier,topn_absolute_quality_delta,cascade_absolute_quality_correction,cascade_opportunity_quality_correction,cascade_opportunity_verified_correction,cascade_joint_risk_correction,cascade_v19_fallback_set_correction,cascade_v19_rich_set_correction,cascade_v23_dense_quality_correction,cascade_v24_relative_risk_correction,cascade_v25_pairwise_calibrated_correction,cascade_v26_prior_restored_pairwise_correction,cascade_v28_selected_abstention_correction,cascade_v29_counterfactual_selected_correction,cascade_v37_counterfactual_benefit_hazard_correction,cascade_v38_complementary_logodds_correction,cascade_v39_hazard_residual_correction}]
+                         [--source_moe_gate_loss_weight SOURCE_MOE_GATE_LOSS_WEIGHT]
+                         [--source_moe_gate_mask_loss_weight SOURCE_MOE_GATE_MASK_LOSS_WEIGHT]
+                         [--source_moe_gate_focal_gamma SOURCE_MOE_GATE_FOCAL_GAMMA]
+                         [--source_moe_gate_false_override_weight SOURCE_MOE_GATE_FALSE_OVERRIDE_WEIGHT]
+                         [--source_moe_gate_objective {balanced_focal,calibrated_utility,balanced_calibrated_utility,hierarchical_risk_calibrated,pairwise_risk_calibrated,topn_risk_calibrated,topn_dual_risk_calibrated,topn_absolute_quality_calibrated,cascade_absolute_quality_calibrated,cascade_opportunity_balanced_calibrated,cascade_opportunity_verified_calibrated,cascade_joint_risk_calibrated,cascade_v19_fallback_set_risk_calibrated,cascade_v19_rich_set_empirical_risk,cascade_v23_dense_quality_risk,cascade_v24_relative_risk,cascade_v25_pairwise_calibrated_risk,cascade_v26_prior_restored_pairwise_risk,cascade_v27_uncertainty_quality_risk,cascade_v28_selected_abstention_risk,cascade_v29_counterfactual_selected_risk,cascade_v37_counterfactual_benefit_hazard_risk,cascade_v38_complementary_logodds_risk,cascade_v39_hazard_residual_risk}]
+                         [--source_moe_gate_setwise_temperature SOURCE_MOE_GATE_SETWISE_TEMPERATURE]
+                         [--source_moe_gate_boundary_loss_weight SOURCE_MOE_GATE_BOUNDARY_LOSS_WEIGHT]
+                         [--source_moe_gate_lr SOURCE_MOE_GATE_LR]
+                         [--mask_head_lr_multiplier MASK_HEAD_LR_MULTIPLIER]
+                         [--use_decoder_query_adapter]
+                         [--decoder_query_adapter_train_only]
+                         [--decoder_query_adapter_lr DECODER_QUERY_ADAPTER_LR]
+                         [--decoder_query_adapter_hidden_dim DECODER_QUERY_ADAPTER_HIDDEN_DIM]
+                         [--decoder_query_adapter_heads DECODER_QUERY_ADAPTER_HEADS]
+                         [--decoder_query_adapter_dropout DECODER_QUERY_ADAPTER_DROPOUT]
+                         [--decoder_query_adapter_max_delta DECODER_QUERY_ADAPTER_MAX_DELTA]
+                         [--use_query_mask_fusion_calibrator]
+                         [--query_mask_fusion_train_only]
+                         [--query_mask_fusion_resume_optimizer]
+                         [--query_mask_fusion_lr QUERY_MASK_FUSION_LR]
+                         [--query_mask_fusion_hidden_dim QUERY_MASK_FUSION_HIDDEN_DIM]
+                         [--query_mask_fusion_dropout QUERY_MASK_FUSION_DROPOUT]
+                         [--query_mask_fusion_max_delta QUERY_MASK_FUSION_MAX_DELTA]
+                         [--use_egqs_mask_refiner]
+                         [--egqs_mask_refiner_train_only]
+                         [--egqs_mask_refiner_lr EGQS_MASK_REFINER_LR]
+                         [--egqs_mask_refiner_arch {egqs,graph}]
+                         [--egqs_mask_refiner_hidden_dim EGQS_MASK_REFINER_HIDDEN_DIM]
+                         [--egqs_mask_refiner_max_delta EGQS_MASK_REFINER_MAX_DELTA]
+                         [--egqs_mask_refiner_components {content,evidence,geometry,all}]
+                         [--egqs_mask_refiner_graph_mode {spatial,bilateral}]
+                         [--egqs_mask_refiner_neighbor_count EGQS_MASK_REFINER_NEIGHBOR_COUNT]
+                         [--use_joint_query_quality_reranker]
+                         [--joint_query_quality_train_only]
+                         [--joint_query_quality_lr JOINT_QUERY_QUALITY_LR]
+                         [--joint_query_quality_hidden_dim JOINT_QUERY_QUALITY_HIDDEN_DIM]
+                         [--joint_query_quality_heads JOINT_QUERY_QUALITY_HEADS]
+                         [--joint_query_quality_layers JOINT_QUERY_QUALITY_LAYERS]
+                         [--joint_query_quality_dropout JOINT_QUERY_QUALITY_DROPOUT]
+                         [--joint_query_quality_max_delta JOINT_QUERY_QUALITY_MAX_DELTA]
+                         [--joint_query_quality_mask_weight JOINT_QUERY_QUALITY_MASK_WEIGHT]
+                         [--joint_query_quality_score_weight JOINT_QUERY_QUALITY_SCORE_WEIGHT]
+                         [--joint_query_quality_direct_residual_scale JOINT_QUERY_QUALITY_DIRECT_RESIDUAL_SCALE]
+                         [--joint_query_quality_use_metric_aligned_utility]
+                         [--joint_query_quality_preserve_parent_score]
+                         [--joint_query_quality_candidate_promotion_margin JOINT_QUERY_QUALITY_CANDIDATE_PROMOTION_MARGIN]
+                         [--joint_query_quality_use_parent_transition_advantage]
+                         [--joint_query_quality_use_decomposed_transition_advantage]
+                         [--joint_query_quality_use_setwise_tier_advantage]
+                         [--joint_query_quality_use_decoupled_setwise_heads]
+                         [--joint_query_quality_use_factorized_setwise_safety]
+                         [--joint_query_quality_use_factorized_setwise_risk_bound]
+                         [--joint_query_quality_use_setwise_safety_veto_gate]
+                         [--joint_query_quality_use_cost_calibrated_setwise_risk_bound]
+                         [--joint_query_quality_use_setwise_safety_slack_quantile_bound]
+                         [--joint_query_quality_use_setwise_safety_slack_pairwise_order]
+                         [--joint_query_quality_use_proposal_conditioned_safety]
+                         [--joint_query_quality_use_parent_referenced_safety]
+                         [--joint_query_quality_use_coupled_safe_repair_witness]
+                         [--joint_query_quality_use_bidirectional_coupled_boundary]
+                         [--joint_query_quality_use_centered_coupled_separation]
+                         [--joint_query_quality_use_hazard_conditioned_coupled_separation]
+                         [--joint_query_quality_use_monotonic_box_safety_folding]
+                         [--joint_query_quality_use_same_candidate_branchwise_witness]
+                         [--joint_query_quality_use_parent_non_degradation_certificate]
+                         [--joint_query_quality_use_criterion_responsible_hazard_attribution]
+                         [--joint_query_quality_use_independent_joint_hazard_certificate]
+                         [--joint_query_quality_use_frozen_raw_joint_hazard_features]
+                         [--joint_query_quality_use_factorized_hit_advantage]
+                         [--joint_query_quality_use_factorized_nested_dominance]
+                         [--joint_query_quality_factorized_hit_break_cost JOINT_QUERY_QUALITY_FACTORIZED_HIT_BREAK_COST]
+                         [--joint_query_quality_parent_transition_break_cost JOINT_QUERY_QUALITY_PARENT_TRANSITION_BREAK_COST]
+                         [--joint_query_quality_parent_transition_candidate_top_k JOINT_QUERY_QUALITY_PARENT_TRANSITION_CANDIDATE_TOP_K]
+                         [--joint_query_quality_use_mask_calibration]
+                         [--joint_query_quality_max_mask_alpha_delta JOINT_QUERY_QUALITY_MAX_MASK_ALPHA_DELTA]
+                         [--joint_query_quality_max_mask_logit_bias JOINT_QUERY_QUALITY_MAX_MASK_LOGIT_BIAS]
+                         [--joint_query_quality_use_source_mask_evidence]
+                         [--joint_query_quality_use_gate_evidence]
+                         [--joint_query_quality_use_spatial_mask_refiner]
+                         [--joint_query_quality_spatial_mask_hidden_dim JOINT_QUERY_QUALITY_SPATIAL_MASK_HIDDEN_DIM]
+                         [--joint_query_quality_max_spatial_mask_delta JOINT_QUERY_QUALITY_MAX_SPATIAL_MASK_DELTA]
+                         [--joint_query_quality_use_adaptive_source_mixing]
+                         [--joint_query_quality_use_source_distribution_reliability]
+                         [--joint_query_quality_source_names JOINT_QUERY_QUALITY_SOURCE_NAMES]
+                         [--joint_query_quality_max_source_mix_delta JOINT_QUERY_QUALITY_MAX_SOURCE_MIX_DELTA]
+                         [--joint_query_quality_source_mix_temperature JOINT_QUERY_QUALITY_SOURCE_MIX_TEMPERATURE]
+                         [--joint_query_quality_loss_weight JOINT_QUERY_QUALITY_LOSS_WEIGHT]
+                         [--joint_query_quality_temperature JOINT_QUERY_QUALITY_TEMPERATURE]
+                         [--joint_query_quality_aux_loss_weight JOINT_QUERY_QUALITY_AUX_LOSS_WEIGHT]
+                         [--joint_query_quality_anchor_loss_weight JOINT_QUERY_QUALITY_ANCHOR_LOSS_WEIGHT]
+                         [--joint_query_quality_anchor_margin JOINT_QUERY_QUALITY_ANCHOR_MARGIN]
+                         [--joint_query_quality_bidirectional_anchor]
+                         [--joint_query_quality_anchor_margin_050 JOINT_QUERY_QUALITY_ANCHOR_MARGIN_050]
+                         [--joint_query_quality_metric_utility_temperature JOINT_QUERY_QUALITY_METRIC_UTILITY_TEMPERATURE]
+                         [--joint_query_quality_pairwise_loss_weight JOINT_QUERY_QUALITY_PAIRWISE_LOSS_WEIGHT]
+                         [--joint_query_quality_listwise_loss_weight JOINT_QUERY_QUALITY_LISTWISE_LOSS_WEIGHT]
+                         [--joint_query_quality_transition_loss_weight JOINT_QUERY_QUALITY_TRANSITION_LOSS_WEIGHT]
+                         [--joint_query_quality_setwise_repair_boundary_loss_weight JOINT_QUERY_QUALITY_SETWISE_REPAIR_BOUNDARY_LOSS_WEIGHT]
+                         [--joint_query_quality_setwise_negative_tail_loss_weight JOINT_QUERY_QUALITY_SETWISE_NEGATIVE_TAIL_LOSS_WEIGHT]
+                         [--joint_query_quality_setwise_rank_loss_weight JOINT_QUERY_QUALITY_SETWISE_RANK_LOSS_WEIGHT]
+                         [--joint_query_quality_setwise_dense_safety_loss_weight JOINT_QUERY_QUALITY_SETWISE_DENSE_SAFETY_LOSS_WEIGHT]
+                         [--joint_query_quality_setwise_balanced_safety_loss_weight JOINT_QUERY_QUALITY_SETWISE_BALANCED_SAFETY_LOSS_WEIGHT]
+                         [--joint_query_quality_setwise_factorized_safety_loss_weight JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_SAFETY_LOSS_WEIGHT]
+                         [--joint_query_quality_setwise_factorized_risk_bound_loss_weight JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_RISK_BOUND_LOSS_WEIGHT]
+                         [--joint_query_quality_factorized_hit_loss_weight JOINT_QUERY_QUALITY_FACTORIZED_HIT_LOSS_WEIGHT]
+                         [--joint_query_quality_factorized_pair_loss_weight JOINT_QUERY_QUALITY_FACTORIZED_PAIR_LOSS_WEIGHT]
+                         [--joint_query_quality_transition_break_cost JOINT_QUERY_QUALITY_TRANSITION_BREAK_COST]
+                         [--joint_query_quality_transition_neutral_weight JOINT_QUERY_QUALITY_TRANSITION_NEUTRAL_WEIGHT]
+                         [--joint_query_quality_deploy_candidate_top_k JOINT_QUERY_QUALITY_DEPLOY_CANDIDATE_TOP_K]
+                         [--joint_query_quality_source_candidate_top_k JOINT_QUERY_QUALITY_SOURCE_CANDIDATE_TOP_K]
+                         [--joint_query_quality_oracle_candidate_top_k JOINT_QUERY_QUALITY_ORACLE_CANDIDATE_TOP_K]
+                         [--joint_query_quality_source_mix_loss_weight JOINT_QUERY_QUALITY_SOURCE_MIX_LOSS_WEIGHT]
+                         [--joint_query_quality_source_mix_alignment_temperature JOINT_QUERY_QUALITY_SOURCE_MIX_ALIGNMENT_TEMPERATURE]
+                         [--joint_query_quality_source_mix_query_focus_weight JOINT_QUERY_QUALITY_SOURCE_MIX_QUERY_FOCUS_WEIGHT]
+                         [--joint_query_quality_candidate_mask_loss_weight JOINT_QUERY_QUALITY_CANDIDATE_MASK_LOSS_WEIGHT]
+                         [--joint_query_quality_candidate_lovasz_loss_weight JOINT_QUERY_QUALITY_CANDIDATE_LOVASZ_LOSS_WEIGHT]
+                         [--joint_query_quality_candidate_mask_top_k JOINT_QUERY_QUALITY_CANDIDATE_MASK_TOP_K]
+                         [--use_sacr_source]
+                         [--legacy_scene_graph_cache LEGACY_SCENE_GRAPH_CACHE]
+                         [--legacy_scene_graph_cache_strict]
+                         [--legacy_scene_graph_cache_expected_target_selection {,first_object,conservative_syntax_v1}]
+                         [--legacy_scene_graph_cache_expected_sha256 LEGACY_SCENE_GRAPH_CACHE_EXPECTED_SHA256]
+                         [--use_sacr_score_refiner]
+                         [--sacr_score_refiner_train_only]
+                         [--use_parent_relative_text_verifier]
+                         [--parent_relative_text_verifier_train_only]
+                         [--parent_relative_text_verifier_counterfactual_training]
+                         [--parent_relative_text_verifier_top_k PARENT_RELATIVE_TEXT_VERIFIER_TOP_K]
+                         [--parent_relative_text_verifier_max_candidates PARENT_RELATIVE_TEXT_VERIFIER_MAX_CANDIDATES]
+                         [--parent_relative_text_verifier_hidden_dim PARENT_RELATIVE_TEXT_VERIFIER_HIDDEN_DIM]
+                         [--parent_relative_text_verifier_heads PARENT_RELATIVE_TEXT_VERIFIER_HEADS]
+                         [--parent_relative_text_verifier_dropout PARENT_RELATIVE_TEXT_VERIFIER_DROPOUT]
+                         [--parent_relative_text_verifier_max_parent_score_gap PARENT_RELATIVE_TEXT_VERIFIER_MAX_PARENT_SCORE_GAP]
+                         [--parent_relative_text_verifier_promotion_margin PARENT_RELATIVE_TEXT_VERIFIER_PROMOTION_MARGIN]
+                         [--parent_relative_text_verifier_min_parse_confidence PARENT_RELATIVE_TEXT_VERIFIER_MIN_PARSE_CONFIDENCE]
+                         [--parent_relative_text_verifier_min_anchor_mass PARENT_RELATIVE_TEXT_VERIFIER_MIN_ANCHOR_MASS]
+                         [--parent_relative_text_verifier_promotion_epsilon PARENT_RELATIVE_TEXT_VERIFIER_PROMOTION_EPSILON]
+                         [--parent_relative_text_verifier_detach_inputs]
+                         [--parent_relative_text_verifier_lr PARENT_RELATIVE_TEXT_VERIFIER_LR]
+                         [--parent_relative_text_verifier_loss_weight PARENT_RELATIVE_TEXT_VERIFIER_LOSS_WEIGHT]
+                         [--parent_relative_text_verifier_positive_margin PARENT_RELATIVE_TEXT_VERIFIER_POSITIVE_MARGIN]
+                         [--parent_relative_text_verifier_neutral_margin PARENT_RELATIVE_TEXT_VERIFIER_NEUTRAL_MARGIN]
+                         [--fpr_scene_disjoint_audit]
+                         [--fpr_scene_disjoint_av4_audit]
+                         [--fpr_scene_disjoint_fold FPR_SCENE_DISJOINT_FOLD]
+                         [--fpr_scene_disjoint_expected_fit_scenes FPR_SCENE_DISJOINT_EXPECTED_FIT_SCENES]
+                         [--fpr_scene_disjoint_expected_holdout_scenes FPR_SCENE_DISJOINT_EXPECTED_HOLDOUT_SCENES]
+                         [--fpr_scene_disjoint_expected_fit_samples FPR_SCENE_DISJOINT_EXPECTED_FIT_SAMPLES]
+                         [--fpr_scene_disjoint_expected_holdout_samples FPR_SCENE_DISJOINT_EXPECTED_HOLDOUT_SAMPLES]
+                         [--fpr_scene_disjoint_checkpoint_sha256 FPR_SCENE_DISJOINT_CHECKPOINT_SHA256]
+                         [--sacr_score_use_parent_relative_abstention]
+                         [--sacr_score_use_relation_counterfactual]
+                         [--sacr_score_parent_gate_hidden_dim SACR_SCORE_PARENT_GATE_HIDDEN_DIM]
+                         [--sacr_score_refiner_lr SACR_SCORE_REFINER_LR]
+                         [--sacr_score_refiner_loss_weight SACR_SCORE_REFINER_LOSS_WEIGHT]
+                         [--sacr_score_temperature SACR_SCORE_TEMPERATURE]
+                         [--sacr_score_mask_weight SACR_SCORE_MASK_WEIGHT]
+                         [--sacr_score_max_delta SACR_SCORE_MAX_DELTA]
+                         [--sacr_score_min_box_advantage SACR_SCORE_MIN_BOX_ADVANTAGE]
+                         [--sacr_score_promotion_margin SACR_SCORE_PROMOTION_MARGIN]
+                         [--sacr_counterfactual_parent_top_k SACR_COUNTERFACTUAL_PARENT_TOP_K]
+                         [--sacr_counterfactual_target_tolerance SACR_COUNTERFACTUAL_TARGET_TOLERANCE]
+                         [--sacr_counterfactual_attribute_tolerance SACR_COUNTERFACTUAL_ATTRIBUTE_TOLERANCE]
+                         [--sacr_counterfactual_geometry_threshold SACR_COUNTERFACTUAL_GEOMETRY_THRESHOLD]
+                         [--sacr_counterfactual_iou_gap SACR_COUNTERFACTUAL_IOU_GAP]
+                         [--sacr_counterfactual_correct_iou_threshold SACR_COUNTERFACTUAL_CORRECT_IOU_THRESHOLD]
+                         [--sacr_counterfactual_pair_margin SACR_COUNTERFACTUAL_PAIR_MARGIN]
+                         [--sacr_counterfactual_max_negatives SACR_COUNTERFACTUAL_MAX_NEGATIVES]
+                         [--sacr_counterfactual_relation_scale SACR_COUNTERFACTUAL_RELATION_SCALE]
+                         [--sacr_counterfactual_deployment_threshold SACR_COUNTERFACTUAL_DEPLOYMENT_THRESHOLD]
+                         [--relation_counterfactual_aux_loss_weight RELATION_COUNTERFACTUAL_AUX_LOSS_WEIGHT]
+                         [--relation_counterfactual_aux_parent_top_k RELATION_COUNTERFACTUAL_AUX_PARENT_TOP_K]
+                         [--relation_counterfactual_aux_target_tolerance RELATION_COUNTERFACTUAL_AUX_TARGET_TOLERANCE]
+                         [--relation_counterfactual_aux_attribute_tolerance RELATION_COUNTERFACTUAL_AUX_ATTRIBUTE_TOLERANCE]
+                         [--relation_counterfactual_aux_geometry_threshold RELATION_COUNTERFACTUAL_AUX_GEOMETRY_THRESHOLD]
+                         [--relation_counterfactual_aux_correct_iou_threshold RELATION_COUNTERFACTUAL_AUX_CORRECT_IOU_THRESHOLD]
+                         [--relation_counterfactual_aux_pair_margin RELATION_COUNTERFACTUAL_AUX_PAIR_MARGIN]
+                         [--relation_counterfactual_aux_max_negatives RELATION_COUNTERFACTUAL_AUX_MAX_NEGATIVES]
+                         [--relation_counterfactual_aux_target_confidence_floor RELATION_COUNTERFACTUAL_AUX_TARGET_CONFIDENCE_FLOOR]
+                         [--relation_counterfactual_aux_attribute_confidence_floor RELATION_COUNTERFACTUAL_AUX_ATTRIBUTE_CONFIDENCE_FLOOR]
+                         [--relation_counterfactual_aux_acc025_pair_weight RELATION_COUNTERFACTUAL_AUX_ACC025_PAIR_WEIGHT]
+                         [--relation_counterfactual_aux_conservative_anchor_set]
+                         [--tier_hard_query_aux_loss_weight TIER_HARD_QUERY_AUX_LOSS_WEIGHT]
+                         [--tier_hard_query_aux_candidate_top_k TIER_HARD_QUERY_AUX_CANDIDATE_TOP_K]
+                         [--tier_hard_query_aux_max_negatives TIER_HARD_QUERY_AUX_MAX_NEGATIVES]
+                         [--tier_hard_query_aux_target_tolerance TIER_HARD_QUERY_AUX_TARGET_TOLERANCE]
+                         [--tier_hard_query_aux_target_confidence_floor TIER_HARD_QUERY_AUX_TARGET_CONFIDENCE_FLOOR]
+                         [--tier_hard_query_aux_pair_margin TIER_HARD_QUERY_AUX_PAIR_MARGIN]
+                         [--tier_hard_query_aux_preserve_weight TIER_HARD_QUERY_AUX_PRESERVE_WEIGHT]
+                         [--tier_hard_query_aux_acc025_pair_weight TIER_HARD_QUERY_AUX_ACC025_PAIR_WEIGHT]
+                         [--density_aware_target_box_loss_weight DENSITY_AWARE_TARGET_BOX_LOSS_WEIGHT]
+                         [--density_aware_target_box_checkpoint_sha256 DENSITY_AWARE_TARGET_BOX_CHECKPOINT_SHA256]
+                         [--density_aware_target_box_scene_disjoint_audit]
+                         [--density_aware_target_box_scene_disjoint_role {parent,control,method}]
+                         [--density_aware_target_box_scene_disjoint_fold DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_FOLD]
+                         [--density_aware_target_box_scene_disjoint_expected_fit_scenes DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_EXPECTED_FIT_SCENES]
+                         [--density_aware_target_box_scene_disjoint_expected_holdout_scenes DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_EXPECTED_HOLDOUT_SCENES]
+                         [--density_aware_target_box_scene_disjoint_expected_fit_samples DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_EXPECTED_FIT_SAMPLES]
+                         [--density_aware_target_box_scene_disjoint_expected_holdout_samples DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_EXPECTED_HOLDOUT_SAMPLES]
+                         [--sacr_score_mask_tolerance SACR_SCORE_MASK_TOLERANCE]
+                         [--sacr_score_raw_margin SACR_SCORE_RAW_MARGIN]
+                         [--sacr_score_dense_weight SACR_SCORE_DENSE_WEIGHT]
+                         [--sacr_score_preserve_weight SACR_SCORE_PRESERVE_WEIGHT]
+                         [--sacr_score_gate_weight SACR_SCORE_GATE_WEIGHT]
+                         [--sacr_score_saturation_weight SACR_SCORE_SATURATION_WEIGHT]
+                         [--sacr_hidden_dim SACR_HIDDEN_DIM]
+                         [--sacr_max_pairs SACR_MAX_PAIRS]
+                         [--sacr_top_m_targets SACR_TOP_M_TARGETS]
+                         [--sacr_top_k_anchors SACR_TOP_K_ANCHORS]
+                         [--sacr_geo_dim SACR_GEO_DIM]
+                         [--sacr_min_parse_confidence SACR_MIN_PARSE_CONFIDENCE]
+                         [--sacr_score_contract_audit]
+                         [--sacr_residual_scale_init SACR_RESIDUAL_SCALE_INIT]
+                         [--mask_loss_scale MASK_LOSS_SCALE]
+                         [--native_mask_geometry_supervision]
+                         [--consistency_loss_scale CONSISTENCY_LOSS_SCALE]
+                         [--eval_use_selector_choice_scores]
+                         [--expected_eval_sample_count EXPECTED_EVAL_SAMPLE_COUNT]
+                         [--rec_reranker_checkpoint REC_RERANKER_CHECKPOINT]
+                         [--eval_use_rec_reranker_scores]
+                         [--rec_geometry_reranker_checkpoint REC_GEOMETRY_RERANKER_CHECKPOINT]
+                         [--eval_use_rec_geometry_reranker_scores]
+                         [--rec_joint_box_mask_checkpoint REC_JOINT_BOX_MASK_CHECKPOINT]
+                         [--eval_use_rec_joint_box_mask]
+                         [--rec_selective_residual_checkpoint REC_SELECTIVE_RESIDUAL_CHECKPOINT]
+                         [--eval_use_rec_selective_residual_scores]
+                         [--rec_hierarchical_reranker_checkpoint REC_HIERARCHICAL_RERANKER_CHECKPOINT]
+                         [--eval_use_rec_hierarchical_reranker_scores]
+                         [--batch_size BATCH_SIZE]
+                         [--dataset DATASET [DATASET ...]]
+                         [--test_dataset TEST_DATASET] [--data_root DATA_ROOT]
+                         [--use_height] [--use_color] [--use_multiview]
+                         [--wo_obj_name WO_OBJ_NAME] [--butd] [--butd_gt]
+                         [--butd_cls] [--augment_det]
+                         [--num_workers NUM_WORKERS]
+                         [--dataloader_prefetch_factor DATALOADER_PREFETCH_FACTOR]
+                         [--persistent_train_workers]
+                         [--skip_missing_superpoints]
+                         [--hard_example_replay_manifest HARD_EXAMPLE_REPLAY_MANIFEST]
+                         [--hard_example_replay_manifest_sha256 HARD_EXAMPLE_REPLAY_MANIFEST_SHA256]
+                         [--start_epoch START_EPOCH] [--max_epoch MAX_EPOCH]
+                         [--gradient_accumulation_steps GRADIENT_ACCUMULATION_STEPS]
+                         [--drop_incomplete_accumulation_group]
+                         [--migrate_scheduler_for_gradient_accumulation]
+                         [--resume_lr_scale RESUME_LR_SCALE]
+                         [--resume_lr_scale_expected_lineage RESUME_LR_SCALE_EXPECTED_LINEAGE]
+                         [--restore_e57_lr_to_initial]
+                         [--e57_lr_restore_claim E57_LR_RESTORE_CLAIM]
+                         [--optimizer OPTIMIZER] [--weight_decay WEIGHT_DECAY]
+                         [--lr LR] [--lr_backbone LR_BACKBONE]
+                         [--text_encoder_lr TEXT_ENCODER_LR]
+                         [--lr-scheduler {step,cosine}]
+                         [--lr_decay_epochs LR_DECAY_EPOCHS [LR_DECAY_EPOCHS ...]]
+                         [--lr_decay_rate LR_DECAY_RATE]
+                         [--clip_norm CLIP_NORM] [--bn_momentum BN_MOMENTUM]
+                         [--syncbn] [--warmup-epoch WARMUP_EPOCH]
+                         [--warmup-multiplier WARMUP_MULTIPLIER] [--frozen]
+                         [--small_lr] [--checkpoint_path CHECKPOINT_PATH]
+                         [--checkpoint_start_epoch CHECKPOINT_START_EPOCH]
+                         [--model_only_initialization]
+                         [--checkpoint_metric_retention]
+                         [--checkpoint_retention_metrics {rec_acc025,rec_acc050,mask_acc025,mask_acc050,mask_miou} [{rec_acc025,rec_acc050,mask_acc025,mask_acc050,mask_miou} ...]]
+                         [--log_dir LOG_DIR] [--exp EXP]
+                         [--print_freq PRINT_FREQ]
+                         [--max_train_batches MAX_TRAIN_BATCHES]
+                         [--save_freq SAVE_FREQ] [--val_freq VAL_FREQ]
+                         [--local_rank LOCAL_RANK]
+                         [--ap_iou_thresholds AP_IOU_THRESHOLDS [AP_IOU_THRESHOLDS ...]]
+                         [--rng_seed RNG_SEED] [--debug]
+                         [--debug_train_holdout] [--eval] [--eval_train]
+                         [--pp_checkpoint PP_CHECKPOINT]
+                         [--pp_checkpoint_sha256 PP_CHECKPOINT_SHA256]
+                         [--reduce_lr]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --num_target NUM_TARGET
+                        Proposal number
+  --sampling SAMPLING   Query points sampling method (kps, fps)
+  --num_encoder_layers NUM_ENCODER_LAYERS
+  --num_decoder_layers NUM_DECODER_LAYERS
+  --self_position_embedding SELF_POSITION_EMBEDDING
+                        (none, xyz_learned, loc_learned)
+  --self_attend
+  --model MODEL
+  --use_candidate_local_visual
+  --candidate_local_visual_lr CANDIDATE_LOCAL_VISUAL_LR
+  --candidate_local_visual_variant {local,center,extent}
+  --query_points_obj_topk QUERY_POINTS_OBJ_TOPK
+  --use_contrastive_align
+  --use_soft_token_loss
+  --detect_intermediate
+  --joint_det
+  --use_source_choice_selector
+  --source_choice_selector_train_only
+  --source_choice_selector_lr SOURCE_CHOICE_SELECTOR_LR
+  --source_choice_selector_hidden_dim SOURCE_CHOICE_SELECTOR_HIDDEN_DIM
+  --source_choice_selector_loss_weight SOURCE_CHOICE_SELECTOR_LOSS_WEIGHT
+  --source_choice_selector_sources SOURCE_CHOICE_SELECTOR_SOURCES
+  --source_choice_selector_default_source SOURCE_CHOICE_SELECTOR_DEFAULT_SOURCE
+  --source_choice_selector_choice_target {precision_gain_default_sourcewise_focal_bce,precision_gain_default_ce}
+  --source_choice_selector_min_iou_gap SOURCE_CHOICE_SELECTOR_MIN_IOU_GAP
+  --use_source_moe
+  --source_moe_train_only
+  --source_moe_gate_train_only
+  --source_moe_gate_new_heads_only
+  --source_moe_gate_resume_optimizer
+  --source_moe_shared_source SOURCE_MOE_SHARED_SOURCE
+  --source_moe_top_k SOURCE_MOE_TOP_K
+  --source_moe_balance_loss_weight SOURCE_MOE_BALANCE_LOSS_WEIGHT
+  --source_moe_rank_loss_weight SOURCE_MOE_RANK_LOSS_WEIGHT
+  --source_moe_mask_rank_loss_weight SOURCE_MOE_MASK_RANK_LOSS_WEIGHT
+  --source_moe_rank_temperature SOURCE_MOE_RANK_TEMPERATURE
+  --source_moe_anchor_loss_weight SOURCE_MOE_ANCHOR_LOSS_WEIGHT
+  --source_moe_anchor_margin SOURCE_MOE_ANCHOR_MARGIN
+  --source_moe_query_layers SOURCE_MOE_QUERY_LAYERS
+  --source_moe_query_heads SOURCE_MOE_QUERY_HEADS
+  --source_moe_query_dropout SOURCE_MOE_QUERY_DROPOUT
+  --source_moe_query_max_delta SOURCE_MOE_QUERY_MAX_DELTA
+  --source_moe_lr SOURCE_MOE_LR
+  --source_moe_use_fallback_gate
+  --source_moe_gate_hidden_dim SOURCE_MOE_GATE_HIDDEN_DIM
+  --source_moe_gate_candidate_top_k SOURCE_MOE_GATE_CANDIDATE_TOP_K
+  --source_moe_gate_break_cost SOURCE_MOE_GATE_BREAK_COST
+  --source_moe_gate_decision_margin SOURCE_MOE_GATE_DECISION_MARGIN
+  --source_moe_gate_mask_utility_weight SOURCE_MOE_GATE_MASK_UTILITY_WEIGHT
+  --source_moe_gate_uncertainty_weight SOURCE_MOE_GATE_UNCERTAINTY_WEIGHT
+  --source_moe_gate_use_evidence_features
+  --source_moe_gate_context_layers SOURCE_MOE_GATE_CONTEXT_LAYERS
+  --source_moe_gate_context_heads SOURCE_MOE_GATE_CONTEXT_HEADS
+  --source_moe_gate_context_dropout SOURCE_MOE_GATE_CONTEXT_DROPOUT
+  --source_moe_gate_action_mode {decision,expected_utility,direct_utility,hierarchical_utility,pairwise_verifier,topn_pairwise_verifier,topn_dual_evidence_verifier,topn_absolute_quality_delta,cascade_absolute_quality_correction,cascade_opportunity_quality_correction,cascade_opportunity_verified_correction,cascade_joint_risk_correction,cascade_v19_fallback_set_correction,cascade_v19_rich_set_correction,cascade_v23_dense_quality_correction,cascade_v24_relative_risk_correction,cascade_v25_pairwise_calibrated_correction,cascade_v26_prior_restored_pairwise_correction,cascade_v28_selected_abstention_correction,cascade_v29_counterfactual_selected_correction,cascade_v37_counterfactual_benefit_hazard_correction,cascade_v38_complementary_logodds_correction,cascade_v39_hazard_residual_correction}
+                        fallback action score; inherit checkpoint mode when
+                        unset
+  --source_moe_gate_loss_weight SOURCE_MOE_GATE_LOSS_WEIGHT
+  --source_moe_gate_mask_loss_weight SOURCE_MOE_GATE_MASK_LOSS_WEIGHT
+  --source_moe_gate_focal_gamma SOURCE_MOE_GATE_FOCAL_GAMMA
+  --source_moe_gate_false_override_weight SOURCE_MOE_GATE_FALSE_OVERRIDE_WEIGHT
+  --source_moe_gate_objective {balanced_focal,calibrated_utility,balanced_calibrated_utility,hierarchical_risk_calibrated,pairwise_risk_calibrated,topn_risk_calibrated,topn_dual_risk_calibrated,topn_absolute_quality_calibrated,cascade_absolute_quality_calibrated,cascade_opportunity_balanced_calibrated,cascade_opportunity_verified_calibrated,cascade_joint_risk_calibrated,cascade_v19_fallback_set_risk_calibrated,cascade_v19_rich_set_empirical_risk,cascade_v23_dense_quality_risk,cascade_v24_relative_risk,cascade_v25_pairwise_calibrated_risk,cascade_v26_prior_restored_pairwise_risk,cascade_v27_uncertainty_quality_risk,cascade_v28_selected_abstention_risk,cascade_v29_counterfactual_selected_risk,cascade_v37_counterfactual_benefit_hazard_risk,cascade_v38_complementary_logodds_risk,cascade_v39_hazard_residual_risk}
+                        gate training objective; inherit checkpoint objective
+                        when unset
+  --source_moe_gate_setwise_temperature SOURCE_MOE_GATE_SETWISE_TEMPERATURE
+  --source_moe_gate_boundary_loss_weight SOURCE_MOE_GATE_BOUNDARY_LOSS_WEIGHT
+  --source_moe_gate_lr SOURCE_MOE_GATE_LR
+  --mask_head_lr_multiplier MASK_HEAD_LR_MULTIPLIER
+  --use_decoder_query_adapter
+  --decoder_query_adapter_train_only
+  --decoder_query_adapter_lr DECODER_QUERY_ADAPTER_LR
+  --decoder_query_adapter_hidden_dim DECODER_QUERY_ADAPTER_HIDDEN_DIM
+  --decoder_query_adapter_heads DECODER_QUERY_ADAPTER_HEADS
+  --decoder_query_adapter_dropout DECODER_QUERY_ADAPTER_DROPOUT
+  --decoder_query_adapter_max_delta DECODER_QUERY_ADAPTER_MAX_DELTA
+  --use_query_mask_fusion_calibrator
+  --query_mask_fusion_train_only
+  --query_mask_fusion_resume_optimizer
+  --query_mask_fusion_lr QUERY_MASK_FUSION_LR
+  --query_mask_fusion_hidden_dim QUERY_MASK_FUSION_HIDDEN_DIM
+  --query_mask_fusion_dropout QUERY_MASK_FUSION_DROPOUT
+  --query_mask_fusion_max_delta QUERY_MASK_FUSION_MAX_DELTA
+  --use_egqs_mask_refiner
+  --egqs_mask_refiner_train_only
+  --egqs_mask_refiner_lr EGQS_MASK_REFINER_LR
+  --egqs_mask_refiner_arch {egqs,graph}
+  --egqs_mask_refiner_hidden_dim EGQS_MASK_REFINER_HIDDEN_DIM
+  --egqs_mask_refiner_max_delta EGQS_MASK_REFINER_MAX_DELTA
+  --egqs_mask_refiner_components {content,evidence,geometry,all}
+  --egqs_mask_refiner_graph_mode {spatial,bilateral}
+  --egqs_mask_refiner_neighbor_count EGQS_MASK_REFINER_NEIGHBOR_COUNT
+  --use_joint_query_quality_reranker
+  --joint_query_quality_train_only
+  --joint_query_quality_lr JOINT_QUERY_QUALITY_LR
+  --joint_query_quality_hidden_dim JOINT_QUERY_QUALITY_HIDDEN_DIM
+  --joint_query_quality_heads JOINT_QUERY_QUALITY_HEADS
+  --joint_query_quality_layers JOINT_QUERY_QUALITY_LAYERS
+  --joint_query_quality_dropout JOINT_QUERY_QUALITY_DROPOUT
+  --joint_query_quality_max_delta JOINT_QUERY_QUALITY_MAX_DELTA
+  --joint_query_quality_mask_weight JOINT_QUERY_QUALITY_MASK_WEIGHT
+  --joint_query_quality_score_weight JOINT_QUERY_QUALITY_SCORE_WEIGHT
+  --joint_query_quality_direct_residual_scale JOINT_QUERY_QUALITY_DIRECT_RESIDUAL_SCALE
+  --joint_query_quality_use_metric_aligned_utility
+  --joint_query_quality_preserve_parent_score
+  --joint_query_quality_candidate_promotion_margin JOINT_QUERY_QUALITY_CANDIDATE_PROMOTION_MARGIN
+  --joint_query_quality_use_parent_transition_advantage
+  --joint_query_quality_use_decomposed_transition_advantage
+  --joint_query_quality_use_setwise_tier_advantage
+  --joint_query_quality_use_decoupled_setwise_heads
+  --joint_query_quality_use_factorized_setwise_safety
+  --joint_query_quality_use_factorized_setwise_risk_bound
+  --joint_query_quality_use_setwise_safety_veto_gate
+  --joint_query_quality_use_cost_calibrated_setwise_risk_bound
+  --joint_query_quality_use_setwise_safety_slack_quantile_bound
+  --joint_query_quality_use_setwise_safety_slack_pairwise_order
+  --joint_query_quality_use_proposal_conditioned_safety
+  --joint_query_quality_use_parent_referenced_safety
+  --joint_query_quality_use_coupled_safe_repair_witness
+  --joint_query_quality_use_bidirectional_coupled_boundary
+  --joint_query_quality_use_centered_coupled_separation
+  --joint_query_quality_use_hazard_conditioned_coupled_separation
+  --joint_query_quality_use_monotonic_box_safety_folding
+  --joint_query_quality_use_same_candidate_branchwise_witness
+  --joint_query_quality_use_parent_non_degradation_certificate
+  --joint_query_quality_use_criterion_responsible_hazard_attribution
+  --joint_query_quality_use_independent_joint_hazard_certificate
+  --joint_query_quality_use_frozen_raw_joint_hazard_features
+  --joint_query_quality_use_factorized_hit_advantage
+  --joint_query_quality_use_factorized_nested_dominance
+  --joint_query_quality_factorized_hit_break_cost JOINT_QUERY_QUALITY_FACTORIZED_HIT_BREAK_COST
+  --joint_query_quality_parent_transition_break_cost JOINT_QUERY_QUALITY_PARENT_TRANSITION_BREAK_COST
+  --joint_query_quality_parent_transition_candidate_top_k JOINT_QUERY_QUALITY_PARENT_TRANSITION_CANDIDATE_TOP_K
+  --joint_query_quality_use_mask_calibration
+  --joint_query_quality_max_mask_alpha_delta JOINT_QUERY_QUALITY_MAX_MASK_ALPHA_DELTA
+  --joint_query_quality_max_mask_logit_bias JOINT_QUERY_QUALITY_MAX_MASK_LOGIT_BIAS
+  --joint_query_quality_use_source_mask_evidence
+  --joint_query_quality_use_gate_evidence
+  --joint_query_quality_use_spatial_mask_refiner
+  --joint_query_quality_spatial_mask_hidden_dim JOINT_QUERY_QUALITY_SPATIAL_MASK_HIDDEN_DIM
+  --joint_query_quality_max_spatial_mask_delta JOINT_QUERY_QUALITY_MAX_SPATIAL_MASK_DELTA
+  --joint_query_quality_use_adaptive_source_mixing
+  --joint_query_quality_use_source_distribution_reliability
+  --joint_query_quality_source_names JOINT_QUERY_QUALITY_SOURCE_NAMES
+                        optional source pool used only by joint adaptive
+                        mixing
+  --joint_query_quality_max_source_mix_delta JOINT_QUERY_QUALITY_MAX_SOURCE_MIX_DELTA
+  --joint_query_quality_source_mix_temperature JOINT_QUERY_QUALITY_SOURCE_MIX_TEMPERATURE
+  --joint_query_quality_loss_weight JOINT_QUERY_QUALITY_LOSS_WEIGHT
+  --joint_query_quality_temperature JOINT_QUERY_QUALITY_TEMPERATURE
+  --joint_query_quality_aux_loss_weight JOINT_QUERY_QUALITY_AUX_LOSS_WEIGHT
+  --joint_query_quality_anchor_loss_weight JOINT_QUERY_QUALITY_ANCHOR_LOSS_WEIGHT
+  --joint_query_quality_anchor_margin JOINT_QUERY_QUALITY_ANCHOR_MARGIN
+  --joint_query_quality_bidirectional_anchor
+  --joint_query_quality_anchor_margin_050 JOINT_QUERY_QUALITY_ANCHOR_MARGIN_050
+  --joint_query_quality_metric_utility_temperature JOINT_QUERY_QUALITY_METRIC_UTILITY_TEMPERATURE
+  --joint_query_quality_pairwise_loss_weight JOINT_QUERY_QUALITY_PAIRWISE_LOSS_WEIGHT
+  --joint_query_quality_listwise_loss_weight JOINT_QUERY_QUALITY_LISTWISE_LOSS_WEIGHT
+  --joint_query_quality_transition_loss_weight JOINT_QUERY_QUALITY_TRANSITION_LOSS_WEIGHT
+  --joint_query_quality_setwise_repair_boundary_loss_weight JOINT_QUERY_QUALITY_SETWISE_REPAIR_BOUNDARY_LOSS_WEIGHT
+  --joint_query_quality_setwise_negative_tail_loss_weight JOINT_QUERY_QUALITY_SETWISE_NEGATIVE_TAIL_LOSS_WEIGHT
+  --joint_query_quality_setwise_rank_loss_weight JOINT_QUERY_QUALITY_SETWISE_RANK_LOSS_WEIGHT
+  --joint_query_quality_setwise_dense_safety_loss_weight JOINT_QUERY_QUALITY_SETWISE_DENSE_SAFETY_LOSS_WEIGHT
+  --joint_query_quality_setwise_balanced_safety_loss_weight JOINT_QUERY_QUALITY_SETWISE_BALANCED_SAFETY_LOSS_WEIGHT
+  --joint_query_quality_setwise_factorized_safety_loss_weight JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_SAFETY_LOSS_WEIGHT
+  --joint_query_quality_setwise_factorized_risk_bound_loss_weight JOINT_QUERY_QUALITY_SETWISE_FACTORIZED_RISK_BOUND_LOSS_WEIGHT
+  --joint_query_quality_factorized_hit_loss_weight JOINT_QUERY_QUALITY_FACTORIZED_HIT_LOSS_WEIGHT
+  --joint_query_quality_factorized_pair_loss_weight JOINT_QUERY_QUALITY_FACTORIZED_PAIR_LOSS_WEIGHT
+  --joint_query_quality_transition_break_cost JOINT_QUERY_QUALITY_TRANSITION_BREAK_COST
+  --joint_query_quality_transition_neutral_weight JOINT_QUERY_QUALITY_TRANSITION_NEUTRAL_WEIGHT
+  --joint_query_quality_deploy_candidate_top_k JOINT_QUERY_QUALITY_DEPLOY_CANDIDATE_TOP_K
+  --joint_query_quality_source_candidate_top_k JOINT_QUERY_QUALITY_SOURCE_CANDIDATE_TOP_K
+  --joint_query_quality_oracle_candidate_top_k JOINT_QUERY_QUALITY_ORACLE_CANDIDATE_TOP_K
+  --joint_query_quality_source_mix_loss_weight JOINT_QUERY_QUALITY_SOURCE_MIX_LOSS_WEIGHT
+  --joint_query_quality_source_mix_alignment_temperature JOINT_QUERY_QUALITY_SOURCE_MIX_ALIGNMENT_TEMPERATURE
+  --joint_query_quality_source_mix_query_focus_weight JOINT_QUERY_QUALITY_SOURCE_MIX_QUERY_FOCUS_WEIGHT
+  --joint_query_quality_candidate_mask_loss_weight JOINT_QUERY_QUALITY_CANDIDATE_MASK_LOSS_WEIGHT
+  --joint_query_quality_candidate_lovasz_loss_weight JOINT_QUERY_QUALITY_CANDIDATE_LOVASZ_LOSS_WEIGHT
+  --joint_query_quality_candidate_mask_top_k JOINT_QUERY_QUALITY_CANDIDATE_MASK_TOP_K
+  --use_sacr_source
+  --legacy_scene_graph_cache LEGACY_SCENE_GRAPH_CACHE
+                        utterance-only deterministic cache for legacy
+                        Scene_graph_parse outputs
+  --legacy_scene_graph_cache_strict
+                        fail if an annotation from a dataset declared by the
+                        cache manifest is absent
+  --legacy_scene_graph_cache_expected_target_selection {,first_object,conservative_syntax_v1}
+                        fail if cache target-selection provenance differs
+  --legacy_scene_graph_cache_expected_sha256 LEGACY_SCENE_GRAPH_CACHE_EXPECTED_SHA256
+                        required immutable SHA-256 for a raw scene-graph
+                        bundle
+  --use_sacr_score_refiner
+  --sacr_score_refiner_train_only
+  --use_parent_relative_text_verifier
+                        verify a compact Top-K candidate set against the
+                        immutable parent and otherwise abstain
+  --parent_relative_text_verifier_train_only
+  --parent_relative_text_verifier_counterfactual_training
+                        add fixed training-only text-Top1 and leave-one-out
+                        Parent views; deployment always keeps the actual V99
+                        Parent
+  --parent_relative_text_verifier_top_k PARENT_RELATIVE_TEXT_VERIFIER_TOP_K
+  --parent_relative_text_verifier_max_candidates PARENT_RELATIVE_TEXT_VERIFIER_MAX_CANDIDATES
+  --parent_relative_text_verifier_hidden_dim PARENT_RELATIVE_TEXT_VERIFIER_HIDDEN_DIM
+  --parent_relative_text_verifier_heads PARENT_RELATIVE_TEXT_VERIFIER_HEADS
+  --parent_relative_text_verifier_dropout PARENT_RELATIVE_TEXT_VERIFIER_DROPOUT
+  --parent_relative_text_verifier_max_parent_score_gap PARENT_RELATIVE_TEXT_VERIFIER_MAX_PARENT_SCORE_GAP
+  --parent_relative_text_verifier_promotion_margin PARENT_RELATIVE_TEXT_VERIFIER_PROMOTION_MARGIN
+  --parent_relative_text_verifier_min_parse_confidence PARENT_RELATIVE_TEXT_VERIFIER_MIN_PARSE_CONFIDENCE
+  --parent_relative_text_verifier_min_anchor_mass PARENT_RELATIVE_TEXT_VERIFIER_MIN_ANCHOR_MASS
+  --parent_relative_text_verifier_promotion_epsilon PARENT_RELATIVE_TEXT_VERIFIER_PROMOTION_EPSILON
+  --parent_relative_text_verifier_detach_inputs
+  --parent_relative_text_verifier_lr PARENT_RELATIVE_TEXT_VERIFIER_LR
+  --parent_relative_text_verifier_loss_weight PARENT_RELATIVE_TEXT_VERIFIER_LOSS_WEIGHT
+  --parent_relative_text_verifier_positive_margin PARENT_RELATIVE_TEXT_VERIFIER_POSITIVE_MARGIN
+  --parent_relative_text_verifier_neutral_margin PARENT_RELATIVE_TEXT_VERIFIER_NEUTRAL_MARGIN
+  --fpr_scene_disjoint_audit
+                        train FPR-TV on four deterministic Nr3D train-scene
+                        folds and evaluate only the held-out train-scene fold
+  --fpr_scene_disjoint_av4_audit
+                        use the separately preregistered A-V4 counterfactual-
+                        Parent contract for an FPR scene-disjoint audit
+  --fpr_scene_disjoint_fold FPR_SCENE_DISJOINT_FOLD
+  --fpr_scene_disjoint_expected_fit_scenes FPR_SCENE_DISJOINT_EXPECTED_FIT_SCENES
+  --fpr_scene_disjoint_expected_holdout_scenes FPR_SCENE_DISJOINT_EXPECTED_HOLDOUT_SCENES
+  --fpr_scene_disjoint_expected_fit_samples FPR_SCENE_DISJOINT_EXPECTED_FIT_SAMPLES
+  --fpr_scene_disjoint_expected_holdout_samples FPR_SCENE_DISJOINT_EXPECTED_HOLDOUT_SAMPLES
+  --fpr_scene_disjoint_checkpoint_sha256 FPR_SCENE_DISJOINT_CHECKPOINT_SHA256
+  --sacr_score_use_parent_relative_abstention
+                        anchor SACR residuals to the parent and abstain per
+                        sample
+  --sacr_score_use_relation_counterfactual
+                        mine relation/anchor target swaps instead of generic
+                        ranking
+  --sacr_score_parent_gate_hidden_dim SACR_SCORE_PARENT_GATE_HIDDEN_DIM
+  --sacr_score_refiner_lr SACR_SCORE_REFINER_LR
+  --sacr_score_refiner_loss_weight SACR_SCORE_REFINER_LOSS_WEIGHT
+  --sacr_score_temperature SACR_SCORE_TEMPERATURE
+  --sacr_score_mask_weight SACR_SCORE_MASK_WEIGHT
+  --sacr_score_max_delta SACR_SCORE_MAX_DELTA
+  --sacr_score_min_box_advantage SACR_SCORE_MIN_BOX_ADVANTAGE
+  --sacr_score_promotion_margin SACR_SCORE_PROMOTION_MARGIN
+  --sacr_counterfactual_parent_top_k SACR_COUNTERFACTUAL_PARENT_TOP_K
+  --sacr_counterfactual_target_tolerance SACR_COUNTERFACTUAL_TARGET_TOLERANCE
+  --sacr_counterfactual_attribute_tolerance SACR_COUNTERFACTUAL_ATTRIBUTE_TOLERANCE
+  --sacr_counterfactual_geometry_threshold SACR_COUNTERFACTUAL_GEOMETRY_THRESHOLD
+  --sacr_counterfactual_iou_gap SACR_COUNTERFACTUAL_IOU_GAP
+  --sacr_counterfactual_correct_iou_threshold SACR_COUNTERFACTUAL_CORRECT_IOU_THRESHOLD
+  --sacr_counterfactual_pair_margin SACR_COUNTERFACTUAL_PAIR_MARGIN
+  --sacr_counterfactual_max_negatives SACR_COUNTERFACTUAL_MAX_NEGATIVES
+  --sacr_counterfactual_relation_scale SACR_COUNTERFACTUAL_RELATION_SCALE
+  --sacr_counterfactual_deployment_threshold SACR_COUNTERFACTUAL_DEPLOYMENT_THRESHOLD
+  --relation_counterfactual_aux_loss_weight RELATION_COUNTERFACTUAL_AUX_LOSS_WEIGHT
+  --relation_counterfactual_aux_parent_top_k RELATION_COUNTERFACTUAL_AUX_PARENT_TOP_K
+  --relation_counterfactual_aux_target_tolerance RELATION_COUNTERFACTUAL_AUX_TARGET_TOLERANCE
+  --relation_counterfactual_aux_attribute_tolerance RELATION_COUNTERFACTUAL_AUX_ATTRIBUTE_TOLERANCE
+  --relation_counterfactual_aux_geometry_threshold RELATION_COUNTERFACTUAL_AUX_GEOMETRY_THRESHOLD
+  --relation_counterfactual_aux_correct_iou_threshold RELATION_COUNTERFACTUAL_AUX_CORRECT_IOU_THRESHOLD
+  --relation_counterfactual_aux_pair_margin RELATION_COUNTERFACTUAL_AUX_PAIR_MARGIN
+  --relation_counterfactual_aux_max_negatives RELATION_COUNTERFACTUAL_AUX_MAX_NEGATIVES
+  --relation_counterfactual_aux_target_confidence_floor RELATION_COUNTERFACTUAL_AUX_TARGET_CONFIDENCE_FLOOR
+  --relation_counterfactual_aux_attribute_confidence_floor RELATION_COUNTERFACTUAL_AUX_ATTRIBUTE_CONFIDENCE_FLOOR
+  --relation_counterfactual_aux_acc025_pair_weight RELATION_COUNTERFACTUAL_AUX_ACC025_PAIR_WEIGHT
+  --relation_counterfactual_aux_conservative_anchor_set
+  --tier_hard_query_aux_loss_weight TIER_HARD_QUERY_AUX_LOSS_WEIGHT
+  --tier_hard_query_aux_candidate_top_k TIER_HARD_QUERY_AUX_CANDIDATE_TOP_K
+  --tier_hard_query_aux_max_negatives TIER_HARD_QUERY_AUX_MAX_NEGATIVES
+  --tier_hard_query_aux_target_tolerance TIER_HARD_QUERY_AUX_TARGET_TOLERANCE
+  --tier_hard_query_aux_target_confidence_floor TIER_HARD_QUERY_AUX_TARGET_CONFIDENCE_FLOOR
+  --tier_hard_query_aux_pair_margin TIER_HARD_QUERY_AUX_PAIR_MARGIN
+  --tier_hard_query_aux_preserve_weight TIER_HARD_QUERY_AUX_PRESERVE_WEIGHT
+  --tier_hard_query_aux_acc025_pair_weight TIER_HARD_QUERY_AUX_ACC025_PAIR_WEIGHT
+  --density_aware_target_box_loss_weight DENSITY_AWARE_TARGET_BOX_LOSS_WEIGHT
+  --density_aware_target_box_checkpoint_sha256 DENSITY_AWARE_TARGET_BOX_CHECKPOINT_SHA256
+  --density_aware_target_box_scene_disjoint_audit
+  --density_aware_target_box_scene_disjoint_role {parent,control,method}
+  --density_aware_target_box_scene_disjoint_fold DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_FOLD
+  --density_aware_target_box_scene_disjoint_expected_fit_scenes DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_EXPECTED_FIT_SCENES
+  --density_aware_target_box_scene_disjoint_expected_holdout_scenes DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_EXPECTED_HOLDOUT_SCENES
+  --density_aware_target_box_scene_disjoint_expected_fit_samples DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_EXPECTED_FIT_SAMPLES
+  --density_aware_target_box_scene_disjoint_expected_holdout_samples DENSITY_AWARE_TARGET_BOX_SCENE_DISJOINT_EXPECTED_HOLDOUT_SAMPLES
+  --sacr_score_mask_tolerance SACR_SCORE_MASK_TOLERANCE
+  --sacr_score_raw_margin SACR_SCORE_RAW_MARGIN
+  --sacr_score_dense_weight SACR_SCORE_DENSE_WEIGHT
+  --sacr_score_preserve_weight SACR_SCORE_PRESERVE_WEIGHT
+  --sacr_score_gate_weight SACR_SCORE_GATE_WEIGHT
+  --sacr_score_saturation_weight SACR_SCORE_SATURATION_WEIGHT
+  --sacr_hidden_dim SACR_HIDDEN_DIM
+  --sacr_max_pairs SACR_MAX_PAIRS
+  --sacr_top_m_targets SACR_TOP_M_TARGETS
+  --sacr_top_k_anchors SACR_TOP_K_ANCHORS
+  --sacr_geo_dim SACR_GEO_DIM
+  --sacr_min_parse_confidence SACR_MIN_PARSE_CONFIDENCE
+  --sacr_score_contract_audit
+  --sacr_residual_scale_init SACR_RESIDUAL_SCALE_INIT
+  --mask_loss_scale MASK_LOSS_SCALE
+  --native_mask_geometry_supervision
+                        Add the fixed root Mask geometry objective on
+                        referring rows only.
+  --consistency_loss_scale CONSISTENCY_LOSS_SCALE
+  --eval_use_selector_choice_scores
+  --expected_eval_sample_count EXPECTED_EVAL_SAMPLE_COUNT
+  --rec_reranker_checkpoint REC_RERANKER_CHECKPOINT
+  --eval_use_rec_reranker_scores
+  --rec_geometry_reranker_checkpoint REC_GEOMETRY_RERANKER_CHECKPOINT
+  --eval_use_rec_geometry_reranker_scores
+  --rec_joint_box_mask_checkpoint REC_JOINT_BOX_MASK_CHECKPOINT
+  --eval_use_rec_joint_box_mask
+  --rec_selective_residual_checkpoint REC_SELECTIVE_RESIDUAL_CHECKPOINT
+  --eval_use_rec_selective_residual_scores
+  --rec_hierarchical_reranker_checkpoint REC_HIERARCHICAL_RERANKER_CHECKPOINT
+  --eval_use_rec_hierarchical_reranker_scores
+  --batch_size BATCH_SIZE
+                        Batch Size during training
+  --dataset DATASET [DATASET ...]
+                        list of datasets to train on
+  --test_dataset TEST_DATASET
+  --data_root DATA_ROOT
+  --use_height          Use height signal in input.
+  --use_color           Use RGB color in input.
+  --use_multiview
+  --wo_obj_name WO_OBJ_NAME
+  --butd
+  --butd_gt
+  --butd_cls
+  --augment_det
+  --num_workers NUM_WORKERS
+  --dataloader_prefetch_factor DATALOADER_PREFETCH_FACTOR
+  --persistent_train_workers
+  --skip_missing_superpoints
+  --hard_example_replay_manifest HARD_EXAMPLE_REPLAY_MANIFEST
+                        Training-only manifest whose fixed hard referring
+                        examples are replayed exactly once per epoch without
+                        changing losses.
+  --hard_example_replay_manifest_sha256 HARD_EXAMPLE_REPLAY_MANIFEST_SHA256
+                        Exact SHA-256 required with
+                        --hard_example_replay_manifest.
+  --start_epoch START_EPOCH
+  --max_epoch MAX_EPOCH
+  --gradient_accumulation_steps GRADIENT_ACCUMULATION_STEPS
+                        Number of consecutive micro-batches whose mean
+                        gradient is applied in one optimizer/scheduler step.
+  --drop_incomplete_accumulation_group
+                        Drop the final incomplete accumulation group so every
+                        optimizer step has the requested effective batch size.
+  --migrate_scheduler_for_gradient_accumulation
+                        On a full-state resume whose checkpoint used a
+                        different accumulation factor, normalize scheduler
+                        progress to completed epochs while preserving the
+                        checkpoint learning rates.
+  --resume_lr_scale RESUME_LR_SCALE
+                        Explicit one-time multiplier for every optimizer
+                        parameter-group learning rate after an exact
+                        optimizer/scheduler checkpoint resume. Values must be
+                        in (0, 1]; 1 preserves legacy behavior.
+  --resume_lr_scale_expected_lineage RESUME_LR_SCALE_EXPECTED_LINEAGE
+                        Fail-closed authorization for an additional resume LR
+                        decay. When the checkpoint already records a
+                        cumulative decay, this value is required and must
+                        equal that recorded lineage exactly.
+  --restore_e57_lr_to_initial
+                        One-time, Nr3D-E57-only exact-resume repair that
+                        restores every optimizer current learning rate to its
+                        checkpoint initial_lr and updates only scheduler
+                        _last_lr. The model, optimizer moments, scheduler
+                        phase/base/milestones, and epoch remain unchanged.
+  --e57_lr_restore_claim E57_LR_RESTORE_CLAIM
+                        Immutable one-shot claim created by the reviewed E57
+                        launcher; required only with
+                        --restore_e57_lr_to_initial.
+  --optimizer OPTIMIZER
+  --weight_decay WEIGHT_DECAY
+  --lr LR
+  --lr_backbone LR_BACKBONE
+  --text_encoder_lr TEXT_ENCODER_LR
+  --lr-scheduler {step,cosine}
+  --lr_decay_epochs LR_DECAY_EPOCHS [LR_DECAY_EPOCHS ...]
+                        when to decay lr, can be a list
+  --lr_decay_rate LR_DECAY_RATE
+                        for step scheduler. decay rate for lr
+  --clip_norm CLIP_NORM
+                        gradient clipping max norm
+  --bn_momentum BN_MOMENTUM
+  --syncbn
+  --warmup-epoch WARMUP_EPOCH
+  --warmup-multiplier WARMUP_MULTIPLIER
+  --frozen
+  --small_lr
+  --checkpoint_path CHECKPOINT_PATH
+                        Model checkpoint path
+  --checkpoint_start_epoch CHECKPOINT_START_EPOCH
+                        Explicit first training epoch after loading a
+                        checkpoint. Use this for initialization checkpoints
+                        whose epoch is not numeric.
+  --model_only_initialization
+                        Load compatible model tensors from an initialization
+                        checkpoint without restoring optimizer/scheduler
+                        state. Requires an explicit --checkpoint_start_epoch
+                        and is invalid for evaluation.
+  --checkpoint_metric_retention
+                        Atomically keep the latest checkpoint and the best
+                        checkpoints for REC@0.25, REC@0.50, mask@0.25,
+                        mask@0.50, and mask mIoU.
+  --checkpoint_retention_metrics {rec_acc025,rec_acc050,mask_acc025,mask_acc050,mask_miou} [{rec_acc025,rec_acc050,mask_acc025,mask_acc050,mask_miou} ...]
+                        Metric aliases retained by
+                        --checkpoint_metric_retention. Defaults to all five
+                        metrics; use rec_acc025 for REC-only runs.
+  --log_dir LOG_DIR     Dump dir to save model checkpoint
+  --exp EXP             exp name to save model checkpoint
+  --print_freq PRINT_FREQ
+  --max_train_batches MAX_TRAIN_BATCHES
+                        0 runs full epochs; positive values run a bounded
+                        train-only audit
+  --save_freq SAVE_FREQ
+  --val_freq VAL_FREQ
+  --local_rank LOCAL_RANK
+                        local rank for DistributedDataParallel
+  --ap_iou_thresholds AP_IOU_THRESHOLDS [AP_IOU_THRESHOLDS ...]
+                        A list of AP IoU thresholds
+  --rng_seed RNG_SEED   manual seed
+  --debug               try to overfit few samples
+  --debug_train_holdout
+                        with --debug, train and evaluate on two deterministic,
+                        scene-disjoint 128-example subsets of the training
+                        split
+  --eval
+  --eval_train
+  --pp_checkpoint PP_CHECKPOINT
+  --pp_checkpoint_sha256 PP_CHECKPOINT_SHA256
+  --reduce_lr

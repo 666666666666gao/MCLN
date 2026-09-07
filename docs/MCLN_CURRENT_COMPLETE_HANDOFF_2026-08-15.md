@@ -17373,3 +17373,16 @@ GPU前向0、优化器更新0、权重写入0、正式评估0。原生快照618�
 这只完成跨数据集原生训练的loss接续代码与CPU集成，不证明真实数据训练或REC收益。当前Scan仍按20.135/20.137既定配对、终态和正式门接续；不在专用Scan循环同时开启此原生flag，以免重复加辅助。正式Scan通过后才导出实际84项终点，并用新原生入口核验Nr/Sr真实GPU批次和启动训练。未提前启动Nr/Sr；运行观察仍以20.137的实际时间为准，下一次主要观察接近训练末尾。完整三数据集目标未完成。
 
 发布预检发现旧远端canonical main_utils只有CRLF差异，但models/losses尚缺Git已有的density和部分counterfactual接口（标准化后3969行对4170行），最近50次该文件历史中未找到完全相同版本。本轮未覆盖旧canonical main_utils/models.losses；新增入口完整源码已在上述v2隔离目录并按明确overlay路径通过CPU测试，同时发布GitHub。该差异不影响当前冻结Scan快照，后续正式训练必须从明确的新源码快照启动，不能直接混用旧canonical目录。差异证据保存remote_canonical_source_differences.json；不据此改写受保护指标。
+
+
+### 20.139 原生Mask几何完整源码接续准备（2026-09-07T20:37:39.247422+08:00）
+
+为解决20.138已发现的旧canonical源码差异，将已核验618文件原生依赖与Git9c7c9f4中的当前main_utils/losses及辅助文件组成622文件完整快照，位于`/root/autodl-tmp/mcln_native_mask_geometry_source_preparation_20260907_v1/model_source`。全部组成和SHA明确记录，不声称所有依赖来自同一次Git提交。旧canonical核心和当前Scan训练源码保持不变，无测试包的跨目录加载补丁。
+
+20:34:41 CST检查完成：实际`train_dist_mod.py --help`成功，Nr3D/Sr3D均能用新开关构造原生criterion，旧local/extent开关关闭，7个关键模块普通导入来源均在完整快照内。该快照内6项现有原生辅助CPU集成检查通过（0.26秒），使用合成点云/Mask；没有重跑84项初始化fixture或新增网络模块。首次检查仅因命名空间重复列出相同scripts路径三次而失败，修正检查器为解析目录集合比较后通过，模型源码未改，原日志保留。
+
+source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a27693030`；receipt SHA `12057a2237a37de9b9fb6d79661ec337d1d49564d2e46dbdfb39b01b5bb1e9e7`。输入、初次检查、路径诊断、最终6项测试和普通导入记录归档`refine-logs/native_mask_geometry_source_preparation_20260907_v1/`。GPU前向0、优化器更新0、新权重0、正式行0、真实Scan终点绑定尚未执行。该快照是后续原生接续基础，不是Nr/Sr训练或精度结果。
+
+核对旧range预检仍绑定已失败extent，不能直接拿来启动当前机制；nr_contract中的历史--eval、E57路径和max_epoch240也不是新训练授权。正式Scan晋级后需在上述完整源目录绑定真实84项初始化，核验实际数据批次与明确训练预算，再尽快Nr/Sr REC。现有Scan配对/唯一终态/条件正式队列设置不变。
+
+最近实际进程观察为20:22:40：Python62969存活，两臂1216/2482更新（约49%），loss/梯度有限、磁盘10485620736 bytes；20:23:51接续Python63084存活，正式目录尚未创建。预计训练21:28左右、终态核验22:05—22:15左右，下一主要观察21:20；这些是当时进度与估计，不是本节发布时的新训练记录。三数据集总目标尚未完成，正式最好未变。

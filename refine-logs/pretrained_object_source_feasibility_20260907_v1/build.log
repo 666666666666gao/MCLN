@@ -1,0 +1,24 @@
+Processing ./assets/dgl_cu111-0.9.1.post1-cp37-cp37m-manylinux1_x86_64.whl
+Installing collected packages: dgl-cu111
+Successfully installed dgl-cu111-0.9.1.post1
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Processing ./assets/torch.redstone-0.0.6-py3-none-any.whl
+Installing collected packages: torch.redstone
+Successfully installed torch.redstone-0.0.6
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Traceback (most recent call last):
+  File "probe_objects.py", line 96, in <module>
+    main()
+  File "probe_objects.py", line 26, in main
+    'einops==0.6.1', 'huggingface-hub==0.4.0'])
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/pkg_resources/__init__.py", line 886, in require
+    needed = self.resolve(parse_requirements(requirements))
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/pkg_resources/__init__.py", line 772, in resolve
+    raise DistributionNotFound(req, requirers)
+pkg_resources.DistributionNotFound: The 'networkx>=2.1' distribution was not found and is required by dgl-cu111
+Traceback (most recent call last):
+  File "build_runtime.py", line 14, in <module>
+    subprocess.check_call(['bash',str(r/'witness.sh')])
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/subprocess.py", line 363, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['bash', '/root/autodl-tmp/mcln_openshape_object_source_20260907_v1/witness.sh']' returned non-zero exit status 1.

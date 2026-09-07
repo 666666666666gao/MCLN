@@ -17444,3 +17444,12 @@ source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a276
 当前研究目标及Scan过线再Nr/Sr REC顺序不变。新方案是采用已有预训练并改变原生信息入口，不宣称普通投影为原创强创新、不宣称去除V99后处理。下一步按已固定计划完成两臂，分别检查原生和完整系统REC修复/破坏与Scan Mask底线；通过后固定9508正式核验，随后尽快Nr/Sr。不得以两步loss下降或181/181槽检索替代REC成绩。
 
 代码、计划、真实日志/receipt归档pretrained_object_source_feasibility_20260907_v1、scanrefer_openshape_cache_20260908_v1、scanrefer_object_appearance_native_20260908_v1、scanrefer_object_appearance_pair_20260908_v1。下载权重/依赖/特征NPZ不入Git；已删本地4个验证过的重复传输文件659353724B，远端运行权重、全部保护模型及证据保留。完整Goal仍未完成。
+
+
+### 20.143.1 实际全参数容量通过、基线运行及终态审计接续（2026-09-08T00:58:54.470064+08:00）
+
+00:56:18实际进程70238仍存活；screen70235.mcln_os_appearance_pair_v1未重启，已记录baseline1536/6887，1536行耗时376.96s，约4.07行/s。预计起点评估在01:15—01:20左右完成，此后才开始2482更新/臂；未有新训练指标，正式REC仍未变化。实际batch12容量通过：控制18893844参数/540个梯度张量，候选19098644/541，两组初始native loss10.820710完全相同，max allocated14210.12MiB；当前GPU进程占用18803MiB，不能混写成同一显存统计。数据盘剩约8.90GB。
+
+终态CPU审计已准备并排入70596.mcln_os_appearance_audit_v1，240s间隔等原controller.exit；原任务非零退出则记录原错误，不重启。审计将重算两阈值修复/破坏、Mask、完整fit遍历、冻结state/readout和optimizer记录。当前是待执行审计，不宣称PASS。主训练代码、manifest和原plan.md均未修改；原冻结plan SHA仍由manifest绑定，并存本地frozen_plan.md。
+
+补充实现范围：配对runner保存的是完整V99逐行REC/Mask，未保存原生REC逐行决定；原生端点对照必须在终态另做只读评估，不能把当前V99行当原生结果。文档已澄清这项待办，不改变本次训练参数或晋级要求。阶段20.143代码已推送96dc33249cda9e4f9d1a157fa6cd4627b17d9ec1；本节同步实际容量、审计接续及原始日志。首次同步工具遇Windows默认GBK读tracker、以及远端旧constructor无新本地参数的两处差异，均在写入前停止；分别显式UTF8、按核验SHA仅改远端三个appearance位置解决，未覆盖其他canonical差异。真正运行的是已固定625文件源码。

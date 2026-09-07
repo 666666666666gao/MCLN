@@ -42,10 +42,8 @@ also performs a batch12 forward/backward for both complete chosen parameter
 groups, without any update, before baseline evaluation. If that capacity
 check fails, the process stops with its original error; no silent batch change.
 
-The paired runner records full V99 REC decisions, Mask IoUs and point hashes
-at baseline and final module-holdout evaluation. Native REC endpoint evaluation
-is a required separate read-only follow-up; its per-row decisions are not
-present in this paired runner's saved rows. The final model/optimizer
+Baseline and final module-holdout evaluation record the actual native and full
+V99 REC decisions, Mask IoUs and point hashes. The final model/optimizer
 checkpoints are saved before final evaluation to protect against evaluation
 interruption. Only the fixed2482-update endpoints are compared.
 

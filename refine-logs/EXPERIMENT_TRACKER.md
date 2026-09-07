@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T00:48:12.450189+08:00. Section20.143: frozen object source/cache/native probe complete; paired ScanRefer job launched, no new formal metric.
+Updated: 2026-09-08T00:58:54.470064+08:00. Section20.143.1: full-scope batch12 capacity PASS; baseline1536/6887 observed; paired fitting pending baseline; CPU endpoint audit queued.
 
 | Experiment | Current state | Decision |
 |---|---|---|

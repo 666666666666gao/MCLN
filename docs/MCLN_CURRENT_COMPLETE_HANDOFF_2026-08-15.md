@@ -17282,3 +17282,12 @@ CPU复用原9508-row逐级记录及141个真实场景的GT对象几何，重算2
 V99 final@0.50保护/局部命中4795/4723，配对修复75、破坏147；两臂均root唯一最大重叠子集54/114、净−60。各臂选定Geometry Query的原框→变体：保护4484→4816，修复419/破坏87、净+332；局部4485→4727，修复303/破坏61、净+242。故变体收益少90来自修复少116且破坏也少26，不能写成“变体增加破坏”。两臂所选Query不同，旧缓存没有全七变体，仍不能区分变体oracle覆盖下降与冻结读出失配。
 
 summary SHA `d7db6f5f0a2da414dbe65769b8e3b240182534b401aec2430f1ec18ddcead1df`，独立重算记录16:49:13 PASS。完整表和边界见`docs/SCANREFER_BOX_TRANSFER_AND_INSTANCE_OVERLAP_RESULT_2026-09-07.md`。下一步从实际Query—Variant输出与训练目标的对应入手，不复跑已失败固定范围读取或同教师辅助扫描。ScanRefer先过保护线即接Nr/Sr REC的总目标不变，当前没有新正式精度或新训练启动。
+
+
+### 20.130 按用户参考图重做原始网格GT/Ours可视化（2026-09-07T17:28:55.709907+08:00）
+
+用户反馈原5万点散点图稀疏、场景和框难辨认。本次将相同ScanRefer/Nr3D各3例改用5个真实ScanNet彩色网格，约9.4万—23.7万顶点、17.9万—45.2万三角面；上排绿色GT、下排红色预测，同相机/同裁切，白底去坐标轴，框线白描边，底部完整原始描述和IoU。所有原GT/预测数值不变，密集网格仅用于显示，未重新推理或增加训练输入。模型5万采样点到轴对齐原网格顶点的最大距离2.5622e-7m，六例坐标匹配。
+
+交付目录`C:\Users\gb\Desktop\document\MCLN_3D_failure_visualizations_20260907\paper_style_dense`；两张3560×2780、300dpi数据集PNG、各自单页PDF及两页合并PDF，六例独立对照PNG及分开的GT/Ours/无框场景。PNG完整解码、两页PDF解析通过；目录约61.56MB，包含原始未裁切PLY与渲染源码。原总览index.html已指向新版，旧散点入口另存index_sparse_diagnostic.html。Sr真实预测源仍缺，没有用其他权重或人工框补齐。
+
+渲染源SHA `3d06ef03c00dadf52bca900ddf14a604eddaf68495eacc641ac97429a8d57197`；详细mesh来源、相机、二维投影、图像SHA与校验在`refine-logs/failure_visualizations_dense_20260907_v1/`。这是用户要求的展示修订，不是新方法指标；原生教师框配对已封存，当前无运行训练。完整三数据集目标仍未完成，下一轮继续实际Query—Variant输出与训练目标对应的机制工作。

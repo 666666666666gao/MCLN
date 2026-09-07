@@ -1,10 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T04:08:55.007932+08:00. Section20.153:Scan appearance terminal complete; integrity PASS, module REC screen FAIL (-22/-89 vs control); native diagnostic pending; formal rows0.
+Updated: 2026-09-08T05:22:26.262085+08:00. Section20.157:Scan native6887 endpoint evaluation and native/full-system transfer analysis complete; full-system appearance screen remains failed.
 
 | Experiment | Current state | Decision |
 |---|---|---|
-| Pretrained native object appearance | Completed2482 updates/arm and6887-row full-system endpoint evaluation;appearance6665/6342 vs control6687/6431 | Integrity PASS;REC screen FAIL;native diagnostic continues;no formal9508 or Nr/Sr promotion;see20.153 |
+| Pretrained native object appearance | Fixed training, full-system and native6887 endpoint evaluations complete; independent scalar20661-box recount PASS | Full-system REC -22/-89 vs control;failed candidate sealed;see20.157 for native/system decomposition |
 | Native/adapter score actual fit audit | 512 fixed rows;actual evaluator and SourceChoice recorded;independent all256 score/IoU/candidate recount | Top1 disagreements 0;native Top1 excluded 0;no deployment or metric-gain claim;see20.142 |
 | Native default score definitions | Existing evaluator/SourceChoice agree;adapter changesTop1 in2/3synthetic token-count cases | Contract difference only;no rule change or metric gain;real fit prevalence now recorded in20.142 |
 | Mask geometry surrogate transfer | Saved6887 rows, no new inference;328soft50 repairs,306hard50 already correct | Same328hard net0/deployed−1;full soft+293 versus hard+5;no surrogate gain claim as REC |

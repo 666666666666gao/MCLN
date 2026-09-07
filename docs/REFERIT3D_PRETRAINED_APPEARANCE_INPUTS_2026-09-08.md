@@ -251,3 +251,39 @@ model zero-initialization parity, actual gradients and subsequent REC training
 remain conditional on Scan qualification. Source, manifests and results are
 in `refine-logs/referit3d_appearance_cache_loader_20260908_v1`. No main training
 settings, formal thresholds or protected weights changed.
+
+## Conditional real-model probe (2026-09-08)
+
+A further queue now waits for the existing qualified1200-scene cache queue.
+Current PID74354 was confirmed at03:45:05CST. Prior failure, Scan nonqualification
+or a cache receipt hash mismatch cannot launch its GPU subprocess; all three
+paths passed locally and in the actual bdetr environment. The probe and queue
+entrypoints also passed `--help`. Actual GPU execution remains pending.
+
+The probe has its own627-file snapshot: the unchanged625-file Scan source,
+plus the two appearance data helpers and only the two-field training-input
+mapping change. Its source manifest is
+`bcaf56ce60db00a7030d907cc12452a4d5cebef8b1ccc7a5e1e2b9f3dcaadb57`.
+The running Scan snapshot, formal/cache queue plans and runtime are unchanged.
+
+Once qualified, the probe rechecks the real cache and its formal provenance,
+strictly loads protected Nr3D averaged E57 and attaches the zero-initialized
+appearance projection. This same Nr checkpoint initializes the Sr engineering
+probe; it is explicitly not a recovered Sr best checkpoint. For each dataset,
+the fixed12 language+4 detection rows undergo native-output parity checks and
+two disposable native-GT updates. Input augmentation is retained during those
+updates; BN/dropout stay frozen, and the trainable scope/LRs match the Scan
+bridge (multimodal encoder/Decoder/prediction heads1e-6, projection1e-4).
+The probe checks finite/nonzero projection and core gradients and unchanged
+state outside that scope. It writes no weights and does not start full training.
+
+Before any GPU execution, source review found that `_to_gpu` mutates raw
+tensors. The point-hash recording was corrected to use `.cpu().numpy()`.
+Only the initial pending probe PID74294 was stopped and replaced; the original
+pending plan/script/log remain archived. The current probe plan SHA is
+`671270b4200c144b1a3103484a1489509f0d6c1b91e49edf6ed92f24a8058ca2`.
+This fixes a recording-path error, not an observed model-quality failure.
+All preparation evidence is in
+`refine-logs/referit3d_pretrained_appearance_probe_preparation_20260908_v1`.
+Successful engineering checks will still leave full Nr/Sr training and official
+REC evaluation to complete; no new benchmark result is claimed.

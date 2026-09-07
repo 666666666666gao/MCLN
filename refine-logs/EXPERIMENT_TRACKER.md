@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T03:29:05.130985+08:00. Section20.151:Scan paired2482-step fit saved and independently file-hashed; terminal V99 evaluation live; no new formal results.
+Updated: 2026-09-08T03:47:47.569211+08:00. Section20.152:qualified real Nr/Sr model probe queue prepared; actual GPU probe pending; Scan terminal4608/6887 continues.
 
 | Experiment | Current state | Decision |
 |---|---|---|

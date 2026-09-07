@@ -17566,3 +17566,16 @@ rows SHA612e11e5e2ba01372cd2345bd4c2685a93e9f4e2d6de80c7cc365a8a85615b7e，manif
 当前实际终态评估日志：SCANREFER OBJECT APPEARANCE EVAL {"stage": "terminal", "rows": 12, "total": 6887, "elapsed_seconds": 3.0074901580810547}。继续对同一6887-row模块留出集做两臂完整V99评估；该集合的场景已被原主干训练见过，不能称正式新场景成绩。尚无terminal receipt或新正式REC/Mask结果，独立审计、原生REC补评估和条件正式9508队列仍在等前置完成。
 
 观测时间2026-09-08T03:27:08.249941+08:00，同一主进程及四条接续队列存活，数据盘剩7370530816B。磁盘减少对应本次授权保存的两份固定终点；保护E71/Nr权重和旧有效系统不删除。Nr/Sr真实cache尚未生成。按此前零更新全系统评估约28min估计，终点评估仍需相近时间，具体以实际日志为准；不根据拟合loss判性能，也不提前晋级Nr/Sr。三数据集完整Goal及现有验收线保持。
+
+
+### 20.152 Nr/Sr达线后真实预训练模型接入检查已条件排队（2026-09-08T03:47:47.569211+08:00）
+
+在Scan终态评估期间，准备probe_referit3d_pretrained_appearance.py及条件queue，原G14运行环境/依赖未改。新独立源码快照627文件：原625文件继承，仅追加object_appearance_inputs、referit_object_appearance两文件，以及train_dist_mod的两项输入映射；原625运行快照未改。新source manifest SHA bcaf56ce60db00a7030d907cc12452a4d5cebef8b1ccc7a5e1e2b9f3dcaadb57。目录/root/autodl-tmp/mcln_referit3d_pretrained_appearance_probe_preparation_20260908_v1。
+
+当前队列PID74354在03:45:05确认存活，以240s间隔等待此前真实1200场景cache队列完成。前置queue失败、Scan未晋级或cache receipt SHA不符均不执行GPU子进程；三项拒绝测试本地/实际bdetr均通过，两入口--help通过。只有真实缓存完成，才通过同一GPU flock运行；实际probe再次核验缓存及Scan正式9508晋级来源。当前真实probe0、Nr/Sr完整训练0，不能把代码/help/队列存活写成模型通过。
+
+固定接入检查使用原12语言+4检测记录/数据集，严格加载已保护Nr平均E57，再追加零初始化外观投影。Sr工程检查也明确使用Nr起点，不冒称找回Sr历史最好。每数据集先两批原生输出一致性检查，再两次一次性native GT更新；预计总12次MCLN forward、4次disposable optimizer、0权重写出。native输入增强保留，BN/dropout冻结；可训练范围与Scan桥接相同，为多模态encoder/decoder/prediction heads lr1e-6及外观projection lr1e-4。检查实际梯度有限且非零、限定范围外原状态保持；工程通过后仍需完整Nr/Sr训练与正式REC。
+
+准备后源码复核发现_to_gpu会就地迁移raw tensor，点云SHA记录应先.cpu()再.numpy()。在任何GPU执行前，只停止了尚在等待的初始probe PID74294，修正这一行并重新挂起PID74354；原pending plan/script/log保留，当前plan SHA671270b4200c144b1a3103484a1489509f0d6c1b91e49edf6ed92f24a8058ca2。初始计划17acd40eb7f40e479bafb18751a8237c7b4fc10b843c36847a395aceae3bf6fd为已替换的准备版本；没有重启Scan或旧评估队列，也没有把工程修正记为科学负结果。
+
+03:45:05主PID70238终态评估最新4608/6887行，累计1147.81s，原四队列及新条件probe存活；数据盘7324962816B。暂未生成terminal receipt、正式新指标或Nr/Sr真实cache；按速度约03:54结束模块评估，之后实际审计/原生REC补评估/条件正式仍待完成。归档refine-logs/referit3d_pretrained_appearance_probe_preparation_20260908_v1保存627源manifest、源码差分载荷、固定计划、CPU结果及初始/当前队列证据。现有保护目标及三数据集完整Goal不变。

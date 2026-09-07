@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T01:10:58.023257+08:00. Section20.143.2: paired training live; baseline3072/6887 observed; CPU audit and native endpoint REC evaluation queued, neither terminal yet.
+Updated: 2026-09-08T01:26:43.160471+08:00. Section20.144: baseline exact6684/6426; paired fit128/2482 live; native audit and conditional formal evaluation queued; no new formal result.
 
 | Experiment | Current state | Decision |
 |---|---|---|

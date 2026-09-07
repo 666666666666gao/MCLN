@@ -17464,3 +17464,16 @@ source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a276
 只读补评估不写权重、不做optimizer更新、不消费正式val，不追加损失；会核对模型state、端点文件和固定源码在运行前后不变。新的脚本已本地编译、远端bdetr --help入口通过，队列进程已实际确认；完整6887行推理尚未执行，不宣称数值正确或性能通过。原生评估即使完整系统候选未通过也保留为失败归因证据，不据此更换epoch或放松晋级线。正式9508行输入特征缓存及模型加载接入仍为后续任务；三数据集REC目标尚未达成。
 
 证据：refine-logs/scanrefer_object_appearance_pair_20260908_v1/{observe_04.json,native_evaluation_sources.json,native_queue_launch.json,native_queue.sh}。本节同步本地仓库、桌面和canonical远端交接文档，新增代码推送main。原生评估是既定训练计划的观测补齐，不是另一条新网络实验。
+
+
+### 20.144 外观配对已进入真实拟合；正式评估路径准备并条件接续（2026-09-08T01:26:43.160471+08:00）
+
+01:16:40实际同一PID70238已完成baseline并记录step1；01:23:34仍存活且记录128/2482更新/臂。baseline两组6887逐行输出完全一致，REC6684/6426，Mask6511/6097、mIoU77.8108607870%，与正确mesh既有起点一致；仍是主干见过场景的模块留出，不是正式指标。首步native loss两组10.82071018；第128步control9.64105797、appearance9.07936573，梯度均有限。loss下降不证明REC提升。128步累计402.74s、约3.15s/两臂更新，估计03:25—03:30完成拟合，之后还需约28分钟同协议终点评估、CPU审计和单独原生REC补评估；后两者耗时以实际运行记录为准。数据盘约8.89GB余量，未删除保护权重。
+
+本轮新增正式评估接入，延续既有9508行原始loader、2 workers和batch12。其控制源码从实际旧mesh formal归档按SHA1e5e1e30e8efba15a2696e612d677c4f18e4c587c9076d59b3f0be3bc96cc935核对，与当前本地源码字节相同。新入口仅接受固定2482 appearance端点，严格加载appearance投影；保留同批protected/appearance、原生REC和完整V99 REC/Mask，逐行绑定验证点SHA和预测检测框。新正式代码、独立CPU审计、验证外观缓存入口和条件queue均通过编译及远端bdetr --help；4项晋级边界测试通过。实际完整GPU前向尚未执行，不宣称正式接入已全面验证。
+
+01:22:42确认条件queue PID71123存活，目录/root/autodl-tmp/mcln_scanrefer_object_appearance_formal_preparation_20260908_v1。240s间隔等待既有native_queue.exit；必须先有完整fit、CPU integrity PASS、原生6887行补评估完成、且既定fullV99模块REC相对baseline及control双阈值不退化。native成绩只报告，不新增筛选门。未通过则记module_screen_rejected，不执行验证预处理或模型推理。通过才获取原GPU锁，按同一OpenShape冻结配方生成141个ScanRefer val场景特征，然后执行唯一9508行protected/appearance对照和独立结果审计。已只读核对141个预测框文件存在；mesh完整性仍检查312个ScanNet val superpoint文件，两种计数不能混淆。
+
+验证缓存仅改变train/val路径、场景数和split标签；点数、RGB、坐标、384点可用性阈值、最多10000点采样、官方G14冻结权重均与train一致。GT或文本不参与裁剪/编码，无额外训练。此时validation_cache和formal推理尚未启动，formal_rows_consumed=0。满足Scan正式历史5572/4797及同次保护不退化、Mask58.70/50.70/44.72后，才能接Nr/Sr；59/51不是晋级门，Nr/Sr Mask继续豁免。本queue记录晋级结果，但未声称Nr/Sr训练已接入或已开始。
+
+详见docs/SCANREFER_OBJECT_APPEARANCE_OFFICIAL_PLAN_2026-09-08.md；证据归档refine-logs/scanrefer_object_appearance_formal_preparation_20260908_v1，包括plan、源码hash、入口/CPU测试、真实queue PID和train/val配方等价检查。原训练runner、625文件快照、manifest、冻结plan与步数未改，无重复训练，无重新选epoch，无新正式成绩。

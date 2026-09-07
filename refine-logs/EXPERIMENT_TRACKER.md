@@ -1,9 +1,12 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T17:13:46.990118+08:00. Sections20.128-20.129: teacher-box pair COMPLETED/REC FAIL, queue ended with formal0; historical geometry attribution independently recounted; no current training.
+Updated: 2026-09-07T18:13:22.943883+08:00. Sections20.131-20.133: actual hard-Mask gradient audit, continuous probability geometry prototype and root-matched disposable update checks completed; no long training live, no new formal results.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Mask geometry GT supervision | 9CPU tests,16fit native gradients and2 disposable steps/arm PASS;84allowed/82changed;no checkpoint | Fixed Scan pair plan ready;runner/terminal audit and84-parameter saver not yet implemented;not a REC result |
+| Probability geometry prototype | Same16fit/251valid candidates;hard210/208,soft211/210;meanIoU slightly lower | Direct native gradients verified;no deployment replacement or trained quality result |
+| Hard Mask geometry gradient audit | 16fit,1144state unchanged,independent recount PASS | Pure Mask coordinates have no Mask autograd route;score statistics do;not full failure attribution |
 | Historical instance-overlap attribution | CPU complete;141 scenes,152128 stage records;6tests and independent recount PASS | Final50 net−72; root-max proxy subgroup−60; lost variant repairs dominate, no new method/formal result |
 | Native box-head initialization export | 8CPUtests PASS;actual Nr/Sr native loader each1144state exact on explicit synthetic delta fixture;fresh optimizer/scheduler | Future true endpoint only after formalScan pass;temporary599MBfixture deleted;0 GPU/actual training/quality claim |
 | Native box transfer automatic continuation | Completed16:40:04, controller0 | Fixed candidate module REC FAIL; formal0, Nr/Sr0; no control substitution |

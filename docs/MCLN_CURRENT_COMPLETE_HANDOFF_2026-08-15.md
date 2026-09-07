@@ -17291,3 +17291,24 @@ summary SHA `d7db6f5f0a2da414dbe65769b8e3b240182534b401aec2430f1ec18ddcead1df`�
 交付目录`C:\Users\gb\Desktop\document\MCLN_3D_failure_visualizations_20260907\paper_style_dense`；两张3560×2780、300dpi数据集PNG、各自单页PDF及两页合并PDF，六例独立对照PNG及分开的GT/Ours/无框场景。PNG完整解码、两页PDF解析通过；目录约61.56MB，包含原始未裁切PLY与渲染源码。原总览index.html已指向新版，旧散点入口另存index_sparse_diagnostic.html。Sr真实预测源仍缺，没有用其他权重或人工框补齐。
 
 渲染源SHA `3d06ef03c00dadf52bca900ddf14a604eddaf68495eacc641ac97429a8d57197`；详细mesh来源、相机、二维投影、图像SHA与校验在`refine-logs/failure_visualizations_dense_20260907_v1/`。这是用户要求的展示修订，不是新方法指标；原生教师框配对已封存，当前无运行训练。完整三数据集目标仍未完成，下一轮继续实际Query—Variant输出与训练目标对应的机制工作。
+
+
+### 20.131 实际Mask几何与读出梯度边界（2026-09-07T18:13:22.943883+08:00）
+
+同一E71/冻结读出/正确mesh、既有16条fit输入、B4，实际原生前向完成；没有optimizer或新权重。四种纯Mask变体有效候选251/251/251/250，对原始Text/Query Mask和核心的坐标L1梯度均为0；两个混合变体只通过原生框传递坐标梯度。已有读出GT和原生GT则向16/16条原始Mask提供非零梯度。测量目标是原始forward tensor，不是人工leaf或重建fused view。
+
+这说明连续评分特征的梯度不等于硬选点边界的梯度；不证明历史全部REC下降由此导致，也不说Mask完全无法训练。1144项初始state/读出不变，峰值1607.82MiB。NumPy独立重算IoU/L1最大差1.20175e-6/1.62982e-8，receipt SHA `3f88249cdd4cb29a33efb310b69c951af4a493ae9cc3320f10a691b735ed994c`。
+
+### 20.132 连续概率范围原型：真实前向与几何梯度（2026-09-07T18:13:22.943883+08:00）
+
+实现隔离的sigmoid质量CDF分位插值，固定0.005/0.995，未接入MCLN部署。同一16条输入点SHA、Query映射、硬框逐项相同；251有效候选中，硬/soft过线数210/208与211/210，均值IoU0.714592/0.712811，两者行级oracle均16/16。不能当作部署REC或新场景成绩。坐标损失已能传回原始Query Mask和核心参数。
+
+被硬阈值排除点的累计概率均值2.4856%、中位1.3157%，155/251超过1%；这是概率质量而非GT背景比例。后续须同时检查hard/soft，不能只优化连续替代目标。原环境7项算子/有限差分测试和独立数值重算通过。首次启动观察误用旧进程名，仅纠正只读观察；原进程正常运行并自然退出0，没有重启。receipt SHA `df24466ed0b6b318407d85dc52bc460cdb9c265026aa41cf5f77f0747eb9fb3d`。
+
+### 20.133 当前root匹配的Mask几何GT辅助：实际更新检查完成（2026-09-07T18:13:22.943883+08:00）
+
+新增隔离训练辅助按当次原生Hungarian取得root Query，连续读取其fused Mask范围，以root GT监督5×(center L1+0.2×size L1)+GIoU；GT不进入forward，不使用旧Query编号或教师，也不把其他候选一律当root正例。原网络和硬几何/V99部署未改变。
+
+9项CPU检查、16条fit实际梯度、两臂各2次一次性更新完成；四批GT/辅助梯度余弦0.0566/0.2052/0.7435/0.1180，不外推全数据集。第一批两步后控制/候选几何loss0.686834/0.676409，共同起点0.701149，仅为执行证据。84项允许参数中两臂各82项改变，其余state及旧读出不变；峰值2431.24MiB，checkpoint0、formal0。独立L1/GIoU重算最大差8.94e-9/4.99e-7，receipt SHA `699b74ef2b79a5c26fd4d51c49a973f2c5e79942ac3624e6ea26b4cfbd8ac26b`。
+
+固定下一计划见`docs/SCANREFER_MASK_GEOMETRY_GT_PLAN_2026-09-07.md`：同一E71/mesh、native_gt对native_gt_mask_geometry，B12、lr1e-6、2482更新/臂，先6887模块筛选，再按既有保护线正式Scan；通过即Nr/Sr REC，不等59/51。长配对尚未启动，需要新runner/终态审计支持84参数小终点及实际82份optimizer映射，不能套用旧16框头入口。18:07:40实际进程均结束、GPU1MiB，剩余10503421952 bytes。没有新正式指标，完整三数据集目标继续。

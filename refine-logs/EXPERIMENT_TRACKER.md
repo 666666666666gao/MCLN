@@ -1,19 +1,20 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T14:32:02.301611+08:00. Section20.127: sealed correct-mesh local endpoints removed (1.154GiB); six protected weights and evidence unchanged; native box pair768/2482 alive, terminal pending.
+Updated: 2026-09-07T17:13:46.990118+08:00. Sections20.128-20.129: teacher-box pair COMPLETED/REC FAIL, queue ended with formal0; historical geometry attribution independently recounted; no current training.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Historical instance-overlap attribution | CPU complete;141 scenes,152128 stage records;6tests and independent recount PASS | Final50 net−72; root-max proxy subgroup−60; lost variant repairs dominate, no new method/formal result |
 | Native box-head initialization export | 8CPUtests PASS;actual Nr/Sr native loader each1144state exact on explicit synthetic delta fixture;fresh optimizer/scheduler | Future true endpoint only after formalScan pass;temporary599MBfixture deleted;0 GPU/actual training/quality claim |
-| Native box transfer automatic continuation | Queue58294/Python58296 live;fixed source/data hashes verified;8 originalCPUtests PASS | Read controller audit once;only fixed moduleREC pass triggers9508 formal+audit;no candidate/epoch selection;Nr/Sr pendingScan |
-| Native teacher-box transfer | Baseline6887 exact prior parity;trainPID58023 at768/2482 per arm;only16box tensors | Fixed GT-only vs GT+teacher;native6572/5955 and system6684/6426 at start;terminal/conditional formal pending;noNr/Sr |
+| Native box transfer automatic continuation | Completed16:40:04, controller0 | Fixed candidate module REC FAIL; formal0, Nr/Sr0; no control substitution |
+| Native teacher-box transfer | Complete2482/arm,6887rows; integrityPASS, RECFAIL | System candidate6678/6441 vs6684/6426 and6679/6440; native6556/5976 vs6572/5955 and6557/5979; fixed version sealed |
 | Correct-mesh teacher transfer | Same512fit rows;native491/461,teacher497/481;342GT-supported better teacher boxes | Input-version correction,not model gain;rawcandidate rows retained off Git with SHA;GT primary |
 | Native pretrained transfer input/load audit | E71/Nr schema1144 equal;actual E71 CPUload underNr/Sr configs1144/1144, freshoptimizer | No GPU/updates;future trained endpoint still needs explicit native format export and actual-data check afterScanpromotion |
 | Frozen protected readout compatibility | Completed2482/arm;terminal6887 and independent integrity audit PASS | Module REC screen FAIL: system vs baseline -2/+16,vs native_only +3/-7;no9508 formal or Nr/Sr training |
 | Native range conditional GPU preflight | Queue48128 exited0 at06:53;scanrefer_not_promoted | Native GPU preflight and Nr/Sr training never started;prepared integration not an experiment result |
 | Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |
 | ScanRefer matched center/extent range reading | Complete2482updates/arm+6887module+9508formal;integrityPASS,RECFAIL | System extent5543/4740 vs protected5568/4794 and center5555/4740;native5502/4419 vs5515/4411;no promotion or continuation |
-| ScanRefer corrected-mesh final and stage diagnostic | Formal5543/4722 vs5570/4797 FAIL;diagnostic9508 complete,auditPASS | Parent widens@0.25 loss;Geometry turns@0.50 +6 to−89;Top16 oracle+42/+82;next fixed64-point extent control;Nr/Sr not launched |
+| ScanRefer corrected-mesh final and stage diagnostic | Formal REC FAIL; archived diagnostic independently extended | Same-query Geometry benefit332→242:116 fewer repairs and26 fewer breaks; overlap proxy is not semantic identity; fixed range successor also already failed |
 | G0 augmentation pair | Complete; integrity PASS, scientific FAIL | Keep data fix; original G0→G1 performance route sealed |
 | P1 four-row padding identity and candidate audit | Complete | Selected seeds/Masks stable in four padding interventions; full object-memory availability remains incomplete. PR #7 stays draft |
 | Independent P2 v1 | Complete; both heads 6,687 updates; terminal verification PASS | Pair-global REC -1/-84, pair-protected -3/+118 and lower Mask mIoU. Both fixed screens FAIL; do not advance this variant to P3 |
@@ -35,12 +36,12 @@ Updated: 2026-09-07T14:32:02.301611+08:00. Section20.127: sealed correct-mesh lo
 | ScanRefer joint readout | Complete2482 updates/arm and6887 terminal rows;integrity PASS, fixed REC screen FAIL | Joint-baseline -7/+20; joint-detached -5/-8; sealed with no formal promotion; full endpoint weights removed after audit per user |
 | ScanRefer joint formal entry | Prepared but not launched | Fixed terminal REC screen failed; no9508 result from this trial |
 | ScanRefer fixed endpoint audit | Actual weights,108 optimizer states/arm,fit traversal and6887 paired rows PASS | Metrics independently recomputed;106-room intervals diagnostic;before user-authorized deletion of failed full checkpoints |
-| ScanRefer candidate local visual | Correct-mesh6887 baseline independently verified;originalPID42648 at64/2482 per arm23:02;new initial REC6684/6426 | Terminal estimate09-07 01:18-01:21;fixed budget continues;see20.98 |
+| ScanRefer candidate local visual | Correct-mesh pair and full formal completed; endpoints retired with evidence retained | REC FAIL5543/4722 vs5570/4797; see20.102-20.103 and20.127; no process remains pending |
 | ScanRefer local visual official | Correct mesh v3 complete9508;independent audit PASS;local5549/4744 vs protected5570/4797 | REC promotion FAIL;ScanMask floors PASS;see20.97 |
 | ScanRefer local visual endpoint audit | Old2482-step states audited before retirement;two failed weights deleted22:21 with logs/rows/proof retained | New mesh audit entry12CPUtests PASS;new trained endpoint pending;see20.97 |
 | Weight storage cleanup | Prior9.529GiB + current1.156GiB released;8.708GiB free at07:14 | Two failed range endpoints removed after full audit;all logs/rows and six protected hashes retained |
-| ScanRefer mesh post-training queue | Live waiting worker43358;CPU audit then fixed9508 formal launch after actual successful training exit | Firstcheck09-07 01:13:08 then240s;localobserver50584 at01:14:08;no Nr/Sr activation;see20.98 |
-| ScanRefer mesh formal acceptance queue | Localworker50808 and waitchild37596 verified live;waits existingcollector50584 | Actual formal terminal then independentCPU audit;only ScanPASS permits disposable Nr/Sr GPU preflight;session10701;see20.99 |
+| ScanRefer mesh post-training queue | Historical queue completed | Correct-mesh formal REC FAIL; no Nr/Sr launch; old live observations superseded by20.102-20.103 |
+| ScanRefer mesh formal acceptance queue | Historical acceptance completed | Scan failed; native GPU preflight not activated; no pending wait handle |
 | Nr/Sr warm-start interface | CPU actual-weight strict loading and synthetic candidate filtering PASS | Weights-only Nr initialization needs fresh optimizer;butd_cls filtering differs from Scan metadata;no GPU/data/quality claim |
 | Nr/Sr candidate-local native entry | Opt-in native factory/loader/optimizer added;55 original-environment checks PASS;real Nr weights load1154-state local model in both protocols | CPU integration only;fresh optimizer;zero native model updates/formal rows;Scan promotion and real-data GPU preflight still required |
 | Nr/Sr native annotation/input audit | Actual CPU loaders:44909/77836 joint train rows;7899/17726 language val;B12 gives3742/6486 updates;32 fixed preflight inputs | No train/val physical-space overlap;0 point samples/GPU/updates/checkpoints;Scan formal and real GPU preflight remain pending |

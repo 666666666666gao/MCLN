@@ -17130,3 +17130,35 @@ Nr/Sr接续48128仍等待固定正式结果；只在ScanRefer历史REC5572/4797�
 终点目录仍为`/root/autodl-tmp/mcln_scanrefer_frozen_readout_pair_20260907_v1`。fit_complete SHA`3c91d24879a1ae6c48d7ff4d2a1a47fc291c45e24aecfd57e89c6dae2ef927df`；fit_point_batches SHA`15d99c6cc81310d453876fae619ed0e1b995dd76b18384c4032acc3534b90db7`；独立收取回执SHA`a9bcf3de257f89924303d828712d72d5dbfeb601de18c857bae68fa756009150`。本次仅新增两份固定终点，共1237204430 bytes；11:23观察磁盘剩余8104755200 bytes，约7.548 GiB，没有再次删除权重。
 
 当前没有terminal完整指标、正式9508结果或晋级结论，历史最好保持不变。根据同轮baseline约1836秒评估耗时，预计terminal约11:51结束；这是时间估计，不是完成证据。继续等待固定6887评估与原定独立审计；只有预先固定frozen_gt在系统REC两阈值相对起点和native_only均不退化，才接续唯一9508正式评估。Scan通过既定保护线后尽快进行Nr/Sr REC训练，不等待59/51，不设置Nr/Sr Mask门槛。总体目标继续active。
+
+
+### 20.117 冻结读出兼容配对终态：未通过模块 REC 筛选（2026-09-07 11:54 CST 实际收取）
+
+原训练与接续队列自然结束，两份controller.exit均为0，52529/52535已退出。两臂各2482步、29778条fit表达、6887条模块holdout，完整终态及独立审计已收取。11:50:39队列判定module_rec_screen_not_passed；本轮没有运行9508正式评估，没有Nr/Sr训练，也没有改变设置或重选终点。
+
+| 6887条模块holdout | 系统REC@0.25/@0.50 hits | 原生REC hits | Mask hits@0.25/@0.50 | Mask mIoU |
+|---|---:|---:|---:|---:|
+| 相同起点 | 6684/6426 | 6572/5955 | 6511/6097 | 77.81086079% |
+| native_only终点 | 6679/6449 | 6559/5994 | 6509/6096 | 77.79712060% |
+| frozen_gt终点 | 6682/6442 | 6572/5987 | 6509/6099 | 77.82407767% |
+
+固定候选系统REC相对起点−2/+16，相对native_only +3/−7；没有满足两个阈值相对两项控制均不退化。原生REC相对起点0/+32，相对native_only +13/−7。不能说所有单项都变差，也不能将相对起点的严格阈值收益全部归给兼容损失。系统相对起点修复/破坏：@0.25=5/7，@0.50=32/16；相对控制=6/3和10/17。实例身份尚未独立分解，IoU转移不自动等于跨实例切换。
+
+独立审计PASS：冻结参数、三个旧读出及归一化元数据不变，66份optimizer状态均2482步，来源与数据一致。receipt SHA `d3f7053fd6ba6d8dcf110ce5c8ac6b23cb8c07a8cb7a2a4023a730143292a00c`；independent_audit SHA `0b1790d34d63207236a1292d2644008179dc50a283e40e56ddef7b77e4cd3c96`；terminal_rows SHA `a7a65a3d1302ec4253ff54df1fd4ef3f77ddd369094cccdeaa6a0745b9161e08`。这些是主干已见场景的模块筛选数据，不是新场景正式结果。历史最好不变，总体目标未完成；本版本封存，不继续同机制扫参。
+
+### 20.118 用户请求的真实失败场景本地可视化（2026-09-07 12:22 CST）
+
+用户要求在`C:\Users\gb\Desktop\document`渲染三个数据集的一些失败定位案例。当前已实际完成ScanRefer、Nr3D各3例，存于`MCLN_3D_failure_visualizations_20260907`，含6张2890×1700 PNG、6个离线交互HTML、总览、真实50k点NPZ、原文及来源记录。Sr3D历史权重和预测框缓存缺失，尚未完成；已向用户询问备份路径，没有用其他模型或人工框替代。
+
+ScanRefer使用受保护V99的逐级诊断stage_rows，不冒充精确历史正式逐行输出；3例实际输入point SHA与forward记录一致。Nr3D使用平均E57的root_only Default缓存（4275/7899口径），不是正式4475/7899逐行分解。GT按原数据实现从实例min/max转换为center/size；每例IoU重算一致，Nr3D全部有效缓存候选也核对一致。无新GPU forward或优化更新。
+
+| 数据集 | 场景 | 目标 | 类型 | 实际IoU | Top16 oracle IoU |
+|---|---|---|---|---:|---:|
+| ScanRefer | scene0011_00 | chair | selection | 0.000000 | 0.706027 |
+| ScanRefer | scene0019_00 | chair | strict_overlap | 0.454792 | 0.518591 |
+| ScanRefer | scene0025_00 | keyboard | top16_coverage | 0.000000 | 0.000000 |
+| Nr3D | scene0565_00 | chair | selection | 0.000000 | 0.853615 |
+| Nr3D | scene0011_00 | window | strict_overlap | 0.456175 | 0.688398 |
+| Nr3D | scene0164_00 | kitchen cabinet | top16_coverage | 0.000000 | 0.000000 |
+
+strict_overlap只在0.50阈值失败；top16_coverage不推断Full256缺框。静态图明确记录高处剖开/裁切和显示降采样，交互图保留全部50k点；所有PNG已解码检查，Chrome断网逐页验证通过，并实看PNG与交互截图。案例不是总体性能估计。可视化代码和小型来源/验证记录归档于`refine-logs/failure_visualizations_20260907_v1`；点云及图像在用户指定本地目录，不加入Git大文件。

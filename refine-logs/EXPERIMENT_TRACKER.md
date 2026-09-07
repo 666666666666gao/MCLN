@@ -1,11 +1,11 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 11:26 CST. Section20.116: fixed pair completed2482 updates/arm;both endpoint hashes/batch traversal verified;terminal6887 running,no new quality or formal result.
+Updated: 2026-09-07 12:22 CST. Sections20.117-118: frozen_gt completed and failed module REC screen; no new formal; six real ScanRefer/Nr3D visualizations delivered locally, Sr3D predictions missing.
 
 | Experiment | Current state | Decision |
 |---|---|---|
 | Native pretrained transfer input/load audit | E71/Nr schema1144 equal;actual E71 CPUload underNr/Sr configs1144/1144, freshoptimizer | No GPU/updates;future trained endpoint still needs explicit native format export and actual-data check afterScanpromotion |
-| Frozen protected readout compatibility | Fit2482/2482 each complete;two fixed endpoints hashchecked;terminal6887 running | Frozen_gt fixed candidate;independent terminal audit and module REC gate pending;no new formal result or Nr/Sr training |
+| Frozen protected readout compatibility | Completed2482/arm;terminal6887 and independent integrity audit PASS | Module REC screen FAIL: system vs baseline -2/+16,vs native_only +3/-7;no9508 formal or Nr/Sr training |
 | Native range conditional GPU preflight | Queue48128 exited0 at06:53;scanrefer_not_promoted | Native GPU preflight and Nr/Sr training never started;prepared integration not an experiment result |
 | Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |
 | ScanRefer matched center/extent range reading | Complete2482updates/arm+6887module+9508formal;integrityPASS,RECFAIL | System extent5543/4740 vs protected5568/4794 and center5555/4740;native5502/4419 vs5515/4411;no promotion or continuation |

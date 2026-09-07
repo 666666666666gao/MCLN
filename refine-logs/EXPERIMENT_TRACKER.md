@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T02:49:09.025188+08:00. Section20.149:128 full native sample comparisons and8 collations passed; marker inputs only, no new REC; Scan fixed training continues.
+Updated: 2026-09-08T03:06:14.672650+08:00. Section20.150:disk cache wrapper and standard training input mapping passed CPU checks; synthetic markers only; Scan2112/2482 continues.
 
 | Experiment | Current state | Decision |
 |---|---|---|

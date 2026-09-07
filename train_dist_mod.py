@@ -3476,6 +3476,8 @@ class TrainTester(BaseTrainTester):
                 "decomp_global_only_mask",
                 "decomp_weak_generic_mask",
                 "structured_annotation_available",
+                "det_visual_features",
+                "det_visual_available",
         ]:
             if key in batch_data:
                 inputs[key] = batch_data[key]

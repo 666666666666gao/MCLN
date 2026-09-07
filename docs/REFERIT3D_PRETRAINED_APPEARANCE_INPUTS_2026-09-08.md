@@ -220,3 +220,34 @@ parity and gradient checks remain before qualified Nr/Sr training. No model
 forward, optimizer step or formal evaluation occurred. The running Scan source
 and all its fixed queues remain unchanged. Evidence is archived in
 `refine-logs/referit3d_appearance_getitem_20260908_v1`.
+
+## Disk cache wrapper and training-input mapping (2026-09-08)
+
+`ReferItObjectAppearanceDataset` now wraps the native dataset. At construction
+it verifies the expected cache receipt, scene index and individual NPZ hashes,
+original scene points, canonical boxes, predicted classes and original slot
+IDs. A shallow dataset/scan copy with augmentation disabled is used only for
+canonical verification; the actual native dataset retains its augmentation.
+Required scene features are loaded once. Each sample then uses the original
+native `__getitem__` and adds appearance through the verified slot binding.
+
+The standard `TrainTester._get_inputs` now includes the two appearance keys in
+its existing optional field list. This is a two-line mapping addition; the
+running Scan snapshot and its custom input path are unchanged.
+
+A new CPU run completed and was collected at03:04:18CST. It created on-disk
+fixtures containing synthetic slot markers with real canonical scene boxes and
+predicted classes. The new wrapper loaded and validated those files, then ran
+128 plain/wrapped comparisons (256 native calls), with augmentation on/off and
+seeds0/1. All37 original fields and RNG states matched. Eight collated batches
+passed through the exact `_get_inputs` method body extracted from the modified
+training source; the new fields arrived unchanged and the old input fields
+matched. This checks the actual pure mapping function, not a full training
+process or MCLN forward. The fixtures are explicitly marked as synthetic and
+are outside the qualified G14 cache directory.
+
+This completes preparation of disk loading and input plumbing. Real G14 cache,
+model zero-initialization parity, actual gradients and subsequent REC training
+remain conditional on Scan qualification. Source, manifests and results are
+in `refine-logs/referit3d_appearance_cache_loader_20260908_v1`. No main training
+settings, formal thresholds or protected weights changed.

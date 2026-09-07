@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T13:52:33.951206+08:00. Section20.125: baseline6887 exactly matches prior E71/mesh rows;actual trainPID58023 at64/2482 per arm;queue58296 live;no new formal.
+Updated: 2026-09-07T14:07:58.584371+08:00. Section20.126: native box initializer8CPUtests+Nr/Sr actual model-loader fixture PASS;noGPU/actualendpoint/transfer result;fixedScantraining continues.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Native box-head initialization export | 8CPUtests PASS;actual Nr/Sr native loader each1144state exact on explicit synthetic delta fixture;fresh optimizer/scheduler | Future true endpoint only after formalScan pass;temporary599MBfixture deleted;0 GPU/actual training/quality claim |
 | Native box transfer automatic continuation | Queue58294/Python58296 live;fixed source/data hashes verified;8 originalCPUtests PASS | Read controller audit once;only fixed moduleREC pass triggers9508 formal+audit;no candidate/epoch selection;Nr/Sr pendingScan |
 | Native teacher-box transfer | Baseline6887 exact prior parity;trainPID58023 at64/2482 per arm;only16box tensors | Fixed GT-only vs GT+teacher;native6572/5955 and system6684/6426 at start;terminal/conditional formal pending;noNr/Sr |
 | Correct-mesh teacher transfer | Same512fit rows;native491/461,teacher497/481;342GT-supported better teacher boxes | Input-version correction,not model gain;rawcandidate rows retained off Git with SHA;GT primary |

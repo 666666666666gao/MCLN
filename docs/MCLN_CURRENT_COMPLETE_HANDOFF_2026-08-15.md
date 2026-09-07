@@ -17312,3 +17312,16 @@ summary SHA `d7db6f5f0a2da414dbe65769b8e3b240182534b401aec2430f1ec18ddcead1df`�
 9项CPU检查、16条fit实际梯度、两臂各2次一次性更新完成；四批GT/辅助梯度余弦0.0566/0.2052/0.7435/0.1180，不外推全数据集。第一批两步后控制/候选几何loss0.686834/0.676409，共同起点0.701149，仅为执行证据。84项允许参数中两臂各82项改变，其余state及旧读出不变；峰值2431.24MiB，checkpoint0、formal0。独立L1/GIoU重算最大差8.94e-9/4.99e-7，receipt SHA `699b74ef2b79a5c26fd4d51c49a973f2c5e79942ac3624e6ea26b4cfbd8ac26b`。
 
 固定下一计划见`docs/SCANREFER_MASK_GEOMETRY_GT_PLAN_2026-09-07.md`：同一E71/mesh、native_gt对native_gt_mask_geometry，B12、lr1e-6、2482更新/臂，先6887模块筛选，再按既有保护线正式Scan；通过即Nr/Sr REC，不等59/51。长配对尚未启动，需要新runner/终态审计支持84参数小终点及实际82份optimizer映射，不能套用旧16框头入口。18:07:40实际进程均结束、GPU1MiB，剩余10503421952 bytes。没有新正式指标，完整三数据集目标继续。
+
+
+### 20.134 Mask几何GT完整配对入口与终态审计就绪（2026-09-07T18:33:56.370332+08:00）
+
+当前固定研究机制与20.133不变，未换模块或扫超参。新增`run_scanrefer_mask_geometry_pair.py`复用既有数据/原生与V99评估路径，控制native_gt仅原生GT；候选native_gt_mask_geometry加当前Hungarian root的概率Mask范围GT。没有教师前向、旧候选编号或新部署分数。GT匹配几何诊断在部署结果记录后执行，不能影响选择。
+
+起点和唯一终点均记录6887行原生REC、完整V99 REC、原Mask，以及匹配root的soft框、硬fused_t0_q0.005框、有效性、IoU和GT。硬框无效记0并另报有效数；这些匹配诊断不是部署REC。训练仍29778fit、B12、2482更新/臂、lr1e-6、wd0.0005、clip0.1、model.eval、84项允许参数。其余核心buffer及三个读出/归一化冻结。
+
+每批保存84位真实梯度存在记录；终点按参数ID核对各自optimizer步数，保存84项core delta+实际optimizer，再与保护E71重建1144项并实际重载后评估。纠正20.133措辞：probe只证明84允许/82改变，未序列化证明固定82份optimizer；本次按实际记录核验，不硬编码82/84份状态。
+
+新增`audit_scanrefer_mask_geometry_pair.py`独立NumPy重算训练L1/GIoU、soft/hard几何和完整REC/Mask、修复/破坏、模型delta与逐参数optimizer，末尾核验源码/1201个mesh superpoint及保护artifact。CPU四项检查通过（1.62秒），含持续/间歇/无梯度参数保存恢复和当前Query/空硬邻域，原Python3.7语法通过。此为准备完成，不是终态质量PASS。
+
+远端`/root/autodl-tmp/mcln_scanrefer_mask_geometry_pair_20260907_v1`已冻结源码和manifest，controller自动接终态CPU审计；尚未启动，无新权重/正式评估/NrSr训练。启动前再次检查实际GPU和磁盘。REC晋级线沿用已固定规则：完整系统两阈值相对起点和控制均不退化，才正式Scan；正式保护及Mask底线通过即Nr/Sr REC，不等59/51。最近实查GPU1MiB、盘余10503274496 bytes；无需额外清权重。完整目标未完成。

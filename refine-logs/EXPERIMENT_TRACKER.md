@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T06:07:47.478963+08:00. Sections20.158-20.159: saved native geometry attribution complete; full pretrained geometry resources inspected; no new formal model promotion.
+Updated: 2026-09-08T07:12:25.351686+08:00. Sections20.160-20.161: isolated PV-Ground runtime and four real train-scene full forwards pass; engineering evidence only; no formal metric change.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -231,3 +231,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 2026-09-07 03:06 CST: §20.104 records real range preflight and live paired-task/queue;no new formal improvement claimed.
 | Native appearance geometry attribution | CPU20661 selected boxes /762882 object comparisons; independent recount PASS | Same-root-overlap group contributes -44 of native strict -45 net vs control; geometric proxy only; see20.158 |
 | Full pretrained geometry resource audit | Six official PV-Ground checkpoint metadata/logs pinned; ScanRefer checkpoint acquisition recorded | External model resources, not project results; no current network replacement; see20.159 |
+| PV-Ground isolated runtime | Three CUDA extensions built; seeded kernel witness PASS; fresh documented invocation environment PASS, output-format WARN retained | Original bdetr packages unchanged; final spec966235b2; no accuracy claim; see20.160 |
+| Full PV-Ground ScanRefer pretrained forward | Strict1234 state tensors; four fit scenes/two GPU forwards PASS; local1024-box decode PASS | 827 positive-size raw boxes,197 nonpositive; no training/formal rows; final scoring/legality and training interfaces remain to check; see20.161 |

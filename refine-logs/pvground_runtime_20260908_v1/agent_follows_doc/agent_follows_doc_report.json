@@ -1,0 +1,263 @@
+{
+  "report_schema": "agent-follows-doc/1",
+  "date": "2026-09-08",
+  "task": "PV-Ground existing runtime documented witness",
+  "reviewer": {
+    "agent": "/root/pvg_runtime_doc_witness",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "context": "fresh task; only supplied skill, contract, policy, execution-plan ledger, documented command, and produced outputs were used"
+  },
+  "overall_verdict": "WARN",
+  "environment_execution_verdict": "PASS",
+  "report_format_verdict": "WARN",
+  "scope": "Verify the existing environment through the documented fixed operator witness. No model accuracy evaluation.",
+  "command": {
+    "text": "uv run --no-project --with paramiko python -u C:/Users/gb/.codex/tmp/run_mcln_authorized_20260908.py C:/Users/gb/.codex/tmp/mcln_remote_script_20260907.py C:/Users/gb/.codex/tmp/run_pvg_runtime_documented_witness_20260908.py --out C:/Users/gb/.codex/tmp/pvg_runtime_agent_witness_20260908.json",
+    "shell": "powershell",
+    "login": false,
+    "workdir": "C:/Users/gb",
+    "executions": 1,
+    "started_utc": "2026-09-07 22:51:56 UTC",
+    "completion_observed_utc": "2026-09-07 22:52:17 UTC",
+    "session_id": 55094,
+    "exit_code": 0,
+    "initial_wait_seconds": 10.0035699,
+    "final_poll_wait_seconds": 0.0000039
+  },
+  "sentinels": {
+    "PVG_RUNTIME_WITNESS": true,
+    "DOCUMENTED_WITNESS_PASS": true
+  },
+  "witness": {
+    "status": "pass",
+    "time_cst": "2026-09-08T06:52:14.172250+08:00",
+    "torch": "1.10.2+cu111",
+    "spconv": "2.3.6",
+    "gpu": "NVIDIA A100-PCIE-40GB",
+    "fps_indices": [
+      [
+        0,
+        3,
+        2
+      ],
+      [
+        0,
+        3,
+        2
+      ]
+    ],
+    "empty_groups": [
+      false,
+      true,
+      false,
+      true
+    ],
+    "grouping_max_abs_error": 0,
+    "grouping_gradient_matches_reference": true,
+    "roi_membership_matches_reference": true,
+    "voxel_coordinate_order": "zyx",
+    "voxel_reference_arithmetic": "float32",
+    "raw_point_order_preserved": true,
+    "point_extension": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/lib/python3.7/site-packages/pointnet2/_ext.cpython-37m-x86_64-linux-gnu.so",
+    "stack_extension": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/OpenPCDet/pcdet/ops/pointnet2/pointnet2_stack/pointnet2_stack_cuda.cpython-37m-x86_64-linux-gnu.so",
+    "full_model_imported": "PVGround",
+    "model_forwards": 0,
+    "optimizer_steps": 0,
+    "dataset_rows": 0,
+    "elapsed_seconds": 15.204147100448608,
+    "script_sha256": "22955d73b72e5c49b3d6c811f9480392676e3d230309a86ec89e1a95b6132a75"
+  },
+  "checks": [
+    {
+      "id": "verbatim_invocation",
+      "status": "PASS",
+      "documented": "Execute the PowerShell command verbatim without environment repair, installation, or training.",
+      "observed": "The documented command was submitted unchanged with shell=powershell, login=false, cwd=C:/Users/gb. It was executed once. No repair, install, or training command was issued by the reviewer."
+    },
+    {
+      "id": "process_exit",
+      "status": "PASS",
+      "documented": "Expected exit code 0.",
+      "observed": 0
+    },
+    {
+      "id": "kernel_sentinel",
+      "status": "PASS",
+      "documented": "Output contains PVG_RUNTIME_WITNESS.",
+      "observed": {
+        "present": true,
+        "status": "pass"
+      }
+    },
+    {
+      "id": "wrapper_receipt_check",
+      "status": "PASS",
+      "documented": "The wrapper checks the receipt.",
+      "observed": "DOCUMENTED_WITNESS_PASS is present. This is wrapper-reported receipt verification; the remote receipt was not separately opened by this reviewer."
+    },
+    {
+      "id": "torch_spconv_gpu",
+      "status": "PASS",
+      "documented": "Torch 1.10.2+cu111, spconv 2.3.6, one A100 40GB.",
+      "observed": {
+        "torch": "1.10.2+cu111",
+        "spconv": "2.3.6",
+        "gpu": "NVIDIA A100-PCIE-40GB"
+      }
+    },
+    {
+      "id": "isolated_extension_paths",
+      "status": "PASS",
+      "documented": "PointNet2 extensions resolve inside the dedicated runtime root.",
+      "observed": {
+        "point_extension": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/lib/python3.7/site-packages/pointnet2/_ext.cpython-37m-x86_64-linux-gnu.so",
+        "stack_extension": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/OpenPCDet/pcdet/ops/pointnet2/pointnet2_stack/pointnet2_stack_cuda.cpython-37m-x86_64-linux-gnu.so"
+      }
+    },
+    {
+      "id": "fps_two_batches",
+      "status": "PASS",
+      "documented": "Fixed witness checks two batches of synthetic points and FPS against a CPU reference.",
+      "observed": {
+        "fps_indices": [
+          [
+            0,
+            3,
+            2
+          ],
+          [
+            0,
+            3,
+            2
+          ]
+        ],
+        "witness_status": "pass"
+      }
+    },
+    {
+      "id": "grouping_and_empty_neighborhood",
+      "status": "PASS",
+      "documented": "Radius grouping, empty neighborhoods, and exact feature gradients are checked.",
+      "observed": {
+        "grouping_max_abs_error": 0,
+        "grouping_gradient_matches_reference": true,
+        "empty_groups": [
+          false,
+          true,
+          false,
+          true
+        ],
+        "witness_status": "pass"
+      }
+    },
+    {
+      "id": "roi_geometry",
+      "status": "PASS",
+      "documented": "RoI membership is checked against axis-aligned geometry.",
+      "observed": {
+        "roi_membership_matches_reference": true
+      }
+    },
+    {
+      "id": "voxel_dtype_and_order",
+      "status": "PASS",
+      "documented": "The reference uses float32, coordinates are ZYX, and original point order is preserved.",
+      "observed": {
+        "voxel_coordinate_order": "zyx",
+        "voxel_reference_arithmetic": "float32",
+        "raw_point_order_preserved": true,
+        "witness_status": "pass"
+      }
+    },
+    {
+      "id": "full_model_import",
+      "status": "PASS",
+      "documented": "Import the complete PVGround class without instantiating or forwarding the model.",
+      "observed": {
+        "full_model_imported": "PVGround",
+        "model_forwards": 0
+      }
+    },
+    {
+      "id": "zero_training_zero_dataset_rows",
+      "status": "PASS",
+      "documented": "0 training steps and 0 formal evaluation rows.",
+      "observed": {
+        "model_forwards": 0,
+        "optimizer_steps": 0,
+        "dataset_rows": 0
+      }
+    },
+    {
+      "id": "local_out_serialization",
+      "status": "WARN",
+      "documented": "The documented --out path ends in .json; the text does not explicitly promise JSON serialization.",
+      "observed": "The file contains a PVG_RUNTIME_WITNESS line followed by DOCUMENTED_WITNESS_PASS. It is log text, not a standalone JSON document. PowerShell ConvertFrom-Json fails at its first character P.",
+      "impact": "No kernel or command execution failure. Any consumer using the .json suffix to select a JSON parser will fail. This report separately supplies valid structured JSON."
+    },
+    {
+      "id": "ledger_location",
+      "status": "PASS",
+      "documented": "The compute contract permits ledger blocks in the project's existing server-notes document instead of .aris/compute/<provider>.md.",
+      "observed": "PVG_RUNTIME_EXECUTION_PLAN_2026-09-08.md contains env blocks for c73eed09, 5e83ce8f, and 966235b2. .aris/compute was absent. The alternative ledger location is permitted by the contract."
+    }
+  ],
+  "divergences": [
+    {
+      "id": "local_out_serialization",
+      "status": "WARN",
+      "documented": "The documented --out path ends in .json; the text does not explicitly promise JSON serialization.",
+      "observed": "The file contains a PVG_RUNTIME_WITNESS line followed by DOCUMENTED_WITNESS_PASS. It is log text, not a standalone JSON document. PowerShell ConvertFrom-Json fails at its first character P.",
+      "impact": "No kernel or command execution failure. Any consumer using the .json suffix to select a JSON parser will fail. This report separately supplies valid structured JSON."
+    }
+  ],
+  "unverified_by_this_documented_invocation": [
+    "The reviewer did not separately open build_receipt.json or agent_kernel_receipt.json on the remote machine; only wrapper output confirms receipt checks.",
+    "The full env-spec canonical hash, source Git blob hashes, dependency wheel hashes, and pretrained weight SHA were not recomputed by this review.",
+    "Historical v1/v2 build failures, exact CUDA compiler version and SM target, package installation provenance, and byte-for-byte equality of the original bdetr package inventory were not independently rerun or re-established.",
+    "Full-model checkpoint loading, real ScanRefer input validation, model forward behavior, model quality, and REC metrics are outside scope."
+  ],
+  "no_unauthorized_actions": {
+    "reviewer_read_credentials": false,
+    "reviewer_reported_credentials": false,
+    "reviewer_repaired_environment": false,
+    "reviewer_installed_packages": false,
+    "reviewer_trained_model": false,
+    "reviewer_modified_source_or_docs": false
+  },
+  "raw_output": {
+    "stdout": "PVG_RUNTIME_WITNESS {\"status\": \"pass\", \"time_cst\": \"2026-09-08T06:52:14.172250+08:00\", \"torch\": \"1.10.2+cu111\", \"spconv\": \"2.3.6\", \"gpu\": \"NVIDIA A100-PCIE-40GB\", \"fps_indices\": [[0, 3, 2], [0, 3, 2]], \"empty_groups\": [false, true, false, true], \"grouping_max_abs_error\": 0.0, \"grouping_gradient_matches_reference\": true, \"roi_membership_matches_reference\": true, \"voxel_coordinate_order\": \"zyx\", \"voxel_reference_arithmetic\": \"float32\", \"raw_point_order_preserved\": true, \"point_extension\": \"/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/lib/python3.7/site-packages/pointnet2/_ext.cpython-37m-x86_64-linux-gnu.so\", \"stack_extension\": \"/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/OpenPCDet/pcdet/ops/pointnet2/pointnet2_stack/pointnet2_stack_cuda.cpython-37m-x86_64-linux-gnu.so\", \"full_model_imported\": \"PVGround\", \"model_forwards\": 0, \"optimizer_steps\": 0, \"dataset_rows\": 0, \"elapsed_seconds\": 15.204147100448608, \"script_sha256\": \"22955d73b72e5c49b3d6c811f9480392676e3d230309a86ec89e1a95b6132a75\"}\r\nDOCUMENTED_WITNESS_PASS\r\n",
+    "documented_out_path": "C:/Users/gb/.codex/tmp/pvg_runtime_agent_witness_20260908.json",
+    "standalone_json_valid": false,
+    "json_parser_check": {
+      "command": "Get-Content -LiteralPath 'C:/Users/gb/.codex/tmp/pvg_runtime_agent_witness_20260908.json' -Raw | ConvertFrom-Json -ErrorAction Stop",
+      "exit_code": 1,
+      "output": "ConvertFrom-Json: \r\nLine |\r\n   2 |  … gent_witness_20260908.json' -Raw | ConvertFrom-Json -ErrorAction Stop\r\n     |                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n     | Conversion from JSON failed with error: Unexpected character encountered while parsing value: P. Path '', line 0, position 0.\r\n"
+    }
+  },
+  "input_and_output_sha256": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvg_runtime_agent_witness_20260908.json",
+      "sha256": "975c592efa10cc7db84e206834f22a17ffb3663856f07f9a6e08726033f0125b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_mcln_g0_20260905\\docs\\PVG_RUNTIME_EXECUTION_PLAN_2026-09-08.md",
+      "sha256": "23d1a7dadc9ab81857a0e6503b14b4ebfae0afcfc7beebba7b622b6dc7b417fb"
+    },
+    {
+      "path": "C:\\Users\\gb\\.agents\\skills\\run-experiment\\SKILL.md",
+      "sha256": "489dd5e852565a607b9f5bd9853d9edad44444fcf59905cce1b1c2a18c1b7529"
+    },
+    {
+      "path": "C:\\Users\\gb\\.agents\\skills\\shared-references\\compute-env-contract.md",
+      "sha256": "27aee2eee75a705a7d3ed72086b05ae2aa499104489376596ecb5b683807eeb5"
+    },
+    {
+      "path": "C:\\Users\\gb\\.agents\\skills\\shared-references\\local-codex-policy.md",
+      "sha256": "73c9b68b96771024da9a5e77a434a1de33ef6e3ce740e2f9063eeeffdc3442ea"
+    }
+  ]
+}

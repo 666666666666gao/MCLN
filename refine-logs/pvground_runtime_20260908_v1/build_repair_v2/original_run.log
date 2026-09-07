@@ -1,0 +1,52 @@
+Looking in links: /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/wheels
+Processing ./wheels/networkx-2.6.3-py3-none-any.whl
+Processing ./wheels/imageio-2.31.2-py3-none-any.whl
+Processing ./wheels/tifffile-2021.11.2-py3-none-any.whl
+Processing ./wheels/PyWavelets-1.3.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl
+Processing ./wheels/scikit_image-0.19.3-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl
+Installing collected packages: networkx, imageio, tifffile, PyWavelets, scikit-image
+Successfully installed PyWavelets-1.3.0 imageio-2.31.2 networkx-2.6.3 scikit-image-0.19.3 tifffile-2021.11.2
+Looking in links: /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/wheels
+Processing ./wheels/SharedArray-3.2.4.tar.gz
+    Preparing wheel metadata: started
+    Preparing wheel metadata: finished with status 'done'
+Building wheels for collected packages: SharedArray
+  Building wheel for SharedArray (PEP 517): started
+  Building wheel for SharedArray (PEP 517): finished with status 'done'
+  Created wheel for SharedArray: filename=SharedArray-3.2.4-cp37-cp37m-linux_x86_64.whl size=81077 sha256=15b58ccb88900efb8e60f9450d73a8be75375067f9b34739fed783caacf608aa
+  Stored in directory: /tmp/pip-ephem-wheel-cache-tg_g5mbm/wheels/9a/5b/a8/0e9b219bc2a3a8b624398586d409201671c13f560ea96c47ba
+Successfully built SharedArray
+Installing collected packages: SharedArray
+Successfully installed SharedArray-3.2.4
+running build_ext
+/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/utils/cpp_extension.py:381: UserWarning: Attempted to use ninja as the BuildExtension backend but we could not find ninja.. Falling back to using the slow distutils backend.
+  warnings.warn(msg.format('we could not find ninja.'))
+Traceback (most recent call last):
+  File "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/setup_pvg_ops.py", line 16, in <module>
+    setup(name='pcdet-pvg-ops', version='0.6.0', ext_modules=extensions, cmdclass={'build_ext': BuildExtension})
+  File "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/lib/python3.7/site-packages/setuptools/__init__.py", line 144, in setup
+    return distutils.core.setup(**attrs)
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/distutils/core.py", line 148, in setup
+    dist.run_commands()
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/distutils/dist.py", line 966, in run_commands
+    self.run_command(cmd)
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/distutils/dist.py", line 985, in run_command
+    cmd_obj.run()
+  File "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/lib/python3.7/site-packages/setuptools/command/build_ext.py", line 87, in run
+    _build_ext.run(self)
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/distutils/command/build_ext.py", line 340, in run
+    self.build_extensions()
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/utils/cpp_extension.py", line 404, in build_extensions
+    self._check_cuda_version()
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/utils/cpp_extension.py", line 781, in _check_cuda_version
+    raise RuntimeError(CUDA_MISMATCH_MESSAGE.format(cuda_str_version, torch.version.cuda))
+RuntimeError: 
+The detected CUDA version (11.6) mismatches the version that was used to compile
+PyTorch (11.1). Please make sure to use the same CUDA versions.
+
+Traceback (most recent call last):
+  File "build_runtime.py", line 40, in <module>
+    subprocess.run([str(python), str(root / 'setup_pvg_ops.py'), 'build_ext', '--inplace'], cwd=str(root / 'OpenPCDet'), env=environment, check=True)
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/subprocess.py", line 512, in run
+    output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python', '/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/setup_pvg_ops.py', 'build_ext', '--inplace']' returned non-zero exit status 1.

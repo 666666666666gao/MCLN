@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T01:26:43.160471+08:00. Section20.144: baseline exact6684/6426; paired fit128/2482 live; native audit and conditional formal evaluation queued; no new formal result.
+Updated: 2026-09-08T01:43:55.650725+08:00. Section20.145: Scan pair512/2482 live; Nr/Sr1061-scene CPU slot export and checkpoint-shape check complete; no new formal metrics.
 
 | Experiment | Current state | Decision |
 |---|---|---|

@@ -17477,3 +17477,18 @@ source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a276
 验证缓存仅改变train/val路径、场景数和split标签；点数、RGB、坐标、384点可用性阈值、最多10000点采样、官方G14冻结权重均与train一致。GT或文本不参与裁剪/编码，无额外训练。此时validation_cache和formal推理尚未启动，formal_rows_consumed=0。满足Scan正式历史5572/4797及同次保护不退化、Mask58.70/50.70/44.72后，才能接Nr/Sr；59/51不是晋级门，Nr/Sr Mask继续豁免。本queue记录晋级结果，但未声称Nr/Sr训练已接入或已开始。
 
 详见docs/SCANREFER_OBJECT_APPEARANCE_OFFICIAL_PLAN_2026-09-08.md；证据归档refine-logs/scanrefer_object_appearance_formal_preparation_20260908_v1，包括plan、源码hash、入口/CPU测试、真实queue PID和train/val配方等价检查。原训练runner、625文件快照、manifest、冻结plan与步数未改，无重复训练，无重新选epoch，无新正式成绩。
+
+
+### 20.145 Nr/Sr预训练外观输入接入准备完成一项；Scan配对512步持续（2026-09-08T01:43:55.650725+08:00）
+
+利用Scan训练等待时间完成CPU-only真实对象槽导出，未提前启动Nr/Sr训练或GPU试验。按当前625文件原生源码调用_get_scene_objects，在同一未增强50000点场景上复核Nr511、Sr1018扫描（共享468，合并1061）：所有输入点SHA、完整padding框SHA、有效槽索引及显式AABB裁剪点计数与既有全量记录一致，export.exit=0，本地独立JSON复算PASS。点/框/类来自既定butd_cls协议：实例框＋预测类别，不是ScanRefer的GroupFree预测框；裁剪不使用target_id或实例mask清洗。
+
+既定OpenShape384点最低要求下，Nr16181有效槽中11560可编码（71.4418%）、4621不可用；Sr34865中24219（69.4651%）、10646不可用。这是场景对象槽统计，不能当表达修复比例、语言Anchor recall或REC上界。Nr的scene0074_00/0216_00/0134_00/0228_00四个场景存在中间无效槽，必须按实际slot_ids散射特征，不能用Scan的[:count]前缀赋值；Sr已审计train槽无中间空位，最大索引131。既有两个单点Sr对象按相同384规则自然不可用，保留原框/类别信息即可，无需重复点或伪造几何。
+
+原生槽metadata共5526487字节，SHA31d5bb22f90556ae2f6087017c603203647e849568fd66e24212b1000e1fd11f；保存在/root/autodl-tmp/mcln_referit3d_pretrained_slots_20260908_v1/scene_slots.json及本地已核验临时副本，不将全量对象框元数据推入Git。source/receipt/计数/核验摘要归档refine-logs/referit3d_pretrained_slots_20260908_v1。导出处理及末次重哈希121.515s，不含场景加载；0外观embedding、0模型forward、0GPU、0优化器更新、0正式验证行。
+
+另在CPU逐一SHA核对并加载受保护Scan E71与Nr平均E57：均1144个state张量，无键差异、无shape差异，其中206个值相同；配置分别butd和butd_cls，6层/256Query/RGB/同双源选择结构。此证据支持优先使用已有Nr权重初始化，未证明新增路径的完整模型加载或梯度正确；Nr权重evaluation_only且无optimizer，不得称为原训练状态续跑，也不得改名为Sr受保护权重。
+
+尚待解决的实际接口：Nr/Sr原训练确有旋转/翻转、噪声、RGB扰动和对象框独立jitter；当前Scan外观配对明确无增强，不能把它的原始point/box SHA断言直接复制到增强输入，也不能未经验证声称缓存特征旋转不变。后续要明确canonical外观与增强几何是否为两个受控视图，或编码增强裁剪，并做真实输入和模型接入检查。当前未修改任何现有增强逻辑或数据划分。详见REFERIT3D_PRETRAINED_APPEARANCE_INPUTS_2026-09-08.md。
+
+01:42:20同一Scan PID70238已运行62分钟，实际记录512/2482更新/臂，累计1601.81s、约3.13s/步；第512步control loss9.16980、appearance9.43657，均有限。损失有波动，不能据此前几步低loss宣布精度改善；预计拟合仍在03:25—03:30完成。01:38:33实际核验训练和CPU审计70598/原生补评估70823/正式条件queue71123全部存活；正式流程仍未消费val。完整三数据集目标未完成，保护结果无更新。

@@ -456,7 +456,8 @@ class MCLN(nn.Module):
                  parent_relative_text_verifier_detach_inputs=True,
                  parent_relative_text_verifier_filter_non_gt_boxes=False,
                  parent_relative_text_verifier_counterfactual_training=False,
-                 pointnet_ckpt_sha256=""):
+                 pointnet_ckpt_sha256="",
+                 use_pretrained_object_appearance=False):
         """Initialize layers."""
         super().__init__()
 
@@ -465,6 +466,11 @@ class MCLN(nn.Module):
         self.self_position_embedding = self_position_embedding
         self.contrastive_align_loss = contrastive_align_loss
         self.butd = butd
+        self.object_appearance = None
+        if use_pretrained_object_appearance:
+            assert butd and d_model == 288
+            from .pretrained_object_appearance import PretrainedObjectAppearance
+            self.object_appearance = PretrainedObjectAppearance()
         self.use_source_choice_selector = bool(use_source_choice_selector)
         self.use_source_moe = bool(use_source_moe)
         self.use_query_mask_fusion_calibrator = bool(
@@ -1938,6 +1944,10 @@ class MCLN(nn.Module):
             # step box feature     ([B, 132, 288])
             detected_feats = torch.cat([box_embeddings, class_embeddings.transpose(1, 2)]
                                         , 1).transpose(1, 2).contiguous()
+            if self.object_appearance is not None:
+                detected_feats = self.object_appearance(
+                    detected_feats, inputs['det_visual_features'],
+                    inputs['det_visual_available'] & ~detected_mask)
         else:
             detected_mask = None
             detected_feats = None

@@ -1,0 +1,83 @@
+{
+  "schema": "openshape-bdetr-extension-runtime-v2",
+  "base": {
+    "interpreter": "/root/miniconda3/envs/bdetr/bin/python",
+    "python": "3.7.11",
+    "torch": "1.10.2+cu111",
+    "immutable": true,
+    "resolved_dependencies": {
+      "numpy": "1.21.5",
+      "scipy": "1.7.3",
+      "requests": "2.27.1",
+      "tqdm": "4.63.1",
+      "psutil": "5.9.0",
+      "typing-extensions": "4.7.1",
+      "einops": "0.6.1",
+      "huggingface-hub": "0.4.0"
+    }
+  },
+  "dependency_prefix": "/root/autodl-tmp/mcln_openshape_object_source_20260907_v1/deps",
+  "pip_phases": [
+    [
+      "dgl-cu111==0.9.1.post1"
+    ],
+    [
+      "torch.redstone==0.0.6"
+    ],
+    [
+      "networkx==2.6.3"
+    ]
+  ],
+  "pip_no_deps": true,
+  "files": {
+    "assets/model.pt": {
+      "sha256": "34949c162aca01b6fd3147ed7ccf34b448a34bdebc4a857605ea62412ad54fb9",
+      "bytes": 388091433
+    },
+    "assets/lvis_cats.pt": {
+      "sha256": "71baf2d3f89884a082f1db75d0e94ac9a3b8036553877a3fdd98861cd01c4aec",
+      "bytes": 5919467
+    },
+    "assets/dgl_cu111-0.9.1.post1-cp37-cp37m-manylinux1_x86_64.whl": {
+      "sha256": "f798f374f6bc308c8c7ee389b15ee783a3a640cbfc21215ac40011b60a5cc966",
+      "bytes": 269313867
+    },
+    "assets/torch.redstone-0.0.6-py3-none-any.whl": {
+      "sha256": "31454c5cff2173f198cfb1208e0c9a9874bae7b038831af7eb00a0c90e76fb34",
+      "bytes": 21136
+    },
+    "vendor/openshape/__init__.py": {
+      "sha256": "8d8703de05701287ee31d698af761aab319ebad14f05895b3ef3c220f55bbcad",
+      "bytes": 1239
+    },
+    "vendor/openshape/ppat_rgb.py": {
+      "sha256": "bd35b15473742c2680cdad6c19f60789eb03b44aeaa6c5fa7e9f802b4aecaa1c",
+      "bytes": 4289
+    },
+    "vendor/openshape/pointnet_util.py": {
+      "sha256": "7109479db367487e4bc7d379b57f3540a40f63bf6ac2f640c00c96e601cd318e",
+      "bytes": 11391
+    },
+    "assets/lvis_categories.json": {
+      "sha256": "5c3786609ff9355fcc87885fde85d9a8c84d4403c0ced8dc9713f02f0a64a95b",
+      "bytes": 14925
+    },
+    "assets/networkx-2.6.3-py3-none-any.whl": {
+      "sha256": "80b6b89c77d1dfb64a4c7854981b60aeea6360ac02c6d4e4913319e0a313abef",
+      "bytes": 1927288,
+      "url": "https://files.pythonhosted.org/packages/e9/93/aa6613aa70d6eb4868e667068b5a11feca9645498fd31b954b6c4bb82fa5/networkx-2.6.3-py3-none-any.whl"
+    }
+  },
+  "source_revision": "70dbc29fa30520cb78b4982de671f90600c08685",
+  "weight_revision": "d771a992218de10b967eea690e8f474aa96dd758",
+  "env": {
+    "PYTHONPATH": "/root/autodl-tmp/mcln_openshape_object_source_20260907_v1/vendor:/root/autodl-tmp/mcln_openshape_object_source_20260907_v1/deps",
+    "DGLBACKEND": "pytorch",
+    "OMP_NUM_THREADS": "4",
+    "MKL_NUM_THREADS": "4",
+    "OPENBLAS_NUM_THREADS": "4",
+    "CUDA_VISIBLE_DEVICES": "0"
+  },
+  "witness_command": "bash /root/autodl-tmp/mcln_openshape_object_source_20260907_v1/witness.sh",
+  "expected": "OPENSHAPE_WITNESS"
+}

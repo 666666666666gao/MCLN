@@ -1,0 +1,26 @@
+{
+  "review_date": "2026-09-08",
+  "reviewer": "fresh Codex subagent",
+  "independence": "same-family fresh-agent review; no external model backend",
+  "status": "blocked",
+  "provisional": true,
+  "basis": [
+    "C:/Users/gb/.agents/skills/shared-references/compute-env-contract.md",
+    "docs/OPENSHAPE_RUNTIME_2026-09-07.md",
+    "runtime_spec_v2.json"
+  ],
+  "exact_local_command": "uv run --no-project --with paramiko python -u C:/Users/gb/.codex/tmp/review_openshape_witness_20260907.py",
+  "exact_remote_command": "bash /root/autodl-tmp/mcln_openshape_object_source_20260907_v1/witness.sh",
+  "command_executed": false,
+  "command_exit": null,
+  "observed_tensor_shape": null,
+  "observed_norm": null,
+  "observed_device": null,
+  "observed_parameter_count": null,
+  "documented_expectation": "exit 0; OPENSHAPE_WITNESS; shape [1,1280]; positive finite norm; actual CUDA device; parameter count",
+  "mismatches": [],
+  "blocked_reason": "load('mclnCredential') was unavailable in the fresh agent store. No alternative credential retrieval was attempted.",
+  "conclusion": "Runtime is not independently verified by this review; no doc-versus-runtime mismatch can be established without executing the documented command.",
+  "environment_changes": false,
+  "object_probe_or_training_started": false
+}

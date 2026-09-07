@@ -1,0 +1,39 @@
+{
+  "review_date": "2026-09-08",
+  "reviewer": "fresh Codex subagent",
+  "independence": "same-family fresh-agent review; no external model backend",
+  "provisional": true,
+  "provisional_reason": "Fresh-agent execution is independent of the author, but uses the same model family; this is not cross-model review.",
+  "decision": "PASS",
+  "scope": "Documented runtime kernel-dispatch witness only",
+  "basis": [
+    "C:/Users/gb/.agents/skills/shared-references/compute-env-contract.md",
+    "docs/OPENSHAPE_RUNTIME_2026-09-07.md",
+    "runtime_spec_v2.json"
+  ],
+  "exact_local_command": "uv run --no-project --with paramiko python -u C:/Users/gb/.codex/tmp/review_openshape_witness_20260907.py",
+  "exact_remote_command": "bash /root/autodl-tmp/mcln_openshape_object_source_20260907_v1/witness.sh",
+  "command_executed_verbatim": true,
+  "local_transport_exit_code": 0,
+  "witness_exit_code": 0,
+  "actual_output": {
+    "stdout": "OPENSHAPE_WITNESS {\"shape\": [1, 1280], \"norm\": 1134.4815673828125, \"device\": \"NVIDIA A100-PCIE-40GB\", \"torch\": \"1.10.2+cu111\", \"dgl\": \"0.9.1post1\", \"parameters\": 32326080}\n",
+    "stderr": ""
+  },
+  "observed": {
+    "tensor_shape": [1, 1280],
+    "norm": 1134.4815673828125,
+    "norm_positive_and_finite": true,
+    "device": "NVIDIA A100-PCIE-40GB",
+    "torch": "1.10.2+cu111",
+    "dgl": "0.9.1post1",
+    "parameter_count": 32326080
+  },
+  "doc_runtime_comparison": "Exit 0, sentinel, expected shape, positive finite norm, A100 40GB device, and parameter count were all observed. Torch matches the documented version. DGL reports the equivalent post-release version string 0.9.1post1.",
+  "mismatches": [],
+  "credential_handling": "The missing environment precondition was supplied from a current-user DPAPI handoff; no credential content was printed or written to this report.",
+  "initial_blocked_review_preserved_at": "archive/runtime_review.json",
+  "environment_changes": false,
+  "object_probe_or_training_started": false,
+  "conclusion": "The documented exact runtime witness passes fresh-agent execution. This establishes the stated runtime smoke behavior, not scientific quality or formal evaluation validity."
+}

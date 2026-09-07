@@ -1,0 +1,14 @@
+[
+  [
+    "                 pointnet_ckpt_sha256=\"\"):",
+    "                 pointnet_ckpt_sha256=\"\",\n                 use_pretrained_object_appearance=False):"
+  ],
+  [
+    "        self.butd = butd\n",
+    "        self.butd = butd\n        self.object_appearance = None\n        if use_pretrained_object_appearance:\n            assert butd and d_model == 288\n            from .pretrained_object_appearance import PretrainedObjectAppearance\n            self.object_appearance = PretrainedObjectAppearance()\n"
+  ],
+  [
+    "                                        , 1).transpose(1, 2).contiguous()\n",
+    "                                        , 1).transpose(1, 2).contiguous()\n            if self.object_appearance is not None:\n                detected_feats = self.object_appearance(\n                    detected_feats, inputs['det_visual_features'],\n                    inputs['det_visual_available'] & ~detected_mask)\n"
+  ]
+]

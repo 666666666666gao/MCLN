@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T23:17:57.092776+08:00. Section20.142: fixed512 real-input score audit and independent CPU recount complete;no training/formal/Nr/Sr.
+Updated: 2026-09-08T00:48:12.450189+08:00. Section20.143: frozen object source/cache/native probe complete; paired ScanRefer job launched, no new formal metric.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Pretrained native object appearance | Frozen source409 forwards;562-scene cache complete;16-row native parity/gradient PASS;Scan paired job launched | Same E71,2482 updates/arm planned;all multimodal encoder/Decoder/prediction heads;no completed REC gain;see20.143 |
 | Native/adapter score actual fit audit | 512 fixed rows;actual evaluator and SourceChoice recorded;independent all256 score/IoU/candidate recount | Top1 disagreements 0;native Top1 excluded 0;no deployment or metric-gain claim;see20.142 |
 | Native default score definitions | Existing evaluator/SourceChoice agree;adapter changesTop1 in2/3synthetic token-count cases | Contract difference only;no rule change or metric gain;real fit prevalence now recorded in20.142 |
 | Mask geometry surrogate transfer | Saved6887 rows, no new inference;328soft50 repairs,306hard50 already correct | Same328hard net0/deployed−1;full soft+293 versus hard+5;no surrogate gain claim as REC |

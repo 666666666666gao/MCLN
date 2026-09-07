@@ -17425,3 +17425,22 @@ source manifest SHA `dbdc1da768fb0689f9b7ce1b140bfafc5cc2646d99fc3ed69b1ada5a276
 工程错误明确保留：首次清单路径预检停止；v1预算字段应为candidate_rule而非顶层，前向前停止。v2完成512前向、1144state/源码/权重/mesh后检、evaluator一致断言并落盘4分片后，最终receipt相对manifest路径错误。controller.exit=1不改写；CPU恢复已有数据，未重新前向，receipt注明恢复证据及缺失运行字段。一次恢复源码检查定位误差也保留；通用runner改为切换cwd前resolve绝对路径。峰值显存和完整耗时缺失，不补造。
 
 当前任务无活跃训练/等待，更新/checkpoint/正式行均0；本样本为主干已见fit，不是泛化指标。评分口径排查完成，不据此改map或扩至正式集找规则。已封存的Mask几何、原生教师框、冻结读出仍不重跑；后续转回需要新证据的原生REC候选判别与几何决策设计。Scan保持V99并争取59/51，Scan Mask底线不变，正式过线即Nr/Sr REC；完整三数据集目标尚未完成。
+
+
+### 20.143 冻结预训练对象外观：真实源检查、原生接入与ScanRefer配对启动（2026-09-08T00:48:12.450189+08:00）
+
+20.142之后核对历史实现：SourceMoE、SACR/JQQ、Tier hard-query、Relation-CF已有质量或最终分数监督，因此不把普通IoU评分损失重复作为新方向；这些是分别存在的实现，非保护E71全部同时启用。当前对象记忆由128维框位置与160维类别组成，进入3层双向编码器及6层Decoder。新检查改为官方OpenShape G14 RGB冻结视觉证据，非重启O1末层轻量MLP或Source Selector。
+
+固定前16条既有fit记录，10个场景、591次对象槽、314个去重槽；原生50000 XYZ/RGB SHA全部匹配真实E71 forward。GroupFree预测框裁剪，无GT框/实例mask清洗。409次/228个去重槽达到官方384 FPS点数要求；182次/86个槽不足。真实冻结编码全部完成，8.81793s、峰值321.08MiB。181个重复槽余弦中位数0.995989，同场景同预测类别不同槽304对中位数0.768863；重复槽检索181/181。此为槽分离和采样稳定性，非语义身份/REC准确率。床类有合理语义，部分柜子/椅子匹配仍偏离，不提前宣称预训练迁移有效。
+
+官方权重SHA34949c162aca01b6fd3147ed7ccf34b448a34bdebc4a857605ea62412ad54fb9，官方推理源70dbc29、权重d771a99。保留原conda bdetr/Torch1.10.2cu111，新增DGL/redstone/networkx到独立prefix。首build缺networkx退出1原样保留；v2声明spec SHAfe8ac66b8f51ed0e179a279717d0d1c2213e9a6b463785ccaa6a6e5eaf2385ac，安装/真实CUDA witness/独立fresh Codex按文档执行均通过，原base包清单未变。review为同模型家族、provisional，仅证明runtime。局部分析从真实NPZ独立重算，和远端浮点差<1e-6。
+
+随后完成全部562个ScanRefer训练场景的冻结缓存：16759槽，12392可编码，4367不足384点；实际编码310.18s。每场景/槽固定种子，同50000点、相同预测框，逐scene保存feature、available、box、point-count及SHA。未使用文本或GT标签。cache receipt SHA5bac70c4deb1166890fc80dd0c430f3fa76fda3e9ede17f83297b10a2bafc48b。缓存只供训练场景，目前未生成正式验证预测或Nr/Sr缓存。
+
+新增默认关闭的PretrainedObjectAppearance：1280→160无偏置零初始化投影，共204800参数，加入原对象记忆语义部分；128位置维保持，无外观槽贡献为0。CPU身份/位置/缺失槽/置换/梯度检查通过。原生625文件隔离源码manifest SHA190d0011bc5bfefab4a3965d972606f4dc21a946f68b2382f5a90837b3a4c4ef；真实16条Scan fit、batch4逐输入点SHA/框/缓存对齐通过，初始框、Mask及V99 runtime均严格相同；GT投影梯度范数11.96—33.43。两次一次性试更新loss10.52475→9.90343，原1144状态张量全保持、无权重保存。此为工程通过，非性能增益；试更新权重已丢弃。
+
+固定ScanRefer新配对已在00:40 CST启动screen70235.mcln_os_appearance_pair_v1。两组同E71、correct-mesh、29778 fit/6887模块留出、batch12、每臂2482更新/1完整遍历；同原生GT损失，cross_encoder/全部Decoder/预测头学习率1e-6，候选另训外观投影1e-4，AdamW wd0.0005/clip0.1。现有主干与语言编码、其他参数buffer、Parent/Geometry/V99保持；先做全选定参数batch12容量梯度检查，后起点评估、训练、终点评估及审计。对照忽略相同batch附带的外观字段。模块留出是主干已见训练场景，正式三数据集结果仍未更新。00:42:10实际PID70238存活，处于全量训练数据文本准备，尚无capacity或optimizer-step记录；不能将screen启动算完成训练。
+
+当前研究目标及Scan过线再Nr/Sr REC顺序不变。新方案是采用已有预训练并改变原生信息入口，不宣称普通投影为原创强创新、不宣称去除V99后处理。下一步按已固定计划完成两臂，分别检查原生和完整系统REC修复/破坏与Scan Mask底线；通过后固定9508正式核验，随后尽快Nr/Sr。不得以两步loss下降或181/181槽检索替代REC成绩。
+
+代码、计划、真实日志/receipt归档pretrained_object_source_feasibility_20260907_v1、scanrefer_openshape_cache_20260908_v1、scanrefer_object_appearance_native_20260908_v1、scanrefer_object_appearance_pair_20260908_v1。下载权重/依赖/特征NPZ不入Git；已删本地4个验证过的重复传输文件659353724B，远端运行权重、全部保护模型及证据保留。完整Goal仍未完成。

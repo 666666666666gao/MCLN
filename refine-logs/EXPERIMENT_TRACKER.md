@@ -1,11 +1,11 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07 08:17 CST. §20.114: Scanpair52529/post52535 live,baseline1536 logged;actual Nr/Sr nativeCPU model-only loadingPASS1144 tensors;no native training or new weights.
+Updated: 2026-09-07 08:37 CST. §20.115: baseline6887 exactparity verified against priorcorrectmesh;actual fixedpair 64/2482 updates/arm,52529/52535 live;no terminal quality result.
 
 | Experiment | Current state | Decision |
 |---|---|---|
 | Native pretrained transfer input/load audit | E71/Nr schema1144 equal;actual E71 CPUload underNr/Sr configs1144/1144, freshoptimizer | No GPU/updates;future trained endpoint still needs explicit native format export and actual-data check afterScanpromotion |
-| Frozen protected readout compatibility | Actual GPU probePASS;fixed2482steps/arm pair launched07:52, screens52529/52535 | Frozen Parent/Geometry/V99, candidatefrozen_gt;6887 module REC nonregression versus baseline+native_only gates one9508 formal;no result yet |
+| Frozen protected readout compatibility | Actualupdates 64/2482 each;baseline6887 exactrowparity,system6684/6426,native6572/5955 | Fixedfrozen_gt candidate;modulegate then oneformal;no terminal results,no Nr/Sr training |
 | Native range conditional GPU preflight | Queue48128 exited0 at06:53;scanrefer_not_promoted | Native GPU preflight and Nr/Sr training never started;prepared integration not an experiment result |
 | Native extent integration preparation | CPU62PASS;actual Nr/Sr model/loading/optimizer PASS | 1144 pretrained tensors equal +10 new;0 GPU forwards/updates/weights;Scan promotion still required |
 | ScanRefer matched center/extent range reading | Complete2482updates/arm+6887module+9508formal;integrityPASS,RECFAIL | System extent5543/4740 vs protected5568/4794 and center5555/4740;native5502/4419 vs5515/4411;no promotion or continuation |

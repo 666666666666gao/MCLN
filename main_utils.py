@@ -1569,6 +1569,8 @@ def parse_option():
                         default=False)
     parser.add_argument('--sacr_residual_scale_init', type=float, default=0.1)
     parser.add_argument('--mask_loss_scale', type=float, default=1.0)
+    parser.add_argument('--native_mask_geometry_supervision', action='store_true', default=False,
+                        help='Add the fixed root Mask geometry objective on referring rows only.')
     parser.add_argument('--consistency_loss_scale', type=float, default=1.0)
     parser.add_argument('--eval_use_selector_choice_scores',
                         action='store_true', default=False)
@@ -6665,6 +6667,7 @@ class BaseTrainTester:
                 args.source_choice_selector_min_iou_gap
             ),
             mask_loss_scale=args.mask_loss_scale,
+            native_mask_geometry_supervision=getattr(args, 'native_mask_geometry_supervision', False),
             consistency_loss_scale=args.consistency_loss_scale,
             source_moe_balance_loss_weight=(
                 getattr(args, 'source_moe_balance_loss_weight', 0.01)

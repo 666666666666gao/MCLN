@@ -1871,7 +1871,8 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                            parent_relative_text_verifier_counterfactual_training=False,
                            relation_counterfactual_aux_conservative_anchor_set=False,
                            density_aware_target_box_loss_weight=0.0,
-                           density_scene_audit_return_match_indices=False):
+                           density_scene_audit_return_match_indices=False,
+                           native_mask_geometry_supervision=False):
     """Compute Hungarian matching loss containing CE, bbox and giou."""
     for scale_name, scale in (
             ("mask_loss_scale", mask_loss_scale),
@@ -2327,6 +2328,10 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         raise ValueError(
             "density-aware target-box supervision requires full training mode"
         )
+    if native_mask_geometry_supervision and any((
+            query_mask_fusion_train_only, joint_query_quality_train_only,
+            sacr_score_refiner_train_only, parent_relative_text_verifier_train_only)):
+        raise ValueError("native Mask geometry supervision requires full training mode")
 
     if parent_relative_text_verifier_train_only:
         if parent_relative_text_verifier_loss_weight <= 0:
@@ -4102,6 +4107,22 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
             + density_aware_target_box_loss_weight
             * density_aware_target_box_loss
         )
+    if native_mask_geometry_supervision:
+        from scripts.native_mask_geometry_supervision import native_mask_geometry_loss
+        referring = build_source_moe_grounding_sample_mask(
+            end_points, len(target), gt_bbox.device)
+        batch_indices = referring.nonzero(as_tuple=False).flatten().tolist()
+        auxiliary = loss.new_zeros(())
+        if batch_indices:
+            assert box_label_mask[batch_indices, 0].bool().all()
+            auxiliary, geometry = native_mask_geometry_loss(
+                end_points, {'point_clouds': end_points['point_clouds'].float()},
+                gt_bbox[:, 0], last_match_indices, batch_indices=batch_indices)
+            loss = loss + auxiliary
+            end_points['mask_geometry_query_indices'] = geometry['query_indices']
+            end_points['mask_geometry_soft_boxes'] = geometry['soft_boxes']
+        end_points['mask_geometry_loss'] = auxiliary
+        end_points['mask_geometry_referring_rows'] = auxiliary.new_tensor(len(batch_indices))
     if isinstance(loss, torch.Tensor) and loss.numel() == 1:
         loss = loss.reshape(())
     end_points['loss_ce'] = loss_ce

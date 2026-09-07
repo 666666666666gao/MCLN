@@ -1,11 +1,12 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-07T18:42:19.871861+08:00. Section20.135: fixed Mask geometry pair and gated formal queue live;no new formal results.
+Updated: 2026-09-07T20:13:39.687484+08:00. Section20.138: native Mask geometry loss CPU integration PASS;Scan pair continues, no new formal result.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| Native Mask geometry loss integration | 11CPU checks PASS using actual native loss/Hungarian/SetCriterion on synthetic tensors;default off;ScanNet detection rows excluded | No GPU/dataset training or new weights;actual Nr/Sr entry only after formalScan promotion |
 | Mask geometry84-core native initialization | 8CPU format tests and actual Nr/Sr native loaders PASS;1144state exact,84changed/1060preserved on synthetic fixture | Ready only for future formally promoted endpoint;GPU0/actualtraining0;temporary599MBfixture deleted |
-| Mask geometry GT supervision | 9CPU tests,16fit native gradients and2 disposable steps/arm PASS;84allowed/82changed;no checkpoint | Fixed pair LIVE Python62969 since18:35;18:40 data parsing,no updates verified;gated formal queue63084 live;4+8 CPU checks PASS;not a REC result |
+| Mask geometry GT supervision | 9CPU tests,16fit native gradients and2 disposable steps/arm PASS;84allowed/82changed;no checkpoint | Baseline6887 exact/recount PASS;19:32 actual256/2482 perarm,Python62969 live;queue63084 confirmed19:34;no new formal result |
 | Probability geometry prototype | Same16fit/251valid candidates;hard210/208,soft211/210;meanIoU slightly lower | Direct native gradients verified;no deployment replacement or trained quality result |
 | Hard Mask geometry gradient audit | 16fit,1144state unchanged,independent recount PASS | Pure Mask coordinates have no Mask autograd route;score statistics do;not full failure attribution |
 | Historical instance-overlap attribution | CPU complete;141 scenes,152128 stage records;6tests and independent recount PASS | Final50 net−72; root-max proxy subgroup−60; lost variant repairs dominate, no new method/formal result |

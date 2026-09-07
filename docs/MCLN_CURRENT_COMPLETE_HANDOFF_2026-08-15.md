@@ -17360,3 +17360,16 @@ summary SHA `d7db6f5f0a2da414dbe65769b8e3b240182534b401aec2430f1ec18ddcead1df`�
 核验未运行模型forward、未更新参数、未写新权重。完整baseline_rows.json保存在服务器及本地归档，SHA 2dee88c98cfa718187418f7a27f2a87cc95820191a79ffed0a66b8674507f9ee；Git归档使用已逐字节解压核对的baseline_rows.json.gz，避免提交12.8MB原始JSON。指标和baseline_cross_run_audit.py/json已归档，审计SHA 1d39889bcee2222825371fa59266c07b8f67240bba680906b3c811c6a5c70197。审计仅读输出，不修改正在运行的训练文件、终态CPU审计、正式晋级门或接续队列。
 
 最新真实运行观察时间2026-09-07T19:32:02.263632+08:00：两臂均已完成256/2482次实际更新；累计训练789.18秒，日志估计训练剩余6862.16秒。该批每臂82/84项参数有梯度，两个loss及梯度范数有限；损失数值不是质量晋级证据。当前训练仍为原Python62969，未重复启动；固定2482更新/臂及唯一终点评估继续。完整训练、正式Scan、Nr/Sr训练均不能以这个起点通过替代；正式Scan过现行REC与Mask底线后按原要求接Nr/Sr REC，不等待59/51争取线。完整目标未完成。
+
+
+### 20.138 Mask几何辅助接入原生Nr/Sr训练入口，CPU集成通过（2026-09-07T20:13:39.687484+08:00）
+
+核验发现原生joint_det把scannet纯检测样本加入训练（dataset_dict['scannet']=10），不能把检测行第一个框当成句子指代目标。新增默认关闭的`--native_mask_geometry_supervision`，经BaseTrainTester进入原生compute_hungarian_loss；直接读取已有last_match_indices，只对sample_dataset非scannet的指代表达行加入当前固定辅助，系数1、分位数0.005及L1/GIoU公式不变。纯检测批次不调用辅助，保留原生损失和梯度；现有专用输出头提前返回模式不能与此开关组合。未增加推理模块或新的可调辅助权重。
+
+原环境11项CPU检查通过（0.89秒测试，1.57秒整体），实际调用原生loss入口、HungarianMatcher和SetCriterion，使用合成点云/Mask：Nr/Sr混合批次选择last而非proposal匹配，只给指代表达的当前root Query附加Mask梯度；检测行梯度不变；全检测批次原loss及梯度不变；默认关闭不调用辅助或新增字段；批次子集与单行目标一致。现有辅助/CLI/损失转发和density默认路径回归也通过。第一次仅因CPU测试包缺少旧测试按绝对相对路径读取的density模块而收集失败；补齐原文件后通过，未改网络逻辑来绕过测试。
+
+GPU前向0、优化器更新0、权重写入0、正式评估0。原生快照618文件及当前Scan训练manifest/source在检查前后逐项SHA一致；运行中配对源码不改。CPU结果归档`refine-logs/mask_geometry_native_loss_cpu_20260907_v2`，receipt SHA `980acb3b1a07e9179894399770595a1bfa27add7f5ebcf26b84cd9eb70fc0511`。用法与边界已续写`docs/MASK_GEOMETRY_NATIVE_INITIALIZATION_2026-09-07.md`。
+
+这只完成跨数据集原生训练的loss接续代码与CPU集成，不证明真实数据训练或REC收益。当前Scan仍按20.135/20.137既定配对、终态和正式门接续；不在专用Scan循环同时开启此原生flag，以免重复加辅助。正式Scan通过后才导出实际84项终点，并用新原生入口核验Nr/Sr真实GPU批次和启动训练。未提前启动Nr/Sr；运行观察仍以20.137的实际时间为准，下一次主要观察接近训练末尾。完整三数据集目标未完成。
+
+发布预检发现旧远端canonical main_utils只有CRLF差异，但models/losses尚缺Git已有的density和部分counterfactual接口（标准化后3969行对4170行），最近50次该文件历史中未找到完全相同版本。本轮未覆盖旧canonical main_utils/models.losses；新增入口完整源码已在上述v2隔离目录并按明确overlay路径通过CPU测试，同时发布GitHub。该差异不影响当前冻结Scan快照，后续正式训练必须从明确的新源码快照启动，不能直接混用旧canonical目录。差异证据保存remote_canonical_source_differences.json；不据此改写受保护指标。

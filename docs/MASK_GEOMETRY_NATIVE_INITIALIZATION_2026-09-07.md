@@ -26,3 +26,15 @@ CUDA_VISIBLE_DEVICES= /root/miniconda3/envs/bdetr/bin/python \
 - 证据归档：`refine-logs/mask_geometry_initialization_preparation_20260907_v1/receipt.json`。真实训练终点尚未产生，正式通过后的CLI和真实终点加载尚未执行。
 
 初始化准备不能证明新原生网络达到完整V99的REC，也不能证明同一辅助在Nr/Sr有效。后续仍按原生与完整系统分开报告，并以Nr3D59.82/51.38、Sr3D68.43/57.30为REC底线；Nr/Sr Mask不设当前晋级门。
+
+## 原生训练监督入口
+
+原生`train_dist_mod.py`现可显式使用`--native_mask_geometry_supervision`。默认关闭；启用时在原生全部GT损失之后加入当前固定的Mask几何辅助，系数1、分位数0.005、中心/尺寸和GIoU公式均与Scan配对一致，没有新增可调权重。
+
+该入口直接读取`compute_hungarian_loss`已有的最后一层匹配结果，不重新匹配，也不永久绑定旧Query编号。Nr/Sr的`joint_det`会加入`scannet`纯检测样本，因此使用已有`sample_dataset`元数据筛选指代表达行，辅助在这些行上取均值；纯检测行不贡献辅助。全检测批次保留原生损失与梯度，不强行给第一个检测框赋予指代身份。当前数据按root目标在GT槽0的约定核验。已有四种只训练专用输出头的提前返回模式不接受该开关，防止请求的监督被跳过。
+
+原Python3.7/Torch1.10.2环境11项CPU检查通过，实际调用原生`BaseTrainTester._compute_loss`、`HungarianMatcher`和`SetCriterion`，使用合成点云/Mask张量验证：Nr/Sr混合检测批次使用最终层而非proposal层匹配；纯检测行辅助梯度为0；全检测批次保持原损失和梯度；默认关闭不调用辅助、不新增输出字段；指定批次子集与单行目标相同。沿用的两项辅助损失测试、CLI/损失转发及旧density默认关闭检查也通过。首次CPU测试包遗漏被旧测试直接按路径读取的density模块，未完成测试收集；补齐原文件后通过，这不是模型质量负结果。
+
+本次没有GPU前向、优化器更新、权重写入或正式评估，当前Scan运行文件逐项SHA保持不变。完整证据位于`refine-logs/mask_geometry_native_loss_cpu_20260907_v2`。这完成原生损失接入与CPU集成核验；正式Scan晋级后的真实84项终点导出、Nr/Sr真实数据GPU梯度与训练仍未执行。不得在当前运行中开启此新入口，否则会与专用配对循环重复计算辅助；后续原生训练使用该入口时仅由原生criterion加入一次。
+
+发布时发现旧canonical远端目录中的`models/losses.py`比Git当前版本缺少已有接口，因此本轮保留其原文件，未直接覆盖。新`main_utils.py`和`models/losses.py`已发布GitHub，并保存于已检查的远端`/root/autodl-tmp/mcln_mask_geometry_native_loss_cpu_20260907_v2`隔离目录。后续正式训练须绑定新源码快照及完整依赖，不能直接在旧canonical目录使用新CLI；当前Scan的冻结快照不受影响。

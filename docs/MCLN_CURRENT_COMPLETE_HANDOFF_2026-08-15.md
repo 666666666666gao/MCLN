@@ -17935,3 +17935,10 @@ Torch1.10.2+cu111环境直接复用；子进程屏蔽GPU，检查前后CUDA均�
 完整源码/原始64行/聚合/实际源片段保留refine-logs/pvground_referit3d_voxel_cpu_20260908_v1；说明docs/PVG_REFERIT3D_VOXEL_INPUT_2026-09-08.md。执行源码SHA 0a944ce914fe50dd04dd48e773b4da9fdaa9c4d4fa7fe37fdc9fc2105f128284，回执SHA 83cb6ce385e5cd9b4df849fb8f9646d0d6f1e6a3af524af9d3c2aa2fd1b0cd8a。
 
 末次仅检查进程存在和磁盘：2026-09-08T09:28:51.838906+08:00，三主控制器状态{"5874": true, "6398": true, "6898": true}，磁盘剩余5851267072字节。本轮未再次轮询Scan训练步数；仍接近10:30观察原3723步训练/6887终态与条件9508队列。无新增正式成绩，三个数据集Goal继续active。
+
+
+### 20.169 补齐训练至正式审计的只读结果收集（2026-09-08T09:40:54.952264+08:00）
+
+新增scripts/observe_pvground_scanrefer_pipeline.py，在既有训练/6887终态观察器上增加正式队列decision、published_parent/fit_terminal单臂receipt、9508总receipt、独立audit与各阶段退出码，并将三个任务目录的实际进程一起记录。只读取远端并保存本地快照，不下载NPY/权重，不启动或修改任何运行任务。已对照实际writer文件名并通过语法检查，尚未执行新版全阶段收集，安排接近10:30首次使用。原仅收集训练/终态的临时观察脚本不再作为后续全流程入口。
+
+训练退出不代表正式完成，单臂结果也不代表两臂/独立审计全部通过；正式晋级仍按已固定的完整回执与审计共同判定。本轮无网络、数据、Loss、更新预算或评估协议变化，无新正式成绩。执行说明追加于docs/PVG_SCANREFER_FORMAL_PLAN_2026-09-08.md，完整Goal继续active。

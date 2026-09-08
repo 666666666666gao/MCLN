@@ -260,3 +260,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 | PV-Ground corrected Scan fit | 3723 updates/29778 rows complete17:10:27; terminal331MB saved | 6887 terminal evaluation active, no endpoint metrics or formal result yet; see20.188 |
 | PV-Ground Sr3D official parent preparation | Local hidden PID20372 live17:14:59,143MB partial of830MB | Download/transfer/CPU inventory only; not verified complete or trained; see20.188 |
+
+| PV-Ground corrected VSA full fine-tune terminal | Independent audit PASS17:26; bbs6147/5549→6119/5537, net-28/-12; bbf-21/-33 | Fixed trial sealed negative;9508 formal skipped; no Nr/Sr training; see20.189 |
+| Sr3D parent truncated download recovery | Initial397533346 bytes rejected; one valid206 Range; full830MB/SHA now PASS | PID13440 transferring, remote144474112 bytes at17:28; CPU model checks pending; see20.189 |

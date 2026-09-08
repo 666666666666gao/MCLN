@@ -122,3 +122,12 @@ CPU作者体素处理后400000个原始点、299785个体素；原始点顺序�
 Nr3D固定真实批次CPU绑定检查通过：预测类别索引0—362，位于实际父权重485行类别表内；离线RoBERTa得到[8,47]输入，词表50265行，八行有效长度26/16/15/34/47/47/47/47。六类positive map均为[8,132,256]、有限且非负；各行EOS之后至254无非零标签，255槽也均为零。本批次没有发现类别/词表索引越界或文本标签超出编码长度。
 
 检查绑定已冻结native_batch、Nr父权重SHA和1235项状态清单；没有重新加载权重或实例化模型，0模型前向/更新/正式行，CUDA未初始化，执行耗时2.0956秒。gt_masks存储[8,132,50000] bool，原生损失前恢复float32的要求不变。证据在refine-logs/pvground_nr_batch_bindings_20260908_v1，脚本audit_pvground_nr_batch_bindings.py。本检查只能说明这八行的索引范围与token/标签尺寸一致，不能证明类别本体映射、损失/梯度或模型精度正确；真实Nr模型前向与训练仍待执行。
+
+
+## 原生损失标签及Mask类型接续说明（17:01记录）
+
+对同一真实Nr预检批次完成CPU原生损失输入检查，全部14个所需标签字段存在；8行有效目标数1/1/1/1/7/8/6/8，共33个。有效目标中心及尺寸有限，三轴尺寸均为正；所有33个目标Mask均非空，文本map在有效目标索引下形状一致。四条语言样本与四条联合检测样本的language_dataset均为nr3d，因此原作者按batch首项决定的分类/对比系数在本批次为1.0。sem_cls_label属于原生训练标签，不与前项对象输入485类预测表混为同一索引空间。
+
+同时读取当前修正VSA源的models/losses.py与main_utils.py，SHA记录在回执：criterion启用boxes/labels/masks/contrastive_align，共proposal、last及五个中间prefix。Mask分支在选出匹配目标后调用.float()，再scatter_mean；matcher的Mask cdist也明确转float。因此§20.184—185的“损失前恢复float32”应准确理解为沿用原生内部转换，无需另将[8,132,50000]整个bool数组提前展开成float32；当前Scan使用bool存储也不能据此误判为Mask计算错误。不改变任何已运行训练或原生Mask权重。
+
+本项只完成真实标签选择、尺寸/有限值及源接口核对，未执行criterion、模型前向或反向，0优化器更新/正式行/权重加载，耗时1.7276秒；不能标记为完整Nr训练接口通过。证据目录refine-logs/pvground_nr_loss_inputs_20260908_v1，源码audit_pvground_nr_loss_inputs.py；原始批次仍留服务器，未上传Git。

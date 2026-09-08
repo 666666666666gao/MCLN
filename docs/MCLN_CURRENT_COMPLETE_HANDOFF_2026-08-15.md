@@ -18088,3 +18088,20 @@ GPU重放控制器10883、等待进程10884在11:42:40实际存活，尚无模�
 下一步保持Scan固定3723更新和终点规则：终点首先与本轮6147/5549配对，由独立审计复核，再按既定条件进入9508正式评估；正式仍保护同一V99的5572/4797及Scan Mask底线。未晋级不提前占GPU训练Nr/Sr；不改学习率、epoch、seed或重新选择更好中途权重。Goal保持active。
 
 CPU回执SHA：8648f9715973cdb1705593d71b62ab2689ca7788137b1f8a930cd2f97574972f。
+
+
+### 20.178 Nr3D预训练提前准备，CPU核验依赖已排队，Scan固定训练继续（2026-09-08 15:22 CST）
+
+上一Goal回合实查了存活训练，属于verified wait；本回合推进了后续Nr预训练接入，没有将Goal收缩成CPU测试。为减少Scan晋级后的接入等待，只提前准备官方Nr3D父权重，不提前进行Nr/Sr训练、模型前向或正式评估。Sr权重仍未下载。
+
+固定HF模型库AaNnWwTt/PV-Ground、revision cf4a8b1eed045f1309e6a691ea948d1d6c54448e，文件PV-Ground_NR3D.pth。15:15:26本地下载完成，实际829830168字节，完整SHA d2d9afaf9c293c54977f3555a46c7bb2a72d9f80163a3f602dd8426032d7fa5d，与先前固定元数据一致，用时252.62秒。采用之前Scan父权重已验证可用的本地HTTPS→SSH传输；服务器直接HTTPS在原Scan流程有真实超时证据，不反复重试该路径。
+
+传输前服务器可用4668080128字节，准备单份Nr父权重并保留超过2GiB额外空间。15:19:07只收到101122048字节.part，上传尚未完成，不能称远端权重已验证，也不能声称已strict load。传输较慢，预计仍需几十分钟；不因观察等待重传。上传完成后才整文件SHA校验、原子改名，随后CPU清点参数。既有Scan权重及训练文件不删除。本地中转副本只在远端校验及CPU检查通过后删除，回执保留；当前尚未清理。
+
+独立CPU严格加载依赖已用screen启动，进程15748，每300秒检查inventory.exit。依赖失败则记录失败，不尝试改配置或重启；依赖成功后，使用当前修正VSA模型源与固定RoBERTa非持久position_ids处理进行CPU实例化和strict load，逐项核对所有加载张量。环境spec仍为966235b2...，CUDA_VISIBLE_DEVICES为空，不重建环境、不占训练GPU。当前仅队列存活，CPU参数清点/strict load都没有完成态证据，不能将接口准备写成模型效果。
+
+本轮15:21:24再次实查原Scan模型14249及相关控制器仍存活，日志919/3723更新、累计2165.37秒，无终态，磁盘当时4530548736字节（含传输中的部分文件）。仍预计17:25—17:35左右完成训练与6887终点评估，9508正式流程只按已有固定条件接续。没有新的正式REC/Mask成绩，V99和Nr/Sr保护指标不变。
+
+接入脚本：prepare_pvground_nr_checkpoint.py（单份下载/传输/清点）、inspect_pvground_nr_checkpoint.py、strict_load_pvground_nr_cpu.py、queue_pvground_nr_cpu_strict.py（等待清点后只做CPU严格加载）、observe_pvground_nr_checkpoint.py、finish_pvground_nr_checkpoint_cpu.py（收集通过结果后仅清理本地中转副本）。证据目录refine-logs/pvground_nr_checkpoint_inspection_20260908_v1；远端/root/autodl-tmp/mcln_pvground_nr_checkpoint_inspection_20260908_v1。
+
+下一次先看同一上传/CPU依赖状态，不重复启动；成功后才能固定实际Nr配置和同结构训练接入。Nr训练仍等待Scan正式达现行底线，不恢复100/140epoch上游长训，不根据模块留出改LR/seed。完整三数据集Goal继续active。

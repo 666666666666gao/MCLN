@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08 15:03 CST. Section20.177: Nr/Sr independent CPU packet audit PASS; Scan384/3723 observed live15:00.
+Updated: 2026-09-08 15:22 CST. Section20.178: Nr parent local SHA verified, transfer/CPU queue pending; Scan919/3723 live.
 
 | Experiment | Current state | Decision |
 |---|---|---|

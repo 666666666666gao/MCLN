@@ -51,3 +51,11 @@
 距离采用CPU float64、严格小于半径；这是几何审计，不保证与CUDA float32半径边界逐位等价。BEV不进入这个三维格式；体素中心支持不是卷积感受野覆盖，非空也不是语义有效或定位质量标签。该工具不检查原始点是否进入体素范围，也不检查目标框内点数；这些须与既有输入审计和后续实际框范围统计分开关联，不能把中心邻域计数当框覆盖率。
 
 五个已知几何查询覆盖交错batch、重复槽位/坐标、空邻域、无同batch支持、半径边界及错误batch选点；另有两个查询经过NPZ命令行读取并检查JSON。证据在refine-logs/pvground_support_observation_cpu_20260908_v1，包含输入、输出、执行源码和SHA。全部为人工几何夹具，不是模型实测、GPU算子一致性证据或新方法收益，0前向/更新/正式行。
+
+### 实际stack算子导出约定补充
+
+已只读当前运行环境的OpenPCDet pointnet2_stack CUDA与Python源码。ball_query逐batch按计数前缀访问支持行，返回batch内局部索引；第一个有效邻居填满槽位，再按遇到顺序覆盖，达到nsample立即停止，不是最近K个。无邻居时CUDA令idx[0]=-1，Python BallQuery保留empty_ball_mask后把该行idx设为0。随后QueryAndGroup把空行的grouped_xyz和grouped_features清零，但仅返回new_features和idx，丢弃empty_ball_mask。因此不能从QueryAndGroup返回的全0索引、或最终特征是否为0推断空邻域；后续导出应截取ball_query返回的原mask。
+
+新辅助函数stack_indices_to_global按真实支持/Query批次计数把局部索引变为全局行号，并让empty mask决定有效性。导出数据仍需保留坐标实际batch ID；不能只由前缀计数重建“正确batch”标签，否则会掩盖曾经发现的交错行错误。四个不等长双batch合成查询验证局部0在第二batch的偏移、重复0与空行的区别；原五个几何夹具同时通过。尚未对真实模型执行采集。
+
+当前VSA在grouping后清空无效坐标和特征，不能直接套用旧MCLN Mask未屏蔽seed0的案例。源码证据在refine-logs/pvground_support_stack_contract_20260908_v1/source_contract.json，记录上游来源和每个实际文件SHA；只读源码，不修改或重编译扩展。空行在后续MLP/BN后的值也不能替代原empty mask。

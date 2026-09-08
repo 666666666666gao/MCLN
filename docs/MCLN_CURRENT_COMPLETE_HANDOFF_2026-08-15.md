@@ -18140,3 +18140,12 @@ CPU检查通过后，已核对路径和SHA并删除唯一的本地中转副本�
 本回合为后续覆盖机制准备独立CPU几何审计，不增加网络模块或训练损失。新增pvground_support_observation.py读取单源单半径NPZ，保留实际batch身份及算子空邻域标记，区分支持行/不同坐标、重复选择槽位/唯一行、最近同batch距离、跨batch和半径外选点。输出绑定输入和执行源码SHA。全局行号转换是导出端契约，当前尚未捕获真实VSA模型数据；BEV与框内覆盖不套用这一中心半径计数。
 
 check_pvground_support_observation.py的五个已知几何查询通过，并用两个额外查询检查NPZ命令行至JSON路径。全部人工夹具、0模型前向、0优化器更新、0正式行；CPU float64距离不是CUDA边界等价证明，不把重复坐标行解释为独立观测，不把非空解释为可靠特征。证据目录refine-logs/pvground_support_observation_cpu_20260908_v1，详细字段及实证边界在覆盖读取设计文档。运行中的Scan源、环境、3723步预算、seed2027及晋级条件均未改；Nr/Sr尚未开始训练。Goal继续active。
+
+
+### 20.182 核实VSA空邻域与batch局部索引导出边界（2026-09-08 16:13 CST）
+
+上一回合完成独立CPU支持工具，属于progress。本回合只读当前已构建OpenPCDet的ball_query/group_points CUDA及pointnet2_utils/modules源码，不重建环境，不运行模型。确认ball_query返回batch内局部索引，以第一个有效邻居重复补齐；它按源行顺序截断，不按距离排序。Python BallQuery保留empty_ball_mask后将空索引置0，QueryAndGroup将空行坐标与特征清零，但返回时丢弃mask。因此从QueryAndGroup的全零idx或特征零值判断缺失会混淆真实第0个支持与空邻域；后续实际导出必须在ball_query返回处保留mask。
+
+独立工具增加局部到全局索引转换，使用相同批次计数前缀，同时要求实际坐标batch标签由导出端保留。四个不等长双batch查询验证偏移与empty/有效0区分，原五个几何夹具继续通过；源码SHA、来源、执行工具和人工几何结果在refine-logs/pvground_support_stack_contract_20260908_v1。未采集真实模型邻居，未统计真实覆盖率，0前向/更新/正式行。
+
+这项源码核对也明确：当前PV-Ground VSA已将空group的坐标和特征清零，不能将旧MCLN Mask远处seed0案例直接推断为当前VSA仍有相同未屏蔽污染。后续特征值可能经过MLP/BN，不能据其非零反推真实观测。Scan正在运行的模型源、预算、数据和晋级规则未改，Nr/Sr训练未启动；继续等待同一固定训练及既有审计。Goal active。

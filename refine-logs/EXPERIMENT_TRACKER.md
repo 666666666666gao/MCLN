@@ -245,3 +245,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV-Ground VSA batch-order correction | Initial6887 REC6147/5549; -57/-56 vs old interface; CPU integrity PASS | Fixed training47/3723 at14:47; no new formal; see20.176 |
 
 | PV-Ground support-observation CPU audit | Five synthetic geometry queries and two NPZ CLI queries PASS; repeated/empty/wrong-batch support distinguished | Tool only, no real VSA export or coverage rate, no forward/update/formal; current Scan unchanged; see20.181 |
+
+| PV-Ground stack support export contract | Actual CUDA/Python source checked; four local-to-global index fixtures plus five geometry fixtures PASS | QueryAndGroup discards empty mask after zeroing; export at ball_query, no real model packet or training change; see20.182 |

@@ -17869,3 +17869,22 @@ CPU接续队列为`screen mcln_pvg_endpoint_audit_v1`、controller PID6398，与
 正式输入已单独只读复核：正确mesh验证superpoint312份SHA全部一致，原始ScanRefer val列表筛选后9508条、141个表达场景；annotation SHA为`c9a44fa2cfb83ea1893a76f4041f206bb0432614600b43d87b47ca2d791e76f3`，原始身份顺序SHA为`2935085fc6094aef4e9ca4994ff1bb8a02ce1c8a185ed7e5f91defacf447c717`。这是输入约定核验，执行的正式模型行数仍为0。
 
 证据：`refine-logs/pvground_scanrefer_endpoint_audit_20260908_v1/`和当前训练目录；计划为`docs/PVG_SCANREFER_ENDPOINT_AUDIT_PLAN_2026-09-08.md`，CPU脚本为`scripts/audit_pvground_scanrefer_finetune.py`。原始NPY、checkpoint仅保留在远端，不上传Git或Desktop。ScanRefer受保护V99的58.6033/50.4523及Mask59.8443/52.3349/45.9303不变；Nr/Sr未启动新训练。完整三数据集Goal保持active。
+
+
+### 20.165 固定终点的9508正式评估条件接续已就绪（2026-09-08T08:30:18.155420+08:00）
+
+本轮没有改变正在运行的3723步训练。新增完整原生正式评估入口和独立CPU复核，并在终态结果尚未知时固定后续规则。先完成训练与6887-row终态审计；只有固定主bbs REC两项相对原生起点均不退化才进入9508正式评估，否则保存负结果并跳过，不选择bbf、其他epoch或新阈值。
+
+正式模型固定为官方ScanRefer epoch81父权重和当前3723步terminal，依序在同一9508条输入上评估。终点通过父state加可训练参数/buffer增量恢复完整state后strict=True加载；不复制或训练冻结RoBERTa。无Parent、Geometry、V99，外部预训练原生控制与V99完整系统分列。
+
+两模型使用batch8、两worker、seed2027、正确312份mesh验证superpoint、BUTD预测检测框、原50000点和原生bbs完整REC/Mask输出；bbf独立完整记录。该batch/seed与历史V99不同，不冒称同步重跑V99。V99比较值保持历史保护5572/4797；Mask底线58.70/50.70/44.72，无新增逐场景门。达到底线即可接Nr/Sr REC，仍不等待59/51全部超过。
+
+新CPU审计代码于2026-09-08T08:24:42.528591+08:00在已完成的真实6887-row起点产物上执行：1763072个原框、13774次最高分选择及框对应核对通过，最大CPU/GPU IoU差2.37364741e-06，两模式全部行指标与原receipt一致。用时2.447秒，未导入Torch，GPU前向和正式执行行数均为0。这验证计数接口，不证明新正式入口已经执行9508条或方法精度通过。
+
+队列`screen mcln_pvg_formal_queue_v1`、controller PID6898，于2026-09-08T08:24:42.986891+08:00启动，目录`/root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_v1`。首次依赖检查固定为2026-09-08 10:30 CST，之后300秒；依赖完整后取得既有GPU锁，运行两个固定原生状态并接续独立正式CPU审计。训练或审计失败时保存dependency失败，原进程不重启；筛选未通过时记录跳过。
+
+发布前再次确认训练PID5874、终态CPU队列PID6398及正式条件队列PID6898均存活；正式evaluation尚未启动，服务器剩余5852073984字节。新增代码/计划不占GPU，不下载或另存大权重。当前速度仍以上轮128步的早期估计为准，接近10:30时再核对训练进度，不为无中途筛选的固定训练反复轮询。
+
+计划：`docs/PVG_SCANREFER_FORMAL_PLAN_2026-09-08.md`。代码：`scripts/evaluate_pvground_scanrefer_official.py`、`scripts/audit_pvground_scanrefer_official.py`。来源及CPU探测回执、不可变spec、controller和接续源码保存在`refine-logs/pvground_scanrefer_formal_20260908_v1/`；spec SHA `6c47e3f62e031f0c1e6beace7b114bdcd6ce460de72e7582af1d9c6c1d585740`。运行目录与训练目录相互独立。
+
+ScanRefer、Nr3D、Sr3D正式最好均未变化，Goal继续active。正式GPU结果和三数据集指标仍是未完成工作；准备代码、CPU校验及活跃队列不能替代这些结果。

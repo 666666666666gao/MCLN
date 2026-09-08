@@ -249,3 +249,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV-Ground stack support export contract | Actual CUDA/Python source checked; four local-to-global index fixtures plus five geometry fixtures PASS | QueryAndGroup discards empty mask after zeroing; export at ball_query, no real model packet or training change; see20.182 |
 
 | PV-Ground real support capture | CPU queue17223 live16:21; first check17:25 after current Scan formal pipeline | Prepared/syntax checked only; no captured model rows yet; one fixed eight-row parent batch, no updates; see20.183 |
+
+| PV-Ground Nr3D real native batch | CPU eight augmented training rows persisted/read back PASS16:32; 400000 points,299785 voxels | Four language+four detection preflight only; no model/weights/GPU/update/formal; see20.184 |

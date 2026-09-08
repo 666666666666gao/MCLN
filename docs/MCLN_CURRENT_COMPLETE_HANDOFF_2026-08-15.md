@@ -18158,3 +18158,14 @@ check_pvground_support_observation.py的五个已知几何查询通过，并用�
 已通过本地及远端Python3.7语法检查，尚未执行模型。16:20:03启动独立screen等待，16:21:30核实controller17222及queue17223存活；首次17:25检查既有Scan formal控制器14358退出0，随后300秒间隔，在相同GPU锁下只运行一次。当前Scan训练14249及formal14358/14359仍在，排队前GPU20259MiB/100%，磁盘3837227008字节；没有占用第二份模型显存或复制预训练权重。初次launcher读取不存在的formal controller.pid时失败在创建目录/进程之前；核实该controller确实不写pid文件后，改为读取已有launch.json并验证/proc命令身份，没有重启formal或训练。
 
 远端目录/root/autodl-tmp/mcln_pvground_support_capture_20260908_v1；队列、spec、源码、launch、syntax和等待状态保存在同名refine-logs目录。采集完成后的原始点NPZ与trace保留远端，JSON/log由observer收集，不上传原始场景点云。当前状态queued-only，不是运行通过或方法成功。Scan固定训练/评估优先，Nr/Sr尚未训练；没有改变现行晋级要求。Goal active。
+
+
+### 20.184 Nr3D真实增强输入批次CPU准备完成，模型仍未训练（2026-09-08 16:36 CST）
+
+上一回合完成真实支持采集的隔离排队，属于progress。本回合利用等待时间为Nr后续接续准备真实输入，未占GPU。沿用已有固定Nr getitem/voxel样本清单，取4条语言和4条联合检测样本，seed2027一次顺序采样并保留原生增强；检查协议对象框/合法槽与all_bboxes一致，使用butd_cls的实例框＋预测类别，未使用目标标签构造模型输入。
+
+16:32:26 CPU任务完成，耗时68.49秒。原始点400000，体素299785，对象框[8,132,6]、superpoint[8,50000]；作者体素processor保留原始点顺序、RGB和batch对应。inputs及native_batch分别保存并逐字段回读检查；gt_masks以精确bool节省存储，后续计算原生损失前须恢复float32，不因Mask免门而私自删除原生训练项。
+
+可复用文件/root/autodl-tmp/mcln_pvground_nr_native_batch_20260908_v1/native_batch.pt，135447612字节，SHA7974b2bd74a4c8990501d6ea2264440cc985a2145090aa04efc515394d813f98。它只用于预检，不代表完整联合数据混合比例或正式测试。16:34:53核实controller.exit=0、CPU进程已退出，磁盘3701506048字节；没有加载权重、没有CUDA初始化或模型前向、0更新/正式行。原始批次不上传GitHub，只同步脚本、运行日志和receipt。
+
+当前Scan固定训练和其后支持采集顺序不变，未触发Nr/Sr训练。Nr官方父权重严格加载与真实输入准备分别通过，实际模型前向、损失、反向及完整REC仍待执行；数据协议文档补全输入来源与边界。Goal继续active。

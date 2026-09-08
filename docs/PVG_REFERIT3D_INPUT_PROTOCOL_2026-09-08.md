@@ -105,3 +105,13 @@ test中的函数比较也不表示验证启用了训练增强。
 Nr状态共1235项，比Scan多一个确定性的RoBERTa position_ids；其余共有形状一致。CPU strict-load使用同一修正VSA模型源，保留Nr实际存储的buffer，1235状态逐项精确加载，通过记录在v2目录。没有strict=False、删键或重新训练。可学习参数规模与Scan一致，不把序列化buffer多一项视为新架构。
 
 本地中转副本已在成功校验后清理；远端父权重位于/root/autodl-tmp/mcln_pvground_nr_checkpoint_inspection_20260908_v1/PV-Ground_NR3D.pth。实际Nr数据前向、反向、训练与完整REC依然未执行；Sr准备状态未改变。作者保存的学习率和优化器不是本项目已经批准执行的续训配置。
+
+## Nr3D真实CPU预检批次已冻结（16:32完成态）
+
+已沿用既有selection manifest ef0d6d75...的Nr条目，固定取索引0/1/2/3和12/13/14/15，组成4条Nr表达＋4条ScanNet联合检测的增强训练批次，seed2027一次顺序采样。它是接口/容量预检批次，不代表44909条完整联合训练的混合比例，也不用于挑选模型或评估成绩。
+
+数据源复用已审计的model_source与manifest190d0011...（既有Nr getitem/voxel输入路径），模型尚未实例化。使用butd=False、butd_cls=True，实际模型输入为协议实例框＋预测类别；检测框及合法槽与all_bboxes/all_bbox_label_mask逐项相同。目标中心/尺寸、positive_map和Mask标签只在独立native_batch中保存，不进入模型inputs字典，不能据此称完全无对象GT先验。
+
+CPU作者体素处理后400000个原始点、299785个体素；原始点顺序、RGB和batch序号检查通过，对象输入[8,132,6]、superpoint[8,50000]。inputs与native_batch保存后全部张量和非张量字段回读一致。gt_masks精确二值转bool只用于存储，后续原生损失前必须恢复float32；Nr Mask不作晋级门不意味着此次擅自删除原生Mask训练损失。
+
+文件/root/autodl-tmp/mcln_pvground_nr_native_batch_20260908_v1/native_batch.pt，135447612字节，SHA7974b2bd74a4c8990501d6ea2264440cc985a2145090aa04efc515394d813f98。原始批次留服务器，不推送GitHub；代码和receipt/日志在同名refine-logs目录。16:32:26完成，用时68.49秒；16:34:53观察退出0、准备进程已结束，磁盘3701506048字节。0模型前向/参数更新/正式行/权重加载，CUDA未初始化。后续仍须实际Nr模型前向、原生损失、反向和候选读出检查，不能把输入成功视为训练或REC通过。

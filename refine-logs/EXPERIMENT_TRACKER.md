@@ -282,3 +282,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV cached geometry attribution | All6887 point hashes/root boxes verified; native strict net-12 = both-root +9 plus remaining -21 | CPU only; proxy not identity; empty-pool1152/3723 ongoing;20.196 |
 
 | PV empty-pool fixed terminal | bbs own +16/-35, versus native +35/-23; audit passed, formal skipped | Negative;3723 complete;0 formal;latest331MB removed;20.197 |
+
+| PV source-separated Query reader | +714528params; full native2updates pass; fixed actual lastlayer train replay exact | Scan controller25348/audit25357 live; data loading;0 formal;20.198 |

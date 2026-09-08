@@ -1,0 +1,9 @@
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.dense.bias', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Traceback (most recent call last):
+  File "/root/autodl-tmp/mcln_pvground_source_query_interface_20260908_v1/check.py", line 284, in <module>
+    main()
+  File "/root/autodl-tmp/mcln_pvground_source_query_interface_20260908_v1/check.py", line 151, in main
+    if torch.is_tensor(value):assert torch.equal(value,native[key]),key
+AssertionError: last_pred_mask_seeds

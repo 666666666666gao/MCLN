@@ -1,14 +1,18 @@
 """Collect small initial-replay receipts and worker failures without GPU traces."""
 import datetime
+import argparse
 import json
 import os
 from pathlib import Path
 import paramiko
 
+parser=argparse.ArgumentParser()
+parser.add_argument('--run-name',default='pvground_initial_replay_20260908_v1')
+args=parser.parse_args()
 c=paramiko.SSHClient();c.load_system_host_keys()
 c.connect('region-9.autodl.pro',port=33476,username='root',password=os.environ['MCLN_SSH_PASSWORD'],timeout=30)
-s=c.open_sftp();root='/root/autodl-tmp/mcln_pvground_initial_replay_20260908_v1'
-archive=Path(__file__).resolve().parents[1]/'refine-logs/pvground_initial_replay_20260908_v1'
+s=c.open_sftp();root='/root/autodl-tmp/mcln_'+args.run_name
+archive=Path(__file__).resolve().parents[1]/'refine-logs'/args.run_name
 names=s.listdir(root)
 record=dict(time_cst=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),files=names)
 for name in ['input.log','input_controller.pid','input_controller.exit','queue.pid','controller.pid',

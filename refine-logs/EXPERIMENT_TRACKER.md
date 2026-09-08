@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T14:02:39.171341+08:00. Section20.174: detalign3723/6887 completed;REC -64/-105;independent audit PASS;formal skipped.
+Updated: 2026-09-08T14:30:18.786832+08:00. Section20.175: sparse batch contract violation fixed; seeded repeat recovered; ScanRefer fixed trial live.
 
 | Experiment | Current state | Decision |
 |---|---|---|
@@ -241,3 +241,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | Full pretrained geometry resource audit | Six official PV-Ground checkpoint metadata/logs pinned; ScanRefer checkpoint acquisition recorded | External model resources, not project results; no current network replacement; see20.159 |
 | PV-Ground isolated runtime | Three CUDA extensions built; seeded kernel witness PASS; fresh documented invocation environment PASS, output-format WARN retained | Original bdetr packages unchanged; final spec966235b2; no accuracy claim; see20.160 |
 | Full PV-Ground ScanRefer pretrained forward | Strict1234 state tensors; four fit scenes/two GPU forwards PASS; local1024-box decode PASS | 827 positive-size raw boxes,197 nonpositive; no training/formal rows; final scoring/legality and training interfaces remain to check; see20.161 |
+
+| PV-Ground VSA batch-order correction | Actual sparse rows violate stack batch segments; fixed same-seed replay exact within process, cross-process small differences retained | Fixed ScanRefer3723/6887 running; no new formal metrics; see20.175 |

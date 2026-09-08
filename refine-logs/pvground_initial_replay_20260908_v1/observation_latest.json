@@ -1,5 +1,5 @@
 {
-  "time_cst": "2026-09-08T14:02:14.403888+08:00",
+  "time_cst": "2026-09-08T14:10:53.090536+08:00",
   "files": [
     "export_inputs.py",
     "input_controller.py",
@@ -14,7 +14,11 @@
     "spec.json",
     "controller.pid",
     "queue.log",
-    "queue.pid"
+    "queue.pid",
+    "process_a.log",
+    "__pycache__",
+    "process_a.exit",
+    "controller.exit"
   ],
   "input.log": [
     "Loading train files, take a breath!",
@@ -26,11 +30,24 @@
   "input_controller.exit": "0\n",
   "queue.pid": "10884\n",
   "controller.pid": "10883\n",
+  "controller.exit": "1\n",
   "queue.log": [
-    "REPLAY_WAIT 2026-09-08T13:50:00.098419",
-    "REPLAY_WAIT 2026-09-08T13:55:00.198138",
-    "REPLAY_WAIT 2026-09-08T14:00:00.298158"
+    "Traceback (most recent call last):",
+    "  File \"/root/autodl-tmp/mcln_pvground_initial_replay_20260908_v1/queue.py\", line 69, in <module>",
+    "    if __name__=='__main__':main()",
+    "  File \"/root/autodl-tmp/mcln_pvground_initial_replay_20260908_v1/queue.py\", line 39, in main",
+    "    assert result.returncode==0,name+' failed; no automatic retry'",
+    "AssertionError: process_a failed; no automatic retry"
   ],
+  "process_a.log": [
+    "    from .connectionpool import HTTPConnectionPool, HTTPSConnectionPool, connection_from_url",
+    "  File \"/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/urllib3/connectionpool.py\", line 43, in <module>",
+    "    from .util.queue import LifoQueue",
+    "  File \"/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/urllib3/util/queue.py\", line 11, in <module>",
+    "    class LifoQueue(queue.Queue):",
+    "AttributeError: module 'queue' has no attribute 'Queue'"
+  ],
+  "process_a.exit": "1\n",
   "inputs": {
     "status": "pass",
     "time_cst": "2026-09-08T11:40:39.679463+08:00",
@@ -48,9 +65,5 @@
     "formal_rows": 0,
     "weights_loaded": 0
   },
-  "processes": [
-    " 10882      1    8407 SCREEN -dmS mcln_pvg_initial_replay_v1 /root/miniconda3/bin/python /root/autodl-tmp/mcln_pvground_initial_replay_20260908_v1/controller.py",
-    " 10883  10882    8407 /root/miniconda3/bin/python /root/autodl-tmp/mcln_pvground_initial_replay_20260908_v1/controller.py",
-    " 10884  10883    8407 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_initial_replay_20260908_v1/queue.py"
-  ]
+  "processes": []
 }

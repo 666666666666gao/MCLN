@@ -1,0 +1,736 @@
+{
+  "status": "complete",
+  "time_cst": "2026-09-08T14:20:51.006312+08:00",
+  "input_sha256": "eeb6eab59f2b54a104d73f85d4bae08144e25e7ce6a23f1b3cfc41382964c91e",
+  "checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+  "seed": 2027,
+  "batch_size": 8,
+  "cases": [
+    {
+      "case": "reset_seed_first",
+      "seconds": 1.7562649250030518,
+      "shapes": {
+        "cpu_rng_before": [
+          5056
+        ],
+        "cuda_rng_before": [
+          816
+        ],
+        "backbone.inds": [
+          8,
+          1024
+        ],
+        "backbone.point_coords": [
+          8,
+          1024,
+          3
+        ],
+        "backbone.point_features": [
+          8,
+          1024,
+          288
+        ],
+        "text_projector": [
+          8,
+          24,
+          288
+        ],
+        "box_embeddings": [
+          8,
+          128,
+          132
+        ],
+        "cross_encoder.visual": [
+          8,
+          1024,
+          288
+        ],
+        "cross_encoder.text": [
+          8,
+          24,
+          288
+        ],
+        "gumbel.logits": [
+          8,
+          1024,
+          256
+        ],
+        "gumbel.cuda_rng_before_noise": [
+          816
+        ],
+        "gumbel.attention": [
+          8,
+          256,
+          1024
+        ],
+        "last_decoder": [
+          8,
+          256,
+          288
+        ],
+        "output.seed_xyz": [
+          8,
+          1024,
+          3
+        ],
+        "output.seed_features": [
+          8,
+          288,
+          1024
+        ],
+        "output.query_points_xyz": [
+          8,
+          256,
+          3
+        ],
+        "output.last_center": [
+          8,
+          256,
+          3
+        ],
+        "output.last_pred_size": [
+          8,
+          256,
+          3
+        ],
+        "output.last_sem_cls_scores": [
+          8,
+          256,
+          256
+        ],
+        "output.last_proj_queries": [
+          8,
+          256,
+          64
+        ],
+        "output.proj_tokens": [
+          8,
+          24,
+          64
+        ],
+        "cpu_rng_after": [
+          5056
+        ],
+        "cuda_rng_after": [
+          816
+        ],
+        "output.raw_bbs_score": [
+          8,
+          256
+        ],
+        "output.raw_bbs_query": [
+          8
+        ]
+      },
+      "hashes": {
+        "cpu_rng_before": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+        "cuda_rng_before": "9a5c513a89e10448ae10311d95f3a4b7e4dbd5bdefcbf81d9397ef4957036b77",
+        "backbone.inds": "8a62a788c9ad4a6a39e97232bd093dbe40a2a99ad62fec64d0f0a61290032506",
+        "backbone.point_coords": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+        "backbone.point_features": "df99ed56d4a30a15da875eacee1fa9cd938095b08882585862a178af781b3c57",
+        "text_projector": "2426f21eb897de820bfbd2733c63a14a7605e07b916071a1eefcc6ec8e939980",
+        "box_embeddings": "01e381800834bd7909676abdcc18079d61e2c185c1c4e49b08597fefec62e910",
+        "cross_encoder.visual": "f5da330c0d451c6be2ddb1e9565b2396bd344e293be666c80e8dfce94a877316",
+        "cross_encoder.text": "98e71850498497447a245c0ef73d33a0e64ec55cb445c1badf87ec6f1b655f04",
+        "gumbel.logits": "f6678989cadf33745a52b28d8d711ec3798dbcd1b61cd0ecd777ff5d80b44735",
+        "gumbel.cuda_rng_before_noise": "9a5c513a89e10448ae10311d95f3a4b7e4dbd5bdefcbf81d9397ef4957036b77",
+        "gumbel.attention": "985a1541676e4cc0e990136a23128034413669ad2fe71c02379e0eda6c235740",
+        "last_decoder": "ef34e5cc9db722cc164bf58687c8d0c60a7a0d1f6260266c8e2a1a96282e5436",
+        "output.seed_xyz": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+        "output.seed_features": "34243de35d389ac2fb61a94f42bcf781566f32ace3c9ef08535d4607d6d45478",
+        "output.query_points_xyz": "f13314833b545621b92524829629e4003a7558e4ccfb1555fdab4934e71fd7ec",
+        "output.last_center": "4a5006ada7c3f80c76c03a5c5cd7800efabd3ee09fdb30c3d4b3e454662479a5",
+        "output.last_pred_size": "7b00b3ba3b0e9d364a06729d35ef87b9feb3fb18ce67db776c6519a6879c255c",
+        "output.last_sem_cls_scores": "8d10bd9f88f84e2102941d324f8a26bf5844f4e73b82b1ad4506981061c9cbe3",
+        "output.last_proj_queries": "d8bf8c5a76ff5de3636d313bd5ada5d59c079e12ae6738de325f59d4d132efc2",
+        "output.proj_tokens": "1b43d84714a758c72dd57d040f3e708a0aab3e1b7bedd7f2aec1e8cafd6b96dd",
+        "cpu_rng_after": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+        "cuda_rng_after": "152f14fd9539ee727e0afb5a9dfeece54b0704427b6c7f86ba6791e387e0895c",
+        "output.raw_bbs_score": "67c05b18fa5df85969923fef55e02f184d04507991a39b551057d2c1ed0f2ae1",
+        "output.raw_bbs_query": "0f55156173241d6ac168939d48a1eec931a98b3a47db14317421774da00a5d45"
+      },
+      "raw_bbs_query": [
+        163,
+        55,
+        235,
+        37,
+        53,
+        26,
+        80,
+        90
+      ],
+      "state_unchanged": true
+    },
+    {
+      "case": "reset_seed_repeat",
+      "seconds": 1.1577975749969482,
+      "shapes": {
+        "cpu_rng_before": [
+          5056
+        ],
+        "cuda_rng_before": [
+          816
+        ],
+        "backbone.inds": [
+          8,
+          1024
+        ],
+        "backbone.point_coords": [
+          8,
+          1024,
+          3
+        ],
+        "backbone.point_features": [
+          8,
+          1024,
+          288
+        ],
+        "text_projector": [
+          8,
+          24,
+          288
+        ],
+        "box_embeddings": [
+          8,
+          128,
+          132
+        ],
+        "cross_encoder.visual": [
+          8,
+          1024,
+          288
+        ],
+        "cross_encoder.text": [
+          8,
+          24,
+          288
+        ],
+        "gumbel.logits": [
+          8,
+          1024,
+          256
+        ],
+        "gumbel.cuda_rng_before_noise": [
+          816
+        ],
+        "gumbel.attention": [
+          8,
+          256,
+          1024
+        ],
+        "last_decoder": [
+          8,
+          256,
+          288
+        ],
+        "output.seed_xyz": [
+          8,
+          1024,
+          3
+        ],
+        "output.seed_features": [
+          8,
+          288,
+          1024
+        ],
+        "output.query_points_xyz": [
+          8,
+          256,
+          3
+        ],
+        "output.last_center": [
+          8,
+          256,
+          3
+        ],
+        "output.last_pred_size": [
+          8,
+          256,
+          3
+        ],
+        "output.last_sem_cls_scores": [
+          8,
+          256,
+          256
+        ],
+        "output.last_proj_queries": [
+          8,
+          256,
+          64
+        ],
+        "output.proj_tokens": [
+          8,
+          24,
+          64
+        ],
+        "cpu_rng_after": [
+          5056
+        ],
+        "cuda_rng_after": [
+          816
+        ],
+        "output.raw_bbs_score": [
+          8,
+          256
+        ],
+        "output.raw_bbs_query": [
+          8
+        ]
+      },
+      "hashes": {
+        "cpu_rng_before": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+        "cuda_rng_before": "9a5c513a89e10448ae10311d95f3a4b7e4dbd5bdefcbf81d9397ef4957036b77",
+        "backbone.inds": "8a62a788c9ad4a6a39e97232bd093dbe40a2a99ad62fec64d0f0a61290032506",
+        "backbone.point_coords": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+        "backbone.point_features": "df99ed56d4a30a15da875eacee1fa9cd938095b08882585862a178af781b3c57",
+        "text_projector": "2426f21eb897de820bfbd2733c63a14a7605e07b916071a1eefcc6ec8e939980",
+        "box_embeddings": "01e381800834bd7909676abdcc18079d61e2c185c1c4e49b08597fefec62e910",
+        "cross_encoder.visual": "f5da330c0d451c6be2ddb1e9565b2396bd344e293be666c80e8dfce94a877316",
+        "cross_encoder.text": "98e71850498497447a245c0ef73d33a0e64ec55cb445c1badf87ec6f1b655f04",
+        "gumbel.logits": "f6678989cadf33745a52b28d8d711ec3798dbcd1b61cd0ecd777ff5d80b44735",
+        "gumbel.cuda_rng_before_noise": "9a5c513a89e10448ae10311d95f3a4b7e4dbd5bdefcbf81d9397ef4957036b77",
+        "gumbel.attention": "985a1541676e4cc0e990136a23128034413669ad2fe71c02379e0eda6c235740",
+        "last_decoder": "ef34e5cc9db722cc164bf58687c8d0c60a7a0d1f6260266c8e2a1a96282e5436",
+        "output.seed_xyz": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+        "output.seed_features": "34243de35d389ac2fb61a94f42bcf781566f32ace3c9ef08535d4607d6d45478",
+        "output.query_points_xyz": "f13314833b545621b92524829629e4003a7558e4ccfb1555fdab4934e71fd7ec",
+        "output.last_center": "4a5006ada7c3f80c76c03a5c5cd7800efabd3ee09fdb30c3d4b3e454662479a5",
+        "output.last_pred_size": "7b00b3ba3b0e9d364a06729d35ef87b9feb3fb18ce67db776c6519a6879c255c",
+        "output.last_sem_cls_scores": "8d10bd9f88f84e2102941d324f8a26bf5844f4e73b82b1ad4506981061c9cbe3",
+        "output.last_proj_queries": "d8bf8c5a76ff5de3636d313bd5ada5d59c079e12ae6738de325f59d4d132efc2",
+        "output.proj_tokens": "1b43d84714a758c72dd57d040f3e708a0aab3e1b7bedd7f2aec1e8cafd6b96dd",
+        "cpu_rng_after": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+        "cuda_rng_after": "152f14fd9539ee727e0afb5a9dfeece54b0704427b6c7f86ba6791e387e0895c",
+        "output.raw_bbs_score": "67c05b18fa5df85969923fef55e02f184d04507991a39b551057d2c1ed0f2ae1",
+        "output.raw_bbs_query": "0f55156173241d6ac168939d48a1eec931a98b3a47db14317421774da00a5d45"
+      },
+      "raw_bbs_query": [
+        163,
+        55,
+        235,
+        37,
+        53,
+        26,
+        80,
+        90
+      ],
+      "state_unchanged": true,
+      "compared_to_first": {
+        "cpu_rng_before": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cuda_rng_before": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "backbone.inds": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "backbone.point_coords": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "backbone.point_features": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "text_projector": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "box_embeddings": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cross_encoder.visual": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cross_encoder.text": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "gumbel.logits": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "gumbel.cuda_rng_before_noise": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "gumbel.attention": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "last_decoder": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.seed_xyz": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.seed_features": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.query_points_xyz": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.last_center": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.last_pred_size": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.last_sem_cls_scores": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.last_proj_queries": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.proj_tokens": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cpu_rng_after": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cuda_rng_after": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.raw_bbs_score": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.raw_bbs_query": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        }
+      }
+    },
+    {
+      "case": "advance_rng_control",
+      "seconds": 0.983853816986084,
+      "shapes": {
+        "cpu_rng_before": [
+          5056
+        ],
+        "cuda_rng_before": [
+          816
+        ],
+        "backbone.inds": [
+          8,
+          1024
+        ],
+        "backbone.point_coords": [
+          8,
+          1024,
+          3
+        ],
+        "backbone.point_features": [
+          8,
+          1024,
+          288
+        ],
+        "text_projector": [
+          8,
+          24,
+          288
+        ],
+        "box_embeddings": [
+          8,
+          128,
+          132
+        ],
+        "cross_encoder.visual": [
+          8,
+          1024,
+          288
+        ],
+        "cross_encoder.text": [
+          8,
+          24,
+          288
+        ],
+        "gumbel.logits": [
+          8,
+          1024,
+          256
+        ],
+        "gumbel.cuda_rng_before_noise": [
+          816
+        ],
+        "gumbel.attention": [
+          8,
+          256,
+          1024
+        ],
+        "last_decoder": [
+          8,
+          256,
+          288
+        ],
+        "output.seed_xyz": [
+          8,
+          1024,
+          3
+        ],
+        "output.seed_features": [
+          8,
+          288,
+          1024
+        ],
+        "output.query_points_xyz": [
+          8,
+          256,
+          3
+        ],
+        "output.last_center": [
+          8,
+          256,
+          3
+        ],
+        "output.last_pred_size": [
+          8,
+          256,
+          3
+        ],
+        "output.last_sem_cls_scores": [
+          8,
+          256,
+          256
+        ],
+        "output.last_proj_queries": [
+          8,
+          256,
+          64
+        ],
+        "output.proj_tokens": [
+          8,
+          24,
+          64
+        ],
+        "cpu_rng_after": [
+          5056
+        ],
+        "cuda_rng_after": [
+          816
+        ],
+        "output.raw_bbs_score": [
+          8,
+          256
+        ],
+        "output.raw_bbs_query": [
+          8
+        ]
+      },
+      "hashes": {
+        "cpu_rng_before": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+        "cuda_rng_before": "152f14fd9539ee727e0afb5a9dfeece54b0704427b6c7f86ba6791e387e0895c",
+        "backbone.inds": "8a62a788c9ad4a6a39e97232bd093dbe40a2a99ad62fec64d0f0a61290032506",
+        "backbone.point_coords": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+        "backbone.point_features": "df99ed56d4a30a15da875eacee1fa9cd938095b08882585862a178af781b3c57",
+        "text_projector": "2426f21eb897de820bfbd2733c63a14a7605e07b916071a1eefcc6ec8e939980",
+        "box_embeddings": "01e381800834bd7909676abdcc18079d61e2c185c1c4e49b08597fefec62e910",
+        "cross_encoder.visual": "f5da330c0d451c6be2ddb1e9565b2396bd344e293be666c80e8dfce94a877316",
+        "cross_encoder.text": "98e71850498497447a245c0ef73d33a0e64ec55cb445c1badf87ec6f1b655f04",
+        "gumbel.logits": "f6678989cadf33745a52b28d8d711ec3798dbcd1b61cd0ecd777ff5d80b44735",
+        "gumbel.cuda_rng_before_noise": "152f14fd9539ee727e0afb5a9dfeece54b0704427b6c7f86ba6791e387e0895c",
+        "gumbel.attention": "72624945606ffa93c9733310e19fa6b2bd93da7261a9aa4299fb8348affda5ad",
+        "last_decoder": "d6c475a5f9575163ac5122a57d11f8aaebf07dd84fdb6603a8df8a6971c64287",
+        "output.seed_xyz": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+        "output.seed_features": "34243de35d389ac2fb61a94f42bcf781566f32ace3c9ef08535d4607d6d45478",
+        "output.query_points_xyz": "22994cc2331bf490bd92a1fe70c431e889d4455886e16fa459118a7029a113a4",
+        "output.last_center": "016117ebb87f66c38abf36b4b4dc683b92474553c5e6e6b6bb39477d7ba3ddf8",
+        "output.last_pred_size": "7fbaacda13825f9102e670f04db835e052c3abafb1695052ec2d9f81d3d4c157",
+        "output.last_sem_cls_scores": "4e2f4156512bfb3792a9fe1f5c3d34ced865f72cc0abf9e267ff2b7d477f1bed",
+        "output.last_proj_queries": "77654ba5c558787f3a0571c27dd93b48da40dec25a4fdf3262bdfb3a31e2b5cc",
+        "output.proj_tokens": "1b43d84714a758c72dd57d040f3e708a0aab3e1b7bedd7f2aec1e8cafd6b96dd",
+        "cpu_rng_after": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+        "cuda_rng_after": "a89a43099a818919c93d8ddb967d5da85e2a15be25a29bd8724d7b3c202b70ad",
+        "output.raw_bbs_score": "fc494cb32a44275b379911dde6794513808cba510b51472f4a6412deab979bda",
+        "output.raw_bbs_query": "d376bda636039dedcc4c0ef200b4f0f3bb813485f30287221ed94d1d6944fbe1"
+      },
+      "raw_bbs_query": [
+        110,
+        185,
+        97,
+        16,
+        113,
+        115,
+        73,
+        89
+      ],
+      "state_unchanged": true,
+      "compared_to_first": {
+        "cpu_rng_before": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cuda_rng_before": {
+          "exact": false,
+          "max_abs": 12.0,
+          "mean_abs": 0.014705882352941176
+        },
+        "backbone.inds": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "backbone.point_coords": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "backbone.point_features": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "text_projector": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "box_embeddings": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cross_encoder.visual": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cross_encoder.text": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "gumbel.logits": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "gumbel.cuda_rng_before_noise": {
+          "exact": false,
+          "max_abs": 12.0,
+          "mean_abs": 0.014705882352941176
+        },
+        "gumbel.attention": {
+          "exact": false,
+          "max_abs": 0.9938785581616685,
+          "mean_abs": 0.0012867716786693635
+        },
+        "last_decoder": {
+          "exact": false,
+          "max_abs": 6.8920334577560425,
+          "mean_abs": 0.19868479729866606
+        },
+        "output.seed_xyz": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.seed_features": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "output.query_points_xyz": {
+          "exact": false,
+          "max_abs": 1.8527163863182068,
+          "mean_abs": 0.13481145278503406
+        },
+        "output.last_center": {
+          "exact": false,
+          "max_abs": 1.7474992871284485,
+          "mean_abs": 0.12968510994930207
+        },
+        "output.last_pred_size": {
+          "exact": false,
+          "max_abs": 5.774198770523071,
+          "mean_abs": 0.2889009508920329
+        },
+        "output.last_sem_cls_scores": {
+          "exact": false,
+          "max_abs": 48.2485408782959,
+          "mean_abs": 2.9984240001007834
+        },
+        "output.last_proj_queries": {
+          "exact": false,
+          "max_abs": 0.26983027160167694,
+          "mean_abs": 0.00550477348420198
+        },
+        "output.proj_tokens": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cpu_rng_after": {
+          "exact": true,
+          "max_abs": 0.0,
+          "mean_abs": 0.0
+        },
+        "cuda_rng_after": {
+          "exact": false,
+          "max_abs": 12.0,
+          "mean_abs": 0.014705882352941176
+        },
+        "output.raw_bbs_score": {
+          "exact": false,
+          "max_abs": 0.8210946060717106,
+          "mean_abs": 0.01375582588443049
+        },
+        "output.raw_bbs_query": {
+          "exact": false,
+          "max_abs": 138.0,
+          "mean_abs": 62.375
+        }
+      }
+    }
+  ],
+  "reference_trace_sha256": "088d5b8ad2a3931c0733d905194f8e48f371f6912092fee83edd74f8938354f7",
+  "script_sha256": "cdd3ff55bf97adb22adacc9c1e9bc847e54cc27c208d65fe81a3f9075af0115f",
+  "formal_rows": 0,
+  "optimizer_steps": 0,
+  "full_forwards": 3,
+  "scope": "same frozen first batch; no original capacity backward or whole6887 replay; hooks are observational",
+  "repeated_seed_exact": true
+}

@@ -29,14 +29,13 @@ config_names=['dataset','test_dataset','butd','butd_cls','butd_gt','num_queries'
     'joint_det','detect_intermediate','use_color','use_height','use_multiview','frozen','small_lr',
     'lr','lr_backbone','weight_decay','clip_norm','query_points_obj_topk']
 selected={name:getattr(config,name) for name in config_names if hasattr(config,name)}
-assert not config.butd and config.butd_cls and not config.butd_gt
+assert config.butd and config.butd_cls and not config.butd_gt
 raw=(json.dumps(inventory,indent=2,sort_keys=True)+'\n').encode();(root/'state_inventory.json').write_bytes(raw)
 receipt=dict(status='complete',time_cst=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
     checkpoint_sha256=digest.hexdigest(),bytes=path.stat().st_size,epoch=payload['epoch'],
     payload_keys=sorted(payload),config=selected,model_tensor_count=len(state),
     inventory_sha256=hashlib.sha256(raw).hexdigest(),scan_inventory_sha256=hashlib.sha256(scan_path.read_bytes()).hexdigest(),
     same_state_schema_as_scan=(inventory==scan),shape_differences=shape_differences,
-    effective_object_stream=bool(config.butd or config.butd_gt or config.butd_cls),
     nr_only_keys=sorted(set(inventory)-set(scan)),scan_only_keys=sorted(set(scan)-set(inventory)),
     model_instantiated=False,strict_load_tested=False,model_forwards=0,optimizer_steps=0,formal_rows=0,
     torch_version=torch.__version__,torch_cuda_initialized=torch.cuda.is_initialized())

@@ -96,3 +96,12 @@ test中的函数比较也不表示验证启用了训练增强。
 上文“尚未下载”是原CPU协议审计的时点状态。现在仅Nr父权重已完成本地下载及829830168字节/SHA校验，正在传向独立服务器目录；Sr仍未下载。此次准备先于训练，不改变Scan正式晋级后才启动Nr/Sr训练的顺序。
 远端清点和CPU strict-load已设置依赖接续，当前尚无完成态；并未执行真实Nr/Sr网络前向/反向或正式评估。详见统一交接§20.178和 `refine-logs/pvground_nr_checkpoint_inspection_20260908_v1/`。
 权重不进入Git；完成远端校验和CPU检查后清理本地中转副本。原runtime包与spec不变。
+
+
+## Nr3D实际父权重已核验（15:44 CPU完成态）
+
+固定Nr文件已经传到服务器，SHA与829830168字节均一致；实际epoch25。保存配置是butd=False、butd_cls=True、butd_gt=False，作者用三者的OR启用模型对象流。首版清点把butd也要求True而失败，属于检查脚本假设错误，已保留v1异常；不能把合法的butd_cls协议误判为不使用对象输入。
+
+Nr状态共1235项，比Scan多一个确定性的RoBERTa position_ids；其余共有形状一致。CPU strict-load使用同一修正VSA模型源，保留Nr实际存储的buffer，1235状态逐项精确加载，通过记录在v2目录。没有strict=False、删键或重新训练。可学习参数规模与Scan一致，不把序列化buffer多一项视为新架构。
+
+本地中转副本已在成功校验后清理；远端父权重位于/root/autodl-tmp/mcln_pvground_nr_checkpoint_inspection_20260908_v1/PV-Ground_NR3D.pth。实际Nr数据前向、反向、训练与完整REC依然未执行；Sr准备状态未改变。作者保存的学习率和优化器不是本项目已经批准执行的续训配置。

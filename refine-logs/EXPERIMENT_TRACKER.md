@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08. Section20.179: user coverage-reading direction grounded in six-source VSA mapping; current Scan unchanged.
+Updated: 2026-09-08 15:48 CST. Section20.180: Nr parent CPU strict-load PASS1235; Scan1582/3723 live; no new formal.
 
 | Experiment | Current state | Decision |
 |---|---|---|

@@ -18116,3 +18116,18 @@ CPU回执SHA：8648f9715973cdb1705593d71b62ab2689ca7788137b1f8a930cd2f97574972f�
 同时区分关键点与最终候选框中心的支撑；BEV的二维高度压缩支持不等于目标Z范围内的三维观测；邻居槽位与唯一支持数量、非空与语义有效性也不同。当前源映射只读配置/清单，没有测新覆盖率、前向或优化器更新。详细候选与实证边界见docs/PVG_COVERAGE_QUERY_READING_2026-09-08.md，结构映射回执见refine-logs/pvground_coverage_source_map_20260908_v1/receipt.json。
 
 实际运行状态与用户引用的旧§20.176/47步分开：15:25:48原Scan进程及依赖仍在，日志1024/3723，未终态，可用4421480448字节。Nr上传进程仍运行，15:25:47远端.part为243367936/829830168字节；CPU严格加载依赖15748已排队，尚无完成结果。没有新正式指标，不重传、不提前开始Nr/Sr训练。Goal继续active；原受保护成绩和后续Scan过线即Nr/Sr顺序不变。
+
+
+### 20.180 Nr3D父权重传输及CPU严格加载完成，纠正旗标与缓冲区假设（2026-09-08 15:48 CST）
+
+上一Goal回合完成了用户覆盖方向的源码定位和发布，属于progress。本回合完成同一Nr上传与后续CPU检查，未重复下载或启动Nr训练。固定Nr权重829830168字节于15:38传输完成，服务器端SHA d2d9afaf9c293c54977f3555a46c7bb2a72d9f80163a3f602dd8426032d7fa5d验证一致，上传用时1377.08秒；保存于/root/autodl-tmp/mcln_pvground_nr_checkpoint_inspection_20260908_v1/PV-Ground_NR3D.pth。
+
+初次CPU清点退出1：执行者脚本错误要求butd和butd_cls同时为True。实际官方epoch25配置为butd=False、butd_cls=True、butd_gt=False；固定作者train/test_nr3d.sh只指定butd_cls，而train_dist_mod.py第119行使用butd OR butd_gt OR butd_cls构造模型对象流。因此这不是坏权重或对象流缺失，是清点脚本的错误假设。v1原脚本、异常日志、退出1及依赖队列失败记录完整保留；没有改写成成功。
+
+清点还发现Nr保存1235个状态张量，比Scan的1234多出module.text_encoder.embeddings.position_ids，形状[1,514]，精确等于arange(514)；其他共有状态形状全部一致。Nr加载保留这一已有缓冲区，不能机械照搬Scan缺少该buffer时的非持久处理。没有删除权重键、strict=False或随机补参数。
+
+在独立v2目录复用同一父权重与同一环境，按实际旗标语义及缓冲区结构检查。15:44:50 CPU清点完成，随后完整模型CPU实例化并strict load通过：1235张量全部逐项精确一致，missing/unexpected keys均为空；783可训练张量、27959611可训练参数，199冻结张量，与当前Scan同一可学习结构规模。0 GPU初始化、0模型前向、0优化器更新、0正式行。它证明结构与参数加载兼容，不证明实际Nr体素数据前向、训练稳定性或REC改善。保存配置中的lr1e-4、backbone1e-3及epoch25只是作者checkpoint元数据，未恢复其optimizer/scheduler，也不作为自动续训预算。
+
+CPU检查通过后，已核对路径和SHA并删除唯一的本地中转副本，释放829830168字节；服务器父权重保留。Sr权重仍未下载。v2结果、执行脚本及原始日志在refine-logs/pvground_nr_checkpoint_inspection_20260908_v2/；v1失败、原始下载与传输证据保留原目录。CPU严格加载回执SHA：10a9215c05f081afe7aac589d88a69f3bf7473902f90d0ab9b76959529185329。
+
+15:47:24 Scan原模型14249及训练/审计/正式依赖仍存活，日志1582/3723更新、累计3715.52秒，未终态；服务器可用3837538304字节。预计训练加模块留出评估仍约17:25—17:35，当前无新正式成绩。Nr正式训练依旧等待Scan正式过线；下一步实际数据前向/反向及固定微调入口应以当前已验证的Nr父权重结构与butd_cls数据协议接入，不能继续使用Scan的not-butd_cls断言或Scan专用buffer假设。单seed2027、现行REC/Mask门、用户覆盖感知研究候选均保持。Goal active。

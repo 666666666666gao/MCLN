@@ -1,11 +1,11 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T11:44:09.614949+08:00. Section20.173: first8 CPU input freeze PASS;layered GPU replay queued after main evaluation;Scan training live.
+Updated: 2026-09-08T14:02:39.171341+08:00. Section20.174: detalign3723/6887 completed;REC -64/-105;independent audit PASS;formal skipped.
 
 | Experiment | Current state | Decision |
 |---|---|---|
 | PV-Ground initial replay | CPU first8 same-scene input freeze PASS;GPU queue10884 waiting | No forward/metric yet;two processes after current formal chain;see20.173 |
-| ScanRefer detected-box augmentation alignment | CPU32/1135 geometry PASS;initial6887 bbs6204/5605 audited;512/3723 observed11:37 | Fixed training ongoing;terminal compared to own initial;see20.172-173 |
+| ScanRefer detected-box augmentation alignment | Complete3723/6887;bbs6204/5605 to6140/5500;CPU integrity PASS | REC -64/-105;formal skipped;geometry fix retained;no sweeps;see20.174 |
 | PV-Ground Nr/Sr real voxel inputs |64 actual samples/128 CPU processors/16 batches PASS|Fixed32 training inputs;Z-range clipping observed under augmentation;0 models/updates/formal;see20.168|
 | PV-Ground native root REC readout | CPU8192 scores/320 Top10 indices/48 counters equal to actual author methods | Synthetic protocol integration only;0 model/GPU/updates;unchanged Scan runtime;see20.167 |
 | PV-Ground Nr/Sr input/source protocol | CPU exact annotations/splits/class-file PASS;17 pinned sources;native view fix retained | RawNr2155 vs normalized-before-parser327 differences;explicit pretrained paths required;no model/GPU/updates;see20.166 |

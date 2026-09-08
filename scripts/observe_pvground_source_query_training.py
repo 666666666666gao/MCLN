@@ -5,13 +5,14 @@ import paramiko
 
 repo=Path(__file__).resolve().parents[1]
 roots=['/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_sourcequery_v1',
-       '/root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260908_sourcequery_v1']
+       '/root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260908_sourcequery_v1',
+       '/root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_sourcequery_v1']
 c=paramiko.SSHClient();c.load_system_host_keys();c.connect('region-9.autodl.pro',port=33476,username='root',password=os.environ['MCLN_SSH_PASSWORD'],timeout=30)
 s=c.open_sftp();record={'time_cst':datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),'jobs':{}}
 for root in roots:
     archive=repo/'refine-logs'/Path(root).name.replace('mcln_','',1)
     names=s.listdir(root);entry={}
-    for name in ['run.log','controller.exit','capacity.json','receipt.json','audit.json','audit.exit','initial_audit.json','train.jsonl']:
+    for name in ['run.log','controller.exit','capacity.json','receipt.json','audit.json','audit.exit','initial_audit.json','train.jsonl','decision.json','evaluation.exit','terminal_restore.json']:
         if name in names:
             assert s.stat(root+'/'+name).st_size<10*1024**2
             s.get(root+'/'+name,str(archive/name))

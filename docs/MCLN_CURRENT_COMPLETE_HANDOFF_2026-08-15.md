@@ -18445,3 +18445,28 @@ v3在22:07:40退出0，实际4次full eval、4次full train、额外2次最后�
 预计本轮训练加留出约3—4小时，尚待batch8实测吞吐更新。CPU审计首次22:31附近、随后300秒按原队列；下一回合核验同进程容量/initial并完成对应正式接续准备，当前新的9508正式接续尚未启动，不能说已经排队。own-initial bbs两阈值筛选不变；最终Scan正式V99 REC5572/4797、Mask58.70/50.70/44.72，过线立即Nr/Sr REC，不等59/51、不恢复Nr/Sr Mask门。未通过则保留负结果，不中途延训扫LR。当前0正式行，V99/Nr/Sr正式保护成绩不变，三数据集总目标仍未完成。
 
 详细规格PVG_SOURCE_QUERY_CONTROL_2026-09-08.md；各阶段证据位于refine-logs/pvground_source_query_*与pvground_scanrefer_*_20260908_sourcequery_v1。
+
+
+### 20.199 分源Query正式恢复与CPU检查通过；固定9508审计接续排队（2026-09-08 22:29 CST）
+
+前一目标回合为progress（分源读取实现、固定训练启动并发布）；本回合补齐正式接续并完成实际CPU恢复检查，亦为progress。三数据集目标未完成。没有重建运行环境、修改运行中训练、重新选seed/epoch或把工程通过计为精度。
+
+### 正式评估恢复已实际接通
+
+旧evaluator假定单文件source_port以及terminal/parent同一参数集合，不能直接恢复本轮新模块。新增evaluate_pvground_scanrefer_source_query.py改为核验本轮全文件source_port清单，strict加载官方1234原生张量后安装24个新增reader张量；完整初始状态1258张量。terminal_state严格要求与训练保存逻辑一致的全部可训练参数和持久buffer集合，逐项shape/dtype/finite、冻结参数不变；任何新reader张量缺失都会停止，不能悄悄保持初始值。parent/spec/module/port/checkpoint均绑定SHA。
+
+同一修正源码中published_parent禁用reader，fit_terminal启用并完整载入真实终态。两臂各9508、相同数据/seed2027/batch8/原生bbs选择与Mask、评价前重置RNG，评价后核验state不变。published_parent指该预训练在修正源码下的原生控制，不是复现作者公开日志或V99。V99仍为历史完整系统5572/4797与Mask58.70/50.70/44.72门槛；不拼接bbf单项，不把本轮6887模块留出视为正式泛化。
+
+### CPU准备检查与实际终态检查区分
+
+22:26:41，CPU实际实例化当前PVGround并strict恢复官方Scan parent，构造只在内存中的序列化fixture，逐个改变全部24个新增tensor，恢复1059个delta张量后精确核对，再恢复原始expanded state并核对1234个原生张量。故意删除一个新增tensor时被拒绝。全程CUDA未初始化，0场景forward、0optimizer、0新权重文件；13.05秒。此fixture不是训练结果，不能声称真实terminal已恢复。
+
+同次独立重算此前已完成initial的6887行、1763072候选框和13774选择，最大选框IoU误差2.374e-6；新evaluator计数与独立审计一致。含CPU模型检查的prepare总27.15秒。该重算不是本轮新initial，也不是9508正式推理。两轴只读代码审查无阻塞，记录于本formal归档code_review.md；保留同家族/暂定边界。
+
+22:26:42正式接续controller26014、screen mcln_pvg_sourcequery_formal_v1启动，目录/root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_sourcequery_v1。首次检查2026-09-09 01:11:11 CST，随后300秒；依赖原endpoint audit controller25357实际存活及完成receipt。固定3723终态通过完整性与own-initial bbs两阈值后，先CPU恢复实际terminal、检验其SHA/全部新增state，再获取原GPU锁运行两臂formal，最后独立CPU审计9508结果。若模块终态退化则记录skip、0formal。此刻真实terminal恢复和formal均未执行。
+
+### 实时进度与资源
+
+22:19 batch8容量backward通过、0更新，峰值allocated17748743168字节（约16.53GiB）；随后完整恢复initial/RNG开始起点评价。22:27:37直接检查原训练25348、审计25357和formal26014，三者均存活；训练日志initial5120/6887，用504.31秒，约余3分钟后进入3723固定训练。此刻无完整initial/terminal receipt，不报告临时子集准确率。GPU进程占20480MiB；磁盘可用2177130496字节（约2.03GiB），新formal文件只有脚本/小receipt，未复制父权重。之前观察连接发生一次10054，重查同一原进程成功；未因连接异常重启任务。
+
+训练加两次模块留出仍暂估至9月9日01:15—02:15附近，需要实际训练步速校正；若formal门通过，其两臂推理还需额外时间，不能将该ETA当作正式结果必定完成时刻。保持Scan先行，正式过线即Nr/Sr REC；不等待59/51，不恢复Nr/Sr Mask晋级门。所有正式保护指标仍未刷新。下一步按实际初始/训练吞吐检查原进程，不增加新训练或修改本trial。

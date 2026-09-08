@@ -284,3 +284,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV empty-pool fixed terminal | bbs own +16/-35, versus native +35/-23; audit passed, formal skipped | Negative;3723 complete;0 formal;latest331MB removed;20.197 |
 
 | PV source-separated Query reader | +714528params; full native2updates pass; fixed actual lastlayer train replay exact | Scan controller25348/audit25357 live; data loading;0 formal;20.198 |
+
+| PV source Query formal bridge | actual CPU restore1258 tensors /24 new; synthetic serialization + historical6887 recount pass | formal controller26014 audit-gated;initial5120/6887;0formal;20.199 |

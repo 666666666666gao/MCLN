@@ -1,0 +1,90 @@
+{
+  "time_cst": "2026-09-08T14:44:28.574143+08:00",
+  "state": {
+    "processes": [
+      " 14247  14246    1091 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1/controller.py",
+      " 14248  14247    1091 flock -n /root/autodl-tmp/mcln_v99_backbone_gpu0.lock /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1/spec.json",
+      " 14249  14248    1091 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1/spec.json",
+      " 14254  14253    1088 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260908_vsaorder_v1/controller.py",
+      " 14257  14254    1088 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260908_vsaorder_v1/audit_queue.py",
+      " 14358  14357    1024 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_vsaorder_v1/controller.py",
+      " 14359  14358    1024 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_vsaorder_v1/formal_queue.py",
+      " 14737  14249     638 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1/spec.json",
+      " 14738  14249     638 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1/spec.json"
+    ],
+    "disk_free": 5001949184,
+    "gpu": "18633 MiB, 21 %\n"
+  },
+  "files": [
+    "train.py",
+    "plan.md",
+    "spec.json",
+    "controller.py",
+    "run.log",
+    "launch.json",
+    "imports.json",
+    "capacity.json",
+    "initial"
+  ],
+  "terminal": false,
+  "tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "PVG_FINETUNE_DATASET_LOADING 2026-09-08T14:26:40.005717+08:00",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "PVG_FULL_DATASET_INPUTS_PASS {\"fit\": 29778, \"holdout\": 6887, \"physical_fit\": 456, \"physical_holdout\": 106, \"reference_rows\": 4}",
+    "PVG_BATCH8_CAPACITY_PASS {\"loss\": 13.411377906799316, \"grad_norm\": 61.9925422668457, \"seconds\": 23.03287959098816, \"rows\": [14307, 26871, 13547, 1622, 9672, 18692, 29949, 23417], \"loss_bbox\": 1.8883376121520996, \"loss_giou\": 1.9945976734161377, \"loss_ce\": 26.6719970703125, \"loss_sem_align\": 97.2357177734375, \"status\": \"pass\", \"optimizer_steps\": 0, \"batch_size\": 8, \"peak_allocated_bytes\": 16433301504, \"time_cst\": \"2026-09-08T14:33:49.442287+08:00\"}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 512, \"total\": 6887, \"seconds\": 49.38866353034973}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 1024, \"total\": 6887, \"seconds\": 97.78053140640259}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 1536, \"total\": 6887, \"seconds\": 145.32454705238342}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 2048, \"total\": 6887, \"seconds\": 194.74967551231384}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 2560, \"total\": 6887, \"seconds\": 243.5315089225769}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 3072, \"total\": 6887, \"seconds\": 292.8279414176941}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 3584, \"total\": 6887, \"seconds\": 343.9526414871216}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 4096, \"total\": 6887, \"seconds\": 393.03976106643677}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 4608, \"total\": 6887, \"seconds\": 442.4983208179474}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 5120, \"total\": 6887, \"seconds\": 492.6555359363556}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 5632, \"total\": 6887, \"seconds\": 539.2402920722961}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 6144, \"total\": 6887, \"seconds\": 591.5053133964539}"
+  ],
+  "initial_files": [
+    "boxes.npy",
+    "scores.npy",
+    "rows.jsonl"
+  ],
+  "cpu_audit": {
+    "files": [
+      "audit.py",
+      "plan.md",
+      "audit_queue.py",
+      "controller.py",
+      "spec.json",
+      "run.log",
+      "launch.json",
+      "__pycache__"
+    ],
+    "tail": []
+  },
+  "formal_evaluation": {
+    "files": [
+      "audit.py",
+      "plan.md",
+      "evaluate.py",
+      "formal_input_contract.json",
+      "formal_queue.py",
+      "controller.py",
+      "cpu_probe.py",
+      "spec.json",
+      "cpu_probe.log",
+      "__pycache__",
+      "preparation_receipt.json",
+      "cpu_probe.exit",
+      "run.log",
+      "launch.json"
+    ],
+    "tail": []
+  }
+}

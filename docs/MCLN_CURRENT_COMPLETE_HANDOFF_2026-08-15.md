@@ -17849,3 +17849,23 @@ CPU清单SHA为`2ed19ee241fe3e1b3063e53c787d1aa8c8400d48e5868cc41b8f0154a0a4a250
 运行计划：`docs/PVG_SCANREFER_FINETUNE_PLAN_2026-09-08.md`。执行代码：`scripts/run_pvground_scanrefer_finetune.py`。不可变spec SHA为`824c02f99babac609b039fcce60698ddc9b061c5792cf4e4056edcee15386128`。证据：`refine-logs/pvground_scanrefer_finetune_20260908_v1/`。在实际batch8稳定计时前只给数小时量级估计；按180—300秒或接近ETA观察，不因网络检查超时重启原作业。
 
 这是一条外部完整预训练原生控制，不是本项目原创方法的成功结果。9508-row正式评估尚未启动，没有新正式指标。固定终点先与同起点bbs REC比较，再按预定协议评价正式Scan；只有正式满足同一V99的5572/4797及Scan Mask58.70/50.70/44.72底线后，才推进Nr3D/Sr3D REC，不等待59/51伸展目标全部达到。当前Goal仍active。
+
+
+### 20.164 原生起点评估完成、CPU重计通过及固定微调进度（2026-09-08T08:08:29.809190+08:00）
+
+完整6887-row起点评估于2026-09-08T08:02:13.956832+08:00结束，用时628.53秒；随后自动开始原定3723步fit。以下为作者ScanRefer epoch81权重在模块留出上的原生起点，场景在预训练时已见，不是正式验证或新方法提升。
+
+| 原生模式 | REC命中@0.25/@0.50 | Mask命中@0.25/@0.50 | Mask mIoU |
+|---|---:|---:|---:|
+| bbs/position，固定主模式 | 6189/5599 | 6214/5867 | 74.673926% |
+| bbf/contrastive，独立诊断 | 6206/5632 | 6228/5875 | 74.821815% |
+
+独立CPU审计于2026-09-08T08:02:32.642742+08:00完成：6887行对应一致，1763072个原始框/13774次选择核对通过，CPU重算选中框IoU与GPU记录的最大差为2.37364741e-06。REC两阈值、Mask逐行指标重计与作者Evaluator绑定回执一致。Mask二值预测未重新落盘，此处不宣称独立重算全部点级Mask。
+
+CPU接续队列为`screen mcln_pvg_endpoint_audit_v1`、controller PID6398，与训练原PID5874同时存活；训练源码未改。首次检查后每300秒观察依赖，在训练退出0及固定terminal完整后自动检查全部fit顺序、权重/source/spec SHA、两模式完整结果和修复/破坏。训练失败则保存dependency失败退出，不重启、不扫描其他权重。审计通过不等于精度过线，9508正式评估尚未由此队列启动。
+
+截至2026-09-08T08:07:56.026753+08:00，日志已确认至少128/3723次更新，累计fit用时295.50秒。首步之后实测平均2.292秒/步；按当前速度并计入约10.5分钟终态留出评估及最多5分钟审计轮询，预计2026-09-08 10:39 CST左右完成该阶段。此为早期速度估计，复杂场景可改变耗时，不含后续正式评估。服务器剩余6183567360字节。
+
+正式输入已单独只读复核：正确mesh验证superpoint312份SHA全部一致，原始ScanRefer val列表筛选后9508条、141个表达场景；annotation SHA为`c9a44fa2cfb83ea1893a76f4041f206bb0432614600b43d87b47ca2d791e76f3`，原始身份顺序SHA为`2935085fc6094aef4e9ca4994ff1bb8a02ce1c8a185ed7e5f91defacf447c717`。这是输入约定核验，执行的正式模型行数仍为0。
+
+证据：`refine-logs/pvground_scanrefer_endpoint_audit_20260908_v1/`和当前训练目录；计划为`docs/PVG_SCANREFER_ENDPOINT_AUDIT_PLAN_2026-09-08.md`，CPU脚本为`scripts/audit_pvground_scanrefer_finetune.py`。原始NPY、checkpoint仅保留在远端，不上传Git或Desktop。ScanRefer受保护V99的58.6033/50.4523及Mask59.8443/52.3349/45.9303不变；Nr/Sr未启动新训练。完整三数据集Goal保持active。

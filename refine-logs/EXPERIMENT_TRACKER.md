@@ -1,11 +1,11 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T07:54:24.981879+08:00. Sections20.162-20.163: native scoring/full backward PASS; fixed ScanRefer pretrained fit control running; no new formal metric.
+Updated: 2026-09-08T08:08:29.809190+08:00. Section20.164: initial6887 native evaluation and CPU recount PASS; fixed full fit at least128/3723; no new formal metric.
 
 | Experiment | Current state | Decision |
 |---|---|---|
 | Full PV-Ground native training interface | Author Evaluator plus two full GT backward/AdamW steps PASS; local14-item recount PASS | 759 active-gradient tensors; no checkpoint saved, no formal rows; see20.162 |
-| Full PV-Ground ScanRefer fit control | Launched07:44 CST; last observed 2026-09-08T07:53:39.987915+08:00 with original processes alive | One29778-row pass/3723 updates, initial and terminal6887 native eval; fixed bbs primary;9508 formal not launched; see20.163 |
+| Full PV-Ground ScanRefer fit control | Initial6887 bbs6189/5599; CPU1763072-box audit PASS; observed128/3723 steps at2026-09-08T08:07:56.026753+08:00 | Fixed native pretrained control; terminal CPU queue active;9508 formal not launched; see20.164 |
 | Pretrained native object appearance | Fixed training, full-system and native6887 endpoint evaluations complete; independent scalar20661-box recount PASS | Full-system REC -22/-89 vs control;failed candidate sealed;see20.157 for native/system decomposition |
 | Native/adapter score actual fit audit | 512 fixed rows;actual evaluator and SourceChoice recorded;independent all256 score/IoU/candidate recount | Top1 disagreements 0;native Top1 excluded 0;no deployment or metric-gain claim;see20.142 |
 | Native default score definitions | Existing evaluator/SourceChoice agree;adapter changesTop1 in2/3synthetic token-count cases | Contract difference only;no rule change or metric gain;real fit prevalence now recorded in20.142 |

@@ -78,3 +78,16 @@ Begin text decoupling......
 新增独立CPU跨控制分析scripts/compare_pvground_empty_pool_control.py：将已完成VSA-corrected native与empty-pool各自的initial/terminal逐行对齐，核对父权重、输入契约、正确源码、seed、LR、预算和6887条point SHA/GT/身份字段；报告bbs/bbf修复破坏、IoU三档迁移、按物理场景统计，以及原始Full256 GT oracle。该oracle明确是全部raw候选、不冒充合法过滤后的recall，也不用于部署。终态另外核对两轮实际3723步训练行顺序，并分别报告初始差、终点差和训练变化之差；后者是描述性差分，不声称独立因果效应。输入点哈希一致不等于全部内部浮点逐位一致，场景留出仍是主干见过的训练场景。
 
 18:47:11分析队列screen mcln_pvg_empty_compare_v1/controller21426已启动，依赖现有independent audit20878的initial_audit.json/终态audit.json及精确receipt SHA；18:56首次检查、后续300秒。不占用GPU、0模型forward/更新/正式行，不修改现有own-initial筛选或正式晋级门槛。代码已编译并按真实归档字段检查，实际数值比较须待完整initial审计后产生；当前不能声称该比较已经通过或给出增益。
+
+
+## Initial comparison and actual updates (20.194)
+
+上一回合完成batch8容量验证及跨控制分析队列；本回合获得完整initial、同输入逐行比较，并核实原进程已开始实际参数更新，属于progress。无重复启动、未追加预算或修改训练。
+
+initial在18:55:06完成，6887条耗时658.22秒，bbs6138/5549，Mask6167/5819及mIoU74.06608854；bbf6171/5585。相对上一轮同父权重的VSA-corrected native起点6147/5549，主REC−9/0；不能把清零称为已经改善，也不把跨进程差异全部作绝对确定的机制因果归因。当前长训仍从本轮真实起点比较，终态还需与同预算native终点6119/5537对比。
+
+CPU配对分析已在独立initial审计后完成，初始阶段exit0，6887条row_id、scan_id、target_id、point_sha256、root_box逐行相同，父权重、输入契约、源码、seed和预算一致。主输出@0.25修复8、破坏17，净-9；@0.50修复17、破坏17，净0。所有原始256框GT oracle：native 6872/6697，candidate 6873/6698。这是raw全集上界，不表述成合法过滤后recall或部署成绩。完整按场景/IoU档结果保存在比较目录initial.json，不据其逐场景改规则。
+
+实时观察2026-09-08T19:01:19.243932+08:00：原训练仍存活，最近已落盘step128/3723，累计训练305.78秒，平均2.389秒/step。按此短期吞吐估计训练加终态留出评估约21:34 CST，仍有波动，后续按较长窗口更新；这不是终态完成时间。初始评估后恢复父状态/seed，实际训练已经发生；不能再写成仍在加载数据或仅完成smoke。
+
+不因初始−9/0中途重选版本、改变学习率或覆盖模块。现有endpoint/formal/CPU comparison队列保持原依赖和300秒间隔，下一主要检查点为固定终态附近。当前0正式行，V99及Nr/Sr正式保护成绩不变，Scan过正式门后才启动Nr/Sr学习。

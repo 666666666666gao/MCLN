@@ -276,3 +276,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 | PV empty-pool batch8 capacity | full native forward/backward PASS,15.31GiB allocated,0 updates; initial1536/6887 at18:47 | Running; initial full metrics pending;20.193 |
 | PV native vs empty-pool saved-output analysis | same input/GT and budget checks; initial/terminal differences and raw256 oracle; CPU queue21426 | Queued after independent audit; no training/gate changes;20.193 |
+
+| PV empty-pool initial vs native | bbs6138/5549 vs6147/5549;6887 point/GT identities equal; paired analysis exit0 | No initial improvement; training128/3723 ongoing;20.194 |

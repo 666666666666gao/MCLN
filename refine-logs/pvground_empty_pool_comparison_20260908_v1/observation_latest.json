@@ -1,0 +1,147 @@
+{
+  "time_cst": "2026-09-08T19:01:43.962047+08:00",
+  "files": [
+    "compare.py",
+    "queue.py",
+    "controller.py",
+    "spec.json",
+    "controller.pid",
+    "run.log",
+    "launch.json",
+    "initial.log",
+    "initial.json",
+    "initial.exit"
+  ],
+  "run.log": [
+    "PVG_CROSS_CONTROL_COMPLETE initial"
+  ],
+  "initial.exit": 0,
+  "initial.log": [
+    "{\"status\": \"complete\", \"stage\": \"initial\", \"rows\": 6887, \"transitions\": {\"bbs\": {\"0.25\": {\"native_hits\": 6147, \"candidate_hits\": 6138, \"fixes\": 8, \"breaks\": 17, \"net\": -9}, \"0.5\": {\"native_hits\": 5549, \"candidate_hits\": 5549, \"fixes\": 17, \"breaks\": 17, \"net\": 0}, \"iou_band_counts\": [[732, 4, 4], [10, 575, 13], [7, 10, 5532]]}, \"bbf\": {\"0.25\": {\"native_hits\": 6174, \"candidate_hits\": 6171, \"fixes\": 9, \"breaks\": 12, \"net\": -3}, \"0.5\": {\"native_hits\": 5583, \"candidate_hits\": 5585, \"fixes\": 20, \"breaks\": 18, \"net\": 2}, \"iou_band_counts\": [[704, 3, 6], [6, 571, 14], [6, 12, 5565]]}}, \"full256_oracle\": {\"native\": {\"hits25\": 6872, \"hits50\": 6697, \"scope\": \"all raw 256 boxes; GT-only upper bound, not legal-filter recall\"}, \"candidate\": {\"hits25\": 6873, \"hits50\": 6698, \"scope\": \"all raw 256 boxes; GT-only upper bound, not legal-filter recall\"}}, \"formal_rows\": 0}"
+  ],
+  "initial.json": {
+    "status": "complete",
+    "stage": "initial",
+    "rows": 6887,
+    "metrics": [
+      {
+        "bbf": {
+          "mask_hits25": 6187,
+          "mask_hits50": 5836,
+          "mask_iou_sum": 5119.069850585423,
+          "mask_miou": 74.32945913438978,
+          "rec_hits25": 6174,
+          "rec_hits50": 5583
+        },
+        "bbs": {
+          "mask_hits25": 6174,
+          "mask_hits50": 5824,
+          "mask_iou_sum": 5106.323576468974,
+          "mask_miou": 74.1443818276314,
+          "rec_hits25": 6147,
+          "rec_hits50": 5549
+        }
+      },
+      {
+        "bbf": {
+          "mask_hits25": 6182,
+          "mask_hits50": 5833,
+          "mask_iou_sum": 5115.69247287116,
+          "mask_miou": 74.28041923727545,
+          "rec_hits25": 6171,
+          "rec_hits50": 5585
+        },
+        "bbs": {
+          "mask_hits25": 6167,
+          "mask_hits50": 5819,
+          "mask_iou_sum": 5100.93151771347,
+          "mask_miou": 74.06608853947249,
+          "rec_hits25": 6138,
+          "rec_hits50": 5549
+        }
+      }
+    ],
+    "transitions": {
+      "bbs": {
+        "0.25": {
+          "native_hits": 6147,
+          "candidate_hits": 6138,
+          "fixes": 8,
+          "breaks": 17,
+          "net": -9
+        },
+        "0.5": {
+          "native_hits": 5549,
+          "candidate_hits": 5549,
+          "fixes": 17,
+          "breaks": 17,
+          "net": 0
+        },
+        "iou_band_counts": [
+          [
+            732,
+            4,
+            4
+          ],
+          [
+            10,
+            575,
+            13
+          ],
+          [
+            7,
+            10,
+            5532
+          ]
+        ]
+      },
+      "bbf": {
+        "0.25": {
+          "native_hits": 6174,
+          "candidate_hits": 6171,
+          "fixes": 9,
+          "breaks": 12,
+          "net": -3
+        },
+        "0.5": {
+          "native_hits": 5583,
+          "candidate_hits": 5585,
+          "fixes": 20,
+          "breaks": 18,
+          "net": 2
+        },
+        "iou_band_counts": [
+          [
+            704,
+            3,
+            6
+          ],
+          [
+            6,
+            571,
+            14
+          ],
+          [
+            6,
+            12,
+            5565
+          ]
+        ]
+      }
+    },
+    "full256_oracle": {
+      "native": {
+        "hits25": 6872,
+        "hits50": 6697,
+        "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+      },
+      "candidate": {
+        "hits25": 6873,
+        "hits50": 6698,
+        "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+      }
+    },
+    "formal_rows": 0
+  },
+  "live_process": "21426 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_empty_pool_comparison_20260908_v1/controller.py"
+}

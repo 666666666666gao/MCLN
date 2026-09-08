@@ -1,0 +1,38 @@
+{
+  "root": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260909_observation_v1",
+  "runtime": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1",
+  "input_manifest": "/root/autodl-tmp/mcln_scanrefer_detection_aligned_source_20260908_v1/input_manifest.json",
+  "reference_fixtures": "/root/autodl-tmp/mcln_pvground_train_fixtures_20260908_v2/fixtures",
+  "training_interface_receipt": "/root/autodl-tmp/mcln_pvground_observation_interface_20260909_v2/results/receipt.json",
+  "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+  "checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+  "batch_size": 8,
+  "fit_passes": 1,
+  "seed": 2027,
+  "lr": 1e-05,
+  "lr_backbone": 1e-05,
+  "primary_mode": "bbs",
+  "formal_rows": 0,
+  "files": {
+    "train.py": "3e1867adf1afad5f333beae92122a9e58e972e77a8706325c75a48c39c8639d5",
+    "pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "plan.md": "2b7efcf228cdb322344a5332ce90f79b81537ec324936b9c3c259c1793f19820"
+  },
+  "model_source": "/root/autodl-tmp/mcln_pvground_observation_source_20260909_v1/PV-Ground",
+  "source_port": "/root/autodl-tmp/mcln_pvground_observation_source_20260909_v1/PV-Ground/../source_port.json",
+  "source_query_read": true,
+  "source_query_module_sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+  "source_port_sha256": "83c712907348c1eeb829bed9db805f32aab6efad87a37f041d5876adcfe84306",
+  "native_control_root": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1",
+  "disk_budget": {
+    "delta_estimate_bytes": 340274398,
+    "new_artifact_budget": 995121596,
+    "reserve_bytes": 1073741824,
+    "free_before": 2415656960
+  },
+  "comparison": "own initial and same-budget B/A; primary bbs; actual selected support state; no quality or generalization claim",
+  "observation_state": true,
+  "observation_module_sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+  "comparison_control_root": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_sourcequery_v1"
+}

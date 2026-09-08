@@ -8,8 +8,8 @@ import shlex
 import paramiko
 
 repo=Path(__file__).resolve().parents[1]
-root='/root/autodl-tmp/mcln_pvground_observation_interface_20260909_v1'
-archive=repo/'refine-logs/pvground_observation_interface_20260909_v1'
+root='/root/autodl-tmp/mcln_pvground_observation_interface_20260909_v2'
+archive=repo/'refine-logs/pvground_observation_interface_20260909_v2'
 runtime='/root/autodl-tmp/mcln_pvground_runtime_20260908_v1'
 model_source='/root/autodl-tmp/mcln_pvground_observation_source_20260909_v1/PV-Ground'
 fixtures='/root/autodl-tmp/mcln_pvground_training_interface_20260908_v1/fixtures'
@@ -155,7 +155,7 @@ for name,raw in files.items():
     (archive/name).write_bytes(raw)
     with s.open(root+'/'+name,'wb') as f:f.write(raw)
     with s.open(root+'/'+name,'rb') as f:assert f.read()==raw
-command=['screen','-dmS','mcln_pvg_observation_interface_v1','/root/miniconda3/envs/bdetr/bin/python','-u',root+'/controller.py']
+command=['screen','-dmS','mcln_pvg_observation_interface_v2','/root/miniconda3/envs/bdetr/bin/python','-u',root+'/controller.py']
 _,out,err=c.exec_command(' '.join(map(shlex.quote,command)),timeout=30)
 assert out.channel.recv_exit_status()==0,err.read().decode()
 _,out,err=c.exec_command('pgrep -af '+shlex.quote('^/root/miniconda3/envs/bdetr/bin/python -u '+root+'/controller.py$'),timeout=30)

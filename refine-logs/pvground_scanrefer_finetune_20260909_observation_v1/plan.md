@@ -33,7 +33,3 @@ ScanRefer正式REC保护5572/4797 of9508，Mask58.70/50.70/44.72；达线立即�
 ## 来源
 
 分组顺序与填充约定依据当前固定OpenPCDet commit233f849829b6ac19afb8af8837a0246890908755，pointnet2_stack/pointnet2_utils.py及src/ball_query_gpu.cu。源保留原许可证；本实现的分组代码为其接口适配。B普通分源模块保留，C新增状态输入不宣称首创多源注意力。当前没有C精度结果。
-
-## 2026-09-09 execution update
-
-C implemented and v2 interface passed; fixed ScanRefer training/controller29647, audit29653 and gated formal29849 started. Batch8 capacity passed at02:03 with0updates; full initial6887 pending. See handoff20.203. No C quality result yet.

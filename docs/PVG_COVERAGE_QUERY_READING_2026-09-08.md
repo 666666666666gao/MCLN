@@ -59,3 +59,11 @@
 新辅助函数stack_indices_to_global按真实支持/Query批次计数把局部索引变为全局行号，并让empty mask决定有效性。导出数据仍需保留坐标实际batch ID；不能只由前缀计数重建“正确batch”标签，否则会掩盖曾经发现的交错行错误。四个不等长双batch合成查询验证局部0在第二batch的偏移、重复0与空行的区别；原五个几何夹具同时通过。尚未对真实模型执行采集。
 
 当前VSA在grouping后清空无效坐标和特征，不能直接套用旧MCLN Mask未屏蔽seed0的案例。源码证据在refine-logs/pvground_support_stack_contract_20260908_v1/source_contract.json，记录上游来源和每个实际文件SHA；只读源码，不修改或重编译扩展。空行在后续MLP/BN后的值也不能替代原empty mask。
+
+### 真实采集已排队，尚未执行（2026-09-08 16:21 CST）
+
+`capture_pvground_support.py`复用已有固定输入与三次前向replay脚本。只包装首次PVGround前向，在VSA聚合入口保留真实坐标batch标签，在ball_query返回处保留empty mask和局部索引；转换后抽取每样本固定步长32的关键点（1024中取32），不读取GT/分数来选样。raw和conv1—4的两半径共10个包，各256个关键点，同时记录全部8192个关键点的算子空邻域数。它不测BEV、最终候选框内覆盖或三数据集总体比例。
+
+包装调用在finally中恢复，仅限新诊断进程。第二次同seed原始前向须与首次被观察前向的既有全套trace逐项精确一致，否则停止并保留失败，不能宣称观察无影响。第三次按原replay递进RNG用于原协议控制，不新增seed或参数更新。实际点坐标NPZ和reference_trace留在服务器诊断目录，observer只收集JSON/log，不把原始场景点云上传GitHub。
+
+同一环境spec966235b2...、官方Scan父权重及原8条冻结输入复用，不重新加载数据采样、不重编译、不新建预训练副本。远端Python3.7语法检查通过，不等于模型前向通过。队列/root/autodl-tmp/mcln_pvground_support_capture_20260908_v1，controller17222/queue17223已在16:21:30核实存活；首次17:25检查现有Scan formal controller14358正常退出，随后每300秒。执行时持相同GPU锁，至多一次三前向采集，失败不自动重试。当前只有CPU等待，0实际采集前向/更新/正式行。后续用scripts/observe_pvground_support_capture.py读取同一进程，不重复launch。

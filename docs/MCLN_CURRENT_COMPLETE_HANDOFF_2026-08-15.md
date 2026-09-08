@@ -18149,3 +18149,12 @@ check_pvground_support_observation.py的五个已知几何查询通过，并用�
 独立工具增加局部到全局索引转换，使用相同批次计数前缀，同时要求实际坐标batch标签由导出端保留。四个不等长双batch查询验证偏移与empty/有效0区分，原五个几何夹具继续通过；源码SHA、来源、执行工具和人工几何结果在refine-logs/pvground_support_stack_contract_20260908_v1。未采集真实模型邻居，未统计真实覆盖率，0前向/更新/正式行。
 
 这项源码核对也明确：当前PV-Ground VSA已将空group的坐标和特征清零，不能将旧MCLN Mask远处seed0案例直接推断为当前VSA仍有相同未屏蔽污染。后续特征值可能经过MLP/BN，不能据其非零反推真实观测。Scan正在运行的模型源、预算、数据和晋级规则未改，Nr/Sr训练未启动；继续等待同一固定训练及既有审计。Goal active。
+
+
+### 20.183 将真实支持采集排在现有Scan评估之后，当前未执行（2026-09-08 16:23 CST）
+
+上一回合完成算子接口核对和CPU转换，属于progress。本回合实现真实ball_query观测入口，复用现有固定8条输入、官方Scan父权重和三次replay加载/前向流程；首次保留支持，第二次同seed无包装前向检查既有trace精确一致，第三次保持原递进RNG控制。原网络源码不修改，包装仅存在于新诊断进程。CPU保存每源实际batch标签与全局索引、原empty mask，固定每样本32个VSA关键点，5源×2半径共10个包；同时统计全部关键点算子空邻域。没有GT选样、没有候选框覆盖或全数据集比例主张。
+
+已通过本地及远端Python3.7语法检查，尚未执行模型。16:20:03启动独立screen等待，16:21:30核实controller17222及queue17223存活；首次17:25检查既有Scan formal控制器14358退出0，随后300秒间隔，在相同GPU锁下只运行一次。当前Scan训练14249及formal14358/14359仍在，排队前GPU20259MiB/100%，磁盘3837227008字节；没有占用第二份模型显存或复制预训练权重。初次launcher读取不存在的formal controller.pid时失败在创建目录/进程之前；核实该controller确实不写pid文件后，改为读取已有launch.json并验证/proc命令身份，没有重启formal或训练。
+
+远端目录/root/autodl-tmp/mcln_pvground_support_capture_20260908_v1；队列、spec、源码、launch、syntax和等待状态保存在同名refine-logs目录。采集完成后的原始点NPZ与trace保留远端，JSON/log由observer收集，不上传原始场景点云。当前状态queued-only，不是运行通过或方法成功。Scan固定训练/评估优先，Nr/Sr尚未训练；没有改变现行晋级要求。Goal active。

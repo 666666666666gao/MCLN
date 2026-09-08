@@ -1,5 +1,5 @@
 {
-  "time_cst": "2026-09-08T19:01:43.962047+08:00",
+  "time_cst": "2026-09-08T21:43:27.706960+08:00",
   "files": [
     "compare.py",
     "queue.py",
@@ -10,10 +10,16 @@
     "launch.json",
     "initial.log",
     "initial.json",
-    "initial.exit"
+    "initial.exit",
+    "terminal.log",
+    "terminal.json",
+    "terminal.exit",
+    "controller.exit"
   ],
+  "controller.exit": 0,
   "run.log": [
-    "PVG_CROSS_CONTROL_COMPLETE initial"
+    "PVG_CROSS_CONTROL_COMPLETE initial",
+    "PVG_CROSS_CONTROL_COMPLETE terminal"
   ],
   "initial.exit": 0,
   "initial.log": [
@@ -143,5 +149,132 @@
     },
     "formal_rows": 0
   },
-  "live_process": "21426 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_empty_pool_comparison_20260908_v1/controller.py"
+  "terminal.exit": 0,
+  "terminal.log": [
+    "{\"status\": \"complete\", \"stage\": \"terminal\", \"rows\": 6887, \"transitions\": {\"bbs\": {\"0.25\": {\"native_hits\": 6119, \"candidate_hits\": 6154, \"fixes\": 171, \"breaks\": 136, \"net\": 35}, \"0.5\": {\"native_hits\": 5537, \"candidate_hits\": 5514, \"fixes\": 302, \"breaks\": 325, \"net\": -23}, \"iou_band_counts\": [[597, 76, 95], [58, 317, 207], [78, 247, 5212]]}, \"bbf\": {\"0.25\": {\"native_hits\": 6153, \"candidate_hits\": 6163, \"fixes\": 153, \"breaks\": 143, \"net\": 10}, \"0.5\": {\"native_hits\": 5550, \"candidate_hits\": 5532, \"fixes\": 308, \"breaks\": 326, \"net\": -18}, \"iou_band_counts\": [[581, 61, 92], [60, 327, 216], [83, 243, 5224]]}}, \"full256_oracle\": {\"native\": {\"hits25\": 6865, \"hits50\": 6684, \"scope\": \"all raw 256 boxes; GT-only upper bound, not legal-filter recall\"}, \"candidate\": {\"hits25\": 6860, \"hits50\": 6686, \"scope\": \"all raw 256 boxes; GT-only upper bound, not legal-filter recall\"}}, \"formal_rows\": 0}"
+  ],
+  "terminal.json": {
+    "status": "complete",
+    "stage": "terminal",
+    "rows": 6887,
+    "metrics": [
+      {
+        "bbf": {
+          "mask_hits25": 6182,
+          "mask_hits50": 5812,
+          "mask_iou_sum": 5110.842496031197,
+          "mask_miou": 74.20999703835048,
+          "rec_hits25": 6153,
+          "rec_hits50": 5550
+        },
+        "bbs": {
+          "mask_hits25": 6166,
+          "mask_hits50": 5800,
+          "mask_iou_sum": 5098.494745834265,
+          "mask_miou": 74.03070634288173,
+          "rec_hits25": 6119,
+          "rec_hits50": 5537
+        }
+      },
+      {
+        "bbf": {
+          "mask_hits25": 6194,
+          "mask_hits50": 5834,
+          "mask_iou_sum": 5120.6699039016385,
+          "mask_miou": 74.35269208511164,
+          "rec_hits25": 6163,
+          "rec_hits50": 5532
+        },
+        "bbs": {
+          "mask_hits25": 6185,
+          "mask_hits50": 5827,
+          "mask_iou_sum": 5113.999132488156,
+          "mask_miou": 74.2558317480493,
+          "rec_hits25": 6154,
+          "rec_hits50": 5514
+        }
+      }
+    ],
+    "transitions": {
+      "bbs": {
+        "0.25": {
+          "native_hits": 6119,
+          "candidate_hits": 6154,
+          "fixes": 171,
+          "breaks": 136,
+          "net": 35
+        },
+        "0.5": {
+          "native_hits": 5537,
+          "candidate_hits": 5514,
+          "fixes": 302,
+          "breaks": 325,
+          "net": -23
+        },
+        "iou_band_counts": [
+          [
+            597,
+            76,
+            95
+          ],
+          [
+            58,
+            317,
+            207
+          ],
+          [
+            78,
+            247,
+            5212
+          ]
+        ]
+      },
+      "bbf": {
+        "0.25": {
+          "native_hits": 6153,
+          "candidate_hits": 6163,
+          "fixes": 153,
+          "breaks": 143,
+          "net": 10
+        },
+        "0.5": {
+          "native_hits": 5550,
+          "candidate_hits": 5532,
+          "fixes": 308,
+          "breaks": 326,
+          "net": -18
+        },
+        "iou_band_counts": [
+          [
+            581,
+            61,
+            92
+          ],
+          [
+            60,
+            327,
+            216
+          ],
+          [
+            83,
+            243,
+            5224
+          ]
+        ]
+      }
+    },
+    "full256_oracle": {
+      "native": {
+        "hits25": 6865,
+        "hits50": 6684,
+        "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+      },
+      "candidate": {
+        "hits25": 6860,
+        "hits50": 6686,
+        "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+      }
+    },
+    "formal_rows": 0
+  }
 }

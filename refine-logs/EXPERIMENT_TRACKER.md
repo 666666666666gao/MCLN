@@ -280,3 +280,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV empty-pool initial vs native | bbs6138/5549 vs6147/5549;6887 point/GT identities equal; paired analysis exit0 | No initial improvement; training128/3723 ongoing;20.194 |
 
 | PV cached geometry attribution | All6887 point hashes/root boxes verified; native strict net-12 = both-root +9 plus remaining -21 | CPU only; proxy not identity; empty-pool1152/3723 ongoing;20.196 |
+
+| PV empty-pool fixed terminal | bbs own +16/-35, versus native +35/-23; audit passed, formal skipped | Negative;3723 complete;0 formal;latest331MB removed;20.197 |

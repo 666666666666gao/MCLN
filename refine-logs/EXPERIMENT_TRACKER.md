@@ -1,15 +1,15 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T09:28:51.427515+08:00. Section20.168: actual Nr/Sr CPU voxel input PASS; observed augmentation-related Z-range truncation; no new formal metrics.
+Updated: 2026-09-08T10:41:46.297591+08:00. Section20.170: fixed full PV-Ground fine-tune regressed; independent audit PASS; formal evaluation skipped by preregistered rule.
 
 | Experiment | Current state | Decision |
 |---|---|---|
 | PV-Ground Nr/Sr real voxel inputs |64 actual samples/128 CPU processors/16 batches PASS|Fixed32 training inputs;Z-range clipping observed under augmentation;0 models/updates/formal;see20.168|
 | PV-Ground native root REC readout | CPU8192 scores/320 Top10 indices/48 counters equal to actual author methods | Synthetic protocol integration only;0 model/GPU/updates;unchanged Scan runtime;see20.167 |
 | PV-Ground Nr/Sr input/source protocol | CPU exact annotations/splits/class-file PASS;17 pinned sources;native view fix retained | RawNr2155 vs normalized-before-parser327 differences;explicit pretrained paths required;no model/GPU/updates;see20.166 |
-| Full PV-Ground fixed formal continuation | CPU6887 recount PASS; screen mcln_pvg_formal_queue_v1 live; first dependency check10:30 CST | Parent/terminal native9508 only if fixed fit screen passes; no new formal metric; see20.165 |
+| Full PV-Ground fixed formal continuation | skipped_primary_rec_regression;controller exit0;formal0 rows | Fixed bbs terminal failed both REC thresholds;no9508 evaluation/noNrSr launch;see20.170 |
 | Full PV-Ground native training interface | Author Evaluator plus two full GT backward/AdamW steps PASS; local14-item recount PASS | 759 active-gradient tensors; no checkpoint saved, no formal rows; see20.162 |
-| Full PV-Ground ScanRefer fit control | Initial6887 bbs6189/5599; CPU1763072-box audit PASS; observed128/3723 steps at2026-09-08T08:07:56.026753+08:00 | Fixed native pretrained control; terminal CPU queue active;9508 formal not launched; see20.164 |
+| Full PV-Ground ScanRefer fit control | Complete3723 updates/29778fit;6887 bbs6189/5599 to6123/5462;CPU integrity PASS | REC -66/-137;sealed negative;no LR/epoch/mode sweep;see20.170 |
 | Pretrained native object appearance | Fixed training, full-system and native6887 endpoint evaluations complete; independent scalar20661-box recount PASS | Full-system REC -22/-89 vs control;failed candidate sealed;see20.157 for native/system decomposition |
 | Native/adapter score actual fit audit | 512 fixed rows;actual evaluator and SourceChoice recorded;independent all256 score/IoU/candidate recount | Top1 disagreements 0;native Top1 excluded 0;no deployment or metric-gain claim;see20.142 |
 | Native default score definitions | Existing evaluator/SourceChoice agree;adapter changesTop1 in2/3synthetic token-count cases | Contract difference only;no rule change or metric gain;real fit prevalence now recorded in20.142 |

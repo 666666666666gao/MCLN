@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T09:09:13.686422+08:00. Section20.167: CPU native PV readout agrees with actual upstream Evaluator on controlled synthetic inputs; no new model/formal result.
+Updated: 2026-09-08T09:28:51.427515+08:00. Section20.168: actual Nr/Sr CPU voxel input PASS; observed augmentation-related Z-range truncation; no new formal metrics.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| PV-Ground Nr/Sr real voxel inputs |64 actual samples/128 CPU processors/16 batches PASS|Fixed32 training inputs;Z-range clipping observed under augmentation;0 models/updates/formal;see20.168|
 | PV-Ground native root REC readout | CPU8192 scores/320 Top10 indices/48 counters equal to actual author methods | Synthetic protocol integration only;0 model/GPU/updates;unchanged Scan runtime;see20.167 |
 | PV-Ground Nr/Sr input/source protocol | CPU exact annotations/splits/class-file PASS;17 pinned sources;native view fix retained | RawNr2155 vs normalized-before-parser327 differences;explicit pretrained paths required;no model/GPU/updates;see20.166 |
 | Full PV-Ground fixed formal continuation | CPU6887 recount PASS; screen mcln_pvg_formal_queue_v1 live; first dependency check10:30 CST | Parent/terminal native9508 only if fixed fit screen passes; no new formal metric; see20.165 |

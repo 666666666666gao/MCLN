@@ -1,0 +1,55 @@
+{
+  "native": {
+    "full_source_sha256": "4a8edacf2c59c8ded76697153d96e8eb078b70146222c187e98b0e34f64bc77e",
+    "functions": {
+      "_augment": "def _augment(self, pc, color, rotate):\n        augmentations = {}\n\n        # Rotate/flip only if we don't have a view_dep sentence\n        if rotate:\n            theta_z = 90*np.random.randint(0, 4) + (2*np.random.rand() - 1) * 5\n            # Flipping along the YZ plane\n            augmentations['yz_flip'] = np.random.random() > 0.5\n            if augmentations['yz_flip']:\n                pc[:, 0] = -pc[:, 0]\n            # Flipping along the XZ plane\n            augmentations['xz_flip'] = np.random.random() > 0.5\n            if augmentations['xz_flip']:\n                pc[:, 1] = -pc[:, 1]\n        else:\n            theta_z = (2*np.random.rand() - 1) * 5\n        augmentations['theta_z'] = theta_z\n        pc[:, :3] = rot_z(pc[:, :3], theta_z)\n        # Rotate around x\n        theta_x = (2*np.random.rand() - 1) * 2.5\n        augmentations['theta_x'] = theta_x\n        pc[:, :3] = rot_x(pc[:, :3], theta_x)\n        # Rotate around y\n        theta_y = (2*np.random.rand() - 1) * 2.5\n        augmentations['theta_y'] = theta_y\n        pc[:, :3] = rot_y(pc[:, :3], theta_y)\n\n        # Add noise\n        noise = np.random.rand(len(pc), 3) * 5e-3\n        augmentations['noise'] = noise\n        pc[:, :3] = pc[:, :3] + noise\n\n        # Translate/shift\n        augmentations['shift'] = np.random.random((3,))[None, :] - 0.5\n        pc[:, :3] += augmentations['shift']\n\n        # Scale\n        augmentations['scale'] = 0.98 + 0.04*np.random.random()\n        pc[:, :3] *= augmentations['scale']\n\n        # Color\n        if color is not None:\n            color += self.mean_rgb\n            color *= 0.98 + 0.04*np.random.random((len(color), 3))\n            color -= self.mean_rgb\n        return pc, color, augmentations",
+      "_get_pc": "def _get_pc(self, anno, scan):\n        \"\"\"Return a point cloud representation of current scene.\"\"\"\n        scan_id = anno['scan_id']\n        rel_name = \"none\"\n        if anno['dataset'].startswith('sr3d'):\n            rel_name = self._find_rel(anno['utterance'])\n\n        # a. Color\n        color = None\n        if self.use_color:\n            color = scan.color - self.mean_rgb\n\n        # b .Height\n        height = None\n        if self.use_height:\n            floor_height = np.percentile(scan.pc[:, 2], 0.99)\n            height = np.expand_dims(scan.pc[:, 2] - floor_height, 1)\n\n        # c. Multi-view 2d features\n        multiview_data = None\n        if self.use_multiview:\n            multiview_data = self._load_multiview(scan_id)\n\n        # d. Augmentations\n        augmentations = {}\n        if self.split == 'train' and self.augment:\n            rotate_natural = (\n                anno['dataset'] in ('nr3d', 'scanrefer')\n                and self._augment_nr3d(anno['utterance'])\n            )\n            rotate_sr3d = (\n                anno['dataset'].startswith('sr3d')\n                and rel_name not in VIEW_DEP_RELS\n            )\n            rotate_else = anno['dataset'] == 'scannet'\n            rotate = rotate_sr3d or rotate_natural or rotate_else\n            pc, color, augmentations = self._augment(scan.pc, color, rotate)\n            scan.pc = pc\n\n        # e. Concatenate representations\n        point_cloud = scan.pc\n        if color is not None:\n            point_cloud = np.concatenate((point_cloud, color), 1)\n        if height is not None:\n            point_cloud = np.concatenate([point_cloud, height], 1)\n        if multiview_data is not None:\n            point_cloud = np.concatenate([point_cloud, multiview_data], 1)\n\n        return point_cloud, augmentations, scan.color"
+    }
+  },
+  "upstream": {
+    "full_source_sha256": "ee4ebfacedb0d45873b0ff5db0f056a8055e544bca516cf22d9b440681916618",
+    "functions": {
+      "_augment": "def _augment(self, pc, color, rotate):\n        augmentations = {}\n\n        # Rotate/flip only if we don't have a view_dep sentence\n        if rotate:\n            theta_z = 90*np.random.randint(0, 4) + (2*np.random.rand() - 1) * 5\n            # Flipping along the YZ plane\n            augmentations['yz_flip'] = np.random.random() > 0.5\n            if augmentations['yz_flip']:\n                pc[:, 0] = -pc[:, 0]\n            # Flipping along the XZ plane\n            augmentations['xz_flip'] = np.random.random() > 0.5\n            if augmentations['xz_flip']:\n                pc[:, 1] = -pc[:, 1]\n        else:\n            theta_z = (2*np.random.rand() - 1) * 5\n        augmentations['theta_z'] = theta_z\n        pc[:, :3] = rot_z(pc[:, :3], theta_z)\n        # Rotate around x\n        theta_x = (2*np.random.rand() - 1) * 2.5\n        augmentations['theta_x'] = theta_x\n        pc[:, :3] = rot_x(pc[:, :3], theta_x)\n        # Rotate around y\n        theta_y = (2*np.random.rand() - 1) * 2.5\n        augmentations['theta_y'] = theta_y\n        pc[:, :3] = rot_y(pc[:, :3], theta_y)\n\n        # Add noise\n        noise = np.random.rand(len(pc), 3) * 5e-3\n        augmentations['noise'] = noise\n        pc[:, :3] = pc[:, :3] + noise\n\n        # Translate/shift\n        augmentations['shift'] = np.random.random((3,))[None, :] - 0.5\n        pc[:, :3] += augmentations['shift']\n\n        # Scale\n        augmentations['scale'] = 0.98 + 0.04*np.random.random()\n        pc[:, :3] *= augmentations['scale']\n\n        # Color\n        if color is not None:\n            color += self.mean_rgb\n            color *= 0.98 + 0.04*np.random.random((len(color), 3))\n            color -= self.mean_rgb\n        return pc, color, augmentations",
+      "_get_pc": "def _get_pc(self, anno, scan):\n        \"\"\"Return a point cloud representation of current scene.\"\"\"\n        scan_id = anno['scan_id']\n        rel_name = \"none\"\n        if anno['dataset'].startswith('sr3d'):\n            rel_name = self._find_rel(anno['utterance'])\n\n        # a. Color\n        color = None\n        if self.use_color:\n            color = scan.color - self.mean_rgb\n\n        # b .Height\n        height = None\n        if self.use_height:\n            floor_height = np.percentile(scan.pc[:, 2], 0.99)\n            height = np.expand_dims(scan.pc[:, 2] - floor_height, 1)\n\n        # c. Multi-view 2d features\n        multiview_data = None\n        if self.use_multiview:\n            multiview_data = self._load_multiview(scan_id)\n\n        # d. Augmentations\n        augmentations = {}\n        if self.split == 'train' and self.augment:\n            rotate_natural = (\n                anno['dataset'] in ('nr3d', 'scanrefer')\n                and self._augment_nr3d(anno['utterance'])\n            )\n            rotate_sr3d = (\n                anno['dataset'].startswith('sr3d')\n                and rel_name not in VIEW_DEP_RELS\n            )\n            rotate_else = anno['dataset'] == 'scannet'\n            rotate = rotate_sr3d or rotate_natural or rotate_else\n            pc, color, augmentations = self._augment(scan.pc, color, rotate)\n            scan.pc = pc\n\n        # e. Concatenate representations\n        point_cloud = scan.pc\n        if color is not None:\n            point_cloud = np.concatenate((point_cloud, color), 1)\n        if height is not None:\n            point_cloud = np.concatenate([point_cloud, height], 1)\n        if multiview_data is not None:\n            point_cloud = np.concatenate([point_cloud, multiview_data], 1)\n\n        return point_cloud, augmentations, scan.color"
+    }
+  },
+  "augment_ast_equal": true,
+  "outside_by_axis": [
+    {
+      "dataset": "nr3d",
+      "augmented": false,
+      "xyz": [
+        0,
+        0,
+        164
+      ]
+    },
+    {
+      "dataset": "nr3d",
+      "augmented": true,
+      "xyz": [
+        0,
+        0,
+        95119
+      ]
+    },
+    {
+      "dataset": "sr3d",
+      "augmented": false,
+      "xyz": [
+        0,
+        0,
+        945
+      ]
+    },
+    {
+      "dataset": "sr3d",
+      "augmented": true,
+      "xyz": [
+        0,
+        0,
+        67502
+      ]
+    }
+  ]
+}

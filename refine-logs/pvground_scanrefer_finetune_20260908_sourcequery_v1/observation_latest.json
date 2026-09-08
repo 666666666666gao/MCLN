@@ -1,5 +1,5 @@
 {
-  "time_cst": "2026-09-08T22:27:37.831928+08:00",
+  "time_cst": "2026-09-08T22:34:23.700700+08:00",
   "jobs": {
     "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_sourcequery_v1": {
       "capacity.json": {
@@ -27,12 +27,74 @@
         "time_cst": "2026-09-08T22:19:00.435594+08:00"
       },
       "last_log_line": [
-        "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 5120, \"total\": 6887, \"seconds\": 504.30827140808105}"
+        "PVG_TRAIN_PROGRESS {\"loss\": 14.166452407836914, \"grad_norm\": 116.11361694335938, \"seconds\": 4.540991306304932, \"rows\": [7567, 30736, 20705, 8947, 23373, 33838, 25918, 26821], \"loss_bbox\": 1.3549946546554565, \"loss_giou\": 2.2309622764587402, \"loss_ce\": 31.249773025512695, \"loss_sem_align\": 103.75541687011719, \"step\": 64, \"total_steps\": 3723, \"cumulative_seconds\": 156.73688626289368}"
       ],
+      "initial": {
+        "boxes_sha256": "11b36d12c1d2030ee5a754771c876d2caac1d0504f2ebc9a979c7ac4d0d7fa36",
+        "elapsed_seconds": 679.8490152359009,
+        "formal_rows": 0,
+        "metrics": {
+          "bbf": {
+            "mask_hits25": 6187,
+            "mask_hits50": 5836,
+            "mask_iou_sum": 5119.069850585423,
+            "mask_miou": 74.32945913438978,
+            "rec_hits25": 6174,
+            "rec_hits50": 5583
+          },
+          "bbs": {
+            "mask_hits25": 6174,
+            "mask_hits50": 5824,
+            "mask_iou_sum": 5106.323576468974,
+            "mask_miou": 74.1443818276314,
+            "rec_hits25": 6147,
+            "rec_hits50": 5549
+          }
+        },
+        "rows": 6887,
+        "rows_sha256": "28aa9b0cfbbce28174b92cdc4ca08d4c32327e7934328bdac8eb2f878be5ceeb",
+        "scores_sha256": "ea8c6869b9760157794c813693c314315111c9462829307cce1e051f459c2931",
+        "stage": "initial",
+        "status": "pass",
+        "time_cst": "2026-09-08T22:30:21.492293+08:00"
+      },
       "actual_process": "25348 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_sourcequery_v1/controller.py"
     },
     "/root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260908_sourcequery_v1": {
-      "last_log_line": [],
+      "initial_audit.json": {
+        "integrity_pass": true,
+        "stage": "initial",
+        "formal_rows": 0,
+        "metrics": {
+          "bbs": {
+            "rec_hits25": 6147,
+            "rec_hits50": 5549,
+            "mask_hits25": 6174,
+            "mask_hits50": 5824,
+            "mask_iou_sum": 5106.323576468974,
+            "mask_miou": 74.1443818276314
+          },
+          "bbf": {
+            "rec_hits25": 6174,
+            "rec_hits50": 5583,
+            "mask_hits25": 6187,
+            "mask_hits50": 5836,
+            "mask_iou_sum": 5119.069850585423,
+            "mask_miou": 74.32945913438978
+          }
+        },
+        "checks": {
+          "rows": 6887,
+          "candidate_boxes_checked": 1763072,
+          "selection_checks": 13774,
+          "max_selected_iou_error": 3.91157637158468e-06
+        },
+        "receipt_sha256": "a9f966652bfc89518a3ede0c037c569d2aba9246ab43fbc240778f9f7307a50f",
+        "time_cst": "2026-09-08T22:31:14.991347+08:00"
+      },
+      "last_log_line": [
+        "PVG_INITIAL_AUDIT_COMPLETE {\"integrity_pass\": true, \"stage\": \"initial\", \"formal_rows\": 0, \"metrics\": {\"bbs\": {\"rec_hits25\": 6147, \"rec_hits50\": 5549, \"mask_hits25\": 6174, \"mask_hits50\": 5824, \"mask_iou_sum\": 5106.323576468974, \"mask_miou\": 74.1443818276314}, \"bbf\": {\"rec_hits25\": 6174, \"rec_hits50\": 5583, \"mask_hits25\": 6187, \"mask_hits50\": 5836, \"mask_iou_sum\": 5119.069850585423, \"mask_miou\": 74.32945913438978}}, \"checks\": {\"rows\": 6887, \"candidate_boxes_checked\": 1763072, \"selection_checks\": 13774, \"max_selected_iou_error\": 3.91157637158468e-06}, \"receipt_sha256\": \"a9f966652bfc89518a3ede0c037c569d2aba9246ab43fbc240778f9f7307a50f\", \"time_cst\": \"2026-09-08T22:31:14.991347+08:00\"}"
+      ],
       "actual_process": "25357 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260908_sourcequery_v1/controller.py"
     },
     "/root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_sourcequery_v1": {
@@ -40,6 +102,6 @@
       "actual_process": "26014 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_sourcequery_v1/controller.py"
     }
   },
-  "gpu_processes": "372670, 20480 MiB",
-  "disk_free": 2177130496
+  "gpu_processes": "372670, 21210 MiB",
+  "disk_free": 2162593792
 }

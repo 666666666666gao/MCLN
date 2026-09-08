@@ -251,3 +251,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV-Ground real support capture | CPU queue17223 live16:21; first check17:25 after current Scan formal pipeline | Prepared/syntax checked only; no captured model rows yet; one fixed eight-row parent batch, no updates; see20.183 |
 
 | PV-Ground Nr3D real native batch | CPU eight augmented training rows persisted/read back PASS16:32; 400000 points,299785 voxels | Four language+four detection preflight only; no model/weights/GPU/update/formal; see20.184 |
+
+| PV-Ground Nr3D real batch bindings | CPU class/token bounds and six text map checks PASS; class IDs0..362 in485, text[8,47] | Eight-row interface check only; no weights/model/GPU/update/formal; see20.185 |

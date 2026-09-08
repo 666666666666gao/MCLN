@@ -1,0 +1,315 @@
+{
+  "time_cst": "2026-09-09T02:30:04.884897+08:00",
+  "jobs": {
+    "pvground_observation_checkpoint_audit_20260909_v1": {
+      "last_log_line": [],
+      "actual_process": "30817 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_observation_checkpoint_audit_20260909_v1/controller.py"
+    },
+    "pvground_observation_comparison_20260909_v1": {
+      "initial_A_C.json": {
+        "status": "complete",
+        "stage": "initial",
+        "rows": 6887,
+        "formal_rows": 0,
+        "model_forwards": 0,
+        "optimizer_steps": 0,
+        "time_cst": "2026-09-09T02:28:52.952966+08:00",
+        "roots": [
+          "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_vsaorder_v1",
+          "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260909_observation_v1"
+        ],
+        "metrics": [
+          {
+            "bbf": {
+              "mask_hits25": 6187,
+              "mask_hits50": 5836,
+              "mask_iou_sum": 5119.069850585423,
+              "mask_miou": 74.32945913438978,
+              "rec_hits25": 6174,
+              "rec_hits50": 5583
+            },
+            "bbs": {
+              "mask_hits25": 6174,
+              "mask_hits50": 5824,
+              "mask_iou_sum": 5106.323576468974,
+              "mask_miou": 74.1443818276314,
+              "rec_hits25": 6147,
+              "rec_hits50": 5549
+            }
+          },
+          {
+            "bbf": {
+              "mask_hits25": 6187,
+              "mask_hits50": 5836,
+              "mask_iou_sum": 5119.069850585423,
+              "mask_miou": 74.32945913438978,
+              "rec_hits25": 6175,
+              "rec_hits50": 5584
+            },
+            "bbs": {
+              "mask_hits25": 6174,
+              "mask_hits50": 5824,
+              "mask_iou_sum": 5106.323576468974,
+              "mask_miou": 74.1443818276314,
+              "rec_hits25": 6147,
+              "rec_hits50": 5549
+            }
+          }
+        ],
+        "identical_row_fields": {
+          "row_id": 6887,
+          "scan_id": 6887,
+          "target_id": 6887,
+          "point_sha256": 6887,
+          "root_box": 6887
+        },
+        "receipt_sha256": [
+          "071f156730437ef46bcc5e616505907e1067a8e594336bb68e4fbcccbb08013b",
+          "853372845a2a57ba7aee1a95b1566fd42283a5135aaaa5a1d636146e7f016f4f"
+        ],
+        "transitions": {
+          "bbs": {
+            "0.25": {
+              "native_hits": 6147,
+              "candidate_hits": 6147,
+              "fixes": 0,
+              "breaks": 0,
+              "net": 0
+            },
+            "0.5": {
+              "native_hits": 5549,
+              "candidate_hits": 5549,
+              "fixes": 0,
+              "breaks": 0,
+              "net": 0
+            },
+            "iou_band_counts": [
+              [
+                740,
+                0,
+                0
+              ],
+              [
+                0,
+                598,
+                0
+              ],
+              [
+                0,
+                0,
+                5549
+              ]
+            ]
+          },
+          "bbf": {
+            "0.25": {
+              "native_hits": 6174,
+              "candidate_hits": 6175,
+              "fixes": 1,
+              "breaks": 0,
+              "net": 1
+            },
+            "0.5": {
+              "native_hits": 5583,
+              "candidate_hits": 5584,
+              "fixes": 1,
+              "breaks": 0,
+              "net": 1
+            },
+            "iou_band_counts": [
+              [
+                712,
+                0,
+                1
+              ],
+              [
+                0,
+                591,
+                0
+              ],
+              [
+                0,
+                0,
+                5583
+              ]
+            ]
+          }
+        },
+        "full256_oracle": {
+          "native": {
+            "hits25": 6872,
+            "hits50": 6697,
+            "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+          },
+          "candidate": {
+            "hits25": 6872,
+            "hits50": 6696,
+            "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+          }
+        },
+        "script_sha256": "2ad72b4d9584c864d57d05fd035ea37f07977b42d8b881be280a4fb0950f9295",
+        "export_byte_exact": {
+          "rows.jsonl": false,
+          "boxes.npy": false,
+          "scores.npy": false
+        },
+        "scope": "Backbone-seen module holdout; same input point hashes and GT. No new-scene or statistical seed-variance claim. Difference of changes is descriptive, not separate causal attribution. No gate or training change."
+      },
+      "initial_B_C.json": {
+        "status": "complete",
+        "stage": "initial",
+        "rows": 6887,
+        "formal_rows": 0,
+        "model_forwards": 0,
+        "optimizer_steps": 0,
+        "time_cst": "2026-09-09T02:28:56.543509+08:00",
+        "roots": [
+          "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_sourcequery_v1",
+          "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260909_observation_v1"
+        ],
+        "metrics": [
+          {
+            "bbf": {
+              "mask_hits25": 6187,
+              "mask_hits50": 5836,
+              "mask_iou_sum": 5119.069850585423,
+              "mask_miou": 74.32945913438978,
+              "rec_hits25": 6174,
+              "rec_hits50": 5583
+            },
+            "bbs": {
+              "mask_hits25": 6174,
+              "mask_hits50": 5824,
+              "mask_iou_sum": 5106.323576468974,
+              "mask_miou": 74.1443818276314,
+              "rec_hits25": 6147,
+              "rec_hits50": 5549
+            }
+          },
+          {
+            "bbf": {
+              "mask_hits25": 6187,
+              "mask_hits50": 5836,
+              "mask_iou_sum": 5119.069850585423,
+              "mask_miou": 74.32945913438978,
+              "rec_hits25": 6175,
+              "rec_hits50": 5584
+            },
+            "bbs": {
+              "mask_hits25": 6174,
+              "mask_hits50": 5824,
+              "mask_iou_sum": 5106.323576468974,
+              "mask_miou": 74.1443818276314,
+              "rec_hits25": 6147,
+              "rec_hits50": 5549
+            }
+          }
+        ],
+        "identical_row_fields": {
+          "row_id": 6887,
+          "scan_id": 6887,
+          "target_id": 6887,
+          "point_sha256": 6887,
+          "root_box": 6887
+        },
+        "receipt_sha256": [
+          "a9f966652bfc89518a3ede0c037c569d2aba9246ab43fbc240778f9f7307a50f",
+          "853372845a2a57ba7aee1a95b1566fd42283a5135aaaa5a1d636146e7f016f4f"
+        ],
+        "transitions": {
+          "bbs": {
+            "0.25": {
+              "native_hits": 6147,
+              "candidate_hits": 6147,
+              "fixes": 0,
+              "breaks": 0,
+              "net": 0
+            },
+            "0.5": {
+              "native_hits": 5549,
+              "candidate_hits": 5549,
+              "fixes": 0,
+              "breaks": 0,
+              "net": 0
+            },
+            "iou_band_counts": [
+              [
+                740,
+                0,
+                0
+              ],
+              [
+                0,
+                598,
+                0
+              ],
+              [
+                0,
+                0,
+                5549
+              ]
+            ]
+          },
+          "bbf": {
+            "0.25": {
+              "native_hits": 6174,
+              "candidate_hits": 6175,
+              "fixes": 1,
+              "breaks": 0,
+              "net": 1
+            },
+            "0.5": {
+              "native_hits": 5583,
+              "candidate_hits": 5584,
+              "fixes": 1,
+              "breaks": 0,
+              "net": 1
+            },
+            "iou_band_counts": [
+              [
+                712,
+                0,
+                1
+              ],
+              [
+                0,
+                591,
+                0
+              ],
+              [
+                0,
+                0,
+                5583
+              ]
+            ]
+          }
+        },
+        "full256_oracle": {
+          "native": {
+            "hits25": 6872,
+            "hits50": 6697,
+            "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+          },
+          "candidate": {
+            "hits25": 6872,
+            "hits50": 6696,
+            "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+          }
+        },
+        "script_sha256": "2ad72b4d9584c864d57d05fd035ea37f07977b42d8b881be280a4fb0950f9295",
+        "export_byte_exact": {
+          "rows.jsonl": false,
+          "boxes.npy": false,
+          "scores.npy": false
+        },
+        "scope": "Backbone-seen module holdout; same input point hashes and GT. No new-scene or statistical seed-variance claim. Difference of changes is descriptive, not separate causal attribution. No gate or training change."
+      },
+      "initial_A_C.exit": 0,
+      "initial_B_C.exit": 0,
+      "last_log_line": [
+        "PVG_OBSERVATION_COMPARISON_COMPLETE initial_B_C"
+      ],
+      "actual_process": "30854 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_observation_comparison_20260909_v1/controller.py"
+    }
+  }
+}

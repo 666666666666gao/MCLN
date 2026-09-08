@@ -18613,3 +18613,23 @@ bbf仅row26681、scene0497_00改变选中Query，从8换到153，IoU0.106873变0
 CPU比对0模型forward、0更新、0新增checkpoint。证据见refine-logs/pvground_observation_initial_comparison_20260909_v1。当前未验证C性能有效，正式Scan保护与Nr/Sr转移要求不变，总目标仍未完成。
 
 02:21:18再次核对原三controller仍活跃；最新打印128/3723，累计312.338秒，约2.440秒/步。按当前早期吞吐估计固定训练约04:47结束，之后约12分钟终态模块评估，约05:00前后取得模块终态；正式9508仍须后续筛选，不能包含在此ETA中。磁盘空闲2353344512字节。
+
+### 20.205 C终态A/B配对分析接续已准备；首个实际checkpoint核验排队（2026-09-09 02:30 CST）
+
+本轮只增加CPU只读核算，不改变训练、候选输出或晋级门。02:30:47核对原训练controller29647、审计29653、正式接续29849均活跃。最新打印384/3723，累计927.510秒，约2.415秒/步；按此吞吐固定训练约04:45、随后约12分钟模块终态评估。该ETA不含条件式9508正式评估。
+
+### 终态比较接续与实际初始验证
+
+新增CPU比较controller30854、screen mcln_pvg_observation_comparison_v1，根目录/root/autodl-tmp/mcln_pvground_observation_comparison_20260909_v1。初始A/C、B/C比较已分别于02:28:52和02:28:56完成、退出0，实际处理各6887条保存输出，0模型forward、0更新、0新增checkpoint。
+
+比较程序重新核对文件SHA、输入身份、父权重、固定训练协议和各臂源码manifest摘要。完整导出差异作为结果记录，未删除检查或假装逐字节相同。主输出初始修复/破坏仍全部0；bbf起点+1/+1单独保留。C初始全部256原框GT oracle为6872/6696，A与B为6872/6697，即0/-1；这也是零更新差异，不是已学习的覆盖增益。raw256为GT辅助分析上界，不是合法候选召回或部署准确率。
+
+终态比较首次检查04:45，之后300秒，必须等待原审计controller29653产生通过且绑定当前训练receipt的终态证据。届时验证3723步训练行顺序相同，报告C相对真实起点、相对A/B终点的REC/Mask变化、两阈值修复破坏、IoU区间和场景分组、raw256 oracle；两种输出均保留起点差异及训练变化差。变化差是描述性对照，不直接宣称独立因果归因。比较流程不参与训练或替换正式门。
+
+### 实际保存恢复检查已排队，尚未执行
+
+CPUcheckpoint检查controller30817、screen mcln_pvg_observation_checkpoint_audit_v1，根目录/root/autodl-tmp/mcln_pvground_observation_checkpoint_audit_20260909_v1，首次02:38检查，若原任务仍活跃但快照尚未产生则300秒后再看。检查使用实际latest.pth一次打开的文件描述符，避免与训练端原子替换混淆；不额外复制权重。
+
+核验范围：真实快照step与fit行前缀、父权重/spec/source及两个模块SHA、1071项delta和36个新增state的严格CPU恢复、819个优化器参数ID及状态有限性、实际新参数变化。记录真正观察到的step，不预先写成512；不做GPUforward、不测试恢复后的未来轨迹、不输出精度或正式成绩。目前仅证明队列已经启动且原句柄存在，尚无真实checkpoint恢复通过结论。
+
+02:30实测磁盘空闲2353115136字节。C仍在固定训练，总目标未完成；ScanRefer正式保护及Nr/Sr推进要求不变。证据分别位于refine-logs/pvground_observation_comparison_20260909_v1与pvground_observation_checkpoint_audit_20260909_v1。

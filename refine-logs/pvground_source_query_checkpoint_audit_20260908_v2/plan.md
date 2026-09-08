@@ -1,0 +1,1 @@
+One read-only CPU restore of first observed periodic checkpoint, after 22:52 CST; no training changes, new weights, scene inference or formal score. Uses the existing formal restore helpers. Original training PID25348; poll300s if snapshot not ready. Record actual observed step, not assumed step512.

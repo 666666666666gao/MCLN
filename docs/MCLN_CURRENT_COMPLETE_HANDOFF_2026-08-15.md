@@ -18485,3 +18485,30 @@ v3在22:07:40退出0，实际4次full eval、4次full train、额外2次最后�
 首个latest按原代码每512步保存一次，预计22:51附近出现，下一次有意义检查安排在22:52—22:56附近，先核验原进程与已写checkpoint，再只读检查实际新reader状态；不提前复制权重、不改保存频率。formal CPU真实终态restore已经接续，尚未执行。GPU报告21210MiB；磁盘空闲2162593792字节，约2.01GiB，无新删除。仍只保留latest原子覆盖和固定terminal，原预训练与受保护权重保持。
 
 Scan先满足历史V99 REC5572/4797和Mask58.70/50.70/44.72，之后立即Nr/Sr REC的目标不变。当前正式0行、无新正式成绩，总目标仍未完成。
+
+
+### 20.201 首个512步分源Query快照CPU恢复通过，训练继续576步（2026-09-08 22:57 CST）
+
+前一回合完整initial等价检查已发布；本回合按预估保存时间完成首个真实快照CPU恢复，属于progress，期间保持原训练，不改固定预算或评估条件。
+
+### 只读检查失败与修复边界
+
+22:40:51只读CPU检查controller26366启动，计划22:52检查首个latest。v1脚本名queue.py与Python标准库同名，Torch导入queue时误加载该脚本，再次打开check.log触发FileExistsError；controller/check均退出1。此失败发生在import torch阶段，尚未加载模型/快照，不是checkpoint损坏或训练失败。失败原log/source/spec完整保留于refine-logs/pvground_source_query_checkpoint_audit_20260908_v1。
+
+只在独立v2目录将等待脚本改名checkpoint_queue.py，未加fallback、改变runtime或修改训练源码/权重。22:54:07 controller26600启动，实际核验原25348训练仍运行；22:54:26真实CPU检查通过，controller/check均退出0。v2记录和脚本归档保留。两次检查均不占GPU、无场景推理、无optimizer更新、未生成新权重；不重启任何训练/正式控制器。v1/v2已终态，后续不再轮询。
+
+### 首个实际训练快照已完整恢复
+
+观测latest实际step512、4096fit行，大小339701270字节（约323.96MiB），快照SHA e5f3bec8c2cf30b0f2d12213e4908b473d28c63a09a2cdc534d80e8ad4c9e7ac。使用同一个打开的文件描述符计算SHA并torch.load，适配训练现有tmp+os.replace原子写入，不复制快照，不把其后可能更新的latest路径误说成永久固定文件。
+
+复用正式evaluator的已验证恢复函数：先strict加载1234张量官方parent，再安装24新张量，实际1059个delta tensor恢复到1258个expanded模型state后逐项精确一致；检查shape/dtype/finite、冻结参数保持、parent/spec/module/port SHA。新reader全部24个状态张量均相对初始化改变，各投影最大变化约4.06e-4至7.61e-4，输出权重最大约9.61e-4。它证明新模块在实际训练中更新且被保存，不能当成REC增益。
+
+4096个row_id与实际前512步日志完全一致、无重复、全部属于fit且不与holdout重叠。优化器参数ID807个，已有状态783项，保存的exp_avg/exp_avg_sq全部有限；不将未建状态的参数擅自解释成故障，也不声称做过完整恢复后继续训练的等价性试验。检查读取实际快照，不是前一轮内存fixture；真实固定terminal仍未产生，未来formal前仍按既定queue再次检查terminal。
+
+### 训练继续与时间估计
+
+22:53观察原训练25348、审计25357、formal26014均存活；22:55:25再次核验相同原进程，run.log已576/3723步，累计1390.965秒。512步累计1234.794秒，平均约2.412秒/步。继续预估训练及终态6887在01:10—01:45附近完成；固定formal首次01:11:11检查endpoint，之后300秒；若满足筛选则两臂9508另需时间。不会以512快照替代规定terminal评估或重新选epoch。
+
+GPU占用22582MiB；22:55磁盘空闲1822588928字节（约1.70GiB），已写首个约324MiB latest，落在原delta预算内。仍保留原保护权重/日志，不新增全量权重副本。此刻0formal，无新正式REC/Mask指标，Scan V99不退化线与三数据集REC目标不变。
+
+接下来等待固定训练推进至终点；按预计结束时间附近核查，期间仅稀疏监控原进程、磁盘和异常。已完成起点、CPU保存恢复及接续准备，不再重复相同检查，也不增加新机制或诊断队列。

@@ -1,5 +1,5 @@
 {
-  "time_cst": "2026-09-08T22:34:23.700700+08:00",
+  "time_cst": "2026-09-08T22:55:25.905388+08:00",
   "jobs": {
     "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_sourcequery_v1": {
       "capacity.json": {
@@ -27,7 +27,7 @@
         "time_cst": "2026-09-08T22:19:00.435594+08:00"
       },
       "last_log_line": [
-        "PVG_TRAIN_PROGRESS {\"loss\": 14.166452407836914, \"grad_norm\": 116.11361694335938, \"seconds\": 4.540991306304932, \"rows\": [7567, 30736, 20705, 8947, 23373, 33838, 25918, 26821], \"loss_bbox\": 1.3549946546554565, \"loss_giou\": 2.2309622764587402, \"loss_ce\": 31.249773025512695, \"loss_sem_align\": 103.75541687011719, \"step\": 64, \"total_steps\": 3723, \"cumulative_seconds\": 156.73688626289368}"
+        "PVG_TRAIN_PROGRESS {\"loss\": 13.093329429626465, \"grad_norm\": 37.550235748291016, \"seconds\": 2.285468101501465, \"rows\": [33280, 30764, 30722, 27295, 23328, 7182, 22083, 968], \"loss_bbox\": 0.9163207411766052, \"loss_giou\": 2.1648612022399902, \"loss_ce\": 31.143617630004883, \"loss_sem_align\": 105.76914978027344, \"step\": 576, \"total_steps\": 3723, \"cumulative_seconds\": 1390.9652252197266}"
       ],
       "initial": {
         "boxes_sha256": "11b36d12c1d2030ee5a754771c876d2caac1d0504f2ebc9a979c7ac4d0d7fa36",
@@ -100,8 +100,71 @@
     "/root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_sourcequery_v1": {
       "last_log_line": [],
       "actual_process": "26014 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_sourcequery_v1/controller.py"
+    },
+    "/root/autodl-tmp/mcln_pvground_source_query_checkpoint_audit_20260908_v2": {
+      "controller.exit": 0,
+      "receipt.json": {
+        "status": "pass",
+        "time_cst": "2026-09-08T22:54:26.861990+08:00",
+        "step": 512,
+        "fit_rows": 4096,
+        "checkpoint_snapshot_sha256": "e5f3bec8c2cf30b0f2d12213e4908b473d28c63a09a2cdc534d80e8ad4c9e7ac",
+        "checkpoint_snapshot_bytes": 339701270,
+        "checkpoint_path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_sourcequery_v1/latest.pth",
+        "snapshot_open_descriptor": true,
+        "delta_tensors": 1059,
+        "expanded_tensors": 1258,
+        "added_tensors": 24,
+        "added_max_absolute_change": {
+          "decoder.5.source_query_read.attention.in_proj_bias": 0.0008645531488582492,
+          "decoder.5.source_query_read.attention.in_proj_weight": 0.0011705774813890457,
+          "decoder.5.source_query_read.attention.out_proj.bias": 0.0007519461214542389,
+          "decoder.5.source_query_read.attention.out_proj.weight": 0.0010450836271047592,
+          "decoder.5.source_query_read.norms.0.bias": 0.000618365709669888,
+          "decoder.5.source_query_read.norms.0.weight": 0.0005810260772705078,
+          "decoder.5.source_query_read.norms.1.bias": 0.0009016866679303348,
+          "decoder.5.source_query_read.norms.1.weight": 0.0009568929672241211,
+          "decoder.5.source_query_read.norms.2.bias": 0.0008058437961153686,
+          "decoder.5.source_query_read.norms.2.weight": 0.000816643238067627,
+          "decoder.5.source_query_read.norms.3.bias": 0.0007573642069473863,
+          "decoder.5.source_query_read.norms.3.weight": 0.0007612109184265137,
+          "decoder.5.source_query_read.norms.4.bias": 0.0008253807900473475,
+          "decoder.5.source_query_read.norms.4.weight": 0.0009194016456604004,
+          "decoder.5.source_query_read.norms.5.bias": 0.0005579657736234367,
+          "decoder.5.source_query_read.norms.5.weight": 0.0005468130111694336,
+          "decoder.5.source_query_read.output.bias": 0.00046350291813723743,
+          "decoder.5.source_query_read.output.weight": 0.0009614268783479929,
+          "decoder.5.source_query_read.projections.0.weight": 0.0005188360810279846,
+          "decoder.5.source_query_read.projections.1.weight": 0.00047919154167175293,
+          "decoder.5.source_query_read.projections.2.weight": 0.0005297660827636719,
+          "decoder.5.source_query_read.projections.3.weight": 0.0006485581398010254,
+          "decoder.5.source_query_read.projections.4.weight": 0.0007607191801071167,
+          "decoder.5.source_query_read.projections.5.weight": 0.000406414270401001
+        },
+        "optimizer_parameter_ids": 807,
+        "optimizer_state_entries": 783,
+        "optimizer_state_finite": true,
+        "exact_fit_log_prefix": true,
+        "strict_restore_exact": true,
+        "cpu_only": true,
+        "torch_cuda_initialized": false,
+        "model_forwards": 0,
+        "optimizer_steps": 0,
+        "new_checkpoint_files": 0,
+        "formal_rows": 0,
+        "elapsed_seconds": 3.0762763023376465,
+        "module_sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+        "source_port_sha256": "834861df76493163580ea66ede20fdcea53e0a1fc024b5be97ab23a0844bc6f7",
+        "training_spec_sha256": "7b0adda445ea342ee6bbf6914692ee24652c1d94fe0b3e86b6eb9aa5f838fab1",
+        "scope": "actual observed intermediate snapshot, not terminal quality or resume-equivalence test"
+      },
+      "check.exit": 0,
+      "last_log_line": [
+        "{\"status\": \"pass\", \"time_cst\": \"2026-09-08T22:54:26.861990+08:00\", \"step\": 512, \"fit_rows\": 4096, \"checkpoint_snapshot_sha256\": \"e5f3bec8c2cf30b0f2d12213e4908b473d28c63a09a2cdc534d80e8ad4c9e7ac\", \"checkpoint_snapshot_bytes\": 339701270, \"checkpoint_path\": \"/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_sourcequery_v1/latest.pth\", \"snapshot_open_descriptor\": true, \"delta_tensors\": 1059, \"expanded_tensors\": 1258, \"added_tensors\": 24, \"added_max_absolute_change\": {\"decoder.5.source_query_read.attention.in_proj_bias\": 0.0008645531488582492, \"decoder.5.source_query_read.attention.in_proj_weight\": 0.0011705774813890457, \"decoder.5.source_query_read.attention.out_proj.bias\": 0.0007519461214542389, \"decoder.5.source_query_read.attention.out_proj.weight\": 0.0010450836271047592, \"decoder.5.source_query_read.norms.0.bias\": 0.000618365709669888, \"decoder.5.source_query_read.norms.0.weight\": 0.0005810260772705078, \"decoder.5.source_query_read.norms.1.bias\": 0.0009016866679303348, \"decoder.5.source_query_read.norms.1.weight\": 0.0009568929672241211, \"decoder.5.source_query_read.norms.2.bias\": 0.0008058437961153686, \"decoder.5.source_query_read.norms.2.weight\": 0.000816643238067627, \"decoder.5.source_query_read.norms.3.bias\": 0.0007573642069473863, \"decoder.5.source_query_read.norms.3.weight\": 0.0007612109184265137, \"decoder.5.source_query_read.norms.4.bias\": 0.0008253807900473475, \"decoder.5.source_query_read.norms.4.weight\": 0.0009194016456604004, \"decoder.5.source_query_read.norms.5.bias\": 0.0005579657736234367, \"decoder.5.source_query_read.norms.5.weight\": 0.0005468130111694336, \"decoder.5.source_query_read.output.bias\": 0.00046350291813723743, \"decoder.5.source_query_read.output.weight\": 0.0009614268783479929, \"decoder.5.source_query_read.projections.0.weight\": 0.0005188360810279846, \"decoder.5.source_query_read.projections.1.weight\": 0.00047919154167175293, \"decoder.5.source_query_read.projections.2.weight\": 0.0005297660827636719, \"decoder.5.source_query_read.projections.3.weight\": 0.0006485581398010254, \"decoder.5.source_query_read.projections.4.weight\": 0.0007607191801071167, \"decoder.5.source_query_read.projections.5.weight\": 0.000406414270401001}, \"optimizer_parameter_ids\": 807, \"optimizer_state_entries\": 783, \"optimizer_state_finite\": true, \"exact_fit_log_prefix\": true, \"strict_restore_exact\": true, \"cpu_only\": true, \"torch_cuda_initialized\": false, \"model_forwards\": 0, \"optimizer_steps\": 0, \"new_checkpoint_files\": 0, \"formal_rows\": 0, \"elapsed_seconds\": 3.0762763023376465, \"module_sha256\": \"e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab\", \"source_port_sha256\": \"834861df76493163580ea66ede20fdcea53e0a1fc024b5be97ab23a0844bc6f7\", \"training_spec_sha256\": \"7b0adda445ea342ee6bbf6914692ee24652c1d94fe0b3e86b6eb9aa5f838fab1\", \"scope\": \"actual observed intermediate snapshot, not terminal quality or resume-equivalence test\"}"
+      ],
+      "actual_process": ""
     }
   },
-  "gpu_processes": "372670, 21210 MiB",
-  "disk_free": 2162593792
+  "gpu_processes": "372670, 22582 MiB",
+  "disk_free": 1822588928
 }

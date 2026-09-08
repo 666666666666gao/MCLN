@@ -1,6 +1,6 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08 15:22 CST. Section20.178: Nr parent local SHA verified, transfer/CPU queue pending; Scan919/3723 live.
+Updated: 2026-09-08. Section20.179: user coverage-reading direction grounded in six-source VSA mapping; current Scan unchanged.
 
 | Experiment | Current state | Decision |
 |---|---|---|

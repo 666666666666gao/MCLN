@@ -18105,3 +18105,14 @@ CPU回执SHA：8648f9715973cdb1705593d71b62ab2689ca7788137b1f8a930cd2f97574972f�
 接入脚本：prepare_pvground_nr_checkpoint.py（单份下载/传输/清点）、inspect_pvground_nr_checkpoint.py、strict_load_pvground_nr_cpu.py、queue_pvground_nr_cpu_strict.py（等待清点后只做CPU严格加载）、observe_pvground_nr_checkpoint.py、finish_pvground_nr_checkpoint_cpu.py（收集通过结果后仅清理本地中转副本）。证据目录refine-logs/pvground_nr_checkpoint_inspection_20260908_v1；远端/root/autodl-tmp/mcln_pvground_nr_checkpoint_inspection_20260908_v1。
 
 下一次先看同一上传/CPU依赖状态，不重复启动；成功后才能固定实际Nr配置和同结构训练接入。Nr训练仍等待Scan正式达现行底线，不恢复100/140epoch上游长训，不根据模块留出改LR/seed。完整三数据集Goal继续active。
+
+
+### 20.179 用户更新后续覆盖读取方向，核实融合前六源位置（2026-09-08）
+
+用户新分析明确支持继续正确点—体素路线，保持单seed2027和同预算，当前训练中不加覆盖模块、不改LR/Gumbel/体素范围；后续研究普通多尺度读取→Query级覆盖状态→语义/几何不同记忆的独立增量。该方向纳入后续候选，未启动新结构训练，未改变当前3723步终点或Scan正式晋级门。
+
+本轮从实际修正VSA源码、固定YAML及Scan预训练参数清单核实：融合前顺序为BEV128、raw128、conv1/2各128、conv3/4各256，共1024维，实际投影[288,1024]。代码先BEV再raw再稀疏源，不能仅按YAML列表切片。融合前输出语句当前被注释，Decoder读取融合后的288维。拟议新读取应保留真实分源特征，不能重读同一混合向量后宣称解耦。
+
+同时区分关键点与最终候选框中心的支撑；BEV的二维高度压缩支持不等于目标Z范围内的三维观测；邻居槽位与唯一支持数量、非空与语义有效性也不同。当前源映射只读配置/清单，没有测新覆盖率、前向或优化器更新。详细候选与实证边界见docs/PVG_COVERAGE_QUERY_READING_2026-09-08.md，结构映射回执见refine-logs/pvground_coverage_source_map_20260908_v1/receipt.json。
+
+实际运行状态与用户引用的旧§20.176/47步分开：15:25:48原Scan进程及依赖仍在，日志1024/3723，未终态，可用4421480448字节。Nr上传进程仍运行，15:25:47远端.part为243367936/829830168字节；CPU严格加载依赖15748已排队，尚无完成结果。没有新正式指标，不重传、不提前开始Nr/Sr训练。Goal继续active；原受保护成绩和后续Scan过线即Nr/Sr顺序不变。

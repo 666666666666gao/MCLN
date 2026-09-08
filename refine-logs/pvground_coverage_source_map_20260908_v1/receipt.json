@@ -1,0 +1,114 @@
+{
+  "source_order": [
+    {
+      "support_domain": "height-compressed XY plane",
+      "source": "bev",
+      "channels": 128,
+      "slice_start": 0,
+      "slice_stop": 128
+    },
+    {
+      "radii_m": [
+        0.1,
+        0.2
+      ],
+      "sample_caps": [
+        16,
+        16
+      ],
+      "support_domain": "3D radius grouping",
+      "source": "raw_points",
+      "channels": 128,
+      "slice_start": 128,
+      "slice_stop": 256
+    },
+    {
+      "radii_m": [
+        0.1,
+        0.2
+      ],
+      "sample_caps": [
+        16,
+        16
+      ],
+      "support_domain": "3D radius grouping",
+      "source": "x_conv1",
+      "channels": 128,
+      "slice_start": 256,
+      "slice_stop": 384
+    },
+    {
+      "radii_m": [
+        0.2,
+        0.4
+      ],
+      "sample_caps": [
+        16,
+        32
+      ],
+      "support_domain": "3D radius grouping",
+      "source": "x_conv2",
+      "channels": 128,
+      "slice_start": 384,
+      "slice_stop": 512
+    },
+    {
+      "radii_m": [
+        0.4,
+        0.8
+      ],
+      "sample_caps": [
+        16,
+        32
+      ],
+      "support_domain": "3D radius grouping",
+      "source": "x_conv3",
+      "channels": 256,
+      "slice_start": 512,
+      "slice_stop": 768
+    },
+    {
+      "radii_m": [
+        0.8,
+        1.6
+      ],
+      "sample_caps": [
+        16,
+        32
+      ],
+      "support_domain": "3D radius grouping",
+      "source": "x_conv4",
+      "channels": 256,
+      "slice_start": 768,
+      "slice_stop": 1024
+    }
+  ],
+  "fusion_weight_shape": [
+    288,
+    1024
+  ],
+  "keypoints": 1024,
+  "point_source": "raw_points",
+  "voxel_range": [
+    -8,
+    -8,
+    -0.2,
+    8,
+    8,
+    3.8
+  ],
+  "voxel_size": [
+    0.02,
+    0.02,
+    0.02
+  ],
+  "evidence_sha256": {
+    "refine-logs/pvground_pretrained_resources_20260908_v1/source/wandb_config.yaml": "8556a89d2f8e5db0c09e43fd160c9ab8e4ca7b144e0bf686ed644ce6d73072d1",
+    "refine-logs/pvground_vsa_order_replay_20260908_v1/pv_utils.py": "33279bc4e0302250025eb963f956f164cbe3f9b265ac57d9d4826abf6c370810",
+    "refine-logs/pvground_scan_checkpoint_inspection_20260908_v1/state_inventory.json": "2ed19ee241fe3e1b3063e53c787d1aa8c8400d48e5868cc41b8f0154a0a4a250"
+  },
+  "scope": "source/config/state-inventory mapping; not measured local coverage or method gain",
+  "model_forwards": 0,
+  "optimizer_steps": 0,
+  "formal_rows": 0
+}

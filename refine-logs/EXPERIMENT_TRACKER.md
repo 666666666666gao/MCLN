@@ -290,3 +290,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV source Query initial + early fit | initial6887 exported boxes/scores/rows byte-exact native; independent audit pass |87/3723 actual log rows;same order;finite;0formal;20.200 |
 
 | PV source Query checkpoint | actual512step/4096rows/1059delta strict CPU restore pass;24 added tensors updated |v1 queue-name failure retained,v2 pass;train576/3723 live;0formal;20.201 |
+
+| PV ordinary source-query B fixed terminal | bbs6136/5481; own-11/-68; native+17/-56; independent audit passed | Negative;3723 complete;formal skipped;superseded latest removed;20.202 |

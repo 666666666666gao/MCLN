@@ -17888,3 +17888,22 @@ CPU接续队列为`screen mcln_pvg_endpoint_audit_v1`、controller PID6398，与
 计划：`docs/PVG_SCANREFER_FORMAL_PLAN_2026-09-08.md`。代码：`scripts/evaluate_pvground_scanrefer_official.py`、`scripts/audit_pvground_scanrefer_official.py`。来源及CPU探测回执、不可变spec、controller和接续源码保存在`refine-logs/pvground_scanrefer_formal_20260908_v1/`；spec SHA `6c47e3f62e031f0c1e6beace7b114bdcd6ce460de72e7582af1d9c6c1d585740`。运行目录与训练目录相互独立。
 
 ScanRefer、Nr3D、Sr3D正式最好均未变化，Goal继续active。正式GPU结果和三数据集指标仍是未完成工作；准备代码、CPU校验及活跃队列不能替代这些结果。
+
+
+### 20.166 PV-Ground的Nr/Sr输入、对象协议与预训练路径核对（2026-09-08T08:53:48.286453+08:00）
+
+本轮仅做后续接入准备，不提前训练Nr/Sr。2026-09-08T08:46:30.544783+08:00，实际服务器CPU审计退出0，用时9.16秒，未导入Torch；模型前向、优化步数、正式评估和权重下载均为0。原Scan训练及两个接续controller未改。
+
+从固定PV提交262e2592589baec7bb83a0d46aae6542d4ccedfb对应runtime读取并逐SHA核对17份源码/脚本/划分。直接执行原生与上游Dataset中的annotation列表表达式，在实际CSV上得到相同原始annotation及顺序：Nr训练32919/511场景、test7899/130；Sr训练65846/1018、test17726/255。声明split及预测类别文件一致，类别记录覆盖全部表达场景。按物理房间前缀重计，Nr511/130、Sr490/123，两基准各自train/test物理房间不交叉。未运行场景图解析或完整Dataset。
+
+四份上游two-stage脚本均启用butd_cls，真实输入为实例框与预测类别；joint_det重复现有1199条检测annotation十次。现有原生联合行数因此为Nr44909、Sr77836，此计数复用既有实际检测输入审计，不是本轮训练量。Nr/Sr候选分数按与有效对象框的最大IoU>0.25乘mask，随后仍在256个Query上argsort，不能直接复制Scan无此过滤的正式入口。
+
+上游仍使用旧视角词函数。对相同Nr原始CSV，train检测差异2155条；经过两源码相同的caption规范化、但在场景图解析前，差异为327条。test对应482/65。此处没有执行parser附加前缀或随机增强，不应将2155/327当实际错误增强次数或可恢复命中数；test也未开启增强。后续保持已修复原生数据层，不恢复上游旧检测。
+
+发现固定train_sr3d.sh引用PV-Ground_NR3D.pth，test_sr3d.sh引用PV-Ground_ScanRefer.pth。它们不证明作者发布Sr日志的实际权重来源；本项目不能直接照抄该路径。官方固定HF revision另有分别命名的Nr/Sr two-stage文件，各829830168字节，文件SHA已记录；本轮均未下载或宣称strict load已通过。后续Scan正式晋级后按明确文件及SHA读取config/state，复用预训练，不自动跑上游100/140 epoch。
+
+本地再次核对回执和17份source SHA、声明与实际场景、四份脚本的准确CLI参数。此复核不冒称重新独立遍历全部CSV。实际audit源码SHA为15dcec3676d3cb8969b9451feaeca1d200dbe07d80c1ecf2255f5706b683c609，回执SHA为49c32f59d5c38471885b96160f677deb0eabbe3d9c7cf1d1f4c5c48c58d7f9f9。代码scripts/audit_pvground_referit3d_inputs.py，说明docs/PVG_REFERIT3D_INPUT_PROTOCOL_2026-09-08.md，完整小型证据refine-logs/pvground_referit3d_input_protocol_20260908_v1。
+
+发布前只复核作业存活与磁盘，训练PID5874、终态CPU队列PID6398、正式队列PID6898均存活，正式9508尚未启动，服务器剩余5851803648字节。训练步数和ETA仍以上轮实际观察为准，接近10:30再观察，不重复早期轮询。没有启用旧OpenShape队列、复制大权重或改变当前运行源。
+
+当前三个基准的正式最好不变，Goal保持active。Scan先达到同一V99 REC5572/4797及Mask58.70/50.70/44.72，再尽快推进Nr/Sr REC；不等待59/51全部达到，Nr/Sr Mask仍不作晋级门。

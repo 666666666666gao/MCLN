@@ -1,9 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T08:30:18.155420+08:00. Section20.165: conditional fixed9508 native formal queue prepared; real6887 CPU recount PASS; no formal GPU rows yet.
+Updated: 2026-09-08T08:53:48.286453+08:00. Section20.166: pinned PV Nr/Sr CPU input/source protocol PASS; no new Nr/Sr model execution, current Scan continues.
 
 | Experiment | Current state | Decision |
 |---|---|---|
+| PV-Ground Nr/Sr input/source protocol | CPU exact annotations/splits/class-file PASS;17 pinned sources;native view fix retained | RawNr2155 vs normalized-before-parser327 differences;explicit pretrained paths required;no model/GPU/updates;see20.166 |
 | Full PV-Ground fixed formal continuation | CPU6887 recount PASS; screen mcln_pvg_formal_queue_v1 live; first dependency check10:30 CST | Parent/terminal native9508 only if fixed fit screen passes; no new formal metric; see20.165 |
 | Full PV-Ground native training interface | Author Evaluator plus two full GT backward/AdamW steps PASS; local14-item recount PASS | 759 active-gradient tensors; no checkpoint saved, no formal rows; see20.162 |
 | Full PV-Ground ScanRefer fit control | Initial6887 bbs6189/5599; CPU1763072-box audit PASS; observed128/3723 steps at2026-09-08T08:07:56.026753+08:00 | Fixed native pretrained control; terminal CPU queue active;9508 formal not launched; see20.164 |

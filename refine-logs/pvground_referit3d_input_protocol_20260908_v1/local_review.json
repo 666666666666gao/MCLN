@@ -1,0 +1,274 @@
+{
+  "status": "pass",
+  "time_cst": "2026-09-08T08:51:22.804451+08:00",
+  "source_files_verified": 17,
+  "receipt_sha256": "49c32f59d5c38471885b96160f677deb0eabbe3d9c7cf1d1f4c5c48c58d7f9f9",
+  "review_scope": "local provenance, split-scene recount and exact shell flags; no independent full-CSV rerun",
+  "physical_scene_counts": {
+    "nr3d": {
+      "train": 511,
+      "test": 130
+    },
+    "sr3d": {
+      "train": 490,
+      "test": 123
+    }
+  },
+  "physical_train_test_overlap": {
+    "nr3d": 0,
+    "sr3d": 0
+  },
+  "upstream_recipes": {
+    "test_nr3d.sh": {
+      "--num_decoder_layers": [
+        "6"
+      ],
+      "--use_color": [],
+      "--weight_decay": [
+        "0.0005"
+      ],
+      "--data_root": [
+        "/root/vg_data/"
+      ],
+      "--val_freq": [
+        "3"
+      ],
+      "--batch_size": [
+        "24"
+      ],
+      "--save_freq": [
+        "3"
+      ],
+      "--print_freq": [
+        "500"
+      ],
+      "--lr_backbone": [
+        "1e-3"
+      ],
+      "--lr": [
+        "1e-4"
+      ],
+      "--dataset": [
+        "nr3d"
+      ],
+      "--test_dataset": [
+        "nr3d"
+      ],
+      "--detect_intermediate": [],
+      "--joint_det": [],
+      "--use_soft_token_loss": [],
+      "--use_contrastive_align": [],
+      "--log_dir": [
+        "/root/autodl-tmp/logs/"
+      ],
+      "--lr_decay_epochs": [
+        "150"
+      ],
+      "--butd_cls": [],
+      "--self_attend": [],
+      "--checkpoint_path": [
+        "/root/autodl-tmp/ckpt/PV-Ground_NR3D.pth"
+      ],
+      "--eval": [],
+      "--model": [
+        "PVGround"
+      ],
+      "--exp": [
+        "PVGround"
+      ]
+    },
+    "test_sr3d.sh": {
+      "--num_decoder_layers": [
+        "6"
+      ],
+      "--use_color": [],
+      "--weight_decay": [
+        "0.0005"
+      ],
+      "--data_root": [
+        "/root/vg_data/"
+      ],
+      "--val_freq": [
+        "3"
+      ],
+      "--batch_size": [
+        "24"
+      ],
+      "--save_freq": [
+        "3"
+      ],
+      "--print_freq": [
+        "500"
+      ],
+      "--lr_backbone": [
+        "1e-3"
+      ],
+      "--lr": [
+        "1e-4"
+      ],
+      "--dataset": [
+        "sr3d"
+      ],
+      "--test_dataset": [
+        "sr3d"
+      ],
+      "--detect_intermediate": [],
+      "--joint_det": [],
+      "--use_soft_token_loss": [],
+      "--use_contrastive_align": [],
+      "--log_dir": [
+        "/root/autodl-tmp/logs/"
+      ],
+      "--lr_decay_epochs": [
+        "150"
+      ],
+      "--butd_cls": [],
+      "--self_attend": [],
+      "--checkpoint_path": [
+        "/root/autodl-tmp/ckpt/PV-Ground_ScanRefer.pth"
+      ],
+      "--eval": [],
+      "--model": [
+        "PVGround"
+      ],
+      "--exp": [
+        "PVGround"
+      ]
+    },
+    "train_nr3d.sh": {
+      "--num_decoder_layers": [
+        "6"
+      ],
+      "--use_color": [],
+      "--weight_decay": [
+        "0.0005"
+      ],
+      "--data_root": [
+        "/root/vg_data/"
+      ],
+      "--val_freq": [
+        "1"
+      ],
+      "--batch_size": [
+        "10"
+      ],
+      "--save_freq": [
+        "1"
+      ],
+      "--print_freq": [
+        "500"
+      ],
+      "--lr_backbone": [
+        "2e-4"
+      ],
+      "--lr": [
+        "1e-4"
+      ],
+      "--dataset": [
+        "nr3d"
+      ],
+      "--test_dataset": [
+        "nr3d"
+      ],
+      "--detect_intermediate": [],
+      "--joint_det": [],
+      "--use_soft_token_loss": [],
+      "--use_contrastive_align": [],
+      "--log_dir": [
+        "/root/autodl-tmp/logs/"
+      ],
+      "--lr_decay_epochs": [
+        "20",
+        "50"
+      ],
+      "--butd_cls": [],
+      "--self_attend": [],
+      "--checkpoint_path": [
+        "/root/autodl-tmp/ckpt/PV-Ground_NR3D.pth"
+      ],
+      "--max_epoch": [
+        "100"
+      ],
+      "--model": [
+        "PVGround"
+      ],
+      "--exp": [
+        "PVGround"
+      ]
+    },
+    "train_sr3d.sh": {
+      "--num_decoder_layers": [
+        "6"
+      ],
+      "--use_color": [],
+      "--weight_decay": [
+        "0.0005"
+      ],
+      "--data_root": [
+        "/root/vg_data/"
+      ],
+      "--val_freq": [
+        "1"
+      ],
+      "--batch_size": [
+        "10"
+      ],
+      "--save_freq": [
+        "1"
+      ],
+      "--print_freq": [
+        "500"
+      ],
+      "--lr_backbone": [
+        "2e-4"
+      ],
+      "--lr": [
+        "1e-4"
+      ],
+      "--dataset": [
+        "sr3d"
+      ],
+      "--test_dataset": [
+        "sr3d"
+      ],
+      "--detect_intermediate": [],
+      "--joint_det": [],
+      "--use_soft_token_loss": [],
+      "--use_contrastive_align": [],
+      "--log_dir": [
+        "/root/autodl-tmp/logs/"
+      ],
+      "--lr_decay_epochs": [
+        "20",
+        "50"
+      ],
+      "--butd_cls": [],
+      "--self_attend": [],
+      "--checkpoint_path": [
+        "/root/autodl-tmp/ckpt/PV-Ground_NR3D.pth"
+      ],
+      "--max_epoch": [
+        "140"
+      ],
+      "--model": [
+        "PVGround"
+      ],
+      "--exp": [
+        "PVGround"
+      ]
+    }
+  },
+  "published_model_revision": "cf4a8b1eed045f1309e6a691ea948d1d6c54448e",
+  "not_downloaded_weights": {
+    "PV-Ground_NR3D.pth": {
+      "bytes": 829830168,
+      "sha256": "d2d9afaf9c293c54977f3555a46c7bb2a72d9f80163a3f602dd8426032d7fa5d"
+    },
+    "PV-Ground_SR3D.pth": {
+      "bytes": 829830168,
+      "sha256": "a4a14b0090947177a648703ad6de094246891d89174fffa56fe454f730dbe3dc"
+    }
+  },
+  "formal_evaluation_rows": 0,
+  "optimizer_steps": 0
+}

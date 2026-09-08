@@ -1,10 +1,10 @@
 # MCLN experiment tracker
 
-Updated: 2026-09-08T11:01:51.813587+08:00. Section20.171: real detected-box augmentation order error confirmed/fixed; one-factor ScanRefer control launched.
+Updated: 2026-09-08T11:25:40.232394+08:00. Section20.172: detalign initial audit PASS;cross-run initial differs;fixed training128/3723 observed.
 
 | Experiment | Current state | Decision |
 |---|---|---|
-| ScanRefer detected-box augmentation alignment | Real32 scenes/1135 boxes audited;old340 center errors>1cm;fixed max3.51e-7m | Three rotations moved after flips;other outputs/RNG unchanged;fixed3723-step control live;see20.171 |
+| ScanRefer detected-box augmentation alignment | CPU32/1135 geometry PASS;initial6887 bbs6204/5605 audited;128/3723 live | Old initial6189/5599 differs before updates;not a gain;terminal compared to own initial;see20.172 |
 | PV-Ground Nr/Sr real voxel inputs |64 actual samples/128 CPU processors/16 batches PASS|Fixed32 training inputs;Z-range clipping observed under augmentation;0 models/updates/formal;see20.168|
 | PV-Ground native root REC readout | CPU8192 scores/320 Top10 indices/48 counters equal to actual author methods | Synthetic protocol integration only;0 model/GPU/updates;unchanged Scan runtime;see20.167 |
 | PV-Ground Nr/Sr input/source protocol | CPU exact annotations/splits/class-file PASS;17 pinned sources;native view fix retained | RawNr2155 vs normalized-before-parser327 differences;explicit pretrained paths required;no model/GPU/updates;see20.166 |

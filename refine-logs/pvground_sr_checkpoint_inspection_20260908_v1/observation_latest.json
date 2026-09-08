@@ -1,10 +1,110 @@
 {
-  "time_cst": "2026-09-08T17:42:49.227448+08:00",
+  "time_cst": "2026-09-08T17:56:31.130807+08:00",
   "files": [
     "plan.json",
-    "PV-Ground_SR3D.pth.part"
+    "PV-Ground_SR3D.pth",
+    "inventory.py",
+    "controller.sh",
+    "transfer.json",
+    "download.json",
+    "resume_from_local.py",
+    "inventory.log",
+    "launch.json",
+    "state_inventory.json",
+    "receipt.json",
+    "inventory.exit",
+    "strict_load.py",
+    "strict_controller.py",
+    "strict_controller.pid",
+    "strict_load.log",
+    "strict_load.stderr",
+    "strict_load.json",
+    "strict_load.exit"
   ],
-  "PV-Ground_SR3D.pth.part": {
-    "bytes": 670924800
-  }
+  "PV-Ground_SR3D.pth": {
+    "bytes": 829830168
+  },
+  "inventory.exit": "0",
+  "receipt.json": {
+    "bytes": 829830168,
+    "checkpoint_sha256": "a4a14b0090947177a648703ad6de094246891d89174fffa56fe454f730dbe3dc",
+    "config": {
+      "butd": false,
+      "butd_cls": true,
+      "butd_gt": false,
+      "clip_norm": 0.1,
+      "dataset": [
+        "sr3d"
+      ],
+      "detect_intermediate": true,
+      "frozen": false,
+      "joint_det": true,
+      "lr": 0.0001,
+      "lr_backbone": 0.001,
+      "num_decoder_layers": 6,
+      "query_points_obj_topk": 4,
+      "self_attend": true,
+      "self_position_embedding": "loc_learned",
+      "small_lr": false,
+      "test_dataset": "sr3d",
+      "use_color": true,
+      "use_contrastive_align": true,
+      "use_height": false,
+      "use_multiview": false,
+      "use_soft_token_loss": true,
+      "weight_decay": 0.0005
+    },
+    "effective_object_stream": true,
+    "epoch": 31,
+    "formal_rows": 0,
+    "inventory_sha256": "94d9361c738715c47579f9e08f694f18f5c19aa4d3666436111289cf4f71fdb6",
+    "model_forwards": 0,
+    "model_instantiated": false,
+    "model_tensor_count": 1235,
+    "object_protocol_matches_planned_butd_cls": true,
+    "optimizer_steps": 0,
+    "payload_keys": [
+      "config",
+      "epoch",
+      "model",
+      "optimizer",
+      "save_path",
+      "scheduler"
+    ],
+    "same_state_schema_as_scan": false,
+    "scan_inventory_sha256": "2ed19ee241fe3e1b3063e53c787d1aa8c8400d48e5868cc41b8f0154a0a4a250",
+    "scan_only_keys": [],
+    "shape_differences": {},
+    "sr_only_keys": [
+      "module.text_encoder.embeddings.position_ids"
+    ],
+    "status": "complete",
+    "strict_load_tested": false,
+    "time_cst": "2026-09-08T17:51:57.272757+08:00",
+    "torch_cuda_initialized": false,
+    "torch_version": "1.10.2+cu111"
+  },
+  "strict_load.json": {
+    "status": "pass",
+    "checkpoint_sha256": "a4a14b0090947177a648703ad6de094246891d89174fffa56fe454f730dbe3dc",
+    "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+    "model_source": "/root/autodl-tmp/mcln_pvground_vsa_order_source_20260908_v1/PV-Ground",
+    "model_source_port_sha256": "1bf5c1e6d48ff988373740d57d4934bc7483080b6ccde0675c6e43366ffb6dbe",
+    "state_tensors": 1235,
+    "loaded_tensors_exact": true,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "model_instantiated": true,
+    "model_forwards": 0,
+    "optimizer_steps": 0,
+    "formal_rows": 0,
+    "trainable_parameters": 27959611,
+    "trainable_tensors": 783,
+    "frozen_tensors": 199,
+    "cpu_only": true,
+    "torch_cuda_initialized": false,
+    "elapsed_seconds": 2.2757647037506104,
+    "script_sha256": "f5dd1a1e778cd92b68cf061e4a72c4571776c5c399180d4c20637d941e264be4"
+  },
+  "strict_load.exit": "0"
 }

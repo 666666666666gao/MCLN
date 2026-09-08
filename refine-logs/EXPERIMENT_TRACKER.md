@@ -266,3 +266,7 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 | PV support capture and cached center geometry | 10 groups: actual VSA empty0/8192 each; final center raw0.1m hypothetical empty107/256 | One scene only; no new model/quality claim; see20.190 |
 | Corrected PV obsolete latest cleanup | Removed3584-step latest331178206 bytes; terminal3723 preserved and rehashed | No other weights deleted; see20.190 |
+
+| Sr official pretrained resource | epoch31;1235 state tensors strict CPU exact; local duplicate829830168B removed after remote SHA recheck | Ready resource,0 full forward/training/formal; see20.191 |
+| PV fit support census | 16 fit scenes×unaug/aug;4 forwards; augmented conv1 .2m empty1616/16384 | Missing source support observed; center-empty also occurs for good boxes; see20.191 |
+| PV empty-pool mask control | Zero additional parameters; real CUDA output/gradient PASS; full nonempty batch3-forward exact | Implementation only; native full-loss training not yet launched; see20.191 |

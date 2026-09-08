@@ -1,0 +1,31 @@
+{
+  "runtime": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1",
+  "input_manifest": "/root/autodl-tmp/mcln_scanrefer_detection_aligned_source_20260908_v1/input_manifest.json",
+  "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+  "checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+  "model_source": "/root/autodl-tmp/mcln_pvground_vsa_order_source_20260908_v1/PV-Ground",
+  "source_port": "/root/autodl-tmp/mcln_pvground_vsa_order_source_20260908_v1/source_port.json",
+  "seed": 2027,
+  "scene_count": 16,
+  "row_selection": "first expression per fit physical scene; sixteen evenly spaced sorted scene indices",
+  "conditions": [
+    "native_unaugmented",
+    "native_augmented"
+  ],
+  "batch_size": 8,
+  "optimizer_steps": 0,
+  "formal_rows": 0,
+  "model_mode": "eval frozen official Scan parent",
+  "gpu_lock": "/root/autodl-tmp/mcln_v99_backbone_gpu0.lock",
+  "diagnostic_repair": {
+    "previous_root": "/root/autodl-tmp/mcln_pvground_fit_support_20260908_v1",
+    "previous_completed_forwards": 1,
+    "previous_optimizer_steps": 0,
+    "change": "Replace unsupported all-positive-size assertion with native float32 clamp(min=1e-6) for IoU only"
+  },
+  "files": {
+    "audit.py": "6761fbc188bdfdd0030456e21cdf031924c7acaf1c125211a348cb8181cf81ff",
+    "pvground_support_observation.py": "3105d49cc2ba4de9b9a11f79cd5b8c72a033b81d965cfd5afdceeff182b8513b",
+    "controller.py": "21dda91ed775fc05fb72260935893d064bdaa1847502c207725c61e989616620"
+  }
+}

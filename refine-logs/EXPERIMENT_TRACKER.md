@@ -270,3 +270,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | Sr official pretrained resource | epoch31;1235 state tensors strict CPU exact; local duplicate829830168B removed after remote SHA recheck | Ready resource,0 full forward/training/formal; see20.191 |
 | PV fit support census | 16 fit scenes×unaug/aug;4 forwards; augmented conv1 .2m empty1616/16384 | Missing source support observed; center-empty also occurs for good boxes; see20.191 |
 | PV empty-pool mask control | Zero additional parameters; real CUDA output/gradient PASS; full nonempty batch3-forward exact | Implementation only; native full-loss training not yet launched; see20.191 |
+
+| PV empty-pool native interface | 2 eval +2 train forwards,2 ephemeral native REC/Mask updates; frozen state unchanged | PASS interface only;0 checkpoints/formal rows;20.192 |
+| ScanRefer PV empty-pool control | official parent,seed2027,batch8,3723 updates; real job18:36 with endpoint audit/formal queue | Running;no terminal claim; same-budget native control6119/5537;20.192 |

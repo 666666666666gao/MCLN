@@ -18273,3 +18273,30 @@ Sr官方权重传输17:51完成，829830168字节及SHA a4a14b0090947177a648703a
 验证一：真实CUDA已知非空/空双查询，禁用控制与原模块精确一致；启用后非空输出精确一致、空输出全0；仅空输出loss的梯度全0，非空特征梯度有限且非零，state键和值不变。验证二：已有全部VSA邻域非空的8条固定输入，完整Scan父模型依次禁用/启用/禁用、每次重置同seed，全部trace张量逐项一致；共3次forward、0更新/正式行。结果只证明该非空批次的行为一致，不外推6887或9508全部相同。
 
 下一步先将这个最小控制接入完整native GT损失与训练，检查真实反向和预算，再按同父权重、同fit/holdout、同seed2027及固定训练预算与已完成native控制比较。先回答明确空邻域处理有没有收益；只有该控制和普通读取关系清楚后，再加学习式观测权重或语义/几何不同记忆，避免把基本mask作用归给复杂机制。当前尚未启动这项训练；现有纯微调负结果不改判，V99正式最好不变，Nr/Sr训练仍待Scan正式达线。此计划不恢复LR/epoch/seed扫描，不重启已结束任务。
+
+
+### 20.192 空邻域完整原生训练接口通过；固定ScanRefer控制与终态接续已启动（2026-09-08 18:40 CST）
+
+上一回合完成16场景支持审计及模块控制实现，本回合完成完整损失反向、真实长训启动及评估恢复路径，属于progress；总体三数据集目标未完成，保持active。
+
+当前用户上传材料记录的47/3723步已过时：VSA顺序修正后的原生微调已在17:21:55完整收尾，6887条bbs6147/5549→6119/5537（−28/−12），bbf6174/5583→6153/5550（−21/−33），独立审计通过但科学门失败，正式队列按原规则跳过，0正式行。这个结果保持负结论，不继续延训或改LR，也不声称正确接口自动涨点。
+
+本回合将20.191的空邻域控制接入完整native REC/Mask损失。18:28:38启动、18:29:15完成，耗时36.34秒；固定训练行[0,173,237,455]，2 eval forward、2 train forward及2次临时AdamW更新，783可训练张量27959611参数、199冻结张量保持不变。非零原生REC及Mask损失参与反向；没有输出新权重文件、没有正式评估。模块SHA1eb336f59a1824fa74e778c2e0c293b2357fefbd23bdbfa66f5988cf2767c803，正确VSA源码/运行环境复用。临时更新权重不会进入长训起点。
+
+18:36:29启动固定ScanRefer empty-pool控制，训练controller20870、screen mcln_pvg_scan_emptypool_v1。仍从官方Scan epoch81 parent严格加载；29778 fit、6887模块留出，seed2027、batch8、LR及backbone LR均1e-5，3723步/一遍fit，native全部REC和Mask损失不变。唯一机制变化是保存真实CUDA空邻域mask，在原MLP/BN/ReLU/maxpool后逐半径清零。没有额外参数、学习式coverage权重、候选Gate、复杂多尺度读取、语义/几何解耦或V99 sidecar。比较自己的initial→terminal与已完成同预算native终点6119/5537，不能将初始差异写成训练收益。
+
+18:36:33排队独立CPU审计，controller20878；18:37:42排队正式接续controller20981，首次检查21:22:35 CST，之后300秒间隔。正式recount/evaluator函数用既有6887输出做CPU一致性检查通过，0 GPU forward/更新/正式行；这不是正式质量结果。预计当前长训及留出评估约3小时，按实际吞吐修正ETA；不高频轮询或启动重复作业。
+
+本控制不改变state_dict键，因此仅载入权重不能保证恢复同一模型。训练spec、delta checkpoint及receipt显式记录empty_pool_mask与模块SHA；正式evaluate严格验证这些字段。published_parent臂明确关闭mask，fit_terminal臂明确开启；参数键、native bbs/diagnostic bbf、候选规则与9508行正式输入契约保持一致。独立审计通过且own-initial两个REC阈值不退化才进入既定正式流程；最终仍需V99的5572/4797及Scan Mask58.70/50.70/44.72底线。跨数据集只在Scan正式通过后继续，不恢复Nr/Sr Mask门。
+
+磁盘启动检查可用2690916352字节（约2.51GiB）。按已有331MB增量权重实际大小，预留1.25GiB产物预算及1GiB空闲，不再复制830MB父权重或源目录。仅原子覆盖一个latest并保留固定terminal；本回合没有删除受保护文件。此前已经核验清理的Sr本地传输副本及旧native中间latest不重复删除。runtime环境未变，无包/编译修改，不重建环境。
+
+所有通过目前仍是训练接口、数据和执行完整性证据，不是新REC增益。V99/V109/V113及Nr/Sr正式受保护结果不变；没有将新PV控制、原生输出或模块留出数字拼到完整系统表里。
+
+本次实际观察时间：2026-09-08T18:41:05.797336+08:00；末尾日志：
+```text
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+PVG_FINETUNE_DATASET_LOADING 2026-09-08T18:36:52.218668+08:00
+Loading train files, take a breath!
+Begin text decoupling......
+```

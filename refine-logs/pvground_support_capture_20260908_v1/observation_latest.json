@@ -1,5 +1,5 @@
 {
-  "time_cst": "2026-09-08T16:44:12.096997+08:00",
+  "time_cst": "2026-09-08T17:33:57.384552+08:00",
   "files": [
     "capture.py",
     "pvground_support_observation.py",
@@ -10,11 +10,904 @@
     "inputs",
     "controller.pid",
     "queue.log",
-    "queue.pid"
+    "queue.pid",
+    "capture.log",
+    "__pycache__",
+    "observed_replay",
+    "capture.exit",
+    "controller.exit"
   ],
   "controller.pid": "17222",
   "queue.pid": "17223",
-  "queue.log": "",
-  "processes": "   PID   PPID ELAPSED COMMAND\n 17222  17221    1450 /root/miniconda3/envs/bdetr/bin/python /root/autodl-tmp/mcln_pvground_support_capture_20260908_v1/controller.py\n 17223  17222    1450 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_support_capture_20260908_v1/replay_queue.py\n",
-  "ps_exit": 0
+  "controller.exit": "0",
+  "capture.exit": "0",
+  "queue.log": "SUPPORT_WAIT 2026-09-08T17:25:00.098778\nSUPPORT_QUEUE_COMPLETE\n",
+  "capture.log": "6-09-08T17:30:27.252263+08:00\", \"input_sha256\": \"eeb6eab59f2b54a104d73f85d4bae08144e25e7ce6a23f1b3cfc41382964c91e\", \"checkpoint_sha256\": \"6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3\", \"seed\": 2027, \"batch_size\": 8, \"reference_trace_sha256\": \"932ed5f7514f48b47d41dfd821adc67018a3cc2f461d17c8c5dd43805cd6a57c\", \"script_sha256\": \"151011aaabc15dfb89f75dc52003bbceab17e2ec1cd12780ebecb833e66c308c\", \"formal_rows\": 0, \"optimizer_steps\": 0, \"full_forwards\": 3, \"scope\": \"same frozen first batch; no original capacity backward or whole6887 replay; hooks are observational\", \"repeated_seed_exact\": true}\nSUPPORT_CAPTURE_COMPLETE {\"status\": \"pass\", \"records\": [{\"source\": \"raw_points\", \"radius_m\": 0.1, \"cap\": 16, \"packet\": \"00_raw_points.npz\", \"packet_sha256\": \"b0d3a075ee2a9e60e57b42dc2bfd3275d152db47ac31882d670f37c661acff8f\", \"report_sha256\": \"889cd9b4b7140ecfbdbcadd4746c3fddb3e51e88f8eba81ae099ba5d330aa356\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 16}, {\"source\": \"raw_points\", \"radius_m\": 0.2, \"cap\": 16, \"packet\": \"01_raw_points.npz\", \"packet_sha256\": \"a1635b63d21af091b6da51dd6c6637401eb626c5ff80fb2a18658e07066fd2b1\", \"report_sha256\": \"53644cdd74386bdc21f24d54af184075ff826b6b61ac08a48b7cf812b46d8d7a\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 16}, {\"source\": \"x_conv1\", \"radius_m\": 0.1, \"cap\": 16, \"packet\": \"02_x_conv1.npz\", \"packet_sha256\": \"9cca1381b16be6763588a64dece04931e3a688719543282585a738431e04b064\", \"report_sha256\": \"f299add7823920d896a807570e915b43d8493fa67bf2181feb455aa44bee231b\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 16}, {\"source\": \"x_conv1\", \"radius_m\": 0.2, \"cap\": 16, \"packet\": \"03_x_conv1.npz\", \"packet_sha256\": \"d60b9148c52802ed019689f0bac694ce2bc0b0698b29e38d87d51911f13c2f61\", \"report_sha256\": \"843a31326767d6a6cbfc09d37a5126b6088bd618f7b9890721c433d5386771a7\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 16}, {\"source\": \"x_conv2\", \"radius_m\": 0.2, \"cap\": 16, \"packet\": \"04_x_conv2.npz\", \"packet_sha256\": \"fc676803b31b0ebc16a7869d345a1075beda769fe203a2f49aa2be207a2079a3\", \"report_sha256\": \"c3c7fbcb085e0232838bdc746fc1e870d37b49ac3bf0f6a26f70bb329b16df59\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 16}, {\"source\": \"x_conv2\", \"radius_m\": 0.4, \"cap\": 32, \"packet\": \"05_x_conv2.npz\", \"packet_sha256\": \"2108af9e217678c6a61fe4715a41900ea87eef59082d0842af7a11f3231ae688\", \"report_sha256\": \"5e9069fbfcdbd89d5702cab2469bc8140dcfbbf22d8b29f70018c9ffa93f9da4\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 32}, {\"source\": \"x_conv3\", \"radius_m\": 0.4, \"cap\": 16, \"packet\": \"06_x_conv3.npz\", \"packet_sha256\": \"632d27b61b915cb0dae5dc44c54df31eb0cecb9c59976f3bac466dbbc6813085\", \"report_sha256\": \"90061e362a9a28da2e199c26cae79b6cb9b5b3d3b3ad443bc15d8ac39d22176c\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 16}, {\"source\": \"x_conv3\", \"radius_m\": 0.8, \"cap\": 32, \"packet\": \"07_x_conv3.npz\", \"packet_sha256\": \"5e7d328677cd3a5b7331aa4d6b38949d6262174f568a7b2865d3574b0e2fce82\", \"report_sha256\": \"7b356cce3ad6fb64d70e2f42f014035998b9bdb1ac2a305ee57354c361fe52dd\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 32}, {\"source\": \"x_conv4\", \"radius_m\": 0.8, \"cap\": 16, \"packet\": \"08_x_conv4.npz\", \"packet_sha256\": \"08976405c118d10c8f54ab8708482f367d302ac5d812500929c1d7bb208c9002\", \"report_sha256\": \"2fdf34819dadc950bd11d78b660a431a1468151ae41cad566279781e05e6f19d\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 16}, {\"source\": \"x_conv4\", \"radius_m\": 1.6, \"cap\": 32, \"packet\": \"09_x_conv4.npz\", \"packet_sha256\": \"6596aaaf5ad54db43b9ac3d5e8c1a1f710568f817071680291984b7a14b7bebf\", \"report_sha256\": \"a8b26397c000b419eb6e069b735aafe5888c9c6efa78a24263891d3a73fa5654\", \"all_query_count\": 8192, \"all_query_operator_empty\": 0, \"diagnostic_query_count\": 256, \"geometry_empty\": 0, \"max_selected_unique_rows\": 32}], \"full_forwards\": 3, \"optimizer_steps\": 0, \"formal_rows\": 0, \"observed_vs_unobserved_seed_repeat_exact\": true, \"input_sha256\": \"eeb6eab59f2b54a104d73f85d4bae08144e25e7ce6a23f1b3cfc41382964c91e\", \"checkpoint_sha256\": \"6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3\", \"seed\": 2027, \"scope\": \"one pinned eight-row batch, parent weights; sampled keypoint geometry is not candidate-box coverage or dataset rate\"}\n",
+  "processes": "   PID   PPID ELAPSED COMMAND\n",
+  "ps_exit": 1,
+  "output_files": [
+    "reference_trace.pt",
+    "receipt.json",
+    "support",
+    "support_receipt.json"
+  ],
+  "receipt.json": {
+    "status": "complete",
+    "time_cst": "2026-09-08T17:30:27.252263+08:00",
+    "input_sha256": "eeb6eab59f2b54a104d73f85d4bae08144e25e7ce6a23f1b3cfc41382964c91e",
+    "checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+    "seed": 2027,
+    "batch_size": 8,
+    "cases": [
+      {
+        "case": "reset_seed_first",
+        "seconds": 1.4351673126220703,
+        "shapes": {
+          "cpu_rng_before": [
+            5056
+          ],
+          "cuda_rng_before": [
+            816
+          ],
+          "backbone.inds": [
+            8,
+            1024
+          ],
+          "backbone.point_coords": [
+            8,
+            1024,
+            3
+          ],
+          "backbone.point_features": [
+            8,
+            1024,
+            288
+          ],
+          "text_projector": [
+            8,
+            24,
+            288
+          ],
+          "box_embeddings": [
+            8,
+            128,
+            132
+          ],
+          "cross_encoder.visual": [
+            8,
+            1024,
+            288
+          ],
+          "cross_encoder.text": [
+            8,
+            24,
+            288
+          ],
+          "gumbel.logits": [
+            8,
+            1024,
+            256
+          ],
+          "gumbel.cuda_rng_before_noise": [
+            816
+          ],
+          "gumbel.attention": [
+            8,
+            256,
+            1024
+          ],
+          "last_decoder": [
+            8,
+            256,
+            288
+          ],
+          "output.seed_xyz": [
+            8,
+            1024,
+            3
+          ],
+          "output.seed_features": [
+            8,
+            288,
+            1024
+          ],
+          "output.query_points_xyz": [
+            8,
+            256,
+            3
+          ],
+          "output.last_center": [
+            8,
+            256,
+            3
+          ],
+          "output.last_pred_size": [
+            8,
+            256,
+            3
+          ],
+          "output.last_sem_cls_scores": [
+            8,
+            256,
+            256
+          ],
+          "output.last_proj_queries": [
+            8,
+            256,
+            64
+          ],
+          "output.proj_tokens": [
+            8,
+            24,
+            64
+          ],
+          "cpu_rng_after": [
+            5056
+          ],
+          "cuda_rng_after": [
+            816
+          ],
+          "output.raw_bbs_score": [
+            8,
+            256
+          ],
+          "output.raw_bbs_query": [
+            8
+          ]
+        },
+        "hashes": {
+          "cpu_rng_before": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+          "cuda_rng_before": "9a5c513a89e10448ae10311d95f3a4b7e4dbd5bdefcbf81d9397ef4957036b77",
+          "backbone.inds": "8a62a788c9ad4a6a39e97232bd093dbe40a2a99ad62fec64d0f0a61290032506",
+          "backbone.point_coords": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+          "backbone.point_features": "8a0889af436418b7645fe3cd8a9ab1b5eaeb263e2b7f2c4e5c57212b49918645",
+          "text_projector": "2426f21eb897de820bfbd2733c63a14a7605e07b916071a1eefcc6ec8e939980",
+          "box_embeddings": "01e381800834bd7909676abdcc18079d61e2c185c1c4e49b08597fefec62e910",
+          "cross_encoder.visual": "9816b7e94dfb197f698d6b95d7b2773ba5db56f0187f8b84a4d2d290a120149e",
+          "cross_encoder.text": "7bfedd351902426c967379da19d4cc79e7f3babb26c6e9223509cb103679deec",
+          "gumbel.logits": "319fc8cb05a422d6776a3a4d5a4d0b8c1bbb7ed8907243c0b12f74afdcb118dd",
+          "gumbel.cuda_rng_before_noise": "9a5c513a89e10448ae10311d95f3a4b7e4dbd5bdefcbf81d9397ef4957036b77",
+          "gumbel.attention": "517b2b85a0fed1b16abd39da3da319a0145ad9dfe192659e1190dec0987b5f8d",
+          "last_decoder": "5596f0349aea6c235066e56093dfea001d2d5c5dd800dc335420d11bb5d7e290",
+          "output.seed_xyz": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+          "output.seed_features": "442d244777c15e1ea22b89572fc1a7247098cf8969e2e1da2e4a0bec96b1a317",
+          "output.query_points_xyz": "8064a7a681ee7442ad86ccb2a912357b10e737b4382e051d18734b3adb378fa5",
+          "output.last_center": "3e0e12990b405209feefa15ba7536fbead81040ba79f2c88af30c3c5ed00bae5",
+          "output.last_pred_size": "bdc2a208baf1119f07d485b822fc92c85f8a1a24783cd559118ea269e9287598",
+          "output.last_sem_cls_scores": "1b53a8786293fce287def8a04f54b06a767e8ed277a7a614a39f09fc89443b05",
+          "output.last_proj_queries": "1dd0ffe493739c3689c41c4ec897339000c6a5726c74b552121aa057ff7ef220",
+          "output.proj_tokens": "ea8808ae1c626b021eaf2672baeafc2e0c0744baadb8800f4fe8e3ef40f8c590",
+          "cpu_rng_after": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+          "cuda_rng_after": "152f14fd9539ee727e0afb5a9dfeece54b0704427b6c7f86ba6791e387e0895c",
+          "output.raw_bbs_score": "b329dfdc949e161510de942ee431cb39e7698ee0d03643a423b2ccdc6990b4d1",
+          "output.raw_bbs_query": "0f55156173241d6ac168939d48a1eec931a98b3a47db14317421774da00a5d45"
+        },
+        "raw_bbs_query": [
+          163,
+          55,
+          235,
+          37,
+          53,
+          26,
+          80,
+          90
+        ],
+        "state_unchanged": true
+      },
+      {
+        "case": "reset_seed_repeat",
+        "seconds": 0.8629646301269531,
+        "shapes": {
+          "cpu_rng_before": [
+            5056
+          ],
+          "cuda_rng_before": [
+            816
+          ],
+          "backbone.inds": [
+            8,
+            1024
+          ],
+          "backbone.point_coords": [
+            8,
+            1024,
+            3
+          ],
+          "backbone.point_features": [
+            8,
+            1024,
+            288
+          ],
+          "text_projector": [
+            8,
+            24,
+            288
+          ],
+          "box_embeddings": [
+            8,
+            128,
+            132
+          ],
+          "cross_encoder.visual": [
+            8,
+            1024,
+            288
+          ],
+          "cross_encoder.text": [
+            8,
+            24,
+            288
+          ],
+          "gumbel.logits": [
+            8,
+            1024,
+            256
+          ],
+          "gumbel.cuda_rng_before_noise": [
+            816
+          ],
+          "gumbel.attention": [
+            8,
+            256,
+            1024
+          ],
+          "last_decoder": [
+            8,
+            256,
+            288
+          ],
+          "output.seed_xyz": [
+            8,
+            1024,
+            3
+          ],
+          "output.seed_features": [
+            8,
+            288,
+            1024
+          ],
+          "output.query_points_xyz": [
+            8,
+            256,
+            3
+          ],
+          "output.last_center": [
+            8,
+            256,
+            3
+          ],
+          "output.last_pred_size": [
+            8,
+            256,
+            3
+          ],
+          "output.last_sem_cls_scores": [
+            8,
+            256,
+            256
+          ],
+          "output.last_proj_queries": [
+            8,
+            256,
+            64
+          ],
+          "output.proj_tokens": [
+            8,
+            24,
+            64
+          ],
+          "cpu_rng_after": [
+            5056
+          ],
+          "cuda_rng_after": [
+            816
+          ],
+          "output.raw_bbs_score": [
+            8,
+            256
+          ],
+          "output.raw_bbs_query": [
+            8
+          ]
+        },
+        "hashes": {
+          "cpu_rng_before": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+          "cuda_rng_before": "9a5c513a89e10448ae10311d95f3a4b7e4dbd5bdefcbf81d9397ef4957036b77",
+          "backbone.inds": "8a62a788c9ad4a6a39e97232bd093dbe40a2a99ad62fec64d0f0a61290032506",
+          "backbone.point_coords": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+          "backbone.point_features": "8a0889af436418b7645fe3cd8a9ab1b5eaeb263e2b7f2c4e5c57212b49918645",
+          "text_projector": "2426f21eb897de820bfbd2733c63a14a7605e07b916071a1eefcc6ec8e939980",
+          "box_embeddings": "01e381800834bd7909676abdcc18079d61e2c185c1c4e49b08597fefec62e910",
+          "cross_encoder.visual": "9816b7e94dfb197f698d6b95d7b2773ba5db56f0187f8b84a4d2d290a120149e",
+          "cross_encoder.text": "7bfedd351902426c967379da19d4cc79e7f3babb26c6e9223509cb103679deec",
+          "gumbel.logits": "319fc8cb05a422d6776a3a4d5a4d0b8c1bbb7ed8907243c0b12f74afdcb118dd",
+          "gumbel.cuda_rng_before_noise": "9a5c513a89e10448ae10311d95f3a4b7e4dbd5bdefcbf81d9397ef4957036b77",
+          "gumbel.attention": "517b2b85a0fed1b16abd39da3da319a0145ad9dfe192659e1190dec0987b5f8d",
+          "last_decoder": "5596f0349aea6c235066e56093dfea001d2d5c5dd800dc335420d11bb5d7e290",
+          "output.seed_xyz": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+          "output.seed_features": "442d244777c15e1ea22b89572fc1a7247098cf8969e2e1da2e4a0bec96b1a317",
+          "output.query_points_xyz": "8064a7a681ee7442ad86ccb2a912357b10e737b4382e051d18734b3adb378fa5",
+          "output.last_center": "3e0e12990b405209feefa15ba7536fbead81040ba79f2c88af30c3c5ed00bae5",
+          "output.last_pred_size": "bdc2a208baf1119f07d485b822fc92c85f8a1a24783cd559118ea269e9287598",
+          "output.last_sem_cls_scores": "1b53a8786293fce287def8a04f54b06a767e8ed277a7a614a39f09fc89443b05",
+          "output.last_proj_queries": "1dd0ffe493739c3689c41c4ec897339000c6a5726c74b552121aa057ff7ef220",
+          "output.proj_tokens": "ea8808ae1c626b021eaf2672baeafc2e0c0744baadb8800f4fe8e3ef40f8c590",
+          "cpu_rng_after": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+          "cuda_rng_after": "152f14fd9539ee727e0afb5a9dfeece54b0704427b6c7f86ba6791e387e0895c",
+          "output.raw_bbs_score": "b329dfdc949e161510de942ee431cb39e7698ee0d03643a423b2ccdc6990b4d1",
+          "output.raw_bbs_query": "0f55156173241d6ac168939d48a1eec931a98b3a47db14317421774da00a5d45"
+        },
+        "raw_bbs_query": [
+          163,
+          55,
+          235,
+          37,
+          53,
+          26,
+          80,
+          90
+        ],
+        "state_unchanged": true,
+        "compared_to_first": {
+          "cpu_rng_before": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cuda_rng_before": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "backbone.inds": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "backbone.point_coords": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "backbone.point_features": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "text_projector": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "box_embeddings": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cross_encoder.visual": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cross_encoder.text": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "gumbel.logits": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "gumbel.cuda_rng_before_noise": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "gumbel.attention": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "last_decoder": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.seed_xyz": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.seed_features": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.query_points_xyz": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.last_center": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.last_pred_size": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.last_sem_cls_scores": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.last_proj_queries": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.proj_tokens": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cpu_rng_after": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cuda_rng_after": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.raw_bbs_score": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.raw_bbs_query": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          }
+        }
+      },
+      {
+        "case": "advance_rng_control",
+        "seconds": 0.7807631492614746,
+        "shapes": {
+          "cpu_rng_before": [
+            5056
+          ],
+          "cuda_rng_before": [
+            816
+          ],
+          "backbone.inds": [
+            8,
+            1024
+          ],
+          "backbone.point_coords": [
+            8,
+            1024,
+            3
+          ],
+          "backbone.point_features": [
+            8,
+            1024,
+            288
+          ],
+          "text_projector": [
+            8,
+            24,
+            288
+          ],
+          "box_embeddings": [
+            8,
+            128,
+            132
+          ],
+          "cross_encoder.visual": [
+            8,
+            1024,
+            288
+          ],
+          "cross_encoder.text": [
+            8,
+            24,
+            288
+          ],
+          "gumbel.logits": [
+            8,
+            1024,
+            256
+          ],
+          "gumbel.cuda_rng_before_noise": [
+            816
+          ],
+          "gumbel.attention": [
+            8,
+            256,
+            1024
+          ],
+          "last_decoder": [
+            8,
+            256,
+            288
+          ],
+          "output.seed_xyz": [
+            8,
+            1024,
+            3
+          ],
+          "output.seed_features": [
+            8,
+            288,
+            1024
+          ],
+          "output.query_points_xyz": [
+            8,
+            256,
+            3
+          ],
+          "output.last_center": [
+            8,
+            256,
+            3
+          ],
+          "output.last_pred_size": [
+            8,
+            256,
+            3
+          ],
+          "output.last_sem_cls_scores": [
+            8,
+            256,
+            256
+          ],
+          "output.last_proj_queries": [
+            8,
+            256,
+            64
+          ],
+          "output.proj_tokens": [
+            8,
+            24,
+            64
+          ],
+          "cpu_rng_after": [
+            5056
+          ],
+          "cuda_rng_after": [
+            816
+          ],
+          "output.raw_bbs_score": [
+            8,
+            256
+          ],
+          "output.raw_bbs_query": [
+            8
+          ]
+        },
+        "hashes": {
+          "cpu_rng_before": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+          "cuda_rng_before": "152f14fd9539ee727e0afb5a9dfeece54b0704427b6c7f86ba6791e387e0895c",
+          "backbone.inds": "8a62a788c9ad4a6a39e97232bd093dbe40a2a99ad62fec64d0f0a61290032506",
+          "backbone.point_coords": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+          "backbone.point_features": "8a0889af436418b7645fe3cd8a9ab1b5eaeb263e2b7f2c4e5c57212b49918645",
+          "text_projector": "2426f21eb897de820bfbd2733c63a14a7605e07b916071a1eefcc6ec8e939980",
+          "box_embeddings": "01e381800834bd7909676abdcc18079d61e2c185c1c4e49b08597fefec62e910",
+          "cross_encoder.visual": "9816b7e94dfb197f698d6b95d7b2773ba5db56f0187f8b84a4d2d290a120149e",
+          "cross_encoder.text": "7bfedd351902426c967379da19d4cc79e7f3babb26c6e9223509cb103679deec",
+          "gumbel.logits": "319fc8cb05a422d6776a3a4d5a4d0b8c1bbb7ed8907243c0b12f74afdcb118dd",
+          "gumbel.cuda_rng_before_noise": "152f14fd9539ee727e0afb5a9dfeece54b0704427b6c7f86ba6791e387e0895c",
+          "gumbel.attention": "89aad141820d808510133897de98b40230e4c0567f14f2083d5cd8ad6012f738",
+          "last_decoder": "288d934fa5ae6057ce572a441c5f8eb77071787aec61bc5eb36392e49c92ddea",
+          "output.seed_xyz": "35b63f1fa1b8d36d5d322b278ce1bd1093ab12a318f89afe5f6825601f365a40",
+          "output.seed_features": "442d244777c15e1ea22b89572fc1a7247098cf8969e2e1da2e4a0bec96b1a317",
+          "output.query_points_xyz": "e7b79267b2060dd794d3f807779ec63747747103f7f0f0bde749e9a2b09b8832",
+          "output.last_center": "81f8d49f90a753cf270785ebab9f18673dfcb4485024ed2034cfd7fe683f8561",
+          "output.last_pred_size": "decca61235030680ee7c692edf3ed5f8e4f795a93f3f26ebb693fd2b8eab4d18",
+          "output.last_sem_cls_scores": "177b4d3e600ddf9580a244afebcf2d2cc54b4d3a05b0d52ef8ba1145ec883e5b",
+          "output.last_proj_queries": "0d77fdc0acf3eb51986d7708bb27cc493dd1a6a074ed572cdc766eb6bfc5d2fd",
+          "output.proj_tokens": "ea8808ae1c626b021eaf2672baeafc2e0c0744baadb8800f4fe8e3ef40f8c590",
+          "cpu_rng_after": "50400c02bd9dfaf4b1c43eec7b1e48a99966bf9c145af5f20e9e5b639b2b40b0",
+          "cuda_rng_after": "a89a43099a818919c93d8ddb967d5da85e2a15be25a29bd8724d7b3c202b70ad",
+          "output.raw_bbs_score": "e297a64445bc47da56084a0a2ff2f4344056fb9eb825b309d17dc69643001088",
+          "output.raw_bbs_query": "d376bda636039dedcc4c0ef200b4f0f3bb813485f30287221ed94d1d6944fbe1"
+        },
+        "raw_bbs_query": [
+          110,
+          185,
+          97,
+          16,
+          113,
+          115,
+          73,
+          89
+        ],
+        "state_unchanged": true,
+        "compared_to_first": {
+          "cpu_rng_before": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cuda_rng_before": {
+            "exact": false,
+            "max_abs": 12.0,
+            "mean_abs": 0.014705882352941176
+          },
+          "backbone.inds": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "backbone.point_coords": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "backbone.point_features": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "text_projector": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "box_embeddings": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cross_encoder.visual": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cross_encoder.text": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "gumbel.logits": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "gumbel.cuda_rng_before_noise": {
+            "exact": false,
+            "max_abs": 12.0,
+            "mean_abs": 0.014705882352941176
+          },
+          "gumbel.attention": {
+            "exact": false,
+            "max_abs": 0.9938785553677008,
+            "mean_abs": 0.0012867717318873722
+          },
+          "last_decoder": {
+            "exact": false,
+            "max_abs": 6.892032146453857,
+            "mean_abs": 0.19868477708212343
+          },
+          "output.seed_xyz": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.seed_features": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "output.query_points_xyz": {
+            "exact": false,
+            "max_abs": 1.8527153134346008,
+            "mean_abs": 0.13481144471100018
+          },
+          "output.last_center": {
+            "exact": false,
+            "max_abs": 1.7474982887506485,
+            "mean_abs": 0.1296851631006272
+          },
+          "output.last_pred_size": {
+            "exact": false,
+            "max_abs": 5.774501323699951,
+            "mean_abs": 0.2889009458522196
+          },
+          "output.last_sem_cls_scores": {
+            "exact": false,
+            "max_abs": 48.248552322387695,
+            "mean_abs": 2.998437663972652
+          },
+          "output.last_proj_queries": {
+            "exact": false,
+            "max_abs": 0.2698301812633872,
+            "mean_abs": 0.005504834224328202
+          },
+          "output.proj_tokens": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cpu_rng_after": {
+            "exact": true,
+            "max_abs": 0.0,
+            "mean_abs": 0.0
+          },
+          "cuda_rng_after": {
+            "exact": false,
+            "max_abs": 12.0,
+            "mean_abs": 0.014705882352941176
+          },
+          "output.raw_bbs_score": {
+            "exact": false,
+            "max_abs": 0.8210944309830666,
+            "mean_abs": 0.01375602609639
+          },
+          "output.raw_bbs_query": {
+            "exact": false,
+            "max_abs": 138.0,
+            "mean_abs": 62.375
+          }
+        }
+      }
+    ],
+    "reference_trace_sha256": "932ed5f7514f48b47d41dfd821adc67018a3cc2f461d17c8c5dd43805cd6a57c",
+    "script_sha256": "151011aaabc15dfb89f75dc52003bbceab17e2ec1cd12780ebecb833e66c308c",
+    "formal_rows": 0,
+    "optimizer_steps": 0,
+    "full_forwards": 3,
+    "scope": "same frozen first batch; no original capacity backward or whole6887 replay; hooks are observational",
+    "repeated_seed_exact": true
+  },
+  "support_receipt.json": {
+    "status": "pass",
+    "records": [
+      {
+        "source": "raw_points",
+        "radius_m": 0.1,
+        "cap": 16,
+        "packet": "00_raw_points.npz",
+        "packet_sha256": "b0d3a075ee2a9e60e57b42dc2bfd3275d152db47ac31882d670f37c661acff8f",
+        "report_sha256": "889cd9b4b7140ecfbdbcadd4746c3fddb3e51e88f8eba81ae099ba5d330aa356",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 16
+      },
+      {
+        "source": "raw_points",
+        "radius_m": 0.2,
+        "cap": 16,
+        "packet": "01_raw_points.npz",
+        "packet_sha256": "a1635b63d21af091b6da51dd6c6637401eb626c5ff80fb2a18658e07066fd2b1",
+        "report_sha256": "53644cdd74386bdc21f24d54af184075ff826b6b61ac08a48b7cf812b46d8d7a",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 16
+      },
+      {
+        "source": "x_conv1",
+        "radius_m": 0.1,
+        "cap": 16,
+        "packet": "02_x_conv1.npz",
+        "packet_sha256": "9cca1381b16be6763588a64dece04931e3a688719543282585a738431e04b064",
+        "report_sha256": "f299add7823920d896a807570e915b43d8493fa67bf2181feb455aa44bee231b",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 16
+      },
+      {
+        "source": "x_conv1",
+        "radius_m": 0.2,
+        "cap": 16,
+        "packet": "03_x_conv1.npz",
+        "packet_sha256": "d60b9148c52802ed019689f0bac694ce2bc0b0698b29e38d87d51911f13c2f61",
+        "report_sha256": "843a31326767d6a6cbfc09d37a5126b6088bd618f7b9890721c433d5386771a7",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 16
+      },
+      {
+        "source": "x_conv2",
+        "radius_m": 0.2,
+        "cap": 16,
+        "packet": "04_x_conv2.npz",
+        "packet_sha256": "fc676803b31b0ebc16a7869d345a1075beda769fe203a2f49aa2be207a2079a3",
+        "report_sha256": "c3c7fbcb085e0232838bdc746fc1e870d37b49ac3bf0f6a26f70bb329b16df59",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 16
+      },
+      {
+        "source": "x_conv2",
+        "radius_m": 0.4,
+        "cap": 32,
+        "packet": "05_x_conv2.npz",
+        "packet_sha256": "2108af9e217678c6a61fe4715a41900ea87eef59082d0842af7a11f3231ae688",
+        "report_sha256": "5e9069fbfcdbd89d5702cab2469bc8140dcfbbf22d8b29f70018c9ffa93f9da4",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 32
+      },
+      {
+        "source": "x_conv3",
+        "radius_m": 0.4,
+        "cap": 16,
+        "packet": "06_x_conv3.npz",
+        "packet_sha256": "632d27b61b915cb0dae5dc44c54df31eb0cecb9c59976f3bac466dbbc6813085",
+        "report_sha256": "90061e362a9a28da2e199c26cae79b6cb9b5b3d3b3ad443bc15d8ac39d22176c",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 16
+      },
+      {
+        "source": "x_conv3",
+        "radius_m": 0.8,
+        "cap": 32,
+        "packet": "07_x_conv3.npz",
+        "packet_sha256": "5e7d328677cd3a5b7331aa4d6b38949d6262174f568a7b2865d3574b0e2fce82",
+        "report_sha256": "7b356cce3ad6fb64d70e2f42f014035998b9bdb1ac2a305ee57354c361fe52dd",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 32
+      },
+      {
+        "source": "x_conv4",
+        "radius_m": 0.8,
+        "cap": 16,
+        "packet": "08_x_conv4.npz",
+        "packet_sha256": "08976405c118d10c8f54ab8708482f367d302ac5d812500929c1d7bb208c9002",
+        "report_sha256": "2fdf34819dadc950bd11d78b660a431a1468151ae41cad566279781e05e6f19d",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 16
+      },
+      {
+        "source": "x_conv4",
+        "radius_m": 1.6,
+        "cap": 32,
+        "packet": "09_x_conv4.npz",
+        "packet_sha256": "6596aaaf5ad54db43b9ac3d5e8c1a1f710568f817071680291984b7a14b7bebf",
+        "report_sha256": "a8b26397c000b419eb6e069b735aafe5888c9c6efa78a24263891d3a73fa5654",
+        "all_query_count": 8192,
+        "all_query_operator_empty": 0,
+        "diagnostic_query_count": 256,
+        "geometry_empty": 0,
+        "max_selected_unique_rows": 32
+      }
+    ],
+    "full_forwards": 3,
+    "optimizer_steps": 0,
+    "formal_rows": 0,
+    "observed_vs_unobserved_seed_repeat_exact": true,
+    "input_sha256": "eeb6eab59f2b54a104d73f85d4bae08144e25e7ce6a23f1b3cfc41382964c91e",
+    "checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+    "seed": 2027,
+    "scope": "one pinned eight-row batch, parent weights; sampled keypoint geometry is not candidate-box coverage or dataset rate"
+  }
 }

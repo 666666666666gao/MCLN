@@ -263,3 +263,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 
 | PV-Ground corrected VSA full fine-tune terminal | Independent audit PASS17:26; bbs6147/5549→6119/5537, net-28/-12; bbf-21/-33 | Fixed trial sealed negative;9508 formal skipped; no Nr/Sr training; see20.189 |
 | Sr3D parent truncated download recovery | Initial397533346 bytes rejected; one valid206 Range; full830MB/SHA now PASS | PID13440 transferring, remote144474112 bytes at17:28; CPU model checks pending; see20.189 |
+
+| PV support capture and cached center geometry | 10 groups: actual VSA empty0/8192 each; final center raw0.1m hypothetical empty107/256 | One scene only; no new model/quality claim; see20.190 |
+| Corrected PV obsolete latest cleanup | Removed3584-step latest331178206 bytes; terminal3723 preserved and rehashed | No other weights deleted; see20.190 |

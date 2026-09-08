@@ -140,3 +140,8 @@ Nr3D固定真实批次CPU绑定检查通过：预测类别索引0—362，位于
 预检定义为一次train-mode前向＋完整原生criterion＋一次反向，0optimizer.step、0新权重文件。严格加载1235状态，保持butd_cls的OR启用方式及Nr实际position_ids，核对783可训练/199冻结张量；记录七个关键模块梯度、全部有限loss、峰值显存、缺失梯度和耗时。参数必须未改变，BN等已序列化buffer在检查后恢复父状态，父文件SHA保持；bool Mask仍沿原生匹配/损失内部float转换。运行时需由同一GPU锁下的持久控制器执行，且排在已存在支持采集之后，不与之竞争；具体launch尚未建立。
 
 本地Python3.13和服务器既有runtime Python3.7.11编译语法通过，源码SHA0b4bc6a214cc2a90671ce12e427801b50ebffc343547a190e6d18461c044c2e3。证据目录refine-logs/pvground_nr_backward_preparation_20260908_v1。该状态严格为prepared_syntax_only，不能称真实前向/反向通过、满数据容量通过或Nr训练成功。环境spec966235b2未改，没有重建包或改环境台账；Scan正式未晋级前不执行此GPU预检。
+
+
+## Sr3D父权重准备启动（17:15，尚未完成）
+
+17:13:44启动隐藏CPU下载/传输任务20372，固定PV-Ground_SR3D.pth，829830168字节，SHAa4a14b0090947177a648703ad6de094246891d89174fffa56fe454f730dbe3dc，revision cf4a8b1eed045f1309e6a691ea948d1d6c54448e。17:14:59仅下载142606336字节，进程存活，尚未完成完整校验或远端清点；预计17:40—17:45再检查。传入前空闲3351695360字节，保留2GiB余量。代码及证据在refine-logs/pvground_sr_checkpoint_inspection_20260908_v1。没有Sr模型实例化、GPU前向/反向、训练或正式评估；完整权重的实际配置和状态以CPU清点为准，strict-load另行验证。

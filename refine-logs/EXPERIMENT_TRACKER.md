@@ -257,3 +257,6 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV-Ground Nr3D native loss inputs | CPU33 valid targets in8 rows: required fields, finite positive boxes and nonempty masks PASS | Native loss casts selected masks to float internally; no criterion/model/gradient/update/formal; see20.186 |
 
 | PV-Ground Nr3D native backward preparation | One-forward/no-update entry compiled on local3.13 and runtime3.7 | Prepared only, not queued/executed; requires successful independent Scan9508 audit; see20.187 |
+
+| PV-Ground corrected Scan fit | 3723 updates/29778 rows complete17:10:27; terminal331MB saved | 6887 terminal evaluation active, no endpoint metrics or formal result yet; see20.188 |
+| PV-Ground Sr3D official parent preparation | Local hidden PID20372 live17:14:59,143MB partial of830MB | Download/transfer/CPU inventory only; not verified complete or trained; see20.188 |

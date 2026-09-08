@@ -18192,3 +18192,16 @@ Nr3D固定真实批次CPU绑定检查通过：预测类别索引0—362，位于
 本项只完成真实标签选择、尺寸/有限值及源接口核对，未执行criterion、模型前向或反向，0优化器更新/正式行/权重加载，耗时1.7276秒；不能标记为完整Nr训练接口通过。证据目录refine-logs/pvground_nr_loss_inputs_20260908_v1，源码audit_pvground_nr_loss_inputs.py；原始批次仍留服务器，未上传Git。
 
 预计训练17:12—17:15、6887终态17:25—17:35的窗口未改；9508正式仍须通过既定筛选后另行执行。Nr/Sr训练尚未启动，Scan先达现行底线、单seed2027和后续覆盖机制的独立对照要求不变。Goal active。
+
+
+### 20.187 准备受正式Scan晋级约束的Nr3D真实反向入口，尚未运行（2026-09-08 17:08 CST）
+
+上一回合17:03:35核实原Scan训练14249及其依赖仍存活，记录3520/3723步，磁盘3701178368字节，属于verified wait；没有终态和新正式指标。本回合完成接续代码准备。
+
+已准备check_pvground_nr_native_backward.py，复用实际Nr父权重、修正VSA源和固定8行真实批次。入口先读取正式Scan controller.exit、9508行独立audit及其receipt SHA，要求现行晋级检查全部通过，才实例化Nr模型。没有启动或排队该入口；当前Scan不受影响。
+
+预检定义为一次train-mode前向＋完整原生criterion＋一次反向，0optimizer.step、0新权重文件。严格加载1235状态，保持butd_cls的OR启用方式及Nr实际position_ids，核对783可训练/199冻结张量；记录七个关键模块梯度、全部有限loss、峰值显存、缺失梯度和耗时。参数必须未改变，BN等已序列化buffer在检查后恢复父状态，父文件SHA保持；bool Mask仍沿原生匹配/损失内部float转换。运行时需由同一GPU锁下的持久控制器执行，且排在已存在支持采集之后，不与之竞争；具体launch尚未建立。
+
+本地Python3.13和服务器既有runtime Python3.7.11编译语法通过，源码SHA0b4bc6a214cc2a90671ce12e427801b50ebffc343547a190e6d18461c044c2e3。证据目录refine-logs/pvground_nr_backward_preparation_20260908_v1。该状态严格为prepared_syntax_only，不能称真实前向/反向通过、满数据容量通过或Nr训练成功。环境spec966235b2未改，没有重建包或改环境台账；Scan正式未晋级前不执行此GPU预检。
+
+当前3723步训练、固定seed2027、6887终态及9508正式的既定先后顺序不变。Goal active，三个数据集最终要求未达成。

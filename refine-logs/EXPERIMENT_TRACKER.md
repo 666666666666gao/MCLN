@@ -255,3 +255,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV-Ground Nr3D real batch bindings | CPU class/token bounds and six text map checks PASS; class IDs0..362 in485, text[8,47] | Eight-row interface check only; no weights/model/GPU/update/formal; see20.185 |
 
 | PV-Ground Nr3D native loss inputs | CPU33 valid targets in8 rows: required fields, finite positive boxes and nonempty masks PASS | Native loss casts selected masks to float internally; no criterion/model/gradient/update/formal; see20.186 |
+
+| PV-Ground Nr3D native backward preparation | One-forward/no-update entry compiled on local3.13 and runtime3.7 | Prepared only, not queued/executed; requires successful independent Scan9508 audit; see20.187 |

@@ -298,3 +298,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV observation C complete initial | bbs6147/5549; same6887 inputs/selectedQuery asB; bbf+1/+1; full exports NOT byte-exact | Independent audit pass; fixed fit started; no formal;20.204 |
 
 | PV observation C comparison / snapshot checks | A/C and B/C initial CPU comparisons passed; raw256 C6872/6696 versus6872/6697 | Terminal comparison30854 audit-gated; actual snapshot check30817 queued02:38; training384/3723;20.205 |
+
+| PV observation C actual checkpoint | step512/4096 fit rows;1071 delta strict CPU restore;36/36 new states changed | PASS saved-state integrity only; original fixed training continues;0formal;20.206 |

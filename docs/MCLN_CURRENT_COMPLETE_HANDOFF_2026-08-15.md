@@ -18300,3 +18300,14 @@ PVG_FINETUNE_DATASET_LOADING 2026-09-08T18:36:52.218668+08:00
 Loading train files, take a breath!
 Begin text decoupling......
 ```
+
+
+### 20.193 ScanRefer batch8容量通过；跨原生控制逐行分析已排队（2026-09-08 18:48 CST）
+
+上一回合已启动empty-pool固定训练及评估接续；本回合核实原controller20870及train20872持续存活，完成全量训练输入和实际batch8容量验证，新增不改变训练的跨控制分析队列，属于progress。无重复训练、无训练参数/规则变更。
+
+18:44:07容量检查通过：完整原生损失13.558786、clip前梯度范数37.601467、峰值allocated16434629120字节（15.31GiB），一次batch8前后向22.88秒，0 optimizer update。随后严格恢复官方父状态并重置seed，进入initial6887评估。18:47:24实时观察为initial1536/6887、累计146.42秒；当前预计initial18:55—18:56完成并自动进入训练。此时尚未有完整initial指标或任何终态结果，容量loss不能当作质量增益。
+
+新增独立CPU跨控制分析scripts/compare_pvground_empty_pool_control.py：将已完成VSA-corrected native与empty-pool各自的initial/terminal逐行对齐，核对父权重、输入契约、正确源码、seed、LR、预算和6887条point SHA/GT/身份字段；报告bbs/bbf修复破坏、IoU三档迁移、按物理场景统计，以及原始Full256 GT oracle。该oracle明确是全部raw候选、不冒充合法过滤后的recall，也不用于部署。终态另外核对两轮实际3723步训练行顺序，并分别报告初始差、终点差和训练变化之差；后者是描述性差分，不声称独立因果效应。输入点哈希一致不等于全部内部浮点逐位一致，场景留出仍是主干见过的训练场景。
+
+18:47:11分析队列screen mcln_pvg_empty_compare_v1/controller21426已启动，依赖现有independent audit20878的initial_audit.json/终态audit.json及精确receipt SHA；18:56首次检查、后续300秒。不占用GPU、0模型forward/更新/正式行，不修改现有own-initial筛选或正式晋级门槛。代码已编译并按真实归档字段检查，实际数值比较须待完整initial审计后产生；当前不能声称该比较已经通过或给出增益。

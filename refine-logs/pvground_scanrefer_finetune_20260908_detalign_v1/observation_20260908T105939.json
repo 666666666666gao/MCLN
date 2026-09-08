@@ -1,0 +1,65 @@
+{
+  "time_cst": "2026-09-08T10:59:39.144581+08:00",
+  "state": {
+    "processes": [
+      "  9515   9514     129 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_detalign_v1/controller.py",
+      "  9516   9515     129 flock -n /root/autodl-tmp/mcln_v99_backbone_gpu0.lock /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_detalign_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_detalign_v1/spec.json",
+      "  9517   9516     129 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_detalign_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260908_detalign_v1/spec.json",
+      "  9522   9521     127 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260908_detalign_v1/controller.py",
+      "  9523   9522     127 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260908_detalign_v1/queue.py",
+      "  9634   9633      27 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_detalign_v1/controller.py",
+      "  9635   9634      27 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260908_detalign_v1/queue.py"
+    ],
+    "disk_free": 5742850048,
+    "gpu": "2433 MiB, 0 %\n"
+  },
+  "files": [
+    "train.py",
+    "plan.md",
+    "spec.json",
+    "controller.py",
+    "run.log",
+    "launch.json",
+    "imports.json"
+  ],
+  "terminal": false,
+  "tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.layer_norm.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.bias', 'lm_head.bias', 'lm_head.decoder.weight', 'lm_head.dense.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "PVG_FINETUNE_DATASET_LOADING 2026-09-08T10:57:52.230823+08:00",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......"
+  ],
+  "cpu_audit": {
+    "files": [
+      "audit.py",
+      "plan.md",
+      "queue.py",
+      "controller.py",
+      "spec.json",
+      "run.log",
+      "launch.json"
+    ],
+    "tail": []
+  },
+  "formal_evaluation": {
+    "files": [
+      "evaluate.py",
+      "audit.py",
+      "plan.md",
+      "formal_input_contract.json",
+      "queue.py",
+      "controller.py",
+      "cpu_probe.py",
+      "spec.json",
+      "cpu_probe.log",
+      "__pycache__",
+      "preparation_receipt.json",
+      "cpu_probe.exit",
+      "run.log",
+      "launch.json"
+    ],
+    "tail": []
+  }
+}

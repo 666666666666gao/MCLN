@@ -1,0 +1,11 @@
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.layer_norm.weight', 'lm_head.decoder.weight', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.bias', 'lm_head.layer_norm.bias']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Traceback (most recent call last):
+  File "/root/autodl-tmp/mcln_pvground_task_terminal_diagnostic_20260917_v1/diagnose.py", line 199, in <module>
+    main()
+  File "/root/autodl-tmp/mcln_pvground_task_terminal_diagnostic_20260917_v1/diagnose.py", line 143, in main
+    snapshot = {key:output[key].detach().cpu().clone() for key in tensor_keys}
+  File "/root/autodl-tmp/mcln_pvground_task_terminal_diagnostic_20260917_v1/diagnose.py", line 143, in <dictcomp>
+    snapshot = {key:output[key].detach().cpu().clone() for key in tensor_keys}
+AttributeError: 'list' object has no attribute 'detach'

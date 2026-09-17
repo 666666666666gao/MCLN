@@ -320,3 +320,7 @@ Prepared only, Python3.13/local and3.7/runtime syntax passed. Actual D formal950
 ## 2026-09-17 D task-read sealed negative
 
 3723 steps and6887 terminal complete; bbs6136/5547 versus own6147/5549 (-11/-2), A+17/+10, B0/+66, C-3/+1. Independent integrity PASS, quality gate FAIL, formal skipped,0 Nr/Sr training. Raw256 oracle6879/6701 is not deployment recall. D terminal preserved; superseded3584 latest removed342296239 bytes after all four original controllers exited0. No extension or output switching. See master §20.213.
+
+## 2026-09-17 D fixed-terminal intervention diagnostic
+
+Completed v2 at15:49:15,28.52s,exit0;4 fixed training fixtures,10 forwards,0 optimizer steps/formal rows/checkpoints. Actual1271-state terminal strict restore and full-state equality after interventions passed. Normal repeat: REC boxes/scores exact,Mask max4.19617e-5. Zero semantic: logits max0.0949173,score0.000630677,boxes exact. Zero geometry: semantic scores exact,center max0.000861943m,size0.005386591m,Mask0.113143921. All4 bbs selections unchanged in all conditions. This is local sensitivity, not accuracy, generalization or decomposition of D/C training contributions; zero_both is not C. v1 output-serialization failure (adaptive_weights list) and exact one-variable retry preserved. No new training or promotion; see master §20.214 and independent same-family provisional audit.

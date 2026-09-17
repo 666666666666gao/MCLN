@@ -18783,3 +18783,15 @@ D完整零更新6887条于2026-09-17T12:36:01.074709+08:00完成，耗时676.23�
 本项是Nr/Sr同结构权重接入准备，不是迁移性能或真实数据前向/反向通过。既有check_pvground_nr_native_backward.py仍绑定旧native结构（783训练张量），不得作为D接口已验证入口；正式接续时需使用D的820张量与实际两任务路径，再执行真实批次检查。对象输入仍为butd_cls实例框＋预测类别，不称无对象先验。Scan正式过现行保护线后才进入Nr/Sr REC训练；Mask仍不作Nr/Sr晋级门，原生损失保留。
 
 证据：scripts/check_pvground_referit_task_cpu.py与refine-logs/pvground_referit_task_cpu_20260917_v1中的执行源码、runtime子进程调用、退出记录、真实receipt和原失败日志。没有新增三数据集正式指标、没有删除权重，总目标未完成。
+
+### 20.212 Nr3D D真实前向/反向入口已准备，尚未执行（2026-09-17）
+
+13:16:02确认原训练controller1696仍存活，定期日志960/3723步，累计2253.70秒，loss/梯度有限，磁盘余1869758464字节；没有依据中间值选择权重或更改实验。预计终态时间范围不变。
+
+新增check_pvground_nr_task_backward.py，保留旧native入口作为历史准备。本入口精确绑定当前D正式目录，须controller正常结束、9508独立审计完整且advance_to_nr3d_sr3d_rec=True才取得原GPU锁并进入Nr模型。绑定D的training spec、source-port与三个reader源码哈希；严格加载Nr1235状态，安装37项D状态，核对1272状态、820训练张量与923616 reader参数。
+
+预定执行固定8行真实增强批次（4Nr表达＋4联合检测），一次train-mode forward、原生完整criterion与backward，0optimizer step、0新权重、0正式行。检查关键模块与新增输出投影有限梯度，记录两任务Query矩阵梯度，冻结参数保持，全部参数未改；训练态BN等buffer在结束前恢复。零输出初始化时task Query首步梯度可能为零，不把它当异常或已学到任务分工。继续原生bool Mask内部float转换，不增加Nr Mask晋级条件。
+
+本地Python3.13及服务器实际runtime Python3.7.11语法编译通过，服务器13:22:32完成；源码SHA7e231f26ce071feab3b0c0b9435c17cc7f357b8c72286d8210cfe32ac6565af6。状态严格是prepared_syntax_only；没有执行入口、启动GPU预检或排入队列，没有实际forward/backward/capacity结果。未来运行须使用现有runtime环境及文件入口，不能把语法检查写成真实训练接口通过。
+
+证据：refine-logs/pvground_nr_task_backward_preparation_20260917_v1。Scan原训练、终态审计和正式接续保持原样；三数据集正式指标未更新，总目标未完成。

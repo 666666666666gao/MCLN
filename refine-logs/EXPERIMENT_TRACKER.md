@@ -312,3 +312,7 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 ## 2026-09-17 Nr/Sr D CPU parent binding
 
 Actual official Nr/Sr parents strictly loaded on CPU, preserved 1235 states and installed 37 D states (1272 total); 820 trainable tensors. Both PASS, zero forward/update/GPU/formal rows. Independent config copies correct demonstrated constructor mutation in this two-model check. Original failures retained. D training remains fixed; no Nr/Sr training launched. See master §20.211 and refine-logs/pvground_referit_task_cpu_20260917_v1.
+
+## 2026-09-17 Nr D backward entry prepared
+
+Prepared only, Python3.13/local and3.7/runtime syntax passed. Actual D formal9508 pass required before shared GPU lock; fixed8-row single forward/backward, zero update. Not launched/queued or claimed capacity. See master §20.212 and pvground_nr_task_backward_preparation_20260917_v1.

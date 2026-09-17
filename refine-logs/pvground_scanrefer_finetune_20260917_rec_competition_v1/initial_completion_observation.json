@@ -1,0 +1,66 @@
+{
+  "time_cst": "2026-09-17T20:39:01.016148+08:00",
+  "initial/receipt.json": {
+    "boxes_sha256": "c5b7bc1da6c71cf3c7631e3f1c95060ccc9490e654cc0a300b60a9f0e63a0a36",
+    "elapsed_seconds": 657.1783301830292,
+    "formal_rows": 0,
+    "metrics": {
+      "bbf": {
+        "mask_hits25": 6187,
+        "mask_hits50": 5836,
+        "mask_iou_sum": 5119.069850585423,
+        "mask_miou": 74.32945913438978,
+        "rec_hits25": 6175,
+        "rec_hits50": 5584
+      },
+      "bbs": {
+        "mask_hits25": 6174,
+        "mask_hits50": 5824,
+        "mask_iou_sum": 5106.323576468974,
+        "mask_miou": 74.1443818276314,
+        "rec_hits25": 6147,
+        "rec_hits50": 5549
+      }
+    },
+    "rows": 6887,
+    "rows_sha256": "c8aaff407aaf71228ae8d76a25b12630b59d516d686e8f8652023e06d2ee83e0",
+    "scores_sha256": "b90bbdc090b6bfa95468244f2961814e889b321727e7cb820513c41b22cad720",
+    "stage": "initial",
+    "status": "pass",
+    "time_cst": "2026-09-17T20:37:12.835258+08:00"
+  },
+  "initial_audit.json": {
+    "integrity_pass": true,
+    "stage": "initial",
+    "formal_rows": 0,
+    "metrics": {
+      "bbs": {
+        "rec_hits25": 6147,
+        "rec_hits50": 5549,
+        "mask_hits25": 6174,
+        "mask_hits50": 5824,
+        "mask_iou_sum": 5106.323576468974,
+        "mask_miou": 74.1443818276314
+      },
+      "bbf": {
+        "rec_hits25": 6175,
+        "rec_hits50": 5584,
+        "mask_hits25": 6187,
+        "mask_hits50": 5836,
+        "mask_iou_sum": 5119.069850585423,
+        "mask_miou": 74.32945913438978
+      }
+    },
+    "checks": {
+      "rows": 6887,
+      "candidate_boxes_checked": 1763072,
+      "selection_checks": 13774,
+      "max_selected_iou_error": 2.54348355110956e-06
+    },
+    "receipt_sha256": "854227213ca91b53f401279664a929ad4c70d9b726fd0254e6307d9e27a627c4",
+    "time_cst": "2026-09-17T20:38:35.913061+08:00"
+  },
+  "last_training_line": "{\"loss\": 14.703519821166992, \"loss_native\": 14.241937637329102, \"loss_rec_competition\": 0.4615820646286011, \"eligible25\": 8, \"active25\": 6, \"eligible50\": 8, \"active50\": 6, \"grad_norm\": 69.50814056396484, \"seconds\": 2.2473597526550293, \"rows\": [26481, 2261, 2031, 5456, 30417, 3941, 12260, 11693], \"loss_bbox\": 1.2983564138412476, \"loss_giou\": 2.017413854598999, \"loss_ce\": 37.60555648803711, \"loss_sem_align\": 105.24497985839844, \"step\": 35, \"total_steps\": 3723, \"cumulative_seconds\": 90.57475805282593}\n",
+  "processes": " 12166  12165       30:30  0.0 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_rec_competition_v1/controller.py\n 12171  12170       30:22  0.0 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260917_rec_competition_v1/controller.py\n 12668  12667       24:37  0.0 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260917_rec_competition_v1/controller.py\n 12755  12754       20:30  102 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_rec_competition_v1/train.py --spec /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_rec_competition_v1/spec.json\n 13286  13285       13:04  0.0 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_nr_rec_competition_preparation_20260917_v1/controller.py\n 13750  13749       03:49  0.0 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_sr_rec_competition_preparation_20260917_v1/controller.py\n",
+  "log_tail": "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 5632, \"total\": 6887, \"seconds\": 534.6505415439606}\nPVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 6144, \"total\": 6887, \"seconds\": 586.8315234184265}\nPVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 6656, \"total\": 6887, \"seconds\": 635.7635283470154}\nPVG_EVAL_COMPLETE {\"status\": \"pass\", \"stage\": \"initial\", \"rows\": 6887, \"metrics\": {\"bbs\": {\"rec_hits25\": 6147, \"rec_hits50\": 5549, \"mask_hits25\": 6174, \"mask_hits50\": 5824, \"mask_iou_sum\": 5106.323576468974, \"mask_miou\": 74.1443818276314}, \"bbf\": {\"rec_hits25\": 6175, \"rec_hits50\": 5584, \"mask_hits25\": 6187, \"mask_hits50\": 5836, \"mask_iou_sum\": 5119.069850585423, \"mask_miou\": 74.32945913438978}}, \"elapsed_seconds\": 657.1783301830292, \"time_cst\": \"2026-09-17T20:37:12.835258+08:00\", \"formal_rows\": 0, \"rows_sha256\": \"c8aaff407aaf71228ae8d76a25b12630b59d516d686e8f8652023e06d2ee83e0\", \"boxes_sha256\": \"c5b7bc1da6c71cf3c7631e3f1c95060ccc9490e654cc0a300b60a9f0e63a0a36\", \"scores_sha256\": \"b90bbdc090b6bfa95468244f2961814e889b321727e7cb820513c41b22cad720\"}\nPVG_TRAIN_PROGRESS {\"loss\": 13.904463768005371, \"loss_native\": 13.411377906799316, \"loss_rec_competition\": 0.4930855929851532, \"eligible25\": 8, \"active25\": 7, \"eligible50\": 7, \"active50\": 6, \"grad_norm\": 121.2101821899414, \"seconds\": 3.4645326137542725, \"rows\": [14307, 26871, 13547, 1622, 9672, 18692, 29949, 23417], \"loss_bbox\": 1.8883379697799683, \"loss_giou\": 1.9945979118347168, \"loss_ce\": 26.671998977661133, \"loss_sem_align\": 97.23571014404297, \"step\": 1, \"total_steps\": 3723, \"cumulative_seconds\": 5.5843329429626465}\n"
+}

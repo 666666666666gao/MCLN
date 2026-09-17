@@ -399,3 +399,8 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 - F actual pipeline launched20:18:31;20:25 original controllers12166/12171/12668 live, text parsing, no new accuracy.
 - Actual Nr batch has4 referring and4 scannet detection rows; language_dataset is all nr3d. Auxiliary REC uses sample_dataset, detection contributes zero; full-batch denominator retained. CPU behavior passed for Nr/Sr, not actual model performance.
 - Nr real batch probe controller13286 waits Scan F formal REC-only gate. No Nr optimizer or Sr job launched. See master20.229 and pvground_nr_rec_competition_preparation_20260917_v1.
+
+## 2026-09-17 F initial audit and Sr actual input preparation
+- F full6887 initial bbs6147/5549; rows/boxes/scores SHA exactly match D initial. Independent audit passed20:38:35. Actual optimizer35/3723 at20:39; no terminal/formal result.
+- Sr real CPU batch completed:4sr3d+4scannet, exact reread and source checks,135837820bytes SHA d503b7fb3282ac682f642a2a7f0cd31133b709d823a78a0184179fd5b43b04b0. No CUDA/model/optimizer.
+- Sr single-batch F probe controller13750 waits actual Scan formal REC-only pass, as Nr13286 does; shared GPU lock serializes. Full Nr/Sr training remains outstanding. See master20.230.

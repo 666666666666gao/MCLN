@@ -4,9 +4,7 @@ root=Path(__file__).parent
 spec=json.loads((root/'spec.json').read_bytes())
 for name,digest in spec['files'].items():assert hashlib.sha256((root/name).read_bytes()).hexdigest()==digest,name
 audit=Path(spec['candidate_audit']);candidate=Path(spec['candidate_root'])
-assert (root/'initial_D_E.exit').read_text().strip()=='0'
-assert hashlib.sha256((root/'initial_D_E.json').read_bytes()).hexdigest()==spec['completed_initial_sha256']
-for stage,filename in [('terminal','audit.json')]:
+for stage,filename in [('initial','initial_audit.json'),('terminal','audit.json')]:
     if stage=='terminal':time.sleep(max(0,datetime.datetime.fromisoformat(spec['terminal_first_check_cst']).timestamp()-time.time()))
     while not (audit/filename).is_file():
         if (audit/'controller.exit').is_file():raise RuntimeError('Original audit terminated without '+filename)

@@ -19134,3 +19134,14 @@ E入口在任何torch导入/模型实例化之前要求真实Scan正式controlle
 验证使用10组显式模拟边界（5组REC各配低/高Mask）：5572/4797即使Mask全0也允许，任一REC少1命中均拒绝，REC提高时允许。评估端与独立审计端各自代码得出相同判断；旧门确实拒绝低Mask样例。模拟测试不是基准成绩。其余非main/非promotion evaluator函数AST完全一致；实际替换范围仅性能判定及protocol元数据，未改变Mask计算。部署后新队列已验证单实例等待并完成文件哈希校验。
 
 可重建准备脚本prepare_pvground_fixed_memory_formal.py也接入同一REC-only转换；新增pvground_rec_only_policy.py与apply_pvground_rec_only_policy.py。旧历史evaluate/audit脚本不改。收据、模拟测试和旧规则快照均在本E formal归档。当前未获得E终态或新正式数字，受保护ScanRefer/Nr3D/Sr3D成绩未刷新；总目标未完成。后续按本节的新REC优先范围接续。
+
+
+### 20.224 D/E终态比较按实测ETA接续，保留已完成initial（2026-09-17 18:57 CST）
+
+§20.221已将formal提前，但D/E终态报告仍20:41首查。当前E训练预计约19:10结束、终态评估/审计约19:20—19:30，等待到20:41会推迟结果解释。18:57:07验证原comparison8866/8867确为单子进程do_select等待、无终态文件，initial_D_E.exit=0且6887行身份对应完成；保留原queue/controller/spec/launch/run/controller.pid于before_terminal_reschedule_20260917。
+
+只替换这个CPU等待器，新controller10801/queue10802。终态首查19:15、之后300秒；queue从terminal阶段继续，不重跑已完成initial，启动时校验其SHA。controller的run.log由独占新建改为追加，实测新队列进入等待后日志原字节未变。原initial SHA bb0e6e240a340e4d18fc7d73614fab196f095a47d1d794d1d59bf38593012b92；compare.py及D_E.json哈希、实际比较算法与自身起点重计逻辑保持。该调整不执行模型、不写checkpoint、不改变已完成initial结果。
+
+原训练8666、endpoint8673及训练spec SHA在操作前后相同；formal10344继续§20.223的REC-only规则，不受本队列调整影响。当前尚无Eterminal或新正式Acc，不能把运行状态视为提升。最近完整训练观察18:54:53为2944/3723、磁盘1,422,454,784字节，18:57额外核验原训练仍在。固定终态约19:20—19:30估计不变。
+
+执行证据在refine-logs/pvground_fixed_memory_comparison_20260917_v1/reschedule_receipt.json、reschedule_terminal.py及before_terminal_reschedule_20260917；本地入口scripts/reschedule_pvground_fixed_memory_comparison.py。新comparison spec SHA 3bfb8d7163f737484a5a95797287806b90463fcc65d5c0a91dfdf49e3b00483a。本轮0模型forward/optimizer/正式行/删除，主要变更是消除保守等待对终态报告的额外延迟；三数据集目标仍未完成。

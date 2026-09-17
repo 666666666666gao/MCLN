@@ -371,3 +371,8 @@ Preserved D entry; new E entry binds E formal gate and frozen204visual states,71
 ## 2026-09-17 User scope update: ScanRefer REC-only promotion
 
 User waived ScanRefer Mask gate. E formal evaluator and independent auditor now require only same-bbs9508 REC5572/4797;Mask remains diagnostic and native training loss unchanged.10 synthetic boundary cases passed both implementations;old policy retained. Formal waiter10344/10347,firstcheck19:15/300s;train8666/endpoint8673 unchanged.0formal rows/newtraining/deletion. No historical result reclassified. See§20.223 and rec_only_policy_receipt/tests.
+
+
+## 2026-09-17 E terminal comparison waiter aligned with measured ETA
+
+18:57:07 original sleeping8866/8867 replaced by10801/10802;19:15 firstcheck then300s. Completed initial retained and hash-bound;resume only terminal,append log,compare.py/D_E.json unchanged. Train8666/endpoint8673 and REC-only formal rules unchanged.0model/optimizer/formal/deletion;no Eterminal yet. See§20.224 and comparison reschedule_receipt.json.

@@ -1,0 +1,1 @@
+CPU-only A/D, B/D and C/D comparisons after the original independent audit. Wait300s; terminal check near measured fit ETA. Bind actual exports, identical inputs and fixed fit order. Report initial and terminal differences; do not assume byte equality. Raw256 oracle is GT-only analysis. No model execution, gate edits or checkpoint writes.

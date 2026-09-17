@@ -18695,3 +18695,41 @@ bbf诊断：C起点6175/5584，终点6157/5565，自身-18/-19；相对A终点+4
 固定权重状态替换/打乱只可作为后续机制诊断，不能代替正常数据性能，不据结果扫描部署规则。当前不启动多seed、Key-only/Value-only多臂、超参数搜索或额外正式评估。先完成C封存及同步，再推进一个可归因的后续机制。ScanRefer现行V99保护线与Mask底线、达到后尽快转Nr/Sr REC的总目标保持不变，当前目标未完成。
 
 证据：refine-logs/pvground_scanrefer_finetune_20260909_observation_v1、pvground_scanrefer_endpoint_audit_20260909_observation_v1、pvground_scanrefer_formal_20260909_observation_v1，以及pvground_observation_comparison_20260909_v1中的原receipt、退出码和配对明细。
+
+### 20.208 D任务条件读取已落地并启动固定接续（2026-09-17）
+
+实际观察时间：2026-09-17T12:25:46.506323+08:00。本节接续20.207的C封存结论，覆盖此前“尚未实施D”的状态。C仍为自身起点-8/-3、相对A+20/+9、相对B+3/+65，正式未通过；不追认C成功。D尚无终态质量，不将工程检查当作精度贡献。
+
+#### 本轮唯一机制与固定协议
+
+在C实际六源内容/观测状态Key、Value和输出映射上，新增两组零初始化288×288 Query变换。语义读取进入最后层soft-token与对比评分；几何读取进入center、size和Query Mask。原生文本/对象/视觉交互、Text Mask、alpha、候选编号、Hungarian匹配和全部原损失保留。两组Query沿查询轴合并，一次构建共享Key/Value；尾部参数共享，三处dropout共享同一个掩码。不是两个独立主干，也不声称消除共享梯度冲突。
+
+相比C新增165888参数，读取模块总923616参数，新增37项state，父1234项扩成1271项。额外查询attention及尾部计算实际增加，不能称零计算开销。模型文件SHA39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d；独立source-port SHA0375886f9df2b3ac18a63ce7571d672ceb433613b6defdfcd9f8d244a20bf855。C及其他既有运行源码保持原样。
+
+从同一官方ScanRefer epoch81初始化，不加载C终点续训。固定seed2027、mesh/检测框增强/VSA修正、29778 fit/6887 holdout、batch8、LR及backbone LR1e-5、3723步、bbs主输出。先自身完整零更新再固定终点，bbf仅诊断，无额外loss、采样、状态维度、多seed、epoch择优或追加轮次。
+
+#### 实际工程验收
+
+12:08 CST，CUDA单元和4条真实训练表达的完整forward、两步临时更新通过。第二步语义/几何task矩阵梯度范数约0.000189899/0.000615244，均有实际更新；820个训练张量、28883227训练参数，冻结文本参数保持。严格CPU序列化恢复全部1271项，无checkpoint落盘。
+
+非零输出投影下，任务变换分别影响对应读取；共享dropout尾部与C训练/评估态一致且结束RNG一致。真实两批fixture九项REC张量一致；Mask最大差为约1e-5至1e-4，不能外推全量逐位一致。两轴代码审查无阻断，详见docs/PVG_TASK_OBSERVATION_REVIEW_2026-09-17.md。
+
+batch8真实容量检查于2026-09-17T12:24:43.748791+08:00通过：峰值19791337984字节（18.432GiB），loss=13.41138268，梯度有限，0 optimizer step。之后严格恢复完整初始state、清梯度与RNG，才进入6887零更新；容量forward不计入3723步。
+
+12:17 CST，正式接续CPU准备通过：合成改变37项reader状态后严格恢复、缺失项拒绝，旧6887行/1763072框独立重算一致。该fixture不是训练终点，实际终态CPU恢复仍需在终态通过后执行。父臂的task_read_by_arm=False指reader残差禁用，layer.task_read仍保持tuple路径并走共享eval尾部，不能把该字段误读为关闭运行分支。
+
+#### 当前进度与自动接续
+
+原训练控制器1696（12:16:45）、独立审计1703、正式接续1890、CPU配对1919均为本轮原始句柄。观察时训练最近记录：`PVG_EVAL_PROGRESS {"stage": "initial", "rows": 512, "total": 6887, "seconds": 52.73812246322632}`。当前没有D终态结果、新正式9508成绩或Nr/Sr迁移。
+
+独立审计会检查自身初始和终态。A/D、B/D、C/D在各阶段审计通过后用保存输出进行CPU比较，保留起点差、自身变化、两阈值修复/破坏、训练行序、原始256框上界与导出数值差，不把GT oracle称为部署性能。该比较不改变晋级门。
+
+正式接续首查15:17 CST，终态比较首查15:18 CST，随后每300秒；这些是既定检查时间，不是承诺训练完成时间。仅在固定终态自身bbs两项不退化及独立完整性审计通过后，才执行实际终点CPU恢复与两臂各9508正式评估。ScanRefer保护线仍为5572/4797与Mask58.70/50.70/44.72，满足后尽快Nr/Sr REC，不恢复其Mask门。训练ETA待实际步耗时确认，不因中途loss改配置。
+
+#### 磁盘
+
+经终态/审计/正式跳过、SHA、原进程结束、无打开句柄、逐行预测和缓存哈希核验，删除已封存empty-pool失败终点e5cc9aa891e5386b74fe2c9d6390f2ce3935cf18e986c0144b1808b06f42e773，释放331181662字节。其预测、receipt和负结果保留。官方父、V99及A/B/C终态均保留；D不引用被删权重。
+
+训练前空闲2274930688字节，预估新增artifact999102908字节，另留1GiB；本次观察空闲2268868608字节。旧C latest另于20.207删除340304498字节，两次合计释放671486160字节。
+
+证据目录：refine-logs/pvground_task_observation_interface_20260917_v1、pvground_scanrefer_finetune_20260917_task_observation_v1、pvground_scanrefer_endpoint_audit_20260917_task_observation_v1、pvground_scanrefer_formal_20260917_task_observation_v1、pvground_task_observation_comparison_20260917_v1。全目标尚未完成。

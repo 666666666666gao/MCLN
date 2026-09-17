@@ -302,3 +302,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV observation C actual checkpoint | step512/4096 fit rows;1071 delta strict CPU restore;36/36 new states changed | PASS saved-state integrity only; original fixed training continues;0formal;20.206 |
 
 | PV observation C terminal | bbs 6139/5546; own -8/-3; vs A +20/+9; vs B +3/+65; Mask mIoU73.93272047 | Completed; integrity pass, primary gate fail, formal skipped; 20.207; D not launched |
+
+| PV task-specific observed-memory D | +165888 vs C; 923616 reader params;37 new states; CUDA/full-model2step and CPU formal preparation pass; batch8 18.432GiB | Original train1696/audit1703/formal1890/comparison1919 active; fixed3723;0formal;20.208; no quality conclusion |

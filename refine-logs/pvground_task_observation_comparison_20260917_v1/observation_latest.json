@@ -1,6 +1,7 @@
 {
-  "time_cst": "2026-09-17T12:40:40.044857+08:00",
+  "time_cst": "2026-09-17T15:20:43.460837+08:00",
   "results": {
+    "controller.exit": 0,
     "initial_A_D.json": {
       "status": "complete",
       "stage": "initial",
@@ -387,10 +388,397 @@
         "scores.npy": true
       }
     },
-    "initial_C_D.exit": 0
+    "initial_C_D.exit": 0,
+    "terminal_A_D.json": {
+      "status": "complete",
+      "stage": "terminal",
+      "rows": 6887,
+      "metrics": [
+        {
+          "bbf": {
+            "mask_hits25": 6182,
+            "mask_hits50": 5812,
+            "mask_iou_sum": 5110.842496031197,
+            "mask_miou": 74.20999703835048,
+            "rec_hits25": 6153,
+            "rec_hits50": 5550
+          },
+          "bbs": {
+            "mask_hits25": 6166,
+            "mask_hits50": 5800,
+            "mask_iou_sum": 5098.494745834265,
+            "mask_miou": 74.03070634288173,
+            "rec_hits25": 6119,
+            "rec_hits50": 5537
+          }
+        },
+        {
+          "bbf": {
+            "mask_hits25": 6195,
+            "mask_hits50": 5812,
+            "mask_iou_sum": 5109.3320291321725,
+            "mask_miou": 74.18806489229233,
+            "rec_hits25": 6164,
+            "rec_hits50": 5574
+          },
+          "bbs": {
+            "mask_hits25": 6183,
+            "mask_hits50": 5802,
+            "mask_iou_sum": 5101.960574820638,
+            "mask_miou": 74.08103056222794,
+            "rec_hits25": 6136,
+            "rec_hits50": 5547
+          }
+        }
+      ],
+      "transitions": {
+        "bbs": {
+          "0.25": {
+            "native_hits": 6119,
+            "candidate_hits": 6136,
+            "fixes": 176,
+            "breaks": 159,
+            "net": 17
+          },
+          "0.5": {
+            "native_hits": 5537,
+            "candidate_hits": 5547,
+            "fixes": 306,
+            "breaks": 296,
+            "net": 10
+          },
+          "iou_band_counts": [
+            [
+              592,
+              82,
+              94
+            ],
+            [
+              75,
+              295,
+              212
+            ],
+            [
+              84,
+              212,
+              5241
+            ]
+          ]
+        },
+        "bbf": {
+          "0.25": {
+            "native_hits": 6153,
+            "candidate_hits": 6164,
+            "fixes": 162,
+            "breaks": 151,
+            "net": 11
+          },
+          "0.5": {
+            "native_hits": 5550,
+            "candidate_hits": 5574,
+            "fixes": 320,
+            "breaks": 296,
+            "net": 24
+          },
+          "iou_band_counts": [
+            [
+              572,
+              73,
+              89
+            ],
+            [
+              70,
+              302,
+              231
+            ],
+            [
+              81,
+              215,
+              5254
+            ]
+          ]
+        }
+      },
+      "full256_oracle": {
+        "native": {
+          "hits25": 6865,
+          "hits50": 6684,
+          "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+        },
+        "candidate": {
+          "hits25": 6879,
+          "hits50": 6701,
+          "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+        }
+      },
+      "export_byte_exact": {
+        "rows.jsonl": false,
+        "boxes.npy": false,
+        "scores.npy": false
+      }
+    },
+    "terminal_A_D.exit": 0,
+    "terminal_B_D.json": {
+      "status": "complete",
+      "stage": "terminal",
+      "rows": 6887,
+      "metrics": [
+        {
+          "bbf": {
+            "mask_hits25": 6180,
+            "mask_hits50": 5812,
+            "mask_iou_sum": 5102.2214778596535,
+            "mask_miou": 74.08481890314583,
+            "rec_hits25": 6158,
+            "rec_hits50": 5512
+          },
+          "bbs": {
+            "mask_hits25": 6168,
+            "mask_hits50": 5801,
+            "mask_iou_sum": 5094.357863492332,
+            "mask_miou": 73.97063835476017,
+            "rec_hits25": 6136,
+            "rec_hits50": 5481
+          }
+        },
+        {
+          "bbf": {
+            "mask_hits25": 6195,
+            "mask_hits50": 5812,
+            "mask_iou_sum": 5109.3320291321725,
+            "mask_miou": 74.18806489229233,
+            "rec_hits25": 6164,
+            "rec_hits50": 5574
+          },
+          "bbs": {
+            "mask_hits25": 6183,
+            "mask_hits50": 5802,
+            "mask_iou_sum": 5101.960574820638,
+            "mask_miou": 74.08103056222794,
+            "rec_hits25": 6136,
+            "rec_hits50": 5547
+          }
+        }
+      ],
+      "transitions": {
+        "bbs": {
+          "0.25": {
+            "native_hits": 6136,
+            "candidate_hits": 6136,
+            "fixes": 166,
+            "breaks": 166,
+            "net": 0
+          },
+          "0.5": {
+            "native_hits": 5481,
+            "candidate_hits": 5547,
+            "fixes": 359,
+            "breaks": 293,
+            "net": 66
+          },
+          "iou_band_counts": [
+            [
+              585,
+              61,
+              105
+            ],
+            [
+              76,
+              325,
+              254
+            ],
+            [
+              90,
+              203,
+              5188
+            ]
+          ]
+        },
+        "bbf": {
+          "0.25": {
+            "native_hits": 6158,
+            "candidate_hits": 6164,
+            "fixes": 158,
+            "breaks": 152,
+            "net": 6
+          },
+          "0.5": {
+            "native_hits": 5512,
+            "candidate_hits": 5574,
+            "fixes": 349,
+            "breaks": 287,
+            "net": 62
+          },
+          "iou_band_counts": [
+            [
+              571,
+              55,
+              103
+            ],
+            [
+              70,
+              330,
+              246
+            ],
+            [
+              82,
+              205,
+              5225
+            ]
+          ]
+        }
+      },
+      "full256_oracle": {
+        "native": {
+          "hits25": 6865,
+          "hits50": 6692,
+          "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+        },
+        "candidate": {
+          "hits25": 6879,
+          "hits50": 6701,
+          "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+        }
+      },
+      "export_byte_exact": {
+        "rows.jsonl": false,
+        "boxes.npy": false,
+        "scores.npy": false
+      }
+    },
+    "terminal_B_D.exit": 0,
+    "terminal_C_D.json": {
+      "status": "complete",
+      "stage": "terminal",
+      "rows": 6887,
+      "metrics": [
+        {
+          "bbf": {
+            "mask_hits25": 6182,
+            "mask_hits50": 5819,
+            "mask_iou_sum": 5099.96228167275,
+            "mask_miou": 74.05201512520327,
+            "rec_hits25": 6157,
+            "rec_hits50": 5565
+          },
+          "bbs": {
+            "mask_hits25": 6166,
+            "mask_hits50": 5809,
+            "mask_iou_sum": 5091.746458482463,
+            "mask_miou": 73.9327204658409,
+            "rec_hits25": 6139,
+            "rec_hits50": 5546
+          }
+        },
+        {
+          "bbf": {
+            "mask_hits25": 6195,
+            "mask_hits50": 5812,
+            "mask_iou_sum": 5109.3320291321725,
+            "mask_miou": 74.18806489229233,
+            "rec_hits25": 6164,
+            "rec_hits50": 5574
+          },
+          "bbs": {
+            "mask_hits25": 6183,
+            "mask_hits50": 5802,
+            "mask_iou_sum": 5101.960574820638,
+            "mask_miou": 74.08103056222794,
+            "rec_hits25": 6136,
+            "rec_hits50": 5547
+          }
+        }
+      ],
+      "transitions": {
+        "bbs": {
+          "0.25": {
+            "native_hits": 6139,
+            "candidate_hits": 6136,
+            "fixes": 171,
+            "breaks": 174,
+            "net": -3
+          },
+          "0.5": {
+            "native_hits": 5546,
+            "candidate_hits": 5547,
+            "fixes": 320,
+            "breaks": 319,
+            "net": 1
+          },
+          "iou_band_counts": [
+            [
+              577,
+              60,
+              111
+            ],
+            [
+              88,
+              296,
+              209
+            ],
+            [
+              86,
+              233,
+              5227
+            ]
+          ]
+        },
+        "bbf": {
+          "0.25": {
+            "native_hits": 6157,
+            "candidate_hits": 6164,
+            "fixes": 168,
+            "breaks": 161,
+            "net": 7
+          },
+          "0.5": {
+            "native_hits": 5565,
+            "candidate_hits": 5574,
+            "fixes": 329,
+            "breaks": 320,
+            "net": 9
+          },
+          "iou_band_counts": [
+            [
+              562,
+              59,
+              109
+            ],
+            [
+              74,
+              298,
+              220
+            ],
+            [
+              87,
+              233,
+              5245
+            ]
+          ]
+        }
+      },
+      "full256_oracle": {
+        "native": {
+          "hits25": 6869,
+          "hits50": 6695,
+          "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+        },
+        "candidate": {
+          "hits25": 6879,
+          "hits50": 6701,
+          "scope": "all raw 256 boxes; GT-only upper bound, not legal-filter recall"
+        }
+      },
+      "export_byte_exact": {
+        "rows.jsonl": false,
+        "boxes.npy": false,
+        "scores.npy": false
+      }
+    },
+    "terminal_C_D.exit": 0
   },
-  "actual_process": "1919 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_task_observation_comparison_20260917_v1/controller.py",
+  "actual_process": "",
   "last_log_line": [
-    "PVG_OBSERVATION_COMPARISON_COMPLETE initial_C_D"
+    "PVG_OBSERVATION_COMPARISON_COMPLETE terminal_C_D"
   ]
 }

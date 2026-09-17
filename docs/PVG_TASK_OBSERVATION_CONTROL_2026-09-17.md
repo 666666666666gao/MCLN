@@ -27,3 +27,7 @@
 ## 来源与命名
 
 这是C内部的任务读取对照，不声称首创任务attention。直接复用本仓库C及PV-Ground的预训练模块，保留原许可证。主张仅在正常数据、同预算配对增量后讨论。C工程修复、V99成绩以及D尚未产生的结果不得混记。
+
+## Fixed endpoint outcome, 2026-09-17 15:20 CST
+
+Completed exactly3723 updates. Main bbs6136/5547, own start-11/-2; matched C-3/+1. Integrity audit passed; frozen quality gate failed, formal skipped. D is sealed as no independent dual-threshold gain over C; no task-disentanglement or new-scene claim. Full results and original comparisons are in master §20.213.

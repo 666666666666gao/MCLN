@@ -316,3 +316,7 @@ Actual official Nr/Sr parents strictly loaded on CPU, preserved 1235 states and 
 ## 2026-09-17 Nr D backward entry prepared
 
 Prepared only, Python3.13/local and3.7/runtime syntax passed. Actual D formal9508 pass required before shared GPU lock; fixed8-row single forward/backward, zero update. Not launched/queued or claimed capacity. See master §20.212 and pvground_nr_task_backward_preparation_20260917_v1.
+
+## 2026-09-17 D task-read sealed negative
+
+3723 steps and6887 terminal complete; bbs6136/5547 versus own6147/5549 (-11/-2), A+17/+10, B0/+66, C-3/+1. Independent integrity PASS, quality gate FAIL, formal skipped,0 Nr/Sr training. Raw256 oracle6879/6701 is not deployment recall. D terminal preserved; superseded3584 latest removed342296239 bytes after all four original controllers exited0. No extension or output switching. See master §20.213.

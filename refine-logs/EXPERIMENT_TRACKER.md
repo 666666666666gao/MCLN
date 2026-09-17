@@ -300,3 +300,5 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV observation C comparison / snapshot checks | A/C and B/C initial CPU comparisons passed; raw256 C6872/6696 versus6872/6697 | Terminal comparison30854 audit-gated; actual snapshot check30817 queued02:38; training384/3723;20.205 |
 
 | PV observation C actual checkpoint | step512/4096 fit rows;1071 delta strict CPU restore;36/36 new states changed | PASS saved-state integrity only; original fixed training continues;0formal;20.206 |
+
+| PV observation C terminal | bbs 6139/5546; own -8/-3; vs A +20/+9; vs B +3/+65; Mask mIoU73.93272047 | Completed; integrity pass, primary gate fail, formal skipped; 20.207; D not launched |

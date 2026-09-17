@@ -1,0 +1,134 @@
+{
+  "integrity_pass": true,
+  "fixed_visual_memory_verified": true,
+  "time_cst": "2026-09-17T19:21:11.151409+08:00",
+  "formal_rows": 0,
+  "fit_rows": 29778,
+  "training_steps": 3723,
+  "holdout_rows": 6887,
+  "primary_mode": "bbs",
+  "initial": {
+    "bbs": {
+      "rec_hits25": 6147,
+      "rec_hits50": 5549,
+      "mask_hits25": 6174,
+      "mask_hits50": 5824,
+      "mask_iou_sum": 5106.323576468974,
+      "mask_miou": 74.1443818276314
+    },
+    "bbf": {
+      "rec_hits25": 6175,
+      "rec_hits50": 5584,
+      "mask_hits25": 6187,
+      "mask_hits50": 5836,
+      "mask_iou_sum": 5119.069850585423,
+      "mask_miou": 74.32945913438978
+    }
+  },
+  "terminal": {
+    "bbs": {
+      "rec_hits25": 6149,
+      "rec_hits50": 5524,
+      "mask_hits25": 6170,
+      "mask_hits50": 5801,
+      "mask_iou_sum": 5091.462159527233,
+      "mask_miou": 73.92859241363776
+    },
+    "bbf": {
+      "rec_hits25": 6161,
+      "rec_hits50": 5550,
+      "mask_hits25": 6179,
+      "mask_hits50": 5808,
+      "mask_iou_sum": 5097.013153809821,
+      "mask_miou": 74.00919346318892
+    }
+  },
+  "transitions": {
+    "bbs": {
+      "0.25": {
+        "fixes": 158,
+        "breaks": 156,
+        "net": 2
+      },
+      "0.5": {
+        "fixes": 306,
+        "breaks": 331,
+        "net": -25
+      }
+    },
+    "bbf": {
+      "0.25": {
+        "fixes": 141,
+        "breaks": 155,
+        "net": -14
+      },
+      "0.5": {
+        "fixes": 291,
+        "breaks": 325,
+        "net": -34
+      }
+    }
+  },
+  "transition_bands": [
+    "[0,0.25]",
+    "(0.25,0.50]",
+    "(0.50,1]"
+  ],
+  "transition_counts": {
+    "bbs": [
+      [
+        582,
+        71,
+        87
+      ],
+      [
+        57,
+        322,
+        219
+      ],
+      [
+        99,
+        232,
+        5218
+      ]
+    ],
+    "bbf": [
+      [
+        571,
+        62,
+        79
+      ],
+      [
+        53,
+        326,
+        212
+      ],
+      [
+        102,
+        223,
+        5259
+      ]
+    ]
+  },
+  "stages": {
+    "initial": {
+      "rows": 6887,
+      "candidate_boxes_checked": 1763072,
+      "selection_checks": 13774,
+      "max_selected_iou_error": 2.54348355110956e-06
+    },
+    "terminal": {
+      "rows": 6887,
+      "candidate_boxes_checked": 1763072,
+      "selection_checks": 13774,
+      "max_selected_iou_error": 2.558198693103364e-06
+    }
+  },
+  "primary_rec_nonregression": false,
+  "candidate_for_fixed_formal_evaluation": false,
+  "mask_audit_scope": "recount exported per-row mask IoU; original binary masks are not reloaded",
+  "new_scene_generalization_claim": false,
+  "nr3d_sr3d_promotion": false,
+  "receipt_sha256": "52839fa405f3f580efd447c5f2d962c50d86467fc5deb6a7ba6b76d4c3a647c0",
+  "auditor_sha256": "a7c8f915a6ce13ca16707cd47214a59977d1349de71f2844b8bff9ae2a7ca98f"
+}

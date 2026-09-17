@@ -19145,3 +19145,27 @@ E入口在任何torch导入/模型实例化之前要求真实Scan正式controlle
 原训练8666、endpoint8673及训练spec SHA在操作前后相同；formal10344继续§20.223的REC-only规则，不受本队列调整影响。当前尚无Eterminal或新正式Acc，不能把运行状态视为提升。最近完整训练观察18:54:53为2944/3723、磁盘1,422,454,784字节，18:57额外核验原训练仍在。固定终态约19:20—19:30估计不变。
 
 执行证据在refine-logs/pvground_fixed_memory_comparison_20260917_v1/reschedule_receipt.json、reschedule_terminal.py及before_terminal_reschedule_20260917；本地入口scripts/reschedule_pvground_fixed_memory_comparison.py。新comparison spec SHA 3bfb8d7163f737484a5a95797287806b90463fcc65d5c0a91dfdf49e3b00483a。本轮0模型forward/optimizer/正式行/删除，主要变更是消除保守等待对终态报告的额外延迟；三数据集目标仍未完成。
+
+### 20.225 E固定视觉记忆终态完成：REC-only仍未通过，正式评估跳过（2026-09-17 19:28 CST）
+
+本节接续§20.223用户最新范围：ScanRefer只以主输出REC@0.25/@0.50判断晋级，Mask仅记录。E按原配置完成3723步、29778训练行恰好一次，19:09:22结束训练；19:20:47完成6887条模块留出终态评估，19:20:50训练controller正常exit0。没有追加训练、改LR、选择中间权重或切换主输出。此集合场景被预训练模型见过，以下不是9508条正式验证成绩。
+
+| 主输出bbs | REC hits@0.25 | REC hits@0.50 |
+| --- | ---: | ---: |
+| D/E共同零更新起点 | 6147 | 5549 |
+| D任务读取终点 | 6136 | 5547 |
+| E固定视觉记忆终点 | 6149 | 5524 |
+| E相对自身起点 | +2 | -25 |
+| E相对D终点 | +13 | -23 |
+
+E自身@0.25修复158、破坏156；@0.50修复306、破坏331。相对D，分别修复186/342、破坏173/365。D→E严格阈值365个破坏中248个仍位于(0.25,0.50]，117个降至0.25及以下；这不是实例身份或回归器因果归因。诊断bbf从6175/5584降至6161/5550（-14/-34），不替代bbs。Mask终态6170/5801、mIoU73.92859241仅诊断，本轮拒绝原因是REC@0.50下降，与Mask门槛无关。
+
+19:21:11独立审计通过完整性和fixed_visual_memory_verified：204视觉参数/buffer保持冻结；3723步及29778行覆盖、有限loss、6887输入/GT对应一致。每阶段重计1763072原框、13774次选择，终态选中IoU最大误差2.5582e-6。训练与审计声明一致，primary_rec_nonregression=false。19:25配对比较完成，D/E所有6887行身份、点SHA、root框以及训练行顺序对应一致。
+
+全256原框GT oracle：D终点6879/6701，E终点6863/6692（-16/-9）。这是未经过合法候选过滤的GT上界，不是部署REC；冻结视觉路径没有提高这项候选上界，不能沿用“候选更好、只剩评分器问题”的结论。冻结同时改变了可学习范围与backbone train/eval行为，本实验不单独证明BN因果作用，也不否定所有点—体素或任务读取机制。
+
+formal决策已写skipped_primary_rec_regression，formal_rows=0；训练、独立审计、formal等待器和D/E比较四个controller均exit0。未启动新的9508评估或Nr/Sr训练，正式受保护成绩仍为ScanRefer V99 58.6033/50.4523；59/51仍是争取目标，不再附加ScanRefer Mask门。
+
+独立审计后只删除E被终态替代的latest.pth，314352251字节（约299.79MiB），删除前SHA 0a4f63a4481d155f60ee53ad27621df783fb9f9ba88408f377009be2004eb588。保留terminal.pth，SHA fcfb46f9169a1ab25782e0f437b733eba1a245b0c20fba6546fa450208538902；cleanup_receipt已确认deleted=true。19:28:17真实观察GPU空闲，磁盘可用1360179200字节。其他受保护权重和原始证据保留。
+
+证据：本E训练receipt.json、terminal/receipt.json、完整train.jsonl；endpoint audit.json/cleanup_receipt.json；formal decision.json；comparison terminal_D_E.json与exit。下一步优先从已有逐行导出区分合法候选覆盖与实际选择损失，再决定一个有新证据支持的REC机制；不以本轮失败为由扫描冻结比例、LR或追加epoch，也不恢复Mask专项门槛。三数据集目标尚未完成。

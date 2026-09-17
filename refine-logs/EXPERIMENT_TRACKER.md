@@ -376,3 +376,7 @@ User waived ScanRefer Mask gate. E formal evaluator and independent auditor now 
 ## 2026-09-17 E terminal comparison waiter aligned with measured ETA
 
 18:57:07 original sleeping8866/8867 replaced by10801/10802;19:15 firstcheck then300s. Completed initial retained and hash-bound;resume only terminal,append log,compare.py/D_E.json unchanged. Train8666/endpoint8673 and REC-only formal rules unchanged.0model/optimizer/formal/deletion;no Eterminal yet. See§20.224 and comparison reschedule_receipt.json.
+
+## 2026-09-17 E fixed visual memory complete, REC-only failure
+
+3723steps/29778fit rows exactly once; final6887 bbs6149/5524 vs own6147/5549 (+2/-25), vs D6136/5547 (+13/-23). Own fixes158/306,breaks156/331. Paired D/E fixes186/342,breaks173/365; full raw256 oracle D6879/6701→E6863/6692, GT-only not legal recall. Independent integrity/frozen204visual audit passed; all four controllers exit0. Formal skipped_primary_rec_regression,0formal rows,no Nr/Sr launch. Mask diagnostics did not gate. Audited superseded E latest314352251bytes deleted; terminal fcfb46f9169a1ab25782e0f437b733eba1a245b0c20fba6546fa450208538902 retained.19:28:17 GPU empty,1360179200bytesfree. See§20.225. No extra training or intermediate selection; full research goal remains active.

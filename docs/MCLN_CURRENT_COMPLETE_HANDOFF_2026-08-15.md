@@ -19076,3 +19076,22 @@ E容量补充（17:49取证）：17:48:15真实增强batch8完整原生loss/back
 此前observer覆写同名文件导致历史审计只剩当时哈希，已保留17:52不可变快照；本轮最小修正为每次读取同时保存带时间戳的run.log和observation，之后可直接引用固定字节。只扩展本地观察产物，不改变远端训练/队列。修改源码compile通过，18:02:19真实执行已产出对应快照。保存train_prefix_20260917_180219.jsonl及initial_and_training_prefix_check.json，后者只做本地收据/哈希/训练前缀核对，没有宣称重新运行全模型或重新读取二值Mask。
 
 现行正式成绩和晋级要求不变：ScanRefer V99 REC58.6033/50.4523，目标三数据集超过baseline尚未完成；Nr/Sr尚未启动新训练。本轮0删除，保留所有保护终点，E自己的latest只在既定终态审计通过后回收。
+
+
+### 20.220 E第512步实际权重CPU恢复通过，204项视觉state仍精确等于父值（2026-09-17）
+
+本轮继续原E训练及既定队列，没有改变训练配置或读取中间精度。针对E相对D新增的完整骨干冻结，复用已经验证的D周期checkpoint恢复路径，检查实际写出的权重，而不是再用内存构造夹具。新增check_pvground_fixed_memory_latest.py与prepare_pvground_fixed_memory_checkpoint_check.py；实际启动前确认原训练controller8666仍在、latest.pth已存在。
+
+18:09:42只读CPU检查controller9772启动，18:09:59完成exit0。只打开一次latest.pth文件描述符，在原训练tmp+os.replace写入机制下固定完整inode，先算SHA再从同一描述符torch.load，避免读取两次不同周期文件。实际读到step512/4096fit行，逐项绑定官方父、E训练spec、三个reader模块和source_port；不把512快照替代3723终点。
+
+结果：1072个delta state完整展开并strict恢复1271个模型state，实际逐张量值与恢复目标完全一致；204个backbone参数/buffer与官方预训练父值逐项torch.equal。payload的fixed_visual_memory和memory_policy匹配E配置。优化器3组参数ID数为[718,0,0]、全部ID唯一；694个实际AdamW state条目一二阶矩有限、step不超过512。CPU模型未恢复优化器运行，因此这不是继续训练等价性检查。
+
+37/37新增reader state均与初始化不同，两类task_query最大绝对变化分别0.0008274266与0.0009744085。保存的4096行与训练日志前512步完全一致、无重复、均来自fit且与holdout无交集。这证明已实际更新并保存允许训练的模块、保持冻结骨干、可严格加载；不能证明任务分工有效、定位改善或泛化达标。
+
+CUDA未初始化，0模型forward、0额外optimizer步、0新checkpoint、0正式行；检查后的原训练进程仍在。实际权重314,278,715字节，低于预先按D342,299,567字节估算的单份上界；没有增加checkpoint副本或删除旧权重。18:10:18检查收取时磁盘1,423,527,936字节。终态仍按原审计及清理规则执行。
+
+最后一轮训练观察2026-09-17T18:10:48.775987+08:00：已576/3723步，累计648.208秒；四个原controller仍在，GPU 612468, 18580 MiB，剩余磁盘1423634432字节。按实测约1.1秒/步，19:20—19:30取得终态评估/筛选的预估不变；当前无终态指标。下一次关键观察约19:15，原endpoint每300秒检查，formal/比较终态保守20:41首查仍未变。
+
+证据位于refine-logs/pvground_fixed_memory_checkpoint_check_20260917_v1（代码、spec、原始launch、check.log、receipt与exit），这次是单独CPU检查进程，不冒充新增fresh-agent评审。继承§20.218同族暂定源码审计的相关接口结论，但当前E快照的通过来自本次实际执行。正式V99保护、三数据集目标与Nr/Sr接续条件不变，总目标尚未完成。
+
+绑定：第512步snapshot SHA ec8fb325705a4f27ddaa34c06ef9b0426a1db1dc67337d4c9a3e4c207b97dab3；receipt SHA e79b463460718eaf1d048c30bb477d2db61716863b7956b3015bdca8b9d41f30；实际check.py SHA 33299b2b2f0fd11e6213bf945eca777e61448f66e93cf45bd914bbbe64d20f1b；E训练spec仍0babc37d4ecb3fb5e033d6180cccc007c51235d1d52c63316dfd788c8a3fd467。该SHA仅标识本次打开的中间快照，后续latest将被按原规则替换。

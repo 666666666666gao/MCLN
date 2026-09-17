@@ -351,3 +351,8 @@ E17:52:17: initial2048/6887 in204.23s;fourcontrollers live;1,777,680,384bytesfre
 ## 2026-09-17 E complete initial and real training prefix
 
 Initial6887 finished17:59:30: bbs6147/5549, Mask6174/5824,mIoU74.1443818276. Independent initial recount18:00:58 passed; D/E comparison18:01:39 exit0,all rows/boxes/scores exports byte-identical.18:02:19 observed128/3723 updates,146.442s; finite logged values and same first128 batch row order asD. Original4controllers live,GPU18566MiB,1,738,133,504bytesfree. Measured ETA terminal+audit19:20–19:30; queuedformal/comparison original20:41 firstcheck unchanged. Timestamped observation/log preservation added and actually used. No terminal/formal/new-dataset result or deletion. See§20.219.
+
+
+## 2026-09-17 E actual512 checkpoint restore
+
+CPU-only observed512/4096fit checkpoint restored1072delta→1271state exactly;204visual states equal officialparent;optimizer groups[718,0,0],694finite states.37/37reader states changed,both taskqueries changed. No GPU/forward/update/newcheckpoint/formal;check controller9772 exit0,originaltrain8666 continues. Snapshot314278715bytes SHAec8fb325705a4f27ddaa34c06ef9b0426a1db1dc67337d4c9a3e4c207b97dab3. Latest observation2026-09-17T18:10:48.775987+08:00 training576/3723,1423634432bytesfree. No terminal result, promotion or deletion;see§20.220.

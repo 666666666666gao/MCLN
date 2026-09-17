@@ -18769,3 +18769,17 @@ D完整零更新6887条于2026-09-17T12:36:01.074709+08:00完成，耗时676.23�
 权重写出后磁盘约1870098432字节（1.74GiB），符合预留预算。本次未删除任何权重。D继续固定3723步，终态及正式评估仍由原审计、比较、正式接续处理；目前0新正式9508结果、0Nr/Sr迁移，ScanRefer保护值及总目标均不变。后续重点在接近预估15:15终态时核对原进程，不重复同一checkpoint检查。
 
 证据：refine-logs/pvground_task_checkpoint_check_20260917_v1内check.py、spec、launch、receipt、退出码与观察记录；新增scripts/check_pvground_task_observation_latest.py、prepare_pvground_task_checkpoint_check.py只服务此次CPU检查，没有写入原训练目录或改动模型参数。
+
+### 20.211 Nr/Sr官方父权重与D任务读取的CPU接入已核验（2026-09-17）
+
+13:05:17实时观察确认原训练controller1696、审计1703、正式接续1890仍在运行，训练定期日志704/3723步、累计1653.06秒，loss/梯度有限，GPU使用23202MiB、磁盘余1869905920字节。没有根据中间loss修改配置，终态及正式晋级顺序不变。
+
+在等待D固定终态期间，13:10:16完成Nr3D和Sr3D实际官方父权重CPU检查。复用已固定的D隔离源码、六源/观测/task模块及现有runtime，各自严格核验完整父文件SHA。两份父均为1235状态（包括实际保存的persistent RoBERTa position_ids），先严格加载，再安装37项D状态，得到1272项完整状态；全部父张量逐项未变，新增task矩阵为零，820可训练张量/28883227参数，199冻结张量，reader参数923616。两份分别耗时5.85/5.22秒；没有GPU初始化、模型forward、optimizer step、新权重文件或正式评估。
+
+这与Scan父1234→1271有一项序列化buffer差异，不得直接复用Scan expanded_parent_state中删除position_ids持久状态的逻辑。不是不同网络容量，也没有strict=False、删键或退回旧模型。
+
+预检保留三次工程错误日志：第一次直接python -c在启动后设置PYTHONPATH，未更新解释器搜索路径，pcdet导入失败；改为由已有runtime环境启动子进程。随后同进程连续构建两个模型时，VSA构造修改共享配置的MLP列表，使第二个Sr实例从应有1235状态变成1295；诊断列出60项额外MLP/BN状态。最终每个模型传入原配置的独立deepcopy，两份均通过，且实际记录model_constructor_mutated_its_config=True、原配置保持。修正仅在新CPU检查脚本内，不修改任何正在运行的训练源码，不据此推断已运行单模型实验受影响。
+
+本项是Nr/Sr同结构权重接入准备，不是迁移性能或真实数据前向/反向通过。既有check_pvground_nr_native_backward.py仍绑定旧native结构（783训练张量），不得作为D接口已验证入口；正式接续时需使用D的820张量与实际两任务路径，再执行真实批次检查。对象输入仍为butd_cls实例框＋预测类别，不称无对象先验。Scan正式过现行保护线后才进入Nr/Sr REC训练；Mask仍不作Nr/Sr晋级门，原生损失保留。
+
+证据：scripts/check_pvground_referit_task_cpu.py与refine-logs/pvground_referit_task_cpu_20260917_v1中的执行源码、runtime子进程调用、退出记录、真实receipt和原失败日志。没有新增三数据集正式指标、没有删除权重，总目标未完成。

@@ -308,3 +308,7 @@ L1 v2 native preflight PASS/exit0,16 fit rows,20 forwards,zero updates; all tens
 | PV task-read D complete initial | bbs 6147/5549; independent audit and A/B/C initial comparisons pass | Original fit1696 at 110/3723, logged row order matches C; no terminal or formal result;20.209 |
 
 | PV task-read D actual checkpoint | step512/4096 fit;1072 delta to1271 strict CPU restore;37/37 added states and both task matrices changed | Saved-state PASS only;0 GPU forward/update/new weight/formal rows; original fixed training continues;20.210 |
+
+## 2026-09-17 Nr/Sr D CPU parent binding
+
+Actual official Nr/Sr parents strictly loaded on CPU, preserved 1235 states and installed 37 D states (1272 total); 820 trainable tensors. Both PASS, zero forward/update/GPU/formal rows. Independent config copies correct demonstrated constructor mutation in this two-model check. Original failures retained. D training remains fixed; no Nr/Sr training launched. See master §20.211 and refine-logs/pvground_referit_task_cpu_20260917_v1.

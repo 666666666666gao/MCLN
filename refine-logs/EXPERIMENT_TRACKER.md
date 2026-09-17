@@ -337,3 +337,12 @@ Completed at16:53:24,228.83s,exit0. Same128 fit scenes/16 eval forwards;820 trai
 ## 2026-09-17 D fixed normalization-state intervention
 
 CPU census:84 BN groups/252 running-state tensors changed from parent; all counters+3723. Fixed128 training scenes,3 paired eval arms,48 forwards completed17:15:22 in103.34s,exit0. Normal/repeat114/106; parent-BN buffers with D parameters114/110,net0/+4,fix/break1/1 and6/2. Repeat boxes/scores exact; parent-BN changed80/128 selected indices. Raw nonpositive-size candidates7339→9620,raw oracle128/127 unchanged; no claim all candidate quality improved. All D state restored,0 backward/update/checkpoint/formal/Mask evaluation. Independent exported-box/GT float32 IoU recount98,304 candidates,error0;score formula verified by source,logits not exported. Local positive strict-threshold signal but no dual-threshold increase; no frozen-BN training,per-layer restoration scan or formal promotion launched. Health17:19:27:GPU empty,controller8172 gone,1800560640 bytes free. See§20.217 and same-family provisional audit.
+
+
+## 2026-09-17 E fixed pretrained visual memory launched
+
+Same D architecture/parent/seed2027/data3723-step budget, with complete backbone parameters and running state fixed. Actual718 trainable tensors/25,397,851 parameters;301 frozen;204 visual states. Train controller8666 at17:40:55; endpoint8673, D/E comparison8866, formal8872. New mode must pass actual batch8 backward (0update), own initial/terminal audit and existing primary dual-threshold gate before formal; CPU serialization preparation is not terminal/performance evidence. Preserve D negative and BN0/+4 mixed diagnostic. Only E superseded latest eligible for removal after audited terminal SHA; separate formal1GiB free preflight. No old weight deletion, formal0, Nr/Sr not launched. See§20.218 and fixed-memory audit.
+
+E capacity addendum17:49:00: actual batch8 full loss/backward passed17:48:15,0 optimizer steps,204visual states unchanged,peak allocated14,962,948,608 bytes. Four originalcontrollers live;1,795,928,064bytes free. Initial/terminal and actual training outcome still pending; no new formal result or deletion.
+
+E17:52:17: initial2048/6887 in204.23s;fourcontrollers live;1,777,680,384bytesfree. Completeinitial/terminal stillpending.

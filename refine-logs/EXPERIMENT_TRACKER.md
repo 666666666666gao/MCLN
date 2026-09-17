@@ -324,3 +324,8 @@ Prepared only, Python3.13/local and3.7/runtime syntax passed. Actual D formal950
 ## 2026-09-17 D fixed-terminal intervention diagnostic
 
 Completed v2 at15:49:15,28.52s,exit0;4 fixed training fixtures,10 forwards,0 optimizer steps/formal rows/checkpoints. Actual1271-state terminal strict restore and full-state equality after interventions passed. Normal repeat: REC boxes/scores exact,Mask max4.19617e-5. Zero semantic: logits max0.0949173,score0.000630677,boxes exact. Zero geometry: semantic scores exact,center max0.000861943m,size0.005386591m,Mask0.113143921. All4 bbs selections unchanged in all conditions. This is local sensitivity, not accuracy, generalization or decomposition of D/C training contributions; zero_both is not C. v1 output-serialization failure (adaptive_weights list) and exact one-variable retry preserved. No new training or promotion; see master §20.214 and independent same-family provisional audit.
+
+
+## 2026-09-17 D native CE versus bbs fixed-logit diagnostic
+
+Completed128 fixed fit physical scenes,16 forwards,0 model updates/formal rows/checkpoints at16:29:19,443.58s,exit0. Selected114/106;root Hungarian128/127;raw256 oracle128/127. Covered errors14/21 all show positive best-vs-selected and matched-root-vs-selected local CE margin velocity. Thus this sample does not support CE pushing correct relative ranks backwards; not evidence about full-loss/shared-parameter training. Actual float32 autograd/analytic error<=3.72529e-8;fullstate unchanged. v1 stopped in text parsing after static dtype blocker,exit143;v2 nativefloat32 correction and all logs retained.32768-candidate exported-value recount passed. No new loss/head/training launched; see master§20.215 and same-family provisional audit.

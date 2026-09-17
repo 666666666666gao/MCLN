@@ -18878,3 +18878,50 @@ ScanRefer V99及三数据集目标未改变，Nr/Sr的CPU接入和GPU检查入�
 当前C/D终态、对照和路由机制诊断均已完成，没有挂起的本轮训练。保留A/B/C/D作为后续受控参照，不继续扫描同一末层任务矩阵的学习率/epoch/seed，也不将置零分支晋级。下一项方法尚未启动；需要明确改变了什么可用证据或训练责任，再固定最小对照。现有证据不足以选择新的质量头、额外状态维度或扩大训练范围。ScanRefer正式保护及三数据集目标继续有效，总目标未完成。
 
 证据目录：refine-logs/pvground_task_terminal_diagnostic_20260917_v1和v2。v2脚本SHA22909e25751cca86b733420dbf1322b53ab1907dd3fb590ef8887573e8e900e8；框/分数NPZ SHA7275497dbf0144e2c1c24fcda1daf3b51e3b657fea8382d23341f73b079877c1。diagnostic.json含各批全部差值、选择和输入/源代码/权重绑定，run.log含10条forward记录，controller.exit为0。
+
+
+### 20.215 原生分类监督与部署bbs方向诊断完成：本次不支持分类项反向损害排序的假设（2026-09-17）
+
+本节接续§20.214。A/B/C/D的6887条终态结论与正式晋级条件均不变；没有新模型训练、9508评估或Nr/Sr训练。固定D的3723步真实终点，检查实际原生分类监督在当前输出处如何作用于部署bbs，而非再增加冻结候选的质量头或重做V133。
+
+#### 预定输入与执行范围
+
+预先写入docs/PVG_NATIVE_SCORE_CONTRACT_DIAGNOSTIC_2026-09-17.md。按原fit annotation顺序取前128个不同物理训练场景各首条表达，排除模块holdout物理场景；不按错误挑选。清单在首次forward之前保存。固定seed2027、batch8、关闭增强，16次eval/no_grad模型forward；GT框、Mask和token maps只在forward之后供原生matcher与损失分析。该样本来自预训练见过的训练场景，不能作为正式或新场景成绩。
+
+严格恢复D官方父与全部delta（1271项状态）；终点SHA ce03188965491a82bcb1c5a6d26f590d3a243a01985457f220d5503c75b2fcf5。沿用实际Hungarian matcher的class/bbox/GIoU/Mask成本1/0/2/0.0002。detach最后层语义logits后，仅对其求原生loss_pos_align与bbs分数梯度；没有对模型参数反向、optimizer或checkpoint。结束验证全state_dict未改且所有模型参数.grad为None。
+
+v1在文本解析时由独立静态审计发现double logits与float32 token maps高级索引赋值不兼容；原loss的zeros_like(logits)目的张量与源标签dtype不同。16:20:28精确终止该诊断child6883，controller.exit143。未等到CE执行，不能写成已发生的远端CE traceback。停止receipt、原源码和日志保留。v2保持原生float32 logits/标签/EOS，解析梯度容差1e-6；补充排名输出，不改变选择规则、权重、数据、监督和预算。v2启动须验证v1已exit143。
+
+v2 controller7113于16:21:56启动，16:29:19完成，实际443.58秒，exit0。初始化解析全部36665条训练表达，因此起初5分钟估计偏短；修正后预估20分钟，按约5分钟取证，未密集轮询。128行前向均完成，公式梯度最大误差3.7252903e-8；分析加权求和与部署顺序浮点求和的所选Query差异为0。
+
+#### 结果与解释
+
+对固定最后层logits z、分类损失L与bbs分数s，记录v=-(grad_z L) dot (grad_z s)。好框相对当前选择的v差为正，只表示单独沿该CE项下降时的瞬时margin方向；不是共享参数更新、完整原生总损失、AdamW更新或实测精度增益。
+
+| 128个训练场景诊断 | @0.25 | @0.50 |
+| --- | ---: | ---: |
+| 实际bbs所选框命中 | 114 | 106 |
+| Hungarian匹配root的框命中 | 128 | 127 |
+| 原始256框GT oracle命中 | 128 | 127 |
+| 有合格原始框但实际选错 | 14 | 21 |
+| 上述错误中best-IoU候选相对当前选择margin方向改善 | 14 | 21 |
+| 上述错误中匹配root候选相对当前选择margin方向改善 | 14 | 21 |
+| 上述错误中匹配root本身已合格 | 14 | 21 |
+
+严格阈值实际共有22条错误，21条存在合格原始框，余1条原始256框都未过0.5。这里的oracle没有合法过滤，不能写为部署候选召回。全部统计只适用于此固定128场景。
+
+合格且完全未匹配任何训练目标的候选有8259/6802个，其中8258/6802个在单独CE下分数下降；合格且匹配其他标注目标的候选本次均为0。匹配root的合格候选128/127个，其分数均未下降。这符合一对一集合训练的重复候选抑制责任，不能将前一项单独称为训练bug：错误行中真正匹配root的合格框和best-IoU框，其相对错误选择的局部margin全部在改善。
+
+因此，本轮没有支持“原生分类项在这些有框错误上把正确相对排序推向反方向”的假设。也不能反过来声称训练目标已经完全一致、分类足够或其他样本不存在问题；实际参数共享、其余decoder层、回归/Mask/对齐损失及优化器均未纳入该方向检查。原生ScanRefer分类目标的0.6/0.2/0.2/0.1文本权重与bbs主词二值加其他跨度、减other-entity的规则确实不同，但代数不同不是有害作用的充分证据。
+
+#### 可复核性、范围与后续
+
+input_selection、rows、candidate_values NPZ及16批原始日志全部保留。独立导出重计检查128行、32768候选、两种score选择、匹配身份、排名、IoU/velocity字段和聚合计数。它是导出数值重计，不是重新从原始框/GT计算IoU，也不是从未保存的全logits重算梯度。实际autograd与解析梯度的核对发生在远端诊断运行；本地原SetCriterion CPU fixture另为公式检查，不能混成真实数据实验。
+
+独立上下文审计见docs/PVG_NATIVE_SCORE_DIAGNOSTIC_AUDIT_2026-09-17.md，same-family/provisional，不是跨模型独立接受。Plan提及的“未匹配root”在结果中明确分为匹配其他目标与完全未匹配，不混报。
+
+16:33:14核验controller7113已退出、exit0、GPU无计算进程，磁盘可用1805246464字节。本轮0新权重、0删除权重；此前清理的3584步latest不重复计入。v1停止与v2完成均归档。
+
+据此不启动新的分类替换、质量头或多正例重训，不扫描D的LR/epoch/seed。后续如继续检验训练责任，应区分当前logit空间的CE方向与完整损失通过共享参数产生的实际方向；本次尚未测后者，不能先写成梯度冲突已确认。新的训练机制仍需以具体证据和固定对照为依据，不用这128行另定验收标准。受保护V99正式结果与三数据集目标不变，总目标仍未完成。
+
+证据：refine-logs/pvground_native_score_diagnostic_20260917_v1及v2。v2脚本SHA1d51a20431793062b041745a39965515597e3c75f3ea6fec1241792b613ad31c；NPZ SHA7d311074f1b1cd3f18a815ba0bd03e082f7e82c82d48d81b4b7739d5429b00ed；真实PV losses.py SHA920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de。原生匹配责任参考DETR的一对一集合监督；相近Align-DETR仍保留末层一对一、在中间层使用多对一与质量目标，不能将本次诊断或未实现的loss改法宣称新颖。来源：https://github.com/facebookresearch/detr/blob/main/models/detr.py ； https://arxiv.org/abs/2304.07527 。

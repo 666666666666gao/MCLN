@@ -19280,3 +19280,19 @@ Nr语言fit与6172条holdout逐索引保持历史清单不变；Sr复用同一�
 Nr partition SHA f17805d1faa8347e000ca7f800fe666742a1acd56bf7d2ae3b0e8d0e7d29d6fc，2635468字节；Sr SHA71bb8fd46587f1cd75371f9bf01e9de50412dffed8c5918f2e9f754b267e1c16，5213955字节。保存原始语言行关键字段SHA及检测scene列表，供后续loader核对；不保存新的权重。脚本prepare/launch/observe_pvground_referit_fit_partitions.py；原始回执和local_recount位于refine-logs/pvground_referit_fit_partitions_20260917_v1。
 
 上述4594/8195只是已验证划分在batch8下一次遍历的算术预算，不是已启动完整训练。Nr/Sr目前仍仅有Scan正式REC过线后的单batch前后向检查接续，完整训练入口及其终态/正式流程仍待实现和运行。保留butd_cls实例框与预测类别协议，不声称纯点云检测；继续加载各数据集官方父权重。当前Scan运行不修改配置、不挑中间快照、不增加Mask专项。三数据集目标未完成。
+
+### 20.232 Nr/Sr完整fit入口部署与CPU契约检查完成；尚未排完整训练（2026-09-17 21:07 CST）
+
+接续§20.231，新增run_pvground_referit_rec_competition.py及pvground_referit_fit_dataset.py，部署各自Nr/Sr独立训练目录。当前没有启动完整训练controller，不将已排队的单batch检查写成完整训练。实际Scan F在21:05:11为691/3723步，累计1669.860秒、最近2.282秒；原train12755、训练/审计/正式以及Nr/Sr检查controller均存活，尚无新终态/正式指标。继续只看Scan正式REC双阈值，Mask诊断。
+
+新入口沿用Scan F的点/体素准备、native_loss、evaluate及loader四段函数，AST比对完全一致；仅绑定各自官方预训练父、真实混合样本和§20.231划分，保留Nr/Sr父已有的persistent position_ids，严格1235→1272状态加载。相同D任务读取结构、F辅助竞争及全部原生损失；实际sample_dataset为scannet的行不产生REC竞争监督。没有修改正在运行的Scan目录、模型或训练预算。
+
+训练前以实际Scan正式controller退出码、9508完整性、REC-only audit及receipt SHA为门；随后要求各自真实单batch前后向检查pass、0优化器更新、全部模型状态恢复及相同父权重/source/task/env绑定。全部门在模型加载及GPU锁之前。准入后才构建实际完整loader，并逐行核验原始语言关键字段SHA、检测重复顺序、物理房间划分、所有1201训练mesh文件及原始点archive；原始文本SHA在原生解析器规范化之前核验。
+
+原生检测重复用同一annotation字典，故训练行ID取__getitem__实际index，不附着到annotation字典。新增3项CPU行为测试覆盖重复字典的不同取样索引、二值Mask无损存储、原始文本核验先于规范化，以及目标ID/文本被改时在解析前拒绝。测试使用合成最小fixture，是索引/绑定行为证据，不是实际完整loader吞吐或模型能力。
+
+21:04:19远端真实Python3.7/Torch环境CPU准备通过：全部入口编译、3项测试通过，两个实际训练命令都因当前Scan正式未结束，在模型前拒绝执行；各自官方父、partition、input manifest及原生evaluator重新全文件SHA核验。0模型forward/optimizer/正式行/完整训练任务。driver SHA1b64a82797a000f3805bc272b551cc36d7bb8d31726b976e8eba2afdcfda6dd4；Nr spec b8b602a5209ec16c30b21cb558042d75cf36cbb4adb32fd2bee8c1442045927c；Sr spec756962a74cf3c9e056f65a054e3f6e996dd298bfc5fa4881f4babad23e5bdf35。
+
+固定后续预算：seed2027、batch8、各自官方父、LR/backbone LR1e-5、原生wd0.0005/clip0.1、各一遍fit，Nr4594步、Sr8195步；不扫配置、不选中间权重。完整初始/终态模块留出保持bbs主输出、bbf与Mask仅诊断，两个REC相对自身起点均不退化才进入正式。预定正式Nr7899至少4726/4059 hits（超过59.82/51.38）；Sr17726至少12139/10335（保护现有且超过原基线）。这是已绑定计划，尚无这些新成绩。
+
+准备时磁盘可用1490767872字节，未新增模型权重。仍需准备并检查独立终态审计、正式评估和串行controller，落实各阶段磁盘预算后才排完整训练；当前不能将新入口宣称GPU集成已通过，也不为测试绕开Scan准入条件。源码prepare_pvground_referit_rec_training.py，证据refine-logs/pvground_referit_rec_training_preparation_20260917_v1。目标仍是三数据集REC达到要求，当前未完成。

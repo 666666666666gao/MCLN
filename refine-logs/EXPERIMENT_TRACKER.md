@@ -408,3 +408,9 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 - CPU controller13955 exit0; actual native annotations and all1201 mesh scene inputs verified. Nr language26747/6172 retained; Sr55518/10328 fixed physical-room split. Excluded199/195 detection base rows to prevent module-holdout rooms entering joint detection. Fit totals36747/65558; batch8 one-pass4594/8195 are preparation counts, not completed updates.
 - Local saved-index recount and hashes passed, no train/holdout/formal physical overlap; no model/optimizer/CUDA or new metrics. Official pretraining previously saw module holdout.
 - Scan F actual401/3723 at20:53:43; REC-only formal floors5572/4797, Mask diagnostic. Full Nr/Sr training is not yet launched; single-batch gated probes remain queued. See master20.231.
+
+## 2026-09-17 ReferIt full-fit entries prepared, not launched
+- Nr/Sr dataset-specific parents and room-disjoint partitions bound to fixed seed2027/batch8/one fit pass4594/8195 updates. Same F architecture and native evaluator; actual detection rows excluded only from auxiliary REC competition.
+- Full-fit entry checks actual Scan REC-only formal pass and own restored real backward probe before model. Native repeated detection dictionaries use sampled index IDs. Three CPU behavior cases passed in actual runtime; both premature launch attempts rejected. No full loader/GPU/training/metrics claimed.
+- Driver1b64a82797a000f3805bc272b551cc36d7bb8d31726b976e8eba2afdcfda6dd4. Prepare/native_loss/evaluate/loader AST unchanged from Scan F. Endpoint/formal controllers and disk provision remain before full launch.
+- Scan F691/3723 observed21:05:11 with original processes live; no terminal/new formal results. See master20.232.

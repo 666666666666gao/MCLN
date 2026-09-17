@@ -361,3 +361,8 @@ CPU-only observed512/4096fit checkpoint restored1072delta→1271state exactly;20
 ## 2026-09-17 E formal waiter schedule correction
 
 18:21:25 sleeping formal8872/8873 replaced by10116/10119 after exact process/code/no-output checks. First check19:15,then300s;old launch/spec/log retained. Train8666,endpoint8673 and training spec unchanged;formal code and all gates unchanged. Comparison8866 remains20:41 and is not a gate dependency. Observation 2026-09-17T18:21:45.487476+08:00: 1175/3723 steps,1423388672bytes free,no terminal/formal/deletion. See master§20.221 and reschedule_receipt.json.
+
+
+## 2026-09-17 E Nr entry prepared, no GPU launch
+
+Preserved D entry; new E entry binds E formal gate and frozen204visual states,718trainable tensors. Runtime3.7 syntax and actual missing-formal rejection before torch passed. Existing Nr/Sr official829830168-byte parents and135447612-byte Nr batch rehashed exactly;0downloads/forward/backward/update/checkpoint/formal. Actual E Nr capacity/backward and Sr batch still pending. No Nr/Sr queue created. See§20.222 and pvground_nr_fixed_memory_preparation_20260917_v1.

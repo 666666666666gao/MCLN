@@ -384,3 +384,7 @@ User waived ScanRefer Mask gate. E formal evaluator and independent auditor now 
 ## 2026-09-17 E saved-export candidate/selection decomposition
 
 CPU-only,0forward/update/formal. E initial→terminal strict selected5549→5524,raw256oracle6696→6692,selectiongap1147→1168. D→E strict5547→5524,oracle6701→6692,gap1154→1168. Of365 D→E strict breaks,8 have no qualifying box,210 have a good box ranked2,124 ranked3-16,18 ranked17-64,5 ranked65-256. Top16strict D/E both6398. Full6887 identities/input SHA/GT and export SHA checked; no qualifying-score ties. Descriptive GT-only analysis, not legal-filter recall or causal identity diagnosis. No new scorer or gate, no freeze/LR scan. See§20.226 and pvground_fixed_memory_selection_20260917_v1.
+
+## 2026-09-17 Fixed fit-scene instance/extent geometry attribution
+
+CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All original point SHA/root boxes and32768 candidate root IoUs verified (max error0). At.25 failures14:13 other-same-label max,1 other-label max;all14 have qualifying alternatives. At.5 failures22:8 root max,13 same-label max,1 other-label max;21 covered,including all8 root-max failures. Maximum overlap remains a geometry proxy,not semantic identity.0model/update/formal/checkpoint. Next investigate actual-bbs candidate competition with native regression/matching preserved;no new quality head or extra frozen-memory sweep. See§20.227 and pvground_fit_instance_geometry_20260917_v1.

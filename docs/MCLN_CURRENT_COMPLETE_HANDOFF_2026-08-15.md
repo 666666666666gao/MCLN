@@ -19401,3 +19401,23 @@ F相对自身：@0.25修复174/破坏171，@0.50修复335/破坏383。相对D：
 这些结果不支持直接删no-object或调词项权重来宣布问题解决；终点多数错误的词项相对证据也不足。结合既有D未匹配合格框受原生CE压低的诊断，下一候选训练机制应检查GT合格未匹配Query的REC语义监督，保留原Hungarian框回归及实例对应。需要预先固定正例条件、质量标签、归一化及已匹配其他目标的处理，并用实际梯度检查后再决定训练；当前尚未实现/启动该新训练，不能把本检查写成新方法增益。当前Scan只验收双REC，Mask仍不阻挡，Nr/Sr仍待Scan通过。
 
 代码diagnose/analyze/prepare/observe_pvground_rec_score_evidence.py、run_pvground_rec_score_evidence_analysis.py、decompose_pvground_nonnull_evidence.py；回执及逐行证据refine-logs/pvground_rec_score_evidence_20260917_v1。3,844,187字节候选数组完整SHA c2cd9aa9d78cc9a3d04b0ff9f9d8f00addb00acc6fdf926096734204fa56f00e，保留远端及本地D:/Program Files/UserCache/gb/codex/tmp/pvg_rec_score_evidence_20260917_v1/candidate_values.npz两份，核对后从Git工作树移出，array_location.json保留位置和摘要。rows SHA07a24a3dc97fea748dfe0f3bb911a727a1a94c35dc40dbac39e805f0f8e5969e。未改受保护权重、未新建训练权重，正式成绩仍未更新，三数据集目标未完成。
+
+### 20.239 G原生语义标签替换已实现，固定训练及REC-only正式接续就绪（2026-09-18 00:25 CST）
+
+接续§20.238，G不再增加唯一匹配正例的竞争项。保留D完整PV-Ground、六源观测状态和语义/几何读取结构，官方epoch81起点、923616读取参数及原生部署规则。新增代码只在训练最后层语义CE中，将未被任何GT匹配且原框对句子root IoU>0.5的Query，从no-object改为原生root文本目标；保护全部已匹配root及其它目标。Hungarian、框/Mask回归索引及其它损失保持。几何资格detach，推理不读取GT或新sidecar。
+
+原生root目标仍为0.6positive+0.2modifier+0.2pronoun+0.1relation，保留原非单位质量及熵项。被替换Query继续使用原未匹配权重0.1、原匹配数归一化、末层CE总系数0.5/7。以signed correction精确减去旧项、加新项，不与旧no-object目标同时叠加。其它层和原对比损失仍有自身竞争，因此不称为消除所有监督冲突或已证明身份标签正确。该实现是限定的多正例标签策略，不预先声称结构创新。
+
+同预算主对照D6136/5547，A/F仅历史参照。固定seed2027、batch8、29778fit行各一次、3723步、LR/backbone1e-5、wd0.0005、clip0.1；不改原数据/增强/Gumbel、不读失败终点，不扫描阈值、LR或epoch。G自身完整6887零更新结果仍待运行，不能借用D的数字当实测。模块场景已被预训练见过。
+
+CPU四组行为检查已通过：与直接改标签CE等价，匹配root和其它实例受保护，无合格候选零修正、无几何梯度、严格0.5边界、保留修饰/代词/关系目标质量。真实batch8 preflight原进程18178于00:11:37启动；只做0优化步前反传和完整状态恢复，实际criterion数值/梯度检查尚待回执。环境spec仍966235b2，warm reuse，无新环境或依赖。00:17:56核对preflight18178、训练控制器18224、审计18228及正式18404均真实存活；当时preflight在数据/文本解析，GPU2426MiB，不是3723步训练已完成，也尚无新性能指标。
+
+正式CPU准备00:14:11通过：在历史6887导出上重计1763072框与13774选择，不是新正式推理；真实CPU模型严格恢复1234父状态+37读取状态，1271总状态，37状态的序列化用内存构造夹具，不是G终点。固定终点可用后还须实际终点SHA/严格恢复。
+
+训练controller在preflight exit0、完整恢复及磁盘足够后启动；独立审计约00:33首次检查起点，随后300秒轮询原controller；正式controller首次03:13:42检查该轮审计，通过自身双REC不退化才跑9508父/终点两臂，之后独立重计。正式验收只用5572/4797 REC命中，Mask无门。两臂预计35—45分钟，不能把单臂20—30分钟当整个正式流程；训练约150分钟，另加两次6887、加载和审计，ETA仅为条件估计。
+
+部署前空闲3910496256字节，完整训练要求1759741824字节，已满足。终态独立审计后才删除被terminal替代的latest；保护父/V99/F及有用终点，不删数据/日志。当前Scan正式受保护58.6033/50.4523不变，formal_rows=0，Nr/Sr没有新训练。Scan正式过线后尽快接同结构Nr/Sr，F已跳过队列不能冒充G接续。三数据集目标未完成。
+
+计划docs/PVG_SEMANTIC_ASSIGNMENT_PLAN_2026-09-18.md，模型models/pvground_semantic_assignment.py，运行/准备/队列/观察/审计scripts/*semantic_assignment*.py，原始spec/CPU/launch/观察归档refine-logs/pvground_scanrefer_{finetune,endpoint_audit,formal}_20260918_semantic_assignment_v1。训练specSHA90d95a9baa87822bece1d482a3e083b761118bc3a06a301e8f19cc85206153f6，模块SHA3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773，train.py SHA586741368ea974524f1443ac14cf73812f3b16da8ecc9ff77aa8884bdba446c6。00:21:42接续核对：preflight已于00:19:31通过、exit0，0优化步/0新权重，全部状态恢复。实际8条里7条包含259个严格合格未匹配Query，匹配数8；原CE重建与替换后损失误差均0，梯度最大误差2.3283064e-10，非选中Query修正梯度精确为0，几何梯度None，合格Query的no-object CE梯度方向通过。旧被替换CE0.40693194、新20.28234673，带系数修正1.41967249；这是计算量，不是精度。峰值分配19791468544字节，单步检查22.907秒。训练原controller18224仍活着，尚在300秒依赖轮询，GPU当时空闲；不得把此处计为已有优化步。当前实际GPU工程检查通过，但尚无新REC提升。
+
+00:24:59最新实查：训练controller18224已于00:23:23通过preflight和磁盘检查，启动完整训练入口；GPU进程863497/2426MiB，当前数据/文本解析阶段，尚无优化步或G起点指标。独立审计18228和正式18404仍为原实际进程。按历史加载、两次6887评估、150分钟更新及9508两臂推理估算，若REC过筛且吞吐相近，正式结果约03:55—04:15 CST；这不是保证过线或完成时间。近期观察应靠近起点/首批优化完成（约00:45），之后按实际吞吐推终态，避免密集轮询。

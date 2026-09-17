@@ -18925,3 +18925,51 @@ input_selection、rows、candidate_values NPZ及16批原始日志全部保留。
 据此不启动新的分类替换、质量头或多正例重训，不扫描D的LR/epoch/seed。后续如继续检验训练责任，应区分当前logit空间的CE方向与完整损失通过共享参数产生的实际方向；本次尚未测后者，不能先写成梯度冲突已确认。新的训练机制仍需以具体证据和固定对照为依据，不用这128行另定验收标准。受保护V99正式结果与三数据集目标不变，总目标仍未完成。
 
 证据：refine-logs/pvground_native_score_diagnostic_20260917_v1及v2。v2脚本SHA1d51a20431793062b041745a39965515597e3c75f3ea6fec1241792b613ad31c；NPZ SHA7d311074f1b1cd3f18a815ba0bd03e082f7e82c82d48d81b4b7739d5429b00ed；真实PV losses.py SHA920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de。原生匹配责任参考DETR的一对一集合监督；相近Align-DETR仍保留末层一对一、在中间层使用多对一与质量目标，不能将本次诊断或未实现的loss改法宣称新颖。来源：https://github.com/facebookresearch/detr/blob/main/models/detr.py ； https://arxiv.org/abs/2304.07527 。
+
+
+### 20.216 共享参数方向诊断完成：当前样本不支持把主要退化归因于其他任务压制定位（2026-09-17）
+
+接续§20.215，固定同一D的3723步终点与128个fit物理场景，检验原生完整损失通过共享参数产生的分数竞争方向。当前仍是完整预训练PV-Ground加观测状态及语义/几何任务读取D，架构、训练参数和A/B/C/D终态均未改动；本节没有新的训练、checkpoint、9508正式成绩或Nr/Sr训练。
+
+#### 固定方案与实际运行
+
+方案预先保存于docs/PVG_PARAMETER_DIRECTION_PLAN_2026-09-17.md。沿用上一轮128行、场景、文本与原始点SHA；保留全部36665训练annotations用于原生unique/distractor计数，只解析所选表达。seed2027、batch8、关闭增强、eval模式不变。模型严格恢复1271项状态，实际允许训练820个张量、28883227个参数。
+
+16:49:36启动controller7623，16:53:24完成，228.83秒、exit0；16次带计算图forward、32次loss-to-parameter autograd、72次非恒零margin autograd。另56条所选与root匹配编号相同，margin恒0，不重复反向。峰值allocated18715622912字节。没有optimizer.step，全部模型状态在结束时与恢复值相等，所有参数.grad为None。不是更新后性能实验。
+
+直接调用当前原生完整criterion，捕获实际7次matcher调用；proposal_、last_、0head_至4head_中取last_的root匹配。最后层分类项使用真实键last__loss_ce，乘原生系数0.5/7。对固定匹配root与当前部署所选候选，定义m=s(root)-s(selected)，计算v=-grad_theta(m)·grad_theta(L)。v>0仅表示本次原生autograd图中沿该batch损失下降时的瞬时margin方向。完整loss与最后层CE分别反向，remainder由二者线性相减得到，不是独立反传的单个任务。
+
+#### 同一128场景的结果
+
+| 诊断项 | @0.25 | @0.50 |
+| --- | ---: | ---: |
+| 实际bbs所选框命中 | 114 | 106 |
+| Hungarian匹配root框命中 | 128 | 127 |
+| 所选失败、匹配root已合格 | 14 | 21 |
+| 上述错误中最后层CE的logit方向为正 | 14 | 21 |
+| 最后层CE经共享参数后的方向为正 | 11 | 13 |
+| 完整原生loss经共享参数后的方向为正 | 12 | 17 |
+| 完整原生loss方向为负 | 2 | 4 |
+| CE参数方向为正、加入其余项后转负 | 1 | 1 |
+
+完整loss负方向行：@0.25为2455、4424；@0.50为848、3839、4424、9248。最后层CE在logit空间为正、经参数共享后为负的严格错误有8条：848、4087、4215、4424、6111、6459、9026、9248。由此可见参数耦合确实可能改变方向，但完整loss的正方向样本17条，多于单独最后层CE的13条；严格错误中仅3839由CE参数正方向变为完整loss负方向。
+
+这批证据不支持“其他任务的loss是压制定位排序的主要原因”，不足以据此降低Mask权重或加入梯度冲突优化。也不能扩大成共享训练不存在冲突：这是固定128个训练场景和当前状态的局部方向，不代表完整训练轨迹。不能把上述17条写成已经修复17条；没有执行参数更新，实际预测命中没有变成新模型成绩。
+
+#### 必须保留的计算与来源边界
+
+1. 每个margin对应该8条表达batch的总损失梯度，不是单样本独立CE；可能包含批内其他表达的共享参数影响。
+2. 原生完整目标包含真实GT的分类/框/Mask等监督，也包含以阈值化预测sp_src_masks构造目标的Mask自一致性项；不能称所有目标均为数据集GT。remainder还含其他decoder层监督，不是纯Mask或纯几何loss。
+3. eval下原生Gumbel仍采样，本结果条件于固定seed的实际采样实现；不是对随机性的期望。模型保留proposal/层间框detach、离散索引和no_grad观测描述，因此是固定原生autograd图方向，不是参数有限扰动后全部几何路径重算的精确导数。
+4. 没有重放原训练的增强、Dropout/BN、梯度裁剪、AdamW动量或weight decay；不能据此宣称训练一步必然提高准确率。模块级内积受尺度及抵消影响，不能按绝对值直接确定某个模块或任务为根因。
+5. 与上一轮128行的点SHA、文本、顺序、所选Query及匹配root编号一致；所选IoU最大差3.066659e-5、score最大差6.794930e-5，不能说所有输出逐位一致。旧记录没有完整检测框、superpoint、token-map和root GT字节，因此也不能宣称全部输入及GT逐字节相同。
+
+#### 复核、资源与执行决定
+
+全部行、批次、参数分组、候选NPZ及原始日志归档于refine-logs/pvground_parameter_direction_20260917_v1。本地重计验证128行、32768候选、索引、两阈值计数、模块内积和及remainder代数关系。原始参数梯度没有导出，因此这是导出数值复核，不是独立重新计算真实参数梯度；NPZ中的IoU也不是从未导出的全部原始框/GT重新计算。
+
+新上下文独立审计见docs/PVG_PARAMETER_DIRECTION_AUDIT_2026-09-17.md，same-family/provisional；区分静态初审与终态补充，不把开始时未验证的运行写成当时已通过。16:57:06核验controller7623退出、exit0、GPU无计算进程，磁盘剩余1804066816字节。本轮0新权重、0删除；§20.213清理的342296239字节不重复计入。
+
+当前C、D固定训练及既定机制检查已完成。本次结束“仅凭指标权衡就减小Mask损失”的诊断分支，不扩展成更多相同的梯度统计或扫描权重。下一轮方法需先明确可部署分数、几何输出或输入证据中哪一个发生实质变化，再固定最小训练对照；目前未启动新训练，不把参数方向当作任何新模块的成功依据。受保护V99为58.6033/50.4523，ScanRefer现行保护和三数据集目标不变；达正式底线后尽快Nr/Sr REC，总目标仍未完成。
+
+绑定：D终点SHA ce03188965491a82bcb1c5a6d26f590d3a243a01985457f220d5503c75b2fcf5；driver SHA2ac6aa173c0fad9198121e54002ef3c1d9494eb7ba5597f6b52b617f936dcad8；diagnostic SHA1d267bb37152dc6e875e4407fca4c93ddc4e4ea5d63f90da2ec39ceabf04297f；rows SHA271f50a390afebeecd012e179c91612dbde39455c94698276b7f916e44962e27；NPZ SHA9ae57406d59db72a1a73a7068866db55f81adb49da7f089d625315359a401db2。真实loss源SHA920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de，port SHA0375886f9df2b3ac18a63ce7571d672ceb433613b6defdfcd9f8d244a20bf855。

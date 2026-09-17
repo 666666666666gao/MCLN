@@ -430,3 +430,7 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 - Deleted both sealed OpenShape pair terminals after full receipt hashes, successful completed audits and no active dependency;1507980579 bytes freed, no local backup for these two. All result/log/source/parent evidence retained. Combined with E offload1822336158 bytes freed; A/D still pending.
 - Real controller15497 live21:53:19,3307823104 bytes free, awaiting Scan formal12668 then both original real probes. Firstcheck23:13:44/300s; Nr then Sr fixed fit/audit/conditional formal. No actual Nr/Sr training or new metrics yet. See master20.235.
 - Follow-up21:56:30 Scan1971/3723 live; conditional formal ETA23:55–00:25. A331181534 bytes archived/hash-verified and removed; cumulative2153517692 freed, D copying.
+
+## 2026-09-17 Weight offload complete; fixed REC run continues
+- A/D transfer exited0 at22:04:01, full local SHA verified before remote removal. Including E and sealed OpenShape cleanup2495817259 bytes freed this round; remote free3981541376. All protected/current weights and metric exports retained.
+- Scan2176/3723 at22:04:49, all original jobs live; serial15497/15498 both live waiting, no new formal result. Configuration/REC-only gates unchanged. See master20.236.

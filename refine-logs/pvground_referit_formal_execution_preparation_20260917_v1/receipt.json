@@ -1,0 +1,99 @@
+{
+  "status": "cpu_preparation_pass",
+  "time_cst": "2026-09-17T21:27:28.663375+08:00",
+  "datasets": {
+    "nr3d": {
+      "parent_sha256": "d2d9afaf9c293c54977f3555a46c7bb2a72d9f80163a3f602dd8426032d7fa5d",
+      "state_tensors": 1272,
+      "actual_cpu_parent_restore": true,
+      "initial_state_fixture_restore": true,
+      "missing_task_state_rejected": true,
+      "actual_terminal_restore": false,
+      "model_forwards": 0
+    },
+    "sr3d": {
+      "parent_sha256": "a4a14b0090947177a648703ad6de094246891d89174fffa56fe454f730dbe3dc",
+      "state_tensors": 1272,
+      "actual_cpu_parent_restore": true,
+      "initial_state_fixture_restore": true,
+      "missing_task_state_rejected": true,
+      "actual_terminal_restore": false,
+      "model_forwards": 0
+    }
+  },
+  "boundary_cases": [
+    {
+      "dataset": "nr3d",
+      "hits": [
+        4726,
+        4059
+      ],
+      "pass_expected": true
+    },
+    {
+      "dataset": "nr3d",
+      "hits": [
+        4725,
+        4059
+      ],
+      "pass_expected": false
+    },
+    {
+      "dataset": "nr3d",
+      "hits": [
+        4726,
+        4058
+      ],
+      "pass_expected": false
+    },
+    {
+      "dataset": "nr3d",
+      "hits": [
+        4727,
+        4060
+      ],
+      "pass_expected": true
+    },
+    {
+      "dataset": "sr3d",
+      "hits": [
+        12139,
+        10335
+      ],
+      "pass_expected": true
+    },
+    {
+      "dataset": "sr3d",
+      "hits": [
+        12138,
+        10335
+      ],
+      "pass_expected": false
+    },
+    {
+      "dataset": "sr3d",
+      "hits": [
+        12139,
+        10334
+      ],
+      "pass_expected": false
+    },
+    {
+      "dataset": "sr3d",
+      "hits": [
+        12140,
+        10336
+      ],
+      "pass_expected": true
+    }
+  ],
+  "formal_rows": 0,
+  "model_forwards": 0,
+  "optimizer_steps": 0,
+  "new_checkpoints": 0,
+  "torch_cuda_initialized": false,
+  "script_sha256": "921a6a79894ec57714ab82aa7b7b62c8c76f94b348cda56fef0f93eb4ab801f4",
+  "evaluator_sha256": "5d2de08abef8495876925043df6cb6a450a67e62fabaca05ed2639bae6d37d59",
+  "elapsed_seconds": 22.44474506378174,
+  "scope": "actual CPU parents plus initial-state fixture and REC boundary checks; no trained terminal or formal inference"
+}

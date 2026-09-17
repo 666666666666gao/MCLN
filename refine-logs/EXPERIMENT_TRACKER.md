@@ -414,3 +414,9 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 - Full-fit entry checks actual Scan REC-only formal pass and own restored real backward probe before model. Native repeated detection dictionaries use sampled index IDs. Three CPU behavior cases passed in actual runtime; both premature launch attempts rejected. No full loader/GPU/training/metrics claimed.
 - Driver1b64a82797a000f3805bc272b551cc36d7bb8d31726b976e8eba2afdcfda6dd4. Prepare/native_loss/evaluate/loader AST unchanged from Scan F. Endpoint/formal controllers and disk provision remain before full launch.
 - Scan F691/3723 observed21:05:11 with original processes live; no terminal/new formal results. See master20.232.
+
+## 2026-09-17 ReferIt endpoint/formal entries and input contracts
+- Actual native val binding passed: Nr7899/130scenes, Sr17726/255scenes;312mesh files and2.1GB points fully hashed; no inference. Five mixed-log audit behavior cases passed.
+- Formal parent/terminal bbs comparison and independent REC-only audit installed; targets4726/4059 Nr,12139/10335 Sr. Real CPU official parents each strictly expanded1235→1272; in-memory initial-state fixture and missing-task rejection passed,8 REC boundaries passed with zero Mask metrics. No actual terminal or GPU evaluation yet.
+- Fixed invocation to reuse existing env; reset pinned YAML per CPU model because upstream VSA mutates MLPS. Failed preparation logs retained; running Scan unchanged.
+- Scan F1139/3723 at21:23:24; serial full-training controllers and disk supply remain. See master20.233.

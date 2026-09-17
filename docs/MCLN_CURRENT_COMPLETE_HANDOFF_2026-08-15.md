@@ -19260,3 +19260,23 @@ Sr native_batch.pt为135837820字节，SHA d503b7fb3282ac682f642a2a7f0cd31133b70
 20:35:13 Sr单batch前后向接续controller13750启动，与Nr13286均绑定本轮F正式controller12668的真实结果；Scan正式REC过线后，分别加载各自官方父及同一结构/辅助损失，使用GPU锁依次执行。Scan未过则写skip。Sr新增入口SHA ad00edc841e778d0af55328ca47b095da4ad3f2a931ace40092175a8e0512363，等待controller SHA432aee644f6a67119aa7c00825ee87b7dc48f89c5a8d42fae9994b78768d0abe。20:39再次核对两者原进程均存活。这是门后的单batch检查，不是Nr/Sr完整训练已启动；真实模型前后向及后续完整训练/正式评估仍待执行。
 
 归档refine-logs/pvground_sr_native_batch_20260917_v1、pvground_sr_rec_competition_preparation_20260917_v1；F initial/receipt.json、endpoint initial_audit.json及initial_completion_observation.json保存本节依据。下一步完成固定F，对自身起点与D终点做双REC比较，达到既定筛选后执行Scan正式9508，正式达到V99 REC保护线即推进Nr/Sr训练。当前三数据集目标仍未完成，未新增Mask专项或不同seed实验。
+### 20.231 Nr/Sr实际训练划分核验完成；Scan F继续按REC-only目标优化（2026-09-17 20:55 CST）
+
+当前ScanRefer只以同一正式9508条主输出bbs的Acc@0.25和Acc@0.50作为性能晋级条件，保护线5572/4797（58.6033/50.4523%），争取超过59/51。Mask仅记录诊断，原生训练损失保持；不将取消Mask门解释为旧失败晋级。20:53:43实际读取F train.jsonl为401/3723步，累计969.433秒、最近一步2.313秒；实际训练12755、训练/审计/正式controller及Nr/Sr门后单batchcontroller均存活。尚无F终态或新9508正式指标，暂估23:15—23:35完成训练及终态模块留出，正式评估须待筛选通过。
+
+为准备Scan REC过线后的跨数据集训练，CPU controller13955于20:47:54启动，20:49:05完成、exit0，实际工作71.138秒。复用已核验的原生ReferIt加载器、完整1201训练场景pickle、注释与划分文件、mesh superpoint清单及源文件SHA；未生成文本图、未调用模型或优化器、CUDA未初始化。原生联合检测包含1199条基础行，各重复10次；不同扫描可能属于同一物理房间，因此不能只排除语言留出行而保留对应检测行。
+
+| 划分 | Nr3D | Sr3D |
+| --- | ---: | ---: |
+| 语言fit / 模块holdout | 26747 / 6172 | 55518 / 10328 |
+| 保留 / 排除检测基础行 | 1000 / 199 | 1004 / 195 |
+| 总fit行（含检测10次） | 36747 | 65558 |
+| batch8单次遍历更新数 | 4594 | 8195 |
+| fit / holdout物理房间 | 466 / 98 | 467 / 96 |
+| 后续正式表达行 | 7899 | 17726 |
+
+Nr语言fit与6172条holdout逐索引保持历史清单不变；Sr复用同一预先固定salt和物理房间哈希规则，不能按模型错误挑选。检测行按语言holdout的物理房间排除，保留原生10倍重复索引。实测fit与模块holdout、全部训练房间与正式房间的交集均空。本地另重计JSON行数、索引唯一性、10次重复映射、物理房间分离和文件SHA通过。这是新增模块训练划分的隔离，不代表官方预训练从未见过模块holdout。
+
+Nr partition SHA f17805d1faa8347e000ca7f800fe666742a1acd56bf7d2ae3b0e8d0e7d29d6fc，2635468字节；Sr SHA71bb8fd46587f1cd75371f9bf01e9de50412dffed8c5918f2e9f754b267e1c16，5213955字节。保存原始语言行关键字段SHA及检测scene列表，供后续loader核对；不保存新的权重。脚本prepare/launch/observe_pvground_referit_fit_partitions.py；原始回执和local_recount位于refine-logs/pvground_referit_fit_partitions_20260917_v1。
+
+上述4594/8195只是已验证划分在batch8下一次遍历的算术预算，不是已启动完整训练。Nr/Sr目前仍仅有Scan正式REC过线后的单batch前后向检查接续，完整训练入口及其终态/正式流程仍待实现和运行。保留butd_cls实例框与预测类别协议，不声称纯点云检测；继续加载各数据集官方父权重。当前Scan运行不修改配置、不挑中间快照、不增加Mask专项。三数据集目标未完成。

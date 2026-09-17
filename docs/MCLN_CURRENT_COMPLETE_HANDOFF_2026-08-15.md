@@ -18973,3 +18973,41 @@ input_selection、rows、candidate_values NPZ及16批原始日志全部保留。
 当前C、D固定训练及既定机制检查已完成。本次结束“仅凭指标权衡就减小Mask损失”的诊断分支，不扩展成更多相同的梯度统计或扫描权重。下一轮方法需先明确可部署分数、几何输出或输入证据中哪一个发生实质变化，再固定最小训练对照；目前未启动新训练，不把参数方向当作任何新模块的成功依据。受保护V99为58.6033/50.4523，ScanRefer现行保护和三数据集目标不变；达正式底线后尽快Nr/Sr REC，总目标仍未完成。
 
 绑定：D终点SHA ce03188965491a82bcb1c5a6d26f590d3a243a01985457f220d5503c75b2fcf5；driver SHA2ac6aa173c0fad9198121e54002ef3c1d9494eb7ba5597f6b52b617f936dcad8；diagnostic SHA1d267bb37152dc6e875e4407fca4c93ddc4e4ea5d63f90da2ec39ceabf04297f；rows SHA271f50a390afebeecd012e179c91612dbde39455c94698276b7f916e44962e27；NPZ SHA9ae57406d59db72a1a73a7068866db55f81adb49da7f089d625315359a401db2。真实loss源SHA920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de，port SHA0375886f9df2b3ac18a63ce7571d672ceb433613b6defdfcd9f8d244a20bf855。
+
+### 20.217 固定D终点的BN运行统计干预：严格阈值局部净增4条，未形成双阈值提升（2026-09-17）
+
+上一轮共享参数方向诊断已完成，本轮检验其未覆盖的非可训练状态：预训练BatchNorm运行统计在微调后发生变化，是否会实质改变当前输出。不是重新执行梯度诊断，不增加网络模块；受保护V99、A/B/C/D架构与终态结论均不变。
+
+#### 先核对实际变化，再固定干预
+
+CPU只读加载官方Scan epoch81及D3723步终点；84组BN共252个running_mean/running_var/num_batches_tracked均变化，全部计数器从479199到482922，恰好增加3723。统计变化属于训练预期现象，本身不是bug、统计污染或性能下降证据。已保存逐张量均值、最大绝对差和RMS，未从数值最大的一层挑选干预目标。
+
+docs/PVG_NORMALIZATION_INTERVENTION_PLAN_2026-09-17.md在GPU前固定：沿用128个fit物理场景/各首条表达、seed2027、batch8、无增强、eval。三臂为D正常、D正常重复、D全部可训练参数保持终态而仅将全部BN运行统计恢复父值。BN affine weight/bias保持D；不按层挑选、不扫描混合比例、不重估统计。模型中实际_BatchNorm模块的buffer集合须与census252项完全相等。
+
+三臂各自恢复相同Python/NumPy/CPU/CUDA随机状态，并从相同原数据重新构造输入。每批后恢复D的BN及正常臂前向后的随机状态，保证后续批序列不被额外前向消耗的随机数改变。GT框只在forward后用于IoU分析，不把GT框输入模型。bbs仍按预定的root表达解析图和原生评分公式计算，不是新增GT选框器。
+
+#### 实际执行与完整结果
+
+17:13:39启动controller8172，17:15:22完成，103.34秒、exit0；按约5分钟首次取证计划于17:18后收取完整产物，没有中途改配置。48次no_grad前向，0 backward/optimizer/checkpoint/正式行；峰值allocated3907996160字节。末态逐项验证1271项完整模型状态与D恢复值相等，所有参数.grad为None。
+
+| 固定128训练场景 | REC命中@0.25/@0.50 | 相对正常修复@0.25/@0.50 | 破坏@0.25/@0.50 | 所选IoU均值 |
+| --- | ---: | ---: | ---: | ---: |
+| D正常 | 114/106 | 0/0 | 0/0 | 0.665025979 |
+| D正常重复 | 114/106 | 0/0 | 0/0 | 0.665025979 |
+| D参数＋父BN运行统计 | 114/110 | 1/6 | 1/2 | 0.678163026 |
+
+正常重复的全部原始框、分数与IoU逐位相同。父BN干预的80/128所选Query编号改变，原始框分量最大差6.302164米，score最大差0.96035564。该最大差比较同编号框，不能解读成同一实例的边界移动6.3米；候选身份也可能变化。原始32768候选中，含非正尺寸的框从7339增加到9620。原始256框GT oracle两臂均128/127，它不是合法候选召回。
+
+这证明本次固定终点对BN运行统计有明显敏感性，且恢复父统计在该训练子集有严格阈值净+4的局部正信号。宽松阈值净0，不是双阈值同时提高；候选整体质量改善、BN是主要退化原因、冻结BN训练有效、正式泛化改善均未被证明。尤其当前干预保持D权重不变，与从起点用固定统计训练是两种不同实验，不能互相替代。
+
+#### 独立复核与执行边界
+
+本次额外保存每臂所有原始center/size、score、IoU及root GT。scripts/analyze_pvground_normalization_intervention.py从导出的原始框和GT，按原生尺寸clamp>=1e-6及严格>0.25/>0.5重算98304个候选，float32 IoU最大差0，全部选择和修复/破坏一致。它没有重新解析原始annotation，也没有独立重建未保存的logits/token-map评分；评分公式由真实源码对照核验。
+
+新上下文独立审计见docs/PVG_NORMALIZATION_INTERVENTION_AUDIT_2026-09-17.md，same-family/provisional。运行参数、实际source_port、dataset来源、状态替换范围、随机状态配对与导出数值分开审计。保存真实负尺寸、修复和破坏，不因净+4而筛掉不利行。没有新增Mask测量，不据此满足ScanRefer五项正式要求。
+
+17:19:27核验controller8172已退出、exit0、GPU无计算进程，磁盘剩余1800560640字节；本轮0新权重、0删除。CPU及GPU证据分别在refine-logs/pvground_normalization_census_20260917_v1和pvground_normalization_intervention_20260917_v1。干预混合状态仅存在于运行内存，未保存为可部署新checkpoint。
+
+本轮封存这个固定干预，不启动冻结BN训练、逐层恢复或比例扫描，也不将其直接进入9508。当前证据可以保留为训练适配敏感性线索，但不能替代下一项机制的独立训练证据。后续方法必须明确区别于已失败的末层重读/任务常量，以及已有D参数上的状态替换；不因小样本单项上涨恢复长期baseline重训或改变seed。三数据集目标继续有效，ScanRefer正式保护仍58.6033/50.4523；尚未满足进入Nr/Sr训练的既定条件，总目标未完成。
+
+绑定：D终点ce03188965491a82bcb1c5a6d26f590d3a243a01985457f220d5503c75b2fcf5；GPU driver bb0d8f2878e45ba78ca064add0b358434f6d263456a0b6261e68116a10234110；diagnostic 17bb48a5c4904c7f5d116ea7404189fee5e4a713258f38df214d63c17b7ca7a4；rows f2a99d0b39e158e18c4fc884c3d98ee782872507dc1e7cb69ad2aeb462fce33b；NPZ 04ca3fc81e8a239fdfc37501ec89beb62deb07e276ac2cb28192cedb99d3004e。来源文件和其余哈希见spec、census、diagnostic及审计。

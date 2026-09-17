@@ -1,5 +1,5 @@
 {
-  "time_cst": "2026-09-17T20:25:00.557627+08:00",
+  "time_cst": "2026-09-17T23:23:39.437237+08:00",
   "stages": {
     "finetune": {
       "launch.json": {
@@ -7,6 +7,7 @@
         "screen": "mcln_pvg_rec_competition_v1",
         "time_cst": "2026-09-17T20:08:32.581213+08:00"
       },
+      "controller.exit": "0",
       "preflight.exit": "0",
       "preflight_receipt.json": {
         "competition": {
@@ -59,16 +60,16 @@
         "batch_size": 8,
         "eligible25": 8,
         "eligible50": 7,
-        "grad_norm": 121.26919555664062,
-        "loss": 13.904457092285156,
-        "loss_bbox": 1.8883376121520996,
-        "loss_ce": 26.671985626220703,
-        "loss_giou": 1.994598150253296,
-        "loss_native": 13.411375045776367,
-        "loss_rec_competition": 0.49308156967163086,
-        "loss_sem_align": 97.23568725585938,
+        "grad_norm": 119.30403137207031,
+        "loss": 13.904474258422852,
+        "loss_bbox": 1.88833749294281,
+        "loss_ce": 26.672012329101562,
+        "loss_giou": 1.994597315788269,
+        "loss_native": 13.411381721496582,
+        "loss_rec_competition": 0.49309268593788147,
+        "loss_sem_align": 97.23575592041016,
         "optimizer_steps": 0,
-        "peak_allocated_bytes": 19793474560,
+        "peak_allocated_bytes": 19793565696,
         "rows": [
           14307,
           26871,
@@ -79,12 +80,103 @@
           29949,
           23417
         ],
-        "seconds": 23.103891849517822,
+        "seconds": 22.714667081832886,
         "status": "pass",
-        "time_cst": "2026-09-17T20:09:21.459778+08:00"
+        "time_cst": "2026-09-17T20:26:14.593305+08:00"
       },
-      "process": "12166       16:30 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_rec_competition_v1/controller.py",
-      "log_tail": "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\nPVG_FINETUNE_DATASET_LOADING 2026-09-17T20:18:53.966510+08:00\nLoading train files, take a breath!\nBegin text decoupling......\n"
+      "receipt.json": {
+        "added_state_tensors": 37,
+        "changed_parameter_tensors": 796,
+        "checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+        "competition_module_sha256": "a9f29de16a1be902c912ea1d0b3759323d23b7e757e0224f587e069d8caeee57",
+        "fit_rows": 29778,
+        "fit_seen_exactly_once": true,
+        "formal_rows": 0,
+        "frozen_parameters_unchanged": true,
+        "holdout_rows": 6887,
+        "initial": {
+          "bbf": {
+            "mask_hits25": 6187,
+            "mask_hits50": 5836,
+            "mask_iou_sum": 5119.069850585423,
+            "mask_miou": 74.32945913438978,
+            "rec_hits25": 6175,
+            "rec_hits50": 5584
+          },
+          "bbs": {
+            "mask_hits25": 6174,
+            "mask_hits50": 5824,
+            "mask_iou_sum": 5106.323576468974,
+            "mask_miou": 74.1443818276314,
+            "rec_hits25": 6147,
+            "rec_hits50": 5549
+          }
+        },
+        "new_parameters": 923616,
+        "observation_module_sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+        "observation_state": true,
+        "primary_mode": "bbs",
+        "primary_rec_nonregression": false,
+        "rec_competition": true,
+        "script_sha256": "9b5b99b066204a5f74f02398fe24a5de4aac962854653c094c087c74d857f0aa",
+        "source_port_sha256": "0375886f9df2b3ac18a63ce7571d672ceb433613b6defdfcd9f8d244a20bf855",
+        "source_query_module_sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+        "source_query_read": true,
+        "spec_sha256": "c12749af94d54a6effb93119ca97062eb8c47c39f3931fb3368db4b2903dc13b",
+        "status": "complete",
+        "task_module_sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+        "task_read": true,
+        "terminal": {
+          "bbf": {
+            "mask_hits25": 6181,
+            "mask_hits50": 5820,
+            "mask_iou_sum": 5102.508165229578,
+            "mask_miou": 74.08898163539389,
+            "rec_hits25": 6155,
+            "rec_hits50": 5506
+          },
+          "bbs": {
+            "mask_hits25": 6187,
+            "mask_hits50": 5821,
+            "mask_iou_sum": 5107.446187444497,
+            "mask_miou": 74.16068226287929,
+            "rec_hits25": 6150,
+            "rec_hits50": 5501
+          }
+        },
+        "terminal_sha256": "9762fb3e91ed1203f085328b4388ed45e74a5e8b920b9aac7c3a499cd298f4ca",
+        "time_cst": "2026-09-17T23:19:02.015667+08:00",
+        "train_log_sha256": "66c9d60fe7c4b4a284daa168572f59f1f1e9aa60f03188f7ed10d14bd9b0ec30",
+        "training_steps": 3723,
+        "transitions": {
+          "bbf": {
+            "0.25": {
+              "breaks": 179,
+              "fixes": 159,
+              "net": -20
+            },
+            "0.5": {
+              "breaks": 399,
+              "fixes": 321,
+              "net": -78
+            }
+          },
+          "bbs": {
+            "0.25": {
+              "breaks": 171,
+              "fixes": 174,
+              "net": 3
+            },
+            "0.5": {
+              "breaks": 383,
+              "fixes": 335,
+              "net": -48
+            }
+          }
+        }
+      },
+      "process": "",
+      "log_tail": "PVG_EVAL_PROGRESS {\"stage\": \"terminal\", \"rows\": 5632, \"total\": 6887, \"seconds\": 574.7793419361115}\nPVG_EVAL_PROGRESS {\"stage\": \"terminal\", \"rows\": 6144, \"total\": 6887, \"seconds\": 629.748318195343}\nPVG_EVAL_PROGRESS {\"stage\": \"terminal\", \"rows\": 6656, \"total\": 6887, \"seconds\": 683.5999183654785}\nPVG_EVAL_COMPLETE {\"status\": \"pass\", \"stage\": \"terminal\", \"rows\": 6887, \"metrics\": {\"bbs\": {\"rec_hits25\": 6150, \"rec_hits50\": 5501, \"mask_hits25\": 6187, \"mask_hits50\": 5821, \"mask_iou_sum\": 5107.446187444497, \"mask_miou\": 74.16068226287929}, \"bbf\": {\"rec_hits25\": 6155, \"rec_hits50\": 5506, \"mask_hits25\": 6181, \"mask_hits50\": 5820, \"mask_iou_sum\": 5102.508165229578, \"mask_miou\": 74.08898163539389}}, \"elapsed_seconds\": 705.6896951198578, \"time_cst\": \"2026-09-17T23:18:58.544760+08:00\", \"formal_rows\": 0, \"rows_sha256\": \"9d8cb5283246ea28762d68a0bf38981943b81a10ecaede60c715929cde458113\", \"boxes_sha256\": \"3d602fe80d9665a311de3357996fe09a2676d339cc9f1e448e7b239ab9cf4666\", \"scores_sha256\": \"b794aef4e444cd3ad1da4a3d17bb70d08c3ca5ca28d35a4bb52d7a1d41bcc133\"}\nPVG_FINETUNE_COMPLETE {\"status\": \"complete\", \"time_cst\": \"2026-09-17T23:19:02.015667+08:00\", \"training_steps\": 3723, \"fit_rows\": 29778, \"holdout_rows\": 6887, \"formal_rows\": 0, \"primary_mode\": \"bbs\", \"initial\": {\"bbs\": {\"rec_hits25\": 6147, \"rec_hits50\": 5549, \"mask_hits25\": 6174, \"mask_hits50\": 5824, \"mask_iou_sum\": 5106.323576468974, \"mask_miou\": 74.1443818276314}, \"bbf\": {\"rec_hits25\": 6175, \"rec_hits50\": 5584, \"mask_hits25\": 6187, \"mask_hits50\": 5836, \"mask_iou_sum\": 5119.069850585423, \"mask_miou\": 74.32945913438978}}, \"terminal\": {\"bbs\": {\"rec_hits25\": 6150, \"rec_hits50\": 5501, \"mask_hits25\": 6187, \"mask_hits50\": 5821, \"mask_iou_sum\": 5107.446187444497, \"mask_miou\": 74.16068226287929}, \"bbf\": {\"rec_hits25\": 6155, \"rec_hits50\": 5506, \"mask_hits25\": 6181, \"mask_hits50\": 5820, \"mask_iou_sum\": 5102.508165229578, \"mask_miou\": 74.08898163539389}}, \"transitions\": {\"bbs\": {\"0.25\": {\"fixes\": 174, \"breaks\": 171, \"net\": 3}, \"0.5\": {\"fixes\": 335, \"breaks\": 383, \"net\": -48}}, \"bbf\": {\"0.25\": {\"fixes\": 159, \"breaks\": 179, \"net\": -20}, \"0.5\": {\"fixes\": 321, \"breaks\": 399, \"net\": -78}}}, \"primary_rec_nonregression\": false, \"checkpoint_sha256\": \"6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3\", \"terminal_sha256\": \"9762fb3e91ed1203f085328b4388ed45e74a5e8b920b9aac7c3a499cd298f4ca\", \"changed_parameter_tensors\": 796, \"frozen_parameters_unchanged\": true, \"fit_seen_exactly_once\": true, \"train_log_sha256\": \"66c9d60fe7c4b4a284daa168572f59f1f1e9aa60f03188f7ed10d14bd9b0ec30\", \"spec_sha256\": \"c12749af94d54a6effb93119ca97062eb8c47c39f3931fb3368db4b2903dc13b\", \"script_sha256\": \"9b5b99b066204a5f74f02398fe24a5de4aac962854653c094c087c74d857f0aa\", \"task_read\": true, \"task_module_sha256\": \"39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d\", \"observation_state\": true, \"observation_module_sha256\": \"cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742\", \"source_query_read\": true, \"source_query_module_sha256\": \"e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab\", \"source_port_sha256\": \"0375886f9df2b3ac18a63ce7571d672ceb433613b6defdfcd9f8d244a20bf855\", \"added_state_tensors\": 37, \"new_parameters\": 923616, \"rec_competition\": true, \"competition_module_sha256\": \"a9f29de16a1be902c912ea1d0b3759323d23b7e757e0224f587e069d8caeee57\"}\n"
     },
     "endpoint_audit": {
       "launch.json": {
@@ -92,8 +184,8 @@
         "screen": "mcln_pvg_rec_competition_audit_v1",
         "time_cst": "2026-09-17T20:08:40.721226+08:00"
       },
-      "process": "12171       16:22 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260917_rec_competition_v1/controller.py",
-      "log_tail": ""
+      "process": "12171    03:15:05 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260917_rec_competition_v1/controller.py",
+      "log_tail": "PVG_INITIAL_AUDIT_COMPLETE {\"integrity_pass\": true, \"stage\": \"initial\", \"formal_rows\": 0, \"metrics\": {\"bbs\": {\"rec_hits25\": 6147, \"rec_hits50\": 5549, \"mask_hits25\": 6174, \"mask_hits50\": 5824, \"mask_iou_sum\": 5106.323576468974, \"mask_miou\": 74.1443818276314}, \"bbf\": {\"rec_hits25\": 6175, \"rec_hits50\": 5584, \"mask_hits25\": 6187, \"mask_hits50\": 5836, \"mask_iou_sum\": 5119.069850585423, \"mask_miou\": 74.32945913438978}}, \"checks\": {\"rows\": 6887, \"candidate_boxes_checked\": 1763072, \"selection_checks\": 13774, \"max_selected_iou_error\": 2.54348355110956e-06}, \"receipt_sha256\": \"854227213ca91b53f401279664a929ad4c70d9b726fd0254e6307d9e27a627c4\", \"time_cst\": \"2026-09-17T20:38:35.913061+08:00\"}\n"
     },
     "formal": {
       "launch.json": {
@@ -106,9 +198,9 @@
         "cpu_probe_source": "previous completed6887 recount plus actual CPU model restore with in-memory fixture; no terminal claim",
         "training_changes": false
       },
-      "process": "12668       10:38 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260917_rec_competition_v1/controller.py",
+      "process": "12668    03:09:21 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260917_rec_competition_v1/controller.py",
       "log_tail": ""
     }
   },
-  "resources": "Filesystem       1B-blocks        Used  Available Use% Mounted on\n/dev/sdb       53687091200 51647504384 2039586816  97% /root/autodl-tmp\n2435 MiB, 0 %\n"
+  "resources": "Filesystem       1B-blocks        Used  Available Use% Mounted on\n/dev/sdb       53687091200 50110586880 3576504320  94% /root/autodl-tmp\n1 MiB, 0 %\n"
 }

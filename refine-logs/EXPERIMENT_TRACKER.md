@@ -434,3 +434,9 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 ## 2026-09-17 Weight offload complete; fixed REC run continues
 - A/D transfer exited0 at22:04:01, full local SHA verified before remote removal. Including E and sealed OpenShape cleanup2495817259 bytes freed this round; remote free3981541376. All protected/current weights and metric exports retained.
 - Scan2176/3723 at22:04:49, all original jobs live; serial15497/15498 both live waiting, no new formal result. Configuration/REC-only gates unchanged. See master20.236.
+
+## 2026-09-17 F completed: competition did not preserve strict REC
+- Fixed3723/29778 training completed23:07:12; full6887 terminal23:18:58, controller0. Independent endpoint audit passed23:23:45. bbs6150/5501 vs own6147/5549 (+3/-48); vs D6136/5547 (+14/-46). bbf6155/5506 also regressed. Formal skipped_primary_rec_regression,0 formal rows; Mask did not gate.
+- Same initial exports and3723 training row order verified. D/F raw256 oracle6879/6701→6852/6687; strict selection gap1154→1186. -46=-14-32 is descriptive arithmetic, not causal attribution. Of374 strict breaks,366 retain a qualifying box,341 within top16. Both-root-maximum-overlap proxy subset net-36, others-10; no semantic identity claim.
+- F terminal9762fb3e91ed1203f085328b4388ed45e74a5e8b920b9aac7c3a499cd298f4ca retained; independently audited superseded latest342296367 bytes deleted. Full raw log and pair diagnostics archived. No extra epochs/hyperparameter scan; ScanV99 protected58.6033/50.4523 unchanged. See master20.237 and PVG_REC_COMPETITION_RESULT_2026-09-17.md.
+- Final live check23:35:25: all original controllers exited0, none remain. Nr/Sr actual probes and serial queue skipped_scanrefer_rec;0 new model forwards/optimizer/full training jobs. No restart or replacement task.

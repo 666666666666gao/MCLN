@@ -1,5 +1,5 @@
 {
-  "time_cst": "2026-09-17T20:15:05.962270+08:00",
+  "time_cst": "2026-09-17T20:25:00.557627+08:00",
   "stages": {
     "finetune": {
       "launch.json": {
@@ -46,6 +46,13 @@
         "spec_sha256": "c12749af94d54a6effb93119ca97062eb8c47c39f3931fb3368db4b2903dc13b",
         "status": "pass"
       },
+      "training_start.json": {
+        "time_cst": "2026-09-17T20:18:31.762980+08:00",
+        "disk_free": 2039664640,
+        "required_free": 1759741824,
+        "training_steps": 3723,
+        "seed": 2027
+      },
       "capacity.json": {
         "active25": 7,
         "active50": 6,
@@ -76,8 +83,8 @@
         "status": "pass",
         "time_cst": "2026-09-17T20:09:21.459778+08:00"
       },
-      "process": "12166       06:35 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_rec_competition_v1/controller.py",
-      "log_tail": "REC_COMPETITION_WAIT_DISK 1699528704\n"
+      "process": "12166       16:30 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_rec_competition_v1/controller.py",
+      "log_tail": "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\nPVG_FINETUNE_DATASET_LOADING 2026-09-17T20:18:53.966510+08:00\nLoading train files, take a breath!\nBegin text decoupling......\n"
     },
     "endpoint_audit": {
       "launch.json": {
@@ -85,7 +92,7 @@
         "screen": "mcln_pvg_rec_competition_audit_v1",
         "time_cst": "2026-09-17T20:08:40.721226+08:00"
       },
-      "process": "12171       06:28 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260917_rec_competition_v1/controller.py",
+      "process": "12171       16:22 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_endpoint_audit_20260917_rec_competition_v1/controller.py",
       "log_tail": ""
     },
     "formal": {
@@ -99,9 +106,9 @@
         "cpu_probe_source": "previous completed6887 recount plus actual CPU model restore with in-memory fixture; no terminal claim",
         "training_changes": false
       },
-      "process": "12668       00:44 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260917_rec_competition_v1/controller.py",
+      "process": "12668       10:38 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/mcln_pvground_scanrefer_formal_20260917_rec_competition_v1/controller.py",
       "log_tail": ""
     }
   },
-  "resources": "Filesystem       1B-blocks        Used  Available Use% Mounted on\n/dev/sdb       53687091200 51647426560 2039664640  97% /root/autodl-tmp\n1 MiB, 0 %\n"
+  "resources": "Filesystem       1B-blocks        Used  Available Use% Mounted on\n/dev/sdb       53687091200 51647504384 2039586816  97% /root/autodl-tmp\n2435 MiB, 0 %\n"
 }

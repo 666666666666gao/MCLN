@@ -395,3 +395,7 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 - Training12166, audit12171, formal12668 queued; formal first check23:13:44 then300s. Scan formal REC-only floors5572/4797; Mask diagnostic. Full-update ETA about3h after actual pipeline launch, superseding plan's2h estimate.
 - B/C failed terminal files copied to D archive and SHA verified before exact remote deletion;680085960bytes freed, protected parents/V99 unchanged. Complete evidence in pvground_failed_weight_offload_20260917_v1.
 - See master§20.228. No new formal9508 results, no Nr/Sr training yet; goal active.
+## 2026-09-17 F launch and gated Nr preparation
+- F actual pipeline launched20:18:31;20:25 original controllers12166/12171/12668 live, text parsing, no new accuracy.
+- Actual Nr batch has4 referring and4 scannet detection rows; language_dataset is all nr3d. Auxiliary REC uses sample_dataset, detection contributes zero; full-batch denominator retained. CPU behavior passed for Nr/Sr, not actual model performance.
+- Nr real batch probe controller13286 waits Scan F formal REC-only gate. No Nr optimizer or Sr job launched. See master20.229 and pvground_nr_rec_competition_preparation_20260917_v1.

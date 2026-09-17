@@ -388,3 +388,10 @@ CPU-only,0forward/update/formal. E initial→terminal strict selected5549→5524
 ## 2026-09-17 Fixed fit-scene instance/extent geometry attribution
 
 CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All original point SHA/root boxes and32768 candidate root IoUs verified (max error0). At.25 failures14:13 other-same-label max,1 other-label max;all14 have qualifying alternatives. At.5 failures22:8 root max,13 same-label max,1 other-label max;21 covered,including all8 root-max failures. Maximum overlap remains a geometry proxy,not semantic identity.0model/update/formal/checkpoint. Next investigate actual-bbs candidate competition with native regression/matching preserved;no new quality head or extra frozen-memory sweep. See§20.227 and pvground_fit_instance_geometry_20260917_v1.
+
+## 2026-09-17 F native bbs competition / REC-only continuation
+- E remains failed (+2/-25 vs own initial); no reclassification from waived Mask gate.
+- F uses D architecture/full update with one training-only matched-root competition loss; fixed seed2027, batch8, LR1e-5, 3723 steps. CPU5 cases and real batch8 backward preflight passed; optimizer0/restored. No accuracy result yet.
+- Training12166, audit12171, formal12668 queued; formal first check23:13:44 then300s. Scan formal REC-only floors5572/4797; Mask diagnostic. Full-update ETA about3h after actual pipeline launch, superseding plan's2h estimate.
+- B/C failed terminal files copied to D archive and SHA verified before exact remote deletion;680085960bytes freed, protected parents/V99 unchanged. Complete evidence in pvground_failed_weight_offload_20260917_v1.
+- See master§20.228. No new formal9508 results, no Nr/Sr training yet; goal active.

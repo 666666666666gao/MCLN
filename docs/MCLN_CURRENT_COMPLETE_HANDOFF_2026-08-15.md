@@ -19212,3 +19212,23 @@ E自身331个严格破坏中8个终态已没有合格框，190个合格框在第
 下一项机制优先检查“原生实际bbs分数的几何有效候选竞争”能否直接训练：保留原生框回归、匹配、Mask损失和推理接口，不新增普通质量头或冻结缓存重排；先明确比较候选及GT边界，再做固定训练对照。这是待实现/待验证方向，不是当前已启动训练，也不将通用排序监督宣称新创新。不会继续扫冻结比例、LR或追加E训练。
 
 源码analyze_pvground_fit_instance_geometry.py/prepare_pvground_fit_instance_geometry.py；归档refine-logs/pvground_fit_instance_geometry_20260917_v1。原D终点SHA ce03188965491a82bcb1c5a6d26f590d3a243a01985457f220d5503c75b2fcf5；本轮driver SHA58dd93cdba71b67f7777115bc3dad6fe25ca5011dafe48cfd90bf7e459cb4fcd，rows SHA3261d80d6376e946ce16c87352b3e886faa1c4e453523d05736aa94f042d9dfb。本地另对rows与summary两阈值计数重计一致，属于导出复核而非再次加载场景。正式保护成绩、REC-only晋级和三数据集完整目标保持；目标未完成。
+
+### 20.228 原生bbs竞争F预检通过、REC-only接续排队与失败权重转存（2026-09-17 20:16 CST）
+
+接续§20.227，F已经实现。复用D的完整预训练PV-Ground及任务读取，未沿用E冻结视觉方案；新增仅训练期原生bbs竞争项，无新模型参数、质量头、推理重排或GT推理输入。保留原生匹配、框回归和Mask损失。按用户最新要求，ScanRefer晋级只看同一9508条bbs的REC两阈值5572/4797，Mask仅诊断，不阻挡Nr/Sr；59/51是争取目标，不恢复历史Mask门，也不追认旧失败。
+
+训练期记录原生criterion的7次Hungarian匹配，使用last_中target=0的唯一匹配p。对0.25和0.50，若p相对root的IoU过线，取不过线候选中实际bbs分数最高的n，增加relu(stopgrad(IoU(p)-IoU(n))+s(n)-s(p))，按2×batch槽位求均值，系数1。原生bbs包含root、modifier、pronoun、relation及other_entity负项；不替换部署分数。无合格匹配时不生成辅助正例，未匹配好框不被全部奖励。该项检验部署竞争监督的增量，不宣称通用排序损失为新颖结构。
+
+固定官方epoch81父、D结构与数据顺序、seed2027、batch8、LR1e-5、29778fit行一次3723步，820允许训练张量及28883227可训练参数；不从失败D/E终点续训。不变函数AST核对包括evaluate、prepare、loader和native_loss。运行环境与source-port均复用并校验SHA，没有重建环境。
+
+实际远端CPU行为测试5项通过。20:09:21真实batch8前向、原生匹配、联合反向预检通过：native loss13.411375，辅助项0.493082，实际有效对8/7、激活对7/6，峰值显存19793474560字节。optimizer_steps=0，全部模型状态恢复，无新权重。这些只证明工程执行，不是准确率收益。spec SHA c12749af94d54a6effb93119ca97062eb8c47c39f3931fb3368db4b2903dc13b，driver SHA9b5b99b066204a5f74f02398fe24a5de4aac962854653c094c087c74d857f0aa。
+
+训练controller12166于20:08:32排队，独立终态审计12171于20:08:40排队。训练须等预检通过及磁盘可用不少于1759741824字节，300秒检查；20:15观察controller仍在，最近日志为等待磁盘，尚无training_start.json，不将排队称为完成优化。审计保留固定3723步和完整训练行核验，实际辅助项/原生项及保存SHA核验通过后才删除被terminal替代的latest。
+
+正式接续controller12668于20:14:26排队，首次检查23:13:44，其后300秒；须独立终态审计及自身起点双REC不退化才运行9508。准备阶段实际CPU重建1271状态，37新增状态内存序列化fixture严格恢复通过，另重计旧6887导出；0模型forward、0正式行，没有声称新terminal已恢复。实际terminal恢复留到晋级后检查。REC-only规则已写入本次evaluate.py和audit.py，而非只修改文字；Mask仍导出，三项不进入promotion checks。
+
+磁盘处理已完成：B/C失败terminal分别完整转存到D:/Program Files/UserCache/gb/codex/tmp/mcln_failed_weight_archive_20260917/B_terminal.pth及C_terminal.pth，每份核对字节与SHA后才删除精确远端文件。B为339778134字节、SHA ec3a08674ccaa648ce808626b88411cf5d06df7c6e64f1a116171b36ffd1d1e8；C为340307826字节、SHA cad742d7ad3efa512435426f74328e298c48263f8dd470eef51448654bff0f93。20:14:48收据确认释放680085960字节，可用2039664640字节。官方三数据集预训练、受保护V99及A/D/E权重未动，B/C全部原始日志、指标和导出保留。本地pth在临时归档目录，不在Git；后续清理本地缓存前应先核对是否仍需复查。
+
+ETA修正：绑定计划原文“约2小时”估计偏短，F采用D完整更新而非E冻结。D实测训练8713.77秒，两次评估676.23/679.26秒；加解析初始化应估计实际训练pipeline启动后约3小时。此修正只改运行预估，不改绑定训练配置或预算。后续按实际吞吐更新，不密集轮询。
+
+代码models/pvground_rec_competition.py、scripts/run_pvground_scanrefer_rec_competition.py及prepare/queue/audit/formal入口；测试tests/test_pvground_rec_competition.py。证据在refine-logs/pvground_scanrefer_{finetune,endpoint_audit,formal}_20260917_rec_competition_v1和pvground_failed_weight_offload_20260917_v1。此时无F终态或新正式成绩，受保护V99仍58.6033/50.4523。下一步完成固定F、按真实起点和D配对判定，正式Scan REC过线即接Nr/Sr REC；三数据集目标仍未完成。

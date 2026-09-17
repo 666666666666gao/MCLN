@@ -356,3 +356,8 @@ Initial6887 finished17:59:30: bbs6147/5549, Mask6174/5824,mIoU74.1443818276. Ind
 ## 2026-09-17 E actual512 checkpoint restore
 
 CPU-only observed512/4096fit checkpoint restored1072delta→1271state exactly;204visual states equal officialparent;optimizer groups[718,0,0],694finite states.37/37reader states changed,both taskqueries changed. No GPU/forward/update/newcheckpoint/formal;check controller9772 exit0,originaltrain8666 continues. Snapshot314278715bytes SHAec8fb325705a4f27ddaa34c06ef9b0426a1db1dc67337d4c9a3e4c207b97dab3. Latest observation2026-09-17T18:10:48.775987+08:00 training576/3723,1423634432bytesfree. No terminal result, promotion or deletion;see§20.220.
+
+
+## 2026-09-17 E formal waiter schedule correction
+
+18:21:25 sleeping formal8872/8873 replaced by10116/10119 after exact process/code/no-output checks. First check19:15,then300s;old launch/spec/log retained. Train8666,endpoint8673 and training spec unchanged;formal code and all gates unchanged. Comparison8866 remains20:41 and is not a gate dependency. Observation 2026-09-17T18:21:45.487476+08:00: 1175/3723 steps,1423388672bytes free,no terminal/formal/deletion. See master§20.221 and reschedule_receipt.json.

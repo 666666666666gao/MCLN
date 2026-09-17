@@ -19095,3 +19095,16 @@ CUDA未初始化，0模型forward、0额外optimizer步、0新checkpoint、0正�
 证据位于refine-logs/pvground_fixed_memory_checkpoint_check_20260917_v1（代码、spec、原始launch、check.log、receipt与exit），这次是单独CPU检查进程，不冒充新增fresh-agent评审。继承§20.218同族暂定源码审计的相关接口结论，但当前E快照的通过来自本次实际执行。正式V99保护、三数据集目标与Nr/Sr接续条件不变，总目标尚未完成。
 
 绑定：第512步snapshot SHA ec8fb325705a4f27ddaa34c06ef9b0426a1db1dc67337d4c9a3e4c207b97dab3；receipt SHA e79b463460718eaf1d048c30bb477d2db61716863b7956b3015bdca8b9d41f30；实际check.py SHA 33299b2b2f0fd11e6213bf945eca777e61448f66e93cf45bd914bbbe64d20f1b；E训练spec仍0babc37d4ecb3fb5e033d6180cccc007c51235d1d52c63316dfd788c8a3fd467。该SHA仅标识本次打开的中间快照，后续latest将被按原规则替换。
+
+
+### 20.221 按E实测速率提前正式等待器首查，训练与筛选不变（2026-09-17）
+
+原正式等待器仍使用启动时的保守20:41首查，而E实测约1.13秒/步、完整initial约674.5秒，预计19:20—19:30已有终态筛选。为避免通过后额外等待一小时，18:21:25只重新安排尚未执行任何推理的formal等待进程。先核对controller8872/child8873的精确命令、单子进程、等待状态、空日志、无decision/evaluation/terminal_restore及全部代码SHA；保留原launch/spec/run到before_reschedule_20260917，再终止这两个等待进程并确认已退出。
+
+新formal controller10116、queue10119，首查改为19:15:00 CST，此后仍300秒；新进程实际进入等待，当前formal_rows=0。训练controller8666、独立endpoint审计8673均保持原进程，训练spec SHA不变；正式evaluate/restore/audit/queue源码及所有门槛完全不变。只有formal spec的first_check_cst改变。终态必须先通过原数值审计、204视觉state冻结核验与bbs自身起点双阈值不退化；再做真实terminal CPU恢复、1GiB空间核验与原GPU锁下9508评估。提前首查不是提前通过，也不启动第二份训练或重复正式评估。
+
+原D/E terminal比较controller8866继续原20:41调度；其延后只影响配对报告生成，不阻塞独立审计或正式门槛。本轮没有为提前报告重跑已完成的initial比较。首个重排脚本在操作前发现运行环境Python3.7 time.sleep使用do_select而非预期hrtimer_nanosleep，安全断言退出、未发信号；读取实际进程后按真实等待状态修正并成功执行，没有添加未知状态fallback。
+
+后续实际观察2026-09-17T18:21:45.487476+08:00：训练日志已1175/3723步、累计1323.172秒；训练/endpoint/比较原句柄与新formal句柄均存活，GPU 612468, 18580 MiB，磁盘1423388672字节。尚无terminal结果，预计完成时间不变。不根据中途loss或快照选权重，无新增方法、训练更新或权重删除。
+
+证据：formal归档reschedule_waiter.py、reschedule_receipt.json及before_reschedule_20260917；本地操作源码scripts/reschedule_pvground_fixed_memory_formal.py。新formal spec SHA 9b556513a6b7bf918ecf3335b51ed080acb2404c3f733831f5149757cf6eeafe，原spec SHA 68c2e2e5154d8a9205d99c185ef29f8c8ca5c3a38e51c37abff8a9d912c9cbc9。受保护正式成绩、ScanRefer先过底线再转Nr/Sr REC的范围不变；总目标未完成。

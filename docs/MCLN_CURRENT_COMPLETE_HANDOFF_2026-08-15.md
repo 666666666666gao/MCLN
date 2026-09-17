@@ -18755,3 +18755,17 @@ D完整零更新6887条于2026-09-17T12:36:01.074709+08:00完成，耗时676.23�
 本次磁盘空闲2212470784字节。A/B/C及官方/受保护权重仍保留，无新增权重删除。当前ScanRefer正式最好、Nr/Sr指标和验收线均未更新，总目标未完成。
 
 证据：同名D训练目录initial/receipt.json、train.jsonl和observation_latest.json；D审计initial_audit.json；pvground_task_observation_comparison_20260917_v1中的initial_A_D、initial_B_D、initial_C_D完整CPU对照。新增只读观察脚本observe_pvground_task_observation_comparison.py，不启动模型或更改队列。
+
+### 20.210 D首个实际checkpoint已完成只读CPU严格恢复（2026-09-17）
+
+12:56:39观察原训练controller1696仍存活，定期日志到512/3723步；累计1203.73秒，未改变配置、预算或原接续。512步latest.pth写出后，12:57:02启动一次独立CPU检查controller3145；2026-09-17T12:57:20.203275+08:00检查完成，2026-09-17T12:57:54.069265+08:00取回check/controller双exit0，检查进程已自然结束。
+
+实际检查的快照是512步、4096条fit表达，文件342222639字节，SHA 387c2e6a2c1156d11f0e49a226370a811027322a825fee3c7ed9b8781c7b21de。只打开一个文件描述符读取hash及payload，固定同一个inode；训练继续原子替换latest不会导致混合读取。没有复制新的checkpoint、运行GPU forward或执行optimizer.step。
+
+全部1072项delta严格恢复到1271项模型状态，包含37项新增reader状态；父权重、训练spec、六源/观测/task模块、source-port哈希与实际payload交叉一致。新增状态中37/37项已改变。语义与几何任务矩阵最大绝对变化分别0.0010438154、0.0009929299，均非零。该证据说明两组任务参数确实参加本轮更新并被保存，不证明它们学到有效的语义/几何分工。
+
+820个优化器参数ID无重复，实际状态数796；保存的moment均有限，计数不超过已观察步数。4096行与训练日志前缀完全一致且均属于fit，不含6887 holdout。检查全过程CUDA未初始化，耗时2.95秒；不把严格权重恢复称为完整断点续训等价性测试，也不将中间快照作为终态或质量指标。
+
+权重写出后磁盘约1870098432字节（1.74GiB），符合预留预算。本次未删除任何权重。D继续固定3723步，终态及正式评估仍由原审计、比较、正式接续处理；目前0新正式9508结果、0Nr/Sr迁移，ScanRefer保护值及总目标均不变。后续重点在接近预估15:15终态时核对原进程，不重复同一checkpoint检查。
+
+证据：refine-logs/pvground_task_checkpoint_check_20260917_v1内check.py、spec、launch、receipt、退出码与观察记录；新增scripts/check_pvground_task_observation_latest.py、prepare_pvground_task_checkpoint_check.py只服务此次CPU检查，没有写入原训练目录或改动模型参数。

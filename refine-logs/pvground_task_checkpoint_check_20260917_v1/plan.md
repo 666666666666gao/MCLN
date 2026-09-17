@@ -1,0 +1,1 @@
+One actual D periodic checkpoint CPU strict restore. Pin one open inode during atomic writer replacements; bind parent/spec/source and all 37 reader states, verify both task matrices updated. No GPU forward, optimizer update, new weights, quality inference or training changes. Record observed step rather than assume512.

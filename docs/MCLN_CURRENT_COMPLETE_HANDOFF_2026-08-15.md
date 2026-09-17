@@ -19169,3 +19169,23 @@ formal决策已写skipped_primary_rec_regression，formal_rows=0；训练、独�
 独立审计后只删除E被终态替代的latest.pth，314352251字节（约299.79MiB），删除前SHA 0a4f63a4481d155f60ee53ad27621df783fb9f9ba88408f377009be2004eb588。保留terminal.pth，SHA fcfb46f9169a1ab25782e0f437b733eba1a245b0c20fba6546fa450208538902；cleanup_receipt已确认deleted=true。19:28:17真实观察GPU空闲，磁盘可用1360179200字节。其他受保护权重和原始证据保留。
 
 证据：本E训练receipt.json、terminal/receipt.json、完整train.jsonl；endpoint audit.json/cleanup_receipt.json；formal decision.json；comparison terminal_D_E.json与exit。下一步优先从已有逐行导出区分合法候选覆盖与实际选择损失，再决定一个有新证据支持的REC机制；不以本轮失败为由扫描冻结比例、LR或追加epoch，也不恢复Mask专项门槛。三数据集目标尚未完成。
+
+### 20.226 E终态REC候选覆盖与排序缺口分解（2026-09-17 19:35 CST）
+
+接续§20.225，仅对已经冻结的E起点、D终点、E终点导出做CPU分析。新增analyze_pvground_fixed_memory_selection.py及运行入口run_pvground_fixed_memory_selection_analysis.py；没有模型forward、optimizer、权重、正式评估或部署规则修改。三组每条row/scene/target/point SHA/root框逐项一致，boxes/scores/rows全部绑定原receipt SHA，重算原框IoU及所选bbs命中。
+
+源码核对：当前PV评估filter_non_gt_boxes=False，保存全部256原框，原生尺寸clamp(min=1e-6)，bbs对文本概率加正跨度、减other_entity后直接取最大。这里不新增NMS、Top-K过滤或GT实例筛选。以下上界仍为GT-only原256框分析，不能与历史MCLN的合法Top-16协议混用，也不作为部署精度。
+
+| 主输出bbs，6887条 | 实际@0.50 | Top-2含合格框 | Top-16含合格框 | Full-256含合格框 | 有框但没选中 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| E起点 | 5549 | 5934 | 6407 | 6696 | 1147 |
+| D终点 | 5547 | 5926 | 6398 | 6701 | 1154 |
+| E终点 | 5524 | 5925 | 6398 | 6692 | 1168 |
+
+E自身331个严格破坏中8个终态已没有合格框，190个合格框在第二名，113个位于第3—16，15个位于17—64，5个位于65—256。D→E的365个严格破坏中8个缺框、210个合格框在第二名、124个在3—16、18个在17—64、5个在65—256。两组相关排名都无分数并列；实现仍显式记录并列下排名上下界，不依赖numpy与Torch相同tie顺序。所选Query采用原导出索引，且核验其分数确为最大。
+
+恒等式selected=oracle-selection_gap给出：E自身严格变化-25=(-4)-(+21)；D→E为-23=(-9)-(+14)。宽松阈值E自身+2=(-9)-(-11)，D→E为+13=(-16)-(-29)。这是集合计数的算术分解，不是把-25因果归到两个独立模块。错误中的多数仍有合格候选，不等于其Query特征足以区分；第二名存在好框也不允许把GT用于推理选第二名。
+
+本轮收敛判断：E没有解决严格阈值下候选选择问题，且候选上界也未提高，不继续扫描冻结比例。已有§20.215—216证据表明原生CE在固定训练样本上多数推动正确margin，不能将当前分布直接说成CE目标错误或Mask梯度压制。后续训练机制需具体区分同实例范围竞争与跨实例表达竞争；先在已固定的训练场景诊断输出中核对所选框与合格替代框的几何对应，不再重复logit/参数方向统计，也不从这些6887留出案例调部署阈值。仍以ScanRefer REC-only正式保护线及三数据集目标为准。
+
+证据归档refine-logs/pvground_fixed_memory_selection_20260917_v1，远端同名加mcln_前缀；analysis.exit=0，完整analysis.json含两阈值Top1/2/4/8/16/32/64/256排名界、候选缺失和配对修复/破坏。driver SHA f6a6b2cc04f49824f83246691a3219c799446e580ae9a62e9f77cd2f70ea30b2。没有新增模型成绩或权重清理；总目标未完成。

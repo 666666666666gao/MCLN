@@ -380,3 +380,7 @@ User waived ScanRefer Mask gate. E formal evaluator and independent auditor now 
 ## 2026-09-17 E fixed visual memory complete, REC-only failure
 
 3723steps/29778fit rows exactly once; final6887 bbs6149/5524 vs own6147/5549 (+2/-25), vs D6136/5547 (+13/-23). Own fixes158/306,breaks156/331. Paired D/E fixes186/342,breaks173/365; full raw256 oracle D6879/6701→E6863/6692, GT-only not legal recall. Independent integrity/frozen204visual audit passed; all four controllers exit0. Formal skipped_primary_rec_regression,0formal rows,no Nr/Sr launch. Mask diagnostics did not gate. Audited superseded E latest314352251bytes deleted; terminal fcfb46f9169a1ab25782e0f437b733eba1a245b0c20fba6546fa450208538902 retained.19:28:17 GPU empty,1360179200bytesfree. See§20.225. No extra training or intermediate selection; full research goal remains active.
+
+## 2026-09-17 E saved-export candidate/selection decomposition
+
+CPU-only,0forward/update/formal. E initial→terminal strict selected5549→5524,raw256oracle6696→6692,selectiongap1147→1168. D→E strict5547→5524,oracle6701→6692,gap1154→1168. Of365 D→E strict breaks,8 have no qualifying box,210 have a good box ranked2,124 ranked3-16,18 ranked17-64,5 ranked65-256. Top16strict D/E both6398. Full6887 identities/input SHA/GT and export SHA checked; no qualifying-score ties. Descriptive GT-only analysis, not legal-filter recall or causal identity diagnosis. No new scorer or gate, no freeze/LR scan. See§20.226 and pvground_fixed_memory_selection_20260917_v1.

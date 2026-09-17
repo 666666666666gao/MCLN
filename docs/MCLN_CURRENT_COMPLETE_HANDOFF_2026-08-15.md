@@ -18733,3 +18733,25 @@ batch8真实容量检查于2026-09-17T12:24:43.748791+08:00通过：峰值197913
 训练前空闲2274930688字节，预估新增artifact999102908字节，另留1GiB；本次观察空闲2268868608字节。旧C latest另于20.207删除340304498字节，两次合计释放671486160字节。
 
 证据目录：refine-logs/pvground_task_observation_interface_20260917_v1、pvground_scanrefer_finetune_20260917_task_observation_v1、pvground_scanrefer_endpoint_audit_20260917_task_observation_v1、pvground_scanrefer_formal_20260917_task_observation_v1、pvground_task_observation_comparison_20260917_v1。全目标尚未完成。
+
+### 20.209 D零更新完成、独立对照已核算，固定训练继续（2026-09-17）
+
+实际进度观察2026-09-17T12:40:39.586944+08:00。本节只补20.208后的初始结果和训练状态，不重复架构与固定计划。原训练controller1696、审计1703、正式接续1890、CPU配对1919保持同一任务。
+
+D完整零更新6887条于2026-09-17T12:36:01.074709+08:00完成，耗时676.23秒。bbs REC 6147/5549，Mask 6174/5824，mIoU 74.14438183%；bbf仅诊断REC 6175/5584。独立审计重算1763072个候选、13774次选择通过；没有新9508正式评估。
+
+以下全部为零更新D减对应控制初始，不是训练增益。三组6887条输入身份、点SHA、GT逐行一致，导出逐字节状态单独列出，不从主指标相同推断全部输出相同。
+
+| 初始参照 | bbs差值25/50 | bbf诊断差值25/50 | rows/boxes/scores逐字节相同 |
+| --- | --- | --- | --- |
+| A | +0 / +0 | +1 / +1 | {'rows.jsonl': False, 'boxes.npy': False, 'scores.npy': False} |
+| B | +0 / +0 | +1 / +1 | {'rows.jsonl': False, 'boxes.npy': False, 'scores.npy': False} |
+| C | +0 / +0 | +0 / +0 | {'rows.jsonl': True, 'boxes.npy': True, 'scores.npy': True} |
+
+固定训练已实际开始。观察到完整日志110/3723步、880条fit表达；已记录前缀与C训练行顺序逐步一致。runner每步检查有限loss和梯度；当前结果不用于挑选权重或改变配置。初始独立核算不等于终态通过，后续自身起点及A/B/C终态比较仍由原接续完成。
+
+累计261.70秒，当前平均2.379秒/步。以此短前缀估计，余下fit加同规模终态评估约2.58小时，即2026-09-17T15:15:11.471524+08:00附近；仅为吞吐外推，尚不含可能触发的正式双臂评估。正式接续仍按原15:17首查/300秒等待审计，未修改正在运行的训练或输出规则。
+
+本次磁盘空闲2212470784字节。A/B/C及官方/受保护权重仍保留，无新增权重删除。当前ScanRefer正式最好、Nr/Sr指标和验收线均未更新，总目标未完成。
+
+证据：同名D训练目录initial/receipt.json、train.jsonl和observation_latest.json；D审计initial_audit.json；pvground_task_observation_comparison_20260917_v1中的initial_A_D、initial_B_D、initial_C_D完整CPU对照。新增只读观察脚本observe_pvground_task_observation_comparison.py，不启动模型或更改队列。

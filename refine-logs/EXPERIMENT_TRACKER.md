@@ -425,3 +425,8 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 - Real Python3.7 and local4 CPU behaviors passed; queue binds Scan formal REC, both original restored probes, Nr then Sr fixed stages, independent audits, disk checks and superseded-latest cleanup. Prepared, not launched; no GPU result claimed.
 - E314355579 bytes copied to D with full SHA verified, then removed remotely. Free1800159232 at21:47:15. A/D transfer separately ongoing; their space not counted. Protected and active weights retained.
 - Scan F1745/3723 at21:47:53, original processes live; no terminal/formal metrics. See master20.234.
+
+## 2026-09-17 Serial queue armed after sealed-weight cleanup
+- Deleted both sealed OpenShape pair terminals after full receipt hashes, successful completed audits and no active dependency;1507980579 bytes freed, no local backup for these two. All result/log/source/parent evidence retained. Combined with E offload1822336158 bytes freed; A/D still pending.
+- Real controller15497 live21:53:19,3307823104 bytes free, awaiting Scan formal12668 then both original real probes. Firstcheck23:13:44/300s; Nr then Sr fixed fit/audit/conditional formal. No actual Nr/Sr training or new metrics yet. See master20.235.
+- Follow-up21:56:30 Scan1971/3723 live; conditional formal ETA23:55–00:25. A331181534 bytes archived/hash-verified and removed; cumulative2153517692 freed, D copying.

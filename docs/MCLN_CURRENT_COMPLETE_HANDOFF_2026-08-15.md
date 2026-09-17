@@ -19326,3 +19326,19 @@ Nr正式input contract SHA5339166b38dad06a7e46c73c2e9a27cbbc4e399a90a2622518a21b
 21:47:15 E已封存失败终点314355579字节完成本地D盘转存，全SHA fcfb46f9169a1ab25782e0f437b733eba1a245b0c20fba6546fa450208538902与原实际receipt一致后，删除远端唯一terminal.pth副本；本地可恢复文件为D:/Program Files/UserCache/gb/codex/tmp/mcln_failed_weight_archive_20260917/E_terminal.pth。远端当时可用1800159232字节，释放314355579；受保护V99、三份官方PV父和当前F权重未动。回执pvground_failed_weight_offload_20260917_ade_v1当前只含E，目录名不表示A/D也已完成。
 
 初次准备清理A时，原保护检查发现F spec含A历史对照root而主动停止，没有删除。检查训练/审计/正式运行脚本后，未发现读取这些root下terminal权重的代码；A/D用于历史对照的目录与导出保留。A/D已另行开始本地转存，但截至本节仅确认A传输中，未把这两份空间计作释放；原始transfer仍继续，完整SHA验证之前不删除。后续继续核实该传输，再决定是否具备Nr/Sr连续运行的磁盘预算。当前三数据集REC目标仍未完成。
+
+### 20.235 清理封存OpenShape终点；Nr→Sr完整接续controller已排队（2026-09-17 21:54 CST）
+
+§20.234之后进一步检查发现，OpenShape配对实验仍保留appearance755219632字节与control752760947字节的.pt终点，此前仅盘点.pth未覆盖这两份。实际controller.exit、audit_queue.exit、native_queue.exit均0；原receipt complete且development_dual_rec_nonregression=false，独立audit integrity_pass=true/module_rec_screen_pass=false。逐个完整SHA与原receipt一致：appearance b6d04d3549e5accb200d447b85181d7c3e4ab93bed093c36b33f2a1ee223a4eb；control089ece6aaf75be2d01c1a2c09ece5109954cb3be004e6d2db9e53e456f8a1c26。核实该root无运行进程，当前Scan/Nr/Sr训练及正式spec不依赖该root。
+
+按用户清理不用权重的授权，21:52:02删除上述两份已封存配对终点，释放1507980579字节，服务器可用3307823104字节。此次两份没有本地权重备份；保留所有逐行结果、完整receipt/audit、原始日志、脚本、预训练父及受保护成果，不能写成可直接恢复这两个终点。原receipt/audit及逐文件核验/删除回执已归档openshape_failed_weight_cleanup_20260917_v1。结合本轮E转存，共已实际释放1822336158字节；A/D仍在本地转存流程中，尚未计入此数值。
+
+21:53:19部署launch_pvground_referit_serial_queue.py后，独立串行controller15497启动，实查/proc命令及ps确认存活，父进程1。启动前完整核对队列spec/脚本与各段执行文件SHA，核实原Scan正式12668、Nr13286、Sr13750均为原controller；磁盘超过3GiB启动下限。spec/queue保持§20.234的已测版本未改。回执status=waiting_for_scanrefer_rec；firstcheck23:13:44，之后每300秒检查原依赖。
+
+这里已排队的是后续完整Nr→Sr流程，但当前仍未启动Nr/Sr模型forward、optimizer或正式推理。Scan正式双REC未达标则整队列skip；过线后待两个真实probe完成再训练。各自初始/终态完整模块留出、独立审计及达到筛选才正式评估，保持seed2027、官方各自父、Nr4594/Sr8195固定更新预算。阶段实际运行前仍检查磁盘，不因已排队跳过容量检查。Mask仅诊断，旧失败不重新晋级。
+
+最新Scan训练实测仍采用21:47:53的1745/3723，不把后续墙钟时间推算成新步数；无新终态/正式成绩。接下来等待固定终点及已排队审计，继续核实A/D转存进程并同步最终释放记录；不启动另一份Scan训练、不修改当前配置。三数据集目标未完成。
+
+21:56补充实际观察：Scan F1971/3723步，累计4758.488秒，最近一步2.342秒，原6个进程仍存活。剩余训练按实际平均约70分钟，终态模块检查后若通过REC筛选，估计正式9508双臂与独立审计在23:55—次日00:25完成；这只是基于吞吐的条件估计，不是正式启动/完成事实。若模块REC退化，则既定正式流程跳过，约23:15—23:35可知筛选结论。
+
+同次本地转存观察确认A已完成331181534字节转存，SHA6b951587f09674ec441b30d8c30627d94c6bdca24a8a4d9bee274cd9a3248c2f与原receipt一致，远端terminal删除；原对照结果目录保留。本轮实际累计释放2153517692字节（E、两份OpenShape及A）；D正在复制，尚未计入。A回执归档pvground_failed_weight_offload_20260917_ad_v1，实际传输进程未重启。

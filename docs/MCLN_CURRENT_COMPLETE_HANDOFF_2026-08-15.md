@@ -19382,3 +19382,22 @@ F相对自身：@0.25修复174/破坏171，@0.50修复335/破坏383。相对D：
 独立分析代码compare_pvground_rec_competition_control.py、analyze_pvground_rec_competition_selection.py、analyze_pvground_rec_competition_overlap.py；结果refine-logs/pvground_rec_competition_comparison_20260917_v1（D_F、selection、overlap/summary），全部0新forward/optimizer/正式行。完整说明docs/PVG_REC_COMPETITION_RESULT_2026-09-17.md，原F计划仅更新状态，预设方案原文保留。
 
 23:35:25最后一次实际接续核查：Scan训练、独立审计、正式controller，以及Nr/Sr单batch和串行controller均已有真实exit0，原进程全部退出。Nr/Sr各decision=skipped_scanrefer_rec，0模型forward/optimizer；串行decision同为skip、training_jobs_launched=0。这里是按REC失败结束队列，不是正在训练Nr/Sr，也不是进程丢失或网络故障。相关原始decision/exit和终态观察已经归档，未启动替代任务。
+
+### 20.238 F固定训练场景的匹配与词项概率检查完成；不能归为未启用竞争或单一no-object问题（2026-09-17 23:58 CST）
+
+接续§20.237，原controller17519于23:44:05启动，23:46:13完成、exit0，实际128.048秒。使用此前固定的128个不同fit物理场景和表达，input_selection SHA d2fbed7e9aa4546af703f90cff47928e7950c783be03f49c9ed916b66192ca22，逐行真实点SHA与历史清单一致；没有按F错误重新选样。起点/F终点各16个batch8，逐batch恢复相同随机状态，共32次forward，eval/no_grad，0backward/optimizer/新权重/正式行。输入不含GT；forward之后才执行原生criterion七次匹配、last_ root与竞争量诊断。F严格恢复及最终全部状态未变、参数无梯度通过。
+
+原生bbs五个分量分别保留root二值词图、modifier、pronoun、relation和other_entity（最后一项取负）；继续使用原始运算顺序和argsort选框，未以分解后的求和改变选择。对当前最高分、root匹配、最高IoU及各阈值最高分合格候选保存词项分数和token概率，同时保存全部256框及分量。两臂65,536个候选的CPU独立重计通过：最大IoU误差2.25e-6、分量重组误差1.09e-7、竞争损失误差3.70e-7。数组角色按产生顺序记录，JSON键经排序，独立分析显式使用原角色顺序，未将排序键顺序当作数组行身份。
+
+| 固定128训练场景 | 实际选择hits@0.25/@0.50 | root匹配框合格 | raw256覆盖 |
+| --- | ---: | ---: | ---: |
+| 起点 | 114 / 107 | 128 / 126 | 128 / 126 |
+| F终点 | 115 / 106 | 128 / 126 | 128 / 126 |
+
+终点13/20条有合格框的错误，全部当前root匹配框在对应阈值合格，没有因匹配质量不足而禁用竞争的样本。因此在该固定小样本中，不能用“新增损失没有启用”解释失败；不外推为全部训练/留出发生率。终点20条严格错误中，最高分合格候选仅4条等于root匹配，16条未匹配。阈值修复/破坏为2/1和5/6，不作为新的正式准确率或晋级依据。
+
+终点13条宽松错误的合格候选root词分量全部低于选中框，20条严格错误中仅1条root词分量更高。对应no-object概率更高的合格候选分别13/13、19/20。随后仅用已存概率将原生分数除以直接求和的非no-object概率质量，描述条件化分配，不重新排序或修改规则：严格错误里合格框该比值占优从起点13/19变为终点3/20，匹配框占优14/19→5/20。两次都失败的同14条表达里，合格框比值占优9→2，匹配框11→4。候选本身动态变化，仍不能据此作单一层因果归因。
+
+这些结果不支持直接删no-object或调词项权重来宣布问题解决；终点多数错误的词项相对证据也不足。结合既有D未匹配合格框受原生CE压低的诊断，下一候选训练机制应检查GT合格未匹配Query的REC语义监督，保留原Hungarian框回归及实例对应。需要预先固定正例条件、质量标签、归一化及已匹配其他目标的处理，并用实际梯度检查后再决定训练；当前尚未实现/启动该新训练，不能把本检查写成新方法增益。当前Scan只验收双REC，Mask仍不阻挡，Nr/Sr仍待Scan通过。
+
+代码diagnose/analyze/prepare/observe_pvground_rec_score_evidence.py、run_pvground_rec_score_evidence_analysis.py、decompose_pvground_nonnull_evidence.py；回执及逐行证据refine-logs/pvground_rec_score_evidence_20260917_v1。3,844,187字节候选数组完整SHA c2cd9aa9d78cc9a3d04b0ff9f9d8f00addb00acc6fdf926096734204fa56f00e，保留远端及本地D:/Program Files/UserCache/gb/codex/tmp/pvg_rec_score_evidence_20260917_v1/candidate_values.npz两份，核对后从Git工作树移出，array_location.json保留位置和摘要。rows SHA07a24a3dc97fea748dfe0f3bb911a727a1a94c35dc40dbac39e805f0f8e5969e。未改受保护权重、未新建训练权重，正式成绩仍未更新，三数据集目标未完成。

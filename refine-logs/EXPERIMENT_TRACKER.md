@@ -420,3 +420,8 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 - Formal parent/terminal bbs comparison and independent REC-only audit installed; targets4726/4059 Nr,12139/10335 Sr. Real CPU official parents each strictly expanded1235→1272; in-memory initial-state fixture and missing-task rejection passed,8 REC boundaries passed with zero Mask metrics. No actual terminal or GPU evaluation yet.
 - Fixed invocation to reuse existing env; reset pinned YAML per CPU model because upstream VSA mutates MLPS. Failed preparation logs retained; running Scan unchanged.
 - Scan F1139/3723 at21:23:24; serial full-training controllers and disk supply remain. See master20.233.
+
+## 2026-09-17 ReferIt serial queue prepared and E weight archived
+- Real Python3.7 and local4 CPU behaviors passed; queue binds Scan formal REC, both original restored probes, Nr then Sr fixed stages, independent audits, disk checks and superseded-latest cleanup. Prepared, not launched; no GPU result claimed.
+- E314355579 bytes copied to D with full SHA verified, then removed remotely. Free1800159232 at21:47:15. A/D transfer separately ongoing; their space not counted. Protected and active weights retained.
+- Scan F1745/3723 at21:47:53, original processes live; no terminal/formal metrics. See master20.234.

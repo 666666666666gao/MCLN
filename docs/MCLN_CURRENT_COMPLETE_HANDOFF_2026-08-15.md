@@ -19312,3 +19312,17 @@ Nr正式input contract SHA5339166b38dad06a7e46c73c2e9a27cbbc4e399a90a2622518a21b
 准备过程修复三项执行问题并保留原证据：生成CPU controller时换行转义错误在启动前被compile截住，核实无进程后补装；首次直接调用CPU checker未加载既定env中的pcdet路径，改用原env_spec启动而非重建环境；随后同一进程连续构建Nr/Sr时，pv_utils.py中VSA构造器原地向MLPS列表添加输入宽度，复用cfg导致第二模型多层。仅在每次CPU模型构建前重新读取同一官方YAML，最终双父检查通过。当前Scan及计划正式评估每进程只构建一模型，不受这次双模型检查的配置复用问题影响；没有修改骨干或已跑训练。
 
 最新Scan F实际观察为21:23:24的1139/3723步、累计2754.544秒、最近2.319秒；原训练/审计/正式/Nr/Sr单batch检查进程均活，终态和新正式成绩仍无。受保护Scan58.6033/50.4523保持，REC-only规则不变。已建立Nr/Sr完整训练、终态审计和正式评估文件目录，但完整串行controller与磁盘供给尚待落实，未启动Nr/Sr完整训练。两类准备归档pvground_referit_formal_preparation_20260917_v1与pvground_referit_formal_execution_preparation_20260917_v1；三数据集目标未完成。
+
+### 20.234 Nr/Sr串行接续入口准备完成；E失败终点已转存释放空间（2026-09-17 21:49 CST）
+
+当前Scan F在21:47:53实测1745/3723步，累计4214.402秒、最近一步2.281秒；实际训练12755及原训练/独立审计/正式接续、Nr/Sr单batch检查进程均存活。没有F终态或新9508正式成绩，继续预估23:15—23:35完成训练与终态模块留出，正式评估仍取决于既定REC筛选。Scan只看Acc@0.25/@0.50，保护5572/4797 hits，Mask不阻挡；未修改运行中的损失、学习率或预算。
+
+新增run_pvground_referit_serial_queue.py及CPU部署入口。顺序为：等待原Scan正式controller12668真实完成并通过双REC → 等待原Nr13286/Sr13750真实前后向检查均完成且恢复全部状态 → Nr固定fit/独立终态审计/符合条件的正式评估 → Sr相同步骤。Nr自身模块REC退化只跳过Nr正式，不据此取消已经由Scan批准的Sr训练；任何执行或完整性错误停止队列，不自动重启。每次依赖等待300秒，首查沿用23:13:44。训练入口自身持有GPU锁，队列不再嵌套同一锁；正式评估单独使用该锁。
+
+每段训练前要求1941962752字节可用（两份350MiB权重、384MiB导出、768MiB余量），正式前要求1342177280字节（512MiB导出、768MiB余量）。终态独立审计及完整terminal SHA通过后，只删除该训练目录内被固定终点取代的latest.pth，保存清理前后回执。官方父、终点及全部逐行导出保留。尚未启动串行controller，后续必须落实剩余磁盘后再启动；不能将部署入口或CPU测试写成已启动Nr/Sr完整训练。
+
+21:45:17原服务器Python3.7环境4项CPU行为检查通过，本地同4项也通过：模块退化时无需不存在的正式文件；两REC共同决定准入且绑定实际receipt SHA（Mask0不阻挡）；实际子进程exit7被记录、再次调用被拒绝；原controller句柄缺失时不创建替代任务。0模型forward、0optimizer、0新正式行。完整GPU顺序执行仍待Scan正式通过，不以CPU检查替代。queue SHA726d0580e90968309a5f4777472fe238eaf42e7185f44b6419e23adfa37624cc，spec SHAafff5af0c9a614ced757aab36b29c9c369dc5fc6077d30e8950915edfccdbb2f；归档pvground_referit_serial_queue_20260917_v1。
+
+21:47:15 E已封存失败终点314355579字节完成本地D盘转存，全SHA fcfb46f9169a1ab25782e0f437b733eba1a245b0c20fba6546fa450208538902与原实际receipt一致后，删除远端唯一terminal.pth副本；本地可恢复文件为D:/Program Files/UserCache/gb/codex/tmp/mcln_failed_weight_archive_20260917/E_terminal.pth。远端当时可用1800159232字节，释放314355579；受保护V99、三份官方PV父和当前F权重未动。回执pvground_failed_weight_offload_20260917_ade_v1当前只含E，目录名不表示A/D也已完成。
+
+初次准备清理A时，原保护检查发现F spec含A历史对照root而主动停止，没有删除。检查训练/审计/正式运行脚本后，未发现读取这些root下terminal权重的代码；A/D用于历史对照的目录与导出保留。A/D已另行开始本地转存，但截至本节仅确认A传输中，未把这两份空间计作释放；原始transfer仍继续，完整SHA验证之前不删除。后续继续核实该传输，再决定是否具备Nr/Sr连续运行的磁盘预算。当前三数据集REC目标仍未完成。

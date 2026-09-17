@@ -1,5 +1,7 @@
 import datetime,hashlib,json,os,shlex
 from pathlib import Path
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 import paramiko
 repo=Path('C:/Users/gb/.codex_mcln_g0_20260905')
 old=repo/'refine-logs/pvground_scanrefer_formal_20260908_vsaorder_v1'
@@ -58,6 +60,9 @@ for name in ['formal_queue.py','controller.py','cpu_probe.py']:
         text=text.replace(anchor,check+anchor)
         text=text.replace("'torch_imported':False", "'torch_imported_in_recount_process':False,'restore_probe_uses_cpu_torch':True")
     files['formal_queue.py' if name=='queue.py' else name]=text.encode()
+from pvground_rec_only_policy import rec_only_sources
+policy_texts=rec_only_sources(files['evaluate.py'].decode(),files['audit.py'].decode(),files['plan.md'].decode())
+for name,text in zip(['evaluate.py','audit.py','plan.md'],policy_texts):files[name]=text.encode()
 spec['files']={name:hashlib.sha256(raw).hexdigest() for name,raw in files.items()}
 files['spec.json']=(json.dumps(spec,indent=2)+'\n').encode()
 c=paramiko.SSHClient();c.load_system_host_keys();c.connect('region-9.autodl.pro',port=33476,username='root',password=os.environ['MCLN_SSH_PASSWORD'],timeout=30)

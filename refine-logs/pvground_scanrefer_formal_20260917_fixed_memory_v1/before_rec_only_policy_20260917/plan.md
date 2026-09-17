@@ -8,5 +8,5 @@ require all 37 new state tensors. Recount preparation uses previous completed688
 outputs, not new formal inference. CPU serialization fixture is explicitly synthetic.
 9508 rows per arm: published parent on corrected port with reader disabled; terminal
 with learned reader enabled. Same data and output rules. V99 historical floors
-5572/4797 remain. Per user instruction2026-09-17, Mask is recorded but is not a ScanRefer promotion gate. No optimizer, changed training, new checkpoint,
+5572/4797, Mask58.70/50.70/44.72 remain. No optimizer, changed training, new checkpoint,
 threshold tuning or output-source mixing. Actual formal audit required for transfer.

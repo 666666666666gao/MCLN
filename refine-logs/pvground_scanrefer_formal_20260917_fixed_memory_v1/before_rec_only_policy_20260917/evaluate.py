@@ -42,9 +42,12 @@ def row_metrics(rows, mode):
 
 def promotion_check(metrics):
     checks = {'rec25_historical_v99': metrics['rec_hits25'] >= 5572,
-              'rec50_historical_v99': metrics['rec_hits50'] >= 4797}
+              'rec50_historical_v99': metrics['rec_hits50'] >= 4797,
+              'mask25_paper': metrics['mask_hits25'] * 100. / 9508 >= 58.70,
+              'mask50_paper': metrics['mask_hits50'] * 100. / 9508 >= 50.70,
+              'mask_miou_paper': metrics['mask_miou'] >= 44.72}
     return {'checks': checks, 'advance_to_nr3d_sr3d_rec': all(checks.values()),
-            'requires_independent_formal_audit': True, 'scanrefer_mask_gate': False, 'nr3d_sr3d_mask_gate': False}
+            'requires_independent_formal_audit': True, 'nr3d_sr3d_mask_gate': False}
 
 
 def expanded_parent_state(model, parent):
@@ -235,7 +238,7 @@ def main():
         'source_query_module_sha256':train_spec['source_query_module_sha256'],
         'source_port_sha256':train_spec['source_port_sha256'],
         'arms':['published_parent','fit_terminal'],'v99_reference':'historical protected complete system; not rerun in this comparison',
-        'v99_rec_floor_hits':[5572,4797],'scanrefer_mask_gate':False})
+        'v99_rec_floor_hits':[5572,4797],'scan_mask_floor_percent':[58.70,50.70,44.72]})
 
     def prepare(raw):
         voxel_rows = [processor.forward({'points':pc.numpy().copy(),'use_lead_xyz':True}) for pc in raw['point_clouds']]

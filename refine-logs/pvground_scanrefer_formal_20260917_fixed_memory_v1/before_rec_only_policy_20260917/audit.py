@@ -99,7 +99,7 @@ def audit(root):
     assert restore['added_tensors']==37 and restore['scope']=='actual fixed terminal delta'
     assert restore['terminal_sha256']==receipt['terminal_checkpoint_sha256']
     assert protocol['v99_rec_floor_hits']==[5572,4797]
-    assert protocol['scanrefer_mask_gate'] is False
+    assert protocol['scan_mask_floor_percent']==[58.70,50.70,44.72]
     identities=protocol['parsed_identities']
     assert len(identities)==9508
     stages={};records={};metrics={}
@@ -130,16 +130,18 @@ def audit(root):
     assert transitions==receipt['transitions']
     candidate=metrics['fit_terminal']['bbs']
     checks={'rec25_historical_v99':candidate['rec_hits25']>=5572,
-        'rec50_historical_v99':candidate['rec_hits50']>=4797}
+        'rec50_historical_v99':candidate['rec_hits50']>=4797,
+        'mask25_paper':candidate['mask_hits25']*100./9508>=58.70,
+        'mask50_paper':candidate['mask_hits50']*100./9508>=50.70,
+        'mask_miou_paper':candidate['mask_miou']>=44.72}
     assert checks==receipt['promotion']['checks']
     assert all(checks.values())==receipt['promotion']['advance_to_nr3d_sr3d_rec']
     assert receipt['promotion']['requires_independent_formal_audit']
-    assert receipt['promotion']['scanrefer_mask_gate'] is False
     assert not receipt['promotion']['nr3d_sr3d_mask_gate']
     return {'integrity_pass':True,'time_cst':datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
         'formal_rows':9508,'metrics':metrics,'transitions':transitions,'transition_counts':bands,
         'transition_bands':['[0,0.25]','(0.25,0.50]','(0.50,1]'],'checks':checks,
-        'advance_to_nr3d_sr3d_rec':all(checks.values()),'scanrefer_mask_gate':False,'stages':stages,
+        'advance_to_nr3d_sr3d_rec':all(checks.values()),'stages':stages,
         'mask_audit_scope':'exported per-row IoU recount; binary predictions not reloaded',
         'v99_reference':'historical protected complete system; not a contemporaneous rerun',
         'receipt_sha256':sha(root/'receipt.json'),'auditor_sha256':sha(__file__)}

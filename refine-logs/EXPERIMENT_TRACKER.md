@@ -366,3 +366,8 @@ CPU-only observed512/4096fit checkpoint restored1072delta→1271state exactly;20
 ## 2026-09-17 E Nr entry prepared, no GPU launch
 
 Preserved D entry; new E entry binds E formal gate and frozen204visual states,718trainable tensors. Runtime3.7 syntax and actual missing-formal rejection before torch passed. Existing Nr/Sr official829830168-byte parents and135447612-byte Nr batch rehashed exactly;0downloads/forward/backward/update/checkpoint/formal. Actual E Nr capacity/backward and Sr batch still pending. No Nr/Sr queue created. See§20.222 and pvground_nr_fixed_memory_preparation_20260917_v1.
+
+
+## 2026-09-17 User scope update: ScanRefer REC-only promotion
+
+User waived ScanRefer Mask gate. E formal evaluator and independent auditor now require only same-bbs9508 REC5572/4797;Mask remains diagnostic and native training loss unchanged.10 synthetic boundary cases passed both implementations;old policy retained. Formal waiter10344/10347,firstcheck19:15/300s;train8666/endpoint8673 unchanged.0formal rows/newtraining/deletion. No historical result reclassified. See§20.223 and rec_only_policy_receipt/tests.

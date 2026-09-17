@@ -346,3 +346,8 @@ Same D architecture/parent/seed2027/data3723-step budget, with complete backbone
 E capacity addendum17:49:00: actual batch8 full loss/backward passed17:48:15,0 optimizer steps,204visual states unchanged,peak allocated14,962,948,608 bytes. Four originalcontrollers live;1,795,928,064bytes free. Initial/terminal and actual training outcome still pending; no new formal result or deletion.
 
 E17:52:17: initial2048/6887 in204.23s;fourcontrollers live;1,777,680,384bytesfree. Completeinitial/terminal stillpending.
+
+
+## 2026-09-17 E complete initial and real training prefix
+
+Initial6887 finished17:59:30: bbs6147/5549, Mask6174/5824,mIoU74.1443818276. Independent initial recount18:00:58 passed; D/E comparison18:01:39 exit0,all rows/boxes/scores exports byte-identical.18:02:19 observed128/3723 updates,146.442s; finite logged values and same first128 batch row order asD. Original4controllers live,GPU18566MiB,1,738,133,504bytesfree. Measured ETA terminal+audit19:20–19:30; queuedformal/comparison original20:41 firstcheck unchanged. Timestamped observation/log preservation added and actually used. No terminal/formal/new-dataset result or deletion. See§20.219.

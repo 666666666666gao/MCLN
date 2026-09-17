@@ -10,6 +10,7 @@ roots=['/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_fixed_memory_
        '/root/autodl-tmp/mcln_pvground_fixed_memory_comparison_20260917_v1']
 c=paramiko.SSHClient();c.load_system_host_keys();c.connect('region-9.autodl.pro',port=33476,username='root',password=os.environ['MCLN_SSH_PASSWORD'],timeout=30)
 s=c.open_sftp();record={'time_cst':datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),'jobs':{}}
+stamp=datetime.datetime.fromisoformat(record['time_cst']).strftime('%Y%m%d_%H%M%S')
 for root in roots:
     archive=repo/'refine-logs'/Path(root).name.replace('mcln_','',1)
     names=s.listdir(root);entry={}
@@ -19,7 +20,9 @@ for root in roots:
             s.get(root+'/'+name,str(archive/name))
             if name.endswith('.json'):entry[name]=json.loads((archive/name).read_bytes())
             elif name.endswith('.exit'):entry[name]=int((archive/name).read_text())
-    if 'run.log' in names:entry['last_log_line']=(archive/'run.log').read_text().splitlines()[-1:]
+    if 'run.log' in names:
+        entry['last_log_line']=(archive/'run.log').read_text().splitlines()[-1:]
+        (archive/('run_'+stamp+'.log')).write_bytes((archive/'run.log').read_bytes())
     for stage in ['initial','terminal']:
         if stage in names and 'receipt.json' in s.listdir(root+'/'+stage):
             (archive/stage).mkdir(exist_ok=True)
@@ -37,4 +40,6 @@ _,out,err=c.exec_command('df -B1 --output=avail /root/autodl-tmp',timeout=30)
 record['disk_free']=int(out.read().decode().splitlines()[-1]);assert out.channel.recv_exit_status()==0,err.read().decode()
 s.close();c.close()
 (repo/'refine-logs/pvground_scanrefer_finetune_20260917_fixed_memory_v1/observation_latest.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')
+latest=repo/'refine-logs/pvground_scanrefer_finetune_20260917_fixed_memory_v1/observation_latest.json'
+(latest.parent/('observation_'+stamp+'.json')).write_bytes(latest.read_bytes())
 print(json.dumps(record),flush=True)

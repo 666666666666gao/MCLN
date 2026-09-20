@@ -19718,3 +19718,18 @@ v3于23:03:32完成44909行、5614次更新，训练16258.21秒；199项冻结�
 00:18:07第一次将uv临时环境里的sys.executable直接作为脱离父进程的Python启动，PID47084随即因failed to locate pyvenv.cfg退出；没有下载或渲染，未影响服务器。保留首次launch/log，改为让uv父进程在整个本地等待与渲染期间存活，没有修改全局环境、加fallback或重启远端任务。当前exec session29175、Python PID48692，00:19:27成功记录waiting_export，00:19:48实际Get-Process确认存活。最终图片和人工视觉检查仍待完成，不能把等待器启动当成交付。
 
 本地运行记录refine-logs/eg3dvg_sr3d_local_visual_queue_20260921，脚本哈希已固定；需在交付后查看实际合成图并核验可读性。最近远端实查00:15:18 Sr11264/17726、2352.23秒，原评估/任务训练等待12201/配对分析12456均存活；预计约00:40完成Sr，再启动实际任务预检。当前无新REC或任务优化步，三数据集目标继续。
+
+
+## 20.260 用户改为ScanRefer优先；Nr任务训练在0更新时撤销，EG创新改走Scan预训练续训（2026-09-21 00:44 CST）
+
+用户明确要求先不管Nr3D/Sr3D，先将自己的创新移植到原生EG-3DVG，并基于作者ScanRefer预训练权重训练，直到Scan两项REC超过实际原生EG后再训练另两数据集。本条覆盖§257—259的队列顺序。实际原生Scan last/bbs为9508条5542/4952（58.2878/52.0825%）；严格超过需同一模型至少5543/4953，Mask不设门槛。既有V99 5572/4797继续独立保护，不把两个系统的最好单项拼起来。
+
+00:27:47核对/proc命令及未产生fit/initial_equality后，停止Nr任务训练等待12201和配对分析12456，0优化更新；T/controller.exit143及deferred_by_user_scanrefer_priority.json明确是用户改变优先级，不是科学失败。同步停止Sr图导出等待7083和本地渲染48692，未生成Sr图片。已超过80%的Sr零更新正式评估允许收尾，最新只读检查确认controller.exit0、GPU释放；没有接续任何Sr训练，也不借此转移当前Scan研究。
+
+新独立root为/root/autodl-tmp/mcln_eg3dvg_scan_task_20260921_v1。使用已经过CPU行为检查的EG最后层语义/几何任务读取，165888新增参数；语义进soft-token/对比头，几何进box/Query Mask/superpoint refinement。仍是完整EG，不将PV六路VSA、C状态或G标签替换冒称已移植，也不接V99。完整计划docs/EG3DVG_SCAN_TASK_PLAN_2026-09-21.md。
+
+训练数据按作者ScanRefer loader/Scene_graph_parse生成完整训练表达，联合ScanNet1199条检测prompt×10，使用GroupFree预测框而非Nr的GT对象框协议。发现原代码点云flip→rotation与检测框rotation→flip不一致，两臂共同改为flip→Z/X/Y rotation→shift→scale，另用实际GroupFree框和独立矩阵计算验证；修复不计创新收益。保留作者augment_det与全部原生损失/负表达前向。
+
+预先固定最多3个完整续训epoch，seed2027/batch8；两臂独立从同一官方epoch69权重和新AdamW开始，读取权重内保存的三组后期LR并保持不变。每epoch共享行顺序，逐步记录实际增强点SHA；task先训练和正式9508评估，再跑同预算native控制。保留每个epoch两阈值及修复破坏，不选中途checkpoint。首个完整配对epoch中task超过预训练双阈值即结束本轮；相对同预算native的增量独立判断，不能把普通续训收益全归给模块。三轮不通过仍继续Scan研究，不启动Nr/Sr。
+
+准备阶段两个失败保留：Python3.7 AST无end_lineno，改为真实节点最大行号；ScanRefer注释loader需要wo_obj_name与label_mapclass，补齐原生初始化字段，未改表达/标签。旧等待stage13347因第一次准备无回执而正常报错退出；新准备PID13398已进入Begin text decoupling，尚无训练或新REC。本地7个新脚本通过Python3.7语法检查，正式GPU零初始化/损失/RNG比较和两批实际优化仍待数据回执后执行。这里只记录CPU准备，不能说训练已开始。

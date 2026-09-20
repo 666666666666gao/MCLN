@@ -19526,3 +19526,14 @@ Nr/Sr全量作者文本解析7899/17726完成；全部评价场景对象槽检�
 18:02取回完整训练输入回执：作者解析于17:59:22完成，Nr3D32919条/511场景（297.32秒），ScanNet检测1199条/1199场景。joint_det重复10次后完整Dataset44909条；独立增强训练Dataset在48.30秒内完成构造及固定8条Nr、3条ScanNet检查，exit0；点/框有限、GT对象框槽对齐、正/负文本目标字段可用，0模型forward/更新。训练缓存SHA：Nr4684a3bfd69f11bf6758c140eb3de32c5fd7c844cb486e25d71b3c1853852a23，ScanNet7547e8a8ac469709ec9956be342167618e28c99cd0615cdb25d107c9601a5231；独立训练Dataset源SHA5f771e1d55e0663ba4f84240866bbf3c4d4a94e3033bea26fce72b5523793a30。
 
 本次作者解析后的Nr train文本，原方向词增强判断与相同十词表的小写字母分词出现325条差异；例如句首Looking、Facing和facing漏判为可做90度旋转/翻转。该数字属于EG实际解析输入，不沿用旧MCLN原始文本2155条。当前仅记录未修复，验证源和进行中的7899推理不变；下一次训练前应在独立训练源对这一实际标签一致性问题作最小修正并检查全部325条，不能把修复称模型创新或把全部训练退化归因于它。18:01:59实际controller4408仍存活，正式日志2560/7899条/518.26秒；无完整REC结果，预计18:20—18:25不变。
+
+
+## 20.247 EG Nr3D训练方向词修正通过；固定单轮原生适配已排队（2026-09-20 18:16 CST）
+
+继续在独立训练副本完成实际方向词修正，不改当前Nr验证源。原十词表改用小写字母分词，统一_is_view_dep/_augment_nr3d；全32919条检查325条允许旋转→禁止，0条反向；view标记变化274条。前/后训练Dataset SHA5f771e1d55e0663ba4f84240866bbf3c4d4a94e3033bea26fce72b5523793a30→a425943b8abdb82c0b8aae6cd8c20868b9596ff6045e8c410c472f87640578d9；真实例子/逐行清单在refine-logs/eg3dvg_nr3d_adapt_20260920_v1。只说明标签一致性修复，不声称模型增益。
+
+新增scripts/train_eg3dvg_nr3d_adaptation.py，固定完整一次44909条，batch8、末批5保留、5614更新，seed2027预存顺序。严格加载作者epoch69，重新建立AdamW；主LR1e-4、骨干1e-5、文字组1e-5（RoBERTa按作者冻结），weight_decay0.0005、clip0.1、常数LR。保留完整作者训练loss和负表达双forward；不加入新网络模块。两批16条训练预检先检查loss/backward/真实AdamW，丢弃这2步审计权重，正式重新从作者权重加载。固定終点再8条/7899原生评估及独立重计，不依中途loss改配置或挑权重。
+
+运行root /root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v1；状态存储/root/mcln_eg3dvg_nr3d_adapt_states_20260920_v1启动前实测空闲>4GB，每512步/终点原子保存唯一latest，含optimizer/RNG/step/spec，供恢复非挑选。controller4951于18:13:03启动；先等当前Nr transfer终态与audit通过，再持同一GPU锁执行预检→fit→终点评估。18:13:58实查4951等待、4408仍活、Nr日志6144/7899；没有训练开始或新Nr指标。spec f5608e579a52b4730cbeca465beddec908cbe38b5825c333eecfd367f45110ff，环境81a835e8144f7070d66feb0afa460911dec610052ced6b96c98097352cd022fd暖复用不变。
+
+详见docs/EG3DVG_NR3D_ADAPTATION_2026-09-20.md。此为作者Scan权重的有限Nr适配控制，不是作者240轮Nr复现；不恢复长baseline、多seed或旧PV模块队列。原生更新与方向词修复同时存在，不能把全部差值归给修复。ScanRefer保护不变，Sr3D无新结果，三数据集目标未完成。

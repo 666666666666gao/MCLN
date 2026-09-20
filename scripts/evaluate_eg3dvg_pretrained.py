@@ -55,6 +55,8 @@ def main():
     sys.path.insert(1, str(source / 'pointnet2'))
     import numpy as np
     import torch
+    assert torch.__version__ == spec['torch_version']
+    assert torch.version.cuda == spec['cuda_version']
     from torch.utils.data import DataLoader, Subset
     from models import EG
     from src.joint_det_dataset import Joint3DDataset
@@ -77,12 +79,6 @@ def main():
     assert all(k.startswith(prefix) for k in checkpoint['model'])
     state = {k[len(prefix):]: v for k, v in checkpoint['model'].items()}
     assert all(torch.isfinite(v).all() for v in state.values())
-    if spec['nonpersistent_position_ids']:
-        assert set(model.state_dict()) - set(state) == {'text_encoder.embeddings.position_ids'}
-        assert not set(state) - set(model.state_dict())
-        assert torch.equal(model.text_encoder.embeddings.position_ids,
-                           torch.arange(model.text_encoder.config.max_position_embeddings).expand(1, -1))
-        model.text_encoder.embeddings.register_buffer('position_ids', model.text_encoder.embeddings.position_ids, persistent=False)
     model.load_state_dict(state, strict=True)
     assert all(torch.equal(model.state_dict()[k], v) for k, v in state.items())
     reference = {k: v.clone() for k, v in model.state_dict().items()}
@@ -103,6 +99,8 @@ def main():
     native_box_rule = '0.5 * (last regressed box + box enclosing points with predicted mask > 0.5)'
     started = time.time()
     count = 0
+    candidates = np.lib.format.open_memmap(str(output / 'candidates.npy'), mode='w+',
+                                          dtype=np.float32, shape=(expected_rows, 256, 14))
     with gzip.open(str(output / 'rows.jsonl.gz'), 'wt') as stream, torch.no_grad():
         for batch in loader:
             for k, v in batch.items():
@@ -145,6 +143,11 @@ def main():
                 parts = [(probs * p[:, :1]).sum(-1) for p in [main_map, modifier, pronoun, relation, other]]
                 scores = parts[0] + parts[1] + parts[2] + parts[3] - parts[4]
                 selected[mode] = (scores.argsort(1, descending=True)[:, 0], scores)
+            batch_slice = slice(count, count + boxes.shape[0])
+            candidates[batch_slice, :, :6] = raw_boxes.cpu().numpy()
+            candidates[batch_slice, :, 6:12] = boxes.cpu().numpy()
+            candidates[batch_slice, :, 12] = selected['bbs'][1].cpu().numpy()
+            candidates[batch_slice, :, 13] = selected['bbf'][1].cpu().numpy()
             for i in range(boxes.shape[0]):
                 row = {'row_id': count, 'scan_id': batch['scan_ids'][i],
                        'target_id': int(batch['target_id'][i]), 'utterance': batch['utterances'][i],
@@ -171,11 +174,17 @@ def main():
                 print('EG_EVAL_PROGRESS ' + json.dumps({'rows': count, 'total': expected_rows,
                       'elapsed_seconds': time.time() - started, 'metrics': counts}), flush=True)
     assert count == expected_rows
+    candidates.flush()
+    del candidates
     assert all(torch.equal(value.cpu(), reference[k]) for k, value in model.state_dict().items())
     receipt = {'status': 'complete', 'time_cst': now(), 'stage': args.stage, 'rows': count,
                'elapsed_seconds': time.time() - started, 'metrics': counts, 'primary_mode': 'bbs',
                'native_box_rule': native_box_rule, 'checkpoint_sha256': spec['checkpoint_sha256'],
                'spec_sha256': sha(args.spec), 'rows_sha256': sha(output / 'rows.jsonl.gz'),
+               'candidates_sha256': sha(output / 'candidates.npy'),
+               'candidate_columns': ['raw_cx', 'raw_cy', 'raw_cz', 'raw_dx', 'raw_dy', 'raw_dz',
+                                     'box_cx', 'box_cy', 'box_cz', 'box_dx', 'box_dy', 'box_dz',
+                                     'bbs_score', 'bbf_score'],
                'all_model_states_unchanged': True, 'training_steps': 0, 'optimizer_created': False,
                'upstream_commit': spec['upstream_commit'], 'mask_metric_gate': False}
     write(output / 'receipt.json', receipt)

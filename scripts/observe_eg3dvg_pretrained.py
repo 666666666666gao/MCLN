@@ -25,7 +25,8 @@ def main():
             'audit.exit', 'preflight.log', 'formal.log', 'audit.log', 'data.log',
             'checkpoint_inspection.exit', 'checkpoint_inspection.log',
             'launch_queue.json', 'launch_queue.exit', 'launch_queue.log',
-            'prepare_evaluation.log', 'controller.log']
+            'prepare_evaluation.log', 'controller.log', 'torch112_install_launch.json',
+            'torch112_install.log', 'torch112_install.exit', 'torch112_witness.json']
     for name in keep:
         if name not in names:
             continue
@@ -49,8 +50,8 @@ def main():
     if 'official_scanrefer.pth' in names:
         record['checkpoint_bytes_now'] = sftp.stat(root + '/official_scanrefer.pth').st_size
     commands = {'gpu': 'nvidia-smi --query-compute-apps=pid,used_memory --format=csv,noheader',
-                'disk': 'df -B1 --output=avail /root/autodl-tmp',
-                'processes': 'ps -eo pid,args | grep "[m]cln_eg3dvg_acceptance_20260920_v1"'}
+                'disk': 'df -B1 --output=avail / /root/autodl-tmp',
+                'processes': "ps -eo pid,args | grep -E '[m]cln_eg3dvg_(acceptance|torch112)'"}
     for key, cmd in commands.items():
         _, out, err = client.exec_command(cmd, timeout=30)
         record[key] = out.read().decode().strip()

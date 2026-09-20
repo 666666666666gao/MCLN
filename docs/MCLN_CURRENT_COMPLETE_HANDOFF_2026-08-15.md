@@ -19473,3 +19473,25 @@ G terminal SHA0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522�
 官方Nr/Sr脚本均butd_cls：使用场景GT实例框和预测类别，并在evaluator按候选与任意有效输入对象框IoU>0.25乘0/1后排序，仍输出回归框与预测Mask框平均，不吸附到GT框。该口径不是纯预测提议，也不是离散GT对象选择准确率。当前MCLN普通入口也把filter连接至butd_cls，但另备的PV ReferIt入口显式关闭此过滤；后续不能混称同一native口径。作者README只有ScanRefer完整权重，9月20日公开release页面无发布，尚未确认Nr/Sr专用EG权重。将Scan权重直接用于Nr/Sr应称跨数据集转移实验，不能冒称专用模型复现。完整证据见EG3DVG_REFERIT_PROTOCOL_2026-09-20.md。
 
 16:16:07重新观察原进程：权重已传668762112/875723586字节（约76.4%），inspection1519、acceptance1754均存活，GPU为空，尚无EG前向或新正式结果。未重启、未下载第二份权重；按近期速度剩余传输约10–15分钟，属于网络估计，完整REC耗时仍待真实批次。后续首先等原校验及8条检查，必要时只修实际接口错误，再完成唯一9508验收。三数据集目标仍未达成，不改受保护结果。
+
+### 20.244 EG作者完整权重到位；执行缺陷与独立Torch1.12环境（2026-09-20接续）
+
+作者ScanRefer checkpoint上传已完整关闭，远端SHA与本地一致：785f46ca595aed3a06efdfc46dc1c4b0493b212ccb66062a76f519324fd24f7e，875723586字节。其epoch字段69；严格加载1276项状态，缺失、多余、形状不一致均为0，没有跳过模型参数，不创建优化器、不续训。论文/README58.54/52.36仍是作者值，不能当成本机正式结果。
+
+纠正§20.241—242的场景口径：9508条ScanRefer表达实际覆盖141场景，作者val文本清单同为141；312是val_v3scans.pkl和完整mesh superpoint缓存场景数。最初prepare据312生成表达场景断言而停止，尚未forward；仅修正manifest断言和141个真实GroupFree路径，保留9508表达及全部312缓存。原失败脚本/日志、scene_counts和repair回执保留。
+
+首个完整前向在GMA失败：forward两处引用未定义self.spatial_n_head，而构造函数已有self.n_head。实际checkpoint的language72维/geometric每头9维对应8头，固定真实权重CPU复现先失败，再仅替换两处属性为self.n_head后通过形状、有限值、注意力归一化和权重不变检查。encoder_decoder_layers.py由bb38453fbc7095fdfb5e2de1545238fdabc628518d42a4da1eb557555cc3c6f1变为61251d06736222c4b5182fe6817cb47d32e1f93157f094a8c5aeb6f99bb25235。未修改当前未执行的padding分支；该次0完整预测，归档failed_gma/。
+
+第二次前向到未改动的eg_attention.py时因Tensor.is_nested缺失停止。作者要求Torch1.12，实际复用PV环境为1.10.2，因此改建独立/root/mcln_eg3dvg_torch112_20260920_v1，使用作者Torch1.12.0+cu113，不给attention加兼容分支。第二次同为0完整预测，归档failed_torch110/。此前仅import/FPS成功不构成完整EG执行通过，旧独立环境见证也不能替代新环境验证。
+
+新环境首次安装真实出现ENOSPC。现场检查系统盘8.3GiB可用、inode充足、旧Torch1.10.2路径和版本未变；pip20.1.1源码实际先完整unpack再复制，产生重复大文件。只在新venv升级固定pip23.1.2，确认其install_wheel直接读取ZipFile，再用同一官方wheel、--ignore-installed、--no-deps重试；保留首次日志，没有删除原权重/数据/旧环境。新env canonical SHA e3c282df0abe891616976eed0186e8da9bcaea32ba904a477fc31b3ed91663f4；完整声明和见证命令见EG3DVG_TORCH112_ENV_2026-09-20.json、EG3DVG_TORCH112_RUNTIME_2026-09-20.md。
+
+在首个spec/forward之前已加完整256候选导出：每条raw Box、作者平均Box、bbs/bbf分数，共(N,256,14)float32，9508条约136MB；与逐行选择结果一起记录SHA，由独立CPU重计验证选择、分数、框及IoU。该导出不改变模型或选框。大数组留远端，不进Git。固定seed2027、last/bbs主输出、bbf仅诊断、batch8、9508条不变，Mask没有验收门槛但保留作者原生Mask-derived框规则。G已完成59.0555/47.2760，V99受保护结果不变。
+
+Torch1.12+cu113安装完成后，真实扩展导入报TensorImpl未定义符号，证明旧Torch1.10 PointNet2二进制不能复用。按完整作者九个C++/CUDA源文件在新环境重编译，源代码未改，A100指定8.0；作者setup硬编码8.6/8.9，因此独立构建配方留在runtime目录，不改推理源码。编译又因本机唯一nvcc11.6与cu113严格版本校验失败，故实际环境调整为官方Torch1.12.0+cu116以匹配已有工具链。此CUDA构建与作者cu113不同，如实保留，不关闭版本校验；只卸载路径已确认位于新venv的cu113包，旧PV环境/权重不变。最终待验证env SHA更新为f2f06febf7db9276f9c084fbaa3d9e460445052ea15b790f1fb4d95d29a5d470；前两版spec及失败日志均保留。安装完成不代表前向或REC通过，仍需真实CUDA见证、独立文档重放和完整8条预检。
+
+实际Torch1.12+cu116安装与作者CUDA扩展编译均exit0。新扩展包最初缺作者Python包装文件，按真实ModuleNotFoundError补入三份未改动原文件并记录SHA，重建包也同步完整。最终env SHA为81a835e8144f7070d66feb0afa460911dec610052ced6b96c98097352cd022fd。执行方真实CUDA见证已通过：FPS[2,16]、group[2,8,16,8]、作者masked SWA[1,256,288]，均有限值；扩展明确来自新venv。随后进行fresh agent文档命令重放，仍不将环境见证计为模型完整前向或REC结果。
+
+17:07独立gpt-6-astra/max新上下文按文档命令重放pass，本地/远端exit0、stderr为空，版本/最终env哈希/新扩展路径及真实CUDA形状一致；review_independence=same-family、acceptance_status=provisional，0正式行。17:07:54.508891启动controller3503，固定spec SHA a01cf60f57b6e8eaecc45b5507f6934cb9b7ad88c16f7d743f49a07b4d095908。该进程先8条完整前向，再唯一9508正式与CPU重计，任一失败即停；17:08:25仍在加载val，尚无preflight完成回执。不得把kernel见证/launch当成新模型精度。
+
+17:08:38.706762完整8条预检完成exit0：真实作者EG全前向、原生两路计数与独立重组结果一致，全部1276项模型状态不变，0训练步。预检3/2命中仅为执行记录，不按它挑权重或决定精度晋级。随后原controller自动开始9508正式；17:11:50观察到512条/97.7537秒，GPU9152MiB、正式进程在运行，尚无formal完整receipt或audit。按此初段速度，整套推理约30分钟，预计17:40—17:50含CPU重计完成；这是速度估计，场景复杂度可能改变耗时。暂不报告子集百分比作为正式结果，也不重复启动。完整输出留原独立目录，由controller自动重计并写terminal退出码。

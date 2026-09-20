@@ -1,0 +1,73 @@
+{
+  "base": "Existing /root/miniconda3/envs/bdetr Python 3.7.11, isolated system-site-packages venv",
+  "runtime_root": "/root/mcln_eg3dvg_torch112_20260920_v1",
+  "pip_phases": [
+    [
+      "torch==1.12.0+cu116",
+      "--no-deps",
+      "--no-cache-dir",
+      "--index-url",
+      "https://download.pytorch.org/whl/cu116"
+    ]
+  ],
+  "additional_site_packages": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/lib/python3.7/site-packages",
+  "required_versions": {
+    "torch": "1.12.0+cu116",
+    "numpy": "1.21.5",
+    "transformers": "4.17.0",
+    "spacy": "3.4.4"
+  },
+  "env": {
+    "CUDA_VISIBLE_DEVICES": "0",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1",
+    "TOKENIZERS_PARALLELISM": "false"
+  },
+  "smoke": {
+    "seed": 2027,
+    "gpu_tests": [
+      "PointNet2 FPS and QueryAndGroup on CUDA",
+      "Actual EG custom SWA attention on CUDA with masks",
+      "Tensor.is_nested available on dense inputs"
+    ],
+    "require_independent_documented_witness": true
+  },
+  "weights": {
+    "path": "/root/autodl-tmp/mcln_eg3dvg_acceptance_20260920_v1/official_scanrefer.pth",
+    "sha256": "785f46ca595aed3a06efdfc46dc1c4b0493b212ccb66062a76f519324fd24f7e"
+  },
+  "reason": "Existing Torch 1.10 fails in unchanged author eg_attention.py at Tensor.is_nested; use author's declared Torch 1.12 instead of patching its attention API. CUDA build aligned to installed nvcc11.6 after actual Torch1.12 compiler mismatch failure; author cu113 deviation recorded.",
+  "installer_pip": "23.1.2",
+  "pointnet2_build": {
+    "source_commit": "174e34894aea6513442da6b5dfa9b3e2bf8a1efa",
+    "source_files": {
+      "include/ball_query.h": "0471321f53fffd783eb485543c63855944be2eccd4647e8d0a8cdd1b92eb7610",
+      "include/cuda_utils.h": "57c50d6d4cb73e46f83d19ea14807073051072669b59ed97d114a9e29af5532a",
+      "include/group_points.h": "a0484f9512e2192c1448fc8bc6ef551dd2603be4e68fede163661d0e8f6a6204",
+      "include/interpolate.h": "cf5b7e9d6eab01efc62a70f0f18f53d3ce13a28f384583f3b790ccfe293a0ad7",
+      "include/sampling.h": "0b4b5deff23735f5976bc738106fbd025a382eda64e110d6aaaba46f0ccc98d8",
+      "include/utils.h": "fd99d14b5430beb15d213a66dd70d81a8e9f9394715a15f1554211d1e531963e",
+      "src/ball_query.cpp": "813e5b350963db9eaf40c3c9dcc9e816c58b9626c87c15dc80d3d828c8e7aca3",
+      "src/ball_query_gpu.cu": "fe9c25682c20c1b8b49a934bf1f6a7aa5e96543bf70fc6f91fb51b3b9ac2efbc",
+      "src/bindings.cpp": "0f63ad6b6c0c26c1070437e2307313653de2316e537f06c536d49bfe641be39a",
+      "src/group_points.cpp": "4a39cebad0a82d6dd01b2043de052895e94ad79a75582c676ebb6ec370cf8198",
+      "src/group_points_gpu.cu": "eeb6172b7b9fe3bd74ae78c18bda14c56558f6cf0b36ba2ab8ece65b10165333",
+      "src/interpolate.cpp": "7c7b447d72103a70c9801c2a8bd5ec99afa11dc487f6403bcb11241bef70022c",
+      "src/interpolate_gpu.cu": "f79234241609430e1a352c1ddf7c6eebbcaf241a3205fb3bae580b30a9bac625",
+      "src/sampling.cpp": "974d5ca1371e81b6a820372e33da4a84323a8624319e9968d4966b5e83fef6cf",
+      "src/sampling_gpu.cu": "1be6b19ebc60403809c4e7907c53e8da6d2cbb3ad129af4f09b4c7e54791ff28"
+    },
+    "cuda_home": "/usr/local/cuda-11.6",
+    "architecture": "8.0",
+    "max_jobs": 2,
+    "reason": "old Torch1.10 binary fails real import with undefined TensorImpl ABI symbol",
+    "python_wrappers": {
+      "pointnet2_utils.py": "84f5233ee50ffcc3484078e7d77e4a3147530e84a6b2259789d9c75e7ca3f3c2",
+      "pointnet2_modules.py": "c64fdb7d09f9db2e7e44dec82295404b7d2b69d7512c10432481de10975cf369",
+      "pytorch_utils.py": "e0e7fdd540f6437d922736240f9086870d432ea336122d3a90f88d38d67c8fb9"
+    }
+  }
+}

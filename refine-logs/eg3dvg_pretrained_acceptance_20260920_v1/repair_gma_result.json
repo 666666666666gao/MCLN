@@ -1,0 +1,6 @@
+{
+  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 CUDA_VISIBLE_DEVICES=0 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python /root/autodl-tmp/mcln_eg3dvg_acceptance_20260920_v1/repair_gma.py",
+  "stdout": "{\"file\": \"models/encoder_decoder_layers.py\", \"before_sha256\": \"bb38453fbc7095fdfb5e2de1545238fdabc628518d42a4da1eb557555cc3c6f1\", \"after_sha256\": \"61251d06736222c4b5182fe6817cb47d32e1f93157f094a8c5aeb6f99bb25235\", \"changes\": \"Two undefined self.spatial_n_head references replaced with existing self.n_head.\", \"reason\": \"Constructor stores n_head=8; checkpoint lang projection72 and pairwise projection9 require 8 heads.\", \"learned_parameters_added_or_removed\": 0, \"formal_rows_before_fix\": 0, \"failed_model_forward_attempts\": 1}\n",
+  "stderr": "",
+  "exit": 0
+}

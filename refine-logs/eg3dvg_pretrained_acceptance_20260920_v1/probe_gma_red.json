@@ -1,0 +1,6 @@
+{
+  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 CUDA_VISIBLE_DEVICES=0 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python /root/autodl-tmp/mcln_eg3dvg_acceptance_20260920_v1/probe_gma.py",
+  "stdout": "{\"n_head\": 8, \"language_width\": 72, \"geometry_width\": 9, \"loaded_states\": 16}\n",
+  "stderr": "Traceback (most recent call last):\n  File \"/root/autodl-tmp/mcln_eg3dvg_acceptance_20260920_v1/probe_gma.py\", line 14, in <module>\n    output,attention=m(torch.randn(2,256,288),torch.randn(2,32,288),torch.randn(2,32,288),torch.randn(2,256,32,5),txt_embeds=torch.randn(2,288))\n  File \"/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/nn/modules/module.py\", line 1102, in _call_impl\n    return forward_call(*input, **kwargs)\n  File \"/root/autodl-tmp/mcln_eg3dvg_acceptance_20260920_v1/source/models/encoder_decoder_layers.py\", line 81, in forward\n    spatial_weights = einops.rearrange(spatial_weights, 'b l (h d) -> h b l d', h=self.spatial_n_head)\n  File \"/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/nn/modules/module.py\", line 1178, in __getattr__\n    type(self).__name__, name))\nAttributeError: 'GMA' object has no attribute 'spatial_n_head'\n",
+  "exit": 1
+}

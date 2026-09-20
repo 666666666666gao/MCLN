@@ -55,8 +55,23 @@ def main():
                 assert (recomputed > threshold) == (v['iou'] > threshold)
                 counts[mode][name] += int(recomputed > threshold)
     assert counts == receipt['metrics']
+    candidate_path = root / 'formal/candidates.npy'
+    assert sha(candidate_path) == receipt['candidates_sha256']
+    candidates = np.load(str(candidate_path), mmap_mode='r')
+    assert candidates.shape == (9508, 256, 14) and candidates.dtype == np.float32
+    assert np.isfinite(candidates).all()
+    for row in rows:
+        for mode, column in [('bbs', 12), ('bbf', 13)]:
+            value = row[mode]
+            candidate = candidates[row['row_id'], value['query']]
+            assert np.array_equal(candidate[:6], value['raw_box'])
+            assert np.array_equal(candidate[6:12], value['box'])
+            assert candidate[column] == value['score']
+            assert candidate[column] == candidates[row['row_id'], :, column].max()
     audit = {'integrity_pass': True, 'rows': len(rows), 'metrics': counts,
              'maximum_iou_error': maximum_error, 'receipt_sha256': sha(root / 'formal/receipt.json'),
+             'candidates_sha256': receipt['candidates_sha256'],
+             'all_selected_candidates_match_export': True,
              'time_cst': datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
              'model_forwards': 0, 'optimizer_steps': 0, 'primary_mode': 'bbs',
              'rec25_v99_floor': counts['bbs']['rec_hits25'] >= 5572,

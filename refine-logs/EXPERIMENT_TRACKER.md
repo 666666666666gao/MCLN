@@ -466,3 +466,13 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 - Actual CSV conditions yield Nr7899/130 scenes, Sr17726/255; all class/superpoint files available.0 model forwards/updates. Actual directory refer_it_3d differs from author ReferIt3D; isolated CPU check fixed path, Scan untouched.
 - Author butd_cls means scene GT object boxes plus predicted classes and IoU>.25 score filtering, with regression/Mask averaged output. Separate from current PV no-filter entry. Only Scan checkpoint verified; no public releases. See EG3DVG_REFERIT_PROTOCOL_2026-09-20.md.
 - At16:16:07 weight668762112/875723586 bytes, both original waiters alive, GPU empty; no EG metric. Remaining transfer estimated10–15min, not formal completion ETA. See master20.243.
+
+## 2026-09-20 EG完整预训练权重验收：预检通过，9508正式运行中（§20.244）
+
+- 作者ScanRefer权重875723586字节、epoch69、SHA785f46ca595aed3a06efdfc46dc1c4b0493b212ccb66062a76f519324fd24f7e；严格1276状态全部匹配。0训练、不接旧V99/C/D/G。
+- 更正表达场景数为141，312只是ScanNet缓存场景。保留全部9508条及作者原生GroupFree输入、Mask-derived平均框、last/bbs主评分，Mask无验收门槛。
+- GMA两处未定义属性按实际8头权重修复；Torch1.10 Tensor.is_nested失败后建独立Torch1.12+cu116/CUDA11.6环境，作者CUDA源不改、为A100重编译PointNet2。cu116不同于作者cu113，记录真实偏差；原PV环境不变。全部真实失败日志保留。
+- 最终env SHA81a835e8144f7070d66feb0afa460911dec610052ced6b96c98097352cd022fd；执行方及fresh gpt-6-astra/max同family文档重放均通过真实CUDA见证，独立验收标为provisional，只证明环境。
+- controller3503/spec a01cf60f57b6e8eaecc45b5507f6934cb9b7ad88c16f7d743f49a07b4d095908于17:07:54启动，8条完整预检17:08:38 exit0、所有状态不变，随后自动9508正式。
+- 17:11:50观测512条/97.7537秒，尚无完整formal/audit；初步预计17:40—17:50含重计。不能拿作者58.54/52.36或该子集当复现结果，不重复启动。完整256候选数组留远端，CPU审计将核对原生计数和所选框/分数。
+- G正式59.0555/47.2760已完成但未过V99严格阈值；V99保护58.6033/50.4523，Nr/Sr未启动EG新训练。

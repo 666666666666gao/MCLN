@@ -4,6 +4,12 @@ The user authorized complete published pretrained weights as a new research
 starting point. Accept EG-3DVG first, without training or importing C/D/G, V99,
 Parent, Geometry, or custom score rules. UniVLG is a separate option, not running.
 
+The complete current EG path is XYZRGB through PointNet++, RoBERTa language and
+GroupFree object inputs, the author's multimodal encoder, 256 objectness-selected
+queries and six PECA/GMA/superpoint decoder layers, then native box, soft-token,
+contrastive and mask outputs. This is separate from the PV six-source C/D/G
+branch. The acceptance run performs inference only.
+
 Official source: https://github.com/Gwan9Wook/EG3DVG
 
 Pinned commit: `174e34894aea6513442da6b5dfa9b3e2bf8a1efa`.
@@ -15,7 +21,8 @@ Reported author numbers are 58.54 / 52.36, not locally reproduced results.
 ## Fixed acceptance scope
 
 - Complete EG model and all published weights; strict state restoration.
-- ScanRefer validation, exactly 9,508 expressions / 312 scenes, seed 2027,
+- ScanRefer validation, exactly 9,508 expressions / 141 expression scenes,
+  loaded from a 312-scene ScanNet validation cache, seed 2027,
   batch 8, one GPU, no shuffle, no dropped or duplicated rows.
 - Author two-stage GroupFree detections (`butd=True`, `butd_cls=False`,
   `butd_gt=False`), XYZRGB, existing mesh-derived superpoints.
@@ -62,9 +69,10 @@ Public source integration changes are recorded with before/after hashes:
    public config lacks `one_hot_scanrefer`, and __getitem__ does not export this
    label to the model or evaluation. Do not invent a mapping.
 
-No model, attention, prediction head, learned parameter, token scoring, mask
-threshold, or box-averaging rule is changed. Original source snapshot, license,
-manifest and failed setup logs are retained.
+No learned parameter set, prediction head, token scoring, mask threshold or
+box-averaging rule is changed. A subsequently observed GMA attribute-reference
+error is repaired below. Original source snapshot, license, manifest and failed
+setup logs are retained.
 
 ## Independent documented kernel witness
 
@@ -113,12 +121,100 @@ rows, the full 9,508-row validation, and an independent CPU recount. Each stage
 must succeed before the next starts. No training, checkpoint selection or
 parameter changes occur in this queue.
 
-The input manifest binds the actual 312 scene files in
-`group_free_pred_bboxes/group_free_pred_bboxes_val`, mesh superpoints, the scene
-pickle, annotation cache and local RoBERTa files. The evaluator verifies all
+The corrected input manifest binds the 141 expression-scene files in
+`group_free_pred_bboxes/group_free_pred_bboxes_val`, all 312 loaded mesh
+superpoint files, the scene pickle, annotation cache and local RoBERTa files. The evaluator verifies all
 recorded input/source hashes and finite checkpoint/box/score tensors.
 
 At this observation there is no launch.json, preflight result or formal result;
 both waiters are alive and GPU compute is empty. The queue is running, but model
 inference has not started. A formal completion ETA requires measured EG batch
 throughput after the transfer; it is not inferred from PV-Ground timings.
+
+## Transfer complete and actual acceptance launch, 16:23:59 CST
+
+The original upload completed successfully in 1780.592 seconds. The remote
+complete file hash matches the local official checkpoint. Its epoch field is
+69; all 1,276 model states match the instantiated author EG model, with no
+missing/unexpected keys or shape differences. No model parameter is skipped.
+
+The first preparation stopped before model execution because its scene-list
+assertion incorrectly treated the 312 cached ScanNet scenes as the number of
+ScanRefer expression scenes. Actual annotations and the official ScanRefer val
+scene file both contain 141 scenes. Only the input manifest assertion/list was
+corrected; all 9,508 expressions, data, weights and inference rules are retained.
+The original failure logs and prepare script are archived, and launch_queue.exit
+1 refers to this completed failed preparation, not the replacement controller.
+
+Actual controller PID2184 launched at 16:23:58.996511+08:00 with spec SHA256
+`5194a46116ad202be3b4b75c2dfffd8ac311dbcdc4b9fc81e8487e812d078568`.
+It is the eight-row preflight followed by the single full evaluation and CPU
+recount. No optimizer is created. Completion still requires their receipts.
+
+Before the spec was created or any model forward ran, the recorder was extended
+to save all 256 raw/native averaged boxes and both scores in candidates.npy,
+alongside selected-row exports. The 9,508-row float32 array is about 136 MB and
+remains outside Git. Its SHA and column layout are recorded; the CPU audit also
+checks that each selected query/box/score agrees with this full candidate array.
+This enables subsequent failure analysis without changing prediction behavior.
+
+## GMA runtime repair and second execution preflight
+
+The first full-model attempt stopped inside GMA before producing predictions:
+its forward refers to `self.spatial_n_head`, but its constructor defines only
+`self.n_head`. With actual published decoder.0.cross_v weights, the isolated CPU
+reproducer failed at the same statement. The checkpoint language projection has
+72 outputs and geometric projection has 9 outputs per head, fixing the intended
+head count to the existing 8. A single-head interpretation cannot satisfy these
+tensor dimensions.
+
+Two attribute references were changed from `self.spatial_n_head` to
+`self.n_head`; no tensor, layer, weight or mask rule was added. The same CPU
+reproducer then passed output shape [2,256,288], attention [8,2,256,32], finite
+values, normalized attention and unchanged loaded state. The actual current
+call passes no key-padding mask to GMA; its unused padding branch was not
+modified speculatively.
+
+`models/encoder_decoder_layers.py` SHA256:
+
+- Original: `bb38453fbc7095fdfb5e2de1545238fdabc628518d42a4da1eb557555cc3c6f1`.
+- Repaired: `61251d06736222c4b5182fe6817cb47d32e1f93157f094a8c5aeb6f99bb25235`.
+
+The failed run's spec/logs/empty export remain in `failed_gma/`. Its controller
+exited1, with zero completed preflight/formal rows. A new fixed spec after the
+repair is `51296e810fde12229303b3dd09f82d771342c91a26822f319d7b9888eceed96a`.
+Controller2329 started at 16:29:13.657366+08:00 to rerun the original eight-row
+scenario and then the formal set. The isolated GMA pass is not a replacement for
+this full-model preflight or a REC performance result.
+
+## Validated runtime and full-model preflight launch, 17:07:54 CST
+
+The Torch1.10 attempt failed on Tensor.is_nested in the unchanged author attention
+implementation. It is archived in failed_torch110/. The isolated runtime uses
+Torch1.12.0+cu116 and the existing CUDA11.6 compiler; the cu116 build differs from
+the author's cu113 requirement and is explicitly recorded. The initial cu113
+install/build failures and their fixes are preserved in the runtime ledger.
+
+The author PointNet2 C++/CUDA sources were rebuilt without modification for the
+actual A100 architecture8.0. Its three unchanged Python wrappers are installed
+alongside the extension. Both executor and fresh same-family agent executed the
+seed2027 real CUDA FPS, grouping and author masked SWA witness successfully.
+The independent witness is environment-only, acceptance_status provisional.
+
+Final environment spec SHA:
+`81a835e8144f7070d66feb0afa460911dec610052ced6b96c98097352cd022fd`.
+Full evaluation spec SHA:
+`a01cf60f57b6e8eaecc45b5507f6934cb9b7ad88c16f7d743f49a07b4d095908`.
+Controller3503 launched17:07:54.508891+08:00. It runs the original eight-row
+execution check, then9508 formal rows and independent CPU recount. No training,
+GT model inputs, checkpoint selection or changed scores are introduced. A launch
+receipt is not a completed preflight or a formal REC result.
+
+At17:08:38.706762+08:00 the complete eight-row model preflight finished exit0:
+all model states unchanged, no optimizer/training, native counts equal the
+recorder. The3/2 hits are only an execution record, not an accuracy gate.
+The existing controller automatically entered formal9508. Observation17:11:50
+shows512 rows in97.7537 inference seconds and9152MiB GPU memory. No complete
+formal receipt/audit exists yet. Initial projected total inference is about30min,
+with a provisional17:40–17:50 CST completion window including CPU recount.
+Do not launch a second evaluation or use the partial counts as formal metrics.

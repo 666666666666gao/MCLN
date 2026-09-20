@@ -12,7 +12,7 @@ import pyvista as pv
 from scipy.spatial import cKDTree
 
 parser=argparse.ArgumentParser()
-parser.add_argument('--limit',type=int,default=6)
+parser.add_argument('--limit',type=int)
 parser.add_argument('--root',type=Path,required=True)
 options=parser.parse_args()
 root=options.root
@@ -132,10 +132,12 @@ for number,case in enumerate(manifest['cases'][:options.limit]):
         'prediction_and_gt_boxes_unchanged':True,'gt_prediction_background_identical':True})
     plot.close();print('DENSE_RENDER',case['case_id'],mesh.n_points,mesh.n_cells,flush=True)
 
-if options.limit==6:
+if len(rows)==len(manifest['cases']):
     composites=[]
-    for dataset in ('ScanRefer','Nr3D'):
+    datasets=list(dict.fromkeys(c['dataset'] for c in manifest['cases']))
+    for dataset in datasets:
         selected=[c for c in manifest['cases'] if c['dataset']==dataset]
+        assert len(selected)==3,dataset
         canvas=Image.new('RGB',(W*3+200,H*2+680),'white');draw=ImageDraw.Draw(canvas)
         draw.text((155,25),dataset+'  |  EG-3DVG failure cases',font=font(42,True),fill=INK)
         draw.text((24,590),'GT',font=font(45,True),fill=GREEN)
@@ -154,8 +156,8 @@ if options.limit==6:
         filename=dataset+'_GT_EG_dense.png'
         canvas.save(out/filename,dpi=(300,300));canvas.save(out/(dataset+'_GT_EG_dense.pdf'),resolution=300)
         composites.append(canvas)
-    composites[0].save(out/'ScanRefer_Nr3D_GT_EG_dense.pdf',save_all=True,append_images=composites[1:],resolution=300)
+    composites[0].save(out/('_'.join(datasets)+'_GT_EG_dense.pdf'),save_all=True,append_images=composites[1:],resolution=300)
 
 (out/'dense_render_verification.json').write_text(json.dumps({'cases':rows,'style':'GT row above EG row; exact shared mesh, crop and orthographic camera; no axes; colored triangle surfaces; white-halo box lines.',
     'mesh_interpolation':'ScanNet original triangle connectivity; no generated surfaces or duplicated points.',
-    'new_predictions':False,'rendering_only_uses_dense_mesh':True,'sr3d_complete':False},indent=2)+'\n',encoding='utf-8')
+    'new_predictions':False,'rendering_only_uses_dense_mesh':True,'sr3d_complete':sum(r['dataset']=='Sr3D' for r in rows)==3},indent=2)+'\n',encoding='utf-8')

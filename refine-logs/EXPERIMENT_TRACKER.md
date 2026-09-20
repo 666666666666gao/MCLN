@@ -634,3 +634,14 @@ ScanRefer：scene0011_00/chair/row0，IoU0、256平均框oracle0.950411；scene0
 Sr目录中的CPU等待器7083于19:57:53启动，19:58:40实查存活；每300秒等待原Sr controller.exit=0后执行导出，CUDA禁用。导出到独立mcln_eg3dvg_sr3d_failure_visuals_20260920_v1，0新模型forward/优化步，不改训练或评估。脚本SHA bfa498b699ed41c9236f19867f8adfb73e77e6447e4829d1bf9ef5344ba56294。命令行入口在实际EG环境--help退出0，读取Sr spec确认相同DATA_ROOT_mcln_meshsp；这些只是接续与入口检查，尚无Sr导出、图像或正式精度。等待器、启动器与PID回执保存在refine-logs/eg3dvg_sr3d_transfer_20260920_v1，observer已包含其进程及导出日志/退出码。
 
 后续取得真实案例后，下载所需原始彩色mesh，以已交付GT绿色/EG红色、同视角和白描边样式渲染到桌面，再检查图像与来源；当前不声称第三数据集可视化已完成。19:58:40 Nr日志1728/5614步、13824行、5045.78秒，loss/梯度有限；训练GPU934466、原接续5317/5318/5662/6128/6387及新增7083存活。没有新REC，继续固定终点；三数据集指标目标仍未完成。
+
+
+## 20.255 Sr单数据集下载、渲染与打包入口已准备（2026-09-20 20:03 CST）
+
+§254只接续了远端真实导出。本轮去掉渲染/打包脚本固定六例和固定ScanRefer/Nr3D列表的限制，按真实cases.json中的数据集组织每组三例、PNG及PDF；原六例默认行为保留，默认渲染所有已有案例，显式--limit仍可限制单例检查。新增scripts/collect_eg3dvg_failure_visuals.py使用显式--remote和--root下载，并逐文件核对manifest SHA，凭据只从运行环境读取。
+
+使用桌面现有三例真实ScanRefer及其已验证图像，复制到D盘临时检查目录后实际执行单数据集打包：3例13张PNG解码/哈希通过，全部HTML本地目标存在，PDF存在；渲染脚本语法编译通过。检查记录single_dataset_packaging_check.json已归档，未将ScanRefer例子重命名为Sr，未重新渲染或改动原交付目录；Sr真实渲染尚未执行，不能据此写为Sr图像已验收。
+
+待Sr正式评估和failure_visual_export.exit=0后，下载/root/autodl-tmp/mcln_eg3dvg_sr3d_failure_visuals_20260920_v1至C:/Users/gb/Desktop/document/EG3DVG_Sr3D_failure_visualizations_20260920，再执行render_eg3dvg_failure_visuals.py与package_eg3dvg_failure_visuals.py（均--root指定该目录），实际查看总图后再交付。旧六例保留，完整输入与真实模型来源一并保存。
+
+20:02:25 Nr日志1792/5614步、14336行、5229.92秒，loss5.23970/梯度5.71840有限，GPU934466及全部既定接续进程存活。Sr导出等待器7083仍存活，尚无新正式结果。继续原定训练终点，不改网络、优化器或验收范围；三数据集REC目标未完成。

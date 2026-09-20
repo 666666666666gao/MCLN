@@ -1,0 +1,177 @@
+{
+  "time_cst": "2026-09-20T15:59:44.483423+08:00",
+  "source_patch.json": {
+    "file": "src/joint_det_dataset.py",
+    "before": "450e01fd17ea3206408c535023931ff321f2c11573025239a70e0edcec3d964c",
+    "after": "db88d89e6bd6f2776cfccf99f211044adb40e8c0d56f4251fd8eb2dc0cf6fdd7",
+    "changes": [
+      "Use upstream load_annos instead of author placeholder text cache",
+      "Omit weights_only=False, which is the legacy torch.load default"
+    ]
+  },
+  "dataset_repair.json": {
+    "before_sha256": "db88d89e6bd6f2776cfccf99f211044adb40e8c0d56f4251fd8eb2dc0cf6fdd7",
+    "after_sha256": "86cf6a430f6fee00ecad4d09c7448e9cfec0806e507cebec1951351ceec3fdec",
+    "reason": "Public DC omits one_hot_scanrefer; point_class_label is computed but never returned by __getitem__ or used by any model/evaluator. Remove only dead computation and return slot.",
+    "cache": "Original upstream parser already completed all annotations before the sample-label exception. Reuse its saved annotations exactly.",
+    "annotations_sha256": "07947d077d4d24a712d45c6cc93cd067751b28ff12b5e19c7891d98121806909"
+  },
+  "import_kernel_receipt.json": {
+    "torch": "1.10.2+cu111",
+    "numpy": "1.21.5",
+    "transformers": "4.17.0",
+    "spacy": "3.4.4",
+    "gpu": "NVIDIA A100-PCIE-40GB",
+    "fps_shape": [
+      2,
+      16
+    ],
+    "extension": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/lib/python3.7/site-packages/pointnet2/_ext.cpython-37m-x86_64-linux-gnu.so",
+    "training_steps": 0,
+    "formal_rows": 0,
+    "base_environment_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c"
+  },
+  "data_receipt.json": {
+    "status": "complete",
+    "time_cst": "2026-09-20T15:47:12.899124+08:00",
+    "rows": 9508,
+    "scenes": 312,
+    "seconds": 10.655125856399536,
+    "annotations_sha256": "07947d077d4d24a712d45c6cc93cd067751b28ff12b5e19c7891d98121806909",
+    "sample_shapes": {
+      "box_label_mask": [
+        132
+      ],
+      "center_label": [
+        132,
+        3
+      ],
+      "sem_cls_label": [
+        132
+      ],
+      "size_gts": [
+        132,
+        3
+      ],
+      "gt_masks": [
+        132,
+        50000
+      ],
+      "point_clouds": [
+        50000,
+        6
+      ],
+      "og_color": [
+        50000,
+        3
+      ],
+      "tokens_positive": [
+        132,
+        2
+      ],
+      "positive_map": [
+        132,
+        256
+      ],
+      "modify_positive_map": [
+        132,
+        256
+      ],
+      "pron_positive_map": [
+        132,
+        256
+      ],
+      "other_entity_map": [
+        132,
+        256
+      ],
+      "rel_positive_map": [
+        132,
+        256
+      ],
+      "auxi_entity_positive_map": [
+        132,
+        256
+      ],
+      "auxi_box": [
+        1,
+        6
+      ],
+      "point_instance_label": [
+        50000
+      ],
+      "all_bboxes": [
+        132,
+        6
+      ],
+      "all_bbox_label_mask": [
+        132
+      ],
+      "all_class_ids": [
+        132
+      ],
+      "distractor_ids": [
+        32
+      ],
+      "anchor_ids": [
+        32
+      ],
+      "all_detected_boxes": [
+        132,
+        6
+      ],
+      "all_detected_bbox_label_mask": [
+        132
+      ],
+      "all_detected_class_ids": [
+        132
+      ],
+      "all_detected_logits": [
+        132,
+        485
+      ],
+      "target_cid": [],
+      "superpoint": [
+        50000
+      ],
+      "negative_positive_map": [
+        132,
+        256
+      ],
+      "negative_modify_positive_map": [
+        132,
+        256
+      ],
+      "negative_pron_positive_map": [
+        132,
+        256
+      ],
+      "negative_other_entity_map": [
+        132,
+        256
+      ],
+      "negative_auxi_entity_positive_map": [
+        132,
+        256
+      ],
+      "negative_rel_positive_map": [
+        132,
+        256
+      ]
+    },
+    "sample_utterance": "there is a dark brown wooden and leather chair . placed in the table of the kitchen . . not mentioned",
+    "model_forwards": 0,
+    "training_steps": 0
+  },
+  "data.log": [
+    "  File \"/root/autodl-tmp/mcln_eg3dvg_acceptance_20260920_v1/source/src/joint_det_dataset.py\", line 925, in __getitem__",
+    "    self._get_target_boxes(anno, scan)",
+    "  File \"/root/autodl-tmp/mcln_eg3dvg_acceptance_20260920_v1/source/src/joint_det_dataset.py\", line 713, in _get_target_boxes",
+    "    one_hot_dict = getattr(DC, f'one_hot_{dataset}')",
+    "AttributeError: 'ScannetDatasetConfig' object has no attribute 'one_hot_scanrefer'"
+  ],
+  "checkpoint_bytes_now": 406650880,
+  "gpu": "",
+  "disk": "Avail\n2710650880",
+  "processes": "1519 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/autodl-tmp/mcln_eg3dvg_acceptance_20260920_v1/inspect_wait.py"
+}

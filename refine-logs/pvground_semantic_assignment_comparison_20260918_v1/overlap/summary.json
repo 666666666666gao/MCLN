@@ -1,0 +1,605 @@
+{
+  "status": "complete",
+  "time_cst": "2026-09-20T15:48:50.940260+08:00",
+  "rows_per_snapshot": 6887,
+  "scenes": 106,
+  "model_forwards": 0,
+  "optimizer_steps": 0,
+  "new_formal_rows": 0,
+  "training_changes": false,
+  "used_for_promotion_or_tuning": false,
+  "semantic_instance_identity_proven": false,
+  "all_point_hashes_and_root_boxes_verified": true,
+  "input_files": {
+    "/root/autodl-tmp/mcln_scanrefer_appearance_native_overlap_20260908_v1/summary.json": "72fab673dfafe3bd4936188fdc48a61082b02e9d75a7bf82534c04de6f7ce5b1",
+    "/root/autodl-tmp/mcln_scanrefer_appearance_native_overlap_20260908_v1/input_manifest.json": "cf217cdbb37125a6708ad78af1cacfcc7f1ac683703a61583e3bb008762d3684",
+    "/root/autodl-tmp/mcln_scanrefer_appearance_native_overlap_20260908_v1/overlap_rows.json.gz": "35ae606aa4f170400b056cd3bcf228e2df9deb673073dafa1f436ecbe275c503",
+    "/root/autodl-tmp/mcln_scanrefer_appearance_native_overlap_20260908_v1/scripts/analyze_scanrefer_instance_overlap.py": "39fb3acadb204069bacaab9fdfc36b537e4d60b98d1e92b413426a4e1c8d2776",
+    "/root/autodl-tmp/mcln_scanrefer_appearance_native_overlap_20260908_v1/scripts/audit_scanrefer_stage_diagnostic.py": "bcc8e1cbf8848452281699ca1de6cab6d51f7a02437c852657faf5c5914372d3",
+    "/root/autodl-tmp/mcln_pvground_semantic_assignment_comparison_20260918_v1/summary.json": "c1930234a77b459c4b6b8da316cff94606f2f28143f9e90241e8b764718f794e",
+    "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/initial/receipt.json": "c8a734e8e7e3069d363c41d75881691bafb21601b41c71cc47d362b5ea2f73d9",
+    "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/initial/rows.jsonl": "c8aaff407aaf71228ae8d76a25b12630b59d516d686e8f8652023e06d2ee83e0",
+    "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_task_observation_v1/terminal/receipt.json": "d32be530c0ee479af3f2e76e74cdbf64ab3689386274cf0495b36aa3cd083143",
+    "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_task_observation_v1/terminal/rows.jsonl": "2f8e8d133b9ffb7a8beb2de2f9feef82a7b665554d1db5d172e254a10716c960",
+    "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/terminal/receipt.json": "af1be127fcec875917db79800da4b3e9266367cf6595ea9b75ab2fd0103a5aa3",
+    "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/terminal/rows.jsonl": "16fcd34914ed1c28cc4295638d7b87c967d29882356d6595d86269ff352d26ce"
+  },
+  "script_sha256": "7f54e8c9c175290f8be99cde0e566856b2dbd644d52639f20ce0855a3a0cb4f1",
+  "root_iou_max_absolute_difference": 3.0994415283203125e-06,
+  "snapshots": {
+    "G_initial": {
+      "bbs": {
+        "rows": 6887,
+        "categories": {
+          "root_unique_max": 6263,
+          "other_different_label_unique_max": 98,
+          "other_same_label_unique_max": 519,
+          "tied_max": 4,
+          "no_overlap": 3
+        },
+        "025": {
+          "hits": 6147,
+          "failures": 740,
+          "failure_categories": {
+            "root_unique_max": 153,
+            "other_same_label_unique_max": 502,
+            "other_different_label_unique_max": 78,
+            "tied_max": 4,
+            "no_overlap": 3
+          }
+        },
+        "050": {
+          "hits": 5549,
+          "failures": 1338,
+          "failure_categories": {
+            "root_unique_max": 724,
+            "other_same_label_unique_max": 519,
+            "other_different_label_unique_max": 88,
+            "tied_max": 4,
+            "no_overlap": 3
+          }
+        }
+      },
+      "bbf": {
+        "rows": 6887,
+        "categories": {
+          "root_unique_max": 6284,
+          "other_different_label_unique_max": 82,
+          "other_same_label_unique_max": 515,
+          "no_overlap": 4,
+          "tied_max": 2
+        },
+        "025": {
+          "hits": 6175,
+          "failures": 712,
+          "failure_categories": {
+            "root_unique_max": 147,
+            "other_same_label_unique_max": 497,
+            "other_different_label_unique_max": 62,
+            "tied_max": 2,
+            "no_overlap": 4
+          }
+        },
+        "050": {
+          "hits": 5584,
+          "failures": 1303,
+          "failure_categories": {
+            "root_unique_max": 709,
+            "other_same_label_unique_max": 515,
+            "other_different_label_unique_max": 73,
+            "tied_max": 2,
+            "no_overlap": 4
+          }
+        }
+      }
+    },
+    "D_terminal": {
+      "bbs": {
+        "rows": 6887,
+        "categories": {
+          "root_unique_max": 6230,
+          "other_different_label_unique_max": 117,
+          "other_same_label_unique_max": 531,
+          "no_overlap": 7,
+          "tied_max": 2
+        },
+        "025": {
+          "hits": 6136,
+          "failures": 751,
+          "failure_categories": {
+            "root_unique_max": 147,
+            "other_same_label_unique_max": 506,
+            "other_different_label_unique_max": 89,
+            "tied_max": 2,
+            "no_overlap": 7
+          }
+        },
+        "050": {
+          "hits": 5547,
+          "failures": 1340,
+          "failure_categories": {
+            "root_unique_max": 702,
+            "other_same_label_unique_max": 530,
+            "other_different_label_unique_max": 99,
+            "tied_max": 2,
+            "no_overlap": 7
+          }
+        }
+      },
+      "bbf": {
+        "rows": 6887,
+        "categories": {
+          "root_unique_max": 6250,
+          "other_different_label_unique_max": 105,
+          "other_same_label_unique_max": 523,
+          "no_overlap": 7,
+          "tied_max": 2
+        },
+        "025": {
+          "hits": 6164,
+          "failures": 723,
+          "failure_categories": {
+            "root_unique_max": 142,
+            "other_same_label_unique_max": 497,
+            "other_different_label_unique_max": 75,
+            "tied_max": 2,
+            "no_overlap": 7
+          }
+        },
+        "050": {
+          "hits": 5574,
+          "failures": 1313,
+          "failure_categories": {
+            "root_unique_max": 696,
+            "other_same_label_unique_max": 522,
+            "other_different_label_unique_max": 86,
+            "tied_max": 2,
+            "no_overlap": 7
+          }
+        }
+      }
+    },
+    "G_terminal": {
+      "bbs": {
+        "rows": 6887,
+        "categories": {
+          "root_unique_max": 6243,
+          "other_different_label_unique_max": 101,
+          "other_same_label_unique_max": 534,
+          "no_overlap": 4,
+          "tied_max": 5
+        },
+        "025": {
+          "hits": 6176,
+          "failures": 711,
+          "failure_categories": {
+            "root_unique_max": 121,
+            "other_same_label_unique_max": 505,
+            "other_different_label_unique_max": 76,
+            "tied_max": 5,
+            "no_overlap": 4
+          }
+        },
+        "050": {
+          "hits": 5602,
+          "failures": 1285,
+          "failure_categories": {
+            "root_unique_max": 657,
+            "other_same_label_unique_max": 531,
+            "other_different_label_unique_max": 88,
+            "tied_max": 5,
+            "no_overlap": 4
+          }
+        }
+      },
+      "bbf": {
+        "rows": 6887,
+        "categories": {
+          "root_unique_max": 6271,
+          "other_different_label_unique_max": 84,
+          "other_same_label_unique_max": 520,
+          "tied_max": 9,
+          "no_overlap": 3
+        },
+        "025": {
+          "hits": 6206,
+          "failures": 681,
+          "failure_categories": {
+            "root_unique_max": 118,
+            "other_same_label_unique_max": 491,
+            "other_different_label_unique_max": 60,
+            "tied_max": 9,
+            "no_overlap": 3
+          }
+        },
+        "050": {
+          "hits": 5647,
+          "failures": 1240,
+          "failure_categories": {
+            "root_unique_max": 639,
+            "other_same_label_unique_max": 518,
+            "other_different_label_unique_max": 71,
+            "tied_max": 9,
+            "no_overlap": 3
+          }
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "G_initial->G_terminal": {
+      "bbs": {
+        "category_transitions": {
+          "root_unique_max->root_unique_max": 6123,
+          "other_different_label_unique_max->other_different_label_unique_max": 55,
+          "other_same_label_unique_max->root_unique_max": 88,
+          "root_unique_max->other_different_label_unique_max": 39,
+          "other_same_label_unique_max->other_same_label_unique_max": 428,
+          "other_different_label_unique_max->root_unique_max": 31,
+          "root_unique_max->other_same_label_unique_max": 98,
+          "tied_max->other_different_label_unique_max": 2,
+          "other_same_label_unique_max->other_different_label_unique_max": 3,
+          "no_overlap->other_different_label_unique_max": 2,
+          "tied_max->no_overlap": 2,
+          "other_different_label_unique_max->tied_max": 3,
+          "other_different_label_unique_max->other_same_label_unique_max": 8,
+          "root_unique_max->tied_max": 2,
+          "root_unique_max->no_overlap": 1,
+          "no_overlap->root_unique_max": 1,
+          "other_different_label_unique_max->no_overlap": 1
+        },
+        "025": {
+          "repairs": 183,
+          "breaks": 154,
+          "net": 29,
+          "repair_categories": {
+            "other_same_label_unique_max->root_unique_max": 84,
+            "root_unique_max->root_unique_max": 71,
+            "other_different_label_unique_max->root_unique_max": 16,
+            "other_same_label_unique_max->other_same_label_unique_max": 10,
+            "root_unique_max->other_different_label_unique_max": 1,
+            "no_overlap->root_unique_max": 1
+          },
+          "break_categories": {
+            "root_unique_max->root_unique_max": 44,
+            "root_unique_max->other_different_label_unique_max": 20,
+            "root_unique_max->other_same_label_unique_max": 84,
+            "other_different_label_unique_max->other_different_label_unique_max": 3,
+            "other_same_label_unique_max->other_same_label_unique_max": 1,
+            "other_same_label_unique_max->other_different_label_unique_max": 1,
+            "root_unique_max->no_overlap": 1
+          }
+        },
+        "050": {
+          "repairs": 372,
+          "breaks": 319,
+          "net": 53,
+          "repair_categories": {
+            "root_unique_max->root_unique_max": 278,
+            "other_same_label_unique_max->root_unique_max": 80,
+            "other_different_label_unique_max->root_unique_max": 10,
+            "other_different_label_unique_max->other_different_label_unique_max": 2,
+            "other_same_label_unique_max->other_same_label_unique_max": 1,
+            "no_overlap->root_unique_max": 1
+          },
+          "break_categories": {
+            "root_unique_max->root_unique_max": 220,
+            "root_unique_max->other_different_label_unique_max": 18,
+            "root_unique_max->other_same_label_unique_max": 77,
+            "other_different_label_unique_max->other_different_label_unique_max": 3,
+            "root_unique_max->no_overlap": 1
+          }
+        },
+        "both_root_unique_max": {
+          "rows": 6123,
+          "category_transitions": {
+            "root_unique_max->root_unique_max": 6123
+          },
+          "025": {
+            "repairs": 71,
+            "breaks": 44,
+            "net": 27,
+            "repair_categories": {
+              "root_unique_max->root_unique_max": 71
+            },
+            "break_categories": {
+              "root_unique_max->root_unique_max": 44
+            }
+          },
+          "050": {
+            "repairs": 278,
+            "breaks": 220,
+            "net": 58,
+            "repair_categories": {
+              "root_unique_max->root_unique_max": 278
+            },
+            "break_categories": {
+              "root_unique_max->root_unique_max": 220
+            }
+          }
+        }
+      },
+      "bbf": {
+        "category_transitions": {
+          "root_unique_max->root_unique_max": 6157,
+          "other_different_label_unique_max->other_different_label_unique_max": 46,
+          "other_same_label_unique_max->root_unique_max": 86,
+          "other_same_label_unique_max->other_same_label_unique_max": 424,
+          "root_unique_max->other_different_label_unique_max": 33,
+          "other_different_label_unique_max->root_unique_max": 27,
+          "root_unique_max->other_same_label_unique_max": 91,
+          "other_same_label_unique_max->other_different_label_unique_max": 5,
+          "no_overlap->tied_max": 2,
+          "tied_max->no_overlap": 1,
+          "other_different_label_unique_max->tied_max": 4,
+          "no_overlap->no_overlap": 1,
+          "other_different_label_unique_max->other_same_label_unique_max": 5,
+          "root_unique_max->tied_max": 2,
+          "no_overlap->root_unique_max": 1,
+          "root_unique_max->no_overlap": 1,
+          "tied_max->tied_max": 1
+        },
+        "025": {
+          "repairs": 169,
+          "breaks": 138,
+          "net": 31,
+          "repair_categories": {
+            "other_same_label_unique_max->root_unique_max": 80,
+            "root_unique_max->root_unique_max": 63,
+            "other_different_label_unique_max->root_unique_max": 14,
+            "other_same_label_unique_max->other_same_label_unique_max": 10,
+            "no_overlap->root_unique_max": 1,
+            "other_different_label_unique_max->other_different_label_unique_max": 1
+          },
+          "break_categories": {
+            "root_unique_max->root_unique_max": 41,
+            "root_unique_max->other_different_label_unique_max": 15,
+            "root_unique_max->other_same_label_unique_max": 76,
+            "other_different_label_unique_max->other_different_label_unique_max": 3,
+            "other_same_label_unique_max->other_different_label_unique_max": 1,
+            "other_same_label_unique_max->other_same_label_unique_max": 1,
+            "root_unique_max->no_overlap": 1
+          }
+        },
+        "050": {
+          "repairs": 352,
+          "breaks": 289,
+          "net": 63,
+          "repair_categories": {
+            "root_unique_max->root_unique_max": 262,
+            "other_same_label_unique_max->root_unique_max": 76,
+            "other_different_label_unique_max->root_unique_max": 11,
+            "other_different_label_unique_max->other_different_label_unique_max": 2,
+            "no_overlap->root_unique_max": 1
+          },
+          "break_categories": {
+            "root_unique_max->root_unique_max": 200,
+            "root_unique_max->other_different_label_unique_max": 15,
+            "root_unique_max->other_same_label_unique_max": 70,
+            "other_different_label_unique_max->other_different_label_unique_max": 3,
+            "root_unique_max->no_overlap": 1
+          }
+        },
+        "both_root_unique_max": {
+          "rows": 6157,
+          "category_transitions": {
+            "root_unique_max->root_unique_max": 6157
+          },
+          "025": {
+            "repairs": 63,
+            "breaks": 41,
+            "net": 22,
+            "repair_categories": {
+              "root_unique_max->root_unique_max": 63
+            },
+            "break_categories": {
+              "root_unique_max->root_unique_max": 41
+            }
+          },
+          "050": {
+            "repairs": 262,
+            "breaks": 200,
+            "net": 62,
+            "repair_categories": {
+              "root_unique_max->root_unique_max": 262
+            },
+            "break_categories": {
+              "root_unique_max->root_unique_max": 200
+            }
+          }
+        }
+      }
+    },
+    "D_terminal->G_terminal": {
+      "bbs": {
+        "category_transitions": {
+          "root_unique_max->root_unique_max": 6114,
+          "other_different_label_unique_max->other_different_label_unique_max": 57,
+          "other_different_label_unique_max->root_unique_max": 50,
+          "other_same_label_unique_max->root_unique_max": 76,
+          "root_unique_max->other_different_label_unique_max": 36,
+          "other_same_label_unique_max->other_same_label_unique_max": 451,
+          "no_overlap->other_different_label_unique_max": 3,
+          "root_unique_max->other_same_label_unique_max": 75,
+          "other_same_label_unique_max->other_different_label_unique_max": 4,
+          "tied_max->no_overlap": 1,
+          "other_different_label_unique_max->other_same_label_unique_max": 7,
+          "tied_max->other_different_label_unique_max": 1,
+          "other_different_label_unique_max->tied_max": 2,
+          "root_unique_max->tied_max": 3,
+          "no_overlap->root_unique_max": 3,
+          "root_unique_max->no_overlap": 2,
+          "no_overlap->other_same_label_unique_max": 1,
+          "other_different_label_unique_max->no_overlap": 1
+        },
+        "025": {
+          "repairs": 188,
+          "breaks": 148,
+          "net": 40,
+          "repair_categories": {
+            "root_unique_max->root_unique_max": 83,
+            "other_same_label_unique_max->root_unique_max": 71,
+            "other_different_label_unique_max->root_unique_max": 22,
+            "other_same_label_unique_max->other_same_label_unique_max": 8,
+            "other_different_label_unique_max->other_different_label_unique_max": 2,
+            "no_overlap->root_unique_max": 2
+          },
+          "break_categories": {
+            "root_unique_max->root_unique_max": 49,
+            "root_unique_max->other_different_label_unique_max": 21,
+            "other_different_label_unique_max->other_different_label_unique_max": 2,
+            "root_unique_max->other_same_label_unique_max": 68,
+            "other_same_label_unique_max->other_same_label_unique_max": 5,
+            "other_same_label_unique_max->other_different_label_unique_max": 1,
+            "other_different_label_unique_max->root_unique_max": 1,
+            "root_unique_max->no_overlap": 1
+          }
+        },
+        "050": {
+          "repairs": 354,
+          "breaks": 299,
+          "net": 55,
+          "repair_categories": {
+            "root_unique_max->root_unique_max": 274,
+            "other_same_label_unique_max->root_unique_max": 65,
+            "other_different_label_unique_max->other_different_label_unique_max": 2,
+            "other_different_label_unique_max->root_unique_max": 10,
+            "other_same_label_unique_max->other_same_label_unique_max": 1,
+            "no_overlap->root_unique_max": 1,
+            "root_unique_max->other_different_label_unique_max": 1
+          },
+          "break_categories": {
+            "root_unique_max->root_unique_max": 208,
+            "root_unique_max->other_same_label_unique_max": 66,
+            "root_unique_max->other_different_label_unique_max": 18,
+            "other_different_label_unique_max->root_unique_max": 1,
+            "other_different_label_unique_max->other_different_label_unique_max": 5,
+            "root_unique_max->no_overlap": 1
+          }
+        },
+        "both_root_unique_max": {
+          "rows": 6114,
+          "category_transitions": {
+            "root_unique_max->root_unique_max": 6114
+          },
+          "025": {
+            "repairs": 83,
+            "breaks": 49,
+            "net": 34,
+            "repair_categories": {
+              "root_unique_max->root_unique_max": 83
+            },
+            "break_categories": {
+              "root_unique_max->root_unique_max": 49
+            }
+          },
+          "050": {
+            "repairs": 274,
+            "breaks": 208,
+            "net": 66,
+            "repair_categories": {
+              "root_unique_max->root_unique_max": 274
+            },
+            "break_categories": {
+              "root_unique_max->root_unique_max": 208
+            }
+          }
+        }
+      },
+      "bbf": {
+        "category_transitions": {
+          "root_unique_max->root_unique_max": 6146,
+          "other_different_label_unique_max->other_different_label_unique_max": 47,
+          "other_different_label_unique_max->root_unique_max": 49,
+          "other_same_label_unique_max->other_same_label_unique_max": 446,
+          "root_unique_max->other_different_label_unique_max": 33,
+          "other_same_label_unique_max->root_unique_max": 73,
+          "root_unique_max->other_same_label_unique_max": 68,
+          "other_same_label_unique_max->other_different_label_unique_max": 4,
+          "no_overlap->tied_max": 2,
+          "other_different_label_unique_max->no_overlap": 1,
+          "other_different_label_unique_max->other_same_label_unique_max": 5,
+          "tied_max->root_unique_max": 1,
+          "other_different_label_unique_max->tied_max": 3,
+          "root_unique_max->tied_max": 3,
+          "no_overlap->no_overlap": 2,
+          "no_overlap->root_unique_max": 2,
+          "no_overlap->other_same_label_unique_max": 1,
+          "tied_max->tied_max": 1
+        },
+        "025": {
+          "repairs": 180,
+          "breaks": 138,
+          "net": 42,
+          "repair_categories": {
+            "root_unique_max->root_unique_max": 80,
+            "other_different_label_unique_max->root_unique_max": 22,
+            "other_same_label_unique_max->root_unique_max": 67,
+            "other_same_label_unique_max->other_same_label_unique_max": 8,
+            "no_overlap->root_unique_max": 1,
+            "other_different_label_unique_max->other_different_label_unique_max": 2
+          },
+          "break_categories": {
+            "root_unique_max->root_unique_max": 47,
+            "root_unique_max->other_different_label_unique_max": 19,
+            "other_different_label_unique_max->other_different_label_unique_max": 2,
+            "root_unique_max->other_same_label_unique_max": 63,
+            "other_same_label_unique_max->other_different_label_unique_max": 1,
+            "other_same_label_unique_max->other_same_label_unique_max": 5,
+            "other_different_label_unique_max->root_unique_max": 1
+          }
+        },
+        "050": {
+          "repairs": 348,
+          "breaks": 275,
+          "net": 73,
+          "repair_categories": {
+            "root_unique_max->root_unique_max": 273,
+            "other_same_label_unique_max->root_unique_max": 58,
+            "other_different_label_unique_max->other_different_label_unique_max": 1,
+            "other_different_label_unique_max->root_unique_max": 14,
+            "no_overlap->root_unique_max": 1,
+            "root_unique_max->other_different_label_unique_max": 1
+          },
+          "break_categories": {
+            "root_unique_max->root_unique_max": 194,
+            "root_unique_max->other_same_label_unique_max": 59,
+            "root_unique_max->other_different_label_unique_max": 18,
+            "other_different_label_unique_max->root_unique_max": 1,
+            "other_different_label_unique_max->other_different_label_unique_max": 3
+          }
+        },
+        "both_root_unique_max": {
+          "rows": 6146,
+          "category_transitions": {
+            "root_unique_max->root_unique_max": 6146
+          },
+          "025": {
+            "repairs": 80,
+            "breaks": 47,
+            "net": 33,
+            "repair_categories": {
+              "root_unique_max->root_unique_max": 80
+            },
+            "break_categories": {
+              "root_unique_max->root_unique_max": 47
+            }
+          },
+          "050": {
+            "repairs": 273,
+            "breaks": 194,
+            "net": 79,
+            "repair_categories": {
+              "root_unique_max->root_unique_max": 273
+            },
+            "break_categories": {
+              "root_unique_max->root_unique_max": 194
+            }
+          }
+        }
+      }
+    }
+  },
+  "limitations": "Maximum annotated box overlap is a geometric proxy, not semantic identity. Includes structural and nested objects; same-label means exact raw annotation label. Both-root comparisons do not separate reranking from regression changes. Initial snapshots and fixed training endpoints are reported separately. Backbone-seen module holdout, not unseen-scene generalization.",
+  "rows_sha256": "3d196655160d7b4e435413c0d161ac55cd5c329443a4dba92396c52f0bf05d3c"
+}

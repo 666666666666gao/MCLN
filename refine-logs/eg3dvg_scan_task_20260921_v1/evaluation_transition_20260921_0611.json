@@ -1,0 +1,95 @@
+{
+  "time_cst": "2026-09-21T06:11:34.238142+08:00",
+  "14125": {
+    "status": [
+      "Name:\tpython",
+      "State:\tS (sleeping)",
+      "PPid:\t1"
+    ],
+    "command": "/root/mcln_eg3dvg_torch112_20260920_v1/venv/bin/python -u /root/autodl-tmp/mcln_eg3dvg_scan_task_20260921_v1/controller.py "
+  },
+  "15960": {
+    "status": [
+      "Name:\tpython",
+      "State:\tS (sleeping)",
+      "PPid:\t1"
+    ],
+    "command": "/root/mcln_eg3dvg_torch112_20260920_v1/venv/bin/python -u /root/autodl-tmp/mcln_eg3dvg_scan_task_20260921_v1/wait_eg3dvg_scan_candidate_analysis.py --root /root/autodl-tmp/mcln_eg3dvg_scan_task_20260921_v1 --controller-pid 14125 "
+  },
+  "25078": {
+    "status": [
+      "Name:\tpython",
+      "State:\tR (running)",
+      "PPid:\t14125"
+    ],
+    "command": "/root/mcln_eg3dvg_torch112_20260920_v1/venv/bin/python -u /root/autodl-tmp/mcln_eg3dvg_scan_task_20260921_v1/evaluate.py --spec /root/autodl-tmp/mcln_eg3dvg_scan_task_20260921_v1/task/evaluation_01/spec.json --stage formal "
+  },
+  "task_epoch_01.exit": "0\n",
+  "task/epoch_01/receipt.json": {
+    "status": "complete",
+    "stage": "fit",
+    "time_cst": "2026-09-21T06:06:59.504010+08:00",
+    "epoch": 1,
+    "rows": 48655,
+    "optimizer_steps": 6082,
+    "total_fit_steps": 6082,
+    "elapsed_seconds": 17926.479368686676,
+    "spec_sha256": "abc505429465da5c746813a7799db20f9eba6f65ef0fb1db2dd8e9715df6ddf1",
+    "parent_checkpoint_sha256": "785f46ca595aed3a06efdfc46dc1c4b0493b212ccb66062a76f519324fd24f7e",
+    "frozen_parameter_tensors": 199,
+    "frozen_parameters_unchanged": true,
+    "trainable_parameter_tensors": 870,
+    "validation_rows": 0,
+    "gpu_peak_allocated_bytes": 34599586816,
+    "preflight_weight_discarded": false,
+    "checkpoint_selection": false,
+    "checkpoint_path": "/root/mcln_eg3dvg_scan_task_states_20260921_v1/latest.pth",
+    "checkpoint_sha256": "10e07ac58b301534963c744033bca804754d4b4261ead7f2629e13dfdf0f3ac6"
+  },
+  "task/evaluation_01/preflight/receipt.json": {
+    "status": "complete",
+    "time_cst": "2026-09-21T06:07:49.211490+08:00",
+    "stage": "preflight",
+    "rows": 8,
+    "elapsed_seconds": 4.655293226242065,
+    "metrics": {
+      "bbs": {
+        "rec_hits25": 3,
+        "rec_hits50": 2
+      },
+      "bbf": {
+        "rec_hits25": 3,
+        "rec_hits50": 2
+      }
+    },
+    "primary_mode": "bbs",
+    "native_box_rule": "0.5 * (last regressed box + box enclosing points with predicted mask > 0.5)",
+    "checkpoint_sha256": "10e07ac58b301534963c744033bca804754d4b4261ead7f2629e13dfdf0f3ac6",
+    "spec_sha256": "3ab2523ff251456f548cd69169d7ae88ccb2e99a497a3ed05eead009635a68a7",
+    "rows_sha256": "0ef0d2edabe98e868723785608f33913bc510372b2b8cd5ca6b614335143529c",
+    "candidates_sha256": "191b96fbae9c9561d6dfaea7e93258b4dbe21ca408e08418199519b4fd8ceaa4",
+    "candidate_columns": [
+      "raw_cx",
+      "raw_cy",
+      "raw_cz",
+      "raw_dx",
+      "raw_dy",
+      "raw_dz",
+      "box_cx",
+      "box_cy",
+      "box_cz",
+      "box_dx",
+      "box_dy",
+      "box_dz",
+      "bbs_score",
+      "bbf_score"
+    ],
+    "all_model_states_unchanged": true,
+    "training_steps": 0,
+    "checkpoint_training_steps": 6082,
+    "optimizer_created": false,
+    "upstream_commit": "174e34894aea6513442da6b5dfa9b3e2bf8a1efa",
+    "mask_metric_gate": false
+  },
+  "controller_exit_exists": false
+}

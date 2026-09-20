@@ -502,3 +502,8 @@ Nr/Sr全量作者文本解析7899/17726完成；全部评价场景对象槽检�
 新增scripts/evaluate_eg3dvg_nr3d_transfer.py、audit_eg3dvg_nr3d_transfer.py、observe_eg3dvg_nr3d_transfer.py；运行协议见docs/EG3DVG_NR3D_TRANSFER_2026-09-20.md。CPU4480并行准备Nr3D train和ScanNet检测注释，4557等待其exit0后检查独立训练Dataset及固定8条Nr/3条ScanNet样本；17:58仍在文本解析，尚未宣称训练缓存/训练输入完整通过。所有CPU任务0模型更新，训练尚未启动。
 
 源码确认作者Nr训练脚本240轮，checkpoint_path还会接续旧epoch、尝试恢复optimizer/scheduler且strict=False；不直接照搬。后续有限迁移需完整严格加载作者模型、独立新优化器/固定预算，保留原生损失和真实输入职责，先排除已知训练接口问题。当前只记录方向词分词差异，不修改正在运行的验证源。ScanRefer V99 58.6033/50.4523受保护，EG 58.2878/52.0825保留；Sr3D未启动EG训练/推理，三数据集目标未完成。
+
+
+18:02取回完整训练输入回执：作者解析于17:59:22完成，Nr3D32919条/511场景（297.32秒），ScanNet检测1199条/1199场景。joint_det重复10次后完整Dataset44909条；独立增强训练Dataset在48.30秒内完成构造及固定8条Nr、3条ScanNet检查，exit0；点/框有限、GT对象框槽对齐、正/负文本目标字段可用，0模型forward/更新。训练缓存SHA：Nr4684a3bfd69f11bf6758c140eb3de32c5fd7c844cb486e25d71b3c1853852a23，ScanNet7547e8a8ac469709ec9956be342167618e28c99cd0615cdb25d107c9601a5231；独立训练Dataset源SHA5f771e1d55e0663ba4f84240866bbf3c4d4a94e3033bea26fce72b5523793a30。
+
+本次作者解析后的Nr train文本，原方向词增强判断与相同十词表的小写字母分词出现325条差异；例如句首Looking、Facing和facing漏判为可做90度旋转/翻转。该数字属于EG实际解析输入，不沿用旧MCLN原始文本2155条。当前仅记录未修复，验证源和进行中的7899推理不变；下一次训练前应在独立训练源对这一实际标签一致性问题作最小修正并检查全部325条，不能把修复称模型创新或把全部训练退化归因于它。18:01:59实际controller4408仍存活，正式日志2560/7899条/518.26秒；无完整REC结果，预计18:20—18:25不变。

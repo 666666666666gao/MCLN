@@ -1,0 +1,105 @@
+"""CPU recount of selected EG-3DVG boxes; does not rerun or alter the model."""
+import argparse
+import datetime
+import gzip
+import hashlib
+import json
+from pathlib import Path
+
+import numpy as np
+
+
+def sha(p):
+    return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+
+
+def iou(a, b):
+    a, b = np.asarray(a, np.float64), np.asarray(b, np.float64)
+    sa, sb = np.maximum(a[3:], 1e-6), np.maximum(b[3:], 1e-6)
+    low = np.maximum(a[:3] - sa / 2, b[:3] - sb / 2)
+    high = np.minimum(a[:3] + sa / 2, b[:3] + sb / 2)
+    inter = np.maximum(high - low, 0).prod()
+    return float(inter / (sa.prod() + sb.prod() - inter))
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument('--root', type=Path, required=True)
+    args = p.parse_args()
+    root = args.root
+    receipt = json.loads((root / 'formal/receipt.json').read_text())
+    assert receipt['status'] == 'complete' and receipt['rows'] == 17726
+    assert receipt['all_model_states_unchanged'] and receipt['training_steps'] == 0
+    rows_path = root / 'formal/rows.jsonl.gz'
+    assert sha(rows_path) == receipt['rows_sha256']
+    with gzip.open(str(rows_path), 'rt') as f:
+        rows = [json.loads(line) for line in f]
+    assert [row['row_id'] for row in rows] == list(range(17726))
+    manifest = json.loads((root / 'annotation_manifest.json').read_text())
+    assert len(manifest) == len(rows)
+    counts = {m: {'rec_hits25': 0, 'rec_hits50': 0} for m in ['bbs', 'bbf', 'bbs_unfiltered', 'bbf_unfiltered']}
+    maximum_error = 0.
+    for row, annotation in zip(rows, manifest):
+        assert row['scan_id'] == annotation['scan_id'] and row['target_id'] == annotation['target_id']
+        expected_text = ' '.join(annotation['utterance'].replace(',', ' ,').split()) + ' . not mentioned'
+        assert row['utterance'] == expected_text
+        for mode in counts:
+            v = row[mode]
+            assert 0 <= v['query'] < 256
+            assert np.allclose(v['box'], (np.asarray(v['raw_box']) + np.asarray(v['mask_box'])) / 2, atol=1e-6, rtol=1e-6)
+            recomputed = iou(row['gt_box'], v['box'])
+            assert np.isfinite(recomputed)
+            maximum_error = max(maximum_error, abs(recomputed - v['iou']))
+            assert abs(recomputed - v['iou']) < 1e-4
+            for threshold, name in [(.25, 'rec_hits25'), (.5, 'rec_hits50')]:
+                assert (recomputed > threshold) == (v['iou'] > threshold)
+                counts[mode][name] += int(recomputed > threshold)
+    assert counts == receipt['metrics']
+    candidate_path = root / 'formal/candidates.npy'
+    assert sha(candidate_path) == receipt['candidates_sha256']
+    candidates = np.load(str(candidate_path), mmap_mode='r')
+    assert candidates.shape == (17726, 256, 17) and candidates.dtype == np.float32
+    assert np.isfinite(candidates).all()
+    for row in rows:
+        matrix = candidates[row['row_id']]
+        objects = np.asarray(row['object_boxes'], np.float64)
+        boxes = matrix[:, 6:12].astype(np.float64)
+        osize = objects[:, 3:]
+        bsize = boxes[:, 3:]
+        low = np.maximum(objects[:, None, :3] - osize[:, None] / 2,
+                         boxes[None, :, :3] - bsize[None] / 2)
+        high = np.minimum(objects[:, None, :3] + osize[:, None] / 2,
+                          boxes[None, :, :3] + bsize[None] / 2)
+        inter = np.maximum(high - low, 0).prod(-1)
+        overlap = inter / (osize.prod(-1)[:, None] + bsize.prod(-1)[None] - inter)
+        valid = overlap.max(0) > .25
+        assert np.array_equal(valid, matrix[:, 16].astype(bool)), row['row_id']
+        assert np.array_equal(matrix[:, 12], matrix[:, 14] * matrix[:, 16])
+        assert np.array_equal(matrix[:, 13], matrix[:, 15] * matrix[:, 16])
+        for mode, column in [('bbs', 12), ('bbf', 13), ('bbs_unfiltered', 14), ('bbf_unfiltered', 15)]:
+            value = row[mode]
+            candidate = candidates[row['row_id'], value['query']]
+            assert np.array_equal(candidate[:6], value['raw_box'])
+            assert np.array_equal(candidate[6:12], value['box'])
+            assert candidate[column] == value['score']
+            assert candidate[column] == candidates[row['row_id'], :, column].max()
+    audit = {'integrity_pass': True, 'rows': len(rows), 'metrics': counts,
+             'maximum_iou_error': maximum_error, 'receipt_sha256': sha(root / 'formal/receipt.json'),
+             'candidates_sha256': receipt['candidates_sha256'],
+             'all_selected_candidates_match_export': True,
+             'time_cst': datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+             'model_forwards': 0, 'optimizer_steps': 0, 'primary_mode': 'bbs',
+             'rec25_project_target': counts['bbs']['rec_hits25'] >= 12139,
+             'rec50_project_target': counts['bbs']['rec_hits50'] >= 10335,
+             'dataset': 'sr3d', 'initialization_dataset': 'scanrefer',
+             'experiment_type': 'single_epoch_adaptation', 'checkpoint_optimizer_steps': receipt['checkpoint_optimizer_steps'],
+             'object_filter_recomputed': True,
+             'mask_metric_gate': False}
+    with (root / 'formal/audit.json').open('x') as f:
+        json.dump(audit, f, indent=2)
+    print('EG_AUDIT_COMPLETE ' + json.dumps(audit))
+
+
+if __name__ == '__main__':
+    main()
+

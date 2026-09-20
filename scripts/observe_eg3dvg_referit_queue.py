@@ -10,7 +10,7 @@ client.load_system_host_keys()
 client.connect('region-9.autodl.pro',port=33476,username='root',password=os.environ['MCLN_SSH_PASSWORD'],timeout=30)
 sftp=client.open_sftp()
 record={'time_cst':datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat()}
-for label,root in [('nr','/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v3'),('sr','/root/autodl-tmp/mcln_eg3dvg_sr3d_transfer_20260920_v1')]:
+for label,root in [('nr','/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v3'),('sr','/root/autodl-tmp/mcln_eg3dvg_sr3d_transfer_20260920_v1'),('sr_adapt','/root/autodl-tmp/mcln_eg3dvg_sr3d_adapt_20260920_v1')]:
     names=sftp.listdir(root)
     item={}
     for name in ['preflight.exit','fit.exit','formal.exit','audit.exit','controller.exit','train_inputs.exit','train_dataset_preflight.exit']:
@@ -26,8 +26,10 @@ for label,root in [('nr','/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v3'),
             for name in ['receipt.json','audit.json']:
                 if name in sftp.listdir(root+'/'+directory):
                     with sftp.open(root+'/'+directory+'/'+name,'rb') as f:item[directory+'/'+name]=json.loads(f.read())
+    if 'decision.json' in names:
+        with sftp.open(root+'/decision.json','rb') as f:item['decision.json']=json.loads(f.read())
     record[label]=item
-for name,command in [('processes','ps -p 5317,5318,5662,5663,5718 -o pid,etime,args --no-headers'),
+for name,command in [('processes','ps -p 5317,5318,5662,6128 -o pid,etime,args --no-headers'),
                      ('gpu','nvidia-smi --query-compute-apps=pid,used_memory --format=csv,noheader'),
                      ('disk','df -B1 /root /root/autodl-tmp')]:
     _,stdout,stderr=client.exec_command(command,timeout=30)

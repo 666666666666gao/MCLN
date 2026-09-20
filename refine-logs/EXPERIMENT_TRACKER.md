@@ -575,3 +575,20 @@ CPU5718每180秒等待解析exit0，然后在独立训练输入副本绑定Sr缓
 
 
 18:59实际恢复文件检查：Nr固定训练已完成至少512步/4096行，latest.pth大小875644160字节，SHA 3a9f33cbbc40b36ea5790806c330d36ec621f2ba205f32654ef6964805f2adc1。独立新EG环境CPU反序列化成功，1276模型状态的key/shape/dtype与父权重匹配且数值有限；保存841项优化器状态、三组参数、完整RNG及训练spec/父权重SHA。没有为该检查执行模型前向、恢复后的训练更新或验证，也未以中间checkpoint选最好。恢复文件只用于故障续接，唯一性能终点仍5614步。检查代码scripts/audit_eg3dvg_nr3d_recovery_checkpoint.py及轻量回执已保存。
+
+
+## 20.250 EG Sr3D固定适配条件接续已部署，保留Nr未达标时的训练优先级（2026-09-20 19:09 CST）
+
+本轮在Sr CPU训练输入完成后，预先固定后续资源分配，未改正在运行的Nr训练。新增独立root /root/autodl-tmp/mcln_eg3dvg_sr3d_adapt_20260920_v1，controller6128于19:06:58启动，19:09:05仍存活等待。此时没有Sr GPU训练预检、优化更新或新REC。Sr零更新评估controller5662仍按§249独立接续，不受以下训练条件取消。
+
+条件在Nr/Sr终态结果出来前写入spec：先等Nr固定适配终点和独立audit；若bbs任一阈值低于4726/4059，则记录deferred_for_nr_priority，结束Sr训练控制器并保留后续Nr训练优先级。若Nr达标，再等待Sr原作者Scan权重零更新评估；若Sr已达到保护12139/10335，则记录skipped_zero_update_already_meets_protected，不训练。其余情况才记录run_fixed_adaptation，持原GPU锁进入真实训练预检。跳过分支controller.exit0不代表训练完成或精度成功，必须结合decision、fit receipt和evaluation audit判读。
+
+若进入训练：从原作者ScanRefer epoch69完整权重重新加载，不沿用Nr终点；seed2027、77836行完整一次、batch8末批4、9730更新、主LR1e-4/骨干1e-5、AdamW/clip0.1/固定LR，与现有原生适配控制保持一致。保留完整作者损失和负表达双forward；先两批真实GPU训练预检，丢弃预检权重，再重新加载父权重开始fit。每512步与终点保存单一恢复状态，不挑中间checkpoint，不做多seed、LR搜索或长期baseline训练。
+
+Sr增强沿作者关系判断，不复制Nr方向词修正。独立训练源只绑定已有训练缓存，并导出原生loss实际所需、forward已经计算的super_xyz_list；不改变张量计算和loss公式。Dataset SHA c45cd27aac71c8e65ba0713a0332625670423220d9ff5544df0e8f6752663699；模型SHA b65e77b9e3dd095591e37cbd88f8a6c3179b3499f4ed027569f9a33870438ee1；spec SHA 89fc730fc2a1cf18e1970ae87d2faa142d799171f117f7bb2da4175a82578011。复用已验收Torch1.12+cu116环境，不重建。
+
+固定终点按原Sr协议依次8条预检、17726条完整验证、CPU独立重计、起终点配对。主输出last/bbs，场景GT实例框+预测类别及作者对象支持分数乘法规则保留；不是单阶段或无GT对象框推理。只以REC两阈值验收，Mask仅诊断但保留原生训练/REC平均框计算。详见docs/EG3DVG_SR3D_ADAPTATION_2026-09-20.md及refine-logs/eg3dvg_sr3d_adapt_20260920_v1。
+
+实际controller前缀在五个隔离CPU数据夹具上通过：Nr任一阈值差1命中均延后；Nr精确达线、Sr两项精确保护则跳过；Sr任一阈值差1命中均进入预检分支。controller SHA b1269e0a3e3729283315224b0f7392c0ba8c7b22da70c0c48ce6438798ef71ec。此检查0模型forward/0更新，只验证调度分支，不是GPU执行通过或真实精度；不得将夹具数字计入结果。
+
+19:09:05实查Nr固定适配日志704/5614步、5632行、2077.65秒，loss和梯度有限，GPU训练进程934466存活。按实测速度预计Nr固定终点及7899评估约23:40—23:45，之后Sr零更新评估约55—65分钟；若条件满足再训练Sr，预计另需约9小时含正式评估。均为时间估计，当前无Nr适配终态、无Sr结果。Scan正式EG5542/4952与V99保护5572/4797不变，三数据集目标仍未完成。

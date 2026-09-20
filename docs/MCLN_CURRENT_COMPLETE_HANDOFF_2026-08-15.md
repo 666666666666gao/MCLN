@@ -19624,3 +19624,16 @@ Sr增强沿作者关系判断，不复制Nr方向词修正。独立训练源只�
 新增scripts/analyze_eg3dvg_nr3d_candidates.py，SHA da10a62e17bcebd0450dbc3f576ac003cdd40ee0af0820ae4ebf84655a75fae3；完整结果在refine-logs/eg3dvg_nr3d_transfer_20260920_v1/formal/candidate_analysis.json，说明在docs/EG3DVG_NR3D_CANDIDATE_ANALYSIS_2026-09-20.md。同脚本已部署到Nr适配v3，CPU等待器6387于19:20:20启动且19:20:44实查存活，每300秒等既定controller终态0后对evaluation目录执行同样分析；输入审计必须通过。它不增加模型推理、训练配置变化或额外权重选择。既有5318起终点配对计数继续保留。
 
 19:20:44 Nr实际日志960/5614步、7680行、2815.93秒，loss/梯度有限，GPU934466存活，Sr5662/6128仍等待。observer补充终点评估阶段日志/回执及CPU分析句柄，避免fit完成后只看到旧训练日志。当前无Nr适配或Sr新精度；ScanRefer EG5542/4952与V99保护5572/4797不变。下一步按固定终点比较实际REC、候选覆盖及合格候选排名的变化，再决定尚未达标数据集的后续工作。三数据集目标仍未完成。
+
+
+## 20.252 EG真实失败场景的稠密网格可视化已交付（2026-09-20 19:36 CST）
+
+训练等待期间复用既有真实网格渲染方式，完成当前EG ScanRefer和Nr3D各3例，共6个不同场景。只读取已审计9508/7899正式导出，0模型forward/优化更新。六例均重新核对当前输入点云SHA与原forward记录一致、GT由同一缓存场景实例重建、预测IoU重算一致；原始ScanNet彩色mesh和作者坐标矩阵逐文件核对SHA。每场景94315—237360顶点、178934—451905三角面，坐标对齐后所有采样点到原始顶点最大最近距离<2e-6米。
+
+本地目录C:/Users/gb/Desktop/document/EG3DVG_3D_failure_visualizations_20260920，index.html为离线入口；paper_style_dense包含两张三列GT/EG上下对照总图、每例高清图及合并PDF。26张PNG均完整解码校验，两个总图已实际目视检查，GT绿色/EG红色加白描边、共享相机/背景/剖切，不修改任何GT或预测框。HTML未做浏览器交互测试，不能写成浏览器验收通过。脚本、原始点包、mesh及逐文件来源本地保留；公开仓库只保存自有脚本与轻量来源/验证记录，不上传ScanNet mesh或点云数据。
+
+ScanRefer：scene0011_00/chair/row0，IoU0、256平均框oracle0.950411；scene0025_00/shelf/row232，IoU0.437233、oracle0.759116；scene0015_00/table/row76，IoU0、oracle0.317443。Nr3D：scene0690_00/lamp/row26，IoU0、oracle0.885491；scene0221_00/pillow/row12，IoU0.442206、oracle0.528988；scene0164_00/kitchen cabinet/row0，IoU0、oracle0.289291。三类分别为有合格候选未选中、严格阈值失败、全部256平均框未达到0.5；按显示条件取首个合格行并限制每数据集不同场景，不是随机或代表性精度样本。
+
+图中EG明确指作者ScanRefer epoch69零更新基线；Nr图不是Nr适配终点，也不冒充历史E57。Sr尚无本次正式输出，因此本批未制作Sr图，未使用替代模型伪装保护结果。旧MCLN可视化目录及其V99/E57来源保持不变。图片文字仅去掉模型末尾追加的“. not mentioned”，完整实际输入仍在cases.json。
+
+19:34:53实查Nr日志1216/5614步、9728行、3559.84秒，GPU934466存活，loss/梯度有限；所有既定接续进程存活，无新正式REC。本次CPU导出和本地渲染没有改变训练、队列、主输出或验收门槛。预计Nr固定终点及评估仍约23:40，实际以终态回执为准。当前架构/实验/优化计划沿§250—251，不重复历史。三数据集目标未完成。

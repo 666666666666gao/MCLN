@@ -1,0 +1,24 @@
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.decoder.weight', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Loading train files, take a breath!
+Traceback (most recent call last):
+  File "/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v1/train.py", line 168, in <module>
+    main()
+  File "/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v1/train.py", line 99, in main
+    for batch in loader:
+  File "/root/mcln_eg3dvg_torch112_20260920_v1/venv/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 652, in __next__
+    data = self._next_data()
+  File "/root/mcln_eg3dvg_torch112_20260920_v1/venv/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 692, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/root/mcln_eg3dvg_torch112_20260920_v1/venv/lib/python3.7/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/mcln_eg3dvg_torch112_20260920_v1/venv/lib/python3.7/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/root/mcln_eg3dvg_torch112_20260920_v1/venv/lib/python3.7/site-packages/torch/utils/data/dataset.py", line 290, in __getitem__
+    return self.dataset[self.indices[idx]]
+  File "/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v1/source/src/joint_det_dataset.py", line 918, in __getitem__
+    point_cloud, augmentations, og_color = self._get_pc(anno, scan)
+  File "/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v1/source/src/joint_det_dataset.py", line 498, in _get_pc
+    and self._augment_nr3d(anno['utterance'])
+TypeError: _augment_nr3d() takes 1 positional argument but 2 were given

@@ -1,0 +1,14 @@
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight', 'lm_head.dense.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Loading train files, take a breath!
+Traceback (most recent call last):
+  File "/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v2/train.py", line 168, in <module>
+    main()
+  File "/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v2/train.py", line 112, in main
+    native_loss, end = BaseTrainTester._compute_loss(end, criterion, set_criterion, native_args)
+  File "/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v2/source/main_utils.py", line 501, in _compute_loss
+    query_points_obj_topk=args.query_points_obj_topk
+  File "/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v2/source/models/losses.py", line 909, in compute_hungarian_loss
+    output['super_xyz_list'] = end_points['super_xyz_list']
+KeyError: 'super_xyz_list'

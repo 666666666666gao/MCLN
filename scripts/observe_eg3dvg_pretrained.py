@@ -22,7 +22,10 @@ def main():
     keep = ['source_patch.json', 'dataset_repair.json', 'import_kernel_receipt.json',
             'checkpoint_download.json', 'checkpoint_inspection.json', 'data_receipt.json',
             'spec.json', 'launch.json', 'controller.exit', 'preflight.exit', 'formal.exit',
-            'audit.exit', 'preflight.log', 'formal.log', 'audit.log', 'data.log']
+            'audit.exit', 'preflight.log', 'formal.log', 'audit.log', 'data.log',
+            'checkpoint_inspection.exit', 'checkpoint_inspection.log',
+            'launch_queue.json', 'launch_queue.exit', 'launch_queue.log',
+            'prepare_evaluation.log', 'controller.log']
     for name in keep:
         if name not in names:
             continue

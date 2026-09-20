@@ -19457,3 +19457,11 @@ G terminal SHA0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522�
 重要协议：官方REC evaluator将回归框与预测Mask生成框平均；首次完整验收保留这个作者原生流程，不冒称纯Box头无几何处理。它与旧V99、PV原生分别报告。固定last/bbs为主，bbf诊断，GroupFree butd，不用GT对象过滤。新runner逐批对照作者原生REC计数并导出所选框/Query、点SHA和IoU，完整结束后另做CPU重计。
 
 当前仅数据与运行时检查通过；权重传输、严格restore、固定8条前向及唯一9508正式尚未完成。预检仅检查执行，不按8条精度筛选模型；不新增训练。接续按EG3DVG_PRETRAINED_ACCEPTANCE_2026-09-20.md检查原进程/marker，不重复下载或重启。完整正式速度须以EG实际批次估计。本节后续追加真实启动/终态，不把计划作为完成证据。
+
+### 20.242 EG完整预训练验收已挂接持久队列；权重仍在传输（2026-09-20 16:08 CST）
+
+16:08:28实际观察：原SFTP传输已写553189376/875723586字节，尚未关闭，不可加载该部分文件。权重本地完整SHA沿用§20.241；上传成功关闭后才写远端checkpoint_download.json，随后原CPU检查进程1519按180秒间隔检测、核对全文件SHA及模型键/形状。服务器直连作者下载域名一次15秒连接超时，未下载第二份文件，继续保留原有效SFTP传输。
+
+16:07:05启动持久验收等待进程1754，16:08再次确认存活。它按180秒等待CPU检查成功，然后prepare_evaluation.py固定spec、输入/源码/权重SHA并启动controller。controller取得共享GPU锁后依次执行8条固定运行检查、9508条作者原生REC和独立CPU重计；任一失败即停止并保留日志，不另选模型、不调参数、不训练。输入manifest使用312场景实际GroupFree val子目录、mesh superpoint、scene pickle、原生文本缓存和本地RoBERTa；评估前检查SHA及有限数值。
+
+本次记录时GPU为空、无launch.json及preflight/formal回执，故状态是“接续队列已运行，模型推理尚未启动”，不是正式评估完成。EG完整耗时须待真实推理批次测量，不能套PV耗时。观察脚本scripts/observe_eg3dvg_pretrained.py已支持下载检查/队列/正式各阶段回执，后续先读原日志，不重复启动。主输出bbs，两阈值同模型，Mask无门槛；G已完成59.0555/47.2760，受保护V99及有用权重均保留，尚无EG新精度。

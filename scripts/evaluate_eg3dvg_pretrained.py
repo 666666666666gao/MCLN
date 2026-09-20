@@ -42,6 +42,8 @@ def main():
     source = Path(spec['source'])
     for path, digest in spec['source_files'].items():
         assert sha(source / path) == digest, path
+    for path, digest in spec['input_hashes'].items():
+        assert sha(path) == digest, path
     if args.stage == 'formal':
         preflight = json.loads((root / 'preflight/receipt.json').read_text())
         assert preflight['status'] == 'complete' and preflight['rows'] == 8
@@ -74,6 +76,7 @@ def main():
     prefix = spec['checkpoint_key_prefix']
     assert all(k.startswith(prefix) for k in checkpoint['model'])
     state = {k[len(prefix):]: v for k, v in checkpoint['model'].items()}
+    assert all(torch.isfinite(v).all() for v in state.values())
     if spec['nonpersistent_position_ids']:
         assert set(model.state_dict()) - set(state) == {'text_encoder.embeddings.position_ids'}
         assert not set(state) - set(model.state_dict())
@@ -112,6 +115,9 @@ def main():
                       'det_class_ids': batch['all_detected_class_ids'],
                       'superpoint': batch['superpoint'], 'train': False}
             end = model(inputs)
+            assert torch.isfinite(end['last_center']).all()
+            assert torch.isfinite(end['last_pred_size']).all()
+            assert torch.isfinite(end['last_sem_cls_scores']).all()
             for k, v in batch.items():
                 assert k not in end, k
                 end[k] = v

@@ -94,3 +94,31 @@ formal metric claim. Preserve real failures; no result-based score adjustment.
 Status at plan creation: data sample and CUDA FPS passed; weight downloaded and
 being transferred; strict checkpoint inspection and model-forward preflight
 pending. There is no new EG precision result yet.
+
+## Durable acceptance queue, 2026-09-20 16:08 CST
+
+The complete local checkpoint is 875,723,586 bytes, SHA256
+`785f46ca595aed3a06efdfc46dc1c4b0493b212ccb66062a76f519324fd24f7e`.
+The original SFTP transfer is still active: 553,189,376 remote bytes at 16:08:28.
+Do not restart or treat the partial file as usable. Its completion marker is
+written only after the original transfer closes successfully. A direct server
+download from the author host timed out; no second checkpoint was downloaded.
+
+Existing inspection waiter PID1519 checks the marker every 180 seconds, verifies
+the complete hash and model key/shape compatibility, and writes its exit status.
+Acceptance waiter PID1754 is now running. It checks the inspection result every
+180 seconds, then fixes source/checkpoint/input hashes and starts controller.py.
+The controller acquires the shared GPU lock, runs eight fixed execution-check
+rows, the full 9,508-row validation, and an independent CPU recount. Each stage
+must succeed before the next starts. No training, checkpoint selection or
+parameter changes occur in this queue.
+
+The input manifest binds the actual 312 scene files in
+`group_free_pred_bboxes/group_free_pred_bboxes_val`, mesh superpoints, the scene
+pickle, annotation cache and local RoBERTa files. The evaluator verifies all
+recorded input/source hashes and finite checkpoint/box/score tensors.
+
+At this observation there is no launch.json, preflight result or formal result;
+both waiters are alive and GPU compute is empty. The queue is running, but model
+inference has not started. A formal completion ETA requires measured EG batch
+throughput after the transfer; it is not inferred from PV-Ground timings.

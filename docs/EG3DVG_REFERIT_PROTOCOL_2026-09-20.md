@@ -65,3 +65,32 @@ native control before introducing one new mechanism. Using ScanRefer weights
 on Nr/Sr without adaptation would be a transfer experiment, not a reproduction
 of a dedicated author's Nr/Sr model. No old PV conditional training queue is
 reused for EG, and no long baseline retraining or multi-seed run is started.
+
+## Full object-slot and author annotation preparation, 2026-09-20
+
+A read-only CPU check exercised the actual author `_get_scene_objects` on every
+selected evaluation scene, then performed its predicted-class slot assignment.
+Nr3D covered7899 expressions/130 scenes/4299 kept object boxes; Sr3D covered17726
+expressions/255 scenes/9095 kept boxes. All target IDs and point indices were
+valid, all roots occurred in the object input, all predicted-class counts matched
+the kept slots and all IDs lay in0..484. No nonfinite/zero-extent box or target
+label-string mismatch was found. These are input checks, not REC results.
+
+The unchanged original `load_annos` and `Scene_graph_parse` then generated full
+validation annotation caches: Nr3D69.94s and Sr3D133.53s. A private data-view
+symlink maps the author's `ReferIt3D` spelling onto the existing `refer_it_3d`
+folder, without modifying the active ScanRefer source, shared data or GPU run.
+
+- Nr3D annotation SHA: `2ab567bada9d0df8659df1f1381d195b0494f6f260a0c0f14e2f7d8fd797a904`.
+- Sr3D annotation SHA: `96ee8af2d6788980e8c0c52be4489ad3cec59686b2a0d32fe0b94f54fcec75d1`.
+
+Caches are retained under the acceptance root `referit_input_cache/` and are not
+model weights. The active ScanRefer loader remains explicitly val/ScanRefer-only.
+A separate source copy `referit_input_source/` changes only that cache binding to
+Nr3D/Sr3D. Its full CPU Dataset construction and eight fixed samples per dataset
+are checked separately. No Nr/Sr model inference or training is implied.
+
+
+## Full CPU Dataset preflight completed
+
+Both full validation Dataset constructors and eight fixed real samples per dataset passed with exit0. Checked50000x6 point arrays,132 object slots, finite boxes and predicted-class alignment. Source SHA fda8006e6174698bda4dedb4e5bd43dff3e77f04407a34a4cfb6f3593fa5261f. Active ScanRefer source was unchanged. This is16 CPU sample reads,0 model forwards and0 training steps; no EG Nr/Sr metric exists yet. Receipt: `refine-logs/eg3dvg_pretrained_acceptance_20260920_v1/referit_dataset_preflight.json`.

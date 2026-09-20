@@ -1,0 +1,65 @@
+{
+  "status": "complete",
+  "rows": 9508,
+  "model_forwards": 0,
+  "optimizer_steps": 0,
+  "inference_rules_changed": false,
+  "receipt_sha256": "760ad9e732ba46733d8554efa7341becd5d3837e2e69c9162e86d4bf407a3c20",
+  "candidates_sha256": "d847f67203579f7cb49a22cf863a6ffaf604fbfbb751fa22669575e7f1957f02",
+  "primary_mode": "bbs",
+  "thresholds": {
+    "0.25": {
+      "raw_256_unfiltered_oracle_hits": 9079,
+      "native_256_unfiltered_oracle_hits": 9083,
+      "modes": {
+        "bbs": {
+          "selected_native_hits": 5542,
+          "selected_raw_same_query_hits": 5536,
+          "native_box_repairs_same_query": 65,
+          "native_box_breaks_same_query": 59,
+          "failures_without_native_qualifying_candidate": 425,
+          "failures_with_native_qualifying_candidate": 3541
+        },
+        "bbf": {
+          "selected_native_hits": 5552,
+          "selected_raw_same_query_hits": 5546,
+          "native_box_repairs_same_query": 64,
+          "native_box_breaks_same_query": 58,
+          "failures_without_native_qualifying_candidate": 425,
+          "failures_with_native_qualifying_candidate": 3531
+        }
+      },
+      "bbf_vs_bbs_diagnostic_only": {
+        "repairs": 52,
+        "breaks": 42
+      }
+    },
+    "0.5": {
+      "raw_256_unfiltered_oracle_hits": 8069,
+      "native_256_unfiltered_oracle_hits": 8354,
+      "modes": {
+        "bbs": {
+          "selected_native_hits": 4952,
+          "selected_raw_same_query_hits": 4732,
+          "native_box_repairs_same_query": 342,
+          "native_box_breaks_same_query": 122,
+          "failures_without_native_qualifying_candidate": 1154,
+          "failures_with_native_qualifying_candidate": 3402
+        },
+        "bbf": {
+          "selected_native_hits": 4966,
+          "selected_raw_same_query_hits": 4752,
+          "native_box_repairs_same_query": 335,
+          "native_box_breaks_same_query": 121,
+          "failures_without_native_qualifying_candidate": 1154,
+          "failures_with_native_qualifying_candidate": 3388
+        }
+      },
+      "bbf_vs_bbs_diagnostic_only": {
+        "repairs": 55,
+        "breaks": 41
+      }
+    }
+  },
+  "interpretation_boundary": "Oracle uses GT solely for offline diagnosis and does not represent deployable accuracy. Same-query raw/native comparison isolates output choice only after that query has been selected; it does not identify semantic-instance correctness or a causal training bottleneck. bbf remains diagnostic; no output-head selection is performed."
+}

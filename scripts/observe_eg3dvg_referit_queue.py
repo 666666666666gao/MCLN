@@ -26,7 +26,7 @@ for label,root in [('nr','/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v3'),
             for name in ['receipt.json','audit.json']:
                 if name in sftp.listdir(root+'/'+directory):
                     with sftp.open(root+'/'+directory+'/'+name,'rb') as f:item[directory+'/'+name]=json.loads(f.read())
-    for receipt in ['initial_equality.json','cpu_check.json','launch.json']:
+    for receipt in ['initial_equality.json','cpu_check.json','launch.json','analysis_launch.json']:
         if receipt in names:
             with sftp.open(root+'/'+receipt,'rb') as f:item[receipt]=json.loads(f.read())
     if 'decision.json' in names:
@@ -36,7 +36,7 @@ for label,root in [('nr','/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v3'),
             if name in sftp.listdir(root+'/evaluation/formal'):
                 with sftp.open(root+'/evaluation/formal/'+name,'rb') as f:item['evaluation/formal/'+name]=json.loads(f.read())
     record[label]=item
-for name,command in [('processes','ps -p 5317,5318,5662,6128,6387,7083,12201 -o pid,etime,args --no-headers'),
+for name,command in [('processes','ps -p 5317,5318,5662,6128,6387,7083,12201,12456 -o pid,etime,args --no-headers'),
                      ('gpu','nvidia-smi --query-compute-apps=pid,used_memory --format=csv,noheader'),
                      ('disk','df -B1 /root /root/autodl-tmp')]:
     _,stdout,stderr=client.exec_command(command,timeout=30)

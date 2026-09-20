@@ -1,0 +1,46 @@
+{
+  "time_cst": "2026-09-21T00:11:05.971539+08:00",
+  "task_read": {
+    "controller.log": [],
+    "cpu_check.json": {
+      "status": "pass",
+      "checks": {
+        "eval": "exact outputs, super features and RNG",
+        "train": "exact outputs, super features and RNG",
+        "interventions": "semantic changes only semantic; geometry changes box/mask and refined memory",
+        "gradients": "both requests receive their own head gradients; no opposite-request gradient",
+        "serialization": "strict task-layer state round trip"
+      },
+      "new_parameters": 165888,
+      "optimizer_steps": 0,
+      "scene_forwards": 0,
+      "accuracy_result": false
+    },
+    "launch.json": {
+      "time_cst": "2026-09-21T00:01:34.278699+08:00",
+      "pid": 12201,
+      "wait_for": "/root/autodl-tmp/mcln_eg3dvg_sr3d_transfer_20260920_v1",
+      "training_started": false,
+      "planned_steps": 5614,
+      "cpu_check_passed": true
+    },
+    "analysis_launch.json": {
+      "time_cst": "2026-09-21T00:10:18.588192+08:00",
+      "pid": 12456,
+      "wait_for": "controller.exit0",
+      "check": {
+        "status": "pass",
+        "real_rows": 7899,
+        "known_native_net": [
+          462,
+          295
+        ],
+        "self_comparison_all_zero": true,
+        "model_forwards": 0,
+        "task_result_available": false
+      }
+    }
+  },
+  "processes": "5662    05:26:50 /root/mcln_eg3dvg_torch112_20260920_v1/venv/bin/python -u /root/autodl-tmp/mcln_eg3dvg_sr3d_transfer_20260920_v1/controller.py\n  7083    04:13:26 /root/mcln_eg3dvg_torch112_20260920_v1/venv/bin/python -u /root/autodl-tmp/mcln_eg3dvg_sr3d_transfer_20260920_v1/wait_failure_visuals.py\n 12201       09:46 /root/mcln_eg3dvg_torch112_20260920_v1/venv/bin/python -u /root/autodl-tmp/mcln_eg3dvg_nr3d_task_read_20260920_v1/controller.py\n 12456       01:01 /root/mcln_eg3dvg_torch112_20260920_v1/venv/bin/python -u /root/autodl-tmp/mcln_eg3dvg_nr3d_task_read_20260920_v1/wait_eg3dvg_task_read_analysis.py",
+  "gpu": "137192, 9154 MiB"
+}

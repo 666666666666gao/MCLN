@@ -1,0 +1,62 @@
+{
+  "status": "complete",
+  "time_cst": "2026-09-20T23:31:44.216276+08:00",
+  "stage": "formal",
+  "rows": 7899,
+  "elapsed_seconds": 1598.5856943130493,
+  "metrics": {
+    "bbs": {
+      "rec_hits25": 3970,
+      "rec_hits50": 3204
+    },
+    "bbf": {
+      "rec_hits25": 3942,
+      "rec_hits50": 3175
+    },
+    "bbs_unfiltered": {
+      "rec_hits25": 3701,
+      "rec_hits50": 3085
+    },
+    "bbf_unfiltered": {
+      "rec_hits25": 3666,
+      "rec_hits50": 3064
+    }
+  },
+  "primary_mode": "bbs",
+  "native_box_rule": "0.5 * (last regressed box + box enclosing points with predicted mask > 0.5)",
+  "checkpoint_sha256": "5c706a673c7b0c4d00c43a6891578577beb9dbac188e56e6c5abaf8551c34f17",
+  "spec_sha256": "525ed57962a8f3ee80f2bd271753377805187068ab169b76f524aa89eac49309",
+  "rows_sha256": "2f8b66d1364a639c60446bb77566b3fc7f92705e3154fa81c3d65320fec7bf3b",
+  "candidates_sha256": "f73847b5fe3eedd3c5333ab95b5ddd165bd25299347b7d5bb628d93504261dfc",
+  "candidate_columns": [
+    "raw_cx",
+    "raw_cy",
+    "raw_cz",
+    "raw_dx",
+    "raw_dy",
+    "raw_dz",
+    "box_cx",
+    "box_cy",
+    "box_cz",
+    "box_dx",
+    "box_dy",
+    "box_dz",
+    "bbs_filtered_score",
+    "bbf_filtered_score",
+    "bbs_unfiltered_score",
+    "bbf_unfiltered_score",
+    "object_support_gt25"
+  ],
+  "all_model_states_unchanged": true,
+  "training_steps": 0,
+  "optimizer_created": false,
+  "upstream_commit": "174e34894aea6513442da6b5dfa9b3e2bf8a1efa",
+  "mask_metric_gate": false,
+  "dataset": "nr3d",
+  "initialization_dataset": "scanrefer",
+  "experiment_type": "single_epoch_adaptation",
+  "checkpoint_optimizer_steps": 5614,
+  "object_input": "all scene GT instance boxes plus author predicted class ids",
+  "primary_filter": "native mean box overlaps any input object by IoU > .25; multiply score by 0/1",
+  "unfiltered_modes_are_diagnostic": true
+}

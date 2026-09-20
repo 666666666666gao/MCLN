@@ -19637,3 +19637,10 @@ ScanRefer：scene0011_00/chair/row0，IoU0、256平均框oracle0.950411；scene0
 图中EG明确指作者ScanRefer epoch69零更新基线；Nr图不是Nr适配终点，也不冒充历史E57。Sr尚无本次正式输出，因此本批未制作Sr图，未使用替代模型伪装保护结果。旧MCLN可视化目录及其V99/E57来源保持不变。图片文字仅去掉模型末尾追加的“. not mentioned”，完整实际输入仍在cases.json。
 
 19:34:53实查Nr日志1216/5614步、9728行、3559.84秒，GPU934466存活，loss/梯度有限；所有既定接续进程存活，无新正式REC。本次CPU导出和本地渲染没有改变训练、队列、主输出或验收门槛。预计Nr固定终点及评估仍约23:40，实际以终态回执为准。当前架构/实验/优化计划沿§250—251，不重复历史。三数据集目标未完成。
+
+
+## 20.253 ScanRefer保护权重实物校验；Nr继续固定训练（2026-09-20 19:53 CST）
+
+19:48:55只读检查受保护V99依赖的四份实际权重：E71、Parent、Geometry、V99文件均存在，SHA-256全部与仓库既有冻结合同一致，权限均0444。合同来自scripts/audit_scanrefer_joint_box_mask.py与scripts/run_frozen_v99_pareto_contextual_official.py。脚本保存为scripts/check_protected_scanrefer_artifacts.py，路径、字节数、完整SHA与检查时间保存于refine-logs/protected_scanrefer_artifacts_20260920/audit.json。0模型forward、0优化步、未修改权重。这只验证四份权重文件完整性，不代表重新验证了运行环境、输入数据或正式REC；5572/4797仍引用原正式结果。
+
+19:52:47实查Nr固定适配日志1600/5614步、12800行、4676.68秒；loss5.49147、梯度范数8.82049有限，GPU进程934466存活。训练控制5317、配对分析5318、候选分析6387及Sr接续5662/6128均存活。Sr尚无模型forward或正式结果。继续原定终点与评估流程，不新增训练、不改预算或权重选择。预计Nr终点及正式评估约23:40，实际以完成回执为准；三数据集目标未完成。

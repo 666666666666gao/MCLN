@@ -1,4 +1,4 @@
-"""Real ScanRefer replay: exact inserted layer; full native repeat variability is reported."""
+"""Real training-batch equality before task-read optimization, with native loss."""
 import argparse
 import hashlib
 import json
@@ -75,61 +75,28 @@ def main():
             loss, end = BaseTrainTester._compute_negative_loss(loss, end, other)
             return selected, float(loss)
 
-    def clone(value):
-        if torch.is_tensor(value): return value.detach().clone()
-        if isinstance(value,list): return [clone(item) for item in value]
-        if isinstance(value,tuple): return tuple(clone(item) for item in value)
-        if isinstance(value,dict): return {key:clone(item) for key,item in value.items()}
-        return value
-
-    captured = []
-    original_forward = model.decoder[-1].forward
-    def capture(*args, **kwargs):
-        captured.append((clone(args),clone(kwargs),torch.get_rng_state(),torch.cuda.get_rng_state()))
-        return original_forward(*args, **kwargs)
-    model.decoder[-1].forward = capture
     cpu_before, cuda_before = torch.get_rng_state(), torch.cuda.get_rng_state()
     reference, reference_loss = forward()
     cpu_after, cuda_after = torch.get_rng_state(), torch.cuda.get_rng_state()
     buffers_after = {k: v.cpu().clone() for k, v in model.named_buffers()}
-    model.decoder[-1].forward = original_forward
-    def errors(left,right):
-        return {key:max(float((a-b).abs().max()) for a,b in zip(left[key],right[key])) for key in keys}
-    model.load_state_dict(state,strict=True)
-    torch.set_rng_state(cpu_before);torch.cuda.set_rng_state(cuda_before)
-    repeated, repeated_loss = forward()
-    native_rng_equal = torch.equal(cpu_after,torch.get_rng_state()) and torch.equal(cuda_after,torch.cuda.get_rng_state())
-    model.load_state_dict(state,strict=True)
-    layer_args,layer_kwargs,cpu_layer,cuda_layer = captured[0]
-    torch.set_rng_state(cpu_layer);torch.cuda.set_rng_state(cuda_layer)
-    with torch.no_grad():
-        layer_reference,super_reference = original_forward(*clone(layer_args),**clone(layer_kwargs))
-    cpu_layer_after,cuda_layer_after = torch.get_rng_state(),torch.cuda.get_rng_state()
-    install_task_read(model);model.cuda()
-    torch.set_rng_state(cpu_layer);torch.cuda.set_rng_state(cuda_layer)
-    with torch.no_grad():
-        layer_actual,super_actual = original_forward(*clone(layer_args),**clone(layer_kwargs))
-    layer_errors = dict(geometry=float((layer_reference-layer_actual).abs().max()),
-                        semantic=float((layer_reference-model.decoder[-1].semantic_query).abs().max()),
-                        refined_super=max(float((a-b).abs().max()) for a,b in zip(super_reference,super_actual)))
-    layer_rng_equal = torch.equal(cpu_layer_after,torch.get_rng_state()) and torch.equal(cuda_layer_after,torch.cuda.get_rng_state())
-    model.decoder[-1].semantic_query = None
-    torch.set_rng_state(cpu_before);torch.cuda.set_rng_state(cuda_before)
-    actual,actual_loss=forward()
-    assert all(value == 0 for value in layer_errors.values()), layer_errors
-    assert layer_rng_equal and native_rng_equal
-    assert torch.equal(cpu_after,torch.get_rng_state()) and torch.equal(cuda_after,torch.cuda.get_rng_state())
-    assert torch.count_nonzero(model.decoder[-1].task_queries) == 0
-    assert all(torch.isfinite(value).all() for value in model.state_dict().values())
-    report=dict(status='pass', scope='Exact task-layer replay on captured real GPU inputs; whole-model native repeats are not bitwise stable',
-                spec_sha256=sha(args.spec), checkpoint_sha256=spec['checkpoint_sha256'],
-                native_repeat_errors=errors(reference,repeated),
-                task_full_errors=errors(reference,actual),native_losses=[reference_loss,repeated_loss],
-                task_loss=actual_loss,native_repeat_rng_equal=native_rng_equal,
-                captured_real_last_layer_errors=layer_errors,captured_real_last_layer_rng_equal=layer_rng_equal,
-                model_forwards=6,last_layer_replays=2,optimizer_steps=0)
-    (args.spec.parent/'initial_equality.json').write_text(json.dumps(report,indent=2))
-    print(json.dumps(report),flush=True)
+    model.load_state_dict(state, strict=True)
+    install_task_read(model)
+    model.cuda()
+    torch.set_rng_state(cpu_before)
+    torch.cuda.set_rng_state(cuda_before)
+    actual, actual_loss = forward()
+    errors = {key: max(float((a - b).abs().max()) for a, b in zip(reference[key], actual[key])) for key in keys}
+    assert all(value == 0 for value in errors.values()), errors
+    assert reference_loss == actual_loss, (reference_loss, actual_loss)
+    assert torch.equal(cpu_after, torch.get_rng_state())
+    assert torch.equal(cuda_after, torch.cuda.get_rng_state())
+    assert all(torch.equal(v.cpu(), buffers_after[k]) for k, v in model.named_buffers())
+    report = {'status': 'pass', 'rows': 8, 'model_forwards': 4, 'optimizer_steps': 0,
+              'max_absolute_errors': errors, 'native_loss': reference_loss, 'task_loss': actual_loss,
+              'rng_equal': True, 'buffers_equal': True, 'spec_sha256': sha(args.spec),
+              'checkpoint_sha256': spec['checkpoint_sha256'], 'accuracy_result': False}
+    (args.spec.parent / 'initial_equality.json').write_text(json.dumps(report, indent=2))
+    print(json.dumps(report), flush=True)
 
 
 if __name__ == '__main__':

@@ -461,3 +461,8 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 
 ## 2026-09-20 EG native acceptance queue armed
 - At16:08:28, original SFTP transfer553189376/875723586 bytes; CPU inspection waiter1519 and evaluation waiter1754 alive, GPU empty. Transfer completion marker precedes hash/key/shape inspection; then fixed8 execution rows,9508 formal and CPU recount run serially under GPU lock. Poll180s; no duplicate transfer or training. No EG precision result yet. See master20.242.
+
+## 2026-09-20 EG ReferIt resources checked while transfer continues
+- Actual CSV conditions yield Nr7899/130 scenes, Sr17726/255; all class/superpoint files available.0 model forwards/updates. Actual directory refer_it_3d differs from author ReferIt3D; isolated CPU check fixed path, Scan untouched.
+- Author butd_cls means scene GT object boxes plus predicted classes and IoU>.25 score filtering, with regression/Mask averaged output. Separate from current PV no-filter entry. Only Scan checkpoint verified; no public releases. See EG3DVG_REFERIT_PROTOCOL_2026-09-20.md.
+- At16:16:07 weight668762112/875723586 bytes, both original waiters alive, GPU empty; no EG metric. Remaining transfer estimated10–15min, not formal completion ETA. See master20.243.

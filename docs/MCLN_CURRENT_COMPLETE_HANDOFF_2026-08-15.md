@@ -19465,3 +19465,11 @@ G terminal SHA0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522�
 16:07:05启动持久验收等待进程1754，16:08再次确认存活。它按180秒等待CPU检查成功，然后prepare_evaluation.py固定spec、输入/源码/权重SHA并启动controller。controller取得共享GPU锁后依次执行8条固定运行检查、9508条作者原生REC和独立CPU重计；任一失败即停止并保留日志，不另选模型、不调参数、不训练。输入manifest使用312场景实际GroupFree val子目录、mesh superpoint、scene pickle、原生文本缓存和本地RoBERTa；评估前检查SHA及有限数值。
 
 本次记录时GPU为空、无launch.json及preflight/formal回执，故状态是“接续队列已运行，模型推理尚未启动”，不是正式评估完成。EG完整耗时须待真实推理批次测量，不能套PV耗时。观察脚本scripts/observe_eg3dvg_pretrained.py已支持下载检查/队列/正式各阶段回执，后续先读原日志，不重复启动。主输出bbs，两阈值同模型，Mask无门槛；G已完成59.0555/47.2760，受保护V99及有用权重均保留，尚无EG新精度。
+
+### 20.243 EG后续Nr/Sr资源与口径核对；Scan原传输仍有效（2026-09-20 16:16 CST）
+
+等待期间完成独立CPU数据读取，0模型forward/optimizer/新训练。EG固定源码的Nr test条件为correct_guess=True且不按mentions_target_class删样；Sr test要求mentions_target_class=True。现有实际CSV按上述条件得到Nr7899条/130场景、Sr17726条/255场景，全部有作者cls_results条目和现有mesh superpoint文件。最初按作者ReferIt3D目录读取失败，实际既有目录为refer_it_3d；只修正本诊断的明确路径，不改Scan源码、不复制或移动数据。保存实际CSV/划分/分类文件SHA与失败日志；未实例化完整Nr/Sr Dataset，未执行parser或模型。
+
+官方Nr/Sr脚本均butd_cls：使用场景GT实例框和预测类别，并在evaluator按候选与任意有效输入对象框IoU>0.25乘0/1后排序，仍输出回归框与预测Mask框平均，不吸附到GT框。该口径不是纯预测提议，也不是离散GT对象选择准确率。当前MCLN普通入口也把filter连接至butd_cls，但另备的PV ReferIt入口显式关闭此过滤；后续不能混称同一native口径。作者README只有ScanRefer完整权重，9月20日公开release页面无发布，尚未确认Nr/Sr专用EG权重。将Scan权重直接用于Nr/Sr应称跨数据集转移实验，不能冒称专用模型复现。完整证据见EG3DVG_REFERIT_PROTOCOL_2026-09-20.md。
+
+16:16:07重新观察原进程：权重已传668762112/875723586字节（约76.4%），inspection1519、acceptance1754均存活，GPU为空，尚无EG前向或新正式结果。未重启、未下载第二份权重；按近期速度剩余传输约10–15分钟，属于网络估计，完整REC耗时仍待真实批次。后续首先等原校验及8条检查，必要时只修实际接口错误，再完成唯一9508验收。三数据集目标仍未达成，不改受保护结果。

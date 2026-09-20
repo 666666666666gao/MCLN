@@ -43,3 +43,5 @@ Scripts: prepare_eg3dvg_scan_task_inputs.py, check_eg3dvg_scan_box_alignment.py,
 Expected cost must be updated from measured ScanRefer throughput. The previous native EG run took about 2.9 seconds per batch; the extra last-layer read may cost more. A complete ScanRefer formal pass was approximately29 minutes. These are estimates, not new accuracy results.
 
 The official code and license attribution remain intact. CPU module checks established implementation behavior, not accuracy. No task-read ScanRefer result exists at plan creation.
+
+Recovery artifact inspection: scripts/audit_eg3dvg_scan_recovery_checkpoint.py waits at 300-second intervals for the first task latest.pth while checking the live campaign controller. It loads that file on CPU, verifies parent keys plus the two task matrices, finite model/optimizer tensors, experiment identity and saved RNG payload. It performs no model forward, resumed optimizer step or accuracy evaluation. Its pending launch is recorded separately; only a generated recovery_checkpoint_*.json proves that inspection completed. The training/evaluation configuration is unchanged.

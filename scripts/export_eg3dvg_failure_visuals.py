@@ -1,4 +1,5 @@
 """Export real audited EG predictions and their original point/mesh provenance."""
+import argparse
 import gzip
 import hashlib
 import json
@@ -10,6 +11,7 @@ import numpy as np
 
 BASE = Path('/root/autodl-tmp/mcln_eg3dvg_acceptance_20260920_v1')
 NR = Path('/root/autodl-tmp/mcln_eg3dvg_nr3d_transfer_20260920_v1')
+SR = Path('/root/autodl-tmp/mcln_eg3dvg_sr3d_transfer_20260920_v1')
 OUT = Path('/root/autodl-tmp/mcln_eg3dvg_failure_visuals_20260920_v1')
 sys.path.insert(0, str(BASE / 'referit_input_source'))
 from src.visual_data_handlers import Scan  # Resolves author cache class.
@@ -32,15 +34,23 @@ def ious(boxes, gt):
 
 
 def main():
-    OUT.mkdir()
-    (OUT / 'data').mkdir()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--datasets', nargs='+', choices=['ScanRefer', 'Nr3D', 'Sr3D'],
+                        default=['ScanRefer', 'Nr3D'])
+    parser.add_argument('--out', type=Path, default=OUT)
+    args = parser.parse_args()
+    output = args.out
+    output.mkdir()
+    (output / 'data').mkdir()
     spec = json.loads((BASE / 'spec.json').read_text())
     cache = Path(spec['data_root']) / 'val_v3scans.pkl'
     with cache.open('rb') as f:
         assert pickle.load(f) == 1
         scenes = pickle.load(f)
     selected, sources = [], []
-    for dataset, root, n in [('ScanRefer', BASE, 9508), ('Nr3D', NR, 7899)]:
+    inputs = {'ScanRefer': (BASE, 9508), 'Nr3D': (NR, 7899), 'Sr3D': (SR, 17726)}
+    for dataset in args.datasets:
+        root, n = inputs[dataset]
         receipt = json.loads((root / 'formal/receipt.json').read_text())
         audit = json.loads((root / 'formal/audit.json').read_text())
         assert audit['integrity_pass'] and receipt['rows'] == n
@@ -86,7 +96,7 @@ def main():
             cloud = np.concatenate([scene.pc, scene.color - np.array([109.8, 97.2, 83.8]) / 256], 1).astype(np.float32)
             assert hashlib.sha256(cloud.tobytes()).hexdigest() == row['point_sha256']
             case_id = dataset.lower() + '_' + category + '_' + row['scan_id'] + '_' + str(row['row_id'])
-            path = OUT / 'data' / (case_id + '.npz')
+            path = output / 'data' / (case_id + '.npz')
             mask = np.zeros(len(scene.pc), dtype=bool)
             mask[scene.three_d_objects[row['target_id']]['points']] = True
             np.savez_compressed(path, xyz=scene.pc.astype(np.float32), rgb=scene.color.astype(np.float32),
@@ -110,12 +120,12 @@ def main():
         sources.append({'remote_path': str(path), 'bytes': path.stat().st_size, 'sha256': sha(path),
                         'local_file': ('meshes/' if path.suffix == '.ply' else '') + path.name})
     manifest = {'cases': selected, 'mesh_sources': sources, 'scene_cache_sha256': sha(cache),
-                'gpu_forwards': 0, 'optimizer_steps': 0, 'sr3d_complete': False,
+                'gpu_forwards': 0, 'optimizer_steps': 0, 'sr3d_complete': 'Sr3D' in args.datasets,
                 'selection_note': 'First qualifying row per display category, distinct scenes within each dataset. Selected failures are not an accuracy sample.',
                 'coverage_definition': 'No native averaged box among all256 exceeds IoU0.5; not a Top16 claim.',
                 'provenance_note': 'New EG baseline visualizations; do not relabel as protected V99/E57/Sr3D results.'}
-    (OUT / 'cases.json').write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
-    print('EG_FAILURE_EXPORT_COMPLETE ' + str(OUT), flush=True)
+    (output / 'cases.json').write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
+    print('EG_FAILURE_EXPORT_COMPLETE ' + str(output), flush=True)
 
 
 if __name__ == '__main__':

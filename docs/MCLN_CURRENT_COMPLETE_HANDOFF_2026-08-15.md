@@ -19644,3 +19644,12 @@ ScanRefer：scene0011_00/chair/row0，IoU0、256平均框oracle0.950411；scene0
 19:48:55只读检查受保护V99依赖的四份实际权重：E71、Parent、Geometry、V99文件均存在，SHA-256全部与仓库既有冻结合同一致，权限均0444。合同来自scripts/audit_scanrefer_joint_box_mask.py与scripts/run_frozen_v99_pareto_contextual_official.py。脚本保存为scripts/check_protected_scanrefer_artifacts.py，路径、字节数、完整SHA与检查时间保存于refine-logs/protected_scanrefer_artifacts_20260920/audit.json。0模型forward、0优化步、未修改权重。这只验证四份权重文件完整性，不代表重新验证了运行环境、输入数据或正式REC；5572/4797仍引用原正式结果。
 
 19:52:47实查Nr固定适配日志1600/5614步、12800行、4676.68秒；loss5.49147、梯度范数8.82049有限，GPU进程934466存活。训练控制5317、配对分析5318、候选分析6387及Sr接续5662/6128均存活。Sr尚无模型forward或正式结果。继续原定终点与评估流程，不新增训练、不改预算或权重选择。预计Nr终点及正式评估约23:40，实际以完成回执为准；三数据集目标未完成。
+
+
+## 20.254 Sr3D真实失败图的正式评估后导出已接续（2026-09-20 19:59 CST）
+
+为完成用户要求的三个数据集稠密场景可视化，在现有export_eg3dvg_failure_visuals.py增加显式--datasets/--out，默认ScanRefer/Nr3D及原案例选择条件不变。Sr输入固定为既定零更新正式输出17726条，仍要求formal审计通过、receipt/rows/candidates SHA对应，重算预测IoU、缓存实例GT与实际输入点SHA；不提前伪造案例、不替换为历史Sr保护模型。
+
+Sr目录中的CPU等待器7083于19:57:53启动，19:58:40实查存活；每300秒等待原Sr controller.exit=0后执行导出，CUDA禁用。导出到独立mcln_eg3dvg_sr3d_failure_visuals_20260920_v1，0新模型forward/优化步，不改训练或评估。脚本SHA bfa498b699ed41c9236f19867f8adfb73e77e6447e4829d1bf9ef5344ba56294。命令行入口在实际EG环境--help退出0，读取Sr spec确认相同DATA_ROOT_mcln_meshsp；这些只是接续与入口检查，尚无Sr导出、图像或正式精度。等待器、启动器与PID回执保存在refine-logs/eg3dvg_sr3d_transfer_20260920_v1，observer已包含其进程及导出日志/退出码。
+
+后续取得真实案例后，下载所需原始彩色mesh，以已交付GT绿色/EG红色、同视角和白描边样式渲染到桌面，再检查图像与来源；当前不声称第三数据集可视化已完成。19:58:40 Nr日志1728/5614步、13824行、5045.78秒，loss/梯度有限；训练GPU934466、原接续5317/5318/5662/6128/6387及新增7083存活。没有新REC，继续固定终点；三数据集指标目标仍未完成。

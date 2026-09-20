@@ -13,10 +13,10 @@ record={'time_cst':datetime.datetime.now(datetime.timezone(datetime.timedelta(ho
 for label,root in [('nr','/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v3'),('sr','/root/autodl-tmp/mcln_eg3dvg_sr3d_transfer_20260920_v1'),('sr_adapt','/root/autodl-tmp/mcln_eg3dvg_sr3d_adapt_20260920_v1')]:
     names=sftp.listdir(root)
     item={}
-    for name in ['preflight.exit','fit.exit','formal.exit','audit.exit','controller.exit','train_inputs.exit','train_dataset_preflight.exit','evaluation_preflight.exit','evaluation_formal.exit','evaluation_audit.exit','paired_rec.exit','candidate_analysis.exit']:
+    for name in ['preflight.exit','fit.exit','formal.exit','audit.exit','controller.exit','train_inputs.exit','train_dataset_preflight.exit','evaluation_preflight.exit','evaluation_formal.exit','evaluation_audit.exit','paired_rec.exit','candidate_analysis.exit','failure_visual_export.exit']:
         if name in names:
             with sftp.open(root+'/'+name,'rb') as f:item[name]=f.read().decode().strip()
-    for name in ['fit.log','preflight.log','formal.log','controller.log','train_inputs.log','train_dataset_preflight.log','evaluation_preflight.log','evaluation_formal.log','evaluation_audit.log','candidate_analysis.log']:
+    for name in ['fit.log','preflight.log','formal.log','controller.log','train_inputs.log','train_dataset_preflight.log','evaluation_preflight.log','evaluation_formal.log','evaluation_audit.log','candidate_analysis.log','failure_visual_export.log']:
         if name in names:
             with sftp.open(root+'/'+name,'rb') as f:
                 f.seek(max(0,sftp.stat(root+'/'+name).st_size-16000))
@@ -33,7 +33,7 @@ for label,root in [('nr','/root/autodl-tmp/mcln_eg3dvg_nr3d_adapt_20260920_v3'),
             if name in sftp.listdir(root+'/evaluation/formal'):
                 with sftp.open(root+'/evaluation/formal/'+name,'rb') as f:item['evaluation/formal/'+name]=json.loads(f.read())
     record[label]=item
-for name,command in [('processes','ps -p 5317,5318,5662,6128,6387 -o pid,etime,args --no-headers'),
+for name,command in [('processes','ps -p 5317,5318,5662,6128,6387,7083 -o pid,etime,args --no-headers'),
                      ('gpu','nvidia-smi --query-compute-apps=pid,used_memory --format=csv,noheader'),
                      ('disk','df -B1 /root /root/autodl-tmp')]:
     _,stdout,stderr=client.exec_command(command,timeout=30)

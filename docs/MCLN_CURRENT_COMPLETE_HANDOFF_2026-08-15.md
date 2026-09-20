@@ -19569,3 +19569,28 @@ ScanRefer完整作者权重5542/4952（58.2878/52.0825%）和V99保护5572/4797�
 
 
 2026-09-20T18:36:07.906487+08:00实际状态：v3两批16条训练预检于2026-09-20T18:31:02.036710+08:00完成，2次完整原生loss/backward/AdamW、199项冻结参数不变，869项允许训练，峰值分配显存27.313GiB。预检权重已丢弃，fit从作者epoch69重新严格加载。最新固定训练日志64/5614步、512/44909行、197.91秒，loss与梯度有限，controller5317和实际GPU训练进程存活。按已完成训练平均速度加约30分钟终点评估，预计剩余约5.3小时；这是耗时估计，不能作为完成承诺或精度证据。未据loss更改任何设置。完整逐步日志、每512步恢复状态和固定终点保持预定规则；结束后自动完成7899正式评估、CPU复算及起终点配对计数。当前仍无Nr适配终态成绩，Sr没有EG成绩。
+
+
+## 20.249 EG Sr3D原生迁移评估接续与训练输入准备（2026-09-20 18:51 CST）
+
+前一目标轮完成Nr零更新评估、修复实际训练预检问题并启动固定适配，属于实质进展。18:47:36本轮实查Nr controller5317、GPU子进程934466仍在执行；日志256/5614步、2048/44909行、772.03秒，loss/梯度有限，显存32374MiB。没有终点或适配REC。ScanRefer作者原生5542/4952与V99保护5572/4797不变；Nr未经适配起点3508/2909。不得因短期loss改变预算、seed或选权重。
+
+为完整三基准验收建立Sr独立root /root/autodl-tmp/mcln_eg3dvg_sr3d_transfer_20260920_v1。18:44:29启动controller5662，每300秒等待Nr适配v3 controller.exit0及终点评估独立audit通过，然后获取同一GPU锁。使用原作者ScanRefer epoch69权重，而非尚未验收的Nr训练终点；先8条真实前向，再完整17726条/255场景，最后独立CPU复算。当前仅排队，无Sr模型forward、优化更新或精度。
+
+GPU环境继续复用已验收Torch1.12+cu116，canonical SHA81a835e8144f7070d66feb0afa460911dec610052ced6b96c98097352cd022fd不变。复用只读referit_input_source，其Dataset SHA fda8006e6174698bda4dedb4e5bd43dff3e77f04407a34a4cfb6f3593fa5261f，已有完整CPU Dataset及固定8条Sr验证读取证据。此次不再复制或改动源，不干扰活动Nr训练。spec SHA c8c928ab15e99b192aa49a56b9c616b3941ddedab0385b51505e64ca59d11b20。
+
+Sr规定输出last/bbs，butd_cls=True，场景GT实例框+作者预测类别；原生回归框与预测Mask框平均，保留作者对任一场景对象IoU>.25的分数乘法过滤。bbf及同forward未过滤两路仅诊断，不按结果换主输出。完整导出每行身份、GT计数信息、实际对象输入与256候选，CPU重算支持标记、选中框和两阈值。保护参照12139/10335；Mask无验收门槛。此为Scan权重的跨基准起点，不是作者Sr专用权重复现，也不是无GT对象框输入的单阶段结果。
+
+Sr CPU输入进程5663独立调用原作者load_annos与场景图解析，GPU不可见。按原始CSV和作者train split、mentions_target_class=true筛选，解析前65846条/1018场景。Sr train/val在场景编号和物理房间编号上均0交叉；当前ScanRefer train清单与Sr val两种编号也0交叉。该检查只覆盖本地作者清单，不能据此断言发布checkpoint全部训练来源的完整溯源。CSV SHA 8183a19693b115859404736e90214442babbf9317a5621a26aadb8747d9a10b5；训练split SHA ee14cb3d24d62915af454c4e3b3b21510e11550081f4f4f65f0b9b9bdfd48afb。
+
+CPU5718每180秒等待解析exit0，然后在独立训练输入副本绑定Sr缓存及已有ScanNet1199条×10，构造完整增强Dataset并读取固定8条Sr/3条检测样本。此时只验证输入，不启动Sr训练或假定缓存已完成。Sr增强依据作者_find_rel与VIEW_DEP_RELS，保持原规则，不移植Nr方向词分词修正。缓存和CPU预检终态以实际receipt/exit为准。
+
+新增固定Sr evaluator/auditor、CPU注释准备/训练Dataset检查、split范围检查及双任务只读observer；参见scripts/*eg3dvg_sr3d*、scripts/observe_eg3dvg_referit_queue.py。Sr GPU评估预计本身约55—65分钟，排在Nr训练及7899终点评估之后；不是立即占卡。先完成Nr固定终态与其起点配对，再根据真实收益决定下一项训练或机制控制，不同时堆回C/D/G、旧Gate或多seed。三数据集高于baseline并保护ScanRefer的完整目标仍未完成。
+
+
+18:58取回完整CPU终态：Sr作者文本解析于2026-09-20T18:54:06.504408+08:00完成，534.18秒，65846条/1018场景，缓存SHA 350c8d0e984b9f7d6325422309a73ff9f8a40626a0a2d166e2eebeab02f40aa4。接续完整增强训练Dataset构造及固定8条Sr+3条ScanNet样本在45.71秒内完成，train_inputs与train_dataset_preflight均exit0；总77836条，点50000×6、对象槽132×6、GT场景对象槽对应、正/负文本目标有限均通过。训练输入副本Dataset SHA c45cd27aac71c8e65ba0713a0332625670423220d9ff5544df0e8f6752663699；只变缓存绑定、增强规则未改、0模型forward/优化更新。Sr仍等待Nr完整终态后才开始GPU评估，尚未启动Sr训练。
+
+18:57:28实际Nr更新448/5614、3584行、1336.77秒，controller5317和GPU934466仍活；Sr等待controller5662仍活，CPU解析/检查进程已正常退出。此轮完成新的Sr输入和可执行接续流程，未产生新REC，不据运行健康宣布三数据集目标完成。
+
+
+18:59实际恢复文件检查：Nr固定训练已完成至少512步/4096行，latest.pth大小875644160字节，SHA 3a9f33cbbc40b36ea5790806c330d36ec621f2ba205f32654ef6964805f2adc1。独立新EG环境CPU反序列化成功，1276模型状态的key/shape/dtype与父权重匹配且数值有限；保存841项优化器状态、三组参数、完整RNG及训练spec/父权重SHA。没有为该检查执行模型前向、恢复后的训练更新或验证，也未以中间checkpoint选最好。恢复文件只用于故障续接，唯一性能终点仍5614步。检查代码scripts/audit_eg3dvg_nr3d_recovery_checkpoint.py及轻量回执已保存。

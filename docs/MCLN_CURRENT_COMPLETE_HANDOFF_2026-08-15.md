@@ -19713,7 +19713,7 @@ v3于23:03:32完成44909行、5614次更新，训练16258.21秒；199项冻结�
 
 ## 20.259 Sr3D真实失败图的本地接续已启动，尚未生成图片（2026-09-21 00:21 CST）
 
-新增scripts/wait_render_eg3dvg_sr3d.py，将此前远端7083案例导出接到Windows本地下载/渲染/打包；每300秒等failure_visual_export.exit0及正式audit通过，核验mesh/数据SHA，用已验证原始坐标对齐文件39029c41...4e54e4dee渲染。目的目录C:/Users/gb/Desktop/document/EG3DVG_Sr3D_failure_visualizations_20260920，预定三个不同场景、GT绿色/EG红色、同视角稠密彩色三角网格，输出PNG/PDF/HTML和来源记录。使用作者Scan epoch69零更新Sr正式预测，不冒充任务读取终点或历史保护结果；0新增模型推理。原Scan/Nr已交付图不变。
+新增scripts/wait_render_eg3dvg_sr3d.py，将此前远端7083案例导出接到Windows本地下载/渲染/打包；每300秒等failure_visual_export.exit0及正式audit通过，核验mesh/数据SHA，用已验证原始坐标对齐文件39029c41a9baf3851e82d42f0b2093dac16b28c1e6f08bfa7456d5e4d54e4dee渲染。目的目录C:/Users/gb/Desktop/document/EG3DVG_Sr3D_failure_visualizations_20260920，预定三个不同场景、GT绿色/EG红色、同视角稠密彩色三角网格，输出PNG/PDF/HTML和来源记录。使用作者Scan epoch69零更新Sr正式预测，不冒充任务读取终点或历史保护结果；0新增模型推理。原Scan/Nr已交付图不变。
 
 00:18:07第一次将uv临时环境里的sys.executable直接作为脱离父进程的Python启动，PID47084随即因failed to locate pyvenv.cfg退出；没有下载或渲染，未影响服务器。保留首次launch/log，改为让uv父进程在整个本地等待与渲染期间存活，没有修改全局环境、加fallback或重启远端任务。当前exec session29175、Python PID48692，00:19:27成功记录waiting_export，00:19:48实际Get-Process确认存活。最终图片和人工视觉检查仍待完成，不能把等待器启动当成交付。
 

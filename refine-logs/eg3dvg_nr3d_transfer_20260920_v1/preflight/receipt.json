@@ -1,0 +1,61 @@
+{
+  "status": "complete",
+  "time_cst": "2026-09-20T17:52:02.222668+08:00",
+  "stage": "preflight",
+  "rows": 8,
+  "elapsed_seconds": 6.037503004074097,
+  "metrics": {
+    "bbs": {
+      "rec_hits25": 2,
+      "rec_hits50": 2
+    },
+    "bbf": {
+      "rec_hits25": 2,
+      "rec_hits50": 2
+    },
+    "bbs_unfiltered": {
+      "rec_hits25": 2,
+      "rec_hits50": 2
+    },
+    "bbf_unfiltered": {
+      "rec_hits25": 2,
+      "rec_hits50": 2
+    }
+  },
+  "primary_mode": "bbs",
+  "native_box_rule": "0.5 * (last regressed box + box enclosing points with predicted mask > 0.5)",
+  "checkpoint_sha256": "785f46ca595aed3a06efdfc46dc1c4b0493b212ccb66062a76f519324fd24f7e",
+  "spec_sha256": "fcae845cc495120fe5e48bbf0a69022242089d0e5881fbfca5f4d4d3d9738cae",
+  "rows_sha256": "b39b655ecbebe5c4e6c8b88e1e3cd5234e14e4b2e0a9de2bb0b2e78b0bd5a3c2",
+  "candidates_sha256": "0d93ebcc866de027f5928d85a68ee14390293a334e8e8f55364cafb360583359",
+  "candidate_columns": [
+    "raw_cx",
+    "raw_cy",
+    "raw_cz",
+    "raw_dx",
+    "raw_dy",
+    "raw_dz",
+    "box_cx",
+    "box_cy",
+    "box_cz",
+    "box_dx",
+    "box_dy",
+    "box_dz",
+    "bbs_filtered_score",
+    "bbf_filtered_score",
+    "bbs_unfiltered_score",
+    "bbf_unfiltered_score",
+    "object_support_gt25"
+  ],
+  "all_model_states_unchanged": true,
+  "training_steps": 0,
+  "optimizer_created": false,
+  "upstream_commit": "174e34894aea6513442da6b5dfa9b3e2bf8a1efa",
+  "mask_metric_gate": false,
+  "dataset": "nr3d",
+  "initialization_dataset": "scanrefer",
+  "experiment_type": "cross_dataset_transfer",
+  "object_input": "all scene GT instance boxes plus author predicted class ids",
+  "primary_filter": "native mean box overlaps any input object by IoU > .25; multiply score by 0/1",
+  "unfiltered_modes_are_diagnostic": true
+}

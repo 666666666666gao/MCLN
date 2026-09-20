@@ -489,3 +489,16 @@ CPU-only reuse of D normal-arm128scene saved boxes,controller11695 exit0. All or
 Nr/Sr全量作者文本解析7899/17726完成；全部评价场景对象槽检查无异常。独立referit_input_source完整CPU Dataset构造及每集8个固定真实样本均通过，exit0，Scan源未变。仍0 Nr/Sr模型forward、0训练、无EG Nr/Sr成绩。作者butd_cls=场景GT实例框+预测类别，另有对象框过滤；该口径与PV无过滤须分开。只验明ScanRefer权重，未有Nr/Sr专用权重。不得把准备通过当精度通过或沿旧PV条件队列启动EG。
 
 权重SHA785f46ca595aed3a06efdfc46dc1c4b0493b212ccb66062a76f519324fd24f7e；spec a01cf60f57b6e8eaecc45b5507f6934cb9b7ad88c16f7d743f49a07b4d095908；rows 897c9d22b00aaf70f5c674baac2c496fdf09646898baa797d519ea89768174ae；candidates d847f67203579f7cb49a22cf863a6ffaf604fbfbb751fa22669575e7f1957f02。大输出留远端formal目录，摘要/脚本/原始日志进仓库。三数据集总体目标未完成；后续基于已验收完整EG明确Nr/Sr初始化与协议，再做固定seed同预算原生控制及一项改进，不扫描验证头/seed，不恢复长baseline。
+
+
+## 20.246 EG作者ScanRefer权重→Nr3D零更新迁移已通过完整预检并开始7899评估（2026-09-20 17:59 CST）
+
+本轮是上一轮完整EG验收后的跨数据集起点测量，使用同一epoch69作者ScanRefer权重，0优化步，不称Nr3D专用权重复现。独立root /root/autodl-tmp/mcln_eg3dvg_nr3d_transfer_20260920_v1；controller4408于17:51:17启动，复用已验证Torch1.12+cu116环境，canonical SHA81a835e8144f7070d66feb0afa460911dec610052ced6b96c98097352cd022fd不变；未重建环境。spec fcae845cc495120fe5e48bbf0a69022242089d0e5881fbfca5f4d4d3d9738cae。
+
+17:52:02完整8条预检exit0，四种计数与原生evaluator逐batch一致、1276状态不变；8条2/2仅执行记录，不作精度筛选。随后同一controller开始7899完整评估。17:58:35实查controller存活、GPU9110MiB，日志已到1536条/314.17秒，无完整formal receipt/audit。以最近512条约101秒估计，预计18:20—18:25包括CPU复算完成，时间是估计，不能将子集命中写为正式成绩。
+
+规定主输出last/bbs沿作者Nr协议：butd_cls=True，场景GT实例框+作者预测类别；作者平均框对任一场景对象IoU>.25时分数保留，否则乘0。目标身份/目标框不额外进入model.forward。不能称完全无GT对象框推理。bbf以及同forward未过滤bbs_unfiltered/bbf_unfiltered仅诊断，不据结果更换主协议。未过滤诊断仍使用相同GT对象框输入，不等于单阶段。每行导出实际对象框、全部256个原框/平均框/四分数/支持位，CPU审计将重新计算资格与计数。
+
+新增scripts/evaluate_eg3dvg_nr3d_transfer.py、audit_eg3dvg_nr3d_transfer.py、observe_eg3dvg_nr3d_transfer.py；运行协议见docs/EG3DVG_NR3D_TRANSFER_2026-09-20.md。CPU4480并行准备Nr3D train和ScanNet检测注释，4557等待其exit0后检查独立训练Dataset及固定8条Nr/3条ScanNet样本；17:58仍在文本解析，尚未宣称训练缓存/训练输入完整通过。所有CPU任务0模型更新，训练尚未启动。
+
+源码确认作者Nr训练脚本240轮，checkpoint_path还会接续旧epoch、尝试恢复optimizer/scheduler且strict=False；不直接照搬。后续有限迁移需完整严格加载作者模型、独立新优化器/固定预算，保留原生损失和真实输入职责，先排除已知训练接口问题。当前只记录方向词分词差异，不修改正在运行的验证源。ScanRefer V99 58.6033/50.4523受保护，EG 58.2878/52.0825保留；Sr3D未启动EG训练/推理，三数据集目标未完成。

@@ -1,0 +1,55 @@
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.layer_norm.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.decoder.weight', 'lm_head.bias', 'lm_head.layer_norm.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.layer_norm.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.decoder.weight', 'lm_head.bias', 'lm_head.layer_norm.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+NR_PAIR_DATASET_LOADING
+Loading train files, take a breath!
+Begin text decoupling......
+End text decoupling!
+NR_PAIR_TRAIN {"step": 1, "row_ids": [5, 4, 1, 6], "point_sha256": "59b01e9c08f023007cbb4638f9546fc6cccc6c8d09b079265e2222b90775650b", "native": {"loss": 17.794811248779297, "gradient_norm": 31.643680572509766, "parameters_with_gradient": 716}, "replacement": {"loss": 17.963048934936523, "gradient_norm": 31.345300674438477, "parameters_with_gradient": 716, "reassigned_per_sample": [4, 2, 10, 3], "delta_ce": 1.1776736974716187}, "elapsed_seconds": 3.9099044799804688}
+NR_PAIR_TRAIN {"step": 2, "row_ids": [2, 0, 3, 7], "point_sha256": "b99876892413f8de447bb61f5ad1256d0372a093a35ef313ddfe9fe3151aabec", "native": {"loss": 18.181032180786133, "gradient_norm": 36.792686462402344, "parameters_with_gradient": 716}, "replacement": {"loss": 18.33368682861328, "gradient_norm": 38.04389572143555, "parameters_with_gradient": 716, "reassigned_per_sample": [2, 5, 1, 7], "delta_ce": 0.41813454031944275}, "elapsed_seconds": 5.841414928436279}
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/serialization.py", line 379, in save
+    _save(obj, opened_zipfile, pickle_module, pickle_protocol)
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/serialization.py", line 499, in _save
+    zip_file.write_record(name, storage.data_ptr(), num_bytes)
+OSError: [Errno 28] No space left on device
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/autodl-tmp/mcln_nr_semantic_assignment_20260921_v1/scripts/train_nr3d_semantic_assignment_pair.py", line 239, in <module>
+    main()
+  File "/root/autodl-tmp/mcln_nr_semantic_assignment_20260921_v1/scripts/train_nr3d_semantic_assignment_pair.py", line 205, in main
+    path=root/(arm+'_preflight.pth');torch.save(state,path)
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/serialization.py", line 380, in save
+    return
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/serialization.py", line 259, in __exit__
+    self.file_like.write_end_of_file()
+RuntimeError: [enforce fail at inline_container.cc:300] . unexpected pos 323925952 vs 323925840
+terminate called after throwing an instance of 'c10::Error'
+  what():  [enforce fail at inline_container.cc:300] . unexpected pos 323925952 vs 323925840
+frame #0: c10::ThrowEnforceNotMet(char const*, int, char const*, std::string const&, void const*) + 0x47 (0x7f8435fccae7 in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x2799d00 (0x7f8489199d00 in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: <unknown function> + 0x27952dc (0x7f84891952dc in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: caffe2::serialize::PyTorchStreamWriter::writeRecord(std::string const&, void const*, unsigned long, bool) + 0xb5 (0x7f848919cf45 in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #4: caffe2::serialize::PyTorchStreamWriter::writeEndOfFile() + 0x173 (0x7f848919d233 in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: caffe2::serialize::PyTorchStreamWriter::~PyTorchStreamWriter() + 0x125 (0x7f848919d4a5 in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/lib/libtorch_cpu.so)
+frame #6: <unknown function> + 0xb444b3 (0x7f85319d44b3 in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/lib/libtorch_python.so)
+frame #7: <unknown function> + 0x2a6e78 (0x7f8531136e78 in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/lib/libtorch_python.so)
+frame #8: <unknown function> + 0x2a817e (0x7f853113817e in /root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/lib/libtorch_python.so)
+frame #9: <unknown function> + 0xfa2d8 (0x564da61752d8 in /root/miniconda3/envs/bdetr/bin/python)
+frame #10: <unknown function> + 0xfad68 (0x564da6175d68 in /root/miniconda3/envs/bdetr/bin/python)
+frame #11: <unknown function> + 0xfad7c (0x564da6175d7c in /root/miniconda3/envs/bdetr/bin/python)
+frame #12: <unknown function> + 0xfad7c (0x564da6175d7c in /root/miniconda3/envs/bdetr/bin/python)
+frame #13: <unknown function> + 0x12b327 (0x564da61a6327 in /root/miniconda3/envs/bdetr/bin/python)
+frame #14: PyDict_SetItemString + 0x89 (0x564da61b2e59 in /root/miniconda3/envs/bdetr/bin/python)
+frame #15: PyImport_Cleanup + 0xab (0x564da6227d0b in /root/miniconda3/envs/bdetr/bin/python)
+frame #16: Py_FinalizeEx + 0x64 (0x564da629c304 in /root/miniconda3/envs/bdetr/bin/python)
+frame #17: <unknown function> + 0x232960 (0x564da62ad960 in /root/miniconda3/envs/bdetr/bin/python)
+frame #18: _Py_UnixMain + 0x3c (0x564da62adccc in /root/miniconda3/envs/bdetr/bin/python)
+frame #19: __libc_start_main + 0xf3 (0x7f85348a8083 in /usr/lib/x86_64-linux-gnu/libc.so.6)
+frame #20: <unknown function> + 0x1d7555 (0x564da6252555 in /root/miniconda3/envs/bdetr/bin/python)
+

@@ -43,8 +43,8 @@ native. No ground truth is introduced at inference.
    native inference. No long baseline reproduction or multi-seed sweep.
 
 E57 is an evaluation-only weight average without optimizer state. New training
-must not be described as exact optimizer continuation. Detailed update scope
-and budget are not yet frozen; no full training is launched by the probe.
+must not be described as exact optimizer continuation. The paired update scope
+and budget are recorded below; no full training is launched by the zero-update probe.
 
 ## Evaluation
 
@@ -58,6 +58,49 @@ Report same-budget native-versus-replacement results, repairs/breaks at both
 thresholds, candidate coverage and eligible-candidate ranks. Do not attribute
 the normal adaptation gain to label replacement. Any module holdout from
 pretrained training scenes is a development screen, not unseen-scene evidence.
+
+## Locked paired adaptation budget
+
+Both arms start from protected E57 with fresh AdamW and the same native
+architecture, trainable parameter set and losses, including the existing source
+selector loss weight 0.5. Update all parameters that the native model exposes
+as trainable, with uniform LR 1e-5, weight decay 0.0005, clipping 0.1. This is
+a common low-LR adaptation protocol, not reproduction of the historical E57
+training schedule. No new model parameters are added.
+
+Use all 32919 Nr3D train expressions once, batch 4 (8230 updates per arm),
+seed 2027. Disable geometric augmentation and exclude joint detection prompts
+in both arms for this Nr-only adaptation. Preserve intermediate-object labels.
+Both arms consume the same sampled input tensor per step and the same seeded
+model/loss randomness. Differences after updates are part of the paired run.
+
+First execute 2 optimizer steps per arm on 8 previously fixed fit rows, verify
+the shared initial training predictions, finite gradients, actual parameter
+changes, and saving/reloading model tensors. These preflight weights are not
+used for full training. Then measure the actual parent on all 7899 validation
+expressions, train one fixed pass from the protected weights, and evaluate both
+terminal arms on the same 7899 expressions regardless of which is better.
+Keep native selected-source scores and detector support filtering. This is a
+development evaluation, not an untouched test. No intermediate best selection.
+
+Recovery checkpoints every 512 updates preserve model/optimizer/step; automatic
+resume is not implemented by this initial runner. At the terminal update each
+recovery file is refreshed then renamed as its terminal checkpoint, retaining
+two arm files rather than four duplicate files. All per-step records are saved.
+Checkpoint files use `/root/mcln_nr_semantic_states_20260921_v1`; logs and
+receipts remain in the experiment directory on the data disk.
+
+The first optimizer preflight completed two steps in each arm (716 parameter
+tensors with finite gradients, nonzero gradient norms, identical first training
+predictions) but failed saving its second checkpoint with ENOSPC. It is not a
+passed preflight. The data disk had only 1.7 MB available; the system disk had
+2.7 GB. The attempted local archive stalled and was not completed or hash verified.
+Only this run's two disposable preflight checkpoint files were removed after
+retaining the failure log and update records; temporary_cleanup.json records
+the exact paths and sizes. The partial local archive is not a valid checkpoint. Historical protected and
+EG checkpoint files are untouched. Retry uses a separate `optimizer_preflight_v2`
+output, the system-disk checkpoint directory and one reusable preflight file.
+The launch checks available space on both disks before running.
 
 ## Status
 
@@ -74,6 +117,10 @@ initial synthetic fixture's float64/float32 denominator mismatch was corrected;
 the probe draft's ScanRefer coefficient was corrected to Nr3D's 1/7 before
 launch. Neither required changing the replacement module.
 
-No optimizer steps, formal accuracy results or full training have occurred.
-Next: freeze update scope and budget, run genuine optimizer preflight, then
-the paired native/replacement experiment. Existing protected metrics remain.
+Two optimizer steps per arm occurred in the first, storage-failed preflight;
+they are not a full training result and are discarded before the retry/full
+run. No formal accuracy or full-training result exists yet. Complete the
+corrected storage/reload preflight before the paired experiment.
+
+
+Update: optimizer_preflight_v2 passed actual model and optimizer reload after two steps per arm. Full paired entry launched as PID43284; baseline evaluation precedes training. No new formal accuracy exists yet. See handoff section20.270.

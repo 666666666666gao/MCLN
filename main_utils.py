@@ -1708,6 +1708,8 @@ def parse_option():
     # io
     parser.add_argument('--checkpoint_path', default=None,
                         help='Model checkpoint path')
+    parser.add_argument('--use_cs_mcln', action='store_true', default=False,
+                        help='Use the three native CS-MCLN forward modules')
     parser.add_argument(
         '--checkpoint_start_epoch', type=int, default=None,
         help=(

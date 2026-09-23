@@ -55,6 +55,11 @@ from .joint_query_quality import (
 )
 from .structured_slots import StructuredSlotBuilder
 from .sacr_head import SACRHead
+from .cs_mcln_modules import (
+    ObservationCrossScaleEnhancer,
+    ContextSupportReader,
+    MaskSupportBoxRefiner,
+)
 from .sacr_parent_relative import (
     SACRParentRelativeGate,
     apply_parent_relative_sacr_refinement,
@@ -457,7 +462,8 @@ class MCLN(nn.Module):
                  parent_relative_text_verifier_filter_non_gt_boxes=False,
                  parent_relative_text_verifier_counterfactual_training=False,
                  pointnet_ckpt_sha256="",
-                 use_pretrained_object_appearance=False):
+                 use_pretrained_object_appearance=False,
+                 use_cs_mcln=False):
         """Initialize layers."""
         super().__init__()
 
@@ -466,6 +472,7 @@ class MCLN(nn.Module):
         self.self_position_embedding = self_position_embedding
         self.contrastive_align_loss = contrastive_align_loss
         self.butd = butd
+        self.use_cs_mcln = bool(use_cs_mcln)
         self.object_appearance = None
         if use_pretrained_object_appearance:
             assert butd and d_model == 288
@@ -1405,6 +1412,15 @@ class MCLN(nn.Module):
             nn.Linear(2*d_model,d_model)
             )
         self.super_grouper = pointnet2_utils.QueryAndGroup(radius=0.2, nsample=2, use_xyz=False, normalize_xyz=True)
+        self.cs_structure = (
+            ObservationCrossScaleEnhancer(d_model) if self.use_cs_mcln else None
+        )
+        self.cs_context_reader = (
+            ContextSupportReader(d_model) if self.use_cs_mcln else None
+        )
+        self.cs_box_refiner = (
+            MaskSupportBoxRefiner(d_model) if self.use_cs_mcln else None
+        )
 
         # Query initialization
         self.points_obj_cls = PointsObjClsModule(d_model)
@@ -1926,6 +1942,8 @@ class MCLN(nn.Module):
         """
         # STEP 1. vision and text encoding
         end_points = self._run_backbones(inputs)
+        if self.cs_structure is not None:
+            end_points['fp2_features'] = self.cs_structure.enhance_seeds(end_points)
         points_xyz = end_points['fp2_xyz']
         points_features = end_points['fp2_features']
         text_feats = end_points['text_feats']
@@ -1997,6 +2015,11 @@ class MCLN(nn.Module):
             grouped_feature=grouped_feature+rel_feat     
             super_feature = F.max_pool2d(grouped_feature, kernel_size=[1, grouped_feature.size(3)]).squeeze(-1).squeeze(0)  # [288, super_num]
             super_features.append(super_feature)
+        if self.cs_structure is not None:
+            super_features = self.cs_structure.enhance_superpoints(
+                super_features, super_xyz_list, inputs['point_clouds'],
+                superpoint, end_points, points_features,
+            )
 
         # STEP 5. Query Points Generation
         end_points = self._generate_queries(
@@ -2054,6 +2077,11 @@ class MCLN(nn.Module):
                     if self.decoder[i].local_visual is not None else None
                 )
             )  # (B, V, F)
+            if self.cs_context_reader is not None and i >= self.num_decoder_layers - 2:
+                query = self.cs_context_reader(
+                    query, points_features.transpose(1, 2).contiguous(),
+                    super_features, super_xyz_list, base_xyz,
+                )
             if (i == self.num_decoder_layers - 1
                     and self.decoder_query_adapter is not None):
                 query, adapter_residual = self.decoder_query_adapter(
@@ -2085,6 +2113,14 @@ class MCLN(nn.Module):
                 end_points=end_points,  # 
                 prefix=prefix
             )
+            if self.cs_box_refiner is not None and i >= self.num_decoder_layers - 2:
+                mask_query = self.x_query(query.transpose(1, 2)).transpose(1, 2)
+                base_xyz, base_size = self.cs_box_refiner(
+                    query, mask_query, super_features, super_xyz_list,
+                    base_xyz, base_size,
+                )
+                end_points[prefix + 'center'] = base_xyz
+                end_points[prefix + 'pred_size'] = base_size
             base_xyz = base_xyz.detach().clone()
             base_size = base_size.detach().clone()
 

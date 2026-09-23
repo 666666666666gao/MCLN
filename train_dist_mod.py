@@ -3000,6 +3000,7 @@ class TrainTester(BaseTrainTester):
             data_path = args.data_root,
             self_attend=args.self_attend,
             use_source_choice_selector=args.use_source_choice_selector,
+            use_cs_mcln=getattr(args, 'use_cs_mcln', False),
             source_choice_selector_sources=args.source_choice_selector_sources,
             source_choice_selector_hidden_dim=args.source_choice_selector_hidden_dim,
             use_source_moe=getattr(args, 'use_source_moe', False),

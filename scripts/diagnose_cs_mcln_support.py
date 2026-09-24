@@ -74,6 +74,7 @@ def main():
     train, validation = TrainTester.get_datasets(config)
     assert len(train) == 48655 and len(validation) == 9508
     train.augment = False
+    train.augment_det = False
 
     first_by_scene = {}
     for index, annotation in enumerate(train.annos):

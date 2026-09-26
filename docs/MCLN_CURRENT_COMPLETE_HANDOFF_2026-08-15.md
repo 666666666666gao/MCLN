@@ -20239,3 +20239,9 @@ best模型文件605462210字节；数据盘可用1847508992字节、系统盘可
 新增独立接续入口`scripts/run_cs_mcln_posttrain_diagnostic.py`，SHA256 `a1f30fc89e2ec4effd53b127fe5ac67a069c675004b1b858f48d4f2ca794e9d9`。该脚本远端部署于现行run的`diagnostics/`目录，PID76407已确认存活，日志仅为`WAIT_UNTIL 2026-09-26T16:20:00+08:00`。它先等待预计终态窗口，再每300秒核对正式训练PID3615；训练进程退出后，必须核对全部21轮`EPOCH cs`保存标记、各轮4055步/48655训练输入/9508验证数、按既定排序复算的best与best.json及实际best.pth一致、latest.pth为第21轮，并确认GPU没有计算进程，才运行既有只读诊断。任何核对失败直接报错停止，不重启训练、不替换权重、不启动native控制。
 
 诊断继续使用原隔离训练源码`/root/autodl-tmp/cs_mcln_source_20260923_v1`与相同E71父模型，只输出`diagnostics/m3_fixed_train_panel.json`、对应小型日志和`posttrain_diagnostic_execution.json`起止时间/退出码。接续入口通过本地语法与CLI检查、远端语法检查，实际等待状态已核验；**尚未执行GPU诊断，不能把排队或检查通过写成诊断成功**。本次系统/数据盘可用2050465792/1847492608字节，新增的是小脚本和日志，未改正式训练或删除任何权重。最新正式指标仍为§20.304的第19轮5467/4382，best仍第15轮5466/4409。诊断完成后需先解读固定面板及终态，再推进同预算native控制。
+
+## 20.306 第0—19轮原始REC结果归档与可核对指标表（2026-09-26 09:54 CST）
+
+为便于最终21轮汇总，本次从远端正式run按已完成范围取回`epoch_0.json`至`epoch_19.json`，逐份保留原始字节和SHA256，并核对第1—19轮均有`EPOCH cs`保存完成标记、4055步、48655条训练输入及9508条验证。独立按命中数复算两阈值准确率，按训练脚本的既定双阈值排序复算best，并与远端best.json一致：仍是第15轮5466/4409。第0轮5514/4408是预训练零更新起点，未混入训练后best选择；第20、21轮暂不填值。
+
+原始文件、best快照、来源清单`manifest.json`和汇总`epoch_metrics.csv`归档在仓库`docs/results/cs_mcln_scanrefer_20260923/`；23份小文件已同步远端主仓库同路径并逐文件核对SHA256。CSV另存桌面`C:\Users\gb\Desktop\document\CS_MCLN_ScanRefer_epoch_metrics.csv`，两处字节一致，SHA256为`968104e9c041600e648efbf38da754a774ea655078924f4fd6fa6adde8285efd`。表含同一轮两项REC、相对第0轮的命中差、训练耗时和源文件哈希。该归档没有新训练或新评估，不刷新任何指标；同预算native控制仍无结果，不能据此主张三个模块有独立增益。

@@ -38,13 +38,16 @@ def atomic_json(path, data):
     os.replace(str(temporary), str(path))
 
 
-def experiment_args(config, arm, data_root):
+def experiment_args(config, arm, data_root, quality_weight=0.0,
+                    score_temperature=1.0):
     sys.argv = [sys.argv[0]]
     args = parse_option()
     vars(args).update(vars(config))
     args.data_root = str(data_root).rstrip('/') + '/'
-    args.use_cs_mcln = arm in ('cs', 'cs_readback')
-    args.use_cs_geometry_readback = arm == 'cs_readback'
+    args.use_cs_mcln = arm in ('cs', 'cs_readback', 'cs_readback_quality')
+    args.use_cs_geometry_readback = arm in ('cs_readback', 'cs_readback_quality')
+    args.cs_native_root_quality_weight = quality_weight
+    args.cs_native_root_quality_score_temperature = score_temperature
     args.use_source_choice_selector = False
     args.eval_use_selector_choice_scores = False
     args.use_source_moe = False
@@ -70,7 +73,7 @@ def load_exact_e71(model, checkpoint_state, arm):
         del source[name]
     target = model.state_dict()
     prefixes = CS_PREFIXES if arm != 'native' else ()
-    if arm == 'cs_readback':
+    if arm in ('cs_readback', 'cs_readback_quality'):
         prefixes += (READBACK_PREFIX,)
     additions = {name for name in target if name.startswith(prefixes)}
     assert bool(additions) == (arm != 'native')
@@ -148,6 +151,8 @@ def checkpoint(path, model, optimizer, epoch, args, initial_load):
     payload = {'epoch': epoch, 'model': model.state_dict(),
                'optimizer': optimizer.state_dict(), 'arm': args.arm,
                'batch_size': args.batch_size, 'seed': SEED,
+               'root_quality_loss_weight': args.root_quality_loss_weight,
+               'root_quality_score_temperature': args.root_quality_score_temperature,
                'initial_load': initial_load}
     temporary = path.with_suffix('.tmp')
     torch.save(payload, str(temporary))
@@ -165,6 +170,8 @@ def save_best(path, model, epoch, metrics, args, initial_load):
     payload = {'epoch': epoch, 'model': model.state_dict(),
                'metrics': metrics, 'arm': args.arm,
                'batch_size': args.batch_size, 'seed': SEED,
+               'root_quality_loss_weight': args.root_quality_loss_weight,
+               'root_quality_score_temperature': args.root_quality_score_temperature,
                'initial_load': initial_load}
     temporary = path.with_suffix('.tmp')
     torch.save(payload, str(temporary))
@@ -207,7 +214,8 @@ def zero_update_check(cs_model, validation, parent_path, config):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--arm', choices=('native', 'cs', 'cs_readback'),
+    parser.add_argument('--arm', choices=('native', 'cs', 'cs_readback',
+                                          'cs_readback_quality'),
                         required=True)
     parser.add_argument('--mode', choices=('preflight', 'train'), required=True)
     parser.add_argument('--checkpoint', type=Path, required=True)
@@ -215,15 +223,27 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--best-dir', type=Path)
     parser.add_argument('--batch-size', type=int, required=True)
+    parser.add_argument('--root-quality-loss-weight', type=float)
+    parser.add_argument('--root-quality-score-temperature', type=float)
     parser.add_argument('--resume', action='store_true')
     args = parser.parse_args()
     assert args.batch_size in (4, 8, 12, 16)
+    if args.arm == 'cs_readback_quality':
+        assert args.root_quality_loss_weight is not None and args.root_quality_loss_weight > 0
+        assert args.root_quality_score_temperature is not None and args.root_quality_score_temperature > 0
+    else:
+        assert args.root_quality_loss_weight is None
+        assert args.root_quality_score_temperature is None
     args.output.mkdir(parents=True, exist_ok=True)
     set_seed(SEED)
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
     payload = torch.load(str(args.checkpoint), map_location='cpu')
-    config = experiment_args(payload['config'], args.arm, args.data_root)
+    config = experiment_args(
+        payload['config'], args.arm, args.data_root,
+        quality_weight=args.root_quality_loss_weight or 0.0,
+        score_temperature=args.root_quality_score_temperature or 1.0,
+    )
     model = TrainTester.get_model(config)
     initial_load = load_exact_e71(model, payload['model'], args.arm)
     del payload
@@ -236,6 +256,8 @@ def main():
     print('CONFIG', json.dumps({'arm': args.arm, 'mode': args.mode,
           'train_samples': len(train), 'val_samples': len(validation),
           'batch_size': args.batch_size, 'rates': rates,
+          'root_quality_loss_weight': config.cs_native_root_quality_weight,
+          'root_quality_score_temperature': config.cs_native_root_quality_score_temperature,
           'initial_load': initial_load}), flush=True)
 
     if args.mode == 'preflight':
@@ -256,6 +278,8 @@ def main():
             loss, outputs = batch_loss(model, raw, criterion, set_criterion,
                                        config, True)
             assert bool(torch.isfinite(loss))
+            if args.arm == 'cs_readback_quality':
+                assert bool(torch.isfinite(outputs['cs_native_root_quality_loss']))
             if args.arm != 'native' and step == 2:
                 mask_to_box = torch.autograd.grad(
                     outputs['last_center'].sum()
@@ -291,11 +315,14 @@ def main():
                     assert all(parameters[name].grad is not None and
                                bool(parameters[name].grad.abs().sum() > 0)
                                for name in internal)
-                if args.arm == 'cs_readback':
+                if args.arm in ('cs_readback', 'cs_readback_quality'):
                     readback_name = 'cs_geometry_readback.output.weight'
                     assert bool(parameters[readback_name].grad.abs().sum() > 0)
             optimizer.step()
-            print('PREFLIGHT_STEP', step, float(loss), float(norm), flush=True)
+            print('PREFLIGHT_STEP', step, float(loss), float(norm),
+                  float(outputs['cs_native_root_quality_loss'])
+                  if args.arm == 'cs_readback_quality' else None,
+                  flush=True)
             if step == 2:
                 break
         torch.cuda.synchronize()
@@ -315,6 +342,8 @@ def main():
             'checkpoint_bytes': checkpoint_bytes,
             'model_only_bytes': model_bytes,
             'initial_load': initial_load,
+            'root_quality_loss_weight': config.cs_native_root_quality_weight,
+            'root_quality_score_temperature': config.cs_native_root_quality_score_temperature,
             'zero_update_max_abs_differences': zero_differences,
         })
         return
@@ -327,6 +356,9 @@ def main():
             saved = torch.load(str(args.output / 'latest.pth'), map_location='cpu')
             assert saved['arm'] == args.arm and saved['batch_size'] == args.batch_size
             assert saved['seed'] == SEED and saved['initial_load'] == initial_load
+            if args.arm == 'cs_readback_quality':
+                assert saved['root_quality_loss_weight'] == args.root_quality_loss_weight
+                assert saved['root_quality_score_temperature'] == args.root_quality_score_temperature
             model.load_state_dict(saved['model'], strict=True)
             optimizer.load_state_dict(saved['optimizer'])
             first_epoch = saved['epoch'] + 1
@@ -340,6 +372,9 @@ def main():
         best_payload = torch.load(str(args.best_dir / 'best.pth'),
                                   map_location='cpu')
         assert best_payload['arm'] == args.arm
+        if args.arm == 'cs_readback_quality':
+            assert best_payload['root_quality_loss_weight'] == args.root_quality_loss_weight
+            assert best_payload['root_quality_score_temperature'] == args.root_quality_score_temperature
         best = {'arm': best_payload['arm'], 'epoch': best_payload['epoch'],
                 'metrics': best_payload['metrics']}
         del best_payload

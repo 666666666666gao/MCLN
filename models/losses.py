@@ -59,6 +59,8 @@ from .parent_relative_text_verifier import (
 from .density_aware_target_box import (
     compute_density_aware_target_box_loss,
 )
+from .source_choice_adapter import compute_default_source_scores
+from .cs_native_root_quality import root_matched_quality_loss
 
 
 def build_source_moe_grounding_sample_mask(end_points, batch_size, device):
@@ -1872,7 +1874,9 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                            relation_counterfactual_aux_conservative_anchor_set=False,
                            density_aware_target_box_loss_weight=0.0,
                            density_scene_audit_return_match_indices=False,
-                           native_mask_geometry_supervision=False):
+                           native_mask_geometry_supervision=False,
+                           cs_native_root_quality_weight=0.0,
+                           cs_native_root_quality_score_temperature=1.0):
     """Compute Hungarian matching loss containing CE, bbox and giou."""
     for scale_name, scale in (
             ("mask_loss_scale", mask_loss_scale),
@@ -4123,6 +4127,19 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
             end_points['mask_geometry_soft_boxes'] = geometry['soft_boxes']
         end_points['mask_geometry_loss'] = auxiliary
         end_points['mask_geometry_referring_rows'] = auxiliary.new_tensor(len(batch_indices))
+    if cs_native_root_quality_weight > 0:
+        native_scores = compute_default_source_scores(end_points, end_points)
+        final_boxes = torch.cat((
+            end_points['last_center'],
+            end_points['last_pred_size'].clamp(min=1e-6),
+        ), dim=-1)
+        quality_loss = root_matched_quality_loss(
+            native_scores, final_boxes, gt_bbox, last_match_indices,
+            end_points['sample_dataset'],
+            cs_native_root_quality_score_temperature,
+        )
+        loss = loss + cs_native_root_quality_weight * quality_loss
+        end_points['cs_native_root_quality_loss'] = quality_loss
     if isinstance(loss, torch.Tensor) and loss.numel() == 1:
         loss = loss.reshape(())
     end_points['loss_ce'] = loss_ce

@@ -2,7 +2,7 @@
 
 import torch
 
-from models.source_moe import compute_query_box_ious
+from .source_moe import compute_query_box_ious
 
 
 def root_matched_quality_loss(scores, final_boxes, gt_boxes, matches,

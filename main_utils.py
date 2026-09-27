@@ -6673,6 +6673,12 @@ class BaseTrainTester:
             ),
             mask_loss_scale=args.mask_loss_scale,
             native_mask_geometry_supervision=getattr(args, 'native_mask_geometry_supervision', False),
+            cs_native_root_quality_weight=getattr(
+                args, 'cs_native_root_quality_weight', 0.0
+            ),
+            cs_native_root_quality_score_temperature=getattr(
+                args, 'cs_native_root_quality_score_temperature', 1.0
+            ),
             consistency_loss_scale=args.consistency_loss_scale,
             source_moe_balance_loss_weight=(
                 getattr(args, 'source_moe_balance_loss_weight', 0.01)

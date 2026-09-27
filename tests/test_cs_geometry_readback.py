@@ -25,12 +25,20 @@ def test_refiner_evidence_preserves_boxes_and_readback_starts_at_identity():
     assert torch.equal(center, plain_center)
     assert torch.equal(size, plain_size)
     assert evidence.shape == (batch, queries, channels + 15)
+    evidence = evidence.detach()
 
     readback = GeometryEvidenceReadback(channels, context_dim=8)
     updated = readback(query, evidence)
     assert torch.equal(updated, query)
     updated.square().sum().backward()
     assert readback.output.weight.grad.abs().sum().item() > 0
+
+    optimizer = torch.optim.AdamW(readback.parameters(), lr=1e-2)
+    optimizer.step()
+    optimizer.zero_grad(set_to_none=True)
+    readback(query, evidence).square().sum().backward()
+    assert readback.encode[0].weight.grad.abs().sum().item() > 0
+    assert readback.set_attention.in_proj_weight.grad.abs().sum().item() > 0
 
     with torch.no_grad():
         readback.output.weight.normal_(std=0.1)

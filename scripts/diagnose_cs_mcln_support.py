@@ -1,4 +1,4 @@
-"""Read-only CS-MCLN M3 geometry diagnosis on a fixed ScanRefer train panel."""
+"""Read-only CS-MCLN M3 geometry diagnosis on ScanRefer scenes."""
 
 import argparse
 import hashlib
@@ -51,6 +51,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--panel-scenes', type=int, default=128)
     parser.add_argument('--batch-size', type=int, default=4)
+    parser.add_argument('--split', choices=('train-panel', 'validation'),
+                        default='train-panel')
     opt = parser.parse_args()
     assert opt.panel_scenes > 0 and opt.batch_size > 0
 
@@ -73,19 +75,23 @@ def main():
     criterion, set_criterion = TrainTester.get_criterion(config)
     train, validation = TrainTester.get_datasets(config)
     assert len(train) == 48655 and len(validation) == 9508
-    train.augment = False
-    train.augment_det = False
-
-    first_by_scene = {}
-    for index, annotation in enumerate(train.annos):
-        if annotation['dataset'] == 'scanrefer':
-            first_by_scene.setdefault(annotation['scan_id'], index)
-    scene_ids = sorted(first_by_scene, key=lambda scene: hashlib.sha256(
-        (PANEL_SALT + '\0' + scene).encode('utf-8')
-    ).hexdigest())[:opt.panel_scenes]
-    assert len(scene_ids) == opt.panel_scenes
-    panel_ids = [first_by_scene[scene] for scene in scene_ids]
-    panel = torch.utils.data.Subset(train, panel_ids)
+    if opt.split == 'train-panel':
+        train.augment = False
+        train.augment_det = False
+        first_by_scene = {}
+        for index, annotation in enumerate(train.annos):
+            if annotation['dataset'] == 'scanrefer':
+                first_by_scene.setdefault(annotation['scan_id'], index)
+        scene_ids = sorted(first_by_scene, key=lambda scene: hashlib.sha256(
+            (PANEL_SALT + '\0' + scene).encode('utf-8')
+        ).hexdigest())[:opt.panel_scenes]
+        assert len(scene_ids) == opt.panel_scenes
+        panel_ids = [first_by_scene[scene] for scene in scene_ids]
+        panel = torch.utils.data.Subset(train, panel_ids)
+    else:
+        panel_ids = list(range(len(validation)))
+        scene_ids = [annotation['scan_id'] for annotation in validation.annos]
+        panel = validation
     loader = torch.utils.data.DataLoader(
         panel, batch_size=opt.batch_size, shuffle=False, num_workers=0,
     )
@@ -122,10 +128,11 @@ def main():
             )
             evaluator.evaluate(outputs, 'last_')
             scores = compute_default_source_scores(outputs, outputs)
-            chosen = evaluator._position_top_indices(
+            ranking = evaluator._position_top_indices(
                 scores, torch.ones_like(scores, dtype=torch.bool),
-                'default_query_axis', 1,
-            )[:, 0]
+                'default_query_axis', 256,
+            )
+            chosen = ranking[:, 0]
             for bid in range(chosen.shape[0]):
                 panel_index = start * opt.batch_size + bid
                 query_index = int(chosen[bid])
@@ -149,9 +156,12 @@ def main():
                 mass = logits.sigmoid()
                 pre_box = before[query_index]
                 post_box = after[query_index]
-                rows.append({
+                ordered_post_iou = after_iou[ranking[bid]]
+                first025 = (ordered_post_iou > 0.25).nonzero().flatten()
+                first050 = (ordered_post_iou > 0.5).nonzero().flatten()
+                row = {
                     'panel_index': panel_index,
-                    'train_row_id': panel_ids[panel_index],
+                    'row_id': panel_ids[panel_index],
                     'scan_id': scene_ids[panel_index],
                     'target_id': int(outputs['target_id'][bid]),
                     'query_index': query_index,
@@ -160,6 +170,12 @@ def main():
                     'post_selected_iou': float(after_iou[query_index]),
                     'pre_raw256_oracle_iou': float(before_iou.max()),
                     'post_raw256_oracle_iou': float(after_iou.max()),
+                    'post_first_qualified_rank025': (
+                        int(first025[0]) + 1 if first025.numel() else None
+                    ),
+                    'post_first_qualified_rank050': (
+                        int(first050[0]) + 1 if first050.numel() else None
+                    ),
                     'center_shift_m': float((post_box[:3] - pre_box[:3]).norm()),
                     'center_shift_over_gt_size': float(
                         (post_box[:3] - pre_box[:3]).norm()
@@ -175,10 +191,13 @@ def main():
                         xyz, mass, pre_box[:3], pre_box[3:]
                     ),
                     'superpoint_count': int(xyz.shape[0]),
-                })
+                }
+                if opt.split == 'train-panel':
+                    row['train_row_id'] = panel_ids[panel_index]
+                rows.append(row)
             captured.clear()
     hook.remove()
-    assert len(rows) == opt.panel_scenes
+    assert len(rows) == len(panel)
 
     summary = {}
     for threshold, suffix in ((0.25, '025'), (0.5, '050')):
@@ -198,6 +217,22 @@ def main():
         summary['raw256_post_oracle_hits' + suffix] = sum(
             row['post_raw256_oracle_iou'] > threshold for row in rows
         )
+        if opt.split == 'validation':
+            ranks = [row['post_first_qualified_rank' + suffix]
+                     for row in rows if row['post_selected_iou'] <= threshold]
+            summary['post_no_qualified_candidate' + suffix] = sum(
+                rank is None for rank in ranks
+            )
+            summary['post_qualified_not_selected' + suffix] = sum(
+                rank is not None for rank in ranks
+            )
+            for label, low, high in (
+                ('rank2', 2, 2), ('rank3to16', 3, 16),
+                ('rank17to64', 17, 64), ('rank65to256', 65, 256),
+            ):
+                summary['post_' + label + '_misses' + suffix] = sum(
+                    rank is not None and low <= rank <= high for rank in ranks
+                )
         assert summary['selected_post_hits' + suffix] == int(
             evaluator.dets[('last_', threshold, 1, 'bbs')]
         )
@@ -208,11 +243,17 @@ def main():
         summary[name + '_median'] = statistics.median(row[name] for row in rows)
     assert all(parameter.grad is None for parameter in model.parameters())
     result = {
-        'schema': 'cs-mcln-m3-fixed-train-panel-v1',
-        'panel_salt': PANEL_SALT,
-        'panel_definition': 'one first ScanRefer expression per hashed train scene',
+        'schema': ('cs-mcln-m3-fixed-train-panel-v2'
+                   if opt.split == 'train-panel'
+                   else 'cs-mcln-m3-full-scanrefer-validation-v1'),
+        'split': opt.split,
+        'panel_definition': (
+            'one first ScanRefer expression per hashed train scene'
+            if opt.split == 'train-panel'
+            else 'all ScanRefer validation expressions in dataset order'
+        ),
         'augmentation': False,
-        'train_row_ids': panel_ids,
+        'row_ids': panel_ids,
         'checkpoint_epoch': checkpoint_epoch,
         'checkpoint_sha256': file_sha256(opt.checkpoint),
         'checkpoint_formal_metrics': checkpoint_metrics,
@@ -222,6 +263,14 @@ def main():
         'summary': summary,
         'rows': rows,
     }
+    if opt.split == 'train-panel':
+        result['panel_salt'] = PANEL_SALT
+        result['train_row_ids'] = panel_ids
+    else:
+        result['formal_result_match'] = {
+            'hits025': summary['selected_post_hits025'] == checkpoint_metrics['hits025'],
+            'hits050': summary['selected_post_hits050'] == checkpoint_metrics['hits050'],
+        }
     opt.output.parent.mkdir(parents=True, exist_ok=True)
     opt.output.write_text(json.dumps(result, indent=2, allow_nan=False) + '\n')
     print(json.dumps({'output': str(opt.output), 'summary': summary}), flush=True)

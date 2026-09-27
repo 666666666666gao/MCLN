@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import torch
 
 from models.losses import _iou3d_par, box_cxcyczwhd_to_xyzxyz
+from models.rec_mask_geometry import normalize_mcln_mask_logits
 from models.source_choice_adapter import compute_default_source_scores
 from scripts.train_cs_mcln_scanrefer import (
     batch_loss, experiment_args, load_exact_e71, set_seed,
@@ -154,6 +155,11 @@ def main():
                 features = captured['super_features'][bid].transpose(0, 1)
                 logits = captured['mask_query'][bid, query_index] @ features.T
                 mass = logits.sigmoid()
+                _, query_logits, fused_logits, alpha = (
+                    normalize_mcln_mask_logits(
+                        outputs, bid, [query_index],
+                    )
+                )
                 pre_box = before[query_index]
                 post_box = after[query_index]
                 ordered_post_iou = after_iou[ranking[bid]]
@@ -189,6 +195,16 @@ def main():
                     ),
                     'm3_mass_outside_pre_box': outside_mass(
                         xyz, mass, pre_box[:3], pre_box[3:]
+                    ),
+                    'final_query_mass_outside_gt_box': outside_mass(
+                        xyz, query_logits[0].sigmoid(), root[:3], root[3:]
+                    ),
+                    'final_fused_mass_outside_gt_box': outside_mass(
+                        xyz, fused_logits[0].sigmoid(), root[:3], root[3:]
+                    ),
+                    'final_fusion_alpha': float(alpha.reshape(-1)[0]),
+                    'm3_to_final_query_logit_max_abs': float(
+                        (logits - query_logits[0]).abs().max()
                     ),
                     'superpoint_count': int(xyz.shape[0]),
                 }
@@ -239,13 +255,16 @@ def main():
         assert int(evaluator.gts[('last_', threshold, 1, 'bbs')]) == len(rows)
     for name in ('center_shift_m', 'center_shift_over_gt_size',
                  'max_abs_log_size_ratio', 'm3_mass_outside_gt_box',
-                 'm3_mass_outside_pre_box'):
+                 'm3_mass_outside_pre_box',
+                 'final_query_mass_outside_gt_box',
+                 'final_fused_mass_outside_gt_box', 'final_fusion_alpha',
+                 'm3_to_final_query_logit_max_abs'):
         summary[name + '_median'] = statistics.median(row[name] for row in rows)
     assert all(parameter.grad is None for parameter in model.parameters())
     result = {
         'schema': ('cs-mcln-m3-fixed-train-panel-v2'
                    if opt.split == 'train-panel'
-                   else 'cs-mcln-m3-full-scanrefer-validation-v1'),
+                   else 'cs-mcln-m3-full-scanrefer-validation-v2'),
         'split': opt.split,
         'panel_definition': (
             'one first ScanRefer expression per hashed train scene'

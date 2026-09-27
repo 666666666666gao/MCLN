@@ -20474,3 +20474,9 @@ ScanNet检测行的`target_id`是对象列表，`_get_target_boxes`及`_get_toke
 旧V99的`models/rec_mask_geometry.py::DEFAULT_REC_MASK_GEOMETRY_VARIANTS`恰有7种解释：原回归框、融合Mask原阈值框、融合Mask微分位框、Query Mask微分位框、提高阈值的融合Mask框，以及原框与融合/Query Mask框各一半的两种混合框；`normalize_mcln_mask_logits`先按实际`adaptive_weights`融合文本与Query Mask的**logit**，再由点云位置产生Mask框。§20.103所见严格阈值几何收益因而不能被当前只读取M3内部Query Mask几何矩的草稿直接视为已迁移。这个代码事实改变后续实验解释，但尚无消融证明融合Mask就是当前CS未达标的主因。
 
 Nr3D原RSA空球问题也已有直接控制，不重复启动：§20.47的M4在16条固定训练表达发现31个多数前景空球误读3.092—6.160米外seed0；随后M5最近邻替换虽有Mask均值局部收益，固定终态未过其预定门槛。PV的另一项空邻域屏蔽见§20.197，也是不同网络和数据口径下的负结果，不能混为MCLN M5。当前不改正在运行的native源码或从头重跑相同最近邻方案。下一项结构判断应先使用已备9508验证诊断确认CS的候选覆盖、最后层M3前后和实际排名，再单独决定是否让最终融合Mask支撑进入同一原生评分/几何路径；若改计算顺序，须核对语义头仅一次、训练随机流及实际GPU输出，而非把旧V99侧链直接塞回部署。
+
+## 20.336 9508验证诊断增加最终Query／融合Mask支撑对照（2026-09-28 03:40 CST）
+
+为让§20.335的计算顺序差距可测，**只修改尚未执行GPU前向的只读诊断脚本**`scripts/diagnose_cs_mcln_support.py`，没有修改训练或模型。脚本在同一最终已选Query、同一超点中心上，调用旧Geometry的`normalize_mcln_mask_logits`读取实际`sp_last_pred_masks`、`last_pred_masks`及`adaptive_weights`，新增最终Query Mask与最终融合Mask的概率质量落在GT框外的比例、实际融合系数，以及M3内部Query Mask logit与最终Query Mask logit的最大绝对差。与原有M3支撑框外比例、最后层精修前后IoU、全256框上界及实际排名逐行共同保存；完整验证结果仍必须与所载第15轮best的**5466/4409**两阈值一致，否则退出失败。新增“GT框外”仅是超点中心空间代理，框内仍可有其他实例，不能直接称为真正的目标/背景Mask率，也不用于推理。
+
+本地语法与`git diff --check`通过，修改脚本SHA-256为`dd1306527ffa06c03b3098186098441e5a132928dfe47ead91efe0ae0bc6b3ee`；远端主仓库及独立诊断入口回读SHA一致，在项目Python环境通过语法和`--help`导入。验证输出schema由v1升为v2，未生成任何新诊断行或REC数值。继续等待native21轮终态释放单张A100，再按原冻结输入执行完整9508验证；目前不得用新增字段名称推断融合Mask必然更好。

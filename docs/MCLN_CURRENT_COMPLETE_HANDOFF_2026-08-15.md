@@ -20390,3 +20390,11 @@ V99的可迁移机制以实际代码为准：`models/rec_pareto_contextual_hiera
 在native第10轮预计完整评估前，单独进行**不占GPU、不读取训练进度**的只读核验。按§8记录的精确路径，在远端逐份执行SHA-256和文件元数据检查：E71核心`794125833`字节、SHA `3e44f4bdad3bd66ad82102032e1cb0241de57d147c0aa1d3eff9736926ef2208`；Parent artifact `611713`字节、SHA `f06f8972fdcfbbdcb799df267864ab2ebc9ca8403ff92576e2bbdb0a8c17269b`；Geometry artifact `704449`字节、SHA `835c25be4717dfcbb324e0c4c5b9d1d3f3e2b90a4dbcb4d4ebe79f215f263b6f`；V99 hierarchy artifact `914315`字节、SHA `9752990c393fa6e45173a9dd129c4de4bb740924094dcbbec2f3121cbf39d1f2`。四份均存在、均与§8历史哈希一致、文件权限均为`0444`；没有移动、覆盖或删除任何权重。
 
 这证明**受保护V99的关键权重文件目前仍可读取且身份未变**，不是重跑9508条正式评估，也不证明新CS已继承V99性能。训练期教师若以后启用，还须按新网络输入/Query对应重新设计并与无教师控制分开；当前native21轮与已备好的CS完整验证诊断继续按既定顺序，不因本次核验插入新训练。native第10轮完整评估仍按§20.320的05:10—05:35 CST窗口检查。
+
+## 20.323 V99式root质量监督的真实样本来源接口（2026-09-28 02:04 CST）
+
+**本节为静态代码核对，未修改训练或得到新指标。**当前ScanRefer训练入口明确开启`joint_det`；`train_dist_mod.py::TrainTester.get_datasets`因此将`scannet`检测prompt加入训练。`src/joint_det_dataset.py::__getitem__`把`language_dataset`设为本次任务的`self.test_dataset`，同时把每条标注的真实来源保存为`sample_dataset=anno['dataset']`。因此，在ScanRefer联合训练中，不能用`language_dataset == 'scanrefer'`筛出单目标指代表达；该值并不区分同一训练流里的ScanNet检测行。此处`language_dataset`服务已有数据集级语言损失配方，本次并不将其判作旧代码错误；**新root专属质量监督必须按`sample_dataset`逐行选择**。
+
+ScanNet检测行的`target_id`是对象列表，`_get_target_boxes`及`_get_token_positive_map`会构造多个目标框/文本对应，而非一个指代root。若直接取它的第0个GT框计算V99式root IoU和列表目标，就会给一条多目标检测prompt指定虚假的唯一指代答案。现有`batch_loss`在模型输出后把batch字段复制到`outputs`，`models/losses.py`的最终层Hungarian匹配也保留为`last_match_indices`，所以后续可在损失计算处用逐行来源、root有效性和匹配信息定义训练资格，不需要修改正在运行的数据或推理协议。ScanRefer首版只对真实`sample_dataset == 'scanrefer'`的行施加root质量目标；ScanNet行继续原生检测损失。推广到Nr3D/Sr3D时仍使用各自行来源，不把任务级`language_dataset`当行来源。
+
+对于已经匹配到其他GT实例的Query，不能因其框与root重叠就改为root；若未来扩展合格未匹配候选，还须与§20.319的no-object/对比对齐目标共同定义。当前代码审查没有把ScanNet prompt中出现的负类别词认作一条独立的“整句无目标指代”训练分支，首版也不为未证实的分支新增处理。下一步仍先完成native21轮和9508条CS验证诊断，再固定V99内化实验协议。

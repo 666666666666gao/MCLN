@@ -198,7 +198,9 @@ class MaskSupportBoxRefiner(nn.Module):
             result_centers.append(centers[batch_index] + change[:, :3])
             result_sizes.append(sizes[batch_index] * change[:, 3:].exp())
             if return_evidence:
-                evidence.append(torch.cat((support, change), dim=-1))
+                evidence.append(torch.cat((
+                    centers[batch_index], support, change,
+                ), dim=-1))
         if return_evidence:
             return (
                 torch.stack(result_centers),
@@ -214,9 +216,9 @@ class GeometryEvidenceReadback(nn.Module):
     def __init__(self, d_model=288, context_dim=64):
         super().__init__()
         self.d_model = d_model
-        self.coarse_encoder = nn.Linear(d_model + 3, context_dim)
-        self.support_encoder = nn.Linear(2 * d_model + 6, context_dim)
-        self.refined_encoder = nn.Linear(d_model + 9, context_dim)
+        self.coarse_encoder = nn.Linear(d_model + 6, context_dim)
+        self.support_encoder = nn.Linear(2 * d_model + 9, context_dim)
+        self.refined_encoder = nn.Linear(d_model + 12, context_dim)
         self.encode = nn.Sequential(
             nn.Linear(d_model + 2 * context_dim, context_dim), nn.ReLU(),
         )
@@ -228,16 +230,18 @@ class GeometryEvidenceReadback(nn.Module):
         nn.init.zeros_(self.output.bias)
 
     def forward(self, query, evidence):
-        observed_feature, center_offset, extent, size, change = evidence.split(
-            (self.d_model, 3, 3, 3, 6), dim=-1,
+        center, observed_feature, center_offset, extent, size, change = evidence.split(
+            (3, self.d_model, 3, 3, 3, 6), dim=-1,
         )
         role_tokens = torch.stack((
-            self.coarse_encoder(torch.cat((query, size), dim=-1)),
+            self.coarse_encoder(torch.cat((query, center, size), dim=-1)),
             self.support_encoder(torch.cat((
-                query, observed_feature, center_offset, extent,
+                query, observed_feature, center + center_offset,
+                center_offset, extent,
             ), dim=-1)),
             self.refined_encoder(torch.cat((
-                query, size * change[..., 3:].exp(), change,
+                query, center + change[..., :3],
+                size * change[..., 3:].exp(), change,
             ), dim=-1)),
         ), dim=2)
         geometry = torch.cat((

@@ -26,7 +26,8 @@ def test_refiner_evidence_preserves_boxes_and_readback_starts_at_identity():
     )
     assert torch.equal(center, plain_center)
     assert torch.equal(size, plain_size)
-    assert evidence.shape == (batch, queries, channels + 15)
+    assert evidence.shape == (batch, queries, channels + 18)
+    assert torch.equal(evidence[..., :3], centers)
     evidence = evidence.detach()
 
     readback = GeometryEvidenceReadback(channels, context_dim=8)
@@ -48,7 +49,7 @@ def test_refiner_evidence_preserves_boxes_and_readback_starts_at_identity():
     with torch.no_grad():
         readback.output.weight.normal_(std=0.1)
         changed_evidence = evidence.clone()
-        changed_evidence[:, 1] += 2
+        changed_evidence[:, 1, :3] += 2
         original = readback(query, evidence)
         changed = readback(query, changed_evidence)
     assert not torch.allclose(original[:, 0], changed[:, 0])

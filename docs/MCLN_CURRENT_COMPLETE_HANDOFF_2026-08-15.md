@@ -20424,3 +20424,7 @@ ScanNet检测行的`target_id`是对象列表，`_get_target_boxes`及`_get_toke
 隔离分支`codex/v99-native-internalization-20260928`提交并推送`62ef429`。将§20.326的纯损失函数移至`models/cs_native_root_quality.py`，在`models/losses.py`最终层Hungarian匹配完成、原生总损失形成后，新增**默认权重0**的可选辅助项。启用时从`last_sem_cls_scores`及本batch文本map调用`compute_default_source_scores`取得实际`last/bbs`部署分数，对`last_center`与最终`last_pred_size`组成的实际输出框计算训练期root质量，并按逐行`sample_dataset`和匹配索引限制资格；原生Box、Mask、soft-token、对比损失、匹配与推理规则均未改变。草稿训练入口新增独立`--arm cs_readback_quality`，必须显式提供正的损失权重和分数温度；`native`、`cs`、`cs_readback`三臂仍传权重0。新增参数与此前回读臂相同，从E71初始化，仍未读取Parent、Geometry、V99权重；这只是迁移V99效用监督思想，不是复现完整V99。
 
 本地语法编译及暂存diff检查通过；远端屏蔽CUDA的质量监督检查现为`4 passed`，新增一项确认辅助梯度确实到达原生语义logit，而高IoU未匹配候选仍不接收该辅助梯度。隔离目录中的完整`models.losses`、`main_utils`及训练脚本在远端项目Python环境导入通过；**没有真实ScanRefer batch、GPU优化、显存或9508条精度结果**。质量损失权重、原生分数温度尚未决定；须先跑§20.325固定训练batch审计，再冻结配方并做真实GPU起点及两步优化预检，不能直接启动21轮。主分支和native正式运行源码未变；native第10轮仍按**05:10—05:35 CST**的预计完整评估窗口只读检查，不在轮中轮询。V99保护链与当前best/latest保存策略不变。
+
+## 20.328 固定训练batch审计对齐已接入的质量目标（2026-09-28 02:55 CST）
+
+隔离V99内化分支提交并推送`2296766`，在§20.325的12条固定ScanRefer训练输入只读脚本中直接调用§20.327已接入的同一个`root_matched_quality_loss`，补记符合“已匹配root IoU>0.25”资格的行数，以及原生部署分数温度为0.05、0.1、0.25、0.5、1.0时的实际辅助损失。这样后续可同时检查原生分数与evaluator同口径、候选资格、V99效用目标和损失尺度；这组温度只是**无优化的尺度审计**，不是五组正式训练或按验证精度搜索。脚本在本地通过语法及diff检查，在远端不占GPU的隔离代码目录通过完整模块导入检查；**尚未执行模型前向或得到任何温度/损失数值**。远端正在运行的native源码、进程、权重和磁盘保存规则未改，第10轮仍按§20.320的完整评估预计窗口检查。

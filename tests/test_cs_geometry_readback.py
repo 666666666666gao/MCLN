@@ -40,6 +40,9 @@ def test_refiner_evidence_preserves_boxes_and_readback_starts_at_identity():
     optimizer.zero_grad(set_to_none=True)
     readback(query, evidence).square().sum().backward()
     assert readback.encode[0].weight.grad.abs().sum().item() > 0
+    for encoder in (readback.coarse_encoder, readback.support_encoder,
+                    readback.refined_encoder):
+        assert encoder.weight.grad.abs().sum().item() > 0
     assert readback.set_attention.in_proj_weight.grad.abs().sum().item() > 0
 
     with torch.no_grad():

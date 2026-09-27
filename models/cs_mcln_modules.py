@@ -209,13 +209,16 @@ class MaskSupportBoxRefiner(nn.Module):
 
 
 class GeometryEvidenceReadback(nn.Module):
-    """Compare refined support across queries before the one final semantic head."""
+    """Aggregate each query's geometry roles before cross-query comparison."""
 
     def __init__(self, d_model=288, context_dim=64):
         super().__init__()
+        self.d_model = d_model
+        self.coarse_encoder = nn.Linear(d_model + 3, context_dim)
+        self.support_encoder = nn.Linear(2 * d_model + 6, context_dim)
+        self.refined_encoder = nn.Linear(d_model + 9, context_dim)
         self.encode = nn.Sequential(
-            nn.Linear(2 * d_model + 15, context_dim),
-            nn.ReLU(),
+            nn.Linear(d_model + 2 * context_dim, context_dim), nn.ReLU(),
         )
         self.set_attention = nn.MultiheadAttention(
             context_dim, num_heads=4, dropout=0.0, batch_first=True,
@@ -225,7 +228,22 @@ class GeometryEvidenceReadback(nn.Module):
         nn.init.zeros_(self.output.bias)
 
     def forward(self, query, evidence):
-        tokens = self.encode(torch.cat((query, evidence), dim=-1))
+        observed_feature, center_offset, extent, size, change = evidence.split(
+            (self.d_model, 3, 3, 3, 6), dim=-1,
+        )
+        role_tokens = torch.stack((
+            self.coarse_encoder(torch.cat((query, size), dim=-1)),
+            self.support_encoder(torch.cat((
+                query, observed_feature, center_offset, extent,
+            ), dim=-1)),
+            self.refined_encoder(torch.cat((
+                query, size * change[..., 3:].exp(), change,
+            ), dim=-1)),
+        ), dim=2)
+        geometry = torch.cat((
+            role_tokens.mean(dim=2), role_tokens.amax(dim=2),
+        ), dim=-1)
+        tokens = self.encode(torch.cat((query, geometry), dim=-1))
         context, _ = self.set_attention(
             tokens, tokens, tokens, need_weights=False,
         )

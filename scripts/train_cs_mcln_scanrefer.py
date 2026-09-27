@@ -22,6 +22,7 @@ from src.grounding_evaluator import GroundingEvaluator
 SEED = 2027
 EPOCHS = 21
 CS_PREFIXES = ('cs_structure.', 'cs_context_reader.', 'cs_box_refiner.')
+READBACK_PREFIX = 'cs_geometry_readback.'
 
 
 def set_seed(value):
@@ -42,7 +43,8 @@ def experiment_args(config, arm, data_root):
     args = parse_option()
     vars(args).update(vars(config))
     args.data_root = str(data_root).rstrip('/') + '/'
-    args.use_cs_mcln = arm == 'cs'
+    args.use_cs_mcln = arm in ('cs', 'cs_readback')
+    args.use_cs_geometry_readback = arm == 'cs_readback'
     args.use_source_choice_selector = False
     args.eval_use_selector_choice_scores = False
     args.use_source_moe = False
@@ -67,8 +69,11 @@ def load_exact_e71(model, checkpoint_state, arm):
     for name in selector:
         del source[name]
     target = model.state_dict()
-    additions = {name for name in target if name.startswith(CS_PREFIXES)}
-    assert (arm == 'cs') == bool(additions)
+    prefixes = CS_PREFIXES if arm != 'native' else ()
+    if arm == 'cs_readback':
+        prefixes += (READBACK_PREFIX,)
+    additions = {name for name in target if name.startswith(prefixes)}
+    assert bool(additions) == (arm != 'native')
     assert set(target) - set(source) == additions
     assert set(source) - set(target) == set()
     for name, value in source.items():
@@ -87,7 +92,7 @@ def parameter_groups(model, batch_size):
     for name, parameter in model.named_parameters():
         if not parameter.requires_grad:
             continue
-        if name.startswith(CS_PREFIXES):
+        if name.startswith(CS_PREFIXES + (READBACK_PREFIX,)):
             grouped['new'].append(parameter)
         elif name.startswith('backbone_net.'):
             grouped['backbone'].append(parameter)
@@ -202,7 +207,8 @@ def zero_update_check(cs_model, validation, parent_path, config):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--arm', choices=('native', 'cs'), required=True)
+    parser.add_argument('--arm', choices=('native', 'cs', 'cs_readback'),
+                        required=True)
     parser.add_argument('--mode', choices=('preflight', 'train'), required=True)
     parser.add_argument('--checkpoint', type=Path, required=True)
     parser.add_argument('--data-root', type=Path, required=True)
@@ -236,7 +242,7 @@ def main():
         assert not args.resume
         zero_differences = (
             zero_update_check(model, validation, args.checkpoint, config)
-            if args.arm == 'cs' else None
+            if args.arm != 'native' else None
         )
         loader = torch.utils.data.DataLoader(
             train, batch_size=args.batch_size, shuffle=True, num_workers=0,
@@ -250,7 +256,7 @@ def main():
             loss, outputs = batch_loss(model, raw, criterion, set_criterion,
                                        config, True)
             assert bool(torch.isfinite(loss))
-            if args.arm == 'cs' and step == 2:
+            if args.arm != 'native' and step == 2:
                 mask_to_box = torch.autograd.grad(
                     outputs['last_center'].sum()
                     + outputs['last_pred_size'].sum(),
@@ -261,7 +267,7 @@ def main():
             loss.backward()
             norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 0.1)
             assert bool(torch.isfinite(norm)) and float(norm) > 0
-            if args.arm == 'cs':
+            if args.arm != 'native':
                 names = ('cs_structure.seed_delta.2.weight',
                          'cs_structure.super_delta.weight',
                          'cs_context_reader.delta.weight',
@@ -285,6 +291,9 @@ def main():
                     assert all(parameters[name].grad is not None and
                                bool(parameters[name].grad.abs().sum() > 0)
                                for name in internal)
+                if args.arm == 'cs_readback':
+                    readback_name = 'cs_geometry_readback.output.weight'
+                    assert bool(parameters[readback_name].grad.abs().sum() > 0)
             optimizer.step()
             print('PREFLIGHT_STEP', step, float(loss), float(norm), flush=True)
             if step == 2:

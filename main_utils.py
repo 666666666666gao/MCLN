@@ -1710,6 +1710,9 @@ def parse_option():
                         help='Model checkpoint path')
     parser.add_argument('--use_cs_mcln', action='store_true', default=False,
                         help='Use the three native CS-MCLN forward modules')
+    parser.add_argument('--use_cs_geometry_readback', action='store_true',
+                        default=False,
+                        help='Read refined geometry evidence before final semantic scoring')
     parser.add_argument(
         '--checkpoint_start_epoch', type=int, default=None,
         help=(

@@ -20360,3 +20360,11 @@ V99的可迁移机制以实际代码为准：`models/rec_pareto_contextual_hiera
 训练目标的直接迁移控制拟对**实际输出的最终框**计算root实例IoU，再以原V99效用函数构造表达级候选质量目标，监督实际用于Top-1选择的同一分数。质量目标须停止梯度，原生几何、Mask和唯一匹配责任保持；负表达、联合检测prompt、已匹配其他实例的Query不应误获root标签。可信未匹配root候选如获新增语义目标，须替换与其相反的no-object监督，而非叠加矛盾损失。无合格候选时如何处理列表目标、质量与原生文本目标如何配权，应在实现前依照当前损失接口固定为明确协议，不能根据验证集结果临时改规则。G式标签替换和V99教师作为**后续分别检验**的训练因素，不与首个结构实验同时引入。
 
 执行顺序保持单变量和资源纪律：先完成native21轮并报告同期、训练后best及固定终点；GPU空闲后运行已部署但未前向的9508条CS验证集M3/候选诊断，区分精修前后、全候选覆盖和实际排名；再确定首个最小V99内化实验的输入、最终分数及质量监督协议，固定E71起点、seed2027、ScanRefer数据暴露量、原生`last/bbs`输出与预算，在40GB A100上完成真实显存/优化预检后训练。第一项结果必须与同预算native及当前CS控制比较；若结构与质量目标一起接入，还需后续拆开二者，不能把整块收益归给一个算子。磁盘继续只保留必要的best/latest和受保护V99链，不新增巨型候选缓存。ScanRefer同一模型达到既定5544/4754开发线后，再固定结构与推理规则，从共同MCLN初始化分别训练Nr3D、Sr3D；不做多seed，也不宣称未经微调的跨域泛化。
+
+## 20.319 V99内化首轮实验的原生评分与监督接口核对（2026-09-28 00:36 CST）
+
+本节为**静态代码核对，没有GPU前向、优化或新指标**，补充§20.318首轮方案必须遵守的实际接口。MCLN最终`last/bbs`并非直接对一个额外质量头取argmax：`src/grounding_evaluator.py::evaluate_bbox_by_pos_align`对`last_sem_cls_scores`做token维softmax，以root、修饰、代词、关系文本位置的概率和减去other-entity位置概率，在256个Query上排序。`models/source_choice_adapter.py::compute_default_source_scores`已有与原生evaluator对应的可微计算；历史`audit_native_rec_score_semantics.py`也记录过不同候选适配公式可能改变Top-1。因此V99式质量目标若宣称监督“实际部署分数”，必须以该原生`bbs`公式和真实输入文本map为准，并用同一批真实样本核验训练分数排序与evaluator一致，不能监督独立质量分数后推理仍用旧`bbs`。
+
+当前`models/losses.py::SetCriterion`有两条需要共同核对的语义路径：`loss_pos_align`把未匹配Query监督到末位no-object token，`loss_sem_align`默认将未匹配Query对齐到“未提及”的末尾文本位置；当前训练入口由checkpoint配置继承`use_contrastive_align`，启用时两条都参与。若直接对**全部256个候选**按root IoU进行V99列表学习，高IoU但未匹配的候选会同时收到“提高实际root分数”和“no-object/未提及”的相反要求。这是现有代码中可定位的监督冲突，而非假设性edge case。首个不引入G的机制控制，应明确只在原有root匹配候选与无歧义负候选上施加质量排序，检验几何证据回读及集合比较；它不能自称已经解决“多个好框受压制”。若后续要把合格未匹配候选纳入root认可集合，须在实例保护条件下同步规定位置分类和对比对齐的目标/忽略规则，再单独与首版控制比较。负表达、联合检测prompt和已匹配其他对象的Query保持原职责。
+
+最后层结构接入也有实际计算约束：`models/mcln.py`目前先调用`ClsAgnosticPredictHead`，再调用M3覆写框；`models/modules.py::ThreeLayerMLP`的语义头含BatchNorm和Dropout。不能简单在M3后把同一个语义头再调用一次并声称只改变回读信息，因为这会额外更新运行统计、消耗随机流。实现首个结构实验时应让最终语义头仅执行一次，同时保持零初始化插入点与E71在真实输入上的起点输出核对。此处只是后续实现要求，当前native21轮和已排队的验证诊断均不改动。

@@ -12,7 +12,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import torch
 
 from models.losses import _iou3d_par, box_cxcyczwhd_to_xyzxyz
-from models.rec_mask_geometry import normalize_mcln_mask_logits
+from models.rec_mask_geometry import (
+    mask_logits_to_point_aabbs, normalize_mcln_mask_logits,
+)
 from models.source_choice_adapter import compute_default_source_scores
 from scripts.train_cs_mcln_scanrefer import (
     batch_loss, experiment_args, load_exact_e71, set_seed,
@@ -160,6 +162,18 @@ def main():
                         outputs, bid, [query_index],
                     )
                 )
+                fused_boxes, fused_valid, fused_diagnostics = (
+                    mask_logits_to_point_aabbs(
+                        outputs['point_clouds'][bid, :, :3],
+                        outputs['superpoints'][bid], fused_logits,
+                        logit_threshold=0.0, quantiles=(0.0,),
+                    )
+                )
+                fused_exact_valid = bool(fused_valid[0, 0])
+                fused_exact_iou = (
+                    float(ious_to_root(fused_boxes[0, 0:1], root)[0])
+                    if fused_exact_valid else None
+                )
                 pre_box = before[query_index]
                 post_box = after[query_index]
                 ordered_post_iou = after_iou[ranking[bid]]
@@ -203,6 +217,14 @@ def main():
                         xyz, fused_logits[0].sigmoid(), root[:3], root[3:]
                     ),
                     'final_fusion_alpha': float(alpha.reshape(-1)[0]),
+                    'fused_exact_valid': fused_exact_valid,
+                    'fused_exact_selected_iou': fused_exact_iou,
+                    'fused_exact_selected_points': int(
+                        fused_diagnostics['selected_point_counts'][0]
+                    ),
+                    'fused_exact_rejection_code': int(
+                        fused_diagnostics['rejection_codes'][0, 0]
+                    ),
                     'm3_to_final_query_logit_max_abs': float(
                         (logits - query_logits[0]).abs().max()
                     ),
@@ -253,6 +275,24 @@ def main():
             evaluator.dets[('last_', threshold, 1, 'bbs')]
         )
         assert int(evaluator.gts[('last_', threshold, 1, 'bbs')]) == len(rows)
+        valid_rows = [row for row in rows if row['fused_exact_valid']]
+        summary['fused_exact_valid_rows'] = len(valid_rows)
+        summary['post_hits_on_fused_valid' + suffix] = sum(
+            row['post_selected_iou'] > threshold for row in valid_rows
+        )
+        summary['fused_exact_hits' + suffix] = sum(
+            row['fused_exact_selected_iou'] > threshold for row in valid_rows
+        )
+        summary['post_to_fused_exact_repairs' + suffix] = sum(
+            row['post_selected_iou'] <= threshold
+            and row['fused_exact_selected_iou'] > threshold
+            for row in valid_rows
+        )
+        summary['post_to_fused_exact_damages' + suffix] = sum(
+            row['post_selected_iou'] > threshold
+            and row['fused_exact_selected_iou'] <= threshold
+            for row in valid_rows
+        )
     for name in ('center_shift_m', 'center_shift_over_gt_size',
                  'max_abs_log_size_ratio', 'm3_mass_outside_gt_box',
                  'm3_mass_outside_pre_box',
@@ -262,9 +302,9 @@ def main():
         summary[name + '_median'] = statistics.median(row[name] for row in rows)
     assert all(parameter.grad is None for parameter in model.parameters())
     result = {
-        'schema': ('cs-mcln-m3-fixed-train-panel-v2'
+        'schema': ('cs-mcln-m3-fixed-train-panel-v3'
                    if opt.split == 'train-panel'
-                   else 'cs-mcln-m3-full-scanrefer-validation-v2'),
+                   else 'cs-mcln-m3-full-scanrefer-validation-v3'),
         'split': opt.split,
         'panel_definition': (
             'one first ScanRefer expression per hashed train scene'

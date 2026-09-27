@@ -20376,3 +20376,11 @@ V99的可迁移机制以实际代码为准：`models/rec_pareto_contextual_hiera
 同期CS第9轮为5463/4362，因此**第9轮CS相对native为+45/+18个命中**，方向与此前多数轮次相反。这说明早期“native严格阈值持续领先”的观察不能外推到整段训练；两个轮次不是独立seed，且native尚有12轮，不据第9轮宣布三个模块的终态收益。当前CS训练后best仍是第15轮5466/4409，native训练后best仍是第8轮5441/4410；不同轮次best比较也不能替代同预算完整终态。
 
 复查时正式native进程继续运行，A100占用27511 MiB；系统盘和数据盘可用分别约1253740544/1248780288字节，与前次保存后接近。继续仅保留native单份best/latest，CS与E71及V99完整保护链不动。第0—9轮原始JSON、best快照、10行CSV及来源SHA已归档于仓库`docs/results/cs_mcln_scanrefer_native_20260926/`，20份结果文件逐份镜像远端主仓库并校验；桌面`CS_MCLN_ScanRefer_native_epoch_metrics.csv`与仓库同字节，SHA256为`07ee211c6e8d5e51c80f1f3a15674a716f11ba16f4b36c157a80560376bdbb9e`。按目前约3.5小时/完整轮，第10轮完整评估先估计**2026-09-28 05:10—05:35 CST**，固定第21轮粗估9月29日晚间；均以实际完整保存为准，不在轮中频繁轮询。§20.315准备的9508条CS验证集M3诊断仍未占用GPU，待native终态释放后执行。
+
+## 20.321 V99列表目标迁入原生评分时的尺度核对（2026-09-28 01:55 CST）
+
+**本节是静态接口核对，没有新GPU训练、评估或指标。**`scripts/train_cs_mcln_scanrefer.py`固定用`last/bbs`验证，`filter_non_gt_boxes=False`且未启用旧几何轴；`src/grounding_evaluator.py::_resolve_position_candidates`在该条件下将全部256个Query视为有效，随后按`last_sem_cls_scores`的token softmax与表达map组合排序。`models/source_choice_adapter.py::compute_default_source_scores`提供同一组合的可微形式。首轮若声称把V99式质量目标施加在实际部署分数上，应直接核对该函数与9508条评估器的Top-1一致，而不能监督一个另外输出的质量头。
+
+旧`scripts/run_v95_threshold_aligned_listwise_hierarchical.py`的列表目标温度为0.25，处理的是16个Query下的V99质量效用；当前原生`bbs`分数来自token概率组合，要在256个Query中竞争，二者的数量和数值尺度都不同。一个**仅用于说明尺度风险的数学例子**：若一个Query得分1、其余255个得分0，直接对原生得分做温度1的softmax，最优Query概率仅约1.05%；若相应质量为4和0，并按旧目标温度0.25做softmax，目标概率约99.997%。这不是当前真实batch的测量，更不是训练失败归因；它说明不能未经核对就把旧温度、旧logit形式与新原生分数直接相加训练。
+
+新实验的最小预检应在固定的真实训练batch上记录原生`bbs`得分范围、列表目标分布、损失及梯度，并确认训练分数的排序与原评估器一致。若使用正温度调整**训练时**的列表softmax尺度，Top-1部署顺序本身不变；温度和损失权重须在正式训练前固定，不依据开发验证结果临时搜索。§20.319已经指出全部256候选中的合格未匹配Query与原生no-object及对比对齐可能冲突，分数尺度检查不能替代该监督职责检查。当前native21轮及已备好的CS验证诊断均不改动。

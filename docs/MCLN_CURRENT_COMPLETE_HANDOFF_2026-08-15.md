@@ -20466,3 +20466,11 @@ ScanNet检测行的`target_id`是对象列表，`_get_target_boxes`及`_get_toke
 针对§20.332指出的“草稿只有一份拼接证据、没有同Query几何证据聚合”差距，隔离分支`codex/v99-native-internalization-20260928`提交并推送`90074c7`。`GeometryEvidenceReadback`现从**同一次M3前向**取得三种角色：粗框的尺寸与共同Query、预测Mask的观测特征/相对中心/空间离散程度、精修后的尺寸及六维变化。三者各自编码为64维token；在同一Query内取均值和最大值摘要，再与该Query合并，由原有64维全256 Query注意力进行候选集合比较。输出投影仍零初始化，最终原生语义头仍只调用一次，部署仍只有一套`last/bbs`分数、一个框和对应Mask。没有增加7个固定框头、第二套部署评分或V99推理侧链；三类角色也**不等价于旧V99七种几何版本**。
 
 远端隔离CPU测试`tests/test_cs_geometry_readback.py`为**3/3通过**：证据返回不改变M3框，初始回读保持Query不变，更新一步后三个角色编码器及候选注意力均获得梯度，证据变化可影响其他候选；语义头仍只执行一次，合成质量损失可沿实际`bbs`分数到达回读及M3。随后隔离分支`c9a3b0d`加入并通过Query顺序置换检查：重排Query和同位证据，只会同样重排回读结果，不依赖固定候选编号；这与历史教师/学生Query编号不稳定的诊断直接相关。修改后的8份隔离关键文件逐份SHA回读一致，项目Python环境完整导入通过。正式native源码、进程、权重及受保护V99链未改。**没有真实GPU前向、显存测量、训练或新REC结果**；质量目标仍是§20.327的保守root/背景控制，不能称为完整V99内化。继续等native终态和9508验证诊断，再运行固定训练batch审计、两步GPU预检和存储预算检查，不提前启动新21轮。
+
+## 20.335 原生Mask生成顺序限制当前草稿继承V99几何证据（2026-09-28 03:35 CST）
+
+只读核对隔离草稿的实际计算顺序：`models/mcln.py`最后两层在原Box头后立即调用`MaskSupportBoxRefiner`，其支持概率来自`x_query(Query) @ superpoint_features`；最后层再对这份支持、粗框和精修变化进行三角色回读及一次语义预测。**文本Mask、Query Mask最终输出和`adaptive_weights`融合系数，是Decoder循环结束后才在文本解码段生成并写入`last_pred_masks`、`sp_last_pred_masks`、`adaptive_weights`。**因此当前M3及回读尚未读取实际融合Mask的空间范围；名称中的“Mask支撑”在此处具体指M3内部的Query Mask支撑，不能写成已利用最终融合Mask几何。
+
+旧V99的`models/rec_mask_geometry.py::DEFAULT_REC_MASK_GEOMETRY_VARIANTS`恰有7种解释：原回归框、融合Mask原阈值框、融合Mask微分位框、Query Mask微分位框、提高阈值的融合Mask框，以及原框与融合/Query Mask框各一半的两种混合框；`normalize_mcln_mask_logits`先按实际`adaptive_weights`融合文本与Query Mask的**logit**，再由点云位置产生Mask框。§20.103所见严格阈值几何收益因而不能被当前只读取M3内部Query Mask几何矩的草稿直接视为已迁移。这个代码事实改变后续实验解释，但尚无消融证明融合Mask就是当前CS未达标的主因。
+
+Nr3D原RSA空球问题也已有直接控制，不重复启动：§20.47的M4在16条固定训练表达发现31个多数前景空球误读3.092—6.160米外seed0；随后M5最近邻替换虽有Mask均值局部收益，固定终态未过其预定门槛。PV的另一项空邻域屏蔽见§20.197，也是不同网络和数据口径下的负结果，不能混为MCLN M5。当前不改正在运行的native源码或从头重跑相同最近邻方案。下一项结构判断应先使用已备9508验证诊断确认CS的候选覆盖、最后层M3前后和实际排名，再单独决定是否让最终融合Mask支撑进入同一原生评分/几何路径；若改计算顺序，须核对语义头仅一次、训练随机流及实际GPU输出，而非把旧V99侧链直接塞回部署。

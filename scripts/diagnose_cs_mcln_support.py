@@ -184,6 +184,7 @@ def main():
                     'row_id': panel_ids[panel_index],
                     'scan_id': scene_ids[panel_index],
                     'target_id': int(outputs['target_id'][bid]),
+                    'root_box_volume_m3': float(root[3:].prod()),
                     'query_index': query_index,
                     'score': float(scores[bid, query_index]),
                     'pre_selected_iou': float(before_iou[query_index]),
@@ -302,9 +303,9 @@ def main():
         summary[name + '_median'] = statistics.median(row[name] for row in rows)
     assert all(parameter.grad is None for parameter in model.parameters())
     result = {
-        'schema': ('cs-mcln-m3-fixed-train-panel-v3'
+        'schema': ('cs-mcln-m3-fixed-train-panel-v4'
                    if opt.split == 'train-panel'
-                   else 'cs-mcln-m3-full-scanrefer-validation-v3'),
+                   else 'cs-mcln-m3-full-scanrefer-validation-v4'),
         'split': opt.split,
         'panel_definition': (
             'one first ScanRefer expression per hashed train scene'

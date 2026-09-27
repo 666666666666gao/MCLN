@@ -20454,3 +20454,9 @@ ScanNet检测行的`target_id`是对象列表，`_get_target_boxes`及`_get_toke
 当前隔离草稿只迁入了**部分思想**：M3取出同一Query实际用于精修的一份Mask/几何支撑摘要，64维全256 Query注意力将它回读到最终原生语义头；可选损失只在已匹配root与低IoU未匹配背景间，用实际最终框的上述效用目标训练实际`last/bbs`分数。它没有7个显式几何解释、同Query版本均值/最大值、版本级损失、V99两阈值概率头、旧V99参数加载或Pareto部署规则；高IoU未匹配候选因原生no-object/对比标签仍被首版排除。因而首个`cs_readback`/`cs_readback_quality`实验只能回答“几何证据回读及保守质量监督相对CS/native是否有增量”，**不能据其成败判定完整V99能力是否已经迁移**。
 
 同一代码核对还确认了接线口径：`compute_hungarian_loss`只在`prefix == 'last_'`时保存`last_match_indices`；新辅助使用该层的最终`center/pred_size`、同批GT的第0个root槽及与Evaluator同式的root/修饰/代词/关系减other的原生`bbs`分数。ScanRefer、Nr3D、Sr3D指代标注都把root放在GT第0槽；Sr3D的有效anchor可追加到后续槽，而联合ScanNet检测prompt是多目标，不能当成单root。当前辅助只在逐行`sample_dataset == 'scanrefer'`时启用。静态核对没有发现跨层或错GT槽连接，但仍须用真实训练batch验证分数等价、候选资格、损失尺度和显存，不能据此声称质量目标已产生涨点。下一轮若要进一步学习多个合格root候选，须先同步处理原生no-object和对比目标冲突，再单独检验版本级或多正例职责，不在当前未预检草稿中一次叠加。
+
+## 20.333 完整验证诊断必须与正式best同口径（2026-09-28 03:18 CST）
+
+只读审查§20.315已备好的`scripts/diagnose_cs_mcln_support.py`，确认它用最后层M3 hook固定同一已选Query比较精修前后、按原Evaluator排序全部256候选，并覆盖完整9508条ScanRefer验证。发现一个具体的验收缺口：原脚本虽把诊断命中数与所载第15轮best回执比较并写入`formal_result_match`，但即使两阈值有一项不一致，仍会退出0并生成看似完成的JSON。现仅在验证模式下增加`assert all(result['formal_result_match'].values())`，让口径不一致时直接失败；训练面板模式、模型、权重和正在运行的native训练均未改变。
+
+修改后脚本SHA-256为`69d3d8017a2d029d71f888fb5f3dd5c3b38173f58f4bd5346e4e96a0eee51909`。本地语法编译和`git diff --check`通过；远端主仓库脚本及独立诊断入口逐份回读SHA一致，在项目Python环境通过语法与`--help`导入检查。**尚未运行GPU前向、没有新M3验证指标**。第10轮native仍按05:10—05:35 CST完整评估窗口检查，待21轮终态释放GPU后再运行此诊断。

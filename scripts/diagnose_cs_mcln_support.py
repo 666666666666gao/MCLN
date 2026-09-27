@@ -271,6 +271,7 @@ def main():
             'hits025': summary['selected_post_hits025'] == checkpoint_metrics['hits025'],
             'hits050': summary['selected_post_hits050'] == checkpoint_metrics['hits050'],
         }
+        assert all(result['formal_result_match'].values())
     opt.output.parent.mkdir(parents=True, exist_ok=True)
     opt.output.write_text(json.dumps(result, indent=2, allow_nan=False) + '\n')
     print(json.dumps({'output': str(opt.output), 'summary': summary}), flush=True)

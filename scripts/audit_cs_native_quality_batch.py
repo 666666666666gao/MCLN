@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import torch
 
+from models.cs_native_root_quality import root_matched_quality_loss
 from models.source_choice_adapter import compute_default_source_scores
 from models.source_moe import compute_query_box_ious
 from scripts.train_cs_mcln_scanrefer import (
@@ -136,6 +137,14 @@ def main():
         'model_updates': 0,
         'sample_dataset': 'scanrefer',
         'query_count': int(scores.shape[1]),
+        'qualified_root_rows': sum(row['matched_iou'] > 0.25 for row in rows),
+        'root_quality_loss_by_score_temperature': {
+            str(temperature): float(root_matched_quality_loss(
+                scores, boxes, gt_boxes, matches,
+                batch['sample_dataset'], temperature,
+            ))
+            for temperature in (0.05, 0.1, 0.25, 0.5, 1.0)
+        },
         'rows': rows,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

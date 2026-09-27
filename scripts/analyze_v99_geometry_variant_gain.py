@@ -73,7 +73,7 @@ def main():
             summary['same_selected_query_raw_to_variant_box'][key]['damage']
         )
     output = SOURCE / 'protected_v99_variant_gain.json'
-    output.write_text(json.dumps(result, indent=2) + '\n')
+    output.write_bytes((json.dumps(result, indent=2) + '\n').encode())
     print(json.dumps(result))
 
 

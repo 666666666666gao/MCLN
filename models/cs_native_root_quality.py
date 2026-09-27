@@ -1,4 +1,4 @@
-"""Root-matched V99-style quality target for the native MCLN score."""
+"""Matched-root ranking control on the native MCLN score."""
 
 import torch
 
@@ -11,6 +11,7 @@ def root_matched_quality_loss(scores, final_boxes, gt_boxes, matches,
 
     Unmatched high-IoU queries remain outside this first control because the
     native soft-token and contrastive losses still label them no-object.
+    This does not rank multiple qualified geometries of the same instance.
     """
     assert score_temperature > 0
     rows = []

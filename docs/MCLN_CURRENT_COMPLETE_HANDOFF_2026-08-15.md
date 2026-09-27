@@ -20418,3 +20418,9 @@ ScanNet检测行的`target_id`是对象列表，`_get_target_boxes`及`_get_toke
 隔离分支`1edbbcc`新增`scripts/cs_native_root_quality.py`，**目前只是独立损失函数，未接入正式总损失或启动训练**。对逐行`sample_dataset == 'scanrefer'`且Hungarian匹配root框IoU超过0.25的表达，它用M3后的实际最终框计算`U(u)=u+2·1[u>0.25]+1[u>0.50]`，停止质量目标梯度，并在已匹配root与低于0.25的未匹配背景候选之间构造列表目标；已匹配其他GT实例的Query及高IoU未匹配Query不进入此首版排序集合。后者当前仍受原生no-object和“未提及”对比标签约束，若直接抬高其root分数就会产生§20.319所述相反监督。ScanNet联合检测行不接受单root质量目标；无合格root的行不被硬造正例。函数使用调用者传入的分数，后续训练接线必须明确传入`compute_default_source_scores`的**实际`last/bbs`部署分数**，不能换成第二套只用于训练的评分头。预测分数温度尚未固定，先执行§20.325的真实batch尺度审计。
 
 远端屏蔽CUDA的PyTorch单测`3 passed`：证实高IoU未匹配候选及已匹配其他实例不接受该辅助损失梯度、混合batch中的ScanNet行不接受root辅助梯度、无合格root时返回零辅助损失。另已扩展§20.324的回读CPU检查，在一次优化之后编码层与集合注意力均获得非零梯度，`2 passed`；第一次测试失败仅因为测试代码复用同一M3计算图做第二次反向，固定测试输入后通过，模型计算未修改。这些均不是GPU真实训练、容量、正式验证或方法增益证据。native第10轮仍按**05:10—05:35 CST**预计窗口查询完整评估，当前不提前轮中轮询。
+
+## 20.327 V99式root质量目标已接到独立训练臂，参数待真实batch审计（2026-09-28 02:47 CST）
+
+隔离分支`codex/v99-native-internalization-20260928`提交并推送`62ef429`。将§20.326的纯损失函数移至`models/cs_native_root_quality.py`，在`models/losses.py`最终层Hungarian匹配完成、原生总损失形成后，新增**默认权重0**的可选辅助项。启用时从`last_sem_cls_scores`及本batch文本map调用`compute_default_source_scores`取得实际`last/bbs`部署分数，对`last_center`与最终`last_pred_size`组成的实际输出框计算训练期root质量，并按逐行`sample_dataset`和匹配索引限制资格；原生Box、Mask、soft-token、对比损失、匹配与推理规则均未改变。草稿训练入口新增独立`--arm cs_readback_quality`，必须显式提供正的损失权重和分数温度；`native`、`cs`、`cs_readback`三臂仍传权重0。新增参数与此前回读臂相同，从E71初始化，仍未读取Parent、Geometry、V99权重；这只是迁移V99效用监督思想，不是复现完整V99。
+
+本地语法编译及暂存diff检查通过；远端屏蔽CUDA的质量监督检查现为`4 passed`，新增一项确认辅助梯度确实到达原生语义logit，而高IoU未匹配候选仍不接收该辅助梯度。隔离目录中的完整`models.losses`、`main_utils`及训练脚本在远端项目Python环境导入通过；**没有真实ScanRefer batch、GPU优化、显存或9508条精度结果**。质量损失权重、原生分数温度尚未决定；须先跑§20.325固定训练batch审计，再冻结配方并做真实GPU起点及两步优化预检，不能直接启动21轮。主分支和native正式运行源码未变；native第10轮仍按**05:10—05:35 CST**的预计完整评估窗口只读检查，不在轮中轮询。V99保护链与当前best/latest保存策略不变。

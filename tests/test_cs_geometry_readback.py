@@ -52,6 +52,10 @@ def test_refiner_evidence_preserves_boxes_and_readback_starts_at_identity():
         original = readback(query, evidence)
         changed = readback(query, changed_evidence)
     assert not torch.allclose(original[:, 0], changed[:, 0])
+    permutation = torch.tensor([2, 0, 1])
+    with torch.no_grad():
+        reordered = readback(query[:, permutation], evidence[:, permutation])
+    torch.testing.assert_close(reordered, original[:, permutation])
 
 
 def test_deferred_semantic_head_runs_once_and_preserves_initial_logits():

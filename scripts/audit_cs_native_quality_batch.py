@@ -108,6 +108,28 @@ def main():
         best = int(score.argmax())
         eligible = iou > 0.5
         utility = iou + 2 * (iou > 0.25).float() + (iou > 0.5).float()
+        quality_row = None
+        if float(iou[matched]) > 0.25:
+            quality_eligible = iou < 0.25
+            quality_eligible[source] = False
+            quality_eligible[matched] = True
+            root_position = int((
+                quality_eligible.nonzero(as_tuple=True)[0] == matched
+            ).nonzero(as_tuple=True)[0].item())
+            quality_row = {
+                'eligible_count': int(quality_eligible.sum()),
+                'root_target_probability': float(
+                    (utility[quality_eligible] / 0.25)
+                    .softmax(dim=0)[root_position]
+                ),
+                'root_score_probability_by_temperature': {
+                    str(temperature): float(
+                        (score[quality_eligible] / temperature)
+                        .softmax(dim=0)[root_position]
+                    )
+                    for temperature in (0.05, 0.1, 0.25, 0.5, 1.0)
+                },
+            }
         rows.append({
             'dataset_index': selected[b],
             'matched_query': matched,
@@ -131,6 +153,7 @@ def main():
             'qualified_050_count': int(eligible.sum()),
             'qualified_050_unmatched_count': int(eligible.sum()) - int(eligible[matched]),
             'best_iou': float(iou.max()),
+            'matched_root_quality': quality_row,
         })
     result = {
         'source': 'E71 core; 12 fixed ScanRefer training rows; eval-mode forward',

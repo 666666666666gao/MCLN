@@ -132,7 +132,13 @@ class ClsAgnosticPredictHead(nn.Module):
         if compute_sem_scores:
             self.sem_cls_scores_head = ThreeLayerMLP(seed_feat_dim, self.num_class)
 
-    def forward(self, features, base_xyz, end_points, prefix=''):
+    def write_semantic_scores(self, features, end_points, prefix=''):
+        end_points[f'{prefix}sem_cls_scores'] = (
+            self.sem_cls_scores_head(features).transpose(2, 1)
+        )
+
+    def forward(self, features, base_xyz, end_points, prefix='',
+                defer_semantic=False):
         """
         Args:
             features: (B,C,num_proposal)
@@ -166,13 +172,10 @@ class ClsAgnosticPredictHead(nn.Module):
             [batch_size, num_proposal, 3])  # (batch_size, num_proposal, 3)
 
         # step 2. class
-        if self.compute_sem_scores:
-            sem_cls_scores = self.sem_cls_scores_head(features).transpose(2, 1)  # (B, num_proposal, num_class)
-
         end_points[f'{prefix}base_xyz'] = base_xyz
         end_points[f'{prefix}center'] = center
         end_points[f'{prefix}pred_size'] = pred_size
 
-        if self.compute_sem_scores:
-            end_points[f'{prefix}sem_cls_scores'] = sem_cls_scores
+        if self.compute_sem_scores and not defer_semantic:
+            self.write_semantic_scores(features, end_points, prefix)
         return center, pred_size

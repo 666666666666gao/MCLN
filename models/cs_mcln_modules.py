@@ -173,9 +173,10 @@ class MaskSupportBoxRefiner(nn.Module):
         nn.init.zeros_(self.delta[-1].bias)
 
     def forward(self, query, mask_query, super_features, super_xyz_list,
-                centers, sizes):
+                centers, sizes, return_evidence=False):
         result_centers = []
         result_sizes = []
+        evidence = []
         for batch_index, memory in enumerate(super_features):
             xyz = super_xyz_list[batch_index].squeeze(0)
             feature = memory.transpose(0, 1)
@@ -188,11 +189,44 @@ class MaskSupportBoxRefiner(nn.Module):
                 (weights.unsqueeze(-1) * offset.square()).sum(dim=1) + 1e-6
             ).sqrt()
             observed_feature = weights @ feature
-            change = self.delta(torch.cat((
-                query[batch_index], observed_feature,
+            support = torch.cat((
+                observed_feature,
                 observed_center - centers[batch_index],
                 observed_extent, sizes[batch_index],
-            ), dim=-1))
+            ), dim=-1)
+            change = self.delta(torch.cat((query[batch_index], support), dim=-1))
             result_centers.append(centers[batch_index] + change[:, :3])
             result_sizes.append(sizes[batch_index] * change[:, 3:].exp())
+            if return_evidence:
+                evidence.append(torch.cat((support, change), dim=-1))
+        if return_evidence:
+            return (
+                torch.stack(result_centers),
+                torch.stack(result_sizes),
+                torch.stack(evidence),
+            )
         return torch.stack(result_centers), torch.stack(result_sizes)
+
+
+class GeometryEvidenceReadback(nn.Module):
+    """Compare refined support across queries before the one final semantic head."""
+
+    def __init__(self, d_model=288, context_dim=64):
+        super().__init__()
+        self.encode = nn.Sequential(
+            nn.Linear(2 * d_model + 15, context_dim),
+            nn.ReLU(),
+        )
+        self.set_attention = nn.MultiheadAttention(
+            context_dim, num_heads=4, dropout=0.0, batch_first=True,
+        )
+        self.output = nn.Linear(context_dim, d_model)
+        nn.init.zeros_(self.output.weight)
+        nn.init.zeros_(self.output.bias)
+
+    def forward(self, query, evidence):
+        tokens = self.encode(torch.cat((query, evidence), dim=-1))
+        context, _ = self.set_attention(
+            tokens, tokens, tokens, need_weights=False,
+        )
+        return query + self.output(context)

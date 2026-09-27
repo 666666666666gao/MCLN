@@ -59,6 +59,7 @@ from .cs_mcln_modules import (
     ObservationCrossScaleEnhancer,
     ContextSupportReader,
     MaskSupportBoxRefiner,
+    GeometryEvidenceReadback,
 )
 from .sacr_parent_relative import (
     SACRParentRelativeGate,
@@ -463,7 +464,8 @@ class MCLN(nn.Module):
                  parent_relative_text_verifier_counterfactual_training=False,
                  pointnet_ckpt_sha256="",
                  use_pretrained_object_appearance=False,
-                 use_cs_mcln=False):
+                 use_cs_mcln=False,
+                 use_cs_geometry_readback=False):
         """Initialize layers."""
         super().__init__()
 
@@ -473,6 +475,9 @@ class MCLN(nn.Module):
         self.contrastive_align_loss = contrastive_align_loss
         self.butd = butd
         self.use_cs_mcln = bool(use_cs_mcln)
+        self.use_cs_geometry_readback = bool(use_cs_geometry_readback)
+        if self.use_cs_geometry_readback and not self.use_cs_mcln:
+            raise ValueError('geometry readback requires the CS-MCLN refiner')
         self.object_appearance = None
         if use_pretrained_object_appearance:
             assert butd and d_model == 288
@@ -1421,6 +1426,10 @@ class MCLN(nn.Module):
         self.cs_box_refiner = (
             MaskSupportBoxRefiner(d_model) if self.use_cs_mcln else None
         )
+        self.cs_geometry_readback = (
+            GeometryEvidenceReadback(d_model)
+            if self.use_cs_geometry_readback else None
+        )
 
         # Query initialization
         self.points_obj_cls = PointsObjClsModule(d_model)
@@ -2107,18 +2116,34 @@ class MCLN(nn.Module):
                     end_points['source_choice_candidate_feats'] = proj_query
 
             # step box Prediction head
+            readback_last = (
+                self.cs_geometry_readback is not None
+                and i == self.num_decoder_layers - 1
+            )
             base_xyz, base_size = self.prediction_heads[i](
                 query.transpose(1, 2).contiguous(),     # ([B, F=288, V=256])
                 base_xyz=cluster_xyz,                   # ([B, 256, 3])
                 end_points=end_points,  # 
-                prefix=prefix
+                prefix=prefix,
+                defer_semantic=readback_last,
             )
             if self.cs_box_refiner is not None and i >= self.num_decoder_layers - 2:
                 mask_query = self.x_query(query.transpose(1, 2)).transpose(1, 2)
-                base_xyz, base_size = self.cs_box_refiner(
-                    query, mask_query, super_features, super_xyz_list,
-                    base_xyz, base_size,
-                )
+                if readback_last:
+                    base_xyz, base_size, geom_evidence = self.cs_box_refiner(
+                        query, mask_query, super_features, super_xyz_list,
+                        base_xyz, base_size, return_evidence=True,
+                    )
+                    final_query = self.cs_geometry_readback(query, geom_evidence)
+                    self.prediction_heads[i].write_semantic_scores(
+                        final_query.transpose(1, 2).contiguous(),
+                        end_points, prefix,
+                    )
+                else:
+                    base_xyz, base_size = self.cs_box_refiner(
+                        query, mask_query, super_features, super_xyz_list,
+                        base_xyz, base_size,
+                    )
                 end_points[prefix + 'center'] = base_xyz
                 end_points[prefix + 'pred_size'] = base_size
             base_xyz = base_xyz.detach().clone()

@@ -20398,3 +20398,9 @@ V99的可迁移机制以实际代码为准：`models/rec_pareto_contextual_hiera
 ScanNet检测行的`target_id`是对象列表，`_get_target_boxes`及`_get_token_positive_map`会构造多个目标框/文本对应，而非一个指代root。若直接取它的第0个GT框计算V99式root IoU和列表目标，就会给一条多目标检测prompt指定虚假的唯一指代答案。现有`batch_loss`在模型输出后把batch字段复制到`outputs`，`models/losses.py`的最终层Hungarian匹配也保留为`last_match_indices`，所以后续可在损失计算处用逐行来源、root有效性和匹配信息定义训练资格，不需要修改正在运行的数据或推理协议。ScanRefer首版只对真实`sample_dataset == 'scanrefer'`的行施加root质量目标；ScanNet行继续原生检测损失。推广到Nr3D/Sr3D时仍使用各自行来源，不把任务级`language_dataset`当行来源。
 
 对于已经匹配到其他GT实例的Query，不能因其框与root重叠就改为root；若未来扩展合格未匹配候选，还须与§20.319的no-object/对比对齐目标共同定义。当前代码审查没有把ScanNet prompt中出现的负类别词认作一条独立的“整句无目标指代”训练分支，首版也不为未证实的分支新增处理。下一步仍先完成native21轮和9508条CS验证诊断，再固定V99内化实验协议。
+
+## 20.324 隔离分支完成几何证据回读的最小结构草稿（2026-09-28 02:18 CST）
+
+在独立Git worktree `C:\Users\gb\.codex_mcln_v99_internal_20260928`、分支`codex/v99-native-internalization-20260928`提交了`ad64300`，**没有改动正在运行的native训练源码或主分支**。这是下一版结构草稿，不是V99完整能力已内化或获得新精度。草稿在最后层M3保留原有框精修计算，额外取出它实际使用的Mask支撑特征、中心/范围摘要和六维修正量；64维候选集合注意力读取全部Query后，通过零初始化残差回到同一个Query，原有语义头只执行一次并生成最终单套分数。旧CS路径默认关闭该开关，既有语义头调用顺序与部署规则保留。它尚未加入V99式质量监督、G标签替换或训练期教师，也没有加载Parent/Geometry/V99参数；不能把草稿等同于已达到5572/4797的完整V99。
+
+新代码的本地Python语法编译和`git diff --check`通过；在远端**仅使用CPU、屏蔽CUDA**运行两项小规模PyTorch检查，结果`2 passed`：M3返回证据时的框与原返回路径逐位一致，零初始化回读起点保持Query，新增输出投影有梯度且其他候选证据可改变该Query的回读；延后语义头后与普通调用的初始中心、尺寸及语义输出一致，语义头仅调用一次。这些检查不是实际ScanRefer batch的随机流、显存、梯度或9508条验证核验。新增集合注意力会增加计算与显存，待native终态和§20.315的完整验证诊断后，再决定是否做真实GPU起点/容量预检及同预算训练。第10轮native完整结果仍按§20.320预计的**05:10—05:35 CST**窗口检查，不提前轮中轮询。

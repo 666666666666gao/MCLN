@@ -20446,3 +20446,11 @@ ScanNet检测行的`target_id`是对象列表，`_get_target_boxes`及`_get_toke
 §20.325先前放在`/root/autodl-tmp/cs_native_quality_audit_20260928/`的单文件审计副本早于§20.327损失函数移至`models`，**不能作为后续实际质量目标审计入口**。已将当前隔离分支的M1/M2/M3、回读、`models/losses.py`、root质量函数、`main_utils.py`、训练入口和更新后的固定batch审计入口，重新暂存到远端独立目录`/root/autodl-tmp/cs_v99_internal_draft_20260928/`。8份关键文件上传后逐份回读SHA-256与本地一致；在屏蔽CUDA的项目Python环境中导入`models.losses`、`main_utils`、训练入口和审计入口通过，并断言实际导入的修改模块来自该隔离目录。旧`/root/autodl-tmp/cs_mcln_source_20260923_v1`仍是正在运行的native正式源码，未被覆盖。
 
 新隔离目录只是**待预检的代码快照**：没有读取E71真实batch、没有GPU前向或优化、没有新REC结果。native终态后若执行§20.328审计，需从此快照加载同一E71保护权重和`/root/autodl-tmp/DATA_ROOT/`，并在启动前重新核对Git提交、输入路径、GPU空闲及磁盘余量；不要误用上述旧单文件副本。正式第10轮监控仍按完整评估窗口进行。
+
+## 20.332 V99原实现与当前内化草稿的职责差距（2026-09-28 03:20 CST）
+
+本节是**只读代码对照**，没有新训练或指标。原V99的`ParetoContextualHierarchicalReranker`读取16个Query、每个Query的7种几何版本：先用`variant_encoder`编码25维版本特征，按同一Query对有效版本取均值和最大值，再与152维Query特征及附加状态融合；一层4头Transformer在16个Query之间做集合上下文，随后分别产生Query和版本的两阈值输出。其实际V99训练入口调用V95的分级列表损失：候选目标质量为`IoU + 2·1[IoU>0.25] + 1[IoU>0.50]`，Query目标取该Query有效版本的最高质量，模型分数由有序的`P(hit@0.25)`、`P(hit@0.50)`构成，分别对Query集合和同Query版本集合学习。部署时还结合Pareto规则；这些都是冻结核心后的侧链能力，不是E71原生能力。
+
+当前隔离草稿只迁入了**部分思想**：M3取出同一Query实际用于精修的一份Mask/几何支撑摘要，64维全256 Query注意力将它回读到最终原生语义头；可选损失只在已匹配root与低IoU未匹配背景间，用实际最终框的上述效用目标训练实际`last/bbs`分数。它没有7个显式几何解释、同Query版本均值/最大值、版本级损失、V99两阈值概率头、旧V99参数加载或Pareto部署规则；高IoU未匹配候选因原生no-object/对比标签仍被首版排除。因而首个`cs_readback`/`cs_readback_quality`实验只能回答“几何证据回读及保守质量监督相对CS/native是否有增量”，**不能据其成败判定完整V99能力是否已经迁移**。
+
+同一代码核对还确认了接线口径：`compute_hungarian_loss`只在`prefix == 'last_'`时保存`last_match_indices`；新辅助使用该层的最终`center/pred_size`、同批GT的第0个root槽及与Evaluator同式的root/修饰/代词/关系减other的原生`bbs`分数。ScanRefer、Nr3D、Sr3D指代标注都把root放在GT第0槽；Sr3D的有效anchor可追加到后续槽，而联合ScanNet检测prompt是多目标，不能当成单root。当前辅助只在逐行`sample_dataset == 'scanrefer'`时启用。静态核对没有发现跨层或错GT槽连接，但仍须用真实训练batch验证分数等价、候选资格、损失尺度和显存，不能据此声称质量目标已产生涨点。下一轮若要进一步学习多个合格root候选，须先同步处理原生no-object和对比目标冲突，再单独检验版本级或多正例职责，不在当前未预检草稿中一次叠加。

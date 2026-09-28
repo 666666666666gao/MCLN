@@ -1,0 +1,61 @@
+{
+  "addon_source": "/root/autodl-tmp/mcln_g0_view_pair_20260905/pair_readout_train_v1",
+  "census": {
+    "fit": {
+      "identity_sha256": "428529560b2448b703b93d0ddf8f0189d67926f08af37d950c81fa62e8c5cb0e",
+      "rows": 26747,
+      "scenes": 413
+    },
+    "holdout": {
+      "identity_sha256": "9779029dda18400db707833707835d6146c0f7978bff9ec5f3abebfa79562256",
+      "rows": 6172,
+      "scenes": 98
+    }
+  },
+  "contract": {
+    "augmentation": false,
+    "backbone_frozen": true,
+    "batch_size": 4,
+    "checkpoint_selection": "last step only; no intermediate holdout",
+    "decision_score": "single uncalibrated scalar logit",
+    "empty_supervision_batch": "skip both optimizer updates",
+    "epochs": 1,
+    "eval_seed": 1000,
+    "folds": 5,
+    "formal_validation": false,
+    "gradient_clip_norm": 1.0,
+    "holdout_fold": 0,
+    "init_seed": 9,
+    "loader_seed": 0,
+    "loss": "IoU-weighted listwise CE over valid candidates with root IoU > .25",
+    "lr": 0.0001,
+    "num_workers": 4,
+    "optimizer": "AdamW",
+    "scheduler": null,
+    "schema": "mcln-nr3d-pair-readout-train-v1",
+    "split_salt": "MCLN-NR3D-PAIR-READOUT-V1-20260905",
+    "top_k": 32,
+    "uncovered_rows": "excluded from ranking loss; retained as evaluation misses",
+    "weight_decay": 0.0001,
+    "whole_system_unseen_scenes": false
+  },
+  "files": {
+    "docs/NR3D_PAIR_READOUT_P2_PLAN_2026-09-05.md": "b4e2f302efd57c3ff1c4fcbd2d2e83590ecc1bd406b212ea86bbd9d8ce80ccd2",
+    "models/candidate_edge_adapter.py": "5947d97b2c3130626ab027c50b182d6afb0afa779424bf3096bedfc26f192f83",
+    "models/candidate_edge_direct_scorer.py": "0912850f2914c2bca416ccf0c06ef9c6976460878982ae410737b715eadd2186",
+    "scripts/nr3d_pair_readout_contract.py": "7791f590c3819b65344e3a5a8fa635b6510fc074d1ba5298cb2a4b5066c663fb",
+    "scripts/run_nr3d_pair_readout.py": "24aca08d8d5f81aedbd34fdf858a3f150713b352a633521c56fa8a3987c651dc",
+    "scripts/run_nr3d_pair_readout.sh": "7317e41afaaa5db3da296c1ed8d28e1c6f6c0832f3cfa9f3dbab967319908a06",
+    "tests/test_nr3d_pair_readout_contract.py": "8fb4e965eb87ce6e65e0ff49906d1ccab7416e8930a00929ae19201492a97428"
+  },
+  "model_source": "/root/autodl-tmp/mcln_g0_view_pair_20260905/inputs_v3/fixed_source",
+  "preregistration_commit": "bf2a6b5",
+  "prerequisites": {
+    "candidate_contract_v2_receipt.json": "10a235eefdd245f0a7cff04b87281cdf4831d59c5cc2695f5f18acde93d6729f",
+    "padding_identity_receipt.json": "ccb466fe36be62296bc701db62dd8d2edf8ef1b2d5bd701aeb68b63520edb643",
+    "pair_readout_scene_receipt.json": "fead3257a26b024b8187c8113ffce7eecd0f82833beee1b0507b9b42353f3d91",
+    "results/decision.json": "bdc6ed1217c6033c26a85f33a549b848b62f89e756b1b28ffa0bb27f14ab0da9"
+  },
+  "schema": "mcln-p2-input-v1",
+  "source_manifest_sha256": "dcf333b0e1868a7eeaafaf7f0a7abdb664a34dda65966defc1ad244ce762b15d"
+}

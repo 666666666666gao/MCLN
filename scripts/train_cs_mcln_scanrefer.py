@@ -273,6 +273,7 @@ def main():
         model.train()
         torch.cuda.reset_peak_memory_stats()
         started = time.time()
+        quality_readback_gradient_norms = []
         for step, raw in enumerate(loader, 1):
             optimizer.zero_grad(set_to_none=True)
             loss, outputs = batch_loss(model, raw, criterion, set_criterion,
@@ -280,6 +281,12 @@ def main():
             assert bool(torch.isfinite(loss))
             if args.arm == 'cs_readback_quality':
                 assert bool(torch.isfinite(outputs['cs_native_root_quality_loss']))
+                quality_gradient = torch.autograd.grad(
+                    outputs['cs_native_root_quality_loss'],
+                    model.cs_geometry_readback.output.weight, retain_graph=True,
+                )[0]
+                assert bool(torch.isfinite(quality_gradient).all())
+                quality_readback_gradient_norms.append(float(quality_gradient.norm()))
             if args.arm != 'native' and step == 2:
                 mask_to_box = torch.autograd.grad(
                     outputs['last_center'].sum()
@@ -344,6 +351,11 @@ def main():
             'initial_load': initial_load,
             'root_quality_loss_weight': config.cs_native_root_quality_weight,
             'root_quality_score_temperature': config.cs_native_root_quality_score_temperature,
+            'quality_only_readback_gradient_l2_by_step': quality_readback_gradient_norms,
+            'quality_only_readback_exercised': (
+                any(value > 0 for value in quality_readback_gradient_norms)
+                if args.arm == 'cs_readback_quality' else None
+            ),
             'zero_update_max_abs_differences': zero_differences,
         })
         return

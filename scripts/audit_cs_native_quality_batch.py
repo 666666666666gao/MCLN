@@ -15,7 +15,31 @@ from models.source_moe import compute_query_box_ious
 from scripts.train_cs_mcln_scanrefer import (
     experiment_args, load_exact_e71, set_seed,
 )
+from src.grounding_evaluator import GroundingEvaluator
 from train_dist_mod import TrainTester
+
+
+class AuditGroundingEvaluator(GroundingEvaluator):
+    """Record the actual native evaluator ranking without changing it."""
+
+    def __init__(self, expected_scores):
+        super().__init__(
+            only_root=True, thresholds=[0.25, 0.5], topks=[1],
+            prefixes=['last_'], filter_non_gt_boxes=False, model='MCLN',
+        )
+        self.expected_scores = expected_scores.detach()
+        self.selected_queries = []
+
+    def _position_top_indices(self, scores, valid, axis_mode, max_topk):
+        row = len(self.selected_queries)
+        torch.testing.assert_close(scores[0], self.expected_scores[row])
+        top = super()._position_top_indices(scores, valid, axis_mode, max_topk)
+        expected_top = super()._position_top_indices(
+            self.expected_scores[row:row + 1], valid, axis_mode, max_topk,
+        )
+        assert torch.equal(top, expected_top)
+        self.selected_queries.append(int(top[0, 0]))
+        return top
 
 
 def main():
@@ -32,7 +56,7 @@ def main():
     load_exact_e71(model, parent['model'], 'native')
     del parent
     model = model.cuda().eval()
-    _, set_criterion = TrainTester.get_criterion(config)
+    criterion, set_criterion = TrainTester.get_criterion(config)
     train, _ = TrainTester.get_datasets(config)
     scan_rows = [
         i for i, anno in enumerate(train.annos)
@@ -99,13 +123,54 @@ def main():
             'superpoints': output['superpoints'],
         }, targets)
 
+    semantic_logits = output['last_sem_cls_scores'].detach().requires_grad_(True)
+    output['last_sem_cls_scores'] = semantic_logits
+    native_loss, output = TrainTester._compute_loss(
+        output, criterion, set_criterion, config,
+    )
+    native_gradient = torch.autograd.grad(native_loss, semantic_logits)[0]
+    assert bool(torch.isfinite(native_gradient).all())
+    native_gradient_norm = float(native_gradient.norm())
+    assert native_gradient_norm > 0
+    gradient_audit = {}
+    for temperature in (0.05, 0.1, 0.25, 0.5, 1.0):
+        quality_loss = root_matched_quality_loss(
+            compute_default_source_scores(output, output), boxes, gt_boxes,
+            matches, batch['sample_dataset'], temperature,
+        )
+        quality_gradient = torch.autograd.grad(quality_loss, semantic_logits)[0]
+        assert bool(torch.isfinite(quality_gradient).all())
+        norm = float(quality_gradient.norm())
+        gradient_audit[str(temperature)] = {
+            'loss': float(quality_loss.detach()),
+            'semantic_logit_gradient_l2': norm,
+            'gradient_l2_ratio_to_native': norm / native_gradient_norm,
+        }
+    with torch.no_grad():
+        evaluator = AuditGroundingEvaluator(scores)
+        evaluation_output = dict(output)
+        evaluation_output['last_pred_size'] = boxes[..., 3:]
+        evaluator.evaluate_bbox_by_pos_align(evaluation_output, 'last_')
+        assert len(evaluator.selected_queries) == len(selected)
+        selected_ious = ious.gather(
+            1, torch.tensor(evaluator.selected_queries, device=ious.device)[:, None],
+        ).squeeze(1)
+        evaluator_counts = {}
+        for threshold in (0.25, 0.5):
+            key = ('last_', threshold, 1, 'bbs')
+            assert evaluator.gts[key] == len(selected)
+            assert evaluator.dets[key] == int((selected_ious > threshold).sum())
+            evaluator_counts[str(threshold)] = {
+                'hits': int(evaluator.dets[key]), 'samples': int(evaluator.gts[key]),
+            }
+
     rows = []
     for b, (source, target) in enumerate(matches):
         assert len(source) == len(target) == 1 and int(target[0]) == 0
         matched = int(source[0])
         score = scores[b]
         iou = ious[b]
-        best = int(score.argmax())
+        best = evaluator.selected_queries[b]
         eligible = iou > 0.5
         utility = iou + 2 * (iou > 0.25).float() + (iou > 0.5).float()
         quality_row = None
@@ -161,13 +226,13 @@ def main():
         'sample_dataset': 'scanrefer',
         'query_count': int(scores.shape[1]),
         'qualified_root_rows': sum(row['matched_iou'] > 0.25 for row in rows),
+        'native_loss': float(native_loss.detach()),
+        'native_semantic_logit_gradient_l2': native_gradient_norm,
         'root_quality_loss_by_score_temperature': {
-            str(temperature): float(root_matched_quality_loss(
-                scores, boxes, gt_boxes, matches,
-                batch['sample_dataset'], temperature,
-            ))
-            for temperature in (0.05, 0.1, 0.25, 0.5, 1.0)
+            temperature: value['loss'] for temperature, value in gradient_audit.items()
         },
+        'root_quality_gradient_by_score_temperature': gradient_audit,
+        'actual_native_evaluator_bbs_counts': evaluator_counts,
         'rows': rows,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

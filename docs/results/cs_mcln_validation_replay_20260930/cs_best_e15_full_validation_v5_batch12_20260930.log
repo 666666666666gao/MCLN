@@ -1,0 +1,17 @@
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Loading datasets: ['scannet', 'scanrefer']
+Loading train files, take a breath!
+Begin text decoupling......
+End text decoupling!
+Loading val files, take a breath!
+Begin text decoupling......
+End text decoupling!
+{"output": "/root/cs_mcln_scanrefer_cs_20260923/diagnostics/cs_best_e15_full_validation_v5_batch12_20260930.json", "summary": {"selected_pre_hits025": 4623, "selected_post_hits025": 5467, "same_query_repairs025": 885, "same_query_damages025": 41, "raw256_pre_oracle_hits025": 8074, "raw256_post_oracle_hits025": 8995, "post_no_qualified_candidate025": 513, "post_qualified_not_selected025": 3528, "post_rank2_misses025": 439, "post_rank3to16_misses025": 752, "post_rank17to64_misses025": 1563, "post_rank65to256_misses025": 774, "fused_exact_valid_rows": 9477, "post_hits_on_fused_valid025": 5463, "fused_exact_hits025": 5410, "post_to_fused_exact_repairs025": 141, "post_to_fused_exact_damages025": 194, "selected_pre_hits050": 1283, "selected_post_hits050": 4409, "same_query_repairs050": 3147, "same_query_damages050": 21, "raw256_pre_oracle_hits050": 3404, "raw256_post_oracle_hits050": 7864, "post_no_qualified_candidate050": 1644, "post_qualified_not_selected050": 3455, "post_rank2_misses050": 556, "post_rank3to16_misses050": 950, "post_rank17to64_misses050": 1410, "post_rank65to256_misses050": 539, "post_hits_on_fused_valid050": 4406, "fused_exact_hits050": 4403, "post_to_fused_exact_repairs050": 490, "post_to_fused_exact_damages050": 493, "center_shift_m_median": 0.11775071918964386, "center_shift_over_gt_size_median": 0.098884467035532, "max_abs_log_size_ratio_median": 0.25196921825408936, "m3_mass_outside_gt_box_median": 0.13947302848100662, "m3_mass_outside_pre_box_median": 0.2673410624265671, "final_query_mass_outside_gt_box_median": 0.13948962092399597, "final_fused_mass_outside_gt_box_median": 0.13654325902462006, "final_fusion_alpha_median": 0.10463035851716995, "m3_to_final_query_logit_max_abs_median": 0.0072879791259765625}}
+Traceback (most recent call last):
+  File "/root/cs_mcln_scanrefer_cs_20260923/diagnostics/diagnose_cs_mcln_support_validation_v5.py", line 350, in <module>
+    main()
+  File "/root/cs_mcln_scanrefer_cs_20260923/diagnostics/diagnose_cs_mcln_support_validation_v5.py", line 346, in main
+    assert all(result['formal_result_match'].values())
+AssertionError

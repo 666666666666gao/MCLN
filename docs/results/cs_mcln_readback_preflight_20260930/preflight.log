@@ -1,0 +1,20 @@
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.dense.bias', 'lm_head.bias', 'lm_head.layer_norm.bias']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Loading datasets: ['scannet', 'scanrefer']
+Loading train files, take a breath!
+Begin text decoupling......
+End text decoupling!
+Loading val files, take a breath!
+Begin text decoupling......
+End text decoupling!
+CONFIG {"arm": "cs_readback", "mode": "preflight", "train_samples": 48655, "val_samples": 9508, "batch_size": 12, "rates": {"new": 8.660254037844386e-05, "core": 1.7320508075688774e-05, "backbone": 1.7320508075688771e-06}, "root_quality_loss_weight": 0.0, "root_quality_score_temperature": 1.0, "initial_load": {"core_tensors": 1135, "removed_selector_tensors": 9, "new_tensors": 40}}
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.dense.bias', 'lm_head.bias', 'lm_head.layer_norm.bias']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Traceback (most recent call last):
+  File "/root/autodl-tmp/cs_v99_internal_draft_20260928/scripts/train_cs_mcln_scanrefer.py", line 467, in <module>
+    main()
+  File "/root/autodl-tmp/cs_v99_internal_draft_20260928/scripts/train_cs_mcln_scanrefer.py", line 328, in main
+    assert bool(parameters[readback_name].grad.abs().sum() > 0)
+KeyError: 'cs_geometry_readback.output.weight'

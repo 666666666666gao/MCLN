@@ -74,6 +74,7 @@ def load_exact_e71(model, checkpoint_state, arm):
     target = model.state_dict()
     prefixes = CS_PREFIXES if arm != 'native' else ()
     if arm in ('cs_readback', 'cs_readback_quality'):
+        assert model.cs_geometry_readback is not None, 'readback arm requires the R module'
         prefixes += (READBACK_PREFIX,)
     additions = {name for name in target if name.startswith(prefixes)}
     assert bool(additions) == (arm != 'native')

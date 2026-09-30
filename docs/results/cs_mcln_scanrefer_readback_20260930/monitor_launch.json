@@ -1,0 +1,22 @@
+{
+  "monitor_pid": 188243,
+  "monitor_remote_path": "/root/cs_mcln_scanrefer_readback_20260930/epoch_monitor.py",
+  "monitor_source_sha256": "cfe50fdd86403286e838324821edadd3dd4f5fda545be3ebf937dc4e15198d81",
+  "first_check_cst": "2026-09-30 19:10 CST",
+  "later_checks": "latest completed epoch JSON mtime + measured full epoch duration + 300s; incomplete only 240s recheck",
+  "process_witness": "187859 Rl+  Wed Sep 30 13:29:12 2026       10:40 20195972 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/cs_mcln_readback_source_20260930_v1/scripts/train_cs_mcln_scanrefer.py --arm cs_readback --mode train --checkpoint /root/autodl-tmp/DATA_ROOT/output/preserved_best/mcln_pair_sweep/mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth --data-root /root/autodl-tmp/DATA_ROOT --output /root/cs_mcln_scanrefer_readback_20260930 --best-dir /root/cs_mcln_scanrefer_readback_best_20260930 --batch-size 12\n188243 S    Wed Sep 30 13:39:52 2026       00:00 10772 /root/miniconda3/envs/bdetr/bin/python -u /root/cs_mcln_scanrefer_readback_20260930/epoch_monitor.py",
+  "training_log_tail_at_monitor_launch": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight', 'lm_head.dense.weight', 'lm_head.layer_norm.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Loading datasets: ['scannet', 'scanrefer']",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "Loading val files, take a breath!",
+    "Begin text decoupling......",
+    "End text decoupling!",
+    "CONFIG {\"arm\": \"cs_readback\", \"mode\": \"train\", \"train_samples\": 48655, \"val_samples\": 9508, \"batch_size\": 12, \"rates\": {\"new\": 8.660254037844386e-05, \"core\": 1.7320508075688774e-05, \"backbone\": 1.7320508075688771e-06}, \"root_quality_loss_weight\": 0.0, \"root_quality_score_temperature\": 1.0, \"initial_load\": {\"core_tensors\": 1135, \"removed_selector_tensors\": 9, \"new_tensors\": 54}}"
+  ],
+  "gpu_at_monitor_launch": "NVIDIA A100-PCIE-40GB, 7915 MiB, 0 %"
+}

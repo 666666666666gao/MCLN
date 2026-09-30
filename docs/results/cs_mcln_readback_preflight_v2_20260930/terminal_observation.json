@@ -1,0 +1,79 @@
+{
+  "observed_at_cst": "2026-09-30 13:22:02 CST",
+  "process": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  "gpu": {
+    "exit_code": 0,
+    "stdout": "1 MiB, 40960 MiB, 0 %\n",
+    "stderr": ""
+  },
+  "disks": {
+    "exit_code": 0,
+    "stdout": "     Avail\n1235017728\n1246502912\n",
+    "stderr": ""
+  },
+  "terminal_exit_code": 0,
+  "files": {
+    "exit.txt": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "remote_mtime": 1790745669
+    },
+    "preflight.log": {
+      "sha256": "9b03a42dfd3c49623385cc58fcad240ac6be076fdd1c886fd50fff563df27549",
+      "bytes": 2174,
+      "remote_mtime": 1790745661
+    },
+    "preflight.json": {
+      "sha256": "7daa27937025635b8e9c6ca0137ae278b36c787876dfb52e8093d7250f191884",
+      "bytes": 1583,
+      "remote_mtime": 1790745664
+    }
+  },
+  "result": {
+    "arm": "cs_readback",
+    "batch_size": 12,
+    "seconds_two_steps_including_diagnostics": 8.984555721282959,
+    "peak_allocated_bytes": 25401748992,
+    "peak_reserved_bytes": 28900851712,
+    "checkpoint_bytes": 814770370,
+    "model_only_bytes": 606018228,
+    "initial_load": {
+      "core_tensors": 1135,
+      "removed_selector_tensors": 9,
+      "new_tensors": 54
+    },
+    "root_quality_loss_weight": 0.0,
+    "root_quality_score_temperature": 1.0,
+    "quality_only_readback_gradient_l2_by_step": [],
+    "readback_gradient_l2_by_step": [
+      {
+        "cs_geometry_readback.coarse_encoder.weight": 0.0,
+        "cs_geometry_readback.support_encoder.weight": 0.0,
+        "cs_geometry_readback.refined_encoder.weight": 0.0,
+        "cs_geometry_readback.encode.0.weight": 0.0,
+        "cs_geometry_readback.set_attention.in_proj_weight": 0.0,
+        "cs_geometry_readback.output.weight": 8.636452548671514e-06
+      },
+      {
+        "cs_geometry_readback.coarse_encoder.weight": 3.139993509648775e-07,
+        "cs_geometry_readback.support_encoder.weight": 3.365920804299094e-07,
+        "cs_geometry_readback.refined_encoder.weight": 3.4945787774631754e-07,
+        "cs_geometry_readback.encode.0.weight": 2.4220098566729575e-06,
+        "cs_geometry_readback.set_attention.in_proj_weight": 5.479081437442801e-07,
+        "cs_geometry_readback.output.weight": 8.329648699145764e-05
+      }
+    ],
+    "quality_only_readback_exercised": null,
+    "zero_update_max_abs_differences": {
+      "last_center": 0.0,
+      "last_pred_size": 0.0,
+      "last_sem_cls_scores": 0.0,
+      "sp_last_pred_masks": 0.0,
+      "last_pred_masks": 0.0
+    }
+  }
+}

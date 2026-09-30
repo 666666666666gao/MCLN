@@ -20707,3 +20707,15 @@ Nr3D原RSA空球问题也已有直接控制，不重复启动：§20.47的M4在1
 第0—21轮逐轮原始JSON、训练后best快照、CSV和manifest共**44个小文件**，已收录于`docs/results/cs_mcln_scanrefer_native_20260926/`并逐文件SHA核对远端镜像；桌面同名CSV与仓库CSV字节一致。终版CSV SHA256 **2447bf2806fe25285d9cd4892ed4f7a8118a063c140aebb6ea2ac72657f873ef**；第20、21轮原始JSON SHA256分别为**4969dc9088a4b735ea1accd0c563d502acac51b165a74216a3c54ca111bdcf3a**、**0e8158dfd218433ee0929f68951d6c0cbdcee47f433a0c6567dcc3670b66f2a2**。两盘可用空间在10:00约为**1,249,308,672 / 1,246,740,480字节**；保留E71、V99、CS best及native best/latest，未因接近满盘删除权重。
 
 按§20.349既定资源顺序，原生训练结束后已启动**旧CS第15轮best的9508条完整验证只读诊断**。2026-09-30约10:08 CST在独立screen中启动远端`diagnose_cs_mcln_support_validation.py`，加载受保护E71和CS best；脚本SHA256 **c05f7e7d54a1c364b4200675d48dde1864f6145e863f535e5967a5c34145a6ab**。10:11:36 CST核查，实际Python PID181823仍在运行、进入数据加载，显存分配2435 MiB；尚无GPU前向完成或诊断JSON，**没有新的精度、M3验证收益或融合Mask反事实结果**。诊断将复核原生e15的5466/4409，分解固定Query的最后一次M3前后、完整候选覆盖与排名，以及按原生logit融合构造的真实点几何反事实；反事实不算可部署模型成绩。等完整结果再决定先改支撑来源还是候选判别，不在运行时修改训练或混称未训练的R与三个旧CS模块。ScanRefer达标及随后Nr3D/Sr3D独立重训仍是活动目标。
+
+## 20.359 已完成21轮的完整配对曲线与结论边界（2026-09-30 10:30 CST）
+
+新增可复现分析入口`scripts/analyze_cs_mcln_native_control.py`，对已封存CS与native各22个epoch（含零更新）先核对原始JSON、manifest、CSV SHA和命中／百分比，再按原保存规则复算训练后best，生成完整配对表和PNG／SVG曲线。真实输入执行通过：CS best为15、native best为8，与各自实际保存记录一致；不选择新的epoch或更改模型。两组共44个原始评估JSON通过来源核查。脚本SHA256 **c3ca35ed6f7353c5193d2c2cd2a47f7f25703f91ff54f4e450b141ce9f25bb8b**；配对CSV SHA256 **c4ed72a1a479f29a99126dabb7afe9e584173bd7d3d3fbcd11da8eba12b29c82**。
+
+完整曲线补充了早期／晚期差异：严格阈值下CS在第1—8、17—18轮低于native，在第9—16、19—21轮高于native。固定21轮终点的**+23/+40**与各自best比较的**+25/−1**应同时呈现；前者支持相对该同预算续训控制的终点优势，后者说明按预定规则保留的最佳模型尚未形成严格阈值增量。这些epoch是同一单seed轨迹的相关快照，不能累加命中差、当作独立重复或据此声称跨seed显著性，更不能证明M1、M2或M3各自的因果作用。没有一个训练后模型在两项指标上整体超过共同E71起点，ScanRefer开发线仍未达到。
+
+完整逐轮表、来源摘要及图已放在[配对分析报告](results/cs_mcln_native_control_comparison_20260930/comparison.md)，5个产物在仓库、桌面同相对目录与远端逐字节／SHA核验一致。图中圆圈表示按原规则选出的训练后best，方块表示固定第21轮；纵轴范围用于观察训练轨迹，58.3%／50.0%门槛另行明确标注，未把它省略成已达标。
+
+![CS与native完整21轮曲线](results/cs_mcln_native_control_comparison_20260930/training_curves.png)
+
+CS完整9508条只读诊断已于10:18确认进入GPU前向，尚无完整结果；本地观察器将在**11:20 CST**首次读取终态，未完成才每240秒复查。后续结构变量仍由这份当前验证证据决定，不用历史V99融合Mask的条件收益代替CS实测结果。

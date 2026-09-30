@@ -1,0 +1,28 @@
+{
+  "old_import_paths": {
+    "factory": "/root/autodl-tmp/cs_mcln_source_20260923_v1/train_dist_mod.py",
+    "head": "/root/autodl-tmp/cs_v99_internal_draft_20260928/models/modules.py"
+  },
+  "changes": {
+    "train_dist_mod.py": {
+      "old_resolved_file": "/root/autodl-tmp/cs_mcln_source_20260923_v1/train_dist_mod.py",
+      "old_sha256_lf": "e0a6f76509f5483cb8c67f21013ba403272e9ab054a4721714c22c50f14ce71d",
+      "new_sha256_lf": "bb0370df5aa91b8b847d29598209ef10b292cd95f5f6af2ab6749c978d93da77",
+      "diff": "--- resolved_before\n+++ isolated_after\n@@ -3001,6 +3001,9 @@\n             self_attend=args.self_attend,\n             use_source_choice_selector=args.use_source_choice_selector,\n             use_cs_mcln=getattr(args, 'use_cs_mcln', False),\n+            use_cs_geometry_readback=getattr(\n+                args, 'use_cs_geometry_readback', False,\n+            ),\n             source_choice_selector_sources=args.source_choice_selector_sources,\n             source_choice_selector_hidden_dim=args.source_choice_selector_hidden_dim,\n             use_source_moe=getattr(args, 'use_source_moe', False),\n"
+    },
+    "models/modules.py": {
+      "old_resolved_file": "/root/autodl-tmp/cs_v99_internal_draft_20260928/models/modules.py",
+      "old_sha256_lf": "719141b5c01c18421feff7fabda6d2ab1061cf5753adba67c65c6e049d39d999",
+      "new_sha256_lf": "719141b5c01c18421feff7fabda6d2ab1061cf5753adba67c65c6e049d39d999",
+      "diff": ""
+    },
+    "scripts/train_cs_mcln_scanrefer.py": {
+      "old_resolved_file": "/root/autodl-tmp/cs_v99_internal_draft_20260928/scripts/train_cs_mcln_scanrefer.py",
+      "old_sha256_lf": "bcd8b8feb485c5f9250f99ad2df4c4cf85c9958d023aaa1dd0ef61aaaaf02ffa",
+      "new_sha256_lf": "fb14b9207ed04f79bb959f3a341bea27c4dcb57e724a956bd3f12bf27fa625c1",
+      "diff": "--- resolved_before\n+++ isolated_after\n@@ -74,6 +74,7 @@\n     target = model.state_dict()\n     prefixes = CS_PREFIXES if arm != 'native' else ()\n     if arm in ('cs_readback', 'cs_readback_quality'):\n+        assert model.cs_geometry_readback is not None, 'readback arm requires the R module'\n         prefixes += (READBACK_PREFIX,)\n     additions = {name for name in target if name.startswith(prefixes)}\n     assert bool(additions) == (arm != 'native')\n"
+    }
+  },
+  "CPU_real_factory_witness": "REAL_FACTORY_READBACK_WITNESS {\"core_tensors\": 1135, \"removed_selector_tensors\": 9, \"new_tensors\": 54}",
+  "note": "Failed v1 did not instantiate R; no optimizer step reached. Original formal source unchanged."
+}

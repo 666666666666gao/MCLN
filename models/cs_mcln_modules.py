@@ -5,14 +5,14 @@ import math
 import torch
 from torch import nn
 
+from utils.scatter_util import deterministic_scatter_mean_dim0
+
 
 def _member_mean(values, member_ids, count):
     """Aggregate only sampled points that actually belong to each superpoint."""
-    sums = values.new_zeros(count, values.shape[-1])
-    sums.index_add_(0, member_ids, values)
-    numbers = values.new_zeros(count, 1)
-    numbers.index_add_(0, member_ids, values.new_ones(values.shape[0], 1))
-    return sums / numbers.clamp_min(1), numbers
+    mean = deterministic_scatter_mean_dim0(values, member_ids, dim_size=count)
+    numbers = torch.bincount(member_ids, minlength=count).to(values.dtype).unsqueeze(-1)
+    return mean, numbers
 
 
 class ObservationCrossScaleEnhancer(nn.Module):

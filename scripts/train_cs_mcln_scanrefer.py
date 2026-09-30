@@ -274,6 +274,7 @@ def main():
         torch.cuda.reset_peak_memory_stats()
         started = time.time()
         quality_readback_gradient_norms = []
+        readback_gradient_norms = []
         for step, raw in enumerate(loader, 1):
             optimizer.zero_grad(set_to_none=True)
             loss, outputs = batch_loss(model, raw, criterion, set_criterion,
@@ -325,6 +326,22 @@ def main():
                 if args.arm in ('cs_readback', 'cs_readback_quality'):
                     readback_name = 'cs_geometry_readback.output.weight'
                     assert bool(parameters[readback_name].grad.abs().sum() > 0)
+                    readback_names = (
+                        'cs_geometry_readback.coarse_encoder.weight',
+                        'cs_geometry_readback.support_encoder.weight',
+                        'cs_geometry_readback.refined_encoder.weight',
+                        'cs_geometry_readback.encode.0.weight',
+                        'cs_geometry_readback.set_attention.in_proj_weight',
+                        readback_name,
+                    )
+                    gradient_norms = {
+                        name: float(parameters[name].grad.norm())
+                        for name in readback_names
+                    }
+                    assert all(math.isfinite(value) for value in gradient_norms.values())
+                    if step == 2:
+                        assert all(value > 0 for value in gradient_norms.values())
+                    readback_gradient_norms.append(gradient_norms)
             optimizer.step()
             print('PREFLIGHT_STEP', step, float(loss), float(norm),
                   float(outputs['cs_native_root_quality_loss'])
@@ -352,6 +369,7 @@ def main():
             'root_quality_loss_weight': config.cs_native_root_quality_weight,
             'root_quality_score_temperature': config.cs_native_root_quality_score_temperature,
             'quality_only_readback_gradient_l2_by_step': quality_readback_gradient_norms,
+            'readback_gradient_l2_by_step': readback_gradient_norms,
             'quality_only_readback_exercised': (
                 any(value > 0 for value in quality_readback_gradient_norms)
                 if args.arm == 'cs_readback_quality' else None

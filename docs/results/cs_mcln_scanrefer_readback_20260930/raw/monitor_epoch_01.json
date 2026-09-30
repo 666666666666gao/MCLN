@@ -1,33 +1,31 @@
 {
-  "checked_at_cst": "2026-09-30T22:04:20.079538+08:00",
-  "expected_epoch": 2,
-  "completed_epoch": 2,
+  "checked_at_cst": "2026-09-30T19:10:00.099662+08:00",
+  "expected_epoch": 1,
+  "completed_epoch": 1,
   "training_alive": true,
   "exit_code": null,
-  "process": "187859 Rl+     08:35:07 20018744 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/cs_mcln_readback_source_20260930_v1/scripts/train_cs_mcln_scanrefer.py --arm cs_readback --mode train --checkpoint /root/autodl-tmp/DATA_ROOT/output/preserved_best/mcln_pair_sweep/mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth --data-root /root/autodl-tmp/DATA_ROOT --output /root/cs_mcln_scanrefer_readback_20260930 --best-dir /root/cs_mcln_scanrefer_readback_best_20260930 --batch-size 12",
-  "gpu": "NVIDIA A100-PCIE-40GB, 29883 MiB, 30 %",
+  "process": "187859 Rl+     05:40:47 20203884 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/cs_mcln_readback_source_20260930_v1/scripts/train_cs_mcln_scanrefer.py --arm cs_readback --mode train --checkpoint /root/autodl-tmp/DATA_ROOT/output/preserved_best/mcln_pair_sweep/mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth --data-root /root/autodl-tmp/DATA_ROOT --output /root/cs_mcln_scanrefer_readback_20260930 --best-dir /root/cs_mcln_scanrefer_readback_best_20260930 --batch-size 12",
+  "gpu": "NVIDIA A100-PCIE-40GB, 29883 MiB, 12 %",
   "disk_free_bytes": {
-    "/root": 1415270400,
+    "/root": 1419866112,
     "/root/autodl-tmp": 1245110272
   },
   "weights": {
     "latest": {
       "path": "/root/cs_mcln_scanrefer_readback_20260930/latest.pth",
       "bytes": 814771138,
-      "mtime_cst": "2026-09-30T21:59:59.181751+08:00"
+      "mtime_cst": "2026-09-30T18:02:04.586523+08:00"
     },
     "best": {
       "path": "/root/cs_mcln_scanrefer_readback_best_20260930/best.pth",
       "bytes": 606018292,
-      "mtime_cst": "2026-09-30T21:59:53.565821+08:00"
+      "mtime_cst": "2026-09-30T18:02:03.006543+08:00"
     }
   },
   "required_extra_atomic_save_bytes": 814769538,
   "log_tail": [
-    "TRAIN cs_readback 2 3500 4055 6.46563720703125 10909.947781324387",
-    "TRAIN cs_readback 2 4000 4055 7.639847755432129 12466.134847402573",
-    "BEST cs_readback 2 606018292 {\"samples\": 9508, \"hits025\": 5468, \"hits050\": 4337, \"acc025\": 0.5750946571308372, \"acc050\": 0.45614219604543543}",
-    "EPOCH cs_readback {\"epoch\": 2, \"seconds\": 12627.00454735756, \"steps\": 4055, \"samples\": 48655, \"validation\": {\"samples\": 9508, \"hits025\": 5468, \"hits050\": 4337, \"acc025\": 0.5750946571308372, \"acc050\": 0.45614219604543543}} CHECKPOINT_BYTES 814771138",
+    "BEST cs_readback 1 606018292 {\"samples\": 9508, \"hits025\": 5462, \"hits050\": 4301, \"acc025\": 0.5744636095919226, \"acc050\": 0.4523559108119478}",
+    "EPOCH cs_readback {\"epoch\": 1, \"seconds\": 12636.52444767952, \"steps\": 4055, \"samples\": 48655, \"validation\": {\"samples\": 9508, \"hits025\": 5462, \"hits050\": 4301, \"acc025\": 0.5744636095919226, \"acc050\": 0.4523559108119478}} CHECKPOINT_BYTES 814771138",
     "huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...",
     "To disable this warning, you can either:",
     "\t- Avoid using `tokenizers` before the fork if possible",
@@ -43,34 +41,36 @@
     "huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...",
     "To disable this warning, you can either:",
     "\t- Avoid using `tokenizers` before the fork if possible",
-    "\t- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)"
+    "\t- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)",
+    "TRAIN cs_readback 2 500 4055 6.321707725524902 1586.654397726059",
+    "TRAIN cs_readback 2 1000 4055 5.284052848815918 3147.138899087906"
   ],
   "epoch": {
-    "epoch": 2,
-    "seconds": 12627.00454735756,
+    "epoch": 1,
+    "seconds": 12636.52444767952,
     "steps": 4055,
     "samples": 48655,
     "validation": {
       "samples": 9508,
-      "hits025": 5468,
-      "hits050": 4337,
-      "acc025": 0.5750946571308372,
-      "acc050": 0.45614219604543543
+      "hits025": 5462,
+      "hits050": 4301,
+      "acc025": 0.5744636095919226,
+      "acc050": 0.4523559108119478
     }
   },
   "best": {
     "arm": "cs_readback",
-    "epoch": 2,
+    "epoch": 1,
     "metrics": {
       "samples": 9508,
-      "hits025": 5468,
-      "hits050": 4337,
-      "acc025": 0.5750946571308372,
-      "acc050": 0.45614219604543543
+      "hits025": 5462,
+      "hits050": 4301,
+      "acc025": 0.5744636095919226,
+      "acc050": 0.4523559108119478
     }
   },
-  "measured_latest_epoch_including_eval_seconds": 14270.603277921677,
-  "estimated_epoch21_cst": "2026-10-04T01:18:53.728118+08:00",
+  "measured_latest_epoch_including_eval_seconds": 14238.24793791771,
+  "estimated_epoch21_cst": "2026-10-04T01:08:06.621318+08:00",
   "baseline": {
     "samples": 9508,
     "hits025": 5514,

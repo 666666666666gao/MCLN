@@ -1,0 +1,81 @@
+{
+  "checked_at_cst": "2026-09-30T19:10:00.099662+08:00",
+  "expected_epoch": 1,
+  "completed_epoch": 1,
+  "training_alive": true,
+  "exit_code": null,
+  "process": "187859 Rl+     05:40:47 20203884 /root/miniconda3/envs/bdetr/bin/python -u /root/autodl-tmp/cs_mcln_readback_source_20260930_v1/scripts/train_cs_mcln_scanrefer.py --arm cs_readback --mode train --checkpoint /root/autodl-tmp/DATA_ROOT/output/preserved_best/mcln_pair_sweep/mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth --data-root /root/autodl-tmp/DATA_ROOT --output /root/cs_mcln_scanrefer_readback_20260930 --best-dir /root/cs_mcln_scanrefer_readback_best_20260930 --batch-size 12",
+  "gpu": "NVIDIA A100-PCIE-40GB, 29883 MiB, 12 %",
+  "disk_free_bytes": {
+    "/root": 1419866112,
+    "/root/autodl-tmp": 1245110272
+  },
+  "weights": {
+    "latest": {
+      "path": "/root/cs_mcln_scanrefer_readback_20260930/latest.pth",
+      "bytes": 814771138,
+      "mtime_cst": "2026-09-30T18:02:04.586523+08:00"
+    },
+    "best": {
+      "path": "/root/cs_mcln_scanrefer_readback_best_20260930/best.pth",
+      "bytes": 606018292,
+      "mtime_cst": "2026-09-30T18:02:03.006543+08:00"
+    }
+  },
+  "required_extra_atomic_save_bytes": 814769538,
+  "log_tail": [
+    "BEST cs_readback 1 606018292 {\"samples\": 9508, \"hits025\": 5462, \"hits050\": 4301, \"acc025\": 0.5744636095919226, \"acc050\": 0.4523559108119478}",
+    "EPOCH cs_readback {\"epoch\": 1, \"seconds\": 12636.52444767952, \"steps\": 4055, \"samples\": 48655, \"validation\": {\"samples\": 9508, \"hits025\": 5462, \"hits050\": 4301, \"acc025\": 0.5744636095919226, \"acc050\": 0.4523559108119478}} CHECKPOINT_BYTES 814771138",
+    "huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...",
+    "To disable this warning, you can either:",
+    "\t- Avoid using `tokenizers` before the fork if possible",
+    "\t- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)",
+    "huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...",
+    "To disable this warning, you can either:",
+    "\t- Avoid using `tokenizers` before the fork if possible",
+    "\t- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)",
+    "huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...",
+    "To disable this warning, you can either:",
+    "\t- Avoid using `tokenizers` before the fork if possible",
+    "\t- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)",
+    "huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...",
+    "To disable this warning, you can either:",
+    "\t- Avoid using `tokenizers` before the fork if possible",
+    "\t- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)",
+    "TRAIN cs_readback 2 500 4055 6.321707725524902 1586.654397726059",
+    "TRAIN cs_readback 2 1000 4055 5.284052848815918 3147.138899087906"
+  ],
+  "epoch": {
+    "epoch": 1,
+    "seconds": 12636.52444767952,
+    "steps": 4055,
+    "samples": 48655,
+    "validation": {
+      "samples": 9508,
+      "hits025": 5462,
+      "hits050": 4301,
+      "acc025": 0.5744636095919226,
+      "acc050": 0.4523559108119478
+    }
+  },
+  "best": {
+    "arm": "cs_readback",
+    "epoch": 1,
+    "metrics": {
+      "samples": 9508,
+      "hits025": 5462,
+      "hits050": 4301,
+      "acc025": 0.5744636095919226,
+      "acc050": 0.4523559108119478
+    }
+  },
+  "measured_latest_epoch_including_eval_seconds": 14238.24793791771,
+  "estimated_epoch21_cst": "2026-10-04T01:08:06.621318+08:00",
+  "baseline": {
+    "samples": 9508,
+    "hits025": 5514,
+    "hits050": 4408,
+    "acc025": 0.5799326882625158,
+    "acc050": 0.4636095919225915
+  }
+}

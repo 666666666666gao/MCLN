@@ -1,0 +1,104 @@
+{
+  "audited_at_cst": "2026-09-30T19:22:57.585820+08:00",
+  "completed_epoch": 1,
+  "source_hashes_verified": [
+    {
+      "file": "raw/monitor_latest_observation.json",
+      "remote_path": "/root/cs_mcln_scanrefer_readback_20260930/monitor_latest_observation.json",
+      "sha256": "b2c12a511670e5900bd6f6a4b6c61f16c8e5fa85cc46fdb99bd71d49e16a8a18"
+    },
+    {
+      "file": "raw/monitor_state.json",
+      "remote_path": "/root/cs_mcln_scanrefer_readback_20260930/monitor_state.json",
+      "sha256": "5f88e2726605fd822400745e4125e4ba567ddfb3e30079d46fddceac49ae8934"
+    },
+    {
+      "file": "raw/epoch_0.json",
+      "remote_path": "/root/cs_mcln_scanrefer_readback_20260930/epoch_0.json",
+      "sha256": "85b9d4d05dfaf71c460bf252bc64261bb66c79b2c76af3cad7624eb4528ee640"
+    },
+    {
+      "file": "raw/epoch_1.json",
+      "remote_path": "/root/cs_mcln_scanrefer_readback_20260930/epoch_1.json",
+      "sha256": "c3291f06caa1fce60ba19c38f2bbd30f71ec780f713082cbd8746d5d8804e98d"
+    }
+  ],
+  "initial_metrics": {
+    "samples": 9508,
+    "hits025": 5514,
+    "hits050": 4408,
+    "acc025": 0.5799326882625158,
+    "acc050": 0.4636095919225915
+  },
+  "training_epoch": {
+    "epoch": 1,
+    "seconds": 12636.52444767952,
+    "steps": 4055,
+    "samples": 48655,
+    "validation": {
+      "samples": 9508,
+      "hits025": 5462,
+      "hits050": 4301,
+      "acc025": 0.5744636095919226,
+      "acc050": 0.4523559108119478
+    }
+  },
+  "best_training_epoch": 1,
+  "zero_update_excluded_from_training_best": true,
+  "delta_hits_vs_own_e0": [
+    -52,
+    -107
+  ],
+  "historical_same_epoch_delta_vs_old_cs": [
+    -5,
+    -28
+  ],
+  "historical_same_epoch_delta_vs_native": [
+    -14,
+    -74
+  ],
+  "attribution_limit": "Old CS/native comparisons also differ in M1 numerical protocol. Not an isolated R ablation.",
+  "cpu_restore_v1": {
+    "artifact": "restore_witness.json",
+    "exit_code": 1,
+    "reason": "Audit assumed disabled CLI value was 0.0; frozen training serializes None. Failed before model state loading."
+  },
+  "cpu_restore_v2": {
+    "artifact": "restore_witness_v2.json",
+    "exit_code": 0,
+    "result": {
+      "checkpoint_epoch": 1,
+      "arm": "cs_readback",
+      "model_tensor_states_strict_restored": 1189,
+      "readback_states": 14,
+      "optimizer_parameter_groups": 3,
+      "optimizer_parameter_states_exact_restored": 761,
+      "all_model_tensors_exact": true,
+      "all_optimizer_states_exact": true,
+      "cpu_only": true,
+      "optimizer_steps_performed": 0,
+      "checkpoint_bytes": 814771138,
+      "saved_root_quality_loss_weight": null,
+      "saved_root_quality_score_temperature": null,
+      "effective_root_quality_loss_weight": 0.0
+    }
+  },
+  "monitor_observed_at_cst": "2026-09-30T19:10:00.099662+08:00",
+  "next_local_collection_cst": "2026-09-30T22:04:49.910498+08:00",
+  "estimated_epoch21_cst": "2026-10-04T01:08:06.621318+08:00",
+  "measured_epoch_including_eval_seconds": 14238.24793791771,
+  "disk_free_bytes": {
+    "/root": 1419866112,
+    "/root/autodl-tmp": 1245110272
+  },
+  "actual_weight_bytes": {
+    "latest": 814771138,
+    "best": 606018292
+  },
+  "actual_atomic_peak_bytes": 2235560568,
+  "actual_additional_atomic_save_bytes": 814771138,
+  "monitor_preflight_based_additional_atomic_save_bytes": 814769538,
+  "root_free_after_required_additional_bytes": 605094974,
+  "scientific_training_source_changed": false,
+  "planned_epochs_unchanged": 21
+}

@@ -1,0 +1,121 @@
+{
+  "status": "planned_not_launched",
+  "prepared_at_cst": "2026-09-30 14:03 CST",
+  "current_readback_training_not_modified": true,
+  "scientific_variable": "R off (cs) versus R on (cs_readback), with the same deterministic M1 member aggregation",
+  "source": "/root/autodl-tmp/cs_mcln_readback_source_20260930_v1",
+  "immutable_base_source": "/root/autodl-tmp/cs_mcln_source_20260923_v1",
+  "frozen_python_files": {
+    "main_utils.py": {
+      "bytes": 344230,
+      "sha256": "b5ed7afeac744d4d9c4f8b28deb4c74e05bc7a4f65ef0a468bfb20b4f737c97e"
+    },
+    "train_dist_mod.py": {
+      "bytes": 166113,
+      "sha256": "f9fe223173845d7d3f85946eb3088e4c094b2309b9960109c01e015f760a84e7"
+    },
+    "models/__init__.py": {
+      "bytes": 546,
+      "sha256": "1cf29bd3ff98335d2a36517267869a826b072a6112fe74baa55fe7db3183541c"
+    },
+    "models/cs_mcln_modules.py": {
+      "bytes": 10899,
+      "sha256": "8cdd1104c6a0242addd1a7bd18809d4a9507806233bddcc8733b99fb4a86d44a"
+    },
+    "models/modules.py": {
+      "bytes": 6978,
+      "sha256": "fc5c8bc045cfd01eeadca0c20a73e57c3956cf1fad25f58541b93b6dd36a162f"
+    },
+    "models/mcln.py": {
+      "bytes": 149834,
+      "sha256": "3bc978c23220c717112d4cd47fd0e6a48039751e7e016b72bdd1803ce293f228"
+    },
+    "models/losses.py": {
+      "bytes": 190802,
+      "sha256": "e7780ae8da57453adfa5308cb7216758e51382872e25e3827b6e02395de1651d"
+    },
+    "models/cs_native_root_quality.py": {
+      "bytes": 1775,
+      "sha256": "452da79eb76dce029cb204c66e860c2f4c6c62f0f6a154f7cfa1e2fb5000c45a"
+    },
+    "scripts/__init__.py": {
+      "bytes": 71,
+      "sha256": "0c1dfc7854f28b0e0ac415f96bc5c29a42c64b8d59be2f07c40ab012aa4437da"
+    },
+    "scripts/train_cs_mcln_scanrefer.py": {
+      "bytes": 22409,
+      "sha256": "84b59d2297cad982b5d3f3657f8cf208194dbfc7d43d5844bdf03506e76d1d3f"
+    },
+    "scripts/audit_cs_native_quality_batch.py": {
+      "bytes": 10328,
+      "sha256": "b8dea22edcd830bb09f82f02b136d1c3f44961eddbca16ba1fe8450dd2c84b15"
+    }
+  },
+  "initial_checkpoint": "/root/autodl-tmp/DATA_ROOT/output/preserved_best/mcln_pair_sweep/mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth",
+  "epochs": 21,
+  "batch_size": 12,
+  "seed": 2027,
+  "effective_batch_size": 12,
+  "lr_and_scheduler": "same frozen train script: new/core/backbone rates and epoch1 adaptation, then fixed cosine",
+  "expected_initial_load": {
+    "core_tensors": 1135,
+    "removed_selector_tensors": 9,
+    "new_tensors": 40
+  },
+  "readback_enabled": false,
+  "quality_enabled": false,
+  "G_enabled": false,
+  "teacher_enabled": false,
+  "fused_tail_enabled": false,
+  "main_output": "native last/bbs; one score and M3 box; full9508 each epoch",
+  "preflight_argv": [
+    "/root/miniconda3/envs/bdetr/bin/python",
+    "-u",
+    "/root/autodl-tmp/cs_mcln_readback_source_20260930_v1/scripts/train_cs_mcln_scanrefer.py",
+    "--arm",
+    "cs",
+    "--mode",
+    "preflight",
+    "--checkpoint",
+    "/root/autodl-tmp/DATA_ROOT/output/preserved_best/mcln_pair_sweep/mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth",
+    "--data-root",
+    "/root/autodl-tmp/DATA_ROOT",
+    "--output",
+    "/root/cs_mcln_cs_numeric_control_preflight_v1",
+    "--batch-size",
+    "12"
+  ],
+  "train_argv": [
+    "/root/miniconda3/envs/bdetr/bin/python",
+    "-u",
+    "/root/autodl-tmp/cs_mcln_readback_source_20260930_v1/scripts/train_cs_mcln_scanrefer.py",
+    "--arm",
+    "cs",
+    "--mode",
+    "train",
+    "--checkpoint",
+    "/root/autodl-tmp/DATA_ROOT/output/preserved_best/mcln_pair_sweep/mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth",
+    "--data-root",
+    "/root/autodl-tmp/DATA_ROOT",
+    "--output",
+    "/root/cs_mcln_scanrefer_cs_numeric_control_v1",
+    "--best-dir",
+    "/root/cs_mcln_scanrefer_cs_numeric_control_best_v1",
+    "--batch-size",
+    "12"
+  ],
+  "launch_conditions": [
+    "current R21 run has actually terminated and its final result is archived",
+    "actual factory confirms R absent, M1/M2/M3 present and expected core/new state load",
+    "common numerical input/output protocol and semantic-head single-call behavior are checked on real input",
+    "real preflight gradients and measured best/latest atomic save space pass",
+    "preserve E71, V99, old best and R best; retain any completed unique recovery state locally before remote retirement"
+  ],
+  "comparisons": [
+    "same fixed epoch21",
+    "each preset training-best",
+    "each own zero-update initialization"
+  ],
+  "no_additional_native_repeat": true,
+  "attribution_limit": "Historical CS used index_add aggregation and is not the causal R control."
+}

@@ -9,6 +9,6 @@
 
 本地目录：`C:\Users\gb\.codex_mcln_checkpoint_archive_20260930`。模型元数据为epoch21、seed2027、batch12；CS有1175个状态条目和3个优化器参数组，native有1135个状态条目和2组。目录包含两个原始`.pth`和manifest；不是重新序列化的近似复制。
 
-**远端latest尚未删除，当前没有因此释放远端磁盘空间。** CS/native best、E71和V99保护链没有改动。GitHub、交接文档和桌面results只同步小型manifest与核验记录，不提交权重。
+**当前状态：2026-09-30 13:24:26 CST，两个已完成实验的远端latest副本已退役。** 删除前再次完整读取本地归档并核对远端大小与SHA，回收1605956944字节；原始本地恢复文件完整保留。系统盘剩余2840977408字节，数据盘1246502912字节。CS/native best、E71与V99完整链未改动。见[远端退役回执](remote_retirement.json)。原manifest中“remote_files_removed=false”是归档当时状态，未追写改造原回执。GitHub、桌面文档及远端results只同步小型manifest与检查记录，不提交权重。
 
 这份归档使完成实验的终点可恢复，后续新训练仍需依据真实预检的best/latest文件大小及原子替换峰值核算空间。归档完成不代表新结构预检或性能通过；batch12完整诊断复核仍按11:45节点观察。

@@ -70,12 +70,6 @@ def main():
     saved = torch.load(str(opt.checkpoint), map_location='cpu')
     assert saved['arm'] == 'cs' and saved['initial_load'] == initial_load
     assert saved['metrics']['samples'] == 9508
-    checkpoint_batch_size = int(saved['batch_size'])
-    if opt.split == 'validation':
-        assert opt.batch_size == checkpoint_batch_size, (
-            'Full validation must use the checkpoint formal evaluation batch size',
-            opt.batch_size, checkpoint_batch_size,
-        )
     model.load_state_dict(saved['model'], strict=True)
     checkpoint_epoch = int(saved['epoch'])
     checkpoint_metrics = saved['metrics']
@@ -309,9 +303,9 @@ def main():
         summary[name + '_median'] = statistics.median(row[name] for row in rows)
     assert all(parameter.grad is None for parameter in model.parameters())
     result = {
-        'schema': ('cs-mcln-m3-fixed-train-panel-v5'
-                    if opt.split == 'train-panel'
-                    else 'cs-mcln-m3-full-scanrefer-validation-v5'),
+        'schema': ('cs-mcln-m3-fixed-train-panel-v4'
+                   if opt.split == 'train-panel'
+                   else 'cs-mcln-m3-full-scanrefer-validation-v4'),
         'split': opt.split,
         'panel_definition': (
             'one first ScanRefer expression per hashed train scene'
@@ -323,8 +317,6 @@ def main():
         'checkpoint_epoch': checkpoint_epoch,
         'checkpoint_sha256': file_sha256(opt.checkpoint),
         'checkpoint_formal_metrics': checkpoint_metrics,
-        'batch_size': opt.batch_size,
-        'checkpoint_formal_batch_size': checkpoint_batch_size,
         'sample_count': len(rows),
         'optimizer_steps': 0,
         'note': 'GT is used only for offline diagnosis; raw256 oracle is not deployable.',
@@ -339,11 +331,10 @@ def main():
             'hits025': summary['selected_post_hits025'] == checkpoint_metrics['hits025'],
             'hits050': summary['selected_post_hits050'] == checkpoint_metrics['hits050'],
         }
+        assert all(result['formal_result_match'].values())
     opt.output.parent.mkdir(parents=True, exist_ok=True)
     opt.output.write_text(json.dumps(result, indent=2, allow_nan=False) + '\n')
     print(json.dumps({'output': str(opt.output), 'summary': summary}), flush=True)
-    if opt.split == 'validation':
-        assert all(result['formal_result_match'].values())
 
 
 if __name__ == '__main__':

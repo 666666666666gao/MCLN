@@ -1,0 +1,25 @@
+{
+  "batch_size": 12,
+  "formal_metric_gate_retained": true,
+  "source_path": "/root/autodl-tmp/cs_mcln_source_20260923_v1",
+  "diagnostic_sha256": "8b71a2bc789d3bacf124d5d9639b104bba75af0e21a19cc9e36a5f21f84ae4ed",
+  "remote_script": "/root/cs_mcln_scanrefer_cs_20260923/diagnostics/diagnose_cs_mcln_support_validation_v5.py",
+  "launcher": "/root/cs_mcln_scanrefer_cs_20260923/diagnostics/run_cs_best_e15_full_validation_v5_batch12_20260930.sh",
+  "prefix": "/root/cs_mcln_scanrefer_cs_20260923/diagnostics/cs_best_e15_full_validation_v5_batch12_20260930",
+  "negative_batch4_preflight": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT/roberta-base/ were not used when initializing RobertaModel: ['lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.layer_norm.bias', 'lm_head.bias', 'lm_head.decoder.weight']\n- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\nTraceback (most recent call last):\n  File \"/root/cs_mcln_scanrefer_cs_20260923/diagnostics/diagnose_cs_mcln_support_validation_v5.py\", line 350, in <module>\n    main()\n  File \"/root/cs_mcln_scanrefer_cs_20260923/diagnostics/diagnose_cs_mcln_support_validation_v5.py\", line 77, in main\n    opt.batch_size, checkpoint_batch_size,\nAssertionError: ('Full validation must use the checkpoint formal evaluation batch size', 4, 12)\n"
+  },
+  "launched_at": "2026-09-30 11:02:33 CST",
+  "process": {
+    "exit_code": 0,
+    "stdout": "183296 /root/miniconda3/envs/bdetr/bin/python -u /root/cs_mcln_scanrefer_cs_20260923/diagnostics/diagnose_cs_mcln_support_validation_v5.py --parent /root/autodl-tmp/DATA_ROOT/output/preserved_best/mcln_pair_sweep/mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth --checkpoint /root/autodl-tmp/cs_mcln_scanrefer_best_20260923/best.pth --data-root /root/autodl-tmp/DATA_ROOT --output /root/cs_mcln_scanrefer_cs_20260923/diagnostics/cs_best_e15_full_validation_v5_batch12_20260930.json --split validation --batch-size 12\n",
+    "stderr": ""
+  },
+  "disk": {
+    "exit_code": 0,
+    "stdout": "Filesystem       1B-blocks        Used  Available Use% Mounted on\noverlay        32212254720 30962978816 1249275904  97% /\n/dev/sdb       53687091200 52440334336 1246756864  98% /root/autodl-tmp\n",
+    "stderr": ""
+  }
+}

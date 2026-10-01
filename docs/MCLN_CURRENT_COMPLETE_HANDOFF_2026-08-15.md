@@ -20970,3 +20970,48 @@ E2 best/latest于**21:59:53/21:59:59 CST**完成保存，实际606018292/8147711
 依据20.375已发布的完整回执，将两张对照曲线更新到E8；固定快照包含CS+R、历史CS、历史native各9个真实点，每点9508条原生`last/bbs`表达。源CSV及源提交、生成脚本、SVG/PDF和检查用PNG一并保留；不绘制E9以后的预测点，不改模型或增加优化更新。
 
 [Acc@0.25矢量SVG](results/cs_mcln_readback_epoch8_figures_20261001/r_epoch8_acc025.svg)和[Acc@0.50矢量SVG](results/cs_mcln_readback_epoch8_figures_20261001/r_epoch8_acc050.svg)分别附有PDF及LaTeX片段。[来源与比较说明](results/cs_mcln_readback_epoch8_figures_20261001/README.md)披露纵轴截断、M1数值协议的共同变化和单seed相关快照；历史曲线不能分离R的因果增量。独立上下文的Codex gpt-6-astra/max图形审核为PASS，记为same-family/provisional；审核直接读取实际数据并查看渲染，最终论文模板未编译。该图形审核不构成方法有效性或跨数据集验收。
+
+
+### 20.376 2026-10-02：主线改为PV-Ground＋G，首轮G／G＋P2同起点控制
+
+用户最新说明明确取代“官方PV核心＋旧MCLN四单元整体迁移”的初步实现。
+论文baseline为原版PV-Ground；内部强起点为已完成的PV-Ground＋G。MCLN/V99
+保留历史成绩、权重与问题证据；不再把MCLN＋R达到V99作为切换前提。
+
+- 2026-10-02T00:50:09.915325+08:00旧R在E9过程中安全封存，最后完整/预定best仍E8=5440/4374。
+  best/latest与日志保留，旧排队诊断及本地/远端观察器已取消。记录为用户改变主线，
+  不是21轮终态精度失败。旧Oct4 ETA与未执行E9写入器失效。
+- 早先整套PV-CS移植的batch12两步GPU工程预检PASS，未启动其正式训练，
+  不将该预检当作方法效果。代码/回执作为被取代草稿保留。
+- 已验证G终点仍存在：342299695B，SHA256
+  `0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522`。
+  先严格恢复作者epoch81全部1234项核心，安装原D/C读取，再覆盖G的1072项delta。
+  不是从随机新增模块重新学G，也不把G称为原版PV。
+- 当前P2在原D/G最后层读取中加入完整非padding文本条件、六源内容/10或13维
+  实际观测描述、候选尺度归一化坐标和真实相对距离；输出零残差加入同一实例，
+  继续使用原任务norm/FFN和唯一原生语义/几何头。旧D/G参数完整复用。
+  P2新增70项参数状态，全部属于decoder.5.candidate_evidence_read；这个70与
+  被取代的PV-CS草稿70项状态没有内容或机制等价关系。
+- 不加P3，不换TGS/RoBERTa，不改Mask权重、不加入V99教师或推理侧链。
+  G仍仅执行既有末层CE标签替换，其他匹配/定位/分割/对比损失不变。
+- fresh gpt-6-astra/max、fork none、same-family/provisional源码复核PASS；
+  修正一处旧G接口与新P2源码凭据混用，未改变训练目标。两臂实际CPU严格恢复PASS。
+- 实际batch8 GPU预检PASS：同模型零P2与绕过P2的末层输出最大差值
+  {"last_center": 0.0, "last_pred_size": 0.0, "last_sem_cls_scores": 0.0}；2次真实优化，
+  第二步文本/条件/位置分支梯度非零，模型及Adam序列化重载通过。
+  峰值分配显存23213011968B，序列化实测344430559B。
+  这些仅为运行条件，不是新精度。
+- 2026-10-02T01:41:43.634235+08:00串行双臂流程启动，screen=pvg_g_p2_pair_20261002。
+  两臂均从同一G终点重新建立AdamW，不声称继承旧优化器的无缝续训；
+  每臂29778fit输入一次、3723更新，6887模块留出起点/终点评估。
+  seed2027，物理/有效batch8，所有可训核心/骨干/P2 LR1e-5，wd5e-4，clip0.1。
+  固定终点、同样输入顺序与增强；G控制→G＋P2→两个终点各9508正式验证。
+  不根据模块留出涨点决定哪个终点才参加正式评估。
+- 模块留出场景被作者预训练见过，不当作独立泛化。正式验证继续称开发验证。
+  历史G正式5615/4495仍是参照，不代填本轮输出；P2尚无精度结论。
+  保住G宽松优势、争取严格≥50%，固定方法后再独立训练Nr3D/Sr3D。
+- 当前源码/计划/审查/真实回执见docs/PVG_G_P2_PLAN_2026-10-02.md、
+  models/pvground_expression_evidence.py、scripts/run_pvground_g_p2.py、
+  scripts/run_pvground_g_p2_pair.py及refine-logs/pvg_g_p2_20261002/。
+  每臂仅保留latest原子替换，终点改名terminal，未删除旧模型。按实测耗时安排检查，
+  长任务未到预估结束前不短间隔轮询；全目标ACTIVE_UNMET。

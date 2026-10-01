@@ -20917,3 +20917,14 @@ E2 best/latest于**21:59:53/21:59:59 CST**完成保存，实际606018292/8147711
 本轮训练耗时12739.224秒，训练/评估/保存完整间隔14348.754秒。按最新实测间隔估算第21轮终点为**2026-10-04 01:42 CST左右**，这是估计而非结束事实。下一次本地完整轮次收集为**2026-10-01 18:00:10 CST**，到时未完成则按既定240秒复查。
 
 移动观察回执另存为[E6观察原文](results/cs_mcln_scanrefer_readback_20260930/raw/monitor_epoch_06.json)及同轮monitor state，保留E1/E2/E3/E4/E5既有归档，不改写历史成绩。[E6核对记录](results/cs_mcln_scanrefer_readback_20260930/epoch_6_audit.json)和[逐轮CSV](results/cs_mcln_scanrefer_readback_20260930/epoch_metrics.csv)使用真实回执。记录和同步操作未改训练源码。ScanRefer尚未完成预定训练及方法终态判断，Nr3D/Sr3D未进入新结构正式训练，三数据集goal继续保持未完成。
+
+
+### 20.373 R同框配对诊断已实现并排队：尚无GPU精度结果（2026-10-01 16:10 CST）
+
+用户要求先回答“同一份框，R到底选得更好还是更差；若选得更好，为何整体仍未超过起点”。已实现只读脚本 `scripts/diagnose_cs_mcln_readback.py`：一次模型前向固定全部256个原生框、Mask及几何证据，分别在回读前后Query上重放同一个eval语义头；其他输出保持同一对象。直接捕获原生evaluator实际分数，复用其排序并逐条核对top1／Full256前缀，避免另算文本map改变浮点求和顺序。报告两阈值修复／破坏、Query变化、首次合格排名、原生raw256候选覆盖及表达长度描述分组；GT仅用于离线IoU，上界不可部署。
+
+16:08实际CPU合成检查exit0：真实R与语义头的零／非零残差、框Mask共享、原生逐条分数与排序、BN运行buffer不变均通过；0优化步、CUDA未初始化、未加载真实数据。新鲜上下文gpt-6-astra/max源码复核PASS，same-family/provisional；审查与CPU检查均不是精度证据。11份冻结训练源码SHA核验一致，诊断部署在独立目录 `/root/autodl-tmp/cs_mcln_readback_diagnostic_20261001_v1`，当前活动训练源码和配置未改。
+
+16:10:45已启动等待控制器，screen `cs_readback_paired_diag_20261001`、PID220304；目前仅WAIT_UNTIL，无GPU前向。计划不早于北京时间2026-10-04 01:45检查原R训练退出；若仍在运行每300秒再查。成功退出后核对21轮完整记录、既定best和GPU空闲，先first12 sanity，成功后再full9508；先保存JSON，再核对正式best两阈值一致性。失败回执保留，不提前更新正式指标。该诊断优先于同数值CS控制的GPU预检，避免争用唯一A100。
+
+当前R仍只发布到E6，best仍E3=5473／4354；本节没有新REC。R21既有预测约Oct4 01:43，参照上一完整复核估计释放后另需45–60分钟完成sanity与全量，均为估计。绕过同checkpoint的R只能测最后一次回读的前向作用，不能替代同数值CS独立训练控制，也不能单凭其结果证明共同训练损失来自哪条梯度路径。证据目录：`docs/results/cs_mcln_readback_paired_diagnostic_20261001/`。原UV41020/Python37732整轮收集器及18:00:10既定收集时间不变。

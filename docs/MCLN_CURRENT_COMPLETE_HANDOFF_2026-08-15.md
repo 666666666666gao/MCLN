@@ -21085,3 +21085,31 @@ SHA256为834284f24e27897a5eba08c7d0d24b749262d33fc7fba9963159740921a0fc6a。
 回执：refine-logs/pvg_g_p2_20261002/g_control_train_receipt.json、
 g_control_terminal_receipt.json、g_control_terminal_cpu_audit.json和boundary_0435.json。
 两臂终态与9508条正式配对均未完成，研究目标仍为ACTIVE_UNMET。
+
+
+### 20.376.4 2026-10-02 P2完整起点REC一致，首个512步保存通过
+
+P2在04:52:54.562962 CST完成6887条起点评估：bbs为6176/5602，bbf为
+6206/5647。CPU读取两臂完整起点rows，row_id、场景、目标、root GT框和输入
+point_sha256逐行一致；两个阈值的命中资格逐行相同，修复/破坏皆0。不主张
+所有浮点输出逐位相同：P2的bbs Mask mIoU为74.198532%，控制起点为74.199093%。
+这些只是同起点见证，不是P2训练后的精度。
+
+05:15:01.096298 CST观测P2已到554/3723步，模型进程238503和控制器233721
+存活。真实latest.pth的CPU检查见step512、4096个不同fit行、1142项delta，
+其中70项属于decoder.5.candidate_evidence_read；866项Adam状态皆为512，
+模型与Adam浮点状态有限，原本零初始化的P2 output.weight已有非零值。文件
+344458909B，SHA256为1c0a555cf7178f63e29cfb2e52665dd12cdaec66a2c252ac645fc0db42315853。
+两臂前512步的4096个训练行顺序相同；没有据此声称增强后的所有训练点逐位
+一致。实际load.json亦记录1072项G delta、70项P2状态和fresh optimizer。
+检查无CUDA、前向或优化更新；这是滚动恢复文件，不是终点或新正式成绩。
+
+第64—554步实测持续耗时2.3399秒/步，加P2自己的670.2644秒起点评估耗时，
+估计终点评估于07:29:46 CST附近结束；实际结束时间仍待回执。
+下一只读检查07:30 CST，届时未结束则180—300秒后复查同一控制器，不重启。
+本次GPU占用27331MiB，系统盘可用703016960B、数据盘876249088B。两臂正式
+9508条评估仍按既定顺序执行，不因控制留出下降取消，也不改变活动训练配置。
+
+证据：refine-logs/pvg_g_p2_20261002/boundary_0515.json、p2_initial_receipt.json、
+p2_checkpoint_512.json、p2_training_prefix.json、p2_measured_timing.json。
+当前未取得P2终态或正式9508条增益；历史G/V99指标不更新，目标ACTIVE_UNMET。

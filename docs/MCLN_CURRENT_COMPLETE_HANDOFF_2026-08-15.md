@@ -20943,3 +20943,10 @@ E2 best/latest于**21:59:53/21:59:59 CST**完成保存，实际606018292/8147711
 本轮训练耗时12695.955秒，训练/评估/保存完整间隔14316.269秒。按最新实测间隔估算第21轮终点为**2026-10-04 01:34 CST左右**，这是估计而非结束事实。下一次本地完整轮次收集为**2026-10-01 21:58:14 CST**，到时未完成则按既定240秒复查。
 
 移动观察回执另存为[E7观察原文](results/cs_mcln_scanrefer_readback_20260930/raw/monitor_epoch_07.json)及同轮monitor state，保留E1/E2/E3/E4/E5/E6既有归档，不改写历史成绩。[E7核对记录](results/cs_mcln_scanrefer_readback_20260930/epoch_7_audit.json)和[逐轮CSV](results/cs_mcln_scanrefer_readback_20260930/epoch_metrics.csv)使用真实回执。记录和同步操作未改训练源码。ScanRefer尚未完成预定训练及方法终态判断，Nr3D/Sr3D未进入新结构正式训练，三数据集goal继续保持未完成。
+
+
+### 20.374.1 第0—7轮曲线矢量归档（2026-10-01）
+
+将20.374已发布的完整计数绘制为[Acc@0.25 SVG](results/cs_mcln_readback_epoch7_figures_20261001/r_epoch7_acc025.svg)、[Acc@0.50 SVG](results/cs_mcln_readback_epoch7_figures_20261001/r_epoch7_acc050.svg)，并保留对应PDF、PNG、两份生成脚本、固定计数CSV、原始CSV路径与SHA256及LaTeX引用。24个点已与三份原始CSV逐一核验；SVG保留文字且无嵌入位图，PDF无图像XObject，PNG已实际查看。
+
+纵轴截断、每点9508表达、单seed相关快照及R同时改变M1数值协议的限制已写入README与caption；历史CS/native不作为R独立因果消融，不绘制未来轮次或拼接单项最好。LaTeX示例改为双栏figure*的0.8\textwidth，避免半宽缩放使字体过小。按paper-figure要求完成新鲜上下文gpt-6-astra/max图形复核PASS，same-family/provisional；审查记录和所有归档文件SHA见[证据目录](results/cs_mcln_readback_epoch7_figures_20261001/README.md)。本节是已有结果的可视化，新增优化更新和GPU前向均为0；21轮训练、既有观察器与排队的同框R诊断不变。

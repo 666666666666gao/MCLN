@@ -1,25 +1,7 @@
 {
-  "collected_at_cst": "2026-10-01T21:58:17.854837+08:00",
-  "completed_through_epoch": 8,
-  "planned_epochs": 21,
-  "protocol": "full9508 native last/bbs; batch12; seed2027; E71 fresh init; R plus M1 numerical correction",
-  "best_training_epoch": 8,
-  "best_metrics": {
-    "samples": 9508,
-    "hits025": 5440,
-    "hits050": 4374,
-    "acc025": 0.5721497686159024,
-    "acc050": 0.4600336558687421
-  },
-  "latest_metrics": {
-    "samples": 9508,
-    "hits025": 5440,
-    "hits050": 4374,
-    "acc025": 0.5721497686159024,
-    "acc050": 0.4600336558687421
-  },
-  "csv_sha256": "38c61b48d5432e5e2847ae7f9e53962472acac10bd0d5932f7b22de80ef97a0d",
-  "sources": [
+  "audited_at_cst": "2026-10-01T22:02:25.298700+08:00",
+  "completed_epoch": 8,
+  "source_hashes_verified": [
     {
       "file": "raw/monitor_latest_observation.json",
       "remote_path": "/root/cs_mcln_scanrefer_readback_20260930/monitor_latest_observation.json",
@@ -76,13 +58,74 @@
       "sha256": "2b6726128dd04d6782cc1ce2e6c81b74c79395c4e029b337aad264f960fc3f39"
     }
   ],
+  "epoch_specific_receipts": [
+    {
+      "file": "raw/monitor_epoch_08.json",
+      "sha256": "8c55d52e275f44c7eed71089e1a1d786a8bec8bda889598b9cd1a09870568264"
+    },
+    {
+      "file": "raw/monitor_state_epoch_08.json",
+      "sha256": "7bb46199b87a3d1580bdc024462c09d76cfa2c89ca827c5467302faf866820e3"
+    }
+  ],
+  "csv_sha256_verified": "38c61b48d5432e5e2847ae7f9e53962472acac10bd0d5932f7b22de80ef97a0d",
+  "initial_metrics": {
+    "samples": 9508,
+    "hits025": 5514,
+    "hits050": 4408,
+    "acc025": 0.5799326882625158,
+    "acc050": 0.4636095919225915
+  },
+  "training_epoch": {
+    "epoch": 8,
+    "seconds": 12680.499449253082,
+    "steps": 4055,
+    "samples": 48655,
+    "validation": {
+      "samples": 9508,
+      "hits025": 5440,
+      "hits050": 4374,
+      "acc025": 0.5721497686159024,
+      "acc050": 0.4600336558687421
+    }
+  },
+  "total_optimizer_updates": 32440,
+  "total_training_input_consumption": 389240,
+  "best_training_epoch": 8,
+  "zero_update_excluded_from_training_best": true,
+  "delta_hits_vs_own_e0": [
+    -74,
+    -34
+  ],
+  "delta_hits_vs_previous_epoch": [
+    -20,
+    31
+  ],
+  "historical_same_epoch_delta_vs_old_cs": [
+    9,
+    29
+  ],
+  "historical_same_epoch_delta_vs_native": [
+    -1,
+    -36
+  ],
   "attribution_limit": "Old CS/native comparisons also differ in M1 numerical protocol. Not an isolated R ablation.",
+  "previous_once_only_cpu_restore": "restore_witness_v2.json; actual epoch1 restore passed, not rerun for epoch8",
+  "monitor_observed_at_cst": "2026-10-01T21:57:44.852011+08:00",
+  "next_local_collection_cst": "2026-10-02T01:55:08.169780+08:00",
   "estimated_epoch21_cst": "2026-10-04T01:22:36.299870+08:00",
+  "measured_epoch_including_eval_seconds": 14264.844174146652,
   "disk_free_bytes": {
     "/root": 1414881280,
     "/root/autodl-tmp": 1245057024
   },
-  "required_extra_atomic_save_bytes": 814769538,
-  "terminal": false,
-  "exit_code": null
+  "actual_weight_bytes": {
+    "latest": 814771138,
+    "best": 606018292
+  },
+  "actual_atomic_peak_bytes": 2235560568,
+  "actual_additional_atomic_save_bytes": 814771138,
+  "root_free_after_required_additional_bytes": 600110142,
+  "scientific_training_source_changed_by_this_recording": false,
+  "planned_epochs_unchanged": 21
 }

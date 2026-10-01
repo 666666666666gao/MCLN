@@ -20897,3 +20897,10 @@ E2 best/latest于**21:59:53/21:59:59 CST**完成保存，实际606018292/8147711
 本轮训练耗时12780.075秒，训练/评估/保存完整间隔14380.525秒。按最新实测间隔估算第21轮终点为**2026-10-04 01:51 CST左右**，这是估计而非结束事实。下一次本地完整轮次收集为**2026-10-01 14:01:33 CST**，到时未完成则按既定240秒复查。
 
 移动观察回执另存为[E5观察原文](results/cs_mcln_scanrefer_readback_20260930/raw/monitor_epoch_05.json)及同轮monitor state，保留E1/E2/E3/E4既有归档，不改写历史成绩。[E5核对记录](results/cs_mcln_scanrefer_readback_20260930/epoch_5_audit.json)和[逐轮CSV](results/cs_mcln_scanrefer_readback_20260930/epoch_metrics.csv)使用真实回执。记录和同步操作未改训练源码。ScanRefer尚未完成预定训练及方法终态判断，Nr3D/Sr3D未进入新结构正式训练，三数据集goal继续保持未完成。
+
+
+### 20.371.1 CSV发布字节核对（2026-10-01 10:30 CST）
+
+核对发现，E5首次Git发布将本地CSV的7处CRLF转换成LF，提交字节SHA为`e5fdded62826bab798ccd99ab76603b1ec89d7a497a42e0d32220f359e78f9cd`，与manifest记录的原始CSV SHA `dfaf2210aa91ca0e2054a6b306952ad466213f1eb8c3ca3318a0862da6d5ac8f`不同；逐字节对照确认差异仅为换行，命中数未变，原始远端回执的提交SHA均与manifest一致。
+
+已只为`docs/results/cs_mcln_scanrefer_readback_20260930/epoch_metrics.csv`加入`-text whitespace=cr-at-eol`，并用`git add --renormalize`重新读入当前原始字节。主工作树与隔离工作树的Git索引CSV SHA现均与manifest一致，保留7处原始CRLF；已有实验回执、CSV数值、训练源码和配置保持原状。核对证据保存在`epoch_5_publication_byte_audit.json`，本节补充保留旧文档字节，不重写E5科学结果，也不产生E6指标。

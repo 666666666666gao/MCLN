@@ -9,3 +9,5 @@ The waiting controller was launched at 16:10 CST, PID220304. It waits until 2026
 Current training is only published through R E6. No paired GPU result exists. Current R21 ETA is October4 01:43 CST; allow approximately 45–60 minutes after release for sanity and full validation, based on the previous complete CS replay. This is a schedule estimate, not a completion receipt.
 
 Interpretation limit: bypassing R within a jointly trained checkpoint measures the direct final forward effect. It does not replace the common-numeric independently trained no-R control, prove training causality or prove validation coverage was preserved relative to E71. GT is used only offline for IoU/coverage; the raw256 oracle is not deployable.
+
+The local result reader was actually launched on October1 at16:26 CST (uv21684/python42492/python38520), first SSH collection October4 03:00 CST, then300 seconds if unfinished. It only fetches existing results/logs, verifies source hashes and recounts the recorded paired hits; no model execution. Its initial launch-verification assumption failed, then the original process chain and initial WAIT_UNTIL were verified without relaunch.

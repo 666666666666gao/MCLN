@@ -20963,3 +20963,10 @@ E2 best/latest于**21:59:53/21:59:59 CST**完成保存，实际606018292/8147711
 本轮训练耗时12680.499秒，训练/评估/保存完整间隔14264.844秒。按最新实测间隔估算第21轮终点为**2026-10-04 01:22 CST左右**，这是估计而非结束事实。下一次本地完整轮次收集为**2026-10-02 01:55:08 CST**，到时未完成则按既定240秒复查。
 
 移动观察回执另存为[E8观察原文](results/cs_mcln_scanrefer_readback_20260930/raw/monitor_epoch_08.json)及同轮monitor state，保留E1/E2/E3/E4/E5/E6/E7既有归档，不改写历史成绩。[E8核对记录](results/cs_mcln_scanrefer_readback_20260930/epoch_8_audit.json)和[逐轮CSV](results/cs_mcln_scanrefer_readback_20260930/epoch_metrics.csv)使用真实回执。记录和同步操作未改训练源码。ScanRefer尚未完成预定训练及方法终态判断，Nr3D/Sr3D未进入新结构正式训练，三数据集goal继续保持未完成。
+
+
+## 20.375.1 R第0—8轮矢量曲线归档（2026-10-01T22:26:15.586736+08:00）
+
+依据20.375已发布的完整回执，将两张对照曲线更新到E8；固定快照包含CS+R、历史CS、历史native各9个真实点，每点9508条原生`last/bbs`表达。源CSV及源提交、生成脚本、SVG/PDF和检查用PNG一并保留；不绘制E9以后的预测点，不改模型或增加优化更新。
+
+[Acc@0.25矢量SVG](results/cs_mcln_readback_epoch8_figures_20261001/r_epoch8_acc025.svg)和[Acc@0.50矢量SVG](results/cs_mcln_readback_epoch8_figures_20261001/r_epoch8_acc050.svg)分别附有PDF及LaTeX片段。[来源与比较说明](results/cs_mcln_readback_epoch8_figures_20261001/README.md)披露纵轴截断、M1数值协议的共同变化和单seed相关快照；历史曲线不能分离R的因果增量。独立上下文的Codex gpt-6-astra/max图形审核为PASS，记为same-family/provisional；审核直接读取实际数据并查看渲染，最终论文模板未编译。该图形审核不构成方法有效性或跨数据集验收。

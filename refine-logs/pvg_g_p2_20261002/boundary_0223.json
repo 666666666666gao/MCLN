@@ -1,0 +1,74 @@
+{
+  "observed_cst": "2026-10-02T02:23:00.868294+08:00",
+  "pair": {
+    "status": "running",
+    "completed": [],
+    "started_cst": "2026-10-02T01:41:44.558074+08:00",
+    "stage": "g_control/train",
+    "process_pid": 233722
+  },
+  "g_control": {
+    "initial": {
+      "elapsed_seconds": 653.2327558994293,
+      "formal_rows": 0,
+      "metrics": {
+        "bbf": {
+          "mask_hits25": 6208,
+          "mask_hits50": 5833,
+          "mask_iou_sum": 5126.671650556149,
+          "mask_miou": 74.43983810884491,
+          "rec_hits25": 6206,
+          "rec_hits50": 5647
+        },
+        "bbs": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5818,
+          "mask_iou_sum": 5110.091527584242,
+          "mask_miou": 74.19909289362919,
+          "rec_hits25": 6176,
+          "rec_hits50": 5602
+        }
+      },
+      "rows": 6887,
+      "rows_sha256": "bcb49aa285cad9ca594f755f151b4ace454ab216e8633a1161a5766aa757e455",
+      "stage": "initial",
+      "status": "pass",
+      "time_cst": "2026-10-02T01:59:57.743076+08:00"
+    },
+    "last_step": {
+      "loss": 13.520852088928223,
+      "loss_native": 13.495038032531738,
+      "loss_assignment_correction": 0.025814058259129524,
+      "reassigned_queries": 214,
+      "reassigned_samples": 8,
+      "matched_queries": 8,
+      "replaced_ce_old": 4.765330791473389,
+      "replaced_ce_new": 5.12672758102417,
+      "grad_norm": 108.30823516845703,
+      "seconds": 2.26094651222229,
+      "rows": [
+        24568,
+        11432,
+        8751,
+        27595,
+        1306,
+        33960,
+        25823,
+        6070
+      ],
+      "loss_bbox": 1.0860954523086548,
+      "loss_giou": 1.7023924589157104,
+      "loss_ce": 36.56694030761719,
+      "loss_sem_align": 105.94235229492188,
+      "step": 590,
+      "total_steps": 3723,
+      "cumulative_seconds": 1365.990489244461
+    },
+    "latest.pth": {
+      "bytes": 342222895,
+      "modified_unix": 1790878787
+    }
+  },
+  "g_p2": {},
+  "processes_and_resources": "233721       41:18 S+   /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/pvground_g_p2_20261002/pair.py --root /root/pvground_g_p2_20261002\n233722 233721       41:18 S+   flock -n /root/autodl-tmp/mcln_v99_backbone_gpu0.lock /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/pvground_g_p2_20261002/run.py --spec /root/pvground_g_p2_20261002/g_control/spec.json --mode train\n233723 233722       41:18 Rl+  /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/pvground_g_p2_20261002/run.py --spec /root/pvground_g_p2_20261002/g_control/spec.json --mode train\n234456 233723       23:04 Sl+  /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/pvground_g_p2_20261002/run.py --spec /root/pvground_g_p2_20261002/g_control/spec.json --mode train\n234457 233723       23:03 Sl+  /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -u /root/pvground_g_p2_20261002/run.py --spec /root/pvground_g_p2_20261002/g_control/spec.json --mode train\n23209 MiB, 100 %\nFilesystem       1B-blocks        Used  Available Use% Mounted on\noverlay        32212254720 31148548096 1063706624  97% /\n/dev/sdb       53687091200 52810842112  876249088  99% /root/autodl-tmp\n"
+}

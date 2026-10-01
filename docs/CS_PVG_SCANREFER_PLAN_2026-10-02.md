@@ -1,5 +1,10 @@
 # PV-Ground pretrained core + CS improvements
 
+**Superseded before formal training.** The later user clarification selects
+the verified PV-Ground+G endpoint and a G vs G+P2 same-budget comparison; see
+`PVG_G_P2_PLAN_2026-10-02.md`. This wholesale-port draft passed a two-step GPU
+engineering probe only. It has no trained accuracy and is not the active plan.
+
 User decision (2026-10-02): replace the MCLN E71 starting core with the author's
 PV-Ground pretrained ScanRefer weights and adapt our improvements. Old MCLN
 experiments remain historical records; their active training can be superseded

@@ -1,4 +1,15 @@
-# Current research contract — 2026-09-21
+# Current research contract — 2026-10-02
+
+The user now explicitly selects the author's PV-Ground pretrained core plus our
+adapted CS modules. This supersedes the earlier MCLN-only baseline restriction.
+Current implementation and run order are in
+`docs/CS_PVG_SCANREFER_PLAN_2026-10-02.md`. First test M1/M2/M3/R with native losses,
+single native ranking and no inference sidechains. A newly measured PV-Ground E0,
+complete ScanRefer validation and same-start controls are required for gain claims.
+The development gate remains 58.3%/50.0%; only then fix the method and independently
+train Nr3D/Sr3D. Preserve historical MCLN/V99 results. No new accuracy is claimed.
+
+## Historical contract (superseded experiment; evidence remains archived)
 
 User priority: return to protected MCLN/V99 family; improve Nr3D beyond native
 MCLN while preserving ScanRefer and Sr3D protected results. No multi-seed or

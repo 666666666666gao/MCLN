@@ -1,0 +1,60 @@
+{
+  "schema": "mcln-r-epoch7-curve-data-v1",
+  "validation_expressions_per_point": 9508,
+  "seed": 2027,
+  "batch": 12,
+  "native_output": "last/bbs",
+  "sources": [
+    {
+      "method": "CS+R",
+      "source_csv": "docs/results/cs_mcln_scanrefer_readback_20260930/epoch_metrics.csv",
+      "source_sha256": "20b74da0afef477802b7aa7834056e647b4e9eedf66fac967d725dc9d71125dd",
+      "source_git_commit": "70a64bf1af2ed4eab9e709d75788777be560aead",
+      "plotted_complete_epochs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "method": "CS historical",
+      "source_csv": "docs/results/cs_mcln_scanrefer_20260923/epoch_metrics.csv",
+      "source_sha256": "26b66dfec24c4a6bc91989aed5751f31aea681cd96656f1a5d450d9ab3c17b80",
+      "source_git_commit": "70a64bf1af2ed4eab9e709d75788777be560aead",
+      "plotted_complete_epochs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "method": "native historical",
+      "source_csv": "docs/results/cs_mcln_scanrefer_native_20260926/epoch_metrics.csv",
+      "source_sha256": "2447bf2806fe25285d9cd4892ed4f7a8118a063c140aebb6ea2ac72657f873ef",
+      "source_git_commit": "70a64bf1af2ed4eab9e709d75788777be560aead",
+      "plotted_complete_epochs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    }
+  ],
+  "counts_sha256": "3d7fab2e88142157ff54e3dc2d41ef6cc51b5e39a4355b0e7d940617314f6f43",
+  "comparability_limit": "CS+R also uses deterministic M1 aggregation. Historical CS/native curves do not isolate R. Epoch snapshots are correlated; no cross-seed error bars.",
+  "training_or_optimizer_updates_added": 0
+}

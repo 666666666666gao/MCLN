@@ -136,3 +136,5 @@
 - 2026-10-02T19:56:51.346474+08:00 Same-tail raw E0 selectedREC/input parity and142 updates observed; reviewed post-run collection/recount prepared, no terminal result.
 
 - 2026-10-02T21:43:27.120860+08:00 Archived P3 selected-query magnitude analysis only; active same-tail pair unchanged; no new REC result.
+
+- 2026-10-02T23:23:25.075620+08:00 Same-tail raw formal5594/4457 archived/recounted; paired fused attempt failed E0 exact-box assertion before optimizer creation; zero updates, no fused final result.

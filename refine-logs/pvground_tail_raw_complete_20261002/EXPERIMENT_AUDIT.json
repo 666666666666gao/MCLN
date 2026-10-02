@@ -1,0 +1,994 @@
+{
+  "verdict": "WARN",
+  "blocking_findings": [],
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "review_time_utc": "2026-10-02T15:15:24Z",
+  "scope": "Local source and saved-artifact audit with independent Python standard-library CPU arithmetic. No SSH, model execution, training, publisher or repository mutation; checkpoint hash only.",
+  "checklist": {
+    "A": {
+      "status": "PASS",
+      "finding": "Native real-GT provenance and predicted object-input protocol traced within saved-source scope."
+    },
+    "B": {
+      "status": "PASS",
+      "finding": "All raw metrics, selected/coarse thresholds, paired differences, fit order and intake/archive hashes independently reproduce."
+    },
+    "C": {
+      "status": "WARN",
+      "finding": "Raw training and formal completed with exits 0. Fused E0 attempt failed with exit 1 before optimizer creation; zero updates. No fused post-training result."
+    },
+    "D": {
+      "status": "WARN",
+      "finding": "Actual evaluator/tail call order supported; zero-init and gradient witnesses are batch-scoped; dormant replacement reconstruction gets no execution credit."
+    },
+    "E": {
+      "status": "WARN",
+      "finding": "One seed, previously seen module holdout, development validation, clamped saved boxes, inherited units, saved Mask IoUs and saved GPU coverage flags."
+    },
+    "F": {
+      "status": "PASS",
+      "scope": "static_only",
+      "finding": "Current corrected publisher binds ten input hashes, thirteen payloads, exact prefix and scoped staging; guarded nonforce push. No certification of runtime publication."
+    }
+  },
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\formal\\receipt.json",
+      "bytes": 685,
+      "sha256": "485cac46e227a3d71596c9b62506dba60b5e3722d7b7d376a049b4403b5483f0"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\formal\\rows.jsonl",
+      "bytes": 11465618,
+      "sha256": "019210a51f6f6c54fea52d4bf0b67c56154d4840c9d96459857b904ca6910f79"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\formal.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\formal.log",
+      "bytes": 3225,
+      "sha256": "0082771b80aaec9929791c544ce824fedab27c45d20ad2ade13237648afc23f2"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\imports.json",
+      "bytes": 1256,
+      "sha256": "f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\initial\\receipt.json",
+      "bytes": 683,
+      "sha256": "3c264a7c99d707dc654d59b1ed61cbd74ab28164cca315c57af8d69bdf9fd444"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\initial\\rows.jsonl",
+      "bytes": 8460712,
+      "sha256": "ab71095b3f658471776e7c6af63c5908edea02169eee10b9f73a9c26657dd109"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\initial_control_comparison.json",
+      "bytes": 130,
+      "sha256": "a62610b78752ebf6e7bad78dd9ddcae2b8a24bb029945944a6f14b86cc69a44c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\load.json",
+      "bytes": 347,
+      "sha256": "41cbb2499c94f308e030baee68120df885d5fb12c015d406ae8f97fd6c48b697"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\receipt.json",
+      "bytes": 3341,
+      "sha256": "1014f97a5c8a069173716fb9e03297b8464d94657a2529c9fc744429653e7af9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\spec.json",
+      "bytes": 3710,
+      "sha256": "30f8a11ae02f0af3cae1ae3db6d5f225820b13b426c44466615cca01cf5caf13"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\terminal\\receipt.json",
+      "bytes": 684,
+      "sha256": "41e1ed2148d4ce7ef72de2b5927e6d936f1f012575f388fdbf624b964ec9d810"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\terminal\\rows.jsonl",
+      "bytes": 8459584,
+      "sha256": "c006df1980841b3d359e0bc988ace837dbb969c4376df60be21e26ca0e7405cc"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\train.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\train.jsonl",
+      "bytes": 2235828,
+      "sha256": "67cc528aa67679ce24a38d3ef53bf88f623efc72790bd402b5af45191426bfec"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\arm\\train.log",
+      "bytes": 44410,
+      "sha256": "f414af6c88caeb6d70b35cbb4f1cef89320e090a3fb8c1e2459dfeb2974a1796"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\controller.py",
+      "bytes": 4120,
+      "sha256": "21774197eb1ee5a9c4e7742953c1d496e75d6192c80c82de24eb6084398bdcb6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\CPU_RECOUNT.json",
+      "bytes": 10090,
+      "sha256": "08fe504affc8ec90f3c37a5ef6f950bfa77a875b8c7c88a4a8ce77c49f3e676a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\INTAKE.json",
+      "bytes": 11095,
+      "sha256": "f5233d4c89e4bca0d4acb8fa7303057d4a7b39b5e22ac83be3d367cd68a551bb"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\preflight\\imports.json",
+      "bytes": 1256,
+      "sha256": "f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\preflight\\load.json",
+      "bytes": 347,
+      "sha256": "26d0e62ad5ce7537c3bc0f68d3d9e8b2fde1f49acb6961600bcfb32b1cf4452f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\preflight\\preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\preflight\\preflight.json",
+      "bytes": 14485,
+      "sha256": "24b51e90a387fff1c938612f6eab1f73e3c59c51bbaba6c2a5170754ab47457e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\preflight\\preflight.log",
+      "bytes": 10594,
+      "sha256": "a947d4b337a8a2c50a312777eff54d059ab0e38d2335acd229ac8f0dca816bb8"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\preflight\\spec.json",
+      "bytes": 3720,
+      "sha256": "667bd2c4984d550c89eab0150eaafcc4f687f163b9dc2103768889ea96d463fc"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\prepare_source.py",
+      "bytes": 2218,
+      "sha256": "7487405bfd6865838720613c046a6c055d13f4a8d107cc5d26ea66b86e493f8e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\run.py",
+      "bytes": 38567,
+      "sha256": "483a7db4e0d11d8b79af63ea6e02f6d9455bed218190efc17d42e48929648346"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\imported\\evaluator.py",
+      "bytes": 41473,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\imported\\main_utils.py",
+      "bytes": 24599,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\imported\\models.losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\imported\\models.pv_ground.py",
+      "bytes": 25386,
+      "sha256": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\imported\\prepare_data.py",
+      "bytes": 19658,
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\imported\\src.joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\input_manifest.json",
+      "bytes": 161881,
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\pvground_tail_preflight.py",
+      "bytes": 2898,
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\source_port.json",
+      "bytes": 10485,
+      "sha256": "3b2b44241f0c1b52b5e42f6ea84e656abb1dc3f3b062c87d49f0bcbf94b2f7bc"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\source\\split_protocol.json",
+      "bytes": 246139,
+      "sha256": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\status.json",
+      "bytes": 404,
+      "sha256": "86824e4c1fb15a24deaa494eeaf757415af6b791f93ef1fa34528ecb1b38c473"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\collect_complete_arm.py",
+      "bytes": 6134,
+      "sha256": "d9ec4305afef6c066be16bc9ce9655356d240935bb33ba092ba04e36088bbe6c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\recount_complete_arm.py",
+      "bytes": 8537,
+      "sha256": "23724c51a50a46fadcad75fdff662c22572223e2131b731924721329d6410e94"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\publish_raw_result_and_fused_launch.py",
+      "bytes": 12367,
+      "sha256": "f545b377772b21ec46cc029c0af423e68506ad739a4c315bb375fb0c8dc69c4f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_fused_training_launch.json",
+      "bytes": 987,
+      "sha256": "f92de620ee214e024b45d948f328c4d1127801ef3d49c6d6d169f8ad6a23562d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_raw_training_boundary_222900.json",
+      "bytes": 13666,
+      "sha256": "34ee5ff2709f9ccf3c4a1ecfe83ef941f99bb6084c83ff882d258aad3a9c6089"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\train.jsonl",
+      "bytes": 2236096,
+      "sha256": "f7170d5f16fb027f061d52b60c585ad7273c3586b8f72b33ac4b7034c31201d4"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\initial\\rows.jsonl",
+      "bytes": 5510292,
+      "sha256": "bcb49aa285cad9ca594f755f151b4ace454ab216e8633a1161a5766aa757e455"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\terminal\\rows.jsonl",
+      "bytes": 5510801,
+      "sha256": "f8eefd766dab7656b219bce36ad2422b6785a2d1fbdb0e578fdce23ee99e6c41"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\formal\\rows.jsonl",
+      "bytes": 7467535,
+      "sha256": "83c2ff101759b5a24fd3b7b792b39ded4ff26b8054565f6bc00085859375aa38"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\formal\\receipt.json",
+      "bytes": 685,
+      "sha256": "ce178e23eee1d85665bd3c290b9da95b6c061416de2a7c3e6893e0e57da2e859"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\receipt.json",
+      "bytes": 2535,
+      "sha256": "60af173412696ee53ac13e60116460afa6bae5050cd96af84249088dba296374"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\audit.json",
+      "bytes": 2842,
+      "sha256": "eaf159d8092eea1383c69550729c753dfd5e58dea788bf9df346682aed3df704"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\archives\\pvg_tail_raw_20261002\\archive_receipt.json",
+      "bytes": 424,
+      "sha256": "451a27073a5ee45836867691ab1b2a0a117eb693ae9856919fda6c099b08178a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\archives\\pvg_tail_raw_20261002\\terminal.pth",
+      "bytes": 346718993,
+      "sha256": "50961f4be97d5e02cef158b32f3c85300308f7ce044b7668def07277b3df85bd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\selected_refinement_publication.json",
+      "bytes": 694,
+      "sha256": "4dcd493c2e9b9906a955a7d7b8ba3d24099d89485d4c1e888e50ac88e87c347b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publication_stdio_read.json",
+      "bytes": 264,
+      "sha256": "a4a9b05e7fb95e3e912dd1c393af92da9221bfc80db1eb0d153f87ff768cef15"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_fused_training_boundary_225200.json",
+      "bytes": 2962,
+      "sha256": "a23f423e3693b8243d7d471b0449fcd6900cf49e409ab4b2e9f7bb1c94ea856a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\DIFF.json",
+      "bytes": 812918,
+      "sha256": "0de306713d2189eb4bac6df78b06142f026b4d1f359883a7772fbf3ceddbfdec"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\INTAKE.json",
+      "bytes": 1983,
+      "sha256": "e40cb75d141221e2f60961aba92f590dd4158be947e0ff3c4144e8f1c67452f0"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\status.json",
+      "bytes": 202,
+      "sha256": "02f7bf48a7fc82d6466d393f5df903aaaf75e83cac84c8e699cf05aca5108b86"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\run.py",
+      "bytes": 38567,
+      "sha256": "483a7db4e0d11d8b79af63ea6e02f6d9455bed218190efc17d42e48929648346"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\arm\\spec.json",
+      "bytes": 3731,
+      "sha256": "03c6d64f322210998e2cc35b71f42dd42628465d5d4303588a8e269c90311c76"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\arm\\load.json",
+      "bytes": 348,
+      "sha256": "1211d7caa114d4364fa56256979467235a762b510d46b75310ffe5fd678dcbae"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\arm\\imports.json",
+      "bytes": 1256,
+      "sha256": "f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\arm\\train.log",
+      "bytes": 3191,
+      "sha256": "387d217122a1dc86c8cdafe0579ed0685a09d98421e262f48c891c487e704cad"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\arm\\train.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\arm\\initial\\receipt.json",
+      "bytes": 682,
+      "sha256": "3e033e23e997464fae9a3d5db6d640ea90f662a24038903fd93a4db76b2838d1"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\failed_tail_fused_initial\\arm\\initial\\rows.jsonl",
+      "bytes": 8461047,
+      "sha256": "1749aaf81d15d70867e3fd842804f60f91a4b5826ac779e3c92fe9ec3c8fc5e8"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\RAW_RESULT_REVIEW_REQUEST.md",
+      "bytes": 8891,
+      "sha256": "3be7a5875a9abf9c667c2a0ff6a2137bd6843086327c02b403e72e8e45ae6044"
+    }
+  ],
+  "publisher": {
+    "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\publish_raw_result_and_fused_launch.py",
+    "bytes": 12367,
+    "sha256": "f545b377772b21ec46cc029c0af423e68506ad739a4c315bb375fb0c8dc69c4f",
+    "review_bound_input_count": 10,
+    "payload_count": 13,
+    "executed_by_reviewer": false,
+    "publication_success_certified": false,
+    "diagnostic_runtime_status": "Executor-reported ongoing diagnosis is not independently evidenced by the inspected file set; no diagnostic execution/result credited."
+  },
+  "independent_checks": {
+    "raw_evaluation_records": 23282,
+    "historical_evaluation_records": 23282,
+    "fused_failed_e0_records": 6887,
+    "total_evaluation_records": 53451,
+    "training_records": 7446,
+    "raw_box_iou_calculations": 93128,
+    "historical_selected_box_iou_calculations": 46564,
+    "fit_order_matches_historical_control": true,
+    "fit_rows": 29778,
+    "fit_steps": 3723,
+    "fit_ids_once": true,
+    "fit_holdout_disjoint": true,
+    "intake_files_verified": 42,
+    "fused_failure_intake_files_verified": 9,
+    "all_raw_selected_and_coarse_thresholds_match": true,
+    "all_historical_selected_thresholds_match": true,
+    "all_fused_e0_selected_and_coarse_thresholds_match": true,
+    "maximum_raw_box_or_coarse_iou_error": 0.0000036777091214634794,
+    "all_numeric_recount_fields_agree": true,
+    "all_fused_diff_lists_counts_maxima_thresholds_examples_agree": true,
+    "archived_checkpoint_sha256": "50961f4be97d5e02cef158b32f3c85300308f7ce044b7668def07277b3df85bd",
+    "archived_checkpoint_bytes": 346718993,
+    "checkpoint_deserialized": false
+  },
+  "raw_results": {
+    "initial": {
+      "bbs": {
+        "rec_hits25": 6176,
+        "rec_hits50": 5602,
+        "mask_hits25": 6180,
+        "mask_hits50": 5818,
+        "mask_iou_sum": 5110.112005356001,
+        "mask_miou": 74.19939023313489,
+        "cpu_box_iou_max_abs_difference": 0.0000028997857486334766,
+        "cpu_coarse_iou_max_abs_difference": 0.0000028997857486334766,
+        "acc25": 89.6762015391317,
+        "acc50": 81.3416581966023,
+        "same_selected_query_refinement": {
+          "25": {
+            "fixes": 0,
+            "breaks": 0,
+            "net": 0,
+            "coarse_hits": 6176
+          },
+          "50": {
+            "fixes": 0,
+            "breaks": 0,
+            "net": 0,
+            "coarse_hits": 5602
+          }
+        },
+        "executed_gpu_coverage_flags": {
+          "25": {
+            "full256": 6854,
+            "top16": 6509,
+            "selected": 6176,
+            "good_box_not_selected": 678
+          },
+          "50": {
+            "full256": 6694,
+            "top16": 6302,
+            "selected": 5602,
+            "good_box_not_selected": 1092
+          }
+        }
+      },
+      "bbf": {
+        "rec_hits25": 6206,
+        "rec_hits50": 5647,
+        "mask_hits25": 6208,
+        "mask_hits50": 5833,
+        "mask_iou_sum": 5126.692128327908,
+        "mask_miou": 74.44013544835063,
+        "cpu_box_iou_max_abs_difference": 0.0000028997857486334766,
+        "cpu_coarse_iou_max_abs_difference": 0.0000028997857486334766,
+        "acc25": 90.11180484971686,
+        "acc50": 81.99506316248004,
+        "same_selected_query_refinement": {
+          "25": {
+            "fixes": 0,
+            "breaks": 0,
+            "net": 0,
+            "coarse_hits": 6206
+          },
+          "50": {
+            "fixes": 0,
+            "breaks": 0,
+            "net": 0,
+            "coarse_hits": 5647
+          }
+        },
+        "executed_gpu_coverage_flags": {
+          "25": {
+            "full256": 6854,
+            "top16": 6549,
+            "selected": 6206,
+            "good_box_not_selected": 648
+          },
+          "50": {
+            "full256": 6694,
+            "top16": 6330,
+            "selected": 5647,
+            "good_box_not_selected": 1047
+          }
+        }
+      }
+    },
+    "terminal": {
+      "bbs": {
+        "rec_hits25": 6157,
+        "rec_hits50": 5579,
+        "mask_hits25": 6139,
+        "mask_hits50": 5770,
+        "mask_iou_sum": 5069.073430051329,
+        "mask_miou": 73.60350559098778,
+        "cpu_box_iou_max_abs_difference": 0.000003175704432201165,
+        "cpu_coarse_iou_max_abs_difference": 0.0000036777091214634794,
+        "acc25": 89.40031944242777,
+        "acc50": 81.007695658487,
+        "same_selected_query_refinement": {
+          "25": {
+            "fixes": 2,
+            "breaks": 7,
+            "net": -5,
+            "coarse_hits": 6162
+          },
+          "50": {
+            "fixes": 25,
+            "breaks": 25,
+            "net": 0,
+            "coarse_hits": 5579
+          }
+        },
+        "executed_gpu_coverage_flags": {
+          "25": {
+            "full256": 6867,
+            "top16": 6499,
+            "selected": 6157,
+            "good_box_not_selected": 710
+          },
+          "50": {
+            "full256": 6702,
+            "top16": 6286,
+            "selected": 5579,
+            "good_box_not_selected": 1123
+          }
+        }
+      },
+      "bbf": {
+        "rec_hits25": 6171,
+        "rec_hits50": 5610,
+        "mask_hits25": 6152,
+        "mask_hits50": 5779,
+        "mask_iou_sum": 5077.223226303933,
+        "mask_miou": 73.72184153192876,
+        "cpu_box_iou_max_abs_difference": 0.000002872566273626198,
+        "cpu_coarse_iou_max_abs_difference": 0.0000036777091214634794,
+        "acc25": 89.6036009873675,
+        "acc50": 81.45781907942501,
+        "same_selected_query_refinement": {
+          "25": {
+            "fixes": 5,
+            "breaks": 5,
+            "net": 0,
+            "coarse_hits": 6171
+          },
+          "50": {
+            "fixes": 29,
+            "breaks": 23,
+            "net": 6,
+            "coarse_hits": 5604
+          }
+        },
+        "executed_gpu_coverage_flags": {
+          "25": {
+            "full256": 6867,
+            "top16": 6542,
+            "selected": 6171,
+            "good_box_not_selected": 696
+          },
+          "50": {
+            "full256": 6702,
+            "top16": 6333,
+            "selected": 5610,
+            "good_box_not_selected": 1092
+          }
+        }
+      }
+    },
+    "formal": {
+      "bbs": {
+        "rec_hits25": 5594,
+        "rec_hits50": 4457,
+        "mask_hits25": 5796,
+        "mask_hits50": 5112,
+        "mask_iou_sum": 4474.568692273635,
+        "mask_miou": 47.06109268272649,
+        "cpu_box_iou_max_abs_difference": 0.0000029887066953455455,
+        "cpu_coarse_iou_max_abs_difference": 0.000002899697089886466,
+        "acc25": 58.83466554480437,
+        "acc50": 46.87631468237274,
+        "same_selected_query_refinement": {
+          "25": {
+            "fixes": 4,
+            "breaks": 5,
+            "net": -1,
+            "coarse_hits": 5595
+          },
+          "50": {
+            "fixes": 24,
+            "breaks": 15,
+            "net": 9,
+            "coarse_hits": 4448
+          }
+        },
+        "executed_gpu_coverage_flags": {
+          "25": {
+            "full256": 8934,
+            "top16": 6245,
+            "selected": 5594,
+            "good_box_not_selected": 3340
+          },
+          "50": {
+            "full256": 7797,
+            "top16": 5423,
+            "selected": 4457,
+            "good_box_not_selected": 3340
+          }
+        }
+      },
+      "bbf": {
+        "rec_hits25": 5597,
+        "rec_hits50": 4472,
+        "mask_hits25": 5801,
+        "mask_hits50": 5108,
+        "mask_iou_sum": 4472.632900356664,
+        "mask_miou": 47.04073307064224,
+        "cpu_box_iou_max_abs_difference": 0.0000029887066953455455,
+        "cpu_coarse_iou_max_abs_difference": 0.000002899697089886466,
+        "acc25": 58.866217921750106,
+        "acc50": 47.034076567101394,
+        "same_selected_query_refinement": {
+          "25": {
+            "fixes": 5,
+            "breaks": 5,
+            "net": 0,
+            "coarse_hits": 5597
+          },
+          "50": {
+            "fixes": 23,
+            "breaks": 14,
+            "net": 9,
+            "coarse_hits": 4463
+          }
+        },
+        "executed_gpu_coverage_flags": {
+          "25": {
+            "full256": 8934,
+            "top16": 6412,
+            "selected": 5597,
+            "good_box_not_selected": 3337
+          },
+          "50": {
+            "full256": 7797,
+            "top16": 5578,
+            "selected": 4472,
+            "good_box_not_selected": 3325
+          }
+        }
+      }
+    }
+  },
+  "historical_results": {
+    "initial": {
+      "bbs": {
+        "rec_hits25": 6176,
+        "rec_hits50": 5602,
+        "mask_hits25": 6180,
+        "mask_hits50": 5818,
+        "mask_iou_sum": 5110.091527584242,
+        "mask_miou": 74.19909289362919
+      },
+      "bbf": {
+        "rec_hits25": 6206,
+        "rec_hits50": 5647,
+        "mask_hits25": 6208,
+        "mask_hits50": 5833,
+        "mask_iou_sum": 5126.671650556149,
+        "mask_miou": 74.43983810884491
+      }
+    },
+    "terminal": {
+      "bbs": {
+        "rec_hits25": 6144,
+        "rec_hits50": 5552,
+        "mask_hits25": 6160,
+        "mask_hits50": 5782,
+        "mask_iou_sum": 5083.667440186953,
+        "mask_miou": 73.81541222864749
+      },
+      "bbf": {
+        "rec_hits25": 6175,
+        "rec_hits50": 5600,
+        "mask_hits25": 6187,
+        "mask_hits50": 5810,
+        "mask_iou_sum": 5106.430377702927,
+        "mask_miou": 74.14593259333421
+      }
+    },
+    "formal": {
+      "bbs": {
+        "rec_hits25": 5600,
+        "rec_hits50": 4452,
+        "mask_hits25": 5825,
+        "mask_hits50": 5136,
+        "mask_iou_sum": 4476.940310225997,
+        "mask_miou": 47.08603607726122
+      },
+      "bbf": {
+        "rec_hits25": 5628,
+        "rec_hits50": 4465,
+        "mask_hits25": 5837,
+        "mask_hits50": 5169,
+        "mask_iou_sum": 4492.69978703151,
+        "mask_miou": 47.251785728139566
+      }
+    }
+  },
+  "raw_initial_to_terminal": {
+    "bbs": {
+      "0.25": {
+        "fixes": 106,
+        "breaks": 125,
+        "net": -19
+      },
+      "0.5": {
+        "fixes": 259,
+        "breaks": 282,
+        "net": -23
+      }
+    },
+    "bbf": {
+      "0.25": {
+        "fixes": 95,
+        "breaks": 130,
+        "net": -35
+      },
+      "0.5": {
+        "fixes": 252,
+        "breaks": 289,
+        "net": -37
+      }
+    }
+  },
+  "raw_paired_historical": {
+    "terminal": {
+      "bbs": {
+        "0.25": {
+          "fixes": 132,
+          "breaks": 119,
+          "net": 13
+        },
+        "0.5": {
+          "fixes": 315,
+          "breaks": 288,
+          "net": 27
+        }
+      },
+      "bbf": {
+        "0.25": {
+          "fixes": 114,
+          "breaks": 118,
+          "net": -4
+        },
+        "0.5": {
+          "fixes": 280,
+          "breaks": 270,
+          "net": 10
+        }
+      }
+    },
+    "formal": {
+      "bbs": {
+        "0.25": {
+          "fixes": 234,
+          "breaks": 240,
+          "net": -6
+        },
+        "0.5": {
+          "fixes": 345,
+          "breaks": 340,
+          "net": 5
+        }
+      },
+      "bbf": {
+        "0.25": {
+          "fixes": 211,
+          "breaks": 242,
+          "net": -31
+        },
+        "0.5": {
+          "fixes": 331,
+          "breaks": 324,
+          "net": 7
+        }
+      }
+    }
+  },
+  "raw_initial_mask_difference_rows": {
+    "bbs": [
+      18482
+    ],
+    "bbf": [
+      18482
+    ]
+  },
+  "fused_failure": {
+    "historical_g": {
+      "change_counts": {
+        "input": 0,
+        "bbs_query": 1,
+        "bbs_box": 6882,
+        "bbs_iou": 5929,
+        "bbs_mask": 2,
+        "bbf_query": 1,
+        "bbf_box": 6880,
+        "bbf_iou": 5928,
+        "bbf_mask": 2
+      },
+      "max_absolute_delta": {
+        "bbs_box": 0.1963639259338379,
+        "bbs_iou": 0.11932502686977386,
+        "bbf_box": 0.014290809631347656,
+        "bbf_iou": 0.029281049966812134
+      },
+      "threshold_changes": {
+        "bbs": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "bbf": {
+          "0.25": 0,
+          "0.5": 0
+        }
+      },
+      "modes": {
+        "bbs": {
+          "metrics": {
+            "rec_hits25": 6176,
+            "rec_hits50": 5602,
+            "mask_hits25": 6180,
+            "mask_hits50": 5818,
+            "mask_iou_sum": 5110.052920821356,
+            "mask_miou": 74.1985323191717
+          },
+          "box_coordinate_delta_le_1e5": 6775,
+          "box_coordinate_max": 0.1963639259338379,
+          "box_iou_max_replay_error": 0.0000026686022358557437,
+          "changed_query_details": [
+            {
+              "row_id": 26603,
+              "query": 68,
+              "prior_query": 225,
+              "max_box_delta": 0.1963639259338379
+            }
+          ]
+        },
+        "bbf": {
+          "metrics": {
+            "rec_hits25": 6206,
+            "rec_hits50": 5647,
+            "mask_hits25": 6208,
+            "mask_hits50": 5833,
+            "mask_iou_sum": 5126.633043793263,
+            "mask_miou": 74.43927753438744
+          },
+          "box_coordinate_delta_le_1e5": 6802,
+          "box_coordinate_max": 0.014290809631347656,
+          "box_iou_max_replay_error": 0.0000026686022358557437,
+          "changed_query_details": [
+            {
+              "row_id": 26641,
+              "query": 116,
+              "prior_query": 203,
+              "max_box_delta": 0.014290809631347656
+            }
+          ]
+        }
+      }
+    },
+    "same_tail_raw": {
+      "change_counts": {
+        "input": 0,
+        "bbs_query": 1,
+        "bbs_box": 6882,
+        "bbs_iou": 5929,
+        "bbs_mask": 1,
+        "bbf_query": 1,
+        "bbf_box": 6880,
+        "bbf_iou": 5928,
+        "bbf_mask": 1
+      },
+      "max_absolute_delta": {
+        "bbs_box": 0.1963639259338379,
+        "bbs_iou": 0.11932502686977386,
+        "bbf_box": 0.014290809631347656,
+        "bbf_iou": 0.029281049966812134
+      },
+      "threshold_changes": {
+        "bbs": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "bbf": {
+          "0.25": 0,
+          "0.5": 0
+        }
+      },
+      "modes": {
+        "bbs": {
+          "metrics": {
+            "rec_hits25": 6176,
+            "rec_hits50": 5602,
+            "mask_hits25": 6180,
+            "mask_hits50": 5818,
+            "mask_iou_sum": 5110.052920821356,
+            "mask_miou": 74.1985323191717
+          },
+          "box_coordinate_delta_le_1e5": 6775,
+          "box_coordinate_max": 0.1963639259338379,
+          "box_iou_max_replay_error": 0.0000026686022358557437,
+          "changed_query_details": [
+            {
+              "row_id": 26603,
+              "query": 68,
+              "prior_query": 225,
+              "max_box_delta": 0.1963639259338379
+            }
+          ]
+        },
+        "bbf": {
+          "metrics": {
+            "rec_hits25": 6206,
+            "rec_hits50": 5647,
+            "mask_hits25": 6208,
+            "mask_hits50": 5833,
+            "mask_iou_sum": 5126.633043793263,
+            "mask_miou": 74.43927753438744
+          },
+          "box_coordinate_delta_le_1e5": 6802,
+          "box_coordinate_max": 0.014290809631347656,
+          "box_iou_max_replay_error": 0.0000026686022358557437,
+          "changed_query_details": [
+            {
+              "row_id": 26641,
+              "query": 116,
+              "prior_query": 203,
+              "max_box_delta": 0.014290809631347656
+            }
+          ]
+        }
+      }
+    }
+  },
+  "fused_optimizer_updates": 0,
+  "fused_actual_initial_comparison_control": "/root/autodl-tmp/pvground_tail_support_20261002/tail_raw",
+  "claim_ceiling": [
+    "Source-to-saved real-GT trace; original dataset, detector arrays and parent checkpoint bytes not independently reopened.",
+    "Saved selected/coarse boxes and thresholds replayed. Query ranking, binary Masks and all256 candidate geometry not independently replayed.",
+    "Saved boxes are size-clamped; coordinate units inherit the dataset convention.",
+    "One seeded raw continuation and descriptive paired comparisons; no statistical or causal improvement claim.",
+    "Historical G continuation is not the same-tail support-source isolation control.",
+    "Fused attempt failed after E0 before optimizer creation. No post-training fused performance, fix, relaunch or diagnostic result credit.",
+    "No Nr3D/Sr3D performance, teacher knowledge, V99 inheritance or promotion established.",
+    "Static publication review and prior transport witness do not certify future publication success or live observer state."
+  ],
+  "markdown_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\complete_tail_raw\\EXPERIMENT_AUDIT.md",
+  "markdown_sha256": "7e4c460e78764d3020fc5dc409e6fc24fb66498d5f98706ce4804b8fb64d8b91"
+}
+

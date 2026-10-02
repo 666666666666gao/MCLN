@@ -1,0 +1,67 @@
+{
+  "time_cst": "2026-10-02T22:52:00.724601+08:00",
+  "status": {
+    "status": "failed",
+    "completed": [],
+    "support_arm": "tail_fused",
+    "started_cst": "2026-10-02T22:30:28.943504+08:00",
+    "stage": "tail_fused/train",
+    "process_pid": 267119,
+    "exit_code": 1
+  },
+  "disk_free_bytes": 826847232,
+  "load.json": {
+    "base_terminal": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/terminal.pth",
+    "fresh_optimizer": true,
+    "fused_support": true,
+    "g_delta_tensors": 1072,
+    "p2": false,
+    "p3": true,
+    "p3_states": 10,
+    "status": "pass",
+    "support_arm": "tail_fused",
+    "time_cst": "2026-10-02T22:30:47.598086+08:00"
+  },
+  "initial/receipt.json": {
+    "elapsed_seconds": 717.8181207180023,
+    "formal_rows": 0,
+    "metrics": {
+      "bbf": {
+        "mask_hits25": 6208,
+        "mask_hits50": 5833,
+        "mask_iou_sum": 5126.633043793263,
+        "mask_miou": 74.43927753438744,
+        "rec_hits25": 6206,
+        "rec_hits50": 5647
+      },
+      "bbs": {
+        "mask_hits25": 6180,
+        "mask_hits50": 5818,
+        "mask_iou_sum": 5110.052920821356,
+        "mask_miou": 74.1985323191717,
+        "rec_hits25": 6176,
+        "rec_hits50": 5602
+      }
+    },
+    "rows": 6887,
+    "rows_sha256": "1749aaf81d15d70867e3fd842804f60f91a4b5826ac779e3c92fe9ec3c8fc5e8",
+    "stage": "initial",
+    "status": "pass",
+    "time_cst": "2026-10-02T22:49:53.389742+08:00"
+  },
+  "train_exit": 1,
+  "train_log_tail": [
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 5632, \"total\": 6887, \"seconds\": 584.2923810482025}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 6144, \"total\": 6887, \"seconds\": 641.215900182724}",
+    "PVG_EVAL_PROGRESS {\"stage\": \"initial\", \"rows\": 6656, \"total\": 6887, \"seconds\": 694.6807329654694}",
+    "PVG_EVAL_COMPLETE {\"status\": \"pass\", \"stage\": \"initial\", \"rows\": 6887, \"metrics\": {\"bbs\": {\"rec_hits25\": 6176, \"rec_hits50\": 5602, \"mask_hits25\": 6180, \"mask_hits50\": 5818, \"mask_iou_sum\": 5110.052920821356, \"mask_miou\": 74.1985323191717}, \"bbf\": {\"rec_hits25\": 6206, \"rec_hits50\": 5647, \"mask_hits25\": 6208, \"mask_hits50\": 5833, \"mask_iou_sum\": 5126.633043793263, \"mask_miou\": 74.43927753438744}}, \"elapsed_seconds\": 717.8181207180023, \"time_cst\": \"2026-10-02T22:49:53.389742+08:00\", \"formal_rows\": 0, \"rows_sha256\": \"1749aaf81d15d70867e3fd842804f60f91a4b5826ac779e3c92fe9ec3c8fc5e8\"}",
+    "Traceback (most recent call last):",
+    "  File \"/root/autodl-tmp/pvground_tail_support_20261002/run.py\", line 590, in <module>",
+    "    main()",
+    "  File \"/root/autodl-tmp/pvground_tail_support_20261002/run.py\", line 515, in main",
+    "    assert actual[mode][name]==reference[mode][name],(mode,name)",
+    "AssertionError: ('bbs', 'box')"
+  ],
+  "gpu": "1, 0",
+  "child_process": ""
+}

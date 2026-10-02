@@ -1,0 +1,101 @@
+{
+  "review_type": "experiment-bridge CODE_REVIEW=true",
+  "verdict": "WARN",
+  "substantive_result": "PASS_STATIC_AND_CPU_MOCK",
+  "time_cst": "2026-10-03T01:45:37.031206+08:00",
+  "reviewer_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "context": "fresh-context",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "blocking_issues": [],
+  "core_implementation_correct": true,
+  "nonblocking_issues": [
+    {
+      "id": "W1",
+      "file": "recount_full_candidate_audit.py",
+      "line": 77,
+      "issue": "Archived-formal comparison summarizes query/hit changes only; it does not summarize continuous selected box, Box IoU, or Mask IoU differences.",
+      "evidence": "An 8-row synthetic recount passed and reported zero query/hit changes despite changed reference box coordinates, IoU 1 to .875, and Mask IoU .5 to .375 for the same selected query.",
+      "impact": "Do not infer continuous-output equality from zero query/hit changes. Candidate coverage, matching and error partitions remain correct; no official score is overwritten.",
+      "recommendation": "Keep this limit explicit. If numerical comparison is later required, compute counts/max absolute differences from already-saved fields; no GPU rerun is needed."
+    }
+  ],
+  "checks": {
+    "status": "pass",
+    "kind": "STATIC_AND_CPU_MOCK_ONLY",
+    "compiled_files": [
+      "prepare_full_candidate_audit.py",
+      "run_full_candidate_audit.py",
+      "run_candidate_audit_authorized.py",
+      "recount_full_candidate_audit.py",
+      "analyze_saved_error_candidates.py"
+    ],
+    "generated_source_matches_builder": true,
+    "prohibited_update_calls": 0,
+    "gradient_disable_present": true,
+    "base64_npz_actual_receiver_roundtrip": true,
+    "synthetic_rows": 8,
+    "synthetic_candidates_per_row": 256,
+    "synthetic_chunk_batch_sizes": [
+      4,
+      4
+    ],
+    "synthetic_cpu_recount_expected_partitions_exact": true,
+    "demonstrated_nonblocking_gap": "Changed archived box/IoU/Mask values with unchanged query/hits are not counted by current comparison output.",
+    "saved_error_candidates_both_systems_both_modes_recount_exact": true,
+    "fixture_directory": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\candidate_audit_review_fixture_20261003_014237",
+    "GPU_executed": false,
+    "SSH_connections": 0
+  },
+  "saved_source_primary": {
+    "system": "same_tail_raw",
+    "mode": "bbs",
+    "strict_errors": 5051,
+    "qualified_alternative": 3340,
+    "no_qualified": 1711,
+    "first_qualified_rank_intervals": [
+      966,
+      508,
+      980,
+      886
+    ],
+    "selected_loose_only": 1137,
+    "loose_only_with_strict_alternative": 675
+  },
+  "execution": {
+    "deployment": false,
+    "SSH_connections": 0,
+    "GPU_forward": false,
+    "optimizer_updates": 0,
+    "reviewed_source_changed": false,
+    "active_training_changed": false,
+    "auth_wrapper_read": false,
+    "environment_secrets_read": false
+  },
+  "limitations": [
+    "Same-family provisional review, not cross-family acceptance.",
+    "Source and CPU mock checks only; no actual native Torch/GPU run was performed.",
+    "The fused terminal must finish formal evaluation before the existing sanity/full diagnostic sequence.",
+    "Scene-overlap and root-IoU qualification are offline geometric proxies, not physical/semantic identity proofs.",
+    "Saved historical ranking bins are top-K intervals, not exact first ranks."
+  ],
+  "reviewed_files": [
+    "prepare_full_candidate_audit.py",
+    "full_candidate_audit_body.py",
+    "run_full_candidate_audit.py",
+    "run_candidate_audit_authorized.py",
+    "recount_full_candidate_audit.py",
+    "analyze_saved_error_candidates.py",
+    "SAVED_ERROR_CANDIDATES.json"
+  ],
+  "reference_files": [
+    "run_pvground_tail_support_retry.py",
+    "complete_tail_raw/source/imported/models.losses.py",
+    "complete_tail_raw/source/imported/src.joint_det_dataset.py",
+    "complete_tail_raw/source/imported/evaluator.py",
+    "complete_tail_raw/source/imported/models.pv_ground.py",
+    "complete_tail_raw/source/pvground_semantic_assignment.py"
+  ],
+  "immutable_report": true
+}

@@ -1,0 +1,43 @@
+{
+  "files": [
+    {
+      "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/terminal.pth",
+      "exists": true,
+      "bytes": 342299695,
+      "free_bytes": 508094627840
+    },
+    {
+      "path": "/root/autodl-tmp/mcln_pvground_scan_checkpoint_inspection_20260908_v1/PV-Ground_ScanRefer.pth",
+      "exists": true,
+      "bytes": 830036622,
+      "free_bytes": 508094627840
+    },
+    {
+      "path": "/root/autodl-tmp/pvground_g_p2_source_20261002_v1/PV-Ground",
+      "exists": true,
+      "bytes": null,
+      "free_bytes": 437751808
+    },
+    {
+      "path": "/root/autodl-tmp",
+      "exists": true,
+      "bytes": null,
+      "free_bytes": 437751808
+    },
+    {
+      "path": "/root",
+      "exists": true,
+      "bytes": null,
+      "free_bytes": 472961024
+    }
+  ],
+  "gpu": "0, NVIDIA A100-PCIE-40GB, 1 MiB, 40960 MiB",
+  "relevant_processes": [
+    "302369 302357 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -c  import json, os, shutil, subprocess from pathlib import Path paths = json.loads(__import__('sys').argv[1]) files = [] for path in paths:     p = Path(path)     files.append(dict(path=path, exists=p.exists(),                       bytes=p.stat().st_size if p.is_file() else None,                       free_bytes=shutil.disk_usage(p if p.exists() else p.parent).free)) gpu = subprocess.check_output(['nvidia-smi', '--query-gpu=index,name,memory.used,memory.total',                                '--format=csv,noheader'], text=True) processes = subprocess.check_output(['ps', '-eo', 'pid,ppid,args'], text=True) active = [line for line in processes.splitlines() if any(name in line for name in           ('run_full_candidate_audit.py', 'pvground_tail_support', 'pvground_g_p2', 'pvground_candidate_consistency'))] print(json.dumps(dict(files=files, gpu=gpu.strip(), relevant_processes=active)))  [\"/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/terminal.pth\", \"/root/autodl-tmp/mcln_pvground_scan_checkpoint_inspection_20260908_v1/PV-Ground_ScanRefer.pth\", \"/root/autodl-tmp/pvground_g_p2_source_20261002_v1/PV-Ground\", \"/root/autodl-tmp\", \"/root\"]"
+  ],
+  "time_cst": "2026-10-03T05:05:31.247737+08:00",
+  "env_spec_unchanged": true,
+  "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+  "model_forward": false,
+  "optimizer_updates": 0
+}

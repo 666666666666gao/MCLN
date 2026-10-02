@@ -1,0 +1,161 @@
+{
+  "verdict": "WARN",
+  "source_verdict": "PASS",
+  "review_round": 2,
+  "review_time_cst": "2026-10-03T05:35:17+08:00",
+  "review_kind": "required_one_follow_up_source_review_with_read_only_static_checks",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "attribution": {
+    "reviewer": "delegated Codex source reviewer",
+    "same_reviewer_follow_up": true,
+    "same_family": true,
+    "provisional": true,
+    "external_author_review": false,
+    "exact_model_version_independently_exposed": false
+  },
+  "report_path": "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/EXPERIMENT_CODE_REVIEW.md",
+  "prior_report_path": "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/review_round1/EXPERIMENT_CODE_REVIEW.md",
+  "prior_review_verdict": "FAIL",
+  "prior_review_and_source_preserved": true,
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "B1",
+      "status": "RESOLVED_SOURCE_ONLY",
+      "title": "CPU/CUDA index concatenation",
+      "evidence": [
+        "pvground_candidate_consistency.py:21 moves additional indices to queries.device before both concatenations",
+        "Native matcher query and target indices are both CPU int64",
+        "Original pairs and native regression/Mask matching remain unchanged"
+      ],
+      "GPU_verification": "NOT_RUN"
+    },
+    {
+      "id": "B2",
+      "status": "RESOLVED_SOURCE_ONLY",
+      "title": "Disconnected existing provenance checks",
+      "evidence": [
+        "run.py:45-46 and 66-69 hash actual sys.modules module files",
+        "run.py:47 loads the existing task/observation/source import chain before checking",
+        "run.py:77 enforces the supplied source_port_sha256 before reading the manifest file map",
+        "run.py:120-124 records all five custom module paths and hashes",
+        "build_runner.py reproduces the current corrected runner exactly"
+      ]
+    },
+    {
+      "id": "N1",
+      "status": "RESOLVED",
+      "title": "Qualified-fixture receipt wording",
+      "evidence": [
+        "cpu_test.py:84 now uses expanded_native_loss_and_gradient_allclose",
+        "Existing assertions and tolerances are unchanged"
+      ]
+    }
+  ],
+  "reviewed_source": {
+    "root": "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003",
+    "runner_existing_sha256": "919fc36d61b8f21a7285f55c153717f05baa4e969ca43ccbc25171e165bc7392",
+    "consistency_existing_sha256": "dc25727853c178f312db05f5f66c49fb56ecc0b72d390e91aa28dcd6f9085186",
+    "generator_reconstruction": "EXACT_TEXT_MATCH_WITH_ALL_WRITES_EXCLUDED",
+    "all_three_specs_existing_module_pins_match": true,
+    "pair_launcher_and_prepare_pair_byte_equal_to_round1": true,
+    "four_reused_modules_byte_equal_to_sealed_parent": true,
+    "implementation_edited_by_reviewer": false
+  },
+  "correctness_assessment": {
+    "same_detached_strict_iou_qualification_as_G": true,
+    "all_existing_matches_including_other_GT_protected": true,
+    "loss_only_root_correspondence_expansion": true,
+    "actual_hungarian_regression_and_mask_matching_unchanged": true,
+    "native_final_semantic_term_replaced_not_added": true,
+    "native_positive_weights_temperature_formula_retained": true,
+    "original_matched_count_denominator_retained_deliberately": true,
+    "native_scanrefer_half_over_seven_scaling_retained": true,
+    "matching_index_one_is_final_layer": true,
+    "intermediate_targets_unchanged": true,
+    "all_256_candidates_retained": true,
+    "no_qualified_equivalence_assertions_preserved": "NOT_RUN",
+    "qualified_loss_and_gradient_allclose_assertions_preserved": "NOT_RUN",
+    "validation_geometry_used_in_training_or_inference_gate": false,
+    "new_model_parameters": 0,
+    "P2_P3_fused_tail_teacher_quality_head_enabled": false,
+    "both_arms_original_G_and_fresh_AdamW": true,
+    "seed": 2027,
+    "batch_size": 8,
+    "last_fit_batch_rows": 2,
+    "fit_rows": 29778,
+    "planned_training_steps": 3723,
+    "formal_rows": 9508,
+    "efficacy_proven": false,
+    "high_iou_proves_physical_identity": false
+  },
+  "execution_gates": {
+    "source_review_gate_satisfied_for_planned_sanity": true,
+    "CPU_fixture_status": "NOT_RUN",
+    "GPU_sanity_status": "NOT_RUN",
+    "formal_pair_status": "NOT_STARTED",
+    "CPU_before_GPU_sequence_retained": true,
+    "CPU_nonzero_exit_stops_GPU_launch": true,
+    "preflight_expected_optimizer_steps": 2,
+    "preflight_launcher_invokes_full_pair": false,
+    "full_pair_launch_allowed_now": false,
+    "storage_status": "BLOCKED_UNTIL_ACTUAL_OUTPUT_DIRECTORY_CAPACITY_IS_ADEQUATE",
+    "supplied_actual_output_directory_free_bytes": 437751808,
+    "new_preflight_serialization_bytes": null,
+    "pair_gate": "3 * measured_preflight_serialization_bytes + 256 MiB",
+    "per_arm_gate": "2 * measured_preflight_serialization_bytes + 128 MiB",
+    "actual_pair_root_disk_check_before_children": true,
+    "deletion_permission": "PENDING_NOT_GRANTED_BY_REVIEW"
+  },
+  "ssh_and_deployment": {
+    "known_host_keys_loaded": true,
+    "accept_unknown_host_policy_installed": false,
+    "remote_arguments_shell_quoted": true,
+    "password_read_from_environment": true,
+    "GPU_lock_used_for_preflight": true,
+    "SSH_trust_bypass_found": false,
+    "network_connection_made_by_review": false
+  },
+  "scope_checked": [
+    "Preserved round-one FAIL report and original runner/module identities",
+    "Current candidate module, CPU fixture, build_runner.py, generated run.py",
+    "All three specs, prepare_pair.py, pair.py, run_preflight_authorized.py",
+    "Unchanged G qualification and task/observation/source modules",
+    "Existing OpenPCDet import-chain source",
+    "Native source foundations and unchanged training/evaluation paths from initial review"
+  ],
+  "performed_checks": [
+    "Complete relevant round-one/current source diffs",
+    "Preserved round-one source/report verification",
+    "Existing module pins for all three specs",
+    "Four reused-module parent byte equality",
+    "Pair/launcher/prepare_pair round-one byte equality",
+    "Read-only generator-prefix execution with all mutations excluded, exactly reproducing current runner text",
+    "Local Python AST parsing only",
+    "Confirmation that local CPU/preflight/pair receipts are absent"
+  ],
+  "not_run": [
+    "CPU loss/gradient fixtures",
+    "Target Python3.7.11/Torch1.10.2 imports",
+    "GPU forward/backward",
+    "GPU two optimizer steps",
+    "CUDA execution of corrected index path",
+    "GPU memory measurement",
+    "Model/optimizer serialization witness",
+    "Disk checkpoint save/reload",
+    "SSH deployment",
+    "Fresh remote capacity measurement",
+    "Either full training arm",
+    "Holdout/formal evaluation",
+    "Efficacy or novelty assessment"
+  ],
+  "warnings": [
+    "Sanity stage has not executed; source acceptance is not CPU/GPU success",
+    "Full pair remains held for inadequate actual output-directory capacity; no deletion authorized"
+  ],
+  "implementation_change_count_by_reviewer": 0,
+  "GPU_jobs_started_by_reviewer": 0,
+  "files_deleted_by_reviewer": 0
+}

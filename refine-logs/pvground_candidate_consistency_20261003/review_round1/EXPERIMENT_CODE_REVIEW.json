@@ -1,0 +1,166 @@
+{
+  "verdict": "FAIL",
+  "review_time_cst": "2026-10-03T05:25:22+08:00",
+  "review_kind": "source_only_with_read_only_static_checks",
+  "attribution": {
+    "reviewer": "delegated Codex source reviewer",
+    "same_family": true,
+    "provisional": true,
+    "external_author_review": false,
+    "exact_model_version_independently_exposed": false
+  },
+  "report_path": "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/EXPERIMENT_CODE_REVIEW.md",
+  "reviewed_source": {
+    "root": "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003",
+    "parent": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source",
+    "runner_existing_sha256": "b92da008794818c03b646f6515e019bfc6ea2c9516a493ea35d88f5857d24de8",
+    "consistency_existing_sha256": "9fb9ec4a82bfc6ab3ff7803cad08d99d8655ebb9fe736232976fa9cdcea5e4a8",
+    "implementation_edited": false
+  },
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "severity": "high",
+      "title": "CPU matcher indices concatenated with CUDA qualified indices",
+      "blocks": ["GPU preflight", "consistent-arm training"],
+      "locations": [
+        "pvground_candidate_consistency.py:21-23",
+        "run.py:167",
+        "run.py:280-283",
+        "pvground_semantic_assignment.py:10-23",
+        "parent/ported/models/losses.py:378-390"
+      ],
+      "finding": "The actual Hungarian matcher returns CPU int64 tensors. The runner clones them without moving devices. selected.nonzero() follows CUDA predictions, so both new concatenations mix CPU and CUDA tensors and fail before semantic loss computation.",
+      "evidence_kind": "static actual-source dataflow; no GPU reproduction performed",
+      "minimal_correction": "Move additional loss-only indices to queries.device before concatenation, preserve original matching, regenerate existing pins/specs, and run the already planned CPU and real GPU preflight.",
+      "cpu_fixture_limit": "The prepared fixture has all inputs and indices on CPU and cannot expose this device mismatch."
+    },
+    {
+      "id": "B2",
+      "severity": "medium",
+      "title": "Existing provenance assertions are disconnected from imported module files and the supplied source-port pin",
+      "blocks": ["certifying deployed source as reviewed and pinned"],
+      "locations": [
+        "run.py:43-46",
+        "run.py:65-68",
+        "run.py:76-77",
+        "run.py:114-119",
+        "run_preflight_authorized.py:19-33",
+        "pair.py:25",
+        "pair.py:44-45"
+      ],
+      "finding": "Checks hash per-arm module copies, but the common-root runner and PYTHONPATH import common-root modules. The custom imported modules are absent from the import receipt. The runner also trusts source_port.json files without comparing that manifest to spec['source_port_sha256']; the expected field is never referenced.",
+      "observed_local_tampering_or_mismatch": false,
+      "current_local_module_pins_match": true,
+      "minimal_correction": "Connect the existing module checks to actual imported copies and confirm their paths; enforce the already supplied source-port digest before trusting its file list. No new manifest or hash framework is requested."
+    }
+  ],
+  "nonblocking_findings": [
+    {
+      "id": "N1",
+      "title": "Qualified fixture receipt calls tolerance-based agreement exact",
+      "locations": ["cpu_test.py:76-79", "cpu_test.py:84"],
+      "finding": "Qualified-case loss and query-projection gradients use allclose, so exact_expanded_native_loss_and_gradient should be described as tolerance-based. Exact query-projection gradient equality is asserted for the no-qualified case only."
+    }
+  ],
+  "correctness_assessment": {
+    "same_detached_strict_iou_qualification_as_G": true,
+    "all_existing_matches_protected": true,
+    "loss_only_root_correspondence_expansion": true,
+    "actual_hungarian_regression_and_mask_matching_unchanged": true,
+    "native_final_semantic_term_replaced_not_added": true,
+    "native_positive_weights_temperature_and_formula_retained": true,
+    "original_matched_count_denominator_retained_deliberately": true,
+    "native_scanrefer_half_over_seven_scaling_confirmed": true,
+    "matching_index_one_is_final_layer": true,
+    "intermediate_loss_targets_unchanged": true,
+    "all_256_candidates_retained": true,
+    "new_model_parameters": 0,
+    "P2_P3_fused_tail_teacher_quality_head_enabled": false,
+    "validation_geometry_used_in_training_or_inference_gate": false,
+    "holdout_and_formal_modes_separate": true,
+    "both_arms_original_G_and_fresh_AdamW": true,
+    "seed": 2027,
+    "batch_size": 8,
+    "last_fit_batch_rows": 2,
+    "fit_rows": 29778,
+    "planned_training_steps": 3723,
+    "formal_rows": 9508,
+    "efficacy_proven": false,
+    "high_iou_proves_physical_identity": false
+  },
+  "resource_hold": {
+    "full_pair_launch_allowed": false,
+    "status": "BLOCKED_UNTIL_ACTUAL_OUTPUT_PATH_CAPACITY_IS_ADEQUATE",
+    "supplied_output_directory_free_bytes": 437751808,
+    "new_preflight_serialization_bytes": null,
+    "pair_gate": "3 * measured_preflight_serialization_bytes + 256 MiB",
+    "per_training_arm_gate": "2 * measured_preflight_serialization_bytes + 128 MiB",
+    "existing_gate_uses_actual_pair_root": true,
+    "parent_checkpoint_path_free_space_is_not_output_capacity": true,
+    "fresh_remote_measurement_performed": false,
+    "deletion_authorized": false
+  },
+  "ssh_and_deployment": {
+    "known_host_keys_loaded": true,
+    "accept_unknown_host_policy_installed": false,
+    "remote_arguments_shell_quoted": true,
+    "password_read_from_environment": true,
+    "GPU_lock_used_for_preflight": true,
+    "launcher_runs_full_pair": false,
+    "network_connection_made_by_review": false,
+    "SSH_trust_bypass_found": false
+  },
+  "scope_checked": [
+    "EXPERIMENT_PLAN.md",
+    "research_contract.md",
+    "pvground_candidate_consistency.py",
+    "cpu_test.py",
+    "build_runner.py",
+    "run.py",
+    "prepare_pair.py",
+    "pair.py",
+    "run_preflight_authorized.py",
+    "preflight_spec.json",
+    "g_control_spec.json",
+    "g_consistent_spec.json",
+    "pvground_semantic_assignment.py",
+    "pvground_task_observation_query.py",
+    "pvground_observation_query.py",
+    "pvground_source_query.py",
+    "sealed parent run.py and pair.py",
+    "sealed native HungarianMatcher, loss_sem_align, SetCriterion and compute_hungarian_loss",
+    "relevant sealed model wiring, dataset token maps and evaluator scoring",
+    "archived main_utils.py optimizer/criterion and env_spec.json",
+    "existing source/runtime/split manifests and supplied storage inventories"
+  ],
+  "performed_checks": [
+    "Read-only actual-source inspection",
+    "Complete runner and pair textual comparison to sealed parent",
+    "Four reused-module byte-equality checks to sealed parent",
+    "Five local module existing-pin checks",
+    "Archived split existing-pin check and unique/disjoint 29778/6887 recount",
+    "Archived runtime canonical digest matches supplied environment pin",
+    "Task Python source AST parsing using local Python 3.13; not target-runtime execution"
+  ],
+  "not_run": [
+    "CPU loss/gradient fixtures",
+    "Target Python3.7.11/Torch1.10.2 imports",
+    "GPU forward/backward",
+    "GPU two optimizer steps",
+    "CUDA mismatch reproduction",
+    "GPU memory measurement",
+    "Model/optimizer serialization witness",
+    "Disk checkpoint save/reload",
+    "SSH deployment",
+    "Fresh remote capacity measurement",
+    "E0/holdout/formal evaluation",
+    "Either full training arm",
+    "Efficacy or innovation assessment"
+  ],
+  "GPU_sanity_status": "NOT_RUN",
+  "CPU_fixture_status": "NOT_RUN",
+  "implementation_change_count": 0,
+  "GPU_jobs_started": 0,
+  "files_deleted": 0
+}

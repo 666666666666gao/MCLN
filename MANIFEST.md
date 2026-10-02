@@ -122,3 +122,5 @@
 | 2026-10-02 | /experiment-bridge | refine-logs/pvground_p2_semantic_20261002/PLAN.md | real preflight PASS; train process started | only P2 semantic routing; original G start;2-step gradients/in-memory reload pass; sealed G/joint-P2 controls reused; no new formal score |
 | 2026-10-02 | /monitor-experiment | refine-logs/pvground_p2_semantic_20261002/startup.json | initial6887 pass;64/3723 actual updates | bbs6176/5602 matches G; first64 fit batches identical; sole observer13:08; no new formal9508 score |
 | 2026-10-02 | /analyze-results + /experiment-audit | docs/results/pvg_p2_semantic_20261002/REPORT.md | COMPLETE3723/9508; targetFAIL | semantic P2 bbs5588/4439 vs G5600/4452; -12/-13; originalG5615/4495 retained; review WARN same-family/provisional |
+
+- 2026-10-02T15:00:51.695183+08:00 PV P3实现/真实预检，refine-logs/pvground_p3_20261002；无终态精度。

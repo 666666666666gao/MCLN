@@ -1,0 +1,293 @@
+{
+  "verdict": "PASS",
+  "review_type": "fresh static experiment implementation review",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_agent": "/root/pvg_p3_code_review",
+  "review_date": "2026-10-02",
+  "scope": "Candidate-aligned P3 geometry module, exact sealed-parent wiring, continuation runner, stage controller and preflight-only deployment helper; original G start, no negative P2 endpoint.",
+  "blocking_issues": [],
+  "non_blocking_issues": [],
+  "required_fixes": [],
+  "checks": [
+    {
+      "name": "actual_parent_interface_and_minimal_wiring",
+      "status": "PASS",
+      "detail": "All three collected parent model files match the sealed parent source-port file hashes. In-memory execution of the exact prepare-source replacement adds 7 lines to models/pv_ground.py: one None attribute and one final-layer refiner call/output overwrite before the native detach. It preserves one proposal head, six prediction heads and every native semantic/contrastive/Mask call and their order. No P2 module is installed.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\prepare_pvground_p3_source.py:16",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\prepare_pvground_p3_source.py:24",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py:249",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py:494",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py:505",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py:515"
+      ]
+    },
+    {
+      "name": "knn_coordinates_gather_and_dimensions",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "The runner checks voxel points equal the same augmented 50000-by-6 inputs. Each candidate has center and six axis-face locations, with detached center/layout sizes and 1e-6 size floor only for the layout. Batched advanced indexing gathers B-by-Q-by-7-by-16-by-6 members without crossing scenes. topk chooses 16 distinct input indices; duplicate physical observations are not ruled out. Member input has RGB3 + center displacement3 + location displacement3 + distance1. Mean/max pooling gives 7*128=896, then query288 + layout size3 makes 1187. P3 has 367238 parameters in 10 state tensors.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:253",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py:19",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py:30",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py:42",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py:52",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py:55"
+      ]
+    },
+    {
+      "name": "zero_initialization_and_gradient_routes",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "The final 288-to-6 projection is zero initialized; output adds the raw coarse box, preserving even negative coarse sizes at zero residual. The geometry query and all P3 parameters remain differentiable. Coarse center/size retain their identity path through addition, while sampling coordinates and neighbor selection are detached. Native semantic, contrastive and Mask tensors have no direct P3 path. Shared upstream parameter updates, changed discrete matching and changed G qualification can still affect those tasks indirectly.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py:26",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py:45",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py:61",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py:68",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\modules.py:145",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py:499",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py:515"
+      ]
+    },
+    {
+      "name": "native_matching_final_box_supervision_and_g_ce",
+      "status": "PASS",
+      "detail": "Native criterion, loss weights and all seven matcher calls are retained. Matcher order is proposal_, last_, then 0head_..4head_, so matching[1] is the correct last-layer assignment. The wiring overwrites last_center/last_pred_size before the native criterion reads them; native bbox/GIoU supervision therefore trains the deployed refined box. Existing G correction remains native + correction, uses detached refined-box IoU qualification and replaces only the existing eos-weighted final CE contribution at .5/7. It introduces no new loss, teacher or score.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:265",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:276",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\prepare_pvground_p3_source.py:28",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py:298",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py:518",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py:852",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py:898",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py:947",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_semantic_assignment.py:10",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_semantic_assignment.py:34"
+      ]
+    },
+    {
+      "name": "original_g_restore_protocol_and_fresh_optimizer",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "Strict author restore, existing task-reader installation, then strict original G delta restore precede P3 installation. The deployment parent spec retains original G terminal SHA 0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522 and sets p2=False; neither negative P2 endpoint is the start. Seed2027, batch8, 29778 fit IDs once/3723 updates, scene-separated 6887 holdout, LR/backbone LR1e-5, weight decay5e-4 and clip0.1 are retained. Fresh native AdamW includes P3 in the ordinary non-backbone group. RNG reset points remain equivalent to the audited continuation runner.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:80",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:128",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:136",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:144",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:153",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:166",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:474",
+        "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\main_utils.py:339",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py:76"
+      ]
+    },
+    {
+      "name": "initial_and_complete_fit_order_control_reuse",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "Before AdamW construction, all 6887 initial records must match row/scan/target/GT/point identities plus both bbs and bbf chosen query/box/IoU exactly. Any initial Mask-IoU differences are retained as row IDs without attributing a cause. Each of 3723 fit-batch row lists is checked against the sealed control before its update, and final Counter equality establishes every fit ID once. Stored reference artifacts contain the expected 6887 rows, 3723 batches and 29778 distinct fit IDs. New P3 equality has not been run.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:457",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:461",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:467",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:470",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:493",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:501"
+      ]
+    },
+    {
+      "name": "real_preflight_and_serialization_restore",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "Preflight consumes a real augmented batch8. Equal RNG resets surround full P3 and bypass forwards, requiring torch.equal for last semantic/center/size outputs. It records neighbor-distance quantiles and negative coarse-size count, resets to initial state, takes two actual optimizer steps, asserts direct bbox/GIoU output gradient and zero/unused semantic+contrastive+G-correction gradients, then verifies nonzero member/condition/aggregation gradients on the second step. Actual delta plus AdamW state are torch.save/torch.load round-tripped in BytesIO, followed by strict model equality and optimizer step=2 checks. Step durations and CUDA peak are recorded; controller records full phase duration. None has run for P3.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:286",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:317",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:335",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:342",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:348",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:360",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:370",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3_control.py:68"
+      ]
+    },
+    {
+      "name": "evaluation_and_retained_geometry_evidence",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "The unchanged native GT-based evaluator runs on last_ with thresholds .25/.5 and bbs/bbf. Inputs are prepared and model forward completes before batch GT is attached for loss/evaluation. Formal split remains 9508 rows. Each selected output retains refined box/IoU, the same-query coarse box/IoU, coarse Full256 coverage and refined top16/32/64/256 coverage. REC counts and Mask sums are reconciled with the actual native evaluator. Formal rows still require an independent post-run recount.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:222",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:380",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:389",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:419",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:429",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:438"
+      ]
+    },
+    {
+      "name": "controller_staging_resume_and_storage",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "Preflight-only schedules only preflight and ends with preflight_complete. Explicit --train-after-preflight requires that status, removes preflight from the phase list and starts train/formal, so an existing x-opened preflight log is not reopened. Training requires a passed two-update direct-gradient preflight and free bytes >= 2*actual serialization_bytes +128MiB. Child failure prevents later phases; flock guards each GPU child. Atomic latest replacement needs at most old+temporary checkpoint copies, and terminal renaming does not add a third copy. The reviewed deployment launches only --preflight-only and performs no deletion.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3_control.py:16",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3_control.py:34",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3_control.py:42",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3_control.py:48",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3_control.py:57",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:478",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py:500",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py:93"
+      ]
+    },
+    {
+      "name": "deployment_command_trust_boundary",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "Helper checks an accepting review with no blockers and the recorded reviewed-file hashes, requires fresh isolated target paths, checks completed P2 status/current idle GPU and source-copy free space, reads back root uploads, performs CPU restore, then launches preflight-only. SSH uses the existing named password environment variable and system host keys without automatic host-key acceptance. Command paths/arguments and environment values are shell quoted; controller passes argv without a shell. Existing environment variable names come from the operator-owned runtime env_spec. No concrete command-injection or unauthorized cleanup defect was found in the supplied workflow. Helper was parsed/read only.",
+      "references": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py:12",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py:22",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py:34",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py:60",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py:65",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py:90",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py:93",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3_control.py:48"
+      ]
+    }
+  ],
+  "verification_performed": {
+    "source_ast_and_compile": "PASS; five new Python files parsed/compiled in memory with offline uv Python 3.13.12; no experiment imports",
+    "sealed_parent_model_hashes": "3/3 PASS against parent_source_port.json",
+    "exact_prepare_transform": "Executed replacement AST in memory only; 7 added lines, one refiner call, native head constructor count unchanged",
+    "modeled_prepared_pv_ground_sha256": "371f1ec9d00fb8c320b28ddb4d035d52924875b97a6f96e9ca0d4c7c256156a9",
+    "modeled_sha_scope": "Normalized source text transformed in memory; not a deployment readback",
+    "protocol_helpers_ast_equal_to_audited_runner": [
+      "reset_rng",
+      "FitDataset",
+      "FormalDataset",
+      "loader",
+      "prepare",
+      "native_loss"
+    ],
+    "reused_four_g_modules_match_sealed_bytes_and_parent_spec": true,
+    "reference_original_g_spec_equal": true,
+    "reference_initial_rows": 6887,
+    "reference_fit_batches": 3723,
+    "reference_fit_ids_exactly_once": 29778,
+    "reference_last_batch_size": 2,
+    "controller_phase_selection": {
+      "preflight_only": [
+        [
+          "preflight",
+          "preflight"
+        ]
+      ],
+      "explicit_resume": [
+        [
+          "p3",
+          "train"
+        ],
+        [
+          "p3",
+          "formal"
+        ]
+      ],
+      "default": [
+        [
+          "preflight",
+          "preflight"
+        ],
+        [
+          "p3",
+          "train"
+        ],
+        [
+          "p3",
+          "formal"
+        ]
+      ]
+    }
+  },
+  "memory_and_storage": {
+    "p3_parameters": 367238,
+    "distance_chunk_fp32_shape": [
+      8,
+      128,
+      50000
+    ],
+    "distance_chunk_fp32_bytes": 204800000,
+    "full_distance_fp32_bytes_avoided": 2867200000,
+    "chunks_per_forward": 14,
+    "member_feature_fp32_shape": [
+      8,
+      256,
+      7,
+      16,
+      64
+    ],
+    "one_member_feature_tensor_bytes": 58720256,
+    "memory_limit_note": "These are tensor sizes, not a total CUDA peak. The previous distance local can coexist with the next cdist output during assignment; workspaces, retained activations, native model, optimizer and serialization restore add memory. Actual P3 peak is unmeasured.",
+    "stored_remote_snapshot_time": "2026-10-02T14:26:18.073529+08:00",
+    "stored_free_bytes": {
+      "/root": 500252672,
+      "/root/autodl-tmp": 505290752
+    },
+    "snapshot_scope": "Read retained local remote_before.json; no live SSH/storage query",
+    "preflight_checkpoint_disk_write": false,
+    "training_gate": "free >= 2 * preflight.serialization_bytes + 128 * 1024**2",
+    "p3_serialization_bytes": null,
+    "no_cleanup": true
+  },
+  "execution_limits": {
+    "neural_import_or_execution": false,
+    "cuda_execution": false,
+    "ssh_connection_or_remote_command": false,
+    "credential_value_or_authentication_wrapper_read": false,
+    "source_edit": false,
+    "checkpoint_open_or_load": false,
+    "new_p3_preflight": false,
+    "new_p3_training": false,
+    "new_result_available": false,
+    "pending_runtime_gates": [
+      "Strict CPU restore on deployment",
+      "Real batch8 zero-output equality and two-update gradient/restore preflight",
+      "Actual P3 CUDA peak, duration and serialization bytes",
+      "Current disk-space gate before explicit training",
+      "New exact initial bbs+bbf/input comparison and recorded Mask discrepancies",
+      "All 3723 new fit-batch row-order checks and exact-once fit coverage",
+      "Terminal holdout and 9508-row formal evaluation plus independent recount"
+    ],
+    "claim_limit": "PASS is provisional source acceptance only. It is not a GPU/preflight pass, control-equivalence result, REC improvement, novelty claim or cross-family review."
+  },
+  "reviewed_files": {
+    "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+    "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\prepare_pvground_p3_source.py": "3a7f918568f925aeb17f7e163dcec73425fa0929c930bbeaa08670febbf795c5",
+    "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py": "c593a94fbccf0e1554499f7fe7e0d5ec41c54b4a2487954e8eda7c6616aa4d06",
+    "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3_control.py": "efe42dde17f65761eb52908f2f471a7549fe6d7a7d40bed085accb8922c14562",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\PLAN.md": "11f6ddcef37bc50388114314c9d6f45f34f7e61cced2abc702cffeb95262a2cb",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\REVIEW_REQUEST.md": "2a7b08c6efdaa17818a1ce91cade1f4a870f501f542909716e99179e81e12f54",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\deploy_preflight.py": "5497892853cdda7dd0d94f5a40f2fab1138aa24902bc03fe0738e1568ed8702f",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source_port.json": "0375886f9df2b3ac18a63ce7571d672ceb433613b6defdfcd9f8d244a20bf855",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\remote_before.json": "f7363833e72b7a3012445899ec117d71269f1359d4c8f6c71a19cfd7fd4da8b0",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py": "20c353512939ac9087cd8f3d07b82a648bcefe42510563e26afc37235facdb7c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\encoder_decoder_layers.py": "e2cb80a29651f8540edd0a84c6d07072c9933430513c55f3bbe254006788d736",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\modules.py": "1609b3608e017669ae0ff63e7618f2078e5f72f20955da02e7ff230481b846fc",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\run_pvground_p2_semantic.py": "06c1cba7249a00897324092e2d20faffd0597b37b036b7b8f95ad5e8ab5d07ee",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\parent_spec.json": "3635eaefd44b13b5d5f4c8651f935f6dea06b4533dd0142dec08952d26079a4e",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_semantic_assignment.py": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\CODE_REVIEW.json": "cb9eab2db6185601a4ef6d95bbb7d9a62cb27737f2850dbb337f1c956c48eb63",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\complete\\preflight\\preflight.json": "a6bec0c1796ad0f85c5eea22b45a957acc6f74a5288539bf8a6ac71010aff781",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\pv_ground.py": "7fe369d7aaefda3f4e6eb389393799aedbe95ace56dbc107a7d26b0e3a3ea235",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\encoder_decoder_layers.py": "4ba0b8a95114d01987def21a42c846f03b5f32d462f5a7b77f168baddc555874",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\modules.py": "1609b3608e017669ae0ff63e7618f2078e5f72f20955da02e7ff230481b846fc",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\split_protocol.json": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\spec.json": "375440282ab23854794b1e59b44daae0bc3e52a0bbe90342d0eb721528de4e12",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\initial\\rows.jsonl": "bcb49aa285cad9ca594f755f151b4ace454ab216e8633a1161a5766aa757e455",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\train.jsonl": "f7170d5f16fb027f061d52b60c585ad7273c3586b8f72b33ac4b7034c31201d4",
+    "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\main_utils.py": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+  }
+}

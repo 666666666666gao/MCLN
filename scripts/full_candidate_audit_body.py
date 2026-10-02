@@ -58,14 +58,14 @@
                 assert scene_ids.numel()>0
                 scene_boxes=batch['all_bboxes'][bid,scene_ids]
                 target_id=int(batch['target_id'][bid])
-                root_scene_slot=(scene_ids==target_id).nonzero().flatten()
-                assert root_scene_slot.numel()==1
-                assert torch.equal(scene_boxes[root_scene_slot[0]],root)
                 scene_overlap=box_iou(boxes[bid],scene_boxes)
                 best_overlap,best_local=scene_overlap.max(-1)
                 best_id=scene_ids[best_local]
                 best_class=batch['all_class_ids'][bid,best_id]
-                root_joint_best=scene_overlap[:,root_scene_slot[0]]==best_overlap
+                # Native all_bboxes contains detection-vocabulary objects only;
+                # the referring-expression root GT is independently available.
+                root_joint_best=iou>=best_overlap
+                root_in_scene_detection_GT=bool((scene_ids==target_id).any())
 
                 # Count actual input members per superpoint; avoid Q x 50000
                 # point-mask tensors. Keep native sigmoid > .5 exactly.
@@ -100,6 +100,7 @@
                         'qualified_in_topk':[int(good[rank[:k]].any()) for k in (16,32,64,256)],
                         'qualified_root_overlap_proxy':int((good&root_joint_best).sum())}
                 record=dict(row_id=row_id,scan_id=batch['scan_ids'][bid],target_id=target_id,
+                    root_in_scene_detection_GT=root_in_scene_detection_GT,
                     utterance=batch['utterances'][bid],root_box=root.cpu().tolist(),
                     point_sha256=hashlib.sha256(batch['point_clouds'][bid].cpu().numpy().tobytes()).hexdigest(),
                     selected_query=selected,selected_iou=float(iou[selected]),
@@ -135,11 +136,13 @@
     receipt=dict(status='pass',time_cst=now(),rows=len(rows),chunks=chunks,rec_hits=hits,
         elapsed_seconds=time.time()-begin,optimizer_updates=0,optimizer_constructed=False,
         all_candidates_retained=256,model_state_unchanged=True,official_evaluator_counts_exact=True,
+        root_excluded_from_scene_detection_GT_rows=sum(not r['root_in_scene_detection_GT'] for r in rows),
         parent_arm=spec['support_arm'],terminal_step=int(terminal['step']),
         input_manifest=spec['input_manifest'],rows_sha256=sha(audit_output/'rows.jsonl'),
         evidence_limits=('Read-only full-candidate diagnostic, not a retrained ablation. '
             'Native matcher is applied to evaluation inputs; unmatched status is not physical background identity. '
-            'IoU qualification and nearest annotated scene overlap are GT-only geometric proxies, not a deployed selection rule. '
+            'IoU qualification and overlap against detection-vocabulary scene GT are GT-only geometric proxies, not a deployed selection rule. '
+            'Root GT is scored independently even when excluded from the detection-vocabulary scene list; that exclusion is recorded. '
             'All 256 are kept; no new pruning, supervision or optimizer update. Fresh forward may differ numerically from archived formal output.'))
     write_json(audit_output/'receipt.json',receipt)
     print('CANDIDATE_AUDIT_COMPLETE '+json.dumps(receipt),flush=True)

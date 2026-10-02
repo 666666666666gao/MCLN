@@ -12,7 +12,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument('--limit',type=int,choices=(8,9508),required=True)
 args=parser.parse_args()
 local=Path(r'C:\Users\gb\.codex\tmp\pvground_fused_support_20261002')
-name='sanity' if args.limit==8 else 'full'
+name='sanity_gt_scope_v2' if args.limit==8 else 'full_gt_scope_v2'
 destination=local/'candidate_audit'/name
 assert not destination.exists()
 client=paramiko.SSHClient();client.load_system_host_keys()
@@ -26,7 +26,7 @@ assert status['status']=='complete' and status['support_arm']=='tail_fused'
 with sftp.open(experiment+'/tail_fused/formal/receipt.json','rb') as stream:formal=json.loads(stream.read())
 assert formal['status']=='pass' and formal['rows']==9508
 if args.limit==9508:
-    sanity=json.loads((local/'candidate_audit/sanity/receipt.json').read_bytes())
+    sanity=json.loads((local/'candidate_audit/sanity_gt_scope_v2/receipt.json').read_bytes())
     assert sanity['status']=='pass' and sanity['rows']==8 and sanity['model_state_unchanged']
     assert sanity['all_candidates_retained']==256
 sftp.mkdir(remote)

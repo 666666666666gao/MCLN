@@ -1,0 +1,83 @@
+{
+  "status": "warn",
+  "rows": 9508,
+  "rec_hits": {
+    "25": 5566,
+    "50": 4406
+  },
+  "all_candidates_retained": 256,
+  "CPU_all_box_thresholds_exact": false,
+  "max_CPU_vs_GPU_iou_error": 5.394267800662433e-06,
+  "CPU_all_selected_thresholds_exact": true,
+  "CPU_threshold_differences": [
+    {
+      "row_id": 3499,
+      "query": 189,
+      "threshold": 0.25,
+      "CPU_iou": 0.2500001376978458,
+      "GPU_iou": 0.24999968707561493,
+      "selected": false
+    }
+  ],
+  "CPU_all_box_thresholds_exact_by_threshold": {
+    "25": false,
+    "50": true
+  },
+  "error_partition": {
+    "25": {
+      "errors": 3942,
+      "has_alternative": 3357,
+      "has_unmatched_qualified": 3254,
+      "has_unmatched_qualified_root_overlap_proxy": 3229,
+      "has_matched_other_qualified": 0,
+      "no_qualified": 585,
+      "selected_loose_only": 0
+    },
+    "50": {
+      "errors": 5102,
+      "has_alternative": 3408,
+      "has_unmatched_qualified": 3209,
+      "has_unmatched_qualified_root_overlap_proxy": 3201,
+      "has_matched_other_qualified": 0,
+      "no_qualified": 1694,
+      "selected_loose_only": 1160
+    }
+  },
+  "qualified_candidate_counts": {
+    "25": {
+      "matched_root": 8883,
+      "matched_other": 0,
+      "unmatched": 370849
+    },
+    "50": {
+      "matched_root": 7738,
+      "matched_other": 0,
+      "unmatched": 249347
+    }
+  },
+  "CPU_qualified_candidate_counts": {
+    "25": {
+      "matched_root": 8883,
+      "matched_other": 0,
+      "unmatched": 370850
+    },
+    "50": {
+      "matched_root": 7738,
+      "matched_other": 0,
+      "unmatched": 249347
+    }
+  },
+  "CPU_alternative_error_rows": {
+    "25": 3357,
+    "50": 3408
+  },
+  "root_excluded_from_scene_detection_GT_rows": 87,
+  "versus_archived_formal": {
+    "selected_query_changes": 1,
+    "hit25_changes": 0,
+    "hit50_changes": 0
+  },
+  "evidence_limits": "Read-only full-candidate diagnostic, not a retrained ablation. Native matcher is applied to evaluation inputs; unmatched status is not physical background identity. IoU qualification and overlap against detection-vocabulary scene GT are GT-only geometric proxies, not a deployed selection rule. Root GT is scored independently even when excluded from the detection-vocabulary scene list; that exclusion is recorded. All 256 are kept; no new pruning, supervision or optimizer update. Fresh forward may differ numerically from archived formal output.",
+  "unmatched_rule": "Same native last-layer Hungarian matcher on evaluation inputs. G already replaces CE for unmatched IoU>.5; lower IoU is not an automatic semantic-negative or positive identity proof.",
+  "rank_rule": "Exact native ranks are captured; CPU validates first-qualified score-tie bounds, not arbitrary tie reordering."
+}

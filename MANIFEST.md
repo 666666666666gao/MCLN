@@ -142,3 +142,5 @@
 - 2026-10-03T00:21:20.890045+08:00 Fused retry launched after fixed-real-batch zero-update probe and measured capacity review; no new deletion or final REC result.
 
 - 2026-10-03T02:04:43.080663+08:00 Completed saved error-candidate analysis; all256 read-only diagnostic reviewed, GPU execution pending.
+
+- 2026-10-03T04:51:08.841687+08:00 Completed all256 candidate audit; retain unmatched and low-ranked slots. Fused result sealed as negative; original G retained.

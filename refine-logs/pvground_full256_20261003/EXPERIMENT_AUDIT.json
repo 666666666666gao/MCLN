@@ -1,0 +1,354 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "native_cpu_boundary_disagreement_and_bounded_geometric_proxy_scope",
+  "summary": "Complete all256 evidence independently verified. One unselected .25 CPU/GPU threshold disagreement is retained; root-only matching and filtered-scene geometric identity limits remain. No blocking findings for qualified factual archival.",
+  "blocking_findings": [],
+  "auditor": "gpt-6-astra max",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning_effort": "max",
+  "reviewer_reasoning": "max",
+  "reviewer_family": "openai",
+  "executor_model": "unavailable",
+  "executor_model_status": "not_exposed_to_fresh_reviewer",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "agent_id": "/root/pv_full256_result_integrity",
+  "verdict_id": "/root/pv_full256_result_integrity/2026-10-03T04:42:49+08:00",
+  "generated_at": "2026-10-03T04:42:49+08:00",
+  "date": "2026-10-03",
+  "scope": "Completed candidate_audit/full_gt_scope_v2 diagnostic only; no re-audit of the prior fused training run.",
+  "eval_type": "real_gt",
+  "proxy_classification": "Dataset-GT geometric overlap proxy against a detection-vocabulary/slot-filtered scene list; not physical or semantic identity certification.",
+  "checks": {
+    "gt_provenance": {
+      "status": "PASS",
+      "details": "Root annotation, box and mask originate in dataset objects; all archived row/scan/target/root-box/point hashes agree with formal. 87 roots absent from scene detection GT remain evaluated."
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "details": "Ordinary intersection-over-union and fixed expression/error denominators; native softmax scores are not used to normalize reported performance."
+    },
+    "result_existence": {
+      "status": "WARN",
+      "details": "9508 rows, 1189 complete NPZs, 2434048 candidates and all reported counts checked independently. One .25 candidate threshold disagreement remains explicitly reported."
+    },
+    "dead_code": {
+      "status": "PASS",
+      "details": "Native model->criterion/Hungarian->evaluator path is live. Correct final-layer and GT-slot mapping; state guard precedes successful receipt. No update calls in diagnostic AST."
+    },
+    "scope": {
+      "status": "WARN",
+      "details": "One seed2027, one ScanRefer development checkpoint, 141 scenes. All valid native GT slots are [0]; matched_other=0 is structural. Offline oracle does not establish a deployable semantic selector or retraining gain."
+    },
+    "eval_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "qualifier": "Limited filtered-scene geometric identity proxy."
+    }
+  },
+  "warnings": [
+    {
+      "id": "W1",
+      "type": "numerical_precision",
+      "blocking": false,
+      "details": "Exactly one unselected candidate at row3499/query189 crosses .25 between native GPU and float64 CPU; original native decisions, old strict failure, and both counts preserved."
+    },
+    {
+      "id": "W2",
+      "type": "matching_scope",
+      "blocking": false,
+      "details": "All 9508 rows have valid native GT slots [0]; zero matched_other counts cannot validate multi-instance protection."
+    },
+    {
+      "id": "W3",
+      "type": "proxy_scope",
+      "blocking": false,
+      "details": "2911 joint Box/Mask alternative rows require the root overlap proxy; removing that proxy gives 2919. Updated appendix explicitly states the condition."
+    },
+    {
+      "id": "W4",
+      "type": "independent_reconstruction_limit",
+      "blocking": false,
+      "details": "No raw point-mask/full-scene-GT reconstruction or Hungarian re-solve from raw costs was possible from saved NPZs; native source path and saved fields/derived statistics checked."
+    },
+    {
+      "id": "W5",
+      "type": "scope",
+      "blocking": false,
+      "details": "Single-seed development evaluation and a GT geometric oracle do not establish semantic identity, trained efficacy, external generalization, or a deployed achievable bound."
+    },
+    {
+      "id": "W6",
+      "type": "formal_numeric_parity",
+      "blocking": false,
+      "details": "One query switch; zero hit changes, but 9503 selected-box rows and 2 selected-Mask-IoU rows differ from formal. No continuous equality claim."
+    },
+    {
+      "id": "W7",
+      "type": "chronology",
+      "blocking": false,
+      "details": "Saved sanity/full source identity was recorded after full launch, not as a prelaunch witness."
+    }
+  ],
+  "claims": [
+    {
+      "id": "all256_complete",
+      "impact": "supported"
+    },
+    {
+      "id": "geometric_alternatives_in_errors",
+      "impact": "supported_with_explicit_native_threshold_and_proxy_scope"
+    },
+    {
+      "id": "same_continuous_outputs_as_formal",
+      "impact": "unsupported"
+    },
+    {
+      "id": "unmatched_is_physical_background",
+      "impact": "unsupported"
+    },
+    {
+      "id": "all_geometric_alternatives_semantically_correct",
+      "impact": "unsupported"
+    },
+    {
+      "id": "new_training_label_implementation_or_retraining_gain",
+      "impact": "unsupported"
+    },
+    {
+      "id": "multi_instance_training_protection_validated",
+      "impact": "unsupported"
+    },
+    {
+      "id": "cross_benchmark_or_50_percent_goal_complete",
+      "impact": "unsupported"
+    }
+  ],
+  "deterministic_checks": {
+    "status": "pass",
+    "date": "2026-10-03T04:39:29.358945+08:00",
+    "rows": 9508,
+    "candidates": 2434048,
+    "chunks": 1189,
+    "array_bytes": 129459547,
+    "chunk_manifest_sha256": "b5a03f9a28012504841e916a62615b4837e4a0aaab7b53ebb88d047ff7cf431d",
+    "scene_ids": 141,
+    "physical_scene_prefixes": 141,
+    "native_valid_GT_slots": {
+      "(0,)": 9508
+    },
+    "rec_hits": {
+      "25": 5566,
+      "50": 4406
+    },
+    "native_candidate_counts": {
+      "25": {
+        "matched_root": 8883,
+        "matched_other": 0,
+        "unmatched": 370849
+      },
+      "50": {
+        "matched_root": 7738,
+        "matched_other": 0,
+        "unmatched": 249347
+      }
+    },
+    "cpu_candidate_counts": {
+      "25": {
+        "matched_root": 8883,
+        "matched_other": 0,
+        "unmatched": 370850
+      },
+      "50": {
+        "matched_root": 7738,
+        "matched_other": 0,
+        "unmatched": 249347
+      }
+    },
+    "first_qualified_tie_rows": {
+      "25": 0,
+      "50": 0
+    },
+    "max_CPU_iou_error": 5.394267800662433e-06,
+    "max_selected_coarse_iou_error": 2.7848643260401144e-06,
+    "threshold_differences": [
+      {
+        "row_id": 3499,
+        "query": 189,
+        "threshold": 0.25,
+        "CPU_iou": 0.2500001376978458,
+        "GPU_iou": 0.24999968707561493,
+        "selected": false
+      }
+    ],
+    "bins": {
+      "25": {
+        "2-16": 628,
+        "65-256": 1047,
+        "17-32": 544,
+        "33-64": 1138,
+        "none": 585
+      },
+      "50": {
+        "2-16": 959,
+        "65-256": 844,
+        "none": 1694,
+        "33-64": 1072,
+        "17-32": 533
+      }
+    },
+    "bands": {
+      "weak_overlap_0_to_025": {
+        "candidates": 65974,
+        "expression_rows": 7778
+      },
+      "loose_only_025_to_050": {
+        "candidates": 114046,
+        "expression_rows": 6945
+      },
+      "strict_gt050": {
+        "candidates": 248601,
+        "expression_rows": 7603
+      }
+    },
+    "joint_proxy_rows": 2911,
+    "joint_unrestricted_rows": 2919,
+    "formal_comparison": {
+      "selected_query_changes": 1,
+      "hit25_changes": 0,
+      "hit50_changes": 0,
+      "selected_box_rows_differ": 9503,
+      "selected_mask_iou_rows_differ": 2
+    },
+    "query_changed_rows": [
+      {
+        "row_id": 2236,
+        "old": 63,
+        "new": 196,
+        "old_iou": 0.15109270811080933,
+        "new_iou": 0.1647103875875473
+      }
+    ],
+    "import_hashes": {
+      "evaluator": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "main_utils": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "models.losses": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "models.pv_ground": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58",
+      "prepare_data": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "src.joint_det_dataset": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    "input_hashes": {
+      "candidate_audit/full_gt_scope_v2/run.py": "9dc2498f844a0c6a92337fec0bb5600615d0924322aa601f3939bcee462d5f99",
+      "candidate_audit/full_gt_scope_v2/receipt.json": "9e71b2a8f75c0a087e8bbf4d5aa32804271bf3789df90f450a7d162c6d440283",
+      "candidate_audit/full_gt_scope_v2/rows.jsonl": "957d321f7820418d33aa09a9275944b92a75a3337db6861873fd60a92220a58f",
+      "candidate_audit/full_gt_scope_v2/INTAKE.json": "13f5f28a800c9b664201a6e9b6e5ebce82c07fc50e3c423f8ba7145995989b9a",
+      "candidate_audit/full_gt_scope_v2/CPU_RECOUNT.json": "127defe23156639a29b2af28a770d70fb3c093fc65b075d101420b7ef8d79d46",
+      "candidate_audit/full_gt_scope_v2/CPU_THRESHOLD_DIFFERENCES.json": "2cf2f8d400fbbb567dae17de6ee986e9f7accd0dd5849f0472d0af8d75c60591",
+      "candidate_audit/full_gt_scope_v2/SUMMARY.json": "63fab9b1bb7ea55d2405233751effe70013be03c19682209596ffd05e7a3067d",
+      "candidate_audit/full_gt_scope_v2/imports.json": "f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd",
+      "candidate_audit/full_gt_scope_v2/load.json": "377fb3ebe5424836f9df003bd35562f93f97031ab79abe555a0275a1f6093b5d",
+      "candidate_audit/full_gt_scope_v2/run.log": "fdc57270b1d3c7bf44117d90145c8206dc86ebeea1bff7e9141cccf662ae72e6",
+      "candidate_audit/full_gt_scope_v2/run.exit": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "candidate_audit/full_gt_scope_v2/recount_strict_v1.py": "8a262ce36316565156d1d725ec45ab0f036f28c5fdcb87edbfc0e73dae909b72",
+      "candidate_audit/full_gt_scope_v2/recount_strict_v1.failure.json": "fb69e28449eaf59f3f3e71f96e67063a40cdf22096cbc13db746af802d1588d5",
+      "candidate_audit/full_gt_scope_v2/recount_strict_v1.failure.log": "0e3696d602d5ba343548df2b6753b721c754fec8c2cd7425806e26fa843931bb",
+      "recount_full_candidate_audit.py": "278abd52b8062f124c5cda1facf714a59fe88d96547415d11f31ab6b9605eafe",
+      "analyze_completed_candidate_audit.py": "39bddd01088707a2db47638dc034a45c18b946ad6311674a551625777fd410df",
+      "candidate_completion_appendix.md": "6a1fcdd73671948b5cac3b45b84d090e9a5275295af4a516528fd2f02cd9945d",
+      "publish_completed_candidate_audit.py": "0201c1bc640fccf56e05118087197c11997a250b04c4d59fa43f1ed48cadaf9d",
+      "candidate_gt_scope_v2_source_identity.json": "7296dd9119baf725f6d8712840bd26c0b71a014db2aefca096f99b737a8742e7"
+    },
+    "v1_preserved_chunks": 44,
+    "v1_preserved_rows": 352,
+    "sanity_rows": 8,
+    "sanity_thresholds_exact": true,
+    "formal_receipt_counts_exact": true,
+    "imports_match_formal": true,
+    "AST_forbidden_update_calls": 0,
+    "source_module_hashes_match_spec": true,
+    "all_scene_superpoints_in_manifest": true,
+    "additional_hashes": {
+      "complete_tail_fused_retry/source/input_manifest.json": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+      "complete_tail_fused_retry/source/split_protocol.json": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+      "complete_tail_fused_retry/arm/spec.json": "234c661dfab8ad193949042dff08eaa52465793d66e8af37766ba709e102dcf9",
+      "complete_tail_fused_retry/arm/formal/receipt.json": "a15c3587f5bf5b8a3edbc14d0b0e7110432cb7468334409cabd11df5790f0c85",
+      "complete_tail_fused_retry/arm/formal/rows.jsonl": "0b6b63512e819890747eff146abff9a54ae8581cf636da117bcf859a6c0fecbf",
+      "candidate_audit/full/run.py": "2132287cd9bce49ca0774fe1e9246d2b777e99b227dd86e7df8e3ba7fcb7541e",
+      "candidate_audit/full/run.log": "24777bd0a638148bba41109a692b621546b9912ab4caac22fb6f5547ade6932e",
+      "candidate_audit/full/run.exit": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04",
+      "candidate_audit/sanity_gt_scope_v2/receipt.json": "f87e5e6d19dab18f2e27aba3bc9f845398ba08d81c51ad887d1e3c1767649f22",
+      "candidate_audit/sanity_gt_scope_v2/CPU_RECOUNT.json": "fa9df02e66e840cd608e3f22b33706acb1ecbf030f2e5e2f3fd2c2bddbc49c32",
+      "candidate_completion_appendix.md": "f53badd6486f0c3c34efe77e3e936378d48d76af4678894582241cbfbb867e2d",
+      "complete_tail_fused_retry/source/pvground_semantic_assignment.py": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "complete_tail_fused_retry/source/pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "complete_tail_fused_retry/source/pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "complete_tail_fused_retry/source/pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "complete_tail_fused_retry/source/pvground_candidate_box_refiner.py": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "complete_tail_fused_retry/source/pvground_tail_support_box_refiner.py": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "complete_tail_fused_retry/source/pvground_tail_preflight.py": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb"
+    }
+  },
+  "audited_input_hashes": {
+    "candidate_audit/full_gt_scope_v2/run.py": "sha256:9dc2498f844a0c6a92337fec0bb5600615d0924322aa601f3939bcee462d5f99",
+    "candidate_audit/full_gt_scope_v2/receipt.json": "sha256:9e71b2a8f75c0a087e8bbf4d5aa32804271bf3789df90f450a7d162c6d440283",
+    "candidate_audit/full_gt_scope_v2/rows.jsonl": "sha256:957d321f7820418d33aa09a9275944b92a75a3337db6861873fd60a92220a58f",
+    "candidate_audit/full_gt_scope_v2/INTAKE.json": "sha256:13f5f28a800c9b664201a6e9b6e5ebce82c07fc50e3c423f8ba7145995989b9a",
+    "candidate_audit/full_gt_scope_v2/CPU_RECOUNT.json": "sha256:127defe23156639a29b2af28a770d70fb3c093fc65b075d101420b7ef8d79d46",
+    "candidate_audit/full_gt_scope_v2/CPU_THRESHOLD_DIFFERENCES.json": "sha256:2cf2f8d400fbbb567dae17de6ee986e9f7accd0dd5849f0472d0af8d75c60591",
+    "candidate_audit/full_gt_scope_v2/SUMMARY.json": "sha256:63fab9b1bb7ea55d2405233751effe70013be03c19682209596ffd05e7a3067d",
+    "candidate_audit/full_gt_scope_v2/imports.json": "sha256:f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd",
+    "candidate_audit/full_gt_scope_v2/load.json": "sha256:377fb3ebe5424836f9df003bd35562f93f97031ab79abe555a0275a1f6093b5d",
+    "candidate_audit/full_gt_scope_v2/run.log": "sha256:fdc57270b1d3c7bf44117d90145c8206dc86ebeea1bff7e9141cccf662ae72e6",
+    "candidate_audit/full_gt_scope_v2/run.exit": "sha256:13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+    "candidate_audit/full_gt_scope_v2/recount_strict_v1.py": "sha256:8a262ce36316565156d1d725ec45ab0f036f28c5fdcb87edbfc0e73dae909b72",
+    "candidate_audit/full_gt_scope_v2/recount_strict_v1.failure.json": "sha256:fb69e28449eaf59f3f3e71f96e67063a40cdf22096cbc13db746af802d1588d5",
+    "candidate_audit/full_gt_scope_v2/recount_strict_v1.failure.log": "sha256:0e3696d602d5ba343548df2b6753b721c754fec8c2cd7425806e26fa843931bb",
+    "recount_full_candidate_audit.py": "sha256:278abd52b8062f124c5cda1facf714a59fe88d96547415d11f31ab6b9605eafe",
+    "analyze_completed_candidate_audit.py": "sha256:39bddd01088707a2db47638dc034a45c18b946ad6311674a551625777fd410df",
+    "candidate_completion_appendix.md": "sha256:f53badd6486f0c3c34efe77e3e936378d48d76af4678894582241cbfbb867e2d",
+    "publish_completed_candidate_audit.py": "sha256:0201c1bc640fccf56e05118087197c11997a250b04c4d59fa43f1ed48cadaf9d",
+    "candidate_gt_scope_v2_source_identity.json": "sha256:7296dd9119baf725f6d8712840bd26c0b71a014db2aefca096f99b737a8742e7",
+    "complete_tail_fused_retry/source/input_manifest.json": "sha256:14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+    "complete_tail_fused_retry/source/split_protocol.json": "sha256:06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+    "complete_tail_fused_retry/arm/spec.json": "sha256:234c661dfab8ad193949042dff08eaa52465793d66e8af37766ba709e102dcf9",
+    "complete_tail_fused_retry/arm/formal/receipt.json": "sha256:a15c3587f5bf5b8a3edbc14d0b0e7110432cb7468334409cabd11df5790f0c85",
+    "complete_tail_fused_retry/arm/formal/rows.jsonl": "sha256:0b6b63512e819890747eff146abff9a54ae8581cf636da117bcf859a6c0fecbf",
+    "candidate_audit/full/run.py": "sha256:2132287cd9bce49ca0774fe1e9246d2b777e99b227dd86e7df8e3ba7fcb7541e",
+    "candidate_audit/full/run.log": "sha256:24777bd0a638148bba41109a692b621546b9912ab4caac22fb6f5547ade6932e",
+    "candidate_audit/full/run.exit": "sha256:f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04",
+    "candidate_audit/sanity_gt_scope_v2/receipt.json": "sha256:f87e5e6d19dab18f2e27aba3bc9f845398ba08d81c51ad887d1e3c1767649f22",
+    "candidate_audit/sanity_gt_scope_v2/CPU_RECOUNT.json": "sha256:fa9df02e66e840cd608e3f22b33706acb1ecbf030f2e5e2f3fd2c2bddbc49c32",
+    "complete_tail_fused_retry/source/pvground_semantic_assignment.py": "sha256:3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+    "complete_tail_fused_retry/source/pvground_observation_query.py": "sha256:cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "complete_tail_fused_retry/source/pvground_task_observation_query.py": "sha256:39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "complete_tail_fused_retry/source/pvground_source_query.py": "sha256:e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "complete_tail_fused_retry/source/pvground_candidate_box_refiner.py": "sha256:e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+    "complete_tail_fused_retry/source/pvground_tail_support_box_refiner.py": "sha256:665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+    "complete_tail_fused_retry/source/pvground_tail_preflight.py": "sha256:823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb",
+    "complete_tail_fused_retry/source/imported/evaluator.py": "sha256:39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "complete_tail_fused_retry/source/imported/main_utils.py": "sha256:14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+    "complete_tail_fused_retry/source/imported/models.losses.py": "sha256:920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "complete_tail_fused_retry/source/imported/models.pv_ground.py": "sha256:cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58",
+    "complete_tail_fused_retry/source/imported/prepare_data.py": "sha256:3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+    "complete_tail_fused_retry/source/imported/src.joint_det_dataset.py": "sha256:3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+  },
+  "candidate_chunk_manifest": {
+    "count": 1189,
+    "total_bytes": 129459547,
+    "sha256": "b5a03f9a28012504841e916a62615b4837e4a0aaab7b53ebb88d047ff7cf431d",
+    "definition": "SHA256 of sorted UTF-8 name\\tbytes\\tsha256\\n entries"
+  },
+  "source_and_data_limits": "Archived source/import hashes, source-module hashes and row/input identities verified. No current remote raw dataset or parent checkpoint byte re-verification. No model forward executed by reviewer.",
+  "no_model_or_network_execution": true,
+  "reviewed_files_modified_by_reviewer": false,
+  "writes_restricted_to": [
+    "candidate_audit/full_gt_scope_v2/EXPERIMENT_AUDIT.md",
+    "candidate_audit/full_gt_scope_v2/EXPERIMENT_AUDIT.json"
+  ],
+  "trace_path": null,
+  "trace_status": "Full prompt/response immutable trace is the parent executor's responsibility; this child is restricted to the two audit outputs and returns report_markdown verbatim.",
+  "report_markdown": "# Experiment Audit Report\n\n日期：2026-10-03（北京时间）  \n审计对象：已完成的 ScanRefer tail_fused full256 诊断。  \n审计者：gpt-6-astra，reasoning_effort=max，fresh native agent `/root/pv_full256_result_integrity`。  \nreview_independence：same-family；acceptance_status：provisional；executor_model：unavailable。\n\n**Overall verdict：WARN。Integrity status：warn。Blocking findings：[]。**\n\n已独立检查完整原始结果，支持按下述限定如实封存该诊断；没有发现需要修改模型、重跑 GPU 或阻止该事实性封存的材料错误。本审计不重做此前 fused 训练审计，不把旧审查结论当成本次结果证明，也不将代码审查 PASS 当作性能 PASS。\n\n所有相对路径以 `C:/Users/gb/.codex/tmp/pvground_fused_support_20261002` 为根；下文 D 指 `candidate_audit/full_gt_scope_v2`，S 指 `complete_tail_fused_retry/source/imported`。\n\n## A. Ground Truth Provenance：PASS\n\n表达式来自数据集的 ScanRefer annotation JSON，root 的实例编号来自 `object_id`；root 框和 Mask 分别取该实例的原生 bbox 与点成员，不由模型输出构造。证据：`S/src.joint_det_dataset.py:585–646,1086–1119,1324–1334,1387–1392`。输入准备仅向模型提供点、文本、检测结果和 superpoint；GT 在前向后进入原生 loss/evaluator 与离线诊断，见 `D/run.py:269–286,308–336`。butd_gt/butd_cls 均关闭，`D/run.py:138,238–241`。\n\n场景 GT 是另一个受检测词表和最多 132 个原生槽限制的列表，不能假定包含表达式 root（`S/src.joint_det_dataset.py:1121–1157`）。修订版独立计算 root IoU，再与该列表的最大 IoU 比较，且单独记录成员身份（`D/run.py:335–355`）。完整 9508 行中 87 行 root 不在该检测 GT 列表；这些行及其所有候选仍在结果中。零重叠也可能并列，因此只有另加正 IoU 条件的统计才构成“合格 root 重叠代理”。\n\n本地归档的六个原生导入文件 SHA-256 均与本次 imports.json 及归档 formal 的导入记录一致；七个附加模块与 spec 的摘要一致，split_protocol 摘要一致，141 个实际场景均有 manifest 中的 val superpoint 条目。全部行的 row_id、scan_id、target_id、root_box、point_sha256 与归档 formal 精确相同。本轮没有重新读取远端原始 annotation/点云/Mask 文件或父 checkpoint 当前字节；这是源码与归档输入身份的核验，不是对原始数据重新下载后的独立重建。\n\n## B. Score Normalization：PASS\n\n框 IoU 使用普通交并比，体积交集除以两个框体积之和减交集；阈值为严格 `>.25`、`>.5`。命中率分母为全部 9508 条表达；错误中存在备选的百分比分母分别是 3942、5102 条实际错误。没有用模型自己的最大值、均值或预测数量重标性能。证据：`D/run.py:299–305,379–388,420–422`；`S/evaluator.py:289–303`；`analyze_completed_candidate_audit.py:22–43`。\n\nbbs 的 softmax 是原生候选评分的一部分，不是报告 IoU/命中率的自归一化。分数公式与原生 evaluator 的 main、modify、pron、relation 加和及 other 减项一致（`D/run.py:324–328`；`S/evaluator.py:254–281,535–550`）。\n\n## C. Result File Existence and Arithmetic：WARN\n\n审计者用独立的本地 NumPy/float64 代码逐块读取全部 **1189 个 NPZ、9508 行、2,434,048 个候选**，未调用作者的会写报告脚本。文件序号为 0000–1188，前 1188 块各 8 行，末块 4 行；行号连续 0–9507，无重复、缺行或候选筛除。数组共 129,459,547 字节，与 INTAKE 每块文件名和字节数一致。全部数组形状、有限值、框正尺寸、IoU/概率范围、选择字段、匹配槽、代理布尔量、逐行资格计数及摘要算术一致。实际退出码为 0，完成日志与 receipt 精确一致（`D/run.exit:1`；`D/run.log:8–26`）。\n\n独立得到以下原生 GPU 口径结果；相互重叠的备选类别不可相加：\n\n| 数量 | @.25 | @.50 |\n|---|---:|---:|\n| 实际选择命中 | 5566 | 4406 |\n| 实际选择错误 | 3942 | 5102 |\n| 错误中存在合格备选框 | 3357 | 3408 |\n| 错误中存在未匹配合格框 | 3254 | 3209 |\n| 错误中存在同时满足 root 重叠代理的未匹配合格框 | 3229 | 3201 |\n| 错误中全 256 无合格框 | 585 | 1694 |\n| 全部候选中的 matched-root / matched-other / unmatched 合格数 | 8883 / 0 / 370849 | 7738 / 0 / 249347 |\n\n错误行首个合格候选的排名分箱 2–16、17–32、33–64、65–256、none 分别为：@.25 **628/544/1138/1047/585**，@.50 **959/533/1072/844/1694**；32 名之后分别 2185、1916。所有已选 query 都是保存 bbs 分数的最大值；全部 first-qualified rank 的独立分数上下界相等，没有影响这些排名的同分歧义；top-k 标志与实际 first rank 一致。八个示例的行号、query、IoU、Mask IoU、匹配状态与分数排名均逐项核对。\n\n未匹配且满足 root 重叠代理的候选在 `(0,.25]`、`(.25,.5]`、`(.5,1]` 三个区间分别为 **65974/114046/248601** 个，覆盖 **7778/6945/7603** 条表达。严格错误中，额外要求该代理的 unmatched Box>.5 且 Mask>.5 备选存在于 **2911** 行；不要求该代理时是 **2919** 行。摘要字段的实际条件在 `analyze_completed_candidate_audit.py:55–66`，本次已核对更新后的 `candidate_completion_appendix.md:32` 明确写出该限定。\n\n**必须保留的数值 WARN：** float64 CPU 与原生 GPU 的最大框 IoU 差为 **5.394267800662433e-06**。唯一阈值不一致位于 row3499/query189，CPU=**0.2500001376978458**、GPU=**0.24999968707561493**；它未被选择，matched_slot=-1。@.25 合格候选总数 GPU 为 **379732**、CPU 为 **379733**，差异全在 unmatched（370849 对 370850）；@.50 两者均 **257085**。全部已选 .25/.5 判定、所有候选 .5 判定和错误中存在备选的表达数一致。审计复现了原始差异，没有容差抹平、阈值放宽或改写原生决定。证据：`D/CPU_THRESHOLD_DIFFERENCES.json:5–31`；`D/CPU_RECOUNT.json:9–24,46–73`；`recount_full_candidate_audit.py:28–39,53–113`。保存的严格旧 checker 哈希与失败记录一致，其实际 AssertionError/exit1 被保留。\n\n归档 formal 对照的 query 变化 **1** 行（row2236：63→196，IoU 0.15109270811080933→0.1647103875875473），.25/.5 命中变化均 **0**。选中框的连续值在 **9503** 行不完全相同，选中 Mask IoU 在 **2** 行不同；不得声称连续框或 Mask 逐位等价。formal rows 的摘要及 receipt 中的 REC/Mask 命中也由原始行重新核对。此诊断不能将前向数值变化记为方法增益。\n\n## D. Live Evaluation and No Update Path：PASS\n\n本次真实执行路径先 model forward，再调用原生 criterion，捕获七次 matcher 返回；原生层序为 proposal、last、0head…4head，因此 `matching[1]` 对应最后层。将压缩 target 下标映射回 `valid_slots[targets]` 正确（`D/run.py:308–343`；`S/models.losses.py:817,849–885,891–917`）。所有实际行有效 GT 槽均为 **[0]**，每行恰有一个 root 匹配和 255 个未匹配候选。因此 matched_other=0 是此数据与目标构造的结构性结果，不能证明多实例训练保护或完整场景身份判别已通过。\n\n原生 evaluator 实际被调用，累计 REC 与本次 GPU 计数的断言通过；Mask 使用原生 adaptive weight 融合 logits 后 sigmoid>.5，再按 superpoint 点成员计算交并比（`D/run.py:321,357–375,420–425`；`S/evaluator.py:194–206,594–605,646–653,897–902`）。所有保存 Mask/场景代理字段和派生计数均已检查，但 NPZ 没有原始 GT 点成员及完整 scene boxes，因此本轮不能在 CPU 从零复算每个候选的 Mask IoU、scene maximum 或重新解完整 Hungarian cost。\n\n`D/run.py:291–294` 关闭梯度、设 eval、保存 state，`:419` 逐项检查 state 未变，成功 receipt 位于这些断言之后。AST 中没有 backward、step、get_optimizer、Adam/AdamW/SGD 或 model.train 调用；`S/main_utils.py:268–280` 只构建 criterion，优化器构造是另一个未调用的方法。本诊断没有构建优化器、反向传播、更新权重、新建验证训练标签或裁剪候选。已有 G 的训练代码已替换部分 IoU>.5 未匹配 query 的 CE（`complete_tail_fused_retry/source/pvground_semantic_assignment.py:9–50`）；本次诊断没有新增该实现。\n\n## E. Scope and Failure Preservation：WARN\n\n实际范围为 **一个 seed2027、一个 tail_fused 终点、一个 ScanRefer 长期开发验证集、141 个场景、9508 条表达**。它支持全候选离线几何诊断，不能证明重训增益、多 seed 稳定性、独立测试泛化、Nr3D/Sr3D 达标或一个可部署评分器能兑现 oracle 差距。现有 5566/4406 对应 58.54017669%/46.33992427%，不能标为达到 50% 的严格 REC 目标。\n\nv1 full 的真实 exit1 与 root-membership 断言保留（`candidate_audit/full/run.log:8–13`）；实读 44 个旧完整块，连续 352 行/90112 个候选，没有将其算作完整成功。新 sanity_gt_scope_v2 的 8 行、2048 个框、exit0 及 .25/.5 CPU 判断独立核对通过；其结果不代替 full 的 9508 行核验。sanity/full/当前待执行源码字节一致，SHA-256 为 `9dc2498f844a0c6a92337fec0bb5600615d0924322aa601f3939bcee462d5f99`；该源码身份记录明确发生在 full 启动之后（`candidate_gt_scope_v2_source_identity.json:2–7`），不能回填为启动前见证。旧 source-only PASS 不承担本次性能验收。\n\n更新后的 appendix 对 full256、浮点差异、root 范围、2911 的代理条件、root-only 匹配及 formal 连续输出限定与实际产物一致。publisher 仅作为待执行发布代码检查：它要求实际 full exit0、完整数量、sanity/source 一致及无阻塞审查，并纳入摘要、失败记录和本审计（`publish_completed_candidate_audit.py:17–33,49–84`）。本审计未执行发布，也不证明远端或公开仓库已同步；此前 fused 训练结果的进一步结论仍属于原审计范围。\n\n## F. Evaluation Type：real_gt（附有限范围的几何身份代理）\n\nroot Box/Mask 使用数据集真实 GT，分类为 **real_gt**。root IoU 不劣于“检测词表/槽范围筛选后的 scene GT 最大值”只是一种明确限定的 **GT 几何代理**，不证明唯一物理实例或完整表达语义；unmatched 不等于真实背景，低 IoU 也不能直接推出负语义标签。它不是模型生成参考的 synthetic_proxy，但其身份解释必须保留 proxy 限定（`D/run.py:429–433`；`candidate_completion_appendix.md:32,38–40`）。\n\n## Action Items and Claim Impact\n\n- 无阻塞修改项；保留 GPU/CPU 两套原始阈值计数、原严格 CPU 失败以及 v1 GPU 失败，保持 WARN。\n- 支持“完整保留 all256、部分选择错误内已有几何合格备选”；支持本表具体计数。\n- “2911”仅支持带 root 重叠代理的联合 Box/Mask 条件；matched_other=0 不支持多实例职责保护已经验证。\n- 不支持“未匹配均为背景”“备选均为语义正确答案”“可直接转正验证标签”“连续输出完全等价”“该诊断证明新训练策略有效”等超出证据的结论。\n\n审计只做本地读取、CPU 数值/哈希/AST 检查，并写本 Markdown 与同名 JSON；未使用 SSH、网络、GPU、模型前向或凭据。全部 NPZ 的有序文件名/字节数/SHA-256 清单摘要为 `b5a03f9a28012504841e916a62615b4837e4a0aaab7b53ebb88d047ff7cf431d`，定义为按文件名排序的 `name\\tbytes\\tsha256\\n` UTF-8 串的 SHA-256；详细审查输入哈希和独立统计保存在 JSON。完整响应原文交由父执行器按 review-tracing 归档，本子审查不另写 trace 文件。\n"
+}

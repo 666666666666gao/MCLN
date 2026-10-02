@@ -13,8 +13,7 @@ raw=(root/'rows.jsonl').read_bytes()
 assert hashlib.sha256(raw).hexdigest()==receipt['rows_sha256']
 rows=[json.loads(line) for line in raw.splitlines()]
 assert len(rows)==receipt['rows'] and receipt['all_candidates_retained']==256
-all_rows=[];partitions={};qualification_counts={};CPU_qualification_counts={}
-threshold_differences=[];CPU_alternative_error_rows={'25':0,'50':0}
+all_rows=[];partitions={};qualification_counts={}
 hits={'25':0,'50':0};max_iou_error=0.;comparisons=[]
 formal=Path(r'C:\Users\gb\.codex\tmp\pvground_fused_support_20261002\complete_tail_fused_retry\arm\formal\rows.jsonl')
 assert formal.is_file()
@@ -32,11 +31,7 @@ for chunk in sorted(root.glob('candidates_*.npz')):
         inter=np.maximum(hi-lo,0).prod(-1)
         iou=inter/(boxes[:,3:].prod(-1)+gt[3:].prod()-inter)
         saved=data['root_iou'][offset];max_iou_error=max(max_iou_error,float(np.abs(iou-saved).max()))
-        for threshold in (.25,.5):
-            for query in np.flatnonzero((iou>threshold)!=(saved>threshold)):
-                threshold_differences.append(dict(row_id=index,query=int(query),threshold=threshold,
-                    CPU_iou=float(iou[query]),GPU_iou=float(saved[query]),
-                    selected=int(query)==row['selected_query']))
+        for threshold in (.25,.5):assert np.array_equal(iou>threshold,saved>threshold)
         scores=data['bbs_scores'][offset];rank=scores.argsort()[::-1]
         selected=row['selected_query']
         # Torch and NumPy may order tied slots differently. The captured native
@@ -51,11 +46,7 @@ for chunk in sorted(root.glob('candidates_*.npz')):
         assert np.array_equal(proxy,saved>=data['best_scene_GT_iou'][offset])
         limits={}
         for threshold,suffix in ((.25,'25'),(.5,'50')):
-            # Report native evaluation decisions. Independent float64 geometry
-            # and every differing threshold decision are retained separately.
-            good=saved>threshold
-            CPU_good=iou>threshold
-            assert bool(CPU_good[selected])==bool(good[selected])
+            good=iou>threshold
             counts={'matched_root':int((good&(matched==0)).sum()),
                 'matched_other':int((good&(matched>0)).sum()),'unmatched':int((good&(matched<0)).sum())}
             expected=row['geometric_qualification'][suffix]
@@ -77,11 +68,7 @@ for chunk in sorted(root.glob('candidates_*.npz')):
                 'no_qualified':0,'selected_loose_only':0})
             total=qualification_counts.setdefault(suffix,dict(matched_root=0,matched_other=0,unmatched=0))
             for key,value in counts.items():total[key]+=value
-            CPU_total=CPU_qualification_counts.setdefault(suffix,dict(matched_root=0,matched_other=0,unmatched=0))
-            for key,condition in (('matched_root',matched==0),('matched_other',matched>0),('unmatched',matched<0)):
-                CPU_total[key]+=int((CPU_good&condition).sum())
             if iou[selected]<=threshold:
-                CPU_alternative_error_rows[suffix]+=int(CPU_good.any())
                 group['errors']+=1;group['has_alternative']+=int(good.any())
                 group['has_unmatched_qualified']+=int((good&(matched<0)).any())
                 group['has_unmatched_qualified_root_overlap_proxy']+=int((good&(matched<0)&proxy).any())
@@ -98,13 +85,9 @@ assert len(all_rows)==receipt['rows'] and hits==receipt['rec_hits']
 root_excluded=sum(not r['root_in_scene_detection_GT'] for r in rows)
 assert root_excluded==receipt['root_excluded_from_scene_detection_GT_rows']
 for group in partitions.values():assert group['errors']==group['has_alternative']+group['no_qualified']
-result=dict(status='warn' if threshold_differences else 'pass',rows=len(all_rows),rec_hits=hits,all_candidates_retained=256,
-    CPU_all_box_thresholds_exact=not threshold_differences,max_CPU_vs_GPU_iou_error=max_iou_error,
-    CPU_all_selected_thresholds_exact=True,CPU_threshold_differences=threshold_differences,
-    CPU_all_box_thresholds_exact_by_threshold={suffix: not any(d['threshold']==threshold for d in threshold_differences)
-        for threshold,suffix in ((.25,'25'),(.5,'50'))},
+result=dict(status='pass',rows=len(all_rows),rec_hits=hits,all_candidates_retained=256,
+    CPU_all_box_thresholds_exact=True,max_CPU_vs_GPU_iou_error=max_iou_error,
     error_partition=partitions,qualified_candidate_counts=qualification_counts,
-    CPU_qualified_candidate_counts=CPU_qualification_counts,CPU_alternative_error_rows=CPU_alternative_error_rows,
     root_excluded_from_scene_detection_GT_rows=root_excluded,
     versus_archived_formal=dict(selected_query_changes=sum(not r['selected_query_equal'] for r in comparisons),
         hit25_changes=sum(not r['hit25_equal'] for r in comparisons),hit50_changes=sum(not r['hit50_equal'] for r in comparisons)),

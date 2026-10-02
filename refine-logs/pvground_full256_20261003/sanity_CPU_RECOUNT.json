@@ -1,0 +1,52 @@
+{
+  "status": "pass",
+  "rows": 8,
+  "rec_hits": {
+    "25": 4,
+    "50": 3
+  },
+  "all_candidates_retained": 256,
+  "CPU_all_box_thresholds_exact": true,
+  "max_CPU_vs_GPU_iou_error": 1.105977841975303e-06,
+  "error_partition": {
+    "25": {
+      "errors": 4,
+      "has_alternative": 4,
+      "has_unmatched_qualified": 4,
+      "has_unmatched_qualified_root_overlap_proxy": 4,
+      "has_matched_other_qualified": 0,
+      "no_qualified": 0,
+      "selected_loose_only": 0
+    },
+    "50": {
+      "errors": 5,
+      "has_alternative": 4,
+      "has_unmatched_qualified": 4,
+      "has_unmatched_qualified_root_overlap_proxy": 4,
+      "has_matched_other_qualified": 0,
+      "no_qualified": 1,
+      "selected_loose_only": 1
+    }
+  },
+  "qualified_candidate_counts": {
+    "25": {
+      "matched_root": 8,
+      "matched_other": 0,
+      "unmatched": 431
+    },
+    "50": {
+      "matched_root": 7,
+      "matched_other": 0,
+      "unmatched": 197
+    }
+  },
+  "root_excluded_from_scene_detection_GT_rows": 0,
+  "versus_archived_formal": {
+    "selected_query_changes": 0,
+    "hit25_changes": 0,
+    "hit50_changes": 0
+  },
+  "evidence_limits": "Read-only full-candidate diagnostic, not a retrained ablation. Native matcher is applied to evaluation inputs; unmatched status is not physical background identity. IoU qualification and overlap against detection-vocabulary scene GT are GT-only geometric proxies, not a deployed selection rule. Root GT is scored independently even when excluded from the detection-vocabulary scene list; that exclusion is recorded. All 256 are kept; no new pruning, supervision or optimizer update. Fresh forward may differ numerically from archived formal output.",
+  "unmatched_rule": "Same native last-layer Hungarian matcher on evaluation inputs. G already replaces CE for unmatched IoU>.5; lower IoU is not an automatic semantic-negative or positive identity proof.",
+  "rank_rule": "Exact native ranks are captured; CPU validates first-qualified score-tie bounds, not arbitrary tie reordering."
+}

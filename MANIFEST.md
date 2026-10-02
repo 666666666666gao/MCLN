@@ -138,3 +138,5 @@
 - 2026-10-02T21:43:27.120860+08:00 Archived P3 selected-query magnitude analysis only; active same-tail pair unchanged; no new REC result.
 
 - 2026-10-02T23:23:25.075620+08:00 Same-tail raw formal5594/4457 archived/recounted; paired fused attempt failed E0 exact-box assertion before optimizer creation; zero updates, no fused final result.
+
+- 2026-10-03T00:21:20.890045+08:00 Fused retry launched after fixed-real-batch zero-update probe and measured capacity review; no new deletion or final REC result.

@@ -1,0 +1,267 @@
+{
+  "verdict": "PASS",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "time_cst": "2026-10-02T19:54:55.400892+08:00",
+  "review_type": "independent code review; not terminal-result integrity audit",
+  "scope": "collect_complete_arm.py, recount_complete_arm.py and additionally delegated publish_initial_boundary_and_helpers.py; local read-only implementation and interface review",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "L1",
+      "severity": "info",
+      "detail": "这是代码审查。没有新的same-tail终态成绩，没有执行这三个脚本、SSH、远端读写、GPU、checkpoint反序列化或科学实验。PASS不等于已完成运行/发布/结果完整性审计。"
+    },
+    {
+      "id": "L2",
+      "severity": "non-blocking",
+      "detail": "E0 Mask差异仍未解释。边界凭据只有row18482在bbs/bbf中不同；保存selected REC与身份相等不代表全部输入、logit、排名或全模型逐位相等。"
+    },
+    {
+      "id": "L3",
+      "severity": "non-blocking",
+      "detail": "CPU框计算仅复核保存的GT/所选及粗框；Mask和all256限定为保存值/标记。terminal归档是需要保留author/G父权重的delta，不是独立完整模型或已执行的新restore。"
+    },
+    {
+      "id": "L4",
+      "severity": "info",
+      "detail": "现有原始GT来源和历史成绩以本次指定runner/既有审计为背景；未重新从ScanNet原始标注生成全部GT，也未重跑历史控制。"
+    }
+  ],
+  "minimal_fixes": [],
+  "checks": [
+    {
+      "id": "completion_and_budget",
+      "status": "PASS",
+      "evidence": [
+        "collect_complete_arm.py:34-46",
+        "recount_complete_arm.py:25-39",
+        "recount_complete_arm.py:53-59"
+      ],
+      "detail": "收集必须完成指定 arm、3723 更新、通过9508 formal及两阶段exit=0；CPU独立检查3723个按序batch、29778个fit ID、完整holdout次序和6887/6887/9508行数。既有runner实际构造唯一fit分区并验证完全一致，因此这里的Counter检查满足当前协议，无需假设性重复ID分支。"
+    },
+    {
+      "id": "raw_evidence_and_archive",
+      "status": "PASS",
+      "evidence": [
+        "collect_complete_arm.py:47-119",
+        "run_pvground_tail_support.py:527-540"
+      ],
+      "detail": "原始凭据/行/日志/导入来源均按字节保存并记录SHA；行文件、train日志、run/spec/source_port及imported源与既有凭据核对。terminal.pth完整复制，大小、前后stat和SHA核验；runner保存state_delta、optimizer、RNG、fit顺序及父身份。没有删除或父文件改写，元数据明确依赖保留的author/G父权重。"
+    },
+    {
+      "id": "selected_and_coarse_geometry",
+      "status": "PASS",
+      "evidence": [
+        "recount_complete_arm.py:42-101",
+        "run_pvground_tail_support.py:441-482"
+      ],
+      "detail": "所选框与同一query粗框分别对保存root_box计算轴对齐IoU；严格>.25/>.5逐行等价检查与连续最大绝对差异同时保留。没有重新引入已被历史数据否定的2e-6固定误差门槛，也没有用其他模型输出充当GT。"
+    },
+    {
+      "id": "mask_and_coverage_limits",
+      "status": "PASS",
+      "evidence": [
+        "recount_complete_arm.py:63-69",
+        "recount_complete_arm.py:86-100",
+        "recount_complete_arm.py:143"
+      ],
+      "detail": "Mask仅对已保存mask_iou重计；Full256/top16仅对GPU已保存标记求和并检查单调/0或1/所选命中一致性。文本明确没有原始Mask或所有256框的新重放。"
+    },
+    {
+      "id": "paired_identity_and_scope",
+      "status": "PASS",
+      "evidence": [
+        "recount_complete_arm.py:14-19",
+        "recount_complete_arm.py:29-39",
+        "recount_complete_arm.py:102-143"
+      ],
+      "detail": "完整fit batch逐步比较，initial、terminal及formal的row/scan/target/root_box/point SHA逐行核对后才统计修复/破坏。tail_raw对历史G仅背景；tail_fused对应完成的同尾部raw。E0精确比较只针对已保存selected REC与身份，Mask差异原样留在行/比较凭据中。"
+    },
+    {
+      "id": "primary_metric",
+      "status": "PASS",
+      "evidence": [
+        "recount_complete_arm.py:62-101",
+        "recount_complete_arm.py:136-148"
+      ],
+      "detail": "bbs与bbf分开输出；原G5615/4495差值及4754严格命中目标均只读取formal bbs，没有用bbf或6887留出代替。"
+    },
+    {
+      "id": "publication_content",
+      "status": "PASS",
+      "evidence": [
+        "publish_initial_boundary_and_helpers.py:19-57",
+        "tail_raw_training_boundary_193500.json",
+        "training_boundary_record.json"
+      ],
+      "detail": "续写只描述19:35时142步与6887初态bbs6176/5602、bbf6206/5647；保留row18482双模式Mask差异及ETA暂估，未声称终态/正式融合成绩。7个payload正是2份边界证据、请求、2份原样审查报告和2个辅助脚本。"
+    },
+    {
+      "id": "publication_write_boundary",
+      "status": "PASS",
+      "evidence": [
+        "publish_initial_boundary_and_helpers.py:13-31",
+        "publish_initial_boundary_and_helpers.py:47-122"
+      ],
+      "detail": "三个被审脚本SHA受本报告约束；旧交接SHA、三个HEAD和干净工作树均有运行前门禁。发布限定文档、7 payload、manifest及该新目录的gitattributes；第三repo仅交接文档。另在既有本机sync guard内替换旧交接SHA（当前恰好1次）。远端只写文档/归档payload目录，不触及活动训练源码；push为授权main的非强制push并读回HEAD。当前本地门禁已只读核实，远端门禁须执行时验证。"
+    }
+  ],
+  "validation": {
+    "ast_parse": "PASS for the three reviewed scripts and two authoritative runner/controller files; parse only, no imports or execution",
+    "boundary_literal_checks": "PASS against existing JSON, including exact boundary SHA, 142 updates, selected REC counts and row18482 Mask differences",
+    "local_publication_preconditions": {
+      "heads": [
+        "56fd154f21766be0012e6972df54cf184d18c7de",
+        "3e82ea8de6f93dd9535d7854a35db43af6de4f7b",
+        "38613bf37041d19eee335bbd816b036d10931d5b"
+      ],
+      "all_three_worktrees_clean": true,
+      "four_local_handoff_sha256": "c424232c18eb4f03deec92b9dbda1940f00116a02c33efe9d71ca501d8404c36",
+      "handoff_bytes": 2100373,
+      "new_payload_destinations_absent": true
+    },
+    "implementation_files_unchanged": true,
+    "network_or_remote_access": false,
+    "credentials_read": false,
+    "gpu_used": false,
+    "reviewed_scripts_executed": false,
+    "new_terminal_results": false
+  },
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\POSTRUN_REVIEW_REQUEST.md",
+      "sha256": "0f538853ab81ba439360595303a6b849034c2f8b3d8b30af21e9540750be3fc4",
+      "bytes": 3236,
+      "inspection": "本轮审查要求"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\collect_complete_arm.py",
+      "sha256": "d9ec4305afef6c066be16bc9ce9655356d240935bb33ba092ba04e36088bbe6c",
+      "bytes": 6134,
+      "inspection": "完整逐行代码审查和 AST 语法检查"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\recount_complete_arm.py",
+      "sha256": "23724c51a50a46fadcad75fdff662c22572223e2131b731924721329d6410e94",
+      "bytes": 8537,
+      "inspection": "完整逐行代码审查和 AST 语法检查"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\publish_initial_boundary_and_helpers.py",
+      "sha256": "84074fec1cf2fc080f8efca365248df17b459304723cadf5552f9ad2b3eed8d8",
+      "bytes": 8443,
+      "inspection": "追加委托范围；完整逐行代码审查和 AST 语法检查"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\PLAN.md",
+      "sha256": "5e8999f10ec2a3b6e69e71496f5edce863e3131912c33baefd002143f42973ff",
+      "bytes": 4954,
+      "inspection": "原始协议；开头 preparation 状态按要求视为历史状态"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\run_pvground_tail_support.py",
+      "sha256": "483a7db4e0d11d8b79af63ea6e02f6d9455bed218190efc17d42e48929648346",
+      "bytes": 38567,
+      "inspection": "产物、GT、评估、fit 顺序、checkpoint 接口及 AST；训练方法未重新审计"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\run_pvground_tail_support_control.py",
+      "sha256": "21774197eb1ee5a9c4e7742953c1d496e75d6192c80c82de24eb6084398bdcb6",
+      "bytes": 4120,
+      "inspection": "完整控制器产物/退出状态接口和 AST"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_raw_spec.json",
+      "sha256": "30f8a11ae02f0af3cae1ae3db6d5f225820b13b426c44466615cca01cf5caf13",
+      "bytes": 3710,
+      "inspection": "固定 arm、父权重及路径接口"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_fused_spec.json",
+      "sha256": "03c6d64f322210998e2cc35b71f42dd42628465d5d4303588a8e269c90311c76",
+      "bytes": 3731,
+      "inspection": "固定 arm、同尾部 raw 对照及路径接口"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\collect_complete.py",
+      "sha256": "7b1ccfb947a4d5e6a107247326b747a92db737d3e02d6f0347e86321bc574ccb",
+      "bytes": 5629,
+      "inspection": "历史实现及逐行 diff 对照；未执行"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\recount_complete.py",
+      "sha256": "2645e872a2d5a1e0cc46ae3dba50d5e5fa5918b5d18aa021fadaabf6cc4c6524",
+      "bytes": 7764,
+      "inspection": "历史实现及逐行 diff 对照；未执行"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\CPU_RECOUNT.json",
+      "sha256": "fc68682965073245d5371a1a0de71991bc78d1dc7b6d5da747f0b7647e9e2cd5",
+      "bytes": 9891,
+      "inspection": "历史 JSON 内容和数值限制；没有重新生成历史成绩"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\EXPERIMENT_AUDIT.md",
+      "sha256": "5423833a305cb4e6dc32f0c39d4febcfff1f5bbc682d39415693f31a48ada61e",
+      "bytes": 15050,
+      "inspection": "历史证据边界及已有浮点/Mask 差异"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_raw_training_boundary_193500.json",
+      "sha256": "4466c33689f26949419ebda4a85f8209b25d050947329d7b5d3dd9976c1d163f",
+      "bytes": 6108,
+      "inspection": "19:35 既有初态和 142 步凭据"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\runtime_publication.json",
+      "sha256": "57427cacde71c7a5776d543c2723f1357777d5b687670cbaa61f3edec3c6fec4",
+      "bytes": 880,
+      "inspection": "既有发布 HEAD 和交接文档 SHA"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\training_boundary_record.json",
+      "sha256": "aa0e3527d8378ae63485d389fab93f611ab246db7bcbe16e6aaa9f492c57ecad",
+      "bytes": 765,
+      "inspection": "摘要、观察器记录与边界凭据 SHA/数字一致性"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\sync_cs_handoff_remote_20260923.py",
+      "sha256": "27fa322999f13a8f11b4b8d773f90eeac6d245d5774d9e0c9b52cb63eba26384",
+      "bytes": 1435,
+      "inspection": "只检查 AST、整文件 SHA 与旧交接 SHA 字面量恰好一次；未执行该脚本"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_mcln_g0_20260905\\docs\\MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "c424232c18eb4f03deec92b9dbda1940f00116a02c33efe9d71ca501d8404c36",
+      "bytes": 2100373,
+      "inspection": "发布前整文件字节/SHA 对照；未重审历史全文"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\docs\\MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "c424232c18eb4f03deec92b9dbda1940f00116a02c33efe9d71ca501d8404c36",
+      "bytes": 2100373,
+      "inspection": "发布前整文件字节/SHA 对照；未重审历史全文"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_mcln_v99_internal_20260928\\docs\\MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "c424232c18eb4f03deec92b9dbda1940f00116a02c33efe9d71ca501d8404c36",
+      "bytes": 2100373,
+      "inspection": "发布前整文件字节/SHA 对照；未重审历史全文"
+    },
+    {
+      "path": "C:\\Users\\gb\\Desktop\\document\\MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "c424232c18eb4f03deec92b9dbda1940f00116a02c33efe9d71ca501d8404c36",
+      "bytes": 2100373,
+      "inspection": "发布前整文件字节/SHA 对照；未重审历史全文"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_mcln_g0_20260905\\.gitattributes",
+      "sha256": "17bbf1837249dd89b33cfe2290258732f11d815d214032588f81d3a264c34339",
+      "bytes": 25426,
+      "inspection": "现有相关属性规则和整文件 SHA；无修改"
+    }
+  ]
+}

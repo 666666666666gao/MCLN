@@ -1,0 +1,257 @@
+{
+  "review_date_cst": "2026-10-02T16:45:27.758509+08:00",
+  "round": 2,
+  "verdict": "PASS",
+  "code_gate": "PASS",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "actual_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "reviewer_task": "/root/pvg_fused_support_code_review",
+  "scope": "Bounded follow-up review of PGTS-001 only; unchanged algorithm/protocol findings carry forward from frozen round1.",
+  "resolved_findings": [
+    {
+      "id": "PGTS-001",
+      "status": "RESOLVED",
+      "basis": "Both required runtime witnesses are now implemented, asserted before a pass receipt, recorded, and required by the controller before training."
+    }
+  ],
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "PGTS-W001",
+      "severity": "nonblocking",
+      "status": "WARN",
+      "title": "The inherited native G replacement reconstruction witness is not executed by this runner",
+      "locations": [
+        "run_pvground_tail_support.py:322",
+        "run_pvground_tail_support.py:391",
+        "run_pvground_tail_support.py:546"
+      ],
+      "evidence": "verify_native_replacement is under if not update, but the only two step callsites pass update=True. This is inherited unchanged from the audited P3 runner, not a newly broken G correction.",
+      "implication": "Do not describe a fresh native-CE reconstruction/gradient witness as executed by this preflight. The G correction itself is statically consistent with the supplied criterion and consumes the refined last boxes; actual prior G evidence and this fresh preflight have distinct scopes.",
+      "suggested_action": "Keep the evidence limitation explicit. No unrelated G-loss rewrite is requested.",
+      "round2_status": "Unchanged, explicitly retained evidence limitation; the bounded patch makes no fresh G reconstruction-witness claim."
+    }
+  ],
+  "checks": [
+    {
+      "name": "syntax",
+      "status": "PASS",
+      "evidence": "All five affected Python files pass AST parsing and compile() without importing model/PyTorch code or writing bytecode."
+    },
+    {
+      "name": "generated_runner_identity",
+      "status": "PASS",
+      "evidence": "All 18 current builder replacements have a unique anchor; replaying them in memory against the unchanged P3 runner exactly reproduces the generated runner text."
+    },
+    {
+      "name": "bounded_patch_identity",
+      "status": "PASS",
+      "evidence": "Replaying only the literal replacements in patch_runtime_gates.py against the frozen round-1 builder/controller exactly reproduces the current files. No implementation write was executed by this review."
+    },
+    {
+      "name": "unaffected_inputs",
+      "status": "PASS",
+      "evidence": "All 12 unaffected round-1 input files are byte-identical to their frozen reviewed hashes, including PLAN, refiner, source preparation, native model/criterion and the currently running P3 runner."
+    },
+    {
+      "name": "eight_real_native_mask_losses",
+      "status": "PASS",
+      "evidence": "The helper tuple exactly lists the eight terms produced by native SetCriterion.loss_masks (losses.py:562-639), accumulated at :924-931 and exposed at :964-971. The last prefix has the nonempty native Text/Query/alpha outputs, so each term is a Tensor with a differentiable native Mask branch; earlier-prefix float zeros do not make the accumulated term a Python constant. The current batch contains valid root targets, as required by the existing G path."
+    },
+    {
+      "name": "separate_gradient_assertions",
+      "status": "PASS",
+      "evidence": "Helper :13-21 calls autograd.grad separately for each of the eight losses against every refiner parameter, retaining the graph for the eventual training backward. None is allowed for unused parameters; any materialized gradient must be elementwise exactly zero. This cannot hide cancellation between losses or parameters, and autograd.grad does not accumulate into parameter .grad."
+    },
+    {
+      "name": "native_event_sequence",
+      "status": "PASS",
+      "evidence": "Helper :55-63 matches native pv_ground.py:454-547: proposal; heads 0..5; x_query; for each sample one Text prediction, three SWA/FFN/Text predictions, final Text prediction and one Query Mask; then the enabled tail. Batch8 has 105 events with the tail and 104 for intentional bypass: proposal1, each head1, x_query1, each SWA8, each SWA-FFN8, Text40, Query8, enabled refiner1. Exact list equality rejects reordered, missing or extra observed calls."
+    },
+    {
+      "name": "interception_transparency",
+      "status": "PASS",
+      "evidence": "The registered pre-hooks append a Python label and return None. Both temporary method intercepts forward unchanged *args/**kwargs to the saved bound originals and return their exact result. Successful forwards restore those originals and remove all hooks before checking event equality. No tensor operation, parameter/buffer write, extra native forward, or RNG draw is added by observed_forward. A failing disposable process cannot emit a passed receipt."
+    },
+    {
+      "name": "all_four_preflight_forwards",
+      "status": "PASS",
+      "evidence": "Runner :351 and :356 observe the initial enabled/bypass forwards. Its two-step loop at :390 invokes step, whose preflight branch at :285 observes each training forward and whose :313 performs all eight Mask-loss checks before backward/update. The receipt is written only after all existing checks and the new len(witnesses)==4 assertion at :424. Per-loss values are retained in each step record; each call witness retains complete order/counts and enabled role."
+    },
+    {
+      "name": "controller_training_gates",
+      "status": "PASS",
+      "evidence": "Controller :47-52 requires passed status, two updates, matching arm, existing gates, direct_native_mask_loss_to_refiner_gradients_zero, native_call_order_verified and exactly four witnesses before spawning train. This same block is reached by the default flow and train-after-preflight. Old/incomplete receipts cannot satisfy it. Existing current-P3 completion, paired-raw completion and disk gates remain unchanged."
+    },
+    {
+      "name": "preflight_only_instrumentation",
+      "status": "PASS",
+      "evidence": "The new observed forward and Mask-loss autograd checks run only in mode=preflight. Normal training keeps its original model(inputs) call; formal evaluation is unchanged. The helper is imported and checked against the existing per-spec hash convention, and pending deployment must supply that helper and tail_preflight_module_sha256 in its specs."
+    },
+    {
+      "name": "stdlib_behavior_checks",
+      "status": "PASS",
+      "evidence": "Explicit Python stand-ins, without torch/model imports, exercised argument/result identity, repeated method restoration and hook removal, expected 105/104 event lengths, rejection of an extra Text Mask call, invocation of all eight gradient checks, individual rejection of each of eight nonzero loss gradients, and rejection of four old/incomplete controller proofs. These test Python mechanics only and do not establish native Tensor/CUDA behavior."
+    }
+  ],
+  "ready_for_real_preflight": true,
+  "ready_for_full_training": false,
+  "runtime_and_deployment": {
+    "status": "pending",
+    "is_code_defect": false,
+    "note": "This is a source/static/stdlib acceptance of the bounded fix. Actual native Tensor/CUDA checks, restore, memory measurements and deployment receipts remain unexecuted. Full training still requires the current P3 completion gate and passed real preflight receipts for each arm; no new accuracy or completed-run claim is made."
+  },
+  "execution": {
+    "local_only": true,
+    "stdlib_only": true,
+    "ssh_used": false,
+    "gpu_used": false,
+    "packages_installed": false,
+    "implementation_modified": false,
+    "credential_wrappers_read": false,
+    "torch_or_model_imported": false,
+    "artifacts_written": [
+      "CODE_REVIEW_ROUND2.md",
+      "CODE_REVIEW_ROUND2.json"
+    ]
+  },
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\pvground_tail_preflight.py",
+      "bytes": 2898,
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb",
+      "role": "bounded fix implementation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\build_runner.py",
+      "bytes": 8176,
+      "sha256": "de615001e4d9fae9d050248b8a821912d8c206749ecece68e6571cc8f13e74d1",
+      "role": "bounded fix implementation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\run_pvground_tail_support.py",
+      "bytes": 38567,
+      "sha256": "483a7db4e0d11d8b79af63ea6e02f6d9455bed218190efc17d42e48929648346",
+      "role": "bounded fix implementation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\run_pvground_tail_support_control.py",
+      "bytes": 4120,
+      "sha256": "21774197eb1ee5a9c4e7742953c1d496e75d6192c80c82de24eb6084398bdcb6",
+      "role": "bounded fix implementation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\patch_runtime_gates.py",
+      "bytes": 3166,
+      "sha256": "167cf92c073d16ab5a1131f0c178dc0f66296b533524c4a090ac64a771562237",
+      "role": "bounded fix implementation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\review_round1\\CODE_REVIEW.json",
+      "bytes": 15010,
+      "sha256": "3d1c77ae51ec143a55fabc412271b614b209b0aa5ba09148997b3bc8bab2c10e",
+      "role": "frozen round-1 review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\review_round1\\run_pvground_tail_support.py",
+      "bytes": 37656,
+      "sha256": "6ac3a2b2eeaf2d6cbb17a8f1a209650fda31b7e7b7c721431c904d71b52158c2",
+      "role": "frozen comparison baseline"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\review_round1\\run_pvground_tail_support_control.py",
+      "bytes": 3857,
+      "sha256": "fc474f713eb6fb07dfc65b266deaf0d1d364e3306999e4a27d63841c8ac18fbe",
+      "role": "frozen comparison baseline"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\review_round1\\build_runner.py",
+      "bytes": 6126,
+      "sha256": "a84b0ddd966a7023a94d13fa5d85c6df7048f53bffe50a4d110421398880fce1",
+      "role": "frozen comparison baseline"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py",
+      "bytes": 34094,
+      "sha256": "c593a94fbccf0e1554499f7fe7e0d5ec41c54b4a2487954e8eda7c6616aa4d06",
+      "role": "exact native/build dependency"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py",
+      "bytes": 24844,
+      "sha256": "20c353512939ac9087cd8f3d07b82a648bcefe42510563e26afc37235facdb7c",
+      "role": "exact native/build dependency"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "role": "exact native/build dependency"
+    }
+  ],
+  "unchanged_prior_inputs": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\PLAN.md",
+      "bytes": 4954,
+      "sha256": "5e8999f10ec2a3b6e69e71496f5edce863e3131912c33baefd002143f42973ff"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\prepare_pvground_tail_support_source.py",
+      "bytes": 2218,
+      "sha256": "7487405bfd6865838720613c046a6c055d13f4a8d107cc5d26ea66b86e493f8e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py",
+      "bytes": 34094,
+      "sha256": "c593a94fbccf0e1554499f7fe7e0d5ec41c54b4a2487954e8eda7c6616aa4d06"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py",
+      "bytes": 24844,
+      "sha256": "20c353512939ac9087cd8f3d07b82a648bcefe42510563e26afc37235facdb7c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\encoder_decoder_layers.py",
+      "bytes": 21540,
+      "sha256": "e2cb80a29651f8540edd0a84c6d07072c9933430513c55f3bbe254006788d736"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\modules.py",
+      "bytes": 6821,
+      "sha256": "1609b3608e017669ae0ff63e7618f2078e5f72f20955da02e7ff230481b846fc"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\main_utils.py",
+      "bytes": 24599,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 25984,
+      "sha256": "bc3d478c7d64264dc8352393887a04277e0e0f318b81e744f746b21262f63549"
+    }
+  ],
+  "hash_note": "Actual reviewed byte snapshots, following the existing project trace convention; no new hash design."
+}

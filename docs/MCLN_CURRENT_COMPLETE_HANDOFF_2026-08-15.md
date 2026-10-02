@@ -21388,3 +21388,16 @@ bbs/bbf相同。原因未查明，不能称全部逐位复现或无害舍入误�
 软支撑，不硬裁点、不新添答案源。Mask支撑准备尚未真实运行，不称V99能力已内化。
 边界分布、最终质量监督、教师分别延后；当前P3不受这些准备影响。
 原G、作者权重、V99及历史负结果记录保留，无新的Nr3D/Sr3D结果，总目标active/unmet。
+
+
+### 20.376.13 2026-10-02T16:58:13.802194+08:00 Same-tail raw/fused support implementation; real runtime pending
+
+Current raw-point P3 stays unchanged at its fixed3723-update budget. The last actual GPU witness remains576/3723 at15:42; the sole observer45275 is scheduled for17:42. No new terminal or9508 result is claimed.
+Clarification of20.376.12: the published checkpoint metadata is346651153B/mtime15:59:21 observed16:00:58; the original first512-save witness was346638929B/mtime15:39:20. These are separate active-file observations; no active checkpoint was archived or reloaded.
+
+The next paired experiment is implemented locally: fresh originalG for both arms, same 14-channel member encoder,367494 refinement parameters/10 states, same tail after native Mask generation, same3723-update fit and nativebbs. tail_raw uses four zero support channels; tail_fused uses predicted Text/Query probabilities, their disagreement and the probability of native alpha*Textlogit+(1-alpha)*Querylogit. Only the seven-position/16-member selected indices are mapped through actual superpoint IDs; no dense Q-by50000 Mask tensor, hard Mask crop, teacher, quality loss, boundary distribution or second ranking is added.
+The undetached coarse box and candidate Query retain native geometry training. Fused support is differentiable, so this arm intentionally permits final-box loss to train the Mask support path; it is not task isolation.
+
+Astra/max round1 found a concrete preflight blocker: missing eight separate native Mask-loss-to-refiner gradient checks and actual native head/Mask call-order evidence. The bounded fix adds those checks, four forward witnesses and controller gates. Round2 PASS is same-family/provisional and local/static only. The inherited unreachable G-CE reconstruction witness remains explicitly unclaimed; existing G correction was not rewritten. Deployment helper review PASS is also preflight-only, with currentP3-complete/no-GPU gates before mutation, strict originalG restoration in both arms and fused-arm reference to NEW tail_raw.
+No next-arm SSH deployment, real CUDA preflight, training or accuracy exists yet. The source review permits real preflight only; full training requires its actual receipts and measured save capacity. PriorP3 history alone cannot be the independent same-tail Mask control.
+ScanRefer Acc@0.5 remains primary, target4754/9508; Acc@0.25 and nativeMask are retained. No new Nr3D/Sr3D result or validated three-module contribution is claimed.

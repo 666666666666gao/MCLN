@@ -1,0 +1,183 @@
+{
+  "review_date_cst": "2026-10-02T16:57:29.854404+08:00",
+  "verdict": "PASS",
+  "deployment_gate": "preflight-only",
+  "blocking_findings": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "actual_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "reviewer_task": "/root/pvg_fused_support_code_review",
+  "scope": "Concrete deploy_preflight.py review with current round2 code/spec dependencies; approval is for guarded preparation, both CPU restores and raw preflight launch only.",
+  "code_gate_for_preflight_deployment_passed": true,
+  "runtime_preflight_passed": false,
+  "full_training_gate_passed": false,
+  "checks": [
+    {
+      "name": "review_gates_and_snapshot_identity",
+      "status": "PASS",
+      "evidence": "deploy_preflight.py:13-21 requires round2 PASS, no blockers and real-preflight readiness, checks all round2 referenced byte snapshots, then requires this deployment review PASS and verifies its actual reviewed files. The new deployment script itself and the selected parent-spec byte snapshot are included in this review. All 24 round2 snapshot references currently match."
+    },
+    {
+      "name": "guards_before_mutations",
+      "status": "PASS",
+      "evidence": "The embedded remote check at :43-57 requires actual prior P3 status complete, absent new root/source, no nvidia-smi compute PIDs, and sufficient free disk before its first mkdir at :54. All uploads, source preparation, phase-directory/spec writes and CPU/model commands occur after this check returns. The local launch marker is checked absent before connecting; it is written only after launch verification."
+    },
+    {
+      "name": "isolated_paths",
+      "status": "PASS",
+      "evidence": "The new run root is /root/autodl-tmp/pvground_tail_support_20261002 and the new model source is /root/autodl-tmp/pvground_tail_support_source_20261002_v1/PV-Ground. Preparation copies the September17 original G/D model source, not a P2 source, into that new path. No mutation path points at the current /root/autodl-tmp/pvground_p3_20261002 run or its code."
+    },
+    {
+      "name": "common_original_G",
+      "status": "PASS",
+      "evidence": "All four specs retain parent_spec base_terminal=/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/terminal.pth and SHA256 0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522, the configured original G. Both arm specs are sent through the reviewed runner CPU mode, which hashes and strictly restores the author state plus complete1072-entry G delta before installing the common tail; deployment requires successful exit and the CPU-restore marker for both before launch. Actual remote weight bytes and CPU success remain pending."
+    },
+    {
+      "name": "module_copies_and_hash_interfaces",
+      "status": "PASS",
+      "evidence": "The reviewed runner/controller/source preparation and all seven pvground_* helper files are uploaded at the common root; every root upload is read back byte-for-byte. The same helper bytes are copied to all four phase roots, satisfying the runner output-local hash checks while the root is also the script/PYTHONPATH location. Current source/query, observation, task-query and semantic-assignment helper hashes exactly match the retained parent-spec fields. Each spec receives current candidate/tail/preflight-helper hashes and the newly generated source-port path/hash."
+    },
+    {
+      "name": "parent_interfaces_preserved",
+      "status": "PASS",
+      "evidence": "runtime, author checkpoint identity, parent_source_port, training_interface_receipt, input_manifest, reference_fixtures, G helper identities and native supervision settings are retained. model_source/source_port/root are replaced with the isolated new paths; p2 is explicitly changed from the parent value True to False and p3 to True. The preparation script emits the current schema already accepted in round2."
+    },
+    {
+      "name": "paired_protocol_and_references",
+      "status": "PASS",
+      "evidence": "In-memory evaluation of the exact spec-update expressions yields only root, support_arm, fused_support and reused_control_root differences between the two arms. Same-arm preflight/full specs differ only in root. Both retain seed2027, batch8, one29778-row fit pass/3723 updates, LR/backbone LR1e-5 and the reviewed native wd5e-4/clip.1 checks. They use the same14-channel head and native tail order. tail_raw references old G control only for initial/order checks; tail_fused explicitly references the new root/tail_raw. The controller additionally requires new tail_raw formal completion before any later fused training."
+    },
+    {
+      "name": "preflight_only_launch",
+      "status": "PASS",
+      "evidence": "After both CPU restores, the only screen launch is controller --arm tail_raw --preflight-only. The reviewed controller consequently runs one preflight child and no train/formal phases. The two disposable optimizer updates belong to that planned preflight, not the3723-update experiment. Fused GPU preflight and both full-training phases are not launched. The code has no deletion, kill, installation or package-download action."
+    },
+    {
+      "name": "credential_and_shell_boundary",
+      "status": "PASS",
+      "evidence": "The helper reads its SSH password from an environment variable without embedding or printing its value, loads system host keys and does not install an automatic unknown-host acceptance policy. Shell paths/arguments and environment values are quoted with shlex; child runner invocations remain argument lists under the reviewed controller GPU lock. No credential wrapper or environment values were read by this review, and no trust-boundary defect was encountered in the cooperating-operator workflow."
+    },
+    {
+      "name": "executed_local_checks",
+      "status": "PASS",
+      "evidence": "Local standard-library AST/compile checks pass for the deployment script, embedded remote-check Python, and four inherited G helpers. The four specs were assembled in memory from their exact AST expressions and selected parent settings; only the not-yet-generated source_port hash was marked pending. Embedded root/source/parent paths match the deployer, and all four remote assertions statically precede the first mkdir. No deployment code, Paramiko import, SSH call, GPU operation or implementation mutation was executed."
+    }
+  ],
+  "nonblocking_findings": [
+    {
+      "id": "PGTS-W001",
+      "status": "WARN",
+      "title": "Inherited G replacement reconstruction witness remains unexecuted",
+      "evidence": "The reviewed runner still places verify_native_replacement under if not update while both step calls pass True. Deployment does not change that path or claim a fresh G reconstruction/gradient witness.",
+      "action": "Keep the existing evidence limitation in subsequent reporting; no unrelated G rewrite is requested."
+    }
+  ],
+  "pending_runtime": {
+    "status": "pending",
+    "is_code_defect": false,
+    "items": [
+      "actual remote P3 completion, empty-GPU and free-space checks",
+      "new source preparation and remote readback",
+      "both strict CPU restores",
+      "raw real two-update GPU preflight and numerical gates",
+      "later fused GPU preflight",
+      "all formal paired training/results and final integrity review"
+    ]
+  },
+  "execution": {
+    "local_only": true,
+    "stdlib_only": true,
+    "deployment_executed": false,
+    "ssh_used": false,
+    "gpu_used": false,
+    "paramiko_imported": false,
+    "packages_installed": false,
+    "implementation_modified": false,
+    "credential_wrappers_read": false,
+    "environment_values_dumped": false,
+    "artifacts_written": [
+      "DEPLOYMENT_REVIEW.md",
+      "DEPLOYMENT_REVIEW.json"
+    ]
+  },
+  "parent_spec_access": "Parsed the local JSON; only necessary protocol, source/checkpoint/interface paths and expected helper-hash keys were inspected. No environment or credential values were printed.",
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\deploy_preflight.py",
+      "bytes": 7453,
+      "sha256": "09ef38ec50ccea7e64dcea847ce2e3a15fa208cfb9b34014399f44247730fa3b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\parent_spec.json",
+      "bytes": 3169,
+      "sha256": "3635eaefd44b13b5d5f4c8651f935f6dea06b4533dd0142dec08952d26079a4e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\CODE_REVIEW_ROUND2.json",
+      "bytes": 14424,
+      "sha256": "f1dc6c57a73d5b30dfc6b7be2d80497183cb7db159f2e99161ba4c21324cf64d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\CODE_REVIEW_ROUND2.md",
+      "bytes": 7128,
+      "sha256": "431e866f8a0d29c90cb85b71492d8f414e267fba836668d4ce474d7a6149a0cd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\prepare_pvground_tail_support_source.py",
+      "bytes": 2218,
+      "sha256": "7487405bfd6865838720613c046a6c055d13f4a8d107cc5d26ea66b86e493f8e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\run_pvground_tail_support.py",
+      "bytes": 38567,
+      "sha256": "483a7db4e0d11d8b79af63ea6e02f6d9455bed218190efc17d42e48929648346"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\run_pvground_tail_support_control.py",
+      "bytes": 4120,
+      "sha256": "21774197eb1ee5a9c4e7742953c1d496e75d6192c80c82de24eb6084398bdcb6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\pvground_tail_preflight.py",
+      "bytes": 2898,
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\PLAN.md",
+      "bytes": 4954,
+      "sha256": "5e8999f10ec2a3b6e69e71496f5edce863e3131912c33baefd002143f42973ff"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    }
+  ],
+  "hash_note": "Hashes record actual reviewed byte snapshots under the existing project trace convention. No new hashing scheme is introduced."
+}

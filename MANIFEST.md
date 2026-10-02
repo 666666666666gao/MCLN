@@ -134,3 +134,5 @@
 - 2026-10-02T19:17:13.263025+08:00 Both actual tail support preflights passed; guarded raw3723-update control launched; fused formal pending.
 
 - 2026-10-02T19:56:51.346474+08:00 Same-tail raw E0 selectedREC/input parity and142 updates observed; reviewed post-run collection/recount prepared, no terminal result.
+
+- 2026-10-02T21:43:27.120860+08:00 Archived P3 selected-query magnitude analysis only; active same-tail pair unchanged; no new REC result.

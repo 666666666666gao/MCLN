@@ -1,13 +1,21 @@
 # Current research contract — 2026-10-02
 
-The latest user decision selects PV-Ground as the paper baseline and the already
-verified PV-Ground+G endpoint as the reusable strong start. First compare G with
-G+P2 expression-conditioned evidence reading at identical start and budget;
-see `docs/PVG_G_P2_PLAN_2026-10-02.md`. Reuse C observation interfaces and G label
-replacement. Do not launch the old M1/M2/M3/R wholesale PV port's formal training.
-Keep a single native ranking, protect G's loose-threshold advantage, and seek
-strict REC >=50% before fixing the method for independent Nr3D/Sr3D training.
-Historical MCLN/V99 evidence remains protected. P2 performance is not yet known.
+PV-Ground is the paper baseline; verified original G5615/4495 is the common strong start.
+The joint and semantic-only P2 adaptations are completed negative results: formal
+5613/4419 and5588/4439 versus same-budget G5600/4452. Do not reuse their endpoints.
+Raw-point candidate-aligned P3 is running at fixed3723 updates; complete6887 E0
+REC/input equivalence is verified, Mask differences remain unresolved. No trained
+P3 terminal or9508 result exists yet; current source/configuration stay unchanged.
+
+User priority is ScanRefer Acc@0.5, aiming4754/9508(50.0%) while recording
+Acc@0.25 and native Mask costs. Preserve original G loose5615 and strict4495.
+Next prepare the same-tail raw-versus-predicted-fused-Mask support comparison in
+docs/PVG_FUSED_SUPPORT_PLAN_2026-10-02.md. Keep6D residual/nativebbs; no new
+V99 inference chain, general P2 repeat, teacher, quality loss or boundary-distribution
+change in that first comparison. Planned mechanisms are not completed contributions.
+Each result requires actual GT evaluation, same-start/same-budget control, full
+fit-order evidence and independent integrity review. After success freeze the
+method for independent Nr3D/Sr3D training. No new cross-benchmark result exists.
 
 ## Historical contract (superseded experiment; evidence remains archived)
 

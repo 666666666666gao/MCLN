@@ -116,3 +116,4 @@
 | 2026-09-07 03:06 CST | direct continuation | refine-logs/scanrefer_range_pair_20260907_v1/launch.json | experiment | Real range preflightPASS;paired47112 baseline12;queue47242;no new formal result |
 | 2026-09-07 03:29 CST | continuation | refine-logs/native_range_preparation_20260907_v2/receipt.json | preparation | Native extent CPU62PASS;real weights/load only;Scan pair and queue continue |
 | 2026-10-02 03:01 CST | /experiment-bridge | refine-logs/PVG_G_P2_RESULT_ANALYSIS_REVIEW_2026-10-02.md | implementation | Fresh gpt-6-astra/max same-family provisional PASS of offline G/P2 analyzer; no live job changes or new formal accuracy |
+| 2026-10-02 | /experiment-audit | docs/results/pvg_g_p2_20261002/EXPERIMENT_AUDIT.md | completed comparison | G/P2 four stages complete; formal bbs +13/-33; historical G retained; fresh Astra/max WARN same-family provisional |

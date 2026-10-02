@@ -146,3 +146,5 @@
 - 2026-10-03T04:51:08.841687+08:00 Completed all256 candidate audit; retain unmatched and low-ranked slots. Fused result sealed as negative; original G retained.
 
 - 2026-10-03T06:02:42.773160+08:00 /experiment-plan /experiment-bridge: refine-logs/pvground_candidate_consistency_20261003/ original-G semantic consistency preparation and real sanity; no formal result.
+
+- 2026-10-03T06:28:18.719345+08:00 /experiment-bridge: refine-logs/pvground_candidate_consistency_20261003/ prepared reviewed launcher and actual capacity evidence; formal pair NOT_STARTED.

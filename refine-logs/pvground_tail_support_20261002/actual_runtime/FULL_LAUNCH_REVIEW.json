@@ -1,0 +1,383 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "actual_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "reviewer_task": "/root/pvg_fused_support_code_review",
+  "scope": "Bounded static review of launch_full_arm.py and its current reviewed code/spec dependencies, with inspection of supplied actual two-step preflight and cleanup evidence. Acceptance is for guarded tail_raw training first; tail_fused remains conditional on the new tail_raw 9508-row formal receipt and fresh live gates. This is not a full-training or accuracy result.",
+  "reviewed_launcher_sha256": "acc29dd3c03dc636ccb6e7201ea8f62231833602d5187ba00d09876e2ae90099",
+  "checks": [
+    {
+      "id": "FL-01",
+      "status": "PASS",
+      "check": "Review gate schema and frozen local identities",
+      "references": [
+        "launch_full_arm.py:15-24",
+        "CODE_REVIEW_ROUND2.json"
+      ],
+      "detail": "The launcher uses the actual verdict, blocking_findings, and reviewed_files keys, requires PASS with no blockers, and verifies all recorded local file SHA256 values before SSH. The current round2 report and all 12 of its file entries matched. This full-launch report includes the launcher itself and the exact local specs/evidence."
+    },
+    {
+      "id": "FL-02",
+      "status": "PASS",
+      "check": "Live gates precede launch mutations",
+      "references": [
+        "launch_full_arm.py:39-62",
+        "launch_full_arm.py:85"
+      ],
+      "detail": "Before screen or log/marker creation, the remote read-only check requires prior P3 complete, the selected arm preflight_complete, pass/two optimizer steps, correct arm, exact member mapping, zero direct semantic and native Mask-loss gradients, four verified call witnesses, sufficient current free disk, no compute-app GPU PID, and no existing arm train.log."
+    },
+    {
+      "id": "FL-03",
+      "status": "PASS",
+      "check": "Actual supplied two-step evidence",
+      "references": [
+        "tail_raw_boundary_182901.json",
+        "tail_fused_boundary_184800.json",
+        "pvground_tail_preflight.py:13-65"
+      ],
+      "detail": "Both inspected receipts report pass, two real optimizer steps, strict original-state/optimizer restore, exact zero-init outputs, finite nonzero geometric gradients, separate zero refiner gradients for all eight native Mask losses at both steps, and four actual event-order witnesses. Recomputed complete event lists/counts agree with [105,104,105,105] and refiner-enabled roles [true,false,true,true]. The two arms use the same eight probe row IDs. Both formal_rows values remain 0."
+    },
+    {
+      "id": "FL-04",
+      "status": "PASS",
+      "check": "Exact remote entrypoints/spec and sealed source descriptor",
+      "references": [
+        "launch_full_arm.py:64-76",
+        "run_pvground_tail_support.py:42-83",
+        "source_port.json",
+        "tail_raw_spec.json",
+        "tail_fused_spec.json"
+      ],
+      "detail": "The launcher reads back and byte-compares run.py, controller.py, tail support module, preflight helper, and the selected arm spec. The added source_port read asserts its SHA256 equals the existing sealed spec field before launch; both local specs match the reviewed descriptor hash 3b2b44241f0c1b52b5e42f6ea84e656abb1dc3f3b062c87d49f0bcbf94b2f7bc. The runner checks the 98 listed model-source files and existing inherited helper/checkpoint/environment identities. Supplied import receipts match the port for the four model-source imports. These are implemented live checks plus local/supplied evidence; this reviewer made no fresh remote readback."
+    },
+    {
+      "id": "FL-05",
+      "status": "PASS",
+      "check": "Bounded descriptor fix",
+      "references": [
+        "launch_full_arm.py:75-76",
+        "launch_full_arm_before_source_port_check.py"
+      ],
+      "detail": "The current launcher differs from the frozen preceding version only by the two source-port assertion lines. Syntax compilation passes. An isolated stdlib test of this actual AST block passes with the sealed descriptor bytes and rejects changed bytes. The model, runner, controller, optimizer, and protocol are unchanged by this fix."
+    },
+    {
+      "id": "FL-06",
+      "status": "PASS",
+      "check": "No repeated preflight and one GPU lock",
+      "references": [
+        "launch_full_arm.py:82-87",
+        "run_pvground_tail_support_control.py:37-65"
+      ],
+      "detail": "The command uses --train-after-preflight. The controller verifies preflight_complete, empties the preflight phase list, then runs train followed by formal. It reacquires the existing single flock -n GPU lock separately around each runner subprocess and waits for each child; the launcher adds no nested lock. The controller rechecks proof and capacity before training."
+    },
+    {
+      "id": "FL-07",
+      "status": "PASS",
+      "check": "Original G restoration and fresh optimizer",
+      "references": [
+        "run_pvground_tail_support.py:128-168",
+        "run_pvground_tail_support.py:175-177",
+        "run_pvground_tail_support.py:506-524",
+        "main_utils.py:283-366",
+        "tail_raw_spec.json",
+        "tail_fused_spec.json"
+      ],
+      "detail": "Both arms use the same author checkpoint and original G terminal SHA256 0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522. The runner validates 1072 G delta names/shapes/dtypes, strictly restores G, then installs the zero-initialized 10-state tail head. Training starts a new process, verifies the initial model, resets seed2027 and constructs fresh AdamW; it does not resume the disposable preflight optimizer. Both arms use batch8, core/backbone LR1e-5, wd5e-4 and clip0.1."
+    },
+    {
+      "id": "FL-08",
+      "status": "PASS",
+      "check": "Paired capacity, source, order and supervision",
+      "references": [
+        "PLAN.md",
+        "pvground_tail_support_box_refiner.py",
+        "tail_raw_spec.json",
+        "tail_fused_spec.json",
+        "preflight_tail_raw_spec.json",
+        "preflight_tail_fused_spec.json",
+        "run_pvground_tail_support.py:506-552"
+      ],
+      "detail": "Each arm's preflight and full spec differ only in output root. Between arms the only differences are root, support_arm, fused_support and reused_control_root. They share the same after-Mask 14-channel head and original-G supervision. Full training compares all 6887 initial recognition records and every one of the 3723 fit batch row orders to its reference, then requires the 29778 fit rows exactly once with no holdout overlap."
+    },
+    {
+      "id": "FL-09",
+      "status": "PASS",
+      "check": "New raw control gates fused",
+      "references": [
+        "launch_full_arm.py:52-54",
+        "run_pvground_tail_support_control.py:55-57",
+        "tail_fused_spec.json",
+        "run_pvground_tail_support.py:507-520"
+      ],
+      "detail": "The fused spec references /root/autodl-tmp/pvground_tail_support_20261002/tail_raw. Both launcher and controller require that new raw arm's formal receipt to pass with 9508 rows. The old G control only supplies the raw arm's initial/order reference; it does not replace the paired same-tail raw control."
+    },
+    {
+      "id": "FL-10",
+      "status": "PASS",
+      "check": "Live capacity and authorized cleanup boundary",
+      "references": [
+        "launch_full_arm.py:55-59",
+        "run_pvground_tail_support_control.py:53-54",
+        "cleanup_receipt.json"
+      ],
+      "detail": "Both real preflights serialize 346613523 bytes, making the existing per-arm requirement 827444774 bytes. The receipt records exactly three approved archived files deleted and 1212760064 bytes free afterward, a 385315290-byte margin for the first arm. The launcher uses a fresh remote disk query and idle-GPU query, and the controller rechecks disk. The launcher has no deletion/install operation; the historical receipt is not a promise of future free capacity, including for fused."
+    },
+    {
+      "id": "FL-11",
+      "status": "PASS",
+      "check": "Once-only launch and truthful status",
+      "references": [
+        "launch_full_arm.py:15-16",
+        "launch_full_arm.py:45",
+        "launch_full_arm.py:59",
+        "launch_full_arm.py:85-99",
+        "run_pvground_tail_support_control.py:61-81"
+      ],
+      "detail": "Existing local launch markers reject reruns; remote preflight_complete status and train.log absence are checked before launch. The controller opens each phase log exclusively, and the remote launch marker is opened wx. The launcher confirms the exact controller command is present and explicitly records formal_result_available=false. Its row/update metadata are targets, not evidence of completed training."
+    },
+    {
+      "id": "FL-12",
+      "status": "PASS",
+      "check": "Credentials and shell construction",
+      "references": [
+        "launch_full_arm.py:27-36",
+        "launch_full_arm.py:62",
+        "launch_full_arm.py:77-87"
+      ],
+      "detail": "The helper obtains the password from the established environment variable without printing it, loads known host keys and does not install AutoAddPolicy. It shell-quotes the Python/read-only-check arguments, environment values, controller argv, redirection path and process pattern. The screen name derives only from argparse's two fixed arm choices. No credential wrapper or environment values were read by the reviewer."
+    },
+    {
+      "id": "FL-13",
+      "status": "PASS",
+      "check": "Static validation and runtime dependency scope",
+      "references": [
+        "launch_full_arm.py",
+        "run_pvground_tail_support_control.py",
+        "run_pvground_tail_support.py",
+        "pvground_tail_preflight.py"
+      ],
+      "detail": "The current launcher, embedded remote gate, current controller, runner and preflight helper compile under local Python/stdlib checks. No launcher import/execution, remote command, GPU use or package install was performed by the reviewer. The existing exercised environment is reused; dependency availability for the actual launch interpreter is recorded separately. The operator confirmed the actual launch uses the same already-exercised cached offline `uv run --offline --no-project --with paramiko python` environment as today's deployment/preflight/cleanup actions, not the stdlib-only review interpreter. This is an operator-confirmed execution dependency, not a reviewer-run dependency installation."
+    },
+    {
+      "id": "FL-14",
+      "status": "PASS",
+      "check": "Evidence and metric limits",
+      "references": [
+        "tail_raw_boundary_182901.json",
+        "tail_fused_boundary_184800.json",
+        "launch_full_arm.py:90-96",
+        "PLAN.md"
+      ],
+      "detail": "Preflight evidence establishes the recorded two-step implementation gates, not full-fit completion or ScanRefer accuracy. The primary result remains native bbs Acc@0.5 on the 9508-row development validation after complete training. Fused step-two geometric loss has a nonzero gradient to native Mask outputs; this is the intended support path, not full task isolation."
+    }
+  ],
+  "nonblocking_findings": [
+    {
+      "id": "PGTS-W001",
+      "severity": "WARN",
+      "status": "unchanged inherited limitation",
+      "references": [
+        "run_pvground_tail_support.py:322-323",
+        "CODE_REVIEW_ROUND2.json"
+      ],
+      "detail": "verify_native_replacement remains under if not update while the exercised two-step and training call sites use update=True. No fresh G replacement-reconstruction/gradient-witness claim is made. This known limitation is separate from the eight real native Mask-loss gradient gates and actual event-order witnesses, both of which have passed."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "FL-SOURCE-PORT",
+      "status": "resolved before acceptance",
+      "references": [
+        "launch_full_arm.py:75-76"
+      ],
+      "detail": "The preceding launcher did not compare the live source-port descriptor to the already-declared source_port_sha256. The current two-line assertion restores that existing identity invariant without modifying the reviewed training code."
+    }
+  ],
+  "runtime_evidence": {
+    "origin": "Supplied local snapshots from actual completed remote preflights; not remote execution by this reviewer",
+    "preflights": [
+      {
+        "arm": "tail_raw",
+        "preflight_time": "2026-10-02T18:27:32.551269+08:00",
+        "serialization_bytes": 346613523,
+        "required_bytes": 827444774,
+        "peak_allocated_bytes": 20159014400,
+        "observed_event_lengths": [
+          105,
+          104,
+          105,
+          105
+        ],
+        "geometry_to_mask_after_second_step": 0
+      },
+      {
+        "arm": "tail_fused",
+        "preflight_time": "2026-10-02T18:45:29.398122+08:00",
+        "serialization_bytes": 346613523,
+        "required_bytes": 827444774,
+        "peak_allocated_bytes": 20174852096,
+        "observed_event_lengths": [
+          105,
+          104,
+          105,
+          105
+        ],
+        "geometry_to_mask_after_second_step": 2.3913729600977263e-06
+      }
+    ],
+    "required_bytes_per_arm": 827444774,
+    "cleanup_free_after_bytes": 1212760064,
+    "first_arm_margin_at_cleanup_bytes": 385315290,
+    "formal_rows_observed": 0,
+    "full_training_result_available": false
+  },
+  "evidence_limits": [
+    "No launcher, SSH, GPU, installation, cleanup or training action was performed by this reviewer.",
+    "Live server capacity, GPU idleness, current status and current remote byte identities must still pass when the launcher executes.",
+    "No accuracy, nonregression or full-training completion result is inferred from preflight.",
+    "Same-family Astra/max review is provisional, not an independent external-model acceptance.",
+    "The actual launcher uses the operator-confirmed existing offline Paramiko environment. Its credential wrapper and environment values were not read; the separate stdlib review interpreter's missing Paramiko does not describe the intended execution environment."
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\launch_full_arm.py",
+      "sha256": "acc29dd3c03dc636ccb6e7201ea8f62231833602d5187ba00d09876e2ae90099"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\CODE_REVIEW_ROUND2.json",
+      "sha256": "f1dc6c57a73d5b30dfc6b7be2d80497183cb7db159f2e99161ba4c21324cf64d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\pvground_tail_preflight.py",
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\build_runner.py",
+      "sha256": "de615001e4d9fae9d050248b8a821912d8c206749ecece68e6571cc8f13e74d1"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\run_pvground_tail_support.py",
+      "sha256": "483a7db4e0d11d8b79af63ea6e02f6d9455bed218190efc17d42e48929648346"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\run_pvground_tail_support_control.py",
+      "sha256": "21774197eb1ee5a9c4e7742953c1d496e75d6192c80c82de24eb6084398bdcb6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\patch_runtime_gates.py",
+      "sha256": "167cf92c073d16ab5a1131f0c178dc0f66296b533524c4a090ac64a771562237"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\review_round1\\CODE_REVIEW.json",
+      "sha256": "3d1c77ae51ec143a55fabc412271b614b209b0aa5ba09148997b3bc8bab2c10e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\review_round1\\run_pvground_tail_support.py",
+      "sha256": "6ac3a2b2eeaf2d6cbb17a8f1a209650fda31b7e7b7c721431c904d71b52158c2"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\review_round1\\run_pvground_tail_support_control.py",
+      "sha256": "fc474f713eb6fb07dfc65b266deaf0d1d364e3306999e4a27d63841c8ac18fbe"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\review_round1\\build_runner.py",
+      "sha256": "a84b0ddd966a7023a94d13fa5d85c6df7048f53bffe50a4d110421398880fce1"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p3.py",
+      "sha256": "c593a94fbccf0e1554499f7fe7e0d5ec41c54b4a2487954e8eda7c6616aa4d06"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\pv_ground.py",
+      "sha256": "20c353512939ac9087cd8f3d07b82a648bcefe42510563e26afc37235facdb7c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\PLAN.md",
+      "sha256": "5e8999f10ec2a3b6e69e71496f5edce863e3131912c33baefd002143f42973ff"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\prepare_pvground_tail_support_source.py",
+      "sha256": "7487405bfd6865838720613c046a6c055d13f4a8d107cc5d26ea66b86e493f8e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\encoder_decoder_layers.py",
+      "sha256": "e2cb80a29651f8540edd0a84c6d07072c9933430513c55f3bbe254006788d736"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\modules.py",
+      "sha256": "1609b3608e017669ae0ff63e7618f2078e5f72f20955da02e7ff230481b846fc"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_semantic_assignment.py",
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "sha256": "bc3d478c7d64264dc8352393887a04277e0e0f318b81e744f746b21262f63549"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\source_port.json",
+      "sha256": "3b2b44241f0c1b52b5e42f6ea84e656abb1dc3f3b062c87d49f0bcbf94b2f7bc"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_raw_spec.json",
+      "sha256": "30f8a11ae02f0af3cae1ae3db6d5f225820b13b426c44466615cca01cf5caf13"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\preflight_tail_raw_spec.json",
+      "sha256": "667bd2c4984d550c89eab0150eaafcc4f687f163b9dc2103768889ea96d463fc"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_raw_boundary_182901.json",
+      "sha256": "312dab278ce803455444b86f78a588cf2386385654cda436900dedaab41178cd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_fused_spec.json",
+      "sha256": "03c6d64f322210998e2cc35b71f42dd42628465d5d4303588a8e269c90311c76"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\preflight_tail_fused_spec.json",
+      "sha256": "7e91845aa66da63c023ffff8f3abc122c10987c1a0506f45f80ae7a5b0c6f061"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\tail_fused_boundary_184800.json",
+      "sha256": "e66f5578e2e0ff2d5f2fd9f4a85039262b32508c459e0cb627741ea49698c0f2"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\cleanup_receipt.json",
+      "sha256": "faed1fa7d778be22df1dd9f847d0bd0157ddf64b295a65742c3333312d7e046e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_fused_support_20261002\\launch_full_arm_before_source_port_check.py",
+      "sha256": "b450cf5d7ec804e55560226bfb54417bf7924a4a0fceecbd864bdacb187e72a2"
+    }
+  ],
+  "execution_dependency": {
+    "status": "operator-confirmed existing environment",
+    "command_prefix": "C:\\Users\\gb\\AppData\\Local\\Programs\\ClawX\\resources\\bin\\uv.exe run --offline --no-project --with paramiko python -u",
+    "package": "Paramiko 5.0.0 already cached",
+    "reviewer_imported_paramiko": false,
+    "wrapper_read": false,
+    "environment_values_read": false
+  },
+  "review_time_cst": "2026-10-02T19:08:39.502164+08:00"
+}

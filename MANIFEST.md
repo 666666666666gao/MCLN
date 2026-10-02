@@ -130,3 +130,5 @@
 - 2026-10-02T16:58:13.802194+08:00 Reviewed same-tail raw/fused support implementation; runtime pending, currentP3 unchanged.
 
 - 2026-10-02T19:03:05.045292+08:00 Complete P3 raw-point refinement; formal5594/4401 nativebbs, target unmet; full fit/CPU recount and fresh bounded audit.
+
+- 2026-10-02T19:17:13.263025+08:00 Both actual tail support preflights passed; guarded raw3723-update control launched; fused formal pending.

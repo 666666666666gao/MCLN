@@ -1,0 +1,907 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "PASS",
+  "reason_code": "verified_bounded_fixed_box_diagnostic",
+  "summary": "No concrete integrity blocker found. Independently recounted actual 5613/4419 versus semantic bypass 5612/4416 over 9508 rows; net +1/+3 hits, 99 selection changes, fixed full256 coverage 8896/7806, and zero historical selection/threshold mismatches. PASS applies only to this explicitly qualified diagnostic.",
+  "overall_verdict": "pass",
+  "integrity_status": "pass",
+  "acceptance_status": "provisional",
+  "review_independence": "same-family",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "reviewer_family": "openai",
+  "reviewer_context": "fresh; fork_turns=none",
+  "reviewer_invocation_confirmation": "The delegating parent explicitly confirmed the spawn parameters model=gpt-6-astra, reasoning_effort=max, fork_turns=none in this audit's collaboration transcript.",
+  "agent_id": "/root/pvg_fixed_box_complete_integrity",
+  "auditor": "Fresh Codex experiment integrity reviewer",
+  "date": "2026-10-02",
+  "generated_at_utc": "2026-10-02 01:52:49 UTC",
+  "evidence_path_aliases": {
+    "B": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete",
+    "H": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete",
+    "A": "C:/Users/gb/.codex/tmp/analyze_pvg_fixed_box_complete_20261002.py"
+  },
+  "compressed_line_reference_convention": "file.gz:N denotes line N after gzip decompression; zero-based row_id N-1.",
+  "checks": {
+    "gt_provenance": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": "ScanRefer annotation object_id selects the cached scan's annotated instance box and mask. The current root GT and row/scene/target/point-hash identities match all 9,508 historical formal records exactly. Dataset GT is attached after the forward; model inputs contain points/voxels, text, GroupFree predicted boxes/classes/validity, and superpoints. Original dataset binaries were not reopened.",
+      "evidence": [
+        "H/source/joint_det_dataset.py:594-597",
+        "H/source/joint_det_dataset.py:634-648",
+        "H/source/joint_det_dataset.py:1086-1119",
+        "H/source/joint_det_dataset.py:1388-1392",
+        "run.py:261-271",
+        "run.py:311-321",
+        "run.py:336-344",
+        "H/source/grounding_evaluator.py:535-553"
+      ]
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "details": "Native bbs is position/token alignment of softmax last_sem_cls_scores: binarized main text map plus modifier, pronoun and relation maps, minus other-entity map. Candidates are ranked by that score; strict geometric IoU >0.25/>0.50 gives hits. Percentages use 9,508 dataset rows, not prediction maxima. The bbf contrastive-dot-product branch is distinct and is not the intervention metric. All-256 oracle coverage is GT-assisted offline diagnosis.",
+      "evidence": [
+        "run.py:305-306",
+        "run.py:345-363",
+        "run.py:379-390",
+        "H/source/grounding_evaluator.py:217-303",
+        "H/source/grounding_evaluator.py:325-332",
+        "H/source/grounding_evaluator.py:535-553",
+        "REPORT.md:8-15",
+        "C:/Users/gb/.codex/tmp/analyze_pvg_fixed_box_complete_20261002.py:24-28",
+        "C:/Users/gb/.codex/tmp/analyze_pvg_fixed_box_complete_20261002.py:99-100"
+      ]
+    },
+    "result_existence": {
+      "status": "PASS",
+      "details": "All 33 assigned artifacts exist and are hashed. All 13 assigned artifacts represented in INTAKE have matching byte sizes/hashes. Independent complete pilot/full parsing, row identities, selected boxes, IoUs, rankings, coverage, transitions, historical replay, percentages, summary and receipt bindings pass. Full exit is zero, final completion log matches the receipt, and controller status is complete.",
+      "evidence": [
+        "INTAKE.json:4-109",
+        "INTAKE.json:112-173",
+        "status.json:2-20",
+        "full.exit:1",
+        "full.log:8-27",
+        "full/receipt.json:2-40",
+        "SUMMARY.json:3-65",
+        "REPORT.md:10-23",
+        "full/rows.jsonl.gz:1-9508",
+        "pilot/rows.jsonl.gz:1-8",
+        "H/g_p2/formal/rows.jsonl:1-9508"
+      ]
+    },
+    "dead_code": {
+      "status": "PASS",
+      "details": "Every reported current metric is computed inside the executed batch loop and reaches rows/receipt/summary. Both evaluators execute; native bbs counts are asserted against manual hits before writing the receipt. Bbf and mask evaluators are called but their new diagnostic values are not reported. Unused print/sync/visualization, legacy softmax and unreachable inherited fit/CPU branches do not support any claimed result.",
+      "evidence": [
+        "run.py:308-370",
+        "run.py:332-333",
+        "run.py:379-406",
+        "H/source/grounding_evaluator.py:194-206",
+        "H/source/grounding_evaluator.py:289-303",
+        "H/source/grounding_evaluator.py:650-653",
+        "H/source/grounding_evaluator.py:755-758",
+        "C:/Users/gb/.codex/tmp/analyze_pvg_fixed_box_complete_20261002.py:30-89"
+      ]
+    },
+    "scope": {
+      "status": "PASS",
+      "details": "The report accurately restricts the result to one trained P2 step3723 checkpoint, seed2027, ScanRefer development validation, 9,508 expressions/141 scenes/2,068 scan-target pairs, and GroupFree detector-assisted two-stage inputs. The eight-row pilot is an overlapping engineering check. No repeat, independent trained no-P2 model, cross-benchmark generalization, total training benefit, or gradient-conflict mechanism is established.",
+      "evidence": [
+        "PLAN.md:3-17",
+        "PLAN.md:19-31",
+        "run.py:39-46",
+        "run.py:204-235",
+        "run.py:257-259",
+        "run.py:277-306",
+        "H/source/joint_det_dataset.py:1188-1226",
+        "H/source/joint_det_dataset.py:1361-1372",
+        "REPORT.md:3-6",
+        "REPORT.md:13-34",
+        "H/g_control/formal/receipt.json:13-19",
+        "H/SUMMARY.json:417-435"
+      ]
+    },
+    "eval_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "subtype": "Fixed-checkpoint direct semantic-forward intervention with actual P2 boxes and masks held fixed; GT-assisted offline candidate-coverage diagnostics",
+      "details": "This is dataset-grounded REC evaluation. Historical predictions serve as replay references only, not ground truth. The CPU audit is arithmetic over retained data and supplies no new neural benchmark run.",
+      "evidence": [
+        "run.py:282-303",
+        "run.py:324-365",
+        "run.py:391-402",
+        "H/source/joint_det_dataset.py:1086-1119",
+        "REPORT.md:25-27"
+      ]
+    }
+  },
+  "blocking_findings": [],
+  "required_changes": [],
+  "practical_limitations": [
+    "Same-family fresh-context review, acceptance provisional; no cross-family assurance.",
+    "Only one trained checkpoint/seed and one ScanRefer development-validation split. The pilot overlaps the full run; it is not an independent scientific repeat.",
+    "The fixed frame uses actual trained P2 geometry and masks. The discarded bypass geometry, upstream representations, D/G reader and head do not constitute a trained no-P2 system. No total P2-training contribution, retention-loss cause or gradient-conflict conclusion follows.",
+    "Original ScanRefer annotation/scene data, GroupFree detections and superpoint arrays were outside the assigned artifact set. The audit verifies the source provenance route and exact saved identities/GT, not those original bytes.",
+    "Historical formal rows contain selected bbs/bbf boxes, scalar IoUs and coverage bits, not all 256 boxes, full score arrays, text or masks. Thus all stored historical selected boxes/IoUs can be verified exactly, but complete historical candidate/tensor identity cannot.",
+    "The current diagnostic stores all boxes/IoUs/scores and text, but no mask arrays or per-row detector/superpoint fingerprints. Same-branch mask identity is supported by executed-source object sharing and completed assertions, not an independent mask-byte recount.",
+    "No checkpoint binary was opened/loaded, no remote process inspected, and no native evaluator/model rerun. Checkpoint immutability, strict P2 restoration, actual-logit replay and buffer checks rely on the reviewed writer path plus successful recorded execution. Separate imports.json/native accumulator dumps were not in the assigned intake.",
+    "Historical G 5615/4495 is an inherited reference in H/SUMMARY.json and the prior audit; it was not newly recounted here. Current G control 5600/4452 was checked against its formal receipt, not its raw row file.",
+    "Five INTAKE paths were outside the supplied artifact list and not independently opened: launch.json, controller.log, pilot.log, pilot.exit, pilot/load.json. No claim is made to have checked every item of the larger intake."
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "Observed final-semantic direct effect at this trained P2 state is +1/+3 hits.",
+      "impact": "supported_with_scope_qualifiers"
+    },
+    {
+      "id": "C2",
+      "claim": "Both diagnostic scoring branches hold actual all256 boxes and mask predictions fixed.",
+      "impact": "supported_by_reviewed_executed_source; stored all256 boxes independently checked"
+    },
+    {
+      "id": "C3",
+      "claim": "All stored historical row identities, root GT, bbs and bbf selected boxes/IoUs, actual selections and recorded oracle bits replay.",
+      "impact": "supported; all9508"
+    },
+    {
+      "id": "C4",
+      "claim": "P2 is a robust improvement, a trained no-P2 ablation, or proof of gradient conflict.",
+      "impact": "unsupported; the report correctly excludes these interpretations"
+    },
+    {
+      "id": "C5",
+      "claim": "P2 achieved the strict development target or should be promoted.",
+      "impact": "unsupported; 4419 is below 4754 and the report correctly leaves the target unmet"
+    }
+  ],
+  "deterministic_checks": {
+    "recount": {
+      "pilot": {
+        "rows": 8,
+        "candidates": 2048,
+        "distinct_scan_ids": 1,
+        "distinct_physical_scene_ids": 1,
+        "distinct_scan_target_pairs": 6,
+        "metrics": {
+          "actual": {
+            "hits25": 5,
+            "hits50": 5,
+            "oracle25": [
+              5,
+              6,
+              6,
+              8
+            ],
+            "oracle50": [
+              5,
+              5,
+              5,
+              7
+            ]
+          },
+          "bypass": {
+            "hits25": 5,
+            "hits50": 5,
+            "oracle25": [
+              5,
+              6,
+              6,
+              8
+            ],
+            "oracle50": [
+              5,
+              5,
+              5,
+              7
+            ]
+          }
+        },
+        "transitions": {
+          "0.25": {
+            "repairs": 0,
+            "damages": 0,
+            "net": 0,
+            "repair_rows": [],
+            "damage_rows": []
+          },
+          "0.5": {
+            "repairs": 0,
+            "damages": 0,
+            "net": 0,
+            "repair_rows": [],
+            "damage_rows": []
+          }
+        },
+        "changed_selected_queries": 0,
+        "changed_rows": [],
+        "all_stored_input_and_gt_identities_exact": true,
+        "historical_replay": {
+          "bbs_stored_boxes_exact": 8,
+          "bbs_iou_exact": 8,
+          "bbs_threshold_mismatches_0.25": 0,
+          "bbs_threshold_mismatches_0.5": 0,
+          "bbf_stored_boxes_exact": 8,
+          "bbf_iou_exact": 8,
+          "bbf_threshold_mismatches_0.25": 0,
+          "bbf_threshold_mismatches_0.5": 0,
+          "actual_query_mismatches": 0,
+          "actual_oracle25_mismatches": 0,
+          "actual_oracle50_mismatches": 0
+        },
+        "max_historical_selected_iou_difference": 0,
+        "row_identity_sha256": "23e33331ab7cb0d2dab6c9c4942145fa288e824f37b44971bcda504dc10990f6",
+        "max_float64_iou_difference": 0.0000013307668209616708,
+        "max_difference_example": {
+          "row_id": 7,
+          "query": 39,
+          "float64_iou": 0.5710902408696652,
+          "stored_iou": 0.5710889101028442
+        },
+        "smallest_stored_threshold_margin": {
+          "0.25": [
+            0.00007429718971252441,
+            {
+              "row_id": 7,
+              "query": 86,
+              "iou": 0.2500742971897125,
+              "float64_iou": 0.2500746691090547
+            }
+          ],
+          "0.5": [
+            0.00016236305236816406,
+            {
+              "row_id": 4,
+              "query": 117,
+              "iou": 0.49983763694763184,
+              "float64_iou": 0.4998378477543579
+            }
+          ]
+        },
+        "mismatches": {
+          "all256_threshold_0.25": 0,
+          "all256_threshold_0.5": 0,
+          "actual_oracle25_k16": 0,
+          "actual_oracle25_k32": 0,
+          "actual_oracle25_k64": 0,
+          "actual_oracle25_k256": 0,
+          "actual_oracle50_k16": 0,
+          "actual_oracle50_k32": 0,
+          "actual_oracle50_k64": 0,
+          "actual_oracle50_k256": 0,
+          "bypass_oracle25_k16": 0,
+          "bypass_oracle25_k32": 0,
+          "bypass_oracle25_k64": 0,
+          "bypass_oracle25_k256": 0,
+          "bypass_oracle50_k16": 0,
+          "bypass_oracle50_k32": 0,
+          "bypass_oracle50_k64": 0,
+          "bypass_oracle50_k256": 0
+        },
+        "ties": {
+          "actual_top1_rows": 0,
+          "bypass_top1_rows": 0
+        },
+        "score_changed_rows": 8,
+        "max_abs_bbs_score_difference": 0.0038504600524902344,
+        "score_range": [
+          -5.0707981813502556e-8,
+          0.7575288414955139
+        ]
+      },
+      "full": {
+        "rows": 9508,
+        "candidates": 2434048,
+        "distinct_scan_ids": 141,
+        "distinct_physical_scene_ids": 141,
+        "distinct_scan_target_pairs": 2068,
+        "metrics": {
+          "actual": {
+            "hits25": 5613,
+            "hits50": 4419,
+            "oracle25": [
+              6188,
+              6617,
+              7600,
+              8896
+            ],
+            "oracle50": [
+              5365,
+              5816,
+              6733,
+              7806
+            ]
+          },
+          "bypass": {
+            "hits25": 5612,
+            "hits50": 4416,
+            "oracle25": [
+              6191,
+              6612,
+              7600,
+              8896
+            ],
+            "oracle50": [
+              5367,
+              5813,
+              6735,
+              7806
+            ]
+          }
+        },
+        "transitions": {
+          "0.25": {
+            "repairs": 2,
+            "damages": 1,
+            "net": 1,
+            "repair_rows": [
+              2434,
+              8013
+            ],
+            "damage_rows": [
+              8055
+            ]
+          },
+          "0.5": {
+            "repairs": 4,
+            "damages": 1,
+            "net": 3,
+            "repair_rows": [
+              1475,
+              3138,
+              4178,
+              7438
+            ],
+            "damage_rows": [
+              8537
+            ]
+          }
+        },
+        "changed_selected_queries": 99,
+        "changed_rows": [
+          50,
+          108,
+          173,
+          183,
+          289,
+          499,
+          530,
+          777,
+          796,
+          880,
+          944,
+          990,
+          1103,
+          1197,
+          1278,
+          1475,
+          1490,
+          1610,
+          1757,
+          1905,
+          2008,
+          2118,
+          2137,
+          2434,
+          2437,
+          2554,
+          2563,
+          2582,
+          2764,
+          2814,
+          2858,
+          2909,
+          3138,
+          3197,
+          3296,
+          3467,
+          3640,
+          3717,
+          3722,
+          3939,
+          3960,
+          4013,
+          4097,
+          4104,
+          4136,
+          4168,
+          4178,
+          4370,
+          4382,
+          4510,
+          4523,
+          4547,
+          4568,
+          4598,
+          4639,
+          4721,
+          4934,
+          4948,
+          5076,
+          5191,
+          5245,
+          5736,
+          5806,
+          5827,
+          6055,
+          6064,
+          6228,
+          6271,
+          6402,
+          6526,
+          6596,
+          6782,
+          6955,
+          6965,
+          7018,
+          7173,
+          7377,
+          7438,
+          7643,
+          7752,
+          7822,
+          7898,
+          7966,
+          8013,
+          8055,
+          8199,
+          8284,
+          8299,
+          8373,
+          8442,
+          8527,
+          8537,
+          8552,
+          8658,
+          8697,
+          8724,
+          8936,
+          8950,
+          9074
+        ],
+        "all_stored_input_and_gt_identities_exact": true,
+        "historical_replay": {
+          "bbs_stored_boxes_exact": 9508,
+          "bbs_iou_exact": 9508,
+          "bbs_threshold_mismatches_0.25": 0,
+          "bbs_threshold_mismatches_0.5": 0,
+          "bbf_stored_boxes_exact": 9508,
+          "bbf_iou_exact": 9508,
+          "bbf_threshold_mismatches_0.25": 0,
+          "bbf_threshold_mismatches_0.5": 0,
+          "actual_query_mismatches": 0,
+          "actual_oracle25_mismatches": 0,
+          "actual_oracle50_mismatches": 0
+        },
+        "max_historical_selected_iou_difference": 0,
+        "row_identity_sha256": "2e936597ac382e3345e55868e43f11732ac0672a67dd3fe37f59ffff27db6342",
+        "max_float64_iou_difference": 0.000005484273699285502,
+        "max_difference_example": {
+          "row_id": 9477,
+          "query": 10,
+          "float64_iou": 0.5965253108236518,
+          "stored_iou": 0.5965307950973511
+        },
+        "smallest_stored_threshold_margin": {
+          "0.25": [
+            9.834766387939453e-7,
+            {
+              "row_id": 9101,
+              "query": 109,
+              "iou": 0.2499990165233612,
+              "float64_iou": 0.24999877225810924
+            }
+          ],
+          "0.5": [
+            4.76837158203125e-7,
+            {
+              "row_id": 9127,
+              "query": 50,
+              "iou": 0.5000004768371582,
+              "float64_iou": 0.5000009242530522
+            }
+          ]
+        },
+        "mismatches": {
+          "all256_threshold_0.25": 0,
+          "all256_threshold_0.5": 0,
+          "actual_oracle25_k16": 0,
+          "actual_oracle25_k32": 0,
+          "actual_oracle25_k64": 0,
+          "actual_oracle25_k256": 0,
+          "actual_oracle50_k16": 0,
+          "actual_oracle50_k32": 0,
+          "actual_oracle50_k64": 0,
+          "actual_oracle50_k256": 0,
+          "bypass_oracle25_k16": 0,
+          "bypass_oracle25_k32": 0,
+          "bypass_oracle25_k64": 0,
+          "bypass_oracle25_k256": 0,
+          "bypass_oracle50_k16": 0,
+          "bypass_oracle50_k32": 0,
+          "bypass_oracle50_k64": 0,
+          "bypass_oracle50_k256": 0
+        },
+        "ties": {
+          "actual_top1_rows": 0,
+          "bypass_top1_rows": 0,
+          "actual_boundary_16_t25": 2,
+          "actual_boundary_32_t25": 1,
+          "actual_boundary_16_t50": 2,
+          "actual_boundary_32_t50": 1,
+          "bypass_boundary_16_t25": 2,
+          "bypass_boundary_32_t25": 1,
+          "bypass_boundary_16_t50": 2,
+          "bypass_boundary_32_t50": 1
+        },
+        "score_changed_rows": 9508,
+        "max_abs_bbs_score_difference": 0.02782154083251953,
+        "score_range": [
+          -0.44726741313934326,
+          1.8659247159957886
+        ]
+      },
+      "elapsed_audit_seconds": 25.33130693435669
+    },
+    "precision": {
+      "selected_native_float32": {
+        "actual": {
+          "pairs": 9508,
+          "threshold_mismatches25": 0,
+          "threshold_mismatches50": 0,
+          "max_abs_difference": 0.000002205371856689453,
+          "hits25": 5613,
+          "hits50": 4419
+        },
+        "bypass": {
+          "pairs": 9508,
+          "threshold_mismatches25": 0,
+          "threshold_mismatches50": 0,
+          "max_abs_difference": 0.000002205371856689453,
+          "hits25": 5612,
+          "hits50": 4416
+        }
+      },
+      "topk_tie_boundaries": [
+        {
+          "row_id": 2467,
+          "mode": "actual",
+          "k": 16,
+          "tie_group_size": 25,
+          "slots_from_tie_group": 5,
+          "coverage_invariant": {
+            "0.25": true,
+            "0.5": true
+          }
+        },
+        {
+          "row_id": 2467,
+          "mode": "actual",
+          "k": 32,
+          "tie_group_size": 25,
+          "slots_from_tie_group": 21,
+          "coverage_invariant": {
+            "0.25": true,
+            "0.5": true
+          }
+        },
+        {
+          "row_id": 2467,
+          "mode": "bypass",
+          "k": 16,
+          "tie_group_size": 25,
+          "slots_from_tie_group": 5,
+          "coverage_invariant": {
+            "0.25": true,
+            "0.5": true
+          }
+        },
+        {
+          "row_id": 2467,
+          "mode": "bypass",
+          "k": 32,
+          "tie_group_size": 25,
+          "slots_from_tie_group": 21,
+          "coverage_invariant": {
+            "0.25": true,
+            "0.5": true
+          }
+        },
+        {
+          "row_id": 2538,
+          "mode": "actual",
+          "k": 16,
+          "tie_group_size": 3,
+          "slots_from_tie_group": 1,
+          "coverage_invariant": {
+            "0.25": true,
+            "0.5": true
+          }
+        },
+        {
+          "row_id": 2538,
+          "mode": "bypass",
+          "k": 16,
+          "tie_group_size": 3,
+          "slots_from_tie_group": 1,
+          "coverage_invariant": {
+            "0.25": true,
+            "0.5": true
+          }
+        }
+      ],
+      "topk_tie_ambiguous_coverage_rows": [],
+      "pilot_full_exact_rows": 8,
+      "historical_p2_scalar_recount": {
+        "bbs": {
+          "rec_hits25": 5613,
+          "rec_hits50": 4419,
+          "mask_hits25": 5817,
+          "mask_hits50": 5119,
+          "mask_iou_sum": 4476.122756443976,
+          "mask_miou": 47.07743748889331
+        },
+        "bbf": {
+          "rec_hits25": 5615,
+          "rec_hits50": 4401,
+          "mask_hits25": 5802,
+          "mask_hits50": 5112,
+          "mask_iou_sum": 4463.863585112151,
+          "mask_miou": 46.94850215725863
+        }
+      }
+    },
+    "bindings": {
+      "intake_hash_checked_paths": [
+        "run.py",
+        "controller.py",
+        "PLAN.md",
+        "CODE_REVIEW.md",
+        "CODE_REVIEW.json",
+        "status.json",
+        "full.log",
+        "full.exit",
+        "pilot/receipt.json",
+        "pilot/rows.jsonl.gz",
+        "full/receipt.json",
+        "full/load.json",
+        "full/rows.jsonl.gz"
+      ],
+      "intake_paths_outside_assigned_scope": [
+        "launch.json",
+        "controller.log",
+        "pilot.log",
+        "pilot.exit",
+        "pilot/load.json"
+      ],
+      "runtime": {
+        "full_process_seconds": 1024.5900330543518,
+        "full_diagnostic_loop_seconds": 897.7132773399353,
+        "pilot_process_seconds": 131.9385039806366,
+        "pilot_diagnostic_loop_seconds": 4.600160837173462,
+        "controller_total_seconds": 1156.530151,
+        "completion_markers": {
+          "FIXED_BOX_DIAGNOSTIC_SAVED": 26,
+          "FIXED_BOX_COMPLETE": 27
+        },
+        "progress_records": 18,
+        "full_exit": 0
+      },
+      "script_model_call_sites": 1,
+      "script_optimizer_backward_checkpoint_save_calls": 0,
+      "checked_artifact_count": 33,
+      "split_id_counts": [
+        29778,
+        6887
+      ],
+      "all_assertions_pass": true
+    }
+  },
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/run.py": "sha256:8e3e598f8cb8444e4c553e2f0de9bea0b129c59d25eef6df2be52521a3531bb7",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/controller.py": "sha256:8b3542ea5229c0750131abb66306ee4fd4c0f3eeffc8b27438d080fe6bce8794",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/PLAN.md": "sha256:25e43a1413c038c591d492631f5efdc6646db32e8298b75fcec6876c5d53a29b",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/CODE_REVIEW.md": "sha256:6b2f9818f0711093d4e40def9ab76bbe2a7b69387db5cd251a49409d0b09be10",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/CODE_REVIEW.json": "sha256:1be30338c3210f42e9da5013a58f5c0f06310fcd23020202369f7a6129096f8e",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/INTAKE.json": "sha256:f6daa66ffff9753f655a9f719ea586988c7b007031b39a0610048212f84b296b",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/status.json": "sha256:de5b0652b189065ca137d6f71441e1b3661e690037b31447aaef4cd0a97f1c58",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full.log": "sha256:95e545bc080161c5a6db52c3f3f02ad66c0770fe015cc347068a7746ff22d98b",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full/receipt.json": "sha256:a8b696a561d3f0edb9767f5a8e04ff7e8155097d0e75afa8fd6807af5e44ebaf",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full/load.json": "sha256:4d454a43006fcae1af97e91d6a82abbf828325f4370857d977f0f7065b696f45",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full/rows.jsonl.gz": "sha256:5828e307aef52f1026e0d48dfdd511ff7e0cb351ca2645123255941c88bf7e80",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/pilot/receipt.json": "sha256:ad4e6865c88e919bb87bfc3a013d86b595f63955c97053cf5a2fcb986d339528",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/pilot/rows.jsonl.gz": "sha256:1153c9fdf796d0724e9b791fe882794b3aa514f47e9036260eb31e3e7df1dc6b",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/SUMMARY.json": "sha256:ba6ced5deb546ed8669ce29852011afdcdece9414a7139fab0eb7a14ed02158a",
+    "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/REPORT.md": "sha256:5a6e02bdb93e2365a6348eb756fdcda2e92d73b4d75c3f9a98cbfe9733627a68",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/joint_det_dataset.py": "sha256:3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/grounding_evaluator.py": "sha256:39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/input_manifest.json": "sha256:14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/split_protocol.json": "sha256:06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/run.py": "sha256:9ffb44c9d06677fc4e7a2014211ebf228678940465a03db6fbfc4d03f89bf533",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/pvground_task_observation_query.py": "sha256:39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/pvground_expression_evidence.py": "sha256:fe9dbc61f4a12252a1f9da3d00d2dc75f5d97c2f9c52d2c9dd2a3a84dd48d6db",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/encoder_decoder_layers.py": "sha256:4ba0b8a95114d01987def21a42c846f03b5f32d462f5a7b77f168baddc555874",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/pv_ground.py": "sha256:7fe369d7aaefda3f4e6eb389393799aedbe95ace56dbc107a7d26b0e3a3ea235",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/losses.py": "sha256:920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/g_p2/formal/rows.jsonl": "sha256:fc22b21b63424503a45fa0daa98e07acdae05ba6f2994366f49757d3efc0c448",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/g_p2/formal/receipt.json": "sha256:b622f90ebec456bc7ecc885b31c2c6a80f6fc8fa06ad6c9fbdc115dbbb3fc9d5",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/g_p2/spec.json": "sha256:4049ce1675f58f173f57b3908e7a48a4e5889f103a90d8083536df6096be88db",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/g_control/formal/receipt.json": "sha256:ce178e23eee1d85665bd3c290b9da95b6c061416de2a7c3e6893e0e57da2e859",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/SUMMARY.json": "sha256:596de7c6d2506a1e974c3763209cd43eb37a2aee48babb19ca39b5157185ff1f",
+    "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/EXPERIMENT_AUDIT.md": "sha256:527365128ba17594e41c09352d3fb741b2bced11349cf1c22046781fb6b8710c",
+    "C:/Users/gb/.codex/tmp/analyze_pvg_fixed_box_complete_20261002.py": "sha256:988805d54825975462f3289d3cb83a38fb61c79292156f1442861cf238973957"
+  },
+  "audited_artifacts": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/run.py",
+      "sha256": "8e3e598f8cb8444e4c553e2f0de9bea0b129c59d25eef6df2be52521a3531bb7",
+      "bytes": 24713
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/controller.py",
+      "sha256": "8b3542ea5229c0750131abb66306ee4fd4c0f3eeffc8b27438d080fe6bce8794",
+      "bytes": 2473
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/PLAN.md",
+      "sha256": "25e43a1413c038c591d492631f5efdc6646db32e8298b75fcec6876c5d53a29b",
+      "bytes": 2375
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/CODE_REVIEW.md",
+      "sha256": "6b2f9818f0711093d4e40def9ab76bbe2a7b69387db5cd251a49409d0b09be10",
+      "bytes": 8048
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/CODE_REVIEW.json",
+      "sha256": "1be30338c3210f42e9da5013a58f5c0f06310fcd23020202369f7a6129096f8e",
+      "bytes": 11799
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/INTAKE.json",
+      "sha256": "f6daa66ffff9753f655a9f719ea586988c7b007031b39a0610048212f84b296b",
+      "bytes": 6123
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/status.json",
+      "sha256": "de5b0652b189065ca137d6f71441e1b3661e690037b31447aaef4cd0a97f1c58",
+      "bytes": 584
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full.log",
+      "sha256": "95e545bc080161c5a6db52c3f3f02ad66c0770fe015cc347068a7746ff22d98b",
+      "bytes": 4590
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full/receipt.json",
+      "sha256": "a8b696a561d3f0edb9767f5a8e04ff7e8155097d0e75afa8fd6807af5e44ebaf",
+      "bytes": 1193
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full/load.json",
+      "sha256": "4d454a43006fcae1af97e91d6a82abbf828325f4370857d977f0f7065b696f45",
+      "bytes": 264
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/full/rows.jsonl.gz",
+      "sha256": "5828e307aef52f1026e0d48dfdd511ff7e0cb351ca2645123255941c88bf7e80",
+      "bytes": 178058220
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/pilot/receipt.json",
+      "sha256": "ad4e6865c88e919bb87bfc3a013d86b595f63955c97053cf5a2fcb986d339528",
+      "bytes": 1172
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/pilot/rows.jsonl.gz",
+      "sha256": "1153c9fdf796d0724e9b791fe882794b3aa514f47e9036260eb31e3e7df1dc6b",
+      "bytes": 153374
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/SUMMARY.json",
+      "sha256": "ba6ced5deb546ed8669ce29852011afdcdece9414a7139fab0eb7a14ed02158a",
+      "bytes": 4782
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/complete/REPORT.md",
+      "sha256": "5a6e02bdb93e2365a6348eb756fdcda2e92d73b4d75c3f9a98cbfe9733627a68",
+      "bytes": 2182
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "bytes": 75981
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/grounding_evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "bytes": 41473
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/input_manifest.json",
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+      "bytes": 161881
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/split_protocol.json",
+      "sha256": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+      "bytes": 246139
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/run.py",
+      "sha256": "9ffb44c9d06677fc4e7a2014211ebf228678940465a03db6fbfc4d03f89bf533",
+      "bytes": 30626
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "bytes": 2770
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/pvground_expression_evidence.py",
+      "sha256": "fe9dbc61f4a12252a1f9da3d00d2dc75f5d97c2f9c52d2c9dd2a3a84dd48d6db",
+      "bytes": 3549
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/encoder_decoder_layers.py",
+      "sha256": "4ba0b8a95114d01987def21a42c846f03b5f32d462f5a7b77f168baddc555874",
+      "bytes": 22058
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/pv_ground.py",
+      "sha256": "7fe369d7aaefda3f4e6eb389393799aedbe95ace56dbc107a7d26b0e3a3ea235",
+      "bytes": 24954
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "bytes": 40468
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/g_p2/formal/rows.jsonl",
+      "sha256": "fc22b21b63424503a45fa0daa98e07acdae05ba6f2994366f49757d3efc0c448",
+      "bytes": 7465993
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/g_p2/formal/receipt.json",
+      "sha256": "b622f90ebec456bc7ecc885b31c2c6a80f6fc8fa06ad6c9fbdc115dbbb3fc9d5",
+      "bytes": 685
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/g_p2/spec.json",
+      "sha256": "4049ce1675f58f173f57b3908e7a48a4e5889f103a90d8083536df6096be88db",
+      "bytes": 3117
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/g_control/formal/receipt.json",
+      "sha256": "ce178e23eee1d85665bd3c290b9da95b6c061416de2a7c3e6893e0e57da2e859",
+      "bytes": 685
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/SUMMARY.json",
+      "sha256": "596de7c6d2506a1e974c3763209cd43eb37a2aee48babb19ca39b5157185ff1f",
+      "bytes": 11950
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/EXPERIMENT_AUDIT.md",
+      "sha256": "527365128ba17594e41c09352d3fb741b2bced11349cf1c22046781fb6b8710c",
+      "bytes": 20695
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/analyze_pvg_fixed_box_complete_20261002.py",
+      "sha256": "988805d54825975462f3289d3cb83a38fb61c79292156f1442861cf238973957",
+      "bytes": 7784
+    }
+  ],
+  "read_scope_note": "Complete diagnostic runner/controller/analyzer, native evaluator, historical runner, both compressed row files and historical P2 rows were inspected; dataset/model/loss source inspection targeted provenance, input construction, routing, evaluator arithmetic and mutation/call paths. JSON manifests were parsed and relevant bindings checked.",
+  "execution_restrictions": "Local standard-library source/data arithmetic only. No SSH/network/credentials, checkpoint load, model imports, model/evaluator execution, optimization, source changes or recursive reviewer calls. Only EXPERIMENT_AUDIT.md and EXPERIMENT_AUDIT.json written.",
+  "trace_path": null,
+  "trace_note": "The delegating parent retains the reviewer request/response transcript. The assigned write scope allows only these two reports, so no additional trace directory was created."
+}

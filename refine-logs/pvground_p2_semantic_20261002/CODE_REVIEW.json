@@ -1,0 +1,206 @@
+{
+  "verdict": "PASS",
+  "review_type": "fresh static experiment implementation review",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_agent": "/root/pvg_p2_semantic_route_review",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "fork_turns": "none",
+  "review_date": "2026-10-02",
+  "scope": "Final minimal P2 semantic-routing control, unchanged native training/evaluation lifecycle, controller and private deployment helper.",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "required_fixes": [],
+  "resolved_during_review": [
+    {
+      "id": "R1",
+      "severity": "blocking_before_fix",
+      "finding": "The first reviewed runner did not implement PLAN.md:29-31 comparison checks against the reused completed control.",
+      "resolution": "Final runner checks all 6887 initial identities, GT boxes, point hashes and bbs selected query/box/IoU before creating AdamW; every fit batch row list is checked against the corresponding saved control batch before step().",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:440",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:473",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:506"
+      ],
+      "status": "resolved"
+    },
+    {
+      "id": "R2",
+      "severity": "non_blocking_before_fix",
+      "finding": "The first reviewed plan attributed the two known initial Mask discrepancies to roundoff although the retained completed audit leaves their cause unresolved.",
+      "resolution": "The final plan preserves the discrepancy, states its cause is unresolved, and disclaims whole-output bitwise identity.",
+      "references": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\PLAN.md:31",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\EXPERIMENT_AUDIT.md:101"
+      ],
+      "status": "resolved"
+    }
+  ],
+  "checks": [
+    {
+      "name": "minimal_routing",
+      "status": "PASS",
+      "detail": "Exactly one decoder assignment changes joint residual addition to (semantic + evidence, geometry); P2 implementation, G task reader and native heads/losses remain unchanged.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\prepare_pvground_p2_semantic_source.py:17",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\encoder_decoder_layers.py:526",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\pvground_task_observation_query.py:38"
+      ]
+    },
+    {
+      "name": "parameter_and_loss_routing",
+      "status": "PASS",
+      "detail": "Semantic output supplies CE and contrastive queries; geometry output supplies center/size and Query Mask. No new backbone freeze or optimizer restriction. Native Hungarian matching remains discrete and can change with semantic scores.",
+      "references": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\pv_ground.py:496",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\modules.py:145",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py:298"
+      ]
+    },
+    {
+      "name": "real_preflight_activation_and_gradient_probe",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "preflight calls step(update=True) twice; the args.mode guard invokes autograd.grad on the actual summed bbox/GIoU tensors and all P2 parameters before loss.backward, with retained graph. Both iterations assert zero/unused geometry gradients, and positive semantic-task P2 gradients are asserted.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:288",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:340"
+      ]
+    },
+    {
+      "name": "initialization_optimizer_and_state_reload",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "Restores the hash-checked original G delta strictly before adding zero-output P2. Preflight restores initial state before its updates and serializes/reloads mutable state and AdamW through BytesIO. The controller starts formal training in a new process with a fresh optimizer; preflight state is not reused.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:119",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:334",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:352",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:454"
+      ]
+    },
+    {
+      "name": "same_protocol_and_budget",
+      "status": "PASS",
+      "detail": "Seed 2027, batch 8, one pass over 29778 fit rows/3723 updates, LR/backbone LR 1e-5, weight decay 5e-4, clip 0.1, scene-separated 6887 holdout, 9508 development validation and last/bbs primary remain unchanged. Completed G and joint-P2 controls are reused explicitly.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:78",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:168",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:251",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:480",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\PLAN.md:22"
+      ]
+    },
+    {
+      "name": "native_ground_truth_evaluation",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "Model runs before GT attachment. Root GT boxes/masks come from annotated ScanNet instances via Joint3DDataset. Native evaluator is actually called by evaluate(), and raw-row REC counts/Mask sums are checked against its accumulators before receipts. GroupFree predicted-object-assisted two-stage inputs are retained.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:255",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:381",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:425",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py:1086",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\grounding_evaluator.py:535"
+      ]
+    },
+    {
+      "name": "failure_ordering_and_storage",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "Controller serializes preflight/train/formal and uses the existing flock lock for each child. Child failure prevents later phases. Training requires a passing 2-step gradient preflight and current free space >= 2 measured serialized states + 128 MiB. Atomic replacement retains existing endpoints. Static review does not establish available runtime space.",
+      "references": [
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic_control.py:31",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic_control.py:35",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic_control.py:47",
+        "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py:457",
+        "C:\\Users\\gb\\.codex\\tmp\\deploy_pvg_semantic_route_20261002.py:36"
+      ]
+    },
+    {
+      "name": "private_deployment_helper",
+      "status": "PASS_STATIC_ONLY",
+      "detail": "Requires PASS and reviewed script/plan hashes, fresh output directories, completed prior pair/diagnostic, and initial source/checkpoint-space estimate. Uploads/readbacks reviewed scripts, configures reused_control_root, runs CPU restore, then starts the gated controller. Helper was read and parsed only, never executed.",
+      "references": [
+        "C:\\Users\\gb\\.codex\\tmp\\deploy_pvg_semantic_route_20261002.py:13",
+        "C:\\Users\\gb\\.codex\\tmp\\deploy_pvg_semantic_route_20261002.py:36",
+        "C:\\Users\\gb\\.codex\\tmp\\deploy_pvg_semantic_route_20261002.py:63",
+        "C:\\Users\\gb\\.codex\\tmp\\deploy_pvg_semantic_route_20261002.py:75",
+        "C:\\Users\\gb\\.codex\\tmp\\deploy_pvg_semantic_route_20261002.py:86"
+      ]
+    }
+  ],
+  "verification_performed": {
+    "source_ast_parse": "PASS; standard library only; no experiment modules imported",
+    "modeled_source_edit_changed_lines": [
+      534
+    ],
+    "expected_prepared_decoder_sha256": "8cc6731f3086a2f074e6905bb9e24a3c321b4b180f2cd43cf6b642c31e54995b",
+    "expected_prepared_decoder_scope": "Derived in memory from the sealed decoder text; not a runtime deployment readback.",
+    "copied_p2_and_g_module_hashes_match_sealed_sources": true,
+    "sealed_control_initial_rows_checked": 6887,
+    "sealed_control_initial_inputs_and_bbs_exact_match": true,
+    "sealed_control_initial_mask_discrepancy_rows": 2,
+    "sealed_training_batches_checked_per_arm": 3723,
+    "sealed_training_batch_order_exact_match": true,
+    "sealed_fit_rows_exactly_once": 29778,
+    "sealed_control_specs_equal_except_root_and_p2": true
+  },
+  "execution_limits": {
+    "new_real_preflight_run": false,
+    "neural_model_import_or_execution": false,
+    "checkpoint_open_or_load": false,
+    "cuda_execution": false,
+    "ssh_connection_or_remote_command": false,
+    "credential_wrapper_or_environment_values_read": false,
+    "deployment_helper_executed": false,
+    "new_result_available": false,
+    "pending_runtime_gates": [
+      "Strict CPU restore on deployment",
+      "Real batch-8 two-update preflight",
+      "Measured current replacement space",
+      "New initial bbs/input equality",
+      "All 3723 new batch row-order checks",
+      "Terminal holdout and 9508 formal evaluation"
+    ],
+    "claim_limit": "PASS concerns static correctness only. Same-family/provisional review is not cross-family assurance, a real preflight pass, or an improvement claim."
+  },
+  "reviewed_files": {
+    "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\prepare_pvground_p2_semantic_source.py": "6221f5a2e52cc2c895e73cee990aa839e521f996613c5bd5960d036ef9e7b9d9",
+    "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic.py": "06c1cba7249a00897324092e2d20faffd0597b37b036b7b8f95ad5e8ab5d07ee",
+    "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\run_pvground_p2_semantic_control.py": "4029ca10e4c5731c26f5858ccba9cd281b32ff14f996556af6c25f8c42520016",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\PLAN.md": "f54d244ae93a8df480517e77c5c8cad2203ad72dae4f33f03bedd17ef18ec5ce",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\parent_spec.json": "3635eaefd44b13b5d5f4c8651f935f6dea06b4533dd0142dec08952d26079a4e",
+    "C:\\Users\\gb\\.codex\\tmp\\deploy_pvg_semantic_route_20261002.py": "a834c138dc8378a8e78419ad5b1e03b39ec9d38cf3ccc0f5d7fcad1f74117de1",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\run.py": "9ffb44c9d06677fc4e7a2014211ebf228678940465a03db6fbfc4d03f89bf533",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\pvground_expression_evidence.py": "fe9dbc61f4a12252a1f9da3d00d2dc75f5d97c2f9c52d2c9dd2a3a84dd48d6db",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\pvground_semantic_assignment.py": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\split_protocol.json": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\pv_ground.py": "7fe369d7aaefda3f4e6eb389393799aedbe95ace56dbc107a7d26b0e3a3ea235",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\encoder_decoder_layers.py": "4ba0b8a95114d01987def21a42c846f03b5f32d462f5a7b77f168baddc555874",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\modules.py": "1609b3608e017669ae0ff63e7618f2078e5f72f20955da02e7ff230481b846fc",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_semantic_assignment.py": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_p2_semantic_20261002\\pvground_expression_evidence.py": "fe9dbc61f4a12252a1f9da3d00d2dc75f5d97c2f9c52d2c9dd2a3a84dd48d6db",
+    "C:\\Users\\gb\\.codex\\tmp\\pvg_p2_fixed_boxes_20261002\\complete\\SUMMARY.json": "ba6ced5deb546ed8669ce29852011afdcdece9414a7139fab0eb7a14ed02158a",
+    "C:\\Users\\gb\\.codex\\tmp\\pvg_p2_fixed_boxes_20261002\\complete\\REPORT.md": "5a6e02bdb93e2365a6348eb756fdcda2e92d73b4d75c3f9a98cbfe9733627a68",
+    "C:\\Users\\gb\\.codex\\tmp\\pvg_p2_fixed_boxes_20261002\\storage_after_complete.json": "1db08f061de3c162869a2f195196ad5c8be2e0eccbd7f0a6707d194994332dc3",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\EXPERIMENT_AUDIT.md": "527365128ba17594e41c09352d3fb741b2bced11349cf1c22046781fb6b8710c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\REPORT.md": "20c4fb99027b738ebd2a93db17467e07d3acfda1772354eda5da8f458da7fa85",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\SUMMARY.json": "596de7c6d2506a1e974c3763209cd43eb37a2aee48babb19ca39b5157185ff1f",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\receipt.json": "7b76c10b0dae74bf11e4d04438ebb76bc2bfa748d0990f93f2edf55917995b4a",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\spec.json": "375440282ab23854794b1e59b44daae0bc3e52a0bbe90342d0eb721528de4e12",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\initial\\rows.jsonl": "bcb49aa285cad9ca594f755f151b4ace454ab216e8633a1161a5766aa757e455",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\train.jsonl": "f7170d5f16fb027f061d52b60c585ad7273c3586b8f72b33ac4b7034c31201d4",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_p2\\spec.json": "4049ce1675f58f173f57b3908e7a48a4e5889f103a90d8083536df6096be88db",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_p2\\initial\\rows.jsonl": "4d205d9d149b6f9f4c9a63758884b90fa2101b8b5ebbeac5363fccc97a691e0c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_p2\\train.jsonl": "a99c59dfa6628c05b8e95f9e1fbc12d3e9b2935a3c4db8bef0addf0ab8590f58",
+    "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\main_utils.py": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\g_source_port.json": "0375886f9df2b3ac18a63ce7571d672ceb433613b6defdfcd9f8d244a20bf855"
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "verdict": "PASS",
+  "review_kind": "static_pre_execution_review",
+  "review_date": "2026-10-02",
+  "reviewer_request": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max"
+  },
+  "attribution": "same-family/provisional",
+  "attribution_limit": "No independently verified cross-provider or cross-family reviewer separation is claimed.",
+  "reviewed_run_py_sha256": "8e3e598f8cb8444e4c553e2f0de9bea0b129c59d25eef6df2be52521a3531bb7",
+  "reviewed_controller_py_sha256": "8b3542ea5229c0750131abb66306ee4fd4c0f3eeffc8b27438d080fe6bce8794",
+  "reviewed_plan_md_sha256": "25e43a1413c038c591d492631f5efdc6646db32e8298b75fcec6876c5d53a29b",
+  "summary": "No remaining concrete correctness blocker after the replay success-label fix.",
+  "blocking_findings": [],
+  "required_changes": [],
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "severity": "P2",
+      "title": "Success-labelled receipt and log preceded replay validation",
+      "prior_run_py_sha256": "b3d60317503ff56a812f86488173b65778281be23ae9abb880dd1ee26792133f",
+      "prior_evidence": "run.py:394-404",
+      "failure": "A nonzero historical mismatch produced status=complete and FIXED_BOX_COMPLETE before raising AssertionError.",
+      "resolution": "Current run.py:394-406 writes replay_mismatch when the replay check fails, preserves the diagnostic, then asserts before printing FIXED_BOX_COMPLETE.",
+      "status": "RESOLVED_BY_PARENT_AND_REVIEWED"
+    }
+  ],
+  "checks": [
+    {
+      "check": "One trained P2 state and one full forward",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "run.py:127-164",
+        "run.py:204-213",
+        "run.py:277-280",
+        "run.py:308-317",
+        "g_p2_spec.json:2-14,25-29,49-51"
+      ],
+      "detail": "Author state, G delta and final P2 delta are restored strictly; terminal identity is pinned to 60371c5ecf6127f4738aa39d77e754a414a03a302ccdbc605173e1612692d9e9. Only model(inputs) at line 312 performs a full forward per batch."
+    },
+    {
+      "check": "Bypass removes only the final semantic P2 addition",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "run.py:290-303",
+        "encoder_decoder_layers.py:526-535",
+        "pvground_task_observation_query.py:25-30,33-53",
+        "pvground_expression_evidence.py:37-62"
+      ],
+      "detail": "The source-reader hook stores the original residual tuple. P2 addition creates a new tuple out of place. The wrapper computes actual and bypass decoder tails from their respective residuals without subtraction, stores only bypass semantic values, and returns the original actual pair."
+    },
+    {
+      "check": "Hook lifetime, tensor dimensions and evaluation state",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "run.py:280,285-318,375-377",
+        "pvground_task_observation_query.py:38-53",
+        "modules.py:89-108,169-178"
+      ],
+      "detail": "Only the last layer has task_read; cache clears before each forward and exact keys are asserted. Decoder tails map Q,B,288 to B,Q,288; the semantic head maps B,288,256 to B,256,256 logits. model.eval disables tail/head dropout and freezes BatchNorm statistics; no_grad prevents graph retention. Exact actual-head replay and final buffer equality are runtime gates."
+    },
+    {
+      "check": "Actual all-256 boxes, masks and contrastive outputs stay fixed",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "run.py:134-136,314-335",
+        "pv_ground.py:496-517,519-552",
+        "modules.py:145-175",
+        "grounding_evaluator.py:56-66,232-249,594-605"
+      ],
+      "detail": "The counterfactual is a shallow copy replacing only last_sem_cls_scores. Center, clamped size and both mask structures are identical objects; other fields, including contrastive projections, adaptive weights and superpoints, remain shared. No candidate subset or GT box filter is used. The discarded bypass geometry never reaches predictions."
+    },
+    {
+      "check": "Official bbs score and manual hit accounting",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "run.py:305-306,345-363,379-390",
+        "grounding_evaluator.py:217-303,535-553",
+        "losses.py:35-75"
+      ],
+      "detail": "Both paths softmax token logits, binarize only the main positive map, add modifier/pronoun/relation terms, subtract other-entity terms and rank all candidates descending. Thresholds are strict >0.25 and >0.5. Native/manual hit equality is required for each arm. Manual size-product and native corner-volume IoU are mathematically equivalent but bitwise equality is not claimed."
+    },
+    {
+      "check": "Input binding and offline-only GT",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "run.py:50-85,93-125,216-235,257-271,279-284,309-312,320-344",
+        "sealed run.py:196-263,362-399"
+      ],
+      "detail": "The sealed formal dataset/loader/prepare path and seed are retained; both runs use batch 8 without augmentation. Only point/voxel/text/detected-box/superpoint inputs reach the model. Real GT is attached after inference for evaluation. Historical records are used only for row/point/GT and selected-query/hit replay, not as prediction labels."
+    },
+    {
+      "check": "Row scope, new output files and historical gate",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "run.py:39-49,281-284,337-370,375-406",
+        "controller.py:26-51"
+      ],
+      "detail": "Only 8 or 9508 rows are accepted, fresh output mkdir is required, ordered row IDs and final row count are checked, and gzip JSONL writes a real newline per row. All boxes, IoUs and both score arrays are retained. A replay mismatch now saves status=replay_mismatch and exits before FIXED_BOX_COMPLETE."
+    },
+    {
+      "check": "Immutability and pilot/full controller",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "run.py:304,308,375-378",
+        "controller.py:12-17,26-54",
+        "PLAN.md:14-26,33-37"
+      ],
+      "detail": "There is no optimizer construction/update or checkpoint save in the diagnostic. Named buffers and terminal file hash are compared after evaluation. The controller uses the existing environment and GPU lock, invokes the pilot and full serially in fresh directories, requires child exit 0 and complete receipts, checks pilot replay and available disk before full, and writes only logs/status/diagnostic outputs."
+    },
+    {
+      "check": "Removing native_loss does not add a second stochastic path",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "sealed run.py:265-270,371-378",
+        "losses.py:298-390,562-641,808-846,849-973",
+        "pv_ground.py:576-590"
+      ],
+      "detail": "The inspected matcher/loss path has no random sampling call; it adds loss fields rather than replacing the bbs predictions. The native Gumbel sampler still runs once per model forward. Historical replay remains a runtime requirement rather than a claimed result."
+    },
+    {
+      "check": "Scientific interpretation",
+      "conclusion": "PASS_STATIC",
+      "evidence": [
+        "run.py:1-3,402",
+        "PLAN.md:3-12,28-31",
+        "REPORT.md:23-30"
+      ],
+      "detail": "This is a direct final-semantic forward intervention at the trained P2 state with actual P2 geometry fixed. It is not a trained no-P2 model, an estimate of total P2 training contribution, or a causal explanation for original-G retention loss."
+    }
+  ],
+  "evidence_limits": [
+    "Local source text and file hashes were inspected. The reviewer did not execute the runner/controller, import model code, run AST or neural tests, use SSH/GPU, or edit source.",
+    "Remote checkpoint bytes, deployed module origins, dataset bytes, environment availability, disk capacity and runtime assertion outcomes were not independently observed in this review.",
+    "The supplied launch context says the existing environment and sources remain unchanged and output directories are new; the verdict applies to that context and the recorded hashes.",
+    "Input replay checks bind row ID, sampled point bytes and root GT box. Historical output replay checks bind selected query and threshold-hit decisions, not exact historical logits or every box coordinate.",
+    "Pilot 8 and full 9508 numerical equality, native/manual counts and historical replay have not yet run. PASS is a source review result, not an experiment result.",
+    "Only the final semantic head is counterfactually recomputed. Contrastive outputs and all geometry/mask predictions intentionally remain from actual P2; no bypass bbf effect is claimed.",
+    "The development-validation and single-seed limitations in the sealed REPORT.md remain applicable."
+  ],
+  "files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/run.py",
+      "sha256": "8e3e598f8cb8444e4c553e2f0de9bea0b129c59d25eef6df2be52521a3531bb7",
+      "read_scope": "full static review; corrected tail re-read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/controller.py",
+      "sha256": "8b3542ea5229c0750131abb66306ee4fd4c0f3eeffc8b27438d080fe6bce8794",
+      "read_scope": "full static review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_p2_fixed_boxes_20261002/PLAN.md",
+      "sha256": "25e43a1413c038c591d492631f5efdc6646db32e8298b75fcec6876c5d53a29b",
+      "read_scope": "full read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/run.py",
+      "sha256": "9ffb44c9d06677fc4e7a2014211ebf228678940465a03db6fbfc4d03f89bf533",
+      "read_scope": "full static review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/g_p2_spec.json",
+      "sha256": "4049ce1675f58f173f57b3908e7a48a4e5889f103a90d8083536df6096be88db",
+      "read_scope": "full read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/pv_ground.py",
+      "sha256": "7fe369d7aaefda3f4e6eb389393799aedbe95ace56dbc107a7d26b0e3a3ea235",
+      "read_scope": "full static review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/encoder_decoder_layers.py",
+      "sha256": "4ba0b8a95114d01987def21a42c846f03b5f32d462f5a7b77f168baddc555874",
+      "read_scope": "full static review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/modules.py",
+      "sha256": "1609b3608e017669ae0ff63e7618f2078e5f72f20955da02e7ff230481b846fc",
+      "read_scope": "full static review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "read_scope": "full static review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/pvground_expression_evidence.py",
+      "sha256": "fe9dbc61f4a12252a1f9da3d00d2dc75f5d97c2f9c52d2c9dd2a3a84dd48d6db",
+      "read_scope": "full static review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/grounding_evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "read_scope": "full static review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/REPORT.md",
+      "sha256": "20c4fb99027b738ebd2a93db17467e07d3acfda1772354eda5da8f458da7fa85",
+      "read_scope": "full read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "read_scope": "targeted static review of IoU, matcher, loss flow and RNG/mutation search"
+    }
+  ]
+}
+

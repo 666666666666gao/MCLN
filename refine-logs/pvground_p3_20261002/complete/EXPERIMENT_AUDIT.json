@@ -1,0 +1,702 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "blocking_findings": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "actual_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "reviewer_task": "/root/pvg_p3_complete_integrity",
+  "timestamp": "2026-10-02T19:01:22.445898+08:00",
+  "scope": "Completed P3 experiment only; no next-arm or separate old-file archival/deletion certification.",
+  "summary": "No blocker to publishing the bounded negative P3 result in the revised claim surface. Formal native last_/bbs is 5594/4401 out of 9508; original-G and same-budget continued-G improvements and target are not achieved.",
+  "checks": {
+    "A": {
+      "name": "ground_truth_provenance",
+      "status": "PASS",
+      "summary": "Dataset scan-object boxes and instance point masks become saved root GT and native Mask truth; no model-derived reference substitution was found.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\src.joint_det_dataset.py",
+          "line": 596
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\src.joint_det_dataset.py",
+          "line": 1102
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\src.joint_det_dataset.py",
+          "line": 1106
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 401
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 427
+        }
+      ],
+      "limit": "Source-to-saved-target provenance checked; raw ScanNet annotations and meshes were not independently reconstructed."
+    },
+    "B": {
+      "name": "prediction_derived_normalization",
+      "status": "PASS",
+      "summary": "Standard intersection-over-union, strict >0.25/>0.5 counts, sample-denominator accuracies, and Mask means. Native softmax ranking is not performance normalization.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 408
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 441
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\models.losses.py",
+          "line": 70
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\evaluator.py",
+          "line": 897
+        }
+      ]
+    },
+    "C": {
+      "name": "result_existence_and_numerical_agreement",
+      "status": "PASS",
+      "summary": "Completed receipts and logs exist. All 34 collected-file hashes, P3/control row hashes and train hashes match. Independent selected/coarse P3 and selected control recounts preserve every threshold decision and reported count.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\INTAKE.json",
+          "line": 5
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\status.json",
+          "line": 2
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\formal\\receipt.json",
+          "line": 18
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\formal\\receipt.json",
+          "line": 18
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\receipt.json",
+          "line": 19
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\receipt.json",
+          "line": 37
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\recount_complete.py",
+          "line": 67
+        }
+      ]
+    },
+    "D": {
+      "name": "executed_versus_dead_evaluation_code",
+      "status": "PASS",
+      "summary": "PASS for reported metrics: both native REC and both Mask branches execute, with REC count and Mask sum agreement asserted before writing receipts. The verify_native_replacement branch is dormant for this run and is not credited as a fresh witness.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 396
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 442
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 445
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\evaluator.py",
+          "line": 194
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 299
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 349
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 495
+        }
+      ]
+    },
+    "E": {
+      "name": "scope_and_claims",
+      "status": "WARN",
+      "summary": "One seed and one local ScanRefer development-validation protocol. Complete matched 3723-update budget is verified, but raw Mask replay, all256 geometry replay, full E0 functional equivalence, independent historical replay and cross-dataset generalization are not established.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\spec.json",
+          "line": 9
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\split_protocol.json",
+          "line": 1
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\train.jsonl",
+          "line": 3723
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 493
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publish_complete.py",
+          "line": 58
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publish_complete.py",
+          "line": 68
+        }
+      ]
+    },
+    "F": {
+      "name": "evaluation_classification",
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "summary": "REC and Mask use dataset GT under two-stage inference with offline GroupFree boxes/classes. Oracle coverage is a GT-assisted diagnostic upper bound; preflight is engineering evidence.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\src.joint_det_dataset.py",
+          "line": 1204
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 222
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 260
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\models.pv_ground.py",
+          "line": 378
+        }
+      ]
+    }
+  },
+  "nonblocking_findings": [
+    {
+      "id": "P3-W01",
+      "summary": "E0 equality is limited to stored point hashes, row/scan/target/root GT and selected bbs/bbf query/box/IoU; only four detector/text fixtures were checked.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 237
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 461
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publish_complete.py",
+          "line": 68
+        }
+      ]
+    },
+    {
+      "id": "P3-W02",
+      "summary": "Unexplained E0 Mask discrepancies remain on rows 2058 and 18482 in both modes; near-cancellation of aggregate differences does not establish equivalence.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\initial\\rows.jsonl",
+          "line": 368
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\initial\\rows.jsonl",
+          "line": 3803
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\initial_control_comparison.json",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "id": "P3-W03",
+      "summary": "Mask statistics are a recount of stored IoUs, not independent raw point-Mask replay.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 426
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 429
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publish_complete.py",
+          "line": 68
+        }
+      ]
+    },
+    {
+      "id": "P3-W04",
+      "summary": "Full256 and top-k coverage are stored executed GPU flags, not independent all256 box/score recomputation.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 431
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\CPU_RECOUNT.json",
+          "line": 210
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publish_complete.py",
+          "line": 66
+        }
+      ]
+    },
+    {
+      "id": "P3-W05",
+      "summary": "Terminal archive is a full saved delta checkpoint with Adam/RNG states; frozen parent model components are absent and no fresh complete model/optimizer restoration was performed by this reviewer.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\archives\\pvg_p3_20261002\\archive_receipt.json",
+          "line": 3
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+          "line": 478
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publish_complete.py",
+          "line": 70
+        }
+      ]
+    },
+    {
+      "id": "P3-W06",
+      "summary": "One seeded local development experiment does not support robustness, statistical significance, unseen-test generalization or Nr3D/Sr3D gains.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\spec.json",
+          "line": 11
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\split_protocol.json",
+          "line": 1
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publish_complete.py",
+          "line": 58
+        }
+      ]
+    },
+    {
+      "id": "P3-W07",
+      "summary": "Revised numerical checks validate each threshold decision, not bitwise IoU equality or the old 2e-6 bound. Actual maximum P3 discrepancy is 2.935893036542676e-6, with zero threshold flips.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\recount_complete_strict_2e6_failed.py",
+          "line": 67
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\recount_complete.py",
+          "line": 67
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\RECOUNT_DIFFERENCE_DIAGNOSIS.json",
+          "line": 549
+        }
+      ]
+    },
+    {
+      "id": "P3-W08",
+      "summary": "Historical original-G and author values are verified against source receipts and matched scene/target protocol, not freshly recounted historical raw prediction arrays.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\receipt.json",
+          "line": 19
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\receipt.json",
+          "line": 37
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\protocol.json",
+          "line": 14
+        }
+      ]
+    }
+  ],
+  "evidence_limits": [
+    "Dataset GT provenance traced through source and saved rows; raw ScanNet targets were not independently reconstructed.",
+    "No GPU/model forward or raw Mask replay was performed.",
+    "All256 candidate boxes/scores are absent; oracle totals remain saved execution flags.",
+    "E0 detector/text input hashes and complete rankings are absent beyond four fixtures; E0 Mask discrepancies are unexplained.",
+    "Same-selected-query coarse/final comparison is internal mechanism evidence, not a separately trained no-P3 ablation.",
+    "Continuous IoUs are not bitwise equal; revised checks establish per-row threshold agreement for the audited data.",
+    "Historical original-G/author metrics are receipt/protocol-backed references, not a fresh historical raw-output recount.",
+    "Archive metadata/content was checked without a fresh full model and optimizer restore; parent dependencies remain.",
+    "One seeded local development protocol; module holdout was seen by previous pretraining.",
+    "Future-arm and separate old-file archival/deletion statements are outside this audit."
+  ],
+  "independently_recounted": {
+    "fit_rows": 29778,
+    "training_steps": 3723,
+    "batch_sizes": {
+      "8": 3722,
+      "2": 1
+    },
+    "fit_exact_once": true,
+    "full_fit_order_matches_control": true,
+    "fit_holdout_row_overlap": 0,
+    "formal_rows": 9508,
+    "formal_bbs": {
+      "rec_hits25": 5594,
+      "rec_hits50": 4401,
+      "acc25": 58.83466554480437,
+      "acc50": 46.28733697938578,
+      "mask_hits25": 5786,
+      "mask_hits50": 5113,
+      "mask_miou": 46.897307123774745
+    },
+    "formal_bbf": {
+      "rec_hits25": 5601,
+      "rec_hits50": 4423
+    },
+    "control_formal_bbs": {
+      "rec_hits25": 5600,
+      "rec_hits50": 4452
+    },
+    "formal_vs_g_continued": {
+      "threshold25": {
+        "fixes": 240,
+        "breaks": 246,
+        "net": -6
+      },
+      "threshold50": {
+        "fixes": 330,
+        "breaks": 381,
+        "net": -51
+      }
+    },
+    "formal_vs_original_g_delta_hits": [
+      -21,
+      -94
+    ],
+    "target50_hits": 4754,
+    "target50_pass": false,
+    "same_selected_query_formal_bbs": {
+      "threshold25": {
+        "coarse_hits": 5598,
+        "final_hits": 5594,
+        "fixes": 3,
+        "breaks": 7
+      },
+      "threshold50": {
+        "coarse_hits": 4403,
+        "final_hits": 4401,
+        "fixes": 15,
+        "breaks": 17
+      }
+    },
+    "p3_max_abs_iou_difference": 2.935893036542676e-06,
+    "p3_each_row_threshold_flips": 0,
+    "archive": {
+      "bytes": 346715793,
+      "sha256": "5dce3f731fda690db0300ecdda54353c24b73820245fae0b41ba7882802a8395",
+      "model_delta_tensors": 1082,
+      "p3_state_tensors": 10,
+      "p3_parameters": 367238,
+      "adam_state_tensors": 806,
+      "adam_steps": 3723,
+      "rng_states_present": true,
+      "fit_row_order_matches": true
+    }
+  },
+  "claims": [
+    {
+      "claim": "Fixed-budget completed negative formal result and unmet target",
+      "status": "supported"
+    },
+    {
+      "claim": "Same-query refinement, stored Mask statistics, executed coverage, bounded E0 comparison and delta archive",
+      "status": "supported_with_stated_limits"
+    },
+    {
+      "claim": "Improved strict localization, full E0 equivalence, independently replayed raw Masks/all256 coverage, standalone full-model archive, V99 capability internalization or cross-dataset gains",
+      "status": "unsupported"
+    }
+  ],
+  "reviewed_publication": {
+    "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publish_complete.py",
+    "sha256": "b2cb69aed9cb8e49ca28f9f1501de399d6987e91022caa6b0a6158583cf6b6b6"
+  },
+  "report_markdown": {
+    "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\EXPERIMENT_AUDIT.md",
+    "sha256": "5423833a305cb4e6dc32f0c39d4febcfff1f5bbc682d39415693f31a48ada61e",
+    "verbatim_preceding_final_reply": true
+  },
+  "audited_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\status.json",
+      "sha256": "1e6b417fb8083c82e24b928544b1164ece8485bdbf3a03ea029f58213c73fba2"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\run.py",
+      "sha256": "c593a94fbccf0e1554499f7fe7e0d5ec41c54b4a2487954e8eda7c6616aa4d06"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\controller.py",
+      "sha256": "efe42dde17f65761eb52908f2f471a7549fe6d7a7d40bed085accb8922c14562"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\prepare_source.py",
+      "sha256": "3a7f918568f925aeb17f7e163dcec73425fa0929c930bbeaa08670febbf795c5"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\preflight\\preflight.json",
+      "sha256": "879f83be50ce53c7245a75adf94ddc48fb546488295a287b55b439148edd2372"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\preflight\\spec.json",
+      "sha256": "791ed7112cd4912550ea45b48bbbc9060058bef9384babbde53e59249e623695"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\spec.json",
+      "sha256": "913fa012aa242b3b9c2c9ea4deb608a665e4f108da1bc56e9a3771d285844298"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\load.json",
+      "sha256": "6ed6bf25f2ad95d9ccd8f8306bb59e3c8984bc41076870da0f3e7476ccd237a7"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\imports.json",
+      "sha256": "194bf5bcac03edb7d899269abea16045a63c203a9dda27e832c43afe98585709"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\receipt.json",
+      "sha256": "5e02ff58023c75ff2e816b6bb5be4846a50ffdd961650e187379c9e8accc0911"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\train.jsonl",
+      "sha256": "cdfdff4f96f9915e96f235e025dfc9219147326d26def71a5ab58e455aa8ccea"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\train.log",
+      "sha256": "060393df231d8c082074e57b4226be827fdb89562134f98f4e5fd9624650a869"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\formal.log",
+      "sha256": "ff5b1a302ba9000294922093b9f53ca8f1e1bb12983ba7541dd64d8902329600"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\initial_control_comparison.json",
+      "sha256": "0b8a08d8f4dac262b040781f1f53a02588a00c2b5d73b7a39b4cf52fca89ad72"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\initial\\rows.jsonl",
+      "sha256": "6bb52ddceb64e3be41952b16c0be809b96f1ed0a5ee2ae88505892d5d532229b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\initial\\receipt.json",
+      "sha256": "91fe06fc18debd9e20fd8c8ccfcea333e7b96e333d9b8420ec8b60bebe4c65ac"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\terminal\\rows.jsonl",
+      "sha256": "fd3cbc72293629ac2c9d6a83514ca6fa30c630398bf82e34a7fc6d956aa5fa53"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\terminal\\receipt.json",
+      "sha256": "7fd5f01506e83c4388c4aaf6b6ba97ba64841b10ba2a807d86bcf07b7203dddd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\formal\\rows.jsonl",
+      "sha256": "fe38d3383598aeb33e3d1c3ecea7b77e195b9e0db9f1a297babe4f74f1fe6c2f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\p3\\formal\\receipt.json",
+      "sha256": "832ae0181ca1927a7351010f8115e30a66013c33ea194d1eddc0efb15401bf02"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\source_port.json",
+      "sha256": "e5a0bb6d506a7d58315283832a43e9d87cb1391dbec3c6c0dd8e01301776e543"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\input_manifest.json",
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\split_protocol.json",
+      "sha256": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\pvground_semantic_assignment.py",
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\models.losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\models.pv_ground.py",
+      "sha256": "f20830572cb344f12956a0c0d7ee623736c772767ebb02d2690eb47d9e9d8ca9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\prepare_data.py",
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\source\\imported\\src.joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\INTAKE.json",
+      "sha256": "e07db4863d45da906f6e50960e250bacbb26a4c545ff56601c88b20a2a71bd21"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\CPU_RECOUNT.json",
+      "sha256": "fc68682965073245d5371a1a0de71991bc78d1dc7b6d5da747f0b7647e9e2cd5"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\complete\\RECOUNT_DIFFERENCE_DIAGNOSIS.json",
+      "sha256": "5cc0dba2b0db924a534c71be7258febe46f358a1d52024361da37d4fe80c139d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\recount_complete.py",
+      "sha256": "2645e872a2d5a1e0cc46ae3dba50d5e5fa5918b5d18aa021fadaabf6cc4c6524"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\recount_complete_strict_2e6_failed.py",
+      "sha256": "0d514aeb10bcd419a1d9a526007520383cabb3cec15de60abc89f9d97ea369de"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\inspect_recount_difference.py",
+      "sha256": "3d8bbc8304722f969565528f20b007f8621bd05c8e9e1a93c100c33b3bb95919"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\collect_complete.py",
+      "sha256": "7b1ccfb947a4d5e6a107247326b747a92db737d3e02d6f0347e86321bc574ccb"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\PLAN.md",
+      "sha256": "11f6ddcef37bc50388114314c9d6f45f34f7e61cced2abc702cffeb95262a2cb"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\publish_complete.py",
+      "sha256": "b2cb69aed9cb8e49ca28f9f1501de399d6987e91022caa6b0a6158583cf6b6b6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\archives\\pvg_p3_20261002\\archive_receipt.json",
+      "sha256": "0ba15121d904503043a68acbd35b29b4a268150c0f33bc779c1c64dbe416aa70"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\archives\\pvg_p3_20261002\\terminal.pth",
+      "sha256": "5dce3f731fda690db0300ecdda54353c24b73820245fae0b41ba7882802a8395"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\receipt.json",
+      "sha256": "7b76c10b0dae74bf11e4d04438ebb76bc2bfa748d0990f93f2edf55917995b4a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\spec.json",
+      "sha256": "375440282ab23854794b1e59b44daae0bc3e52a0bbe90342d0eb721528de4e12"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\train.jsonl",
+      "sha256": "f7170d5f16fb027f061d52b60c585ad7273c3586b8f72b33ac4b7034c31201d4"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\initial\\rows.jsonl",
+      "sha256": "bcb49aa285cad9ca594f755f151b4ace454ab216e8633a1161a5766aa757e455"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\initial\\receipt.json",
+      "sha256": "ae014c5c70be185ab203c050cb2cc9d5ff67c4787a2123ca1031c9f5db947e9a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\terminal\\rows.jsonl",
+      "sha256": "f8eefd766dab7656b219bce36ad2422b6785a2d1fbdb0e578fdce23ee99e6c41"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\terminal\\receipt.json",
+      "sha256": "e967790186cd82735d420e055e990133dc602040ca195436c8594cbd1b348eec"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\formal\\rows.jsonl",
+      "sha256": "83c2ff101759b5a24fd3b7b792b39ded4ff26b8054565f6bc00085859375aa38"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\g_control\\formal\\receipt.json",
+      "sha256": "ce178e23eee1d85665bd3c290b9da95b6c061416de2a7c3e6893e0e57da2e859"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\g_source_port.json",
+      "sha256": "0375886f9df2b3ac18a63ce7571d672ceb433613b6defdfcd9f8d244a20bf855"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\source\\models\\pv_ground.py",
+      "sha256": "20c353512939ac9087cd8f3d07b82a648bcefe42510563e26afc37235facdb7c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\run.py",
+      "sha256": "9ffb44c9d06677fc4e7a2014211ebf228678940465a03db6fbfc4d03f89bf533"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\receipt.json",
+      "sha256": "60af173412696ee53ac13e60116460afa6bae5050cd96af84249088dba296374"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\fit_terminal\\receipt.json",
+      "sha256": "69495b80c88c75ea8a66e37934cafbe7d9c8bc61e3a961a3876150676120ad0e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\published_parent\\receipt.json",
+      "sha256": "b3db10496234299acef08bd569ded05a68cb625bab1d593449c4d951e1609727"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\protocol.json",
+      "sha256": "953f7074fbad0cd5b8fae139c7a4d80db77d5d6f64927f18bd9937bc9a8271de"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\audit.json",
+      "sha256": "eaf159d8092eea1383c69550729c753dfd5e58dea788bf9df346682aed3df704"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\evaluate.py",
+      "sha256": "49c185dcf9d774318c8df8483feed87599c464c4bf22925788da5da38fc2379c"
+    }
+  ]
+}

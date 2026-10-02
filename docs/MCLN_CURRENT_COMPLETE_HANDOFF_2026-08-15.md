@@ -21401,3 +21401,26 @@ The undetached coarse box and candidate Query retain native geometry training. F
 Astra/max round1 found a concrete preflight blocker: missing eight separate native Mask-loss-to-refiner gradient checks and actual native head/Mask call-order evidence. The bounded fix adds those checks, four forward witnesses and controller gates. Round2 PASS is same-family/provisional and local/static only. The inherited unreachable G-CE reconstruction witness remains explicitly unclaimed; existing G correction was not rewritten. Deployment helper review PASS is also preflight-only, with currentP3-complete/no-GPU gates before mutation, strict originalG restoration in both arms and fused-arm reference to NEW tail_raw.
 No next-arm SSH deployment, real CUDA preflight, training or accuracy exists yet. The source review permits real preflight only; full training requires its actual receipts and measured save capacity. PriorP3 history alone cannot be the independent same-tail Mask control.
 ScanRefer Acc@0.5 remains primary, target4754/9508; Acc@0.25 and nativeMask are retained. No new Nr3D/Sr3D result or validated three-module contribution is claimed.
+
+
+### 20.376.14 2026-10-02T19:03:05.045292+08:00 P3原始点局部精修完整终态：正式严格定位未提高
+
+固定实验于2026-10-02T18:13:21.981003+08:00结束，训练与正式评估均正常退出。从原G出发，fresh AdamW，seed2027、batch8、LR1e-5、wd5e-4、clip0.1；29778条fit各一次、3723次更新，6887条模块留出与9508条正式开发验证分开。沿用两阶段协议，推理输入包含离线GroupFree检测框及类别，不是纯点云单阶段结果。独立CPU逐条核对完整fit行序与G续训控制一致、fit/holdout互斥，并从保存的最终框和粗框对真实root GT重新计算IoU。
+
+|9508条正式原生last/bbs|Acc@0.25命中|Acc@0.50命中|
+|---|---:|---:|
+|PV作者父权重本地参照|5579|4381|
+|原G强起点|5615|4495|
+|同预算G续训控制|5600|4452|
+|本次原G+P3|5594|4401|
+
+本次正式Acc@0.25/0.50为58.8347%/46.2873%；相对原G为[-21, -94]条；相对同预算续训控制为[-6, -51]条。主要目标4754/9508尚未达到；不晋级Nr3D/Sr3D。模块留出终态bbs为6172/5614，这是预训练见过场景上的模块留出，不替代正式9508条结果。
+
+当前结构仍是G基础上的CandidateAlignedBoxRefiner：每候选中心+六面、各16个输入点索引，RGB/相对坐标/距离经成员MLP和mean/max聚合，输出唯一六维加性框残差。最终框写回last_center/last_pred_size供原生训练和评估使用；无预测Mask支撑、V99教师、边界分布、质量损失或第二套排名。不能称V99严格定位能力已内化。
+
+同一已选Query内部精修的修复/破坏：{"25": {"fixes": 3, "breaks": 7, "net": -4, "coarse_hits": 5598}, "50": {"fixes": 15, "breaks": 17, "net": -2, "coarse_hits": 4403}}。这些是共同训练模型的内部前后比较，不是独立baseline训练增量。Full256覆盖记录为{"25": {"full256": 8946, "top16": 6228, "selected": 5594, "good_box_not_selected": 3352}, "50": {"full256": 7848, "top16": 5456, "selected": 4401, "good_box_not_selected": 3447}}；上界使用GT，只作诊断，且全部256框未保存，CPU只重算了已选/粗框，未冒称独立重算全部oracle。
+正式native Mask统计为{"mask_hits25": 5786, "mask_hits50": 5113, "mask_miou": 46.897307123774745}；仅重计保存的Mask IoU，没有重放原始点Mask。E0保存的点云哈希、row/scan/target/root GT及所选bbs/bbf Query、框和IoU与G控制一致；另有4条fixture核对对象框/文本输入，未保存全量对象/文本哈希及完整排名，但Mask在2058/18482两行有未解释差异，仍保留此前证据限制。
+
+终点完整保存文件已归档且SHA与训练receipt一致，内含state_delta、Adam及随机状态；恢复完整模型仍依赖保留的作者及原G父权重，不是独立全模型文件；远端终点保留。新鲜Astra/max逐文件完整性复核结论WARN，same-family/provisional；详见本节附属EXPERIMENT_AUDIT与CPU_RECOUNT，不将工程PASS当精度提升。
+
+下一项仍是已审核的同尾部raw/fused支撑对照：共同原G、相同14维成员输入容量和调用顺序、3723更新、原六维残差与原生bbs，仅比较四个空支撑通道与预测Text/Query/分歧/融合支撑。当前P3已结束，首轮不加教师、分布回归或质量监督；真实预检、实测保存空间与正式结果分别记录。三份旧数据盘文件已完整归档751784343B并在18:13:54核对本地/远端SHA和CPU状态；其后删除必须另获明确授权，归档本身不意味着远端空间已释放。

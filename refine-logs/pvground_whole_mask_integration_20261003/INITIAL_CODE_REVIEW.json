@@ -1,0 +1,482 @@
+{
+  "review_date": "2026-10-03",
+  "review_round": "initial_source_review_before_any_followup_patch",
+  "verdict": "WARN",
+  "conclusion": "No concrete source defect was found that blocks the first bounded full-model preflight. The generated implementation and its native call path are internally correct for the stated engineering checks. One nonblocking measurement-coverage defect prevents the current receipt from supporting the plan's full-workflow peak-memory and separate initial-forward timing claims.",
+  "execution_scope": "SOURCE_ONLY",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer": {
+    "agent": "/root/pvg_whole_model_preflight_review",
+    "provider": "native Codex reviewer",
+    "configured_model": "gpt-6-astra",
+    "configured_reasoning_effort": "max",
+    "fork_turns": "none",
+    "attribution_evidence": "Parent confirmed the exact native spawn arguments. The spawn tool returned the canonical task, not an independently verified backend SKU.",
+    "backend_sku_independently_verified": false,
+    "cross_family_review": false
+  },
+  "implementation_changed_by_reviewer": false,
+  "deployment_authorized": false,
+  "formal_training_authorized": false,
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "N1",
+      "severity": "medium",
+      "classification": "measurement_coverage_defect",
+      "title": "Peak reset and timing coverage omit the initial full-model forward/replay phase",
+      "locations": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py",
+          "lines": "353-404"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py",
+          "lines": "288-290,337-341,408-452"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/WHOLE_MODEL_PREFLIGHT_PLAN.md",
+          "lines": "15"
+        }
+      ],
+      "evidence": "The first with-refiner PV forward, two cached head replays, without-refiner PV forward, and membership checks occur before torch.cuda.reset_peak_memory_stats() at line 409. The receipt then reads the reset allocated/reserved peaks. Only step() records seconds, from preparation through criterion/gradient diagnostics/backward/optimizer work; no separate initial-forward time or overall preflight elapsed time is recorded.",
+      "impact": "This does not make the model/gradient checks fail, but peak_allocated_bytes is not an explicitly measured full-preflight high-water mark. Retained CUDA cache may keep reserved memory high but does not establish full-phase coverage after resetting the counters. The two recorded seconds values are instrumented step wall times, not forward-only latency.",
+      "minimal_resolution": "Start peak accounting before the first GPU phase that the plan calls part of the preflight, and add synchronized timing for the initial native forward(s) and overall preflight. Keep the existing step times explicitly labeled as instrumented step totals. No model, loss, optimizer, or scientific protocol change is needed.",
+      "blocks_first_preflight_execution": false,
+      "blocks_full_workflow_measurement_claim": true
+    }
+  ],
+  "source_checks": [
+    {
+      "id": "S1",
+      "status": "PASS_SOURCE",
+      "subject": "Actual generated files and existing provenance",
+      "evidence": "Read the generated runner, checks, builder, both prepared specs, nine copied modules, plan and preparation record. Runner is 27288 bytes, SHA256 95f31c2ec5d87de86d9ada8fe600f37a7b01d036617bc4fe6763c7d737109f11, exactly the preparation record. All nine copies match their recorded source byte counts and SHA256 values. Native PV/loss/main_utils/prepare_data identities match the archived imports and source_port.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S2",
+      "status": "PASS_SOURCE",
+      "subject": "Actual factory and strict official plus protected original G loading",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:132",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:147",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:154"
+      ],
+      "evidence": "Constructs PVGround from the pinned factory/config, checks the 1234 official keys and known nonpersistent position_ids difference, strict-loads the official state, installs the 37-state/923616-parameter task reader, verifies the exact 1072-key G delta set plus each shape/dtype, strict-loads the merged state, then installs the new head. Existing checksum and interface assertions are retained. Checkpoint/config binaries were not opened in this review.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S3",
+      "status": "PASS_SOURCE",
+      "subject": "New states, shapes, and parameter arithmetic",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_whole_mask_box_refiner.py:10",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_candidate_box_refiner.py:15",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:164"
+      ],
+      "evidence": "Five parameterized Linear layers give ten persistent state tensors. Member 14->64 and 64->64, condition 288->64, aggregate 1302->288, output 288->6 sum to 400614 parameters. The 1302 inputs are 288 query + 896 local pooled + 3 layout size + 6 common scene-normalized coarse context + 109 range evidence. The locations buffer is nonpersistent and the inherited output weight/bias remain zero-initialized.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S4",
+      "status": "PASS_SOURCE",
+      "subject": "Native Mask dimensions, scalar alpha and SP slots",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.pv_ground.py:421",
+        "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.pv_ground.py:529",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_tail_support_box_refiner.py:15",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/whole_mask_range.py:40"
+      ],
+      "evidence": "Native text logits are per-sample [1,256,S], query logits [256,S], and sigmoid(pred_scores.squeeze()) supplies a scalar alpha. Both local support and whole-range evidence use alpha*text+(1-alpha)*query in logit space. Whole-range gathers sorted observed native SP IDs rather than mistakenly treating compressed np.unique positions as native mask slots; member geometry uses actual augmented point memberships. The local runtime mapping spot-check is three query IDs per batch item.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S5",
+      "status": "PASS_SOURCE",
+      "subject": "Whole-range/local-range intervention and actual input geometry",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_whole_mask_box_refiner.py:16",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_whole_mask_box_refiner.py:34",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/whole_mask_range.py:12"
+      ],
+      "evidence": "The provider summarizes the actual 50000 augmented XYZ points using member counts, 3x32 histograms, first/second normalized moments, member lower/upper extent means and support fraction: 109 channels. All 256 queries remain. Both arms retain local fused support and six coarse-context channels; local_range zeros only the new 109-channel tensor entering the head. Geometry/coarse context is detached as intended; Mask logits and alpha remain differentiable in the whole-range branch.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S6",
+      "status": "PASS_SOURCE",
+      "subject": "Final box/native criterion and actual Hungarian routing",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.pv_ground.py:556",
+        "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.losses.py:849",
+        "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/main_utils.py:268",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:281"
+      ],
+      "evidence": "The native tail calls the refiner after Text/Query Masks, overwrites last_center and last_pred_size, and returns those tensors. compute_hungarian_loss builds last_ pred_boxes from these final tensors and actual dataset GT; seven native matcher calls occur in proposal_,last_,0head_...4head_ order, so matching[1] is the correct last-layer assignment. The full native criterion is used, not the prior CPU constructed correspondence.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S7",
+      "status": "PASS_SOURCE",
+      "subject": "G qualification/replacement and direct semantic/native Mask gradients",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_semantic_assignment.py:9",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_semantic_assignment.py:34",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:296",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_tail_preflight.py:13",
+        "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.losses.py:458",
+        "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.losses.py:943"
+      ],
+      "evidence": "Qualification uses detached final boxes, actual root GT, IoU>.5 and exclusion of native matched queries. The correction replaces eos-weighted null CE with the native ScanRefer root weighting and .5/7 scaling. Semantic/contrastive/G and all eight native Mask terms are checked for no direct refiner gradients, with the Mask terms tested individually. Native matcher indices and G eligibility are discrete/detached. The optional verify_native_replacement reconstruction function is not called by the two update=True steps, so no new execution of that stronger witness is implied.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S8",
+      "status": "PASS_SOURCE",
+      "subject": "Identical cached-input zero-head replay and native order witness",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:346",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_tail_preflight.py:24"
+      ],
+      "evidence": "The pre-hook captures the actual final geometry-query/raw-point/coarse-box/end_points arguments from one real PV forward. The same zero-output head is replayed with False and True conditions; both outputs must be exactly equal to each other and the captured coarse boxes, then the selected arm is restored. A separately RNG-reset without-refiner forward checks last semantics/center/size. observed_forward records the native methods/modules and checks the precise expected call order. These are appropriate bounded checks, not cross-process parity proof.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S9",
+      "status": "PASS_SOURCE",
+      "subject": "New whole-range branch isolated from local Mask gradients",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/whole_model_preflight_checks.py:5",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:320",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:411"
+      ],
+      "evidence": "The helper differentiates native loss_bbox+loss_giou with respect to the saved whole-range evidence tensor, then takes that tensor's VJP into native text/query/alpha using a detached upstream gradient. This isolates the range route rather than counting the shared local-support route. Off-arm evidence is not in the localization graph and must yield None. On the second forward/backward, after one optimizer update, the range norm and aggregate text/query/alpha group norms must be positive; first-step zero downstream gradients are correctly allowed for the zero head.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S10",
+      "status": "PASS_SOURCE",
+      "subject": "Native AdamW and exact in-memory state reload",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/main_utils.py:283",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:408",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:428",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/whole_model_preflight_checks.py:30"
+      ],
+      "evidence": "The native factory takes frozen=False/small_lr=False and creates AdamW over the core/backbone/text groups; the head belongs to the core group. Core/backbone LR are both 1e-5; weight_decay=.0005 and clip_norm=.1 are asserted. The two real update calls serialize trainable states plus persistent buffers and the optimizer into BytesIO, strict-reload the full merged model, check every resulting model state and state step==2, then compare optimizer param_groups, state IDs, per-state keys and every scalar/tensor value (including exp_avg/exp_avg_sq). No disk or continued-training equivalence is claimed.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S11",
+      "status": "PASS_SOURCE",
+      "subject": "Python 3.7 / Torch 1.10 source compatibility",
+      "evidence": "No newly introduced Python syntax or Torch API use incompatible with the requested Python 3.7 / Torch 1.10 source contract was identified. The added provider uses existing NumPy operations, torch.as_tensor, logsigmoid/softmax, ordinary tensor indexing and autograd.grad; the runner retains the already used legacy APIs. This is manual source inspection, not an import, compile, dependency-resolution or environment execution pass.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S12",
+      "status": "PASS_SOURCE",
+      "subject": "Preflight-only entry and absence of formal fitting/weight output",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:35",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:176",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:210",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:429"
+      ],
+      "evidence": "argparse accepts only cpu/preflight. The builder cuts away evaluate(), the 3723-step fitting loop, disk checkpoint writer and formal scoring path. Remaining if formal branches cannot be entered by the accepted CLI. Reachable torch.save uses BytesIO only. Each prepared spec has formal_rows=0 and preserves protected original G solely for engineering preflight. No deployment launcher is present in the reviewed scope.",
+      "runtime_verified": false
+    },
+    {
+      "id": "S13",
+      "status": "WARN_SOURCE",
+      "subject": "Peak-memory/forward-time measurement scope",
+      "finding_id": "N1",
+      "runtime_verified": false
+    }
+  ],
+  "scope_limitations": [
+    {
+      "id": "L1",
+      "description": "The new full-model cpu/preflight entry has not run. Old tail_fused preflight and the standalone whole-head CPU receipt are historical, different-scope evidence only. Neither is a new PV/CUDA pass or accuracy result."
+    },
+    {
+      "id": "L2",
+      "description": "A future success would cover one augmented fit batch of eight and two updates per selected arm. It would not establish full-dataset behavior, convergence, precision, accuracy, formal 3723-step training, or 9508-expression evaluation."
+    },
+    {
+      "id": "L3",
+      "description": "Identical 400614 parameter counts are not identical effective functional capacity: the 109 zeroed inputs contribute no data-dependent function or corresponding input-column gradients in local_range. No capacity-equivalence causal claim is accepted."
+    },
+    {
+      "id": "L4",
+      "description": "Zero direct semantic/G/Mask-loss gradients into the refiner do not freeze semantics or native Masks over training. Shared upstream parameters are updated, and discrete Hungarian assignments/G qualification can also change when boxes change."
+    },
+    {
+      "id": "L5",
+      "description": "Exact cached-head replay is conditional on the captured upstream inputs and zero output layer. The additional same-process without-refiner comparison is one-batch evidence only; neither establishes cross-process or full-6887-row bitwise parity."
+    },
+    {
+      "id": "L6",
+      "description": "Gradient witnesses use the unweighted sum of native bbox and GIoU components and report aggregate text/query/alpha norms. The actual optimizer still backpropagates the full native weighted loss plus G correction. This is route existence, not proof of useful gradients or accuracy; it does not prove nonzero gradients for every sample/query."
+    },
+    {
+      "id": "L7",
+      "description": "The model and optimizer reload check is an in-memory round trip of persistent state. RNG replay, disk checkpoint recovery, and identical subsequent training after restoration are not tested or claimed."
+    },
+    {
+      "id": "L8",
+      "description": "The optional native CE reconstruction/gradient witness remains behind update=False, whereas this preflight makes two update=True calls. The source formula is correct, but this new preflight alone must not be described as freshly rerunning that optional witness."
+    },
+    {
+      "id": "L9",
+      "description": "Formal common parent and loss choices remain undecided pending analysis of the current normalization result. This source review neither queries/modifies that training nor selects those choices or authorizes deployment."
+    }
+  ],
+  "not_executed": [
+    "prepare_preflight.py, generated runner, copied model/helper modules, or any model import",
+    "AST parse, py_compile, tests, or source-code execution by this reviewer",
+    "New cpu mode or local_range/whole_range CUDA preflight",
+    "Any PVGround construction, forward, backward, optimizer update, checkpoint/fixture deserialization",
+    "CUDA/GPU operations, SSH, job queries, resource polling, authentication/credential inspection",
+    "Any launcher, formal fit/evaluation, weight-file creation, publication or external message",
+    "Any additional reviewer/sub-agent"
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/CODE_REVIEW_REQUEST.txt",
+      "bytes": 3309,
+      "sha256": "d6f0bbc47a815957ff22e83752061713b6251da2dc0db2d691dc39bafcf452a3",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/local_range_spec.json",
+      "bytes": 3101,
+      "sha256": "97f51e15d9cc1f94b978c407d98ffc5690beb538e45cce3b33f4274363cbdcae",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/prepare_preflight.py",
+      "bytes": 7752,
+      "sha256": "b2e6753f4865d56c1f026ca5c30ef3fda85eb50d35e05c8a919e4e59becb8b10",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_tail_preflight.py",
+      "bytes": 2898,
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py",
+      "bytes": 27288,
+      "sha256": "95f31c2ec5d87de86d9ada8fe600f37a7b01d036617bc4fe6763c7d737109f11",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/source_preparation.json",
+      "bytes": 3245,
+      "sha256": "4da965632e39634b3024b43cb3b00a6da6d6b687f7d59ccb5e5be9730628a286",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/WHOLE_MODEL_PREFLIGHT_PLAN.md",
+      "bytes": 3265,
+      "sha256": "526f49bd1446ae5fde560381c8adb9b625d725b327a37e464f289310cc4550b9",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/whole_range_spec.json",
+      "bytes": 3100,
+      "sha256": "502945f4bc7fdfc47ec0fcd4269dd994ddd23b9491429eb22a3f2c7375fde887",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/run_pvground_tail_support_retry.py",
+      "bytes": 38488,
+      "sha256": "54f9df009cc5b67f27ab52745143e85d1fcd5301432b69f664f5e944999c22e6",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/preflight_tail_fused_spec.json",
+      "bytes": 3741,
+      "sha256": "7e91845aa66da63c023ffff8f3abc122c10987c1a0506f45f80ae7a5b0c6f061",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/source_port.json",
+      "bytes": 10485,
+      "sha256": "3b2b44241f0c1b52b5e42f6ea84e656abb1dc3f3b062c87d49f0bcbf94b2f7bc",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_refiner_20261003/cpu_receipt.json",
+      "bytes": 3147,
+      "sha256": "22d086259f3f6b55e60071dc1163dc01fe146c1fca479c9f6d13c09c8995701c",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/main_utils.py",
+      "bytes": 24599,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "review_scope": "Imports and native get_criterion/get_optimizer factories; other train/evaluation utilities outside this preflight call path"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.pv_ground.py",
+      "bytes": 25386,
+      "sha256": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/prepare_data.py",
+      "bytes": 19658,
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/src.joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "review_scope": "Selected constructor, annotation, augmentation, detection-box, sample/GT/SP return paths"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_refiner_20261003/pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_refiner_20261003/whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_refiner_20261003/pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_refiner_20261003/pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/pvground_tail_preflight.py",
+      "bytes": 2898,
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "review_scope": "Source/text review; identical source copies cross-checked by their existing SHA256 identities"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/preflight/imports.json",
+      "bytes": 1256,
+      "sha256": "f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd",
+      "review_scope": "Archived import paths and all imported-source hashes"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/preflight/preflight.json",
+      "bytes": 14499,
+      "sha256": "e5f789444324000e371972b4ec4f126a8e4b4fe44c5cdde0276e30478f1cf1f2",
+      "review_scope": "Selected historical status, zero-output, routing, batch/step and scope fields; not rerun"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/input_manifest.json",
+      "bytes": 161881,
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+      "review_scope": "Selected model/data/split identity fields; no dataset or binary fixture opened"
+    }
+  ],
+  "outside_review_scope": [
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/publish_preflight_preparation.py",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/record_review_request.py",
+    "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/evaluator.py (identity-only hash observed; evaluator functions are unused in the prepared preflight and were not reviewed)"
+  ],
+  "source_preparation_local_AST_pass": "Producer-recorded historical field only; not repeated or independently certified by this SOURCE_ONLY review"
+}

@@ -170,3 +170,5 @@
 - 2026-10-03T22:07:41.950888+08:00 /analyze-results: first actual range-source progress and source-verified read-only terminal tools; no new formal result.
 
 - 2026-10-04T01:22:30.589989+08:00 actual local formal5603/4428 closed; verified nonbest endpoint retired, whole remains active.
+
+- 2026-10-04T05:33:44.274261+08:00 actual local/whole complete9508:5603/4428 versus5594/4461, originalG retained, fresh terminal audit WARN0; owned nonbest endpoints retired.

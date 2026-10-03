@@ -160,3 +160,5 @@
 - 2026-10-03T15:39:07.734111+08:00 /experiment-audit: refine-logs/pvground_candidate_consistency_20261003/ complete native pair, qualified starting comparison and archive-verified retirement; original G remains best.
 
 - 2026-10-03T16:23:12.769230+08:00 /experiment-bridge: refine-logs/pvground_candidate_normalization_20261003/ expanded-count normalization; native sanity passed; one-arm training launched.
+
+- 2026-10-03T20:03:31.438349+08:00 /experiment-audit: refine-logs/pvground_candidate_normalization_20261003/ complete normalized comparison, negative result and one nonbest weight retired; original G retained.

@@ -1,0 +1,25 @@
+Continue your source review for the newly prepared deployment wrapper only. This is same-reviewer continuation, same-family/provisional, not a second independent fresh review. Do not edit implementation, run/import/compile modules, open binary weights or fixture data, use SSH/CUDA, read credentials/auth wrappers, query jobs, or spawn agents. Read source and write DEPLOYMENT_CODE_REVIEW.md/.json only.
+
+Files:
+C:\Users\gb\.codex\tmp\pvground_whole_mask_integration_20261003\PREFLIGHT_DEPLOYMENT_PLAN.md
+C:\Users\gb\.codex\tmp\pvground_whole_mask_integration_20261003\preflight_controller.py
+C:\Users\gb\.codex\tmp\pvground_whole_mask_integration_20261003\launch_preflight_authorized.py
+C:\Users\gb\.codex\tmp\pvground_whole_mask_integration_20261003\run_whole_mask_preflight.py
+C:\Users\gb\.codex\tmp\pvground_whole_mask_integration_20261003\local_range_spec.json
+C:\Users\gb\.codex\tmp\pvground_whole_mask_integration_20261003\whole_range_spec.json
+C:\Users\gb\.codex\tmp\pvground_whole_mask_integration_20261003\EXPERIMENT_CODE_REVIEW.json
+C:\Users\gb\.codex\tmp\pvground_candidate_normalization_20261003\collect_complete.py
+C:\Users\gb\.codex\tmp\pvground_candidate_normalization_20261003\analyze_complete.py
+C:\Users\gb\.codex\tmp\pvground_candidate_normalization_20261003\launch.json
+C:\Users\gb\.codex\tmp\pvground_candidate_normalization_20261003\run_preflight_authorized.py
+
+Check the actual sources directly. Especially verify:
+1. Preflight cannot start while the original normalized controller is live or its actual complete/analysis/audit evidence is missing; there is no current execution.
+2. Existing warm environment, native model/loss/data/weights remain unchanged. Modules and both specs land in the directories where the existing runner verifies and imports them; PYTHONPATH uses the correct arm.
+3. Exclusive fresh remote path, one whole-controller GPU lock, actual process witness and persistent phase logs/exits/status permit authoritative observation. No automatic retry, cleanup, GPU preemption, formal-fit path, or disk checkpoint creation.
+4. Shell command quoting and environment handling protect the authorized credentials; no secret output or wrapper inspection is required.
+5. The two arms each run the already-reviewed batch8/two-update entry and stop on a failed child; controller status does not turn a failed or unexecuted phase into PASS.
+6. Local result/analysis/audit file schema assumptions align with actual existing collector/analyzer and the experiment-audit report contract. Read these paths; do not assume future artifacts already exist.
+7. Scope remains engineering only. Estimated ten-minute runtime / seven-minute first check / 240s followups are estimates, not capacity or precision evidence.
+
+Report BLOCKING and NON-BLOCKING concrete findings, precise source lines, actual reviewed identities, and verdict PASS/WARN/FAIL; JSON must use verdict, execution_scope=SOURCE_ONLY, blocking_findings, nonblocking_findings. Keep previous review reports untouched. Do not add speculative fallback, compatibility, new hashing schemes or retries. Report actual faults at the SSH trust boundary, but propose the simplest direct correction grounded in this implementation. State plainly when correct.

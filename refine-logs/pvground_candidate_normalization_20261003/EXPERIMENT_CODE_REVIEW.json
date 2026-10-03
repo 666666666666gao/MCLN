@@ -1,0 +1,578 @@
+{
+  "verdict": "PASS",
+  "review_type": "SOURCE_ONLY",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer": {
+    "agent_id": "/root/pvg_normalization_code_review",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none",
+    "attribution_source": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\.aris\\traces\\experiment-bridge\\2026-10-03_normalization_run01\\001-code-review.request.json"
+  },
+  "date": "2026-10-03",
+  "summary": "The inspected implementation correctly implements the planned one-arm expanded-correspondence normalization control. No supported blocking or nonblocking code defects were found. CPU/GPU numerical and runtime gates remain unexecuted.",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "suggested_patches": [],
+  "supplemental_coverage": [
+    {
+      "request": "Parent supplemental request to review wait_completion_authorized.py without SSH/jobs/edits",
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\wait_completion_authorized.py",
+      "sha256": "b3ffd536640bb32850aedc4961a2d51de27e4f6df12ed4d8bcdb55395375f60e",
+      "covered_by": "C10"
+    }
+  ],
+  "observations": [
+    {
+      "id": "C01",
+      "topic": "Single-variable method fidelity",
+      "status": "CORRECT",
+      "conclusion": "Compared with the completed consistency variant, the only mathematical change is the denominator of the expanded final-layer native contrastive term: N becomes N+A. The runner, G qualification/CE module, task reader, observed-support reader and source reader are byte-identical to both the previous local source and the completed-source copies. Both new specs differ only in their output root; the previous consistency spec retains its budget/model/seed/checkpoint settings.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_PLAN.md:7",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_PLAN.md:21",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_candidate_consistency.py:28",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_candidate_consistency.py:32",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\pvground_candidate_consistency.py:31",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\prepare.py:9",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\prepare.py:45",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\source_preparation.json:4"
+      ]
+    },
+    {
+      "id": "C02",
+      "topic": "Native formula and no double counting",
+      "status": "CORRECT",
+      "conclusion": "The actual native criterion computes bidirectional box-to-token/token-to-box terms with its existing token maps, background masks and temperature, then divides by num_boxes. The total ScanRefer loss weights each of seven heads by 0.5/7. The captured matcher result at index 1 is the last head because the native order is proposal_, last_, 0head_ through 4head_. The added correction is 0.5/7*(native(expanded,N+A)-native(original,N)); adding it once to the native loss replaces the old last term. N+A rescales original, new and background contributions together, exactly as the plan says.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:646",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:697",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:734",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:752",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:776",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:831",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:852",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:943",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:285",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:292",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:304",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_candidate_consistency.py:29",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_candidate_consistency.py:35",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_PLAN.md:9"
+      ]
+    },
+    {
+      "id": "C03",
+      "topic": "Labels, matching, CE and direct gradient scope",
+      "status": "CORRECT",
+      "conclusion": "Qualification detaches candidate and root geometry, requires root IoU strictly greater than 0.5, and excludes every Hungarian-matched query, including queries matched to another GT. Expansion creates new index tuples with root target 0; it does not mutate the original Hungarian assignments or re-run the matcher. The existing G CE replacement is unchanged and retains the native ScanRefer target mass and eos weight. Direct qualification/contrastive-coordinate gradients are absent by construction; shared-parameter training can still change future box predictions, so this is not a claim that all geometry learning is unaffected.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_semantic_assignment.py:9",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_semantic_assignment.py:19",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_semantic_assignment.py:26",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_semantic_assignment.py:34",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_candidate_consistency.py:19",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_candidate_consistency.py:57",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:458",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:484",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:503",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py:518",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:289"
+      ]
+    },
+    {
+      "id": "C04",
+      "topic": "CPU native-formula check implementation",
+      "status": "CORRECT_NOT_EXECUTED",
+      "conclusion": "The CPU fixture extracts loss_sem_align and _get_src_permutation_idx from the provided actual native source rather than reimplementing the formula. It tests A=0 exact loss-correction/last-query-projection-gradient equality, A=4 direct native expanded-call loss and gradient equivalence with denominator 7, another-GT match protection, unchanged original indices and absence of direct geometry gradients. This reviewer did not execute these numerical tests. The target warm runtime is Python 3.7.11/Torch 1.10.2; ast.Module(body=...) is appropriate to that Python AST API. Local Python 3.13 AST parsing is syntax inspection, not execution of that extraction on a different runtime.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py:15",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py:29",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py:58",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py:62",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py:65",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py:68",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py:74",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py:82",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run_preflight_authorized.py:49",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json:2"
+      ]
+    },
+    {
+      "id": "C05",
+      "topic": "Initialization, optimizer, seed and budget",
+      "status": "CORRECT",
+      "conclusion": "The runner hashes the official parent and original G checkpoint, strictly restores the native parent and G delta, enforces p2=False, batch 8, seed 2027, one fit pass and both learning rates 1e-5, and uses fresh AdamW. The native optimizer receives the unchanged weight-decay and clipping recipe. Training consumes all 29,778 fit rows once, including the final partial batch, and asserts exactly 3,723 optimizer-step iterations and no holdout rows. Preflight and full training are separate processes and roots that each reload the original G; the two preflight updates are not inherited by training.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\normalized_spec.json:7",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\normalized_spec.json:32",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:40",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:80",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:89",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:126",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:149",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:173",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:258",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:323",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:420",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:440",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:449",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\main_utils.py:283",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\main_utils.py:339",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\main_utils.py:363"
+      ]
+    },
+    {
+      "id": "C06",
+      "topic": "Train/holdout/formal splits and GT evaluation",
+      "status": "CORRECT",
+      "conclusion": "The code checks the sealed split protocol, 29,778/6,887 row counts, row disjointness and physical-scene disjointness for fit versus module holdout. Formal uses the separate ScanRefer val source with exactly 9,508 rows and restores the completed 3,723-step checkpoint. Model inputs contain point/voxel data, text, detector boxes/classes and superpoints, not target boxes/masks. The evaluator uses true dataset center_label/size_gts/gt_masks, native bbs ranking and all 256 candidates with filter_non_gt_boxes=False. G qualification is only called in training. Per-row box/Mask measurements are checked against the actual native evaluator; oracle top-k fields are offline diagnostics and do not change ranking.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:49",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:185",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:204",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:217",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:231",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:243",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:262",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:351",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:372",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:384",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:401",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\src.joint_det_dataset.py:585",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\src.joint_det_dataset.py:1086",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\src.joint_det_dataset.py:1189",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\src.joint_det_dataset.py:1361",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\src.joint_det_dataset.py:1387",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\evaluator.py:209",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\evaluator.py:281",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\evaluator.py:535",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\evaluator.py:594",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\evaluator.py:879"
+      ]
+    },
+    {
+      "id": "C07",
+      "topic": "Real GPU preflight and serialization path",
+      "status": "CORRECT_NOT_EXECUTED",
+      "conclusion": "The preflight constructs the actual CUDA model and first batch of eight, runs the actual native and corrected losses with finite-gradient assertions, requires at least one qualified query, performs two optimizer updates, serializes model delta plus optimizer to BytesIO, reloads both, checks exact restored model state and optimizer step=2, and records peak allocated GPU memory and serialized size. This is an implemented in-memory serialization/reload witness, not a completed disk-checkpoint round trip. Full training uses torch.save to a temporary file plus os.replace for its checkpoint and formal mode strictly reloads the terminal. The current local artifacts still show CPU/GPU preflight pending.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:172",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:281",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:307",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:323",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:329",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:334",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:343",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:426",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:437",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:452",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:206",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_TRACKER.md:6"
+      ]
+    },
+    {
+      "id": "C08",
+      "topic": "Warm runtime, source provenance and existing hash invariants",
+      "status": "CORRECT",
+      "conclusion": "All six actual imported native snapshots independently hash to INTAKE.json and to both completed native import manifests. All seven source_preparation hashes and five module hashes in both new specs match the actual files. The matching cached env_spec has the expected canonical SHA256 966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c; a different older bundle copy was not used as runtime identity. The runner checks the live canonical environment hash, source manifests/port, interface and parent/G checkpoint invariants before training and records actual import paths/hashes. Launch scripts reuse the existing interpreter/environment and do not install/rebuild dependencies. This establishes correct gates and local snapshot provenance, not a live remote verification.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\source_preparation.json:3",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\normalized_spec.json:3",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\normalized_spec.json:7",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:45",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:49",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:58",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:74",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:80",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:99",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:116",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run_preflight_authorized.py:20",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\INTAKE.json:3",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\g_control\\imports.json:15",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\g_consistent\\imports.json:15"
+      ]
+    },
+    {
+      "id": "C09",
+      "topic": "Resources, one-arm sequencing and remote-command boundary",
+      "status": "CORRECT",
+      "conclusion": "Preflight requires a new remote root, at least 1 GiB free on its output filesystem and no GPU compute process, then runs the native CPU check before the locked GPU preflight and stops on nonzero exit. Full launch requires a review without blockers, matching local/remote actual preflight and at least two serialized checkpoints plus 256 MiB headroom; it checks GPU idle, starts exactly one controller and verifies one exact controller process. The controller runs only normalized train then normalized formal, waits synchronously, uses the existing single-GPU flock, exclusive logs and status/receipt guards, and never retrains the completed comparator arms. SSH uses known-host loading and no accept-any-host policy; password material is obtained from an environment variable and is not interpolated into remote commands; dynamic command arguments are shell-quoted. No defect in these inspected trust boundaries was found.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run_preflight_authorized.py:10",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run_preflight_authorized.py:15",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run_preflight_authorized.py:23",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run_preflight_authorized.py:48",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run_preflight_authorized.py:55",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\launch_authorized.py:10",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\launch_authorized.py:20",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\launch_authorized.py:27",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\launch_authorized.py:30",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\launch_authorized.py:41",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\launch_authorized.py:48",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\launch_authorized.py:54",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\controller.py:17",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\controller.py:27",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\controller.py:36",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\controller.py:41",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\controller.py:49",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\controller.py:53"
+      ]
+    },
+    {
+      "id": "C10",
+      "topic": "Read-only observation and requested polling cadence",
+      "status": "CORRECT",
+      "conclusion": "observe_authorized.py only reads remote status/logs/receipts, /proc controller liveness and nvidia-smi; it writes a local timestamped observation and contains no launcher. The supplemental wait script begins three minutes before launch.json's estimated finish, then calls that observer every 240 seconds and exits on complete/failed. It neither starts nor restarts training. It is a local waiting process; this reviewer did not run it.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\observe_authorized.py:17",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\observe_authorized.py:25",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\observe_authorized.py:29",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\observe_authorized.py:33",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\observe_authorized.py:38",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\wait_completion_authorized.py:9",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\wait_completion_authorized.py:16",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\wait_completion_authorized.py:18",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\wait_completion_authorized.py:23",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_PLAN.md:23"
+      ]
+    },
+    {
+      "id": "C11",
+      "topic": "Claims, comparison limits and later result work",
+      "status": "CORRECT",
+      "conclusion": "The plan correctly calls this a normalization-of-the-whole-expanded-term control and reserves promotion until the original-G acceptance counts are preserved. Reused runs have acknowledged cross-process numerical start limitations. The runner records initial/terminal holdout rows, formal rows, Mask values and row identifiers needed for the required comparisons; the three-way formal repair/harm comparison is later analysis work and is not claimed complete by this implementation. No improvement, 50% result, exact functional-start equivalence or generalization result is established by this review.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_PLAN.md:5",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_PLAN.md:9",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_PLAN.md:11",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_PLAN.md:15",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\research_contract.md:3",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:375",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:394",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:409",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py:455",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_TRACKER.md:6"
+      ]
+    }
+  ],
+  "validation": {
+    "kind": "local static only",
+    "checks": {
+      "source_preparation_hashes_match": true,
+      "shared_bytes_identical_to_previous": {
+        "run.py": true,
+        "pvground_semantic_assignment.py": true,
+        "pvground_task_observation_query.py": true,
+        "pvground_observation_query.py": true,
+        "pvground_source_query.py": true
+      },
+      "shared_bytes_identical_to_completed_source": {
+        "run.py": true,
+        "pvground_semantic_assignment.py": true,
+        "pvground_task_observation_query.py": true,
+        "pvground_observation_query.py": true,
+        "pvground_source_query.py": true
+      },
+      "native_intake_matches": {
+        "evaluator.py": true,
+        "main_utils.py": true,
+        "models.losses.py": true,
+        "models.pv_ground.py": true,
+        "prepare_data.py": true,
+        "src.joint_det_dataset.py": true
+      },
+      "native_manifest_matches": {
+        "g_control": {
+          "evaluator.py": true,
+          "main_utils.py": true,
+          "models.losses.py": true,
+          "models.pv_ground.py": true,
+          "prepare_data.py": true,
+          "src.joint_det_dataset.py": true
+        },
+        "g_consistent": {
+          "evaluator.py": true,
+          "main_utils.py": true,
+          "models.losses.py": true,
+          "models.pv_ground.py": true,
+          "prepare_data.py": true,
+          "src.joint_det_dataset.py": true
+        }
+      },
+      "preflight_and_train_only_root_diff": [
+        "root"
+      ],
+      "spec_changes_from_prior_consistency": {
+        "comparison": {
+          "previous": "same original G, model/source/RNG/3723 updates; final contrastive semantic correspondence only",
+          "current": "same G qualification expansion and native formula; expanded final contrastive denominator N+A"
+        },
+        "completed_comparators": {
+          "previous": null,
+          "current": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003"
+        },
+        "consistency_module_sha256": {
+          "previous": "dc25727853c178f312db05f5f66c49fb56ecc0b72d390e91aa28dcd6f9085186",
+          "current": "0857b8b68b34b3ad2cba523a886f19ddbe0019fb6acdc7d077329262d53d32f9"
+        },
+        "contrastive_normalization": {
+          "previous": null,
+          "current": "expanded_correspondence_count"
+        },
+        "root": {
+          "previous": "/root/autodl-tmp/pvground_candidate_consistency_20261003/g_consistent",
+          "current": "/root/autodl-tmp/pvground_candidate_normalization_20261003/normalized"
+        }
+      },
+      "spec_module_hashes_match": {
+        "pvground_candidate_consistency.py": true,
+        "pvground_semantic_assignment.py": true,
+        "pvground_task_observation_query.py": true,
+        "pvground_observation_query.py": true,
+        "pvground_source_query.py": true
+      },
+      "cached_environment_canonical_hash_matches": true,
+      "cached_environment_base": "Python3.7.11 + bdetr Torch1.10.2+cu111 + existing isolated sparse packages",
+      "python_ast_parse_3_7": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_candidate_consistency.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_semantic_assignment.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_task_observation_query.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_observation_query.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_source_query.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\controller.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run_preflight_authorized.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\launch_authorized.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\observe_authorized.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\prepare.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\run.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\pvground_candidate_consistency.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\evaluator.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\main_utils.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.pv_ground.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\prepare_data.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\src.joint_det_dataset.py",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\wait_completion_authorized.py"
+      ],
+      "experiment_not_run_locally": {
+        "preflight.json": true,
+        "preflight_intake.json": true,
+        "preflight.exit": true,
+        "launch.json": true
+      },
+      "source_diff": "--- previous/pvground_candidate_consistency.py\n+++ normalized/pvground_candidate_consistency.py\n@@ -1,7 +1,8 @@\n \"\"\"Training-only final contrastive target replacement for G-qualified queries.\n \n-Only the semantic correspondence is expanded. Native Hungarian regression and\n-Mask responsibilities, the CE replacement and inference remain unchanged.\n+The same semantic correspondence is expanded and the entire expanded final\n+contrastive term uses its expanded correspondence count. Native Hungarian\n+regression, Mask responsibilities, CE replacement and inference are unchanged.\n \"\"\"\n import torch\n \n@@ -28,7 +29,8 @@\n     old = set_criterion.loss_sem_align(outputs, targets, indices, num_boxes, None)['loss_sem_align']\n     actual = predictions['last__loss_sem_align']\n     assert torch.allclose(old, actual, rtol=1e-6, atol=1e-6)\n-    new = set_criterion.loss_sem_align(outputs, targets, expanded, num_boxes, None)['loss_sem_align']\n+    expanded_count = sum(len(queries) for queries, _ in expanded)\n+    new = set_criterion.loss_sem_align(outputs, targets, expanded, expanded_count, None)['loss_sem_align']\n     # Use the same weight and seven-head averaging as the native PV criterion.\n     correction = (new - old) * (.5 / 7)\n     assert bool(torch.isfinite(correction))\n@@ -36,7 +38,10 @@\n                            contrastive_reassigned_samples=int(selected.any(-1).sum()),\n                            contrastive_native=float(old), contrastive_replaced=float(new),\n                            contrastive_reconstruction_error=float((old - actual).abs()),\n-                           semantic_target_only=True), selected\n+                           contrastive_native_denominator=num_boxes,\n+                           contrastive_expanded_denominator=expanded_count,\n+                           semantic_target_only=False,\n+                           expanded_count_normalization=True), selected\n \n \n def verify_consistency_replacement(predictions, batch, indices, set_criterion, correction, selected):\n",
+      "older_runtime_bundle_copy_matches_expected_env": false,
+      "matching_cached_environment_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json",
+      "matching_cached_environment_canonical_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c"
+    },
+    "tests_not_executed": [
+      "cpu_test.py numerical fixtures",
+      "real CUDA batch-8 preflight",
+      "optimizer update/save/restore runtime witness",
+      "full training",
+      "formal evaluation",
+      "remote observation"
+    ]
+  },
+  "limitations": [
+    "Source-only review and deterministic local AST/hash/byte-comparison checks were performed. No numerical PyTorch CPU fixture, native model forward/backward, GPU preflight, checkpoint restore, SSH connection, training launch or observation script was executed by this reviewer.",
+    "The candidate directory contained no preflight.json, preflight.exit, preflight_intake.json or launch.json at the inspected boundary. A code PASS permits the planned CPU/GPU sanity workflow; it is not evidence that its runtime conditions already passed.",
+    "GPU preflight's save/reload implementation uses BytesIO. It must be described as an in-memory serialization/reload witness; actual filesystem save behavior and formal terminal reload are subsequent executed checks.",
+    "Live remote environment, checkpoint bytes, data contents/split sizes and available resources were not independently rechecked here. The audited runner/launcher enforce those existing invariants at execution.",
+    "Equal checkpoint, seed, code and budget do not imply bitwise-identical CUDA outputs across processes. Preserve and compare actual initial row identities/inputs/predictions and disclose measured differences as required by the plan.",
+    "Formal comparison against the completed control, unnormalized variant and original G—including Acc@0.50, Acc@0.25, Mask and row-level repair/harm—is pending. This review supports no accuracy or promotion claim."
+  ],
+  "audited_sources": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_PLAN.md",
+      "bytes": 3190,
+      "sha256": "267c8a2d3a9f67cafcc9c44aba384ac953b725eb06aa65cc8887a18ef9d0351c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\research_contract.md",
+      "bytes": 613,
+      "sha256": "018db9e9dee4af8d441abd5e0e1c734ac2212dab9f112db379088577e846f8b7"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_TRACKER.md",
+      "bytes": 499,
+      "sha256": "902bd4e2afbdaef8d43703b33145c8277e3685f118096f3175f3fd7db27b10e0"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run.py",
+      "bytes": 31390,
+      "sha256": "919fc36d61b8f21a7285f55c153717f05baa4e969ca43ccbc25171e165bc7392"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_candidate_consistency.py",
+      "bytes": 3761,
+      "sha256": "0857b8b68b34b3ad2cba523a886f19ddbe0019fb6acdc7d077329262d53d32f9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\cpu_test.py",
+      "bytes": 5450,
+      "sha256": "6ff8075e05faa16e8f5d10544c989d7b85f0cc1d01abdcf5e13e3e77e4fa01e0"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\preflight_spec.json",
+      "bytes": 2597,
+      "sha256": "d549000e2dfd776a06597c83c6306d6152901aec21edd48ead789997c56ffac0"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\normalized_spec.json",
+      "bytes": 2598,
+      "sha256": "7b08ae0531521877129f7517179764b2d7a3dc3c9e7dec46e35e9c137a0dffa8"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\controller.py",
+      "bytes": 2948,
+      "sha256": "5b2ce68765bf51f7ca2ffe54e4eb9667929ab4661237263100a13c6f1b302557"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\run_preflight_authorized.py",
+      "bytes": 4365,
+      "sha256": "315f41009af88421d71d03b63e9ef67e93d7907f0ff48c0fa86d4b3a885b5b62"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\launch_authorized.py",
+      "bytes": 4025,
+      "sha256": "0ca3cf9482e061c8c9a4379d56e604ae4ac34ec7e08eec55866802de03bd33a9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\observe_authorized.py",
+      "bytes": 2077,
+      "sha256": "abcd5ae049e46ee722d0aaf09fbe022518ae40a37a9ff1e90863677d6732ff9e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\source_preparation.json",
+      "bytes": 914,
+      "sha256": "a761218bd61a6a2554433d636e4456009fec9d2d3b6784cd68f6e3f89205cf90"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\prepare.py",
+      "bytes": 7123,
+      "sha256": "34b5e8fe4cf301801c1bfe437bba583bc453286ba746ef96982f8f33216ea3a5"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\run.py",
+      "bytes": 31390,
+      "sha256": "919fc36d61b8f21a7285f55c153717f05baa4e969ca43ccbc25171e165bc7392"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\pvground_candidate_consistency.py",
+      "bytes": 3464,
+      "sha256": "dc25727853c178f312db05f5f66c49fb56ecc0b72d390e91aa28dcd6f9085186"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\evaluator.py",
+      "bytes": 41473,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\INTAKE.json",
+      "bytes": 1063,
+      "sha256": "2785cb844ee75a68d5d19fba6bbb772d5834e4b86567be46f549661c64419a0d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\main_utils.py",
+      "bytes": 24599,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\models.pv_ground.py",
+      "bytes": 24954,
+      "sha256": "7fe369d7aaefda3f4e6eb389393799aedbe95ace56dbc107a7d26b0e3a3ea235"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\prepare_data.py",
+      "bytes": 19658,
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\source\\imported\\src.joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\g_control\\imports.json",
+      "bytes": 2372,
+      "sha256": "c267bd1d40c062d0d3fccf30043085e6f772a6a53f1b7367e6fbdd5837216dac"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\complete\\g_consistent\\imports.json",
+      "bytes": 2372,
+      "sha256": "c267bd1d40c062d0d3fccf30043085e6f772a6a53f1b7367e6fbdd5837216dac"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\g_consistent_spec.json",
+      "bytes": 2435,
+      "sha256": "676e39b61b0451aa69fee82cac1d5c921207f77127ed8fa4bd988df1f321d156"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\runtime_inventory.json",
+      "bytes": 2457,
+      "sha256": "25a054bb9948735c3c39b632cdec614decb35e1424358b972c65d12bfa72a61d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\env_spec.json",
+      "bytes": 2385,
+      "sha256": "3ce5df048f09ed28f1908c2db1907cb51b354f54f954666ad3a9cd452868b5ee"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\wait_completion_authorized.py",
+      "bytes": 1312,
+      "sha256": "b3ffd536640bb32850aedc4961a2d51de27e4f6df12ed4d8bcdb55395375f60e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json",
+      "bytes": 2938,
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\env_spec.json",
+      "bytes": 2938,
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\.aris\\traces\\experiment-bridge\\2026-10-03_normalization_run01\\001-code-review.request.json",
+      "bytes": 4074,
+      "sha256": "9106d9167bdeaea000879d04419fc76e149c27339980f079408b949a79f243ed"
+    }
+  ],
+  "source_changes_made_by_reviewer": [],
+  "remote_actions_made_by_reviewer": [],
+  "report_paths": {
+    "markdown": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_CODE_REVIEW.md",
+    "json": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_normalization_20261003\\EXPERIMENT_CODE_REVIEW.json"
+  }
+}
+

@@ -158,3 +158,5 @@
 - 2026-10-03T11:46:14.689612+08:00 /analyze-results: refine-logs/pvground_candidate_consistency_20261003/ completed control stage and independently recounted module holdout; treatment running; formal pair still pending.
 
 - 2026-10-03T15:39:07.734111+08:00 /experiment-audit: refine-logs/pvground_candidate_consistency_20261003/ complete native pair, qualified starting comparison and archive-verified retirement; original G remains best.
+
+- 2026-10-03T16:23:12.769230+08:00 /experiment-bridge: refine-logs/pvground_candidate_normalization_20261003/ expanded-count normalization; native sanity passed; one-arm training launched.

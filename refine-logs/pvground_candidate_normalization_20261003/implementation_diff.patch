@@ -1,0 +1,63 @@
+--- previous/pvground_candidate_consistency.py
++++ normalized/pvground_candidate_consistency.py
+@@ -1,7 +1,8 @@
+ """Training-only final contrastive target replacement for G-qualified queries.
+ 
+-Only the semantic correspondence is expanded. Native Hungarian regression and
+-Mask responsibilities, the CE replacement and inference remain unchanged.
++The same semantic correspondence is expanded and the entire expanded final
++contrastive term uses its expanded correspondence count. Native Hungarian
++regression, Mask responsibilities, CE replacement and inference are unchanged.
+ """
+ import torch
+ 
+@@ -28,7 +29,8 @@
+     old = set_criterion.loss_sem_align(outputs, targets, indices, num_boxes, None)['loss_sem_align']
+     actual = predictions['last__loss_sem_align']
+     assert torch.allclose(old, actual, rtol=1e-6, atol=1e-6)
+-    new = set_criterion.loss_sem_align(outputs, targets, expanded, num_boxes, None)['loss_sem_align']
++    expanded_count = sum(len(queries) for queries, _ in expanded)
++    new = set_criterion.loss_sem_align(outputs, targets, expanded, expanded_count, None)['loss_sem_align']
+     # Use the same weight and seven-head averaging as the native PV criterion.
+     correction = (new - old) * (.5 / 7)
+     assert bool(torch.isfinite(correction))
+@@ -36,7 +38,10 @@
+                            contrastive_reassigned_samples=int(selected.any(-1).sum()),
+                            contrastive_native=float(old), contrastive_replaced=float(new),
+                            contrastive_reconstruction_error=float((old - actual).abs()),
+-                           semantic_target_only=True), selected
++                           contrastive_native_denominator=num_boxes,
++                           contrastive_expanded_denominator=expanded_count,
++                           semantic_target_only=False,
++                           expanded_count_normalization=True), selected
+ 
+ 
+ def verify_consistency_replacement(predictions, batch, indices, set_criterion, correction, selected):
+--- previous/cpu_test.py
++++ normalized/cpu_test.py
+@@ -62,6 +62,8 @@
+     assert not bool(selected[0, 3])
+     assert all(torch.equal(q, pq) and torch.equal(t, pt)
+                for (q, t), (pq, pt) in zip(indices, preserved))
++    assert statistics['contrastive_native_denominator'] == 3
++    assert statistics['contrastive_expanded_denominator'] == 3 + int(selected.sum())
+     corrected = old * (.5 / 7) + correction
+     if not include_qualified:
+         assert not bool(selected.any()) and float(correction) == 0
+@@ -72,7 +74,7 @@
+         assert int(selected.sum()) == 4
+         expanded = [(torch.tensor([0, 3, 1, 2]), torch.tensor([0, 1, 0, 0])),
+                     (torch.tensor([0, 1, 2]), torch.tensor([0, 0, 0]))]
+-        expected = native.loss_sem_align(outputs, targets, expanded, 3, None)['loss_sem_align'] * (.5 / 7)
++        expected = native.loss_sem_align(outputs, targets, expanded, 7, None)['loss_sem_align'] * (.5 / 7)
+         assert torch.allclose(corrected, expected, rtol=1e-6, atol=1e-6)
+         actual_gradient = torch.autograd.grad(corrected, predictions['last_proj_queries'], retain_graph=True)[0]
+         expected_gradient = torch.autograd.grad(expected, predictions['last_proj_queries'], retain_graph=True)[0]
+@@ -82,6 +84,6 @@
+ receipt = dict(status='pass', native_method_source=str(args.native_loss), fixture_count=2,
+                no_qualified_loss_and_gradient_exact=True, protected_other_match=True,
+                regression_matching_unchanged=True, expanded_native_loss_and_gradient_allclose=True,
+-               CPU_only=True, model_forward=False, fixtures=records)
++               CPU_only=True, model_forward=False, expanded_count_normalization=True, fixtures=records)
+ args.output.write_text(json.dumps(receipt, indent=2) + '\n')
+ print(json.dumps(receipt))

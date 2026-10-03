@@ -150,3 +150,5 @@
 - 2026-10-03T06:28:18.719345+08:00 /experiment-bridge: refine-logs/pvground_candidate_consistency_20261003/ prepared reviewed launcher and actual capacity evidence; formal pair NOT_STARTED.
 
 - 2026-10-03T09:11:44.970949+08:00 /run-experiment: refine-logs/pvground_candidate_consistency_20261003/ user-authorized archived-weight cleanup and actual controlled-pair launch/live evidence.
+
+- 2026-10-03T09:37:21.135484+08:00 /run-experiment: refine-logs/pvground_candidate_consistency_20261003/ completed11remote weight retirements, protected hashes and active single-checkpoint witness.

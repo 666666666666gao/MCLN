@@ -1,0 +1,156 @@
+{
+  "status": {
+    "status": "running",
+    "completed": [
+      {
+        "arm": "g_control",
+        "mode": "train",
+        "seconds": 10422.462062835693
+      },
+      {
+        "arm": "g_consistent",
+        "mode": "train",
+        "seconds": 10515.421343326569
+      }
+    ],
+    "started_cst": "2026-10-03T08:34:36.290136+08:00",
+    "stage": "g_control/formal",
+    "process_pid": 369847
+  },
+  "controller_pid": 320934,
+  "controller_live": true,
+  "child_pid": 369847,
+  "child_live": true,
+  "directory_free_bytes": 1976131584,
+  "gpu": "0, NVIDIA A100-PCIE-40GB, 7321 MiB",
+  "compute_processes": [
+    "207019, 7312 MiB"
+  ],
+  "stage_log_tail": "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.decoder.weight', 'lm_head.layer_norm.bias', 'lm_head.bias']\n- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\nPVG_FINETUNE_DATASET_LOADING 2026-10-03T14:24:01.245770+08:00\nLoading val files, take a breath!\nBegin text decoupling......\nEnd text decoupling!\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 512, \"total\": 9508, \"seconds\": 52.95038557052612}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 1024, \"total\": 9508, \"seconds\": 100.18513774871826}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 1536, \"total\": 9508, \"seconds\": 146.1841917037964}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 2048, \"total\": 9508, \"seconds\": 195.66361331939697}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 2560, \"total\": 9508, \"seconds\": 247.57008028030396}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 3072, \"total\": 9508, \"seconds\": 297.01673793792725}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 3584, \"total\": 9508, \"seconds\": 345.6958885192871}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 4096, \"total\": 9508, \"seconds\": 393.24787282943726}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 4608, \"total\": 9508, \"seconds\": 440.85413694381714}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 5120, \"total\": 9508, \"seconds\": 487.5965151786804}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 5632, \"total\": 9508, \"seconds\": 536.4397442340851}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 6144, \"total\": 9508, \"seconds\": 584.0814850330353}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 6656, \"total\": 9508, \"seconds\": 632.0117025375366}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 7168, \"total\": 9508, \"seconds\": 680.9958312511444}\n",
+  "records": {
+    "initial/receipt.json": {
+      "elapsed_seconds": 667.0908303260803,
+      "formal_rows": 0,
+      "metrics": {
+        "bbf": {
+          "mask_hits25": 6208,
+          "mask_hits50": 5833,
+          "mask_iou_sum": 5126.612751213135,
+          "mask_miou": 74.43898288388465,
+          "rec_hits25": 6206,
+          "rec_hits50": 5647
+        },
+        "bbs": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5818,
+          "mask_iou_sum": 5110.032628241228,
+          "mask_miou": 74.19823766866891,
+          "rec_hits25": 6176,
+          "rec_hits50": 5602
+        }
+      },
+      "rows": 6887,
+      "rows_sha256": "a5ae84a9078a7ea678c597b03c4c23a4d461082e084d15c547ea6669e3b72f03",
+      "stage": "initial",
+      "status": "pass",
+      "time_cst": "2026-10-03T08:52:53.287891+08:00"
+    },
+    "receipt.json": {
+      "added_state_tensors": 37,
+      "assignment_module_sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "base_terminal_sha256": "0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522",
+      "changed_parameter_tensors": 796,
+      "checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+      "consistency_module_sha256": "dc25727853c178f312db05f5f66c49fb56ecc0b72d390e91aa28dcd6f9085186",
+      "fit_rows": 29778,
+      "fit_seen_exactly_once": true,
+      "formal_rows": 0,
+      "fresh_optimizer": true,
+      "frozen_parameters_unchanged": true,
+      "holdout_rows": 6887,
+      "initial": {
+        "bbf": {
+          "mask_hits25": 6208,
+          "mask_hits50": 5833,
+          "mask_iou_sum": 5126.612751213135,
+          "mask_miou": 74.43898288388465,
+          "rec_hits25": 6206,
+          "rec_hits50": 5647
+        },
+        "bbs": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5818,
+          "mask_iou_sum": 5110.032628241228,
+          "mask_miou": 74.19823766866891,
+          "rec_hits25": 6176,
+          "rec_hits50": 5602
+        }
+      },
+      "new_parameters": 923616,
+      "observation_module_sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "observation_state": true,
+      "p2": false,
+      "primary_mode": "bbs",
+      "primary_rec_nonregression": false,
+      "script_sha256": "919fc36d61b8f21a7285f55c153717f05baa4e969ca43ccbc25171e165bc7392",
+      "semantic_assignment": true,
+      "semantic_consistency": false,
+      "source_port_sha256": "9879e0a98040c0b7a21f026414f21f52c1e998343c10d3a59fdec3b501ac7ea9",
+      "source_query_module_sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "source_query_read": true,
+      "spec_sha256": "ddc5466d40f86274019b04e4d2fa0c3049d56df47767386048063a352b22786e",
+      "status": "complete",
+      "task_module_sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "task_read": true,
+      "terminal": {
+        "bbf": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5814,
+          "mask_iou_sum": 5097.313277439913,
+          "mask_miou": 74.01355129141734,
+          "rec_hits25": 6168,
+          "rec_hits50": 5589
+        },
+        "bbs": {
+          "mask_hits25": 6167,
+          "mask_hits50": 5807,
+          "mask_iou_sum": 5089.260260333773,
+          "mask_miou": 73.8966205943629,
+          "rec_hits25": 6144,
+          "rec_hits50": 5561
+        }
+      },
+      "terminal_sha256": "a7c463cf22bca194650da3b997cca242843c7a327275e044ac0367168680120a",
+      "time_cst": "2026-10-03T11:28:12.221868+08:00",
+      "train_log_sha256": "8d69fe201c88af0aedaa11baee81432346658a29da42135f5237f4f107789202",
+      "training_steps": 3723,
+      "transitions": {
+        "bbf": {
+          "0.25": {
+            "breaks": 132,
+            "fixes": 94,
+            "net": -38
+          },
+          "0.5": {
+            "breaks": 296,
+            "fixes": 238,
+            "net": -58
+          }
+        },
+        "bbs": {
+          "0.25": {
+            "breaks": 131,
+            "fixes": 99,
+            "net": -32
+          },
+          "0.5": {
+            "breaks": 309,
+            "fixes": 268,
+            "net": -41
+          }
+        }
+      }
+    }
+  },
+  "time_cst": "2026-10-03T14:37:23.881490+08:00"
+}

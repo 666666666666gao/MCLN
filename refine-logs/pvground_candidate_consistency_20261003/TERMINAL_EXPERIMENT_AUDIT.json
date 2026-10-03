@@ -1,0 +1,1300 @@
+{
+  "audit_skill": "experiment-audit",
+  "date": "2026-10-03",
+  "generated_at": "2026-10-03T15:36:11.167559+08:00",
+  "project": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "qualified_single_seed_result_with_incomplete_raw_provenance_and_stale_status",
+  "summary": "The six evaluation files and two training logs agree numerically with the receipts and analysis. The observed bbs gain is small, bbf/Mask and coverage have regressions, the method misses the declared historical/development goals, and exact starting-output parity failed. Report only a qualified one-seed development comparison.",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "reviewer_family": "openai",
+  "executor_model": "codex-current-session (specific model not independently attested)",
+  "executor_family": "openai",
+  "auditor": "fresh native gpt-6-astra / max reviewer",
+  "agent_id": "/root/pvg_consistency_terminal_integrity",
+  "verdict_id": "/root/pvg_consistency_terminal_integrity/terminal-20261003",
+  "fork_turns": "none",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "context_disclosure": "A fresh native review was spawned with paths/checklist only. Required workspace startup notes were read but were not used as experimental evidence; judgments and numerical results here are based on the cited primary artifacts and CPU checks.",
+  "attribution_evidence": ".aris/traces/experiment-audit/2026-10-03_terminal_run01/001-terminal-integrity.request.json",
+  "attribution_request_sha256": "d77b6e779ef462dfcced8ddec034e876acde8f1838f77d4ac3026fb9e87b9e5a",
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_candidate_consistency_20261003\\.aris\\traces\\experiment-audit\\2026-10-03_terminal_run01",
+  "checks": {
+    "A": {
+      "name": "Ground-truth provenance",
+      "status": "WARN",
+      "deterministic_result": "PASS for recorded fields, selected-box geometry and the inspected source path; raw dataset provenance not independently verified.",
+      "details": [
+        "ScanRefer scene_id/object_id come from ScanRefer_filtered_{train,val}.json. Target boxes and masks come from scan.get_object_bbox(tid) and scan.three_d_objects[tid][points] in train/val_v3scans.pkl, with root at index 0.",
+        "prepare() passes point/voxel tensors, text, GroupFree detection boxes/classes and superpoints into model.forward; center_label, size_gts and gt_masks are added only after forward for native_loss and evaluation. butd_gt and butd_cls are false; model-derived GroupFree detections are inputs, not the reference target.",
+        "The native evaluator receives dataset center/size/mask targets. No undisclosed model-derived evaluation reference was found in the inspected path. Language alignment token maps are derived from the expression parser and are part of the native score interface. Native Mask training also includes prediction-to-prediction corresponding terms (models.losses.py:592, 612, 621); these are auxiliary training objectives, not the evaluator GT.",
+        "Training qualification uses detached predicted boxes against training root GT and excludes all matched queries. Formal/holdout Top-16/32/64/256 oracle flags are GT-dependent offline diagnostics, not a deployable filter or demonstrated recovery policy.",
+        "No raw annotation JSON, scan pickle/object implementation, raw masks, complete model dependency bundle or actual point arrays are in this intake. Exact equality of row_id, scan_id, target_id, root_box and point_sha256 does not establish equality of all inputs, token maps, detection arrays or masks."
+      ],
+      "evidence": [
+        "complete/source/imported/src.joint_det_dataset.py:208",
+        "complete/source/imported/src.joint_det_dataset.py:594",
+        "complete/source/imported/src.joint_det_dataset.py:634",
+        "complete/source/imported/src.joint_det_dataset.py:1086",
+        "complete/source/imported/src.joint_det_dataset.py:1204",
+        "complete/source/imported/src.joint_det_dataset.py:1361",
+        "complete/source/run.py:262",
+        "complete/source/run.py:274",
+        "complete/source/run.py:355",
+        "complete/source/run.py:377",
+        "complete/source/pvground_semantic_assignment.py:9",
+        "complete/source/imported/evaluator.py:535",
+        "complete/source/imported/evaluator.py:879",
+        "analyze_complete.py:56",
+        "inspect_initial_difference.py:28",
+        "analysis/REPORT.md:28"
+      ]
+    },
+    "B": {
+      "name": "Score and loss normalization",
+      "status": "WARN",
+      "deterministic_result": "PASS: metric denominators are evaluation-row counts or geometric/point unions, never prediction maxima, minima or means.",
+      "details": [
+        "REC is the count of selected-box IoU strictly greater than .25/.5 divided by 6887 or 9508; Mask mIoU is the unweighted mean of per-expression point intersection/union, multiplied by 100. bbs uses semantic-class softmax; bbf uses normalized query/token dot-products, fixed temperature .07 and token softmax. These are prediction interfaces, not result renormalization.",
+        "The exact changed objective appends eligible unmatched queries with root target index 0 only for last-layer loss_sem_align. The original native matching indices remain in box/Mask losses. correction=(expanded_native-original_native)*(.5/7) replaces, rather than double-counts, the native final semantic term.",
+        "Expanded correspondence also changes eos=.1 query weights to matched weight 1 and changes both query-to-token and token-to-query terms while retaining the original matched-count denominator. It is not a weight-controlled isolation of label consistency.",
+        "All 3723 experimental updates record nonzero contrastive correction; 3638 expanded last-layer values are negative (minimum -148.15162658691406). This follows the reused weighted native formula; it is not a conventional guaranteed-nonnegative InfoNCE quantity and not evidence of accuracy. All logged numeric values are finite.",
+        "The native logged loss_sem_align is the sum of seven pre-correction head values. loss_contrastive_correction and total loss carry the added replacement; do not present the former field alone as the final trained semantic objective."
+      ],
+      "evidence": [
+        "complete/source/run.py:292",
+        "complete/source/run.py:303",
+        "complete/source/run.py:368",
+        "complete/source/run.py:385",
+        "complete/source/run.py:390",
+        "complete/source/run.py:403",
+        "complete/source/pvground_candidate_consistency.py:18",
+        "complete/source/pvground_candidate_consistency.py:27",
+        "complete/source/imported/models.losses.py:646",
+        "complete/source/imported/models.losses.py:697",
+        "complete/source/imported/models.losses.py:731",
+        "complete/source/imported/models.losses.py:749",
+        "complete/source/imported/models.losses.py:777",
+        "complete/source/imported/models.losses.py:943",
+        "complete/source/imported/evaluator.py:298",
+        "complete/source/imported/evaluator.py:897",
+        "complete/g_consistent/train.jsonl:1",
+        "EXPERIMENT_PLAN.md:31",
+        "analysis/REPORT.md:35"
+      ]
+    },
+    "C": {
+      "name": "Evidence existence and numerical agreement",
+      "status": "WARN",
+      "deterministic_result": "PASS: 169 explicit checks, all six evaluation files, all recorded metric summaries, geometry thresholds, hashes, batch order and the initial diagnostic agree. Documentation/provenance limitations remain.",
+      "details": [
+        "Read and SHA256-hashed 63 requested input files. Recounted 46564 evaluation records, independently calculated 93128 selected-box IoUs from saved centers/sizes, and obtained zero threshold disagreements. Maximum float64-vs-recorded-float32 IoU difference is 3.7845209630571475e-6. Mask scalars and saved oracle flags were recounted, not recomputed from unavailable masks/all-candidate geometry.",
+        "Both arms have 3723 sequential logged optimizer-step calls, 29778 distinct fit row IDs, 3722 batches of eight and one batch of two, identical batch order, and zero fit/holdout row overlap. Fit plus holdout IDs exactly cover range(36665). All four stage exits are zero and pair_status is complete.",
+        "Training source creates fresh AdamW after initial evaluation, calls ordinary optimizer.step with no AMP skip path, and saves the final step rather than selecting a holdout-best checkpoint. The source/log chain supports completion; the reviewer did not deserialize optimizer state or prove every parameter updated on every step.",
+        "Initial threshold bitmaps agree for REC and Mask in both modes, but output tensors are not identical: bbs boxes differ on 6886 rows; bbf boxes differ on 6887 rows and one bbf selected query changes. Continuous Mask IoU changes on two rows in each mode. The 13773 archived changed mode-records and all diagnostic fields were independently reproduced.",
+        "Re-executed original analyzer locally: exit 1 at its line 132 assertion, no output directory created. Re-executed qualified analyzer in reviewer trace space: exit 0 and both generated files byte-identical to analysis/. The patch changes the analysis admission criterion and disclosure only; it does not restore exact functional-start parity.",
+        "Collected endpoint hashes agree with training receipts, and formal source strictly loads the terminal delta before evaluation. The actual checkpoint bytes and parent weights were not downloaded, opened or reloaded by this auditor. load.json/imports.json are written on each invocation; the collected load timestamps are formal-stage, and load.json fresh_optimizer is not an optimizer-reload witness.",
+        "EXPERIMENT_PLAN.md:3 and EXPERIMENT_TRACKER.md:7-9 are stale preterminal status snapshots despite completed primary receipts. analysis/REPORT.md discloses the failed initial assertion and limits, but Inputs/GT match needs the narrower saved-field qualifier. Mask degradation is present in SUMMARY.json/receipts but not tabulated in REPORT.md.",
+        "Historical G 5615/4495 is a supplied contract constant, not independently recounted historical evaluation in this input set. Comparison/retention against it is conditional on that prior reference; current two-arm metrics are fully recounted."
+      ],
+      "evidence": [
+        "complete/pair_status.json:2",
+        "complete/pair_status.json:28",
+        "complete/g_control/train.jsonl:3723",
+        "complete/g_consistent/train.jsonl:3723",
+        "complete/g_control/train.log:82",
+        "complete/g_consistent/train.log:82",
+        "complete/g_control/formal.log:26",
+        "complete/g_consistent/formal.log:26",
+        "complete/source/run.py:204",
+        "complete/source/run.py:307",
+        "complete/source/run.py:420",
+        "complete/source/run.py:426",
+        "complete/source/run.py:440",
+        "collect_complete.py:42",
+        "collect_complete.py:68",
+        "collect_imported_sources.py:25",
+        "complete/INTAKE.json:198",
+        "analyze_complete.py:132",
+        "prepare_initial_qualified_analysis.py:14",
+        "analyze_complete_initial_qualified.py:132",
+        "analysis_initial_comparison/SUMMARY.json:130",
+        "analysis_initial_comparison/SUMMARY.json:178",
+        "EXPERIMENT_PLAN.md:3",
+        "EXPERIMENT_TRACKER.md:7",
+        "analysis/REPORT.md:28"
+      ]
+    },
+    "D": {
+      "name": "Executed functions and dead-code claims",
+      "status": "PASS",
+      "deterministic_result": "Claimed evaluation and training-correction routes are supported by code plus execution records; no claimed phantom metric or proposed module execution found.",
+      "details": [
+        "pair.py executes control/train, consistent/train, control/formal, consistent/formal. train mode calls evaluate(initial), step(update=True) 3723 times, then evaluate(terminal); formal mode loads terminal and calls evaluate(formal). All stages have corresponding outputs.",
+        "Native loss head order is proposal_, last_, 0head_..4head_, so captured matching[1] is the intended final-layer matching. The consistent branch invokes candidate_consistency_correction, calls native loss_sem_align for original and expanded correspondences, adds its correction before backward and records nonzero values in every update.",
+        "GroundingEvaluator.evaluate calls both bbox and both Mask functions. The runner checks native REC hit totals and Mask sums against its row writer. Top-5/10 and subgroup accumulators exist/execute but are not retained as reported audited metrics. print_stats and visualization branches are not execution evidence for additional results.",
+        "verify_consistency_replacement and verify_native_replacement run only in the no-update preflight path, not on all training updates. The preflight receipt is a two-update engineering witness, not independent reviewer gradient/reload reproduction. p2 is asserted false; its unreachable installation branch is not claimed as executed.",
+        "SourceReader/ObservationReader/TaskReader weights and architecture pre-exist in both G arms; the current comparison adds no new model state. Absence of direct box gradient from eligibility selection does not mean geometry predictions remain fixed after shared-parameter training."
+      ],
+      "evidence": [
+        "complete/source/pair.py:36",
+        "complete/source/run.py:40",
+        "complete/source/run.py:281",
+        "complete/source/run.py:296",
+        "complete/source/run.py:323",
+        "complete/source/run.py:351",
+        "complete/source/run.py:417",
+        "complete/source/run.py:455",
+        "complete/source/imported/models.losses.py:852",
+        "complete/source/imported/models.losses.py:917",
+        "complete/source/imported/evaluator.py:194",
+        "complete/preflight/preflight.json:9",
+        "complete/preflight/preflight.json:52",
+        "complete/g_consistent/train.jsonl:1"
+      ]
+    },
+    "E": {
+      "name": "Scope and claim strength",
+      "status": "WARN",
+      "deterministic_result": "The completed scope is two continuation arms at seed 2027 on one dataset, six evaluation passes; no cross-seed or cross-dataset claim is supported.",
+      "details": [
+        "Each arm consumes 29778 fit rows once; logs report 456 physical fit scenes. This latter scene count comes from the run log/source assertion, not independent raw annotation enumeration. The saved 6887-row module holdout contains 106 distinct physical scenes and 1479 scene-target pairs. The 9508-row development validation contains 141 scenes and 2068 scene-target pairs. Holdout/formal saved scene sets are disjoint.",
+        "Both initial and terminal passes reuse the same holdout; 46564 records are repeated arm/stage evaluations, not 46564 independent examples. The module holdout is explicitly acknowledged as seen by author pretraining. The inherited G training history is additional to the matched continuation pass.",
+        "Formal bbs improves by 8 loose and 34 strict hits (+.084139672 and +.357593605 percentage points) relative to the continuing control, but bbf loses 27/24 hits and both formal Mask mIoUs decrease. Candidate coverage also decreases. This is a mixed, small empirical result.",
+        "The method remains 19/38 hits below the stated historical G 5615/4495 and 297 strict hits below the 4754 development target. It has not met the prespecified advancement criterion.",
+        "The initial equivalence check was relaxed after seeing a failure, exact functional starts differ, eligibility distribution and effective loss weight change, and both boxes and scores can move. The evidence does not isolate pure label-consistency causality, fixed-box reranking, robust/significant gains, resolution of the sole failure cause, or physical-instance correctness of all IoU-qualified candidates.",
+        "No new Nr3D or Sr3D evaluation, independent repetitions, cross-seed significance estimate or unbiased held-out test result is provided. The analysis already discloses most of these limits."
+      ],
+      "evidence": [
+        "complete/g_control/spec.json:9",
+        "complete/g_consistent/spec.json:11",
+        "complete/g_control/train.log:8",
+        "complete/g_consistent/train.log:8",
+        "complete/g_control/initial/rows.jsonl:1",
+        "complete/g_control/formal/rows.jsonl:1",
+        "EXPERIMENT_PLAN.md:20",
+        "EXPERIMENT_PLAN.md:27",
+        "research_contract.md:5",
+        "analysis/REPORT.md:11",
+        "analysis/REPORT.md:13",
+        "analysis/REPORT.md:28",
+        "analysis/REPORT.md:34"
+      ]
+    },
+    "F": {
+      "name": "Evaluation type",
+      "status": "PASS",
+      "classification": "real_gt",
+      "deterministic_result": "real_gt by inspected dataset-to-evaluator provenance; raw-dataset authenticity remains outside this local audit.",
+      "details": [
+        "All six REC/Mask evaluation passes use ScanRefer-referred object boxes and ScanNet object point-membership masks, not a teacher/baseline reference, synthetic scene or human score.",
+        "GT-dependent candidate-oracle diagnostics are real_gt offline upper-bound/coverage diagnostics. They are not deployable accuracy, selected-query policy performance, proof of instance identity, or a synthetic/self-supervised reference.",
+        "The CPU analysis replay evaluates saved real-GT records. The two-update preflight is engineering validation on the recorded training batch and does not constitute another benchmark result."
+      ],
+      "evidence": [
+        "complete/source/imported/src.joint_det_dataset.py:634",
+        "complete/source/imported/src.joint_det_dataset.py:1086",
+        "complete/source/run.py:372",
+        "complete/source/run.py:392",
+        "complete/source/run.py:395",
+        "complete/source/imported/evaluator.py:544",
+        "complete/source/imported/evaluator.py:888"
+      ]
+    }
+  },
+  "deterministic_verification": {
+    "status": "PASS",
+    "acceptance_status": "accepted_for_exactly_the_enumerated_checks",
+    "input_files": 63,
+    "checks": 169,
+    "evaluation_jsonl_files": 6,
+    "evaluation_row_records": 46564,
+    "selected_box_geometry_recomputations": 93128,
+    "logged_training_steps": 7446,
+    "changed_initial_mode_records": 13773,
+    "failures": [],
+    "max_selected_iou_absolute_difference": 3.7845209630571475e-06,
+    "geometry_threshold_disagreements": 0,
+    "raw_mask_recomputed": false,
+    "full256_geometry_recomputed": false,
+    "raw_dataset_verified": false,
+    "reviewer_checkpoint_reload": false,
+    "recompute_script_sha256": "a2a2c14eb13121e86de42a4412b0cc4b532651965b1328386fcb224fb82fe331",
+    "recompute_result_sha256": "b96cb1789064453d43a1185938e7b51886748f06d194cebd8422756a95d1fe38",
+    "replay_result_sha256": "e45326e718194d9ef6409a12c2d7be9c9b4007e74ceda52edffab84963483745",
+    "original_analyzer_exit_code": 1,
+    "original_analyzer_failure_line": 132,
+    "qualified_analyzer_exit_code": 0,
+    "qualified_replay_byte_identical": true
+  },
+  "evaluation_type": "real_gt",
+  "evaluation_type_basis": "dataset-to-evaluator source path and saved-row evidence; raw reference authenticity not independently certified",
+  "audited_input_hashes": {
+    "analysis/REPORT.md": "sha256:4baefb0a1ad6f0bc6329e6795d892d0a74a0f6f7f7bdece06f7a66546a32dff4",
+    "analysis/SUMMARY.json": "sha256:907abe7d3f0cff4706ba0d4cbb70dae1cc4f5f16621d70149a8ececefa388519",
+    "analysis_initial_comparison/CHANGED_ROWS.jsonl": "sha256:a85628d60d8381fbafcbd48e2be30387348cca5d2767fe645c93d0d8fd376fd5",
+    "analysis_initial_comparison/failed_analyze_complete.py": "sha256:26dc25549f3999a8330c529a639082d516cea1b85e80d8d78d580d28af4259cd",
+    "analysis_initial_comparison/FAILED_ATTEMPT.json": "sha256:8b197cfae0dbf6866e2ca09bd6b5e69486a8b59804b0fdb8d2a3bcef5f08fc0d",
+    "analysis_initial_comparison/SUMMARY.json": "sha256:b3258e66ecad30b6051d8733d210bc8fd32d49ad2e92ae112be95d916e438aaf",
+    "analyze_complete.py": "sha256:26dc25549f3999a8330c529a639082d516cea1b85e80d8d78d580d28af4259cd",
+    "analyze_complete_initial_qualified.py": "sha256:a5d01e0cf5babeda9f440f8a3ab815ffb27b6a9606a01f89c9b6cd402589ce07",
+    "collect_complete.py": "sha256:7df5d89ee423c92a39acb14e5995e0e321a9eb555de428c735812d9cf5538255",
+    "collect_imported_sources.py": "sha256:90e159326973a882eb4cd093e30f5f3e422b49200ce13aa85f18d6126ea3a269",
+    "complete/g_consistent/formal/receipt.json": "sha256:1cde0d7debdeaf2033fb71a622f1f9c72e2fa563b86589a44b77255a015aa36e",
+    "complete/g_consistent/formal/rows.jsonl": "sha256:7b309abf838b5fc1c40632dc72d157d6b9abcb499ab3971dff6f82e1a09ae828",
+    "complete/g_consistent/formal.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "complete/g_consistent/formal.log": "sha256:924e1d2eb58181e0866cd402309b5ae43817f6b96ab2ecc4c909ab0481fca603",
+    "complete/g_consistent/imports.json": "sha256:c267bd1d40c062d0d3fccf30043085e6f772a6a53f1b7367e6fbdd5837216dac",
+    "complete/g_consistent/initial/receipt.json": "sha256:33ae41151c9c5022c933210080ab16021073556af0f6f01c90b2bf3a24489825",
+    "complete/g_consistent/initial/rows.jsonl": "sha256:5090806948ee43bb727aa4f73d8079968a43297b0524ad9836fa2d5e38f011f0",
+    "complete/g_consistent/load.json": "sha256:cc52d6889dff9bca139402a2a710aab80f680c824249fe3745ce3ebbc7ac6a60",
+    "complete/g_consistent/receipt.json": "sha256:1292350ad95b54274a5615cf0512b7cbb851d2d03a4342e3b065fd72d4a7b773",
+    "complete/g_consistent/spec.json": "sha256:676e39b61b0451aa69fee82cac1d5c921207f77127ed8fa4bd988df1f321d156",
+    "complete/g_consistent/terminal/receipt.json": "sha256:4a36b0b70e53af3a77aa1252b9212379223914086a98350848fb87ac5a814035",
+    "complete/g_consistent/terminal/rows.jsonl": "sha256:4668eff89949aca74f19a52fe794c705bff4266402a7fda77cefdb14dd155deb",
+    "complete/g_consistent/train.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "complete/g_consistent/train.jsonl": "sha256:dff3d5215083167d63c535bac209ccf556e098c1206ce2d77a32e0942013a034",
+    "complete/g_consistent/train.log": "sha256:43540276351bb82a5fbc2a67462704478ae6514b6d6ceaf0bae7e78a95280590",
+    "complete/g_control/formal/receipt.json": "sha256:9b430f63432cb414bdcb3fd29a4c5b9cef23e03d366ce8f3547fe3d4809a8777",
+    "complete/g_control/formal/rows.jsonl": "sha256:d362a766d1b937da38ce2b7bb7285c3403ce2452f74322beddad773a2d87afc2",
+    "complete/g_control/formal.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "complete/g_control/formal.log": "sha256:16b5c4ef6e8ea9174cc1ef8a6ce9153a6d7f6d1573cc53cf37e76eb4f5b3f775",
+    "complete/g_control/imports.json": "sha256:c267bd1d40c062d0d3fccf30043085e6f772a6a53f1b7367e6fbdd5837216dac",
+    "complete/g_control/initial/receipt.json": "sha256:f194404683a1a05c1ed5aff4495945f238bdcbbcb5d3acf6c6e2d5f92a57d138",
+    "complete/g_control/initial/rows.jsonl": "sha256:a5ae84a9078a7ea678c597b03c4c23a4d461082e084d15c547ea6669e3b72f03",
+    "complete/g_control/load.json": "sha256:922717546f3cab1f2120017b10c635aa2a53e7371a222e110b79efabc1096bd5",
+    "complete/g_control/receipt.json": "sha256:c0fb48ed70ff5c1daee12357ad93bb737390a49ba209a3a414767145a3254d43",
+    "complete/g_control/spec.json": "sha256:ddc5466d40f86274019b04e4d2fa0c3049d56df47767386048063a352b22786e",
+    "complete/g_control/terminal/receipt.json": "sha256:c25ddc7e6972cf4b79517bb1cda1058adddfa471ba336ab630e1aee3a0bcba47",
+    "complete/g_control/terminal/rows.jsonl": "sha256:f12936faf45c951b4dfe8e4b1d8cd40fb30c9cef27da743f93d623b08a1fc529",
+    "complete/g_control/train.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "complete/g_control/train.jsonl": "sha256:8d69fe201c88af0aedaa11baee81432346658a29da42135f5237f4f107789202",
+    "complete/g_control/train.log": "sha256:779f0c35dda08a632dc111ba73f957184964e48154f4e2b43aa2451797c4166a",
+    "complete/INTAKE.json": "sha256:f649d2ef263d2a92e6689916be0f9da5cb9142ab0dff27743767e0cf64c5b062",
+    "complete/pair_status.json": "sha256:c6713acdb3837f01ec7d473528ac9ee80900ab594c46ebcad38a0f9c4a91958b",
+    "complete/preflight/preflight.json": "sha256:061c7de80812e170caf2be84b4c017456018aa25fb1fe706480e11134af6a260",
+    "complete/source/imported/evaluator.py": "sha256:39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "complete/source/imported/INTAKE.json": "sha256:2785cb844ee75a68d5d19fba6bbb772d5834e4b86567be46f549661c64419a0d",
+    "complete/source/imported/main_utils.py": "sha256:14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+    "complete/source/imported/models.losses.py": "sha256:920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "complete/source/imported/models.pv_ground.py": "sha256:7fe369d7aaefda3f4e6eb389393799aedbe95ace56dbc107a7d26b0e3a3ea235",
+    "complete/source/imported/prepare_data.py": "sha256:3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+    "complete/source/imported/src.joint_det_dataset.py": "sha256:3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "complete/source/pair.py": "sha256:d6d428b1c574dd9e0e40b056ab83c34d5d07b4d92ddd52ac34880bafa9b65a60",
+    "complete/source/pvground_candidate_consistency.py": "sha256:dc25727853c178f312db05f5f66c49fb56ecc0b72d390e91aa28dcd6f9085186",
+    "complete/source/pvground_observation_query.py": "sha256:cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "complete/source/pvground_semantic_assignment.py": "sha256:3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+    "complete/source/pvground_source_query.py": "sha256:e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "complete/source/pvground_task_observation_query.py": "sha256:39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "complete/source/run.py": "sha256:919fc36d61b8f21a7285f55c153717f05baa4e969ca43ccbc25171e165bc7392",
+    "EXPERIMENT_PLAN.md": "sha256:43516b3a0930b56fed0576544a854ea577a9b0f985c48cdeacdb687a6bdd54b2",
+    "EXPERIMENT_TRACKER.md": "sha256:d481ef730fe8c24f3a140cbfcb94b58c9f1fc1ec145c78a54fdcae79d83f9814",
+    "inspect_initial_difference.py": "sha256:80427da362ccae30acfaa9cf96d43685afd7b498b70616b53d70b2a77da4a922",
+    "prepare_initial_qualified_analysis.py": "sha256:45d54a8ee56f0ad6fbe74e76fe773900da82488bcbf153c447490699015f0b11",
+    "research_contract.md": "sha256:e2b0daa42dff9a092b8a1ed90ccf0073c63cfcd09b4e7a5cd3705389c5d0925e",
+    "WEIGHT_RETENTION.md": "sha256:fc1de402f15d1067d2e90037342a485d1cb8728000574a9a7369fab24407e072"
+  },
+  "audited_input_sizes": {
+    "analysis/REPORT.md": 2437,
+    "analysis/SUMMARY.json": 18992,
+    "analysis_initial_comparison/CHANGED_ROWS.jsonl": 7771026,
+    "analysis_initial_comparison/failed_analyze_complete.py": 12754,
+    "analysis_initial_comparison/FAILED_ATTEMPT.json": 295,
+    "analysis_initial_comparison/SUMMARY.json": 4661,
+    "analyze_complete.py": 12754,
+    "analyze_complete_initial_qualified.py": 13642,
+    "collect_complete.py": 4396,
+    "collect_imported_sources.py": 1546,
+    "complete/g_consistent/formal/receipt.json": 685,
+    "complete/g_consistent/formal/rows.jsonl": 7466209,
+    "complete/g_consistent/formal.exit": 2,
+    "complete/g_consistent/formal.log": 3226,
+    "complete/g_consistent/imports.json": 2372,
+    "complete/g_consistent/initial/receipt.json": 683,
+    "complete/g_consistent/initial/rows.jsonl": 5510219,
+    "complete/g_consistent/load.json": 262,
+    "complete/g_consistent/receipt.json": 2962,
+    "complete/g_consistent/spec.json": 2435,
+    "complete/g_consistent/terminal/receipt.json": 683,
+    "complete/g_consistent/terminal/rows.jsonl": 5509889,
+    "complete/g_consistent/train.exit": 2,
+    "complete/g_consistent/train.jsonl": 3402731,
+    "complete/g_consistent/train.log": 62476,
+    "complete/g_control/formal/receipt.json": 685,
+    "complete/g_control/formal/rows.jsonl": 7467970,
+    "complete/g_control/formal.exit": 2,
+    "complete/g_control/formal.log": 3226,
+    "complete/g_control/imports.json": 2372,
+    "complete/g_control/initial/receipt.json": 683,
+    "complete/g_control/initial/rows.jsonl": 5510294,
+    "complete/g_control/load.json": 262,
+    "complete/g_control/receipt.json": 2964,
+    "complete/g_control/spec.json": 2433,
+    "complete/g_control/terminal/receipt.json": 683,
+    "complete/g_control/terminal/rows.jsonl": 5510174,
+    "complete/g_control/train.exit": 2,
+    "complete/g_control/train.jsonl": 2485183,
+    "complete/g_control/train.log": 47937,
+    "complete/INTAKE.json": 13552,
+    "complete/pair_status.json": 614,
+    "complete/preflight/preflight.json": 4068,
+    "complete/source/imported/evaluator.py": 41473,
+    "complete/source/imported/INTAKE.json": 1063,
+    "complete/source/imported/main_utils.py": 24599,
+    "complete/source/imported/models.losses.py": 40468,
+    "complete/source/imported/models.pv_ground.py": 24954,
+    "complete/source/imported/prepare_data.py": 19658,
+    "complete/source/imported/src.joint_det_dataset.py": 75981,
+    "complete/source/pair.py": 3210,
+    "complete/source/pvground_candidate_consistency.py": 3464,
+    "complete/source/pvground_observation_query.py": 7683,
+    "complete/source/pvground_semantic_assignment.py": 5065,
+    "complete/source/pvground_source_query.py": 3025,
+    "complete/source/pvground_task_observation_query.py": 2770,
+    "complete/source/run.py": 31390,
+    "EXPERIMENT_PLAN.md": 4029,
+    "EXPERIMENT_TRACKER.md": 939,
+    "inspect_initial_difference.py": 3343,
+    "prepare_initial_qualified_analysis.py": 2626,
+    "research_contract.md": 747,
+    "WEIGHT_RETENTION.md": 1582
+  },
+  "recomputed_metrics": {
+    "g_control/initial": {
+      "rows": 6887,
+      "scan_ids": 106,
+      "physical_scene_prefixes": 106,
+      "unique_scene_target_pairs": 1479,
+      "modes": {
+        "bbs": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5818,
+          "rec_hits25": 6176,
+          "rec_hits50": 5602,
+          "mask_iou_sum": 5110.032628241228,
+          "mask_miou": 74.19823766866891,
+          "oracle_hits25": [
+            6509,
+            6612,
+            6768,
+            6854
+          ],
+          "oracle_hits50": [
+            6302,
+            6430,
+            6605,
+            6694
+          ],
+          "rec_acc25_percent": 89.6762015391317,
+          "rec_acc50_percent": 81.3416581966023,
+          "independent_geometry_max_abs_iou_error": 2.8997857486334766e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        },
+        "bbf": {
+          "mask_hits25": 6208,
+          "mask_hits50": 5833,
+          "rec_hits25": 6206,
+          "rec_hits50": 5647,
+          "mask_iou_sum": 5126.612751213135,
+          "mask_miou": 74.43898288388465,
+          "oracle_hits25": [
+            6549,
+            6629,
+            6776,
+            6854
+          ],
+          "oracle_hits50": [
+            6330,
+            6448,
+            6615,
+            6694
+          ],
+          "rec_acc25_percent": 90.11180484971686,
+          "rec_acc50_percent": 81.99506316248004,
+          "independent_geometry_max_abs_iou_error": 2.8997857486334766e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        }
+      }
+    },
+    "g_control/terminal": {
+      "rows": 6887,
+      "scan_ids": 106,
+      "physical_scene_prefixes": 106,
+      "unique_scene_target_pairs": 1479,
+      "modes": {
+        "bbs": {
+          "mask_hits25": 6167,
+          "mask_hits50": 5807,
+          "rec_hits25": 6144,
+          "rec_hits50": 5561,
+          "mask_iou_sum": 5089.260260333773,
+          "mask_miou": 73.8966205943629,
+          "oracle_hits25": [
+            6478,
+            6584,
+            6739,
+            6854
+          ],
+          "oracle_hits50": [
+            6263,
+            6398,
+            6583,
+            6686
+          ],
+          "rec_acc25_percent": 89.21155800784086,
+          "rec_acc50_percent": 80.7463336721359,
+          "independent_geometry_max_abs_iou_error": 3.639558397328102e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        },
+        "bbf": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5814,
+          "rec_hits25": 6168,
+          "rec_hits50": 5589,
+          "mask_iou_sum": 5097.313277439913,
+          "mask_miou": 74.01355129141734,
+          "oracle_hits25": [
+            6517,
+            6603,
+            6751,
+            6854
+          ],
+          "oracle_hits50": [
+            6300,
+            6418,
+            6592,
+            6686
+          ],
+          "rec_acc25_percent": 89.56004065630898,
+          "rec_acc50_percent": 81.15289676201539,
+          "independent_geometry_max_abs_iou_error": 3.7845209630571475e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        }
+      }
+    },
+    "g_control/formal": {
+      "rows": 9508,
+      "scan_ids": 141,
+      "physical_scene_prefixes": 141,
+      "unique_scene_target_pairs": 2068,
+      "modes": {
+        "bbs": {
+          "mask_hits25": 5821,
+          "mask_hits50": 5145,
+          "rec_hits25": 5588,
+          "rec_hits50": 4423,
+          "mask_iou_sum": 4477.405080844765,
+          "mask_miou": 47.09092428318011,
+          "oracle_hits25": [
+            6217,
+            6687,
+            7701,
+            8904
+          ],
+          "oracle_hits50": [
+            5395,
+            5865,
+            6810,
+            7780
+          ],
+          "rec_acc25_percent": 58.771560790912915,
+          "rec_acc50_percent": 46.5187210769878,
+          "independent_geometry_max_abs_iou_error": 2.9233686820548686e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        },
+        "bbf": {
+          "mask_hits25": 5820,
+          "mask_hits50": 5151,
+          "rec_hits25": 5599,
+          "rec_hits50": 4427,
+          "mask_iou_sum": 4475.384079750918,
+          "mask_miou": 47.06966848707319,
+          "oracle_hits25": [
+            6376,
+            6788,
+            7721,
+            8904
+          ],
+          "oracle_hits50": [
+            5540,
+            5948,
+            6825,
+            7780
+          ],
+          "rec_acc25_percent": 58.88725283971392,
+          "rec_acc50_percent": 46.56079091291544,
+          "independent_geometry_max_abs_iou_error": 2.9233686820548686e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        }
+      }
+    },
+    "g_consistent/initial": {
+      "rows": 6887,
+      "scan_ids": 106,
+      "physical_scene_prefixes": 106,
+      "unique_scene_target_pairs": 1479,
+      "modes": {
+        "bbs": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5818,
+          "rec_hits25": 6176,
+          "rec_hits50": 5602,
+          "mask_iou_sum": 5110.112005356001,
+          "mask_miou": 74.19939023313489,
+          "oracle_hits25": [
+            6508,
+            6611,
+            6768,
+            6854
+          ],
+          "oracle_hits50": [
+            6302,
+            6430,
+            6606,
+            6694
+          ],
+          "rec_acc25_percent": 89.6762015391317,
+          "rec_acc50_percent": 81.3416581966023,
+          "independent_geometry_max_abs_iou_error": 2.6683011246086963e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        },
+        "bbf": {
+          "mask_hits25": 6208,
+          "mask_hits50": 5833,
+          "rec_hits25": 6206,
+          "rec_hits50": 5647,
+          "mask_iou_sum": 5126.692128327908,
+          "mask_miou": 74.44013544835063,
+          "oracle_hits25": [
+            6548,
+            6628,
+            6776,
+            6854
+          ],
+          "oracle_hits50": [
+            6330,
+            6448,
+            6615,
+            6694
+          ],
+          "rec_acc25_percent": 90.11180484971686,
+          "rec_acc50_percent": 81.99506316248004,
+          "independent_geometry_max_abs_iou_error": 2.768881777193144e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        }
+      }
+    },
+    "g_consistent/terminal": {
+      "rows": 6887,
+      "scan_ids": 106,
+      "physical_scene_prefixes": 106,
+      "unique_scene_target_pairs": 1479,
+      "modes": {
+        "bbs": {
+          "mask_hits25": 6166,
+          "mask_hits50": 5798,
+          "rec_hits25": 6153,
+          "rec_hits50": 5610,
+          "mask_iou_sum": 5088.820723755984,
+          "mask_miou": 73.8902384747493,
+          "oracle_hits25": [
+            6424,
+            6541,
+            6723,
+            6836
+          ],
+          "oracle_hits50": [
+            6217,
+            6356,
+            6550,
+            6674
+          ],
+          "rec_acc25_percent": 89.34223900101641,
+          "rec_acc50_percent": 81.45781907942501,
+          "independent_geometry_max_abs_iou_error": 3.3013242490831374e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        },
+        "bbf": {
+          "mask_hits25": 6170,
+          "mask_hits50": 5791,
+          "rec_hits25": 6137,
+          "rec_hits50": 5595,
+          "mask_iou_sum": 5085.734286910854,
+          "mask_miou": 73.84542307116094,
+          "oracle_hits25": [
+            6428,
+            6555,
+            6733,
+            6836
+          ],
+          "oracle_hits50": [
+            6228,
+            6365,
+            6566,
+            6674
+          ],
+          "rec_acc25_percent": 89.10991723537099,
+          "rec_acc50_percent": 81.24001742413242,
+          "independent_geometry_max_abs_iou_error": 2.995372799574625e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        }
+      }
+    },
+    "g_consistent/formal": {
+      "rows": 9508,
+      "scan_ids": 141,
+      "physical_scene_prefixes": 141,
+      "unique_scene_target_pairs": 2068,
+      "modes": {
+        "bbs": {
+          "mask_hits25": 5812,
+          "mask_hits50": 5125,
+          "rec_hits25": 5596,
+          "rec_hits50": 4457,
+          "mask_iou_sum": 4473.248949020344,
+          "mask_miou": 47.04721233719336,
+          "oracle_hits25": [
+            6151,
+            6596,
+            7616,
+            8893
+          ],
+          "oracle_hits50": [
+            5343,
+            5782,
+            6729,
+            7764
+          ],
+          "rec_acc25_percent": 58.8557004627682,
+          "rec_acc50_percent": 46.87631468237274,
+          "independent_geometry_max_abs_iou_error": 2.762505838804774e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        },
+        "bbf": {
+          "mask_hits25": 5825,
+          "mask_hits50": 5121,
+          "rec_hits25": 5572,
+          "rec_hits50": 4403,
+          "mask_iou_sum": 4473.914055905887,
+          "mask_miou": 47.05420757158063,
+          "oracle_hits25": [
+            6170,
+            6622,
+            7635,
+            8893
+          ],
+          "oracle_hits50": [
+            5336,
+            5807,
+            6765,
+            7764
+          ],
+          "rec_acc25_percent": 58.603281447202356,
+          "rec_acc50_percent": 46.3083718973496,
+          "independent_geometry_max_abs_iou_error": 3.4426569071044355e-06,
+          "independent_geometry_threshold_disagreements": {
+            "0.25": 0,
+            "0.5": 0
+          }
+        }
+      }
+    }
+  },
+  "recomputed_paired_counts": {
+    "initial": {
+      "bbs": {
+        "25": {
+          "control_hits": 6176,
+          "consistent_hits": 6176,
+          "repairs": 0,
+          "damages": 0,
+          "net": 0,
+          "control_errors_with_good_full256_candidate": 678,
+          "consistent_errors_with_good_full256_candidate": 678,
+          "repairs_from_control_coverable_errors": 0,
+          "repairs_from_control_missing_candidate_errors": 0
+        },
+        "50": {
+          "control_hits": 5602,
+          "consistent_hits": 5602,
+          "repairs": 0,
+          "damages": 0,
+          "net": 0,
+          "control_errors_with_good_full256_candidate": 1092,
+          "consistent_errors_with_good_full256_candidate": 1092,
+          "repairs_from_control_coverable_errors": 0,
+          "repairs_from_control_missing_candidate_errors": 0
+        }
+      },
+      "bbf": {
+        "25": {
+          "control_hits": 6206,
+          "consistent_hits": 6206,
+          "repairs": 0,
+          "damages": 0,
+          "net": 0,
+          "control_errors_with_good_full256_candidate": 648,
+          "consistent_errors_with_good_full256_candidate": 648,
+          "repairs_from_control_coverable_errors": 0,
+          "repairs_from_control_missing_candidate_errors": 0
+        },
+        "50": {
+          "control_hits": 5647,
+          "consistent_hits": 5647,
+          "repairs": 0,
+          "damages": 0,
+          "net": 0,
+          "control_errors_with_good_full256_candidate": 1047,
+          "consistent_errors_with_good_full256_candidate": 1047,
+          "repairs_from_control_coverable_errors": 0,
+          "repairs_from_control_missing_candidate_errors": 0
+        }
+      }
+    },
+    "terminal": {
+      "bbs": {
+        "25": {
+          "control_hits": 6144,
+          "consistent_hits": 6153,
+          "repairs": 128,
+          "damages": 119,
+          "net": 9,
+          "control_errors_with_good_full256_candidate": 710,
+          "consistent_errors_with_good_full256_candidate": 683,
+          "repairs_from_control_coverable_errors": 128,
+          "repairs_from_control_missing_candidate_errors": 0
+        },
+        "50": {
+          "control_hits": 5561,
+          "consistent_hits": 5610,
+          "repairs": 317,
+          "damages": 268,
+          "net": 49,
+          "control_errors_with_good_full256_candidate": 1125,
+          "consistent_errors_with_good_full256_candidate": 1064,
+          "repairs_from_control_coverable_errors": 314,
+          "repairs_from_control_missing_candidate_errors": 3
+        }
+      },
+      "bbf": {
+        "25": {
+          "control_hits": 6168,
+          "consistent_hits": 6137,
+          "repairs": 125,
+          "damages": 156,
+          "net": -31,
+          "control_errors_with_good_full256_candidate": 686,
+          "consistent_errors_with_good_full256_candidate": 699,
+          "repairs_from_control_coverable_errors": 125,
+          "repairs_from_control_missing_candidate_errors": 0
+        },
+        "50": {
+          "control_hits": 5589,
+          "consistent_hits": 5595,
+          "repairs": 311,
+          "damages": 305,
+          "net": 6,
+          "control_errors_with_good_full256_candidate": 1097,
+          "consistent_errors_with_good_full256_candidate": 1079,
+          "repairs_from_control_coverable_errors": 307,
+          "repairs_from_control_missing_candidate_errors": 4
+        }
+      }
+    },
+    "formal": {
+      "bbs": {
+        "25": {
+          "control_hits": 5588,
+          "consistent_hits": 5596,
+          "repairs": 244,
+          "damages": 236,
+          "net": 8,
+          "control_errors_with_good_full256_candidate": 3316,
+          "consistent_errors_with_good_full256_candidate": 3297,
+          "repairs_from_control_coverable_errors": 242,
+          "repairs_from_control_missing_candidate_errors": 2
+        },
+        "50": {
+          "control_hits": 4423,
+          "consistent_hits": 4457,
+          "repairs": 379,
+          "damages": 345,
+          "net": 34,
+          "control_errors_with_good_full256_candidate": 3357,
+          "consistent_errors_with_good_full256_candidate": 3307,
+          "repairs_from_control_coverable_errors": 377,
+          "repairs_from_control_missing_candidate_errors": 2
+        }
+      },
+      "bbf": {
+        "25": {
+          "control_hits": 5599,
+          "consistent_hits": 5572,
+          "repairs": 248,
+          "damages": 275,
+          "net": -27,
+          "control_errors_with_good_full256_candidate": 3305,
+          "consistent_errors_with_good_full256_candidate": 3321,
+          "repairs_from_control_coverable_errors": 246,
+          "repairs_from_control_missing_candidate_errors": 2
+        },
+        "50": {
+          "control_hits": 4427,
+          "consistent_hits": 4403,
+          "repairs": 366,
+          "damages": 390,
+          "net": -24,
+          "control_errors_with_good_full256_candidate": 3353,
+          "consistent_errors_with_good_full256_candidate": 3361,
+          "repairs_from_control_coverable_errors": 361,
+          "repairs_from_control_missing_candidate_errors": 5
+        }
+      }
+    }
+  },
+  "recomputed_training": {
+    "g_control": {
+      "steps": 3723,
+      "row_count": 29778,
+      "unique_rows": 29778,
+      "batch_size_counts": {
+        "8": 3722,
+        "2": 1
+      },
+      "max_total_loss_sum_rounding_error": 9.5367431640625e-07,
+      "max_ce_correction_rounding_error": 8.514949256799298e-08,
+      "loss_min": 10.459656715393066,
+      "loss_max": 20.38933563232422,
+      "cumulative_seconds": 8638.648111581802,
+      "sum_step_seconds": 8605.64666223526,
+      "matched_query_total": 29778,
+      "reassigned_query_total": 938378,
+      "reassigned_sample_total": 28214,
+      "zero_correction_steps": 3723,
+      "nonzero_correction_steps": 0,
+      "contrastive_correction_min": 0.0,
+      "contrastive_correction_max": 0.0,
+      "dataset_log_witness": [
+        "PVG_FULL_DATASET_INPUTS_PASS {\"fit\": 29778, \"holdout\": 6887, \"physical_fit\": 456, \"physical_holdout\": 106, \"reference_rows\": 4}"
+      ]
+    },
+    "g_consistent": {
+      "steps": 3723,
+      "row_count": 29778,
+      "unique_rows": 29778,
+      "batch_size_counts": {
+        "8": 3722,
+        "2": 1
+      },
+      "max_total_loss_sum_rounding_error": 1.4156103134155273e-06,
+      "max_ce_correction_rounding_error": 1.1920928955078125e-07,
+      "loss_min": 1.8724746704101562,
+      "loss_max": 20.465845108032227,
+      "cumulative_seconds": 8738.435400724411,
+      "sum_step_seconds": 8692.745849609375,
+      "matched_query_total": 29778,
+      "reassigned_query_total": 1022313,
+      "reassigned_sample_total": 28246,
+      "zero_correction_steps": 0,
+      "nonzero_correction_steps": 3723,
+      "contrastive_correction_min": -12.58745288848877,
+      "contrastive_correction_max": 5.242063045501709,
+      "contrastive_replaced_negative_steps": 3638,
+      "contrastive_replaced_min": -148.15162658691406,
+      "contrastive_replaced_max": 100.86846923828125,
+      "max_contrastive_reconstruction_error": 0.0,
+      "max_contrastive_correction_rounding_error": 1.3623918810878877e-06,
+      "dataset_log_witness": [
+        "PVG_FULL_DATASET_INPUTS_PASS {\"fit\": 29778, \"holdout\": 6887, \"physical_fit\": 456, \"physical_holdout\": 106, \"reference_rows\": 4}"
+      ]
+    }
+  },
+  "recomputed_initial_comparison": {
+    "rows": 6887,
+    "input_and_gt_exact": true,
+    "modes": {
+      "bbs": {
+        "differing_metric_fields": {
+          "mask_iou_sum": {
+            "control": 5110.032628241228,
+            "consistent": 5110.112005356001
+          },
+          "mask_miou": {
+            "control": 74.19823766866891,
+            "consistent": 74.19939023313489
+          },
+          "oracle_hits25": {
+            "control": [
+              6509,
+              6612,
+              6768,
+              6854
+            ],
+            "consistent": [
+              6508,
+              6611,
+              6768,
+              6854
+            ]
+          },
+          "oracle_hits50": {
+            "control": [
+              6302,
+              6430,
+              6605,
+              6694
+            ],
+            "consistent": [
+              6302,
+              6430,
+              6606,
+              6694
+            ]
+          }
+        },
+        "threshold_bitmap_difference_counts": {
+          "iou0.25": 0,
+          "iou0.5": 0,
+          "mask_iou0.25": 0,
+          "mask_iou0.5": 0
+        },
+        "selected_query_changes": 0,
+        "selected_box_changes": 6886,
+        "max_abs_selected_box_difference": 0.0008502006530761719,
+        "selected_iou_changes": 5939,
+        "selected_mask_iou_changes": 2,
+        "max_abs_mask_iou_difference": 0.059084534645080566,
+        "oracle_vector_changes": {
+          "oracle25": 2,
+          "oracle50": 1
+        }
+      },
+      "bbf": {
+        "differing_metric_fields": {
+          "mask_iou_sum": {
+            "control": 5126.612751213135,
+            "consistent": 5126.692128327908
+          },
+          "mask_miou": {
+            "control": 74.43898288388465,
+            "consistent": 74.44013544835063
+          },
+          "oracle_hits25": {
+            "control": [
+              6549,
+              6629,
+              6776,
+              6854
+            ],
+            "consistent": [
+              6548,
+              6628,
+              6776,
+              6854
+            ]
+          }
+        },
+        "threshold_bitmap_difference_counts": {
+          "iou0.25": 0,
+          "iou0.5": 0,
+          "mask_iou0.25": 0,
+          "mask_iou0.5": 0
+        },
+        "selected_query_changes": 1,
+        "selected_box_changes": 6887,
+        "max_abs_selected_box_difference": 0.02062702178955078,
+        "selected_iou_changes": 5966,
+        "selected_mask_iou_changes": 2,
+        "max_abs_mask_iou_difference": 0.059084534645080566,
+        "oracle_vector_changes": {
+          "oracle25": 1,
+          "oracle50": 0
+        }
+      }
+    },
+    "metrics": {
+      "control": {
+        "bbs": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5818,
+          "rec_hits25": 6176,
+          "rec_hits50": 5602,
+          "mask_iou_sum": 5110.032628241228,
+          "mask_miou": 74.19823766866891,
+          "oracle_hits25": [
+            6509,
+            6612,
+            6768,
+            6854
+          ],
+          "oracle_hits50": [
+            6302,
+            6430,
+            6605,
+            6694
+          ]
+        },
+        "bbf": {
+          "mask_hits25": 6208,
+          "mask_hits50": 5833,
+          "rec_hits25": 6206,
+          "rec_hits50": 5647,
+          "mask_iou_sum": 5126.612751213135,
+          "mask_miou": 74.43898288388465,
+          "oracle_hits25": [
+            6549,
+            6629,
+            6776,
+            6854
+          ],
+          "oracle_hits50": [
+            6330,
+            6448,
+            6615,
+            6694
+          ]
+        }
+      },
+      "consistent": {
+        "bbs": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5818,
+          "rec_hits25": 6176,
+          "rec_hits50": 5602,
+          "mask_iou_sum": 5110.112005356001,
+          "mask_miou": 74.19939023313489,
+          "oracle_hits25": [
+            6508,
+            6611,
+            6768,
+            6854
+          ],
+          "oracle_hits50": [
+            6302,
+            6430,
+            6606,
+            6694
+          ]
+        },
+        "bbf": {
+          "mask_hits25": 6208,
+          "mask_hits50": 5833,
+          "rec_hits25": 6206,
+          "rec_hits50": 5647,
+          "mask_iou_sum": 5126.692128327908,
+          "mask_miou": 74.44013544835063,
+          "oracle_hits25": [
+            6548,
+            6628,
+            6776,
+            6854
+          ],
+          "oracle_hits50": [
+            6330,
+            6448,
+            6615,
+            6694
+          ]
+        }
+      }
+    },
+    "GPU_forwards": 0,
+    "optimizer_updates": 0,
+    "model_source_changes": 0,
+    "source_row_hashes": {
+      "g_control": "a5ae84a9078a7ea678c597b03c4c23a4d461082e084d15c547ea6669e3b72f03",
+      "g_consistent": "5090806948ee43bb727aa4f73d8079968a43297b0524ad9836fa2d5e38f011f0"
+    }
+  },
+  "initial_input_and_gt_exact_field_interpretation": {
+    "checked_fields": [
+      "row_id",
+      "scan_id",
+      "target_id",
+      "root_box",
+      "point_sha256"
+    ],
+    "meaning": "Reproduces the source diagnostic field for these saved values only; it does not certify complete input tensors or raw GT.",
+    "raw_dataset_or_mask_equality_verified": false
+  },
+  "recorded_remote_checkpoint_witnesses": {
+    "g_control": {
+      "path": "/root/autodl-tmp/pvground_candidate_consistency_20261003/g_control/terminal.pth",
+      "bytes": 342299951,
+      "sha256": "a7c463cf22bca194650da3b997cca242843c7a327275e044ac0367168680120a"
+    },
+    "g_consistent": {
+      "path": "/root/autodl-tmp/pvground_candidate_consistency_20261003/g_consistent/terminal.pth",
+      "bytes": 342299951,
+      "sha256": "2bbe2ae88e6dc993ad8c607fa24a7f9453cac781384e65ab1ad683e742762133"
+    }
+  },
+  "checkpoint_witness_verification_level": "metadata agreement only; not locally hashed/deserialized checkpoint bytes",
+  "historical_reference": {
+    "hits25": 5615,
+    "hits50": 4495,
+    "independently_recounted": false,
+    "evidence": [
+      "research_contract.md:3",
+      "WEIGHT_RETENTION.md:6",
+      "analyze_complete_initial_qualified.py:148"
+    ]
+  },
+  "blocking_issues": [],
+  "blocking_issues_scope": "No observed evidence-integrity blocker to reporting the narrow qualified result. This is not approval of promotion, broad causal claims, raw-data certification, checkpoint deletion or a deployment decision.",
+  "nonblocking_issues": [
+    {
+      "id": "W1",
+      "severity": "WARN",
+      "kind": "stale_reporting",
+      "description": "Plan and tracker retain an 11:33 running/TODO snapshot although the pair completed at 14:58:13.702207+08:00.",
+      "action": "Update the terminal publication/status while preserving the old snapshot and the failed exact-comparison evidence.",
+      "evidence": [
+        "EXPERIMENT_PLAN.md:3",
+        "EXPERIMENT_TRACKER.md:7",
+        "EXPERIMENT_TRACKER.md:8",
+        "EXPERIMENT_TRACKER.md:9",
+        "complete/pair_status.json:28"
+      ]
+    },
+    {
+      "id": "W2",
+      "severity": "WARN",
+      "kind": "comparison_qualification",
+      "description": "Inputs/GT exact is broader than the fields actually compared; exact starting outputs failed and the relaxed criterion was post hoc.",
+      "action": "Say recorded row IDs, scene/target IDs, root boxes and point hashes match; REC/Mask threshold bitmaps match; full inputs/raw GT and bitwise outputs were not independently verified.",
+      "evidence": [
+        "analyze_complete.py:56",
+        "inspect_initial_difference.py:28",
+        "prepare_initial_qualified_analysis.py:14",
+        "analysis/REPORT.md:28"
+      ]
+    },
+    {
+      "id": "W3",
+      "severity": "WARN",
+      "kind": "negative_result_visibility",
+      "description": "Mask decreases are in SUMMARY.json and native receipts but absent from the compact REPORT.md table.",
+      "action": "Include both formal Mask mIoUs and bbf negatives alongside bbs gains in the terminal-facing summary.",
+      "evidence": [
+        "research_contract.md:5",
+        "complete/g_control/formal/receipt.json:5",
+        "complete/g_consistent/formal/receipt.json:5",
+        "analysis/REPORT.md:7"
+      ]
+    }
+  ],
+  "limitations": [
+    "No SSH, network data access, GPU forward, training, checkpoint copy, deletion or mutation of the 63 audited inputs was performed by this reviewer.",
+    "Raw ScanRefer annotations, scan/instance geometry, raw point tensors, masks, complete candidate coordinates/scores, parser caches and source manifests referenced remotely are absent from the supplied intake. Their runtime checks are source/log evidence, not independent local revalidation.",
+    "Saved selected-box geometry is independently recomputed; Mask IoU scalars and candidate-oracle flags are only independently recounted and structurally checked. bbs/bbf selection rankings cannot be independently rerun from saved selected boxes alone.",
+    "Checkpoint and parent file hashes quoted below are recorded remote witnesses, not hashes computed from checkpoint bytes by this reviewer. No terminal optimizer state inspection or checkpoint reload repeat was performed.",
+    "Collected imports.json and load.json correspond to the last (formal) invocation. Source-port/custom-module hashes in training receipts support the training chain, but no immutable per-stage full import snapshot or whole dependency bundle is supplied.",
+    "The claim that the evaluator is official is supported by the recorded native path/import hash and source inspected here, not an independent comparison to an upstream release or commit.",
+    "The historical G baseline and prior author/G training history are declared inputs to this audit, not independently reconstructed historical runs.",
+    "One seed, post hoc analysis-gate relaxation and changed effective objective weight limit causal/generalization conclusions. The same-family fresh reviewer route is provisional, not cross-family acceptance."
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "Two arms completed 3723 logged steps over the same 29778 unique fit rows and six complete evaluation passes exist.",
+      "impact": "supported",
+      "qualification": "Source/log/row evidence; not independent terminal optimizer-state deserialization."
+    },
+    {
+      "id": "C2",
+      "claim": "Formal bbs consistent-control difference is +8/+34 hits.",
+      "impact": "supported_with_qualifiers",
+      "qualification": "Descriptive one-seed development result; +.08414/+.35759 pp. No stable, statistically significant or pure-label causal gain established."
+    },
+    {
+      "id": "C3",
+      "claim": "The current policy beats historical G or passes the development target.",
+      "impact": "unsupported",
+      "qualification": "Using the declared historical reference, it is -19/-38 hits; 4457<4754. Historical baseline itself was not independently recounted here."
+    },
+    {
+      "id": "C4",
+      "claim": "There is an across-interface or Mask improvement.",
+      "impact": "unsupported",
+      "qualification": "Formal bbf -27/-24 hits; Mask mIoU decreases in both interfaces."
+    },
+    {
+      "id": "C5",
+      "claim": "The comparison starts from bitwise-identical functional outputs and proves pure label-consistency causality.",
+      "impact": "unsupported",
+      "qualification": "Initial exact analyzer fails; expanded correspondences change effective weight and shared-parameter geometry can change."
+    },
+    {
+      "id": "C6",
+      "claim": "Full-256 coverage represents an executable inference filter or guaranteed repair count.",
+      "impact": "unsupported",
+      "qualification": "GT-only offline diagnosis; raw full-candidate tensors were not provided to independently regenerate coverage."
+    },
+    {
+      "id": "C7",
+      "claim": "All reported dataset-derived references and full raw inputs are independently verified.",
+      "impact": "unsupported",
+      "qualification": "Source provenance and saved-field alignment are verified; raw dataset/masks/dependencies are not."
+    },
+    {
+      "id": "C8",
+      "claim": "The candidate-consistency correction really ran and native box/Mask matching was not replaced.",
+      "impact": "supported_with_qualifiers",
+      "qualification": "Correct final-head call path and nonzero logged corrections in all 3723 updates; direct gradient witness is preflight only."
+    },
+    {
+      "id": "C9",
+      "claim": "Nr3D/Sr3D or robust multi-seed generalization is established.",
+      "impact": "unsupported",
+      "qualification": "Only ScanRefer, seed2027, two trained endpoints."
+    },
+    {
+      "id": "C10",
+      "claim": "Recorded endpoint hashes establish independently verified terminal optimizer reload and archived checkpoint availability.",
+      "impact": "unsupported",
+      "qualification": "Remote collection receipts attest hashes. Checkpoint bytes were not in the intake; no reviewer reload/archive verification."
+    }
+  ],
+  "source_or_evidence_mutation": false,
+  "ssh_used": false,
+  "gpu_used": false,
+  "final_input_recheck": "All 63 audited input SHA256 values unchanged immediately before writing this report."
+}

@@ -1,0 +1,161 @@
+{
+  "status": {
+    "status": "running",
+    "completed": [
+      {
+        "arm": "g_control",
+        "mode": "train",
+        "seconds": 10422.462062835693
+      },
+      {
+        "arm": "g_consistent",
+        "mode": "train",
+        "seconds": 10515.421343326569
+      },
+      {
+        "arm": "g_control",
+        "mode": "formal",
+        "seconds": 1037.2857220172882
+      }
+    ],
+    "started_cst": "2026-10-03T08:34:36.290136+08:00",
+    "stage": "g_consistent/formal",
+    "process_pid": 375442
+  },
+  "controller_pid": 320934,
+  "controller_live": true,
+  "child_pid": 375442,
+  "child_live": true,
+  "directory_free_bytes": 1968648192,
+  "gpu": "0, NVIDIA A100-PCIE-40GB, 7319 MiB",
+  "compute_processes": [
+    "241008, 7310 MiB"
+  ],
+  "stage_log_tail": "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.weight', 'lm_head.decoder.weight', 'lm_head.dense.bias']\n- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\nPVG_FINETUNE_DATASET_LOADING 2026-10-03T14:41:17.947759+08:00\nLoading val files, take a breath!\nBegin text decoupling......\nEnd text decoupling!\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 512, \"total\": 9508, \"seconds\": 55.61372375488281}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 1024, \"total\": 9508, \"seconds\": 104.17082786560059}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 1536, \"total\": 9508, \"seconds\": 150.62166285514832}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 2048, \"total\": 9508, \"seconds\": 202.0720899105072}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 2560, \"total\": 9508, \"seconds\": 255.8453085422516}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 3072, \"total\": 9508, \"seconds\": 306.0505404472351}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 3584, \"total\": 9508, \"seconds\": 354.54864954948425}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 4096, \"total\": 9508, \"seconds\": 401.71749782562256}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 4608, \"total\": 9508, \"seconds\": 449.77528262138367}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 5120, \"total\": 9508, \"seconds\": 496.83875608444214}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 5632, \"total\": 9508, \"seconds\": 545.3510150909424}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 6144, \"total\": 9508, \"seconds\": 591.8185636997223}\nPVG_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 6656, \"total\": 9508, \"seconds\": 639.598388671875}\n",
+  "records": {
+    "initial/receipt.json": {
+      "elapsed_seconds": 654.7133450508118,
+      "formal_rows": 0,
+      "metrics": {
+        "bbf": {
+          "mask_hits25": 6208,
+          "mask_hits50": 5833,
+          "mask_iou_sum": 5126.692128327908,
+          "mask_miou": 74.44013544835063,
+          "rec_hits25": 6206,
+          "rec_hits50": 5647
+        },
+        "bbs": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5818,
+          "mask_iou_sum": 5110.112005356001,
+          "mask_miou": 74.19939023313489,
+          "rec_hits25": 6176,
+          "rec_hits50": 5602
+        }
+      },
+      "rows": 6887,
+      "rows_sha256": "5090806948ee43bb727aa4f73d8079968a43297b0524ad9836fa2d5e38f011f0",
+      "stage": "initial",
+      "status": "pass",
+      "time_cst": "2026-10-03T11:46:37.467632+08:00"
+    },
+    "receipt.json": {
+      "added_state_tensors": 37,
+      "assignment_module_sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "base_terminal_sha256": "0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522",
+      "changed_parameter_tensors": 796,
+      "checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+      "consistency_module_sha256": "dc25727853c178f312db05f5f66c49fb56ecc0b72d390e91aa28dcd6f9085186",
+      "fit_rows": 29778,
+      "fit_seen_exactly_once": true,
+      "formal_rows": 0,
+      "fresh_optimizer": true,
+      "frozen_parameters_unchanged": true,
+      "holdout_rows": 6887,
+      "initial": {
+        "bbf": {
+          "mask_hits25": 6208,
+          "mask_hits50": 5833,
+          "mask_iou_sum": 5126.692128327908,
+          "mask_miou": 74.44013544835063,
+          "rec_hits25": 6206,
+          "rec_hits50": 5647
+        },
+        "bbs": {
+          "mask_hits25": 6180,
+          "mask_hits50": 5818,
+          "mask_iou_sum": 5110.112005356001,
+          "mask_miou": 74.19939023313489,
+          "rec_hits25": 6176,
+          "rec_hits50": 5602
+        }
+      },
+      "new_parameters": 923616,
+      "observation_module_sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "observation_state": true,
+      "p2": false,
+      "primary_mode": "bbs",
+      "primary_rec_nonregression": false,
+      "script_sha256": "919fc36d61b8f21a7285f55c153717f05baa4e969ca43ccbc25171e165bc7392",
+      "semantic_assignment": true,
+      "semantic_consistency": true,
+      "source_port_sha256": "9879e0a98040c0b7a21f026414f21f52c1e998343c10d3a59fdec3b501ac7ea9",
+      "source_query_module_sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "source_query_read": true,
+      "spec_sha256": "676e39b61b0451aa69fee82cac1d5c921207f77127ed8fa4bd988df1f321d156",
+      "status": "complete",
+      "task_module_sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "task_read": true,
+      "terminal": {
+        "bbf": {
+          "mask_hits25": 6170,
+          "mask_hits50": 5791,
+          "mask_iou_sum": 5085.734286910854,
+          "mask_miou": 73.84542307116094,
+          "rec_hits25": 6137,
+          "rec_hits50": 5595
+        },
+        "bbs": {
+          "mask_hits25": 6166,
+          "mask_hits50": 5798,
+          "mask_iou_sum": 5088.820723755984,
+          "mask_miou": 73.8902384747493,
+          "rec_hits25": 6153,
+          "rec_hits50": 5610
+        }
+      },
+      "terminal_sha256": "2bbe2ae88e6dc993ad8c607fa24a7f9453cac781384e65ab1ad683e742762133",
+      "time_cst": "2026-10-03T14:23:27.574315+08:00",
+      "train_log_sha256": "dff3d5215083167d63c535bac209ccf556e098c1206ce2d77a32e0942013a034",
+      "training_steps": 3723,
+      "transitions": {
+        "bbf": {
+          "0.25": {
+            "breaks": 163,
+            "fixes": 94,
+            "net": -69
+          },
+          "0.5": {
+            "breaks": 313,
+            "fixes": 261,
+            "net": -52
+          }
+        },
+        "bbs": {
+          "0.25": {
+            "breaks": 129,
+            "fixes": 106,
+            "net": -23
+          },
+          "0.5": {
+            "breaks": 264,
+            "fixes": 272,
+            "net": 8
+          }
+        }
+      }
+    }
+  },
+  "time_cst": "2026-10-03T14:54:26.857390+08:00"
+}

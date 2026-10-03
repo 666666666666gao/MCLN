@@ -68,7 +68,7 @@ def compare_rows(control, method, mode):
             'control_hits': control_hits, 'consistent_hits': method_hits,
             'repairs': repairs, 'damages': damages, 'net': repairs-damages,
             'control_errors_with_good_full256_candidate': sum(a['iou'] <= threshold and a[oracle_key][-1] for a, _ in pairs),
-            'p2_errors_with_good_full256_candidate': sum(b['iou'] <= threshold and b[oracle_key][-1] for _, b in pairs),
+            'consistent_errors_with_good_full256_candidate': sum(b['iou'] <= threshold and b[oracle_key][-1] for _, b in pairs),
             'repairs_from_control_coverable_errors': sum(a['iou'] <= threshold < b['iou'] and a[oracle_key][-1] for a, b in pairs),
             'repairs_from_control_missing_candidate_errors': sum(a['iou'] <= threshold < b['iou'] and not a[oracle_key][-1] for a, b in pairs),
         }
@@ -182,7 +182,7 @@ def main():
     for label in ('25','50'):
         row = delta[label]
         lines.append('| @{} | {} | {} | {} | {} |'.format(label,row['repairs'],row['damages'],
-            row['control_errors_with_good_full256_candidate'],row['p2_errors_with_good_full256_candidate']))
+            row['control_errors_with_good_full256_candidate'],row['consistent_errors_with_good_full256_candidate']))
     lines.extend(['', 'The ScanRefer development target preserves historical G loose hits (5615) and requires strict hits >=4754 (50%).',
                   'Target passed: {}. Same-budget strict increment preserving loose: {}.'.format(
                       summary['scanrefer_development_target_pass'],summary['same_budget_strict_increment_preserving_loose']), '',

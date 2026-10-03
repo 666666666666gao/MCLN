@@ -1,0 +1,128 @@
+{
+  "verdict": "WARN",
+  "review_date": "2026-10-03",
+  "review_round": 2,
+  "review_type": "EXPLICIT_PATCH_REVIEW_CONTINUATION",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "execution_scope": "SOURCE_ONLY",
+  "reviewer": "same originally fresh delegated Codex agent /root/pvg_whole_mask_cpu_code_review; this round is its patch-review continuation",
+  "summary": "No remaining source-review blockers. The sole launcher change, adding -B before the script path, resolves B1 while preserving the three-file assertion. Core geometry and aggregation remain correct by source inspection. N1 remains a nonblocking reference-independence limitation. The CPU witness has not been executed.",
+  "blocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "B1",
+      "priority": "P1",
+      "status": "RESOLVED_BY_SOURCE_REVIEW",
+      "title": "Python bytecode cache contradicts the launcher's exact remote directory assertion",
+      "locations": [
+        {"file": "run_cpu_witness_authorized.py", "lines": [30, 31, 47, 48]},
+        {"file": "cpu_witness.py", "lines": [11]}
+      ],
+      "original_evidence": "The archived launcher ran Python with -u but without -B. The imported whole_mask_range.py would normally create __pycache__ in the new writable directory, conflicting with the exact three-file assertion and blocking local receipt collection.",
+      "actual_patch": "run_cpu_witness_authorized.py line 30 now invokes the remote interpreter with '-B', '-u' before the script path. The exact three-file assertion remains unchanged.",
+      "patch_comparison": "Read-only git diff --no-index against 001-launcher-before-fix.py shows only the added '-B' argument; its exit code 1 indicates the displayed source difference, not a witness failure.",
+      "resolution_basis": "-B is an interpreter option that disables import bytecode writes for the witness process, removing the identified cache-directory conflict without relying on remote environment settings.",
+      "runtime_validation": "NOT_EXECUTED. The fix is accepted at source level; actual fixture math, exit status, directory contents and local result collection remain to be witnessed by the authorized operator."
+    }
+  ],
+  "nonblocking_findings": [
+    {
+      "id": "N1",
+      "priority": "P2",
+      "title": "Dense range oracle reuses the implementation's member extrema",
+      "locations": [
+        {"file": "cpu_witness.py", "lines": [47, 67, 68, 74, 75]},
+        {"file": "whole_mask_range.py", "lines": [28, 29, 30, 31, 32, 33]}
+      ],
+      "evidence": "The dense reference expands geometry['lower'] and geometry['upper'] from the function under test instead of independently computing raw-member extrema.",
+      "impact": "The comparison checks point-count weighting and Text/Query/alpha gradients conditional on those extrema, but does not independently validate extrema construction. The extrema construction itself is correct by source inspection, so this does not block the narrowly scoped aggregation witness.",
+      "minimal_correction_or_qualification": "For an independent end-to-end member-extrema claim, compute each SP's min/max directly from its raw member coordinates in the reference and then expand/weight. Otherwise state that extrema construction was checked in source and only its aggregation was compared at runtime."
+    }
+  ],
+  "confirmed_by_source": [
+    "The only launcher diff against the archived original is the added -B interpreter argument; the exact three-file assertion and source/runtime isolation are unchanged.",
+    "Native Text logits are expanded across 256 candidates, Query logits are 256 x M, and adaptive alpha is one zero-dimensional tensor per scene.",
+    "Fusion is alpha * Text + (1-alpha) * Query before sigmoid, matching both native evaluator Mask branches.",
+    "Observed SPs are compacted with original native IDs preserved for Mask indexing; no empty-slot fallback or candidate pruning is introduced.",
+    "softmax(logsigmoid(logit) + log(count)) yields point-count-aware SP mass; dividing each SP histogram by its count then merging produces the exact intended point-measure distribution.",
+    "Continuous moments, physical-coordinate mean, member-extrema weighted summaries and support_fraction implement their stated mathematical meanings.",
+    "Dense profile, moments and support_fraction use direct point probabilities and coordinates rather than compressed weights or statistics; range-reference independence is limited as N1 records.",
+    "The fixed four-Query scalar-objective gradient comparison preserves differentiation through Text expansion, Query selection and scalar alpha.",
+    "Existing fixture file SHA checks are correctly implemented against the provided receipt; the configured fixture root matches inventory.",
+    "Only XYZ and SP IDs enter numerical computations; text, detection inputs, target IDs and GT annotations are not used for support or supervision.",
+    "The launcher quotes remote arguments with shlex.join, uses a new directory, and does not query or modify the active model source or training controller.",
+    "No model forward, optimizer update, checkpoint load, weight-file creation or CUDA tensor operation exists in the witness source."
+  ],
+  "reviewed_files": [
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/CODE_REVIEW_REQUEST.txt",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/CPU_WITNESS_PLAN.md",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/whole_mask_range.py",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/cpu_witness.py",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/run_cpu_witness_authorized.py",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/fixture_inventory.json",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/fixture_schema.json",
+    "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/complete/source/imported/models.pv_ground.py",
+    "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/complete/source/imported/evaluator.py",
+    "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/normalized_spec.json",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/.aris/traces/experiment-bridge/2026-10-03_whole_mask_cpu_run01/001-code-review.report.md",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/.aris/traces/experiment-bridge/2026-10-03_whole_mask_cpu_run01/001-code-review.report.json",
+    "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/.aris/traces/experiment-bridge/2026-10-03_whole_mask_cpu_run01/001-launcher-before-fix.py"
+  ],
+  "review_history": {
+    "original_verdict": "FAIL",
+    "original_blocking_findings": ["B1"],
+    "original_report_archive": "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/.aris/traces/experiment-bridge/2026-10-03_whole_mask_cpu_run01/001-code-review.report.md",
+    "archived_records_modified_by_reviewer": false,
+    "review_continuity": "Same independent reviewer continued after an explicit patch-review request; no new-agent or cross-family review is claimed."
+  },
+  "governing_review_instructions_read": [
+    "C:/Users/gb/.codex/skills/experiment-bridge/SKILL.md",
+    "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md"
+  ],
+  "fixture_provenance_review": {
+    "basis": "Provided actual inventory, existing fixture receipt and prior read-only schema-inspector record; fixture binaries were not loaded by the reviewer.",
+    "root": "/root/autodl-tmp/mcln_pvground_train_fixtures_20260908_v2/fixtures",
+    "selection": "first four distinct physical scenes in existing ordered fit row IDs",
+    "training_row_ids": [0, 173, 237, 455],
+    "scan_ids": ["scene0000_00", "scene0001_00", "scene0002_00", "scene0004_00"],
+    "receipt_superpoint_counts": [667, 710, 2329, 1441],
+    "schema_point_cloud_shape": [1, 50000, 6],
+    "schema_point_cloud_dtype": "torch.float32",
+    "schema_superpoint_shape": [1, 50000],
+    "schema_superpoint_dtype": "torch.int64",
+    "schema_torch_version": "1.10.2+cu111",
+    "augmentation": false,
+    "formal_rows": 0,
+    "reviewer_rehashed_or_loaded_fixture_binaries": false
+  },
+  "execution_performed": {
+    "implementation_imports": 0,
+    "witness_runs": 0,
+    "fixture_binary_loads": 0,
+    "ssh_calls": 0,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "gpu_queries": 0,
+    "active_training_queries": 0,
+    "authentication_wrapper_or_credentials_inspected": false,
+    "implementation_or_active_source_modified": false,
+    "files_written": ["EXPERIMENT_CODE_REVIEW.md", "EXPERIMENT_CODE_REVIEW.json"]
+  },
+  "claim_limits": [
+    "This is a source review; there is no new CPU result, measured equivalence error or execution receipt.",
+    "B1 is resolved in source only. Successful mathematical execution and result collection have not yet been observed by this reviewer.",
+    "The intended execution uses four training-scene fixtures and constructed mathematical logits, not model predictions or generalization evaluation.",
+    "The reference checks four selected Queries and one scalar objective, not every output Jacobian or upstream network gradient.",
+    "The dense reference shares normalization origin/span and bin convention; member-extrema construction is also shared as described by N1.",
+    "Three 32-bin directional marginals and continuous summaries do not preserve arbitrary 3D joint shape or missing observations.",
+    "Weighted member extrema are soft summaries and are not final instance or support boundaries.",
+    "All 50000 sampled fixture points are used; this does not imply every physical point of the original scan is present.",
+    "compressed_geometry_bytes is returned NumPy array storage only, not peak process, autograd, model or CUDA memory.",
+    "SP-center histogram differences describe geometry information loss, not accuracy, boundary quality, REC gains or model efficacy.",
+    "CPU double mathematical success would not prove CUDA behavior, whole-model feasibility, learned refinement quality or a validated final-boundary representation."
+  ],
+  "cpu_witness_execution_status": "NOT_EXECUTED",
+  "deployment_gate": "SOURCE_REVIEW_ACCEPTED_CPU_EXECUTION_PENDING",
+  "accepted_scope": "The originally authorized first CPU-only mathematical witness, retaining N1's explicit limitation. No model-integration, GPU-training, accuracy or final-boundary acceptance is conferred."
+}

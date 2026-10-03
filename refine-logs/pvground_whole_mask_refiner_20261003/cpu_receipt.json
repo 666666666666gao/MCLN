@@ -1,0 +1,92 @@
+{
+  "status": "pass",
+  "time_cst": "2026-10-03T18:15:41.116556+08:00",
+  "fixture_row": 0,
+  "scan_id": "scene0000_00",
+  "fixture_sha256": "ca72d437ea3783ffaef57e4b2a5c7064fe7842ce81e85196982e206f3f5eec50",
+  "point_count": 50000,
+  "candidate_count": 256,
+  "range_channels": 109,
+  "coarse_context_channels": 6,
+  "head_input_channels": 1302,
+  "standalone_parameters": 400614,
+  "native_loss_sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+  "initial_zero_residual_exact": true,
+  "shared_initial_state_exact": true,
+  "CPU_only": true,
+  "constructed_queries_masks_coarse_boxes_and_targets": true,
+  "dataset_GT_used": false,
+  "standalone_head_forwards": 6,
+  "standalone_math_optimizer_updates": 2,
+  "real_fit_optimizer_updates": 0,
+  "PVGround_model_forwards": 0,
+  "CUDA_initialized": false,
+  "installed_in_actual_model": false,
+  "in_memory_model_and_optimizer_restore_exact": true,
+  "optimizer_moments_and_groups_exact": true,
+  "weight_files_created": 0,
+  "records": [
+    {
+      "math_step": 1,
+      "native_bbox": 0.12059780955314636,
+      "native_giou": 0.23225659132003784,
+      "standalone_head_gradients": {
+        "member.0.weight": 0.0,
+        "member.0.bias": 0.0,
+        "member.2.weight": 0.0,
+        "member.2.bias": 0.0,
+        "condition.weight": 0.0,
+        "condition.bias": 0.0,
+        "aggregate.0.weight": 0.0,
+        "aggregate.0.bias": 0.0,
+        "output.weight": 126.58789825439453,
+        "output.bias": 27.069700241088867
+      },
+      "global_range_gradient_norm": 0.0,
+      "global_only_route_gradient_norms": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "coarse_and_geometry_query_gradient_norms": [
+        24.544153213500977,
+        11.417231559753418,
+        0.0
+      ]
+    },
+    {
+      "math_step": 2,
+      "native_bbox": 0.11843131482601166,
+      "native_giou": 0.2287268042564392,
+      "standalone_head_gradients": {
+        "member.0.weight": 0.0009079794399440289,
+        "member.0.bias": 0.0013524190289899707,
+        "member.2.weight": 0.003988869022578001,
+        "member.2.bias": 0.0036438119132071733,
+        "condition.weight": 0.06581198424100876,
+        "condition.bias": 0.0036438119132071733,
+        "aggregate.0.weight": 0.16850760579109192,
+        "aggregate.0.bias": 0.007211572956293821,
+        "output.weight": 126.70718383789062,
+        "output.bias": 27.0952091217041
+      },
+      "global_range_gradient_norm": 0.001131653436459601,
+      "global_only_route_gradient_norms": [
+        2.966246029245667e-06,
+        5.508741651283344e-06,
+        2.619086990307551e-05
+      ],
+      "coarse_and_geometry_query_gradient_norms": [
+        24.56895637512207,
+        11.424388885498047,
+        0.0032325577922165394
+      ]
+    }
+  ],
+  "accuracy_results_available": false,
+  "limitations": [
+    "One actual geometry fixture; constructed mathematical inputs and targets.",
+    "AST executes native loss_boxes with fixed constructed correspondence, not actual Hungarian/whole-criterion behavior.",
+    "CPU standalone gradients/restore do not prove CUDA, real-model routing, capacity or accuracy."
+  ]
+}

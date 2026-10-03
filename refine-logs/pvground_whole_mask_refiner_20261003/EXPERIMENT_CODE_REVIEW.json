@@ -1,0 +1,410 @@
+{
+  "verdict": "WARN",
+  "review_date_cst": "2026-10-03",
+  "execution_scope": "SOURCE_ONLY",
+  "attribution": {
+    "reviewer": "delegated source reviewer continuing the original review",
+    "independence": "original separate source-review context; same reviewer patch follow-up",
+    "model_relationship": "same-family",
+    "qualification": "provisional",
+    "exact_model_sku": "not independently queried"
+  },
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "W6",
+      "title": "Plan still says Adam although the sealed native optimizer is AdamW",
+      "finding": "EXPERIMENT_PLAN.md:17 retains fresh Adam wording. The sealed main_utils.py imports torch.optim as optim and constructs optim.AdamW; the standalone witness also constructs AdamW. This is a documentation mismatch, not a mismatch between the two implemented optimizer classes.",
+      "impact": "Use AdamW precisely in the formal protocol before paired training. The wording does not block the standalone CPU witness. The prior report distinction between CPU AdamW and formal native Adam was incorrect and is corrected.",
+      "blocks_first_cpu_execution": false,
+      "evidence": [
+        "EXPERIMENT_PLAN.md:17",
+        "cpu_head_witness.py:78",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/complete/source/imported/main_utils.py:21",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/complete/source/imported/main_utils.py:363"
+      ]
+    },
+    {
+      "id": "W3",
+      "title": "Native loss_boxes extraction is not the complete native training objective",
+      "finding": "One constructed target uses center +0.02 and size *1.07 with fixed candidate-zero correspondence and count one. The witness objective is 10*bbox + 2*giou. Full native training additionally matches targets, aggregates decoder prefixes, divides that block by decoder count plus one and adds other losses.",
+      "impact": "No actual Hungarian/G qualification, active normalization-policy validation or real-fit budget claim follows.",
+      "blocks_first_cpu_execution": false,
+      "evidence": [
+        "cpu_head_witness.py:30",
+        "cpu_head_witness.py:76",
+        "cpu_head_witness.py:77",
+        "cpu_head_witness.py:85",
+        "cpu_head_witness.py:139",
+        "native_losses.py:817",
+        "native_losses.py:831",
+        "native_losses.py:849",
+        "native_losses.py:947"
+      ]
+    },
+    {
+      "id": "W5",
+      "title": "Geometry statistics are detached and semantic invocation preservation is not training invariance",
+      "finding": "Current XYZ/SP geometry is consumed on CPU, with detached conditioning/layout and undetached final coarse residual parents and Mask/alpha routes. Native semantic invocation/fields are not rewritten, but upstream shared learning can alter semantics after updates. The amended query-gradient assertion checks a constructed input, not learned upstream model parameters.",
+      "impact": "No differentiated CPU geometry, frozen semantic behavior across training, CUDA feasibility or performance conclusion is supported.",
+      "blocks_first_cpu_execution": false,
+      "evidence": [
+        "pvground_whole_mask_box_refiner.py:18",
+        "pvground_whole_mask_box_refiner.py:30",
+        "pvground_whole_mask_box_refiner.py:37",
+        "pvground_whole_mask_box_refiner.py:47",
+        "pvground_whole_mask_box_refiner.py:53",
+        "pvground_whole_mask_box_refiner.py:58",
+        "native_pv_ground.py:495",
+        "native_pv_ground.py:500",
+        "native_pv_ground.py:556",
+        "cpu_head_witness.py:98"
+      ]
+    }
+  ],
+  "source_checks": [
+    {
+      "name": "Native scalar-alpha Mask shape/indexing and final hook",
+      "status": "SOURCE_CONSISTENT",
+      "evidence": [
+        "native_pv_ground.py:153",
+        "native_pv_ground.py:518",
+        "native_pv_ground.py:540",
+        "native_pv_ground.py:541",
+        "native_pv_ground.py:542",
+        "native_pv_ground.py:549",
+        "native_pv_ground.py:551",
+        "native_pv_ground.py:556",
+        "pvground_tail_support_box_refiner.py:22",
+        "pvground_whole_mask_box_refiner.py:22",
+        "whole_mask_range.py:48",
+        "native_losses.py:898"
+      ]
+    },
+    {
+      "name": "Actual member geometry and native sparse-SP ID retention",
+      "status": "SOURCE_CONSISTENT",
+      "evidence": [
+        "whole_mask_range.py:15",
+        "whole_mask_range.py:24",
+        "whole_mask_range.py:30",
+        "whole_mask_range.py:34",
+        "whole_mask_range.py:50",
+        "whole_mask_range.py:55",
+        "whole_mask_range.py:56",
+        "whole_mask_range.py:57",
+        "whole_mask_range.py:67"
+      ]
+    },
+    {
+      "name": "All 256 candidates, 14 local channels, 109 whole channels, 1302 aggregate channels, one zero-initialized additive box",
+      "status": "SOURCE_CONSISTENT",
+      "evidence": [
+        "pvground_candidate_box_refiner.py:19",
+        "pvground_candidate_box_refiner.py:26",
+        "pvground_candidate_box_refiner.py:27",
+        "pvground_candidate_box_refiner.py:37",
+        "pvground_tail_support_box_refiner.py:13",
+        "pvground_tail_support_box_refiner.py:28",
+        "pvground_whole_mask_box_refiner.py:14",
+        "pvground_whole_mask_box_refiner.py:24",
+        "pvground_whole_mask_box_refiner.py:36",
+        "pvground_whole_mask_box_refiner.py:45",
+        "pvground_whole_mask_box_refiner.py:48",
+        "pvground_whole_mask_box_refiner.py:53",
+        "pvground_whole_mask_box_refiner.py:58"
+      ]
+    },
+    {
+      "name": "AST extraction of native L1/GIoU method and live helper dependencies",
+      "status": "SOURCE_CONSISTENT_FOR_REQUESTED_PYTHON_3_7",
+      "evidence": [
+        "cpu_head_witness.py:17",
+        "cpu_head_witness.py:20",
+        "cpu_head_witness.py:26",
+        "cpu_head_witness.py:27",
+        "cpu_head_witness.py:29",
+        "native_losses.py:35",
+        "native_losses.py:48",
+        "native_losses.py:56",
+        "native_losses.py:70",
+        "native_losses.py:78",
+        "native_losses.py:518",
+        "native_losses.py:527",
+        "native_losses.py:539",
+        "native_losses.py:543",
+        "native_losses.py:781"
+      ]
+    },
+    {
+      "name": "CPU-only launch, exact source staging, explicit -B, one attempt and no disk weights",
+      "status": "SOURCE_CONSISTENT_NOT_EXECUTED",
+      "evidence": [
+        "run_cpu_head_authorized.py:13",
+        "run_cpu_head_authorized.py:15",
+        "run_cpu_head_authorized.py:23",
+        "run_cpu_head_authorized.py:28",
+        "run_cpu_head_authorized.py:30",
+        "run_cpu_head_authorized.py:32",
+        "run_cpu_head_authorized.py:36",
+        "run_cpu_head_authorized.py:40",
+        "run_cpu_head_authorized.py:47",
+        "run_cpu_head_authorized.py:50",
+        "cpu_head_witness.py:46",
+        "cpu_head_witness.py:107",
+        "cpu_head_witness.py:128"
+      ]
+    },
+    {
+      "name": "Five copied source artifacts match original files and existing preparation receipt",
+      "status": "PASS_LOCAL_TEXT_ARTIFACT_PROVENANCE",
+      "evidence": [
+        "prepare_sources.py:9",
+        "prepare_sources.py:11",
+        "prepare_sources.py:17",
+        "prepare_sources.py:22",
+        "prepare_sources.py:27",
+        "source_preparation.json:4",
+        "source_preparation.json:9",
+        "source_preparation.json:14",
+        "source_preparation.json:19",
+        "source_preparation.json:24",
+        "cpu_head_witness.py:74"
+      ]
+    },
+    {
+      "name": "Amended constructed query input gradient assertions",
+      "status": "SOURCE_CONSISTENT_NOT_EXECUTED",
+      "evidence": [
+        "cpu_head_witness.py:54",
+        "cpu_head_witness.py:90",
+        "cpu_head_witness.py:93",
+        "cpu_head_witness.py:98",
+        "cpu_head_witness.py:106"
+      ]
+    },
+    {
+      "name": "Restored AdamW groups and each moment/step comparison",
+      "status": "SOURCE_CONSISTENT_NOT_EXECUTED",
+      "evidence": [
+        "cpu_head_witness.py:114",
+        "cpu_head_witness.py:116",
+        "cpu_head_witness.py:117",
+        "cpu_head_witness.py:118",
+        "cpu_head_witness.py:121",
+        "cpu_head_witness.py:122",
+        "cpu_head_witness.py:123",
+        "cpu_head_witness.py:138"
+      ]
+    },
+    {
+      "name": "Actual native optimizer factory is AdamW, matching CPU optimizer class",
+      "status": "CONFIRMED_FROM_SEALED_SOURCE",
+      "evidence": [
+        "cpu_head_witness.py:78",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/complete/source/imported/main_utils.py:21",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/complete/source/imported/main_utils.py:363"
+      ]
+    }
+  ],
+  "scope_facts": {
+    "implementation_imported_or_executed_by_reviewer": false,
+    "fixture_binary_loaded_by_reviewer": false,
+    "ssh_used_by_reviewer": false,
+    "gpu_or_active_job_queried_by_reviewer": false,
+    "authentication_wrapper_or_credentials_inspected": false,
+    "implementation_source_modified_by_reviewer": false,
+    "further_agents_used": false,
+    "head_cpu_result_available_at_review": false,
+    "warm_runtime_versions_queried": false,
+    "requested_remote_runtime": "Python 3.7 / Torch 1.10; source compatibility assessment only",
+    "cpu_optimizer": "AdamW, the same optimizer class used by the sealed native factory; isolated head objective, parameters and two mathematical updates are not the native training protocol",
+    "full_model_integration_validated": false,
+    "real_fit_training_validated": false,
+    "cuda_feasibility_validated": false,
+    "accuracy_validated": false,
+    "native_optimizer": "AdamW",
+    "patched_witness_compiled_by_reviewer": false
+  },
+  "prior_geometry_evidence": {
+    "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/cpu_receipt.json",
+    "recorded_status": "pass",
+    "recorded_fixture_rows": 4,
+    "receipt_read_only": true,
+    "reviewer_reran_it": false,
+    "is_a_result_for_this_head": false,
+    "sha256": "bec91ae005b1413eb102be81e3717ea70670fdcb075272f223afc1add072b946"
+  },
+  "reviewed_files": [
+    {
+      "file": "EXPERIMENT_PLAN.md",
+      "bytes": 3764,
+      "sha256": "c5926ef8f906764287f0c3bc283ac5868a6d5f0c4bc246c05fab3be80f7959b6"
+    },
+    {
+      "file": "CODE_REVIEW_REQUEST.txt",
+      "bytes": 2659,
+      "sha256": "86221be5858a8766b698ee5205626e05bf4073b88c5a7b4cec3454ea14f89486"
+    },
+    {
+      "file": "pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118"
+    },
+    {
+      "file": "whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    },
+    {
+      "file": "pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "file": "pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "file": "cpu_head_witness.py",
+      "bytes": 9018,
+      "sha256": "043e18d785f7b77167dd362a37040607492789152f6c3f9f6029491ab9d0c9c9"
+    },
+    {
+      "file": "run_cpu_head_authorized.py",
+      "bytes": 2886,
+      "sha256": "ebe97e25e85f6ae021d0738271cd9a3c7a1bcb38ad2d6f3a20473b394808e744"
+    },
+    {
+      "file": "prepare_sources.py",
+      "bytes": 1819,
+      "sha256": "ecc00039fbb7fea62c20df2bbbae09f2f5f656bac2a81e6ee7c365495165a0e0"
+    },
+    {
+      "file": "source_preparation.json",
+      "bytes": 1640,
+      "sha256": "14765d33c845d4b78b0d8ce57e464beef3b1e2159d83827069f0505a7b86f222"
+    },
+    {
+      "file": "native_pv_ground.py",
+      "bytes": 25386,
+      "sha256": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58"
+    },
+    {
+      "file": "native_losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "file": "../pvground_candidate_normalization_20261003/normalized_spec.json",
+      "bytes": 2598,
+      "sha256": "7b08ae0531521877129f7517179764b2d7a3dc3c9e7dec46e35e9c137a0dffa8"
+    },
+    {
+      "file": "../pvground_candidate_consistency_20261003/complete/source/imported/main_utils.py",
+      "bytes": 24599,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "file": "../pvground_candidate_consistency_20261003/complete/source/imported/models.losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    }
+  ],
+  "decision": "No source-review blocker for the amended first standalone CPU witness. Query-gradient and optimizer-moment gaps are closed in source, pending execution. Remaining Adam wording in plan is a nonblocking documentation mismatch. Preserve actual execution/failure evidence and all scope limits; this does not authorize or validate full-model GPU training.",
+  "review_round": 2,
+  "resolved_previous_findings": [
+    {
+      "previous_id": "W1",
+      "status": "RESOLVED_IN_SOURCE_PENDING_EXECUTION",
+      "title": "Explicit optimizer moments, steps, groups and state-key comparisons added",
+      "finding": "The restored optimizer state is compared with the deserialized in-memory snapshot for param_groups, state keys, each step, exp_avg and exp_avg_sq. The added optimizer_moments_and_groups_exact field is written after those assertions. Model strict loading and exact same-input output comparison remain. No resumed update is claimed or tested.",
+      "evidence": [
+        "cpu_head_witness.py:107",
+        "cpu_head_witness.py:114",
+        "cpu_head_witness.py:115",
+        "cpu_head_witness.py:116",
+        "cpu_head_witness.py:117",
+        "cpu_head_witness.py:119",
+        "cpu_head_witness.py:121",
+        "cpu_head_witness.py:122",
+        "cpu_head_witness.py:123",
+        "cpu_head_witness.py:127",
+        "cpu_head_witness.py:138"
+      ]
+    },
+    {
+      "previous_id": "W2",
+      "status": "RESOLVED_IN_SOURCE_PENDING_EXECUTION",
+      "title": "Constructed incoming geometry-query derivative is now checked",
+      "finding": "Query is a requires-grad leaf. The independent per-step autograd.grad result now contains center, size and query derivatives, all checked finite; query derivative norm must be nonzero at step two. The recorded norms are explicitly named coarse_and_geometry_query_gradient_norms. This remains a standalone mathematical input check.",
+      "evidence": [
+        "cpu_head_witness.py:54",
+        "cpu_head_witness.py:87",
+        "cpu_head_witness.py:90",
+        "cpu_head_witness.py:93",
+        "cpu_head_witness.py:94",
+        "cpu_head_witness.py:98",
+        "cpu_head_witness.py:99",
+        "cpu_head_witness.py:106"
+      ]
+    },
+    {
+      "previous_id": "W4",
+      "status": "CLAIM_QUALIFIED_IN_PLAN",
+      "title": "Parameter equality is explicitly distinguished from effective functional capacity",
+      "finding": "The plan now states that equal parameter shapes and counts do not establish equal effective functional capacity. The unchanged 109-column zero-input control and 400614-parameter heads implement that declared information intervention.",
+      "evidence": [
+        "EXPERIMENT_PLAN.md:7",
+        "pvground_whole_mask_box_refiner.py:14",
+        "pvground_whole_mask_box_refiner.py:49",
+        "pvground_whole_mask_box_refiner.py:51",
+        "cpu_head_witness.py:67",
+        "cpu_head_witness.py:73"
+      ]
+    }
+  ],
+  "previous_review_archive": {
+    "path": ".aris/traces/experiment-bridge/2026-10-03_whole_mask_head_run01",
+    "previous_verdict": "WARN",
+    "unchanged_previously_reviewed_artifacts": 11,
+    "changed_implementation_files": [
+      "cpu_head_witness.py"
+    ],
+    "changed_plan_files": [
+      "EXPERIMENT_PLAN.md"
+    ],
+    "archive_files": [
+      {
+        "file": "001-code-review.report.json",
+        "bytes": 11186,
+        "sha256": "dd06cac535ca15a17e72028cdeccff98a179edd0119cf66f93f4722a2c3cfa77"
+      },
+      {
+        "file": "001-code-review.report.md",
+        "bytes": 14171,
+        "sha256": "54170c1fd37505f8007cdfea5e2cd0c53e9d17f9d3509fb6822166cee73b8469"
+      },
+      {
+        "file": "001-cpu-witness-before-patch.py",
+        "bytes": 8381,
+        "sha256": "5c1be321a1c13ca49abe15a67123aacd9faba0fec9a4e3911469bc75414922fd"
+      },
+      {
+        "file": "001-plan-before-qualification.md",
+        "bytes": 3687,
+        "sha256": "feacf177b79a7b02041042a29e91d3a8dd83e3f3b75ac5fbe0a6873914f69e78"
+      }
+    ]
+  },
+  "prior_report_correction": {
+    "claim": "CPU AdamW was contrasted with formal native Adam",
+    "correction": "The actual sealed native factory constructs AdamW. Both classes are AdamW; isolated loss, groups, inputs and scope still differ.",
+    "evidence": [
+      "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/complete/source/imported/main_utils.py:21",
+      "C:/Users/gb/.codex/tmp/pvground_candidate_consistency_20261003/complete/source/imported/main_utils.py:363",
+      "cpu_head_witness.py:78"
+    ]
+  }
+}

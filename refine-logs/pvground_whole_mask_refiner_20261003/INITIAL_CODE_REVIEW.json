@@ -1,0 +1,129 @@
+{
+  "verdict": "WARN",
+  "review_date_cst": "2026-10-03",
+  "execution_scope": "SOURCE_ONLY",
+  "attribution": {
+    "reviewer": "fresh delegated source reviewer",
+    "independence": "separate source-review context",
+    "model_relationship": "same-family",
+    "qualification": "provisional",
+    "exact_model_sku": "not independently queried"
+  },
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "W1",
+      "title": "Restore exactness flag exceeds the explicit optimizer comparison",
+      "finding": "BytesIO serializes and reloads both states; the code checks ten optimizer states at step two and exact head outputs, but does not compare all optimizer moments/parameter-group fields or execute a resumed update. No restore failure is demonstrated.",
+      "impact": "Interpret success as in-memory loading plus the explicit step/output checks; do not claim independently verified exact optimizer contents or continuation equivalence.",
+      "blocks_first_cpu_execution": false,
+      "evidence": ["cpu_head_witness.py:106", "cpu_head_witness.py:113", "cpu_head_witness.py:114", "cpu_head_witness.py:118", "cpu_head_witness.py:129"]
+    },
+    {
+      "id": "W2",
+      "title": "Gradient witness does not measure the incoming learned geometry-query route",
+      "finding": "Constructed query is not a requires-grad input. The witness checks coarse center/size derivatives, whole-evidence derivatives and their isolated Text/Query Mask/alpha route, plus selected inner-head gradients after the first update.",
+      "impact": "These are standalone mathematical wiring assertions; full-model upstream parameter gradients and loss/accuracy improvement remain untested.",
+      "blocks_first_cpu_execution": false,
+      "evidence": ["cpu_head_witness.py:51", "cpu_head_witness.py:54", "cpu_head_witness.py:55", "cpu_head_witness.py:57", "cpu_head_witness.py:87", "cpu_head_witness.py:90", "cpu_head_witness.py:94", "cpu_head_witness.py:98"]
+    },
+    {
+      "id": "W3",
+      "title": "Native loss_boxes extraction is not the complete native training objective",
+      "finding": "One constructed target uses center +0.02 and size *1.07 with fixed candidate-zero correspondence and count one. The witness objective is 10*bbox + 2*giou. Full native training additionally matches targets, aggregates decoder prefixes, divides that block by decoder count plus one and adds other losses.",
+      "impact": "No actual Hungarian/G qualification, active normalization-policy validation or real-fit budget claim follows.",
+      "blocks_first_cpu_execution": false,
+      "evidence": ["cpu_head_witness.py:30", "cpu_head_witness.py:76", "cpu_head_witness.py:77", "cpu_head_witness.py:85", "cpu_head_witness.py:130", "native_losses.py:817", "native_losses.py:831", "native_losses.py:849", "native_losses.py:947"]
+    },
+    {
+      "id": "W4",
+      "title": "Capacity equality is parameter-count equality with an intended information-off control",
+      "finding": "Both arms have 400614 parameters in ten tensors and the same provider/local support. Zeroing 109 input columns leaves their 31392 aggregate weights without data signal through those columns in the local arm.",
+      "impact": "Do not describe this as proven equal actively used functional capacity; it matches the specified same-shape information intervention.",
+      "blocks_first_cpu_execution": false,
+      "evidence": ["EXPERIMENT_PLAN.md:7", "pvground_whole_mask_box_refiner.py:12", "pvground_whole_mask_box_refiner.py:14", "pvground_whole_mask_box_refiner.py:44", "pvground_whole_mask_box_refiner.py:49", "pvground_whole_mask_box_refiner.py:51", "cpu_head_witness.py:66", "cpu_head_witness.py:67", "cpu_head_witness.py:73"]
+    },
+    {
+      "id": "W5",
+      "title": "Geometry statistics are detached and semantic invocation preservation is not training invariance",
+      "finding": "Current XYZ/SP geometry is consumed on CPU, with detached conditioning/layout and undetached final coarse residual parents and Mask/alpha routes. Native semantic invocation/fields are not rewritten, but upstream shared learning can alter semantics after updates.",
+      "impact": "No differentiated CPU geometry, frozen semantic behavior across training, CUDA feasibility or performance conclusion is supported.",
+      "blocks_first_cpu_execution": false,
+      "evidence": ["pvground_whole_mask_box_refiner.py:18", "pvground_whole_mask_box_refiner.py:30", "pvground_whole_mask_box_refiner.py:37", "pvground_whole_mask_box_refiner.py:47", "pvground_whole_mask_box_refiner.py:53", "pvground_whole_mask_box_refiner.py:58", "native_pv_ground.py:495", "native_pv_ground.py:500", "native_pv_ground.py:556"]
+    }
+  ],
+  "source_checks": [
+    {
+      "name": "Native scalar-alpha Mask shape/indexing and final hook",
+      "status": "SOURCE_CONSISTENT",
+      "evidence": ["native_pv_ground.py:153", "native_pv_ground.py:518", "native_pv_ground.py:540", "native_pv_ground.py:541", "native_pv_ground.py:542", "native_pv_ground.py:549", "native_pv_ground.py:551", "native_pv_ground.py:556", "pvground_tail_support_box_refiner.py:22", "pvground_whole_mask_box_refiner.py:22", "whole_mask_range.py:48", "native_losses.py:898"]
+    },
+    {
+      "name": "Actual member geometry and native sparse-SP ID retention",
+      "status": "SOURCE_CONSISTENT",
+      "evidence": ["whole_mask_range.py:15", "whole_mask_range.py:24", "whole_mask_range.py:30", "whole_mask_range.py:34", "whole_mask_range.py:50", "whole_mask_range.py:55", "whole_mask_range.py:56", "whole_mask_range.py:57", "whole_mask_range.py:67"]
+    },
+    {
+      "name": "All 256 candidates, 14 local channels, 109 whole channels, 1302 aggregate channels, one zero-initialized additive box",
+      "status": "SOURCE_CONSISTENT",
+      "evidence": ["pvground_candidate_box_refiner.py:19", "pvground_candidate_box_refiner.py:26", "pvground_candidate_box_refiner.py:27", "pvground_candidate_box_refiner.py:37", "pvground_tail_support_box_refiner.py:13", "pvground_tail_support_box_refiner.py:28", "pvground_whole_mask_box_refiner.py:14", "pvground_whole_mask_box_refiner.py:24", "pvground_whole_mask_box_refiner.py:36", "pvground_whole_mask_box_refiner.py:45", "pvground_whole_mask_box_refiner.py:48", "pvground_whole_mask_box_refiner.py:53", "pvground_whole_mask_box_refiner.py:58"]
+    },
+    {
+      "name": "AST extraction of native L1/GIoU method and live helper dependencies",
+      "status": "SOURCE_CONSISTENT_FOR_REQUESTED_PYTHON_3_7",
+      "evidence": ["cpu_head_witness.py:17", "cpu_head_witness.py:20", "cpu_head_witness.py:26", "cpu_head_witness.py:27", "cpu_head_witness.py:29", "native_losses.py:35", "native_losses.py:48", "native_losses.py:56", "native_losses.py:70", "native_losses.py:78", "native_losses.py:518", "native_losses.py:527", "native_losses.py:539", "native_losses.py:543", "native_losses.py:781"]
+    },
+    {
+      "name": "CPU-only launch, exact source staging, explicit -B, one attempt and no disk weights",
+      "status": "SOURCE_CONSISTENT_NOT_EXECUTED",
+      "evidence": ["run_cpu_head_authorized.py:13", "run_cpu_head_authorized.py:15", "run_cpu_head_authorized.py:23", "run_cpu_head_authorized.py:28", "run_cpu_head_authorized.py:30", "run_cpu_head_authorized.py:32", "run_cpu_head_authorized.py:36", "run_cpu_head_authorized.py:40", "run_cpu_head_authorized.py:47", "run_cpu_head_authorized.py:50", "cpu_head_witness.py:46", "cpu_head_witness.py:106", "cpu_head_witness.py:119"]
+    },
+    {
+      "name": "Five copied source artifacts match original files and existing preparation receipt",
+      "status": "PASS_LOCAL_TEXT_ARTIFACT_PROVENANCE",
+      "evidence": ["prepare_sources.py:9", "prepare_sources.py:11", "prepare_sources.py:17", "prepare_sources.py:22", "prepare_sources.py:27", "source_preparation.json:4", "source_preparation.json:9", "source_preparation.json:14", "source_preparation.json:19", "source_preparation.json:24", "cpu_head_witness.py:74"]
+    }
+  ],
+  "scope_facts": {
+    "implementation_imported_or_executed_by_reviewer": false,
+    "fixture_binary_loaded_by_reviewer": false,
+    "ssh_used_by_reviewer": false,
+    "gpu_or_active_job_queried_by_reviewer": false,
+    "authentication_wrapper_or_credentials_inspected": false,
+    "implementation_source_modified_by_reviewer": false,
+    "further_agents_used": false,
+    "head_cpu_result_available_at_review": false,
+    "warm_runtime_versions_queried": false,
+    "requested_remote_runtime": "Python 3.7 / Torch 1.10; source compatibility assessment only",
+    "cpu_optimizer": "AdamW for two standalone mathematical updates, not formal paired fit Adam",
+    "full_model_integration_validated": false,
+    "real_fit_training_validated": false,
+    "cuda_feasibility_validated": false,
+    "accuracy_validated": false
+  },
+  "prior_geometry_evidence": {
+    "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_range_20261003/cpu_receipt.json",
+    "recorded_status": "pass",
+    "recorded_fixture_rows": 4,
+    "receipt_read_only": true,
+    "reviewer_reran_it": false,
+    "is_a_result_for_this_head": false,
+    "sha256": "bec91ae005b1413eb102be81e3717ea70670fdcb075272f223afc1add072b946"
+  },
+  "reviewed_files": [
+    {"file": "EXPERIMENT_PLAN.md", "bytes": 3687, "sha256": "feacf177b79a7b02041042a29e91d3a8dd83e3f3b75ac5fbe0a6873914f69e78"},
+    {"file": "CODE_REVIEW_REQUEST.txt", "bytes": 2659, "sha256": "86221be5858a8766b698ee5205626e05bf4073b88c5a7b4cec3454ea14f89486"},
+    {"file": "pvground_whole_mask_box_refiner.py", "bytes": 3906, "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118"},
+    {"file": "whole_mask_range.py", "bytes": 3629, "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"},
+    {"file": "pvground_candidate_box_refiner.py", "bytes": 3767, "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"},
+    {"file": "pvground_tail_support_box_refiner.py", "bytes": 3655, "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"},
+    {"file": "cpu_head_witness.py", "bytes": 8381, "sha256": "5c1be321a1c13ca49abe15a67123aacd9faba0fec9a4e3911469bc75414922fd"},
+    {"file": "run_cpu_head_authorized.py", "bytes": 2886, "sha256": "ebe97e25e85f6ae021d0738271cd9a3c7a1bcb38ad2d6f3a20473b394808e744"},
+    {"file": "prepare_sources.py", "bytes": 1819, "sha256": "ecc00039fbb7fea62c20df2bbbae09f2f5f656bac2a81e6ee7c365495165a0e0"},
+    {"file": "source_preparation.json", "bytes": 1640, "sha256": "14765d33c845d4b78b0d8ce57e464beef3b1e2159d83827069f0505a7b86f222"},
+    {"file": "native_pv_ground.py", "bytes": 25386, "sha256": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58"},
+    {"file": "native_losses.py", "bytes": 40468, "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"},
+    {"file": "../pvground_candidate_normalization_20261003/normalized_spec.json", "bytes": 2598, "sha256": "7b08ae0531521877129f7517179764b2d7a3dc3c9e7dec46e35e9c137a0dffa8"}
+  ],
+  "decision": "No source-review blocker for the first standalone CPU witness. Preserve actual execution/failure evidence and all listed claim limits; this does not authorize or validate full-model GPU training."
+}

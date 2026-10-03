@@ -1,0 +1,279 @@
+{
+  "review_date": "2026-10-03",
+  "review_round": "deployment_wrapper_source_review_same_reviewer_continuation",
+  "verdict": "PASS",
+  "execution_scope": "SOURCE_ONLY",
+  "conclusion": "The prepared deployment wrapper is correct for the stated cooperating-operator engineering preflight scope. No concrete blocking or nonblocking code defect was found. Missing local completion/analysis/audit evidence stops the launcher before SSH; the remote probe separately requires the original controller PID absent, a complete original status and exit 0, idle compute processes, and a fresh output path. The two reviewed preflights run sequentially under one controller-wide GPU lock. This is not an executed deployment or a resource/runtime result.",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer": {
+    "agent": "/root/pvg_whole_model_preflight_review",
+    "configured_model": "gpt-6-astra",
+    "configured_reasoning_effort": "max",
+    "original_fork_turns": "none",
+    "review_context": "Continuation by the original reviewer, not a second fresh independent review",
+    "attribution_evidence": "Parent previously confirmed exact native spawn arguments. No independent backend SKU query was performed.",
+    "backend_sku_independently_verified": false
+  },
+  "source_checks": [
+    {
+      "id": "D1",
+      "status": "PASS_SOURCE",
+      "subject": "Local completion, analysis and audit prerequisites precede connection/staging",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:12",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:19",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:29"
+      ],
+      "evidence": "The latest launcher first requires accepted deployment/source reviews with no blockers, then reads complete/INTAKE.json, analysis/SUMMARY.json and analysis/EXPERIMENT_AUDIT.json. It checks complete status, controller_exit=0, controller_alive=false, equality of summary/intake finished_cst, and audit verdict PASS/WARN with an empty blocking_issues list before creating the SSH client. A missing file/key or failed assertion stops here; no future artifact is created or substituted by this code. The final review is bound to the latest 6088-byte launcher, including the additional blocking_issues gate at line 24.",
+      "runtime_verified": false
+    },
+    {
+      "id": "D2",
+      "status": "PASS_SOURCE",
+      "subject": "Prerequisite schemas match their real producers and the audit contract",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/collect_complete.py:27",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/collect_complete.py:59",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/collect_complete.py:84",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/analyze_complete.py:50",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/analyze_complete.py:173",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/analyze_complete.py:217",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/prepare_terminal_audit_request.py:7",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/prepare_terminal_audit_request.py:30",
+        "C:/Users/gb/.codex/skills/experiment-audit/SKILL.md:184",
+        "C:/Users/gb/.codex/skills/experiment-audit/SKILL.md:189"
+      ],
+      "evidence": "The collector writes nested status, controller_exit and controller_alive to INTAKE.json after verifying original completion, train/formal exit 0, 3723 updates, 29778 fit rows and 9508 formal rows. The analyzer takes finished_cst directly from intake.status.finished_cst and writes SUMMARY.json only after the full comparison/recount checks. The installed experiment-audit machine contract explicitly contains top-level uppercase verdict PASS/WARN/FAIL; lower-case overall_verdict/integrity_status are separate fields. The newly prepared, unexecuted prepare_terminal_audit_request.py requires actual intake/summary and listed evidence files before writing an exclusive audit request; its line 30 explicitly requires the future analysis/EXPERIMENT_AUDIT.json to contain verdict and blocking_issues (list). Thus the latest launcher's audit['verdict'] and audit['blocking_issues'] keys match the explicit future terminal-audit contract. This source file was read as contract evidence only, not run; no future normalization result, generated request or terminal audit was assumed to exist or judged in this review. The deletion implementation named inside that future request remains assigned to the future terminal auditor, outside this deployment review.",
+      "runtime_verified": false
+    },
+    {
+      "id": "D3",
+      "status": "PASS_SOURCE",
+      "subject": "Original controller liveness and fresh resource check",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/launch.json:3",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/launch.json:4",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:27",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:37"
+      ],
+      "evidence": "The current historical launch record supplies the normalized remote root and original controller PID 391849. The fixed remote probe receives these as quoted arguments, requires /proc/PID absent, reads actual original status.json and controller.exit, requires complete/0, rejects a pre-existing preflight root, requires no nvidia-smi compute-app PIDs and at least 64 MiB for logs. Staging occurs only after probe exit 0. These checks do not stop or delete any existing process/artifact.",
+      "runtime_verified": false
+    },
+    {
+      "id": "D4",
+      "status": "PASS_SOURCE",
+      "subject": "Warm environment, module placement and arm-specific imports",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:34",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:58",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:66",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:15",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:23",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:41"
+      ],
+      "evidence": "The existing runtime env_spec is read without modification; its venv/bin/python is used for controller and children. Each child receives environment['env'] plus its own arm directory prepended to PYTHONPATH. All ten required helpers/modules and exact spec.json are placed in that arm directory, where spec.root points and where the runner checks their hashes. The shared runner is placed at the common root, which contains no conflicting helper copy. Controller imports are standard-library only; native model imports occur in the child using the restored warm environment. Source/model/loss/data/checkpoint paths in the unchanged specs remain the reviewed original paths.",
+      "runtime_verified": false
+    },
+    {
+      "id": "D5",
+      "status": "PASS_SOURCE",
+      "subject": "Exclusive output and one controller-wide lock",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:41",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:58",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:62",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:86",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:14",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:19"
+      ],
+      "evidence": "Fresh-root rejection, mkdir and exclusive wx file opens preserve existing artifacts. Uploaded source/spec bytes are reread for equality. One flock -n on the existing environment GPU lock wraps the entire Python controller, which serially runs local_range then whole_range and waits for each. A lock failure exits rather than waiting/retrying. No automatic retries, cleanup, process termination, preemption or alternate path are implemented.",
+      "runtime_verified": false
+    },
+    {
+      "id": "D6",
+      "status": "PASS_SOURCE",
+      "subject": "Persistent observation and fail-stop phase status",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:88",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:92",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:96",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:21",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:29",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:36"
+      ],
+      "evidence": "The wrapper saves controller stdout/stderr and its actual shell exit code. A unique anchored pgrep witness must identify the controller process before LAUNCHED_NOT_COMPLETED is recorded locally/remotely. Each arm uses an exclusive persistent log and a phase exit file. A nonzero child sets failed and exits immediately, leaving the later arm unexecuted; completed is appended only after child exit 0 plus native receipt pass/batch8/two-update assertions. Controller complete is written only after both arms satisfy these conditions. A missing/invalid native receipt cannot be promoted to PASS. Launch state is explicitly not completion.",
+      "runtime_verified": false
+    },
+    {
+      "id": "D7",
+      "status": "PASS_SOURCE",
+      "subject": "SSH/shell boundary and credential handling",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:29",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:52",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:86",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:25",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/run_preflight_authorized.py:15"
+      ],
+      "evidence": "The password is obtained from the already authorized environment variable and passed only to Paramiko.connect. Its value is not interpolated into shell commands, logs, JSON or output. System host keys are loaded and no permissive missing-host-key policy is installed. Probe arguments and flock/Python arguments use shlex.join; the nested bash program, log paths and pgrep pattern are quoted; screen name is a fixed safe literal. Controller child execution uses an argv list, not shell=True; warm environment assignments are literal env arguments. No credential value, auth wrapper, system host-key file or remote environment content was inspected by this reviewer.",
+      "runtime_verified": false
+    },
+    {
+      "id": "D8",
+      "status": "PASS_SOURCE",
+      "subject": "Engineering-only two-step entry and no disk checkpoint path",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:25",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:37",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:38",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:422",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py:440"
+      ],
+      "evidence": "Both children explicitly invoke --mode preflight with their existing spec. The unchanged runner accepts only cpu/preflight, fixes batch8 and two update iterations, and serializes weights/optimizer only into BytesIO. Deployment stages source/config/review text and writes logs/JSON/exit codes, not new weights. It contains no train/formal command, disk-checkpoint writer or weight cleanup. The source/controller do not select the formal parent/loss based on future normalization metrics; original G remains the engineering preflight parent.",
+      "runtime_verified": false
+    },
+    {
+      "id": "D9",
+      "status": "PASS_SOURCE",
+      "subject": "Compatibility and polling/estimation scope",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/PREFLIGHT_DEPLOYMENT_PLAN.md:9",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py:100",
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py:1",
+        "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/run_preflight_authorized.py:33"
+      ],
+      "evidence": "Remote controller/probe use Python-3.7-compatible standard-library syntax/APIs. shlex.join runs in the local launcher, as in the actual existing local normalization preflight launcher; it is not invoked by the remote Python 3.7 controller. The new launcher records 600-second estimated duration, 420-second first check and 240-second followups with an explicit estimate label. It does not implement or start a polling loop, and these fields do not certify capacity or runtime.",
+      "runtime_verified": false
+    },
+    {
+      "id": "D10",
+      "status": "PASS_SOURCE",
+      "subject": "Previously reviewed runner/specs/helpers and reports preserved",
+      "locations": [
+        "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/EXPERIMENT_CODE_REVIEW.json"
+      ],
+      "evidence": "Rechecked all 43 text/source identities recorded by the previous implementation/patch review: no mismatch. The runner remains 28513 bytes / 485a8e04fecbcb83a10beee73af52e46d5fee206884eaae1b148820003699bff; both specs and all model/loss/helper sources are unchanged. Previous MD/JSON reports retain their exact hashes and were not edited.",
+      "runtime_verified": false
+    }
+  ],
+  "scope_limitations": [
+    "This report judges source only. No local/remote launcher, controller, probe, model/helper import, AST/compile, test, SSH command, GPU operation or job query was executed.",
+    "Prepared/not-executed is the stated task state. This review does not claim to have observed current remote liveness, capacity, normalization completion or the existence/acceptance of future completion, summary or terminal-audit artifacts.",
+    "A future preflight_launch.json would witness the controller launch only. Authoritative success requires controller exit 0, complete status for both arms, both phase exit 0 and their native preflight receipts; it is not inferred from elapsed time or a missing observation.",
+    "The GPU probe tests absence of compute processes. The 64 MiB gate is text/log reserve only; it is not an assertion that the full model will fit, a formal-training checkpoint budget, or a complete device-memory measurement.",
+    "Estimated 600-second duration, 420-second first check and 240-second followups are planning metadata. No monitoring loop is launched by this wrapper.",
+    "Each arm remains one real augmented batch of eight and two updates. A successful preflight would not establish formal-fit accuracy, precision, convergence, full-dataset behavior or a new formal common parent/loss choice.",
+    "All prior implementation-review limits remain: same parameter count is not equal effective functional capacity; no direct semantic/Mask gradient into the head does not freeze shared-upstream semantics; exact zero-head replay is conditional on cached inputs; in-memory reload is not disk/RNG/continued-training proof.",
+    "The optional verify_native_replacement witness remains behind update=False and is not called by the two update=True steps. This deployment adds no execution of that optional witness.",
+    "Source approval is same-reviewer, same-family/provisional; it is not a second independent fresh or cross-family review and does not itself establish an actual launch."
+  ],
+  "not_executed": [
+    "Any source/module import, AST parser, compiler, test or reviewed code execution",
+    "SSH connection, remote probe, nvidia-smi, flock, screen, pgrep or current-job/resource query",
+    "Model construction, forward/backward/optimizer update, CPU/GPU preflight or formal fit/evaluation",
+    "Binary weights/fixtures or credential values/auth-wrapper/host-key file inspection",
+    "Source implementation edits, cleanup, deletion, deployment, publication or further agents"
+  ],
+  "source_unchanged_by_reviewer": true,
+  "previous_reports_preserved": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/EXPERIMENT_CODE_REVIEW.md",
+      "bytes": 9119,
+      "sha256": "c4874b22f911bf93b6936eef8dbb11d4fbb48be5f30ac5e59de51b5926d9d6e4"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/EXPERIMENT_CODE_REVIEW.json",
+      "bytes": 42811,
+      "sha256": "1c46d8f0b3d1c2a468321637a6a2a9c2fbd6dffdd2d674693b311b272b1d4156"
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/DEPLOYMENT_REVIEW_REQUEST.txt",
+      "bytes": 3236,
+      "sha256": "87373f81276e15252f01e948c73b27e2141a911ff5f516902425937395ef2b43",
+      "review_scope": "Complete requested source/text read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/PREFLIGHT_DEPLOYMENT_PLAN.md",
+      "bytes": 1481,
+      "sha256": "692fc3a689c6aa971013943f6c65cb5d789e1a13bff2a3fe558f2b1e508ffe52",
+      "review_scope": "Complete requested source/text read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/preflight_controller.py",
+      "bytes": 2147,
+      "sha256": "db943667ea60f3bfe1892cc8137eaafa52f30f73eb0c480d57403f36e90055a9",
+      "review_scope": "Complete requested source/text read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/launch_preflight_authorized.py",
+      "bytes": 6088,
+      "sha256": "77c7aad9a6ece761dea2cf0d202b6c83ce10a25076a841ac2df698e5361c9178",
+      "review_scope": "Complete latest source read after the blocking_issues gate update; supersedes the initially read 6055-byte launcher"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/run_whole_mask_preflight.py",
+      "bytes": 28513,
+      "sha256": "485a8e04fecbcb83a10beee73af52e46d5fee206884eaae1b148820003699bff",
+      "review_scope": "Unchanged full runner reviewed in prior source review; deployment-relevant paths reread and current exact identity rechecked"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/local_range_spec.json",
+      "bytes": 3101,
+      "sha256": "97f51e15d9cc1f94b978c407d98ffc5690beb538e45cce3b33f4274363cbdcae",
+      "review_scope": "Complete requested source/text read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/whole_range_spec.json",
+      "bytes": 3100,
+      "sha256": "502945f4bc7fdfc47ec0fcd4269dd994ddd23b9491429eb22a3f2c7375fde887",
+      "review_scope": "Complete requested source/text read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_integration_20261003/EXPERIMENT_CODE_REVIEW.json",
+      "bytes": 42811,
+      "sha256": "1c46d8f0b3d1c2a468321637a6a2a9c2fbd6dffdd2d674693b311b272b1d4156",
+      "review_scope": "Current prior implementation/patch review and recorded identities reread"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/collect_complete.py",
+      "bytes": 5233,
+      "sha256": "b088c0a6fb647ba685a6fedf82cb99787677018bdb30a33dd46f991cb79e1125",
+      "review_scope": "Complete requested source/text read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/analyze_complete.py",
+      "bytes": 16707,
+      "sha256": "ff0cc108031f7b99a8d86731d0f254427fefa24e374f3bea79454aaebf1b83b8",
+      "review_scope": "Complete requested source/text read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/launch.json",
+      "bytes": 917,
+      "sha256": "96fc06ed7a526af8f3724c522701a732dccd316dd119b2bdb62ccf8cc5e21bf4",
+      "review_scope": "Complete requested source/text read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/run_preflight_authorized.py",
+      "bytes": 4365,
+      "sha256": "315f41009af88421d71d03b63e9ef67e93d7907f0ff48c0fa86d4b3a885b5b62",
+      "review_scope": "Complete requested source/text read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_candidate_normalization_20261003/prepare_terminal_audit_request.py",
+      "bytes": 3832,
+      "sha256": "9f7ece897d7e39ed1da64be9fab73b37e2b80ad5c47caee8dac9b717eba07909",
+      "review_scope": "Complete additional source read for the future terminal-audit report contract; no execution or deletion-implementation review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/skills/experiment-audit/SKILL.md",
+      "bytes": 10983,
+      "sha256": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+      "review_scope": "Experiment-audit JSON output contract, especially canonical verdict key; no audit workflow executed"
+    }
+  ]
+}

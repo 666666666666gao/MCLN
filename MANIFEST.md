@@ -164,3 +164,5 @@
 - 2026-10-03T20:03:31.438349+08:00 /experiment-audit: refine-logs/pvground_candidate_normalization_20261003/ complete normalized comparison, negative result and one nonbest weight retired; original G retained.
 
 - 2026-10-03T20:41:12.390212+08:00 /experiment-bridge: refine-logs/pvground_whole_mask_integration_20261003/ real native factory preflights complete; four engineering updates, no formal result or disk weight.
+
+- 2026-10-03T21:19:00.386155+08:00 /experiment-bridge: refine-logs/pvground_whole_mask_fit_20261003/ reviewed fixed-budget whole-Mask range source control launched; no formal result; automatic verified nonbest retention.

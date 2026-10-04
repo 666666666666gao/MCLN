@@ -216,3 +216,5 @@
 - 2026-10-05T04:55:59.157703+08:00 final-native-bbs quality difference loss: sourcePASS, actual2update preflightPASS, one3723-update fit LAUNCHED, no new accuracy; protected4506, control4477.
 
 - 2026-10-05T05:08:20.824505+08:00 Exact-byte publication repair: scoped final-quality -text attribute; automatic CRLF conversion stopped the first publication before commit. No GPU source change or NN replay.
+
+- 2026-10-05T06:16:23.985587+08:00 Saved protected4506 parent CPU relation:4169/337/964/4038 Box-Mask quadrants; no NN replay/new accuracy. Closed-only collector and analysis prepared; active quality fit unchanged.

@@ -194,3 +194,5 @@
 - 2026-10-04T17:56:45.248876+08:00 face-conditioned decoder actual two-update sanity passed; bounded original-G-frozen fit launched, no terminal accuracy yet.
 
 - 2026-10-04T18:23:52.359805+08:00 isolated final boundary evidence readback draft; AST-only, no factory/GPU/accuracy, active face fit unchanged.
+
+- 2026-10-04T18:40:35.365906+08:00 isolated delayed-semantic source port and exact bbs helper prepared; AST-only, no factory/GPU/accuracy, active fit unchanged.

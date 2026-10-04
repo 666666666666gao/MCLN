@@ -1,0 +1,64 @@
+--- D:\Program Files\UserCache\gb\codex\tmp\pvground_fused_support_20261002\complete_tail_fused_retry\source\imported\models.pv_ground.py
++++ source_preview/PV-Ground/models/pv_ground.py
+@@ -275,6 +275,7 @@
+         # Init
+         self.init_bn_momentum()
+         self.candidate_box_refiner = None
++        self.boundary_evidence_readback = None
+ 
+ 
+     # BRIEF visual and text backbones.
+@@ -508,7 +509,9 @@
+                 base_xyz=cluster_xyz,                   # ([B, 256, 3])
+                 end_points=end_points,  # 
+                 prefix=prefix,
+-                geometry_features=geometry_query.transpose(1, 2).contiguous()
++                geometry_features=geometry_query.transpose(1, 2).contiguous(),
++                defer_semantic=(i == self.num_decoder_layers - 1
++                    and self.boundary_evidence_readback is not None)
+             )
+             base_xyz = base_xyz.detach().clone()
+             base_size = base_size.detach().clone()
+@@ -561,6 +564,15 @@
+             end_points['last_center'] = refined_center
+             end_points['last_pred_size'] = refined_size
+ 
++        if self.boundary_evidence_readback is not None:
++            assert self.candidate_box_refiner is not None
++            end_points['last_semantic_query_before_readback'] = query
++            final_query = self.boundary_evidence_readback(
++                query, text_feats, text_padding_mask, raw_points, end_points)
++            end_points['last_semantic_query_after_readback'] = final_query
++            end_points['last_sem_cls_scores'] = self.prediction_heads[-1].sem_cls_scores_head(
++                final_query.transpose(1, 2).contiguous()).transpose(2, 1)
++
+         return end_points
+ 
+     def init_bn_momentum(self):
+--- D:\Program Files\UserCache\gb\codex\tmp\pvground_fused_support_20261002\source_preview\PV-Ground\models\modules.py
++++ source_preview/PV-Ground/models/modules.py
+@@ -132,7 +132,7 @@
+         if compute_sem_scores:
+             self.sem_cls_scores_head = ThreeLayerMLP(seed_feat_dim, self.num_class)
+ 
+-    def forward(self, features, base_xyz, end_points, prefix='', geometry_features=None):
++    def forward(self, features, base_xyz, end_points, prefix='', geometry_features=None, defer_semantic=False):
+         """
+         Args:
+             features: (B,C,num_proposal)
+@@ -167,13 +167,13 @@
+             [batch_size, num_proposal, 3])  # (batch_size, num_proposal, 3)
+ 
+         # step 2. class
+-        if self.compute_sem_scores:
++        if self.compute_sem_scores and not defer_semantic:
+             sem_cls_scores = self.sem_cls_scores_head(features).transpose(2, 1)  # (B, num_proposal, num_class)
+ 
+         end_points[f'{prefix}base_xyz'] = base_xyz
+         end_points[f'{prefix}center'] = center
+         end_points[f'{prefix}pred_size'] = pred_size
+ 
+-        if self.compute_sem_scores:
++        if self.compute_sem_scores and not defer_semantic:
+             end_points[f'{prefix}sem_cls_scores'] = sem_cls_scores
+         return center, pred_size

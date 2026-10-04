@@ -218,3 +218,5 @@
 - 2026-10-05T05:08:20.824505+08:00 Exact-byte publication repair: scoped final-quality -text attribute; automatic CRLF conversion stopped the first publication before commit. No GPU source change or NN replay.
 
 - 2026-10-05T06:16:23.985587+08:00 Saved protected4506 parent CPU relation:4169/337/964/4038 Box-Mask quadrants; no NN replay/new accuracy. Closed-only collector and analysis prepared; active quality fit unchanged.
+
+- 2026-10-05T07:22:39.708088+08:00 Actual final-quality negative5606/4460 vs native+G control5615/4477; protected best5616/4506 unchanged. CPU rows/order verified, actual fresh terminal review WARN same-family/provisional. Nonbest1284112B removed, no archive.

@@ -1,0 +1,277 @@
+{
+  "accuracy_result": false,
+  "batch_size": 8,
+  "geometry_provider_and_g_states_exact": true,
+  "initial_zero_output_native_exact": true,
+  "isolated_quality_route_verified": true,
+  "optimizer_exact_check": {
+    "all_keys_moments_steps_and_groups_exact": true,
+    "moment_and_step_states": 23,
+    "param_groups": 1
+  },
+  "optimizer_steps": 2,
+  "peak_allocated_bytes": 3788400128,
+  "peak_reserved_bytes": 5538578432,
+  "quality_weight": 1.0,
+  "readback_parameters": 96672,
+  "readback_state_tensors": 23,
+  "runner_sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+  "serialization_bytes": 1179990,
+  "spec_sha256": "24e62ee89f8fed345175d7cea29620bb759cd3e18a19567e596933228575027b",
+  "status": "pass",
+  "time_cst": "2026-10-05T04:39:46.383749+08:00",
+  "weight_files_created": 0,
+  "witnesses": [
+    {
+      "counts": {
+        "final_iou_detached": true,
+        "final_iou_variance": 0.005780771840363741,
+        "native_score_variance": 0.0035298585426062346,
+        "other_matched_queries_excluded": true,
+        "pool_per_sample": [
+          63,
+          37,
+          54,
+          37,
+          1,
+          35,
+          14,
+          80
+        ],
+        "pool_queries": 321
+      },
+      "gradient_norm": 0.5245339870452881,
+      "loss": 14.012104034423828,
+      "native_score": {
+        "candidates": 256,
+        "rank_exact": true,
+        "score_exact": true,
+        "semantic_logit_gradient_exact": true,
+        "semantic_logit_gradient_norm": 4.378375053405762
+      },
+      "previous_updates": 0,
+      "quality": 0.0075763207860291,
+      "quality_route": {
+        "equal_score_quality_direction_verified": true,
+        "final_geometry_target_detached": true,
+        "independent_logit_gradient_error": 5.820766091346741e-11,
+        "independent_pairwise_error": 0.0,
+        "isolated_quality_loss": 0.0075763207860291,
+        "nonpool_direct_gradient_zero": true,
+        "other_matched_direct_gradient_zero": true,
+        "parameter_gradient_norms": {
+          "evidence.0.bias": 0.0,
+          "evidence.0.weight": 0.0,
+          "evidence.2.bias": 0.0,
+          "evidence.2.weight": 0.0,
+          "face_embedding": 0.0,
+          "face_read.in_proj_bias": 0.0,
+          "face_read.in_proj_weight": 0.0,
+          "face_read.out_proj.bias": 0.0,
+          "face_read.out_proj.weight": 0.0,
+          "language_read.in_proj_bias": 0.0,
+          "language_read.in_proj_weight": 0.0,
+          "language_read.out_proj.bias": 0.0,
+          "language_read.out_proj.weight": 0.0,
+          "output.bias": 0.0012265534605830908,
+          "output.weight": 0.019614368677139282,
+          "output_norm.bias": 0.0,
+          "output_norm.weight": 0.0,
+          "query.bias": 0.0,
+          "query.weight": 0.0,
+          "role_norm.bias": 0.0,
+          "role_norm.weight": 0.0,
+          "text.bias": 0.0,
+          "text.weight": 0.0
+        },
+        "previous_updates": 0
+      },
+      "same_frame_call": {
+        "final_semantic_head_calls": 1,
+        "fixed_geometry": {
+          "exact_list_keys": [
+            "last_pred_masks",
+            "sp_last_pred_masks",
+            "adaptive_weights"
+          ],
+          "exact_tensor_keys": [
+            "last_center",
+            "last_pred_size",
+            "p3_coarse_center",
+            "p3_coarse_size",
+            "boundary_logits",
+            "boundary_size_floored",
+            "whole_mask_range_evidence",
+            "last_proj_queries"
+          ]
+        },
+        "fixed_scope": "same complete forward, immediately before versus after readback",
+        "native_semantic_input_output_exact": true,
+        "order": [
+          "refiner",
+          "readback",
+          "native_semantic_head"
+        ]
+      },
+      "semantic_route": {
+        "final_box_and_masks_frozen": true,
+        "isolated_semantic_loss": 0.8266839385032654,
+        "parameter_gradient_norms": {
+          "evidence.0.bias": 0.0,
+          "evidence.0.weight": 0.0,
+          "evidence.2.bias": 0.0,
+          "evidence.2.weight": 0.0,
+          "face_embedding": 0.0,
+          "face_read.in_proj_bias": 0.0,
+          "face_read.in_proj_weight": 0.0,
+          "face_read.out_proj.bias": 0.0,
+          "face_read.out_proj.weight": 0.0,
+          "language_read.in_proj_bias": 0.0,
+          "language_read.in_proj_weight": 0.0,
+          "language_read.out_proj.bias": 0.0,
+          "language_read.out_proj.weight": 0.0,
+          "output.bias": 0.058314625173807144,
+          "output.weight": 0.5205920934677124,
+          "output_norm.bias": 0.0,
+          "output_norm.weight": 0.0,
+          "query.bias": 0.0,
+          "query.weight": 0.0,
+          "role_norm.bias": 0.0,
+          "role_norm.weight": 0.0,
+          "text.bias": 0.0,
+          "text.weight": 0.0
+        },
+        "previous_updates": 0
+      },
+      "zero_output": {
+        "deployed_head_calls_per_forward": 1,
+        "diagnostic_head_replay_calls": 1,
+        "same_cached_native_logits_exact": true,
+        "zero_query_exact": true
+      }
+    },
+    {
+      "counts": {
+        "final_iou_detached": true,
+        "final_iou_variance": 0.005493666511029005,
+        "native_score_variance": 0.004434758797287941,
+        "other_matched_queries_excluded": true,
+        "pool_per_sample": [
+          61,
+          34,
+          50,
+          36,
+          1,
+          29,
+          14,
+          79
+        ],
+        "pool_queries": 304
+      },
+      "gradient_norm": 0.4828625023365021,
+      "loss": 13.840867042541504,
+      "native_score": {
+        "candidates": 256,
+        "rank_exact": true,
+        "score_exact": true,
+        "semantic_logit_gradient_exact": true,
+        "semantic_logit_gradient_norm": 4.3410868644714355
+      },
+      "previous_updates": 1,
+      "quality": 0.006662157364189625,
+      "quality_route": {
+        "equal_score_quality_direction_verified": true,
+        "final_geometry_target_detached": true,
+        "independent_logit_gradient_error": 7.275957614183426e-11,
+        "independent_pairwise_error": 0.0,
+        "isolated_quality_loss": 0.006662157364189625,
+        "nonpool_direct_gradient_zero": true,
+        "other_matched_direct_gradient_zero": true,
+        "parameter_gradient_norms": {
+          "evidence.0.bias": 4.692497270752938e-07,
+          "evidence.0.weight": 1.248577518708771e-06,
+          "evidence.2.bias": 1.1459890174592147e-06,
+          "evidence.2.weight": 1.6999596255118377e-06,
+          "face_embedding": 4.690257640049822e-07,
+          "face_read.in_proj_bias": 7.155683761084219e-07,
+          "face_read.in_proj_weight": 1.099443034036085e-05,
+          "face_read.out_proj.bias": 1.0460115618116106e-06,
+          "face_read.out_proj.weight": 1.0401545296190307e-05,
+          "language_read.in_proj_bias": 7.144061555663939e-07,
+          "language_read.in_proj_weight": 8.256382102445059e-07,
+          "language_read.out_proj.bias": 1.1454566219981643e-06,
+          "language_read.out_proj.weight": 9.644892315918696e-07,
+          "output.bias": 0.0015921153826639056,
+          "output.weight": 0.019553454592823982,
+          "output_norm.bias": 7.771920991217485e-07,
+          "output_norm.weight": 1.2538275768747553e-06,
+          "query.bias": 1.7247866708203219e-06,
+          "query.weight": 4.601022374117747e-05,
+          "role_norm.bias": 5.355653343031008e-07,
+          "role_norm.weight": 1.1777174222515896e-06,
+          "text.bias": 4.915642648484209e-07,
+          "text.weight": 2.1910000214120373e-06
+        },
+        "previous_updates": 1
+      },
+      "same_frame_call": {
+        "final_semantic_head_calls": 1,
+        "fixed_geometry": {
+          "exact_list_keys": [
+            "last_pred_masks",
+            "sp_last_pred_masks",
+            "adaptive_weights"
+          ],
+          "exact_tensor_keys": [
+            "last_center",
+            "last_pred_size",
+            "p3_coarse_center",
+            "p3_coarse_size",
+            "boundary_logits",
+            "boundary_size_floored",
+            "whole_mask_range_evidence",
+            "last_proj_queries"
+          ]
+        },
+        "fixed_scope": "same complete forward, immediately before versus after readback",
+        "native_semantic_input_output_exact": true,
+        "order": [
+          "refiner",
+          "readback",
+          "native_semantic_head"
+        ]
+      },
+      "semantic_route": {
+        "final_box_and_masks_frozen": true,
+        "isolated_semantic_loss": 0.7945709824562073,
+        "parameter_gradient_norms": {
+          "evidence.0.bias": 1.410433014825685e-05,
+          "evidence.0.weight": 3.4745589800877497e-05,
+          "evidence.2.bias": 2.9395316232694313e-05,
+          "evidence.2.weight": 4.0873455873224884e-05,
+          "face_embedding": 1.20143313324661e-05,
+          "face_read.in_proj_bias": 1.772506584529765e-05,
+          "face_read.in_proj_weight": 0.00020076103101018816,
+          "face_read.out_proj.bias": 2.687864071049262e-05,
+          "face_read.out_proj.weight": 0.0002091328933602199,
+          "language_read.in_proj_bias": 1.644381700316444e-05,
+          "language_read.in_proj_weight": 1.6336209228029475e-05,
+          "language_read.out_proj.bias": 2.9388063921942376e-05,
+          "language_read.out_proj.weight": 2.1915824618190527e-05,
+          "output.bias": 0.05422815680503845,
+          "output.weight": 0.4779185354709625,
+          "output_norm.bias": 3.239910802221857e-05,
+          "output_norm.weight": 6.269315053941682e-05,
+          "query.bias": 4.4462212827056646e-05,
+          "query.weight": 0.0008770572603680193,
+          "role_norm.bias": 1.3733604646404274e-05,
+          "role_norm.weight": 1.7767037206795067e-05,
+          "text.bias": 1.0497406037757173e-05,
+          "text.weight": 4.254922168911435e-05
+        },
+        "previous_updates": 1
+      },
+      "zero_output": null
+    }
+  ]
+}

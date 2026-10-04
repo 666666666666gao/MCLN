@@ -196,3 +196,5 @@
 - 2026-10-04T18:23:52.359805+08:00 isolated final boundary evidence readback draft; AST-only, no factory/GPU/accuracy, active face fit unchanged.
 
 - 2026-10-04T18:40:35.365906+08:00 isolated delayed-semantic source port and exact bbs helper prepared; AST-only, no factory/GPU/accuracy, active fit unchanged.
+
+- 2026-10-04T19:32:07.332640+08:00 actual partial readback source review PASS/SOURCE_ONLY; 18 byte bindings, no required source patches, full factory/runner/runtime/accuracy pending.

@@ -1,0 +1,472 @@
+{
+  "verdict": "PASS",
+  "execution_scope": "SOURCE_ONLY",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "actual_backend_sku": "not_independently_attested",
+  "actual_effort": "not_independently_attested",
+  "summary": "No blocking or nonblocking correctness defect found in the supplied readback module, explicit installer, delayed-semantic two-file port, or unused ScanRefer root bbs helper under the stated source contract. PASS is limited to these exact source bytes. No future factory, provider selection, runner, runtime/precision result, or accuracy result is approved.",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "NB1",
+      "severity": "INFO",
+      "kind": "pending_numerical_equivalence",
+      "is_source_correctness_defect": false,
+      "title": "The unused bbs helper has the correct formula but groups floating-point operations differently",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/native_root_bbs.py",
+          "line_start": 4,
+          "line_end": 10
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_face_conditioned_20261004/run_face_fit.py",
+          "line_start": 520,
+          "line_end": 546
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/evaluator.py",
+          "line_start": 253,
+          "line_end": 281
+        }
+      ],
+      "description": "The helper sums the maps first, then performs one probability-weighted token reduction. The native runner/evaluator reduce each map separately and then add/subtract those scores. The positive/modify/pron/rel/other maps and coefficients agree algebraically. Bitwise score, ranking and gradient equality do not follow from that algebra alone. No native mismatch or accuracy effect was measured, and the helper is unused in all supplied callers.",
+      "minimum_patch": "None required for this unused source draft. If the future acceptance contract requires identical native reduction ordering, mirror the five native per-map reductions and their addition/subtraction order; do not add compatibility or fallback logic.",
+      "minimum_check": "Before connecting the helper to a real runner, compare all 256 root scores, rankings, and semantic-logit gradients with the actual ScanRefer bbs computation on the same real batch and declare the numerical equality criterion."
+    }
+  ],
+  "source_correctness_checks": [
+    {
+      "id": "C1",
+      "status": "correct_under_declared_evidence_schema",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_evidence_readback.py",
+          "line_start": 29,
+          "line_end": 61
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_box_refiner.py",
+          "line_start": 13,
+          "line_end": 37
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_box_refiner.py",
+          "line_start": 93,
+          "line_end": 110
+        }
+      ],
+      "conclusion": "Face order is x-, y-, z-, x+, y+, z+. The same expected_offset and 33 knots are used. The lower face moves by -negative_offset*reference_size/4 and the upper face by +positive_offset*reference_size/4 before the shared size floor. Coarse faces use the same clamped reference; final faces use actual final boxes; actual per-axis floor flags are duplicated onto the matching two faces.",
+      "shape_arithmetic": "33 probabilities + 1 offset + 1 entropy + 2 faces + 4 corresponding-axis moments + 1 mass + 1 sign + 1 floor flag = 44. Slices 96:99,99:102,102:105,105:108 supply the four 3D slots and index 108 supplies mass; index_select yields six face slots."
+    },
+    {
+      "id": "C2",
+      "status": "correct",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_evidence_readback.py",
+          "line_start": 62,
+          "line_end": 72
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/pv_ground.py",
+          "line_start": 295,
+          "line_end": 307
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/pv_ground.py",
+          "line_start": 394,
+          "line_end": 420
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/pv_ground.py",
+          "line_start": 567,
+          "line_end": 574
+        }
+      ],
+      "conclusion": "Native encoded text is B x L x 288, with True marking padding. Language attention has B x 1536 queries and all unpadded text keys/values. Face attention has B*256 independent batches, one candidate query and its six roles. It neither mixes candidates through self-attention nor truncates the candidate set. The result is a 288-D update to the existing semantic query, consumed by the original native semantic head."
+    },
+    {
+      "id": "C3",
+      "status": "correct_source_graph_runtime_pending",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_evidence_readback.py",
+          "line_start": 17,
+          "line_end": 30
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_evidence_readback.py",
+          "line_start": 40,
+          "line_end": 72
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/modules.py",
+          "line_start": 89,
+          "line_end": 108
+        }
+      ],
+      "conclusion": "The output weight and bias are zero. With finite intermediates the returned query is initially the input query; no runtime equality is claimed. There is no detach/no_grad across the readback-to-original-semantic-head path. Internal residual-branch parameter gradients are initially blocked by the zero output weight, so internal gradient checks belong after the first output update. Provider freezing/eval mode must be established by the future factory, not inferred from this module."
+    },
+    {
+      "id": "C4",
+      "status": "correct",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/pv_ground.py",
+          "line_start": 496,
+          "line_end": 521
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/pv_ground.py",
+          "line_start": 523,
+          "line_end": 576
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/modules.py",
+          "line_start": 135,
+          "line_end": 179
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/install_boundary_evidence_readback.py",
+          "line_start": 5,
+          "line_end": 10
+        }
+      ],
+      "conclusion": "Without installation every head retains its original behavior. With installation only the final prediction-head semantic call is skipped; its geometry and any configured objectness/heading still run. Proposal/intermediate semantics and contrast projection remain in place. Both native Mask paths and candidate refinement precede one call to prediction_heads[-1].sem_cls_scores_head on the updated semantic query. The full prediction head is not replayed. The candidate provider assertion protects raw_points availability."
+    },
+    {
+      "id": "C5",
+      "status": "correct_source_state_layout_runtime_pending",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/pv_ground.py",
+          "line_start": 249,
+          "line_end": 278
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/modules.py",
+          "line_start": 125,
+          "line_end": 133
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/install_boundary_evidence_readback.py",
+          "line_start": 5,
+          "line_end": 10
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_evidence_readback.py",
+          "line_start": 15,
+          "line_end": 30
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/NATIVE_SOURCE_PORT_SCOPE.md",
+          "line_start": 11,
+          "line_end": 15
+        }
+      ],
+      "conclusion": "Existing native module declarations and state names are unchanged. boundary_evidence_readback=None adds no parent state before explicit installation. The installer registers the new module, requires an existing provider and six decoder layers, and does not choose or load a provider. Parent loading must happen first. Readback count is 96672 parameters across 23 tensors by arithmetic; axes/signs are two nonpersistent buffers. Actual factory state and optimizer membership are unmeasured."
+    },
+    {
+      "id": "C6",
+      "status": "correct_formula_only",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/native_root_bbs.py",
+          "line_start": 4,
+          "line_end": 10
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_face_conditioned_20261004/run_face_fit.py",
+          "line_start": 504,
+          "line_end": 546
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/evaluator.py",
+          "line_start": 222,
+          "line_end": 281
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/evaluator.py",
+          "line_start": 535,
+          "line_end": 553
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/evaluator.py",
+          "line_start": 570,
+          "line_end": 641
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_face_conditioned_20261004/pvground_semantic_assignment.py",
+          "line_start": 26,
+          "line_end": 47
+        }
+      ],
+      "conclusion": "For the pinned ScanRefer root protocol and 256 token-logit width, bbs is token softmax times binary positive + modify + pron + rel - other_entity. The same formula ranks boxes and masks in the native evaluator. It is not the G CE target (.6,.2,.2,.1), is not a probability/BCE target, and contains no auxiliary-entity addition. The helper has no supplied caller. It is not approved for Nr3D/Sr3D or joint-detection target 0."
+    }
+  ],
+  "validation": {
+    "all_18_expected_sizes_and_sha256_match": true,
+    "python_source_files_parsed": 11,
+    "syntax_check": "Python 3.13 ast.parse(feature_version=(3,7)); source parsed only, no model imports or executions",
+    "provided_diff_equals_actual_normalized_two_file_diff": true,
+    "parameter_count_kind": "source arithmetic, not native construction measurement",
+    "parameter_count_arithmetic": 96672,
+    "parameter_tensors_arithmetic": 23,
+    "parameter_breakdown": {
+      "query": 18496,
+      "text": 18496,
+      "face_embedding": 384,
+      "evidence": 7040,
+      "language_read": 16640,
+      "role_norm": 128,
+      "face_read": 16640,
+      "output_norm": 128,
+      "output": 18720
+    },
+    "nonpersistent_buffers": [
+      "axes",
+      "signs"
+    ],
+    "supplied_python_callers_of_native_root_bbs": 0,
+    "native_model_constructions": 0,
+    "native_forwards": 0,
+    "gpu_runs": 0,
+    "optimizer_steps": 0,
+    "accuracy_measurements": 0,
+    "source_files_modified": 0
+  },
+  "pending_deployment_conditions": [
+    {
+      "id": "P1",
+      "title": "Review the actual selected provider and factory/runner",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/SOURCE_SCOPE.md",
+          "line_start": 8,
+          "line_end": 12
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/NATIVE_SOURCE_PORT_SCOPE.md",
+          "line_start": 11,
+          "line_end": 15
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_box_refiner.py",
+          "line_start": 6,
+          "line_end": 6
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_box_refiner.py",
+          "line_start": 93,
+          "line_end": 98
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_face_conditioned_20261004/READBACK_INTERFACE_WITNESS.json",
+          "line_start": 30,
+          "line_end": 34
+        }
+      ],
+      "minimum_check": "Select and disclose the geometry provider from terminal evidence, then review its actual factory, checkpoint loading, freeze/eval policy and runner. The WholeMaskSupportBoxRefiner.whole_range body and face-conditioned provider body are not among the 18 supplied files; certify their actual moment layout/evidence fields with the selected provider. The 109-D consumer indexing is internally correct, but this review does not independently certify those external producer implementations."
+    },
+    {
+      "id": "P2",
+      "title": "Prove zero-update equality and the native call sequence",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/pv_ground.py",
+          "line_start": 507,
+          "line_end": 574
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/pv_ground.py",
+          "line_start": 597,
+          "line_end": 610
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/modules.py",
+          "line_start": 89,
+          "line_end": 108
+        }
+      ],
+      "minimum_check": "On the same actual native batch with controlled RNG (including native Gumbel sampling), compare installed zero-output readback with disabled readback; observe exactly one final semantic subhead call after Mask/tail, identical initial semantic scores, fixed geometry/Mask outputs and the declared BN/Dropout state. A source graph does not establish any of these runtime equalities."
+    },
+    {
+      "id": "P3",
+      "title": "Witness the real trainable state and two-step semantic gradients",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/install_boundary_evidence_readback.py",
+          "line_start": 5,
+          "line_end": 10
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_evidence_readback.py",
+          "line_start": 15,
+          "line_end": 28
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_evidence_readback.py",
+          "line_start": 62,
+          "line_end": 72
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/NATIVE_SOURCE_PORT_SCOPE.md",
+          "line_start": 24,
+          "line_end": 28
+        }
+      ],
+      "minimum_check": "Load the parent before installation, verify actual added state and the declared optimizer parameter set against the readback's calculated 96672/23, and use the actual semantic objective to witness output gradients/updates followed by internal readback gradients after the first output update. Demonstrate actual native score response and unchanged frozen-provider parameters/buffers. Keep autograd through the frozen native semantic subhead available; eval mode is not a no_grad wrapper."
+    },
+    {
+      "id": "P4",
+      "title": "Verify strict save/restore and unused helper equivalence before integration",
+      "source_references": [
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/NATIVE_SOURCE_PORT_SCOPE.md",
+          "line_start": 17,
+          "line_end": 28
+        },
+        {
+          "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/native_root_bbs.py",
+          "line_start": 4,
+          "line_end": 10
+        }
+      ],
+      "minimum_check": "Witness strict model and optimizer serialization/restore on the real reviewed factory. Complete NB1's bbs score/rank/gradient comparison before the helper is used. Keep the helper limited to the stated ScanRefer root protocol; do not assume Nr3D/Sr3D coefficients or a referring root in joint-detection target 0."
+    }
+  ],
+  "required_source_patches": [],
+  "scope_limits": {
+    "future_factory_approved": false,
+    "future_runner_approved": false,
+    "geometry_provider_selected": false,
+    "runtime_pass": false,
+    "precision_pass": false,
+    "accuracy_pass": false,
+    "active_face_experiment_touched": false,
+    "prior_receipts_used_as_runtime_proof": false,
+    "external_producer_bodies_reviewed": false,
+    "network_or_ssh_or_gpu_used": false,
+    "private_memory_or_authorization_files_read": false,
+    "other_agents_used": false,
+    "files_written": [
+      "READBACK_SOURCE_REVIEW.md",
+      "READBACK_SOURCE_REVIEW.json"
+    ]
+  },
+  "reviewed_files": [
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\pvground_boundary_evidence_readback.py",
+      "bytes": 4155,
+      "sha256": "103498992edb1d21d5b90b0934ef64ce3f379d3215a3a5835de06e4f37157ceb",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\install_boundary_evidence_readback.py",
+      "bytes": 469,
+      "sha256": "64f7adfeeeeaa00215ef3774350c1211eefbabdaed1265e6af352fd53ddb2902",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\native_root_bbs.py",
+      "bytes": 479,
+      "sha256": "072359e92710d8ca6270ab98492527fa1bf3b117516627209f518e2f34056084",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 26744,
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\source_preview\\PV-Ground\\models\\modules.py",
+      "bytes": 7068,
+      "sha256": "1f262505e4c9d6fd186609c6da1497bf5cf6f62f982fa7746c7d4f5400d8f2df",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\SOURCE_SCOPE.md",
+      "bytes": 3088,
+      "sha256": "63a5fe6cef911fb916d93c0f5a770174ae2df4eaddd91720165b41a35ca3dc8c",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\NATIVE_SOURCE_PORT_SCOPE.md",
+      "bytes": 2301,
+      "sha256": "754fab98f25a2e48105f86f91c960da3f550aeda5d58ed18c40791ebe244f3ea",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\NATIVE_SOURCE_PORT.diff",
+      "bytes": 3081,
+      "sha256": "e64e47fa982aab42b59f59f9b4c5ec608f257007154fb744f88bb99595e682a1",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\LOCAL_SOURCE_CHECK.json",
+      "bytes": 839,
+      "sha256": "8eafbc7ab2b779c56a1e03b44bcca8f4ec8d00ee79e6ee9b5a7f3fed994e2152",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\NATIVE_SOURCE_PORT_CHECK.json",
+      "bytes": 2031,
+      "sha256": "a1cc23b425a86a2bc6c0957531486f34eb0fb6b2b9d1d37bba7bd45453b6a317",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\READBACK_INTERFACE_WITNESS.json",
+      "bytes": 2122,
+      "sha256": "0471b25c4558ccdf4f44b4bdf4a8c415c1b7e79b9d4e86ebf8fef8fd2cdf53ba",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\READBACK_INTERFACE.md",
+      "bytes": 3962,
+      "sha256": "bc0e177b617981889a83e7d9c5de02d36ab4709095b55cc2e7a4d0c8950f0140",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+      "bytes": 45350,
+      "sha256": "2ce234f5686a458b37a0f790fdb2230714c3fe8833c417767d25f763c77b663f",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.pv_ground.py",
+      "bytes": 25386,
+      "sha256": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\source_preview\\PV-Ground\\models\\modules.py",
+      "bytes": 6821,
+      "sha256": "1609b3608e017669ae0ff63e7618f2078e5f72f20955da02e7ff230481b846fc",
+      "expected_bytes_and_sha256_match": true
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+      "bytes": 41473,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "expected_bytes_and_sha256_match": true
+    }
+  ],
+  "time_cst": "2026-10-04T19:18:12.478964+08:00"
+}

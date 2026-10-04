@@ -184,3 +184,5 @@
 - 2026-10-04T12:25:35.518591+08:00 boundary terminal collection/row analysis/fresh audit request tools prepared and published; no terminal execution or metrics, active training unchanged.
 
 - 2026-10-04T12:46:59.674364+08:00 boundary result tools: offline GT-volume quartiles prepared,2377 rows/group, same-query repairs/damages; no result execution or inference/training change.
+
+- 2026-10-04T14:14:26.366416+08:00 frozen-G residual complete9508 bbs5589/4446; distribution still active, controller CPU proof only, owned nonbest retired.

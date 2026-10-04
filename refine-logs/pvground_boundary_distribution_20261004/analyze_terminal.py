@@ -90,6 +90,35 @@ def refinement(rows, mode):
     return result
 
 
+def volume_groups(residual_rows, distribution_rows):
+    assert len(residual_rows) == len(distribution_rows) == 9508
+    assert all(a['row_id'] == b['row_id'] and a['root_box'] == b['root_box']
+        for a, b in zip(residual_rows, distribution_rows))
+    volume = [math.prod(row['root_box'][3:]) for row in residual_rows]
+    assert all(math.isfinite(value) and value > 0 for value in volume)
+    order = sorted(range(9508), key=lambda index: (volume[index], residual_rows[index]['row_id']))
+    groups = []
+    for group in range(4):
+        indices = order[group*2377:(group+1)*2377]
+        result = dict(quartile=group+1, rows=len(indices),
+            minimum_gt_volume_m3=volume[indices[0]], maximum_gt_volume_m3=volume[indices[-1]],
+            same_selected_bbs_queries=sum(residual_rows[index]['bbs']['query'] == distribution_rows[index]['bbs']['query'] for index in indices))
+        for arm, rows in (('residual', residual_rows), ('distribution', distribution_rows)):
+            result[arm] = {}
+            for label, threshold in (('25', .25), ('50', .5)):
+                values = [rows[index]['bbs'] for index in indices]
+                result[arm][label] = dict(final_hits=sum(value['iou'] > threshold for value in values),
+                    coarse_hits=sum(value['coarse_iou'] > threshold for value in values),
+                    same_query_repairs=sum(value['coarse_iou'] <= threshold < value['iou'] for value in values),
+                    same_query_damages=sum(value['iou'] <= threshold < value['coarse_iou'] for value in values))
+        result['distribution_minus_residual'] = {
+            label:result['distribution'][label]['final_hits']-result['residual'][label]['final_hits']
+            for label in ('25', '50')}
+        groups.append(result)
+    return dict(grouping='offline GT-volume rank quartiles, row_id breaks volume ties;2377 rows each',
+        inference_use=False, causal_size_effect_claim=False, groups=groups)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--root', type=Path, required=True)
@@ -217,6 +246,7 @@ def main():
             leader = dict(name=arm, bbs_hits25=metric['rec_hits25'], bbs_hits50=metric['rec_hits50'])
     assert all(status['retained_best'][key] == value for key, value in leader.items())
     diagnostics = {arm: {mode: refinement(formal_rows[arm], mode) for mode in ('bbs', 'bbf')} for arm in arms}
+    size_groups = volume_groups(formal_rows['residual'], formal_rows['distribution'])
     boundary_statistics = {}
     for arm in arms:
         boundary_statistics[arm] = {}
@@ -251,6 +281,7 @@ def main():
         head_only=True, original_g_state_unchanged=True, upstream_running_state_eval=True,
         trainable_parameter_tensors=10, trainable_parameters={arm: specs[arm]['head_parameters'] for arm in arms}, boundary_training=boundary_training,
         boundary_statistics=boundary_statistics,
+        formal_bbs_gt_volume_groups=size_groups,
         same_fit_batch_order=True, starting_output_comparison=actual_start, bitwise_paired_comparison=False,
         same_query_refinement=diagnostics, historical_g_formal_hits=[5615, 4495],
         delta_from_original_g={arm: [formal['metrics'][arm]['bbs']['rec_hits25']-5615,
@@ -286,6 +317,12 @@ def main():
             value['coarse_selected_hits'], value['final_selected_hits'], value['repairs'], value['damages'],
             value['errors_with_good_full256_candidate'], value['errors_without_good_full256_candidate'],
             diagnostic['selected_max_face_displacement_m']['0.5']*1000))
+    lines += ['', '| Offline GT-volume rank quartile | Rows | Residual @.50 | Distribution @.50 | Difference |', '|---|---:|---:|---:|---:|']
+    for group in size_groups['groups']:
+        lines.append('| {} | {} | {} | {} | {:+d} |'.format(group['quartile'], group['rows'],
+            group['residual']['50']['final_hits'], group['distribution']['50']['final_hits'],
+            group['distribution_minus_residual']['50']))
+    lines += ['', 'GT-volume quartiles are offline diagnostics, with row_id tie breaks; no GT volume enters inference, and the grouping does not establish a causal size effect.']
     lines += ['', 'Retained metric best: {} ({}/{}). Target5615/4754 passed: {}.'.format(
         leader['name'], leader['bbs_hits25'], leader['bbs_hits50'], summary['scanrefer_development_target_pass']),
         'Original-G deltas: {}. Controller retention is verified separately; this analyzer deletes no weights.'.format(summary['delta_from_original_g']), '',

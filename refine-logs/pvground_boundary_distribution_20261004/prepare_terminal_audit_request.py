@@ -11,7 +11,8 @@ paths = [local / name for name in (
     'launch.json', 'residual_spec.json', 'distribution_spec.json',
     'EXPERIMENT_PLAN.md', 'run_boundary_fit.py', 'pvground_boundary_box_refiner.py',
     'PREFLIGHT_ANALYSIS.json', 'launch_publication.json',
-    'terminal_tool_preparation.json', 'terminal_tool_text_correction.json')]
+    'terminal_tool_preparation.json', 'terminal_tool_text_correction.json',
+    'terminal_tool_volume_group_update.json')]
 paths += sorted(path for path in (local / 'complete').rglob('*') if path.is_file())
 paths += [local / 'analysis/SUMMARY.json', local / 'analysis/REPORT.md',
     local.parent / 'pvground_candidate_consistency_20261003/analyze_complete_initial_qualified.py']

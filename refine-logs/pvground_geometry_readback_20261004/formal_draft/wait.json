@@ -1,0 +1,102 @@
+{
+  "time_cst": "2026-10-05T03:43:19.947549+08:00",
+  "terminal": {
+    "status": {
+      "status": "complete",
+      "started_cst": "2026-10-04T23:15:55.474394+08:00",
+      "completed": [
+        {
+          "arm": "evidence_hidden",
+          "mode": "train",
+          "seconds": 6542.18621725589,
+          "finished_cst": "2026-10-05T01:04:57.661262+08:00"
+        },
+        {
+          "arm": "evidence_hidden",
+          "mode": "formal",
+          "seconds": 1469.8884311839938,
+          "finished_cst": "2026-10-05T01:29:27.550389+08:00"
+        },
+        {
+          "arm": "evidence_visible",
+          "mode": "train",
+          "seconds": 6529.659539885819,
+          "finished_cst": "2026-10-05T03:18:21.066848+08:00"
+        },
+        {
+          "arm": "evidence_visible",
+          "mode": "formal",
+          "seconds": 1491.6197355762124,
+          "finished_cst": "2026-10-05T03:43:12.687074+08:00"
+        }
+      ],
+      "retained_best": {
+        "name": "frozen4506_geometry",
+        "path": "/root/autodl-tmp/pvground_boundary_fit_20261004/distribution/terminal.pth",
+        "sha256": "79e35068b8787a81c354c5fd3ed2bbc12fc62e06167b9cfbe781f86cbbd36c67",
+        "bbs_hits25": 5616,
+        "bbs_hits50": 4506,
+        "protected_parent": true
+      },
+      "primary_mode": "bbs",
+      "primary_threshold": 0.5,
+      "formal_training_started": true,
+      "goal_achieved": false,
+      "stage": "evidence_visible/formal",
+      "stage_started_cst": "2026-10-05T03:18:21.067330+08:00",
+      "process_pid": 537845,
+      "last_weight_retention": {
+        "time_cst": "2026-10-05T03:43:16.306346+08:00",
+        "arm": "evidence_visible",
+        "formal_rows_sha256": "f7e9e3306d6eb497ea2c53878ea93b5f2713b1720174b1ab6b05884b0468556f",
+        "terminal_sha256": "9a2307c23191d75d5f6ef630f394b7479fc8ac088b77fbe9f969b6418936c0bb",
+        "cpu_box_threshold_changes": 0,
+        "cpu_bbs_hits25": 5615,
+        "cpu_bbs_hits50": 4477,
+        "retained_best": {
+          "name": "frozen4506_geometry",
+          "path": "/root/autodl-tmp/pvground_boundary_fit_20261004/distribution/terminal.pth",
+          "sha256": "79e35068b8787a81c354c5fd3ed2bbc12fc62e06167b9cfbe781f86cbbd36c67",
+          "bbs_hits25": 5616,
+          "bbs_hits50": 4506,
+          "protected_parent": true
+        },
+        "deleted": [
+          {
+            "path": "/root/autodl-tmp/pvground_readback_fit_20261004/evidence_visible/terminal.pth",
+            "bytes": 1284112,
+            "sha256": "9a2307c23191d75d5f6ef630f394b7479fc8ac088b77fbe9f969b6418936c0bb"
+          }
+        ],
+        "required_parent_chain_preserved": true,
+        "local_weight_archive_created": false,
+        "authorization": "user persistent instruction: retain metric best; remove our completed nonbest weights"
+      },
+      "finished_cst": "2026-10-05T03:43:16.306947+08:00",
+      "scanrefer_target_pass": false
+    },
+    "controller_alive": false,
+    "directory_free_bytes": 2310803456,
+    "system_free_bytes": 75304960,
+    "gpu": "0, 1",
+    "exitcode": 0,
+    "log_tail": [
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 4096, \"total\": 9508, \"seconds\": 590.4636406898499}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 4608, \"total\": 9508, \"seconds\": 663.2235860824585}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 5120, \"total\": 9508, \"seconds\": 734.4923334121704}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 5632, \"total\": 9508, \"seconds\": 808.2853834629059}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 6144, \"total\": 9508, \"seconds\": 880.353001832962}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 6656, \"total\": 9508, \"seconds\": 953.4893591403961}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 7168, \"total\": 9508, \"seconds\": 1027.347013950348}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 7680, \"total\": 9508, \"seconds\": 1102.693438053131}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 8192, \"total\": 9508, \"seconds\": 1176.2369828224182}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 8704, \"total\": 9508, \"seconds\": 1248.2080461978912}",
+      "READBACK_EVAL_PROGRESS {\"stage\": \"formal\", \"rows\": 9216, \"total\": 9508, \"seconds\": 1318.3614103794098}",
+      "READBACK_EVAL_COMPLETE {\"status\": \"pass\", \"stage\": \"formal\", \"rows\": 9508, \"metrics\": {\"bbs\": {\"rec_hits25\": 5615, \"rec_hits50\": 4477, \"mask_hits25\": 5817, \"mask_hits50\": 5137, \"mask_miou\": 47.1315861115407}}, \"fixed_frame_readback_effect\": {\"0.25\": {\"fixes\": 55, \"damages\": 56, \"net\": -1}, \"0.5\": {\"fixes\": 66, \"damages\": 95, \"net\": -29}}, \"primary_mode\": \"bbs\", \"primary_threshold\": 0.5, \"elapsed_seconds\": 1358.9859437942505, \"time_cst\": \"2026-10-05T03:43:10.253952+08:00\", \"formal_rows\": 9508, \"rows_sha256\": \"f7e9e3306d6eb497ea2c53878ea93b5f2713b1720174b1ab6b05884b0468556f\"}"
+    ],
+    "time_cst": "2026-10-05T03:43:19.947549+08:00"
+  },
+  "remote_queries": 41,
+  "observer_closed": true,
+  "no_restart": true
+}

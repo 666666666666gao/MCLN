@@ -210,3 +210,5 @@
 - 2026-10-04T23:36:46.646913+08:00 closed-formal native-bbs analysis implemented/AST37 only; no new result execution, active readback controller unchanged.
 
 - 2026-10-05T01:45:27.715816+08:00 actual hidden readback control9508 native5616/4475; CPU threshold differences0, inferior1284112-byte delta removed, visible arm running; no full pair claim.
+
+- 2026-10-05T04:19:07.210475+08:00 actual closed readback9508 hidden5616/4475 visible5615/4477; sameframe visible66fix95damage; best4506 protected, two inferior deltas removed; fresh same-family provisional audit WARN.

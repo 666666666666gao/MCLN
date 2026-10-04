@@ -12,8 +12,9 @@ from pvground_boundary_box_refiner import expected_offset, SIZE_FLOOR
 class BoundaryEvidenceReadback(nn.Module):
     """Read six final distributions in the condition of the full expression."""
 
-    def __init__(self):
+    def __init__(self, use_geometry_evidence=True):
         super().__init__()
+        self.use_geometry_evidence = use_geometry_evidence
         self.query = nn.Linear(288, 64)
         self.text = nn.Linear(288, 64)
         self.face_embedding = nn.Parameter(torch.empty(6, 64))
@@ -59,6 +60,8 @@ class BoundaryEvidenceReadback(nn.Module):
             coarse_face[..., None], final_face[..., None], moments, mass[..., None],
             sign.expand(batch, candidates, 6)[..., None], floored[..., None]], dim=-1)
         assert evidence.shape == (batch, candidates, 6, 44)
+        if not self.use_geometry_evidence:
+            evidence = torch.zeros_like(evidence)
         query = self.query(semantic_query)
         roles = self.evidence(evidence) + query[:, :, None] + self.face_embedding[None, None]
         language = self.text(text)

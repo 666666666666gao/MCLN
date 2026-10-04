@@ -180,3 +180,5 @@
 - 2026-10-04T11:17:29.819903+08:00 head-only pair complete9508 local[5588, 4447] whole[5589, 4456]; fresh audit WARN, owned nonbest retired.
 
 - 2026-10-04T11:54:54.012493+08:00 frozen original-G boundary residual/distribution: actual two-arm GPU preflight pass; bounded serial comparison launched, no formal metrics yet.
+
+- 2026-10-04T12:25:35.518591+08:00 boundary terminal collection/row analysis/fresh audit request tools prepared and published; no terminal execution or metrics, active training unchanged.

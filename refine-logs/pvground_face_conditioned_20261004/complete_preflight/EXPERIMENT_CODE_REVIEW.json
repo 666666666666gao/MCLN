@@ -1,0 +1,560 @@
+{
+  "verdict": "PASS",
+  "summary": "No unresolved blocking source finding remains after the minimal first-good-rank serialization fix. The next gate is the actual B8, two-update native probe; this review establishes neither native GPU correctness nor accuracy.",
+  "execution_scope": "SOURCE_ONLY",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "backend_sku_independently_verified": false,
+  "reviewer_route_requested": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  "reviewer_model": "Native Codex review agent; gpt-6-astra requested, backend SKU not independently verified",
+  "reviewer_reasoning": "max requested",
+  "actual_agent_identity": "/root/pvg_face_conditioned_source_review",
+  "generated_at": "2026-10-04T09:40:17.985Z",
+  "review_request": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\CODE_REVIEW_REQUEST.txt",
+  "skill": "C:\\Users\\gb\\.codex\\skills\\experiment-bridge\\SKILL.md",
+  "review_policy": "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "status": "RESOLVED_SOURCE",
+      "title": "Persist the exact first-good ranks required by the plan",
+      "original_evidence": "EXPERIMENT_PLAN.md and research_contract.md lines31-32 require first-good rank, but the original runner saved only four top-K oracle flags. Those flags cannot reconstruct the exact rank, and an unsuccessful terminal is eligible for retirement.",
+      "original_runner_sha256": "27fc7b004afe7f42df0f118a72942ba29c573ea093f491c04d348c524c8588aa",
+      "resolution": "Executor added only three diagnostic lines using the existing full ranked/iou tensors. Both bbs and bbf now save first_good_rank25 and first_good_rank50 as one-based ranks with strict >0.25/>0.50 and JSON null when no candidate qualifies. The source was re-read, compared and syntax-checked; no forward, scoring or training change was introduced.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 557
+        }
+      ],
+      "final_runner_sha256": "2ce234f5686a458b37a0f790fdb2230714c3fe8833c417767d25f763c77b663f",
+      "reviewer_implementation_edits": 0
+    }
+  ],
+  "checks": [
+    {
+      "name": "Native factory, parent restore and trainable head",
+      "status": "PASS_SOURCE",
+      "details": "The actual PVGround factory is followed by strict author state loading, the existing 37-state reader installation and strict original-G 1072-tensor delta restore. FaceConditionedBoxRefiner is installed only afterward. Static parameter arithmetic is 64737 across 25 parameter tensors; nonpersistent direction/layout buffers are excluded. The runner asserts the actual factory count and trainable-name equality.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 139
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 161
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 187
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_face_conditioned_box_refiner.py",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "name": "Face order, axes and global statistics",
+      "status": "PASS_SOURCE",
+      "details": "Distribution order x-,y-,z-,x+,y+,z+ maps to native local locations 2,4,6,1,3,5, axes 0,1,2,0,1,2 and signs -,-,-,+,+,+. Each face reads 32 bins of its own axis, 16 own-face members and 16 center members. Whole109 is 96 histogram bins plus mean/second/lower/upper XYZ statistics and support fraction; five axis statistics plus the six-coordinate frame match the 11-input face condition.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_face_conditioned_box_refiner.py",
+          "line": 30
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_face_conditioned_box_refiner.py",
+          "line": 53
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_whole_mask_box_refiner.py",
+          "line": 16
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\whole_mask_range.py",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "name": "Observed point and soft-Mask membership",
+      "status": "PASS_SOURCE",
+      "details": "Nearest member indices address the actual input point order. Their native superpoint slots index query-aligned Text/Query logits; sigmoid(Text), sigmoid(Query), absolute difference and sigmoid(alpha*Text+(1-alpha)*Query) are soft feature channels. Whole profiles weight observed members by native fused probabilities and member counts. No GT mask, teacher, hard foreground crop or quality callback enters the refiner.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_candidate_box_refiner.py",
+          "line": 30
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_tail_support_box_refiner.py",
+          "line": 15
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\whole_mask_range.py",
+          "line": 40
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 288
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.pv_ground.py",
+          "line": 556
+        }
+      ]
+    },
+    {
+      "name": "Six-face decode and distribution loss",
+      "status": "PASS_SOURCE",
+      "details": "The target/decode signs are inverse under the common 1e-6 size reference. Centered uniform probabilities make zero logits produce zero offsets. DFL consumes matching[1], which is the final native layer because prefixes are proposal_, last_, then 0head_ through 4head_. GT indices address the same box_label_mask-filtered centers and sizes used by the native criterion. Raw targets must be finite before endpoint clamping; outside counts are retained. Mean loss over every matched box and six faces has its own 1/7 coefficient.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_boundary_box_refiner.py",
+          "line": 18
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_boundary_box_refiner.py",
+          "line": 40
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 317
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.losses.py",
+          "line": 849
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\src.joint_det_dataset.py",
+          "line": 1086
+        }
+      ]
+    },
+    {
+      "name": "Two-step native probe and optimizer restore",
+      "status": "PASS_SOURCE",
+      "details": "The source requires one actual B8 batch, four observed full native forwards, cached zero-head/common-floor equality, exact native Mask-member mapping, independent geometry and DFL gradients on explicitly named output.weight, then nonzero gradients for all 25 head tensors after the second backward. G remains eval/frozen and its persistent state is compared exactly. A real BytesIO torch.save/load and AdamW.load_state_dict route compares model state plus every optimizer key, moment, step and group. No disk probe checkpoint is written.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 335
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 378
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 448
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\whole_model_preflight_checks.py",
+          "line": 30
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_tail_preflight.py",
+          "line": 24
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\main_utils.py",
+          "line": 283
+        }
+      ]
+    },
+    {
+      "name": "Bounded matched training protocol",
+      "status": "PASS_SOURCE",
+      "details": "Seed2027, B8, no accumulation, fresh AdamW LR1e-5, WD5e-4 and clip0.1 are fixed. drop_last=False gives 3722 batches of eight and a tail of two: 29778 rows once and 3723 updates. Row order is checked against the completed plain-distribution training log; the physical holdout is excluded from head fitting. Only head parameters require gradients, and upstream eval state persists throughout training.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 92
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 203
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 284
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 603
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 625
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\main_utils.py",
+          "line": 339
+        }
+      ]
+    },
+    {
+      "name": "Native scoring, GT evaluation and complete diagnostics",
+      "status": "PASS_SOURCE",
+      "details": "bbs and bbf retain their native token-map scoring, a unique selected query shared by Box/Mask within each mode, and all 256 candidates. Selected-box/Mask counts are checked against the native evaluator. Root boxes and masks come from the dataset; GT is added only after model inference. Coarse/final same-query evidence, top16/32/64/256 coverage, size-floor exposure and face statistics are saved. The reviewed fix now serializes one-based first_good_rank25/50, strict > thresholds, null when absent, separately for both native rankings.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 500
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 542
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 557
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+          "line": 194
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+          "line": 535
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\src.joint_det_dataset.py",
+          "line": 1387
+        }
+      ]
+    },
+    {
+      "name": "Deployment, resource checks and gate ordering",
+      "status": "PASS_SOURCE",
+      "details": "Launchers require a nonblocking SOURCE_ONLY review matching the actual local reviewed-file hashes. Preflight checks prior closure, current-best identity, idle compute and log capacity; formal launch and controller require the completed two-step frozen-G proof and measured serialization capacity. Both use the existing environment GPU flock and preserve the environment. The source review itself does not satisfy the real-model gate.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch_preflight_authorized.py",
+          "line": 10
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch_preflight_authorized.py",
+          "line": 32
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch_preflight_authorized.py",
+          "line": 69
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch_formal_authorized.py",
+          "line": 12
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\controller.py",
+          "line": 65
+        }
+      ]
+    },
+    {
+      "name": "Promotion, exact deletion bounds and text-only collection",
+      "status": "PASS_SOURCE",
+      "details": "Current best 4506 is checked by its exact prior-best path, SHA and bytes. Promotion happens only after train/formal subprocess closure, strict full9508 ordered rows, CPU box-IoU threshold recount, matching native counts, terminal SHA and protected-G SHA checks. Strictly better bbs@.50 replaces the incumbent. Deletion is restricted to the exact declared previous terminal or the new arm's terminal.pth, with identity checks; the original G and official/dependent parent paths are outside deletion bounds. The added collector accepts either exact retained-best location and downloads only text/row artifacts.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\controller.py",
+          "line": 35
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\controller.py",
+          "line": 98
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\controller.py",
+          "line": 127
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "line": 222
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\collect_terminal.py",
+          "line": 25
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\collect_terminal.py",
+          "line": 81
+        }
+      ]
+    },
+    {
+      "name": "Observer cadence and scientific claim limits",
+      "status": "PASS_SOURCE",
+      "details": "The sole formal observer first waits 6300 seconds near the prior measured train-stage end, then uses observed remaining-time estimates with a 240-second minimum. Preflight uses 420-second first check and 240-second later intervals. The plan discloses architecture/capacity changing together, development validation, upstream-seen holdout scenes, single seed and observed cross-process nonbitwise differences. It makes no teacher/quality callback result, pure-attention effect, calibrated entropy or three-method novelty claim.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\wait_fit_authorized.py",
+          "line": 17
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\wait_fit_authorized.py",
+          "line": 75
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\wait_preflight_authorized.py",
+          "line": 10
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\EXPERIMENT_PLAN.md",
+          "line": 15
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\EXPERIMENT_PLAN.md",
+          "line": 29
+        }
+      ]
+    }
+  ],
+  "static_validation": {
+    "status": "PASS",
+    "python_files": 31,
+    "embedded_remote_source_blocks": 6,
+    "syntax_feature_version": "3.7",
+    "model_imports": 0,
+    "source_execution": 0,
+    "files_written": 0,
+    "head_parameter_arithmetic": {
+      "face_embedding": 384,
+      "member": 5120,
+      "condition": 18496,
+      "output": 2145,
+      "face_condition": 768,
+      "range_member": 4480,
+      "support_attention": 16640,
+      "support_norm": 128,
+      "face_update": 16576,
+      "total": 64737,
+      "parameter_tensors": 25
+    },
+    "fit_arithmetic": {
+      "rows": 29778,
+      "batch_size": 8,
+      "full_batches": 3722,
+      "tail_rows": 2,
+      "updates": 3723
+    },
+    "boundary_helper_matches_completed_control_sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+    "reviewed_primary_file_count": 37
+  },
+  "limitations": [
+    "All PASS_SOURCE checks concern the inspected source, not a fresh native factory/model/optimizer/GPU execution.",
+    "No checkpoint, dataset bytes, credential/auth-wrapper or private-goal file was read. Existing reports were inspected as historical evidence, not re-audited raw runtime results.",
+    "Runtime parameter count, exact zero/common-floor behavior, both output-weight gradient routes, all25 second-step gradients, native call order, frozen running state, AdamW restore and actual memory remain subject to the real two-step probe.",
+    "Cross-process initial outputs may differ nonbitwise; the existing comparison records differences and the plan discloses them. This review does not establish identical training feature tensors across architectures.",
+    "Architecture and parameter capacity change together. A future result supports only this bounded package comparison on the declared development protocol; broader target, novel-module and Nr3D/Sr3D claims remain unestablished.",
+    "Full candidate boxes/scores and raw masks are not retained by this bounded recorder; oracle and Mask scalar diagnostics have the corresponding saved-evidence limit."
+  ],
+  "operations": {
+    "ssh_calls": 0,
+    "model_imports": 0,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "torch_or_cuda_calls": 0,
+    "checkpoint_reads": 0,
+    "credential_or_auth_wrapper_file_reads": 0,
+    "private_goal_file_reads": 0,
+    "job_queries_or_changes": 0,
+    "source_edits": 0,
+    "spawned_subagents": 0,
+    "review_owned_outputs_only": true
+  },
+  "reviewed_files": [
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+      "bytes": 45350,
+      "sha256": "2ce234f5686a458b37a0f790fdb2230714c3fe8833c417767d25f763c77b663f"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\controller.py",
+      "bytes": 7871,
+      "sha256": "17ac8badad6533419e7bddd06b0eea35063c1196766d444dd20bb10ba1c94bee"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\preflight_controller.py",
+      "bytes": 2728,
+      "sha256": "1087310b525bd32760ecac9745669c3b1b53b183b0e9ab4d74261b69a5263a79"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch_preflight_authorized.py",
+      "bytes": 5967,
+      "sha256": "cbb769fc4a35eee457db3d0968800c485c825c8e707eb102eec568774c05fa6f"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch_formal_authorized.py",
+      "bytes": 6255,
+      "sha256": "502a17e76ae5d2b3e046d652416b942097c3b16a2e51e66e28695149b1bf2167"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\observe_preflight_authorized.py",
+      "bytes": 1919,
+      "sha256": "ebc79281285fffd2bbef7f6110ae37b347656d22023722d3a4ad4a628ed3c9bd"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\wait_preflight_authorized.py",
+      "bytes": 1552,
+      "sha256": "4a0ac39eacdfabf1851425bc635f8eb3be58556812e089fc2dd61b22ff20a3cd"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\collect_preflight_terminal.py",
+      "bytes": 3178,
+      "sha256": "b5e5a885d31d3973d5023164ee8910871466cd29354ef60d1c23936b50231a82"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_tail_preflight.py",
+      "bytes": 2898,
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\initial_range_comparison.py",
+      "bytes": 1680,
+      "sha256": "f892a2aef21ad1aeee1d7f806436fe9145dad0c8bbb078fe4643dfea4a8ff428"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_face_conditioned_box_refiner.py",
+      "bytes": 5974,
+      "sha256": "92f2ebef37504b6b3228db2149767486d2490d4ed26079f72438f15da001f61f"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\EXPERIMENT_PLAN.md",
+      "bytes": 2696,
+      "sha256": "8d9e14b0d60290fcf66a9416066130a52069478a4c751a7803b40dfbe14a6960"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\face_preflight_spec.json",
+      "bytes": 4036,
+      "sha256": "26ca0952761fb1df5c19abf2abc96e6cce8236c856e78eda9c7243640b54b47c"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\face_fit_spec.json",
+      "bytes": 4030,
+      "sha256": "7ecb6b480e4c7c35c9e6d5489e69a246a2afbf0e8beacf1d25698436d2ad5935"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\idea-stage\\docs\\research_contract.md",
+      "bytes": 2696,
+      "sha256": "8d9e14b0d60290fcf66a9416066130a52069478a4c751a7803b40dfbe14a6960"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+      "bytes": 41473,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\main_utils.py",
+      "bytes": 24599,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.pv_ground.py",
+      "bytes": 25386,
+      "sha256": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\prepare_data.py",
+      "bytes": 19658,
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\src.joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\analysis\\REPORT.md",
+      "bytes": 4563,
+      "sha256": "7a1b8907b49d0870a1a440b179131c30a7db23b22107a64ffa071e65010ce806"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\analysis\\EXPERIMENT_AUDIT.json",
+      "bytes": 93836,
+      "sha256": "e27b405150209e8578a6c682035eaf3bbe120fe61f9e1785047eec51d7460890"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\run_boundary_fit.py",
+      "bytes": 43834,
+      "sha256": "00d771862766ae97ffb0298e8e7a00aff21fdf7fbd81082490f3c48a4afffba7"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\wait_fit_authorized.py",
+      "bytes": 4690,
+      "sha256": "09dd144ea5a27adab684e47646faaccea7b9efa5aef567e1b494e1bea4389d55"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\collect_terminal.py",
+      "bytes": 5073,
+      "sha256": "7ef6dfdd23b9db40dfc1f280f15a5ab098b9afe725f24d796c31ad2ffcf0a103"
+    }
+  ]
+}

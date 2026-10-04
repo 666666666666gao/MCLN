@@ -220,3 +220,5 @@
 - 2026-10-05T06:16:23.985587+08:00 Saved protected4506 parent CPU relation:4169/337/964/4038 Box-Mask quadrants; no NN replay/new accuracy. Closed-only collector and analysis prepared; active quality fit unchanged.
 
 - 2026-10-05T07:22:39.708088+08:00 Actual final-quality negative5606/4460 vs native+G control5615/4477; protected best5616/4506 unchanged. CPU rows/order verified, actual fresh terminal review WARN same-family/provisional. Nonbest1284112B removed, no archive.
+
+- 2026-10-05T07:27:18.359757+08:00 Actual SSH recovered and remote publication closed; complete evidence symlink reuses data disk originals. No GPU/optimizer/weight replay. Formal5606/4460 negative, best5616/4506 unchanged.

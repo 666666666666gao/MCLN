@@ -1,0 +1,404 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "N1",
+      "original_severity": "nonblocking",
+      "status": "RESOLVED_SOURCE_RECHECK",
+      "title": "Explicit raw-target-finiteness witness required by the existing plan",
+      "original_finding": "The previous source only checked finite DFL loss after target clamp; it did not separately verify and record raw target finiteness requested in EXPERIMENT_PLAN.md:50.",
+      "correction": "pvground_boundary_box_refiner.py:53 now asserts torch.isfinite(target).all() before clamping, and line64 records boundary_targets_finite=True. The runner already incorporates boundary_counts into each step record.",
+      "evidence": "Removing exactly those two inserted lines reproduces the originally reviewed module SHA256. All four specifications and the source-preparation record contain the new module identity.",
+      "before_sha256": "562038ab19856ce4fbc06396890c972b40657ad91180eb7bd01fd89a094a3cc4",
+      "after_sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "algorithm_or_budget_changed": false,
+      "runtime_witness_executed": false
+    }
+  ],
+  "execution_scope": "SOURCE_ONLY",
+  "reviewed_at_cst": "2026-10-04T11:30:58.395844+08:00",
+  "review_passes": 2,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "backend_sku_independently_verified": false,
+  "reviewer_route_requested": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  "attribution_note": "Fresh delegated source review through the requested Codex route; provider backend SKU is not independently attested.",
+  "request_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\CODE_REVIEW_REQUEST.txt",
+  "request_sha256": "3d4505a281b66f8bd306e6be6477134d49b97500014a0f8b36390225b579b04c",
+  "supplemental_primary_paths": [
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\prepare_lifecycle_helpers.py",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\lifecycle_preparation.json",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\observe_preflight_authorized.py",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\wait_preflight_authorized.py",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\collect_preflight_terminal.py",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\launch_formal_authorized.py",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\finite_target_correction.json",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\record_finite_target_correction.py"
+  ],
+  "supplemental_scope_authority": "Parent task messages explicitly supplied the six lifecycle files and the two finite-target correction records.",
+  "reviewed_files": [
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\control_tools_preparation.json",
+      "bytes": 631,
+      "sha256": "c5eff9a3c02639dfd720ff237927ad107a9f8ef9e863d333fa84f3152fabec04"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\controller.py",
+      "bytes": 7045,
+      "sha256": "f5e385dd19436cf5d9aa1c9ce75b9c6af95045659a17d4d51e9f6df29d83da9f"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\distribution_preflight_spec.json",
+      "bytes": 3532,
+      "sha256": "fe7cd80bf66826133a89d217ed05fb4ff6cc61c3ba1b81a30719e25fdd8ac901"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\distribution_spec.json",
+      "bytes": 3527,
+      "sha256": "b14540394e3f37a45290a45a7585b61c387ccf79a7fc4cdc401a91d4067e1a20"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\EXPERIMENT_PLAN.md",
+      "bytes": 4987,
+      "sha256": "c8dd6619b6213502f3224a373d14a6f3e05909de18faceeb31b705fef9de8051"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\EXPERIMENT_TRACKER.md",
+      "bytes": 451,
+      "sha256": "4eb139d2deee0511db30b84a6d6f8593de375860ca1fc826853d650614530bc3"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\idea-stage\\docs\\research_contract.md",
+      "bytes": 1305,
+      "sha256": "a9899cf41f5e5d22b99d2cbc1264e985522dab8133069ea4135e4d4384b952a4"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\initial_range_comparison.py",
+      "bytes": 1680,
+      "sha256": "f892a2aef21ad1aeee1d7f806436fe9145dad0c8bbb078fe4643dfea4a8ff428"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\launch_preflight_authorized.py",
+      "bytes": 5608,
+      "sha256": "243deaf5b590e16884c629122c5ae61a9b6ad8a978cb19663a931540eb733aaf"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\preflight_controller.py",
+      "bytes": 2580,
+      "sha256": "6b5773e8379f41bf9ebfff86eb6451fa505d0da6e5f56826c3d96769cb935e55"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\prepare_code_review.py",
+      "bytes": 5456,
+      "sha256": "010284c7eeebaf83e1ef43472abfe0e721360d2c74eda5f49598b2d38b33ebbc"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\prepare_control_tools.py",
+      "bytes": 6066,
+      "sha256": "02a611be4093932ea85d0d30341d876af7c3ad13a640e9aff9cf799a303ea1cf"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\prepare_source.py",
+      "bytes": 9023,
+      "sha256": "7b65ee624fe064f20f944375790bb4413f97f50e05c66abe6ea90d751819ac31"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_tail_preflight.py",
+      "bytes": 2898,
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\references\\CPU_PARAMETERIZATION_CHECK.json",
+      "bytes": 758,
+      "sha256": "da9984fa196139cc8824aeefdac3eca1c713de66d0889ef25a372d6d0c80effd"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\references\\DFINE_LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\references\\INTERFACE_NOTES.md",
+      "bytes": 4031,
+      "sha256": "a10b8dcfc118ae6592643ca70f6dab85f5065c44ecd7a1e5646384f014f91994"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\references\\SOURCE_IDENTITIES.json",
+      "bytes": 1579,
+      "sha256": "1952fcc0786a7f0d36bb3c51f1f9aa8175c97d2e0731ef56bd70c8320e70a4da"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\residual_preflight_spec.json",
+      "bytes": 3504,
+      "sha256": "a7fb1cb5ddc27418706230808327b38dfbe2796fd5b455c692cee4c955adbb04"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\residual_spec.json",
+      "bytes": 3499,
+      "sha256": "45834f86021ec45eb751703f7cfdfecf3c34179dc3a3b3f2edda756baf7f76ee"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\run_boundary_fit.py",
+      "bytes": 43834,
+      "sha256": "00d771862766ae97ffb0298e8e7a00aff21fdf7fbd81082490f3c48a4afffba7"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\source_preparation.json",
+      "bytes": 1982,
+      "sha256": "ccb0b3aad2d2cb702d33be45ecb063c4d37a15f5af6dad52d3abe63c103cae00"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_range_head_only_20261004\\analysis\\REPORT.md",
+      "bytes": 3598,
+      "sha256": "a0004a9dcf0541821b67f61b86bb48409fb3d28feed4ef30d487f569f89f1588"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_range_head_only_20261004\\NEXT_EXPERIMENT_DECISION.md",
+      "bytes": 4779,
+      "sha256": "e6d4d3ac8b2d391ae1836957204d1a7b53122596060cc90fff12cad1d2201e48"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+      "bytes": 41473,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\main_utils.py",
+      "bytes": 24599,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.pv_ground.py",
+      "bytes": 25386,
+      "sha256": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\prepare_data.py",
+      "bytes": 19658,
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\src.joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\prepare_lifecycle_helpers.py",
+      "bytes": 4980,
+      "sha256": "61321f8806060d147e043a7e19bdd5a7297b0481e079df62f8bc35a776ff4de4"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\lifecycle_preparation.json",
+      "bytes": 755,
+      "sha256": "7c16688f06b93438fc90d5dc0dee9f773eb15cc714586dca44cd45c59f37da55"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\observe_preflight_authorized.py",
+      "bytes": 1894,
+      "sha256": "afb9f3cb3b4c8d823ad9c495b5bd494f215e1df079373e155d94c61e6dba5b1c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\wait_preflight_authorized.py",
+      "bytes": 1524,
+      "sha256": "d914706e7e6e2cb9c5b62e19746477b468976715f2f87d044e7214b3edcf3650"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\collect_preflight_terminal.py",
+      "bytes": 3139,
+      "sha256": "97d0e79c74a1d929af0c5a0939ec35afdcf73330d18780c9cc49ba2d178e24d0"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\launch_formal_authorized.py",
+      "bytes": 6172,
+      "sha256": "aa700ba4e3afdcb59b84fc4c9f46a6c026cca4419791583bd0a279c22ec0bee3"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\finite_target_correction.json",
+      "bytes": 924,
+      "sha256": "cb9d656ac6658133a0ae9993ad9416f1e410e1d126ce0ea3dc1f13abb0e68e85"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_boundary_distribution_20261004\\record_finite_target_correction.py",
+      "bytes": 1668,
+      "sha256": "08efdc5b541c4f50e6ad20dd798672386d9e9f6daeab3dd6ebfa3c6c2d6dad11"
+    }
+  ],
+  "checks": [
+    {
+      "topic": "Native final matching and GT filtering",
+      "conclusion": "PASS",
+      "detail": "models.losses.py:852-853 orders proposal_, last_, 0head_..4head_; SetCriterion makes one active matcher call per prefix (817,828-829). run_boundary_fit.py:314-326 captures seven calls and uses matching[1]. Boundary targets reproduce native box_label_mask filtering before indexing each matched GT (boundary:43-49; losses:856-885)."
+    },
+    {
+      "topic": "Boundary representation, interpolation and saturation",
+      "conclusion": "PASS",
+      "detail": "Face order xyz-,xyz+ and scale4 encode outward offsets relative to clamped coarse dimensions. Encoding/decoding agree algebraically before the explicit size floor. All33 knots are symmetric and strictly ordered; adjacent interpolation uses actual distances, both endpoints saturate correctly, and loss averages over matched boxes times six faces. Outside counts precede clamp; the corrected source now independently checks and records raw target finiteness."
+    },
+    {
+      "topic": "Loss and gradients",
+      "conclusion": "SOURCE_PATH_PASS_RUNTIME_PENDING",
+      "detail": "Native loss and original G correction remain; DFL is separately weighted1/7. Targets/coarse references are detached. Native-box and DFL-only output-gradient checks are separate; second-step member, condition and aggregate checks exist. No gradient witness was executed by this review."
+    },
+    {
+      "topic": "Common floor and zero head",
+      "conclusion": "SOURCE_PATH_PASS_RUNTIME_PENDING",
+      "detail": "Both arms apply the same1e-6 reference/final floor in the forward. Uniform integration subtracts the floating uniform reference. Cached-input replay/native-reference checks use the common floor and count raw native dimensions below it. They do not claim equality to unmodified negative native sizes."
+    },
+    {
+      "topic": "Support and parameter count",
+      "conclusion": "PASS",
+      "detail": "288 query+896 local pooled+3 sizes+6 normalized coarse+109 range=1302 aggregate inputs. Seven locations times sixteen observations retain predicted fused Mask support and whole observed-superpoint statistics. Counts recompute to400614 residual and456102 distribution, difference55488."
+    },
+    {
+      "topic": "Frozen original state and restore",
+      "conclusion": "SOURCE_PATH_PASS_RUNTIME_PENDING",
+      "detail": "Only ten refiner tensors require gradients. model.eval with only the refiner trained preserves G running state; frozen gradients and core-state equality are checked. The real probe serializes/restores delta and AdamW in memory, comparing keys, moments, steps and groups. Formal mode strictly restores the terminal head delta on protected G."
+    },
+    {
+      "topic": "Data and actual update budget",
+      "conclusion": "PASS",
+      "detail": "One pass over29778 fit rows at physical/effective batch8 with drop_last=False gives3723 updates and final batch2. Seed2027,LR1e-5,WD5e-4,clip0.1 match. Fit/holdout physical separation, seen-row multiset and distribution-arm batch order are asserted.6887 holdout is pretrained-seen;9508 is development validation."
+    },
+    {
+      "topic": "Evaluation and leakage",
+      "conclusion": "PASS",
+      "detail": "Forward inference precedes training GT insertion. The adapter reads points/native predicted support, not GT geometry or masks. Native unique last/bbs scoring and all256 candidates remain; filter_non_gt_boxes=False. Row reconstruction uses dataset root GT, native score-map algebra and fused Mask rules, with native threshold/mask totals checked. Full256/rank-bucket coverage is an offline GT oracle."
+    },
+    {
+      "topic": "Launch and probe prerequisites",
+      "conclusion": "PASS",
+      "detail": "Both launchers require source verdict PASS/WARN without blockers and verify existing reviewed-file identities. Preflight requires prior closed/audited pair and idle GPU, uploads exclusive new paths, and holds the existing GPU flock. The supplemental formal launcher requires closed complete engineering intake and separate successful residual/distribution two-update receipts before fit, plus the same lock. Source approval alone cannot satisfy runtime gates."
+    },
+    {
+      "topic": "Authorized mutation and retention boundaries",
+      "conclusion": "PASS",
+      "detail": "Launchers write only the two new experiment roots, logs/receipts and local launch records using exclusive files plus byte readback. The formal controller runs serial train/formal, replaces its own recovery files, and unlinks only a hash-checked terminal.pth in its residual/distribution directories after full formal restore and CPU threshold recount. Original G is protected. Collector refuses weights and downloads only permitted source/text suffixes; observer only reads remotely and writes local JSON. Waiter follows a milestone then240s cadence."
+    },
+    {
+      "topic": "Claims",
+      "conclusion": "PASS",
+      "detail": "Plan and contract correctly identify a representation-plus-supervision package with changed parameter count, not a direction-conditioned decoder, isolated architecture/DFL causal effect, established novelty, accuracy result, or Nr3D/Sr3D generalization."
+    }
+  ],
+  "validation": {
+    "reviewed_files": 48,
+    "python_AST_files": 31,
+    "json_files_parsed": 10,
+    "full_file_AST_and_JSON_parse_pass": true,
+    "current_declared_file_identity_checks_pass": 37,
+    "historical_preparation_entries_superseded": [
+      {
+        "snapshot": "control_tools_preparation.json",
+        "file": "residual_spec.json",
+        "prepared_sha256": "ca7ecaea5a8426eda775c95bba4ec00ffd9eeef000e61e21fb0807637593aa57",
+        "current_sha256": "45834f86021ec45eb751703f7cfdfecf3c34179dc3a3b3f2edda756baf7f76ee",
+        "reason": "Historical preparation entry predates the explicitly recorded finite-target correction; reversing only the module digest reproduces its original bytes."
+      },
+      {
+        "snapshot": "control_tools_preparation.json",
+        "file": "distribution_spec.json",
+        "prepared_sha256": "818b6b6e439553c462e6db71e89c1b86830ad653bf5653a5d3d928e1e22d79b4",
+        "current_sha256": "b14540394e3f37a45290a45a7585b61c387ccf79a7fc4cdc401a91d4067e1a20",
+        "reason": "Historical preparation entry predates the explicitly recorded finite-target correction; reversing only the module digest reproduces its original bytes."
+      }
+    ],
+    "correction_exact_two_line_reverse_reproduces_original": true,
+    "scalar_equation_checks": {
+      "knots": 33,
+      "symmetric": true,
+      "strictly_increasing": true,
+      "interpolation_cases": 67,
+      "maximum_reconstruction_error": 0.0,
+      "endpoint_saturation": true,
+      "residual_parameters": 400614,
+      "distribution_parameters": 456102,
+      "aggregate_input_width": 1302,
+      "fit_updates": 3723,
+      "tail_batch": 2
+    },
+    "interpreter": "Existing uv-managed CPython3.13, found offline; no installation or environment change",
+    "initial_local_command_limitation": "PATH python failed before execution with No pyvenv.cfg file; checks then used the existing interpreter above.",
+    "prewrite_snapshot_guard": "An attempted old-snapshot report write stopped before any output when the parent applied the correction. Final reports describe the re-read corrected files.",
+    "model_imports": 0,
+    "model_forwards": 0,
+    "CUDA_calls": 0,
+    "SSH_calls": 0,
+    "checkpoint_reads": 0,
+    "credentials_or_auth_wrapper_reads": 0,
+    "private_goal_file_reads": 0,
+    "remote_mutations": 0,
+    "experiment_source_edits": 0,
+    "review_owned_output_files_only": true
+  },
+  "runtime_acceptance": {
+    "actual_real_model_two_step_probes_satisfied": false,
+    "formal_fit_approved_by_this_review_alone": false,
+    "next_gate": "Execute/collect real batch8,two-update probe for EACH arm, then assess actual gradients, frozen state/AdamW restoration,memory,matching,finite-target/saturation and floor evidence before bounded fit."
+  },
+  "scope_limits": [
+    "Source/scalar checks cannot establish native/CUDA execution, numerical behavior, allocator peak, throughput or accuracy.",
+    "Supplied native-source snapshots and launch checks were reviewed; current remote source/environment was not independently inspected.",
+    "No experimental result, cross-benchmark generalization or cross-family acceptance is asserted."
+  ]
+}

@@ -22053,3 +22053,92 @@ residual的原生定位输出梯度为[7.58567476272583, 9.846501350402832]；di
 controller继续distribution/train。保持同一完整范围／局部输入、原G固定协议及样本／更新预算，仅在另一组使用456102参数六面分布头和独立DFL/7。表示、监督及输出参数量共同改变，不宣称纯DFL效应或已经实现方向条件化face token解码。该组尚无正式9508结果；完整配对、同Query修复／破坏、起点跨进程差异、分布及目标体积分组均在实际闭合后核对。终态收集、真实审阅回执及发布工具已准备，未把准备称为执行或精度证据。
 
 证据：refine-logs/pvground_boundary_distribution_20261004/residual_phase_complete及本次收取／发布源码。当前同检查点5615／4754和Nr3D／Sr3D目标仍未完成，原G及必要V99权重链继续保护。
+
+
+## 20.376.45 固定原G的普通残差／六面分布完整终态与独立上下文核对（2026-10-04T16:35:12.351650+08:00）
+
+本轮controller471894实际于2026-10-04T16:14:46.244404+08:00完成全部四阶段，exit0；现有观察器自然闭合后才收集结果。保留§20.376.43的原始启动记录；计划与预检不改写为性能证据。
+
+### 实际结果与范围
+
+Original G fixed in eval mode, fresh AdamW, seed2027, batch8, head LR1e-5, weight decay5e-4, clip0.1.
+Each arm consumes 29778 fit rows once in identical order: 3723 optimizer updates. All original-G parameters and persistent buffers stay fixed in eval mode; only the declared boundary head learns. Both use whole-range support; distribution adds six-face distribution targets with a separate1/7 coefficient. Native+G final-box losses remain.
+
+| Set / mode | Rows | Residual hits @.25 / .50 | Distribution hits @.25 / .50 | Distribution minus residual |
+|---|---:|---:|---:|---:|
+| initial / bbs | 6887 | 6176 / 5602 | 6176 / 5602 | +0 / +0 |
+| initial / bbf | 6887 | 6206 / 5647 | 6206 / 5647 | +0 / +0 |
+| terminal / bbs | 6887 | 6168 / 5535 | 6174 / 5616 | +6 / +81 |
+| terminal / bbf | 6887 | 6200 / 5592 | 6203 / 5654 | +3 / +62 |
+| formal / bbs | 9508 | 5589 / 4446 | 5616 / 4506 | +27 / +60 |
+| formal / bbf | 9508 | 5624 / 4469 | 5653 / 4526 | +29 / +57 |
+
+| Formal bbs threshold | Distribution repairs vs residual | Distribution damages vs residual | Net |
+|---|---:|---:|---:|
+| @25 | 43 | 16 | +27 |
+| @50 | 126 | 66 | +60 |
+
+| Formal arm / mode | Mask @.25 hits | Mask @.50 hits | Mask mIoU % |
+|---|---:|---:|---:|
+| residual / bbs | 5812 | 5133 | 47.10762848 |
+| residual / bbf | 5847 | 5156 | 47.36762105 |
+| distribution / bbs | 5812 | 5133 | 47.10767130 |
+| distribution / bbf | 5847 | 5156 | 47.36762105 |
+
+| Formal bbs arm | Same-Query coarse/final @.50 | Repairs / damages | Full256 good / missing errors | Median max-face move mm |
+|---|---:|---:|---:|---:|
+| residual | 4495 / 4446 | 80 / 129 | 3516 / 1546 | 16.642533 |
+| distribution | 4495 / 4506 | 20 / 9 | 3384 / 1618 | 5.602553 |
+
+| Offline GT-volume rank quartile | Rows | Residual @.50 | Distribution @.50 | Difference |
+|---|---:|---:|---:|---:|
+| 1 | 2377 | 857 | 881 | +24 |
+| 2 | 2377 | 1043 | 1073 | +30 |
+| 3 | 2377 | 1106 | 1110 | +4 |
+| 4 | 2377 | 1440 | 1442 | +2 |
+
+GT-volume quartiles are offline diagnostics, with row_id tie breaks; no GT volume enters inference, and the grouping does not establish a causal size effect.
+
+Retained metric best: distribution (5616/4506). Target5615/4754 passed: False.
+Original-G deltas: {'residual': [-26, -49], 'distribution': [1, 11]}. Controller retention is verified separately; this analyzer deletes no weights.
+
+Interpretation limits:
+
+- Original G is fixed in eval mode and each arm starts from its protected parent with fresh AdamW; all256 candidates remain.
+- Both use identical1302-D whole/global plus local support. Residual400614 versus distribution456102 parameters, face decoding and DFL/7 change together: representation-plus-supervision adaptation, not an isolated DFL effect or completed face-conditioned token method.
+- Both apply the common1e-6 reference/final size floor. It preserves zero-head agreement with the same numerical protocol; it is not exact preservation of untreated negative native dimensions.
+- Actual cross-process initial Query, continuous box/Mask-IoU and threshold differences are recorded, not assumed bitwise equal.
+- The6887 module holdout scenes were seen by author pretraining;9508 formal rows are development validation. Single seed2027 gives no multi-seed significance estimate.
+- Boundary targets use every actual final native Hungarian correspondence and training GT; none enter the inference head. Out-of-range targets saturate at the declared endpoints and are counted.
+- Final native box/GIoU losses supervise the deployed frame. The first experiment keeps native scoring unchanged; no geometry-quality callback, P2, contrastive expansion, V99 teacher or dual ranking.
+- Same-Query coarse/final evidence comes from this frozen-G forward; between-arm repairs are not an independently trained reranking ablation.
+- CPU reconstruction verifies selected boxes and thresholds. Raw Masks and full candidate boxes are not reconstructed; their recorded native scalar IoUs and coverage are only recounted.
+- Distribution entropy is a model statistic, not calibrated localization quality. Face offsets describe this parameterization, not guaranteed true instance boundaries.
+- Formal runner restored the terminal delta and parent identity before retention. This analyzer never replays model/optimizer tensors, downloads or deletes weights.
+- No new Nr3D or Sr3D result exists. Three complete proposed contribution claims and the full target remain pending actual evidence.
+
+
+新上下文核对实际为WARN、0 blocking；调用gpt-6-astra/max/forknone，same-family/provisional，未独立验证服务端SKU。以原始审阅回复和analysis/EXPERIMENT_AUDIT.md、JSON中实际执行范围为准。CPU重算不等于原始Mask、全部候选框或优化器回放。两组共同使用1302维完整／局部支撑；400614参数残差与456102参数分布头同时改变表示、监督及输出参数量，不宣称纯DFL因果增益，也不等于已经实现方向条件化六面token解码。
+
+实际收集65份SHA绑定的文本、源码和逐行证据；收集与分析执行0次模型前向、0次优化器更新、0份权重下载。恢复、9508条正式开发验证、CPU阈值计数及SHA核对之后，controller实际清理自有非最佳终点共4921221字节。保留指标最佳distribution；实验目录实际剩余权重1份，不创建失败权重的本地归档。原G、官方PV及必要V99链继续保护。收集时系统盘217624576字节、数据盘2421272576字节可用，这只是该次快照。
+
+# 本轮决定与下一项边界结构
+
+本轮普通残差组完整9508条原生last/bbs为5589／4446，六面分布组为5616／4506。后者相对原G5615／4495净增1／11条，相对本轮残差组净增27／60条；同Query严格修复20、破坏9。它是一个小幅正结果，尚不足以证明稳定提升或实现三个拟议贡献。距离同一检查点5615／4754开发线还差248个严格命中。
+
+保留新的度量最佳增量权重distribution/terminal.pth，SHA256为79e35068b8787a81c354c5fd3ed2bbc12fc62e06167b9cfbe781f86cbbd36c67，实际5,587,141字节。原G、官方PV及必要V99链仍是受保护的初始化／恢复依赖。残差组4,921,221字节非最佳权重已在恢复、9508条验证、CPU阈值重算及SHA核对后删除；不建立失败权重的本地归档。
+
+本轮所有原G参数、持久缓冲和运行统计均固定，只训练新增头。分布组中位最大单面移动约5.603毫米，严格Full256覆盖7884→7890；实际4506个命中，仍有3384条严格错误在完整候选中存在合格框，1618条缺少合格框。以上候选资格使用GT离线诊断，不能部署。两组原生评分及选中Query保持原流程；当前增量尚不包含最终几何质量回写。
+
+下一项结构集中到“每个面读取对应方向证据”，而不继续放大普通残差、扩大P2或扫描多正例归一化。保留当前预测融合Mask的三轴32桶支撑、真实成员统计与局部点证据；让六个面分别读取相应轴的范围分布及候选对齐的实际局部成员，保留方向和位置到解码阶段，再用共享的面条件化分布头预测偏移。与本轮简单109维拼接＋MLP分布头直接比较；相同偏移位置、最终框参数化、原生最后层Hungarian职责及独立DFL/7保持不变。
+
+为了区分新增结构与额外适配历史，下一项从共同的受保护原G初始化新增面条件化头，沿用冻结原G的数值协议、seed2027、有效batch8、29778条样本各一次及3723次更新。本轮已完成的普通分布头是同输入、同起点、同预算直接控制；新最佳权重继续保存作为性能参照，不能将不加载该头表述成从它无缝续训。结构及参数量差异、跨进程非逐位一致的数值限制要完整披露，不把差值归成某一个注意力算子的纯因果效应。
+
+新实现先完成独立源码审查和真实两步预检：零初始化保持共同粗框协议、六面顺序及坐标目标一致、独立DFL与原生定位损失有实际梯度、冻结父模型不变、新状态可恢复。通过后执行有界适配与9508条正式开发验证。当前未实现或启动这一项，不把设计记录计为新实验。
+
+随后再依据精修与实际选择的分解，研究最终边界状态回写原生语义表示。当前不同时加入教师、质量损失、对比扩展、第二套排名或测试期GT过滤。保留全部256候选，低分不直接等于无用；仍区分跨实例表达责任与同实例范围质量。六面分布熵尚未校准，不能直接充当真实质量标签。
+
+本轮实际完整性审查为WARN、0项阻断问题，以analysis/EXPERIMENT_AUDIT.md和JSON及原始回复为准。审查独立重算全部46564条评估记录和7446条训练记录，两个阈值无重算分歧；same-family/provisional不能称为独立跨模型验收。原始Mask、全候选框、历史G逐行结果和权重张量未被重新执行，数值及范围限制完整保留。下一项实现仍需自己的源码审查与真实预检。ScanRefer结构和输出未固定、开发线未达到，Nr3D／Sr3D独立训练尚未开始；三基准目标继续未完成。
+
+
+证据：refine-logs/pvground_boundary_distribution_20261004/complete、analysis、terminal_audit_trace、terminal_tools。同一检查点ScanRefer开发线5615／4754的本轮检查结果为False。完整跨基准目标仍未完成；尚无本方法Nr3D／Sr3D结果，也没有教师或最终质量回写结果。

@@ -1,0 +1,75 @@
+{
+  "status": {
+    "status": "running",
+    "started_cst": "2026-10-04T23:15:55.474394+08:00",
+    "completed": [
+      {
+        "arm": "evidence_hidden",
+        "mode": "train",
+        "seconds": 6542.18621725589,
+        "finished_cst": "2026-10-05T01:04:57.661262+08:00"
+      },
+      {
+        "arm": "evidence_hidden",
+        "mode": "formal",
+        "seconds": 1469.8884311839938,
+        "finished_cst": "2026-10-05T01:29:27.550389+08:00"
+      }
+    ],
+    "retained_best": {
+      "name": "frozen4506_geometry",
+      "path": "/root/autodl-tmp/pvground_boundary_fit_20261004/distribution/terminal.pth",
+      "sha256": "79e35068b8787a81c354c5fd3ed2bbc12fc62e06167b9cfbe781f86cbbd36c67",
+      "bbs_hits25": 5616,
+      "bbs_hits50": 4506,
+      "protected_parent": true
+    },
+    "primary_mode": "bbs",
+    "primary_threshold": 0.5,
+    "formal_training_started": true,
+    "goal_achieved": false,
+    "stage": "evidence_visible/train",
+    "stage_started_cst": "2026-10-05T01:29:31.407296+08:00",
+    "process_pid": 526600,
+    "last_weight_retention": {
+      "time_cst": "2026-10-05T01:29:31.405828+08:00",
+      "arm": "evidence_hidden",
+      "formal_rows_sha256": "998ff0180434374f63f5523167512dad3786b4d8a5014a27929d35ee517edfc4",
+      "terminal_sha256": "61119a2019d565f2755617cbd1ecd8311b6eebecb4c76e39b2f50cf30c041a38",
+      "cpu_box_threshold_changes": 0,
+      "cpu_bbs_hits25": 5616,
+      "cpu_bbs_hits50": 4475,
+      "retained_best": {
+        "name": "frozen4506_geometry",
+        "path": "/root/autodl-tmp/pvground_boundary_fit_20261004/distribution/terminal.pth",
+        "sha256": "79e35068b8787a81c354c5fd3ed2bbc12fc62e06167b9cfbe781f86cbbd36c67",
+        "bbs_hits25": 5616,
+        "bbs_hits50": 4506,
+        "protected_parent": true
+      },
+      "deleted": [
+        {
+          "path": "/root/autodl-tmp/pvground_readback_fit_20261004/evidence_hidden/terminal.pth",
+          "bytes": 1284112,
+          "sha256": "61119a2019d565f2755617cbd1ecd8311b6eebecb4c76e39b2f50cf30c041a38"
+        }
+      ],
+      "required_parent_chain_preserved": true,
+      "local_weight_archive_created": false,
+      "authorization": "user persistent instruction: retain metric best; remove our completed nonbest weights"
+    }
+  },
+  "controller_alive": true,
+  "directory_free_bytes": 2336518144,
+  "system_free_bytes": 75898880,
+  "gpu": "0, 2437",
+  "exitcode": null,
+  "log_tail": [
+    "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.bias', 'lm_head.decoder.weight', 'lm_head.layer_norm.weight']",
+    "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+    "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......"
+  ],
+  "time_cst": "2026-10-05T01:30:58.010808+08:00"
+}

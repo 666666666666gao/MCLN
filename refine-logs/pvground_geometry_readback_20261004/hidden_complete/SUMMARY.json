@@ -1,0 +1,92 @@
+{
+  "time_cst": "2026-10-05T01:45:27.715816+08:00",
+  "status": "HIDDEN_CONTROL_COMPLETE_VISIBLE_ARM_RUNNING",
+  "formal_rows": 9508,
+  "primary_mode": "bbs",
+  "primary_threshold": 0.5,
+  "metrics": {
+    "mask_hits25": 5816,
+    "mask_hits50": 5135,
+    "mask_miou": 47.11929770776836,
+    "rec_hits25": 5616,
+    "rec_hits50": 4475
+  },
+  "acc25_percent": 59.06604964240639,
+  "acc50_percent": 47.06562894404712,
+  "delta_vs_frozen4506": {
+    "hits25": 0,
+    "hits50": -31
+  },
+  "fixed_frame_readback_effect": {
+    "0.25": {
+      "damages": 55,
+      "fixes": 55,
+      "net": 0
+    },
+    "0.5": {
+      "damages": 98,
+      "fixes": 67,
+      "net": -31
+    }
+  },
+  "training_steps": 3723,
+  "fit_rows": 29778,
+  "effective_batch": 8,
+  "last_batch_rows": 2,
+  "completed_stages": [
+    {
+      "arm": "evidence_hidden",
+      "mode": "train",
+      "seconds": 6542.18621725589,
+      "finished_cst": "2026-10-05T01:04:57.661262+08:00"
+    },
+    {
+      "arm": "evidence_hidden",
+      "mode": "formal",
+      "seconds": 1469.8884311839938,
+      "finished_cst": "2026-10-05T01:29:27.550389+08:00"
+    }
+  ],
+  "observation": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\formal_draft\\observation_08.json",
+  "retention": {
+    "time_cst": "2026-10-05T01:29:31.405828+08:00",
+    "arm": "evidence_hidden",
+    "formal_rows_sha256": "998ff0180434374f63f5523167512dad3786b4d8a5014a27929d35ee517edfc4",
+    "terminal_sha256": "61119a2019d565f2755617cbd1ecd8311b6eebecb4c76e39b2f50cf30c041a38",
+    "cpu_box_threshold_changes": 0,
+    "cpu_bbs_hits25": 5616,
+    "cpu_bbs_hits50": 4475,
+    "retained_best": {
+      "name": "frozen4506_geometry",
+      "path": "/root/autodl-tmp/pvground_boundary_fit_20261004/distribution/terminal.pth",
+      "sha256": "79e35068b8787a81c354c5fd3ed2bbc12fc62e06167b9cfbe781f86cbbd36c67",
+      "bbs_hits25": 5616,
+      "bbs_hits50": 4506,
+      "protected_parent": true
+    },
+    "deleted": [
+      {
+        "path": "/root/autodl-tmp/pvground_readback_fit_20261004/evidence_hidden/terminal.pth",
+        "bytes": 1284112,
+        "sha256": "61119a2019d565f2755617cbd1ecd8311b6eebecb4c76e39b2f50cf30c041a38"
+      }
+    ],
+    "required_parent_chain_preserved": true,
+    "local_weight_archive_created": false,
+    "authorization": "user persistent instruction: retain metric best; remove our completed nonbest weights"
+  },
+  "actual_receipt_sha256": {
+    "fit_receipt.json": "c31a43ecf60773f2281de106540f7c332cb604affd307abab622660a9bcfd359",
+    "formal_receipt.json": "148e0b99b3e1eba34107f18aa0efac99172b880cd455bc1fe81db9f4c4ee4537",
+    "formal_restore.json": "a8e1d50acfc6dc445541b11928d7728ed812b33d01a66ce58d08066278127812",
+    "weight_retention.json": "07cdb8d32cffe829540640150c8a8a73e29709a0c228db5b789ac5f7cfc0a1d5"
+  },
+  "independent_terminal_audit_complete": false,
+  "comparison_pair_complete": false,
+  "visible_arm_accuracy_available": false,
+  "weights_downloaded": 0,
+  "new_inference_or_optimizer_updates": 0,
+  "active_training_source_changed": false,
+  "observer_session": 66222,
+  "goal_achieved": false
+}

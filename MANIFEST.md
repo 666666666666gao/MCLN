@@ -208,3 +208,5 @@
 - 2026-10-04T23:20:16.969101+08:00 actual V1 preflight failure0updates retained; corrected V2 both2-update GPU PASS; fresh42-file formal SOURCE_ONLY PASS; frozen4506 hidden/visible formal controller launched, no accuracy result.
 
 - 2026-10-04T23:36:46.646913+08:00 closed-formal native-bbs analysis implemented/AST37 only; no new result execution, active readback controller unchanged.
+
+- 2026-10-05T01:45:27.715816+08:00 actual hidden readback control9508 native5616/4475; CPU threshold differences0, inferior1284112-byte delta removed, visible arm running; no full pair claim.

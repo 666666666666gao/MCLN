@@ -176,3 +176,5 @@
 - 2026-10-04T06:11:07.681258+08:00 stable originalG/10-head-tensor real two-step PASS; bounded same-budget local/whole launched, no new accuracy result.
 
 - 2026-10-04T08:32:04.504590+08:00 head-only local complete9508 bbs5588/4447; whole still active, controller CPU proof only, owned nonbest retired.
+
+- 2026-10-04T11:17:29.819903+08:00 head-only pair complete9508 local[5588, 4447] whole[5589, 4456]; fresh audit WARN, owned nonbest retired.

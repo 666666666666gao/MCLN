@@ -1,0 +1,587 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "execution_scope": "SOURCE_ONLY",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "time_cst": "2026-10-04T05:54:23.632468+08:00",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "configured_model": "gpt-6-astra",
+  "configured_reasoning_effort": "max",
+  "fork_turns": "none",
+  "attribution_source": ".aris/traces/experiment-bridge/2026-10-04_head_only_run01/001-source-review.request.json",
+  "backend_sku_independently_verified": false,
+  "reviewer_task": "/root/pvg_range_head_only_source_review",
+  "decision": "The original probe and the subsequently supplied observer/collector and conditional formal-pair operational source are correct. No source defect requiring a change was found. Formal launch is gated on the actual new frozen-mode preflight; no runtime preflight or full-fit result is certified by this SOURCE_ONLY review.",
+  "reviewed_current_artifacts": [
+    "REVIEW_REQUEST.md",
+    "EXPERIMENT_PLAN.md",
+    "preflight_spec.json",
+    "source_preparation.json",
+    "collect_preflight_terminal.py",
+    "initial_range_comparison.py",
+    "launch_preflight_authorized.py",
+    "observe_preflight_authorized.py",
+    "preflight_controller.py",
+    "prepare_source.py",
+    "pvground_candidate_box_refiner.py",
+    "pvground_observation_query.py",
+    "pvground_semantic_assignment.py",
+    "pvground_source_query.py",
+    "pvground_tail_preflight.py",
+    "pvground_tail_support_box_refiner.py",
+    "pvground_task_observation_query.py",
+    "pvground_whole_mask_box_refiner.py",
+    "run_range_head_only.py",
+    "whole_mask_range.py",
+    "whole_model_preflight_checks.py",
+    "observe_preflight_authorized.py",
+    "collect_preflight_terminal.py",
+    "prepare_formal.py",
+    "controller.py",
+    "launch_formal_authorized.py",
+    "local_range_spec.json",
+    "whole_range_spec.json",
+    "formal_preparation.json"
+  ],
+  "additional_current_artifacts_read": [
+    "record_review_request.py",
+    ".aris/traces/experiment-bridge/2026-10-04_head_only_run01/001-source-review.request.json"
+  ],
+  "prior_artifact_root": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003",
+  "primary_prior_artifacts_read": [
+    "run_whole_mask_fit.py",
+    "analysis/REPORT.md",
+    "local_range_spec.json",
+    "whole_range_spec.json",
+    "complete/local_range/spec.json",
+    "complete/local_range/imports.json",
+    "complete/local_range/load.json",
+    "complete/local_range/receipt.json",
+    "complete/local_range/formal/receipt.json",
+    "complete/whole_range/spec.json",
+    "complete/whole_range/imports.json",
+    "complete/whole_range/load.json",
+    "complete/whole_range/receipt.json",
+    "complete/whole_range/formal/receipt.json",
+    "controller.py"
+  ],
+  "additional_launcher_dependencies_read": [
+    "complete/INTAKE.json",
+    "launch.json",
+    "analysis/EXPERIMENT_AUDIT.json: verdict and blocking_issues schema only"
+  ],
+  "native_source_root": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source",
+  "native_sources_read": [
+    "imported/models.pv_ground.py",
+    "imported/models.losses.py",
+    "imported/main_utils.py",
+    "imported/evaluator.py",
+    "imported/src.joint_det_dataset.py",
+    "imported/prepare_data.py",
+    "split_protocol.json",
+    "input_manifest.json"
+  ],
+  "actual_deterministic_checks": [
+    {
+      "check": "Parse current Python sources using stdlib ast.parse(feature_version=(3,7))",
+      "status": "PASS",
+      "files": 21,
+      "note": "15 original implementation files, review-request recorder, two observer/collector helpers and three formal-stage Python files; syntax only."
+    },
+    {
+      "check": "Read full current runner and inspect unified diff against the original runner",
+      "status": "PASS",
+      "original_sha256_matches_source_preparation": true,
+      "current_sha256_matches_source_preparation": true
+    },
+    {
+      "check": "Byte-compare all modules declared unchanged in source_preparation.json against the prior source",
+      "status": "PASS",
+      "files": 11
+    },
+    {
+      "check": "Hash the six supplied native imported source files against both prior completed imports.json records",
+      "status": "PASS",
+      "files_per_arm": 6,
+      "arms": 2
+    },
+    {
+      "check": "Check the three whole_range_files against preflight_spec.json",
+      "status": "PASS",
+      "files": 3
+    },
+    {
+      "check": "Compare both archived prior specs with the corresponding original arm specs",
+      "status": "PASS",
+      "arms": 2
+    },
+    {
+      "check": "Execute only the AST-extracted native optimizer parameter-filtering function with stdlib sentinel parameters and a capturing constructor",
+      "status": "PASS",
+      "group_sizes": [
+        10,
+        0,
+        0
+      ],
+      "exact_head_names": true,
+      "lr": 1e-05,
+      "weight_decay": 0.0005,
+      "note": "No torch import or actual AdamW object was created. The unchanged native code explicitly represents empty groups, including in its existing frozen branch."
+    },
+    {
+      "check": "Compute the parameter count from the unchanged Linear layer dimensions",
+      "status": "PASS",
+      "parameter_tensors": 10,
+      "parameters": 400614,
+      "aggregate_input_features": 1302
+    },
+    {
+      "check": "AST-check controller receipt reads against runner receipt production",
+      "status": "PASS",
+      "keys": [
+        "batch_size",
+        "head_only",
+        "optimizer_steps",
+        "original_g_state_unchanged",
+        "status",
+        "weight_files_created"
+      ]
+    },
+    {
+      "check": "AST-inspect every call to step",
+      "status": "PASS",
+      "update_arguments": [
+        true,
+        true
+      ],
+      "note": "The retained semantic-gradient verification branch for update=False is unreachable in the supplied executable paths."
+    },
+    {
+      "check": "Read the archived split protocol and verify its existing manifest digest, uniqueness and disjointness",
+      "status": "PASS",
+      "fit_rows": 29778,
+      "holdout_rows": 6887,
+      "updates_at_batch8": 3723,
+      "last_batch_rows": 2
+    },
+    {
+      "check": "Parse the embedded remote probe strings using Python 3.7 grammar",
+      "status": "PASS",
+      "files": [
+        "launch_preflight_authorized.py",
+        "observe_preflight_authorized.py",
+        "collect_preflight_terminal.py",
+        "launch_formal_authorized.py"
+      ]
+    },
+    {
+      "check": "Check formal_preparation controller hashes and inspect full prior/current controller diff",
+      "status": "PASS",
+      "detail": "Only the runner name, shared new whole-range sanity gate and head-only fit-state checks changed; retention logic is unchanged."
+    },
+    {
+      "check": "Compare the two prepared formal specs and their new-protocol preflight paths",
+      "status": "PASS",
+      "differences": [
+        "root",
+        "support_arm",
+        "use_whole_range"
+      ],
+      "same_new_whole_preflight": true,
+      "whole_paired_control_root_equals_local_root": true
+    },
+    {
+      "check": "Execute the isolated retention-selection AST with dictionaries and Path objects only",
+      "status": "PASS",
+      "cases": 5,
+      "detail": "Historical local/whole nonbest outcomes both select their own endpoints for retirement; a first improvement preserves protected original G; a tie preserves the incumbent; a later improvement retires only the prior owned endpoint. No unlink or filesystem mutation was executed."
+    },
+    {
+      "check": "Inspect all new formal gates and preflight collector/observer receipt fields",
+      "status": "PASS",
+      "detail": "Formal launch reads complete_preflight/INTAKE.json and the actual whole-range preflight receipt, rechecks remote completion, and the controller checks B8/two updates/frozen original state/cached pair equality/exact optimizer restore before either fit."
+    },
+    {
+      "check": "Observe local existence of actual new-protocol execution artifacts",
+      "status": "PASS",
+      "preflight_launch_exists": false,
+      "preflight_intake_exists": false,
+      "formal_launch_exists": false,
+      "note": "These artifacts were absent at source review time; no remote execution state was queried."
+    }
+  ],
+  "source_conclusions": [
+    {
+      "topic": "Initialization and freeze",
+      "status": "CORRECT",
+      "evidence": [
+        "run_range_head_only.py:135-196",
+        "run_range_head_only.py:419-448",
+        "run_range_head_only.py:567-605"
+      ],
+      "detail": "Strict official PV load followed by the original trained G delta, then the unchanged zero-output range head. Only candidate_box_refiner parameters require gradients. model.eval() precedes both training paths and only the independent head is set to train. Comparisons cover the original persistent parameters and buffers, and original gradients must remain None."
+    },
+    {
+      "topic": "Deployed box and losses",
+      "status": "CORRECT",
+      "evidence": [
+        "imported/models.pv_ground.py:518-564",
+        "imported/models.losses.py:518-544",
+        "imported/models.losses.py:891-955",
+        "run_range_head_only.py:299-349"
+      ],
+      "detail": "The refiner runs after native Mask generation and replaces last_center/last_pred_size before the native criterion. Native bbox and GIoU therefore train the same refined box used for evaluation, with unchanged native weights. Semantic and Mask outputs are frozen observations; no geometry-to-Mask gradient is required or falsely asserted."
+    },
+    {
+      "topic": "Head and candidates",
+      "status": "CORRECT",
+      "evidence": [
+        "pvground_whole_mask_box_refiner.py:10-58",
+        "whole_mask_range.py:40-67",
+        "pvground_tail_support_box_refiner.py:15-32"
+      ],
+      "detail": "Both source conditions preserve the existing 400614 parameters, all 256 candidates, local support and native scalar-alpha logit fusion. The only source intervention is actual 109-D range evidence versus zeros. No teacher, new loss, P2, quality reranking, GT inference gate or dual deployed forward was introduced."
+    },
+    {
+      "topic": "New preflight source",
+      "status": "CORRECT",
+      "evidence": [
+        "run_range_head_only.py:354-471",
+        "preflight_controller.py:11-38"
+      ],
+      "detail": "One real sampled B8 is reused for two optimizer updates. The code checks cached source-off/on zero-head equality, native head-off/on equality with reset RNG, task geometry output gradients, second-step member/condition/aggregate gradients, original state equality and BytesIO head/optimizer restoration. The preflight returns before disk checkpoint creation. Controller fields agree with the produced receipt."
+    },
+    {
+      "topic": "Optimizer and reload",
+      "status": "CORRECT",
+      "evidence": [
+        "imported/main_utils.py:283-366",
+        "whole_model_preflight_checks.py:30-44",
+        "run_range_head_only.py:217-232",
+        "run_range_head_only.py:573-588"
+      ],
+      "detail": "training.frozen and training.small_lr are false, so the unchanged native AdamW groups select the 10 head tensors and two empty groups. Formal restoration overlays exactly the head delta onto the strict original G state. Optimizer groups, state keys, steps and moments are compared by the existing restore helper in the planned probe."
+    },
+    {
+      "topic": "Conditional full fit and validation",
+      "status": "CORRECT_SOURCE_ONLY",
+      "evidence": [
+        "run_range_head_only.py:198-278",
+        "run_range_head_only.py:475-550",
+        "run_range_head_only.py:555-640"
+      ],
+      "detail": "The conditional runner preserves one 29778-row pass, B8 with last B2, 3723 updates, seed 2027, LR 1e-5, WD 5e-4 and clipping 0.1. Fit and holdout physical scenes are disjoint; evaluation order is asserted. Whole training rows must match the completed local control step by step. The 6887 pretrained-seen holdout and 9508 development validation remain separate."
+    },
+    {
+      "topic": "Scoring and diagnostics",
+      "status": "CORRECT",
+      "evidence": [
+        "imported/evaluator.py:209-303",
+        "imported/evaluator.py:535-553",
+        "imported/evaluator.py:557-758",
+        "run_range_head_only.py:479-545"
+      ],
+      "detail": "The saved bbs/bbf selection matches the native token scores and is checked against native evaluator totals. GT is used for evaluation and offline oracle diagnostics, not to select the deployed prediction. Selected Query is fixed for coarse/final comparisons."
+    },
+    {
+      "topic": "Launch and SSH boundary",
+      "status": "CORRECT_SOURCE_ONLY",
+      "evidence": [
+        "launch_preflight_authorized.py:10-82",
+        "preflight_controller.py:20-36"
+      ],
+      "detail": "Launcher accepts only a nonblocking SOURCE_ONLY review, checks the completed predecessor, deploys one whole_range preflight and passes --mode preflight. Known host keys are loaded without an accept-unknown policy. Dynamic remote command arguments are quoted with shlex; the screen name is constant. No formal launch, process termination or weight deletion exists in these launch paths."
+    },
+    {
+      "topic": "Observer and collector",
+      "status": "CORRECT_SOURCE_ONLY",
+      "evidence": [
+        "observe_preflight_authorized.py:12-32",
+        "collect_preflight_terminal.py:14-50"
+      ],
+      "detail": "The observer performs a single quoted read of PID/status/exit/log information. The collector requires a terminated controller and a consistent complete/failed exit, enumerates only allowed text/source suffixes, checks environment and protected parent hashes, then verifies copied bytes. It neither downloads weights nor runs a model, changes a job or deletes anything. Hashing the parent weight occurs remotely without deserialization."
+    },
+    {
+      "topic": "Conditional formal launch gate",
+      "status": "CORRECT_SOURCE_ONLY",
+      "evidence": [
+        "launch_formal_authorized.py:11-46",
+        "controller.py:55-85",
+        "local_range_spec.json",
+        "whole_range_spec.json"
+      ],
+      "detail": "Both arms reference the actual new whole-range freeze-mode sanity, whose cached zero-head replay covers local/whole source equality. Formal launch checks the review reviewed_files list, requires the collected successful terminal probe, and rechecks remote completion and GPU availability. The controller checks the full B8/two-step/freeze/cached-pair/optimizer proof before either fit. The source does not substitute the historical joint-training preflight for this proof."
+    },
+    {
+      "topic": "Formal retention and protected parents",
+      "status": "CORRECT_SOURCE_ONLY",
+      "evidence": [
+        "controller.py:88-140",
+        "run_range_head_only.py:573-605"
+      ],
+      "detail": "After each formal endpoint, the controller requires complete fixed-budget training and all 9508 rows, verifies row hash/order, recomputes selected-box threshold decisions on CPU, and verifies terminal and parent hashes. Selection uses strict native bbs @.50 improvement; ties keep the incumbent. Deletion is restricted to a named terminal.pth in one of the two owned arm directories, excluding the retained best and the protected original G. The runner overwrites one head-only recovery checkpoint and renames it to terminal; no full failed-weight archive is introduced."
+    }
+  ],
+  "prior_outcome_used_only_as_motivation": {
+    "local_formal_bbs_hits25": 5603,
+    "local_formal_bbs_hits50": 4428,
+    "whole_formal_bbs_hits25": 5594,
+    "whole_formal_bbs_hits50": 4461,
+    "whole_minus_local_hits50": 33,
+    "original_g_bbs_hits25": 5615,
+    "original_g_bbs_hits50": 4495,
+    "whole_minus_original_g_hits50": -34,
+    "prior_changed_parameter_tensors_per_arm": 806,
+    "is_evidence_of_new_frozen_protocol": false
+  },
+  "scope_limitations": [
+    "No actual tensor forward, backward, CUDA, AdamW step, checkpoint read, SSH query or experiment launch was performed by this reviewer. The new frozen-mode runtime checks remain pending.",
+    "Eval mode does not disable native F.gumbel_softmax (models.pv_ground.py:585-599). Frozen original state does not imply identical outputs across different RNG draws or processes. The paired zero-head preflight resets the RNG, and initial_range_comparison records actual differences instead of demanding cross-process bitwise equality.",
+    "The formal-pair launcher, controller and both specs were added during this review and have now been read. Their source gate is accepted, but the actual new-protocol preflight intake is absent. This report does not waive the real sanity requirement or certify any new fit/formal/retention execution.",
+    "The historical completed shared-training pair supplies source provenance and motivation only. Its training receipts show 806 changed tensors, so it cannot certify the new 10-tensor freeze protocol.",
+    "Source inspection and sentinel filtering do not constitute an actual empty-group AdamW runtime or serialized tensor replay. Those are explicitly exercised by the supplied two-step probe."
+  ],
+  "suggested_source_changes": [],
+  "reviewer_actions": {
+    "model_imports": 0,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "ssh_calls": 0,
+    "weight_files_read": 0,
+    "weight_files_written": 0,
+    "weight_files_deleted": 0,
+    "jobs_changed": 0,
+    "source_files_edited": 0,
+    "subagents_spawned": 0,
+    "only_written_files": [
+      "EXPERIMENT_CODE_REVIEW.md",
+      "EXPERIMENT_CODE_REVIEW.json"
+    ]
+  },
+  "scope_expansion": "Parent requested the observer/collector and prepared formal-stage operational files during the review. The final PASS explicitly covers those added sources; the earlier probe-only draft was not the final verdict.",
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/models.pv_ground.py",
+      "sha256": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/prepare_data.py",
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/imported/src.joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/input_manifest.json",
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_fused_support_20261002/complete_tail_fused_retry/source/split_protocol.json",
+      "sha256": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/.aris/traces/experiment-bridge/2026-10-04_head_only_run01/001-source-review.request.json",
+      "sha256": "f7ace920055d6e1a51e1ade2c0b2f75602da13c0c486a4e54829d3bd01921c4c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/EXPERIMENT_PLAN.md",
+      "sha256": "647731e2d14fc8393f7f342c27672a0fa17bfc6ce97ea8a2d7589d9bd09c532e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/REVIEW_REQUEST.md",
+      "sha256": "dee6cd6ac773d1004f2eb5bed080a51a53212d2cc8f219eec6609ba17eb2f0bb"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/collect_preflight_terminal.py",
+      "sha256": "65ef53cf980614cbc17310610b1de98a31f218c31d631042ce3c0db136345e4e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/controller.py",
+      "sha256": "a0f81e7b47db2116d39f635d8a7974aacb94c562d472300a78eccd0aa0769eee"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/formal_preparation.json",
+      "sha256": "df8b1800ac8115eb44a3b227fa128089fbe505d121eceeeeed02ede308c03e78"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/initial_range_comparison.py",
+      "sha256": "f892a2aef21ad1aeee1d7f806436fe9145dad0c8bbb078fe4643dfea4a8ff428"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/launch_formal_authorized.py",
+      "sha256": "fac4a8b89cab7c818e920dfa72763b148bbd0d46b707836e2012f8655c4e2f32"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/launch_preflight_authorized.py",
+      "sha256": "59c899fc648bafa249a7ade6b3f8225cab108c34d0018cc65572fde3c07de384"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/local_range_spec.json",
+      "sha256": "2ea464b123d9af9092eb09319b5a832276bbeaf509d0a823d864436f075d7e47"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/observe_preflight_authorized.py",
+      "sha256": "1077574b87696a69592276df636a4991835962f15aab4badfa3f42df441d01eb"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/preflight_controller.py",
+      "sha256": "9a0ddf8b2ee0e18230b2e68bcc6ea6e36a1e77ae928a909131e58ad4b676d5ca"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/preflight_spec.json",
+      "sha256": "a4e26f33bafd63215298578849450b5a82b52644eafc5fd1e062777e7fffbb35"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/prepare_formal.py",
+      "sha256": "adba90a08e162b26a0f350d3cceb312f1e22c0c13b2c0f0dc548960d8579b183"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/prepare_source.py",
+      "sha256": "f2276a43e91c1916d3152c87153efb247a9733cbc2c639733437ffe7c1b6a2af"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/pvground_semantic_assignment.py",
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/pvground_tail_preflight.py",
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/record_review_request.py",
+      "sha256": "b02bbc09b24ab9dfb76eae2f853b7cb118042d82d1f4328d274c4982ec9f52be"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/run_range_head_only.py",
+      "sha256": "e4fdf9bddb90e1709f439a80e55cbe86136f5cd059fb76190a104df28d748b95"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/source_preparation.json",
+      "sha256": "957d9a277154807d8a72aa8f8cbe6a1c501488c4e6b5d67f8509452b971f24b5"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_range_head_only_20261004/whole_range_spec.json",
+      "sha256": "2e1847696a0e19dc7ce87faaf5e3971a9c8ad6e19c5a5e5bfcfb2ceeed51f8cb"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/analysis/EXPERIMENT_AUDIT.json",
+      "sha256": "d2662ca889fc762aecd968ef4bcca7bdd744e7143e4da528c5492d0cce74efe9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/analysis/REPORT.md",
+      "sha256": "7c5255f1a71cb848f8ac7299b9f89b07b9659708969073c79c4764d02313193f"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/INTAKE.json",
+      "sha256": "e278f377882ff91ebd052f1e72e5d15618ab947960d98a06042026fb471515be"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/local_range/formal/receipt.json",
+      "sha256": "924cfca612536abf3aba7a8a4904991c81dc31e5240623a78d4f95fbbc17649b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/local_range/imports.json",
+      "sha256": "f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/local_range/load.json",
+      "sha256": "eba9c98d64d2cfc71a2d94e7a7695f8c823097dfc2bd4b0d949ece0811916c2d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/local_range/receipt.json",
+      "sha256": "0b5154cdee4ab06f6bbb7e2634f4484de1e0590238ee5ec87632854afaa9efde"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/local_range/spec.json",
+      "sha256": "f05c205b4c5516090ca7ad6e26ed14016932e93748fbb3bf77c33bf34fd38ce1"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/whole_range/formal/receipt.json",
+      "sha256": "5d7502681794f90837bb06825b7f5e04dab87e23c9ccee10ffaf4288124121c9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/whole_range/imports.json",
+      "sha256": "f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/whole_range/load.json",
+      "sha256": "08a0a78a0433c70dffeb48b091487c6a3341f1e1e9e76d9f9815663caa8cf575"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/whole_range/receipt.json",
+      "sha256": "d6e8a2a42f9929604efd3f8e2d082a4a2177feaf1b1568ff4af087b8178844e3"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/complete/whole_range/spec.json",
+      "sha256": "fcfd307e74ebab8c9194cfc0966842040c97137e6c0e6510b06f7dc409387ad4"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/controller.py",
+      "sha256": "8155cc9002f0f910a7b8659c7f0170ce212f825d716217c1ad78407d20022d49"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/launch.json",
+      "sha256": "4b654e5ca81d6e47fd3b9e0b72e349a561dbcca7d83ef8c55b03a781acfa0673"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/local_range_spec.json",
+      "sha256": "f05c205b4c5516090ca7ad6e26ed14016932e93748fbb3bf77c33bf34fd38ce1"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/run_whole_mask_fit.py",
+      "sha256": "d862a861d05f0411ed76c18b78684b485fe1fdfaa8a0c00d3250ce9a9e8cfeac"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_whole_mask_fit_20261003/whole_range_spec.json",
+      "sha256": "fcfd307e74ebab8c9194cfc0966842040c97137e6c0e6510b06f7dc409387ad4"
+    }
+  ]
+}

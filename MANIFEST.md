@@ -188,3 +188,5 @@
 - 2026-10-04T14:14:26.366416+08:00 frozen-G residual complete9508 bbs5589/4446; distribution still active, controller CPU proof only, owned nonbest retired.
 
 - 2026-10-04T16:35:12.351650+08:00 frozen-G boundary pair complete9508 residual[5589, 4446] distribution[5616, 4506]; fresh audit WARN, verified owned retention.
+
+- 2026-10-04T16:48:49.124685+08:00 face-conditioned decoder unintegrated source draft; LOCAL_AST_ONLY, no new GPU result.

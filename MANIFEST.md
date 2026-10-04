@@ -192,3 +192,5 @@
 - 2026-10-04T16:48:49.124685+08:00 face-conditioned decoder unintegrated source draft; LOCAL_AST_ONLY, no new GPU result.
 
 - 2026-10-04T17:56:45.248876+08:00 face-conditioned decoder actual two-update sanity passed; bounded original-G-frozen fit launched, no terminal accuracy yet.
+
+- 2026-10-04T18:23:52.359805+08:00 isolated final boundary evidence readback draft; AST-only, no factory/GPU/accuracy, active face fit unchanged.

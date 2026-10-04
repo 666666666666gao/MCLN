@@ -1,0 +1,45 @@
+{
+  "time_cst": "2026-10-04T22:25:07.347263+08:00",
+  "terminal": {
+    "status": {
+      "status": "failed",
+      "started_cst": "2026-10-04T22:10:56.652802+08:00",
+      "completed": [
+        {
+          "arm": "evidence_hidden",
+          "mode": "cpu",
+          "seconds": 18.62504005432129
+        }
+      ],
+      "phase": "evidence_hidden/preflight",
+      "phase_started_cst": "2026-10-04T22:11:15.278308+08:00",
+      "exit_code": 1,
+      "finished_cst": "2026-10-04T22:18:31.167088+08:00"
+    },
+    "controller_alive": false,
+    "directory_free_bytes": 2368352256,
+    "system_free_bytes": 83607552,
+    "gpu": "0, 1",
+    "exitcode": 1,
+    "log_tail": [
+      "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.decoder.weight']",
+      "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+      "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+      "Loading train files, take a breath!",
+      "Begin text decoupling......",
+      "End text decoupling!",
+      "Traceback (most recent call last):",
+      "  File \"/root/autodl-tmp/pvground_readback_preflight_20261004/evidence_hidden/run_readback_preflight.py\", line 269, in <module>",
+      "    main()",
+      "  File \"/root/autodl-tmp/pvground_readback_preflight_20261004/evidence_hidden/run_readback_preflight.py\", line 200, in main",
+      "    fixed_zero = fixed_geometry_and_masks(reference_predictions, zero_predictions)",
+      "  File \"/root/autodl-tmp/pvground_readback_preflight_20261004/evidence_hidden/readback_preflight_checks.py\", line 35, in fixed_geometry_and_masks",
+      "    assert torch.equal(reference[key].detach(), predictions[key].detach()), key",
+      "AssertionError: last_center"
+    ],
+    "time_cst": "2026-10-04T22:25:07.347263+08:00"
+  },
+  "remote_queries": 1,
+  "no_restart": true,
+  "observer_closed": true
+}

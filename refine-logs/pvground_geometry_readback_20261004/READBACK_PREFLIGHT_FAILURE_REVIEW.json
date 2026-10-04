@@ -1,0 +1,370 @@
+{
+  "review_date": "2026-10-04",
+  "timezone": "Asia/Shanghai",
+  "verdict": "FIX_REQUIRED_PREFLIGHT_HARNESS",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_reviewer": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "actual_backend_attested": false,
+    "actual_reasoning_effort_attested": false
+  },
+  "runtime_acceptance": false,
+  "actual_outcome": {
+    "controller_status": "failed",
+    "controller_exit_code": 1,
+    "controller_alive": false,
+    "completed_phases": [
+      "evidence_hidden/cpu"
+    ],
+    "failed_phase": "evidence_hidden/preflight",
+    "failure": "AssertionError: last_center",
+    "failing_call": "fixed_geometry_and_masks(reference_predictions, zero_predictions)",
+    "optimizer_updates": 0,
+    "visible_arm_reached": false,
+    "formal_training_started": false,
+    "native_accuracy_rows": 0
+  },
+  "findings": [
+    {
+      "id": "RPF-1",
+      "severity": "blocking_for_preflight_acceptance",
+      "location": [
+        "run_readback_preflight.py:191-215",
+        "readback_preflight_checks.py:29-40"
+      ],
+      "statement": "The failed comparator conflates repeated whole-model bitwise repeatability and input reuse with same-forward causal geometry preservation by R.",
+      "root_cause_of_numerical_difference": "unproven",
+      "required_change": "Retain repeatability diagnostics; use independent cloned pre-R protected-output snapshots and exact same-forward final comparisons for the R invariance acceptance check.",
+      "no_tolerance_relaxation": true
+    }
+  ],
+  "source_findings": {
+    "readback_after_protected_geometry_and_masks": true,
+    "readback_only_returns_semantic_query_residual": true,
+    "zero_initialized_output_layer": true,
+    "native_final_semantic_head_deferred_once_in_source": true,
+    "all256_preserved_in_source": true,
+    "direct_geometry_writing_defect_found": false,
+    "scatter_add_path_verified": true,
+    "gumbel_eval_random_sampling_path_verified": true,
+    "input_dictionary_reuse_verified": true,
+    "input_mutation_cause_proven": false,
+    "cuda_nondeterminism_cause_proven": false,
+    "nonfinite_outputs_excluded": false
+  },
+  "proposed_diagnostic": {
+    "executed": false,
+    "initial_full_forwards": [
+      "disabled A0 with pristine cloned inputs",
+      "disabled A1 with pristine cloned inputs and same RNG/state",
+      "enabled zero-R Z with same-forward snapshots"
+    ],
+    "original_input_before_after_check": true,
+    "per_field_stats": [
+      "shape",
+      "dtype",
+      "exact_equal",
+      "different_elements",
+      "finite_count",
+      "nan_count",
+      "inf_count",
+      "max_abs_finite_difference"
+    ],
+    "capture_stages": [
+      "source_features/seed coordinates",
+      "query coordinates/features",
+      "super_xyz_list",
+      "coarse boxes",
+      "native masks",
+      "boundary logits/whole evidence",
+      "final boxes"
+    ],
+    "persist_before_assertion": true,
+    "conditional_followups": [
+      "Reused-input comparison only when actual mutation evidence warrants it.",
+      "Isolated scatter_mean repetition only if differences localize to superpoint-coordinate reduction."
+    ]
+  },
+  "required_same_forward_invariants": {
+    "snapshot_requires_clone": true,
+    "tensor_keys": [
+      "last_center",
+      "last_pred_size",
+      "p3_coarse_center",
+      "p3_coarse_size",
+      "boundary_logits",
+      "whole_mask_range_evidence",
+      "last_proj_queries"
+    ],
+    "list_keys": [
+      "last_pred_masks",
+      "sp_last_pred_masks",
+      "adaptive_weights"
+    ],
+    "all_candidates": 256,
+    "zero_query_exact": true,
+    "native_head_actual_input_output_route_exact": true,
+    "optional_direct_score_witness": "Isolated frozen semantic-head replay on captured pre-R query outside actual model forward/counting hooks; require exact equality if used.",
+    "call_order": [
+      "refiner",
+      "readback",
+      "native_semantic_head"
+    ],
+    "model_forward_native_final_head_calls": 1,
+    "repeat_at": [
+      "zero initialization",
+      "each of two update forwards"
+    ],
+    "retain_frozen_state_and_optimizer_restore_checks": true
+  },
+  "unproven": [
+    "Cause, magnitude and finiteness of observed last_center discrepancy",
+    "Original input leaf mutation",
+    "Repeated disabled full-forward bitwise determinism",
+    "Runtime same-forward geometry/mask/contrast exact invariance for all256",
+    "Zero-query and zero-semantic-score identity",
+    "Real CE+G and all256 bbs gradient checks",
+    "Two optimizer updates and strict state restoration",
+    "Visible-arm CPU/GPU execution",
+    "Either arm's successful real preflight",
+    "New real peak memory/throughput receipt",
+    "Any accuracy improvement"
+  ],
+  "local_validation": {
+    "root_and_runtime_bundle_byte_equal_count": 5,
+    "principal_sources_match_collected_hidden_spec_count": 5,
+    "model_source_files_match_collected_port_count": 2,
+    "matched_inherited_sources": [
+      "pv_backbone.py",
+      "scatter_util.py"
+    ],
+    "pv_utils_local_snapshots_match_deployed_source": false,
+    "executed_torch_tests": false,
+    "remote_calls": 0,
+    "model_launches": 0,
+    "primary_source_edits": 0,
+    "credentials_read": false,
+    "new_weight_files": 0
+  },
+  "files_read": [
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/evidence_hidden/preflight.log",
+      "read_scope": "full",
+      "purpose": "actual failure"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/evidence_hidden/preflight.exit",
+      "read_scope": "full",
+      "purpose": "exit 1"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/evidence_hidden/load.json",
+      "read_scope": "full",
+      "purpose": "strict construction receipt"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/evidence_hidden/cpu.log",
+      "read_scope": "full",
+      "purpose": "actual CPU pass"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/evidence_hidden/imports.json",
+      "read_scope": "full",
+      "purpose": "actual import paths and recorded source identities"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/INTAKE.json",
+      "read_scope": "full",
+      "purpose": "closed controller and collected-artifact intake"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/status.json",
+      "read_scope": "full",
+      "purpose": "failed terminal state"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/controller.exit",
+      "read_scope": "full",
+      "purpose": "exit 1"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/source_port.json",
+      "read_scope": "full",
+      "purpose": "deployed model-source manifest"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/evidence_hidden/spec.json",
+      "read_scope": "parsed selected runtime, model_source, env_spec_sha256 and runner_files; raw bytes used for JSON parse",
+      "purpose": "actual hidden spec identities"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/EXPERIMENT_PLAN_READBACK.md",
+      "read_scope": "full",
+      "purpose": "intended invariants and preflight scope"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/run_readback_preflight.py",
+      "read_scope": "full",
+      "purpose": "actual failed comparison/control flow"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/readback_preflight_checks.py",
+      "read_scope": "full",
+      "purpose": "comparison and call-order/gradient checks"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/readback_model_factory.py",
+      "read_scope": "full",
+      "purpose": "freeze/load boundaries"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/pvground_boundary_evidence_readback.py",
+      "read_scope": "full",
+      "purpose": "R semantics and zero initialization"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/install_boundary_evidence_readback.py",
+      "read_scope": "full",
+      "purpose": "installation scope"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/pv_ground.py",
+      "read_scope": "full",
+      "purpose": "native order, inherited stochastic/reduction paths"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/source_preview/PV-Ground/models/modules.py",
+      "read_scope": "full",
+      "purpose": "deferred native semantic head"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/runtime_bundle/run_readback_preflight.py",
+      "read_scope": "full bytes compared to fully read root copy",
+      "purpose": "byte-identical"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/runtime_bundle/readback_preflight_checks.py",
+      "read_scope": "full bytes compared to fully read root copy",
+      "purpose": "byte-identical"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/runtime_bundle/readback_model_factory.py",
+      "read_scope": "full bytes compared to fully read root copy",
+      "purpose": "byte-identical"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/runtime_bundle/pvground_boundary_evidence_readback.py",
+      "read_scope": "full bytes compared to fully read root copy",
+      "purpose": "byte-identical"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/runtime_bundle/install_boundary_evidence_readback.py",
+      "read_scope": "full bytes compared to fully read root copy",
+      "purpose": "byte-identical"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/runtime_bundle/pvground_boundary_box_refiner.py",
+      "read_scope": "full",
+      "purpose": "protected trained provider"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/runtime_bundle/pvground_whole_mask_box_refiner.py",
+      "read_scope": "full",
+      "purpose": "whole evidence route"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/runtime_bundle/whole_mask_range.py",
+      "read_scope": "full",
+      "purpose": "Mask evidence computation"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/READBACK_FULL_SOURCE_REVIEW.json",
+      "read_scope": "targeted source identity inventory lines 95–182 and rg excerpts",
+      "purpose": "historical review only; not runtime proof"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/readback_preflight_observation_01.json",
+      "read_scope": "rg excerpts",
+      "purpose": "duplicate failure trace"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/complete_preflight/launch.json",
+      "read_scope": "rg excerpts",
+      "purpose": "declared interpreter path"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/readback_preflight_launch.json",
+      "read_scope": "rg excerpts",
+      "purpose": "declared interpreter path"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/readback_preflight_resource_check.json",
+      "read_scope": "searched; no relevant matched output used",
+      "purpose": "not used as failure cause"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_boundary_distribution_20261004/run_boundary_fit.py",
+      "read_scope": "lines 91–120 and 210–489 plus targeted rg excerpts",
+      "purpose": "prior cached adapter replay source precedent"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_runtime_bundle_20260908_v1/env_spec.json",
+      "read_scope": "full",
+      "purpose": "declared inherited Python/Torch runtime"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_runtime_bundle_20260908_v1/PV-Ground/utils/scatter_util.py",
+      "read_scope": "full",
+      "purpose": "matches collected source_port, scatter_add_ implementation"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_cs_restart_20261002/source/models/pv_backbone.py",
+      "read_scope": "full",
+      "purpose": "matches collected source_port, input mapping forwarded into inherited backbone"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_runtime_bundle_20260908_v1/PV-Ground/models/pv_backbone.py",
+      "read_scope": "source-identity bytes only",
+      "purpose": "matches collected source_port; duplicate not reread"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_observation_source_20260909/pv_backbone.py",
+      "read_scope": "source-identity bytes only",
+      "purpose": "matches collected source_port; duplicate not reread"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_training_interface_source_20260908/models/pv_backbone.py",
+      "read_scope": "source-identity bytes only",
+      "purpose": "matches collected source_port; duplicate not reread"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_runtime_bundle_20260908_v1/PV-Ground/models/pv_utils.py",
+      "read_scope": "source identity and targeted rg excerpts",
+      "purpose": "REJECTED as deployed evidence: source identity differs"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_observation_source_20260909/pv_utils.py",
+      "read_scope": "source identity and lines 147–173, 231–283, 299–317, 433–472, 516–615",
+      "purpose": "REJECTED as deployed evidence: source identity differs"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_cs_restart_20261002/source/models/pv_utils.py",
+      "read_scope": "source-identity bytes only",
+      "purpose": "REJECTED as deployed evidence: source identity differs"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_cs_restart_20261002/generated/models/pv_utils.py",
+      "read_scope": "source-identity bytes only",
+      "purpose": "REJECTED as deployed evidence: source identity differs"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvg_training_interface_source_20260908/models/pv_utils.py",
+      "read_scope": "source-identity bytes only",
+      "purpose": "REJECTED as deployed evidence: source identity differs"
+    }
+  ],
+  "scope_note": "File inventory concerns experiment artifacts. Session instruction/context reads are not experiment evidence. Existing manifest comparisons were used only to identify the reviewed source; no new hashing framework is proposed."
+}
+

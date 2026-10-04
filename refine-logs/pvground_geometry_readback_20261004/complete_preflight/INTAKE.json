@@ -1,0 +1,112 @@
+{
+  "time_cst": "2026-10-04T22:26:19.805526+08:00",
+  "files": {
+    "READBACK_FULL_SOURCE_REVIEW.json": {
+      "bytes": 20152,
+      "sha256": "abe8b3e67ff17d6848e00a979e7e2ec1873942927ed23648dff7c79a4fe0c621"
+    },
+    "evidence_hidden_preflight_template.json": {
+      "bytes": 3314,
+      "sha256": "a8d0275edb396b0400ceecc742da6c0f187668daf55541926052e3c6dc13a267"
+    },
+    "evidence_visible_preflight_template.json": {
+      "bytes": 3314,
+      "sha256": "c5e5f393f1fe9de59c5dbc20d7ae475c8e6bff1f96878cd77cc91b5840d19592"
+    },
+    "source_port.json": {
+      "bytes": 10665,
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304"
+    },
+    "controller.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "status.json": {
+      "bytes": 371,
+      "sha256": "8eca2ab27bcda39d8939a320ef76a64a3a324b0229520f8959f66071785885ea"
+    },
+    "launch.json": {
+      "bytes": 1426,
+      "sha256": "92e977afc10b7204cf2c0a0ecb486052729caadfbcb835072bdf8346fe0ffe3c"
+    },
+    "controller.exit": {
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "evidence_hidden/spec.json": {
+      "bytes": 3364,
+      "sha256": "6c64f402a4b446fd00c8e4885bdd4776333bb5aaf7a07e0611f562a467802385"
+    },
+    "evidence_hidden/cpu.log": {
+      "bytes": 1317,
+      "sha256": "5cdef0c3e48d0b4bea7d2dd2cc49563130e0789edb3fe675fc0e5798b8da8213"
+    },
+    "evidence_hidden/imports.json": {
+      "bytes": 1047,
+      "sha256": "2f586eced335e443c197992b48f4f0d2922a317c914a800a45f5d61cbbe8fe9b"
+    },
+    "evidence_hidden/load.json": {
+      "bytes": 576,
+      "sha256": "fd847159f5872a9473bfa108090f29a06c3d1a05864c0f41d4251f9f2bb51de6"
+    },
+    "evidence_hidden/cpu.exit": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "evidence_hidden/preflight.log": {
+      "bytes": 1463,
+      "sha256": "a7d1df11831b33486df012d4e3a3ef4328f8bf0f6d01374908ee854754656e3c"
+    },
+    "evidence_hidden/preflight.exit": {
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "evidence_visible/spec.json": {
+      "bytes": 3364,
+      "sha256": "a5c30eb9a6a1002f0c6a9462b73297d9f65b1617405c16792c591bebf0737c54"
+    }
+  },
+  "remote_terminal": {
+    "status": {
+      "status": "failed",
+      "started_cst": "2026-10-04T22:10:56.652802+08:00",
+      "completed": [
+        {
+          "arm": "evidence_hidden",
+          "mode": "cpu",
+          "seconds": 18.62504005432129
+        }
+      ],
+      "phase": "evidence_hidden/preflight",
+      "phase_started_cst": "2026-10-04T22:11:15.278308+08:00",
+      "exit_code": 1,
+      "finished_cst": "2026-10-04T22:18:31.167088+08:00"
+    },
+    "controller_alive": false,
+    "directory_free_bytes": 2368352256,
+    "system_free_bytes": 83607552,
+    "gpu": "0, 1",
+    "exitcode": 1,
+    "log_tail": [
+      "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.decoder.weight']",
+      "- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).",
+      "- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).",
+      "Loading train files, take a breath!",
+      "Begin text decoupling......",
+      "End text decoupling!",
+      "Traceback (most recent call last):",
+      "  File \"/root/autodl-tmp/pvground_readback_preflight_20261004/evidence_hidden/run_readback_preflight.py\", line 269, in <module>",
+      "    main()",
+      "  File \"/root/autodl-tmp/pvground_readback_preflight_20261004/evidence_hidden/run_readback_preflight.py\", line 200, in main",
+      "    fixed_zero = fixed_geometry_and_masks(reference_predictions, zero_predictions)",
+      "  File \"/root/autodl-tmp/pvground_readback_preflight_20261004/evidence_hidden/readback_preflight_checks.py\", line 35, in fixed_geometry_and_masks",
+      "    assert torch.equal(reference[key].detach(), predictions[key].detach()), key",
+      "AssertionError: last_center"
+    ],
+    "time_cst": "2026-10-04T22:25:07.347263+08:00"
+  },
+  "downloaded_weight_files": 0,
+  "created_archived_weights": 0,
+  "native_accuracy_rows": 0,
+  "formal_training_started": false
+}

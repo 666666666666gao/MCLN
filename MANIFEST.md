@@ -204,3 +204,5 @@
 - 2026-10-04T22:01:06.690039+08:00 face actual formal5615/4496, currentbest4506 protected; nonbest904318-byte weight removed; CPU recount and fresh integrity audit WARN/no blockers complete; readback full source gate pending. Revised readback/factory AST-only, full source/runtime gate pending.
 
 - 2026-10-04T22:18:44.920509+08:00 face actual formal5615/4496, currentbest4506 protected; nonbest904318-byte weight removed; CPU recount and fresh integrity audit WARN/no blockers complete; readback full source gate passed; actual preflight pending. Full source gate passed; actual readback preflight launched, runtime terminal pending.
+
+- 2026-10-04T23:20:16.969101+08:00 actual V1 preflight failure0updates retained; corrected V2 both2-update GPU PASS; fresh42-file formal SOURCE_ONLY PASS; frozen4506 hidden/visible formal controller launched, no accuracy result.

@@ -200,3 +200,5 @@
 - 2026-10-04T19:32:07.332640+08:00 actual partial readback source review PASS/SOURCE_ONLY; 18 byte bindings, no required source patches, full factory/runner/runtime/accuracy pending.
 
 - 2026-10-04T21:37:46.157042+08:00 face actual formal5615/4496, currentbest4506 protected; nonbest904318-byte weight removed; CPU recount complete, fresh integrity audit pending. Revised readback/factory AST-only, full source/runtime gate pending.
+
+- 2026-10-04T22:01:06.690039+08:00 face actual formal5615/4496, currentbest4506 protected; nonbest904318-byte weight removed; CPU recount and fresh integrity audit WARN/no blockers complete; readback full source gate pending. Revised readback/factory AST-only, full source/runtime gate pending.

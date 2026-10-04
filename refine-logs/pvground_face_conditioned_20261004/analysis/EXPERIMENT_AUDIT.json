@@ -1,0 +1,3097 @@
+{
+  "audit_skill": "experiment-audit",
+  "skill_path": "C:/Users/gb/.codex/skills/experiment-audit/SKILL.md",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "bounded_development_evidence_with_observed_numerical_and_replay_limits",
+  "summary": "All70 primary files and50287 NDJSON records verified within local source/CPU scope. Formal primary face5615/4496 versus flat5616/4506 is a negative result; target unmet. No blocking integrity issue found. Same-family provisional review with scope, capacity, cross-process, scalar-replay and inactive-helper qualifications.",
+  "generated_at": "2026-10-04T13:48:27.826380+00:00",
+  "date": "2026-10-04",
+  "agent_id": "/root/pvg_face_terminal_integrity",
+  "verdict_id": "pvg_face_terminal_integrity_20261004_v1",
+  "auditor": "fresh native Codex reviewer; actual backend SKU/effort not independently attested",
+  "executor_model": null,
+  "executor_family": "openai",
+  "reviewer_model": null,
+  "reviewer_family": "openai",
+  "reviewer_reasoning": null,
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "reviewer_backend_requested": "codex",
+  "reviewer_backend_sku_verified": false,
+  "reviewer_effort_verified": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "cross_family_review": false,
+  "execution_scope": "local_source_review_and_deterministic_cpu_saved_record_recount",
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis",
+  "trace_artifacts": [
+    "EXPERIMENT_AUDIT.md",
+    "EXPERIMENT_AUDIT_CPU_RECOUNT.py",
+    "EXPERIMENT_AUDIT_CPU.json",
+    "EXPERIMENT_AUDIT_READ_IDENTITIES.json"
+  ],
+  "request_identity": {
+    "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\TERMINAL_AUDIT_REQUEST.txt",
+    "sha256": "afeb2d59c710944977ac6f5d2ca2ee6c0e463656ece0746cb37ad6880c66c589"
+  },
+  "primary_files_read": 70,
+  "primary_bytes_read": 88703558,
+  "actual_read_identities": [
+    {
+      "id": "P01",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\collect_terminal.py",
+      "bytes": 5073,
+      "lines": 93,
+      "sha256": "7ef6dfdd23b9db40dfc1f280f15a5ab098b9afe725f24d796c31ad2ffcf0a103",
+      "functions": [],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P02",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analyze_terminal.py",
+      "bytes": 8358,
+      "lines": 133,
+      "sha256": "3bee208391cb0e01ccf8ed690ef5896ce489ba6d32067ff73442d0668b5f6959",
+      "functions": [
+        {
+          "name": "read_rows",
+          "line": 20,
+          "end_line": 27
+        },
+        {
+          "name": "iou",
+          "line": 29,
+          "end_line": 36
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P03",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\controller.py",
+      "bytes": 7871,
+      "lines": 154,
+      "sha256": "17ac8badad6533419e7bddd06b0eea35063c1196766d444dd20bb10ba1c94bee",
+      "functions": [
+        {
+          "name": "now",
+          "line": 13,
+          "end_line": 14
+        },
+        {
+          "name": "sha",
+          "line": 17,
+          "end_line": 22
+        },
+        {
+          "name": "box_iou",
+          "line": 25,
+          "end_line": 32
+        },
+        {
+          "name": "save",
+          "line": 55,
+          "end_line": 58
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P04",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch.json",
+      "bytes": 1540,
+      "lines": 44,
+      "sha256": "211bb5a6c9629c4ecbaef67412087c125d63756674e361232a13b1156c1532eb",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P05",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\face_fit_spec.json",
+      "bytes": 4030,
+      "lines": 66,
+      "sha256": "7ecb6b480e4c7c35c9e6d5489e69a246a2afbf0e8beacf1d25698436d2ad5935",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P06",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\EXPERIMENT_PLAN.md",
+      "bytes": 2696,
+      "lines": 40,
+      "sha256": "8d9e14b0d60290fcf66a9416066130a52069478a4c751a7803b40dfbe14a6960",
+      "read_method": "full bytes and UTF-8 text"
+    },
+    {
+      "id": "P07",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+      "bytes": 45350,
+      "lines": 679,
+      "sha256": "2ce234f5686a458b37a0f790fdb2230714c3fe8833c417767d25f763c77b663f",
+      "functions": [
+        {
+          "name": "sha",
+          "line": 18,
+          "end_line": 23
+        },
+        {
+          "name": "write_json",
+          "line": 26,
+          "end_line": 27
+        },
+        {
+          "name": "now",
+          "line": 30,
+          "end_line": 31
+        },
+        {
+          "name": "main",
+          "line": 34,
+          "end_line": 675
+        },
+        {
+          "name": "reset_rng",
+          "line": 101,
+          "end_line": 102
+        },
+        {
+          "name": "loader",
+          "line": 284,
+          "end_line": 286
+        },
+        {
+          "name": "prepare",
+          "line": 288,
+          "end_line": 298
+        },
+        {
+          "name": "native_loss",
+          "line": 300,
+          "end_line": 305
+        },
+        {
+          "name": "step",
+          "line": 307,
+          "end_line": 373
+        },
+        {
+          "name": "evaluate",
+          "line": 501,
+          "end_line": 585
+        },
+        {
+          "name": "save_checkpoint",
+          "line": 608,
+          "end_line": 623
+        },
+        {
+          "name": "_scene_graph_parse",
+          "line": 204,
+          "end_line": 213
+        },
+        {
+          "name": "__getitem__",
+          "line": 215,
+          "end_line": 220
+        },
+        {
+          "name": "capture_match",
+          "line": 318,
+          "end_line": 319
+        },
+        {
+          "name": "_scene_graph_parse",
+          "line": 246,
+          "end_line": 250
+        },
+        {
+          "name": "__getitem__",
+          "line": 252,
+          "end_line": 256
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P08",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_face_conditioned_box_refiner.py",
+      "bytes": 5974,
+      "lines": 97,
+      "sha256": "92f2ebef37504b6b3228db2149767486d2490d4ed26079f72438f15da001f61f",
+      "functions": [
+        {
+          "name": "install_face_conditioned_refinement",
+          "line": 95,
+          "end_line": 97
+        },
+        {
+          "name": "__init__",
+          "line": 16,
+          "end_line": 34
+        },
+        {
+          "name": "forward",
+          "line": 36,
+          "end_line": 92
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P09",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "lines": 116,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "functions": [
+        {
+          "name": "expected_offset",
+          "line": 18,
+          "end_line": 22
+        },
+        {
+          "name": "decode_faces",
+          "line": 25,
+          "end_line": 30
+        },
+        {
+          "name": "face_targets",
+          "line": 33,
+          "end_line": 37
+        },
+        {
+          "name": "distribution_loss",
+          "line": 40,
+          "end_line": 65
+        },
+        {
+          "name": "install_boundary_refinement",
+          "line": 114,
+          "end_line": 116
+        },
+        {
+          "name": "__init__",
+          "line": 69,
+          "end_line": 75
+        },
+        {
+          "name": "forward",
+          "line": 77,
+          "end_line": 111
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P10",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "lines": 63,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "functions": [
+        {
+          "name": "install_whole_mask_refinement",
+          "line": 61,
+          "end_line": 63
+        },
+        {
+          "name": "__init__",
+          "line": 11,
+          "end_line": 14
+        },
+        {
+          "name": "whole_range",
+          "line": 16,
+          "end_line": 32
+        },
+        {
+          "name": "forward",
+          "line": 34,
+          "end_line": 58
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P11",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\whole_mask_range.py",
+      "bytes": 3629,
+      "lines": 67,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "functions": [
+        {
+          "name": "member_statistics",
+          "line": 12,
+          "end_line": 37
+        },
+        {
+          "name": "mask_range_evidence",
+          "line": 40,
+          "end_line": 67
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P12",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "lines": 66,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "functions": [
+        {
+          "name": "install_tail_support_refinement",
+          "line": 64,
+          "end_line": 66
+        },
+        {
+          "name": "__init__",
+          "line": 10,
+          "end_line": 13
+        },
+        {
+          "name": "member_support",
+          "line": 15,
+          "end_line": 32
+        },
+        {
+          "name": "forward",
+          "line": 34,
+          "end_line": 61
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P13",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "lines": 93,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "functions": [
+        {
+          "name": "qualified_unmatched",
+          "line": 9,
+          "end_line": 23
+        },
+        {
+          "name": "root_token_target",
+          "line": 26,
+          "end_line": 31
+        },
+        {
+          "name": "semantic_assignment_correction",
+          "line": 34,
+          "end_line": 50
+        },
+        {
+          "name": "verify_native_replacement",
+          "line": 53,
+          "end_line": 93
+        },
+        {
+          "name": "ce",
+          "line": 68,
+          "end_line": 69
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P14",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\PREFLIGHT_ANALYSIS.json",
+      "bytes": 760,
+      "lines": 25,
+      "sha256": "5ceee08f3927d9aa4224a7df95049b96ee25f74b6c41c573d60aec6cad60bca7",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P15",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch_publication.json",
+      "bytes": 754,
+      "lines": 21,
+      "sha256": "76ceba65ff923c1797e73d29156f345329c4f370ed09f74356672d065bdbd11a",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P16",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\controller.exit",
+      "bytes": 2,
+      "lines": 1,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "read_method": "full bytes and UTF-8 text"
+    },
+    {
+      "id": "P17",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\controller.log",
+      "bytes": 2101,
+      "lines": 1,
+      "sha256": "b4279005231dec7f8963dabf2dfceecc1b8acf064cbf7be964c448b6f3113322",
+      "read_method": "full bytes and UTF-8 text"
+    },
+    {
+      "id": "P18",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\controller.py",
+      "bytes": 7871,
+      "lines": 154,
+      "sha256": "17ac8badad6533419e7bddd06b0eea35063c1196766d444dd20bb10ba1c94bee",
+      "identical_bytes_to": "P03",
+      "functions": [
+        {
+          "name": "now",
+          "line": 13,
+          "end_line": 14
+        },
+        {
+          "name": "sha",
+          "line": 17,
+          "end_line": 22
+        },
+        {
+          "name": "box_iou",
+          "line": 25,
+          "end_line": 32
+        },
+        {
+          "name": "save",
+          "line": 55,
+          "end_line": 58
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P19",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\EXPERIMENT_CODE_REVIEW.json",
+      "bytes": 29507,
+      "lines": 560,
+      "sha256": "5681b4cc0590c8d6130f4a8614818ca0e9fbf57f65f8d67f49cd5f37deb6a8f4",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P20",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\EXPERIMENT_PLAN.md",
+      "bytes": 2696,
+      "lines": 40,
+      "sha256": "8d9e14b0d60290fcf66a9416066130a52069478a4c751a7803b40dfbe14a6960",
+      "identical_bytes_to": "P06",
+      "read_method": "full bytes and UTF-8 text"
+    },
+    {
+      "id": "P21",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\receipt.json",
+      "bytes": 687,
+      "lines": 27,
+      "sha256": "231efa4e89d340732b556e10b40b0ce84882f8f8bb9b6ea8d8aa0d58bebc5de5",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P22",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\rows.jsonl",
+      "bytes": 18248209,
+      "lines": 9508,
+      "sha256": "5502d1f6076d3e63e9318af0e1d50e383f6251e95f4c9de5c3bc48be1a4b786c",
+      "records_parsed": 9508,
+      "read_method": "full bytes, every NDJSON record parsed and recounted"
+    },
+    {
+      "id": "P23",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal.exit",
+      "bytes": 2,
+      "lines": 1,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "identical_bytes_to": "P16",
+      "read_method": "full bytes and UTF-8 text"
+    },
+    {
+      "id": "P24",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal.log",
+      "bytes": 3231,
+      "lines": 26,
+      "sha256": "7d8ba0e321ccc8298f801aae0f499ed32776843f74d17231200b0ca83eb005ad",
+      "read_method": "full bytes and UTF-8 text"
+    },
+    {
+      "id": "P25",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\imports.json",
+      "bytes": 1256,
+      "lines": 18,
+      "sha256": "f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P26",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\initial\\receipt.json",
+      "bytes": 682,
+      "lines": 27,
+      "sha256": "4163fa12eb3987a0627fbe06df11242b797b1cda2b13d714d722c3937361f705",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P27",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\initial\\rows.jsonl",
+      "bytes": 11989872,
+      "lines": 6887,
+      "sha256": "8263ddca42eb227caf9daa75be57fa3c72c9953a56e4a58ef40278e69d532b09",
+      "records_parsed": 6887,
+      "read_method": "full bytes, every NDJSON record parsed and recounted"
+    },
+    {
+      "id": "P28",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\initial_control_comparison.json",
+      "bytes": 648,
+      "lines": 32,
+      "sha256": "5547590d2e006f51a39ad29514eb7c474cccd5eea2fbedfcf5797588264b50fe",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P29",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\initial_range_comparison.py",
+      "bytes": 1680,
+      "lines": 24,
+      "sha256": "f892a2aef21ad1aeee1d7f806436fe9145dad0c8bbb078fe4643dfea4a8ff428",
+      "functions": [
+        {
+          "name": "compare_initial_rows",
+          "line": 2,
+          "end_line": 24
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P30",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\load.json",
+      "bytes": 529,
+      "lines": 17,
+      "sha256": "0637d44d0276d8f9a4b62a0a7b335b87506e030981891affcf70400088d35d0d",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P31",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "lines": 116,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "identical_bytes_to": "P09",
+      "functions": [
+        {
+          "name": "expected_offset",
+          "line": 18,
+          "end_line": 22
+        },
+        {
+          "name": "decode_faces",
+          "line": 25,
+          "end_line": 30
+        },
+        {
+          "name": "face_targets",
+          "line": 33,
+          "end_line": 37
+        },
+        {
+          "name": "distribution_loss",
+          "line": 40,
+          "end_line": 65
+        },
+        {
+          "name": "install_boundary_refinement",
+          "line": 114,
+          "end_line": 116
+        },
+        {
+          "name": "__init__",
+          "line": 69,
+          "end_line": 75
+        },
+        {
+          "name": "forward",
+          "line": 77,
+          "end_line": 111
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P32",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "lines": 73,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "functions": [
+        {
+          "name": "install_candidate_box_refinement",
+          "line": 71,
+          "end_line": 73
+        },
+        {
+          "name": "__init__",
+          "line": 15,
+          "end_line": 28
+        },
+        {
+          "name": "nearest_members",
+          "line": 31,
+          "end_line": 40
+        },
+        {
+          "name": "forward",
+          "line": 42,
+          "end_line": 68
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P33",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_face_conditioned_box_refiner.py",
+      "bytes": 5974,
+      "lines": 97,
+      "sha256": "92f2ebef37504b6b3228db2149767486d2490d4ed26079f72438f15da001f61f",
+      "identical_bytes_to": "P08",
+      "functions": [
+        {
+          "name": "install_face_conditioned_refinement",
+          "line": 95,
+          "end_line": 97
+        },
+        {
+          "name": "__init__",
+          "line": 16,
+          "end_line": 34
+        },
+        {
+          "name": "forward",
+          "line": 36,
+          "end_line": 92
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P34",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_observation_query.py",
+      "bytes": 7683,
+      "lines": 142,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "functions": [
+        {
+          "name": "selected_support_state",
+          "line": 20,
+          "end_line": 33
+        },
+        {
+          "name": "within_voxel_range",
+          "line": 61,
+          "end_line": 63
+        },
+        {
+          "name": "spatial_observation",
+          "line": 67,
+          "end_line": 71
+        },
+        {
+          "name": "bev_observation",
+          "line": 75,
+          "end_line": 99
+        },
+        {
+          "name": "install_observation_query_read",
+          "line": 130,
+          "end_line": 142
+        },
+        {
+          "name": "__init__",
+          "line": 38,
+          "end_line": 42
+        },
+        {
+          "name": "forward",
+          "line": 44,
+          "end_line": 57
+        },
+        {
+          "name": "__init__",
+          "line": 103,
+          "end_line": 107
+        },
+        {
+          "name": "forward",
+          "line": 109,
+          "end_line": 127
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P35",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "lines": 93,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "identical_bytes_to": "P13",
+      "functions": [
+        {
+          "name": "qualified_unmatched",
+          "line": 9,
+          "end_line": 23
+        },
+        {
+          "name": "root_token_target",
+          "line": 26,
+          "end_line": 31
+        },
+        {
+          "name": "semantic_assignment_correction",
+          "line": 34,
+          "end_line": 50
+        },
+        {
+          "name": "verify_native_replacement",
+          "line": 53,
+          "end_line": 93
+        },
+        {
+          "name": "ce",
+          "line": 68,
+          "end_line": 69
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P36",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_source_query.py",
+      "bytes": 3025,
+      "lines": 63,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "functions": [
+        {
+          "name": "install_source_query_read",
+          "line": 55,
+          "end_line": 63
+        },
+        {
+          "name": "__init__",
+          "line": 19,
+          "end_line": 37
+        },
+        {
+          "name": "forward",
+          "line": 39,
+          "end_line": 52
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P37",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_tail_preflight.py",
+      "bytes": 2898,
+      "lines": 65,
+      "sha256": "823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb",
+      "functions": [
+        {
+          "name": "native_mask_loss_routes",
+          "line": 13,
+          "end_line": 21
+        },
+        {
+          "name": "observed_forward",
+          "line": 24,
+          "end_line": 65
+        },
+        {
+          "name": "record_text",
+          "line": 40,
+          "end_line": 42
+        },
+        {
+          "name": "record_query",
+          "line": 44,
+          "end_line": 46
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P38",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "lines": 66,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "identical_bytes_to": "P12",
+      "functions": [
+        {
+          "name": "install_tail_support_refinement",
+          "line": 64,
+          "end_line": 66
+        },
+        {
+          "name": "__init__",
+          "line": 10,
+          "end_line": 13
+        },
+        {
+          "name": "member_support",
+          "line": 15,
+          "end_line": 32
+        },
+        {
+          "name": "forward",
+          "line": 34,
+          "end_line": 61
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P39",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_task_observation_query.py",
+      "bytes": 2770,
+      "lines": 62,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "functions": [
+        {
+          "name": "shared_dropout",
+          "line": 33,
+          "end_line": 35
+        },
+        {
+          "name": "finish_task_queries",
+          "line": 38,
+          "end_line": 53
+        },
+        {
+          "name": "install_task_observation_query_read",
+          "line": 56,
+          "end_line": 62
+        },
+        {
+          "name": "__init__",
+          "line": 16,
+          "end_line": 23
+        },
+        {
+          "name": "forward",
+          "line": 25,
+          "end_line": 30
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P40",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "lines": 63,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "identical_bytes_to": "P10",
+      "functions": [
+        {
+          "name": "install_whole_mask_refinement",
+          "line": 61,
+          "end_line": 63
+        },
+        {
+          "name": "__init__",
+          "line": 11,
+          "end_line": 14
+        },
+        {
+          "name": "whole_range",
+          "line": 16,
+          "end_line": 32
+        },
+        {
+          "name": "forward",
+          "line": 34,
+          "end_line": 58
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P41",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\receipt.json",
+      "bytes": 4907,
+      "lines": 152,
+      "sha256": "39a49e430327f7e760b275376b4b6629738bf40962c9ba6a54861d6f81dbbac2",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P42",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\spec.json",
+      "bytes": 4030,
+      "lines": 66,
+      "sha256": "7ecb6b480e4c7c35c9e6d5489e69a246a2afbf0e8beacf1d25698436d2ad5935",
+      "identical_bytes_to": "P05",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P43",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\terminal\\receipt.json",
+      "bytes": 685,
+      "lines": 27,
+      "sha256": "083c8ad6fbd11d3eff7c9369da26e3d69e39f9b05d8beb5b3c4d97c66b5ca159",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P44",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\terminal\\rows.jsonl",
+      "bytes": 13359787,
+      "lines": 6887,
+      "sha256": "5e7f2fda7b89bd2f671a39669c43566accf55545c81030911a93342b343841fd",
+      "records_parsed": 6887,
+      "read_method": "full bytes, every NDJSON record parsed and recounted"
+    },
+    {
+      "id": "P45",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\train.exit",
+      "bytes": 2,
+      "lines": 1,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "identical_bytes_to": "P16",
+      "read_method": "full bytes and UTF-8 text"
+    },
+    {
+      "id": "P46",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\train.jsonl",
+      "bytes": 3078651,
+      "lines": 3723,
+      "sha256": "a8d5a9725bd6541217239ee119cf86a1608405889f8c9c40abbc9230b80e4888",
+      "records_parsed": 3723,
+      "read_method": "full bytes, every NDJSON record parsed and recounted"
+    },
+    {
+      "id": "P47",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\train.log",
+      "bytes": 59518,
+      "lines": 98,
+      "sha256": "926a7b5a9f32b43224290af9d27c72d4c16352419e5f8b3de8ed96108eb4d0c7",
+      "read_method": "full bytes and UTF-8 text"
+    },
+    {
+      "id": "P48",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\weight_retention.json",
+      "bytes": 1320,
+      "lines": 37,
+      "sha256": "151314c38beedac3eaedde7364d629cb5525813ac1bdfd4804ac5897f20fa1f5",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P49",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\whole_mask_range.py",
+      "bytes": 3629,
+      "lines": 67,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "identical_bytes_to": "P11",
+      "functions": [
+        {
+          "name": "member_statistics",
+          "line": 12,
+          "end_line": 37
+        },
+        {
+          "name": "mask_range_evidence",
+          "line": 40,
+          "end_line": 67
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P50",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "lines": 44,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "functions": [
+        {
+          "name": "whole_range_loss_routes",
+          "line": 5,
+          "end_line": 27
+        },
+        {
+          "name": "optimizer_restore_exact",
+          "line": 30,
+          "end_line": 44
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P51",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\INTAKE.json",
+      "bytes": 13130,
+      "lines": 281,
+      "sha256": "c9ce8a1c3513d3bd6c01149acd2eb45ed1ecabd54baf7ff9e2dd9f1243102418",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P52",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\launch.json",
+      "bytes": 1540,
+      "lines": 44,
+      "sha256": "211bb5a6c9629c4ecbaef67412087c125d63756674e361232a13b1156c1532eb",
+      "identical_bytes_to": "P04",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P53",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\run_face_fit.py",
+      "bytes": 45350,
+      "lines": 679,
+      "sha256": "2ce234f5686a458b37a0f790fdb2230714c3fe8833c417767d25f763c77b663f",
+      "identical_bytes_to": "P07",
+      "functions": [
+        {
+          "name": "sha",
+          "line": 18,
+          "end_line": 23
+        },
+        {
+          "name": "write_json",
+          "line": 26,
+          "end_line": 27
+        },
+        {
+          "name": "now",
+          "line": 30,
+          "end_line": 31
+        },
+        {
+          "name": "main",
+          "line": 34,
+          "end_line": 675
+        },
+        {
+          "name": "reset_rng",
+          "line": 101,
+          "end_line": 102
+        },
+        {
+          "name": "loader",
+          "line": 284,
+          "end_line": 286
+        },
+        {
+          "name": "prepare",
+          "line": 288,
+          "end_line": 298
+        },
+        {
+          "name": "native_loss",
+          "line": 300,
+          "end_line": 305
+        },
+        {
+          "name": "step",
+          "line": 307,
+          "end_line": 373
+        },
+        {
+          "name": "evaluate",
+          "line": 501,
+          "end_line": 585
+        },
+        {
+          "name": "save_checkpoint",
+          "line": 608,
+          "end_line": 623
+        },
+        {
+          "name": "_scene_graph_parse",
+          "line": 204,
+          "end_line": 213
+        },
+        {
+          "name": "__getitem__",
+          "line": 215,
+          "end_line": 220
+        },
+        {
+          "name": "capture_match",
+          "line": 318,
+          "end_line": 319
+        },
+        {
+          "name": "_scene_graph_parse",
+          "line": 246,
+          "end_line": 250
+        },
+        {
+          "name": "__getitem__",
+          "line": 252,
+          "end_line": 256
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P54",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\status.json",
+      "bytes": 2445,
+      "lines": 71,
+      "sha256": "2f04ea740fab1e5ff37bcd65976c42d9d2595750030bc90731f43ce764ca437e",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P55",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\SUMMARY.json",
+      "bytes": 7541,
+      "lines": 262,
+      "sha256": "50dbcca3ba3f73f0e3615e834adb762136578d24e5272707171f074003c61381",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P56",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\REPORT.md",
+      "bytes": 1300,
+      "lines": 20,
+      "sha256": "46ad63b01ab98e022364d0410f597cc0ad4c259f253f7b3d8d77b4919b814449",
+      "read_method": "full bytes and UTF-8 text"
+    },
+    {
+      "id": "P57",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\run_boundary_fit.py",
+      "bytes": 43834,
+      "lines": 670,
+      "sha256": "00d771862766ae97ffb0298e8e7a00aff21fdf7fbd81082490f3c48a4afffba7",
+      "functions": [
+        {
+          "name": "sha",
+          "line": 18,
+          "end_line": 23
+        },
+        {
+          "name": "write_json",
+          "line": 26,
+          "end_line": 27
+        },
+        {
+          "name": "now",
+          "line": 30,
+          "end_line": 31
+        },
+        {
+          "name": "main",
+          "line": 34,
+          "end_line": 666
+        },
+        {
+          "name": "reset_rng",
+          "line": 99,
+          "end_line": 100
+        },
+        {
+          "name": "loader",
+          "line": 281,
+          "end_line": 283
+        },
+        {
+          "name": "prepare",
+          "line": 285,
+          "end_line": 295
+        },
+        {
+          "name": "native_loss",
+          "line": 297,
+          "end_line": 302
+        },
+        {
+          "name": "step",
+          "line": 304,
+          "end_line": 368
+        },
+        {
+          "name": "evaluate",
+          "line": 495,
+          "end_line": 576
+        },
+        {
+          "name": "save_checkpoint",
+          "line": 599,
+          "end_line": 614
+        },
+        {
+          "name": "_scene_graph_parse",
+          "line": 202,
+          "end_line": 211
+        },
+        {
+          "name": "__getitem__",
+          "line": 213,
+          "end_line": 218
+        },
+        {
+          "name": "capture_match",
+          "line": 315,
+          "end_line": 316
+        },
+        {
+          "name": "_scene_graph_parse",
+          "line": 243,
+          "end_line": 247
+        },
+        {
+          "name": "__getitem__",
+          "line": 249,
+          "end_line": 253
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P58",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\distribution_spec.json",
+      "bytes": 3527,
+      "lines": 57,
+      "sha256": "b14540394e3f37a45290a45a7585b61c387ccf79a7fc4cdc401a91d4067e1a20",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P59",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\initial\\receipt.json",
+      "bytes": 683,
+      "lines": 27,
+      "sha256": "81cf3ad65e0ad504db6f783691ddbd43b4fa662ee9326000a0f8d11776c13ef2",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P60",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\initial\\rows.jsonl",
+      "bytes": 11325558,
+      "lines": 6887,
+      "sha256": "dcd5a0ec103bd0f3f9ee14fb3a47bbb9074690de94480acdd88ea1aed3a7ded4",
+      "records_parsed": 6887,
+      "read_method": "full bytes, every NDJSON record parsed and recounted"
+    },
+    {
+      "id": "P61",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\terminal\\receipt.json",
+      "bytes": 685,
+      "lines": 27,
+      "sha256": "e9010d2e31d698d9b47f2f7748f7d1a5dbe3932835251d10992d911fc1ac3a84",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P62",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\terminal\\rows.jsonl",
+      "bytes": 12724022,
+      "lines": 6887,
+      "sha256": "42753b44712b8162ead7bad8efcccf61227c2f421082f53fcbf63772f27e95bc",
+      "records_parsed": 6887,
+      "read_method": "full bytes, every NDJSON record parsed and recounted"
+    },
+    {
+      "id": "P63",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\formal\\receipt.json",
+      "bytes": 687,
+      "lines": 27,
+      "sha256": "af3630ae2a37a1fc03d1e4f6c0a2d807954309398261f4a265db74100e44f865",
+      "read_method": "full bytes, UTF-8 text, full JSON parse"
+    },
+    {
+      "id": "P64",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\formal\\rows.jsonl",
+      "bytes": 17351933,
+      "lines": 9508,
+      "sha256": "5bcdaed7649f833ef52251ac5d481628cec0bcd3b9830b6f6b6736367abc6a0e",
+      "records_parsed": 9508,
+      "read_method": "full bytes, every NDJSON record parsed and recounted"
+    },
+    {
+      "id": "P65",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.pv_ground.py",
+      "bytes": 25386,
+      "lines": 599,
+      "sha256": "cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58",
+      "functions": [
+        {
+          "name": "calc_pairwise_locs",
+          "line": 30,
+          "end_line": 45
+        },
+        {
+          "name": "__init__",
+          "line": 50,
+          "end_line": 56
+        },
+        {
+          "name": "_reset_parameters",
+          "line": 58,
+          "end_line": 61
+        },
+        {
+          "name": "with_pos_embed",
+          "line": 63,
+          "end_line": 64
+        },
+        {
+          "name": "forward",
+          "line": 66,
+          "end_line": 86
+        },
+        {
+          "name": "__init__",
+          "line": 90,
+          "end_line": 108
+        },
+        {
+          "name": "forward",
+          "line": 110,
+          "end_line": 114
+        },
+        {
+          "name": "__init__",
+          "line": 136,
+          "end_line": 277
+        },
+        {
+          "name": "_run_backbones",
+          "line": 281,
+          "end_line": 308
+        },
+        {
+          "name": "_generate_queries",
+          "line": 311,
+          "end_line": 321
+        },
+        {
+          "name": "_seg_seeds_prediction",
+          "line": 324,
+          "end_line": 329
+        },
+        {
+          "name": "get_mask",
+          "line": 331,
+          "end_line": 337
+        },
+        {
+          "name": "prediction_head",
+          "line": 339,
+          "end_line": 343
+        },
+        {
+          "name": "avg_lang_feat",
+          "line": 346,
+          "end_line": 350
+        },
+        {
+          "name": "forward",
+          "line": 353,
+          "end_line": 564
+        },
+        {
+          "name": "init_bn_momentum",
+          "line": 566,
+          "end_line": 570
+        },
+        {
+          "name": "__init__",
+          "line": 574,
+          "end_line": 583
+        },
+        {
+          "name": "forward",
+          "line": 585,
+          "end_line": 599
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P66",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.losses.py",
+      "bytes": 40468,
+      "lines": 973,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "functions": [
+        {
+          "name": "is_dist_avail_and_initialized",
+          "line": 27,
+          "end_line": 32
+        },
+        {
+          "name": "box_cxcyczwhd_to_xyzxyz",
+          "line": 35,
+          "end_line": 45
+        },
+        {
+          "name": "_volume_par",
+          "line": 48,
+          "end_line": 53
+        },
+        {
+          "name": "_intersect_par",
+          "line": 56,
+          "end_line": 67
+        },
+        {
+          "name": "_iou3d_par",
+          "line": 70,
+          "end_line": 75
+        },
+        {
+          "name": "generalized_box_iou3d",
+          "line": 78,
+          "end_line": 99
+        },
+        {
+          "name": "calculate_diou_3d",
+          "line": 103,
+          "end_line": 133
+        },
+        {
+          "name": "compute_points_obj_cls_loss_hard_topk",
+          "line": 202,
+          "end_line": 264
+        },
+        {
+          "name": "dice_loss",
+          "line": 393,
+          "end_line": 408
+        },
+        {
+          "name": "sigmoid_focal_loss",
+          "line": 411,
+          "end_line": 437
+        },
+        {
+          "name": "compute_hungarian_loss",
+          "line": 849,
+          "end_line": 973
+        },
+        {
+          "name": "__init__",
+          "line": 143,
+          "end_line": 151
+        },
+        {
+          "name": "sigmoid_cross_entropy_with_logits",
+          "line": 154,
+          "end_line": 173
+        },
+        {
+          "name": "forward",
+          "line": 175,
+          "end_line": 200
+        },
+        {
+          "name": "__init__",
+          "line": 279,
+          "end_line": 296
+        },
+        {
+          "name": "forward",
+          "line": 299,
+          "end_line": 391
+        },
+        {
+          "name": "__init__",
+          "line": 441,
+          "end_line": 453
+        },
+        {
+          "name": "loss_pos_align",
+          "line": 458,
+          "end_line": 515
+        },
+        {
+          "name": "loss_boxes",
+          "line": 518,
+          "end_line": 559
+        },
+        {
+          "name": "loss_masks",
+          "line": 562,
+          "end_line": 641
+        },
+        {
+          "name": "loss_sem_align",
+          "line": 646,
+          "end_line": 778
+        },
+        {
+          "name": "_get_src_permutation_idx",
+          "line": 781,
+          "end_line": 787
+        },
+        {
+          "name": "_get_tgt_permutation_idx",
+          "line": 789,
+          "end_line": 795
+        },
+        {
+          "name": "get_loss",
+          "line": 798,
+          "end_line": 806
+        },
+        {
+          "name": "forward",
+          "line": 808,
+          "end_line": 846
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P67",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\main_utils.py",
+      "bytes": 24599,
+      "lines": 642,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "functions": [
+        {
+          "name": "parse_option",
+          "line": 34,
+          "end_line": 128
+        },
+        {
+          "name": "load_checkpoint",
+          "line": 131,
+          "end_line": 150
+        },
+        {
+          "name": "save_checkpoint",
+          "line": 154,
+          "end_line": 171
+        },
+        {
+          "name": "__init__",
+          "line": 178,
+          "end_line": 206
+        },
+        {
+          "name": "get_datasets",
+          "line": 209,
+          "end_line": 213
+        },
+        {
+          "name": "get_loaders",
+          "line": 217,
+          "end_line": 260
+        },
+        {
+          "name": "get_model",
+          "line": 263,
+          "end_line": 265
+        },
+        {
+          "name": "get_criterion",
+          "line": 268,
+          "end_line": 280
+        },
+        {
+          "name": "get_optimizer",
+          "line": 283,
+          "end_line": 366
+        },
+        {
+          "name": "main",
+          "line": 370,
+          "end_line": 469
+        },
+        {
+          "name": "_to_gpu",
+          "line": 472,
+          "end_line": 477
+        },
+        {
+          "name": "_get_inputs",
+          "line": 480,
+          "end_line": 484
+        },
+        {
+          "name": "_compute_loss",
+          "line": 487,
+          "end_line": 493
+        },
+        {
+          "name": "_accumulate_stats",
+          "line": 496,
+          "end_line": 505
+        },
+        {
+          "name": "train_one_epoch",
+          "line": 509,
+          "end_line": 587
+        },
+        {
+          "name": "_main_eval_branch",
+          "line": 591,
+          "end_line": 630
+        },
+        {
+          "name": "evaluate_one_epoch",
+          "line": 633,
+          "end_line": 642
+        },
+        {
+          "name": "seed_worker",
+          "line": 219,
+          "end_line": 223
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P68",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+      "bytes": 41473,
+      "lines": 902,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "functions": [
+        {
+          "name": "box2points",
+          "line": 22,
+          "end_line": 35
+        },
+        {
+          "name": "softmax",
+          "line": 37,
+          "end_line": 42
+        },
+        {
+          "name": "__init__",
+          "line": 56,
+          "end_line": 71
+        },
+        {
+          "name": "reset",
+          "line": 73,
+          "end_line": 121
+        },
+        {
+          "name": "print_stats",
+          "line": 123,
+          "end_line": 170
+        },
+        {
+          "name": "synchronize_between_processes",
+          "line": 174,
+          "end_line": 191
+        },
+        {
+          "name": "evaluate",
+          "line": 194,
+          "end_line": 206
+        },
+        {
+          "name": "evaluate_bbox_by_pos_align",
+          "line": 209,
+          "end_line": 303
+        },
+        {
+          "name": "evaluate_bbox_by_sem_align",
+          "line": 306,
+          "end_line": 531
+        },
+        {
+          "name": "_parse_gt",
+          "line": 535,
+          "end_line": 553
+        },
+        {
+          "name": "evaluate_masks_by_pos_align",
+          "line": 557,
+          "end_line": 653
+        },
+        {
+          "name": "evaluate_masks_by_sem_align",
+          "line": 657,
+          "end_line": 875
+        },
+        {
+          "name": "_parse_gt_mask",
+          "line": 879,
+          "end_line": 895
+        },
+        {
+          "name": "calculate_masks_iou",
+          "line": 897,
+          "end_line": 902
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P69",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\src.joint_det_dataset.py",
+      "bytes": 75981,
+      "lines": 1906,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "functions": [
+        {
+          "name": "_load_wandb",
+          "line": 55,
+          "end_line": 57
+        },
+        {
+          "name": "resolve_referit3d_csv",
+          "line": 65,
+          "end_line": 78
+        },
+        {
+          "name": "get_positive_map",
+          "line": 1624,
+          "end_line": 1651
+        },
+        {
+          "name": "rot_x",
+          "line": 1654,
+          "end_line": 1664
+        },
+        {
+          "name": "rot_y",
+          "line": 1667,
+          "end_line": 1677
+        },
+        {
+          "name": "rot_z",
+          "line": 1680,
+          "end_line": 1690
+        },
+        {
+          "name": "box2points",
+          "line": 1692,
+          "end_line": 1705
+        },
+        {
+          "name": "points2box",
+          "line": 1708,
+          "end_line": 1713
+        },
+        {
+          "name": "scannet_loader",
+          "line": 1716,
+          "end_line": 1720
+        },
+        {
+          "name": "save_data",
+          "line": 1723,
+          "end_line": 1753
+        },
+        {
+          "name": "pickle_data",
+          "line": 1756,
+          "end_line": 1762
+        },
+        {
+          "name": "unpickle_data",
+          "line": 1765,
+          "end_line": 1778
+        },
+        {
+          "name": "Scene_graph_parse",
+          "line": 1784,
+          "end_line": 1906
+        },
+        {
+          "name": "__init__",
+          "line": 84,
+          "end_line": 266
+        },
+        {
+          "name": "load_annos",
+          "line": 269,
+          "end_line": 286
+        },
+        {
+          "name": "load_sr3dplus_annos",
+          "line": 288,
+          "end_line": 290
+        },
+        {
+          "name": "_literal_list",
+          "line": 293,
+          "end_line": 302
+        },
+        {
+          "name": "_structured_referit3d_path",
+          "line": 304,
+          "end_line": 309
+        },
+        {
+          "name": "_referit3d_structured_key",
+          "line": 312,
+          "end_line": 323
+        },
+        {
+          "name": "_referit3d_structured_lookup",
+          "line": 325,
+          "end_line": 339
+        },
+        {
+          "name": "_structured_scanrefer_path",
+          "line": 341,
+          "end_line": 360
+        },
+        {
+          "name": "_attach_structured_annotation",
+          "line": 363,
+          "end_line": 369
+        },
+        {
+          "name": "_realign_structured_annotations",
+          "line": 372,
+          "end_line": 379
+        },
+        {
+          "name": "_scene_graph_parse",
+          "line": 381,
+          "end_line": 400
+        },
+        {
+          "name": "load_sr3d_annos",
+          "line": 402,
+          "end_line": 437
+        },
+        {
+          "name": "_load_sr3d_structured_annos",
+          "line": 439,
+          "end_line": 477
+        },
+        {
+          "name": "load_nr3d_annos",
+          "line": 479,
+          "end_line": 531
+        },
+        {
+          "name": "_load_nr3d_structured_annos",
+          "line": 533,
+          "end_line": 581
+        },
+        {
+          "name": "load_scanrefer_annos",
+          "line": 585,
+          "end_line": 732
+        },
+        {
+          "name": "load_scannet_annos",
+          "line": 736,
+          "end_line": 772
+        },
+        {
+          "name": "_sample_classes",
+          "line": 775,
+          "end_line": 796
+        },
+        {
+          "name": "_create_scannet_utterance",
+          "line": 799,
+          "end_line": 811
+        },
+        {
+          "name": "_load_multiview",
+          "line": 813,
+          "end_line": 820
+        },
+        {
+          "name": "_augment",
+          "line": 823,
+          "end_line": 868
+        },
+        {
+          "name": "_get_pc",
+          "line": 871,
+          "end_line": 919
+        },
+        {
+          "name": "_get_token_positive_map",
+          "line": 922,
+          "end_line": 975
+        },
+        {
+          "name": "_get_token_positive_map_by_parse",
+          "line": 981,
+          "end_line": 1082
+        },
+        {
+          "name": "_get_target_boxes",
+          "line": 1086,
+          "end_line": 1119
+        },
+        {
+          "name": "_get_scene_objects",
+          "line": 1121,
+          "end_line": 1157
+        },
+        {
+          "name": "_get_auxi_boxes",
+          "line": 1161,
+          "end_line": 1186
+        },
+        {
+          "name": "_get_detected_objects",
+          "line": 1189,
+          "end_line": 1257
+        },
+        {
+          "name": "__getitem__",
+          "line": 1260,
+          "end_line": 1487
+        },
+        {
+          "name": "_is_view_dep",
+          "line": 1490,
+          "end_line": 1497
+        },
+        {
+          "name": "_find_rel",
+          "line": 1500,
+          "end_line": 1508
+        },
+        {
+          "name": "_augment_nr3d",
+          "line": 1511,
+          "end_line": 1513
+        },
+        {
+          "name": "_visualize_superpoint",
+          "line": 1584,
+          "end_line": 1616
+        },
+        {
+          "name": "__len__",
+          "line": 1619,
+          "end_line": 1621
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    },
+    {
+      "id": "P70",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\prepare_data.py",
+      "bytes": 19658,
+      "lines": 466,
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "functions": [
+        {
+          "name": "__init__",
+          "line": 28,
+          "end_line": 54
+        },
+        {
+          "name": "generate",
+          "line": 56,
+          "end_line": 72
+        },
+        {
+          "name": "__init__",
+          "line": 76,
+          "end_line": 88
+        },
+        {
+          "name": "mask_points_and_boxes_outside_range",
+          "line": 90,
+          "end_line": 104
+        },
+        {
+          "name": "boxes_to_corners_3d",
+          "line": 106,
+          "end_line": 131
+        },
+        {
+          "name": "mask_boxes_outside_range_numpy",
+          "line": 133,
+          "end_line": 154
+        },
+        {
+          "name": "shuffle_points",
+          "line": 156,
+          "end_line": 166
+        },
+        {
+          "name": "transform_points_to_voxels_placeholder",
+          "line": 168,
+          "end_line": 176
+        },
+        {
+          "name": "double_flip",
+          "line": 178,
+          "end_line": 192
+        },
+        {
+          "name": "transform_points_to_voxels",
+          "line": 194,
+          "end_line": 241
+        },
+        {
+          "name": "sample_points",
+          "line": 243,
+          "end_line": 273
+        },
+        {
+          "name": "calculate_grid_size",
+          "line": 275,
+          "end_line": 281
+        },
+        {
+          "name": "downsample_depth_map",
+          "line": 283,
+          "end_line": 292
+        },
+        {
+          "name": "image_normalize",
+          "line": 294,
+          "end_line": 306
+        },
+        {
+          "name": "image_calibrate",
+          "line": 308,
+          "end_line": 342
+        },
+        {
+          "name": "forward",
+          "line": 344,
+          "end_line": 359
+        },
+        {
+          "name": "collate_batch",
+          "line": 362,
+          "end_line": 466
+        }
+      ],
+      "read_method": "full bytes, UTF-8 text and AST parse; source reviewed, not executed"
+    }
+  ],
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\collect_terminal.py": "sha256:7ef6dfdd23b9db40dfc1f280f15a5ab098b9afe725f24d796c31ad2ffcf0a103",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analyze_terminal.py": "sha256:3bee208391cb0e01ccf8ed690ef5896ce489ba6d32067ff73442d0668b5f6959",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\controller.py": "sha256:17ac8badad6533419e7bddd06b0eea35063c1196766d444dd20bb10ba1c94bee",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch.json": "sha256:211bb5a6c9629c4ecbaef67412087c125d63756674e361232a13b1156c1532eb",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\face_fit_spec.json": "sha256:7ecb6b480e4c7c35c9e6d5489e69a246a2afbf0e8beacf1d25698436d2ad5935",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\EXPERIMENT_PLAN.md": "sha256:8d9e14b0d60290fcf66a9416066130a52069478a4c751a7803b40dfbe14a6960",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py": "sha256:2ce234f5686a458b37a0f790fdb2230714c3fe8833c417767d25f763c77b663f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_face_conditioned_box_refiner.py": "sha256:92f2ebef37504b6b3228db2149767486d2490d4ed26079f72438f15da001f61f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_boundary_box_refiner.py": "sha256:88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_whole_mask_box_refiner.py": "sha256:4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\whole_mask_range.py": "sha256:22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_tail_support_box_refiner.py": "sha256:665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_semantic_assignment.py": "sha256:3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\PREFLIGHT_ANALYSIS.json": "sha256:5ceee08f3927d9aa4224a7df95049b96ee25f74b6c41c573d60aec6cad60bca7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\launch_publication.json": "sha256:76ceba65ff923c1797e73d29156f345329c4f370ed09f74356672d065bdbd11a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\controller.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\controller.log": "sha256:b4279005231dec7f8963dabf2dfceecc1b8acf064cbf7be964c448b6f3113322",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\controller.py": "sha256:17ac8badad6533419e7bddd06b0eea35063c1196766d444dd20bb10ba1c94bee",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\EXPERIMENT_CODE_REVIEW.json": "sha256:5681b4cc0590c8d6130f4a8614818ca0e9fbf57f65f8d67f49cd5f37deb6a8f4",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\EXPERIMENT_PLAN.md": "sha256:8d9e14b0d60290fcf66a9416066130a52069478a4c751a7803b40dfbe14a6960",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\receipt.json": "sha256:231efa4e89d340732b556e10b40b0ce84882f8f8bb9b6ea8d8aa0d58bebc5de5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\rows.jsonl": "sha256:5502d1f6076d3e63e9318af0e1d50e383f6251e95f4c9de5c3bc48be1a4b786c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal.log": "sha256:7d8ba0e321ccc8298f801aae0f499ed32776843f74d17231200b0ca83eb005ad",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\imports.json": "sha256:f9bb4be0be4d61f3ca26c9c0c6b69a25a1d94b970f039815515debfa13edf5fd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\initial\\receipt.json": "sha256:4163fa12eb3987a0627fbe06df11242b797b1cda2b13d714d722c3937361f705",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\initial\\rows.jsonl": "sha256:8263ddca42eb227caf9daa75be57fa3c72c9953a56e4a58ef40278e69d532b09",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\initial_control_comparison.json": "sha256:5547590d2e006f51a39ad29514eb7c474cccd5eea2fbedfcf5797588264b50fe",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\initial_range_comparison.py": "sha256:f892a2aef21ad1aeee1d7f806436fe9145dad0c8bbb078fe4643dfea4a8ff428",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\load.json": "sha256:0637d44d0276d8f9a4b62a0a7b335b87506e030981891affcf70400088d35d0d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_boundary_box_refiner.py": "sha256:88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_candidate_box_refiner.py": "sha256:e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_face_conditioned_box_refiner.py": "sha256:92f2ebef37504b6b3228db2149767486d2490d4ed26079f72438f15da001f61f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_observation_query.py": "sha256:cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_semantic_assignment.py": "sha256:3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_source_query.py": "sha256:e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_tail_preflight.py": "sha256:823f27d14e333a2fb8f15e6bd41a81abe3717c34a4adcb77aebbbb050ebcdbdb",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_tail_support_box_refiner.py": "sha256:665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_task_observation_query.py": "sha256:39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_whole_mask_box_refiner.py": "sha256:4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\receipt.json": "sha256:39a49e430327f7e760b275376b4b6629738bf40962c9ba6a54861d6f81dbbac2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\spec.json": "sha256:7ecb6b480e4c7c35c9e6d5489e69a246a2afbf0e8beacf1d25698436d2ad5935",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\terminal\\receipt.json": "sha256:083c8ad6fbd11d3eff7c9369da26e3d69e39f9b05d8beb5b3c4d97c66b5ca159",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\terminal\\rows.jsonl": "sha256:5e7f2fda7b89bd2f671a39669c43566accf55545c81030911a93342b343841fd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\train.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\train.jsonl": "sha256:a8d5a9725bd6541217239ee119cf86a1608405889f8c9c40abbc9230b80e4888",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\train.log": "sha256:926a7b5a9f32b43224290af9d27c72d4c16352419e5f8b3de8ed96108eb4d0c7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\weight_retention.json": "sha256:151314c38beedac3eaedde7364d629cb5525813ac1bdfd4804ac5897f20fa1f5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\whole_mask_range.py": "sha256:22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\whole_model_preflight_checks.py": "sha256:115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\INTAKE.json": "sha256:c9ce8a1c3513d3bd6c01149acd2eb45ed1ecabd54baf7ff9e2dd9f1243102418",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\launch.json": "sha256:211bb5a6c9629c4ecbaef67412087c125d63756674e361232a13b1156c1532eb",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\run_face_fit.py": "sha256:2ce234f5686a458b37a0f790fdb2230714c3fe8833c417767d25f763c77b663f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\status.json": "sha256:2f04ea740fab1e5ff37bcd65976c42d9d2595750030bc90731f43ce764ca437e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\SUMMARY.json": "sha256:50dbcca3ba3f73f0e3615e834adb762136578d24e5272707171f074003c61381",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\REPORT.md": "sha256:46ad63b01ab98e022364d0410f597cc0ad4c259f253f7b3d8d77b4919b814449",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\run_boundary_fit.py": "sha256:00d771862766ae97ffb0298e8e7a00aff21fdf7fbd81082490f3c48a4afffba7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\distribution_spec.json": "sha256:b14540394e3f37a45290a45a7585b61c387ccf79a7fc4cdc401a91d4067e1a20",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\initial\\receipt.json": "sha256:81cf3ad65e0ad504db6f783691ddbd43b4fa662ee9326000a0f8d11776c13ef2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\initial\\rows.jsonl": "sha256:dcd5a0ec103bd0f3f9ee14fb3a47bbb9074690de94480acdd88ea1aed3a7ded4",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\terminal\\receipt.json": "sha256:e9010d2e31d698d9b47f2f7748f7d1a5dbe3932835251d10992d911fc1ac3a84",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\terminal\\rows.jsonl": "sha256:42753b44712b8162ead7bad8efcccf61227c2f421082f53fcbf63772f27e95bc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\formal\\receipt.json": "sha256:af3630ae2a37a1fc03d1e4f6c0a2d807954309398261f4a265db74100e44f865",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\formal\\rows.jsonl": "sha256:5bcdaed7649f833ef52251ac5d481628cec0bcd3b9830b6f6b6736367abc6a0e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.pv_ground.py": "sha256:cc17e6c235075c4be24c752bb76dcafe0273c7a036f3dcf6bedb3696379aaa58",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.losses.py": "sha256:920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\main_utils.py": "sha256:14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py": "sha256:39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\src.joint_det_dataset.py": "sha256:3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\prepare_data.py": "sha256:3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+  },
+  "audit_outputs": {
+    "EXPERIMENT_AUDIT.md": {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT.md",
+      "sha256": "af12bd7e09384ac3b1ed9f82857c4e3fe2dd514e7fa967ce9f014febd994cd7d",
+      "bytes": 22688
+    },
+    "EXPERIMENT_AUDIT_CPU_RECOUNT.py": {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT_CPU_RECOUNT.py",
+      "sha256": "921687b53829e04f0fd467721de339994b64273a68f44dc4daa620f256dbf945",
+      "bytes": 22863
+    },
+    "EXPERIMENT_AUDIT_CPU.json": {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT_CPU.json",
+      "sha256": "88f73378fb3272ae84a55e13c2f5f24bb3b249f325fb812804654af86eb7604a",
+      "bytes": 161545
+    },
+    "EXPERIMENT_AUDIT_READ_IDENTITIES.json": {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT_READ_IDENTITIES.json",
+      "sha256": "c05d286cb36e614da5903f6b15d0af19aa2a14f7bcbc671e93e6460936079a8f",
+      "bytes": 58868
+    }
+  },
+  "blocking_issues": [],
+  "nonblocking_issues": [
+    {
+      "id": "W1",
+      "status": "WARN",
+      "blocking": false,
+      "title": "Single-seed development and pretrained-seen scope",
+      "details": "Scientific evidence supports the reported bounded development result only. The face primary score is 4496, below flat4506; the target4754 is unmet. Existing report already discloses the central scope limits.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\EXPERIMENT_PLAN.md",
+          "lines": "27-40"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\receipt.json"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\formal\\receipt.json"
+        }
+      ]
+    },
+    {
+      "id": "W2",
+      "status": "WARN",
+      "blocking": false,
+      "title": "Architecture and capacity change together",
+      "details": "Source arithmetic independently gives face64737 parameters/25 tensors and flat456102/10. This is not an isolated face-conditioning or attention ablation.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_face_conditioned_box_refiner.py",
+          "lines": "16-34"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_boundary_box_refiner.py",
+          "lines": "68-110"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT_CPU.json",
+          "record_selector": "source_arithmetic"
+        }
+      ]
+    },
+    {
+      "id": "W3",
+      "status": "WARN",
+      "blocking": false,
+      "title": "Saved scalar verification is not raw replay",
+      "details": "Mask arrays, full candidate boxes and selection logits are absent. Their scalar aggregates/rank consistency were checked; no raw Mask/full-candidate/model/optimizer replay was performed. Entropy is uncalibrated.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "lines": "531-580"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\rows.jsonl",
+          "lines": "1-9508"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT_CPU.json",
+          "record_selector": "raw_mask_replay, full_candidate_box_replay, selection_logits_replay, model_optimizer_replay"
+        }
+      ]
+    },
+    {
+      "id": "W4",
+      "status": "WARN",
+      "blocking": false,
+      "title": "Observed cross-process differences",
+      "details": "Initial saved Mask IoU differs at rows2058,18482; face initial/terminal also differs at16804. Formal selected query differs on3 bbs and2 bbf rows; coarse boxes differ on9503/9502. Cause is not isolated, and learning cannot be inferred from Mask scalar drift.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\initial\\rows.jsonl",
+          "lines": "368,3439,3803"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\terminal\\rows.jsonl",
+          "lines": "368,3439,3803"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\rows.jsonl",
+          "lines": "959,1228,2239,2256,2284"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\formal\\rows.jsonl",
+          "lines": "959,1228,2239,2256,2284"
+        }
+      ]
+    },
+    {
+      "id": "W5",
+      "status": "WARN",
+      "blocking": false,
+      "title": "Measured target clipping and floor exposure",
+      "details": "386 of178668 matched face targets lie outside distribution support and are clamped after finite checks, across222 updates. Formal selected size floor exposure is43 axes/41 rows bbs and40/40 bbf. All saved values remain finite and recount threshold differences are zero.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\pvground_boundary_box_refiner.py",
+          "lines": "25-65"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\train.jsonl",
+          "lines": "9,57"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT_CPU.json",
+          "record_selector": "training,evaluations.face.formal"
+        }
+      ]
+    },
+    {
+      "id": "W6",
+      "status": "WARN",
+      "blocking": false,
+      "title": "Inactive inherited helpers",
+      "details": "Some inherited diagnostic/metric helpers are unused; no current result depends on them. This triggers the checklist dead-code WARN without a blocking defect or task-related need for refactoring.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "lines": "500-580"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+          "lines": "37-42,194-206,209-399,557-758"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.losses.py",
+          "lines": "103-133,548"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_tail_preflight.py",
+          "lines": "13-21"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\whole_model_preflight_checks.py",
+          "lines": "5-27"
+        }
+      ]
+    },
+    {
+      "id": "W7",
+      "status": "WARN",
+      "blocking": false,
+      "title": "Historical closure and bounded dependency evidence",
+      "details": "Controller/collector source and receipts support completion, metric-best retention, exact owned-face deletion and zero weights downloaded/archive. No new remote readback, raw weights, or complete V99 chain manifest were supplied; the entire live dependency chain is not independently certified.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\controller.py",
+          "lines": "119-148"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\collect_terminal.py",
+          "lines": "15-66,81-90"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\weight_retention.json"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\INTAKE.json"
+        }
+      ]
+    },
+    {
+      "id": "W8",
+      "status": "WARN",
+      "blocking": false,
+      "title": "Common order and original-G baseline evidence boundaries",
+      "details": "Face exact-once/order is freshly recounted. Flat training NDJSON is absent, so common ordering relies on runner assertions and receipt. Standalone original-G formal rows are absent: +1 supports recorded same-run coarse-to-face comparison, not a newly replayed G benchmark.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "lines": "628-638"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\receipt.json",
+          "lines": "9-11"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\REPORT.md",
+          "lines": "19"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\rows.jsonl",
+          "lines": "1-9508"
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "gt_provenance": {
+      "check": "A",
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "details": "Dataset annotations identify scene/object; scan object geometry provides target boxes and point-index masks. Predicted Mask support remains a feature. Native two-stage/object-input and token-map/auxiliary conventions remain; no additional GT inference gate is introduced. Raw dataset and detector payloads were not supplied, so provenance is source-traced with saved witnesses.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\src.joint_det_dataset.py",
+          "lines": "205-226,585-649,981-1119,1188-1226,1337-1441,1784-1906"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.pv_ground.py",
+          "lines": "185-193,378-408,520-564"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+          "lines": "535-553,879-902"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "lines": "245-262,288-305,504-559"
+        }
+      ]
+    },
+    "score_normalization": {
+      "check": "B",
+      "status": "PASS",
+      "details": "Raw selected IoU strict >.25/.50 counts use actual row denominators. Mask IoU uses dataset-mask intersection/union, and mean is saved sum/n*100. Prediction softmax/support normalization does not normalize reported performance. Selected final/coarse boxes were freshly recomputed; Mask/oracles only saved-scalar recounted.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.losses.py",
+          "lines": "35-75"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+          "lines": "209-399,557-758,897-902"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "lines": "519-580"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT_CPU.json",
+          "record_selector": "evaluations"
+        }
+      ]
+    },
+    "result_existence": {
+      "check": "C",
+      "status": "PASS",
+      "qualification": "saved_evidence_only",
+      "details": "All 70 primary files exist; all numbers in the supplied terminal summary reproduce. Full formal row identities, ordering, both modes, native counters, receipt hashes and exit/closure/retention records agree. No metric stitching found. Weight restore and retirement are source/receipt supported, not freshly executed or remotely read back by this audit.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\rows.jsonl",
+          "lines": "1-9508"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_boundary_distribution_20261004\\complete\\distribution\\formal\\rows.jsonl",
+          "lines": "1-9508"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\receipt.json"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal.log",
+          "lines": "26"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\receipt.json",
+          "lines": "7-19,70-88,112-149"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\status.json"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\INTAKE.json"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\weight_retention.json",
+          "lines": "4-36"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\controller.py",
+          "lines": "81-148"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT_CPU.json",
+          "record_selector": "identity_checks, logs, closure_and_retention, prior_summary_reproduced"
+        }
+      ]
+    },
+    "dead_code": {
+      "check": "D",
+      "status": "WARN",
+      "details": "All claimed Box/Mask and diagnostic paths are actually called. Inherited NumPy softmax, DIoU and preflight route helpers are not called by this pipeline and support no claimed result. Native last/bbs is primary; bbf remains separate. Same selected query supplies Box and Mask. No code cleanup is required for the bounded report.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "lines": "500-580"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+          "lines": "37-42,194-206,209-399,557-758"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.losses.py",
+          "lines": "103-133,548"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\pvground_tail_preflight.py",
+          "lines": "13-21"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\whole_model_preflight_checks.py",
+          "lines": "5-27"
+        }
+      ]
+    },
+    "scope": {
+      "check": "E",
+      "status": "WARN",
+      "details": "One seed2027 run per architecture. 6887 module holdout rows/106 physical scenes are upstream-pretrained-seen; 9508 formal rows/141 physical scenes are development validation. Architecture and capacity change together. Cross-process outputs are observably nonidentical. No generalization, isolated direction-conditioning, calibrated entropy or extra dataset/teacher/quality-loss result follows.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\EXPERIMENT_PLAN.md",
+          "lines": "9-18,27-40"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\REPORT.md",
+          "lines": "3-6,17-19"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\face_fit_spec.json",
+          "lines": "9-15,33-58"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\analysis\\EXPERIMENT_AUDIT_CPU.json",
+          "record_selector": "face_vs_flat, initial_to_terminal, source_arithmetic, evaluations.face.formal"
+        }
+      ]
+    },
+    "evaluation_type": {
+      "check": "F",
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": "Face and flat initial/terminal/formal Box and Mask performance use dataset ground truth. GT oracle diagnostics are not deployed selection. Native training consistency losses do not change benchmark classification. This audit is saved-record verification, not a new model evaluation.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\src.joint_det_dataset.py",
+          "lines": "1086-1119"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\evaluator.py",
+          "lines": "535-553,879-902"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_fused_support_20261002\\complete_tail_fused_retry\\source\\imported\\models.losses.py",
+          "lines": "562-641"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "lines": "524-559"
+        }
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "Completed native primary bbs5615/4496 on9508 formal development rows",
+      "impact": "supported",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\rows.jsonl",
+          "lines": "1-9508"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\formal\\receipt.json"
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "claim": "Face improves over flat5616/4506 or reaches5615/4754 target",
+      "impact": "unsupported",
+      "details": "Primary strict score is10 hits lower; goal is unmet."
+    },
+    {
+      "id": "C3",
+      "claim": "Only64737-parameter/25-tensor head learned; originalG fixed/eval",
+      "impact": "needs_qualifier",
+      "details": "Independent source arithmetic, active-state guards and runtime assertions support it; no fresh weight inspection.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\run_face_fit.py",
+          "lines": "171-201,361-368,602-638"
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_face_conditioned_20261004\\complete\\face_conditioned\\receipt.json",
+          "lines": "7,14,18,73,142"
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "claim": "+1 strict primary hit from same-query coarse-to-face geometry",
+      "impact": "supported",
+      "details": "Four repairs, three damages in the same formal forward; not an independently replayed standalone-G run."
+    },
+    {
+      "id": "C5",
+      "claim": "Same raw masks or replayed raw full-256 oracle/model/optimizer",
+      "impact": "unsupported",
+      "details": "Only selected-box geometry and saved scalar Mask/oracle records are available."
+    },
+    {
+      "id": "C6",
+      "claim": "Isolated direction-conditioning gain, robust generalization or calibrated quality",
+      "impact": "unsupported",
+      "details": "One seed, development/pretrained-seen scope, confounded architecture/capacity, uncalibrated entropy."
+    },
+    {
+      "id": "C7",
+      "claim": "Metric-best retained, worse owned terminal deleted, no weight download/archive",
+      "impact": "needs_qualifier",
+      "details": "Supported by consistent historical source/receipts; no independent current readback or entire V99-chain attestation."
+    },
+    {
+      "id": "C8",
+      "claim": "New Nr3D/Sr3D, teacher or quality-loss result",
+      "impact": "unsupported",
+      "details": "No such completed experiment exists in the supplied set."
+    }
+  ],
+  "evaluation_type": "real_gt",
+  "independent_checks": {
+    "status": "PASS",
+    "primary_artifacts_unchanged": true,
+    "ndjson_records_parsed": 50287,
+    "evaluation_records": 46564,
+    "selected_final_boxes_recomputed": 93128,
+    "selected_coarse_boxes_recomputed": 93128,
+    "all_final_and_coarse_threshold_changes": 0,
+    "max_selected_iou_error": 2.941533244982253e-06,
+    "max_final_decode_error": 7.323049544538662e-07,
+    "training": {
+      "records": 3723,
+      "unique_fit_rows": 29778,
+      "every_fit_row_once": true,
+      "batches": {
+        "8": 3722,
+        "2": 1
+      },
+      "last_batch": [
+        4176,
+        17320
+      ],
+      "step_sequence_exact": true,
+      "holdout_overlap": 0,
+      "train_plus_holdout_exact_0_to_36664": true,
+      "order_sha256": "1ab6f45572237ad8be0fc003f4a1e8cd872a4f41f6e7af66b300364e03c2810e",
+      "flat_train_log_in_supplied_set": false,
+      "common_order_evidence": "runner:628-629 assertion and fit receipt; flat train.jsonl was not supplied",
+      "all_numeric_finite": true,
+      "boundary_matched_boxes": 29778,
+      "boundary_faces": 178668,
+      "boundary_outside_faces": 386,
+      "boundary_outside_steps": 222,
+      "outside_step_examples": [
+        {
+          "line": 9,
+          "step": 9,
+          "rows": [
+            2782,
+            22489,
+            27153,
+            20152,
+            24601,
+            23604,
+            28864,
+            23388
+          ],
+          "outside": 2
+        },
+        {
+          "line": 18,
+          "step": 18,
+          "rows": [
+            15002,
+            35328,
+            29835,
+            8281,
+            6236,
+            19734,
+            17308,
+            35794
+          ],
+          "outside": 1
+        },
+        {
+          "line": 19,
+          "step": 19,
+          "rows": [
+            7950,
+            23670,
+            34020,
+            8644,
+            10088,
+            10978,
+            13906,
+            31143
+          ],
+          "outside": 2
+        },
+        {
+          "line": 49,
+          "step": 49,
+          "rows": [
+            10681,
+            19246,
+            25034,
+            35221,
+            4283,
+            6872,
+            16699,
+            26325
+          ],
+          "outside": 2
+        },
+        {
+          "line": 57,
+          "step": 57,
+          "rows": [
+            8951,
+            252,
+            6940,
+            35309,
+            17378,
+            27605,
+            35039,
+            9779
+          ],
+          "outside": 6
+        },
+        {
+          "line": 61,
+          "step": 61,
+          "rows": [
+            16974,
+            29339,
+            11698,
+            1099,
+            30341,
+            7986,
+            13880,
+            4677
+          ],
+          "outside": 1
+        },
+        {
+          "line": 75,
+          "step": 75,
+          "rows": [
+            5518,
+            21897,
+            15963,
+            33996,
+            933,
+            35407,
+            15018,
+            7782
+          ],
+          "outside": 2
+        },
+        {
+          "line": 77,
+          "step": 77,
+          "rows": [
+            27202,
+            25097,
+            5495,
+            23151,
+            28020,
+            15934,
+            24161,
+            178
+          ],
+          "outside": 2
+        },
+        {
+          "line": 86,
+          "step": 86,
+          "rows": [
+            6412,
+            31807,
+            32261,
+            9911,
+            26056,
+            14300,
+            9683,
+            19017
+          ],
+          "outside": 2
+        },
+        {
+          "line": 96,
+          "step": 96,
+          "rows": [
+            8994,
+            23122,
+            2376,
+            22852,
+            30744,
+            10024,
+            11022,
+            31039
+          ],
+          "outside": 2
+        }
+      ],
+      "floor_axes_sum": 39190,
+      "floor_steps": 1408,
+      "raw_loss_equation_max_abs_error": 1.817941665649414e-06,
+      "DFL_div7_max_abs_error": 3.405979703829942e-08,
+      "ranges": {
+        "loss": {
+          "min": 10.297032356262207,
+          "max": 21.727401733398438
+        },
+        "loss_native": {
+          "min": 10.18326473236084,
+          "max": 20.528852462768555
+        },
+        "loss_assignment_correction": {
+          "min": -0.6595224142074585,
+          "max": 1.1917831897735596
+        },
+        "reassigned_queries": {
+          "min": 90,
+          "max": 619
+        },
+        "reassigned_samples": {
+          "min": 2,
+          "max": 8
+        },
+        "matched_queries": {
+          "min": 2,
+          "max": 8
+        },
+        "replaced_ce_old": {
+          "min": 0.8530328869819641,
+          "max": 17.50262451171875
+        },
+        "replaced_ce_new": {
+          "min": 1.8874340057373047,
+          "max": 28.581592559814453
+        },
+        "boundary_matched_boxes": {
+          "min": 2,
+          "max": 8
+        },
+        "boundary_faces": {
+          "min": 12,
+          "max": 48
+        },
+        "boundary_target_outside": {
+          "min": 0,
+          "max": 6
+        },
+        "boundary_loss": {
+          "min": 1.9456266164779663,
+          "max": 3.4965076446533203
+        },
+        "boundary_weighted_loss": {
+          "min": 0.27794668078422546,
+          "max": 0.49950110912323
+        },
+        "size_floor_axis_count": {
+          "min": 0,
+          "max": 1281
+        },
+        "grad_norm": {
+          "min": 0.20957213640213013,
+          "max": 3.5382237434387207
+        },
+        "seconds": {
+          "min": 0.47385644912719727,
+          "max": 1.849484920501709
+        },
+        "loss_bbox": {
+          "min": 0.5096126794815063,
+          "max": 3.142357349395752
+        },
+        "loss_giou": {
+          "min": 1.0575214624404907,
+          "max": 3.826697587966919
+        },
+        "loss_ce": {
+          "min": 23.736156463623047,
+          "max": 98.68742370605469
+        },
+        "loss_sem_align": {
+          "min": 79.68214416503906,
+          "max": 139.03689575195312
+        },
+        "step": {
+          "min": 1,
+          "max": 3723
+        },
+        "total_steps": {
+          "min": 3723,
+          "max": 3723
+        },
+        "cumulative_seconds": {
+          "min": 3.5417439937591553,
+          "max": 4099.345170974731
+        }
+      }
+    },
+    "identities": {
+      "intake_files": 38,
+      "native_import_sources": 6,
+      "module_spec_hashes": 12,
+      "original_g_weight_not_read": true,
+      "official_pv_weight_not_read": true,
+      "V99_chain_not_supplied": true
+    },
+    "source_parameter_arithmetic": {
+      "face_components": {
+        "member": 5120,
+        "condition": 18496,
+        "face_embedding": 384,
+        "face_condition": 768,
+        "range_member": 4480,
+        "attention": 16640,
+        "norm": 128,
+        "face_update": 16576,
+        "output": 2145
+      },
+      "face_parameters": 64737,
+      "face_tensors": 25,
+      "flat_components": {
+        "member": 5120,
+        "condition": 18496,
+        "aggregate": 375264,
+        "output": 57222
+      },
+      "flat_parameters": 456102,
+      "flat_tensors": 10,
+      "nonuniform_knots": [
+        -4.0,
+        -1.9999999999999956,
+        -1.788130973628828,
+        -1.5912247753694828,
+        -1.4082246852806892,
+        -1.2381486121628784,
+        -1.0800838230519019,
+        -0.9331820449317612,
+        -0.7966549123791224,
+        -0.6697697367088757,
+        -0.5518455739153587,
+        -0.44224957030740764,
+        -0.34039356622565253,
+        -0.24573093961551695,
+        -0.15775367251659045,
+        -0.07598962472534576,
+        0.0,
+        0.07598962472534576,
+        0.15775367251659045,
+        0.24573093961551695,
+        0.34039356622565253,
+        0.44224957030740764,
+        0.5518455739153587,
+        0.6697697367088757,
+        0.7966549123791224,
+        0.9331820449317612,
+        1.0800838230519019,
+        1.2381486121628784,
+        1.4082246852806892,
+        1.5912247753694828,
+        1.788130973628828,
+        1.9999999999999956,
+        4.0
+      ],
+      "face_order": [
+        "x-",
+        "y-",
+        "z-",
+        "x+",
+        "y+",
+        "z+"
+      ],
+      "face_local_ids": [
+        2,
+        4,
+        6,
+        1,
+        3,
+        5
+      ],
+      "face_axes": [
+        0,
+        1,
+        2,
+        0,
+        1,
+        2
+      ]
+    },
+    "prior_summary_reproduced": true
+  },
+  "formal_results": {
+    "face": {
+      "bbs": {
+        "rec_hits25": 5615,
+        "rec_hits50": 4496,
+        "mask_hits25": 5812,
+        "mask_hits50": 5133,
+        "mask_iou_sum": 4478.997386772593,
+        "mask_miou": 47.107671295462694
+      },
+      "bbf": {
+        "rec_hits25": 5656,
+        "rec_hits50": 4524,
+        "mask_hits25": 5847,
+        "mask_hits50": 5156,
+        "mask_iou_sum": 4503.713409898512,
+        "mask_miou": 47.36762105488548
+      }
+    },
+    "flat": {
+      "bbs": {
+        "rec_hits25": 5616,
+        "rec_hits50": 4506,
+        "mask_hits25": 5812,
+        "mask_hits50": 5133,
+        "mask_iou_sum": 4478.997386772593,
+        "mask_miou": 47.107671295462694
+      },
+      "bbf": {
+        "rec_hits25": 5653,
+        "rec_hits50": 4526,
+        "mask_hits25": 5847,
+        "mask_hits50": 5156,
+        "mask_iou_sum": 4503.713409898512,
+        "mask_miou": 47.36762105488548
+      }
+    }
+  },
+  "primary_comparison": {
+    "mode": "last/bbs",
+    "threshold": 0.5,
+    "face_hits": 4496,
+    "flat_hits": 4506,
+    "delta_hits": -10,
+    "delta_percentage_points": -0.1051745898190997,
+    "target_hits25": 5615,
+    "target_hits50": 4754,
+    "target_achieved": false
+  },
+  "within_query_face_formal": {
+    "bbs": {
+      "25": {
+        "coarse_hits": 5615,
+        "repairs": 2,
+        "damages": 2
+      },
+      "50": {
+        "coarse_hits": 4495,
+        "repairs": 4,
+        "damages": 3
+      }
+    },
+    "bbf": {
+      "25": {
+        "coarse_hits": 5654,
+        "repairs": 2,
+        "damages": 0
+      },
+      "50": {
+        "coarse_hits": 4520,
+        "repairs": 7,
+        "damages": 3
+      }
+    }
+  },
+  "retention": {
+    "status": "prior_metric_best_retained",
+    "retained_best": {
+      "name": "plain_distribution",
+      "path": "/root/autodl-tmp/pvground_boundary_fit_20261004/distribution/terminal.pth",
+      "sha256": "79e35068b8787a81c354c5fd3ed2bbc12fc62e06167b9cfbe781f86cbbd36c67",
+      "bbs_hits25": 5616,
+      "bbs_hits50": 4506,
+      "protected_parent": false
+    },
+    "deleted": [
+      {
+        "path": "/root/autodl-tmp/pvground_face_fit_20261004/face_conditioned/terminal.pth",
+        "bytes": 904318,
+        "sha256": "d09be40e67b19ba2ff4fa50eec9ff4e912f32c1478bf80372d0a098a16044428"
+      }
+    ],
+    "no_failed_archive_receipt": true,
+    "weights_downloaded_receipt": 0,
+    "original_g_after_sha256": "0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522",
+    "entire_V99_chain_independently_verified": false,
+    "independent_remote_readback": false
+  },
+  "execution_actions": {
+    "network_calls": 0,
+    "SSH_calls": 0,
+    "CUDA_operations": 0,
+    "model_imports": 0,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "weight_reads": 0,
+    "raw_dataset_reads": 0,
+    "private_memory_reads": 0,
+    "credential_reads": 0,
+    "agents_spawned": 0,
+    "primary_artifacts_modified": 0
+  },
+  "replay": {
+    "selected_saved_box_geometry": true,
+    "saved_mask_scalar_recount": true,
+    "saved_oracle_scalar_rank_consistency": true,
+    "raw_masks": false,
+    "full_candidate_boxes": false,
+    "selection_logits": false,
+    "model": false,
+    "optimizer": false,
+    "new_remote_readback": false
+  },
+  "limitations": [
+    "One seed2027 per architecture; module holdout is pretrained-seen and formal is development validation.",
+    "Architecture and parameter capacity change together; no isolated mechanism or robustness claim.",
+    "Raw dataset annotations/scan geometry/detector payloads, model weights and source-port/environment payloads were not supplied for fresh verification.",
+    "Flat training NDJSON not supplied; common full batch-order equality is source/receipt witnessed, not independently cross-recounted.",
+    "Only preflight analysis summary is supplied; raw preflight receipt and runtime state are not independently replayed.",
+    "Selected box geometry is freshly reconstructed; Mask/full-candidate oracle/rank verification is limited to saved scalars and source paths.",
+    "Observed query/coarse/Mask scalar differences prevent all-sample bitwise pairwise equivalence; cause was not isolated.",
+    "386 out-of-support training face targets are explicitly clamped; selected floor exposure is nonzero.",
+    "Entire live originalG/officialPV/V99 dependency chain and current process/filesystem state not independently checked; historical receipts only.",
+    "Standalone originalG formal records not supplied; same-run coarse result and historical baseline count are distinct evidence.",
+    "No new publication readback, independent test set, Nr3D/Sr3D, teacher, quality-loss or calibrated entropy result.",
+    "Same-family provisional semantic review; requested Astra/max backend identity and effort are not independently attested."
+  ],
+  "required_actions": [
+    "Preserve all stated scope and replay qualifiers in downstream claims.",
+    "Report the negative primary comparison and unmet target; keep the recorded flat metric best."
+  ],
+  "required_code_changes": []
+}

@@ -174,3 +174,5 @@
 - 2026-10-04T05:33:44.274261+08:00 actual local/whole complete9508:5603/4428 versus5594/4461, originalG retained, fresh terminal audit WARN0; owned nonbest endpoints retired.
 
 - 2026-10-04T06:11:07.681258+08:00 stable originalG/10-head-tensor real two-step PASS; bounded same-budget local/whole launched, no new accuracy result.
+
+- 2026-10-04T08:32:04.504590+08:00 head-only local complete9508 bbs5588/4447; whole still active, controller CPU proof only, owned nonbest retired.

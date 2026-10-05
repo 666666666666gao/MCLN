@@ -1,0 +1,905 @@
+{
+  "verdict": "PASS",
+  "execution_scope": "SOURCE_ONLY",
+  "review_time_cst": "2026-10-05T14:04:11.678174+08:00",
+  "review_round": "FINAL_ACTUAL_CLOSED_PAIR_BINDING",
+  "reviewer_provenance": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_backend": "unattested",
+    "actual_model": "unattested",
+    "actual_reasoning_effort": "unattested",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "role": "fresh-context Codex source reviewer"
+  },
+  "blocking_findings": [],
+  "warnings": [
+    {
+      "id": "W1",
+      "kind": "EXPECTED_RUNTIME_GATE",
+      "message": "The source/input-binding gate passes. Current remote GPU availability, lock acquisition and remote terminal file bytes were not checked in this review. The unchanged launcher/runner must still perform those existing checks at execution; no diagnostic GPU result is available."
+    },
+    {
+      "id": "W2",
+      "kind": "EVIDENCE_SCOPE",
+      "message": "This final SOURCE_ONLY review is not a result-integrity verdict or formal metric acceptance. The 64 augmented fit rows were seen in training and their verified reference GT is root-only. Correlated candidates do not establish unseen-scene accuracy, nonempty multi-GT protection or physical-instance identity."
+    },
+    {
+      "id": "W3",
+      "kind": "METRIC_SCOPE",
+      "message": "GPU DFL scalars are not independently CPU-recomputed. Eligibility retains the saved parent GPU Box threshold; CPU float64 threshold differences are reported. Cached head replay identity does not claim cross-CUDA complete-forward bitwise identity."
+    },
+    {
+      "id": "W4",
+      "kind": "RETENTION_ORDER",
+      "message": "Both terminal heads must remain available until this actual diagnostic, its collection and CPU audit complete. This source-only review neither deletes nor validates retention of remote weights."
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analyze_probe.py",
+      "sha256": "ac8b3988dd16703b9250b6869563eeeaa734dc1b499d96a6fd622ee879195b8d",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\check_prior_metric.py",
+      "sha256": "4057628a6993d74f0d431aad708ea4483353d5842c262649b16bb0886941a13c",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+      "sha256": "608a717c2257844172705ba774f9e61bf17d1faa9748b8a773b5cd6ba750a90a",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\collect_probe_authorized.py",
+      "sha256": "de5a39203bd0e8ff8058a6ea5ea15a4639c1cfd4834c52ec8778d5f596c9cf21",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\controller.py",
+      "sha256": "a5658bf487fcd701f76478af1b78419c90d1dea17f92c815a011912c9b6cb35c",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\launch_probe_authorized.py",
+      "sha256": "436d981dfdd1b409b959d8cdbb56f846456829785146bec8971a61b87c3981d7",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\observe_probe_authorized.py",
+      "sha256": "a6570ad337c693048d0424f08166b967e3b2f2bf2ec2589864d710f6cde89bbe",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\prepare_closed_spec.py",
+      "sha256": "5a04450354826479f0edb1f37f7af40067d7c273ac260aeb2e1d81399f33b2fd",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\prepare_probe.py",
+      "sha256": "79504839e8492b578b0574cecf8cb41d09cf42683080bac8a4f93891f405e81f",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\probe_body.py",
+      "sha256": "0502ade839808218b943c87bb3dbaf49c02352413bf8785170afe7bbe6346ee2",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\publish_prepared_source.py",
+      "sha256": "945f917fb56bcb3ce2960d94aaf43bf3fb68275bf9061b86e9634044445f04f1",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+      "sha256": "ff006960b9a1c0754ba6dc3ef163fc997c3594e2232e98c9bc25f0639766dd18",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "893f9dcdf38e2221b69fd11eaab594c0c5dbcf03b62d81ec1c1cbffe9654e23d",
+      "review_scope": "Full prepared plan/evidence record",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\GENERATION.json",
+      "sha256": "1a06080d772e7ea3e63f3e4fb53b20ec779c953e53b0f52051ccd37d3443e3c4",
+      "review_scope": "Full prepared plan/evidence record",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARATION.json",
+      "sha256": "a01cba52c462a5a81a676441e64190c55bd7562d93c11fafdb1ad06773c3e6de",
+      "review_scope": "Full prepared plan/evidence record",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\METRIC_PRIMITIVE_CHECK.json",
+      "sha256": "f01b25d0328243ac61bdefe4f6f737737f85b4821b31c7ae8221791b4b289e95",
+      "review_scope": "Full prepared plan/evidence record",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\run_mask_branch_probe.py",
+      "sha256": "84c0858166781214cf241a04d5ee42243b92246fe7c4705579568f58fc6602c7",
+      "review_scope": "Full inherited runner/specification",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\spec.json",
+      "sha256": "cd02a2687fbee148256e101f7709382dcedc0834f4d46f00c0c4e7cebd2a9a1a",
+      "review_scope": "Full inherited runner/specification",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\controller.py",
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_scope": "Closed-pair producer/observer/collection contract source",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_body.py",
+      "sha256": "a67200e7d37bbc87d8303cee56eb63812d0725e9a3b0e364306fec5c64737233",
+      "review_scope": "Closed-pair producer/observer/collection contract source",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\observe_fit_authorized.py",
+      "sha256": "698a5203af439fc2fe90299c606a95eaa6014bdfa1e8443bf6fe47b8614e96e4",
+      "review_scope": "Closed-pair producer/observer/collection contract source",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\collect_formal_authorized.py",
+      "sha256": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890",
+      "review_scope": "Closed-pair producer/observer/collection contract source",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\run_geometry_fit.py",
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_scope": "Focused source inspection of formal restore, checkpoint metadata, evaluation and fit contracts",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\closed_control_receipts\\control\\receipt.json",
+      "sha256": "3779254e981d3ba1c3ad5da7e5c7499b1d06efc29cc78fe1604bfc58dbdfe2e6",
+      "review_scope": "Existing closed control evidence only; not a closed-pair terminal",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\closed_control_receipts\\control\\formal_restore.json",
+      "sha256": "1f7cc61d14972c4d3d56cae0333c26d35047486e2afc94d5cec492e07ac75d4d",
+      "review_scope": "Existing closed control evidence only; not a closed-pair terminal",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\closed_control_receipts\\control\\formal\\receipt.json",
+      "sha256": "63a24be5db5dd873eae6cea6e2f2776fd8cb8b24b12f65e5753dab36f7016574",
+      "review_scope": "Existing closed control evidence only; not a closed-pair terminal",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\receipt.json",
+      "sha256": "5441778fd4e4021c68215a700bc950c65a2acc714caf28bb10c464d7267c7064",
+      "review_scope": "Prior diagnostic receipt identity consumed by metric check",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_00.npz",
+      "sha256": "71e5148220341d0f76480bd1a7e002ce6064d6a992d86f3d5cc98311d023bd32",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_01.npz",
+      "sha256": "4fd47625792533a532433894d0f94175cf576c888583c5b80ee7fec8e6c75fa2",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_02.npz",
+      "sha256": "fb737abb8b934f4f2ed3e6d49dd7b94d739862b08e54105949b1e8b71a4bbaaf",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_03.npz",
+      "sha256": "3a86c5ec2c3337bb2d4a9a0421ebb58824d032965090d3067cf93cf58c60002e",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_04.npz",
+      "sha256": "bd1aeb4f9a35e0f56d2c419a909c229387411e819ac943395db6f58f09382c84",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_05.npz",
+      "sha256": "c134c31445ce9c1d07ff6106b5de46f82d14c39cc0fda831303060d29424a626",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_06.npz",
+      "sha256": "f641f87c0920b8b6f81b661e1b3d655144fb0b0f971203ea664e7ee402e8277b",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_07.npz",
+      "sha256": "946f286c107fa5e066f4cd84defb04eec112f44b17214a76386480a1d44edbfc",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\rows.jsonl",
+      "sha256": "5f93346437c0c154759af270815e52ccc840a7e80f451f67a25904fd1b0e7c0f",
+      "review_scope": "Existing 64-row identity and root-only GT verification",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\rows.jsonl",
+      "sha256": "959bf18c908b44e84e5822b7c19f8ef939414207b833e6c2dbe3ebf9e63dd6b7",
+      "review_scope": "Existing reference row/scan/point/GT identity comparison",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\experiment-bridge\\SKILL.md",
+      "sha256": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+      "review_scope": "Review instructions, especially Phase 2.5",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md",
+      "sha256": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+      "review_scope": "Reviewer attribution and execution policy",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_FIXES.json",
+      "sha256": "01b6cfffec5c90bd05b1ac2f102e064c9f989a2a47e93a29730e22f247ee838d",
+      "review_scope": "Full B1/B2 fix evidence; before/after hashes independently checked",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW_initial.json",
+      "sha256": "94865062f07601195718b562817838885d6e68a56cec4236a9d610451f577cda",
+      "review_scope": "Preserved initial FAIL review",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW_initial.md",
+      "sha256": "e2b80c6226c9c23378de81359a281b3cd0ed2902ca53fdf9347a1331d9310f6b",
+      "review_scope": "Preserved initial FAIL review",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\controller.py",
+      "sha256": "6ba190275bfd121de585d7a70f0fab16a824063f16608a916526e3bf2bc4eceb",
+      "review_scope": "Source template read and transformed in memory to verify exact generated-file consistency",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\launch_probe_authorized.py",
+      "sha256": "3eb44f6adb5762949dfc36f8f700dae544ec627237beb9e3b74ab938024f9fba",
+      "review_scope": "Source template read and transformed in memory to verify exact generated-file consistency",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\observe_probe_authorized.py",
+      "sha256": "2b0e4cad962cddf69873af3fdb95202a907f455fe8f5c6e895aa6913096a7880",
+      "review_scope": "Source template read and transformed in memory to verify exact generated-file consistency",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\collect_probe_authorized.py",
+      "sha256": "de5a39203bd0e8ff8058a6ea5ea15a4639c1cfd4834c52ec8778d5f596c9cf21",
+      "review_scope": "Source template read and transformed in memory to verify exact generated-file consistency",
+      "evidence_reuse": "Previously inspected; exact bytes revalidated in this final source refresh. Named diagnostic files were reread in full."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW.json",
+      "sha256": "c8d390cd80a34d4a5e244524a857dc9ef3cd25395b447f865404ad350452e037",
+      "review_scope": "Prepared review reread; final scope changes recorded separately"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW.md",
+      "sha256": "27aec7ab469fb04aa213f777ba395ba87494c544f52ff03031afa5f5be6eed31",
+      "review_scope": "Prepared review reread; preserved unchanged"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\spec.json",
+      "sha256": "748809b0e1c740b3253d992de719b8e8e1bac55518e7e1e0a5a6651932f1de71",
+      "review_scope": "Full actual closed-pair specification and terminal binding"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_wait.json",
+      "sha256": "701b071d8a92f8bc82de50e37d15ea511960f3cb2a71aef65eb6a77f6ab02d87",
+      "review_scope": "Full actual observer closure proof"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\INTAKE.json",
+      "sha256": "4c6b2457880e28aeda378e70b388f379fc8819f74405c2c6dfaf9b5fe16bd938",
+      "review_scope": "Full actual closed-pair intake manifest and remote terminal proof"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\EXPERIMENT_PLAN.md",
+      "sha256": "b62e838197e85eacd19076696190fdad0590e93d910876bcf98f3fc795a9a947",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\SOURCE_REVIEW.json",
+      "sha256": "a71f65de0423e7ee722b96e92641eb0a7ede8ab6588a43477879e7e3b8d33fd7",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\SOURCE_REVIEW.md",
+      "sha256": "c77a2ca3fbbdee21b2b7d09dc0e6bfd0aebe81d27ab3857c871c2f6fde1940f9",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal\\receipt.json",
+      "sha256": "63a24be5db5dd873eae6cea6e2f2776fd8cb8b24b12f65e5753dab36f7016574",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal\\rows.jsonl",
+      "sha256": "f21000ce1dfa75309627d71d0e56f1580b7d1d3f6d758a5f8acdad8a2179b00f",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal.log",
+      "sha256": "14529032e8d76f3fcb135460936bae6bc126f35b83f68035ee389a061c54ecc3",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal_restore.json",
+      "sha256": "1f7cc61d14972c4d3d56cae0333c26d35047486e2afc94d5cec492e07ac75d4d",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\initial\\receipt.json",
+      "sha256": "875edb6d167676b42c42e1b85dbb9b6c807f9b42073c372486d9da607736ed4c",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\initial\\rows.jsonl",
+      "sha256": "944313ba5ceb0aca7f7d37ff2d6e419efba6eb10bfd6d6bfcbfe92937c7d0563",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\load.json",
+      "sha256": "0de7fcbcbe21c94b035209b3329a8a54c1c4194fe89bc5448425cae9bd17b491",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\preflight.json",
+      "sha256": "a2b904c5145ba3ac0f13b3a80edf8c743150c3a6782e35bf1fed8a3f9d64e37c",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\preflight.log",
+      "sha256": "bc944f386991cc7a5e81fdad7c077a841c3466b43d1bacbb9081a66b71e35300",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\receipt.json",
+      "sha256": "3779254e981d3ba1c3ad5da7e5c7499b1d06efc29cc78fe1604bfc58dbdfe2e6",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\terminal\\receipt.json",
+      "sha256": "84c53976a2f73cc70adf33ff934121b9eadc7bb124cf5e101af32073bb8201af",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\terminal\\rows.jsonl",
+      "sha256": "e2979299fba80a8850d19c9c7271ad1c2ff0367e59ba0f07117447a1884fe338",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.jsonl",
+      "sha256": "b4c9f13a8aa388753fc6c3d80a64f4ecadc4c0c2251f0818e0665d91f28dadff",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.log",
+      "sha256": "16a8dcf75284e7979a38aacfff8e12850696aaec425ff188ca119e805e7134f7",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control_spec.json",
+      "sha256": "282b7f117c3c242970416608c05e8f9b7684f1bf3b0ccfc0159990771505a9a1",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\controller.py",
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_scope": "Collected producer source bytes match the already-reviewed local source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_controller.log",
+      "sha256": "e3c98c416efbdfce06fb89fe65e4dc341e4fcfd621d29f1cbf012c0c565a1e66",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_launch.json",
+      "sha256": "db9e2911484a538b8640fd6d8db0a965467b3a3125dd41e005eeba88ed41c488",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_status.json",
+      "sha256": "1a9c0de09e70af2d7676277dad0571701222f82646fdcb3a59efc8a0423f2a75",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\EXPERIMENT_PLAN.md",
+      "sha256": "b62e838197e85eacd19076696190fdad0590e93d910876bcf98f3fc795a9a947",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\INTAKE.json",
+      "sha256": "965099206cedbd8b37a2cdd46610680b752652bb4eb7e04d2a06a50549860617",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\SOURCE_REVIEW.json",
+      "sha256": "a71f65de0423e7ee722b96e92641eb0a7ede8ab6588a43477879e7e3b8d33fd7",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\SOURCE_REVIEW.md",
+      "sha256": "c77a2ca3fbbdee21b2b7d09dc0e6bfd0aebe81d27ab3857c871c2f6fde1940f9",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\load.json",
+      "sha256": "17b08e65feedfd128571d0a6a8c3c13ef8e953963bf1f4b99c010a4b213e85c9",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\preflight.json",
+      "sha256": "a2b904c5145ba3ac0f13b3a80edf8c743150c3a6782e35bf1fed8a3f9d64e37c",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\preflight.log",
+      "sha256": "bc944f386991cc7a5e81fdad7c077a841c3466b43d1bacbb9081a66b71e35300",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control_spec.json",
+      "sha256": "282b7f117c3c242970416608c05e8f9b7684f1bf3b0ccfc0159990771505a9a1",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\controller.py",
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\preflight_controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\preflight_controller.log",
+      "sha256": "de394bed8819341fe0ff7b9163cad4de402daf4c6e0ac3946cae24e5d8bfc5b5",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\preflight_status.json",
+      "sha256": "897407cab630d81048761c29e8ba83ac11c37a66fcdea3ffae8faea382a78d8e",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\load.json",
+      "sha256": "278d3c5a9d220f4232308c6a72c47002dd5ad2af23ced52fbc9ee77e3035fd78",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\preflight.json",
+      "sha256": "4655ccbbf97c16cf7b9fe283f22084577a4a33cdc448df72f44d2679a0c472fe",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\preflight.log",
+      "sha256": "044b8cbee813540eda266ed18b4dbd8b26397a4ba11285b8c03855b49f082a8f",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported_geometry.py",
+      "sha256": "aebeb6ec667a3a2e61098268193664bf2ef02a1ce8dc72303badca8b19dc964c",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported_spec.json",
+      "sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\run_geometry_fit.py",
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_controller.log",
+      "sha256": "de394bed8819341fe0ff7b9163cad4de402daf4c6e0ac3946cae24e5d8bfc5b5",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_status.json",
+      "sha256": "897407cab630d81048761c29e8ba83ac11c37a66fcdea3ffae8faea382a78d8e",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal\\receipt.json",
+      "sha256": "fdab1dd33b81fa70551b76d6eed6de5c8fbce95b43199297bbe35e19353a33f1",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal\\rows.jsonl",
+      "sha256": "5ef50c722abb31f10e02a06615d0f2cd437b0bcb354b32f5135ebf1304db9e16",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal.log",
+      "sha256": "60df0b70eb586bf2ed5e12eb629653829b9c65a80074fce8e79fb6e14291f067",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal_restore.json",
+      "sha256": "2fdbc5e800c8239906a0ca072179af13a3b228f668fd5ae41395eaa8c483bb82",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\initial\\receipt.json",
+      "sha256": "fb821d87e39e9624009059bc4720769ffa7e8ea343104b2cb3d33e58780985d2",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\initial\\rows.jsonl",
+      "sha256": "05f0585ea8aafbfe1e2f394359ff9071402c0d380d3cd732d5f7688c5622c2d8",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\load.json",
+      "sha256": "333602b496fa48c5d47d6ee795a7ee7e16b4d37a4648f0b3f4f153c4300f8448",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\preflight.json",
+      "sha256": "4655ccbbf97c16cf7b9fe283f22084577a4a33cdc448df72f44d2679a0c472fe",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\preflight.log",
+      "sha256": "044b8cbee813540eda266ed18b4dbd8b26397a4ba11285b8c03855b49f082a8f",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\receipt.json",
+      "sha256": "086c948430ae5d8c08d971155ef01834d5d21b581204d7a6d02634d4b93729f6",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\terminal\\receipt.json",
+      "sha256": "19f925e625c1e918653c04dbc86e9220b48473cf391e4233f7bc7a13bbcee458",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\terminal\\rows.jsonl",
+      "sha256": "7bff0ca8678f3037c8a890ee9f55bdd4b82073a400fdb3a56afbabc6a199659c",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.jsonl",
+      "sha256": "05b98a4da41867b0200246e49040fd744e969e746daf0744321d7c577b286a68",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.log",
+      "sha256": "ab786955be7dc48fc10e26e3290f4e6d39e4158080101433b1bc26f3a025e2a9",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported_geometry.py",
+      "sha256": "aebeb6ec667a3a2e61098268193664bf2ef02a1ce8dc72303badca8b19dc964c",
+      "review_scope": "Actual intake byte size and SHA verified; not a semantic result-integrity verdict"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported_spec.json",
+      "sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+      "review_scope": "Full actual closure/terminal/formal/specification contract read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_scope": "Collected producer source bytes match the already-reviewed local source"
+    }
+  ],
+  "checks": [
+    {
+      "name": "actual_full_pair_closure",
+      "result": "PASS",
+      "details": "fit_wait.json records the fit observer closed, controller absent and exit zero. The collected fit_status.json equals both wait.terminal.status and INTAKE.remote_terminal.status, lists all four control/query_supported train/formal runs, and records protected parents exact. All four child exits and fit_controller.exit are zero."
+    },
+    {
+      "name": "actual_terminal_and_spec_binding",
+      "result": "PASS",
+      "details": "Both actual training receipts record complete, 3723 updates, 29778 fit rows seen once, 456102 parameters and 10 head tensors. Both formal receipts are pass with 9508 rows. Each terminal SHA matches its strict formal-restore receipt and the new spec. Each receipt/payload spec SHA is bound to the actual collected arm-spec bytes; original checkpoint/G parent/4506 geometry/source/runtime/input identities match the diagnostic spec. The arm specs differ only in output root and extra_geometry_weight 0 versus 1."
+    },
+    {
+      "name": "closed_spec_generation",
+      "result": "PASS",
+      "details": "Without executing the writer, the final spec was reconstructed in memory from the unchanged inherited parent spec, both actual receipts and the actual fit_wait/INTAKE hashes; it equals N/spec.json. No placeholder terminal evidence remains."
+    },
+    {
+      "name": "source_and_input_identity",
+      "result": "PASS",
+      "details": "All 53 previously reviewed files remain exact, including all 12 diagnostic Python sources, method body, metrics, preparation history and helper dependencies. The collected training controller/runner match their previously reviewed local source bytes. All 73 actual intake files pass the manifest size/hash checks."
+    },
+    {
+      "name": "launcher_SOURCE_ONLY_gate",
+      "result": "PASS_SOURCE_GATE",
+      "details": "launch_probe_authorized.py requires SOURCE_ONLY, PASS/WARN with no blockers, and exact reviewed-file hashes, including the actual spec in this report. The launcher still performs its existing live remote complete-status/zero-exit check, idle-GPU/resource check and nonblocking GPU lock. This reviewer did not run those remote operations."
+    },
+    {
+      "name": "cached_head_comparison",
+      "result": "PASS_SOURCE",
+      "details": "Each of 8 batches executes one complete current4506 parent forward, captures the same Query/raw points/coarse boxes/output dictionary, then performs exactly 3 cached geometry-head replays (parent/control/query_supported). Each replay loads all 10 compatible geometry state tensors. Parent replay must equal parent boxes. The semantic model head is counted once per complete forward; native logits/scores and all Mask tensors stay fixed. No optimizer, backward, update or weight writer exists in the diagnostic."
+    },
+    {
+      "name": "fixed_parent_eligibility_and_GT",
+      "result": "PASS_SOURCE",
+      "details": "The native final-layer parent matching is captured once. Every matched query is marked with its valid GT slot and excluded. Eligibility is own Query Mask IoU>.5 AND fused Mask IoU>.5 AND parent final Box IoU<=.5 AND unmatched; neither trained head can change membership. Root boxes/masks are real dataset labels. Row/scan/point/GT identities must match the existing fixed 64-row reference."
+    },
+    {
+      "name": "state_restore_and_exit_contracts",
+      "result": "PASS_SOURCE",
+      "details": "The runner restores the parent head and checks every complete model state tensor against its original CPU clone, with gradients absent. Controller and analysis consume model_state_restored. Controller emits probe.exit, collection preserves that basename, and analysis requires both probe.exit and controller.exit to be zero. B1/B2 remain resolved and the generator preserves the fixes."
+    },
+    {
+      "name": "integer_mask_and_CPU_paired_metrics",
+      "result": "PASS_SOURCE_WITH_STATED_LIMITS",
+      "details": "Int64 Query/fused intersections/unions support exact integer support qualification. Saved parent GPU Box IoU fixes cohort membership; CPU float64 boxes determine paired IoU, face errors/moves and strict .25/.5 repair/damage with threshold disagreements reported. Range groups use the same parent coarse targets. GPU DFL interpolation matches the inspected training definition but is not independently recomputed on CPU."
+    },
+    {
+      "name": "observer_collection_and_limits",
+      "result": "PASS_SOURCE",
+      "details": "The observer starts at the existing estimated 300-second check then uses 240-second checks and preserves terminal failures. Collection requires successful complete closure and copies no weight files. The analyzed panel is seen training64, root-only and correlated; it is not unseen-scene accuracy, nonempty multi-GT protection or physical-instance identity evidence. No retention action is invoked here."
+    }
+  ],
+  "source_review_gate_satisfied": true,
+  "source_and_input_binding_verified": true,
+  "runtime_resource_gate_evaluated": false,
+  "actual_GPU_execution": false,
+  "new_cohort_executed": false,
+  "diagnostic_result_available": false,
+  "result_integrity_verdict": "NOT_ASSESSED",
+  "formal_metric_acceptance": "NOT_ASSESSED",
+  "actual_binding": {
+    "spec_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\spec.json",
+    "spec_sha256": "748809b0e1c740b3253d992de719b8e8e1bac55518e7e1e0a5a6651932f1de71",
+    "fit_wait_sha256": "701b071d8a92f8bc82de50e37d15ea511960f3cb2a71aef65eb6a77f6ab02d87",
+    "intake_sha256": "4c6b2457880e28aeda378e70b388f379fc8819f74405c2c6dfaf9b5fe16bd938",
+    "controller_finished_cst": "2026-10-05T13:53:50.086084+08:00",
+    "observer_closed_cst": "2026-10-05T13:54:07.953051+08:00",
+    "intake_time_cst": "2026-10-05T13:57:58.757545+08:00",
+    "both_arms": {
+      "control": {
+        "terminal_path": "/root/autodl-tmp/pvground_query_supported_geometry_20261005/control/terminal.pth",
+        "terminal_sha256": "fcce28c679193e0ede4b1127080bc53376cf2f7b33fbbda94fcaf5f8d66a1ea8",
+        "arm_spec_sha256": "282b7f117c3c242970416608c05e8f9b7684f1bf3b0ccfc0159990771505a9a1",
+        "training_receipt_sha256": "3779254e981d3ba1c3ad5da7e5c7499b1d06efc29cc78fe1604bfc58dbdfe2e6",
+        "formal_receipt_sha256": "63a24be5db5dd873eae6cea6e2f2776fd8cb8b24b12f65e5753dab36f7016574",
+        "restore_receipt_sha256": "1f7cc61d14972c4d3d56cae0333c26d35047486e2afc94d5cec492e07ac75d4d",
+        "training_steps": 3723,
+        "fit_rows": 29778,
+        "formal_rows": 9508,
+        "parent_and_zero_R_states_exact_recorded": true,
+        "strict_model_restore_recorded": true,
+        "train_exit": 0,
+        "formal_exit": 0
+      },
+      "query_supported": {
+        "terminal_path": "/root/autodl-tmp/pvground_query_supported_geometry_20261005/query_supported/terminal.pth",
+        "terminal_sha256": "0b37986d4448b125405d573272282ef37396a781ba970789dfc9b080445cec51",
+        "arm_spec_sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+        "training_receipt_sha256": "086c948430ae5d8c08d971155ef01834d5d21b581204d7a6d02634d4b93729f6",
+        "formal_receipt_sha256": "fdab1dd33b81fa70551b76d6eed6de5c8fbce95b43199297bbe35e19353a33f1",
+        "restore_receipt_sha256": "2fdbc5e800c8239906a0ca072179af13a3b228f668fd5ae41395eaa8c483bb82",
+        "training_steps": 3723,
+        "fit_rows": 29778,
+        "formal_rows": 9508,
+        "parent_and_zero_R_states_exact_recorded": true,
+        "strict_model_restore_recorded": true,
+        "train_exit": 0,
+        "formal_exit": 0
+      }
+    }
+  },
+  "validation": {
+    "status": "PASS_SOURCE_AND_ACTUAL_BINDING",
+    "previous_reviewed_files_unchanged": 53,
+    "diagnostic_python37_grammar_files": 12,
+    "body_fragment_wrapped": true,
+    "local_validation_python": "3.12.6",
+    "intake_files_verified": 73,
+    "intake_bytes_verified": 45176490,
+    "all_four_child_exits_zero": true,
+    "paired_controller_exit_zero": true,
+    "spec_reconstructed_in_memory_matches": true,
+    "arm_spec_differences": [
+      "root",
+      "extra_geometry_weight"
+    ],
+    "remote_actions": 0,
+    "weights_loaded": 0,
+    "old_metric_check_rerun": false,
+    "prior_metric_validation_reused": {
+      "status": "PASS_PRIOR_DATA_ONLY",
+      "rows": 64,
+      "candidates": 16384,
+      "qualified_candidates": 1090,
+      "maximum_CPU_GPU_iou_difference": 2.3695575378512856e-06,
+      "threshold_changes": {
+        "0.25": 0,
+        "0.5": 0
+      },
+      "integer_mask_count_dtypes": true
+    }
+  },
+  "prior_reviews": {
+    "prepared_json_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW.json",
+    "prepared_json_sha256": "c8d390cd80a34d4a5e244524a857dc9ef3cd25395b447f865404ad350452e037",
+    "prepared_md_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW.md",
+    "prepared_md_sha256": "27aec7ab469fb04aa213f777ba395ba87494c544f52ff03031afa5f5be6eed31",
+    "prepared_history_preserved": true,
+    "resolved_findings": [
+      {
+        "id": "B1",
+        "status": "RESOLVED",
+        "details": "controller.py:39 now requires model_state_restored, the exact field produced after complete model-state restoration. prepare_probe.py:26-27 applies the same change when regenerating the controller. Byte reversal of this one field and the two generator lines reproduces the initial source hashes."
+      },
+      {
+        "id": "B2",
+        "status": "RESOLVED",
+        "details": "analyze_probe.py:20 now requires complete/probe.exit, matching controller.py:32 and collection's preserved basename. Byte reversal of this one filename reproduces the initial source hash."
+      }
+    ]
+  },
+  "implementation_edited": false,
+  "packages_installed": 0,
+  "weights_created": 0,
+  "weights_deleted": 0,
+  "next_required_action": "Use the existing authorized launcher only after its live resource/lock checks pass. Then complete the actual diagnostic, closed collection, CPU paired analysis and later result audit before nonbest-head retention. Do not treat this SOURCE_ONLY PASS as a GPU result or an integrity verdict."
+}

@@ -1,0 +1,3120 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "deterministic_integrity_verdict": "PASS",
+  "integrity_status": "warn",
+  "reason_code": "bounded_training_diagnostic_and_unattested_reviewer",
+  "summary": "No blocking integrity defect found. Every saved summary scalar and current closed-process/input binding check passes. Retain the explicit training-GT, DFL-scalar, cross-forward and same-family provenance limitations.",
+  "generated_at_utc": "2026-10-05 06:42:30 UTC",
+  "execution_scope": "TERMINAL_FIXED_COHORT_DIAGNOSTIC_ONLY",
+  "blocking_findings": [],
+  "findings": [
+    {
+      "id": "W1",
+      "severity": "WARN",
+      "blocking": false,
+      "kind": "BOUNDED_TRAINING_GT_SCOPE",
+      "message": "Only 64 seen augmented fit rows / 60 scenes / root-only GT / one seed; no formal accuracy, unseen-scene, multi-GT protection or physical identity claim is supported.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\rows.jsonl",
+          "line": 1,
+          "end_line": 64,
+          "details": "All 64 rows inspected."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analysis\\SUMMARY.json",
+          "line": 632,
+          "end_line": 635,
+          "details": "Artifact already states its limited scope."
+        }
+      ]
+    },
+    {
+      "id": "W2",
+      "severity": "WARN",
+      "blocking": false,
+      "kind": "GPU_DFL_SCALAR_ONLY",
+      "message": "Saved DFL means are reproduced, but raw logits are absent. DFL is not independently CPU-recomputed; lower DFL alone does not establish localization improvement.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 331,
+          "end_line": 340,
+          "details": "GPU DFL calculation and saved scalar."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+          "line": 74,
+          "details": "Mean of saved GPU scalar only."
+        }
+      ]
+    },
+    {
+      "id": "W3",
+      "severity": "WARN",
+      "blocking": false,
+      "kind": "OBSERVED_CROSS_FORWARD_DRIFT",
+      "message": "Versus prior branch: 76,261 parent box components differ (max 0.0013647079467773438 m), 4,081 parent IoUs differ (max 0.00021922588348388672), 16,038 BBS entries differ (max 0.0005064010620117188), 6 fused intersections and 17 fused unions differ. Row/GT/point-hash identity, matching, selected candidates and all 1,090 eligibility memberships agree.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\receipt.json",
+          "line": 13,
+          "details": "Cross-CUDA full-forward equality explicitly excluded."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_00.npz",
+          "details": "Binary arrays directly compared to corresponding prior branch NPZ; no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_01.npz",
+          "details": "Binary arrays directly compared to corresponding prior branch NPZ; no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_02.npz",
+          "details": "Binary arrays directly compared to corresponding prior branch NPZ; no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_03.npz",
+          "details": "Binary arrays directly compared to corresponding prior branch NPZ; no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_04.npz",
+          "details": "Binary arrays directly compared to corresponding prior branch NPZ; no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_05.npz",
+          "details": "Binary arrays directly compared to corresponding prior branch NPZ; no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_06.npz",
+          "details": "Binary arrays directly compared to corresponding prior branch NPZ; no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_07.npz",
+          "details": "Binary arrays directly compared to corresponding prior branch NPZ; no text line number."
+        }
+      ]
+    },
+    {
+      "id": "W4",
+      "severity": "WARN",
+      "blocking": false,
+      "kind": "REVIEW_BACKEND_UNATTESTED",
+      "message": "Requested gpt-6-astra / max is not backend-attested. Verdict is fresh same-family/provisional; deterministic file/array checks are accepted only within their stated scope.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md",
+          "line": 6,
+          "end_line": 24,
+          "details": "Requested route and honest same-family/provisional attribution."
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "A": {
+      "name": "Ground Truth Provenance",
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": [
+        "The imported dataset source hash exactly matches complete/imports.json. ScanRefer object IDs and ScanNet aggregation/segmentation annotations supply object membership. The hash-matched visual_data_handlers source computes boxes from current augmented object points. Supervised GT boxes then receive additional six-dimensional native [0.95,1.05) multiplicative label noise at joint_det_dataset.py:1112-1113; this is separate from detected-object input corruption.",
+        "The diagnostic reads truth from batch center_label/size_gts and gt_masks. Predictions are compared against those labels; labels are not produced from either trained geometry head.",
+        "The parent eligibility mask uses GT only offline after the native forward. prepare() passes points/text/superpoints/detected boxes to the model, with butd_gt=False and butd_cls=False; no new inference GT gate is introduced.",
+        "All 64 current row/scan/point-hash/root-box records exactly match both prior diagnostic records; every saved root_box equals its row record, and all native valid GT slots are [0].",
+        "Point/Mask labels remain attached to the same transformed/noisy point membership, but the subsequent supervised bbox jitter has no accompanying point/Mask transform. Distinct scene-GT all_bboxes jitter and detected-object input transforms/corruption are documented separately in native_GT_and_input_augmentation.",
+        "The additional box-label-noise qualification applies to the 64-row augmented fit diagnostic (and fit-training path), not to the completed pair's 9508 formal or 6887 initial/terminal module-holdout evaluations. This is an executed-source/protocol trace, not a fresh recount or acceptance of formal metrics."
+      ],
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 584,
+          "end_line": 648,
+          "details": "ScanRefer annotation loading and object_id provenance."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1086,
+          "end_line": 1119,
+          "details": "Dataset object masks and boxes; native jitter at line 1112."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1387,
+          "end_line": 1396,
+          "details": "GT fields returned from dataset."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 156,
+          "end_line": 193,
+          "details": "Dataset flags and input construction separate labels from model inputs."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 291,
+          "end_line": 307,
+          "details": "Current point/scan/GT checks and real GT mask source."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\imports.json",
+          "line": 9,
+          "end_line": 14,
+          "details": "Recorded import digests checked against actual local source bytes."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\rows.jsonl",
+          "line": 1,
+          "end_line": 64,
+          "details": "All 64 lines read and compared to prior raw row files."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1105,
+          "end_line": 1119,
+          "details": "GT box construction and explicit supervised jitter."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1325,
+          "end_line": 1329,
+          "details": "Point augmentation executes before supervised target construction."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1387,
+          "end_line": 1392,
+          "details": "Noisy gt_bboxes become center_label/size_gts."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 294,
+          "end_line": 297,
+          "details": "Actual diagnostic root_box reads center_label/size_gts slot 0."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1273,
+          "end_line": 1275,
+          "details": "Reset point coordinates, retaining point/superpoint row identities."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 823,
+          "end_line": 861,
+          "details": "Exact point augmentation sequence."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 896,
+          "end_line": 919,
+          "details": "Writes augmented points back to scan.pc."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1100,
+          "end_line": 1103,
+          "details": "Mask GT is annotation membership, not predicted Mask."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pv_ground_source_20260905\\src\\visual_data_handlers.py",
+          "line": 195,
+          "end_line": 197,
+          "details": "Object point coordinates read current scan.pc."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pv_ground_source_20260905\\src\\visual_data_handlers.py",
+          "line": 225,
+          "end_line": 227,
+          "details": "Object bounding box computed from current object points."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pv_ground_source_20260905\\src\\visual_data_handlers.py",
+          "line": 245,
+          "end_line": 259,
+          "details": "Axis-aligned min/max bbox calculation."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1140,
+          "end_line": 1157,
+          "details": "Scene GT box construction and its separate jitter."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1360,
+          "end_line": 1372,
+          "details": "Only disabled butd_gt/butd_cls branches replace detected inputs by GT boxes."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1426,
+          "end_line": 1439,
+          "details": "Separate all_bboxes and all_detected_boxes returned."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 157,
+          "end_line": 160,
+          "details": "Actual flags disable perfect-GT object inputs."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1203,
+          "end_line": 1226,
+          "details": "Loads external GroupFree predictions."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1227,
+          "end_line": 1239,
+          "details": "Shared coordinate transform on detector-box corners."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1241,
+          "end_line": 1253,
+          "details": "Separate detected-input corruption when augment_det=True."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1438,
+          "end_line": 1441,
+          "details": "Detected object fields returned."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 188,
+          "end_line": 193,
+          "details": "Only detected boxes/classes are wired into the object-input interface."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 238,
+          "end_line": 239,
+          "details": "Both augment and augment_det are enabled."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+          "line": 175,
+          "end_line": 194,
+          "details": "Formal dataset explicitly uses val and 9508 rows."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+          "line": 273,
+          "end_line": 287,
+          "details": "evaluate disables both flags before making a fresh DataLoader and uses eval preparation."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+          "line": 417,
+          "end_line": 419,
+          "details": "Actual formal branch calls evaluate('formal')."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal.log",
+          "line": 25,
+          "end_line": 25,
+          "details": "Actual control formal completion: pass, 9508 rows."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal.log",
+          "line": 25,
+          "end_line": 25,
+          "details": "Actual query-supported formal completion: pass, 9508 rows."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+          "line": 195,
+          "end_line": 204,
+          "details": "FitDataset uses train split, with disjoint module holdout."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+          "line": 238,
+          "end_line": 240,
+          "details": "A new loader is created after the flags are set."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+          "line": 273,
+          "end_line": 287,
+          "details": "Both flags are disabled before holdout sample fetching."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+          "line": 453,
+          "end_line": 455,
+          "details": "Initial evaluation, then explicit flag re-enable for fit training."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+          "line": 491,
+          "end_line": 495,
+          "details": "Terminal evaluation uses the same disabling evaluate path."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.log",
+          "line": 20,
+          "end_line": 20,
+          "details": "Actual initial 6887-row completion."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.log",
+          "line": 93,
+          "end_line": 93,
+          "details": "Actual terminal 6887-row completion."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.log",
+          "line": 20,
+          "end_line": 20,
+          "details": "Actual initial 6887-row completion."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.log",
+          "line": 93,
+          "end_line": 93,
+          "details": "Actual terminal 6887-row completion."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\controller.py",
+          "line": 36,
+          "end_line": 48,
+          "details": "Both arms run this actual source with train/formal modes and preserve each child exit."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_status.json",
+          "line": 9,
+          "end_line": 23,
+          "details": "All four mode invocations completed and controller closed."
+        }
+      ]
+    },
+    "B": {
+      "name": "Score Normalization and Denominators",
+      "status": "PASS",
+      "details": [
+        "Box IoU uses physical 3D intersection divided by prediction-volume + GT-volume - intersection. No division by model maxima, minima or mean output is used to report quality.",
+        "Mask qualification uses int64 intersections and unions: 2*query_intersection>query_union AND 2*fused_intersection>fused_union; saved parent GPU Box IoU<=0.5 and matched_slot<0 fix eligibility.",
+        "All group metrics retain their actual candidate denominators; selected_query has exactly one native BBS argmax per row. BBS softmax is native ranking computation, not a quality normalization.",
+        "Strict >0.25/>0.5 comparisons are used consistently. Repairs require before<=threshold and after>threshold; damages require the opposite."
+      ],
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+          "line": 6,
+          "end_line": 16,
+          "details": "Float64 physical IoU denominator."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 312,
+          "end_line": 319,
+          "details": "Actual point-count Mask intersections/unions."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+          "line": 37,
+          "end_line": 54,
+          "details": "Fixed parent cohort and seven true-denominator groups."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+          "line": 24,
+          "end_line": 34,
+          "details": "Exact strict threshold repair/damage definition."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py",
+          "line": 4,
+          "end_line": 9,
+          "details": "Native semantic ranking score definition."
+        }
+      ]
+    },
+    "C": {
+      "name": "Result Existence and Exact Recount",
+      "status": "PASS",
+      "details": [
+        "All 24 current intake entries exist with exact sizes/hashes (2,632,409 bytes); there are no unmanifested files except INTAKE.json itself. All eight NPZ archives were opened with allow_pickle=False.",
+        "Fresh, separately written NumPy code recalculated IoU, maximum face errors, maximum coarse-to-final face moves, integer-mask eligibility, matching exclusion, inside/outside classification, all 21 arm/group summaries and all 21 pair/group comparisons. All 435 checked scalar leaves equal SUMMARY exactly.",
+        "Counts are 16,384 candidates, 1,090 qualified across 52 rows, 889 inside, 201 outside and 482 outside faces; 2,654 parent-box-good, 64 selected and 10 selected-qualified.",
+        "CPU/GPU threshold disagreements at 0.25/0.5 and CPU-parent eligibility changes are all zero. The largest IoU absolute difference is 2.342442458003191e-6; raw per-arm maxima are recorded.",
+        "Current spec/runner/rows match receipt SHA values; copied current sources/spec/review/launch are exact. Both exit files are 0, controller.log equals status.json and wait.json.status, and eight batch log events plus final receipt exactly match saved files.",
+        "METRIC_PRIMITIVE_CHECK was independently reconstructed from the prior eight branch arrays; it remains a prior-data check, not evidence of the new diagnostic by itself."
+      ],
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\INTAKE.json",
+          "line": 3,
+          "end_line": 128,
+          "details": "24 immutable collected file identities and sizes."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analysis\\SUMMARY.json",
+          "line": 2,
+          "end_line": 9,
+          "details": "Primary fixed cohort counts."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analysis\\SUMMARY.json",
+          "line": 10,
+          "end_line": 244,
+          "details": "All arm summaries."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analysis\\SUMMARY.json",
+          "line": 246,
+          "end_line": 630,
+          "details": "All paired repair/damage groups."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\receipt.json",
+          "line": 7,
+          "end_line": 30,
+          "details": "Closed current diagnostic counts and source identities."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\probe.log",
+          "line": 7,
+          "end_line": 15,
+          "details": "Eight actual batches followed by completion."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\status.json",
+          "line": 2,
+          "end_line": 14,
+          "details": "Actual terminal complete state and protected-parent check."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\controller.exit",
+          "line": 1,
+          "details": "Actual controller exit 0."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\probe.exit",
+          "line": 1,
+          "details": "Actual probe exit 0."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analyze_probe.py",
+          "line": 20,
+          "end_line": 49,
+          "details": "Correct actual exit basenames, raw loading and summary invocation."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\METRIC_PRIMITIVE_CHECK.json",
+          "line": 2,
+          "end_line": 17,
+          "details": "Explicit prior-data-only primitive check."
+        }
+      ],
+      "raw_binary_evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_00.npz",
+          "scope": "Every key loaded; per-candidate values used in recount. Binary archive has no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_01.npz",
+          "scope": "Every key loaded; per-candidate values used in recount. Binary archive has no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_02.npz",
+          "scope": "Every key loaded; per-candidate values used in recount. Binary archive has no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_03.npz",
+          "scope": "Every key loaded; per-candidate values used in recount. Binary archive has no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_04.npz",
+          "scope": "Every key loaded; per-candidate values used in recount. Binary archive has no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_05.npz",
+          "scope": "Every key loaded; per-candidate values used in recount. Binary archive has no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_06.npz",
+          "scope": "Every key loaded; per-candidate values used in recount. Binary archive has no text line number."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_07.npz",
+          "scope": "Every key loaded; per-candidate values used in recount. Binary archive has no text line number."
+        }
+      ]
+    },
+    "D": {
+      "name": "Called Metrics, Execution and Restore Proofs",
+      "status": "PASS",
+      "details": [
+        "Each batch loads parent head then performs one full native forward; the geometry pre-hook captures exactly one argument tuple, final native semantic head is counted once, and matcher hook observes seven layers. Native losses order proposal_, last_, then earlier heads, so matches[1] is the final parent assignment.",
+        "The same captured Query/raw-points/coarse-boxes/end_points inputs are used for parent/control/query_supported geometry replays. Only the complete 10-tensor, 456,102-parameter head state changes. Parent replay must equal its native parent boxes; BBS and all Mask/alpha tensors are asserted identical after every replay.",
+        "Actual head SHA and spec identities match the closed-pair training/strict-restore receipts. Both terminal payloads must satisfy step=3723, total_geometry_fit_updates=7446, head_only, expected extra weight 0/1, exact state keys/shapes/dtypes and the protected geometry parent SHA.",
+        "Receipt records 8 full forwards, 8 final native semantic head calls and 24 geometry-head replays. No optimizer is created, no backward/update/save is called, no parameter gradients exist, and the restored whole model state equals its original CPU clone. Controller rehashes protected parent files after completion and checks that no probe weight file exists.",
+        "load.json fresh_readback_optimizer_required is inherited factory metadata, not a call to construct an optimizer; the diagnostic calls get_criterion, freezes every parameter and uses no_grad.",
+        "Box metrics and DFL are on the executed per-candidate save path; cohort_metrics.summarize calls cpu_iou/faces/paired and analyze_probe calls summarize. DFL interpolation uses GPU logits and the same clipped nonuniform knots as the inspected boundary loss, but only its saved scalar reductions are validated here."
+      ],
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 113,
+          "end_line": 134,
+          "details": "Build actual protected parent/fresh zero-output readback, construct criterion and freeze parameters."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 211,
+          "end_line": 236,
+          "details": "Actual complete head identity and strict tensor loading."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 246,
+          "end_line": 284,
+          "details": "One full forward followed by three cached head replays and equality assertions."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\models\\losses.py",
+          "line": 849,
+          "end_line": 917,
+          "details": "Native criterion prefix order and actual matching call path."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+          "line": 19,
+          "end_line": 68,
+          "details": "Runtime hook-count/order proof for one native semantic head call."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+          "line": 77,
+          "end_line": 111,
+          "details": "Geometry head reads Query/points/Mask context and writes boundary evidence only."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 331,
+          "end_line": 355,
+          "details": "Executed per-candidate IoU/errors/moves/DFL save path."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+          "line": 33,
+          "end_line": 65,
+          "details": "Training face targets and DFL interpolation definition."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 362,
+          "end_line": 377,
+          "details": "Restore parent and check complete model state/gradients before receipt."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\controller.py",
+          "line": 31,
+          "end_line": 45,
+          "details": "Child wait, actual probe.exit, no weight file and protected parent hashes."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\launch_probe_authorized.py",
+          "line": 52,
+          "end_line": 60,
+          "details": "Launch wrapper emits controller.exit for the actual controller command."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+          "line": 54,
+          "end_line": 77,
+          "details": "Called metric functions and scalar DFL reduction."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analyze_probe.py",
+          "line": 41,
+          "end_line": 49,
+          "details": "Actual summarize invocation and summary write."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\receipt.json",
+          "line": 26,
+          "end_line": 39,
+          "details": "Control spec and terminal identities; completed 3723 updates."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\receipt.json",
+          "line": 26,
+          "end_line": 39,
+          "details": "Query-supported spec and terminal identities; completed 3723 updates."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal_restore.json",
+          "line": 7,
+          "end_line": 9,
+          "details": "Strict restoration binds the control terminal SHA."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal_restore.json",
+          "line": 7,
+          "end_line": 9,
+          "details": "Strict restoration binds the query-supported terminal SHA."
+        }
+      ]
+    },
+    "E": {
+      "name": "Scope Assessment",
+      "status": "WARN",
+      "details": [
+        "The actual scope is one fixed augmented fit panel: 64 rows, 60 scenes, one seed, three head states and all 256 candidates. Candidate counts are not independent sample counts.",
+        "All 64 rows have only GT slot 0; this cannot demonstrate protection of additional matched GT objects, physical-instance identity, or unseen-scene performance.",
+        "The plan, current receipt and summary explicitly limit the claim. No scope inflation was found in those artifacts. WARN preserves these material bounds and the saved-GPU-only DFL limitation; it is not a source-correctness blocker.",
+        "The original plan title and SOURCE_REVIEW describe preparation/source-only status. They are historical sealed inputs; current complete status/receipts establish actual execution. SUMMARY's audit-pending marker was left unchanged as requested.",
+        "Separate complete forwards show actual parent-box/BBS/fused-count drift versus the prior branch probe. Same-batch replay exactness must not be generalized to cross-forward bitwise identity.",
+        "GT provenance is real dataset annotation, with native training perturbations. Box IoU, face error, DFL targets and fixed Box<=0.5 eligibility here refer to the additionally noisy supervised root box, not the exact unjittered physical object envelope. Mask support refers to annotation point membership on the augmented cloud; it is not co-transformed by the later bbox-label noise. The audit neither removes this native protocol nor attributes any measured repair/damage or box/Mask disagreement to it."
+      ],
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\EXPERIMENT_PLAN.md",
+          "line": 3,
+          "end_line": 15,
+          "details": "Predetermined fixed-cohort purpose."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\spec.json",
+          "line": 38,
+          "end_line": 58,
+          "details": "One seed and fixed probe row/batch contract."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\receipt.json",
+          "line": 13,
+          "details": "Explicit training64/identity/cross-CUDA limitation."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\rows.jsonl",
+          "line": 1,
+          "end_line": 64,
+          "details": "64 rows, root-only valid slots and prior identity comparisons."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analysis\\SUMMARY.json",
+          "line": 632,
+          "end_line": 639,
+          "details": "No accuracy claim, explicit limitations and unchanged pending marker."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\receipt.json",
+          "line": 14,
+          "details": "Prior branch explicitly limits support proxy and cross-forward identity."
+        }
+      ]
+    },
+    "F": {
+      "name": "Evaluation Type Classification",
+      "status": "PASS",
+      "classification": "real_gt",
+      "subtype": "augmented_training_GT_fixed_parent_cohort_diagnostic",
+      "details": [
+        "Reference labels originate from real dataset annotations. The native training path augments the point cloud and separately perturbs supervised box center/size labels; Mask GT keeps object point membership. These references are not generated from model predictions.",
+        "Qualification is a model-output-conditioned, training-GT support proxy; it is explicitly offline and fixed to the parent. That proxy designation concerns interpretation of candidate support, not fabricated GT.",
+        "Reported DFL is a GPU loss diagnostic, and reported IoU/hit/repair counts are within-panel quantities. None is a newly accepted formal validation accuracy or proof of causal physical-instance identity."
+      ],
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1086,
+          "end_line": 1119,
+          "details": "Dataset GT construction and training-only jitter."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 294,
+          "end_line": 341,
+          "details": "Labels from dataset; fixed parent cohort definition."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+          "line": 78,
+          "end_line": 83,
+          "details": "Bounded diagnostic metadata and DFL limitation."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\receipt.json",
+          "line": 2,
+          "details": "accuracy_result=false."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analysis\\SUMMARY.json",
+          "line": 632,
+          "end_line": 635,
+          "details": "Explicit diagnostic classification."
+        }
+      ]
+    }
+  },
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "backend_attested": false,
+  "actual_model": "unattested",
+  "actual_reasoning_effort": "unattested",
+  "actual_backend": "unattested",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_context": "fresh",
+  "agent_task": "/root/pvg_query_cohort_terminal_integrity",
+  "reviewer_provenance": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "backend_attested": false,
+    "actual_model": "unattested",
+    "actual_reasoning_effort": "unattested",
+    "actual_backend": "unattested",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional"
+  },
+  "evaluation_type": "real_gt",
+  "evaluation_subtype": "augmented_training_GT_fixed_parent_cohort_diagnostic",
+  "verification": {
+    "command": "uv run --offline --with numpy python -B -X utf8 -",
+    "metric_implementation": "Separately written audit NumPy formulas; cohort_metrics.py was not imported.",
+    "recount": {
+      "numeric_leaves_verified": 435,
+      "max_summary_abs_difference": 0,
+      "per_candidate_CPU_vs_GPU_maximum": {
+        "parent": {
+          "max_iou_abs": 0.000002180517747252253,
+          "max_face_error_abs": 8.344650268554688e-7,
+          "max_face_move_abs": 3.5762786865234375e-7
+        },
+        "control": {
+          "max_iou_abs": 0.000002342442458003191,
+          "max_face_error_abs": 8.344650268554688e-7,
+          "max_face_move_abs": 4.76837158203125e-7
+        },
+        "query_supported": {
+          "max_iou_abs": 0.000001899503906055422,
+          "max_face_error_abs": 8.344650268554688e-7,
+          "max_face_move_abs": 4.76837158203125e-7
+        }
+      },
+      "rows": 64,
+      "unique_scan_ids": 60,
+      "unique_physical_scene_prefixes": 60,
+      "groups": {
+        "all_candidates": 16384,
+        "parent_qualified": 1090,
+        "qualified_inside": 889,
+        "qualified_outside": 201,
+        "parent_box_good": 2654,
+        "selected_query": 64,
+        "selected_qualified": 10
+      },
+      "qualified_rows": 52,
+      "outside_faces": 482,
+      "face_target_CPU64_max_abs_difference": 2.4101468697190285,
+      "outside_disagreements": 0,
+      "CPU_parent_qualification_changes": 0,
+      "prior_branch_array_differences": {
+        "row_id": {
+          "different_elements": 0,
+          "max_abs_difference": 0
+        },
+        "root_box": {
+          "different_elements": 0,
+          "max_abs_difference": 0
+        },
+        "parent_boxes": {
+          "different_elements": 76261,
+          "max_abs_difference": 0.0013647079467773438
+        },
+        "parent_iou": {
+          "different_elements": 4081,
+          "max_abs_difference": 0.00021922588348388672
+        },
+        "bbs": {
+          "different_elements": 16038,
+          "max_abs_difference": 0.0005064010620117188
+        },
+        "query_intersection": {
+          "different_elements": 0,
+          "max_abs_difference": 0
+        },
+        "query_union": {
+          "different_elements": 0,
+          "max_abs_difference": 0
+        },
+        "fused_intersection": {
+          "different_elements": 6,
+          "max_abs_difference": 95
+        },
+        "fused_union": {
+          "different_elements": 17,
+          "max_abs_difference": 155
+        },
+        "matched_slot": {
+          "different_elements": 0,
+          "max_abs_difference": 0
+        }
+      },
+      "prior_branch_qualification_changes": 0,
+      "intake_files": 24,
+      "intake_bytes": 2632409,
+      "row_identity_matching": true,
+      "matched_slot_reconstruction_exact": true,
+      "all_summary_metrics_match": true,
+      "primitive_recheck": {
+        "status": "PASS_PRIOR_CLOSED_DATA_METRIC_PRIMITIVE_ONLY",
+        "time_cst": "2026-10-05T12:22:56.893929+08:00",
+        "rows": 64,
+        "candidates": 16384,
+        "qualified_candidates": 1090,
+        "maximum_CPU_GPU_iou_difference": 0.0000023695575378512856,
+        "threshold_changes": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "receipt_sha256": "5441778fd4e4021c68215a700bc950c65a2acc714caf28bb10c464d7267c7064",
+        "metric_source_sha256": "608a717c2257844172705ba774f9e61bf17d1faa9748b8a773b5cd6ba750a90a",
+        "new_cohort_executed": false,
+        "accuracy_result": false,
+        "limitation": "Existing closed branch diagnostic only; does not verify future paired-head GPU execution."
+      }
+    },
+    "bindings": {
+      "all_current_SOURCE_REVIEW_hashes_match": 131,
+      "helpers_bound": 17,
+      "imported_sources_bound": [
+        "src.joint_det_dataset",
+        "models.losses",
+        "main_utils",
+        "prepare_data",
+        "models.pv_ground"
+      ],
+      "closed_pair_bound": {
+        "control": {
+          "terminal_sha256": "fcce28c679193e0ede4b1127080bc53376cf2f7b33fbbda94fcaf5f8d66a1ea8",
+          "spec_sha256": "282b7f117c3c242970416608c05e8f9b7684f1bf3b0ccfc0159990771505a9a1",
+          "training_steps": 3723,
+          "fit_rows": 29778,
+          "formal_rows": 9508
+        },
+        "query_supported": {
+          "terminal_sha256": "0b37986d4448b125405d573272282ef37396a781ba970789dfc9b080445cec51",
+          "spec_sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+          "training_steps": 3723,
+          "fit_rows": 29778,
+          "formal_rows": 9508
+        }
+      },
+      "arm_spec_differences": [
+        "root",
+        "extra_geometry_weight"
+      ],
+      "dataset_provenance": {
+        "manifest_model_source": "/root/autodl-tmp/mcln_scanrefer_detection_aligned_source_20260908_v1/model_source",
+        "manifest_data_root": "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+        "source_manifest_sha256": "75cd5f87a8e715c15b458ed1964c2e6f1d35046bb6beffca1b3388d5903bbe36",
+        "dataset_source_sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+      },
+      "pair_intake_keys": [
+        "time_cst",
+        "files",
+        "remote_terminal",
+        "downloaded_weights",
+        "created_local_weight_archive",
+        "inference_or_optimizer_replayed"
+      ],
+      "pair_summary_scope": "input identity only; no formal metric acceptance"
+    },
+    "additional": {
+      "pair_intake_verified_files": 73,
+      "pair_intake_verified_bytes": 45176490,
+      "fit_membership_verified": 64,
+      "fit_and_holdout_disjoint": true,
+      "prior_selected_candidate_changes": 0,
+      "face_target_CPU64_max_abs_on_qualified": 0.5767658720724285,
+      "face_target_CPU64_max_abs_on_inside_faces": 0.000009612381891344057,
+      "face_target_CPU64_max_scaled_difference": 0.0003038923619864223,
+      "face_target_abs_at_max_error": 17832527.58985313,
+      "coarse_size_floor_components": 10653,
+      "minimum_iou_distance_to_thresholds": {
+        "parent": {
+          "0.25": 0.00007712841033935547,
+          "0.5": 0.0001666545867919922
+        },
+        "control": {
+          "0.25": 0.00026682019233703613,
+          "0.5": 0.00010764598846435547
+        },
+        "query_supported": {
+          "0.25": 0.0004007965326309204,
+          "0.5": 0.00007149577140808105
+        }
+      }
+    },
+    "tolerances": {
+      "summary_float_absolute": 1e-12,
+      "observed_max_summary_absolute": 0,
+      "per_candidate_GPU_comparison_absolute": 0.00001,
+      "counts_and_groups": "exact",
+      "existing_file_sha256": "exact"
+    },
+    "face_target_note": "CPU64 target recomputation has rounding/cancellation differences from saved GPU32 targets, including max absolute 2.4101468697190285 at target magnitude 17,832,527.59 on a size-floor component. All 98,304 face inside/outside classifications are exact; maximum inside-face difference is 9.612381891344057e-6. Face targets themselves are not claimed bitwise identical.",
+    "DFL_recomputed_from_logits": false,
+    "DFL_saved_scalar_reductions_verified": true,
+    "runtime_proof_basis": "Executed no_grad source, hook/equality assertions, collected batch and completion logs, receipt/exit/status/hash closure; no new GPU runtime performed."
+  },
+  "independently_recomputed_summary": {
+    "rows": 64,
+    "candidates_per_row": 256,
+    "parent_qualified_candidates": 1090,
+    "parent_qualified_rows": 52,
+    "qualified_outside_candidates": 201,
+    "qualified_outside_faces": 482,
+    "CPU_parent_qualification_changes": 0,
+    "qualification_uses_saved_parent_GPU_threshold": true,
+    "arms": {
+      "parent": {
+        "threshold_changes_vs_saved_GPU": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "groups": {
+          "all_candidates": {
+            "candidates": 16384,
+            "mean_iou": 0.13744239201910072,
+            "median_iou": 0,
+            "hits25": 3414,
+            "hits50": 2654,
+            "median_max_face_error_m": 1.9473460987210274,
+            "median_max_face_move_m": 0.004345975816249847,
+            "GPU_DFL_mean": 4.216592788696289
+          },
+          "parent_qualified": {
+            "candidates": 1090,
+            "mean_iou": 0.2736403096341624,
+            "median_iou": 0.30257695002699025,
+            "hits25": 660,
+            "hits50": 0,
+            "median_max_face_error_m": 0.16252897679805756,
+            "median_max_face_move_m": 0.005523934960365295,
+            "GPU_DFL_mean": 4.0189714431762695
+          },
+          "qualified_inside": {
+            "candidates": 889,
+            "mean_iou": 0.3269964091820165,
+            "median_iou": 0.34611603198503893,
+            "hits25": 644,
+            "hits50": 0,
+            "median_max_face_error_m": 0.14954420924186707,
+            "median_max_face_move_m": 0.005512893199920654,
+            "GPU_DFL_mean": 4.024070739746094
+          },
+          "qualified_outside": {
+            "candidates": 201,
+            "mean_iou": 0.03765238675833048,
+            "median_iou": 0,
+            "hits25": 16,
+            "hits50": 0,
+            "median_max_face_error_m": 0.2202366292476654,
+            "median_max_face_move_m": 0.005541771650314331,
+            "GPU_DFL_mean": 3.996419668197632
+          },
+          "parent_box_good": {
+            "candidates": 2654,
+            "mean_iou": 0.7090497216744784,
+            "median_iou": 0.7237078603215104,
+            "hits25": 2654,
+            "hits50": 2654,
+            "median_max_face_error_m": 0.07698805630207062,
+            "median_max_face_move_m": 0.005833446979522705,
+            "GPU_DFL_mean": 2.7691633701324463
+          },
+          "selected_query": {
+            "candidates": 64,
+            "mean_iou": 0.54968252325557,
+            "median_iou": 0.6670223724834274,
+            "hits25": 53,
+            "hits50": 42,
+            "median_max_face_error_m": 0.09765357710421085,
+            "median_max_face_move_m": 0.005296871066093445,
+            "GPU_DFL_mean": 3.3304214477539062
+          },
+          "selected_qualified": {
+            "candidates": 10,
+            "mean_iou": 0.3129861952780527,
+            "median_iou": 0.3593520994568402,
+            "hits25": 8,
+            "hits50": 0,
+            "median_max_face_error_m": 0.1124240905046463,
+            "median_max_face_move_m": 0.006320148706436157,
+            "GPU_DFL_mean": 3.9054932594299316
+          }
+        }
+      },
+      "control": {
+        "threshold_changes_vs_saved_GPU": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "groups": {
+          "all_candidates": {
+            "candidates": 16384,
+            "mean_iou": 0.13721497861551046,
+            "median_iou": 0,
+            "hits25": 3409,
+            "hits50": 2647,
+            "median_max_face_error_m": 1.9477129872558123,
+            "median_max_face_move_m": 0.004994159564375877,
+            "GPU_DFL_mean": 4.579085826873779
+          },
+          "parent_qualified": {
+            "candidates": 1090,
+            "mean_iou": 0.27183079870865834,
+            "median_iou": 0.30156346839076664,
+            "hits25": 655,
+            "hits50": 3,
+            "median_max_face_error_m": 0.1632599700242281,
+            "median_max_face_move_m": 0.007535025477409363,
+            "GPU_DFL_mean": 4.166342735290527
+          },
+          "qualified_inside": {
+            "candidates": 889,
+            "mean_iou": 0.32488711510360085,
+            "median_iou": 0.34483245950152613,
+            "hits25": 639,
+            "hits50": 3,
+            "median_max_face_error_m": 0.1509459689259529,
+            "median_max_face_move_m": 0.007597532123327255,
+            "GPU_DFL_mean": 4.138535499572754
+          },
+          "qualified_outside": {
+            "candidates": 201,
+            "mean_iou": 0.03716878241460896,
+            "median_iou": 0,
+            "hits25": 16,
+            "hits50": 0,
+            "median_max_face_error_m": 0.21952444314956665,
+            "median_max_face_move_m": 0.007508276961743832,
+            "GPU_DFL_mean": 4.28933048248291
+          },
+          "parent_box_good": {
+            "candidates": 2654,
+            "mean_iou": 0.7084667046521265,
+            "median_iou": 0.7219527901316416,
+            "hits25": 2654,
+            "hits50": 2644,
+            "median_max_face_error_m": 0.0774458795785904,
+            "median_max_face_move_m": 0.007226228713989258,
+            "GPU_DFL_mean": 2.764709949493408
+          },
+          "selected_query": {
+            "candidates": 64,
+            "mean_iou": 0.5492210796696917,
+            "median_iou": 0.6628819426473539,
+            "hits25": 53,
+            "hits50": 42,
+            "median_max_face_error_m": 0.09255412966012955,
+            "median_max_face_move_m": 0.005754508078098297,
+            "GPU_DFL_mean": 3.4426345825195312
+          },
+          "selected_qualified": {
+            "candidates": 10,
+            "mean_iou": 0.30945705169611293,
+            "median_iou": 0.3570515371313159,
+            "hits25": 8,
+            "hits50": 0,
+            "median_max_face_error_m": 0.11205333285033703,
+            "median_max_face_move_m": 0.008305862545967102,
+            "GPU_DFL_mean": 4.059960842132568
+          }
+        }
+      },
+      "query_supported": {
+        "threshold_changes_vs_saved_GPU": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "groups": {
+          "all_candidates": {
+            "candidates": 16384,
+            "mean_iou": 0.137046304971702,
+            "median_iou": 0,
+            "hits25": 3407,
+            "hits50": 2641,
+            "median_max_face_error_m": 1.9446564341871238,
+            "median_max_face_move_m": 0.0065491944551467896,
+            "GPU_DFL_mean": 3.40175724029541
+          },
+          "parent_qualified": {
+            "candidates": 1090,
+            "mean_iou": 0.2724319541905488,
+            "median_iou": 0.30171008797031323,
+            "hits25": 655,
+            "hits50": 5,
+            "median_max_face_error_m": 0.16397184133529663,
+            "median_max_face_move_m": 0.011484041810035706,
+            "GPU_DFL_mean": 3.37739896774292
+          },
+          "qualified_inside": {
+            "candidates": 889,
+            "mean_iou": 0.3255320378914348,
+            "median_iou": 0.3452751065877295,
+            "hits25": 639,
+            "hits50": 5,
+            "median_max_face_error_m": 0.151774600148201,
+            "median_max_face_move_m": 0.014825224876403809,
+            "GPU_DFL_mean": 3.3926632404327393
+          },
+          "qualified_outside": {
+            "candidates": 201,
+            "mean_iou": 0.03757636011051046,
+            "median_iou": 0,
+            "hits25": 16,
+            "hits50": 0,
+            "median_max_face_error_m": 0.22217197716236115,
+            "median_max_face_move_m": 0.008427292108535767,
+            "GPU_DFL_mean": 3.3098881244659424
+          },
+          "parent_box_good": {
+            "candidates": 2654,
+            "mean_iou": 0.7073908084642365,
+            "median_iou": 0.7195603131872315,
+            "hits25": 2654,
+            "hits50": 2635,
+            "median_max_face_error_m": 0.07793629169464111,
+            "median_max_face_move_m": 0.011231109499931335,
+            "GPU_DFL_mean": 2.7309935092926025
+          },
+          "selected_query": {
+            "candidates": 64,
+            "mean_iou": 0.5494850379225283,
+            "median_iou": 0.6627671439332224,
+            "hits25": 53,
+            "hits50": 42,
+            "median_max_face_error_m": 0.09502212703227997,
+            "median_max_face_move_m": 0.006860479712486267,
+            "GPU_DFL_mean": 3.1082472801208496
+          },
+          "selected_qualified": {
+            "candidates": 10,
+            "mean_iou": 0.3107231656265691,
+            "median_iou": 0.36220580781224954,
+            "hits25": 8,
+            "hits50": 0,
+            "median_max_face_error_m": 0.11180820688605309,
+            "median_max_face_move_m": 0.011848986148834229,
+            "GPU_DFL_mean": 3.4796245098114014
+          }
+        }
+      }
+    },
+    "paired": {
+      "parent_to_control": {
+        "all_candidates": {
+          "candidates": 16384,
+          "mean_delta_iou": -0.00022741340359026243,
+          "0.25": {
+            "before_hits": 3414,
+            "after_hits": 3409,
+            "repairs": 1,
+            "damages": 6,
+            "net": -5
+          },
+          "0.5": {
+            "before_hits": 2654,
+            "after_hits": 2647,
+            "repairs": 3,
+            "damages": 10,
+            "net": -7
+          }
+        },
+        "parent_qualified": {
+          "candidates": 1090,
+          "mean_delta_iou": -0.0018095109255041708,
+          "0.25": {
+            "before_hits": 660,
+            "after_hits": 655,
+            "repairs": 0,
+            "damages": 5,
+            "net": -5
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 3,
+            "repairs": 3,
+            "damages": 0,
+            "net": 3
+          }
+        },
+        "qualified_inside": {
+          "candidates": 889,
+          "mean_delta_iou": -0.0021092940784156592,
+          "0.25": {
+            "before_hits": 644,
+            "after_hits": 639,
+            "repairs": 0,
+            "damages": 5,
+            "net": -5
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 3,
+            "repairs": 3,
+            "damages": 0,
+            "net": 3
+          }
+        },
+        "qualified_outside": {
+          "candidates": 201,
+          "mean_delta_iou": -0.0004836043437215175,
+          "0.25": {
+            "before_hits": 16,
+            "after_hits": 16,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 0,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          }
+        },
+        "parent_box_good": {
+          "candidates": 2654,
+          "mean_delta_iou": -0.0005830170223519826,
+          "0.25": {
+            "before_hits": 2654,
+            "after_hits": 2654,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 2654,
+            "after_hits": 2644,
+            "repairs": 0,
+            "damages": 10,
+            "net": -10
+          }
+        },
+        "selected_query": {
+          "candidates": 64,
+          "mean_delta_iou": -0.00046144358587825186,
+          "0.25": {
+            "before_hits": 53,
+            "after_hits": 53,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 42,
+            "after_hits": 42,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          }
+        },
+        "selected_qualified": {
+          "candidates": 10,
+          "mean_delta_iou": -0.00352914358193979,
+          "0.25": {
+            "before_hits": 8,
+            "after_hits": 8,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 0,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          }
+        }
+      },
+      "parent_to_query_supported": {
+        "all_candidates": {
+          "candidates": 16384,
+          "mean_delta_iou": -0.0003960870473987197,
+          "0.25": {
+            "before_hits": 3414,
+            "after_hits": 3407,
+            "repairs": 0,
+            "damages": 7,
+            "net": -7
+          },
+          "0.5": {
+            "before_hits": 2654,
+            "after_hits": 2641,
+            "repairs": 6,
+            "damages": 19,
+            "net": -13
+          }
+        },
+        "parent_qualified": {
+          "candidates": 1090,
+          "mean_delta_iou": -0.0012083554436136841,
+          "0.25": {
+            "before_hits": 660,
+            "after_hits": 655,
+            "repairs": 0,
+            "damages": 5,
+            "net": -5
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 5,
+            "repairs": 5,
+            "damages": 0,
+            "net": 5
+          }
+        },
+        "qualified_inside": {
+          "candidates": 889,
+          "mean_delta_iou": -0.001464371290581655,
+          "0.25": {
+            "before_hits": 644,
+            "after_hits": 639,
+            "repairs": 0,
+            "damages": 5,
+            "net": -5
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 5,
+            "repairs": 5,
+            "damages": 0,
+            "net": 5
+          }
+        },
+        "qualified_outside": {
+          "candidates": 201,
+          "mean_delta_iou": -0.0000760266478200213,
+          "0.25": {
+            "before_hits": 16,
+            "after_hits": 16,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 0,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          }
+        },
+        "parent_box_good": {
+          "candidates": 2654,
+          "mean_delta_iou": -0.0016589132102419234,
+          "0.25": {
+            "before_hits": 2654,
+            "after_hits": 2654,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 2654,
+            "after_hits": 2635,
+            "repairs": 0,
+            "damages": 19,
+            "net": -19
+          }
+        },
+        "selected_query": {
+          "candidates": 64,
+          "mean_delta_iou": -0.00019748533304156558,
+          "0.25": {
+            "before_hits": 53,
+            "after_hits": 53,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 42,
+            "after_hits": 42,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          }
+        },
+        "selected_qualified": {
+          "candidates": 10,
+          "mean_delta_iou": -0.0022630296514836606,
+          "0.25": {
+            "before_hits": 8,
+            "after_hits": 8,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 0,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          }
+        }
+      },
+      "control_to_query_supported": {
+        "all_candidates": {
+          "candidates": 16384,
+          "mean_delta_iou": -0.00016867364380845725,
+          "0.25": {
+            "before_hits": 3409,
+            "after_hits": 3407,
+            "repairs": 3,
+            "damages": 5,
+            "net": -2
+          },
+          "0.5": {
+            "before_hits": 2647,
+            "after_hits": 2641,
+            "repairs": 11,
+            "damages": 17,
+            "net": -6
+          }
+        },
+        "parent_qualified": {
+          "candidates": 1090,
+          "mean_delta_iou": 0.0006011554818904866,
+          "0.25": {
+            "before_hits": 655,
+            "after_hits": 655,
+            "repairs": 2,
+            "damages": 2,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 3,
+            "after_hits": 5,
+            "repairs": 3,
+            "damages": 1,
+            "net": 2
+          }
+        },
+        "qualified_inside": {
+          "candidates": 889,
+          "mean_delta_iou": 0.0006449227878340042,
+          "0.25": {
+            "before_hits": 639,
+            "after_hits": 639,
+            "repairs": 2,
+            "damages": 2,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 3,
+            "after_hits": 5,
+            "repairs": 3,
+            "damages": 1,
+            "net": 2
+          }
+        },
+        "qualified_outside": {
+          "candidates": 201,
+          "mean_delta_iou": 0.00040757769590149615,
+          "0.25": {
+            "before_hits": 16,
+            "after_hits": 16,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 0,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          }
+        },
+        "parent_box_good": {
+          "candidates": 2654,
+          "mean_delta_iou": -0.0010758961878899406,
+          "0.25": {
+            "before_hits": 2654,
+            "after_hits": 2654,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 2644,
+            "after_hits": 2635,
+            "repairs": 7,
+            "damages": 16,
+            "net": -9
+          }
+        },
+        "selected_query": {
+          "candidates": 64,
+          "mean_delta_iou": 0.0002639582528366863,
+          "0.25": {
+            "before_hits": 53,
+            "after_hits": 53,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 42,
+            "after_hits": 42,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          }
+        },
+        "selected_qualified": {
+          "candidates": 10,
+          "mean_delta_iou": 0.0012661139304561294,
+          "0.25": {
+            "before_hits": 8,
+            "after_hits": 8,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          },
+          "0.5": {
+            "before_hits": 0,
+            "after_hits": 0,
+            "repairs": 0,
+            "damages": 0,
+            "net": 0
+          }
+        }
+      }
+    },
+    "accuracy_result": false
+  },
+  "scope_limitations": [
+    "Fixed augmented training panel: 64 distinct fit rows, 60 scan IDs / physical scene prefixes, seed 2027, 256 correlated candidates per row. Every row belongs to the 29,778-row fit partition and has only native valid GT slot 0.",
+    "GT provenance is real dataset annotation, with native training perturbations. Box IoU, face error, DFL targets and fixed Box<=0.5 eligibility here refer to the additionally noisy supervised root box, not the exact unjittered physical object envelope. Mask support refers to annotation point membership on the augmented cloud; it is not co-transformed by the later bbox-label noise. The audit neither removes this native protocol nor attributes any measured repair/damage or box/Mask disagreement to it.",
+    "Query/fused Mask IoU is an offline GT-support proxy for selecting a fixed parent cohort. It does not establish physical-instance identity, unseen-scene generalization, or nonempty multi-GT protection.",
+    "DFL means are reductions of saved GPU float32 per-candidate scalars. Boundary logits are not saved in NPZ, so the DFL loss itself was not independently recomputed on CPU.",
+    "Exact fixed upstream/score/Mask equality across the three heads is supported by one cached argument tuple, actual runtime assertions, successful receipts and the inspected head call path. This CPU audit did not run another model forward.",
+    "Current and prior complete CUDA forwards are not bitwise equal. Actual differences were measured and preserved; point/row/GT identity, matched slots, selected queries and parent cohort membership remain unchanged.",
+    "Point hashes are verified against prior recorded runtime hashes; raw point clouds and original dataset GT masks were not reloaded in this CPU audit. Mask qualification is reconstructed from the saved integer intersections/unions, not from full mask tensors.",
+    "Terminal weight identities are bound through actual spec bytes, closed training/restore receipts and successful runner file-hash assertions. No local weight load, SSH, GPU call or remote current-state revalidation occurred.",
+    "Requested gpt-6-astra / max execution is unattested. This is fresh-context, same-family, provisional review; it is not a claim of model/effort attestation.",
+    "Closed-pair receipts/specs/SUMMARY were used for input-head binding, plus a narrowly requested source/log trace of dataset augmentation settings: formal9508 and module-holdout6887 both disable supervised bbox noise. Formal metric recount/acceptance, model selection and weight retention/deletion remain outside this audit."
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "statement": "The read-only diagnostic completed 8 full forwards and 24 cached geometry replays over 64 fixed rows, with original model state restored and no optimizer/new weights.",
+      "impact": "supported_with_runtime_receipt_and_source_evidence",
+      "scope": "Closed saved execution, not a new GPU replay."
+    },
+    {
+      "id": "C2",
+      "statement": "There are 1,090 fixed parent-qualified candidates (52 rows): 889 inside and 201 outside, with 482 outside faces.",
+      "impact": "supported",
+      "scope": "Exact integer qualification and CPU range classification from all eight saved arrays."
+    },
+    {
+      "id": "C3",
+      "statement": "Query-supported versus parent repairs 5 qualified candidates at >0.5; all 5 are inside. Qualified mean IoU changes by -0.0012083554436136841, and qualified >0.25 has 0 repairs / 5 damages.",
+      "impact": "supported",
+      "scope": "Within this fixed training panel only."
+    },
+    {
+      "id": "C4",
+      "statement": "Query-supported versus parent over all candidates has 6 repairs / 19 damages (net -13) at >0.5 and 0 / 7 (net -7) at >0.25.",
+      "impact": "supported",
+      "scope": "Correlated candidate counts, not benchmark accuracy."
+    },
+    {
+      "id": "C5",
+      "statement": "Query-supported versus control on the qualified group has 3 repairs / 1 damage (net +2) at >0.5, 2 / 2 (net 0) at >0.25, and mean IoU delta +0.0006011554818904866.",
+      "impact": "supported",
+      "scope": "Does not negate its negative delta versus the parent or all-candidate damage."
+    },
+    {
+      "id": "C6",
+      "statement": "The 64 native selected candidates retain 53 hits at >0.25 and 42 at >0.5 for all three heads; selected-qualified has 0 hits at >0.5 for all three.",
+      "impact": "supported",
+      "scope": "No selected-candidate threshold repair on this panel."
+    },
+    {
+      "id": "C7",
+      "statement": "Qualified GPU DFL means are parent 4.0189714431762695, control 4.166342735290527, query-supported 3.37739896774292.",
+      "impact": "supported_with_GPU_scalar_qualifier",
+      "scope": "Not independent CPU loss recomputation; not sufficient evidence of better localization."
+    },
+    {
+      "id": "C8",
+      "statement": "The extra objective generally improves formal accuracy, solves physical-instance identity, protects nonempty multiple-GT rows or generalizes to unseen scenes.",
+      "impact": "unsupported_by_this_diagnostic",
+      "scope": "No such conclusion is made by the reviewed current summary."
+    },
+    {
+      "id": "C9",
+      "statement": "Cached head replay identity implies repeat complete CUDA forwards are bitwise identical.",
+      "impact": "contradicted_by_saved_prior_comparison",
+      "scope": "Actual cross-forward differences are quantified in W3."
+    },
+    {
+      "id": "C10",
+      "statement": "Supervised root_box itself includes native training bbox-label jitter, distinct from all_bboxes and detector object-input corruption; point/Mask membership is not additionally transformed by this box-only noise.",
+      "impact": "supported_by_exact_imported_source_path",
+      "scope": "Explains the reference tensor being measured; no causal contribution to the observed candidate errors is assigned."
+    },
+    {
+      "id": "C11",
+      "statement": "The closed pair's 9508 formal and 6887 initial/terminal module-holdout calls disable native bbox-label jitter; the present 64-row fit diagnostic enables it.",
+      "impact": "supported_by_actual_source_and_closed_stage_logs",
+      "scope": "Augmentation-protocol verification only, not an acceptance of those formal metrics."
+    }
+  ],
+  "formal_metric_acceptance": "NOT_ASSESSED; closed-pair head binding and augmentation protocol checked only",
+  "retention_decision": "NOT_ASSESSED",
+  "action_items": [
+    "No diagnostic source or raw-data fix is required by the checked evidence.",
+    "Report only the bounded within-panel claims above, with strict thresholds and GPU DFL scalar qualification."
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\experiment-audit\\SKILL.md",
+      "bytes": 10983,
+      "sha256": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+      "review_scope": "Directly read source/policy"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\experiment-bridge\\SKILL.md",
+      "bytes": 16880,
+      "sha256": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md",
+      "bytes": 2948,
+      "sha256": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+      "review_scope": "Directly read source/policy"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pv_ground_source_20260905\\src\\visual_data_handlers.py",
+      "bytes": 10126,
+      "sha256": "6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177",
+      "review_scope": "Direct dataset object mask and bbox construction source, exact pinned dataset manifest hash; points and bbox-jitter path reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py",
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "bytes": 518,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_final_quality.py",
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4",
+      "bytes": 5764,
+      "review_scope": "Existing spec helper hash identity only; not invoked by current diagnostic"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "bytes": 481,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py",
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "bytes": 4335,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "bytes": 3767,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "bytes": 7683,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_semantic_assignment.py",
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "bytes": 5065,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "bytes": 3025,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "bytes": 3655,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "bytes": 2770,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "bytes": 3906,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "bytes": 4754,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "bytes": 8163,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py",
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+      "bytes": 31540,
+      "review_scope": "Existing spec helper hash identity only; not invoked by current diagnostic"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "bytes": 3629,
+      "review_scope": "Direct helper source review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "bytes": 2436,
+      "review_scope": "Existing spec helper hash identity only; not invoked by current diagnostic"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\appearance_source_manifest.json",
+      "sha256": "75cd5f87a8e715c15b458ed1964c2e6f1d35046bb6beffca1b3388d5903bbe36",
+      "bytes": 74702,
+      "review_scope": "Dataset source provenance manifest linkage; not remote raw dataset revalidation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\input_manifest.json",
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+      "bytes": 161881,
+      "review_scope": "Dataset source provenance manifest linkage; not remote raw dataset revalidation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "bytes": 75981,
+      "review_scope": "Runtime import hash exact; direct provenance/matching/routing sections reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\split_protocol.json",
+      "bytes": 246139,
+      "sha256": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+      "review_scope": "Dataset partition hash/count/disjointness and all 64 diagnostic rows belong to fit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\source_port.json",
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304",
+      "bytes": 10665,
+      "review_scope": "Pinned model source port identity"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+      "bytes": 26744,
+      "review_scope": "Runtime import hash exact; direct provenance/matching/routing sections reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\collect_probe_authorized.py",
+      "bytes": 1443,
+      "sha256": "de5a39203bd0e8ff8058a6ea5ea15a4639c1cfd4834c52ec8778d5f596c9cf21",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_00.npz",
+      "sha256": "71e5148220341d0f76480bd1a7e002ce6064d6a992d86f3d5cc98311d023bd32",
+      "bytes": 63703,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_01.npz",
+      "sha256": "4fd47625792533a532433894d0f94175cf576c888583c5b80ee7fec8e6c75fa2",
+      "bytes": 63619,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_02.npz",
+      "sha256": "fb737abb8b934f4f2ed3e6d49dd7b94d739862b08e54105949b1e8b71a4bbaaf",
+      "bytes": 65044,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_03.npz",
+      "sha256": "3a86c5ec2c3337bb2d4a9a0421ebb58824d032965090d3067cf93cf58c60002e",
+      "bytes": 64644,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_04.npz",
+      "sha256": "bd1aeb4f9a35e0f56d2c419a909c229387411e819ac943395db6f58f09382c84",
+      "bytes": 65517,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_05.npz",
+      "sha256": "c134c31445ce9c1d07ff6106b5de46f82d14c39cc0fda831303060d29424a626",
+      "bytes": 64190,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_06.npz",
+      "sha256": "f641f87c0920b8b6f81b661e1b3d655144fb0b0f971203ea664e7ee402e8277b",
+      "bytes": 62724,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_07.npz",
+      "sha256": "946f286c107fa5e066f4cd84defb04eec112f44b17214a76386480a1d44edbfc",
+      "bytes": 64317,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\receipt.json",
+      "sha256": "5441778fd4e4021c68215a700bc950c65a2acc714caf28bb10c464d7267c7064",
+      "bytes": 1408,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\rows.jsonl",
+      "sha256": "5f93346437c0c154759af270815e52ccc840a7e80f451f67a25904fd1b0e7c0f",
+      "bytes": 51207,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\controller.py",
+      "bytes": 2408,
+      "sha256": "6ba190275bfd121de585d7a70f0fab16a824063f16608a916526e3bf2bc4eceb",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\launch_probe_authorized.py",
+      "bytes": 4038,
+      "sha256": "3eb44f6adb5762949dfc36f8f700dae544ec627237beb9e3b74ab938024f9fba",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\observe_probe_authorized.py",
+      "bytes": 2228,
+      "sha256": "2b0e4cad962cddf69873af3fdb95202a907f455fe8f5c6e895aa6913096a7880",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\run_mask_branch_probe.py",
+      "bytes": 19448,
+      "sha256": "84c0858166781214cf241a04d5ee42243b92246fe7c4705579568f58fc6602c7",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\spec.json",
+      "bytes": 4341,
+      "sha256": "cd02a2687fbee148256e101f7709382dcedc0834f4d46f00c0c4e7cebd2a9a1a",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\rows.jsonl",
+      "sha256": "959bf18c908b44e84e5822b7c19f8ef939414207b833e6c2dbe3ebf9e63dd6b7",
+      "bytes": 67075,
+      "review_scope": "Prior raw identity/support and primitive verification; independently compared"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analysis\\SUMMARY.json",
+      "sha256": "c83227a15d97b7fafc4307200f5e8e6f9bafe271ecd4db10c27bf175e9c6986c",
+      "bytes": 18531,
+      "review_scope": "Every metric scalar independently recounted against all eight raw NPZ files"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analyze_probe.py",
+      "sha256": "ac8b3988dd16703b9250b6869563eeeaa734dc1b499d96a6fd622ee879195b8d",
+      "bytes": 2989,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\check_prior_metric.py",
+      "bytes": 1843,
+      "sha256": "4057628a6993d74f0d431aad708ea4483353d5842c262649b16bb0886941a13c",
+      "review_scope": "Directly read source/policy"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+      "sha256": "608a717c2257844172705ba774f9e61bf17d1faa9748b8a773b5cd6ba750a90a",
+      "bytes": 4561,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\collect_probe_authorized.py",
+      "sha256": "de5a39203bd0e8ff8058a6ea5ea15a4639c1cfd4834c52ec8778d5f596c9cf21",
+      "bytes": 1443,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_00.npz",
+      "sha256": "b0fb8880b214544bfbab2c9c525dfce8e11df63b264baa5ba9ec8ee2aabc1f86",
+      "bytes": 308224,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_01.npz",
+      "sha256": "b4b7698f591a6ac995a030b4c2170ea73e5f4a189e9ded2d70e04c608a9fbd9f",
+      "bytes": 306306,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_02.npz",
+      "sha256": "99f8a09ab437e898fc68854017d8184fad781ce52420e1ab3a3225abdff60154",
+      "bytes": 311061,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_03.npz",
+      "sha256": "1fd009cdc0902ef768ebace44a24110fb7cf54a683fb82e91ffa9099b2243caf",
+      "bytes": 308539,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_04.npz",
+      "sha256": "bb42cbd58c8034aa4472a58ea96cf3e3af60fc8408ab21a0e34a7559fd26dfbd",
+      "bytes": 308975,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_05.npz",
+      "sha256": "c9f64b5913d752f5b7d3567e64634487566945392ef33de337fe0255bcc0452e",
+      "bytes": 308204,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_06.npz",
+      "sha256": "1aaef5edc68d4eb6c75d984bc1f65e7e1f3e5dbd25fc16fdf754678007d51cf8",
+      "bytes": 301978,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_07.npz",
+      "sha256": "4cafe6f27eed2a32a277db377acacfd1108e3a8b6c7d60642e506be4a7ace691",
+      "bytes": 308268,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\controller.log",
+      "sha256": "7bde2ec8b630dd4ca924ba7866d6b410805246bc764fd6d02d93b949ff029f57",
+      "bytes": 327,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\controller.py",
+      "sha256": "a5658bf487fcd701f76478af1b78419c90d1dea17f92c815a011912c9b6cb35c",
+      "bytes": 2402,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\EXPERIMENT_PLAN.md",
+      "sha256": "893f9dcdf38e2221b69fd11eaab594c0c5dbcf03b62d81ec1c1cbffe9654e23d",
+      "bytes": 2281,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "bytes": 1059,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\INTAKE.json",
+      "sha256": "6df285574094730f841abcb569d1eb85d3ffb16db925149189fe21627af4c210",
+      "bytes": 3897,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\launch.json",
+      "sha256": "8d908405509a3365e3cf688f05e82e574686a8bbc4478b1a10cdf269867e34d4",
+      "bytes": 689,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\load.json",
+      "sha256": "8992b132063e647d0a6f7b71070576245c51d3e5c38b01b8a7da060d308b9af1",
+      "bytes": 575,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\probe.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\probe.log",
+      "sha256": "cb3f7ea71c8ffca095416ff2085c1e73648895d5f1df781a0fe424f4d92497a1",
+      "bytes": 2700,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\receipt.json",
+      "sha256": "c33f90ee770fe6a27f70e1372eee62dba169d979f43957d650767866b2906460",
+      "bytes": 1229,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\rows.jsonl",
+      "sha256": "0e6236609932eab258ab52b9be725c5161fb1f55378fc565504dcb1386179f3d",
+      "bytes": 41871,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\run_cohort_probe.py",
+      "sha256": "ff006960b9a1c0754ba6dc3ef163fc997c3594e2232e98c9bc25f0639766dd18",
+      "bytes": 22693,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\SOURCE_REVIEW.json",
+      "sha256": "1a2ed273a8489d52ac1f87629080c2989215ef79f5c1e5c8fd0e569c4bf3ffae",
+      "bytes": 62331,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\SOURCE_REVIEW.md",
+      "sha256": "415ecf55555233c81f2ec451e8ed216f77884db63c9159a174ebeea472d23e0e",
+      "bytes": 27133,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\spec.json",
+      "sha256": "748809b0e1c740b3253d992de719b8e8e1bac55518e7e1e0a5a6651932f1de71",
+      "bytes": 5199,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\status.json",
+      "sha256": "cb2d3189614b8f5a63d03e659af47c8bcf4689dbc218971a01e6d832b1e8887f",
+      "bytes": 361,
+      "review_scope": "Sealed current raw diagnostic; arrays independently recomputed; exact copied sources and receipts checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\controller.py",
+      "sha256": "a5658bf487fcd701f76478af1b78419c90d1dea17f92c815a011912c9b6cb35c",
+      "bytes": 2402,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "893f9dcdf38e2221b69fd11eaab594c0c5dbcf03b62d81ec1c1cbffe9654e23d",
+      "bytes": 2281,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\GENERATION.json",
+      "bytes": 407,
+      "sha256": "1a06080d772e7ea3e63f3e4fb53b20ec779c953e53b0f52051ccd37d3443e3c4",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\launch_probe_authorized.py",
+      "sha256": "436d981dfdd1b409b959d8cdbb56f846456829785146bec8971a61b87c3981d7",
+      "bytes": 4054,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\launch.json",
+      "sha256": "8d908405509a3365e3cf688f05e82e574686a8bbc4478b1a10cdf269867e34d4",
+      "bytes": 689,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\METRIC_PRIMITIVE_CHECK.json",
+      "sha256": "f01b25d0328243ac61bdefe4f6f737737f85b4821b31c7ae8221791b4b289e95",
+      "bytes": 668,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\observe_probe_authorized.py",
+      "sha256": "a6570ad337c693048d0424f08166b967e3b2f2bf2ec2589864d710f6cde89bbe",
+      "bytes": 2232,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARATION.json",
+      "bytes": 1381,
+      "sha256": "a01cba52c462a5a81a676441e64190c55bd7562d93c11fafdb1ad06773c3e6de",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\prepare_closed_spec.py",
+      "bytes": 2245,
+      "sha256": "5a04450354826479f0edb1f37f7af40067d7c273ac260aeb2e1d81399f33b2fd",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\prepare_probe.py",
+      "bytes": 3068,
+      "sha256": "79504839e8492b578b0574cecf8cb41d09cf42683080bac8a4f93891f405e81f",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_FIXES.json",
+      "bytes": 1023,
+      "sha256": "01b6cfffec5c90bd05b1ac2f102e064c9f989a2a47e93a29730e22f247ee838d",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW_initial.json",
+      "bytes": 24764,
+      "sha256": "94865062f07601195718b562817838885d6e68a56cec4236a9d610451f577cda",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW_initial.md",
+      "bytes": 11461,
+      "sha256": "e2b80c6226c9c23378de81359a281b3cd0ed2902ca53fdf9347a1331d9310f6b",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW.json",
+      "bytes": 26218,
+      "sha256": "c8d390cd80a34d4a5e244524a857dc9ef3cd25395b447f865404ad350452e037",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARED_SOURCE_REVIEW.md",
+      "bytes": 11638,
+      "sha256": "27aec7ab469fb04aa213f777ba395ba87494c544f52ff03031afa5f5be6eed31",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\probe_body.py",
+      "sha256": "0502ade839808218b943c87bb3dbaf49c02352413bf8785170afe7bbe6346ee2",
+      "bytes": 11299,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\publish_prepared_source.py",
+      "bytes": 4870,
+      "sha256": "945f917fb56bcb3ce2960d94aaf43bf3fb68275bf9061b86e9634044445f04f1",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\resource_check.json",
+      "sha256": "f731327f272d2bc922e514045ae53c79d00cd5eab37c5acdb8c63de54076498a",
+      "bytes": 158,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+      "sha256": "ff006960b9a1c0754ba6dc3ef163fc997c3594e2232e98c9bc25f0639766dd18",
+      "bytes": 22693,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\SOURCE_REVIEW.json",
+      "sha256": "1a2ed273a8489d52ac1f87629080c2989215ef79f5c1e5c8fd0e569c4bf3ffae",
+      "bytes": 62331,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\SOURCE_REVIEW.md",
+      "sha256": "415ecf55555233c81f2ec451e8ed216f77884db63c9159a174ebeea472d23e0e",
+      "bytes": 27133,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\spec.json",
+      "sha256": "748809b0e1c740b3253d992de719b8e8e1bac55518e7e1e0a5a6651932f1de71",
+      "bytes": 5199,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\wait.json",
+      "sha256": "6fa5224619d02eb2e1cc9222317c3c6643e203886f0cea751e3c02198bbfaca5",
+      "bytes": 576,
+      "review_scope": "Current diagnostic source/configuration/closed evidence; directly read"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\analysis\\SUMMARY.json",
+      "sha256": "685cb47e906973fffb4e97ae20d6b5a53a39cb761c3cbf5d7cc1214db1517d52",
+      "bytes": 24095,
+      "review_scope": "Closed-pair identity and completion binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\closed_control_receipts\\control\\formal_restore.json",
+      "bytes": 275,
+      "sha256": "1f7cc61d14972c4d3d56cae0333c26d35047486e2afc94d5cec492e07ac75d4d",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\closed_control_receipts\\control\\formal\\receipt.json",
+      "bytes": 494,
+      "sha256": "63a24be5db5dd873eae6cea6e2f2776fd8cb8b24b12f65e5753dab36f7016574",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\closed_control_receipts\\control\\receipt.json",
+      "bytes": 1257,
+      "sha256": "3779254e981d3ba1c3ad5da7e5c7499b1d06efc29cc78fe1604bfc58dbdfe2e6",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\collect_formal_authorized.py",
+      "bytes": 2399,
+      "sha256": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control_spec.json",
+      "sha256": "282b7f117c3c242970416608c05e8f9b7684f1bf3b0ccfc0159990771505a9a1",
+      "bytes": 3856,
+      "review_scope": "Closed-pair input-head binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal_restore.json",
+      "sha256": "1f7cc61d14972c4d3d56cae0333c26d35047486e2afc94d5cec492e07ac75d4d",
+      "bytes": 275,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal.log",
+      "bytes": 3130,
+      "sha256": "14529032e8d76f3fcb135460936bae6bc126f35b83f68035ee389a061c54ecc3",
+      "review_scope": "Direct closed-pair invocation/augmentation-mode and actual stage completion trace; formal metric values not independently audited here"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal\\receipt.json",
+      "sha256": "63a24be5db5dd873eae6cea6e2f2776fd8cb8b24b12f65e5753dab36f7016574",
+      "bytes": 494,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal\\rows.jsonl",
+      "bytes": 7622912,
+      "sha256": "f21000ce1dfa75309627d71d0e56f1580b7d1d3f6d758a5f8acdad8a2179b00f",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\initial\\receipt.json",
+      "sha256": "875edb6d167676b42c42e1b85dbb9b6c807f9b42073c372486d9da607736ed4c",
+      "bytes": 490,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\initial\\rows.jsonl",
+      "bytes": 5602804,
+      "sha256": "944313ba5ceb0aca7f7d37ff2d6e419efba6eb10bfd6d6bfcbfe92937c7d0563",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\load.json",
+      "bytes": 683,
+      "sha256": "0de7fcbcbe21c94b035209b3329a8a54c1c4194fe89bc5448425cae9bd17b491",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\preflight.json",
+      "bytes": 3963,
+      "sha256": "a2b904c5145ba3ac0f13b3a80edf8c743150c3a6782e35bf1fed8a3f9d64e37c",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\preflight.log",
+      "bytes": 3935,
+      "sha256": "bc944f386991cc7a5e81fdad7c077a841c3466b43d1bacbb9081a66b71e35300",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\receipt.json",
+      "sha256": "3779254e981d3ba1c3ad5da7e5c7499b1d06efc29cc78fe1604bfc58dbdfe2e6",
+      "bytes": 1257,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\terminal\\receipt.json",
+      "sha256": "84c53976a2f73cc70adf33ff934121b9eadc7bb124cf5e101af32073bb8201af",
+      "bytes": 492,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\terminal\\rows.jsonl",
+      "bytes": 5602495,
+      "sha256": "e2979299fba80a8850d19c9c7271ad1c2ff0367e59ba0f07117447a1884fe338",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.jsonl",
+      "bytes": 3593362,
+      "sha256": "b4c9f13a8aa388753fc6c3d80a64f4ecadc4c0c2251f0818e0665d91f28dadff",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.log",
+      "bytes": 64498,
+      "sha256": "16a8dcf75284e7979a38aacfff8e12850696aaec425ff188ca119e805e7134f7",
+      "review_scope": "Direct closed-pair invocation/augmentation-mode and actual stage completion trace; formal metric values not independently audited here"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\controller.py",
+      "bytes": 2899,
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_scope": "Direct closed-pair invocation/augmentation-mode and actual stage completion trace; formal metric values not independently audited here"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\EXPERIMENT_PLAN.md",
+      "bytes": 2744,
+      "sha256": "b62e838197e85eacd19076696190fdad0590e93d910876bcf98f3fc795a9a947",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "review_scope": "Closed-pair identity and completion binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_controller.log",
+      "bytes": 495,
+      "sha256": "e3c98c416efbdfce06fb89fe65e4dc341e4fcfd621d29f1cbf012c0c565a1e66",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_launch.json",
+      "bytes": 1504,
+      "sha256": "db9e2911484a538b8640fd6d8db0a965467b3a3125dd41e005eeba88ed41c488",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_status.json",
+      "sha256": "1a9c0de09e70af2d7676277dad0571701222f82646fdcb3a59efc8a0423f2a75",
+      "bytes": 557,
+      "review_scope": "Closed-pair identity and completion binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\INTAKE.json",
+      "sha256": "4c6b2457880e28aeda378e70b388f379fc8819f74405c2c6dfaf9b5fe16bd938",
+      "bytes": 12291,
+      "review_scope": "Closed-pair identity and completion binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control_spec.json",
+      "bytes": 3856,
+      "sha256": "282b7f117c3c242970416608c05e8f9b7684f1bf3b0ccfc0159990771505a9a1",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\load.json",
+      "bytes": 683,
+      "sha256": "17b08e65feedfd128571d0a6a8c3c13ef8e953963bf1f4b99c010a4b213e85c9",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\preflight.json",
+      "bytes": 3963,
+      "sha256": "a2b904c5145ba3ac0f13b3a80edf8c743150c3a6782e35bf1fed8a3f9d64e37c",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\control\\preflight.log",
+      "bytes": 3935,
+      "sha256": "bc944f386991cc7a5e81fdad7c077a841c3466b43d1bacbb9081a66b71e35300",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\controller.py",
+      "bytes": 2899,
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\EXPERIMENT_PLAN.md",
+      "bytes": 2744,
+      "sha256": "b62e838197e85eacd19076696190fdad0590e93d910876bcf98f3fc795a9a947",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\INTAKE.json",
+      "bytes": 3622,
+      "sha256": "965099206cedbd8b37a2cdd46610680b752652bb4eb7e04d2a06a50549860617",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\preflight_controller.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\preflight_controller.log",
+      "bytes": 466,
+      "sha256": "de394bed8819341fe0ff7b9163cad4de402daf4c6e0ac3946cae24e5d8bfc5b5",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\preflight_status.json",
+      "bytes": 520,
+      "sha256": "897407cab630d81048761c29e8ba83ac11c37a66fcdea3ffae8faea382a78d8e",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported_geometry.py",
+      "bytes": 3549,
+      "sha256": "aebeb6ec667a3a2e61098268193664bf2ef02a1ce8dc72303badca8b19dc964c",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported_spec.json",
+      "bytes": 3864,
+      "sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\load.json",
+      "bytes": 683,
+      "sha256": "278d3c5a9d220f4232308c6a72c47002dd5ad2af23ced52fbc9ee77e3035fd78",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\preflight.json",
+      "bytes": 3967,
+      "sha256": "4655ccbbf97c16cf7b9fe283f22084577a4a33cdc448df72f44d2679a0c472fe",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\query_supported\\preflight.log",
+      "bytes": 3939,
+      "sha256": "044b8cbee813540eda266ed18b4dbd8b26397a4ba11285b8c03855b49f082a8f",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\run_geometry_fit.py",
+      "bytes": 31369,
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\SOURCE_REVIEW.json",
+      "bytes": 20813,
+      "sha256": "a71f65de0423e7ee722b96e92641eb0a7ede8ab6588a43477879e7e3b8d33fd7",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_complete\\SOURCE_REVIEW.md",
+      "bytes": 3823,
+      "sha256": "c77a2ca3fbbdee21b2b7d09dc0e6bfd0aebe81d27ab3857c871c2f6fde1940f9",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_controller.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_controller.log",
+      "bytes": 466,
+      "sha256": "de394bed8819341fe0ff7b9163cad4de402daf4c6e0ac3946cae24e5d8bfc5b5",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\preflight_status.json",
+      "bytes": 520,
+      "sha256": "897407cab630d81048761c29e8ba83ac11c37a66fcdea3ffae8faea382a78d8e",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported_geometry.py",
+      "bytes": 3549,
+      "sha256": "aebeb6ec667a3a2e61098268193664bf2ef02a1ce8dc72303badca8b19dc964c",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported_spec.json",
+      "sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+      "bytes": 3864,
+      "review_scope": "Closed-pair input-head binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal_restore.json",
+      "sha256": "2fdbc5e800c8239906a0ca072179af13a3b228f668fd5ae41395eaa8c483bb82",
+      "bytes": 275,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal.log",
+      "bytes": 3134,
+      "sha256": "60df0b70eb586bf2ed5e12eb629653829b9c65a80074fce8e79fb6e14291f067",
+      "review_scope": "Direct closed-pair invocation/augmentation-mode and actual stage completion trace; formal metric values not independently audited here"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal\\receipt.json",
+      "sha256": "fdab1dd33b81fa70551b76d6eed6de5c8fbce95b43199297bbe35e19353a33f1",
+      "bytes": 494,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal\\rows.jsonl",
+      "bytes": 7623212,
+      "sha256": "5ef50c722abb31f10e02a06615d0f2cd437b0bcb354b32f5135ebf1304db9e16",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\initial\\receipt.json",
+      "sha256": "fb821d87e39e9624009059bc4720769ffa7e8ea343104b2cb3d33e58780985d2",
+      "bytes": 491,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\initial\\rows.jsonl",
+      "bytes": 5602585,
+      "sha256": "05f0585ea8aafbfe1e2f394359ff9071402c0d380d3cd732d5f7688c5622c2d8",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\load.json",
+      "bytes": 683,
+      "sha256": "333602b496fa48c5d47d6ee795a7ee7e16b4d37a4648f0b3f4f153c4300f8448",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\preflight.json",
+      "bytes": 3967,
+      "sha256": "4655ccbbf97c16cf7b9fe283f22084577a4a33cdc448df72f44d2679a0c472fe",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\preflight.log",
+      "bytes": 3939,
+      "sha256": "044b8cbee813540eda266ed18b4dbd8b26397a4ba11285b8c03855b49f082a8f",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\receipt.json",
+      "sha256": "086c948430ae5d8c08d971155ef01834d5d21b581204d7a6d02634d4b93729f6",
+      "bytes": 1261,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\terminal\\receipt.json",
+      "sha256": "19f925e625c1e918653c04dbc86e9220b48473cf391e4233f7bc7a13bbcee458",
+      "bytes": 492,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\terminal\\rows.jsonl",
+      "bytes": 5602562,
+      "sha256": "7bff0ca8678f3037c8a890ee9f55bdd4b82073a400fdb3a56afbabc6a199659c",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "review_scope": "Closed-pair input-head binding only; not a new formal accuracy audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.jsonl",
+      "bytes": 3592714,
+      "sha256": "05b98a4da41867b0200246e49040fd744e969e746daf0744321d7c577b286a68",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.log",
+      "bytes": 64479,
+      "sha256": "ab786955be7dc48fc10e26e3290f4e6d39e4158080101433b1bc26f3a025e2a9",
+      "review_scope": "Direct closed-pair invocation/augmentation-mode and actual stage completion trace; formal metric values not independently audited here"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+      "bytes": 31369,
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_scope": "Direct closed-pair invocation/augmentation-mode and actual stage completion trace; formal metric values not independently audited here"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\SOURCE_REVIEW.json",
+      "bytes": 20813,
+      "sha256": "a71f65de0423e7ee722b96e92641eb0a7ede8ab6588a43477879e7e3b8d33fd7",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\SOURCE_REVIEW.md",
+      "bytes": 3823,
+      "sha256": "c77a2ca3fbbdee21b2b7d09dc0e6bfd0aebe81d27ab3857c871c2f6fde1940f9",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\controller.py",
+      "bytes": 2899,
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_body.py",
+      "bytes": 10699,
+      "sha256": "a67200e7d37bbc87d8303cee56eb63812d0725e9a3b0e364306fec5c64737233",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_wait.json",
+      "sha256": "701b071d8a92f8bc82de50e37d15ea511960f3cb2a71aef65eb6a77f6ab02d87",
+      "bytes": 1032,
+      "review_scope": "Closed-pair identity and completion binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\observe_fit_authorized.py",
+      "bytes": 3097,
+      "sha256": "698a5203af439fc2fe90299c606a95eaa6014bdfa1e8443bf6fe47b8614e96e4",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\run_geometry_fit.py",
+      "bytes": 31369,
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_scope": "Existing source-review manifest hash identity only unless separately listed as direct semantic review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "bytes": 24599,
+      "review_scope": "Runtime import hash exact; direct provenance/matching/routing sections reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\models\\losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "bytes": 40468,
+      "review_scope": "Runtime import hash exact; direct provenance/matching/routing sections reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\prepare_data.py",
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "bytes": 19658,
+      "review_scope": "Runtime import hash exact; direct provenance/matching/routing sections reviewed"
+    }
+  ],
+  "hash_scope_note": "review_scope distinguishes semantic/array review from existing manifest hash-only linkage. Hash-only reads do not claim a fresh semantic audit of every historical artifact.",
+  "audit_actions": {
+    "SSH_calls": 0,
+    "GPU_calls": 0,
+    "credential_wrappers": 0,
+    "browsing_calls": 0,
+    "weights_loaded": 0,
+    "weights_created": 0,
+    "weights_deleted": 0,
+    "source_edits": 0,
+    "raw_edits": 0,
+    "SUMMARY_edits": 0,
+    "files_written": [
+      "analysis/EXPERIMENT_AUDIT.json",
+      "analysis/EXPERIMENT_AUDIT.md"
+    ]
+  },
+  "native_GT_and_input_augmentation": {
+    "supervised_root_box": {
+      "source": "gt_bboxes from _get_target_boxes -> center_label and size_gts -> diagnostic root_box slot 0",
+      "operation": "After bounding current augmented object member points, convert to center/size, then multiply each of all six supervised dimensions by its separately sampled factor 0.95 + 0.1*np.random.random; factors are in [0.95,1.05). This is extra box-label noise, not just proposal corruption.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1105,
+          "end_line": 1119,
+          "details": "GT box construction and explicit supervised jitter."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1325,
+          "end_line": 1329,
+          "details": "Point augmentation executes before supervised target construction."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1387,
+          "end_line": 1392,
+          "details": "Noisy gt_bboxes become center_label/size_gts."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 294,
+          "end_line": 297,
+          "details": "Actual diagnostic root_box reads center_label/size_gts slot 0."
+        }
+      ]
+    },
+    "points_and_mask_GT": {
+      "operation": "__getitem__ resets scan.pc from orig_pc; _get_pc applies native coordinate augmentation before target construction. _augment performs permitted flips, z/x/y rotations, positive per-point noise in [0,0.005), shift and uniform scale. gt_masks retains annotation object point-index membership. Therefore mask labels stay attached to the same transformed/noisy point rows. There is no second point/mask transformation accompanying the subsequent six-dimensional bbox-label noise.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1273,
+          "end_line": 1275,
+          "details": "Reset point coordinates, retaining point/superpoint row identities."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 823,
+          "end_line": 861,
+          "details": "Exact point augmentation sequence."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 896,
+          "end_line": 919,
+          "details": "Writes augmented points back to scan.pc."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1100,
+          "end_line": 1103,
+          "details": "Mask GT is annotation membership, not predicted Mask."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pv_ground_source_20260905\\src\\visual_data_handlers.py",
+          "line": 195,
+          "end_line": 197,
+          "details": "Object point coordinates read current scan.pc."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pv_ground_source_20260905\\src\\visual_data_handlers.py",
+          "line": 225,
+          "end_line": 227,
+          "details": "Object bounding box computed from current object points."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pv_ground_source_20260905\\src\\visual_data_handlers.py",
+          "line": 245,
+          "end_line": 259,
+          "details": "Axis-aligned min/max bbox calculation."
+        }
+      ]
+    },
+    "scene_GT_all_bboxes": {
+      "operation": "_get_scene_objects recomputes current object boxes, then applies its own separate six-dimensional [0.95,1.05) factors to all_bboxes. Returned all_bboxes is not the supervised root_box tensor and is not used as the detected object input in this run because butd_gt=False and butd_cls=False.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1140,
+          "end_line": 1157,
+          "details": "Scene GT box construction and its separate jitter."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1360,
+          "end_line": 1372,
+          "details": "Only disabled butd_gt/butd_cls branches replace detected inputs by GT boxes."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1426,
+          "end_line": 1439,
+          "details": "Separate all_bboxes and all_detected_boxes returned."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 157,
+          "end_line": 160,
+          "details": "Actual flags disable perfect-GT object inputs."
+        }
+      ]
+    },
+    "two_stage_detected_object_inputs": {
+      "source": "GroupFree prediction files -> all_detected_bboxes -> all_detected_boxes -> model inputs det_boxes",
+      "operation": "Loaded predicted box corners undergo the recorded shared flip/rotation/shift/scale (not the pointwise noise), then augment_det independently replaces entries selected by random>0.7 with random boxes and classes. These are model object-input/proposal values, separate from root supervision. No claim is made that the internal network proposal_ output tensor is manually jittered.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1203,
+          "end_line": 1226,
+          "details": "Loads external GroupFree predictions."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1227,
+          "end_line": 1239,
+          "details": "Shared coordinate transform on detector-box corners."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1241,
+          "end_line": 1253,
+          "details": "Separate detected-input corruption when augment_det=True."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+          "line": 1438,
+          "end_line": 1441,
+          "details": "Detected object fields returned."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 188,
+          "end_line": 193,
+          "details": "Only detected boxes/classes are wired into the object-input interface."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 238,
+          "end_line": 239,
+          "details": "Both augment and augment_det are enabled."
+        }
+      ]
+    },
+    "interpretation": "GT provenance is real dataset annotation, with native training perturbations. Box IoU, face error, DFL targets and fixed Box<=0.5 eligibility here refer to the additionally noisy supervised root box, not the exact unjittered physical object envelope. Mask support refers to annotation point membership on the augmented cloud; it is not co-transformed by the later bbox-label noise. The audit neither removes this native protocol nor attributes any measured repair/damage or box/Mask disagreement to it.",
+    "trigger_and_evaluation_modes": {
+      "trigger": "Supervised _get_target_boxes bbox jitter executes iff self.split == 'train' and self.augment; scene all_bboxes jitter uses the same condition. Detected-input corruption has its own self.augment_det and split=='train' condition. model.eval() alone is not the controlling flag.",
+      "fixed_training64": {
+        "split": "train",
+        "augment": true,
+        "augment_det": true,
+        "supervised_bbox_jitter": true,
+        "evidence": [
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+            "line": 157,
+            "end_line": 160,
+            "details": "Diagnostic dataset split and GT-input flags."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+            "line": 238,
+            "end_line": 246,
+            "details": "Flags enabled before fit loader iteration."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+            "line": 1112,
+            "end_line": 1113,
+            "details": "Actual supervised label-noise trigger."
+          }
+        ]
+      },
+      "formal9508": {
+        "split": "val",
+        "augment": false,
+        "augment_det": false,
+        "supervised_bbox_jitter": false,
+        "arms": [
+          "control",
+          "query_supported"
+        ],
+        "evidence": [
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+            "line": 175,
+            "end_line": 194,
+            "details": "Formal dataset explicitly uses val and 9508 rows."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+            "line": 273,
+            "end_line": 287,
+            "details": "evaluate disables both flags before making a fresh DataLoader and uses eval preparation."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+            "line": 417,
+            "end_line": 419,
+            "details": "Actual formal branch calls evaluate('formal')."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\formal.log",
+            "line": 25,
+            "end_line": 25,
+            "details": "Actual control formal completion: pass, 9508 rows."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal.log",
+            "line": 25,
+            "end_line": 25,
+            "details": "Actual query-supported formal completion: pass, 9508 rows."
+          }
+        ]
+      },
+      "module_holdout6887": {
+        "split": "train",
+        "augment": false,
+        "augment_det": false,
+        "supervised_bbox_jitter": false,
+        "stages": [
+          "initial",
+          "terminal"
+        ],
+        "arms": [
+          "control",
+          "query_supported"
+        ],
+        "evidence": [
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+            "line": 195,
+            "end_line": 204,
+            "details": "FitDataset uses train split, with disjoint module holdout."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+            "line": 238,
+            "end_line": 240,
+            "details": "A new loader is created after the flags are set."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+            "line": 273,
+            "end_line": 287,
+            "details": "Both flags are disabled before holdout sample fetching."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+            "line": 453,
+            "end_line": 455,
+            "details": "Initial evaluation, then explicit flag re-enable for fit training."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\run_geometry_fit.py",
+            "line": 491,
+            "end_line": 495,
+            "details": "Terminal evaluation uses the same disabling evaluate path."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.log",
+            "line": 20,
+            "end_line": 20,
+            "details": "Actual initial 6887-row completion."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\control\\train.log",
+            "line": 93,
+            "end_line": 93,
+            "details": "Actual terminal 6887-row completion."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.log",
+            "line": 20,
+            "end_line": 20,
+            "details": "Actual initial 6887-row completion."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\train.log",
+            "line": 93,
+            "end_line": 93,
+            "details": "Actual terminal 6887-row completion."
+          }
+        ]
+      },
+      "controller_binding": {
+        "evidence": [
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\controller.py",
+            "line": 36,
+            "end_line": 48,
+            "details": "Both arms run this actual source with train/formal modes and preserve each child exit."
+          },
+          {
+            "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\fit_status.json",
+            "line": 9,
+            "end_line": 23,
+            "details": "All four mode invocations completed and controller closed."
+          }
+        ]
+      },
+      "claim_boundary": "The additional box-label-noise qualification applies to the 64-row augmented fit diagnostic (and fit-training path), not to the completed pair's 9508 formal or 6887 initial/terminal module-holdout evaluations. This is an executed-source/protocol trace, not a fresh recount or acceptance of formal metrics."
+    }
+  }
+}

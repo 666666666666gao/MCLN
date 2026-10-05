@@ -240,3 +240,5 @@
 - 2026-10-05T11:53:55.947713+08:00 Actual control9508 native5616/4499 closed, strategy running. GPU receipts only; full-row CPU/pair audit pending. Best5616/4506 unchanged; no cleanup. Doc65 synchronized.
 
 - 2026-10-05T14:50:17.058333+08:00 Actual closed Query-supported geometry comparison published; metric-best query_supported [5614, 4509], fresh audit PASS same-family/provisional. Two nonbest geometry heads removed, no archive.
+
+- 2026-10-05T15:00:04.247921+08:00 Fixed-cohort three-head geometry replay closed and audited; 64 augmented fit rows, no optimizer or new weights. Native training bbox-noise scope recorded; next CPU pre-jitter target comparison.

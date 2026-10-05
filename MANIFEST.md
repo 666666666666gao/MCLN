@@ -246,3 +246,5 @@
 - 2026-10-05T16:20:36.866436+08:00 CPU64 native GT-jitter check closed and reviewed; exact native inputs, no model/checkpoint/optimizer. Best5614/4509 unchanged.
 
 - 2026-10-05T16:42:20.516361+08:00 Native/member auxiliary-target comparison sources reviewed and real two-step sanity launched; no formal result or new model parameter.
+
+- 2026-10-05T17:15:04.928532+08:00 Auxiliary-target two-step sanity closed PASS; formal native/member pair launched from4509, no new accuracy yet.

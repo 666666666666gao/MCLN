@@ -1,0 +1,434 @@
+{
+  "verdict": "PASS",
+  "execution_scope": "CLOSED_PREFLIGHT_LAUNCH_READINESS",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "summary": "The actual closed two-arm GPU sanity and the prepared formal-fit launcher satisfy the reviewed experiment contract. No source, receipt, protocol, freeze, restore or lifecycle defect requiring correction was found. Ready to invoke the authorized launcher, subject to its live remote byte/resource/lock gates.",
+  "generated_at": "2026-10-05T17:06:40.582603+08:00",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "backend_attested": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "provenance": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "backend_attribution": "unattested",
+    "actual_backend_model": null,
+    "actual_backend_effort": null,
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "review_context": "Delegated launch-readiness follow-up in the same reviewer context; actual new closed artifacts read directly."
+  },
+  "checks": [
+    {
+      "id": "actual_closed_controller_and_logs",
+      "result": "PASS",
+      "evidence": "preflight_status equals preflight_wait.status and the controller log JSON. completed_runs is exactly control/preflight then member_target/preflight; controller plus both child exits are 0. The observer is closed and controller_alive is false. Completion is 2026-10-05T16:51:05.651446+08:00; actual controller duration930.3403266593814s. Each child log has one completion JSON exactly equal to its preflight receipt, with no traceback."
+    },
+    {
+      "id": "actual_artifact_and_source_binding",
+      "result": "PASS",
+      "evidence": "All21 INTAKE file sizes and existing SHA values match the downloaded files; sum98022bytes matches intake. Downloaded runner/helper/controller/two specs/source-review/plan match current local files byte-for-byte. All45 pre-existing SOURCE_REVIEW bindings remain exact. Runner and each spec SHA in the actual receipts match the uploaded bytes. Launcher/derivation/uploaded Python ASTs parse; running only the deterministic launcher text derivation in memory reproduces the prepared launcher exactly without writing source."
+    },
+    {
+      "id": "imports_and_parent_load",
+      "result": "PASS",
+      "evidence": "Both actual imports.json records are identical to the completed predecessor imports, including dataset3afebfc6..., models.losses920051cc..., models.pv_ground8d2aad66.... Both load receipts are pass, bind their spec SHA, and load the retained4509 query_supported terminal. OriginalG1072delta tensors, geometry10states/456102parameters, head-only trainability and frozen_parent_and_R are confirmed. No deleted4506/control checkpoint is opened by the bound reconstruction path."
+    },
+    {
+      "id": "GT_protocol_and_auxiliary_routing",
+      "result": "PASS",
+      "evidence": "Both actual receipts have native_data_and_member_target_exact=True after the uploaded runner compared batch row IDs, sampled point SHA, native noisy root and member root with closed CPU64 data before updates. The specs differ only in output root and auxiliary_target_mode; both weights are1. native_gt and member_gt appear correctly in all actual witnesses. Auxiliary qualification and L1/GIoU/DFL use the same chosen root; native matching, native losses, G labels, native matched DFL and evaluation retain the original batch and protocol."
+    },
+    {
+      "id": "actual_update_count_and_gradients",
+      "result": "PASS",
+      "evidence": "Each receipt has exactly2 witnesses and optimizer_steps2; the executed source performs two step(batch,True) calls and asserts every optimizer moment step is2. All four total losses and recorded norms are finite. All four isolated extra-head gradient norms are positive. The executed code asserts finite gradients on every trainable parameter, no gradient on frozen parameters and zero extra-output gradient outside qualified queries; each actual witness reports the corresponding pass. Every native matched query is excluded in the bound helper."
+    },
+    {
+      "id": "actual_empty_rows_and_clipped_targets",
+      "result": "PASS",
+      "evidence": "Actual control candidate counts are146/143 with120/126 outside faces; member_target122/140 with45/40 outside faces. Each of the four actual row-count lists includes zero; per-row sum, positive-row count and six-face totals are internally consistent. These actual receipts, not old cached cohort counts, establish the exercised preflight targets."
+    },
+    {
+      "id": "actual_frozen_parent_zeroR_bbs_and_masks",
+      "result": "PASS",
+      "evidence": "Both receipts assert all_parent_and_R_states_exact. The executed source compares every non-geometry state against its initial CPU clone after both updates. Every witness reports zero_R_semantic_exact and cached-upstream bbs/Mask exact after the head update. The native final semantic head runs once per complete forward, with one explicitly diagnostic cached head replay. This is not a claim that separate full GPU forwards are bitwise identical."
+    },
+    {
+      "id": "strict_memory_restore_and_no_carry",
+      "result": "PASS",
+      "evidence": "Both receipts have weight_files_created0 and optimizer_exact_check with10states,1group, all keys/moments/steps/groups exact. The executed preflight uses BytesIO only, strictly restores full model state and optimizer, asserts step2 and returns. Fit controller uses separate child processes for train/formal in each arm. Train reconstructs officialPV+originalG+4509 and creates fresh AdamW; no preflight state is saved or loaded. Formal evaluation later restores only that arm's3723-step terminal."
+    },
+    {
+      "id": "formal_training_budget_and_evaluation",
+      "result": "PASS",
+      "evidence": "The uploaded runner/specs retain29778 fit rows once, B8, no accumulation,3723 updates and tail2, with exact row coverage assertions. Parent geometry7446 plus new3723 is11169; sanity updates do not enter that initialization or budget. Initial/terminal module holdout6887 and separate formal9508 are preserved. evaluate disables both augment flags before loaders and retains official last/bbs against native dataset GT over all256 candidates, with same-query Box/Mask and thresholds.25/.5. Parent state exactness and full10-state checkpoint restore remain asserted."
+    },
+    {
+      "id": "launch_gates_resources_lock_and_lifecycle",
+      "result": "PASS_SOURCE_NOT_EXECUTED",
+      "evidence": "Launcher requires source and launch review PASS/WARN with no blockers, existing byte bindings, both closed actual preflights and the target-specific flags before SSH. It then compares live remote receipt and five source/spec bytes to the reviewed local files, requires completed preflight/no fit_status, idle compute-app list and284880097bytes reserve, and starts the sequential fit controller under the existing exclusive flock. Controller verifies official/G/4509 parents before and after. The diff from the completed predecessor changes only comparison bindings/proofs/budget labels/screen/estimate."
+    },
+    {
+      "id": "polling_estimate_basis",
+      "result": "PASS",
+      "evidence": "The existing predecessor launch timestamp09:22:14.770396 to controller finish13:53:50.086084 is16295.315688s, matching16295.32s in the launcher. The controller-only duration is16290.71916269511s. The16400s pair estimate, first meaningful check6200s and later240s retain the original lifecycle and acknowledge possible target-dependent throughput. They are estimates, not new completion evidence."
+    }
+  ],
+  "actual_preflight": {
+    "control": {
+      "status": "pass",
+      "optimizer_steps": 2,
+      "weight_files_created": 0,
+      "native_data_and_member_target_exact": true,
+      "all_parent_and_R_states_exact": true,
+      "optimizer_exact_check": {
+        "all_keys_moments_steps_and_groups_exact": true,
+        "moment_and_step_states": 10,
+        "param_groups": 1
+      },
+      "elapsed_seconds": 465.82443042844534,
+      "extra_candidates": [
+        146,
+        143
+      ],
+      "outside_faces": [
+        120,
+        126
+      ],
+      "qualified_row_counts": [
+        [
+          28,
+          0,
+          0,
+          4,
+          0,
+          14,
+          98,
+          2
+        ],
+        [
+          28,
+          0,
+          0,
+          1,
+          0,
+          14,
+          100,
+          0
+        ]
+      ],
+      "extra_alone_output_gradient": [
+        0.4267590045928955,
+        0.3588738441467285
+      ],
+      "target_modes": [
+        "native_gt",
+        "native_gt"
+      ]
+    },
+    "member_target": {
+      "status": "pass",
+      "optimizer_steps": 2,
+      "weight_files_created": 0,
+      "native_data_and_member_target_exact": true,
+      "all_parent_and_R_states_exact": true,
+      "optimizer_exact_check": {
+        "all_keys_moments_steps_and_groups_exact": true,
+        "moment_and_step_states": 10,
+        "param_groups": 1
+      },
+      "elapsed_seconds": 449.6750159114599,
+      "extra_candidates": [
+        122,
+        140
+      ],
+      "outside_faces": [
+        45,
+        40
+      ],
+      "qualified_row_counts": [
+        [
+          28,
+          0,
+          0,
+          2,
+          0,
+          11,
+          79,
+          2
+        ],
+        [
+          28,
+          0,
+          0,
+          1,
+          0,
+          28,
+          83,
+          0
+        ]
+      ],
+      "extra_alone_output_gradient": [
+        0.4150775969028473,
+        0.3241184651851654
+      ],
+      "target_modes": [
+        "member_gt",
+        "member_gt"
+      ]
+    }
+  },
+  "actual_controller": {
+    "status": "complete",
+    "phase": "preflight",
+    "started_cst": "2026-10-05T16:35:35.311259+08:00",
+    "protected_best_hits": [
+      5614,
+      4509
+    ],
+    "completed_runs": [
+      "control/preflight",
+      "member_target/preflight"
+    ],
+    "arm": "member_target",
+    "mode": "preflight",
+    "child_pid": 629725,
+    "exit_code": 0,
+    "finished_cst": "2026-10-05T16:51:05.651446+08:00",
+    "elapsed_seconds": 930.3403266593814,
+    "protected_parents_exact": true,
+    "optimizer_steps_per_arm": 2,
+    "accuracy_result": false
+  },
+  "validation": {
+    "intake_entries_checked": 21,
+    "intake_bytes_checked": 98022,
+    "source_review_existing_bindings_checked": 45,
+    "receipt_to_log_exact": true,
+    "receipt_runner_and_spec_bindings_exact": true,
+    "actual_upload_to_current_source_exact": true,
+    "both_import_records_equal_prior_actual_imports": true,
+    "launcher_derivation_exact_without_source_writes": true,
+    "python_AST": "PASS",
+    "loss_and_candidate_count_consistency": "PASS"
+  },
+  "launch_time_conditions": {
+    "local_fit_launch_record_absent": true,
+    "live_remote_byte_resource_and_gpu_lock_gates": "Implemented; intentionally not executed by this reviewer",
+    "required_reserve_bytes": 284880097,
+    "first_check_seconds": 6200,
+    "later_poll_seconds": 240,
+    "estimated_pair_seconds": 16400,
+    "parent_geometry_fit_updates": 7446,
+    "new_fit_updates_per_arm": 3723,
+    "terminal_geometry_updates": 11169
+  },
+  "limitations": [
+    "This review inspected actual saved GPU receipts and their bound source; it did not rerun model forward/backward or load weights.",
+    "The frozen bbs/Mask witness applies to cached upstream data within each update diagnostic; separate complete forwards are not claimed bitwise equal.",
+    "Formal training/evaluation has not been launched by this reviewer; current live remote resources were not queried.",
+    "Historical SOURCE_REVIEW saved-cohort counts remain historical, not the new GPU target counts."
+  ],
+  "actions": {
+    "existing_source_edits": 0,
+    "raw_receipt_edits": 0,
+    "remote_calls": 0,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "weights_loaded": 0,
+    "weights_created": 0,
+    "formal_launches": 0,
+    "review_artifacts_written": true
+  },
+  "reviewed_file_count": 37,
+  "reviewed_files": [
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\launch_geometry_fit_authorized.py",
+      "sha256": "79de4ef26097e8085d745e5ae43d00933a6d80d6c4042d9361b433f94e6a3798",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\prepare_fit_launcher.py",
+      "sha256": "703326eb58badb0e64bcc409b4549397abdbad8182dfe7194452276549348c3d",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\SOURCE_REVIEW.json",
+      "sha256": "dec070a173da35b1c014b714182bb5eb2b40cf0d0e43f4f31b7826fb5bf36f7a",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\SOURCE_REVIEW.md",
+      "sha256": "300bb3c2c50119f2ecd28b7ffa85e3dd85a901a8f403b9679afc7b2fd88fd82d",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_wait.json",
+      "sha256": "27ce9f6c736560ea8501ec4c986fba7d700c93bce676b2e2d47ae385b3bd434b",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\run_geometry_fit.py",
+      "sha256": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\query_supported_geometry.py",
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\controller.py",
+      "sha256": "6be7f646091d090961df236fbf204e6fac74626f9dc13df49ab1e49b3a1982d9",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\control_spec.json",
+      "sha256": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\member_target_spec.json",
+      "sha256": "11825f691eb97342a28055565619be768039824c470e4291c3fff656c1ba9a18",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "45ab4e8bd36073d294aeb41b6a7c9171e0517149de81d8ffff9ef2d44de1ef0d",
+      "coverage": "current_launcher_source_or_bound_source"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\INTAKE.json",
+      "sha256": "304c29f1b934c81fe7b5d156b26a1e8e747416332406f53e5a713319a47c3fad",
+      "coverage": "actual_closed_preflight_intake"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\preflight_status.json",
+      "sha256": "9c673e8924670167de4d232ce910f4331c1dd648c308dce53ac8fea2c81a7d22",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\preflight_controller.log",
+      "sha256": "bd9409c9ad2af81fa980be5b07909e7384bac98157fd722ccf37eac494f63a37",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\preflight_controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\run_geometry_fit.py",
+      "sha256": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\query_supported_geometry.py",
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\controller.py",
+      "sha256": "6be7f646091d090961df236fbf204e6fac74626f9dc13df49ab1e49b3a1982d9",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\control_spec.json",
+      "sha256": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\member_target_spec.json",
+      "sha256": "11825f691eb97342a28055565619be768039824c470e4291c3fff656c1ba9a18",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\SOURCE_REVIEW.json",
+      "sha256": "dec070a173da35b1c014b714182bb5eb2b40cf0d0e43f4f31b7826fb5bf36f7a",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\SOURCE_REVIEW.md",
+      "sha256": "300bb3c2c50119f2ecd28b7ffa85e3dd85a901a8f403b9679afc7b2fd88fd82d",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\EXPERIMENT_PLAN.md",
+      "sha256": "45ab4e8bd36073d294aeb41b6a7c9171e0517149de81d8ffff9ef2d44de1ef0d",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\control\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\control\\load.json",
+      "sha256": "10e33e8108eaddb8e20a36a9e2fda0255e9db5c3072255b96116505c9fbf7ee6",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\control\\preflight.json",
+      "sha256": "edc0f9ef53836b303102c93b727d05b06dab8840ce436fe22b9dd43fa5ce72d5",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\control\\preflight.log",
+      "sha256": "fbd9240fd3b7db22eab35272363da74c2e90c5074d468e330e3cec8497c5ffb1",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\control\\preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\member_target\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\member_target\\load.json",
+      "sha256": "7ed2489957f591b66b97271de7a471a90161451124a718ee86ecfc97c7889fba",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\member_target\\preflight.json",
+      "sha256": "135c0d47a3bb620736d07386dbda20d7d62a4fb8fee249e1273aa0dd3603c02c",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\member_target\\preflight.log",
+      "sha256": "41ea1e55622743412a47405f54fa1cde7b1e14f64f62a2de82c2becdca9333bd",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\preflight_complete\\member_target\\preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "coverage": "actual_uploaded_source_or_closed_preflight_artifact"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\launch_geometry_fit_authorized.py",
+      "sha256": "3f62413380c15a5926f1a3069398c31d42dd9e3a516809b9d4aadc5585bfcc04",
+      "coverage": "actual_predecessor_lifecycle_import_or_timing_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_wait.json",
+      "sha256": "701b071d8a92f8bc82de50e37d15ea511960f3cb2a71aef65eb6a77f6ab02d87",
+      "coverage": "actual_predecessor_lifecycle_import_or_timing_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_launch.json",
+      "sha256": "db9e2911484a538b8640fd6d8db0a965467b3a3125dd41e005eeba88ed41c488",
+      "coverage": "actual_predecessor_lifecycle_import_or_timing_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "coverage": "actual_predecessor_lifecycle_import_or_timing_evidence"
+    }
+  ]
+}

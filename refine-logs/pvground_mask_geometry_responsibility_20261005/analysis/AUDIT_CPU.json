@@ -1,0 +1,1337 @@
+{
+  "status": "PASS",
+  "generated_at": "2026-10-05T00:10:01.339992+00:00",
+  "execution": "LOCAL_CPU_NUMPY_ONLY",
+  "model_import_or_replay": false,
+  "remote_actions": false,
+  "rows": 64,
+  "candidates": 16384,
+  "batches": 8,
+  "seed": 2027,
+  "unique_scan_ids": 60,
+  "unique_physical_scene_ids": 60,
+  "first64_order_matches": true,
+  "point_tensor_hashes_recomputed": false,
+  "all_root_only": true,
+  "counts": {
+    "mask_only": 1115,
+    "both_good": 2447,
+    "mask_only_unmatched": 1112,
+    "mask_only_matched_root": 3,
+    "mask_only_matched_other": 0,
+    "mask_only_box_gradient_nonzero": 3,
+    "mask_only_boundary_gradient_nonzero": 3,
+    "unmatched_good_box": 2593,
+    "rows_with_mask_only_unmatched": 53,
+    "rows_with_both_good": 58,
+    "selected_mask_only": 10,
+    "selected_mask_only_unmatched": 10,
+    "valid_native_GT_slots_total": 64
+  },
+  "all_matched": 64,
+  "all_unmatched": 16320,
+  "all_nonzero_box_gradients": 64,
+  "all_nonzero_boundary_gradients": 64,
+  "unmatched_nonzero_box_gradients": 0,
+  "unmatched_nonzero_boundary_gradients": 0,
+  "box_gradient_analytic_cases": 64,
+  "box_gradient_analytic_max_abs_difference": 1.8560828274338803e-07,
+  "box_threshold_differences": 0,
+  "mask_count_threshold_differences": 0,
+  "numerical_max_abs_differences": {
+    "box_iou_abs": 2.3695575378512856e-06,
+    "mask_iou_abs": 2.9704395831942065e-08,
+    "face_error_abs": 8.344650268554688e-07,
+    "face_change_abs": 4.76837158203125e-07
+  },
+  "bbs_top_tie_rows": 0,
+  "mask_union_point_count_range": [
+    144,
+    14475
+  ],
+  "face_error_median_float64": 0.16417637467384338,
+  "face_change_median_float64": 0.005525633692741394,
+  "outside_pool_candidates": 222,
+  "outside_pool_faces": 546,
+  "coarse_hits50_in_pool": 9,
+  "outside_all_candidates": 12484,
+  "outside_exact_gt_targets_but_final_box_iou_gt_half": 0,
+  "outside_counterexample": null,
+  "raw_mask_reconstructed": false,
+  "hungarian_costs_reconstructed": false,
+  "boundary_logit_gradients_reconstructed": false,
+  "runtime_state_and_parent_weights_independently_rehashed": false,
+  "runtime_receipts_consistent": true,
+  "original_analyzer_cpu_checks": {
+    "saved": 548,
+    "bookkeeping_formula": "8*4+64*8+4",
+    "assert_statement_sites": [
+      15,
+      17,
+      23,
+      31,
+      32,
+      34,
+      35,
+      49,
+      51,
+      55,
+      56,
+      64,
+      77,
+      80,
+      81,
+      82
+    ],
+    "distinct_assert_sites": 16,
+    "expanded_assert_evaluations_from_source_and_actual_loop_sizes": 452,
+    "interpretation": "548 is a manually accumulated label; it is neither distinct sites nor actual assertion evaluations. Original SUMMARY.json preserved."
+  },
+  "array_schema": {
+    "row_id": {
+      "shape": [
+        8
+      ],
+      "dtype": "int64"
+    },
+    "boxes": {
+      "shape": [
+        8,
+        256,
+        6
+      ],
+      "dtype": "float32"
+    },
+    "coarse_boxes": {
+      "shape": [
+        8,
+        256,
+        6
+      ],
+      "dtype": "float32"
+    },
+    "root_box": {
+      "shape": [
+        8,
+        6
+      ],
+      "dtype": "float32"
+    },
+    "bbs": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "float32"
+    },
+    "box_iou": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "float32"
+    },
+    "mask_iou": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "float32"
+    },
+    "mask_intersection": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "int64"
+    },
+    "mask_union": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "int64"
+    },
+    "matched_slot": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "int16"
+    },
+    "box_gradient_max": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "float32"
+    },
+    "boundary_gradient_max": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "float32"
+    },
+    "max_face_error": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "float32"
+    },
+    "max_face_change": {
+      "shape": [
+        8,
+        256
+      ],
+      "dtype": "float32"
+    }
+  },
+  "actual_check_count": 585,
+  "actual_checks": [
+    "intake_bytes_and_sha:EXPERIMENT_PLAN.md",
+    "intake_bytes_and_sha:SOURCE_REVIEW.json",
+    "intake_bytes_and_sha:SOURCE_REVIEW.md",
+    "intake_bytes_and_sha:batch_00.npz",
+    "intake_bytes_and_sha:batch_01.npz",
+    "intake_bytes_and_sha:batch_02.npz",
+    "intake_bytes_and_sha:batch_03.npz",
+    "intake_bytes_and_sha:batch_04.npz",
+    "intake_bytes_and_sha:batch_05.npz",
+    "intake_bytes_and_sha:batch_06.npz",
+    "intake_bytes_and_sha:batch_07.npz",
+    "intake_bytes_and_sha:controller.exit",
+    "intake_bytes_and_sha:controller.log",
+    "intake_bytes_and_sha:controller.py",
+    "intake_bytes_and_sha:imports.json",
+    "intake_bytes_and_sha:launch.json",
+    "intake_bytes_and_sha:load.json",
+    "intake_bytes_and_sha:probe.exit",
+    "intake_bytes_and_sha:probe.log",
+    "intake_bytes_and_sha:receipt.json",
+    "intake_bytes_and_sha:rows.jsonl",
+    "intake_bytes_and_sha:run_mask_geometry_probe.py",
+    "intake_bytes_and_sha:spec.json",
+    "intake_bytes_and_sha:status.json",
+    "intake_total_bytes",
+    "deployed_local_identity:EXPERIMENT_PLAN.md",
+    "deployed_local_identity:SOURCE_REVIEW.md",
+    "deployed_local_identity:SOURCE_REVIEW.json",
+    "deployed_local_identity:controller.py",
+    "deployed_local_identity:run_mask_geometry_probe.py",
+    "deployed_local_identity:spec.json",
+    "deployed_local_identity:launch.json",
+    "prior_review_identity:EXPERIMENT_PLAN.md",
+    "prior_review_identity:run_mask_geometry_probe.py",
+    "prior_review_identity:probe_body.py",
+    "prior_review_identity:prepare_probe.py",
+    "prior_review_identity:spec.json",
+    "prior_review_identity:GENERATION.json",
+    "prior_review_identity:controller.py",
+    "prior_review_identity:launch_probe_authorized.py",
+    "prior_review_identity:run_final_quality_fit.py",
+    "prior_review_identity:readback_model_factory.py",
+    "prior_review_identity:readback_preflight_checks.py",
+    "prior_review_identity:native_root_bbs.py",
+    "prior_review_identity:pvground_boundary_box_refiner.py",
+    "prior_review_identity:pvground_boundary_evidence_readback.py",
+    "prior_review_identity:install_boundary_evidence_readback.py",
+    "prior_review_identity:pvground_task_observation_query.py",
+    "prior_review_identity:pvground_observation_query.py",
+    "prior_review_identity:pvground_source_query.py",
+    "prior_review_identity:pvground_whole_mask_box_refiner.py",
+    "prior_review_identity:pvground_tail_support_box_refiner.py",
+    "prior_review_identity:pvground_candidate_box_refiner.py",
+    "prior_review_identity:whole_mask_range.py",
+    "prior_review_identity:joint_det_dataset.py",
+    "prior_review_identity:input_manifest.json",
+    "prior_review_identity:appearance_source_manifest.json",
+    "prior_review_identity:losses.py",
+    "prior_review_identity:main_utils.py",
+    "prior_review_identity:prepare_data.py",
+    "prior_review_identity:grounding_evaluator.py",
+    "prior_review_identity:pv_ground.py",
+    "prior_review_identity:source_port.json",
+    "prior_review_identity:quality_fit_spec.json",
+    "prior_review_identity:imports.json",
+    "prior_review_identity:train.jsonl",
+    "helper_identity:install_boundary_evidence_readback.py",
+    "helper_identity:native_final_quality.py",
+    "helper_identity:native_root_bbs.py",
+    "helper_identity:pvground_boundary_box_refiner.py",
+    "helper_identity:pvground_boundary_evidence_readback.py",
+    "helper_identity:pvground_candidate_box_refiner.py",
+    "helper_identity:pvground_observation_query.py",
+    "helper_identity:pvground_semantic_assignment.py",
+    "helper_identity:pvground_source_query.py",
+    "helper_identity:pvground_tail_support_box_refiner.py",
+    "helper_identity:pvground_task_observation_query.py",
+    "helper_identity:pvground_whole_mask_box_refiner.py",
+    "helper_identity:readback_model_factory.py",
+    "helper_identity:readback_preflight_checks.py",
+    "helper_identity:run_final_quality_fit.py",
+    "helper_identity:whole_mask_range.py",
+    "helper_identity:whole_model_preflight_checks.py",
+    "actual_import_identity:src.joint_det_dataset",
+    "actual_import_identity:models.losses",
+    "actual_import_identity:main_utils",
+    "actual_import_identity:prepare_data",
+    "actual_import_identity:models.pv_ground",
+    "manifest_source_identity",
+    "manifest_loader_identity",
+    "split_identity",
+    "partition_size_disjoint",
+    "source_port_identity",
+    "receipt_runner_spec_rows_identity",
+    "summary_receipt_identity",
+    "generation_identity",
+    "first64_order_and_unique",
+    "all_probe_rows_fit",
+    "stored_scans_in_fit_physical_fold",
+    "all_scanrefer",
+    "all_root_only",
+    "all_point_hashes_well_formed",
+    "boundary_knot_math",
+    "array_schema:0",
+    "finite_arrays:0",
+    "candidate_domains:0",
+    "point_count_domains:0",
+    "iou_values:0",
+    "all_thresholds:0",
+    "face_values:0",
+    "face_parameterization_identity:0",
+    "face_decode_exact_gt_identity:0",
+    "matched_boundary_range_receipt:0",
+    "0:ids_and_gt",
+    "0:assignment_mapping",
+    "0:selected",
+    "0:unmatched_gradients",
+    "0:native_box_gradient_analytic",
+    "0:role_counts",
+    "1:ids_and_gt",
+    "1:assignment_mapping",
+    "1:selected",
+    "1:unmatched_gradients",
+    "1:native_box_gradient_analytic",
+    "1:role_counts",
+    "2:ids_and_gt",
+    "2:assignment_mapping",
+    "2:selected",
+    "2:unmatched_gradients",
+    "2:native_box_gradient_analytic",
+    "2:role_counts",
+    "3:ids_and_gt",
+    "3:assignment_mapping",
+    "3:selected",
+    "3:unmatched_gradients",
+    "3:native_box_gradient_analytic",
+    "3:role_counts",
+    "4:ids_and_gt",
+    "4:assignment_mapping",
+    "4:selected",
+    "4:unmatched_gradients",
+    "4:native_box_gradient_analytic",
+    "4:role_counts",
+    "5:ids_and_gt",
+    "5:assignment_mapping",
+    "5:selected",
+    "5:unmatched_gradients",
+    "5:native_box_gradient_analytic",
+    "5:role_counts",
+    "6:ids_and_gt",
+    "6:assignment_mapping",
+    "6:selected",
+    "6:unmatched_gradients",
+    "6:native_box_gradient_analytic",
+    "6:role_counts",
+    "7:ids_and_gt",
+    "7:assignment_mapping",
+    "7:selected",
+    "7:unmatched_gradients",
+    "7:native_box_gradient_analytic",
+    "7:role_counts",
+    "batch_receipt:0",
+    "array_schema:1",
+    "finite_arrays:1",
+    "candidate_domains:1",
+    "point_count_domains:1",
+    "iou_values:1",
+    "all_thresholds:1",
+    "face_values:1",
+    "face_parameterization_identity:1",
+    "face_decode_exact_gt_identity:1",
+    "matched_boundary_range_receipt:1",
+    "8:ids_and_gt",
+    "8:assignment_mapping",
+    "8:selected",
+    "8:unmatched_gradients",
+    "8:native_box_gradient_analytic",
+    "8:role_counts",
+    "9:ids_and_gt",
+    "9:assignment_mapping",
+    "9:selected",
+    "9:unmatched_gradients",
+    "9:native_box_gradient_analytic",
+    "9:role_counts",
+    "10:ids_and_gt",
+    "10:assignment_mapping",
+    "10:selected",
+    "10:unmatched_gradients",
+    "10:native_box_gradient_analytic",
+    "10:role_counts",
+    "11:ids_and_gt",
+    "11:assignment_mapping",
+    "11:selected",
+    "11:unmatched_gradients",
+    "11:native_box_gradient_analytic",
+    "11:role_counts",
+    "12:ids_and_gt",
+    "12:assignment_mapping",
+    "12:selected",
+    "12:unmatched_gradients",
+    "12:native_box_gradient_analytic",
+    "12:role_counts",
+    "13:ids_and_gt",
+    "13:assignment_mapping",
+    "13:selected",
+    "13:unmatched_gradients",
+    "13:native_box_gradient_analytic",
+    "13:role_counts",
+    "14:ids_and_gt",
+    "14:assignment_mapping",
+    "14:selected",
+    "14:unmatched_gradients",
+    "14:native_box_gradient_analytic",
+    "14:role_counts",
+    "15:ids_and_gt",
+    "15:assignment_mapping",
+    "15:selected",
+    "15:unmatched_gradients",
+    "15:native_box_gradient_analytic",
+    "15:role_counts",
+    "batch_receipt:1",
+    "array_schema:2",
+    "finite_arrays:2",
+    "candidate_domains:2",
+    "point_count_domains:2",
+    "iou_values:2",
+    "all_thresholds:2",
+    "face_values:2",
+    "face_parameterization_identity:2",
+    "face_decode_exact_gt_identity:2",
+    "matched_boundary_range_receipt:2",
+    "16:ids_and_gt",
+    "16:assignment_mapping",
+    "16:selected",
+    "16:unmatched_gradients",
+    "16:native_box_gradient_analytic",
+    "16:role_counts",
+    "17:ids_and_gt",
+    "17:assignment_mapping",
+    "17:selected",
+    "17:unmatched_gradients",
+    "17:native_box_gradient_analytic",
+    "17:role_counts",
+    "18:ids_and_gt",
+    "18:assignment_mapping",
+    "18:selected",
+    "18:unmatched_gradients",
+    "18:native_box_gradient_analytic",
+    "18:role_counts",
+    "19:ids_and_gt",
+    "19:assignment_mapping",
+    "19:selected",
+    "19:unmatched_gradients",
+    "19:native_box_gradient_analytic",
+    "19:role_counts",
+    "20:ids_and_gt",
+    "20:assignment_mapping",
+    "20:selected",
+    "20:unmatched_gradients",
+    "20:native_box_gradient_analytic",
+    "20:role_counts",
+    "21:ids_and_gt",
+    "21:assignment_mapping",
+    "21:selected",
+    "21:unmatched_gradients",
+    "21:native_box_gradient_analytic",
+    "21:role_counts",
+    "22:ids_and_gt",
+    "22:assignment_mapping",
+    "22:selected",
+    "22:unmatched_gradients",
+    "22:native_box_gradient_analytic",
+    "22:role_counts",
+    "23:ids_and_gt",
+    "23:assignment_mapping",
+    "23:selected",
+    "23:unmatched_gradients",
+    "23:native_box_gradient_analytic",
+    "23:role_counts",
+    "batch_receipt:2",
+    "array_schema:3",
+    "finite_arrays:3",
+    "candidate_domains:3",
+    "point_count_domains:3",
+    "iou_values:3",
+    "all_thresholds:3",
+    "face_values:3",
+    "face_parameterization_identity:3",
+    "face_decode_exact_gt_identity:3",
+    "matched_boundary_range_receipt:3",
+    "24:ids_and_gt",
+    "24:assignment_mapping",
+    "24:selected",
+    "24:unmatched_gradients",
+    "24:native_box_gradient_analytic",
+    "24:role_counts",
+    "25:ids_and_gt",
+    "25:assignment_mapping",
+    "25:selected",
+    "25:unmatched_gradients",
+    "25:native_box_gradient_analytic",
+    "25:role_counts",
+    "26:ids_and_gt",
+    "26:assignment_mapping",
+    "26:selected",
+    "26:unmatched_gradients",
+    "26:native_box_gradient_analytic",
+    "26:role_counts",
+    "27:ids_and_gt",
+    "27:assignment_mapping",
+    "27:selected",
+    "27:unmatched_gradients",
+    "27:native_box_gradient_analytic",
+    "27:role_counts",
+    "28:ids_and_gt",
+    "28:assignment_mapping",
+    "28:selected",
+    "28:unmatched_gradients",
+    "28:native_box_gradient_analytic",
+    "28:role_counts",
+    "29:ids_and_gt",
+    "29:assignment_mapping",
+    "29:selected",
+    "29:unmatched_gradients",
+    "29:native_box_gradient_analytic",
+    "29:role_counts",
+    "30:ids_and_gt",
+    "30:assignment_mapping",
+    "30:selected",
+    "30:unmatched_gradients",
+    "30:native_box_gradient_analytic",
+    "30:role_counts",
+    "31:ids_and_gt",
+    "31:assignment_mapping",
+    "31:selected",
+    "31:unmatched_gradients",
+    "31:native_box_gradient_analytic",
+    "31:role_counts",
+    "batch_receipt:3",
+    "array_schema:4",
+    "finite_arrays:4",
+    "candidate_domains:4",
+    "point_count_domains:4",
+    "iou_values:4",
+    "all_thresholds:4",
+    "face_values:4",
+    "face_parameterization_identity:4",
+    "face_decode_exact_gt_identity:4",
+    "matched_boundary_range_receipt:4",
+    "32:ids_and_gt",
+    "32:assignment_mapping",
+    "32:selected",
+    "32:unmatched_gradients",
+    "32:native_box_gradient_analytic",
+    "32:role_counts",
+    "33:ids_and_gt",
+    "33:assignment_mapping",
+    "33:selected",
+    "33:unmatched_gradients",
+    "33:native_box_gradient_analytic",
+    "33:role_counts",
+    "34:ids_and_gt",
+    "34:assignment_mapping",
+    "34:selected",
+    "34:unmatched_gradients",
+    "34:native_box_gradient_analytic",
+    "34:role_counts",
+    "35:ids_and_gt",
+    "35:assignment_mapping",
+    "35:selected",
+    "35:unmatched_gradients",
+    "35:native_box_gradient_analytic",
+    "35:role_counts",
+    "36:ids_and_gt",
+    "36:assignment_mapping",
+    "36:selected",
+    "36:unmatched_gradients",
+    "36:native_box_gradient_analytic",
+    "36:role_counts",
+    "37:ids_and_gt",
+    "37:assignment_mapping",
+    "37:selected",
+    "37:unmatched_gradients",
+    "37:native_box_gradient_analytic",
+    "37:role_counts",
+    "38:ids_and_gt",
+    "38:assignment_mapping",
+    "38:selected",
+    "38:unmatched_gradients",
+    "38:native_box_gradient_analytic",
+    "38:role_counts",
+    "39:ids_and_gt",
+    "39:assignment_mapping",
+    "39:selected",
+    "39:unmatched_gradients",
+    "39:native_box_gradient_analytic",
+    "39:role_counts",
+    "batch_receipt:4",
+    "array_schema:5",
+    "finite_arrays:5",
+    "candidate_domains:5",
+    "point_count_domains:5",
+    "iou_values:5",
+    "all_thresholds:5",
+    "face_values:5",
+    "face_parameterization_identity:5",
+    "face_decode_exact_gt_identity:5",
+    "matched_boundary_range_receipt:5",
+    "40:ids_and_gt",
+    "40:assignment_mapping",
+    "40:selected",
+    "40:unmatched_gradients",
+    "40:native_box_gradient_analytic",
+    "40:role_counts",
+    "41:ids_and_gt",
+    "41:assignment_mapping",
+    "41:selected",
+    "41:unmatched_gradients",
+    "41:native_box_gradient_analytic",
+    "41:role_counts",
+    "42:ids_and_gt",
+    "42:assignment_mapping",
+    "42:selected",
+    "42:unmatched_gradients",
+    "42:native_box_gradient_analytic",
+    "42:role_counts",
+    "43:ids_and_gt",
+    "43:assignment_mapping",
+    "43:selected",
+    "43:unmatched_gradients",
+    "43:native_box_gradient_analytic",
+    "43:role_counts",
+    "44:ids_and_gt",
+    "44:assignment_mapping",
+    "44:selected",
+    "44:unmatched_gradients",
+    "44:native_box_gradient_analytic",
+    "44:role_counts",
+    "45:ids_and_gt",
+    "45:assignment_mapping",
+    "45:selected",
+    "45:unmatched_gradients",
+    "45:native_box_gradient_analytic",
+    "45:role_counts",
+    "46:ids_and_gt",
+    "46:assignment_mapping",
+    "46:selected",
+    "46:unmatched_gradients",
+    "46:native_box_gradient_analytic",
+    "46:role_counts",
+    "47:ids_and_gt",
+    "47:assignment_mapping",
+    "47:selected",
+    "47:unmatched_gradients",
+    "47:native_box_gradient_analytic",
+    "47:role_counts",
+    "batch_receipt:5",
+    "array_schema:6",
+    "finite_arrays:6",
+    "candidate_domains:6",
+    "point_count_domains:6",
+    "iou_values:6",
+    "all_thresholds:6",
+    "face_values:6",
+    "face_parameterization_identity:6",
+    "face_decode_exact_gt_identity:6",
+    "matched_boundary_range_receipt:6",
+    "48:ids_and_gt",
+    "48:assignment_mapping",
+    "48:selected",
+    "48:unmatched_gradients",
+    "48:native_box_gradient_analytic",
+    "48:role_counts",
+    "49:ids_and_gt",
+    "49:assignment_mapping",
+    "49:selected",
+    "49:unmatched_gradients",
+    "49:native_box_gradient_analytic",
+    "49:role_counts",
+    "50:ids_and_gt",
+    "50:assignment_mapping",
+    "50:selected",
+    "50:unmatched_gradients",
+    "50:native_box_gradient_analytic",
+    "50:role_counts",
+    "51:ids_and_gt",
+    "51:assignment_mapping",
+    "51:selected",
+    "51:unmatched_gradients",
+    "51:native_box_gradient_analytic",
+    "51:role_counts",
+    "52:ids_and_gt",
+    "52:assignment_mapping",
+    "52:selected",
+    "52:unmatched_gradients",
+    "52:native_box_gradient_analytic",
+    "52:role_counts",
+    "53:ids_and_gt",
+    "53:assignment_mapping",
+    "53:selected",
+    "53:unmatched_gradients",
+    "53:native_box_gradient_analytic",
+    "53:role_counts",
+    "54:ids_and_gt",
+    "54:assignment_mapping",
+    "54:selected",
+    "54:unmatched_gradients",
+    "54:native_box_gradient_analytic",
+    "54:role_counts",
+    "55:ids_and_gt",
+    "55:assignment_mapping",
+    "55:selected",
+    "55:unmatched_gradients",
+    "55:native_box_gradient_analytic",
+    "55:role_counts",
+    "batch_receipt:6",
+    "array_schema:7",
+    "finite_arrays:7",
+    "candidate_domains:7",
+    "point_count_domains:7",
+    "iou_values:7",
+    "all_thresholds:7",
+    "face_values:7",
+    "face_parameterization_identity:7",
+    "face_decode_exact_gt_identity:7",
+    "matched_boundary_range_receipt:7",
+    "56:ids_and_gt",
+    "56:assignment_mapping",
+    "56:selected",
+    "56:unmatched_gradients",
+    "56:native_box_gradient_analytic",
+    "56:role_counts",
+    "57:ids_and_gt",
+    "57:assignment_mapping",
+    "57:selected",
+    "57:unmatched_gradients",
+    "57:native_box_gradient_analytic",
+    "57:role_counts",
+    "58:ids_and_gt",
+    "58:assignment_mapping",
+    "58:selected",
+    "58:unmatched_gradients",
+    "58:native_box_gradient_analytic",
+    "58:role_counts",
+    "59:ids_and_gt",
+    "59:assignment_mapping",
+    "59:selected",
+    "59:unmatched_gradients",
+    "59:native_box_gradient_analytic",
+    "59:role_counts",
+    "60:ids_and_gt",
+    "60:assignment_mapping",
+    "60:selected",
+    "60:unmatched_gradients",
+    "60:native_box_gradient_analytic",
+    "60:role_counts",
+    "61:ids_and_gt",
+    "61:assignment_mapping",
+    "61:selected",
+    "61:unmatched_gradients",
+    "61:native_box_gradient_analytic",
+    "61:role_counts",
+    "62:ids_and_gt",
+    "62:assignment_mapping",
+    "62:selected",
+    "62:unmatched_gradients",
+    "62:native_box_gradient_analytic",
+    "62:role_counts",
+    "63:ids_and_gt",
+    "63:assignment_mapping",
+    "63:selected",
+    "63:unmatched_gradients",
+    "63:native_box_gradient_analytic",
+    "63:role_counts",
+    "batch_receipt:7",
+    "all_counts_vs_receipt_and_summary",
+    "range_counts_vs_summary",
+    "medians_vs_summary",
+    "closure_receipts",
+    "controller_log_identity",
+    "probe_logs_receipt",
+    "no_update_receipts",
+    "no_model_backward_or_weight_save_calls",
+    "two_leaf_autograd_calls",
+    "summary_bookkeeping_formula"
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\complete\\quality\\imports.json",
+      "sha256": "9cc629e89199b5cc22c128b402b0b197c4fa7bae81069e65550e8246ca2be595",
+      "bytes": 1252
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\complete\\quality\\train.jsonl",
+      "sha256": "5d2efe4c34c08ad715f820e99f4361e1ce453165346f3ab4305da0bbd75c2674",
+      "bytes": 3483803
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\quality_fit_spec.json",
+      "sha256": "7d84b843e16ccb140ac4f3a4f1b9839606110bdf297f7a8a7148b11a61273ec0",
+      "bytes": 3804
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py",
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "bytes": 518
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "bytes": 481
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py",
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "bytes": 4335
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "bytes": 3767
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "bytes": 7683
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "bytes": 3025
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "bytes": 3655
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "bytes": 2770
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "bytes": 3906
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "bytes": 4754
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "bytes": 8163
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py",
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+      "bytes": 31540
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "bytes": 3629
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\appearance_source_manifest.json",
+      "sha256": "75cd5f87a8e715c15b458ed1964c2e6f1d35046bb6beffca1b3388d5903bbe36",
+      "bytes": 74702
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\input_manifest.json",
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+      "bytes": 161881
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "bytes": 75981
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\source_port.json",
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304",
+      "bytes": 10665
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+      "bytes": 26744
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "2a622f0df59aff75ce7c2e3cb77cf68a58741cc63edfd267d0ab66de023b6cca",
+      "bytes": 2320
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\GENERATION.json",
+      "sha256": "a96d71b0ca181847ff60b4cee526f1000badf519c58855e68fd34228811e693b",
+      "bytes": 516
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\controller.py",
+      "sha256": "a496f8ef286bd1dc6ffba1ddbb676a989d8d4d54dc0475b307803881af1322f9",
+      "bytes": 2365
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\launch_probe_authorized.py",
+      "sha256": "2a8a4ee398c0d2ea62a86bb8f86bbf646b1df12c8181d87852a6872f39c36188",
+      "bytes": 3967
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\prepare_probe.py",
+      "sha256": "549d9c5b9047e2d3968447be718aafbafa989e1339a7e571d9f068cebf4b0e91",
+      "bytes": 3799
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\probe_body.py",
+      "sha256": "a26238433fef50b6508cce0354dca0be1cd8d8977c002db7611a0b5248ddd130",
+      "bytes": 11381
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\run_mask_geometry_probe.py",
+      "sha256": "ff7a5ec93a0021c53fd08ed362d92c7e2f7cff6b99736452ad5237bbf47c73ff",
+      "bytes": 22860
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\spec.json",
+      "sha256": "cf5c12cab4f553b3ba3d9d8e2a5abbf5022962d9ab79973be47e20601f0bede5",
+      "bytes": 4140
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "bytes": 24599
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\models\\losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "bytes": 40468
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\prepare_data.py",
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "bytes": 19658
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\src\\grounding_evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "bytes": 41473
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\complete\\quality\\train.jsonl",
+      "sha256": "5d2efe4c34c08ad715f820e99f4361e1ce453165346f3ab4305da0bbd75c2674",
+      "bytes": 3483803
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py",
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "bytes": 518
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_final_quality.py",
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4",
+      "bytes": 5764
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "bytes": 481
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py",
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "bytes": 4335
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "bytes": 3767
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "bytes": 7683
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_semantic_assignment.py",
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "bytes": 5065
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "bytes": 3025
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "bytes": 3655
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "bytes": 2770
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "bytes": 3906
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "bytes": 4754
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "bytes": 8163
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py",
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+      "bytes": 31540
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "bytes": 3629
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "bytes": 2436
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\appearance_source_manifest.json",
+      "sha256": "75cd5f87a8e715c15b458ed1964c2e6f1d35046bb6beffca1b3388d5903bbe36",
+      "bytes": 74702
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\input_manifest.json",
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+      "bytes": 161881
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "bytes": 75981
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\split_protocol.json",
+      "sha256": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+      "bytes": 246139
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\source_port.json",
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304",
+      "bytes": 10665
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+      "bytes": 26744
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "2a622f0df59aff75ce7c2e3cb77cf68a58741cc63edfd267d0ab66de023b6cca",
+      "bytes": 2320
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\GENERATION.json",
+      "sha256": "a96d71b0ca181847ff60b4cee526f1000badf519c58855e68fd34228811e693b",
+      "bytes": 516
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\GEOMETRY_TARGET_NEXT_PLAN.md",
+      "sha256": "35f828c9cbd5a27ba096be237e544fda66bf570a77f8c55c109efcffc933a29d",
+      "bytes": 3649
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\MANIFEST.md",
+      "sha256": "cc410f8822c8e4f505304cb9e78474e4599ed7e9f0e87463b372313a6b138b2d",
+      "bytes": 842
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\NEXT_CONTINUATION.md",
+      "sha256": "e27c9be034c97fb620fd6cf542c4b4a73e628a0e9f3ff3bf220322abe9a7a90b",
+      "bytes": 405
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW.json",
+      "sha256": "922056a462c2452623eaf59c609c0e42c13c5a84e762a3ae7b7a859c41763e7b",
+      "bytes": 17296
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW.md",
+      "sha256": "bead96f48366af1baceddfd2450c92498d93d3b40dcb3ece4e66afbc80e7ec36",
+      "bytes": 2666
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW_20261005_074957.json",
+      "sha256": "922056a462c2452623eaf59c609c0e42c13c5a84e762a3ae7b7a859c41763e7b",
+      "bytes": 17296
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW_20261005_074957.md",
+      "sha256": "bead96f48366af1baceddfd2450c92498d93d3b40dcb3ece4e66afbc80e7ec36",
+      "bytes": 2666
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW_CALL.json",
+      "sha256": "8782e72c09359698a91ba94b4b84600f9391e559da9a155b25199c875cf2404b",
+      "bytes": 897
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\analysis\\SUMMARY.json",
+      "sha256": "01e1df8604ce53d6628974bcd7134e3359c685c4f7a8bce4db80dc9d6b733b0a",
+      "bytes": 1593
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\analyze_probe.py",
+      "sha256": "e98d3f54875ae64c7095cab2ed354bb05d6cdde6502f4fd841fcda12137facd1",
+      "bytes": 5873
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\collect_probe_authorized.py",
+      "sha256": "a2631322b7a4e212e2f931a9b4ebf82bd257cdf41a60f29f7e16d6955a089f04",
+      "bytes": 1412
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\EXPERIMENT_PLAN.md",
+      "sha256": "2a622f0df59aff75ce7c2e3cb77cf68a58741cc63edfd267d0ab66de023b6cca",
+      "bytes": 2320
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\INTAKE.json",
+      "sha256": "f9c498a633e731f8af4bc3edf952978c7b41f50d0bbaca0f0ba01a641789ccc1",
+      "bytes": 3910
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\SOURCE_REVIEW.json",
+      "sha256": "922056a462c2452623eaf59c609c0e42c13c5a84e762a3ae7b7a859c41763e7b",
+      "bytes": 17296
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\SOURCE_REVIEW.md",
+      "sha256": "bead96f48366af1baceddfd2450c92498d93d3b40dcb3ece4e66afbc80e7ec36",
+      "bytes": 2666
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_00.npz",
+      "sha256": "cd396b2d0932032c9648868456ed7832ebda556bf72805adcf03b05855553478",
+      "bytes": 114112
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_01.npz",
+      "sha256": "b11715fcf83e0c2a39e691d2311c5dc9d6492fc6b86f6c6395f942c66a188185",
+      "bytes": 113100
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_02.npz",
+      "sha256": "000676b3c36dfae86354763551fdf1f01e533a24bca7b5eeef130fd4bc4d4bf2",
+      "bytes": 116141
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_03.npz",
+      "sha256": "da78eba86b73211a330a2c7f3506fbfe2fae51540322fe497fc6f825bd104a98",
+      "bytes": 114137
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_04.npz",
+      "sha256": "48ca99f20f0871fb0f48ea85d2da4c87fe8e0be94fda9e17403eb345659c7643",
+      "bytes": 114675
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_05.npz",
+      "sha256": "dc102569c60c7e752433f2cd6591393e7796780695f78fd1a911aa18925cc8d0",
+      "bytes": 114095
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_06.npz",
+      "sha256": "9182bdd33de7efe96f2a10274cf058e424d80e04912cfd340f530ee36fee3c18",
+      "bytes": 110169
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_07.npz",
+      "sha256": "fbf6439a4d9e52ab18591c1453161e2d3805f07083568452b508fa5cd93a56d6",
+      "bytes": 113676
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\controller.log",
+      "sha256": "d03d6aa01f90cc49f0dd42d8855079d2e582fda5a3df203310f3cb3a0f587ef6",
+      "bytes": 327
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\controller.py",
+      "sha256": "a496f8ef286bd1dc6ffba1ddbb676a989d8d4d54dc0475b307803881af1322f9",
+      "bytes": 2365
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "bytes": 1059
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\launch.json",
+      "sha256": "8406a71cdee88297c6243323de2be84e332318816eb5e06933d29bf3aba38641",
+      "bytes": 683
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\load.json",
+      "sha256": "1eb091cb21c1e06e15a5bb61a698b394b2fd9fb3643a0f897bbb4e23876548cf",
+      "bytes": 575
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\probe.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\probe.log",
+      "sha256": "865cd50178b6fec532b245fa97ce65152dece548e704a4bf54a9f16635e469d2",
+      "bytes": 9191
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\receipt.json",
+      "sha256": "b89c752d93325e8481ba15ec14c41f3d04ead621bf4063cca59cdf5a1aac86b2",
+      "bytes": 5446
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\rows.jsonl",
+      "sha256": "959bf18c908b44e84e5822b7c19f8ef939414207b833e6c2dbe3ebf9e63dd6b7",
+      "bytes": 67075
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\run_mask_geometry_probe.py",
+      "sha256": "ff7a5ec93a0021c53fd08ed362d92c7e2f7cff6b99736452ad5237bbf47c73ff",
+      "bytes": 22860
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\spec.json",
+      "sha256": "cf5c12cab4f553b3ba3d9d8e2a5abbf5022962d9ab79973be47e20601f0bede5",
+      "bytes": 4140
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\status.json",
+      "sha256": "76dbc65f5430c8bae0cfa75fefce44df8db3a221aae4e702d8d05d9743f46b47",
+      "bytes": 361
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\controller.py",
+      "sha256": "a496f8ef286bd1dc6ffba1ddbb676a989d8d4d54dc0475b307803881af1322f9",
+      "bytes": 2365
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\launch.json",
+      "sha256": "8406a71cdee88297c6243323de2be84e332318816eb5e06933d29bf3aba38641",
+      "bytes": 683
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\launch_probe_authorized.py",
+      "sha256": "2a8a4ee398c0d2ea62a86bb8f86bbf646b1df12c8181d87852a6872f39c36188",
+      "bytes": 3967
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\observe_probe_authorized.py",
+      "sha256": "39632e30d075e5d9058b0763416957a6203a99d039f38c8d07ce059e2d23e4a9",
+      "bytes": 2180
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\prepare_probe.py",
+      "sha256": "549d9c5b9047e2d3968447be718aafbafa989e1339a7e571d9f068cebf4b0e91",
+      "bytes": 3799
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\probe_body.py",
+      "sha256": "a26238433fef50b6508cce0354dca0be1cd8d8977c002db7611a0b5248ddd130",
+      "bytes": 11381
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\publish_probe_20261005.py",
+      "sha256": "add6c096b575bf115fe9f1f28354065bf2057d019f0f45cb8a84eb56a54caeb3",
+      "bytes": 13053
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\resource_check.json",
+      "sha256": "1f9e2b3c5359fea0b58295fd27a704836874ef736bbfbccea63a97f46a026749",
+      "bytes": 158
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\run_mask_geometry_probe.py",
+      "sha256": "ff7a5ec93a0021c53fd08ed362d92c7e2f7cff6b99736452ad5237bbf47c73ff",
+      "bytes": 22860
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\spec.json",
+      "sha256": "cf5c12cab4f553b3ba3d9d8e2a5abbf5022962d9ab79973be47e20601f0bede5",
+      "bytes": 4140
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\wait.json",
+      "sha256": "1129c051ed004120e1445e0d549044b41bfa8ab322966d7a493f463e1e5328f3",
+      "bytes": 576
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "bytes": 24599
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\models\\losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "bytes": 40468
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\prepare_data.py",
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "bytes": 19658
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\src\\grounding_evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "bytes": 41473
+    }
+  ],
+  "original_summary_sha256": "01e1df8604ce53d6628974bcd7134e3359c685c4f7a8bce4db80dc9d6b733b0a"
+}

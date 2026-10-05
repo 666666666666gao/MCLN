@@ -222,3 +222,5 @@
 - 2026-10-05T07:22:39.708088+08:00 Actual final-quality negative5606/4460 vs native+G control5615/4477; protected best5616/4506 unchanged. CPU rows/order verified, actual fresh terminal review WARN same-family/provisional. Nonbest1284112B removed, no archive.
 
 - 2026-10-05T07:27:18.359757+08:00 Actual SSH recovered and remote publication closed; complete evidence symlink reuses data disk originals. No GPU/optimizer/weight replay. Formal5606/4460 negative, best5616/4506 unchanged.
+
+- 2026-10-05T08:25:20.764182+08:00 Actual fixed64 augmentedfit geometry-role probe closed; no optimizer/weights. Direct output gradients absent for unmatched Mask-qualified Box-poor candidates. Best5616/4506 unchanged, counts qualified by fixedpanel scope.

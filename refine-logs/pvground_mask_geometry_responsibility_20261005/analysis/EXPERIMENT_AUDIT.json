@@ -1,0 +1,990 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "bounded_diagnostic_evidence_limits_and_bookkeeping_metadata",
+  "summary": "All saved fixed64 candidate counts and geometry/role checks reproduce; no blocking discrepancy. Preserve single-panel/raw-Mask/gradient-route limits and the original548 bookkeeping annotation.",
+  "blocking_findings": [],
+  "execution_scope": "TERMINAL_LOCAL_CPU_AND_SOURCE_AUDIT",
+  "agent_id": "/root/pvg_mask_geometry_terminal_integrity",
+  "verdict_id": "/root/pvg_mask_geometry_terminal_integrity",
+  "auditor": "Fresh Codex reviewer; requested gpt-6-astra/max, actual backend unattested",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_fork_turns": "none",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "actual_backend_attested": false,
+  "reviewer_family": "openai",
+  "executor_model": null,
+  "executor_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "independent_context": true,
+  "generated_at": "2026-10-05T00:21:41.898693+00:00",
+  "date": "2026-10-05",
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\.aris\\traces\\experiment-audit\\2026-10-05_mask_geometry_terminal_run01",
+  "trace_note": "Executor should attach actual returned report/response to its native delegation record; backend remains unattested.",
+  "evidence_roots": {
+    "PROBE": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005",
+    "HELPERS": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle",
+    "DATA": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source",
+    "NATIVE": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground",
+    "PORT": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground",
+    "PRIOR": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\complete\\quality\\train.jsonl"
+  },
+  "checks": {
+    "gt_provenance": {
+      "status": "PASS",
+      "details": "## A. Ground-truth provenance \u2014 PASS, with source/runtime limits\n\nScanRefer annotation IDs and expressions are loaded from dataset files (`DATA/joint_det_dataset.py:585-648`). Point membership masks come from the selected dataset object's member indices, and boxes from `scan.get_object_bbox`, not predictions (`DATA/joint_det_dataset.py:1086-1119`). The enabled train loader first transforms the current point cloud (`:895-908`, `:1324-1329`), then also applies its inherited multiplicative **box-label jitter** (`:1112-1113`). Therefore these are augmented training labels, not untouched official validation boxes. This distinction matters when interpreting a Mask/Box disagreement.\n\nThe actual loader import SHA matches the local DATA source (`PROBE/complete/imports.json:7,14`). The appearance manifest, split protocol, local loader identity, 29,778 fit / 6,887 holdout disjoint row IDs, and all stored scene IDs' fit-fold membership passed local checks. The runner verifies the source and dataset superpoint contract, enables both augmentations, and prepares train voxels (`PROBE/run_mask_geometry_probe.py:47-55,94-114,138-178,179-195,214-231`). No GT mask/box enters the model input dictionary; GT is attached only after forward for the native loss (`:183-204,235-239`).\n\nThe native criterion filters actual labels through `box_label_mask` (`NATIVE/models/losses.py:856-886`). The probe captures the real second matcher call, whose prefix is `last_`, validates its boxes and targets, then maps compressed GT indices through `valid[targets]` (`PROBE/run_mask_geometry_probe.py:232-276`; `NATIVE/models/losses.py:852-853,891-917`). This is not a root-only nearest-IoU replacement. The actual matcher has class/GIoU/text-mask costs (`NATIVE/main_utils.py:268-278`; `NATIVE/models/losses.py:327-390`). Saved assignments and slot mapping are internally exact for every row.\n\n**Limit:** raw dataset point/mask tensors and full matcher cost inputs are not in this local packet. GT generation and the actual Hungarian computation are established by reviewed source plus hash-bound successful runtime receipts, not a fresh independent reconstruction from raw data. A stored point SHA alone does not prove historical tensor equality.\n",
+      "evidence": [
+        "DATA/joint_det_dataset.py:585-648",
+        "DATA/joint_det_dataset.py:1086-1119",
+        ":895-908",
+        ":1324-1329",
+        ":1112-1113",
+        "PROBE/complete/imports.json:7,14",
+        "PROBE/run_mask_geometry_probe.py:47-55,94-114,138-178,179-195,214-231",
+        ":183-204,235-239",
+        "NATIVE/models/losses.py:856-886",
+        "PROBE/run_mask_geometry_probe.py:232-276",
+        "NATIVE/models/losses.py:852-853,891-917",
+        "NATIVE/main_utils.py:268-278",
+        "NATIVE/models/losses.py:327-390"
+      ]
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "details": "## B. Score normalization \u2014 PASS\n\nNo reported diagnostic is divided by the model's own maximum or mean. Box IoU is ordinary intersection/union (`PROBE/run_mask_geometry_probe.py:206-212`). Mask support is `sigmoid(alpha * text + (1-alpha) * query) > .5`; actual superpoint member counts and root-positive member counts produce point intersection/union for all 256 candidates (`:277-296`). This matches native fusion and point expansion (`NATIVE/src/grounding_evaluator.py:594-605,897-902`). It is not an unweighted average of superpoint IoUs. The selected candidate is additionally checked by explicit point expansion at runtime.\n\nThe signed native bbs rank uses softmax probabilities and the native main/modifier/pronoun/relation/other-entity reductions (`HELPERS/native_root_bbs.py:4-9`; `NATIVE/src/grounding_evaluator.py:222-286,535-553`). This softmax is part of the existing model scoring rule, not post-hoc accuracy normalization. Local selection from saved bbs agrees for all 64 rows; no top-score ties occur. Raw token logits/maps are absent, so bbs generation itself was source-checked, not independently recomputed.\n\nFloat64 Box IoU reconstructed from saved boxes agrees within `2.36955754e-6` absolute; saved integer Mask intersections/unions reproduce ratios within `2.97043959e-8`. Both give **zero threshold-classification differences** across all 16,384 candidates. Mask evidence here is an independent recount of saved counts, **not** an independent raw-Mask replay.\n",
+      "evidence": [
+        "PROBE/run_mask_geometry_probe.py:206-212",
+        ":277-296",
+        "NATIVE/src/grounding_evaluator.py:594-605,897-902",
+        "HELPERS/native_root_bbs.py:4-9",
+        "NATIVE/src/grounding_evaluator.py:222-286,535-553"
+      ]
+    },
+    "result_existence": {
+      "status": "WARN",
+      "details": "## C. Result files, numbers, and closure \u2014 WARN for metadata only\n\nAll 24 intake-listed files exist and match both recorded size and SHA256 (1,046,473 bytes total). Deployed copies of plan, source gate, runner, controller, spec and launch receipt match the local originals. All 17 helper identities and the five actual imported source identities match. `probe.exit` and `controller.exit` are both 0; status, controller log, terminal probe log and observer closure agree (`PROBE/complete/INTAKE.json:3-125`; `complete/status.json:2-14`; `complete/probe.log:7-15`; `wait.json:3-21`). Completion is an actual terminal record, not the earlier launch status.\n\nThe independent verifier reads all eight NPZ archives with `allow_pickle=False`, checks their schema and finite values, recomputes geometry and roles, and checks every JSONL row against its NPZ data and receipt. Results:\n\n| Quantity | Independently confirmed |\n|---|---:|\n| Input rows / physical scenes / seeds | 64 / 60 / 1 (2027) |\n| Retained candidates | 16,384 = 64 \u00d7 256 |\n| Mask IoU > .5 and Box IoU \u2264 .5 | 1,115 |\n| Of those: unmatched / root matched / other matched | 1,112 / 3 / 0 |\n| Rows with at least one such unmatched candidate | 53 / 64 |\n| Selected answers in that group / unmatched | 10 / 10 |\n| Mask and Box both > .5 | 2,447, across 58 rows |\n| Unmatched candidates with Box IoU > .5 | 2,593 |\n| All matched / unmatched candidates | 64 / 16,320 |\n| Nonzero saved Box / boundary gradients | 64 / 64, all matched |\n| Unmatched candidates with nonzero saved direct gradients | 0 / 0 |\n| Exact GT face targets outside [-4,4] in the 1,112 pool | 222 candidates / 546 faces |\n| Coarse Box IoU > .5 within that same 1,112 pool | 9 |\n\nThe original float32-derived medians are `0.1641764641 m` for maximum absolute GT-face error and `0.0055255890 m` for maximum coarse-to-final face change. Independent float64 reconstruction gives `0.1641763747 m` and `0.0055256337 m`; these differ only at floating-point rounding scale. Counts match `PROBE/complete/receipt.json:209-222` and `analysis/SUMMARY.json:5-29` exactly.\n\nNonblocking metadata findings:\n\n1. `analysis/SUMMARY.json:20` says `cpu_checks: 548`. Source `analyze_probe.py:36,78,84` computes `8*4 + 64*8 + 4`. It is a manual bookkeeping value, not a count of distinct assertions or actual assertion executions. There are 16 assertion sites and, from the actual loop lengths, 452 evaluations of those statements, including 24 intake hash assertions. Do not advertise \u201c548 independent checks.\u201d Original SUMMARY is preserved; this audit is the provenance-preserving annotation.\n2. **Resolved draft wording:** the earlier publisher at SHA256 `add6c096b575bf115fe9f1f28354065bf2057d019f0f45cb8a84eb56a54caeb3`, old `publish_probe_20261005.py:61`, said approximately 48 MiB system-disk space. This run's `resource_check.json:1` records 29,908,992 bytes = 28.5234375 MiB. The executor changed the text to the launch receipt's actual byte count; I read the final revised `publish_probe_20261005.py:65`, SHA256 `d754eb05c094c7eb01aff5558e62574b1daadb1558069ef323e86b0a29bb0b33`. It also annotates the original 548 bookkeeping label (`:61`). This does not affect diagnostic results. Publication execution itself is outside this audit. `AUDIT_CPU.json` preserves the earlier publisher hash as its time-of-check snapshot; the final audit identities record the separately reread revision.\n",
+      "evidence": [
+        "PROBE/complete/INTAKE.json:3-125",
+        "complete/status.json:2-14",
+        "complete/probe.log:7-15",
+        "wait.json:3-21",
+        "PROBE/complete/receipt.json:209-222",
+        "analysis/SUMMARY.json:5-29",
+        "analysis/SUMMARY.json:20",
+        "analyze_probe.py:36,78,84",
+        "publish_probe_20261005.py:61",
+        "resource_check.json:1",
+        "publish_probe_20261005.py:65",
+        ":61"
+      ]
+    },
+    "dead_code": {
+      "status": "PASS",
+      "details": "## D. Called code and gradient attribution \u2014 PASS for reported probe measures\n\nThe executed entry point calls `main`; the bounded loader loop calls actual model forward, native criterion, the two leaf-gradient probes, native bbs, Box IoU and Mask count computation, then saves each batch and terminal receipt (`PROBE/run_mask_geometry_probe.py:228-365,369-370`). All eight batch records and their final cumulative counts appear in `complete/probe.log:7-15`. No reported measure depends on a merely defined but uncalled helper. The inherited native `calculate_diou_3d` function is unused/commented out (`NATIVE/models/losses.py:103-133,546-557`); **DIoU is not an executed or claimed metric** here. Uncalled quality-training/preflight helpers in the copied bundle likewise supply no claimed results.\n\nFinal Box gradients use detached output leaves and the actual native `loss_boxes`, including center L1, half-weight size L1, matched-count normalization and `(10*L1 + 2*GIoU)/7` (`PROBE/run_mask_geometry_probe.py:247-253`; `NATIVE/models/losses.py:518-544,947-955`). I independently derived the piecewise analytic NumPy derivative from saved matched boxes/GT for all 64 matches. Its maximum absolute component agrees with saved `box_gradient_max` within `1.85608283e-7`. This independently supports the coefficient, loss, normalization and direct-gradient interpretation; full signed gradient vectors were not saved.\n\nBoundary gradients use a separate detached boundary-logit leaf and `distribution_loss/7`, selecting the same final native matches (`PROBE/run_mask_geometry_probe.py:254-276`; `HELPERS/pvground_boundary_box_refiner.py:40-65`). Their recorded support is zero on every unmatched candidate. **This field contains the distribution-loss derivative only**, not the sum of distribution and decoded-Box gradient routes. Raw boundary logits are unavailable for an independent numerical derivative. Neither leaf probe measures model-parameter gradients, total effects of other losses/layers, future changed assignments, or shared-parameter updates.\n\nThe only two autograd calls in the runner target these detached leaves. Full model forward/criterion run under `no_grad`; all parameters are frozen. The runner checks absent parameter gradients and exact before/after state_dict equality before writing its receipt (`:135-138,235-258,349-365`). Controller source checks zero steps/new weights and protected-parent hashes before/after (`PROBE/controller.py:17-20,35-42`), and the terminal receipts satisfy those checks. These are source/runtime witnesses, not a local rehash of the remote model state or weight files.\n",
+      "evidence": [
+        "PROBE/run_mask_geometry_probe.py:228-365,369-370",
+        "complete/probe.log:7-15",
+        "NATIVE/models/losses.py:103-133,546-557",
+        "PROBE/run_mask_geometry_probe.py:247-253",
+        "NATIVE/models/losses.py:518-544,947-955",
+        "PROBE/run_mask_geometry_probe.py:254-276",
+        "HELPERS/pvground_boundary_box_refiner.py:40-65",
+        ":135-138,235-258,349-365",
+        "PROBE/controller.py:17-20,35-42"
+      ]
+    },
+    "scope": {
+      "status": "WARN",
+      "details": "## E. Scope and interpretation \u2014 WARN\n\nThe first eight seeded shuffled fit batches exactly match `PRIOR:1-8`, the saved NPZ row IDs and all 64 JSONL records. There are 60 physical scenes, one seed, one reconstructed checkpoint, and one current augmentation per row; all rows belong to the 29,778-row fit partition. The loader/augmentation/voxel path is the executed fit path (`HELPERS/run_final_quality_fit.py:237-254,423-451`; `PROBE/run_mask_geometry_probe.py:179-195,214-231`). The earlier fit log is an **ordering reference**, not historical per-step assignment or augmented-tensor evidence. Current fresh-R model state is not the evolving earlier fit model. The result is neither full-fit coverage nor a formal validation evaluation.\n\nAll 64 observed valid target lists are `[0]`. Mapping through all valid native GT slots is implemented, but no nonempty multi-GT case occurred. Protection of another matched instance, Nr/Sr behavior and joint detection responsibilities are **not empirically tested** by this panel (`PROBE/complete/rows.jsonl:1-64`; `analysis/SUMMARY.json:29`).\n\nThe checkpoint basis is explicit: official PV SHA `6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3`, original-G delta SHA `0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522`, distribution-geometry delta SHA `79e35068b8787a81c354c5fd3ed2bbc12fc62e06167b9cfbe781f86cbbd36c67`. Source hashes are verified before loading; factory applies strict official state, 1,072 G delta tensors and 10 geometry tensors, then installs fresh R with a zero output projection (`PROBE/spec.json:2-11`; `run_mask_geometry_probe.py:73-76,116-123`; `HELPERS/readback_model_factory.py:15-75`; `pvground_boundary_evidence_readback.py:27-29`). Same-forward query identity is asserted at runtime (`PROBE/run_mask_geometry_probe.py:237-238`). \u201c5616/4506\u201d are protected-parent labels, not newly audited formal accuracy. Inherited spec fields `updates:3723` and factory metadata `fresh_readback_optimizer_required:true` do not describe this probe's executed steps, which are zero.\n\nThe executed boundary parameterization uses 33 knots spanning [-4,4], `REG_SCALE=4`, and reference size floor `1e-6` (`HELPERS/pvground_boundary_box_refiner.py:9-37`). Independent CPU algebra checks both target encoding and inverse decoding in the same coarse-box frame. Its out-of-range counts reproduce 222/546; the actual matched targets all have zero out-of-range faces, matching every batch receipt. This tests **exact GT-face representability**. It is not an optimization over representable boxes and provides no upper bound proving IoU > .5 impossible. The nine coarse hits are counted over the entire 1,112-candidate pool, not just its 222 out-of-range candidates.\n\nNative text masks are explicitly expanded to all 256 candidates before fusion (`PORT/models/pv_ground.py:532-556`). Thus a fused-Mask/root-IoU qualification can partly reflect a shared text-mask component; it is not an independent identity certificate for a query, a semantic correctness label, or a new deployment gate. The saved associations warrant a bounded hypothesis about direct training geometry responsibility, not a causal claim that adding targets, expanding range, or changing losses will improve formal accuracy.\n",
+      "evidence": [
+        "PRIOR:1-8",
+        "HELPERS/run_final_quality_fit.py:237-254,423-451",
+        "PROBE/run_mask_geometry_probe.py:179-195,214-231",
+        "PROBE/complete/rows.jsonl:1-64",
+        "analysis/SUMMARY.json:29",
+        "PROBE/spec.json:2-11",
+        "run_mask_geometry_probe.py:73-76,116-123",
+        "HELPERS/readback_model_factory.py:15-75",
+        "pvground_boundary_evidence_readback.py:27-29",
+        "PROBE/run_mask_geometry_probe.py:237-238",
+        "updates:3723",
+        "HELPERS/pvground_boundary_box_refiner.py:9-37",
+        "PORT/models/pv_ground.py:532-556"
+      ]
+    },
+    "evaluation_type": {
+      "status": "PASS",
+      "details": "## F. Evaluation type \u2014 real_gt, training diagnostic\n\nRoot Mask/Box qualification, Hungarian roles and encoded boundary targets use dataset-derived, currently augmented training labels. They are **real_gt** diagnostics. Model-produced coarse boxes define the coordinate frame for GT face offsets; they are not substituted GT. The same-forward zero-R and immutable-state checks are implementation invariants, not accuracy measurements. There is no synthetic-reference performance claim, independent human evaluation, or formal validation/effectiveness result.\n",
+      "evidence": [],
+      "classification": "real_gt",
+      "subtype": "Augmented training diagnostic, not formal accuracy"
+    }
+  },
+  "nonblocking_findings": [
+    {
+      "id": "W01",
+      "type": "metadata",
+      "status": "ANNOTATED_ORIGINAL_PRESERVED",
+      "finding": "cpu_checks548=8*4+64*8+4 is bookkeeping,not16 assertion sites or452 source-expanded evaluations. Revised publisher labels this distinction.",
+      "evidence": [
+        "PROBE/analyze_probe.py:15-84",
+        "PROBE/analysis/SUMMARY.json:20",
+        "PROBE/publish_probe_20261005.py:61"
+      ]
+    },
+    {
+      "id": "W02",
+      "type": "evidence_limit",
+      "status": "QUALIFIED",
+      "finding": "Raw point/Mask/GT,semantic logits/maps,Hungarian costs and boundary logits absent. Saved-array recount is not full raw-tensor reconstruction.",
+      "evidence": [
+        "PROBE/run_mask_geometry_probe.py:331-340",
+        "PROBE/complete/INTAKE.json:3-125"
+      ]
+    },
+    {
+      "id": "W03",
+      "type": "scope",
+      "status": "QUALIFIED",
+      "finding": "64 rows,60 scenes,one seed,current checkpoint,all root-only. No formal prevalence,historical assignments or nonempty multiGT proof.",
+      "evidence": [
+        "PROBE/complete/rows.jsonl:1-64",
+        "PROBE/analysis/SUMMARY.json:29,34"
+      ]
+    },
+    {
+      "id": "W04",
+      "type": "interpretation",
+      "status": "QUALIFIED_IN_REVISED_DRAFT",
+      "finding": "Text Mask is common across256 candidates before Query fusion. Fused eligibility does not certify candidate semantic/physical identity.",
+      "evidence": [
+        "PORT/models/pv_ground.py:532-556",
+        "PROBE/publish_probe_20261005.py:57"
+      ]
+    },
+    {
+      "id": "W05",
+      "type": "gradient_scope",
+      "status": "QUALIFIED",
+      "finding": "Box leaf covers final native L1/GIoU; boundary leaf covers distribution loss only,not total shared-parameter or other-loss effects.",
+      "evidence": [
+        "PROBE/run_mask_geometry_probe.py:247-276",
+        "HELPERS/pvground_boundary_box_refiner.py:40-65"
+      ]
+    },
+    {
+      "id": "W06",
+      "type": "range_scope",
+      "status": "QUALIFIED",
+      "finding": "222 candidates/546 faces outside knots concern exact GT-face encoding,not a maximum-IoU bound. Nine coarse hits use the whole1112 pool.",
+      "evidence": [
+        "HELPERS/pvground_boundary_box_refiner.py:9-37",
+        "PROBE/analyze_probe.py:37-46,73-76"
+      ]
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "R01",
+      "finding": "Stale48MiB draft wording corrected to launch29908992B; latest claims directly reread.",
+      "original_publisher_sha256": "add6c096b575bf115fe9f1f28354065bf2057d019f0f45cb8a84eb56a54caeb3",
+      "revised_publisher_sha256": "d754eb05c094c7eb01aff5558e62574b1daadb1558069ef323e86b0a29bb0b33",
+      "evidence": [
+        "PROBE/resource_check.json:1",
+        "PROBE/publish_probe_20261005.py:65"
+      ]
+    }
+  ],
+  "actual_verification": {
+    "status": "PASS",
+    "generated_at": "2026-10-05T00:10:01.339992+00:00",
+    "execution": "LOCAL_CPU_NUMPY_ONLY",
+    "model_import_or_replay": false,
+    "remote_actions": false,
+    "rows": 64,
+    "candidates": 16384,
+    "batches": 8,
+    "seed": 2027,
+    "unique_scan_ids": 60,
+    "unique_physical_scene_ids": 60,
+    "first64_order_matches": true,
+    "point_tensor_hashes_recomputed": false,
+    "all_root_only": true,
+    "counts": {
+      "mask_only": 1115,
+      "both_good": 2447,
+      "mask_only_unmatched": 1112,
+      "mask_only_matched_root": 3,
+      "mask_only_matched_other": 0,
+      "mask_only_box_gradient_nonzero": 3,
+      "mask_only_boundary_gradient_nonzero": 3,
+      "unmatched_good_box": 2593,
+      "rows_with_mask_only_unmatched": 53,
+      "rows_with_both_good": 58,
+      "selected_mask_only": 10,
+      "selected_mask_only_unmatched": 10,
+      "valid_native_GT_slots_total": 64
+    },
+    "all_matched": 64,
+    "all_unmatched": 16320,
+    "all_nonzero_box_gradients": 64,
+    "all_nonzero_boundary_gradients": 64,
+    "unmatched_nonzero_box_gradients": 0,
+    "unmatched_nonzero_boundary_gradients": 0,
+    "box_gradient_analytic_cases": 64,
+    "box_gradient_analytic_max_abs_difference": 1.8560828274338803e-07,
+    "box_threshold_differences": 0,
+    "mask_count_threshold_differences": 0,
+    "numerical_max_abs_differences": {
+      "box_iou_abs": 2.3695575378512856e-06,
+      "mask_iou_abs": 2.9704395831942065e-08,
+      "face_error_abs": 8.344650268554688e-07,
+      "face_change_abs": 4.76837158203125e-07
+    },
+    "bbs_top_tie_rows": 0,
+    "mask_union_point_count_range": [
+      144,
+      14475
+    ],
+    "face_error_median_float64": 0.16417637467384338,
+    "face_change_median_float64": 0.005525633692741394,
+    "outside_pool_candidates": 222,
+    "outside_pool_faces": 546,
+    "coarse_hits50_in_pool": 9,
+    "outside_all_candidates": 12484,
+    "outside_exact_gt_targets_but_final_box_iou_gt_half": 0,
+    "outside_counterexample": null,
+    "raw_mask_reconstructed": false,
+    "hungarian_costs_reconstructed": false,
+    "boundary_logit_gradients_reconstructed": false,
+    "runtime_state_and_parent_weights_independently_rehashed": false,
+    "runtime_receipts_consistent": true,
+    "original_analyzer_cpu_checks": {
+      "saved": 548,
+      "bookkeeping_formula": "8*4+64*8+4",
+      "assert_statement_sites": [
+        15,
+        17,
+        23,
+        31,
+        32,
+        34,
+        35,
+        49,
+        51,
+        55,
+        56,
+        64,
+        77,
+        80,
+        81,
+        82
+      ],
+      "distinct_assert_sites": 16,
+      "expanded_assert_evaluations_from_source_and_actual_loop_sizes": 452,
+      "interpretation": "548 is a manually accumulated label; it is neither distinct sites nor actual assertion evaluations. Original SUMMARY.json preserved."
+    },
+    "actual_check_count": 585,
+    "original_summary_sha256": "01e1df8604ce53d6628974bcd7134e3359c685c4f7a8bce4db80dc9d6b733b0a",
+    "command": "uv run --offline --with numpy python -B -X utf8 C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\analysis\\audit_cpu.py",
+    "script_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\analysis\\audit_cpu.py",
+    "script_sha256": "8941d7390a3d81189bce768f7ff8043a491fccc66403b3116347f2b1853ecf15",
+    "result_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\analysis\\AUDIT_CPU.json",
+    "result_sha256": "7b25d79e0854ec7eca56f359fbe0a4dcf76d66fbb67011f79bdc339cfb35a1bb",
+    "named_checks_path": "AUDIT_CPU.json:actual_checks",
+    "analyze_probe_reexecuted": false,
+    "original_summary_preserved": true,
+    "intake_files": 24,
+    "intake_bytes": 1046473,
+    "all_helpers_identity_verified": 17,
+    "actual_import_identities_verified": 5,
+    "all_matched_outside_faces": 0
+  },
+  "evidence_levels": {
+    "independently_reconstructed": [
+      "Saved Box IoUs/thresholds",
+      "Saved Mask count ratios/thresholds",
+      "Row order/split membership",
+      "Candidate roles/selected saved-score ranks",
+      "Saved gradient support",
+      "64 matched native Box gradient maxima by analytic NumPy derivative",
+      "Face errors/changes/knots and inverse decoding"
+    ],
+    "source_plus_runtime_receipt": [
+      "Raw point augmentation and GT derivation",
+      "Native Mask fusion and selected-query expansion",
+      "Actual Hungarian solution",
+      "Raw bbs creation",
+      "Boundary-logit gradient generation",
+      "Unchanged model state/absent parameter gradients",
+      "Three parent hashes before/after"
+    ],
+    "not_reconstructed": [
+      "Raw point/Mask/GT tensors",
+      "Historical per-step responsibilities",
+      "Nonempty multiGT responsibility",
+      "Total parameter gradients/future intervention effects",
+      "Formal validation accuracy/effectiveness"
+    ]
+  },
+  "checkpoint_basis": {
+    "official_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+    "g_delta_sha256": "0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522",
+    "geometry_delta_sha256": "79e35068b8787a81c354c5fd3ed2bbc12fc62e06167b9cfbe781f86cbbd36c67",
+    "fresh_zero_output_R": true,
+    "parent_files_independently_rehashed_by_reviewer": false,
+    "protected_parent_receipt_consistent": true,
+    "probe_optimizer_steps": 0,
+    "probe_weight_files_created": 0
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "impact": "supported_with_scope",
+      "claim": "1112 fused-Mask-qualified,Box-poor,unmatched candidates on the current fixed panel; their saved direct final Box/distribution gradients are zero."
+    },
+    {
+      "id": "C2",
+      "impact": "supported_as_range_diagnostic",
+      "claim": "222 pool candidates/546 GT faces outside current knots; not an IoU-feasibility upper bound."
+    },
+    {
+      "id": "C3",
+      "impact": "unsupported",
+      "claim": "General prevalence,historical assignments,multiGT protection,semantic/physical identity,absence of all learning effects,or formal improvement."
+    }
+  ],
+  "action_items": [
+    "Keep original SUMMARY548 bookkeeping annotation.",
+    "Retain fixed-panel/raw-Mask/gradient-route/checkpoint/fused-component qualifiers.",
+    "No further model or original analyzer replay is required for qualified diagnostic publication."
+  ],
+  "publication_execution_reviewed": false,
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\complete\\quality\\imports.json",
+      "sha256": "9cc629e89199b5cc22c128b402b0b197c4fa7bae81069e65550e8246ca2be595",
+      "bytes": 1252,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\complete\\quality\\train.jsonl",
+      "sha256": "5d2efe4c34c08ad715f820e99f4361e1ce453165346f3ab4305da0bbd75c2674",
+      "bytes": 3483803,
+      "review_depth": "First eight records read for ordering; complete file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\complete\\quality\\train.jsonl"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\quality_fit_spec.json",
+      "sha256": "7d84b843e16ccb140ac4f3a4f1b9839606110bdf297f7a8a7148b11a61273ec0",
+      "bytes": 3804,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py",
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "bytes": 518,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "bytes": 481,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py",
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "bytes": 4335,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "bytes": 3767,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "bytes": 3655,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "bytes": 2770,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "bytes": 3906,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "bytes": 4754,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "bytes": 8163,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py",
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+      "bytes": 31540,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "bytes": 3629,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\appearance_source_manifest.json",
+      "sha256": "75cd5f87a8e715c15b458ed1964c2e6f1d35046bb6beffca1b3388d5903bbe36",
+      "bytes": 74702,
+      "review_depth": "Artifact read/parsed and identity verified.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\appearance_source_manifest.json"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\input_manifest.json",
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+      "bytes": 161881,
+      "review_depth": "Artifact read/parsed and identity verified.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\input_manifest.json"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "bytes": 75981,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\source_port.json",
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304",
+      "bytes": 10665,
+      "review_depth": "Artifact read/parsed and identity verified.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\source_port.json"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+      "bytes": 26744,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "2a622f0df59aff75ce7c2e3cb77cf68a58741cc63edfd267d0ab66de023b6cca",
+      "bytes": 2320,
+      "review_depth": "Artifact read/parsed and identity verified.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\EXPERIMENT_PLAN.md"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\GENERATION.json",
+      "sha256": "a96d71b0ca181847ff60b4cee526f1000badf519c58855e68fd34228811e693b",
+      "bytes": 516,
+      "review_depth": "Artifact read/parsed and identity verified.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\GENERATION.json"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\controller.py",
+      "sha256": "a496f8ef286bd1dc6ffba1ddbb676a989d8d4d54dc0475b307803881af1322f9",
+      "bytes": 2365,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\controller.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\launch_probe_authorized.py",
+      "sha256": "2a8a4ee398c0d2ea62a86bb8f86bbf646b1df12c8181d87852a6872f39c36188",
+      "bytes": 3967,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\launch_probe_authorized.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\prepare_probe.py",
+      "sha256": "549d9c5b9047e2d3968447be718aafbafa989e1339a7e571d9f068cebf4b0e91",
+      "bytes": 3799,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\prepare_probe.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\probe_body.py",
+      "sha256": "a26238433fef50b6508cce0354dca0be1cd8d8977c002db7611a0b5248ddd130",
+      "bytes": 11381,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\probe_body.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\run_mask_geometry_probe.py",
+      "sha256": "ff7a5ec93a0021c53fd08ed362d92c7e2f7cff6b99736452ad5237bbf47c73ff",
+      "bytes": 22860,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\run_mask_geometry_probe.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\spec.json",
+      "sha256": "cf5c12cab4f553b3ba3d9d8e2a5abbf5022962d9ab79973be47e20601f0bede5",
+      "bytes": 4140,
+      "review_depth": "Artifact read/parsed and identity verified.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\spec.json"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "bytes": 24599,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\main_utils.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\models\\losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "bytes": 40468,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\models\\losses.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\prepare_data.py",
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "bytes": 19658,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\prepare_data.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\src\\grounding_evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "bytes": 41473,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\src\\grounding_evaluator.py"
+      ]
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\split_protocol.json",
+      "sha256": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+      "bytes": 246139,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW.json",
+      "sha256": "922056a462c2452623eaf59c609c0e42c13c5a84e762a3ae7b7a859c41763e7b",
+      "bytes": 17296,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW.md",
+      "sha256": "bead96f48366af1baceddfd2450c92498d93d3b40dcb3ece4e66afbc80e7ec36",
+      "bytes": 2666,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW_CALL.json",
+      "sha256": "8782e72c09359698a91ba94b4b84600f9391e559da9a155b25199c875cf2404b",
+      "bytes": 897,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\analysis\\SUMMARY.json",
+      "sha256": "01e1df8604ce53d6628974bcd7134e3359c685c4f7a8bce4db80dc9d6b733b0a",
+      "bytes": 1593,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\analyze_probe.py",
+      "sha256": "e98d3f54875ae64c7095cab2ed354bb05d6cdde6502f4fd841fcda12137facd1",
+      "bytes": 5873,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\collect_probe_authorized.py",
+      "sha256": "a2631322b7a4e212e2f931a9b4ebf82bd257cdf41a60f29f7e16d6955a089f04",
+      "bytes": 1412,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\EXPERIMENT_PLAN.md",
+      "sha256": "2a622f0df59aff75ce7c2e3cb77cf68a58741cc63edfd267d0ab66de023b6cca",
+      "bytes": 2320,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\INTAKE.json",
+      "sha256": "f9c498a633e731f8af4bc3edf952978c7b41f50d0bbaca0f0ba01a641789ccc1",
+      "bytes": 3910,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\SOURCE_REVIEW.json",
+      "sha256": "922056a462c2452623eaf59c609c0e42c13c5a84e762a3ae7b7a859c41763e7b",
+      "bytes": 17296,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\SOURCE_REVIEW.md",
+      "sha256": "bead96f48366af1baceddfd2450c92498d93d3b40dcb3ece4e66afbc80e7ec36",
+      "bytes": 2666,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_00.npz",
+      "sha256": "cd396b2d0932032c9648868456ed7832ebda556bf72805adcf03b05855553478",
+      "bytes": 114112,
+      "review_depth": "All saved arrays/records independently CPU validated."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_01.npz",
+      "sha256": "b11715fcf83e0c2a39e691d2311c5dc9d6492fc6b86f6c6395f942c66a188185",
+      "bytes": 113100,
+      "review_depth": "All saved arrays/records independently CPU validated."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_02.npz",
+      "sha256": "000676b3c36dfae86354763551fdf1f01e533a24bca7b5eeef130fd4bc4d4bf2",
+      "bytes": 116141,
+      "review_depth": "All saved arrays/records independently CPU validated."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_03.npz",
+      "sha256": "da78eba86b73211a330a2c7f3506fbfe2fae51540322fe497fc6f825bd104a98",
+      "bytes": 114137,
+      "review_depth": "All saved arrays/records independently CPU validated."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_04.npz",
+      "sha256": "48ca99f20f0871fb0f48ea85d2da4c87fe8e0be94fda9e17403eb345659c7643",
+      "bytes": 114675,
+      "review_depth": "All saved arrays/records independently CPU validated."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_05.npz",
+      "sha256": "dc102569c60c7e752433f2cd6591393e7796780695f78fd1a911aa18925cc8d0",
+      "bytes": 114095,
+      "review_depth": "All saved arrays/records independently CPU validated."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_06.npz",
+      "sha256": "9182bdd33de7efe96f2a10274cf058e424d80e04912cfd340f530ee36fee3c18",
+      "bytes": 110169,
+      "review_depth": "All saved arrays/records independently CPU validated."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_07.npz",
+      "sha256": "fbf6439a4d9e52ab18591c1453161e2d3805f07083568452b508fa5cd93a56d6",
+      "bytes": 113676,
+      "review_depth": "All saved arrays/records independently CPU validated."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\controller.log",
+      "sha256": "d03d6aa01f90cc49f0dd42d8855079d2e582fda5a3df203310f3cb3a0f587ef6",
+      "bytes": 327,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\controller.py",
+      "sha256": "a496f8ef286bd1dc6ffba1ddbb676a989d8d4d54dc0475b307803881af1322f9",
+      "bytes": 2365,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "bytes": 1059,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\launch.json",
+      "sha256": "8406a71cdee88297c6243323de2be84e332318816eb5e06933d29bf3aba38641",
+      "bytes": 683,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\load.json",
+      "sha256": "1eb091cb21c1e06e15a5bb61a698b394b2fd9fb3643a0f897bbb4e23876548cf",
+      "bytes": 575,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\probe.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\probe.log",
+      "sha256": "865cd50178b6fec532b245fa97ce65152dece548e704a4bf54a9f16635e469d2",
+      "bytes": 9191,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\receipt.json",
+      "sha256": "b89c752d93325e8481ba15ec14c41f3d04ead621bf4063cca59cdf5a1aac86b2",
+      "bytes": 5446,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\rows.jsonl",
+      "sha256": "959bf18c908b44e84e5822b7c19f8ef939414207b833e6c2dbe3ebf9e63dd6b7",
+      "bytes": 67075,
+      "review_depth": "All saved arrays/records independently CPU validated."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\run_mask_geometry_probe.py",
+      "sha256": "ff7a5ec93a0021c53fd08ed362d92c7e2f7cff6b99736452ad5237bbf47c73ff",
+      "bytes": 22860,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\spec.json",
+      "sha256": "cf5c12cab4f553b3ba3d9d8e2a5abbf5022962d9ab79973be47e20601f0bede5",
+      "bytes": 4140,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\status.json",
+      "sha256": "76dbc65f5430c8bae0cfa75fefce44df8db3a221aae4e702d8d05d9743f46b47",
+      "bytes": 361,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\launch.json",
+      "sha256": "8406a71cdee88297c6243323de2be84e332318816eb5e06933d29bf3aba38641",
+      "bytes": 683,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\observe_probe_authorized.py",
+      "sha256": "39632e30d075e5d9058b0763416957a6203a99d039f38c8d07ce059e2d23e4a9",
+      "bytes": 2180,
+      "review_depth": "Probe-relevant source/call paths read; entire file identity hashed."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\publish_probe_20261005.py",
+      "sha256": "d754eb05c094c7eb01aff5558e62574b1daadb1558069ef323e86b0a29bb0b33",
+      "bytes": 13960,
+      "earlier_reviewed_sha256": "add6c096b575bf115fe9f1f28354065bf2057d019f0f45cb8a84eb56a54caeb3",
+      "review_depth": "Revised intended-claim text reread; publication execution excluded."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\resource_check.json",
+      "sha256": "1f9e2b3c5359fea0b58295fd27a704836874ef736bbfbccea63a97f46a026749",
+      "bytes": 158,
+      "review_depth": "Artifact read/parsed and identity verified."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\wait.json",
+      "sha256": "1129c051ed004120e1445e0d549044b41bfa8ab322966d7a493f463e1e5328f3",
+      "bytes": 576,
+      "review_depth": "Artifact read/parsed and identity verified."
+    }
+  ],
+  "identity_only_dependencies": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "bytes": 7683,
+      "review_depth": "Dependency identity only; unused functions supply no claimed probe result.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_observation_query.py"
+      ]
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "bytes": 3025,
+      "review_depth": "Dependency identity only; unused functions supply no claimed probe result.",
+      "path_aliases": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_source_query.py"
+      ]
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_final_quality.py",
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4",
+      "bytes": 5764,
+      "review_depth": "Dependency identity only; unused functions supply no claimed probe result."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_semantic_assignment.py",
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "bytes": 5065,
+      "review_depth": "Dependency identity only; unused functions supply no claimed probe result."
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "bytes": 2436,
+      "review_depth": "Dependency identity only; unused functions supply no claimed probe result."
+    }
+  ],
+  "audited_input_hashes": {
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\complete\\quality\\imports.json": "sha256:9cc629e89199b5cc22c128b402b0b197c4fa7bae81069e65550e8246ca2be595",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\complete\\quality\\train.jsonl": "sha256:5d2efe4c34c08ad715f820e99f4361e1ce453165346f3ab4305da0bbd75c2674",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\quality_fit_spec.json": "sha256:7d84b843e16ccb140ac4f3a4f1b9839606110bdf297f7a8a7148b11a61273ec0",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py": "sha256:531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py": "sha256:b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py": "sha256:88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py": "sha256:ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py": "sha256:e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py": "sha256:665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py": "sha256:39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py": "sha256:4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py": "sha256:c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py": "sha256:1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py": "sha256:47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py": "sha256:22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\appearance_source_manifest.json": "sha256:75cd5f87a8e715c15b458ed1964c2e6f1d35046bb6beffca1b3388d5903bbe36",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\input_manifest.json": "sha256:14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py": "sha256:3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\source_port.json": "sha256:99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py": "sha256:8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\EXPERIMENT_PLAN.md": "sha256:2a622f0df59aff75ce7c2e3cb77cf68a58741cc63edfd267d0ab66de023b6cca",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\GENERATION.json": "sha256:a96d71b0ca181847ff60b4cee526f1000badf519c58855e68fd34228811e693b",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\controller.py": "sha256:a496f8ef286bd1dc6ffba1ddbb676a989d8d4d54dc0475b307803881af1322f9",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\launch_probe_authorized.py": "sha256:2a8a4ee398c0d2ea62a86bb8f86bbf646b1df12c8181d87852a6872f39c36188",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\prepare_probe.py": "sha256:549d9c5b9047e2d3968447be718aafbafa989e1339a7e571d9f068cebf4b0e91",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\probe_body.py": "sha256:a26238433fef50b6508cce0354dca0be1cd8d8977c002db7611a0b5248ddd130",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\run_mask_geometry_probe.py": "sha256:ff7a5ec93a0021c53fd08ed362d92c7e2f7cff6b99736452ad5237bbf47c73ff",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\spec.json": "sha256:cf5c12cab4f553b3ba3d9d8e2a5abbf5022962d9ab79973be47e20601f0bede5",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\main_utils.py": "sha256:14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\models\\losses.py": "sha256:920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\prepare_data.py": "sha256:3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\src\\grounding_evaluator.py": "sha256:39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\split_protocol.json": "sha256:06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW.json": "sha256:922056a462c2452623eaf59c609c0e42c13c5a84e762a3ae7b7a859c41763e7b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW.md": "sha256:bead96f48366af1baceddfd2450c92498d93d3b40dcb3ece4e66afbc80e7ec36",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\SOURCE_REVIEW_CALL.json": "sha256:8782e72c09359698a91ba94b4b84600f9391e559da9a155b25199c875cf2404b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\analysis\\SUMMARY.json": "sha256:01e1df8604ce53d6628974bcd7134e3359c685c4f7a8bce4db80dc9d6b733b0a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\analyze_probe.py": "sha256:e98d3f54875ae64c7095cab2ed354bb05d6cdde6502f4fd841fcda12137facd1",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\collect_probe_authorized.py": "sha256:a2631322b7a4e212e2f931a9b4ebf82bd257cdf41a60f29f7e16d6955a089f04",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\EXPERIMENT_PLAN.md": "sha256:2a622f0df59aff75ce7c2e3cb77cf68a58741cc63edfd267d0ab66de023b6cca",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\INTAKE.json": "sha256:f9c498a633e731f8af4bc3edf952978c7b41f50d0bbaca0f0ba01a641789ccc1",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\SOURCE_REVIEW.json": "sha256:922056a462c2452623eaf59c609c0e42c13c5a84e762a3ae7b7a859c41763e7b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\SOURCE_REVIEW.md": "sha256:bead96f48366af1baceddfd2450c92498d93d3b40dcb3ece4e66afbc80e7ec36",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_00.npz": "sha256:cd396b2d0932032c9648868456ed7832ebda556bf72805adcf03b05855553478",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_01.npz": "sha256:b11715fcf83e0c2a39e691d2311c5dc9d6492fc6b86f6c6395f942c66a188185",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_02.npz": "sha256:000676b3c36dfae86354763551fdf1f01e533a24bca7b5eeef130fd4bc4d4bf2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_03.npz": "sha256:da78eba86b73211a330a2c7f3506fbfe2fae51540322fe497fc6f825bd104a98",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_04.npz": "sha256:48ca99f20f0871fb0f48ea85d2da4c87fe8e0be94fda9e17403eb345659c7643",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_05.npz": "sha256:dc102569c60c7e752433f2cd6591393e7796780695f78fd1a911aa18925cc8d0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_06.npz": "sha256:9182bdd33de7efe96f2a10274cf058e424d80e04912cfd340f530ee36fee3c18",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\batch_07.npz": "sha256:fbf6439a4d9e52ab18591c1453161e2d3805f07083568452b508fa5cd93a56d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\controller.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\controller.log": "sha256:d03d6aa01f90cc49f0dd42d8855079d2e582fda5a3df203310f3cb3a0f587ef6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\controller.py": "sha256:a496f8ef286bd1dc6ffba1ddbb676a989d8d4d54dc0475b307803881af1322f9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\imports.json": "sha256:51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\launch.json": "sha256:8406a71cdee88297c6243323de2be84e332318816eb5e06933d29bf3aba38641",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\load.json": "sha256:1eb091cb21c1e06e15a5bb61a698b394b2fd9fb3643a0f897bbb4e23876548cf",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\probe.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\probe.log": "sha256:865cd50178b6fec532b245fa97ce65152dece548e704a4bf54a9f16635e469d2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\receipt.json": "sha256:b89c752d93325e8481ba15ec14c41f3d04ead621bf4063cca59cdf5a1aac86b2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\rows.jsonl": "sha256:959bf18c908b44e84e5822b7c19f8ef939414207b833e6c2dbe3ebf9e63dd6b7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\run_mask_geometry_probe.py": "sha256:ff7a5ec93a0021c53fd08ed362d92c7e2f7cff6b99736452ad5237bbf47c73ff",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\spec.json": "sha256:cf5c12cab4f553b3ba3d9d8e2a5abbf5022962d9ab79973be47e20601f0bede5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\status.json": "sha256:76dbc65f5430c8bae0cfa75fefce44df8db3a221aae4e702d8d05d9743f46b47",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\launch.json": "sha256:8406a71cdee88297c6243323de2be84e332318816eb5e06933d29bf3aba38641",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\observe_probe_authorized.py": "sha256:39632e30d075e5d9058b0763416957a6203a99d039f38c8d07ce059e2d23e4a9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\publish_probe_20261005.py": "sha256:d754eb05c094c7eb01aff5558e62574b1daadb1558069ef323e86b0a29bb0b33",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\resource_check.json": "sha256:1f9e2b3c5359fea0b58295fd27a704836874ef736bbfbccea63a97f46a026749",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\wait.json": "sha256:1129c051ed004120e1445e0d549044b41bfa8ab322966d7a493f463e1e5328f3"
+  },
+  "input_snapshot_note": "AUDIT_CPU preserves earlier mutable publisher hash; final reviewed_files identifies later directly reread revision. Other listed inputs rechecked unchanged. C:/Users/gb/.codex/tmp resolves to D:/Program Files/UserCache/gb/codex/tmp here.",
+  "report_markdown_sha256": "8e8e1e2b85788d9714cf10ad34e238ee1c2979d725c5bd5af3e7d7a1f88f824a",
+  "reviewed_distinct_physical_files": 69,
+  "identity_only_distinct_physical_files": 5
+}

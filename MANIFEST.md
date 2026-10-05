@@ -232,3 +232,5 @@
 - 2026-10-05T09:36:14.854203+08:00 Query-supported geometry CPU terminal collector/recount tools prepared; historical parent9508 recount5616/4506,0 threshold differences. Active fit has no new result.
 
 - 2026-10-05T10:16:29.545420+08:00 Query-supported geometry closed-weight retention SOURCE_ONLY review PASS, same-family/provisional. Actual closure and fresh terminal audit remain required; no cleanup executed or new fit accuracy.
+
+- 2026-10-05T10:32:21.382539+08:00 Closed-result handoff and retained-weight resource check sources prepared. Local AST/existing-schema check only; no execution, document rewrite, cleanup or new fit result.

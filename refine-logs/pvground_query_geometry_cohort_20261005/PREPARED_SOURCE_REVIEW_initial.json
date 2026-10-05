@@ -1,0 +1,407 @@
+{
+  "verdict": "FAIL",
+  "execution_scope": "PREPARED_SOURCE_ONLY",
+  "review_time_cst": "2026-10-05T12:44:18.508608+08:00",
+  "reviewer_provenance": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_backend": "unattested",
+    "actual_model": "unattested",
+    "actual_reasoning_effort": "unattested",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "role": "fresh-context Codex source reviewer"
+  },
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "severity": "P1",
+      "title": "Controller expects the obsolete model_state_unchanged receipt key",
+      "location": {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\controller.py",
+        "line": 39
+      },
+      "related_locations": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\probe_body.py",
+          "line": 158
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+          "line": 368
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\prepare_probe.py",
+          "line": 20
+        }
+      ],
+      "evidence": "The new probe writes model_state_restored=True after restoring the parent head and checking the complete model state. It never writes model_state_unchanged. The controller unconditionally reads receipt['model_state_unchanged'] when the child exits zero. prepare_probe.py copies the old controller without changing this key.",
+      "impact": "A successful GPU child deterministically causes KeyError in the controller. probe.exit is already zero, but status.json remains its earlier running record and the shell writes controller.exit=1. The observer/collector cannot report successful completion.",
+      "minimal_fix": "Read model_state_restored in the controller and make the existing controller generation transformation preserve that same contract. Keep the all-state restoration assertion; do not add an alias or fallback.",
+      "verification": "Read-only AST extraction confirmed the producer receipt contains model_state_restored and lacks model_state_unchanged, while the controller requires the absent key."
+    },
+    {
+      "id": "B2",
+      "severity": "P1",
+      "title": "CPU analysis reads child.exit although the controller writes probe.exit",
+      "location": {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analyze_probe.py",
+        "line": 20
+      },
+      "related_locations": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\controller.py",
+          "line": 32
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\collect_probe_authorized.py",
+          "line": 25
+        }
+      ],
+      "evidence": "The controller writes root/probe.exit. The collector copies each original basename into complete/. No producer in the reviewed launch/controller/collection path creates child.exit, yet analyze_probe.py requires complete/child.exit.",
+      "impact": "After B1 is corrected and the probe is collected successfully, analysis deterministically raises FileNotFoundError before loading rows/NPZ or writing the paired CPU summary.",
+      "minimal_fix": "Change the analysis exit-file check to complete/probe.exit; retain its zero-exit requirement.",
+      "verification": "Read-only source check confirmed the producer writes probe.exit and the consumer reads child.exit."
+    }
+  ],
+  "warnings": [
+    {
+      "id": "W1",
+      "kind": "EXPECTED_PENDING_GATE",
+      "message": "spec.json is deliberately absent. The two-arm terminal binding and final SOURCE_ONLY launch review are still pending. This PREPARED_SOURCE_ONLY report, even after fixes, cannot satisfy launch_probe_authorized.py:14."
+    },
+    {
+      "id": "W2",
+      "kind": "RUNTIME_UNEXECUTED",
+      "message": "No model/GPU replay, terminal weight load, remote resource check, installation, training change or retention was performed. Python 3.7 grammar checking on local Python 3.12 and prior NumPy recount do not establish execution in the target Python 3.7/Torch 1.10.2 runtime."
+    },
+    {
+      "id": "W3",
+      "kind": "ACCEPTED_EVIDENCE_LIMIT",
+      "message": "The verified 64 reference rows have only native GT slot 0. This augmented training cohort contains correlated candidates and cannot establish unseen-scene accuracy, nonempty multi-GT protection, physical-instance identity, or a new formal selection rule."
+    },
+    {
+      "id": "W4",
+      "kind": "ACCEPTED_METRIC_LIMIT",
+      "message": "Qualification deliberately uses saved parent GPU Box IoU and integer Query/fused Mask counts. CPU float64 IoUs drive paired metrics and report threshold disagreements. GPU DFL scalars are retained and explicitly not independently recomputed on CPU; cached head equality is not a cross-CUDA complete-forward identity claim."
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\analyze_probe.py",
+      "sha256": "c894078e6e16b78b3fd022e6b943bac4089c91a554e80a3dc12e4d441c6f181e",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\check_prior_metric.py",
+      "sha256": "4057628a6993d74f0d431aad708ea4483353d5842c262649b16bb0886941a13c",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+      "sha256": "608a717c2257844172705ba774f9e61bf17d1faa9748b8a773b5cd6ba750a90a",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\collect_probe_authorized.py",
+      "sha256": "de5a39203bd0e8ff8058a6ea5ea15a4639c1cfd4834c52ec8778d5f596c9cf21",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\controller.py",
+      "sha256": "26b867cb760d16b47d59241316caa807111ea937270e5761f7118c5432c5aa83",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\launch_probe_authorized.py",
+      "sha256": "436d981dfdd1b409b959d8cdbb56f846456829785146bec8971a61b87c3981d7",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\observe_probe_authorized.py",
+      "sha256": "a6570ad337c693048d0424f08166b967e3b2f2bf2ec2589864d710f6cde89bbe",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\prepare_closed_spec.py",
+      "sha256": "5a04450354826479f0edb1f37f7af40067d7c273ac260aeb2e1d81399f33b2fd",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\prepare_probe.py",
+      "sha256": "f4fabce3fb6bb7b07dd22b2709367f5a560148de8a033cdcea5cf8ec217aa9bc",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\probe_body.py",
+      "sha256": "0502ade839808218b943c87bb3dbaf49c02352413bf8785170afe7bbe6346ee2",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\publish_prepared_source.py",
+      "sha256": "945f917fb56bcb3ce2960d94aaf43bf3fb68275bf9061b86e9634044445f04f1",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+      "sha256": "ff006960b9a1c0754ba6dc3ef163fc997c3594e2232e98c9bc25f0639766dd18",
+      "review_scope": "Full source; probe_body.py is an embedded main-body fragment"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "893f9dcdf38e2221b69fd11eaab594c0c5dbcf03b62d81ec1c1cbffe9654e23d",
+      "review_scope": "Full prepared plan/evidence record"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\GENERATION.json",
+      "sha256": "1a06080d772e7ea3e63f3e4fb53b20ec779c953e53b0f52051ccd37d3443e3c4",
+      "review_scope": "Full prepared plan/evidence record"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\PREPARATION.json",
+      "sha256": "fe4d02ff16cfc658b36bfe69dee4c093ca3c476a0e0668239561342efa3332b1",
+      "review_scope": "Full prepared plan/evidence record"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\METRIC_PRIMITIVE_CHECK.json",
+      "sha256": "f01b25d0328243ac61bdefe4f6f737737f85b4821b31c7ae8221791b4b289e95",
+      "review_scope": "Full prepared plan/evidence record"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\run_mask_branch_probe.py",
+      "sha256": "84c0858166781214cf241a04d5ee42243b92246fe7c4705579568f58fc6602c7",
+      "review_scope": "Full inherited runner/specification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\spec.json",
+      "sha256": "cd02a2687fbee148256e101f7709382dcedc0834f4d46f00c0c4e7cebd2a9a1a",
+      "review_scope": "Full inherited runner/specification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "review_scope": "Geometry/cache/model construction dependency; full source inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\controller.py",
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_scope": "Closed-pair producer/observer/collection contract source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_body.py",
+      "sha256": "a67200e7d37bbc87d8303cee56eb63812d0725e9a3b0e364306fec5c64737233",
+      "review_scope": "Closed-pair producer/observer/collection contract source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\observe_fit_authorized.py",
+      "sha256": "698a5203af439fc2fe90299c606a95eaa6014bdfa1e8443bf6fe47b8614e96e4",
+      "review_scope": "Closed-pair producer/observer/collection contract source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\collect_formal_authorized.py",
+      "sha256": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890",
+      "review_scope": "Closed-pair producer/observer/collection contract source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\run_geometry_fit.py",
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_scope": "Focused source inspection of formal restore, checkpoint metadata, evaluation and fit contracts"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\closed_control_receipts\\control\\receipt.json",
+      "sha256": "3779254e981d3ba1c3ad5da7e5c7499b1d06efc29cc78fe1604bfc58dbdfe2e6",
+      "review_scope": "Existing closed control evidence only; not a closed-pair terminal"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\closed_control_receipts\\control\\formal_restore.json",
+      "sha256": "1f7cc61d14972c4d3d56cae0333c26d35047486e2afc94d5cec492e07ac75d4d",
+      "review_scope": "Existing closed control evidence only; not a closed-pair terminal"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\closed_control_receipts\\control\\formal\\receipt.json",
+      "sha256": "63a24be5db5dd873eae6cea6e2f2776fd8cb8b24b12f65e5753dab36f7016574",
+      "review_scope": "Existing closed control evidence only; not a closed-pair terminal"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\receipt.json",
+      "sha256": "5441778fd4e4021c68215a700bc950c65a2acc714caf28bb10c464d7267c7064",
+      "review_scope": "Prior diagnostic receipt identity consumed by metric check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_00.npz",
+      "sha256": "71e5148220341d0f76480bd1a7e002ce6064d6a992d86f3d5cc98311d023bd32",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_01.npz",
+      "sha256": "4fd47625792533a532433894d0f94175cf576c888583c5b80ee7fec8e6c75fa2",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_02.npz",
+      "sha256": "fb737abb8b934f4f2ed3e6d49dd7b94d739862b08e54105949b1e8b71a4bbaaf",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_03.npz",
+      "sha256": "3a86c5ec2c3337bb2d4a9a0421ebb58824d032965090d3067cf93cf58c60002e",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_04.npz",
+      "sha256": "bd1aeb4f9a35e0f56d2c419a909c229387411e819ac943395db6f58f09382c84",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_05.npz",
+      "sha256": "c134c31445ce9c1d07ff6106b5de46f82d14c39cc0fda831303060d29424a626",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_06.npz",
+      "sha256": "f641f87c0920b8b6f81b661e1b3d655144fb0b0f971203ea664e7ee402e8277b",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\batch_07.npz",
+      "sha256": "946f286c107fa5e066f4cd84defb04eec112f44b17214a76386480a1d44edbfc",
+      "review_scope": "Read-only existing arrays: boxes, root_box, box_iou, Query/fused integer intersections/unions and matched_slot"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\complete\\rows.jsonl",
+      "sha256": "5f93346437c0c154759af270815e52ccc840a7e80f451f67a25904fd1b0e7c0f",
+      "review_scope": "Existing 64-row identity and root-only GT verification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\complete\\rows.jsonl",
+      "sha256": "959bf18c908b44e84e5822b7c19f8ef939414207b833e6c2dbe3ebf9e63dd6b7",
+      "review_scope": "Existing reference row/scan/point/GT identity comparison"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\experiment-bridge\\SKILL.md",
+      "sha256": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+      "review_scope": "Review instructions, especially Phase 2.5"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md",
+      "sha256": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+      "review_scope": "Reviewer attribution and execution policy"
+    }
+  ],
+  "checks": [
+    {
+      "name": "prepare_closed_spec_guards",
+      "result": "SOURCE_CORRECT_PENDING_ACTUAL_EVIDENCE",
+      "details": "Requires the real fit observer closed, controller absent, zero exit, complete status and all four train/formal runs; both 3723-update/29778-row training receipts, both 9508-row formal receipts, terminal/restore SHA agreement, zero train/formal exits and completed intake must exist before spec creation. The current single closed control receipt is not substituted for a closed pair."
+    },
+    {
+      "name": "launch_gate",
+      "result": "SOURCE_CORRECT_PENDING_FINAL_REVIEW",
+      "details": "Launcher requires a later SOURCE_REVIEW.json with execution_scope SOURCE_ONLY and unchanged reviewed files, actual spec, remote complete paired status/zero exit, idle GPU and resource lock. Current PREPARED_SOURCE_ONLY report and absent spec are not launch approval."
+    },
+    {
+      "name": "cached_head_comparison",
+      "result": "SOURCE_CORRECT_NOT_RUNTIME_PROVEN",
+      "details": "One complete parent forward per batch captures the same Query, raw points, coarse boxes and mutable output dictionary. Three replays replace exactly all 10 geometry state tensors/456102 parameters. The inspected refiner dependencies read the frozen upstream inputs and masks, do not update them, and have no dropout/BatchNorm behavior in this head. The parent replay must equal parent final boxes. Scores and Mask tensors are checked unchanged; no optimizer, backward, parameter update or checkpoint writer is present."
+    },
+    {
+      "name": "fixed_parent_qualification",
+      "result": "SOURCE_CORRECT",
+      "details": "Matching is captured once from the parent native final layer (the existing verified matches[1] convention). Every matched query is marked by its valid native GT slot and excluded. Qualification uses own Query Mask IoU>.5 AND fused Mask IoU>.5 AND parent final Box IoU<=.5 AND unmatched. It is computed from retained parent outputs regardless of either trained arm's subsequent IoU."
+    },
+    {
+      "name": "GT_and_integer_mask_evidence",
+      "result": "SOURCE_CORRECT_PRIOR_DATA_CHECKED",
+      "details": "Targets are actual dataset root boxes/masks, never another model's output. Superpoint member/root-member counts and binary selected masks produce integer point intersections/unions saved as int64. TF32 is disabled and the 50000-point count range is exactly representable in float32. CPU qualification uses 2*intersection>union without a float Mask threshold. Existing saved count dtypes were verified integer."
+    },
+    {
+      "name": "CPU_paired_metrics_and_DFL_definition",
+      "result": "SOURCE_CORRECT_PRIOR_PRIMITIVES_CHECKED",
+      "details": "CPU float64 axis-aligned box IoU and face errors/moves are recomputed from saved boxes. Fixed groups and pairwise strict .25/.5 repairs/damages are correct, including exact-threshold equality. DFL follows the same nonuniform knots, clipping, interpolation and six-face mean as distribution_loss. Range groups use the common coarse-parent face targets."
+    },
+    {
+      "name": "model_state_restoration",
+      "result": "SOURCE_CORRECT_PRODUCER_CONSUMER_BLOCKED_BY_B1",
+      "details": "The runner restores the parent head, checks every model.state_dict entry against the original CPU clone and requires all gradients absent. The resulting correct model_state_restored receipt contract is currently rejected by the stale controller field."
+    },
+    {
+      "name": "honest_scope_and_retention_order",
+      "result": "SOURCE_CORRECT_PENDING_EXECUTION",
+      "details": "The plan/records label preparation and old-data metric checking as non-accuracy evidence. No retention is invoked in this packet. After real pair closure and final source refresh, the actual cohort probe/intake/CPU audit must complete while both terminal heads still exist and before external retention deletes a nonbest head."
+    }
+  ],
+  "validation": {
+    "python37_grammar": {
+      "files": 12,
+      "body_fragment_wrapped": true,
+      "local_python": "3.12.6",
+      "result": "PASS"
+    },
+    "preparation_hashes": "PASS",
+    "generated_runner_matches_source_and_body": "PASS",
+    "reviewed_helper_hashes_match_inherited_spec": 7,
+    "old_metric_recount": {
+      "status": "PASS_PRIOR_DATA_ONLY",
+      "rows": 64,
+      "candidates": 16384,
+      "qualified_candidates": 1090,
+      "maximum_CPU_GPU_iou_difference": 2.3695575378512856e-06,
+      "threshold_changes": {
+        "0.25": 0,
+        "0.5": 0
+      },
+      "integer_mask_count_dtypes": true
+    },
+    "strict_paired_threshold_check": "PASS",
+    "existing_row_identity": {
+      "rows": 64,
+      "root_only_rows": 64,
+      "result": "PASS"
+    },
+    "local_numpy_check_runtime": {
+      "python": "3.13.12",
+      "numpy": "2.5.3"
+    },
+    "new_cohort_executed": false,
+    "actual_GPU_execution": false,
+    "spec_absent": true,
+    "launch_absent": true
+  },
+  "launch_gate_satisfied": false,
+  "final_SOURCE_ONLY_refresh_required": true,
+  "next_required_action": "Fix B1/B2 and refresh this prepared-source review. Only after the actual full pair closes and is collected may the real terminal-bound spec be added and reviewed in a separate SOURCE_ONLY refresh before any launch or retention.",
+  "implementation_edited": false,
+  "weights_created": 0,
+  "packages_installed": 0,
+  "remote_actions": 0
+}

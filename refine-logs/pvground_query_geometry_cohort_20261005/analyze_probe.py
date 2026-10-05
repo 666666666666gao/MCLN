@@ -17,7 +17,7 @@ assert receipt['model_state_restored'] and receipt['model_gradients_absent']
 assert hashlib.sha256((data/'spec.json').read_bytes()).hexdigest()==receipt['spec_sha256']
 assert hashlib.sha256((data/'run_cohort_probe.py').read_bytes()).hexdigest()==receipt['runner_sha256']
 assert hashlib.sha256((data/'rows.jsonl').read_bytes()).hexdigest()==receipt['rows_sha256']
-assert (data/'child.exit').read_text().strip()=='0'
+assert (data/'probe.exit').read_text().strip()=='0'
 assert (data/'controller.exit').read_text().strip()=='0'
 rows=[json.loads(line) for line in (data/'rows.jsonl').read_text().splitlines()]
 assert len(rows)==64

@@ -36,7 +36,7 @@ if code == 0:
     receipt = json.loads((root/'receipt.json').read_bytes())
     assert receipt['rows'] == 64 and receipt['batches'] == 8
     assert receipt['optimizer_steps'] == receipt['weight_files_created'] == 0
-    assert receipt['model_state_unchanged'] and receipt['model_gradients_absent']
+    assert receipt['model_state_restored'] and receipt['model_gradients_absent']
     assert not list(root.glob('*.pth'))
     assert all(hashlib.sha256(path.read_bytes()).hexdigest() == digest for path, digest in parents.items())
     record['protected_parent_hashes_exact'] = True

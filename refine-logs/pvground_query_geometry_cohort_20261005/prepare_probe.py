@@ -23,6 +23,8 @@ for name in ('controller.py','launch_probe_authorized.py','observe_probe_authori
     text=text.replace('run_mask_branch_probe.py','run_cohort_probe.py')
     text=text.replace('pvg_mask_branch_probe_20261005','pvg_query_geometry_cohort_20261005')
     text=text.replace('MASK_BRANCH_OBSERVATION','GEOMETRY_COHORT_OBSERVATION')
+    if name=='controller.py':
+        text=text.replace("receipt['model_state_unchanged']","receipt['model_state_restored']")
     if name=='launch_probe_authorized.py':
         text=text.replace("closed=Path('/root/autodl-tmp/pvground_mask_geometry_responsibility_20261005')",
             "closed=Path('/root/autodl-tmp/pvground_query_supported_geometry_20261005')")

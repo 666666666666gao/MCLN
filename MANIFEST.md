@@ -258,3 +258,5 @@
 - 2026-10-05T19:48:21.127485+08:00 Native-target control full9508 closed and CPU-recounted5616/4511, parent delta+2/+2; member results pending, no promotion/cleanup.
 
 - 2026-10-05T22:34:40.446837+08:00 Actual closed native/member auxiliary target comparison published; metric-best control [5616, 4511], fresh audit WARN same-family/provisional. Two nonbest geometry heads removed, no archive.
+
+- 2026-10-05T23:21:03.011763+08:00 Own/fused support reference SOURCE review complete; actual two-step GPU sanity launched, no accuracy result.

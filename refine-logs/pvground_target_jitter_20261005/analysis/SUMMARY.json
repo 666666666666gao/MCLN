@@ -1,0 +1,632 @@
+{
+  "accuracy_result": false,
+  "candidates": 16384,
+  "limits": "Augmented fit64, correlated candidates, native noisy-label matching and Mask support held fixed. Pre-jitter boxes are annotation-derived, not a new evaluation protocol. No DFL recomputation without logits; no proof of formal-accuracy cause.",
+  "model_forwards": 0,
+  "native_inputs_exact": true,
+  "optimizer_steps": 0,
+  "qualification_added_by_clean_target": 166,
+  "qualification_removed_by_clean_target": 395,
+  "rows": 64,
+  "status": "CPU_RECOUNT_COMPLETE",
+  "supported_unmatched_candidates": 3479,
+  "target_jitter": {
+    "max_face_shift_m": 0.14195909723639488,
+    "median_max_face_shift_m": 0.053923383355140686,
+    "rows_shift_over_1cm": 64,
+    "rows_shift_over_5cm": 37
+  },
+  "targets": {
+    "native_noisy": {
+      "arms": {
+        "control": {
+          "clean_qualified": {
+            "candidates": 861,
+            "hits50": 165,
+            "mean_iou": 0.3039784244481301,
+            "median_iou": 0.2968210262046653,
+            "median_max_face_error_m": 0.1774551272392273
+          },
+          "fixed_noisy_qualified": {
+            "candidates": 1090,
+            "hits50": 3,
+            "mean_iou": 0.27183079870865834,
+            "median_iou": 0.30156346839076664,
+            "median_max_face_error_m": 0.1632599700242281
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "candidates": 1003,
+            "hits50": 3,
+            "mean_iou": 0.2892480046485612,
+            "median_iou": 0.3131209393040129,
+            "median_max_face_error_m": 0.15634959191083908
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "candidates": 87,
+            "hits50": 0,
+            "mean_iou": 0.07103243597621371,
+            "median_iou": 2.317286929341324e-17,
+            "median_max_face_error_m": 0.3378172516822815
+          },
+          "selected_query": {
+            "candidates": 64,
+            "hits50": 42,
+            "mean_iou": 0.5492210796696917,
+            "median_iou": 0.6628819426473539,
+            "median_max_face_error_m": 0.09255412966012955
+          }
+        },
+        "parent": {
+          "clean_qualified": {
+            "candidates": 861,
+            "hits50": 166,
+            "mean_iou": 0.30585058914700936,
+            "median_iou": 0.2983173629159577,
+            "median_max_face_error_m": 0.17664974927902222
+          },
+          "fixed_noisy_qualified": {
+            "candidates": 1090,
+            "hits50": 0,
+            "mean_iou": 0.2736403096341624,
+            "median_iou": 0.30257695002699025,
+            "median_max_face_error_m": 0.16252897679805756
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "candidates": 1003,
+            "hits50": 0,
+            "mean_iou": 0.2911865440940567,
+            "median_iou": 0.3140273609692437,
+            "median_max_face_error_m": 0.15642009675502777
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "candidates": 87,
+            "hits50": 0,
+            "mean_iou": 0.07135441120572707,
+            "median_iou": 2.3253095787085407e-17,
+            "median_max_face_error_m": 0.3350241780281067
+          },
+          "selected_query": {
+            "candidates": 64,
+            "hits50": 42,
+            "mean_iou": 0.54968252325557,
+            "median_iou": 0.6670223724834274,
+            "median_max_face_error_m": 0.09765357710421085
+          }
+        },
+        "query_supported": {
+          "clean_qualified": {
+            "candidates": 861,
+            "hits50": 163,
+            "mean_iou": 0.30383878610352677,
+            "median_iou": 0.29617697788672764,
+            "median_max_face_error_m": 0.17604240775108337
+          },
+          "fixed_noisy_qualified": {
+            "candidates": 1090,
+            "hits50": 5,
+            "mean_iou": 0.2724319541905488,
+            "median_iou": 0.30171008797031323,
+            "median_max_face_error_m": 0.16397184133529663
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "candidates": 1003,
+            "hits50": 5,
+            "mean_iou": 0.2898707638415317,
+            "median_iou": 0.3134501163640571,
+            "median_max_face_error_m": 0.1580812782049179
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "candidates": 87,
+            "hits50": 0,
+            "mean_iou": 0.07138452798438906,
+            "median_iou": 2.4722359887452766e-17,
+            "median_max_face_error_m": 0.33348575234413147
+          },
+          "selected_query": {
+            "candidates": 64,
+            "hits50": 42,
+            "mean_iou": 0.5494850379225283,
+            "median_iou": 0.6627671439332224,
+            "median_max_face_error_m": 0.09502212703227997
+          }
+        }
+      },
+      "fixed_noisy_cohort_outside_candidates": 201,
+      "fixed_noisy_cohort_outside_faces": 482,
+      "paired": {
+        "control_to_query_supported": {
+          "clean_qualified": {
+            "0.25": {
+              "after_hits": 484,
+              "before_hits": 485,
+              "damages": 2,
+              "net": -1,
+              "repairs": 1
+            },
+            "0.5": {
+              "after_hits": 163,
+              "before_hits": 165,
+              "damages": 5,
+              "net": -2,
+              "repairs": 3
+            },
+            "candidates": 861,
+            "mean_delta_iou": -0.0001396383446034025
+          },
+          "fixed_noisy_qualified": {
+            "0.25": {
+              "after_hits": 655,
+              "before_hits": 655,
+              "damages": 2,
+              "net": 0,
+              "repairs": 2
+            },
+            "0.5": {
+              "after_hits": 5,
+              "before_hits": 3,
+              "damages": 1,
+              "net": 2,
+              "repairs": 3
+            },
+            "candidates": 1090,
+            "mean_delta_iou": 0.0006011554818904866
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "0.25": {
+              "after_hits": 642,
+              "before_hits": 642,
+              "damages": 2,
+              "net": 0,
+              "repairs": 2
+            },
+            "0.5": {
+              "after_hits": 5,
+              "before_hits": 3,
+              "damages": 1,
+              "net": 2,
+              "repairs": 3
+            },
+            "candidates": 1003,
+            "mean_delta_iou": 0.0006227591929704664
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "0.25": {
+              "after_hits": 13,
+              "before_hits": 13,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 0,
+              "before_hits": 0,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "candidates": 87,
+            "mean_delta_iou": 0.0003520920081753185
+          },
+          "selected_query": {
+            "0.25": {
+              "after_hits": 53,
+              "before_hits": 53,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 42,
+              "before_hits": 42,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "candidates": 64,
+            "mean_delta_iou": 0.0002639582528366863
+          }
+        },
+        "parent_to_query_supported": {
+          "clean_qualified": {
+            "0.25": {
+              "after_hits": 484,
+              "before_hits": 488,
+              "damages": 4,
+              "net": -4,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 163,
+              "before_hits": 166,
+              "damages": 5,
+              "net": -3,
+              "repairs": 2
+            },
+            "candidates": 861,
+            "mean_delta_iou": -0.002011803043482534
+          },
+          "fixed_noisy_qualified": {
+            "0.25": {
+              "after_hits": 655,
+              "before_hits": 660,
+              "damages": 5,
+              "net": -5,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 5,
+              "before_hits": 0,
+              "damages": 0,
+              "net": 5,
+              "repairs": 5
+            },
+            "candidates": 1090,
+            "mean_delta_iou": -0.0012083554436136841
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "0.25": {
+              "after_hits": 642,
+              "before_hits": 647,
+              "damages": 5,
+              "net": -5,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 5,
+              "before_hits": 0,
+              "damages": 0,
+              "net": 5,
+              "repairs": 5
+            },
+            "candidates": 1003,
+            "mean_delta_iou": -0.001315780252524932
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "0.25": {
+              "after_hits": 13,
+              "before_hits": 13,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 0,
+              "before_hits": 0,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "candidates": 87,
+            "mean_delta_iou": 3.011677866196901e-05
+          },
+          "selected_query": {
+            "0.25": {
+              "after_hits": 53,
+              "before_hits": 53,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 42,
+              "before_hits": 42,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "candidates": 64,
+            "mean_delta_iou": -0.00019748533304156558
+          }
+        }
+      },
+      "qualification_candidates": 1090,
+      "qualification_rows": 52
+    },
+    "pre_jitter": {
+      "arms": {
+        "control": {
+          "clean_qualified": {
+            "candidates": 861,
+            "hits50": 2,
+            "mean_iou": 0.3117432530020736,
+            "median_iou": 0.35605436040925187,
+            "median_max_face_error_m": 0.1233002319931984
+          },
+          "fixed_noisy_qualified": {
+            "candidates": 1090,
+            "hits50": 388,
+            "mean_iou": 0.41745845720247315,
+            "median_iou": 0.4209368426176654,
+            "median_max_face_error_m": 0.10152144730091095
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "candidates": 1003,
+            "hits50": 388,
+            "mean_iou": 0.4512031201617401,
+            "median_iou": 0.4459989250959013,
+            "median_max_face_error_m": 0.09475475549697876
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "candidates": 87,
+            "hits50": 0,
+            "mean_iou": 0.028425158947936624,
+            "median_iou": 2.3196618715034223e-17,
+            "median_max_face_error_m": 0.31259733703910797
+          },
+          "selected_query": {
+            "candidates": 64,
+            "hits50": 48,
+            "mean_iou": 0.6305529075609753,
+            "median_iou": 0.7724239366383407,
+            "median_max_face_error_m": 0.0578126534819603
+          }
+        },
+        "parent": {
+          "clean_qualified": {
+            "candidates": 861,
+            "hits50": 0,
+            "mean_iou": 0.3134838742354887,
+            "median_iou": 0.3581215308349218,
+            "median_max_face_error_m": 0.12532605230808258
+          },
+          "fixed_noisy_qualified": {
+            "candidates": 1090,
+            "hits50": 395,
+            "mean_iou": 0.4189426279673801,
+            "median_iou": 0.42518973788659764,
+            "median_max_face_error_m": 0.10536260344088078
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "candidates": 1003,
+            "hits50": 395,
+            "mean_iou": 0.45279256684920904,
+            "median_iou": 0.45157033841628985,
+            "median_max_face_error_m": 0.09983979165554047
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "candidates": 87,
+            "hits50": 0,
+            "mean_iou": 0.028695631433191166,
+            "median_iou": 2.327692743127448e-17,
+            "median_max_face_error_m": 0.31259733780916577
+          },
+          "selected_query": {
+            "candidates": 64,
+            "hits50": 48,
+            "mean_iou": 0.6303610985217207,
+            "median_iou": 0.7686509137133908,
+            "median_max_face_error_m": 0.05849821679294109
+          }
+        },
+        "query_supported": {
+          "clean_qualified": {
+            "candidates": 861,
+            "hits50": 7,
+            "mean_iou": 0.311860787603173,
+            "median_iou": 0.3562120656438186,
+            "median_max_face_error_m": 0.1266336292028427
+          },
+          "fixed_noisy_qualified": {
+            "candidates": 1090,
+            "hits50": 382,
+            "mean_iou": 0.41731409837226197,
+            "median_iou": 0.42227504461835685,
+            "median_max_face_error_m": 0.10123750939965248
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "candidates": 1003,
+            "hits50": 382,
+            "mean_iou": 0.4510088886644602,
+            "median_iou": 0.44814145775785,
+            "median_max_face_error_m": 0.0947323888540268
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "candidates": 87,
+            "hits50": 0,
+            "mean_iou": 0.0288557689116313,
+            "median_iou": 2.4747697351752005e-17,
+            "median_max_face_error_m": 0.3125973246991407
+          },
+          "selected_query": {
+            "candidates": 64,
+            "hits50": 48,
+            "mean_iou": 0.6300495687035885,
+            "median_iou": 0.7674312808750459,
+            "median_max_face_error_m": 0.059143081307411194
+          }
+        }
+      },
+      "fixed_noisy_cohort_outside_candidates": 87,
+      "fixed_noisy_cohort_outside_faces": 265,
+      "paired": {
+        "control_to_query_supported": {
+          "clean_qualified": {
+            "0.25": {
+              "after_hits": 622,
+              "before_hits": 617,
+              "damages": 0,
+              "net": 5,
+              "repairs": 5
+            },
+            "0.5": {
+              "after_hits": 7,
+              "before_hits": 2,
+              "damages": 1,
+              "net": 5,
+              "repairs": 6
+            },
+            "candidates": 861,
+            "mean_delta_iou": 0.0001175346010993975
+          },
+          "fixed_noisy_qualified": {
+            "0.25": {
+              "after_hits": 886,
+              "before_hits": 881,
+              "damages": 0,
+              "net": 5,
+              "repairs": 5
+            },
+            "0.5": {
+              "after_hits": 382,
+              "before_hits": 388,
+              "damages": 11,
+              "net": -6,
+              "repairs": 5
+            },
+            "candidates": 1090,
+            "mean_delta_iou": -0.00014435883021123863
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "0.25": {
+              "after_hits": 883,
+              "before_hits": 878,
+              "damages": 0,
+              "net": 5,
+              "repairs": 5
+            },
+            "0.5": {
+              "after_hits": 382,
+              "before_hits": 388,
+              "damages": 11,
+              "net": -6,
+              "repairs": 5
+            },
+            "candidates": 1003,
+            "mean_delta_iou": -0.0001942314972798468
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "0.25": {
+              "after_hits": 3,
+              "before_hits": 3,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 0,
+              "before_hits": 0,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "candidates": 87,
+            "mean_delta_iou": 0.0004306099636946701
+          },
+          "selected_query": {
+            "0.25": {
+              "after_hits": 55,
+              "before_hits": 55,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 48,
+              "before_hits": 48,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "candidates": 64,
+            "mean_delta_iou": -0.0005033388573867795
+          }
+        },
+        "parent_to_query_supported": {
+          "clean_qualified": {
+            "0.25": {
+              "after_hits": 622,
+              "before_hits": 618,
+              "damages": 0,
+              "net": 4,
+              "repairs": 4
+            },
+            "0.5": {
+              "after_hits": 7,
+              "before_hits": 0,
+              "damages": 0,
+              "net": 7,
+              "repairs": 7
+            },
+            "candidates": 861,
+            "mean_delta_iou": -0.001623086632315738
+          },
+          "fixed_noisy_qualified": {
+            "0.25": {
+              "after_hits": 886,
+              "before_hits": 882,
+              "damages": 0,
+              "net": 4,
+              "repairs": 4
+            },
+            "0.5": {
+              "after_hits": 382,
+              "before_hits": 395,
+              "damages": 19,
+              "net": -13,
+              "repairs": 6
+            },
+            "candidates": 1090,
+            "mean_delta_iou": -0.0016285295951181643
+          },
+          "fixed_noisy_qualified_inside_clean_range": {
+            "0.25": {
+              "after_hits": 883,
+              "before_hits": 879,
+              "damages": 0,
+              "net": 4,
+              "repairs": 4
+            },
+            "0.5": {
+              "after_hits": 382,
+              "before_hits": 395,
+              "damages": 19,
+              "net": -13,
+              "repairs": 6
+            },
+            "candidates": 1003,
+            "mean_delta_iou": -0.0017836781847488433
+          },
+          "fixed_noisy_qualified_outside_clean_range": {
+            "0.25": {
+              "after_hits": 3,
+              "before_hits": 3,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 0,
+              "before_hits": 0,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "candidates": 87,
+            "mean_delta_iou": 0.0001601374784401259
+          },
+          "selected_query": {
+            "0.25": {
+              "after_hits": 55,
+              "before_hits": 55,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "0.5": {
+              "after_hits": 48,
+              "before_hits": 48,
+              "damages": 0,
+              "net": 0,
+              "repairs": 0
+            },
+            "candidates": 64,
+            "mean_delta_iou": -0.0003115298181322042
+          }
+        }
+      },
+      "qualification_candidates": 861,
+      "qualification_rows": 51
+    }
+  },
+  "weights_loaded": 0
+}

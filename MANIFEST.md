@@ -242,3 +242,5 @@
 - 2026-10-05T14:50:17.058333+08:00 Actual closed Query-supported geometry comparison published; metric-best query_supported [5614, 4509], fresh audit PASS same-family/provisional. Two nonbest geometry heads removed, no archive.
 
 - 2026-10-05T15:00:04.247921+08:00 Fixed-cohort three-head geometry replay closed and audited; 64 augmented fit rows, no optimizer or new weights. Native training bbox-noise scope recorded; next CPU pre-jitter target comparison.
+
+- 2026-10-05T16:20:36.866436+08:00 CPU64 native GT-jitter check closed and reviewed; exact native inputs, no model/checkpoint/optimizer. Best5614/4509 unchanged.

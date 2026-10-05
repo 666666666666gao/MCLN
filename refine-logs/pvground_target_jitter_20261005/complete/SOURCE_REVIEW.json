@@ -1,0 +1,244 @@
+{
+  "verdict": "PASS",
+  "execution_scope": "SOURCE_ONLY",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "summary": "The CPU diagnostic implements the planned annotation-derived pre-jitter capture and fixed-candidate counterfactual correctly. No blocking source defect was found. Actual augmented64 replay and clean-label results remain unexecuted.",
+  "provenance": {
+    "reviewer_task": "/root/pvg_target_jitter_source_review",
+    "tool": "collaboration.spawn_agent",
+    "context": "fresh delegated context",
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_backend_attested": false,
+    "actual_backend": "UNATTESTED",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "independent_or_external_acceptance_claimed": false,
+    "execution": "Read source, parse Python AST, inspect closed local JSON/NPZ, and execute isolated pure methods locally. No experiment entrypoint, SSH, deployment, dataset replay, model/GPU operation, checkpoint load, or package installation was performed by this reviewer.",
+    "local_numpy_version": "2.5.3",
+    "credential_wrapper_read": false
+  },
+  "verified_design": [
+    {
+      "topic": "Annotation root and coordinate conversion",
+      "detail": "The override selects the native root target and calls Scan.get_object_bbox on the already augmented native scan before delegating unchanged to the native target-box method. The bbox method reads annotated object memberships and computes low/high corners with no RNG or mutation. Casting those corners to float64 before center/size arithmetic matches assignment into native float64 bboxes; the final float32 cast matches native returned center_label/size_gts.",
+      "references": [
+        "run_label_probe.py:68-74",
+        "joint_det_dataset.py:1086-1119",
+        "joint_det_dataset.py:1324-1334",
+        "joint_det_dataset.py:1387-1393",
+        "visual_data_handlers.py:195-197",
+        "visual_data_handlers.py:225-227",
+        "visual_data_handlers.py:245-259"
+      ]
+    },
+    {
+      "topic": "RNG, workers, and native data preservation",
+      "detail": "The capture introduces no random call and invokes the original target-box function once. The existing gt_masks boolean conversion is identical to the prior probe. The fit subset, seed2027, shuffle, batch8, num_workers2, generator, pin_memory and drop_last configuration match the prior cohort. Both probes reset CPU RNGs directly before loader iteration; omitted CUDA seeding cannot change the CPU worker generator. Native point augmentation, target jitter and detected-box augmentation remain enabled.",
+      "references": [
+        "run_label_probe.py:49-107",
+        "run_cohort_probe.py:137-178",
+        "run_cohort_probe.py:238-246"
+      ]
+    },
+    {
+      "topic": "Exact replay gates",
+      "detail": "The source requires native dataset import path/SHA, registered partitions and seed/batch parameters; repeats the prior no-augmentation reference hashes/text; additionally checks capture equals unjittered native root labels; and then requires all64 row IDs in order, scan IDs, point bytes, noisy root values and valid slots [0] to match closed evidence. Mismatch raises before the complete receipt is emitted. These are source gates; the real64 replay remains pending.",
+      "references": [
+        "run_label_probe.py:25-47",
+        "run_label_probe.py:84-143"
+      ]
+    },
+    {
+      "topic": "Cached counterfactual metrics",
+      "detail": "All64x256 candidates for parent/control/query_supported use stored boxes. Native noisy-label Hungarian assignments and query/fused mask intersections/unions remain fixed. IoU uses center-size AABBs and strict >0.5 success; qualification is supported, unmatched and parent IoU<=0.5. Boundary targets use the same clamped coarse sizes, scale4 and knots endpoints[-4,4] as the exact prior helper. The original1090-candidate noisy cohort remains fixed for paired geometry changes, with separately named clean-qualified groups.",
+      "references": [
+        "analyze_labels.py:14-98",
+        "cohort_metrics.py:6-38",
+        "run_cohort_probe.py:285-340",
+        "pvground_boundary_box_refiner.py:9-15",
+        "pvground_boundary_box_refiner.py:33-37"
+      ]
+    },
+    {
+      "topic": "Scope, leakage, and claims",
+      "detail": "The loader uses only the registered fit subset for the counterfactual. There is no optimizer, model construction/forward or checkpoint access in the new entrypoint. Dataset superpoint tensors are data loads, not model weights. The source keeps CUDA hidden and checks it is uninitialized. The analyzer explicitly limits the output to correlated augmented training candidates, with no DFL recalculation, protocol change, formal accuracy result or causal conclusion.",
+      "references": [
+        "run_label_probe.py:33-44",
+        "run_label_probe.py:103-143",
+        "analyze_labels.py:90-98",
+        "EXPERIMENT_PLAN.md"
+      ]
+    },
+    {
+      "topic": "Remote and credential boundaries",
+      "detail": "The launcher reads credentials only from the existing environment, uses system host keys with Paramiko's default rejection of unknown hosts, quotes shell arguments, requires the reviewed unchanged files, and creates the fixed new remote directory. The collector reads the bounded diagnostic directory and performs no model rerun. No concrete credential/network-boundary defect was found. The parent confirmed observer invocation will be scheduled at least180 seconds after actual launch; subsequent observer waits are240 seconds.",
+      "references": [
+        "launch_cpu_authorized.py:11-44",
+        "observe_collect_authorized.py:12-58"
+      ],
+      "parent_schedule_confirmation": "Confirmed in the parent message during this review; the observer itself checks immediately when invoked."
+    }
+  ],
+  "local_validation": {
+    "native_dataset_sha_matches_prior_import": true,
+    "boundary_helper_sha_matches_prior_spec": true,
+    "closed_cohort_hashes_match_receipt": true,
+    "rows": 64,
+    "unique_rows": 64,
+    "valid_slots": [
+      [
+        0
+      ]
+    ],
+    "candidates": 16384,
+    "saved_mask_support_and_matching_consistent": true,
+    "supported_unmatched_candidates": 3479,
+    "native_qualified_candidates": 1090,
+    "native_qualified_rows": 52,
+    "native_qualified_outside_candidates": 201,
+    "native_qualified_outside_faces": 482,
+    "native_cpu_threshold_changes": {
+      "parent": 0,
+      "control": 0,
+      "query_supported": 0
+    },
+    "native_outside_classification_changes": 0,
+    "isolated_pure_method_equivalence_checks": 64,
+    "pure_override_preserves_numpy_rng_and_native_returns": true,
+    "pre_jitter_capture_matches_unjittered_native_float32": true,
+    "exact64_augmented_data_replay": "PENDING_REMOTE_EXECUTION",
+    "isolated_method_fixture_scope": "64 synthetic three-point annotated-object fixtures derived from existing native root-box dimensions; AST-extracted actual Scan bbox, native target-box and override methods only. This checks method equivalence and RNG preservation, not real dataset replay.",
+    "python_ast_parse": "PASS for every reviewed Python file",
+    "cached_npz_reads": "8 archives; allow_pickle=False; read only"
+  },
+  "execution_requirements": [
+    "Run only the reviewed diagnostic after confirming reviewed source bytes remain unchanged.",
+    "Call the observer no earlier than180 seconds after actual launch, as confirmed by the parent.",
+    "Treat clean-label counts as pending until actual replay and local recount complete; inspect closed evidence before making result claims."
+  ],
+  "limitations": [
+    "Pre-jitter means before the additional native six-coordinate target-box multiplier. It retains point augmentation, the native scan representation and annotation membership; it is not pristine physical-object truth.",
+    "This report gives same-family provisional source acceptance, not independent or external acceptance.",
+    "The newly added publish_closed_labels.py is outside this review and is not authorized by this source verdict."
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_target_jitter_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "2c98b73233e6225887b84f12055d484a87b5b0f47b72507d8066d948b4ca41e4",
+      "bytes": 1934
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_target_jitter_20261005\\run_label_probe.py",
+      "sha256": "3ba2d9ec8327a520238cbd4f14f43144f30e1847eecc9c88b25d4e1082347a3d",
+      "bytes": 7748
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_target_jitter_20261005\\analyze_labels.py",
+      "sha256": "bd6390d47e6e5a633760f513c45b6c3dfcdebd39d24e34b6e720fcd8a1897d21",
+      "bytes": 6031
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_target_jitter_20261005\\launch_cpu_authorized.py",
+      "sha256": "846a1c8c26ae83d4ad21d933a516fc26056524b8c91c4b2ae32bcaac95493a35",
+      "bytes": 2297
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_target_jitter_20261005\\observe_collect_authorized.py",
+      "sha256": "e155ebefdc60a151db43b750d3bf773351440a5f39b24d7b234fc2670251fec7",
+      "bytes": 2409
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_target_jitter_20261005\\spec.json",
+      "sha256": "e86b2597e4510f1e980074a24ebddba36af9a67594aeff230c6f6d0ad3f56383",
+      "bytes": 298
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\run_cohort_probe.py",
+      "sha256": "ff006960b9a1c0754ba6dc3ef163fc997c3594e2232e98c9bc25f0639766dd18",
+      "bytes": 22693
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\spec.json",
+      "sha256": "748809b0e1c740b3253d992de719b8e8e1bac55518e7e1e0a5a6651932f1de71",
+      "bytes": 5199
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\cohort_metrics.py",
+      "sha256": "608a717c2257844172705ba774f9e61bf17d1faa9748b8a773b5cd6ba750a90a",
+      "bytes": 4561
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\rows.jsonl",
+      "sha256": "0e6236609932eab258ab52b9be725c5161fb1f55378fc565504dcb1386179f3d",
+      "bytes": 41871
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+      "bytes": 1059
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\receipt.json",
+      "sha256": "c33f90ee770fe6a27f70e1372eee62dba169d979f43957d650767866b2906460",
+      "bytes": 1229
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_00.npz",
+      "sha256": "b0fb8880b214544bfbab2c9c525dfce8e11df63b264baa5ba9ec8ee2aabc1f86",
+      "bytes": 308224
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_01.npz",
+      "sha256": "b4b7698f591a6ac995a030b4c2170ea73e5f4a189e9ded2d70e04c608a9fbd9f",
+      "bytes": 306306
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_02.npz",
+      "sha256": "99f8a09ab437e898fc68854017d8184fad781ce52420e1ab3a3225abdff60154",
+      "bytes": 311061
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_03.npz",
+      "sha256": "1fd009cdc0902ef768ebace44a24110fb7cf54a683fb82e91ffa9099b2243caf",
+      "bytes": 308539
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_04.npz",
+      "sha256": "bb42cbd58c8034aa4472a58ea96cf3e3af60fc8408ab21a0e34a7559fd26dfbd",
+      "bytes": 308975
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_05.npz",
+      "sha256": "c9f64b5913d752f5b7d3567e64634487566945392ef33de337fe0255bcc0452e",
+      "bytes": 308204
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_06.npz",
+      "sha256": "1aaef5edc68d4eb6c75d984bc1f65e7e1f3e5dbd25fc16fdf754678007d51cf8",
+      "bytes": 301978
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_geometry_cohort_20261005\\complete\\batch_07.npz",
+      "sha256": "4cafe6f27eed2a32a277db377acacfd1108e3a8b6c7d60642e506be4a7ace691",
+      "bytes": 308268
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "bytes": 75981
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\src\\visual_data_handlers.py",
+      "sha256": "8858aa1d7019aa5f06065bd13fcc35fe130e347787c088269c3535939806060a",
+      "bytes": 9855
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208
+    }
+  ]
+}
+

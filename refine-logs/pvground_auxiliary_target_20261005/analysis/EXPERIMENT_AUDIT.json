@@ -1,0 +1,2303 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "supported_closed_development_comparison_with_replay_and_scope_qualifications",
+  "summary": "The actual closed comparison is supported by source-bound receipts and an independent full-row recount. Native-target control achieves 4511/9508 strict IoU>0.50 hits, member-target 4502, and the protected parent 4509. The member-target intervention loses nine hits versus the same-budget control. No blocking integrity finding was identified; this remains a single-seed development comparison, with limited raw-array replay and observable cross-run numerical drift.",
+  "blocking_findings": [],
+  "execution_scope": "ACTUAL_CLOSED_TERMINAL_AUDIT",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "fresh_context": true,
+  "backend_model_identity_attested": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_task": "/root/pvg_auxiliary_target_terminal_integrity",
+  "trace_path": null,
+  "trace_note": "The executor is responsible for preserving the actual native reviewer call/response and tool trace. No backend model identity attestation was supplied.",
+  "scope_constraints": {
+    "read_only_experiment": true,
+    "remote_calls": 0,
+    "GPU_jobs": 0,
+    "model_forwards": 0,
+    "optimizer_steps": 0,
+    "weights_loaded": 0,
+    "weights_deleted": 0,
+    "weights_archived": 0,
+    "personal_memories_read": false,
+    "credential_wrapper_read": false,
+    "only_writes": "analysis/EXPERIMENT_AUDIT.json and analysis/EXPERIMENT_AUDIT.md"
+  },
+  "methodology": [
+    "Treated author analyses and all older review verdicts as untrusted. Recomputed file identities and calculations independently without importing or executing the author analyzer.",
+    "Read the active runner, auxiliary-loss implementation, actual imported model/loss/dataset copies, native evaluator, closure/preflight/restore receipts, all 7446 training JSONL records and all 56072 evaluation JSONL records. Reused hash equality for duplicated source copies.",
+    "Matched every primary stage to its receipt and intake hash; verified all 153 packet identities twice. Parsed all 52 listed Python artifacts for syntax without executing model code.",
+    "Independently recomputed selected final/coarse AABB IoUs in Python double precision, strict threshold counts, transitions, candidate-coverage scalar aggregations, mask scalar statistics, quartiles, displacement statistics, training counts and row order.",
+    "Read the eight original fixed-cohort NPZ files as NPY arrays with standard-library zip/struct parsing. Independently recomputed the 64-row target-jitter counterfactual from stored boxes, mask intersection/union counts and native matched slots; this is a separate historical diagnostic, not formal-array replay.",
+    "Verified all 24 historical cohort-intake and all 9 target-jitter-intake file identities. These additional inputs support the diagnostic provenance check; their earlier review judgments do not substitute for this audit."
+  ],
+  "checks": {
+    "A": {
+      "name": "Dataset ground-truth provenance",
+      "status": "PASS",
+      "details": [
+        "ScanRefer object IDs and utterances come from dataset annotation JSON. Native root masks mark ScanNet annotation object-member point indices; native boxes enclose those members. They are not derived from predicted boxes or masks.",
+        "The member target is captured from scan.get_object_bbox on the same augmented 50000-point scan representation before the existing independent 0.95+0.1*U box jitter. The hook calls the original target constructor and does not consume RNG. It changes neither native center_label/size_gts nor gt_masks.",
+        "The mode-dependent auxiliary_roots argument is used both in Box IoU<=0.5 eligibility and extra L1/GIoU/DFL targets. Own Query-mask AND fused-mask IoU>0.5, all current native matched-query exclusions, and the native GT loss/matching/evaluation recipe are unchanged. 'Unchanged matching' means the algorithm and targets, not identical assignments after model outputs change.",
+        "Text masks are a single expression mask expanded over 256 candidates; Query masks are candidate specific. Requiring own Query support prevents treating shared Text support alone as candidate identity. Neither support overlap nor a query index proves physical instance identity.",
+        "Provenance is verified from bound code, saved identities and execution assertions. The reviewer did not reload the remote ScanNet annotation/point files and therefore does not claim an independent end-to-end reconstruction of each dataset label."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/joint_det_dataset.py",
+          "line": 585,
+          "end_line": 649,
+          "detail": "Dataset annotation loading and object_id mapping"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/joint_det_dataset.py",
+          "line": 1086,
+          "end_line": 1119,
+          "detail": "Annotation-member masks, member AABB and independent native box jitter"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pv_ground_source_20260905/src/visual_data_handlers.py",
+          "line": 84,
+          "end_line": 259,
+          "detail": "Fixed 50000-point representation, annotation segments/objects, bounding boxes"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 168,
+          "end_line": 181,
+          "detail": "Capture member reference while preserving original native return"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 370,
+          "end_line": 381,
+          "detail": "Native matching, G and matched DFL use original batch; only auxiliary_roots is mode dependent"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/query_supported_geometry.py",
+          "line": 31,
+          "end_line": 65,
+          "detail": "Own/fused support, root-coordinate qualification, match exclusion and extra losses"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_geometry_readback_20261004/revision2/source_preview/PV-Ground/models/pv_ground.py",
+          "line": 532,
+          "end_line": 556,
+          "detail": "Shared Text mask versus candidate-specific Query mask construction"
+        }
+      ]
+    },
+    "B": {
+      "name": "Metric denominators and strict thresholds",
+      "status": "PASS",
+      "details": [
+        "Reported Acc@0.25 and Acc@0.50 are 100 times the number of expressions with selected-box IoU strictly greater than the threshold, divided by the actual stage row count: 9508 formal or 6887 module holdout. Equality is a miss. No model-max, model-mean or prediction-relative accuracy normalization is used.",
+        "The native evaluator is called with only_root=True, last_, bbs, thresholds [0.25,0.5], filter_non_gt_boxes=False; independently recorded selected-box hit counts must equal its bbs counters. The evaluator also computes native bbf metrics, but those are not used to select the reported result.",
+        "Mask support uses sigmoid(logit)>0.5 and point-count intersection/union. Auxiliary eligibility requires both Query and fused mask IoU>0.5 but box IoU<=0.5. The extra geometry term averages candidates within each expression, then averages all batch expressions including empty rows; its denominator is not a prediction score statistic.",
+        "Every selected final/coarse-box CPU threshold decision agrees with the recorded GPU IoU decisions across all 56072 reviewed evaluation rows. Full-formal maximum CPU/GPU IoU differences are 2.8856048953640467e-6 (control) and 2.8749439336395177e-6 (member).",
+        "Mask mIoU and full-256 coverage match saved scalar values. The full formal rows contain no raw point masks, all-256 box arrays or semantic-score vectors, so those scalar recounts do not independently rederive pixel/point membership, candidate ranking or oracle coverage."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 283,
+          "end_line": 352,
+          "detail": "Native evaluator configuration and full evaluation loop"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/geometry_result_metrics.py",
+          "line": 5,
+          "end_line": 77,
+          "detail": "AABB IoU computation, strict thresholds and fixed row denominator"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_runtime_bundle_20260908_v1/PV-Ground/src/grounding_evaluator.py",
+          "line": 281,
+          "end_line": 303,
+          "detail": "Native bbs ranking and strict IoU>t counters"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_runtime_bundle_20260908_v1/PV-Ground/src/grounding_evaluator.py",
+          "line": 594,
+          "end_line": 653,
+          "detail": "Point-mask fusion and intersection/union evaluation"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/query_supported_geometry.py",
+          "line": 6,
+          "end_line": 12,
+          "detail": "Point-count mask IoU"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/query_supported_geometry.py",
+          "line": 40,
+          "end_line": 65,
+          "detail": "Qualification and per-expression/batch loss normalization"
+        }
+      ]
+    },
+    "C": {
+      "name": "Artifact existence, execution and numerical claims",
+      "status": "PASS",
+      "details": [
+        "All 153 packet files exist and match actual bytes/SHA-256. All 51 current closed-intake files match their collection identities. Stage-row SHA values, training-log SHA values, specification SHA values, source-import SHA values and terminal restore/fit identities are consistent.",
+        "Both preflight, train and formal processes, plus both phase controllers, have exit code 0. Each final log record equals the corresponding JSON receipt. The controller records completion at 2026-10-05T21:49:56.894938+08:00, and the closed observer records controller_alive=false.",
+        "All seven evaluation files were parsed without dropping rows: parent formal 9508, and each new arm initial 6887, terminal 6887 and formal 9508. Formal IDs are exactly 0..9507. Pairing validates row_id, scan_id, target_id, root_box and point_sha256 throughout.",
+        "Independent recount reproduces all SUMMARY stage statistics, raw receipt metrics, transition counts, formal volume quartiles, training summaries, metric-best identity and target checks. CSV/RESULTS table values agree. Member versus control at 0.50: 9 repairs, 18 damages, net -9; member versus parent: 20 repairs, 27 damages, net -7. Control versus parent: 18 repairs, 16 damages, net +2.",
+        "Formal restoration is supported by the executed strict model restore and optimizer key/moment/step/group comparison, bound to each terminal hash. This reviewer did not download or open the remote weights; the terminal identities remain execution-receipt evidence, not a new reviewer-side weight restoration.",
+        "Historical PREPARED/pending records are not terminal execution reports. Current weight_retention.json, CLOSED_RESOURCES.json and terminal_publication.json are absent; their prepared tools are reviewed separately as unexecuted."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/TERMINAL_AUDIT_PACKET.json",
+          "line": 1,
+          "detail": "Artifact paths, lengths and hashes verified against actual bytes"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/INTAKE.json",
+          "line": 1,
+          "detail": "51 closed downloaded text/source/result artifacts"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/fit_status.json",
+          "line": 2,
+          "end_line": 23,
+          "detail": "All four train/formal children closed successfully and parents preserved"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/fit_wait.json",
+          "line": 8,
+          "end_line": 34,
+          "detail": "Observer confirms controller is no longer alive"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal.log",
+          "line": 25,
+          "detail": "Actual formal completion record"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal.log",
+          "line": 25,
+          "detail": "Actual formal completion record"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/train.log",
+          "line": 94,
+          "detail": "Actual fit completion record"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/train.log",
+          "line": 94,
+          "detail": "Actual fit completion record"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal_restore.json",
+          "line": 2,
+          "end_line": 9,
+          "detail": "Strict state/optimizer restoration and terminal identity"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal_restore.json",
+          "line": 2,
+          "end_line": 9,
+          "detail": "Strict state/optimizer restoration and terminal identity"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/analysis/FORMAL_METRICS.csv",
+          "line": 2,
+          "end_line": 4,
+          "detail": "Reported parent/control/member numeric table"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/analysis/RESULTS.md",
+          "line": 7,
+          "end_line": 19,
+          "detail": "Reported metrics and transition claims"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 232,
+          "end_line": 247,
+          "detail": "Executed formal checkpoint reconstruction and step verification"
+        }
+      ]
+    },
+    "D": {
+      "name": "Actual called code and inactive diagnostics",
+      "status": "WARN",
+      "details": [
+        "The closed controller executes run_geometry_fit.py with the corresponding arm specification, sequentially in preflight/train/formal modes. Launch source checks bind the deployed files; complete/run_geometry_fit.py is byte-identical to the audited runner. imports.json binds the actually imported dataset, model, losses, main_utils and DataProcessor source copies.",
+        "The actual model call is observed through hooks: refiner, readback, then one native semantic head. The active training loop calls native criterion, semantic G correction, matched boundary DFL and query_supported_geometry_loss. Current full evaluation rows all record one native head call and zero diagnostic head replays. There is no synthetic row/result generator in this path.",
+        "The current runner passes only native points/voxels/text/superpoints/detector predictions to the model. pre_jitter_root_box, GT boxes, GT masks and qualification are outside the forward input dictionary. Native bbs uses the existing language-token maps; no new spatial-GT scoring, candidate pruning or ranking head is added.",
+        "Some bundled routines are intentionally inactive for this comparison: native_final_quality_loss/run_final_quality_fit are not called, and repeated_forward_differences is not called by this runner. Their existence and old draft docstrings are not evidence that their diagnostics, quality fit, or a cross-forward equality test ran. This is a nonblocking call-scope warning.",
+        "The runtime evaluator is loaded explicitly from runtime/PV-Ground/src/grounding_evaluator.py. Its inspected local snapshot has SHA-256 39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677, equal to the source-port evaluator copy, but imports.json records only five other modules and the current runner does not separately hash the runtime evaluator file at load time. This limits exact per-run evaluator-byte attestation; selected-box scoring/threshold totals were independently rederived from every saved row."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/controller.py",
+          "line": 36,
+          "end_line": 58,
+          "detail": "Actual sequential subprocess commands"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/launch_geometry_fit_authorized.py",
+          "line": 44,
+          "end_line": 49,
+          "detail": "Remote/local preflight and executable source-byte agreement"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/imports.json",
+          "line": 2,
+          "end_line": 14,
+          "detail": "Imported path and SHA bindings"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 103,
+          "end_line": 116,
+          "detail": "Active imports"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 252,
+          "end_line": 273,
+          "detail": "Forward input whitelist excludes spatial GT/auxiliary references"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 363,
+          "end_line": 405,
+          "detail": "Active observed forward and training losses"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 19,
+          "end_line": 68,
+          "detail": "Actual complete-forward call order and same-forward identity checks"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 71,
+          "end_line": 87,
+          "detail": "Defined independent-full-forward diagnostic is not invoked here"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_final_quality.py",
+          "line": 41,
+          "end_line": 53,
+          "detail": "Bundled quality loss exists but is inactive in this comparison"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+          "line": 4,
+          "end_line": 9,
+          "detail": "Existing language-map bbs score, no added spatial-GT rank"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 224,
+          "end_line": 228,
+          "detail": "Explicit runtime evaluator import without a separate per-run evaluator-file SHA receipt"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_geometry_readback_20261004/revision2/complete_preflight/source_port.json",
+          "line": 1,
+          "detail": "Stored source-port evaluator identity matches the inspected local runtime snapshot; it is not a new attestation of the executing runtime file"
+        }
+      ]
+    },
+    "E": {
+      "name": "Experimental scope, initialization and claim ceiling",
+      "status": "WARN",
+      "details": [
+        "The two current specifications differ only in output root and auxiliary_target_mode. They start from the same hash-bound protected geometry parent, official PV checkpoint and original G state, with identical seed 2027 and fresh AdamW optimizers. The preflight's two memory-only updates do not initialize either formal fit.",
+        "Each arm has exactly 3723 sequential update records: 3722 batches of eight and one of two, covering the same 29778 unique fit IDs exactly once in the same order. Those IDs equal the raw split protocol; the 6887 holdout IDs are disjoint and ordered exactly as that protocol. Source/runtime assertions check physical-space separation for the local fit/holdout split.",
+        "Only the existing 456102-parameter, 10-state geometry head is trainable. Parent model parameters, buffers, masks, semantics and the zero-output R adapter are frozen/eval. End-of-fit assertions compare every non-head state exactly with initialization; current full evaluation has no R training.",
+        "The parent geometry lineage already contains 7446 updates (3723 boundary-head fit plus 3723 prior query-supported continuation); these new terminals have 11169 cumulative geometry updates. Original G and official PV pretraining/adaptation precede that history. A fresh optimizer does not mean training from scratch.",
+        "The 9508 formal expressions cover 141 scans and are development validation used for selection. Each 6887 module holdout covers 106 scans; the split protocol explicitly records previous pretraining exposure. There is one seed, one fit per current arm and one dataset. No independent test-set, multi-seed stability, significance, Nr3D/Sr3D generalization or complete three-module novelty result is established.",
+        "Actual cross-run differences disprove any blanket bitwise identity claim. Across initial arms, 6885 coarse boxes differ and one saved mask IoU differs (row 16804, JSONL line 3439: 0.950276255607605 versus 0.8911917209625244), despite equal selected queries/hit counts. Across formal arms, 9503 coarse boxes and three selected queries differ. The three query-change rows have box/mask IoU zero in both arms. Same-forward snapshots and cached-head replays establish only their stated local identities.",
+        "The extra-loss direct-output gradient is zero outside qualified candidates in the exercised real batch, but the shared head's parameters can change other candidates on later forwards; native matching is recomputed. Qualification and target coordinates changed together. The observed -9 comparison is not an isolated loss-label-only causal estimate, and the control's +2 hits is a measured selection result rather than evidence of a stable improvement."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/control_spec.json",
+          "line": 2,
+          "end_line": 55,
+          "detail": "Same official/G/geometry parents and fixed budget/hyperparameters"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/member_target_spec.json",
+          "line": 53,
+          "detail": "Only scientific intervention: member_gt mode"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 118,
+          "end_line": 148,
+          "detail": "Parent reconstruction, freeze/unfreeze and 456102/10-state assertions"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 231,
+          "detail": "Fresh AdamW construction"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 439,
+          "end_line": 474,
+          "detail": "Two-update memory-only preflight, not a saved initialization"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 481,
+          "end_line": 533,
+          "detail": "One exact full fit and frozen-state assertion"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/train.jsonl",
+          "line": 1,
+          "end_line": 3723,
+          "detail": "Independent iteration over all 3723 training records"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/train.jsonl",
+          "line": 1,
+          "end_line": 3723,
+          "detail": "Independent iteration over all 3723 training records"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/split_protocol.json",
+          "line": 1,
+          "detail": "Raw split IDs, physical-space counts and pretrained-seen holdout declaration"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_query_supported_geometry_20261005/run_geometry_fit.py",
+          "line": 464,
+          "end_line": 473,
+          "detail": "Parent's saved cumulative geometry history"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/initial/rows.jsonl",
+          "line": 3439,
+          "detail": "Observed cross-run mask difference"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/initial/rows.jsonl",
+          "line": 3439,
+          "detail": "Observed cross-run mask difference"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal/rows.jsonl",
+          "line": 959,
+          "detail": "First of three formal selected-query differences; also lines 2239 and 2284"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal/rows.jsonl",
+          "line": 959,
+          "detail": "First of three formal selected-query differences; also lines 2239 and 2284"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 384,
+          "end_line": 419,
+          "detail": "Qualified-output gradient check and cached-upstream replay limits"
+        }
+      ]
+    },
+    "F": {
+      "name": "Evaluation classification",
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": [
+        "The closed 9508/6887 evaluations are real_gt: predictions are scored against dataset-provided object masks and annotation-member boxes under the native evaluation contract.",
+        "The historical augmented fit64 jitter counterfactual is an annotation-derived real_gt diagnostic, explicitly not an accuracy result, optimizer run or simulation. Its stored mask support is prediction-derived eligibility measured against real GT, not model-generated replacement ground truth.",
+        "Independent NPZ/JSON recount reproduces 3479 supported unmatched candidates, native-qualified 1090, member-qualified 861, removed 395 and added 166; in the fixed native cohort outside-range candidates change 201 to 87. These are correlated training-candidate diagnostics, not additional formal validation rows or proof of the later nine-hit cause.",
+        "No synthetic_proxy, self_supervised_proxy, simulation_only or human_eval performance claim is supported or used here."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 198,
+          "end_line": 203,
+          "detail": "Actual ScanRefer val loader"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+          "line": 309,
+          "end_line": 351,
+          "detail": "Stored native root GT and same-query Box/Mask evaluation"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_target_jitter_20261005/run_label_probe.py",
+          "line": 68,
+          "end_line": 82,
+          "detail": "Annotation-derived pre-jitter root capture"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_target_jitter_20261005/complete/receipt.json",
+          "line": 2,
+          "end_line": 17,
+          "detail": "Closed CPU64 diagnostic; zero optimizer/model steps"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_query_geometry_cohort_20261005/complete/run_cohort_probe.py",
+          "line": 294,
+          "end_line": 354,
+          "detail": "Native matched slots and GT-based mask intersections/unions"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_query_geometry_cohort_20261005/complete/rows.jsonl",
+          "line": 1,
+          "end_line": 64,
+          "detail": "All 64 rows paired to target-jitter labels"
+        }
+      ]
+    }
+  },
+  "scope_qualifications": [
+    {
+      "id": "W1",
+      "blocking": false,
+      "topic": "Single-seed development selection",
+      "details": "One seed and development validation cannot establish stable/statistically significant gains or out-of-dataset generalization; 6887 is pretrained-seen module holdout."
+    },
+    {
+      "id": "W2",
+      "blocking": false,
+      "topic": "Raw evidence replay boundary",
+      "details": "Selected final/coarse boxes can be independently rescored against saved GT. Formal masks/full-candidate coverage can only be recounted from saved scalars, and remote raw dataset/weight contents were not independently replayed."
+    },
+    {
+      "id": "W3",
+      "blocking": false,
+      "topic": "Cross-forward reproducibility",
+      "details": "Initial and formal raw rows show numerical/selection drift. Cached-head and same-forward checks do not establish cross-CUDA complete-forward bitwise equality."
+    },
+    {
+      "id": "W4",
+      "blocking": false,
+      "topic": "Intervention interpretation",
+      "details": "Auxiliary eligibility and targets change together; native matching protocol is unchanged but assignments may change. Local direct-gradient exclusion does not freeze other outputs of the shared trainable head."
+    },
+    {
+      "id": "W5",
+      "blocking": false,
+      "topic": "Per-run evaluator source binding",
+      "details": "The explicitly loaded runtime evaluator lacks its own per-run SHA record. A local runtime snapshot matches the stored source-port copy, and the full selected-box calculation was independently recounted, but exact remote evaluator-byte identity is not newly attested."
+    }
+  ],
+  "claims": [
+    {
+      "claim": "Closed parent/control/member strict formal hits are 4509/4511/4502 of 9508.",
+      "impact": "supported"
+    },
+    {
+      "claim": "Member-target improves against the current same-budget native-target control.",
+      "impact": "unsupported; the observed difference is -9 hits (-0.09465713083718973 percentage points)."
+    },
+    {
+      "claim": "Control is the metric-best candidate under the specified strict Acc@0.50 promotion rule.",
+      "impact": "supported conditionally for retention; actual retention not executed"
+    },
+    {
+      "claim": "The control's two-hit advantage over the parent is a stable causal improvement.",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "Native/member coordinates change auxiliary qualification and localization targets, leaving native target protocol unchanged.",
+      "impact": "supported"
+    },
+    {
+      "claim": "Full point-mask/full-candidate replay, physical identity proof or cross-CUDA bitwise equality was established.",
+      "impact": "unsupported and not claimed by the qualified current RESULTS scope"
+    }
+  ],
+  "prepared_retention_and_publication": {
+    "execution_scope": "SOURCE_ONLY_NOT_EXECUTED",
+    "status": "PASS_WITH_EXECUTION_PENDING",
+    "blocking_findings": [],
+    "measured_winner": "control",
+    "winner_hits": [
+      5616,
+      4511
+    ],
+    "parent_hits": [
+      5614,
+      4509
+    ],
+    "member_hits": [
+      5616,
+      4502
+    ],
+    "promotion_rule": "Maximize strict native last/bbs Acc@0.50 count. On an equal primary count, keep the protected parent before considering Acc@0.25. If both new arms tie above the parent, compare Acc@0.25; a complete new-arm tie follows the table's control-first order.",
+    "expected_action": "Retain the current control's full ten-state geometry delta and its optimizer; remove only the closed parent geometry terminal and member-target geometry terminal. Preserve official PV, original G and V99 paths. This describes the reviewed plan, not an action performed by this auditor.",
+    "target_status": "No model meets the same-model dual target >=5615 at .25 and >=4754 at .50. The measured best remains 243 hits below 4754.",
+    "details": [
+      "analyze_closed_formal.py orders candidates by (rec_hits50, is_protected_parent, rec_hits25). Independent row recount yields control as winner. The remote retention source also rejects a non-parent winner unless its primary count strictly exceeds the parent.",
+      "The wrapper requires actual closed observer state, a received terminal review, PASS/WARN with empty blocking_findings, a reviewed retention source hash and no conflict between the dual-threshold target and metric-best winner.",
+      "Before deletion, the retention source checks exact root/parent paths, terminal SHA agreement with fit/restore receipts, formal count/hits, head shape/key/parameter identity, update history, parent identities and all ten optimizer steps. Each retained delta stores every geometry state, so reconstruction needs official PV plus original G plus the winner, not the older geometry ancestor.",
+      "The publisher requires the completed audit, retention receipt and resource verification; checks parent publication/clean repository heads and identical handoff bytes; carries actual metrics and scope qualifications into the appended section; verifies copied bytes and push destination. check_closed_resources.py hashes official/G/winner weights and verifies removed paths and idle GPU before publication.",
+      "No weight_retention.json, CLOSED_RESOURCES.json or terminal_publication.json exists for this comparison at audit time. No deletion, resource postcondition, publication commit, remote byte identity or successful push is attested by this report."
+    ],
+    "evidence": [
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/analyze_closed_formal.py",
+        "line": 88,
+        "end_line": 103,
+        "detail": "Strict primary metric and protected-parent tie priority"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/retain_metric_best_authorized.py",
+        "line": 11,
+        "end_line": 26,
+        "detail": "Closed/audit/review prerequisites and decision forwarding"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/retain_metric_best.py",
+        "line": 12,
+        "end_line": 49,
+        "detail": "Fixed target paths and header/identity checks"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/retain_metric_best.py",
+        "line": 50,
+        "end_line": 67,
+        "detail": "Strict improvement over parent and exact nonwinner deletion set"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+        "line": 487,
+        "end_line": 500,
+        "detail": "All ten selected head states and full optimizer saved"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/publish_terminal.py",
+        "line": 16,
+        "end_line": 41,
+        "detail": "Requires audit, retention and resource receipts"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/publish_terminal.py",
+        "line": 64,
+        "end_line": 87,
+        "detail": "Prepared result interpretation and explicit scope limitations"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/publish_terminal.py",
+        "line": 93,
+        "end_line": 185,
+        "detail": "Prepared exact-byte publication and repository destination checks"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/check_closed_resources.py",
+        "line": 20,
+        "end_line": 36,
+        "detail": "Planned protected-weight hash and removed-path checks"
+      }
+    ]
+  },
+  "action_items": [
+    "Keep the current development/single-seed, scalar-recount and numerical-drift qualifications attached to the result.",
+    "Use the negative member-versus-control result as the observed outcome; do not turn its within-model coarse-to-final +7 hits into an independent-baseline gain.",
+    "If the already authorized workflow proceeds, execute the reviewed retention/header checks and record actual resource/publication receipts before marking those stages complete. This audit itself performs none of those actions."
+  ],
+  "independent_recount": {
+    "errors": [],
+    "line_counts": {
+      "control/initial": 6887,
+      "control/terminal": 6887,
+      "control/formal": 9508,
+      "control/training": 3723,
+      "member_target/initial": 6887,
+      "member_target/terminal": 6887,
+      "member_target/formal": 9508,
+      "member_target/training": 3723,
+      "parent/formal": 9508
+    },
+    "table": [
+      {
+        "system": "protected_geometry_parent",
+        "rec_hits25": 5614,
+        "rec_hits50": 4509,
+        "rec_acc25": 59.045014724442574,
+        "rec_acc50": 47.423222549432055
+      },
+      {
+        "system": "control",
+        "rec_hits25": 5616,
+        "rec_hits50": 4511,
+        "rec_acc25": 59.0660496424064,
+        "rec_acc50": 47.44425746739588
+      },
+      {
+        "system": "member_target",
+        "rec_hits25": 5616,
+        "rec_hits50": 4502,
+        "rec_acc25": 59.0660496424064,
+        "rec_acc50": 47.34960033655869
+      }
+    ],
+    "training": {
+      "control": {
+        "total_extra_candidate_roles": 558475,
+        "empty_expression_rows": 5790,
+        "total_extra_boundary_outside": 200922,
+        "extra_geometry_loss_first100_mean": 1.1961813867092133,
+        "extra_geometry_loss_last100_mean": 1.144220958352089
+      },
+      "member_target": {
+        "total_extra_candidate_roles": 411513,
+        "empty_expression_rows": 6662,
+        "total_extra_boundary_outside": 161144,
+        "extra_geometry_loss_first100_mean": 1.1707193446159363,
+        "extra_geometry_loss_last100_mean": 1.1094357401132584
+      }
+    },
+    "paired": {
+      "initial": {
+        "0.25": {
+          "repairs": 0,
+          "damages": 0,
+          "net": 0,
+          "selected_query_changes": 0
+        },
+        "0.5": {
+          "repairs": 0,
+          "damages": 0,
+          "net": 0,
+          "selected_query_changes": 0
+        }
+      },
+      "terminal": {
+        "0.25": {
+          "repairs": 0,
+          "damages": 2,
+          "net": -2,
+          "selected_query_changes": 0
+        },
+        "0.5": {
+          "repairs": 8,
+          "damages": 10,
+          "net": -2,
+          "selected_query_changes": 0
+        }
+      },
+      "formal": {
+        "0.25": {
+          "repairs": 3,
+          "damages": 3,
+          "net": 0,
+          "selected_query_changes": 3
+        },
+        "0.5": {
+          "repairs": 9,
+          "damages": 18,
+          "net": -9,
+          "selected_query_changes": 3
+        }
+      }
+    },
+    "versus_parent": {
+      "control": {
+        "0.25": {
+          "repairs": 4,
+          "damages": 2,
+          "net": 2,
+          "selected_query_changes": 0
+        },
+        "0.5": {
+          "repairs": 18,
+          "damages": 16,
+          "net": 2,
+          "selected_query_changes": 0
+        }
+      },
+      "member_target": {
+        "0.25": {
+          "repairs": 6,
+          "damages": 4,
+          "net": 2,
+          "selected_query_changes": 3
+        },
+        "0.5": {
+          "repairs": 20,
+          "damages": 27,
+          "net": -7,
+          "selected_query_changes": 3
+        }
+      }
+    },
+    "volume_groups": [
+      {
+        "volume_quartile": 1,
+        "rows": 2377,
+        "control_hits50": 887,
+        "member_target_hits50": 883,
+        "strategy_vs_control": {
+          "repairs": 4,
+          "damages": 8,
+          "net": -4,
+          "selected_query_changes": 3
+        }
+      },
+      {
+        "volume_quartile": 2,
+        "rows": 2377,
+        "control_hits50": 1070,
+        "member_target_hits50": 1069,
+        "strategy_vs_control": {
+          "repairs": 2,
+          "damages": 3,
+          "net": -1,
+          "selected_query_changes": 0
+        }
+      },
+      {
+        "volume_quartile": 3,
+        "rows": 2377,
+        "control_hits50": 1113,
+        "member_target_hits50": 1112,
+        "strategy_vs_control": {
+          "repairs": 2,
+          "damages": 3,
+          "net": -1,
+          "selected_query_changes": 0
+        }
+      },
+      {
+        "volume_quartile": 4,
+        "rows": 2377,
+        "control_hits50": 1441,
+        "member_target_hits50": 1438,
+        "strategy_vs_control": {
+          "repairs": 1,
+          "damages": 4,
+          "net": -3,
+          "selected_query_changes": 0
+        }
+      }
+    ],
+    "best": {
+      "system": "control",
+      "rec_hits25": 5616,
+      "rec_hits50": 4511,
+      "rec_acc25": 59.0660496424064,
+      "rec_acc50": 47.44425746739588
+    },
+    "formal_stages": {
+      "control": {
+        "rows": 9508,
+        "rec_hits25": 5616,
+        "rec_hits50": 4511,
+        "mask_hits25": 5812,
+        "mask_hits50": 5133,
+        "mask_miou": 47.10762848393134,
+        "cpu_box_threshold_changes": 0,
+        "max_cpu_vs_gpu_iou_absolute_difference": 0.0000028856048953640467,
+        "median_selected_max_face_displacement_m": 0.00885201245546341,
+        "max_selected_face_displacement_m": 0.5037609934806824,
+        "rec_acc25": 59.0660496424064,
+        "rec_acc50": 47.44425746739588,
+        "same_query_refinement": {
+          "0.25": {
+            "coarse_hits": 5615,
+            "final_hits": 5616,
+            "repairs": 7,
+            "damages": 6,
+            "net": 1
+          },
+          "0.5": {
+            "coarse_hits": 4495,
+            "final_hits": 4511,
+            "repairs": 42,
+            "damages": 26,
+            "net": 16
+          }
+        },
+        "candidate_availability": {
+          "0.25": {
+            "topk": [
+              16,
+              32,
+              64,
+              256
+            ],
+            "oracle_hits": [
+              6357,
+              6855,
+              7898,
+              8957
+            ],
+            "errors_with_good_full256": 3341,
+            "errors_without_good_full256": 551,
+            "error_first_good_rank": {
+              "first_good_2_16": 741,
+              "first_good_17_32": 498,
+              "first_good_33_64": 1043,
+              "first_good_65_256": 1059,
+              "none_full256": 551
+            }
+          },
+          "0.5": {
+            "topk": [
+              16,
+              32,
+              64,
+              256
+            ],
+            "oracle_hits": [
+              5578,
+              6075,
+              7026,
+              7902
+            ],
+            "errors_with_good_full256": 3391,
+            "errors_without_good_full256": 1606,
+            "error_first_good_rank": {
+              "first_good_2_16": 1067,
+              "first_good_17_32": 497,
+              "first_good_33_64": 951,
+              "first_good_65_256": 876,
+              "none_full256": 1606
+            }
+          }
+        },
+        "selected_box_mask_at50": {
+          "both_good": 4174,
+          "box_only_good": 337,
+          "mask_only_good": 959,
+          "both_bad": 4038
+        }
+      },
+      "member_target": {
+        "rows": 9508,
+        "rec_hits25": 5616,
+        "rec_hits50": 4502,
+        "mask_hits25": 5812,
+        "mask_hits50": 5133,
+        "mask_miou": 47.10762848393134,
+        "cpu_box_threshold_changes": 0,
+        "max_cpu_vs_gpu_iou_absolute_difference": 0.0000028749439336395177,
+        "median_selected_max_face_displacement_m": 0.009802713990211487,
+        "max_selected_face_displacement_m": 0.6017482876777649,
+        "rec_acc25": 59.0660496424064,
+        "rec_acc50": 47.34960033655869,
+        "same_query_refinement": {
+          "0.25": {
+            "coarse_hits": 5615,
+            "final_hits": 5616,
+            "repairs": 8,
+            "damages": 7,
+            "net": 1
+          },
+          "0.5": {
+            "coarse_hits": 4495,
+            "final_hits": 4502,
+            "repairs": 39,
+            "damages": 32,
+            "net": 7
+          }
+        },
+        "candidate_availability": {
+          "0.25": {
+            "topk": [
+              16,
+              32,
+              64,
+              256
+            ],
+            "oracle_hits": [
+              6357,
+              6854,
+              7898,
+              8958
+            ],
+            "errors_with_good_full256": 3342,
+            "errors_without_good_full256": 550,
+            "error_first_good_rank": {
+              "first_good_2_16": 741,
+              "first_good_17_32": 497,
+              "first_good_33_64": 1044,
+              "first_good_65_256": 1060,
+              "none_full256": 550
+            }
+          },
+          "0.5": {
+            "topk": [
+              16,
+              32,
+              64,
+              256
+            ],
+            "oracle_hits": [
+              5576,
+              6074,
+              7026,
+              7901
+            ],
+            "errors_with_good_full256": 3399,
+            "errors_without_good_full256": 1607,
+            "error_first_good_rank": {
+              "first_good_2_16": 1074,
+              "first_good_17_32": 498,
+              "first_good_33_64": 952,
+              "first_good_65_256": 875,
+              "none_full256": 1607
+            }
+          }
+        },
+        "selected_box_mask_at50": {
+          "both_good": 4168,
+          "box_only_good": 334,
+          "mask_only_good": 965,
+          "both_bad": 4041
+        }
+      }
+    },
+    "initial_differences": {
+      "query": 0,
+      "mask_iou": 1,
+      "coarse_box": 6885,
+      "coarse_iou": 5916,
+      "box": 6887,
+      "iou": 5962
+    },
+    "formal_differences": {
+      "query": 3,
+      "mask_iou": 0,
+      "coarse_box": 9503,
+      "coarse_iou": 5870,
+      "box": 9508,
+      "iou": 6358
+    },
+    "parent_control_differences": {
+      "query": 0,
+      "mask_iou": 0,
+      "coarse_box": 0,
+      "coarse_iou": 0,
+      "box": 9508,
+      "iou": 6361
+    },
+    "point_matching_all_stages": true,
+    "same_order": true,
+    "training_order_sha256": "1ab6f45572237ad8be0fc003f4a1e8cd872a4f41f6e7af66b300364e03c2810e",
+    "scene_counts": {
+      "control": {
+        "initial": 106,
+        "terminal": 106,
+        "formal": 141
+      },
+      "member_target": {
+        "initial": 106,
+        "terminal": 106,
+        "formal": 141
+      }
+    }
+  },
+  "independent_historical_cohort_recount": {
+    "candidates": 16384,
+    "rows": 64,
+    "matched_GT_slots_and_points_equal": true,
+    "totals": {
+      "supported_unmatched": 3479,
+      "native_qualified": 1090,
+      "clean_qualified": 861,
+      "removed": 395,
+      "added": 166,
+      "old_outside_candidates": 201,
+      "clean_outside_candidates": 87,
+      "old_outside_faces": 482,
+      "clean_outside_faces": 265
+    },
+    "jitter": {
+      "max_face_shift_m": 0.14195909723639488,
+      "median_max_face_shift_m": 0.053923383355140686,
+      "rows_shift_over_1cm": 64,
+      "rows_shift_over_5cm": 37
+    }
+  },
+  "input_review_scope_note": "reviewed_files binds actual bytes read, including files hash-checked for identity and inactive/older evidence consulted only for context. It is not a claim that every bundled routine executed or that earlier review judgments were adopted. Runtime remote files and weights were not accessed by this reviewer.",
+  "time_utc": "2026-10-05T14:28:04.730254+00:00",
+  "packet_binding": {
+    "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/TERMINAL_AUDIT_PACKET.json",
+    "bytes": 39490,
+    "sha256": "866bbf8ec17f769b0b84a9ace75d7a3b0ad935b60926d2836f7f5cc1f88e9866"
+  },
+  "artifact_verification": {
+    "packet_files_verified": 153,
+    "packet_hash_mismatches": [],
+    "intakes": [
+      {
+        "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/INTAKE.json",
+        "verified_files": 51,
+        "mismatches": []
+      },
+      {
+        "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/INTAKE.json",
+        "verified_files": 24,
+        "mismatches": []
+      },
+      {
+        "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/INTAKE.json",
+        "verified_files": 9,
+        "mismatches": []
+      }
+    ],
+    "reviewed_input_count": 205,
+    "prepared_publication_static_files_verified": 4,
+    "source_bindings_limit": "The runtime evaluator is explicitly imported, but its exact executing per-run bytes are not separately hashed; see check D and W5."
+  },
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/skills/experiment-audit/SKILL.md",
+      "bytes": 10983,
+      "sha256": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7"
+    },
+    {
+      "path": "C:/Users/gb/.codex/skills/shared-references/experiment-integrity.md",
+      "bytes": 2355,
+      "sha256": "22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60"
+    },
+    {
+      "path": "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md",
+      "bytes": 2948,
+      "sha256": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783"
+    },
+    {
+      "path": "C:/Users/gb/.codex/skills/shared-references/review-tracing.md",
+      "bytes": 4433,
+      "sha256": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395"
+    },
+    {
+      "path": "C:/Users/gb/.codex/skills/shared-references/reviewer-independence.md",
+      "bytes": 1843,
+      "sha256": "1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pv_ground_source_20260905/src/grounding_evaluator.py",
+      "bytes": 42375,
+      "sha256": "8f057c1929a1b6f4acc7a839744ccf561b6d7c2d14a392f1a50583303dfd71e2"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pv_ground_source_20260905/src/visual_data_handlers.py",
+      "bytes": 10126,
+      "sha256": "6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvg_training_interface_source_20260908/env_spec.json",
+      "bytes": 2938,
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/analysis/FORMAL_METRICS.csv",
+      "bytes": 239,
+      "sha256": "f4231f80c3b352d2f89909265b0ba4b045649ba6cb6a2f68001c2920a81344ad"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/analysis/RESULTS.md",
+      "bytes": 1572,
+      "sha256": "7a237ed0ba59119115677ca604e9fa6f5f9afbdec3a7474ebbcb26cfeef9be80"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/analysis/SUMMARY.json",
+      "bytes": 24240,
+      "sha256": "e958f2394d4ac363eabd79bcc7c81397d4aa7d0e7cd30e2a5ba38198f8fff7fd"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/analyze_closed_formal.py",
+      "bytes": 9572,
+      "sha256": "075cbf1df8b5f35ed90d00521ebacaeae5d31e8be8b01617d4f2fdc308d52864"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/check_closed_resources.py",
+      "bytes": 2663,
+      "sha256": "66d3fb7352beea273929186c38acf2e0803223e0ab19273438cf123800b48ef3"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/CLOSED_RESULT_TOOLS.json",
+      "bytes": 708,
+      "sha256": "557f30a139fd89b95b01cb2deb5d37553a50e0d31f8cc2ed3d1736b6141e8117"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/collect_formal_authorized.py",
+      "bytes": 2399,
+      "sha256": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal.log",
+      "bytes": 3134,
+      "sha256": "d2659d508d3b77afa299d7031bf3c3bbd3363cf8d839b49e4d42d9f07bc45a54"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal/receipt.json",
+      "bytes": 494,
+      "sha256": "09660e1169a9d2e43d4111fb4acbae7eb1a1ef035e885f8ff84cb6d08d9ca016"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal/rows.jsonl",
+      "bytes": 7623290,
+      "sha256": "ec73b6acb9691d6c591136c5e5a34e80a8d7d716bedef714ca960bbbd324716c"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal_restore.json",
+      "bytes": 275,
+      "sha256": "5fbd320e4a1a24717f53cab7dc376b449068e55180fe8bc43678c2a0bcb62e00"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/initial/receipt.json",
+      "bytes": 491,
+      "sha256": "2653f7b747b6fbe5355fd91f4fbad10515d5a54948ba7ec18b0fc5e3ae2a1eee"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/initial/rows.jsonl",
+      "bytes": 5602600,
+      "sha256": "8c32ef58d338fc024887550bd3e72600e97b4be0c18442414bcbeb3cc29f5039"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/load.json",
+      "bytes": 698,
+      "sha256": "2fb97e5f7f94124ef87d12afdca995f9d0a421d29c0c2555eadf17f496df5ba9"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/preflight.json",
+      "bytes": 4225,
+      "sha256": "edc0f9ef53836b303102c93b727d05b06dab8840ce436fe22b9dd43fa5ce72d5"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/preflight.log",
+      "bytes": 4171,
+      "sha256": "fbd9240fd3b7db22eab35272363da74c2e90c5074d468e330e3cec8497c5ffb1"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/receipt.json",
+      "bytes": 1259,
+      "sha256": "b8363480385a30c3dc066bb336e3f4e7b57d174d7691307c3691b423901c6d77"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/terminal/receipt.json",
+      "bytes": 492,
+      "sha256": "edb372d84b3523b14027b05a16a3af6f689055dafb1920feea78b620ccfb1928"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/terminal/rows.jsonl",
+      "bytes": 5602664,
+      "sha256": "74e6b1037f232fce90034299351996392938226e02d3e87856afeee01e666580"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/train.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/train.jsonl",
+      "bytes": 3942252,
+      "sha256": "d4d99a9570477a0a7ccbfea7d479e1e6233691bfb9e7144a2dd52f8796efa37e"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/train.log",
+      "bytes": 70022,
+      "sha256": "0cb76386cbbd49acd191c6256a6930ae3a84d26da49ac9b29982322002b87dda"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control_spec.json",
+      "bytes": 4076,
+      "sha256": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/controller.py",
+      "bytes": 2955,
+      "sha256": "6be7f646091d090961df236fbf204e6fac74626f9dc13df49ab1e49b3a1982d9"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/EXPERIMENT_PLAN.md",
+      "bytes": 3452,
+      "sha256": "45ab4e8bd36073d294aeb41b6a7c9171e0517149de81d8ffff9ef2d44de1ef0d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/fit_controller.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/fit_controller.log",
+      "bytes": 489,
+      "sha256": "37f27aa83994c11228e862f77dad35f59581f6b74b4efeff7d93bbe46ed6028a"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/fit_launch.json",
+      "bytes": 1480,
+      "sha256": "181d4e745f1d171f9dbc769737b1464977cabc5b3b0e6fd9352515bbebbbe4a4"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/fit_status.json",
+      "bytes": 551,
+      "sha256": "b74f2f6f0826a6fa1706f7ed018ad2d8602078bf12e6c448c6d9798ee8a2dcdc"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/INTAKE.json",
+      "bytes": 8612,
+      "sha256": "ec35a488d12c9a3943cadc9a7effa7f8042ccdd2990a7c59cc0daf3f7aaa55be"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal.log",
+      "bytes": 3135,
+      "sha256": "2d5ab9ce76f34886bafe2d39554c01a22b0c2c6e67b38fe11bb9ff0496e5dedb"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal/receipt.json",
+      "bytes": 494,
+      "sha256": "068c985fa25b03f116c4a6644350de91ee4f330070ab7e573e58e62b94681f71"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal/rows.jsonl",
+      "bytes": 7622899,
+      "sha256": "5cf350d4bab14e92dcb8fe7c34d0103c1ca120300cb54997af14ee8e540b7bb9"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal_restore.json",
+      "bytes": 275,
+      "sha256": "26c19a2aac3d5c84c00fc430132fec463ebd5d72a253fb7ed548759165828133"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/initial/receipt.json",
+      "bytes": 491,
+      "sha256": "57e4bcd7ecc8eda9ca82e665cb0d4d6d50d0a48dd86cf011c13d46d84e0827f3"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/initial/rows.jsonl",
+      "bytes": 5602599,
+      "sha256": "414845cd96fe78e24eca21a434bff194ce53babf07c0e16b2f886b172a7fab41"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/load.json",
+      "bytes": 698,
+      "sha256": "26bf8821a14adbb0c9f038926dbfadfed1ef94e0e59efe02757c38020f2b5dd3"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/preflight.json",
+      "bytes": 4223,
+      "sha256": "135c0d47a3bb620736d07386dbda20d7d62a4fb8fee249e1273aa0dd3603c02c"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/preflight.log",
+      "bytes": 4169,
+      "sha256": "41ea1e55622743412a47405f54fa1cde7b1e14f64f62a2de82c2becdca9333bd"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/receipt.json",
+      "bytes": 1259,
+      "sha256": "5f6ee299bbfd5740a7244babdc3cbcb4dbd379269c5c4c3ddd7e7855b9a309c1"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/terminal/receipt.json",
+      "bytes": 492,
+      "sha256": "f354e75983fe3f4da943ad848f6b6ca43cb1194369ff1463fdfc4cf2ab3819d7"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/terminal/rows.jsonl",
+      "bytes": 5602688,
+      "sha256": "e1f35e80a3c0d612c6c6b2d699f80f34590e5b4e6c7d387a1c87baaf960d9ac5"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/train.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/train.jsonl",
+      "bytes": 3937569,
+      "sha256": "2e5a036ff055a9a4bfec82227be6a661a9867374805fb0623aad307a6fa6c797"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/train.log",
+      "bytes": 69956,
+      "sha256": "514a57a464af8d3df4f9268b11d852c2ccca7bab47a6697c07f8ace29cbc6aec"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target_spec.json",
+      "bytes": 4082,
+      "sha256": "11825f691eb97342a28055565619be768039824c470e4291c3fff656c1ba9a18"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/preflight_controller.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/preflight_controller.log",
+      "bytes": 462,
+      "sha256": "bd9409c9ad2af81fa980be5b07909e7384bac98157fd722ccf37eac494f63a37"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/preflight_status.json",
+      "bytes": 516,
+      "sha256": "9c673e8924670167de4d232ce910f4331c1dd648c308dce53ac8fea2c81a7d22"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/query_supported_geometry.py",
+      "bytes": 3634,
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/run_geometry_fit.py",
+      "bytes": 33462,
+      "sha256": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/SOURCE_REVIEW.json",
+      "bytes": 21997,
+      "sha256": "dec070a173da35b1c014b714182bb5eb2b40cf0d0e43f4f31b7826fb5bf36f7a"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/SOURCE_REVIEW.md",
+      "bytes": 3078,
+      "sha256": "300bb3c2c50119f2ecd28b7ffa85e3dd85a901a8f403b9679afc7b2fd88fd82d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/control_spec.json",
+      "bytes": 4076,
+      "sha256": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/controller.py",
+      "bytes": 2955,
+      "sha256": "6be7f646091d090961df236fbf204e6fac74626f9dc13df49ab1e49b3a1982d9"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/deploy_preflight_authorized.py",
+      "bytes": 4415,
+      "sha256": "d6c0992e82feef7fee7b9934eb37e9aa8076e215dd85201130cbb2b813aa345a"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/EXPERIMENT_PLAN.md",
+      "bytes": 3452,
+      "sha256": "45ab4e8bd36073d294aeb41b6a7c9171e0517149de81d8ffff9ef2d44de1ef0d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/fit_wait.json",
+      "bytes": 1026,
+      "sha256": "705012720c229f9bf137d36f8f8e5780d504f3a15fcf6bfcd627d3c4d81ac748"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/geometry_result_metrics.py",
+      "bytes": 4593,
+      "sha256": "9e646ba0193f19ddca827e665be3f0a8b651bb4539a05a0ec9568fda9315d5aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/launch_geometry_fit_authorized.py",
+      "bytes": 6283,
+      "sha256": "79de4ef26097e8085d745e5ae43d00933a6d80d6c4042d9361b433f94e6a3798"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/LAUNCH_REVIEW.json",
+      "bytes": 23639,
+      "sha256": "2d52a479d1f4b05701f2b9c25c4a81203cc618b2dbc9573cea91e4749a436c39"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/member_target_spec.json",
+      "bytes": 4082,
+      "sha256": "11825f691eb97342a28055565619be768039824c470e4291c3fff656c1ba9a18"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/load.json",
+      "bytes": 698,
+      "sha256": "10e33e8108eaddb8e20a36a9e2fda0255e9db5c3072255b96116505c9fbf7ee6"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/preflight.json",
+      "bytes": 4225,
+      "sha256": "edc0f9ef53836b303102c93b727d05b06dab8840ce436fe22b9dd43fa5ce72d5"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/preflight.log",
+      "bytes": 4171,
+      "sha256": "fbd9240fd3b7db22eab35272363da74c2e90c5074d468e330e3cec8497c5ffb1"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control_spec.json",
+      "bytes": 4076,
+      "sha256": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/controller.py",
+      "bytes": 2955,
+      "sha256": "6be7f646091d090961df236fbf204e6fac74626f9dc13df49ab1e49b3a1982d9"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/EXPERIMENT_PLAN.md",
+      "bytes": 3452,
+      "sha256": "45ab4e8bd36073d294aeb41b6a7c9171e0517149de81d8ffff9ef2d44de1ef0d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/INTAKE.json",
+      "bytes": 3602,
+      "sha256": "304c29f1b934c81fe7b5d156b26a1e8e747416332406f53e5a713319a47c3fad"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/load.json",
+      "bytes": 698,
+      "sha256": "7ed2489957f591b66b97271de7a471a90161451124a718ee86ecfc97c7889fba"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/preflight.json",
+      "bytes": 4223,
+      "sha256": "135c0d47a3bb620736d07386dbda20d7d62a4fb8fee249e1273aa0dd3603c02c"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/preflight.log",
+      "bytes": 4169,
+      "sha256": "41ea1e55622743412a47405f54fa1cde7b1e14f64f62a2de82c2becdca9333bd"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target_spec.json",
+      "bytes": 4082,
+      "sha256": "11825f691eb97342a28055565619be768039824c470e4291c3fff656c1ba9a18"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/preflight_controller.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/preflight_controller.log",
+      "bytes": 462,
+      "sha256": "bd9409c9ad2af81fa980be5b07909e7384bac98157fd722ccf37eac494f63a37"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/preflight_status.json",
+      "bytes": 516,
+      "sha256": "9c673e8924670167de4d232ce910f4331c1dd648c308dce53ac8fea2c81a7d22"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/query_supported_geometry.py",
+      "bytes": 3634,
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/run_geometry_fit.py",
+      "bytes": 33462,
+      "sha256": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/SOURCE_REVIEW.json",
+      "bytes": 21997,
+      "sha256": "dec070a173da35b1c014b714182bb5eb2b40cf0d0e43f4f31b7826fb5bf36f7a"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/SOURCE_REVIEW.md",
+      "bytes": 3078,
+      "sha256": "300bb3c2c50119f2ecd28b7ffa85e3dd85a901a8f403b9679afc7b2fd88fd82d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_wait.json",
+      "bytes": 752,
+      "sha256": "27ce9f6c736560ea8501ec4c986fba7d700c93bce676b2e2d47ae385b3bd434b"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/PREPARATION.json",
+      "bytes": 874,
+      "sha256": "287a9362a0f32e94cf0a51c24cb51c533fb6e8f32ba6095abefd9e002c5677a3"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_closed_result_tools.py",
+      "bytes": 3301,
+      "sha256": "486a8d062b716d49f94acda08041d5a711707d8571ea2637c2c61a2e445ffb6f"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_fit_launcher.py",
+      "bytes": 1925,
+      "sha256": "703326eb58badb0e64bcc409b4549397abdbad8182dfe7194452276549348c3d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_retention_tools.py",
+      "bytes": 3198,
+      "sha256": "da7fbdb40f84c436dda571af2b99086cd9439c63a9ac1476cd8ca71a2024b3db"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_target_comparison.py",
+      "bytes": 7611,
+      "sha256": "4c6360ee89bface6937d39c44224d3ad13b3203ced10622fc546b86a1a0d08ee"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_terminal_publication.py",
+      "bytes": 13770,
+      "sha256": "dd15c968efb6f7660b44d97cf9b76d45f04bd819d5d76b91bf0a09898a4b3188"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/publish_terminal.py",
+      "bytes": 17705,
+      "sha256": "55846f9dda828c917b7c9111a570bde86f685c29ce13552a21607cbd3d3da181"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/query_supported_geometry.py",
+      "bytes": 3634,
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/retain_metric_best.py",
+      "bytes": 4586,
+      "sha256": "da947e56b0139028f4364018ff57ab79f533995fe8de4b1c11b747cc77a02032"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/retain_metric_best_authorized.py",
+      "bytes": 2672,
+      "sha256": "24ef007d5d3c968f964eb1300a694c10b76eace587e1f6ccf553f7edd025bc64"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/RETENTION_REVIEW.json",
+      "bytes": 17281,
+      "sha256": "e3467987c26ffad27cef28460922f09bf31993d578f9c8c94f43dbad7f7d7098"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/RETENTION_REVIEW_CALL.json",
+      "bytes": 488,
+      "sha256": "83041df4ad6626c25f0a94afbf622da13e65f354eee0b479c73d3672f359e504"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/RETENTION_TOOLS.json",
+      "bytes": 575,
+      "sha256": "85c1d1f722b2cacf1e3361b6c344578da4ad85b8f236aa72920b44945e5d4a25"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py",
+      "bytes": 33462,
+      "sha256": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/SOURCE_REVIEW.json",
+      "bytes": 21997,
+      "sha256": "dec070a173da35b1c014b714182bb5eb2b40cf0d0e43f4f31b7826fb5bf36f7a"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/SOURCE_REVIEW.md",
+      "bytes": 3078,
+      "sha256": "300bb3c2c50119f2ecd28b7ffa85e3dd85a901a8f403b9679afc7b2fd88fd82d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/TERMINAL_AUDIT_PACKET.json",
+      "bytes": 39490,
+      "sha256": "866bbf8ec17f769b0b84a9ace75d7a3b0ad935b60926d2836f7f5cc1f88e9866"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/TERMINAL_PUBLICATION_PREPARATION.json",
+      "bytes": 1026,
+      "sha256": "f8b839ed5e48d33ff8b715f723ec9892a5ac36937f7afc7b565bd62f875f6f4d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/TERMINAL_PUBLICATION_SOURCE_CHECK.json",
+      "bytes": 1492,
+      "sha256": "99e0b3fdcc22c012ce601331839541eee2d4a4d53092122481e969c93ef08509"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_candidate_normalization_20261003/complete/source/imported/main_utils.py",
+      "bytes": 24599,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_candidate_normalization_20261003/complete/source/imported/prepare_data.py",
+      "bytes": 19658,
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_cs_restart_20261002/env_spec.json",
+      "bytes": 2938,
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/install_boundary_evidence_readback.py",
+      "bytes": 518,
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_final_quality.py",
+      "bytes": 5764,
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+      "bytes": 481,
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_evidence_readback.py",
+      "bytes": 4335,
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py",
+      "bytes": 4754,
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+      "bytes": 8163,
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/run_final_quality_fit.py",
+      "bytes": 31540,
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/appearance_source_manifest.json",
+      "bytes": 74702,
+      "sha256": "75cd5f87a8e715c15b458ed1964c2e6f1d35046bb6beffca1b3388d5903bbe36"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/grounding_evaluator.py",
+      "bytes": 41473,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/input_manifest.json",
+      "bytes": 161881,
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/split_protocol.json",
+      "bytes": 246139,
+      "sha256": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/revision2/complete_preflight/source_port.json",
+      "bytes": 10665,
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/revision2/source_preview/PV-Ground/models/pv_ground.py",
+      "bytes": 26744,
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_00.npz",
+      "bytes": 308224,
+      "sha256": "b0fb8880b214544bfbab2c9c525dfce8e11df63b264baa5ba9ec8ee2aabc1f86"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_01.npz",
+      "bytes": 306306,
+      "sha256": "b4b7698f591a6ac995a030b4c2170ea73e5f4a189e9ded2d70e04c608a9fbd9f"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_02.npz",
+      "bytes": 311061,
+      "sha256": "99f8a09ab437e898fc68854017d8184fad781ce52420e1ab3a3225abdff60154"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_03.npz",
+      "bytes": 308539,
+      "sha256": "1fd009cdc0902ef768ebace44a24110fb7cf54a683fb82e91ffa9099b2243caf"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_04.npz",
+      "bytes": 308975,
+      "sha256": "bb42cbd58c8034aa4472a58ea96cf3e3af60fc8408ab21a0e34a7559fd26dfbd"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_05.npz",
+      "bytes": 308204,
+      "sha256": "c9f64b5913d752f5b7d3567e64634487566945392ef33de337fe0255bcc0452e"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_06.npz",
+      "bytes": 301978,
+      "sha256": "1aaef5edc68d4eb6c75d984bc1f65e7e1f3e5dbd25fc16fdf754678007d51cf8"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_07.npz",
+      "bytes": 308268,
+      "sha256": "4cafe6f27eed2a32a277db377acacfd1108e3a8b6c7d60642e506be4a7ace691"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/controller.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/controller.log",
+      "bytes": 327,
+      "sha256": "7bde2ec8b630dd4ca924ba7866d6b410805246bc764fd6d02d93b949ff029f57"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/controller.py",
+      "bytes": 2402,
+      "sha256": "a5658bf487fcd701f76478af1b78419c90d1dea17f92c815a011912c9b6cb35c"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/EXPERIMENT_PLAN.md",
+      "bytes": 2281,
+      "sha256": "893f9dcdf38e2221b69fd11eaab594c0c5dbcf03b62d81ec1c1cbffe9654e23d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/INTAKE.json",
+      "bytes": 3897,
+      "sha256": "6df285574094730f841abcb569d1eb85d3ffb16db925149189fe21627af4c210"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/launch.json",
+      "bytes": 689,
+      "sha256": "8d908405509a3365e3cf688f05e82e574686a8bbc4478b1a10cdf269867e34d4"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/load.json",
+      "bytes": 575,
+      "sha256": "8992b132063e647d0a6f7b71070576245c51d3e5c38b01b8a7da060d308b9af1"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/probe.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/probe.log",
+      "bytes": 2700,
+      "sha256": "cb3f7ea71c8ffca095416ff2085c1e73648895d5f1df781a0fe424f4d92497a1"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/receipt.json",
+      "bytes": 1229,
+      "sha256": "c33f90ee770fe6a27f70e1372eee62dba169d979f43957d650767866b2906460"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/rows.jsonl",
+      "bytes": 41871,
+      "sha256": "0e6236609932eab258ab52b9be725c5161fb1f55378fc565504dcb1386179f3d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/run_cohort_probe.py",
+      "bytes": 22693,
+      "sha256": "ff006960b9a1c0754ba6dc3ef163fc997c3594e2232e98c9bc25f0639766dd18"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/SOURCE_REVIEW.json",
+      "bytes": 62331,
+      "sha256": "1a2ed273a8489d52ac1f87629080c2989215ef79f5c1e5c8fd0e569c4bf3ffae"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/SOURCE_REVIEW.md",
+      "bytes": 27133,
+      "sha256": "415ecf55555233c81f2ec451e8ed216f77884db63c9159a174ebeea472d23e0e"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/spec.json",
+      "bytes": 5199,
+      "sha256": "748809b0e1c740b3253d992de719b8e8e1bac55518e7e1e0a5a6651932f1de71"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/status.json",
+      "bytes": 361,
+      "sha256": "cb2d3189614b8f5a63d03e659af47c8bcf4689dbc218971a01e6d832b1e8887f"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/run_cohort_probe.py",
+      "bytes": 22693,
+      "sha256": "ff006960b9a1c0754ba6dc3ef163fc997c3594e2232e98c9bc25f0639766dd18"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/analyze_closed_formal.py",
+      "bytes": 9101,
+      "sha256": "eb739f42548fcc2ec02f3b6236bdf4ae3cbabf9724e8e8f47af69fe13ae05277"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/collect_formal_authorized.py",
+      "bytes": 2399,
+      "sha256": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/complete/query_supported/formal/receipt.json",
+      "bytes": 494,
+      "sha256": "fdab1dd33b81fa70551b76d6eed6de5c8fbce95b43199297bbe35e19353a33f1"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/complete/query_supported/formal/rows.jsonl",
+      "bytes": 7623212,
+      "sha256": "5ef50c722abb31f10e02a06615d0f2cd437b0bcb354b32f5135ebf1304db9e16"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/complete/query_supported/imports.json",
+      "bytes": 1059,
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/complete/query_supported/receipt.json",
+      "bytes": 1261,
+      "sha256": "086c948430ae5d8c08d971155ef01834d5d21b581204d7a6d02634d4b93729f6"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/controller.py",
+      "bytes": 2899,
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/fit_launch.json",
+      "bytes": 1504,
+      "sha256": "db9e2911484a538b8640fd6d8db0a965467b3a3125dd41e005eeba88ed41c488"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/fit_wait.json",
+      "bytes": 1032,
+      "sha256": "701b071d8a92f8bc82de50e37d15ea511960f3cb2a71aef65eb6a77f6ab02d87"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/geometry_result_metrics.py",
+      "bytes": 4593,
+      "sha256": "9e646ba0193f19ddca827e665be3f0a8b651bb4539a05a0ec9568fda9315d5aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/launch_geometry_fit_authorized.py",
+      "bytes": 6082,
+      "sha256": "3f62413380c15a5926f1a3069398c31d42dd9e3a516809b9d4aadc5585bfcc04"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/query_supported_geometry.py",
+      "bytes": 3549,
+      "sha256": "aebeb6ec667a3a2e61098268193664bf2ef02a1ce8dc72303badca8b19dc964c"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/query_supported_spec.json",
+      "bytes": 3864,
+      "sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/retain_metric_best.py",
+      "bytes": 4179,
+      "sha256": "d44f0634e12987217911e24bf7bcfc17b683c2cd33a03869320f02081aa08e83"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/retain_metric_best_authorized.py",
+      "bytes": 2672,
+      "sha256": "24ef007d5d3c968f964eb1300a694c10b76eace587e1f6ccf553f7edd025bc64"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/RETENTION_REVIEW.md",
+      "bytes": 2666,
+      "sha256": "7bd25748a1ece1ef3a7423c458f9e00622c85abbd61adc734db37aff27c1e489"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/run_geometry_fit.py",
+      "bytes": 31369,
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/weight_retention.json",
+      "bytes": 1255,
+      "sha256": "6ef90b14b890fcd3933d1835ca354ba6ad26bd8d224c788cf43f2f46e4a78ba8"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_runtime_bundle_20260908_v1/env_spec.json",
+      "bytes": 2385,
+      "sha256": "3ce5df048f09ed28f1908c2db1907cb51b354f54f954666ad3a9cd452868b5ee"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_runtime_bundle_20260908_v1/PV-Ground/src/grounding_evaluator.py",
+      "bytes": 41473,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/analysis/SUMMARY.json",
+      "bytes": 20207,
+      "sha256": "2ed4c24dd9c059da2e6d8f5559f500d150a166c087a2b064ae1437a513235a37"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/EXPERIMENT_PLAN.md",
+      "bytes": 1934,
+      "sha256": "2c98b73233e6225887b84f12055d484a87b5b0f47b72507d8066d948b4ca41e4"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/INTAKE.json",
+      "bytes": 1543,
+      "sha256": "93998e95977e7e8c69c563ad2cd0c83abe573ff0f48f6f61cd55e2c9ed54ce6f"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/receipt.json",
+      "bytes": 735,
+      "sha256": "ddddb2215ae789f09ddea7369c4d8bcddb7d462b749689641d96c1096f18ecd2"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/rows.jsonl",
+      "bytes": 28560,
+      "sha256": "3c1144641119d12fb314bbcb17f72c6a07dfb9dbe8d30c70a417f77db6cb2230"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/run.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/run.log",
+      "bytes": 1924,
+      "sha256": "b52670db50cbe43b9792699a147ba0fee74d7e5ea12abd28af5f1e55fbdf4d9e"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/run_label_probe.py",
+      "bytes": 7748,
+      "sha256": "3ba2d9ec8327a520238cbd4f14f43144f30e1847eecc9c88b25d4e1082347a3d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/SOURCE_REVIEW.json",
+      "bytes": 13309,
+      "sha256": "bf61045e511b1a46c6f662f6bd12d4c68c96b3df85f0913ccbffc974170aa2f7"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/SOURCE_REVIEW.md",
+      "bytes": 7098,
+      "sha256": "db00a4f197d80b88f073d3a0f6101640cc8f4aa7884d3cb72c5918583b007b92"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/spec.json",
+      "bytes": 298,
+      "sha256": "e86b2597e4510f1e980074a24ebddba36af9a67594aeff230c6f6d0ad3f56383"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/run_label_probe.py",
+      "bytes": 7748,
+      "sha256": "3ba2d9ec8327a520238cbd4f14f43144f30e1847eecc9c88b25d4e1082347a3d"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/spec.json",
+      "bytes": 298,
+      "sha256": "e86b2597e4510f1e980074a24ebddba36af9a67594aeff230c6f6d0ad3f56383"
+    }
+  ],
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex/skills/experiment-audit/SKILL.md": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+    "C:/Users/gb/.codex/skills/shared-references/experiment-integrity.md": "22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60",
+    "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:/Users/gb/.codex/skills/shared-references/review-tracing.md": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+    "C:/Users/gb/.codex/skills/shared-references/reviewer-independence.md": "1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0",
+    "D:/Program Files/UserCache/gb/codex/tmp/pv_ground_source_20260905/src/grounding_evaluator.py": "8f057c1929a1b6f4acc7a839744ccf561b6d7c2d14a392f1a50583303dfd71e2",
+    "D:/Program Files/UserCache/gb/codex/tmp/pv_ground_source_20260905/src/visual_data_handlers.py": "6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvg_training_interface_source_20260908/env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/analysis/FORMAL_METRICS.csv": "f4231f80c3b352d2f89909265b0ba4b045649ba6cb6a2f68001c2920a81344ad",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/analysis/RESULTS.md": "7a237ed0ba59119115677ca604e9fa6f5f9afbdec3a7474ebbcb26cfeef9be80",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/analysis/SUMMARY.json": "e958f2394d4ac363eabd79bcc7c81397d4aa7d0e7cd30e2a5ba38198f8fff7fd",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/analyze_closed_formal.py": "075cbf1df8b5f35ed90d00521ebacaeae5d31e8be8b01617d4f2fdc308d52864",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/check_closed_resources.py": "66d3fb7352beea273929186c38acf2e0803223e0ab19273438cf123800b48ef3",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/CLOSED_RESULT_TOOLS.json": "557f30a139fd89b95b01cb2deb5d37553a50e0d31f8cc2ed3d1736b6141e8117",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/collect_formal_authorized.py": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal.log": "d2659d508d3b77afa299d7031bf3c3bbd3363cf8d839b49e4d42d9f07bc45a54",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal/receipt.json": "09660e1169a9d2e43d4111fb4acbae7eb1a1ef035e885f8ff84cb6d08d9ca016",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal/rows.jsonl": "ec73b6acb9691d6c591136c5e5a34e80a8d7d716bedef714ca960bbbd324716c",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal_restore.json": "5fbd320e4a1a24717f53cab7dc376b449068e55180fe8bc43678c2a0bcb62e00",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/imports.json": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/initial/receipt.json": "2653f7b747b6fbe5355fd91f4fbad10515d5a54948ba7ec18b0fc5e3ae2a1eee",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/initial/rows.jsonl": "8c32ef58d338fc024887550bd3e72600e97b4be0c18442414bcbeb3cc29f5039",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/load.json": "2fb97e5f7f94124ef87d12afdca995f9d0a421d29c0c2555eadf17f496df5ba9",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/preflight.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/preflight.json": "edc0f9ef53836b303102c93b727d05b06dab8840ce436fe22b9dd43fa5ce72d5",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/preflight.log": "fbd9240fd3b7db22eab35272363da74c2e90c5074d468e330e3cec8497c5ffb1",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/receipt.json": "b8363480385a30c3dc066bb336e3f4e7b57d174d7691307c3691b423901c6d77",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/terminal/receipt.json": "edb372d84b3523b14027b05a16a3af6f689055dafb1920feea78b620ccfb1928",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/terminal/rows.jsonl": "74e6b1037f232fce90034299351996392938226e02d3e87856afeee01e666580",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/train.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/train.jsonl": "d4d99a9570477a0a7ccbfea7d479e1e6233691bfb9e7144a2dd52f8796efa37e",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control/train.log": "0cb76386cbbd49acd191c6256a6930ae3a84d26da49ac9b29982322002b87dda",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/control_spec.json": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/controller.py": "6be7f646091d090961df236fbf204e6fac74626f9dc13df49ab1e49b3a1982d9",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/EXPERIMENT_PLAN.md": "45ab4e8bd36073d294aeb41b6a7c9171e0517149de81d8ffff9ef2d44de1ef0d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/fit_controller.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/fit_controller.log": "37f27aa83994c11228e862f77dad35f59581f6b74b4efeff7d93bbe46ed6028a",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/fit_launch.json": "181d4e745f1d171f9dbc769737b1464977cabc5b3b0e6fd9352515bbebbbe4a4",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/fit_status.json": "b74f2f6f0826a6fa1706f7ed018ad2d8602078bf12e6c448c6d9798ee8a2dcdc",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/INTAKE.json": "ec35a488d12c9a3943cadc9a7effa7f8042ccdd2990a7c59cc0daf3f7aaa55be",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal.log": "2d5ab9ce76f34886bafe2d39554c01a22b0c2c6e67b38fe11bb9ff0496e5dedb",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal/receipt.json": "068c985fa25b03f116c4a6644350de91ee4f330070ab7e573e58e62b94681f71",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal/rows.jsonl": "5cf350d4bab14e92dcb8fe7c34d0103c1ca120300cb54997af14ee8e540b7bb9",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/formal_restore.json": "26c19a2aac3d5c84c00fc430132fec463ebd5d72a253fb7ed548759165828133",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/imports.json": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/initial/receipt.json": "57e4bcd7ecc8eda9ca82e665cb0d4d6d50d0a48dd86cf011c13d46d84e0827f3",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/initial/rows.jsonl": "414845cd96fe78e24eca21a434bff194ce53babf07c0e16b2f886b172a7fab41",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/load.json": "26bf8821a14adbb0c9f038926dbfadfed1ef94e0e59efe02757c38020f2b5dd3",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/preflight.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/preflight.json": "135c0d47a3bb620736d07386dbda20d7d62a4fb8fee249e1273aa0dd3603c02c",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/preflight.log": "41ea1e55622743412a47405f54fa1cde7b1e14f64f62a2de82c2becdca9333bd",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/receipt.json": "5f6ee299bbfd5740a7244babdc3cbcb4dbd379269c5c4c3ddd7e7855b9a309c1",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/terminal/receipt.json": "f354e75983fe3f4da943ad848f6b6ca43cb1194369ff1463fdfc4cf2ab3819d7",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/terminal/rows.jsonl": "e1f35e80a3c0d612c6c6b2d699f80f34590e5b4e6c7d387a1c87baaf960d9ac5",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/train.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/train.jsonl": "2e5a036ff055a9a4bfec82227be6a661a9867374805fb0623aad307a6fa6c797",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target/train.log": "514a57a464af8d3df4f9268b11d852c2ccca7bab47a6697c07f8ace29cbc6aec",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/member_target_spec.json": "11825f691eb97342a28055565619be768039824c470e4291c3fff656c1ba9a18",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/preflight_controller.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/preflight_controller.log": "bd9409c9ad2af81fa980be5b07909e7384bac98157fd722ccf37eac494f63a37",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/preflight_status.json": "9c673e8924670167de4d232ce910f4331c1dd648c308dce53ac8fea2c81a7d22",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/query_supported_geometry.py": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/run_geometry_fit.py": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/SOURCE_REVIEW.json": "dec070a173da35b1c014b714182bb5eb2b40cf0d0e43f4f31b7826fb5bf36f7a",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/complete/SOURCE_REVIEW.md": "300bb3c2c50119f2ecd28b7ffa85e3dd85a901a8f403b9679afc7b2fd88fd82d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/control_spec.json": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/controller.py": "6be7f646091d090961df236fbf204e6fac74626f9dc13df49ab1e49b3a1982d9",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/deploy_preflight_authorized.py": "d6c0992e82feef7fee7b9934eb37e9aa8076e215dd85201130cbb2b813aa345a",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/EXPERIMENT_PLAN.md": "45ab4e8bd36073d294aeb41b6a7c9171e0517149de81d8ffff9ef2d44de1ef0d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/fit_wait.json": "705012720c229f9bf137d36f8f8e5780d504f3a15fcf6bfcd627d3c4d81ac748",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/geometry_result_metrics.py": "9e646ba0193f19ddca827e665be3f0a8b651bb4539a05a0ec9568fda9315d5aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/launch_geometry_fit_authorized.py": "79de4ef26097e8085d745e5ae43d00933a6d80d6c4042d9361b433f94e6a3798",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/LAUNCH_REVIEW.json": "2d52a479d1f4b05701f2b9c25c4a81203cc618b2dbc9573cea91e4749a436c39",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/member_target_spec.json": "11825f691eb97342a28055565619be768039824c470e4291c3fff656c1ba9a18",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/imports.json": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/load.json": "10e33e8108eaddb8e20a36a9e2fda0255e9db5c3072255b96116505c9fbf7ee6",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/preflight.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/preflight.json": "edc0f9ef53836b303102c93b727d05b06dab8840ce436fe22b9dd43fa5ce72d5",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control/preflight.log": "fbd9240fd3b7db22eab35272363da74c2e90c5074d468e330e3cec8497c5ffb1",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/control_spec.json": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/controller.py": "6be7f646091d090961df236fbf204e6fac74626f9dc13df49ab1e49b3a1982d9",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/EXPERIMENT_PLAN.md": "45ab4e8bd36073d294aeb41b6a7c9171e0517149de81d8ffff9ef2d44de1ef0d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/INTAKE.json": "304c29f1b934c81fe7b5d156b26a1e8e747416332406f53e5a713319a47c3fad",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/imports.json": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/load.json": "7ed2489957f591b66b97271de7a471a90161451124a718ee86ecfc97c7889fba",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/preflight.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/preflight.json": "135c0d47a3bb620736d07386dbda20d7d62a4fb8fee249e1273aa0dd3603c02c",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target/preflight.log": "41ea1e55622743412a47405f54fa1cde7b1e14f64f62a2de82c2becdca9333bd",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/member_target_spec.json": "11825f691eb97342a28055565619be768039824c470e4291c3fff656c1ba9a18",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/preflight_controller.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/preflight_controller.log": "bd9409c9ad2af81fa980be5b07909e7384bac98157fd722ccf37eac494f63a37",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/preflight_status.json": "9c673e8924670167de4d232ce910f4331c1dd648c308dce53ac8fea2c81a7d22",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/query_supported_geometry.py": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/run_geometry_fit.py": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/SOURCE_REVIEW.json": "dec070a173da35b1c014b714182bb5eb2b40cf0d0e43f4f31b7826fb5bf36f7a",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_complete/SOURCE_REVIEW.md": "300bb3c2c50119f2ecd28b7ffa85e3dd85a901a8f403b9679afc7b2fd88fd82d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/preflight_wait.json": "27ce9f6c736560ea8501ec4c986fba7d700c93bce676b2e2d47ae385b3bd434b",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/PREPARATION.json": "287a9362a0f32e94cf0a51c24cb51c533fb6e8f32ba6095abefd9e002c5677a3",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_closed_result_tools.py": "486a8d062b716d49f94acda08041d5a711707d8571ea2637c2c61a2e445ffb6f",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_fit_launcher.py": "703326eb58badb0e64bcc409b4549397abdbad8182dfe7194452276549348c3d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_retention_tools.py": "da7fbdb40f84c436dda571af2b99086cd9439c63a9ac1476cd8ca71a2024b3db",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_target_comparison.py": "4c6360ee89bface6937d39c44224d3ad13b3203ced10622fc546b86a1a0d08ee",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/prepare_terminal_publication.py": "dd15c968efb6f7660b44d97cf9b76d45f04bd819d5d76b91bf0a09898a4b3188",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/publish_terminal.py": "55846f9dda828c917b7c9111a570bde86f685c29ce13552a21607cbd3d3da181",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/query_supported_geometry.py": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/retain_metric_best.py": "da947e56b0139028f4364018ff57ab79f533995fe8de4b1c11b747cc77a02032",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/retain_metric_best_authorized.py": "24ef007d5d3c968f964eb1300a694c10b76eace587e1f6ccf553f7edd025bc64",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/RETENTION_REVIEW.json": "e3467987c26ffad27cef28460922f09bf31993d578f9c8c94f43dbad7f7d7098",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/RETENTION_REVIEW_CALL.json": "83041df4ad6626c25f0a94afbf622da13e65f354eee0b479c73d3672f359e504",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/RETENTION_TOOLS.json": "85c1d1f722b2cacf1e3361b6c344578da4ad85b8f236aa72920b44945e5d4a25",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/run_geometry_fit.py": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/SOURCE_REVIEW.json": "dec070a173da35b1c014b714182bb5eb2b40cf0d0e43f4f31b7826fb5bf36f7a",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/SOURCE_REVIEW.md": "300bb3c2c50119f2ecd28b7ffa85e3dd85a901a8f403b9679afc7b2fd88fd82d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/TERMINAL_AUDIT_PACKET.json": "866bbf8ec17f769b0b84a9ace75d7a3b0ad935b60926d2836f7f5cc1f88e9866",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/TERMINAL_PUBLICATION_PREPARATION.json": "f8b839ed5e48d33ff8b715f723ec9892a5ac36937f7afc7b565bd62f875f6f4d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_auxiliary_target_20261005/TERMINAL_PUBLICATION_SOURCE_CHECK.json": "99e0b3fdcc22c012ce601331839541eee2d4a4d53092122481e969c93ef08509",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_candidate_normalization_20261003/complete/source/imported/main_utils.py": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_candidate_normalization_20261003/complete/source/imported/prepare_data.py": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_cs_restart_20261002/env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/install_boundary_evidence_readback.py": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_final_quality.py": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_box_refiner.py": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_evidence_readback.py": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_candidate_box_refiner.py": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_tail_support_box_refiner.py": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_whole_mask_box_refiner.py": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/run_final_quality_fit.py": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/appearance_source_manifest.json": "75cd5f87a8e715c15b458ed1964c2e6f1d35046bb6beffca1b3388d5903bbe36",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/input_manifest.json": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/ported/models/losses.py": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_g_p2_20261002/complete/source/split_protocol.json": "06d0b20a848be97827a4e0257b074afcfb91a04fc8e448f7de34eef453294461",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/revision2/complete_preflight/source_port.json": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_geometry_readback_20261004/revision2/source_preview/PV-Ground/models/pv_ground.py": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_00.npz": "b0fb8880b214544bfbab2c9c525dfce8e11df63b264baa5ba9ec8ee2aabc1f86",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_01.npz": "b4b7698f591a6ac995a030b4c2170ea73e5f4a189e9ded2d70e04c608a9fbd9f",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_02.npz": "99f8a09ab437e898fc68854017d8184fad781ce52420e1ab3a3225abdff60154",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_03.npz": "1fd009cdc0902ef768ebace44a24110fb7cf54a683fb82e91ffa9099b2243caf",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_04.npz": "bb42cbd58c8034aa4472a58ea96cf3e3af60fc8408ab21a0e34a7559fd26dfbd",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_05.npz": "c9f64b5913d752f5b7d3567e64634487566945392ef33de337fe0255bcc0452e",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_06.npz": "1aaef5edc68d4eb6c75d984bc1f65e7e1f3e5dbd25fc16fdf754678007d51cf8",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/batch_07.npz": "4cafe6f27eed2a32a277db377acacfd1108e3a8b6c7d60642e506be4a7ace691",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/controller.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/controller.log": "7bde2ec8b630dd4ca924ba7866d6b410805246bc764fd6d02d93b949ff029f57",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/controller.py": "a5658bf487fcd701f76478af1b78419c90d1dea17f92c815a011912c9b6cb35c",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/EXPERIMENT_PLAN.md": "893f9dcdf38e2221b69fd11eaab594c0c5dbcf03b62d81ec1c1cbffe9654e23d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/imports.json": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/INTAKE.json": "6df285574094730f841abcb569d1eb85d3ffb16db925149189fe21627af4c210",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/launch.json": "8d908405509a3365e3cf688f05e82e574686a8bbc4478b1a10cdf269867e34d4",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/load.json": "8992b132063e647d0a6f7b71070576245c51d3e5c38b01b8a7da060d308b9af1",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/probe.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/probe.log": "cb3f7ea71c8ffca095416ff2085c1e73648895d5f1df781a0fe424f4d92497a1",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/receipt.json": "c33f90ee770fe6a27f70e1372eee62dba169d979f43957d650767866b2906460",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/rows.jsonl": "0e6236609932eab258ab52b9be725c5161fb1f55378fc565504dcb1386179f3d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/run_cohort_probe.py": "ff006960b9a1c0754ba6dc3ef163fc997c3594e2232e98c9bc25f0639766dd18",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/SOURCE_REVIEW.json": "1a2ed273a8489d52ac1f87629080c2989215ef79f5c1e5c8fd0e569c4bf3ffae",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/SOURCE_REVIEW.md": "415ecf55555233c81f2ec451e8ed216f77884db63c9159a174ebeea472d23e0e",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/spec.json": "748809b0e1c740b3253d992de719b8e8e1bac55518e7e1e0a5a6651932f1de71",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/complete/status.json": "cb2d3189614b8f5a63d03e659af47c8bcf4689dbc218971a01e6d832b1e8887f",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_geometry_cohort_20261005/run_cohort_probe.py": "ff006960b9a1c0754ba6dc3ef163fc997c3594e2232e98c9bc25f0639766dd18",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/analyze_closed_formal.py": "eb739f42548fcc2ec02f3b6236bdf4ae3cbabf9724e8e8f47af69fe13ae05277",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/collect_formal_authorized.py": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/complete/query_supported/formal/receipt.json": "fdab1dd33b81fa70551b76d6eed6de5c8fbce95b43199297bbe35e19353a33f1",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/complete/query_supported/formal/rows.jsonl": "5ef50c722abb31f10e02a06615d0f2cd437b0bcb354b32f5135ebf1304db9e16",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/complete/query_supported/imports.json": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/complete/query_supported/receipt.json": "086c948430ae5d8c08d971155ef01834d5d21b581204d7a6d02634d4b93729f6",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/controller.py": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/fit_launch.json": "db9e2911484a538b8640fd6d8db0a965467b3a3125dd41e005eeba88ed41c488",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/fit_wait.json": "701b071d8a92f8bc82de50e37d15ea511960f3cb2a71aef65eb6a77f6ab02d87",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/geometry_result_metrics.py": "9e646ba0193f19ddca827e665be3f0a8b651bb4539a05a0ec9568fda9315d5aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/launch_geometry_fit_authorized.py": "3f62413380c15a5926f1a3069398c31d42dd9e3a516809b9d4aadc5585bfcc04",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/query_supported_geometry.py": "aebeb6ec667a3a2e61098268193664bf2ef02a1ce8dc72303badca8b19dc964c",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/query_supported_spec.json": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/retain_metric_best.py": "d44f0634e12987217911e24bf7bcfc17b683c2cd33a03869320f02081aa08e83",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/retain_metric_best_authorized.py": "24ef007d5d3c968f964eb1300a694c10b76eace587e1f6ccf553f7edd025bc64",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/RETENTION_REVIEW.md": "7bd25748a1ece1ef3a7423c458f9e00622c85abbd61adc734db37aff27c1e489",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/run_geometry_fit.py": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_query_supported_geometry_20261005/weight_retention.json": "6ef90b14b890fcd3933d1835ca354ba6ad26bd8d224c788cf43f2f46e4a78ba8",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_runtime_bundle_20260908_v1/env_spec.json": "3ce5df048f09ed28f1908c2db1907cb51b354f54f954666ad3a9cd452868b5ee",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_runtime_bundle_20260908_v1/PV-Ground/src/grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/analysis/SUMMARY.json": "2ed4c24dd9c059da2e6d8f5559f500d150a166c087a2b064ae1437a513235a37",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/EXPERIMENT_PLAN.md": "2c98b73233e6225887b84f12055d484a87b5b0f47b72507d8066d948b4ca41e4",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/INTAKE.json": "93998e95977e7e8c69c563ad2cd0c83abe573ff0f48f6f61cd55e2c9ed54ce6f",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/receipt.json": "ddddb2215ae789f09ddea7369c4d8bcddb7d462b749689641d96c1096f18ecd2",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/rows.jsonl": "3c1144641119d12fb314bbcb17f72c6a07dfb9dbe8d30c70a417f77db6cb2230",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/run.log": "b52670db50cbe43b9792699a147ba0fee74d7e5ea12abd28af5f1e55fbdf4d9e",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/run_label_probe.py": "3ba2d9ec8327a520238cbd4f14f43144f30e1847eecc9c88b25d4e1082347a3d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/SOURCE_REVIEW.json": "bf61045e511b1a46c6f662f6bd12d4c68c96b3df85f0913ccbffc974170aa2f7",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/SOURCE_REVIEW.md": "db00a4f197d80b88f073d3a0f6101640cc8f4aa7884d3cb72c5918583b007b92",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/complete/spec.json": "e86b2597e4510f1e980074a24ebddba36af9a67594aeff230c6f6d0ad3f56383",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/run_label_probe.py": "3ba2d9ec8327a520238cbd4f14f43144f30e1847eecc9c88b25d4e1082347a3d",
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_target_jitter_20261005/spec.json": "e86b2597e4510f1e980074a24ebddba36af9a67594aeff230c6f6d0ad3f56383"
+  },
+  "reviewed_files_count": 205,
+  "audit_output_scope": "Only the two named audit reports were created; all pre-existing inputs and reports were preserved.",
+  "execution_observations": {
+    "model_retention_executed": false,
+    "publisher_executed": false,
+    "absent_current_stage_receipts": [
+      "weight_retention.json",
+      "CLOSED_RESOURCES.json",
+      "terminal_publication.json"
+    ],
+    "reviewer_remote_or_weight_replay": false
+  }
+}
+

@@ -238,3 +238,5 @@
 - 2026-10-05T11:14:31.159713+08:00 Actual scheduled control progress3723/3723 updates,29778 fit rows,terminal holdout5120/6887 at11:08 snapshot. Same-throughput pair estimate14:00; no formal accuracy, document rewrite or cleanup.
 
 - 2026-10-05T11:53:55.947713+08:00 Actual control9508 native5616/4499 closed, strategy running. GPU receipts only; full-row CPU/pair audit pending. Best5616/4506 unchanged; no cleanup. Doc65 synchronized.
+
+- 2026-10-05T14:50:17.058333+08:00 Actual closed Query-supported geometry comparison published; metric-best query_supported [5614, 4509], fresh audit PASS same-family/provisional. Two nonbest geometry heads removed, no archive.

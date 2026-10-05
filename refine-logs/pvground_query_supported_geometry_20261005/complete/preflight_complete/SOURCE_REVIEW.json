@@ -1,0 +1,338 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "execution_scope": "SOURCE_ONLY",
+  "reviewed_at": "2026-10-05T09:01:21.011013+08:00",
+  "reviewer_agent": "/root/pvg_query_geometry_source_review",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "fork_turns": "none",
+  "actual_backend_attested": false,
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "attribution": "Fresh delegated Codex source review. Requested backend metadata is recorded; actual backend/model/effort were not independently attested.",
+  "execution": {
+    "local_source_reads": true,
+    "stdlib_ast_and_identity_checks": true,
+    "model_imported": false,
+    "model_constructed": false,
+    "torch_imported": false,
+    "remote_calls": false,
+    "gpu_operations": false,
+    "optimizer_updates": 0,
+    "weight_files_created": 0,
+    "experiment_scripts_executed": false
+  },
+  "source_checks": {
+    "python37_ast_pass": [
+      "query_supported_geometry.py",
+      "fit_body.py",
+      "prepare_fit.py",
+      "run_geometry_fit.py",
+      "controller.py",
+      "deploy_preflight_authorized.py",
+      "prepare_preflight_panel.py"
+    ],
+    "fit_body_parse_context": "wrapped in its intended main function",
+    "runner_matches_generation": true,
+    "fit_body_embedded_exactly": true,
+    "arm_spec_differences": [
+      "root",
+      "extra_geometry_weight"
+    ],
+    "reused_helper_identities_exact": 17,
+    "actual_source_port_and_relevant_native_files_exact": true,
+    "fit_rows": 29778,
+    "batch_size": 8,
+    "updates": 3723,
+    "full_batches": 3722,
+    "last_batch_rows": 2,
+    "preflight_batch_index": 1,
+    "panel_row_counts": [
+      28,
+      0,
+      0,
+      1,
+      0,
+      14,
+      100,
+      0
+    ],
+    "panel_outside_faces": 126,
+    "panel_metadata_total_eligible": 1090,
+    "panel_raw_arrays_recounted_by_reviewer": false,
+    "minimal_serializer_delta_exact": true,
+    "serializer_fields_match_existing_geometry_factory": true,
+    "terminal_total_geometry_fit_updates": 7446
+  },
+  "correctness": [
+    "Native matcher calls are proposal_, last_, then five earlier decoder layers; matches[1] is the actual final-layer Hungarian assignment. All its matched queries are excluded, including nonroot targets.",
+    "Native targets and DFL both filter box_label_mask before indexing. The explicit first-valid-slot==0 assertion makes zeros_like(queries) select the same root box for both native loss_boxes and DFL.",
+    "Query and fused Mask IoU use actual superpoint member counts and the same scalar-alpha logit fusion/threshold as the native evaluator. Text alone cannot qualify. Final box IoU must be <=0.5; qualification is detached and called only from training/preflight step.",
+    "The additional row block is (10 times native L1 plus 2 times native GIoU plus six-face-mean DFL)/7, averaged over extra candidates in that expression and then actual batch size. Empty rows contribute zero. Existing native denominators, G correction, matched DFL/7, knots, range and clipping remain unchanged.",
+    "All model parameters are frozen first, only the existing ten candidate_box_refiner tensors/456102 parameters are unfrozen, and model.eval() plus geometry_head.train() leaves all parents and fresh zero-output R in eval. The complete frozen state, including R, is included in initial/core bookkeeping.",
+    "Isolated extra-loss gradients are checked at final centers, final sizes, boundary logits and head parameters. Nonqualified and matched output positions must have exactly zero extra gradient. Updated-head cached replay uses original coarse inputs and the same end_points dictionary, so zero R reads the updated geometry while bbs and Mask arrays are compared on identical upstream tensors.",
+    "The deployed complete forward calls the native semantic head once. One explicitly recorded preflight-only replay is an engineering diagnostic. Evaluation uses native bbs and the same selected query for Box/Mask; the extra GT qualification does not enter evaluation or model inputs.",
+    "Two preflight steps serialize head delta and optimizer to BytesIO only, restore the complete model strictly, and check all model tensors and optimizer moments/groups/step state. Formal reconstructs the same parents/R and restores the terminal head plus optimizer, with 3723 steps and exact fit-row coverage.",
+    "The controller requires completed two-arm preflight and both passing receipts before any full fit subprocess. The deployer remains conditional on closed branch probe, nonempty CPU qualification, nonblocking experiment audit, and this exact source review.",
+    "Checkpoint serialization now includes the four existing geometry-factory fields: boundary_mode=distribution, support_arm=whole_range, use_whole_range=True and boundary_loss_weight=1/7. state_delta remains complete replacement values for all ten head tensors; a promoted terminal can therefore be loaded directly by the existing factory. geometry_parent_fit_updates=3723 and total_geometry_fit_updates=3723+step_number disclose the continuation budget, reaching 7446 at terminal."
+  ],
+  "resolved_findings": [
+    {
+      "issue": "Preflight omitted the promised updated-head bbs/Mask invariance witness.",
+      "resolution": "Revised fit_body/generated runner cache real refiner/R inputs, update the head, replay only the cached tail, and assert exact native bbs and Mask preservation; diagnostic replay count is separate from deployed head calls."
+    },
+    {
+      "issue": "Preflight did not require observed empty-row and clipped-target coverage.",
+      "resolution": "PREFLIGHT_PANEL selects actual batch1 with counts [28,0,0,1,0,14,100,0] and 126 raw outside faces; both real preflight steps require nonempty qualification, at least one empty row and outside targets. DFL clamps these observed targets to the existing endpoints."
+    },
+    {
+      "issue": "Full-fit controller checked each arm preflight only when that arm was reached.",
+      "resolution": "Both receipts and completed preflight_status are now checked before the arm loop."
+    },
+    {
+      "issue": "Inherited load metadata described geometry as frozen and required a readback optimizer.",
+      "resolution": "Revised runner records geometry_head_only, frozen_parent_and_R and fresh_geometry_optimizer_required after its freeze/unfreeze setup."
+    },
+    {
+      "issue": "New head checkpoints omitted four metadata fields required by the existing geometry factory.",
+      "resolution": "The serializer now writes the existing distribution/whole_range/True/1/7 values and explicit parent/cumulative fit-update counts. No compatibility loader, model change, loss change or runtime execution was introduced."
+    }
+  ],
+  "remaining_execution_gates": [
+    "This is a source verdict. The separate closed-probe experiment audit must pass the existing deployer gate.",
+    "Both actual GPU preflights must complete with every existing assertion and restoration check passing before full fit.",
+    "No runtime gradient, GPU-memory, optimizer-update, accuracy, or full-fit result was produced by this reviewer."
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "b62e838197e85eacd19076696190fdad0590e93d910876bcf98f3fc795a9a947",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\query_supported_geometry.py",
+      "sha256": "aebeb6ec667a3a2e61098268193664bf2ef02a1ce8dc72303badca8b19dc964c",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_body.py",
+      "sha256": "a67200e7d37bbc87d8303cee56eb63812d0725e9a3b0e364306fec5c64737233",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\prepare_fit.py",
+      "sha256": "b0839f2b25baf1fc81917ea7d36d5591242ed62286af5faeeb8e819e52ae2383",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\run_geometry_fit.py",
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\control_spec.json",
+      "sha256": "282b7f117c3c242970416608c05e8f9b7684f1bf3b0ccfc0159990771505a9a1",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\query_supported_spec.json",
+      "sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\controller.py",
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\deploy_preflight_authorized.py",
+      "sha256": "ffc7f03d81e712f8d9ab009e23e1b68ec0d21c3e2b0a9ebc8cccd4a847c45a7d",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\GENERATION.json",
+      "sha256": "d72f948f458a69c36eeb6f3b3bc954d568dfef1c2a648691fb8ec275f8d4b7cd",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\PREFLIGHT_PANEL.json",
+      "sha256": "e2a3cadab7819f546514e6024444d1d9dc7055ca5a2b4c08e8365683fdecfa77",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\prepare_preflight_panel.py",
+      "sha256": "f434713073e0045cacca158179d58e09048b7f66457ca5e5d23bc938256740c5",
+      "review_extent": "new delta: substantive source or specification review"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py",
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_final_quality.py",
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4",
+      "review_extent": "unchanged dependency: identity verification only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py",
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "review_extent": "unchanged dependency: identity verification only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_semantic_assignment.py",
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "review_extent": "unchanged dependency: identity verification only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py",
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "review_extent": "required unchanged dependency: relevant source paths and identity reviewed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\source_port.json",
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304",
+      "review_extent": "required source-port manifest: identity and relevant file mappings"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+      "review_extent": "actual readback source: Mask/refiner/R/native semantic call order"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\models\\losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "review_extent": "required native dependency: relevant source ranges and source-port identity"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "review_extent": "required native dependency: relevant source ranges and source-port identity"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\src\\grounding_evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "review_extent": "required native dependency: relevant source ranges and source-port identity"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\src\\joint_det_dataset.py",
+      "sha256": "ee4ebfacedb0d45873b0ff5db0f056a8055e544bca516cf22d9b440681916618",
+      "review_extent": "required native dependency: relevant source ranges and source-port identity"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\analyze_probe.py",
+      "sha256": "72bfe9599afb186690d7a69a3a1951456e71ea2641ffba13b35005618140fb9b",
+      "review_extent": "qualification-gate definition only; analyzer not executed by reviewer"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\probe_body.py",
+      "sha256": "e7f64a6982bf6ac2cc842c1baf197c45749af3fb01c5ed18170c2edf4a4f8b8e",
+      "review_extent": "native target and Mask qualification source ranges only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_branch_responsibility_20261005\\analysis\\SUMMARY.json",
+      "sha256": "785baa5a4019d2848219d4af204fe14322886dd26ccd0964c4b03357b2ac28e0",
+      "review_extent": "supplied closed-probe qualification summary; no independent NPZ recount by reviewer"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_geometry_responsibility_20261005\\probe_body.py",
+      "sha256": "a26238433fef50b6508cce0354dca0be1cd8d8977c002db7611a0b5248ddd130",
+      "review_extent": "coarse_boxes size-floor source range used by panel preparation only"
+    }
+  ],
+  "versioned_report_files": [
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\SOURCE_REVIEW_20261005_090121.md",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\SOURCE_REVIEW_20261005_090121.json"
+  ],
+  "serializer_refresh": {
+    "reviewed_at": "2026-10-05T09:01:21.011013+08:00",
+    "previous_reports": [
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\SOURCE_REVIEW_20261005_085450.md",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\SOURCE_REVIEW_20261005_085450.json"
+    ],
+    "changed_reviewed_files": [
+      "fit_body.py",
+      "run_geometry_fit.py",
+      "GENERATION.json"
+    ],
+    "method": "Removing exactly the two new serializer lines reproduces both previously reviewed file SHA256 identities; both revised sources parse as Python 3.7. All other 36 reviewed file identities are unchanged.",
+    "source_changes": [
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_body.py",
+        "previous_sha256": "9c7489a43eda531c86fbc3ccae67f9ffeab74ecd62d1bea4245183cd08c31e55",
+        "sha256": "a67200e7d37bbc87d8303cee56eb63812d0725e9a3b0e364306fec5c64737233"
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\run_geometry_fit.py",
+        "previous_sha256": "b22238f2fb2a1568978e5226c4f1c1ac6e25fc1e5104c29e41d714bddd30b0fc",
+        "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889"
+      }
+    ],
+    "verdict": "PASS",
+    "blocking_findings": []
+  }
+}

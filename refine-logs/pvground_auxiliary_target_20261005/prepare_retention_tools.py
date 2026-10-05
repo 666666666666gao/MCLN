@@ -22,6 +22,8 @@ changes = {
         "assert payload['checkpoint_sha256']==spec['checkpoint_sha256'] and payload['source_port_sha256']==spec['source_port_sha256']\n    assert payload['geometry_terminal_sha256']==spec['geometry_terminal_sha256'] and payload['extra_geometry_weight']==1.0\n    assert payload['auxiliary_target_mode']==('native_gt' if arm=='control' else 'member_gt')",
     "decision['hits']['protected_geometry_parent']==[5616,4506]":
         "decision['hits']['protected_geometry_parent']==[5614,4509]",
+    "winner=decision['winner']\nassert winner in paths and decision['hits']['protected_geometry_parent']==[5614,4509]":
+        "winner=decision['winner']\nassert winner in paths and decision['hits']['protected_geometry_parent']==[5614,4509]\nassert winner=='protected_geometry_parent' or decision['hits'][winner][1]>decision['hits']['protected_geometry_parent'][1]",
 }
 for before, after in changes.items():
     assert source.count(before) == 1, before

@@ -1,0 +1,265 @@
+{
+  "verdict": "PASS",
+  "execution_scope": "SOURCE_ONLY",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "summary": "The closed-result intake, CPU recount and conditional three-path weight retention tools are correct after the primary-tie promotion inconsistency was fixed. No current-run terminal result or cleanup eligibility is inferred.",
+  "generated_at": "2026-10-05T17:55:38.861230+08:00",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "backend_attested": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "provenance": {
+    "review_context": "follow-up in the same existing reviewer context",
+    "fresh_review": false,
+    "external_review": false,
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "backend_attribution": "unattested",
+    "actual_backend_model": null,
+    "actual_backend_effort": null,
+    "review_independence": "same-family",
+    "acceptance_status": "provisional"
+  },
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "original_issue": "The inherited ranking (hits50,hits25,tie-parent) allowed old4509 deletion when Acc@.50 tied but .25 improved, contrary to the registered strict Acc@.50 promotion rule.",
+      "resolution": "Executor changed ranking to (hits50,tie-parent,hits25) and added the same strict-primary-improvement predicate immediately before the deletion phase. Both generators and source bindings were synchronized.",
+      "verified": true,
+      "current_results_used": false,
+      "training_or_evaluation_source_changed": false
+    }
+  ],
+  "checks": [
+    {
+      "id": "collection_scope",
+      "result": "PASS",
+      "evidence": "collect_formal_authorized.py is byte-identical to the completed predecessor. It requires a closed observer/controller with a recorded exit before intake. It collects only json/jsonl/log/exit/py/md files, never pth/tmp weights. A failed closed run can be collected for diagnosis, but the downstream analyzer and cleanup require exit0. There is no neural execution, weight download or negative-weight archive in the collector."
+    },
+    {
+      "id": "actual_parent_rows_and_native_metrics",
+      "result": "PASS",
+      "evidence": "analyze_closed_formal.py:71 reads pvground_query_supported_geometry_20261005/complete/query_supported/formal, the actual retained4509 parent. Its rows SHA matches the actual receipt. Read-only local recount of the existing historical9508 rows yields hits25=5614, hits50=4509, Acc25=59.045014724442574%, Acc50=47.423222549432055%, with0 CPU threshold changes. This is prior-parent evidence, not a result for the currently running arms."
+    },
+    {
+      "id": "normalization_and_repairs_damages",
+      "result": "PASS",
+      "evidence": "geometry_result_metrics.py is byte-identical to the predecessor. It preserves strict IoU>threshold, hits/row-count*100 accuracy, mean Mask IoU*100, root-GT CPU Box IoU threshold checks, same-query coarse/final repairs/damages, and paired identity checks for row/scan/target/root/point SHA. paired(parent,parent) gives zero repairs/damages/net/query changes at both thresholds. Masks and candidate availability remain scalar recounts; no raw-mask replay is claimed."
+    },
+    {
+      "id": "current_arms_and_budget",
+      "result": "PASS",
+      "evidence": "Analyzer and cleanup now use control/member_target. Both specs and all training log entries must have extra_geometry_weight1; target modes are native_gt/member_gt. Analyzer requires3723 log steps,29778 unique rows, equal arm order, B8/effectiveB8/accumulation1/tail2, fresh optimizer and frozen parent/zeroR. Cleanup payload checks parent7446, current3723 and total11169, plus native9508 formal receipts. Runner/helper/controller/specs and the registered plan were not changed by the correction."
+    },
+    {
+      "id": "official9508_protocol",
+      "result": "PASS",
+      "evidence": "The unchanged producer evaluates last/bbs against native dataset GT after disabling both augment flags, and verifies hit counts against the native evaluator. Analyzer requires9508 ordered formal rows, initial/terminal6887 rows, pass receipts, one native-head call and no diagnostic replay. Per-row paired comparisons preserve native GT and point identity. New auxiliary member targets do not become evaluation GT."
+    },
+    {
+      "id": "closed_results_and_terminal_audit_gate",
+      "result": "PASS_SOURCE_ONLY",
+      "evidence": "The analyzer requires actual closed complete exit0 intake with protected parents, and validates receipt/log/row bytes before any summary. The authorized cleanup wrapper requires closed observer/controller exit0, ACTUAL_CLOSED_ROWS_ANALYZED with exact training order, actual terminal audit PASS/WARN with no blockers, TERMINAL_REVIEW_CALL.result_received, and this SOURCE_ONLY source verdict plus existing file bindings before SSH. The existing joint-target conflict guard preserves candidates if the metric winner would discard the sole dual-threshold success. This source follow-up does not satisfy or replace the future terminal-result audit."
+    },
+    {
+      "id": "strict_primary_promotion",
+      "result": "PASS_AFTER_CORRECTION",
+      "evidence": "Analyzer line91 now ranks (hits50, tie-parent, hits25). retain_metric_best.py checks winner==protected_geometry_parent OR winner.hits50>parent.hits50 before any unlink. Therefore a primary tie retains4509 even if a new arm has better.25. Among new arms strictly above the parent, .25 remains the tie-breaker. Actual-source expression checks cover primary tie/secondary improvement, strict primary improvement, and a new-arm tie above the parent; these are policy examples, not observed new results."
+    },
+    {
+      "id": "complete_replacement_before_deletion",
+      "result": "PASS",
+      "evidence": "Before any unlink, remote cleanup checks both new checkpoint bytes against fit/formal_restore receipts, native9508 metrics against the decision,3723 optimizer steps,29778 unique rows, head-only10-state key set and shapes equal to the retained parent,456102 total elements, distribution/whole_range/1/7 metadata, official/G/source/parent identities, extra weight1 and correct target mode. The producer saves full replacement values for all10 geometry tensors. The existing factory directly loads those10 values after officialPV+originalG and does not recursively load old4509 lineage. A verified promoted complete head is therefore reconstructible without deleting any other parent component."
+    },
+    {
+      "id": "exact_deletion_paths_and_protected_components",
+      "result": "PASS",
+      "evidence": "Root resolves exactly to /root/autodl-tmp/pvground_auxiliary_target_20261005. The old parent resolves exactly to /root/autodl-tmp/pvground_query_supported_geometry_20261005/query_supported/terminal.pth and its known SHA is checked. The only deletion candidates are that path plus new control/terminal.pth and member_target/terminal.pth; each nonwinner is unlinked only after all checks. No recursive deletion, officialPV/G/V99 path, local checkpoint copy or negative-weight archive is present. The script never writes weight files."
+    },
+    {
+      "id": "generator_and_existing_source_bindings",
+      "result": "PASS",
+      "evidence": "All seven tools parse. Collector, metrics helper and authorized retention wrapper remain byte-identical to predecessor. Both preparation scripts reproduce their current analyzer/retention outputs exactly using only in-memory deterministic text derivation. Updated CLOSED_RESULT_TOOLS/RETENTION_TOOLS digests match current files. The two changed selection/deletion conditions are the minimal correction of the registered primary-promotion rule."
+    }
+  ],
+  "validation": {
+    "seven_tool_AST": "PASS",
+    "updated_preparation_bindings": "PASS",
+    "both_generators_exact_in_memory": "PASS",
+    "unchanged_helpers": [
+      "collect_formal_authorized.py",
+      "geometry_result_metrics.py",
+      "retain_metric_best_authorized.py"
+    ],
+    "historical_parent_rows": 9508,
+    "historical_parent_hits": [
+      5614,
+      4509
+    ],
+    "historical_parent_rows_sha256": "5ef50c722abb31f10e02a06615d0f2cd437b0bcb354b32f5135ebf1304db9e16",
+    "historical_parent_cpu_threshold_changes": 0,
+    "historical_parent_max_CPU_GPU_iou_delta": 2.9161592899340505e-06,
+    "actual_source_policy_cases": {
+      "primary_tie_secondary_improves": "parent retained; forced new-winner deletion predicate rejected",
+      "strict_primary_improvement": "new control accepted",
+      "two_new_primary_tie_above_parent": "higher.25 new arm selected"
+    },
+    "existing_training_contract_unchanged": true
+  },
+  "future_execution_gates": {
+    "terminal_artifact_existence_at_review": {
+      "fit_wait.json": false,
+      "complete/INTAKE.json": false,
+      "analysis/SUMMARY.json": false,
+      "analysis/EXPERIMENT_AUDIT.json": false,
+      "analysis/TERMINAL_REVIEW_CALL.json": false,
+      "weight_retention.json": false
+    },
+    "actual_current_terminal_audit_required": true,
+    "this_review_authorizes_no_execution": true,
+    "no_current_run_results_inferred": true
+  },
+  "actions": {
+    "remote_calls": 0,
+    "training_or_model_evaluation_runs": 0,
+    "optimizer_steps": 0,
+    "torch_imports": 0,
+    "weights_loaded": 0,
+    "weight_writes": 0,
+    "weight_deletions": 0,
+    "source_edits_by_reviewer": 0,
+    "raw_receipt_edits": 0,
+    "historical_saved_row_CPU_recount": true,
+    "review_artifacts_written": true
+  },
+  "limitations": [
+    "Current training is still active according to the task context. The new pair has no actual terminal intake/summary/audit here; this review is a source check only.",
+    "The historical parent-only CPU recount and synthetic policy examples are not new control/member_target results.",
+    "Future cleanup must still pass the actual closed-result integrity review and every live on-server receipt/header/path check. No checkpoint was opened by this reviewer."
+  ],
+  "reviewed_file_count": 24,
+  "reviewed_files": [
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\collect_formal_authorized.py",
+      "sha256": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\geometry_result_metrics.py",
+      "sha256": "9e646ba0193f19ddca827e665be3f0a8b651bb4539a05a0ec9568fda9315d5aa",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\analyze_closed_formal.py",
+      "sha256": "075cbf1df8b5f35ed90d00521ebacaeae5d31e8be8b01617d4f2fdc308d52864",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\prepare_closed_result_tools.py",
+      "sha256": "486a8d062b716d49f94acda08041d5a711707d8571ea2637c2c61a2e445ffb6f",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\retain_metric_best.py",
+      "sha256": "da947e56b0139028f4364018ff57ab79f533995fe8de4b1c11b747cc77a02032",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\retain_metric_best_authorized.py",
+      "sha256": "24ef007d5d3c968f964eb1300a694c10b76eace587e1f6ccf553f7edd025bc64",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\prepare_retention_tools.py",
+      "sha256": "da7fbdb40f84c436dda571af2b99086cd9439c63a9ac1476cd8ca71a2024b3db",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\control_spec.json",
+      "sha256": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\member_target_spec.json",
+      "sha256": "11825f691eb97342a28055565619be768039824c470e4291c3fff656c1ba9a18",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\run_geometry_fit.py",
+      "sha256": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "45ab4e8bd36073d294aeb41b6a7c9171e0517149de81d8ffff9ef2d44de1ef0d",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\CLOSED_RESULT_TOOLS.json",
+      "sha256": "557f30a139fd89b95b01cb2deb5d37553a50e0d31f8cc2ed3d1736b6141e8117",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\RETENTION_TOOLS.json",
+      "sha256": "85c1d1f722b2cacf1e3361b6c344578da4ad85b8f236aa72920b44945e5d4a25",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_auxiliary_target_20261005\\SOURCE_REVIEW.json",
+      "sha256": "dec070a173da35b1c014b714182bb5eb2b40cf0d0e43f4f31b7826fb5bf36f7a",
+      "coverage": "current_source_plan_spec_or_preparation"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\collect_formal_authorized.py",
+      "sha256": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890",
+      "coverage": "actual_predecessor_source_or_closed4509_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\geometry_result_metrics.py",
+      "sha256": "9e646ba0193f19ddca827e665be3f0a8b651bb4539a05a0ec9568fda9315d5aa",
+      "coverage": "actual_predecessor_source_or_closed4509_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\analyze_closed_formal.py",
+      "sha256": "eb739f42548fcc2ec02f3b6236bdf4ae3cbabf9724e8e8f47af69fe13ae05277",
+      "coverage": "actual_predecessor_source_or_closed4509_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\retain_metric_best.py",
+      "sha256": "d44f0634e12987217911e24bf7bcfc17b683c2cd33a03869320f02081aa08e83",
+      "coverage": "actual_predecessor_source_or_closed4509_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\retain_metric_best_authorized.py",
+      "sha256": "24ef007d5d3c968f964eb1300a694c10b76eace587e1f6ccf553f7edd025bc64",
+      "coverage": "actual_predecessor_source_or_closed4509_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\RETENTION_REVIEW.md",
+      "sha256": "7bd25748a1ece1ef3a7423c458f9e00622c85abbd61adc734db37aff27c1e489",
+      "coverage": "actual_predecessor_source_or_closed4509_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal\\rows.jsonl",
+      "sha256": "5ef50c722abb31f10e02a06615d0f2cd437b0bcb354b32f5135ebf1304db9e16",
+      "coverage": "actual_predecessor_source_or_closed4509_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\complete\\query_supported\\formal\\receipt.json",
+      "sha256": "fdab1dd33b81fa70551b76d6eed6de5c8fbce95b43199297bbe35e19353a33f1",
+      "coverage": "actual_predecessor_source_or_closed4509_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_query_supported_geometry_20261005\\weight_retention.json",
+      "sha256": "6ef90b14b890fcd3933d1835ca354ba6ad26bd8d224c788cf43f2f46e4a78ba8",
+      "coverage": "actual_predecessor_source_or_closed4509_evidence"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "coverage": "full10_geometry_reconstruction_source"
+    }
+  ]
+}

@@ -20,6 +20,8 @@ changes = {
     "parent=local.parent/'pvground_boundary_distribution_20261004/complete/distribution/formal'":
         "parent=local.parent/'pvground_query_supported_geometry_20261005/complete/query_supported/formal'",
     "==[5616,4506]": "==[5614,4509]",
+    "best=max(table,key=lambda row:(row['rec_hits50'],row['rec_hits25'],row['system']=='protected_geometry_parent'))":
+        "best=max(table,key=lambda row:(row['rec_hits50'],row['system']=='protected_geometry_parent',row['rec_hits25']))",
     "geometry_parent_updates=3723,geometry_total_updates_at_terminal=7446":
         "geometry_parent_updates=7446,geometry_total_updates_at_terminal=11169",
     "# Query-supported geometry responsibility: closed result":

@@ -1,0 +1,13 @@
+# Terminal tools and retention source follow-up
+
+**PASS.** No remaining blocking or unresolved nonblocking findings. Scope: `SOURCE_ONLY`. This is a follow-up in the same existing reviewer context, with requested Astra/max, backend unattested, same-family/provisional. It is not a fresh or external review.
+
+One real inconsistency was corrected before execution: the inherited secondary-metric tie-break could replace 4509 without strictly improving Acc@0.50. The analyzer now ranks `(hits50, tie-parent, hits25)`, and cleanup separately asserts strict improvement over the parent before any deletion. Both preparation scripts reproduce the revised outputs exactly. Policy examples confirm that a primary tie preserves the parent, while a strictly better primary score may promote a complete new head. These examples are not current experiment results.
+
+The parent rows point to the actual closed `pvground_query_supported_geometry_20261005/complete/query_supported/formal` result. Its recorded SHA matches. Read-only recount of those historical 9508 rows reproduces 5614/4509 hits with zero CPU threshold flips. The CPU metrics helper is unchanged: native GT, strict thresholds, percentage normalization, paired identities, repairs/damages and same-query refinement remain the predecessor definitions. Mask and full-candidate statistics are scalar recounts, as stated.
+
+The tools correctly bind control/member_target, extra weights 1/1, native_gt/member_gt, 3723 current updates and 11169 cumulative geometry updates. They require complete receipts, identical training order, formal 9508 rows, exact restore evidence and the future terminal audit before authorized cleanup. This source review does not replace that actual-result audit.
+
+Before deletion, both new heads must match their fit/restore identities and formal metrics, and contain all 10 geometry states with the expected shapes and 456102 elements. The serializer stores complete replacement values; the factory reconstructs a promoted head from official PV, original G and those values without needing the old 4509 head. Deletion is limited to the explicitly resolved old 4509 path and the new control/member_target terminal paths. It touches no official PV, original G or V99 path and creates no negative-weight archive.
+
+All seven tools parse; unchanged intake/metric/wrapper files match the predecessor, and updated preparation digests match current bytes. Training/evaluation source, helper, controller, specs and the registered plan remain unchanged. No SSH, deployment, model evaluation/training, Torch import, weight load/write/deletion or source/raw-receipt edit was performed by this reviewer. Current-run results remain unknown. Exact reviewed paths and SHA values are in `RETENTION_REVIEW.json`.

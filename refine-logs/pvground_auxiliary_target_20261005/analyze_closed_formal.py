@@ -88,7 +88,7 @@ for quartile in range(4):
 keys=('rec_hits25','rec_hits50','rec_acc25','rec_acc50')
 table=[dict(system='protected_geometry_parent',**{key:parent_metric[key] for key in keys})]
 table.extend(dict(system=arm,**{key:stages[arm]['formal'][key] for key in keys}) for arm in stages)
-best=max(table,key=lambda row:(row['rec_hits50'],row['rec_hits25'],row['system']=='protected_geometry_parent'))
+best=max(table,key=lambda row:(row['rec_hits50'],row['system']=='protected_geometry_parent',row['rec_hits25']))
 target_pass_by_system={row['system']:row['rec_hits25']>=5615 and row['rec_hits50']>=4754 for row in table}
 summary=dict(time_cst=datetime.datetime.now().astimezone().isoformat(),status='ACTUAL_CLOSED_ROWS_ANALYZED',
     actual_finished_cst=terminal['status']['finished_cst'],table=table,stages=stages,

@@ -1,2 +1,3 @@
 - 2026-10-05T16:16:53.414325+08:00 SOURCE_ONLY source review PASS; SOURCE_REVIEW_20261005_161653.json/.md and SOURCE_REVIEW.json/.md; same-family/provisional, backend unattested.
 - 2026-10-05T17:06:40.582603+08:00 CLOSED_PREFLIGHT_LAUNCH_READINESS PASS; LAUNCH_REVIEW_20261005_170640.json/.md and LAUNCH_REVIEW.json/.md; actual closed two-update arms; same-family/provisional, backend unattested.
+- 2026-10-05T17:55:38.861230+08:00 SOURCE_ONLY RETENTION_REVIEW PASS after strict-primary-tie correction; RETENTION_REVIEW_20261005_175538.json/.md and fixed counterparts; same existing reviewer context, same-family/provisional, backend unattested.

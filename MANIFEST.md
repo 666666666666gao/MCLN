@@ -250,3 +250,5 @@
 - 2026-10-05T17:15:04.928532+08:00 Auxiliary-target two-step sanity closed PASS; formal native/member pair launched from4509, no new accuracy yet.
 
 - 2026-10-05T17:46:56.406030+08:00 Published evidence moved to data disk with exact contents and logical paths; closed-result and retention tools prepared, not executed.
+
+- 2026-10-05T18:07:06.819207+08:00 Closed-result/retention source review PASS24; strict primary improvement required for replacing4509; no current result or weight cleanup.

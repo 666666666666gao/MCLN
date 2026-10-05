@@ -49,6 +49,7 @@ for arm in ('control','member_target'):
     identities[arm]=dict(path=str(path),bytes=len(raw),sha256=digest)
 winner=decision['winner']
 assert winner in paths and decision['hits']['protected_geometry_parent']==[5614,4509]
+assert winner=='protected_geometry_parent' or decision['hits'][winner][1]>decision['hits']['protected_geometry_parent'][1]
 identities['protected_geometry_parent']=dict(path=str(parent),bytes=parent.stat().st_size,sha256=spec['geometry_terminal_sha256'])
 deleted=[]
 for name,path in paths.items():

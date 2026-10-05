@@ -228,3 +228,5 @@
 - 2026-10-05T09:01:37.347092+08:00 Separate native Query/Text/fused root-support probe, fixed augmentedfit64, audited; no optimizer or weights. Best5616/4506 unchanged.
 
 - 2026-10-05T09:24:44.817719+08:00 Both Query-supported geometry preflights closed; same-start head-only control/strategy fit launched. No new accuracy result; best5616/4506 retained.
+
+- 2026-10-05T09:36:14.854203+08:00 Query-supported geometry CPU terminal collector/recount tools prepared; historical parent9508 recount5616/4506,0 threshold differences. Active fit has no new result.

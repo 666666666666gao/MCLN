@@ -244,3 +244,5 @@
 - 2026-10-05T15:00:04.247921+08:00 Fixed-cohort three-head geometry replay closed and audited; 64 augmented fit rows, no optimizer or new weights. Native training bbox-noise scope recorded; next CPU pre-jitter target comparison.
 
 - 2026-10-05T16:20:36.866436+08:00 CPU64 native GT-jitter check closed and reviewed; exact native inputs, no model/checkpoint/optimizer. Best5614/4509 unchanged.
+
+- 2026-10-05T16:42:20.516361+08:00 Native/member auxiliary-target comparison sources reviewed and real two-step sanity launched; no formal result or new model parameter.

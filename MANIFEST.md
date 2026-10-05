@@ -254,3 +254,5 @@
 - 2026-10-05T18:07:06.819207+08:00 Closed-result/retention source review PASS24; strict primary improvement required for replacing4509; no current result or weight cleanup.
 
 - 2026-10-05T19:09:49.354394+08:00 Actual scheduled check confirmed control3723updates complete, terminal holdout4286rows; no formal result. Revised pair estimate22:03.
+
+- 2026-10-05T19:48:21.127485+08:00 Native-target control full9508 closed and CPU-recounted5616/4511, parent delta+2/+2; member results pending, no promotion/cleanup.

@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "generated_at": "2026-10-05T08:55:24.006148+08:00",
+  "numpy_version": "2.5.3",
+  "intake_files_verified": 24,
+  "intake_bytes_verified": 624252,
+  "rows": 64,
+  "unique_scan_ids": 60,
+  "unique_physical_scene_prefixes": 60,
+  "candidates": 16384,
+  "all_target_slots_root_only": true,
+  "counts": {
+    "fused_mask_only_unmatched": 1112,
+    "own_query_confirmed": 1090,
+    "query_not_qualified_text_qualified": 22,
+    "neither_branch_qualified": 0,
+    "own_query_mask_only_unmatched": 1100,
+    "rows_with_own_query_confirmed": 52
+  },
+  "integer_ratio_max_error": {
+    "text": 2.888669103917607e-08,
+    "query": 2.9704395831942065e-08,
+    "fused": 2.9704395831942065e-08
+  },
+  "independent_float64_box_iou_max_error": 2.3695575378512856e-06,
+  "independent_box_threshold_differences": 0,
+  "prior_matched_slot_differences": 0,
+  "prior_box_threshold_differences": 0,
+  "prior_fused_threshold_differences": 0,
+  "prior_max_box_iou_difference": 1.0728836059570312e-06,
+  "prior_max_fused_iou_difference": 0.0,
+  "prior_selected_query_differences": 0,
+  "current_selected_top_ties": 0,
+  "row_json_and_batch_logs_exact": true,
+  "generation_recipe_exact": true,
+  "python37_parsed": [
+    "run_mask_branch_probe.py",
+    "analyze_probe.py",
+    "controller.py",
+    "collect_probe_authorized.py",
+    "observe_probe_authorized.py",
+    "launch_probe_authorized.py",
+    "prepare_probe.py",
+    "publish_branch.py"
+  ],
+  "model_forwards": 0,
+  "gpu_runs": 0,
+  "optimizer_steps": 0,
+  "remote_calls": 0,
+  "raw_point_mask_cpu_replay": false,
+  "limitation": "CPU recomputes all saved integer intersections/unions and boxes. Raw point masks are not archived; GPU selected-point expansion equality is a reviewed runtime assertion, not a CPU replay."
+}

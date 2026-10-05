@@ -109,7 +109,9 @@ summary={'status':'ACTUAL_CLOSED_REFERENCE_ROWS_ANALYZED','table':table,'systems
     'accuracy_scope':'9508_ScanRefer_development_native_last_bbs',
     'mask_and_full256_scope':'stored_scalar_recount_only','single_seed':2027,
     'fit_order_exact':True,'geometry_parent_fit_updates':11169,'total_geometry_fit_updates':14892,
-    'formal_complete':True,'fresh_terminal_audit_pending':True,'weight_retention_executed':False}
+    'formal_complete':True,'fresh_terminal_audit_pending':True,'weight_retention_executed':False,
+    'scanrefer_target_pass':any(item['rec_hits25']>=5544 and item['rec_hits50']>=4754 for item in table),
+    'metric_best_target_pass':winner['rec_hits25']>=5544 and winner['rec_hits50']>=4754}
 output.mkdir()
 (output/'SUMMARY.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')
 print(json.dumps({'table':table,'best':winner,'audit_pending':True,'weights_changed':False}))

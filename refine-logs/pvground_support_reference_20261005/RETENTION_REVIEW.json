@@ -1,0 +1,690 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "execution_scope": "SOURCE_ONLY",
+  "summary": "No concrete source defect found in the prepared closed-result collector, analyzer and best-weight retention path. The source gate can pass provisionally; collection, terminal audit and retention remain conditional on actual successful closure and have not been executed by this reviewer.",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "effort": "max",
+  "backend_identity": "unattested",
+  "backend_model_identity_attested": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "fresh_context": false,
+  "context_note": "This is the requested follow-up in the existing source reviewer thread, which originally started without the author's implementation context. The earlier source review is retained in this thread; this follow-up is not a newly blank reviewer context and is not the required future terminal review.",
+  "review_policy": [
+    "C:/Users/gb/.codex/skills/experiment-bridge/SKILL.md",
+    "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md"
+  ],
+  "accuracy_claim": false,
+  "closed_fit_verified_by_this_review": false,
+  "actual_weight_restore_executed_by_this_review": false,
+  "checks": [
+    {
+      "id": "generator_and_source_identity",
+      "status": "PASS",
+      "finding": "The preparation script's three declared outputs were reconstructed from the actual prior scripts using only AST-selected string substitutions in memory. All 13 guarded change calls matched exactly once; all three outputs match their actual Windows bytes. The analyzer is a separately authored source file, not an output claimed by this generator. Seventeen Python files parse. The 13 review inputs also present in the earlier source binding are unchanged, including both specs, runner, reference implementation, controller, observer, plan and head helpers.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\prepare_closed_tools.py",
+          "line_start": 5,
+          "line_end": 67,
+          "note": "Actual source inputs, substitutions and three output writes."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 1,
+          "line_end": 117,
+          "note": "Separately read concrete analyzer, not inferred from generation text."
+        }
+      ],
+      "verification": "stdlib-only AST and string reconstruction; no prepared tool entry point or project import executed."
+    },
+    {
+      "id": "closed_collection_and_no_weight_download",
+      "status": "PASS",
+      "finding": "The collector requires the actual fit observer closure record, controller absence and a recorded exit code, then checks the remote controller exit against that record. The observer writes closure only after pgrep reports no matching controller and its exit file exists. The collector intentionally permits collecting failure logs; analysis and retention separately require successful completion. Collection admits only .json/.jsonl/.log/.exit/.py/.md files, excluding all runner-produced .pth/.tmp checkpoints, and performs no weight loading or model replay.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\observe_fit_authorized.py",
+          "line_start": 32,
+          "line_end": 57,
+          "note": "Process/exit observation and actual closure receipt producer."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\collect_formal_authorized.py",
+          "line_start": 12,
+          "line_end": 54,
+          "note": "Closure prerequisites, suffix allowlist, exact byte-count intake and no checkpoint path."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\controller.py",
+          "line_start": 16,
+          "line_end": 59,
+          "note": "One-shot controller, sequential awaited children, success only after all modes and parent checks."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+          "line_start": 523,
+          "line_end": 556,
+          "note": "Actual checkpoint suffixes and terminal rename."
+        }
+      ]
+    },
+    {
+      "id": "closed_row_integrity_and_pairing",
+      "status": "PASS",
+      "finding": "Analysis requires collected fit status complete, protected parents exact and controller exit zero, and verifies every collected intake byte count/hash before reading results. Both arms require all ordered row_ids 0..9507, and pair all 9508 entries against the retained parent by row_id, scan_id, target_id, GT root_box and point_sha256. The training logs require 3723 sequential steps, 29778 unique seen rows, the two-row tail and identical per-batch row order across arms. The runner additionally verifies the exact fit split multiset.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 8,
+          "line_end": 18,
+          "note": "Successful closure and intake integrity prerequisites."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 37,
+          "line_end": 40,
+          "note": "All-row GT and observation identity pairing."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 61,
+          "line_end": 79,
+          "note": "Parent 4511 check and per-arm row, log and receipt checks."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 103,
+          "line_end": 104,
+          "note": "Paired training order."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+          "line_start": 243,
+          "line_end": 260,
+          "note": "Formal checkpoint/split restoration."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+          "line_start": 540,
+          "line_end": 571,
+          "note": "Actual one-pass fit assertions and receipts."
+        }
+      ]
+    },
+    {
+      "id": "native_evaluation_and_independent_box_checks",
+      "status": "PASS",
+      "finding": "For each arm the analyzer recomputes axis-aligned IoU from saved final, coarse and reference coordinates against that row's GT at both strict >.25 and >.5 thresholds. Any discrepancy is counted, and retention requires all these counts to be zero. Saved final hits must also equal the native formal receipt. The producer evaluates native last_/bbs on all 9508 non-augmented validation rows once per batch, uses the same selected Query for its box and fused mask, and checks native box counters and mask-IoU sums. The actual preflight imports receipts identify the expected native evaluator hash. Mask and full-256 oracle diagnostics remain explicitly stored-scalar recounts; they are not represented as independent mask or all-candidate reconstruction.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 25,
+          "line_end": 34,
+          "note": "Independent scalar coordinate IoU."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 78,
+          "line_end": 94,
+          "note": "Native hit recount and three-stage threshold comparisons."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 109,
+          "line_end": 110,
+          "note": "9508 native scope and stored-scalar qualification."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best_authorized.py",
+          "line_start": 16,
+          "line_end": 16,
+          "note": "All independent box threshold discrepancies block retention."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+          "line_start": 192,
+          "line_end": 239,
+          "note": "Formal data scope and exact runtime evaluator identity."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+          "line_start": 296,
+          "line_end": 370,
+          "note": "Single native evaluation, same-Query rows and native counter agreement."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\preflight_complete\\control\\imports.json",
+          "line_start": 2,
+          "line_end": 18,
+          "note": "Collected actual native evaluator identity."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\preflight_complete\\support_reference\\imports.json",
+          "line_start": 2,
+          "line_end": 18,
+          "note": "Same actual evaluator source identity in the support arm."
+        }
+      ]
+    },
+    {
+      "id": "internal_effects_and_baseline_comparisons",
+      "status": "PASS",
+      "finding": "The analyzer labels coarse-to-reference and reference-to-final repairs/damages as same_selected_Query_internal. Separate paired parent_delta and support_vs_control results report cross-system repairs/damages and selected Query changes. These distinct outputs support the planned combined structure-plus-supervision comparison without describing internal stage improvements as gains against the retained baseline. No generalization or causal isolation claim is emitted.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 43,
+          "line_end": 58,
+          "note": "Separate paired-system difference and same-Query internal transition functions."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 88,
+          "line_end": 114,
+          "note": "Distinct output fields and single-seed development scope."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\EXPERIMENT_PLAN.md",
+          "line_start": 14,
+          "line_end": 30,
+          "note": "Combined intervention, diagnostic distinction and acceptance policy."
+        }
+      ]
+    },
+    {
+      "id": "strict_best_and_parent_tie_protection",
+      "status": "PASS",
+      "finding": "Selection maximizes Acc50 hit count first, then prefers the protected parent on an Acc50 tie, then uses Acc25 for ties between new arms. Thus a new model cannot displace the 4511 parent by Acc25 alone. The remote helper independently requires every non-parent winner to exceed 4511 at Acc50. If strict-best selection conflicts with the declared dual-threshold development target, the wrapper preserves all candidates by stopping before SSH cleanup. The parent [5616,4511] identity agrees with its actual prior retention receipt and both current specs.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 61,
+          "line_end": 63,
+          "note": "Parent comparison row and 4511 recount."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 105,
+          "line_end": 114,
+          "note": "Strict primary metric, parent tie priority and development target fields."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best_authorized.py",
+          "line_start": 13,
+          "line_end": 16,
+          "note": "Target-policy conflict and independent-threshold gates."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+          "line_start": 66,
+          "line_end": 68,
+          "note": "Independent remote protection of parent ties."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_auxiliary_target_20261005\\weight_retention.json",
+          "line_start": 4,
+          "line_end": 12,
+          "note": "Actual protected parent identity and counts."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\EXPERIMENT_PLAN.md",
+          "line_start": 30,
+          "line_end": 30,
+          "note": "Explicit parent-tie and new-arm tie policy."
+        }
+      ]
+    },
+    {
+      "id": "actual_head_cpu_restore_and_checkpoint_metadata",
+      "status": "PASS",
+      "finding": "Before deletion the remote helper binds both terminal hashes to their fit and formal-restore receipts, checks current formal hits, and loads only on CPU. It validates 3723 new steps, 11169/14892 history, 29778 unique row IDs, head-only and source/ancestry/reference/auxiliary/loss flags. It constructs the actual BoundaryBoxRefiner('distribution') or SupportReferenceBoxRefiner, checks exact state names, counts 10/12 and parameter totals 456102/459180, strictly loads the entire head and checks equality after load. Existing parent state shapes must be represented. Runtime helper and support-reference source identities are checked before import. Nonpersistent local-sampling locations are supplied by the actual constructor, so all persistent geometry state is covered.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+          "line_start": 17,
+          "line_end": 65,
+          "note": "Pinned source/terminal identities, CPU load, actual constructor, strict load and metadata checks."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\support_reference.py",
+          "line_start": 35,
+          "line_end": 40,
+          "note": "New reference pair and actual inherited constructor."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+          "line_start": 68,
+          "line_end": 75,
+          "note": "Actual old distribution head constructor."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+          "line_start": 15,
+          "line_end": 28,
+          "note": "Deterministic nonpersistent sampling locations and head modules."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+          "line_start": 523,
+          "line_end": 535,
+          "note": "Exact checkpoint payload generated by training."
+        }
+      ],
+      "qualification": "These are verified source requirements, not tensor observations made in this source-only review. The pinned parent is CPU-loaded for its existing state map; the new strict constructor restore is performed for the two current candidates."
+    },
+    {
+      "id": "optimizer_validation_scope",
+      "status": "PASS",
+      "finding": "The cleanup CPU header check requires one optimizer state per head tensor and step 3723 for every state. It does not itself run an optimizer or independently reload optimizer moments. The terminal hash is required to equal the formal-restore receipt; the actual formal entry point strictly restores the full model, reloads the optimizer and compares all optimizer keys, moments, steps and groups using optimizer_restore_exact. The actual two-step preflight receipts separately record exact model/optimizer restoration for both 10- and 12-state arms.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+          "line_start": 34,
+          "line_end": 38,
+          "note": "Current terminal hash tied to formal restore."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+          "line_start": 64,
+          "line_end": 64,
+          "note": "Exact scope of CPU optimizer header check."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+          "line_start": 243,
+          "line_end": 260,
+          "note": "Full formal model and optimizer restore producer."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+          "line_start": 30,
+          "line_end": 44,
+          "note": "Exact optimizer keys, tensors and parameter-group equality."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\preflight_complete\\control\\preflight.json",
+          "line_start": 6,
+          "line_end": 24,
+          "note": "Collected actual two-step 10-state preflight receipt."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\preflight_complete\\support_reference\\preflight.json",
+          "line_start": 6,
+          "line_end": 24,
+          "note": "Collected actual two-step 12-state preflight receipt."
+        }
+      ]
+    },
+    {
+      "id": "terminal_review_source_gate_and_exact_cleanup_scope",
+      "status": "PASS",
+      "finding": "The authorized wrapper requires successful closed fit, the current closed-analysis summary, a returned TERMINAL_REVIEW_CALL, a PASS/WARN current EXPERIMENT_AUDIT without blockers, and this source review's PASS/WARN/no-blockers/SOURCE_ONLY status with every reviewed_files hash rechecked before SSH. The remote helper rechecks complete fit, parent preservation, exit zero and no active matching controller. Its deletion dictionary contains only the pinned parent terminal and this comparison's two terminals; resolved path assertions precede deletion. It retains the winner, does not archive losing weights, and contains no official-PV, original-G or V99 deletion path. All official/G identities are protected by controller completion checks. Windows-to-POSIX root conversion was checked from the actual AST string literal and actual control spec.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best_authorized.py",
+          "line_start": 9,
+          "line_end": 43,
+          "note": "Current-run terminal review gate, existing reviewed_files binding, fixed SSH destination, exact helper upload and receipt-only return."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+          "line_start": 10,
+          "line_end": 29,
+          "note": "Exact roots, closed fit, process absence and pinned parent."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+          "line_start": 31,
+          "line_end": 38,
+          "note": "Candidate resolved paths and terminal identities."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+          "line_start": 66,
+          "line_end": 84,
+          "note": "Only dictionary-listed non-winners unlinked; winner and G retained; no archive."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\controller.py",
+          "line_start": 21,
+          "line_end": 24,
+          "note": "Official/PV/G/geometry identities before fit."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\controller.py",
+          "line_start": 55,
+          "line_end": 59,
+          "note": "All protected disk identities rechecked before complete status."
+        }
+      ],
+      "allowed_weight_paths": [
+        "/root/autodl-tmp/pvground_auxiliary_target_20261005/control/terminal.pth",
+        "/root/autodl-tmp/pvground_support_reference_20261005/control/terminal.pth",
+        "/root/autodl-tmp/pvground_support_reference_20261005/support_reference/terminal.pth"
+      ],
+      "qualification": "A source PASS is not the current-run terminal audit. That separate actual review and returned-call receipt still have to be produced after genuine successful closure."
+    },
+    {
+      "id": "reconstruction_and_claim_boundaries",
+      "status": "PASS",
+      "finding": "Each candidate saves the complete persistent geometry head, so a selected new head does not need the superseded geometry-parent tensor values to reconstruct that head. Reconstruction still depends on the official PV, original G and reviewed source/configuration, which this cleanup preserves. The helper's strict_CPU_head_restore describes head construction/loading, not a rerun of complete PV inference. Analysis describes its future collected formal result only after successful closure guards and explicitly leaves terminal audit pending and weight retention unexecuted. None of these future claims is treated as an observed result in this report.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+          "line_start": 122,
+          "line_end": 138,
+          "note": "Parent reconstruction and selected head installation."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+          "line_start": 523,
+          "line_end": 535,
+          "note": "Complete selected head and ancestry metadata."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+          "line_start": 49,
+          "line_end": 64,
+          "note": "Exact complete head restore."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+          "line_start": 75,
+          "line_end": 82,
+          "note": "Precise head/reconstruction and no-replay receipt fields."
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+          "line_start": 106,
+          "line_end": 117,
+          "note": "Future result scope and audit/retention status."
+        }
+      ]
+    }
+  ],
+  "actual_input_observations": {
+    "checked_at_utc": "2026-10-05T16:21:32.890394+00:00",
+    "fit_wait_json": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\fit_wait.json",
+      "exists": false,
+      "interpretation": "Conditional input absent at local inspection. Neither closure nor continued activity is inferred from absence."
+    },
+    "fit_launch_status": "TWO_ARM_FIT_LAUNCHED_NOT_COMPLETED",
+    "local_complete_directory_exists": false,
+    "local_analysis_directory_exists": false,
+    "actual_preflight_receipts": {
+      "control": {
+        "receipt_sha256": "e63ef9e84e3acfb63347be483890e33f384d6af30b1e933a92b629956906cd87",
+        "state_tensors": 10,
+        "parameters": 456102,
+        "native_evaluator_sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+      },
+      "support_reference": {
+        "receipt_sha256": "c8cb39f6e7e50fabbf37be8e8047cafb198c76088fc0b267078db9962f368da0",
+        "state_tensors": 12,
+        "parameters": 459180,
+        "native_evaluator_sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+      }
+    },
+    "preflight_receipt_scope": "Existing actual collected two-step sanity receipts, both status pass, optimizer_steps 2, weight_files_created 0, accuracy_result false. Reviewer verified their artifacts and source/spec identities without repeating the sanity run.",
+    "parent_retention_receipt_identity": {
+      "system": "control",
+      "hits": [
+        5616,
+        4511
+      ],
+      "path": "/root/autodl-tmp/pvground_auxiliary_target_20261005/control/terminal.pth",
+      "bytes": 5585925,
+      "sha256": "fb9672dce4170a1fd2322bdf28ef581c3cc9ac80e6df1544083893d454c196d6"
+    },
+    "parent_receipt_scope": "Existing closed parent identity only; no prior weights or metrics recomputed.",
+    "native_evaluator_sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+  },
+  "validation": {
+    "status": "PASS",
+    "interpreter": "E:/python.exe, Python 3.12.6, -B; standard library only",
+    "requested_existing_inputs_full_read": 16,
+    "conditional_fit_wait_read": false,
+    "additional_source_or_receipt_inputs": 12,
+    "reviewed_file_count": 28,
+    "python_ast_parses": 17,
+    "generator_guarded_changes": 13,
+    "generator_output_checks": [
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\collect_formal_authorized.py",
+        "normalized_text_exact": true,
+        "windows_emitted_bytes_exact": true,
+        "sha256": "29078717818e9d766a12630a5ae3d7b0407936c814981dab7b0ca1f5eff50b57"
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+        "normalized_text_exact": true,
+        "windows_emitted_bytes_exact": true,
+        "sha256": "ec485f17491d6e5803f27128bc2d19b5daf999ee668dcf95b99e25035ffc1b65"
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best_authorized.py",
+        "normalized_text_exact": true,
+        "windows_emitted_bytes_exact": true,
+        "sha256": "5cf82ee1db66636b8c657887d940790b4b703d02f65aef7d3d49a14a0a9cce51"
+      }
+    ],
+    "generator_execution_scope": "Only AST-selected literal/string replacements in memory. No generator or other prepared tool entry point executed.",
+    "preflight_intake_file_count": 22,
+    "preflight_intake_entries_verified": [
+      "preflight_status.json",
+      "preflight_controller.log",
+      "preflight_controller.exit",
+      "run_geometry_fit.py",
+      "query_supported_geometry.py",
+      "support_reference.py",
+      "controller.py",
+      "control_spec.json",
+      "support_reference_spec.json",
+      "SOURCE_REVIEW.json",
+      "SOURCE_REVIEW.md",
+      "EXPERIMENT_PLAN.md",
+      "control/imports.json",
+      "control/load.json",
+      "control/preflight.json",
+      "control/preflight.log",
+      "control/preflight.exit",
+      "support_reference/imports.json",
+      "support_reference/load.json",
+      "support_reference/preflight.json",
+      "support_reference/preflight.log",
+      "support_reference/preflight.exit"
+    ],
+    "helper_hash_match_count": 17,
+    "original_source_bound_inputs_unchanged": [
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\control_spec.json",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\support_reference_spec.json",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\support_reference.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\controller.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_auxiliary_target_20261005\\weight_retention.json",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\observe_fit_authorized.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\EXPERIMENT_PLAN.md"
+    ],
+    "prior_source_reports_unchanged": {
+      "SOURCE_REVIEW.json": "1f31ef4ce946e598979757f527d60073bb8dedba9a23fa2437af42d0baed1939",
+      "SOURCE_REVIEW.md": "889d2eaf1f3046e8c0daeb68b00ceeab33b03b247e46c4f0d0a11b1c77d31ff1"
+    },
+    "actual_windows_remote_root_translation": "/root/autodl-tmp/pvground_support_reference_20261005"
+  },
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\prepare_closed_tools.py",
+      "sha256": "cbf915123907195e2579dd1fea121dbb752adfcef8d945eb907d5a4428eb5fa0",
+      "bytes": 5561
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\collect_formal_authorized.py",
+      "sha256": "29078717818e9d766a12630a5ae3d7b0407936c814981dab7b0ca1f5eff50b57",
+      "bytes": 2403
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\analyze_reference_formal.py",
+      "sha256": "1c2f148d901f47458e1665b1244398903a834494eb27ea5a5a19f2d73d413fc1",
+      "bytes": 6745
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best.py",
+      "sha256": "ec485f17491d6e5803f27128bc2d19b5daf999ee668dcf95b99e25035ffc1b65",
+      "bytes": 5753
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\postrun\\retain_metric_best_authorized.py",
+      "sha256": "5cf82ee1db66636b8c657887d940790b4b703d02f65aef7d3d49a14a0a9cce51",
+      "bytes": 2853
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\control_spec.json",
+      "sha256": "bd6b065edc9a33fdd4c8fcf4b332019bff5f17ab286b4ae5bf02ff94afb5fc0e",
+      "bytes": 4324
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\support_reference_spec.json",
+      "sha256": "c20e81cc3b72f160931d0afe3c5f04b5b9cc61a199c200ddbfd9719615b62f22",
+      "bytes": 4333
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\support_reference.py",
+      "sha256": "46efbff1f2ddf6df0a9d84a67807659679473eda7c2989470ff19f29f24e3ccf",
+      "bytes": 5590
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\run_geometry_fit.py",
+      "sha256": "8d616169b3a022a9d2f1ed8a569ff17a7357f3150bd68d04fe255800a37faee7",
+      "bytes": 36778
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\controller.py",
+      "sha256": "33fa6618bf9fbe0202dc3d1dc96dd98a7ca1feea2aa54d5f73514b2061043b52",
+      "bytes": 2963
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\fit_launch.json",
+      "sha256": "470f77a2e9be92965ec7b43fd26e4342c57ec4d4e1d0d02f63f2dfbde9040916",
+      "bytes": 1630
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\SOURCE_REVIEW.json",
+      "sha256": "1f31ef4ce946e598979757f527d60073bb8dedba9a23fa2437af42d0baed1939",
+      "bytes": 46825
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\preflight_complete\\INTAKE.json",
+      "sha256": "614c54052d57776c23b5c2c9b36b652b6637cc08f8d5a2ed0366218a1d7e5c4d",
+      "bytes": 3788
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\preflight_complete\\control\\preflight.json",
+      "sha256": "e63ef9e84e3acfb63347be483890e33f384d6af30b1e933a92b629956906cd87",
+      "bytes": 4511
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\preflight_complete\\support_reference\\preflight.json",
+      "sha256": "c8cb39f6e7e50fabbf37be8e8047cafb198c76088fc0b267078db9962f368da0",
+      "bytes": 4718
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_auxiliary_target_20261005\\weight_retention.json",
+      "sha256": "042f2bfec5bf0b1ea957392d67a7d7dc07a1b0d321c9e7835470cb5ce9d3da98",
+      "bytes": 1250
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_auxiliary_target_20261005\\collect_formal_authorized.py",
+      "sha256": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890",
+      "bytes": 2399
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_auxiliary_target_20261005\\retain_metric_best.py",
+      "sha256": "da947e56b0139028f4364018ff57ab79f533995fe8de4b1c11b747cc77a02032",
+      "bytes": 4586
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_auxiliary_target_20261005\\retain_metric_best_authorized.py",
+      "sha256": "24ef007d5d3c968f964eb1300a694c10b76eace587e1f6ccf553f7edd025bc64",
+      "bytes": 2672
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "bytes": 3906
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "bytes": 3767
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "bytes": 3655
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "bytes": 2436
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\observe_fit_authorized.py",
+      "sha256": "698a5203af439fc2fe90299c606a95eaa6014bdfa1e8443bf6fe47b8614e96e4",
+      "bytes": 3097
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "83a50446b19b7f86739123858f9442b9810e47de33be269bfc5903552600d952",
+      "bytes": 3972
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\preflight_complete\\control\\imports.json",
+      "sha256": "4d4eaeaca2c1a1973a150c955c5cc802396c1325ce350a42fbe9172501eece78",
+      "bytes": 1266
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_reference_20261005\\preflight_complete\\support_reference\\imports.json",
+      "sha256": "4d4eaeaca2c1a1973a150c955c5cc802396c1325ce350a42fbe9172501eece78",
+      "bytes": 1266
+    }
+  ],
+  "scope_counters": {
+    "gpu_calls": 0,
+    "remote_calls": 0,
+    "package_installations": 0,
+    "project_module_imports": 0,
+    "model_or_weight_loads": 0,
+    "training_steps": 0,
+    "prepared_tool_entry_points_executed": 0,
+    "weight_changes": 0,
+    "deletions": 0,
+    "publications": 0,
+    "personal_or_credential_memory_reads": 0
+  },
+  "qualifications": [
+    "Requested Astra/max identity remains unattested; this is same-family provisional review, not cross-family acceptance.",
+    "This follow-up reuses the earlier source-review thread; it is not the future fresh terminal-integrity review.",
+    "No formal rows, formal completion, current GPU/process state, terminal tensors or current-run accuracy were observed. Existing local launch/preflight artifacts do not establish formal closure.",
+    "CPU head restore and optimizer/header gates were inspected in source only. Full optimizer exactness is a formal-run check, not a new cleanup replay.",
+    "Existing reviewed_files binding is used without a new hashing protocol. The actual fresh terminal audit and returned-call receipt must still precede any retention execution."
+  ],
+  "required_followthrough": "Wait for the existing controller to close, collect its actual text-only results, run the reviewed analyzer, obtain the separate fresh terminal integrity verdict, and use the existing authorized retention gate only if all its checks pass. This reviewer executed none of those steps.",
+  "input_verification_complete": true,
+  "completed_at_utc": "2026-10-05T16:21:32.890394+00:00"
+}
+

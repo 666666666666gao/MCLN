@@ -226,3 +226,5 @@
 - 2026-10-05T08:25:20.764182+08:00 Actual fixed64 augmentedfit geometry-role probe closed; no optimizer/weights. Direct output gradients absent for unmatched Mask-qualified Box-poor candidates. Best5616/4506 unchanged, counts qualified by fixedpanel scope.
 
 - 2026-10-05T09:01:37.347092+08:00 Separate native Query/Text/fused root-support probe, fixed augmentedfit64, audited; no optimizer or weights. Best5616/4506 unchanged.
+
+- 2026-10-05T09:24:44.817719+08:00 Both Query-supported geometry preflights closed; same-start head-only control/strategy fit launched. No new accuracy result; best5616/4506 retained.

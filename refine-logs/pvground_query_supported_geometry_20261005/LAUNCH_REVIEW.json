@@ -1,0 +1,146 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "execution_scope": "SOURCE_ONLY",
+  "reviewed_at": "2026-10-05T09:16:37.276965+08:00",
+  "reviewer_agent": "/root/pvg_query_geometry_source_review",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "fork_turns_requested": "none",
+  "review_context": "Continuation of the original fresh delegated source reviewer; no new backend independence claimed.",
+  "actual_backend_attested": false,
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "execution": {
+    "local_source_reads": true,
+    "stdlib_ast_checks": true,
+    "ssh_calls": false,
+    "remote_commands_executed": false,
+    "gpu_operations": false,
+    "model_imported": false,
+    "model_constructed": false,
+    "optimizer_updates": 0,
+    "experiment_scripts_executed": false,
+    "main_source_edited": false
+  },
+  "source_checks": {
+    "new_python37_ast_pass": [
+      "collect_preflight_authorized.py",
+      "launch_geometry_fit_authorized.py",
+      "prepare_fit_observer.py",
+      "observe_fit_authorized.py"
+    ],
+    "embedded_remote_probe_python37_ast_pass": true,
+    "generated_observer_exact": true,
+    "original_source_review_39_file_identities_unchanged": true,
+    "source_review_sha256": "a71f65de0423e7ee722b96e92641eb0a7ede8ab6588a43477879e7e3b8d33fd7",
+    "collector_fixed_allowlist_files": 21,
+    "collector_includes_both_import_receipts": true,
+    "optimizer_exact_helper_fields": [
+      "moment_and_step_states",
+      "param_groups",
+      "all_keys_moments_steps_and_groups_exact"
+    ],
+    "windows_remote_root_derivation_exact": true,
+    "first_observation_seconds": 6200,
+    "later_poll_seconds": 240,
+    "estimated_pair_seconds": 15700,
+    "maximum_observations": 106,
+    "last_planned_observation_seconds": 31400
+  },
+  "correctness": [
+    "Collector and launcher consume the actual flat preflight observer result schema: observer_closed, controller_alive, exitcode and status. Both require closure, controller absence, exit0 and complete status before their network operations.",
+    "Launcher checks both real preflight receipts for pass, exactly two optimizer updates, zero disk weights, 456102 parameters/10 state tensors, frozen parent/R state, isolated additional-loss gradients, arm weight and every cached bbs/Mask, qualification-gradient and observed empty-row/clipped-target witness.",
+    "The actual shared optimizer_restore_exact helper returns all_keys_moments_steps_and_groups_exact; the launcher reads that exact key through optimizer_exact_check. There is no mismatched invented restore field.",
+    "Launcher checks original SOURCE_REVIEW and this launch review plus their exact local file identities, compares both remote preflight receipts byte-for-byte to collected receipts, and compares the five remote runner/helper/controller/spec files to reviewed local bytes. It does not redeploy or replace the running code.",
+    "Remote launch prerequisites are both preflight receipts/pass, completed preflight status, controller exit0, absent fit status, idle GPU process list and sufficient data space. Required reserve is 3 times actual maximum in-memory serialized head/optimizer bytes plus 256 MiB. The existing GPU lock is held by flock across the controller and its sequential children. Controller checks protected official/G/geometry identities before and after the pair; runner repeats parent/source/environment verification before construction.",
+    "Every arm train mode is a new subprocess. The runner always reconstructs official PV, original G and the protected geometry checkpoint, then creates a fresh AdamW. The two preflight updates are serialized only to BytesIO and are not a train starting checkpoint. Only formal mode restores the arm terminal. Both arms share the same parent identities, seed and data, differing only in output root and additional-loss weight.",
+    "Each arm trains 29778 fit rows once, with 3722 full B8 updates plus final B2, totaling 3723 updates. The geometry parent has 3723 updates and terminal cumulative geometry history is 7446. This matches the unchanged runner and metadata.",
+    "Full-fit observer generation reproduces the existing lifecycle exactly with fit stage/control spec/phase substitutions. It waits until launch time plus 6200 seconds, then polls every 240 seconds, capped at 106 observations (last planned observation at 31400 seconds). Duplicate local start/wait files are rejected. Terminal status preserves the actual controller exitcode under terminal, closes SFTP/SSH handles, and exits; training outcome is read from terminal.exitcode and terminal.status.",
+    "Collector has a fixed 21-file allowlist covering controller status/log/exit, reviewed code/spec/review/plan and both imports/load/preflight receipts/logs/exits. It rejects arm directories containing .pth/.pt/.tmp and copies no model weights. It issues no model, inference, optimizer or training subprocess."
+  ],
+  "remaining_execution_conditions": [
+    "Actual preflight completion and observer closure are future runtime predicates for these scripts; this source review does not attest new preflight or full-fit results.",
+    "Full fit remains subject to both actual receipts and the existing launcher resource/lock/source gates."
+  ],
+  "main_source_review_preserved": {
+    "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\SOURCE_REVIEW.json",
+    "verdict": "PASS",
+    "reviewed_files": 39,
+    "sha256": "a71f65de0423e7ee722b96e92641eb0a7ede8ab6588a43477879e7e3b8d33fd7"
+  },
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\collect_preflight_authorized.py",
+      "sha256": "e4166bc9790fc38f1dcb6165f9994002f4c01b56d8b44ca643189d2dc3874239",
+      "review_extent": "new launcher/collector/observer source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\launch_geometry_fit_authorized.py",
+      "sha256": "3f62413380c15a5926f1a3069398c31d42dd9e3a516809b9d4aadc5585bfcc04",
+      "review_extent": "new launcher/collector/observer source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\prepare_fit_observer.py",
+      "sha256": "bad561d17671cb0d3bbe5713de34e748551c5d9ee80b3c45846de4e221d25c3c",
+      "review_extent": "new launcher/collector/observer source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\observe_fit_authorized.py",
+      "sha256": "698a5203af439fc2fe90299c606a95eaa6014bdfa1e8443bf6fe47b8614e96e4",
+      "review_extent": "new launcher/collector/observer source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\observe_preflight_authorized.py",
+      "sha256": "35ece104f0589bf865866b9a9a239633ff833cfad0e254b0435a0c3ccaee7a62",
+      "review_extent": "read-only required interface/reference; main source verdict unchanged"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\observe_quality_authorized.py",
+      "sha256": "67d6cdadbd21d999950c55f8025b6bf05242ad17d5313d16eb9494b36214f146",
+      "review_extent": "read-only required interface/reference; main source verdict unchanged"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "review_extent": "read-only required interface/reference; main source verdict unchanged"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\run_geometry_fit.py",
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_extent": "read-only required interface/reference; main source verdict unchanged"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\controller.py",
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_extent": "read-only required interface/reference; main source verdict unchanged"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "b62e838197e85eacd19076696190fdad0590e93d910876bcf98f3fc795a9a947",
+      "review_extent": "read-only required interface/reference; main source verdict unchanged"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\control_spec.json",
+      "sha256": "282b7f117c3c242970416608c05e8f9b7684f1bf3b0ccfc0159990771505a9a1",
+      "review_extent": "read-only required interface/reference; main source verdict unchanged"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\query_supported_spec.json",
+      "sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+      "review_extent": "read-only required interface/reference; main source verdict unchanged"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\SOURCE_REVIEW.json",
+      "sha256": "a71f65de0423e7ee722b96e92641eb0a7ede8ab6588a43477879e7e3b8d33fd7",
+      "review_extent": "read-only required interface/reference; main source verdict unchanged"
+    }
+  ],
+  "versioned_report_files": [
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\LAUNCH_REVIEW_20261005_091637.md",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\LAUNCH_REVIEW_20261005_091637.json"
+  ]
+}

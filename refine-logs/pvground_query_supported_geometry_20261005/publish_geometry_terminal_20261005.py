@@ -27,14 +27,14 @@ best = retention['retained_best']
 assert best['system'] == summary['metric_best_candidate']['system']
 assert best['hits'] == [summary['metric_best_candidate']['rec_hits25'], summary['metric_best_candidate']['rec_hits50']]
 assert len(retention['deleted']) == 2 and retention['local_weight_archive_created'] is False
-assert previous['section'] == '20.376.64'
+assert previous['section'] == '20.376.65'
 repos = [workspace / '.codex_mcln_g0_20260905', workspace / '.codex_pvground_cs_20261002',
          workspace / '.codex_mcln_v99_internal_20260928']
 doc = 'docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md'
 copies = [repo / doc for repo in repos] + [workspace / 'Desktop/document' / Path(doc).name]
 old = copies[0].read_bytes()
 assert hashlib.sha256(old).hexdigest() == previous['handoff_sha256']
-assert all(path.read_bytes() == old for path in copies) and b'## 20.376.65 ' not in old
+assert all(path.read_bytes() == old for path in copies) and b'## 20.376.66 ' not in old
 for repo, head in zip(repos, previous['heads']):
     assert subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD']).decode().strip() == head
     assert not subprocess.check_output(['git', '-C', str(repo), 'status', '--porcelain'])
@@ -57,7 +57,7 @@ prefix = 'refine-logs/pvground_query_supported_geometry_20261005/'
 intake = json.loads((local / 'complete/INTAKE.json').read_bytes())
 section = f'''
 
-## 20.376.65 Query与融合Mask共同支撑的未匹配候选几何训练完成：真实配对结果、终态审计与最佳权重保留（{stamp}）
+## 20.376.66 Query与融合Mask共同支撑的未匹配候选几何训练完成：真实配对结果、终态审计与最佳权重保留（{stamp}）
 
 承接§20.376.64，两组均从已验证的5616／4506几何父模型重新构建，未加载预检两步状态；新AdamW各实际更新3723次，29778条fit各一次、顺序一致，batch8、累积1，尾批2条，seed2027。各组含初始与终点6887条预训练见过场景的模块留出，以及完整9508条开发验证；两组控制器实际完成于 {summary['actual_finished_cst']}，退出码0。只更新已有456102参数／10项状态的边界精修头，官方PV、原G及零残差R全程冻结并eval，保存前父状态精确检查通过。既有几何父头3723次更新与本轮相加，终点累计几何更新7446次；原G此前的结构与适配历史仍须单独披露。
 
@@ -83,7 +83,7 @@ section = f'''
 {target_text}按Acc@0.50、再Acc@0.25与同分父模型优先的预定规则，当前保留最佳为 {best['hits'][0]}／{best['hits'][1]}，严格距4754命中还差 {max(0,4754-best['hits'][1])}。本轮结果用于判断补充合格Mask候选的几何责任是否形成真实增量；不因loss下降、几何上界或追回退化控制就宣布达到目标。继续PV-Ground、完整实例支撑与六面范围、单一原生评分；后续具体结构选择依据本轮实际修复／破坏、支撑边界误差与候选选择差距，不重复已完成的局部概率拼接、简单P2、R容量扩展或仅教师框坐标实验。Nr／Sr新结构正式训练尚未开始，三数据集目标仍ACTIVE_UNMET。
 '''
 new = old + section.encode('utf-8')
-assert new.startswith(old) and new.count(b'## 20.376.65 ') == 1
+assert new.startswith(old) and new.count(b'## 20.376.66 ') == 1
 names = ['fit_wait.json', 'weight_retention.json', 'CLOSED_RESOURCES.json', 'check_closed_resources.py',
          'TERMINAL_PUBLICATION_SOURCE_CHECK.json', Path(__file__).name]
 for directory in ('complete', 'analysis'):
@@ -144,7 +144,7 @@ for index, repo in enumerate(repos):
             assert subprocess.check_output(['git', '-C', str(repo), 'show', ':' + name]) == raw.replace(b'\r\n', b'\n')
     git_doc = subprocess.check_output(['git', '-C', str(repo), 'show', ':' + doc])
     old_git_doc = subprocess.check_output(['git', '-C', str(repo), 'show', previous['heads'][index] + ':' + doc])
-    assert git_doc.startswith(old_git_doc) and git_doc.count(b'## 20.376.65 ') == 1
+    assert git_doc.startswith(old_git_doc) and git_doc.count(b'## 20.376.66 ') == 1
     subprocess.check_call(['git', '-C', str(repo), 'commit', '--quiet', '-m', 'Record closed Query-supported geometry training and metric-best retention'])
     heads.append(subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD']).decode().strip())
     assert not subprocess.check_output(['git', '-C', str(repo), 'status', '--porcelain'])
@@ -156,7 +156,7 @@ raw = guard.read_bytes()
 assert raw.count(previous['handoff_sha256'].encode()) == 1
 guard.write_bytes(raw.replace(previous['handoff_sha256'].encode(), digest.encode()))
 assert all(path.read_bytes() == new for path in copies)
-record = dict(time_cst=datetime.datetime.now().astimezone().isoformat(), section='20.376.65', heads=heads,
+record = dict(time_cst=datetime.datetime.now().astimezone().isoformat(), section='20.376.66', heads=heads,
               github_main=heads[0], handoff_bytes=len(new), handoff_sha256=digest, four_local_and_remote_equal=True,
               payload_count=len(payloads), new_accuracy_result=True, table=summary['table'],
               retained_best=best, deleted_nonbest_bytes=retention['released_bytes'], negative_weight_archived=False,
@@ -167,9 +167,9 @@ record = dict(time_cst=datetime.datetime.now().astimezone().isoformat(), section
 state.update(time_cst=record['time_cst'], status='QUERY_GEOMETRY_TERMINAL_PUBLISHED', latest_publication=str(local / 'terminal_publication.json'),
              owned_gpu_job_active=False, fit_observer_closed=True, observer_session_id=None, active_reviewer=None,
              retention_executed=True, protected_best_hits=best['hits'], strict_target_gap=max(0, 4754-best['hits'][1]),
-             published_heads=heads, handoff_section='20.376.65', handoff_sha256=digest,
+             published_heads=heads, handoff_section='20.376.66', handoff_sha256=digest,
              current_goal_turn_classification='PROGRESS_ACTUAL_TERMINAL_PUBLISHED')
 (local / 'active_continuation_state.json').write_text(json.dumps(state, indent=2) + '\n', encoding='utf-8')
 with (workspace / 'memory/2026-10-05.md').open('a', encoding='utf-8') as stream:
-    stream.write('\nPVGround ' + record['time_cst'] + ': Query-supported geometry full pair closed ' + str(summary['table']) + '. Same29778/order,3723 updates/head-only. Actual fresh audit ' + verdict + ' same-family/provisional; retained ' + str(best['hits']) + ', two nonbest heads deleted/no archive. Doc65 fourlocal+remote equal, main ' + heads[0] + '. Fullgoal ACTIVE_UNMET; no new Nr/Sr result.\n')
+    stream.write('\nPVGround ' + record['time_cst'] + ': Query-supported geometry full pair closed ' + str(summary['table']) + '. Same29778/order,3723 updates/head-only. Actual fresh audit ' + verdict + ' same-family/provisional; retained ' + str(best['hits']) + ', two nonbest heads deleted/no archive. Doc66 fourlocal+remote equal, main ' + heads[0] + '. Fullgoal ACTIVE_UNMET; no new Nr/Sr result.\n')
 print(json.dumps(record), flush=True)

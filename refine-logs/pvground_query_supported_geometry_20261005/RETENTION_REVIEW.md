@@ -1,0 +1,13 @@
+# Retention source review
+
+**PASS — no remaining blocking findings.** Scope: **SOURCE_ONLY**. Same-family / provisional; requested Astra/max backend is not independently attested. Main SOURCE_REVIEW and LAUNCH_REVIEW, active training source, model weights and remote state were not changed.
+
+The actual serializer stores all ten geometry parameters as complete replacement values (456102 parameters), together with distribution/whole_range/use_whole_range/1/7 metadata. The existing factory loads official PV plus G, installs the boundary module, and directly overwrites every geometry tensor from the supplied payload. A promoted new terminal therefore does not need the old4506 weight for reconstruction. Current-stage3723, parent3723 and cumulative7446 metadata are checked by retention.
+
+Cleanup gates are consistent with the existing producers: closed observer/controller and exit0; complete pair; exact training order and full9508 rows per arm; CPU selected-Box/GT threshold recount; receipt metrics; fresh terminal audit PASS/WARN with no blockers; exact reviewed source bytes. Future SUMMARY/audit absence is an intended execution gate.
+
+The deletion set is limited to the two current terminal heads and the explicitly resolved old4506 distribution head. The old parent SHA is checked; each new checkpoint SHA must match fit and formal_restore receipts, and formal metrics must agree with the decision. Paths are fixed and no recursive deletion is used. official PV, original G and V99 are outside the deletion set. CPU payload inspection uses map_location=cpu with no model/forward/optimizer construction or step and no CUDA call; no weight archive is created.
+
+One review issue was resolved. The analyzer already distinguishes any model meeting hits25>=5615 and hits50>=4754 from the winner under hits50, then hits25, then tie-parent ranking. The wrapper now stops before SSH or deletion if `scanrefer_target_pass and not metric_best_target_pass`. This prevents deleting the sole goal-success checkpoint when the primary-metric winner fails the joint target, while preserving the registered metric order. A source-rule example ([5600,4800] versus [5615,4754]) confirms the conflicting state is blocked; these are not observed experiment results. The revision is exactly that one assertion.
+
+Both retention scripts pass Python3.7 AST checks; original main and launch review file identities remain unchanged. This review performed only local source and standard-library checks: no SSH, torch import/load, GPU, optimizer or cleanup. Actual terminal results and audit still govern future execution. Exact reviewed paths and SHA256 are in the companion JSON.

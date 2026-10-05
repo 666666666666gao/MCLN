@@ -1,0 +1,160 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "execution_scope": "SOURCE_ONLY",
+  "reviewed_at": "2026-10-05T10:07:50.649234+08:00",
+  "reviewer_agent": "/root/pvg_query_geometry_source_review",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "fork_turns_requested": "none",
+  "review_context": "Continuation of the original delegated source review; no new independent backend claimed.",
+  "actual_backend_attested": false,
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "execution": {
+    "local_source_reads": true,
+    "stdlib_ast_checks": true,
+    "source_rule_demonstration_only": true,
+    "ssh_calls": false,
+    "remote_commands_executed": false,
+    "torch_imported": false,
+    "torch_load_executed": false,
+    "model_constructed": false,
+    "optimizer_updates": 0,
+    "cleanup_executed": false,
+    "active_training_source_edited": false
+  },
+  "source_checks": {
+    "python37_ast_pass": [
+      "retain_metric_best.py",
+      "retain_metric_best_authorized.py"
+    ],
+    "original_main_and_launch_review_identities_unchanged": true,
+    "goal_conflict_gate_precedes_ssh": true,
+    "revision_is_exactly_one_goal_conflict_assert": true,
+    "metric_sort": "hits50, then hits25, then parent preference",
+    "deletion_candidate_count": 3,
+    "torch_load_only_map_location_cpu": true
+  },
+  "passed_checks": [
+    "Actual producer chain requires closed observer/controller, complete pair, exact training order, full 9508 row IDs per arm, independent selected-Box/GT CPU IoU threshold agreement, receipt agreement, and fresh terminal audit PASS/WARN without blockers. The absent future SUMMARY/audit is a planned execution gate, not an error finding.",
+    "The selector uses primary hits50, secondary hits25 and parent preference on ties. Before SSH or deletion, the authorized wrapper now stops when scanrefer_target_pass is true but metric_best_target_pass is false. A primary-metric winner cannot cause deletion of the only joint-target-success model in that existing summary state.",
+    "Deletion candidates are exactly current control/terminal.pth, query_supported/terminal.pth and the resolved explicit old distribution/terminal.pth. No recursive traversal/deletion and no official PV, original G or V99 path enters this set.",
+    "Remote script requires complete fit status/protected_parents_exact, controller exit0 and absent matching controller process before reading candidates. Old parent SHA is checked. Both new SHA values must match fit and formal_restore receipts; formal counts must match the decision and each formal receipt has 9508 rows.",
+    "Both new payloads are checked for 3723 current updates, 3723 parent updates, 7446 cumulative updates, 29778 distinct rows, head_only, complete ten tensors totaling456102, the parent key set/shapes, distribution/whole_range/1/7 schema and original official/G/source identities. Optimizer payload has ten states at step3723.",
+    "The serializer saves complete parameter values, not additive differences. The actual factory reconstructs official PV plus G, installs the geometry module, then overwrites all ten geometry tensors directly from geometry_payload. Its required schema is present in the new terminal. A promoted new geometry head does not need the old4506 weight for reconstruction.",
+    "Planned CPU loads use map_location=cpu and inspect payload tensors/metadata only. The cleanup source has no model construction, forward, optimizer construction/step or CUDA call. No weight archive is created."
+  ],
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "issue": "Ignoring the existing joint-target versus primary-metric-winner conflict could delete the only target-success checkpoint.",
+      "trigger": "summary['scanrefer_target_pass'] and not summary['metric_best_target_pass']",
+      "resolution": "A single assertion now stops and reports that exact state before SSH creation or any remote write/deletion; registered metric ordering is unchanged.",
+      "source_rule_example_not_observed_metrics": {
+        "control": [
+          5600,
+          4800
+        ],
+        "query_supported": [
+          5615,
+          4754
+        ],
+        "protected_geometry_parent": [
+          5616,
+          4506
+        ],
+        "metric_winner": "control",
+        "now_cleanup_blocked": true
+      },
+      "actual_terminal_metrics_available": false
+    }
+  ],
+  "remaining_execution_gates": [
+    "Actual two-arm closure, complete-row CPU analysis and fresh terminal audit must occur before the authorized wrapper runs.",
+    "If the existing dual-threshold goal conflicts with the registered metric winner, cleanup stops and retains candidates for a retention decision."
+  ],
+  "preserved_reviews": {
+    "source_review_sha256": "a71f65de0423e7ee722b96e92641eb0a7ede8ab6588a43477879e7e3b8d33fd7",
+    "launch_review_sha256": "b69959643ed07bffcd12204bc402c24cdfbb25ccc80a1dd4b498e4f01e5e16ea"
+  },
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\retain_metric_best.py",
+      "sha256": "d44f0634e12987217911e24bf7bcfc17b683c2cd33a03869320f02081aa08e83",
+      "review_extent": "retention delta"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\retain_metric_best_authorized.py",
+      "sha256": "24ef007d5d3c968f964eb1300a694c10b76eace587e1f6ccf553f7edd025bc64",
+      "review_extent": "retention delta"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\analyze_closed_formal.py",
+      "sha256": "eb739f42548fcc2ec02f3b6236bdf4ae3cbabf9724e8e8f47af69fe13ae05277",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\geometry_result_metrics.py",
+      "sha256": "9e646ba0193f19ddca827e665be3f0a8b651bb4539a05a0ec9568fda9315d5aa",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\collect_formal_authorized.py",
+      "sha256": "a4711fc24e4e55f4d1e1515092d07ecdc7b991ded68af088eb60021bdd00e890",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\fit_body.py",
+      "sha256": "a67200e7d37bbc87d8303cee56eb63812d0725e9a3b0e364306fec5c64737233",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\run_geometry_fit.py",
+      "sha256": "ecfaeb9e73aba2d317abd80f5dba340f508b224ebf02f2b262549402ef926889",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\controller.py",
+      "sha256": "8f43a56efa9a6d1097899fd7474054e2663bfb46547fce157705344f8baec895",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\control_spec.json",
+      "sha256": "282b7f117c3c242970416608c05e8f9b7684f1bf3b0ccfc0159990771505a9a1",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\query_supported_spec.json",
+      "sha256": "30fb451ec8ab08b8825e0ab15d4c47504d5f3e9d1027f0ad52363a931fb79c33",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\EXPERIMENT_PLAN.md",
+      "sha256": "b62e838197e85eacd19076696190fdad0590e93d910876bcf98f3fc795a9a947",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\SOURCE_REVIEW.json",
+      "sha256": "a71f65de0423e7ee722b96e92641eb0a7ede8ab6588a43477879e7e3b8d33fd7",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\LAUNCH_REVIEW.json",
+      "sha256": "b69959643ed07bffcd12204bc402c24cdfbb25ccc80a1dd4b498e4f01e5e16ea",
+      "review_extent": "required read-only producer/schema/reference"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "review_extent": "required read-only producer/schema/reference"
+    }
+  ],
+  "versioned_report_files": [
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\RETENTION_REVIEW_20261005_100750.md",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_query_supported_geometry_20261005\\RETENTION_REVIEW_20261005_100750.json"
+  ]
+}

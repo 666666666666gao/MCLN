@@ -234,3 +234,5 @@
 - 2026-10-05T10:16:29.545420+08:00 Query-supported geometry closed-weight retention SOURCE_ONLY review PASS, same-family/provisional. Actual closure and fresh terminal audit remain required; no cleanup executed or new fit accuracy.
 
 - 2026-10-05T10:32:21.382539+08:00 Closed-result handoff and retained-weight resource check sources prepared. Local AST/existing-schema check only; no execution, document rewrite, cleanup or new fit result.
+
+- 2026-10-05T11:14:31.159713+08:00 Actual scheduled control progress3723/3723 updates,29778 fit rows,terminal holdout5120/6887 at11:08 snapshot. Same-throughput pair estimate14:00; no formal accuracy, document rewrite or cleanup.

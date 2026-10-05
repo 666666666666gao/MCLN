@@ -248,3 +248,5 @@
 - 2026-10-05T16:42:20.516361+08:00 Native/member auxiliary-target comparison sources reviewed and real two-step sanity launched; no formal result or new model parameter.
 
 - 2026-10-05T17:15:04.928532+08:00 Auxiliary-target two-step sanity closed PASS; formal native/member pair launched from4509, no new accuracy yet.
+
+- 2026-10-05T17:46:56.406030+08:00 Published evidence moved to data disk with exact contents and logical paths; closed-result and retention tools prepared, not executed.

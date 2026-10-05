@@ -38,6 +38,8 @@ control正式9508条评估实际于{intake['formal_finished_cst']}结束，train
 """
 source=source[:start]+section+source[end:]
 changes={
+    "file.suffix in ('.py', '.json', '.md', '.log', '.exit')":
+        "file.suffix in ('.py', '.json', '.md', '.log', '.exit', '.jsonl')",
     "previous = json.loads((root / 'retention_tools_publication.json').read_bytes())":
         "previous = json.loads((root / 'first_check_publication.json').read_bytes())",
     "assert previous['section'] == '20.376.72'": "assert previous['section'] == '20.376.73'",

@@ -100,7 +100,7 @@ new = old + section.encode('utf-8')
 prefix = 'refine-logs/pvground_auxiliary_target_20261005/'
 payloads = {prefix + file.relative_to(root).as_posix(): file.read_bytes()
             for file in root.rglob('*')
-            if file.is_file() and file.suffix in ('.py', '.json', '.md', '.log', '.exit')}
+            if file.is_file() and file.suffix in ('.py', '.json', '.md', '.log', '.exit', '.jsonl')}
 payloads[prefix + '.gitattributes'] = b'** -text\n'
 client = paramiko.SSHClient()
 client.load_system_host_keys()

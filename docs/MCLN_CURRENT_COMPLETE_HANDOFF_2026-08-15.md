@@ -22680,3 +22680,18 @@ fresh终态experiment-audit为 WARN，阻断发现为0；请求Astra／max，新
 新上下文SOURCE审阅为 PASS、阻断发现0；实际调用已返回，按same-family／provisional记录，后端模型身份未独立证实。证据见SOURCE_REVIEW.json／md及SOURCE_REVIEW_CALL.json。两步GPU预检实际于 2026-10-05T23:19:49.705838+08:00 启动，进程 651243 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -B -u /root/autodl-tmp/pvground_support_reference_20261005/controller.py --phase preflight，screen pvg_support_reference_preflight_20261005，目录 /root/autodl-tmp/pvground_support_reference_20261005。仅预检启动，不是预检通过，也没有新精度结果；不写权重、不承接预检优化器启动正式训练。预计约 1200 秒，首次检查按 900 秒估计，之后240秒复查，使用已有GPU锁顺序运行。
 
 预检将实际核对缓存同上游的零参考／旧头结果、参考及最终定位梯度、冻结父状态与Mask／bbs保持、真实保存恢复和显存。新增原生evaluator的每次导入路径／SHA收据，补足§75已记录的执行器绑定限制，不追溯修改旧结果。预检闭合通过后才正式启动；保持4511权重，完整正式终态后按Acc@0.50优先保留best和清理闭合非best。当前没有Nr3D／Sr3D新成绩，目标仍ACTIVE_UNMET。
+
+
+## 20.376.77 固定／自身支撑参考：两组真实预检通过，正式对照已启动（2026-10-05T23:50:14.401368+08:00）
+
+§76所述参考结构保持。两组预检实际于 2026-10-05T23:36:15.982988+08:00 闭合，控制器退出0，耗时 980.86 秒；各2次真实更新，不写权重。缓存同一上游时，学习参考零初始化与旧头输出一致；参考直接定位梯度两步均非零，原额外定位目标仍只对其资格输出产生直接梯度。头更新后的缓存原生bbs和Mask保持，PV/G及全零R状态保持，CPU保存／严格重载和优化器全部键、矩、步及组检查通过。这些是工程预检，不是新精度结果，也不证明跨进程CUDA前向逐位一致。
+
+实际allocator分配峰值：control 3911791616 字节，support_reference 3910185984 字节；仅代表冻结父模型的预检batch，不外推到全模型联合训练或任意场景。当前batch及学习率不变。
+
+正式控制器实际于 2026-10-05T23:43:11.982817+08:00 启动，进程 653283 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -B -u /root/autodl-tmp/pvground_support_reference_20261005/controller.py --phase fit，screen pvg_support_reference_fit_20261005；采用同一受保护4511权重、fresh optimizer，预检状态不承接。每组29778条fit各一次／3723更新，B8、累积1、seed2027、LR1e-5、WD5e-4、clip0.1。父PV/G、Mask、语义及全零R冻结；控制456102参数／10状态，学习参考459180参数／12状态。旧十项几何状态累计11169→14892更新；新增3078参考参数只训练本轮3723步，原G历史另算。
+
+保留各自初始／终点6887 seen-scene模块留出，之后分别9508条原生开发验证。新增参考定位目标的预算及梯度范数单独记录；结构、参数量与监督预算同时变化，不把它称作纯输入或单项loss消融。唯一bbs、全256、同Query Box／Mask、原GT评价保持，没有教师或第二套排名。
+
+正式预计约 18000 秒；首次按 6200 秒、控制组终点附近安排，随后240秒轮询。只有一个fit观察者，不因未到估计时刻或观察超时重启GPU训练。启动前数据盘余量 1738694656 字节、系统盘 446009344 字节，所需保存及日志储备 284996011 字节，GPU空闲及预检闭合已实际检查。
+
+实际预检原始记录见 refine-logs/pvground_support_reference_20261005/preflight_complete/INTAKE.json及两组preflight.json；正式启动见fit_launch.json／fit_resource_check.json。结果仍待正式9508评估；当前best仍5616／4511、Acc@0.50约47.4443%，到50%还差243净命中。终态经独立核验后才晋级与删除闭合非best，不归档负权重；原PV/G/V99保留。未有Nr3D／Sr3D新结果，总目标ACTIVE_UNMET。

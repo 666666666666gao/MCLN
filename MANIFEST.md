@@ -268,3 +268,5 @@
 - 2026-10-06T08:47:38.466401+08:00 Actual closed support-reference comparison published; metric-best protected_geometry_parent [5616, 4511], fresh audit WARN same-family/provisional. Two nonbest geometry heads removed, no archive.
 
 - 2026-10-06T09:54:54.418704+08:00 Protected4511 completeMask extent read-only diagnostic: actual raw8 M0 accepted, formal9508 running; no new accuracy or weights.
+
+- 2026-10-06T10:46:36.021896+08:00 Protected4511 fullMask diagnostic9508 closed: offline exact4848/q4781, no trainedbest promotion; fresh terminal WARN0blocks.

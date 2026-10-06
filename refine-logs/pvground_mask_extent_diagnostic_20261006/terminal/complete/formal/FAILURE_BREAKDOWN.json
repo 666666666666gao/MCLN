@@ -1,0 +1,139 @@
+{
+  "status": "ACTUAL_9508_SELECTED_QUERY_FAILURE_BREAKDOWN",
+  "rows": 9508,
+  "mask_combinations": {
+    "both_good": 5124,
+    "fused_only": 9,
+    "own_only": 9,
+    "both_bad": 4366
+  },
+  "groups": {
+    "own_and_fused_good": {
+      "exact": {
+        "rows": 5124,
+        "before_hits": 4169,
+        "after_hits": 4577,
+        "repairs": 644,
+        "damages": 236,
+        "net": 408
+      },
+      "quantile": {
+        "rows": 5124,
+        "before_hits": 4169,
+        "after_hits": 4532,
+        "repairs": 611,
+        "damages": 248,
+        "net": 363
+      }
+    },
+    "own_and_fused_good_box_bad": {
+      "exact": {
+        "rows": 955,
+        "before_hits": 0,
+        "after_hits": 644,
+        "repairs": 644,
+        "damages": 0,
+        "net": 644
+      },
+      "quantile": {
+        "rows": 955,
+        "before_hits": 0,
+        "after_hits": 611,
+        "repairs": 611,
+        "damages": 0,
+        "net": 611
+      }
+    },
+    "fused_good_own_bad": {
+      "exact": {
+        "rows": 9,
+        "before_hits": 5,
+        "after_hits": 5,
+        "repairs": 1,
+        "damages": 1,
+        "net": 0
+      },
+      "quantile": {
+        "rows": 9,
+        "before_hits": 5,
+        "after_hits": 5,
+        "repairs": 1,
+        "damages": 1,
+        "net": 0
+      }
+    },
+    "mask_both_bad": {
+      "exact": {
+        "rows": 4366,
+        "before_hits": 328,
+        "after_hits": 258,
+        "repairs": 68,
+        "damages": 138,
+        "net": -70
+      },
+      "quantile": {
+        "rows": 4366,
+        "before_hits": 328,
+        "after_hits": 237,
+        "repairs": 51,
+        "damages": 142,
+        "net": -91
+      }
+    },
+    "learned_correct": {
+      "exact": {
+        "rows": 4511,
+        "before_hits": 4511,
+        "after_hits": 4135,
+        "repairs": 0,
+        "damages": 376,
+        "net": -376
+      },
+      "quantile": {
+        "rows": 4511,
+        "before_hits": 4511,
+        "after_hits": 4118,
+        "repairs": 0,
+        "damages": 393,
+        "net": -393
+      }
+    },
+    "learned_wrong": {
+      "exact": {
+        "rows": 4997,
+        "before_hits": 0,
+        "after_hits": 713,
+        "repairs": 713,
+        "damages": 0,
+        "net": 713
+      },
+      "quantile": {
+        "rows": 4997,
+        "before_hits": 0,
+        "after_hits": 663,
+        "repairs": 663,
+        "damages": 0,
+        "net": 663
+      }
+    }
+  },
+  "all_rows_edge_errors": {
+    "learned": {
+      "valid_rows": 9508,
+      "max_face_error_median_metres": 0.18142899870872498,
+      "scale_normalized_max_face_error_median": 0.3983641382852672
+    },
+    "exact": {
+      "valid_rows": 9469,
+      "max_face_error_median_metres": 0.23807062953710556,
+      "scale_normalized_max_face_error_median": 0.4195170611077039
+    },
+    "quantile": {
+      "valid_rows": 9469,
+      "max_face_error_median_metres": 0.2223659712076187,
+      "scale_normalized_max_face_error_median": 0.39044896388611844
+    }
+  },
+  "own_mask_member_intersections_cpu_verified": true,
+  "scope": "Same selectedQuery, GT diagnostic groups only; no deployable GT gating or additional formal model"
+}

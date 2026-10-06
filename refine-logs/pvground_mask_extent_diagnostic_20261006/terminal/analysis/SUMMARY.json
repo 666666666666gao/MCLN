@@ -1,0 +1,382 @@
+{
+  "status": "ACTUAL_CLOSED_9508_MASK_EXTENT_DIAGNOSTIC_REPORTED",
+  "time_cst": "2026-10-06T10:23:28.978676+08:00",
+  "actual_controller": {
+    "controller_pid": 699895,
+    "mode": "formal",
+    "started_cst": "2026-10-06T09:36:59.209232+08:00",
+    "completed": true,
+    "child_pid": 699896,
+    "exit_code": 0,
+    "finished_cst": "2026-10-06T10:08:24.506117+08:00"
+  },
+  "receipt": {
+    "all256_candidates_retained": true,
+    "cuda_peak_allocated_bytes": 4321393664,
+    "cuda_peak_reserved_bytes": 5739905024,
+    "evidence_bytes_written": 450284771,
+    "geometry_terminal": "/root/autodl-tmp/pvground_auxiliary_target_20261005/control/terminal.pth",
+    "geometry_terminal_sha256": "fb9672dce4170a1fd2322bdf28ef581c3cc9ac80e6df1544083893d454c196d6",
+    "history_hit50_changes": 0,
+    "history_query_changes": 0,
+    "hits": {
+      "exact": {
+        "0.25": 5598,
+        "0.5": 4848
+      },
+      "learned": {
+        "0.25": 5616,
+        "0.5": 4511
+      },
+      "quantile": {
+        "0.25": 5590,
+        "0.5": 4781
+      }
+    },
+    "inference_seconds": 1755.0843103006482,
+    "invalid_exact": 39,
+    "invalid_quantile": 39,
+    "mode": "formal",
+    "model_states_unchanged": true,
+    "native_head_calls_per_batch": 1,
+    "native_mask_hits50": 5133,
+    "new_weights": 0,
+    "optimizer_created": false,
+    "optimizer_updates": 0,
+    "preflight_formal_batch_bytes": null,
+    "quantile": 0.005,
+    "quantile_precision": "NumPy float64 linear interpolation from actual float32 XYZ",
+    "rows": 9508,
+    "rows_sha256": "e01e2413e1eecdf57b678ef46a4bc489b34ddecdb54b08e4f935812c0e2269ae",
+    "scoring_or_box_outputs_overwritten": false,
+    "spec_sha256": "b50869541248ee30b4d451674fbe2a5474bc610cc96ca678616b8d570220d7b7",
+    "status": "pass",
+    "time_cst": "2026-10-06T10:08:22.300981+08:00",
+    "total_seconds": 1882.9816045090556
+  },
+  "cpu": {
+    "status": "ACTUAL_CPU_EXTENT_ROWS_VERIFIED",
+    "rows": 9508,
+    "comparisons": {
+      "exact": {
+        "0.25": {
+          "before_hits": 5616,
+          "after_hits": 5598,
+          "repairs": 174,
+          "damages": 192,
+          "net": -18
+        },
+        "0.5": {
+          "before_hits": 4511,
+          "after_hits": 4848,
+          "repairs": 713,
+          "damages": 376,
+          "net": 337
+        }
+      },
+      "quantile": {
+        "0.25": {
+          "before_hits": 5616,
+          "after_hits": 5590,
+          "repairs": 167,
+          "damages": 193,
+          "net": -26
+        },
+        "0.5": {
+          "before_hits": 4511,
+          "after_hits": 4781,
+          "repairs": 663,
+          "damages": 393,
+          "net": 270
+        }
+      }
+    },
+    "CPU_stored_threshold_flips": {
+      "learned": {
+        "0.25": 0,
+        "0.5": 0
+      },
+      "exact": {
+        "0.25": 0,
+        "0.5": 0
+      },
+      "quantile": {
+        "0.25": 0,
+        "0.5": 0
+      }
+    },
+    "preflight_actual_raw_member_rows_replayed": 0,
+    "mask_good_box_bad": 959,
+    "history_query_changes": 0,
+    "history_hit50_changes": 0,
+    "invalid_exact": 39,
+    "invalid_quantile": 39,
+    "strict_groups": {
+      "all_mask_good": {
+        "rows": 5133,
+        "strict": {
+          "exact": {
+            "repairs": 645,
+            "damages": 237,
+            "net": 408,
+            "learned_hits": 4174,
+            "extent_hits": 4582
+          },
+          "quantile": {
+            "repairs": 612,
+            "damages": 249,
+            "net": 363,
+            "learned_hits": 4174,
+            "extent_hits": 4537
+          }
+        }
+      },
+      "volume_Q1": {
+        "rows": 2377,
+        "strict": {
+          "exact": {
+            "repairs": 297,
+            "damages": 127,
+            "net": 170,
+            "learned_hits": 887,
+            "extent_hits": 1057
+          },
+          "quantile": {
+            "repairs": 304,
+            "damages": 124,
+            "net": 180,
+            "learned_hits": 887,
+            "extent_hits": 1067
+          }
+        }
+      },
+      "volume_Q2": {
+        "rows": 2375,
+        "strict": {
+          "exact": {
+            "repairs": 190,
+            "damages": 97,
+            "net": 93,
+            "learned_hits": 1068,
+            "extent_hits": 1161
+          },
+          "quantile": {
+            "repairs": 179,
+            "damages": 84,
+            "net": 95,
+            "learned_hits": 1068,
+            "extent_hits": 1163
+          }
+        }
+      },
+      "volume_Q3": {
+        "rows": 2379,
+        "strict": {
+          "exact": {
+            "repairs": 95,
+            "damages": 85,
+            "net": 10,
+            "learned_hits": 1115,
+            "extent_hits": 1125
+          },
+          "quantile": {
+            "repairs": 89,
+            "damages": 93,
+            "net": -4,
+            "learned_hits": 1115,
+            "extent_hits": 1111
+          }
+        }
+      },
+      "volume_Q4": {
+        "rows": 2377,
+        "strict": {
+          "exact": {
+            "repairs": 131,
+            "damages": 67,
+            "net": 64,
+            "learned_hits": 1441,
+            "extent_hits": 1505
+          },
+          "quantile": {
+            "repairs": 91,
+            "damages": 92,
+            "net": -1,
+            "learned_hits": 1441,
+            "extent_hits": 1440
+          }
+        }
+      }
+    },
+    "expression_weighted_GT_volume_quartile_cuts": [
+      0.09070646915287309,
+      0.2477334084009524,
+      0.5180449836317556
+    ],
+    "quartile_tie_assignment": "equal to boundary assigned to higher group",
+    "zero_optimization": true,
+    "full_formal_raw_point_sorting_replayed": false,
+    "quantile_formal_scope": "Stored actual neighboring order-statistic values and rank decoding; raw XYZ independently replayed only in M0."
+  },
+  "failure_breakdown": {
+    "status": "ACTUAL_9508_SELECTED_QUERY_FAILURE_BREAKDOWN",
+    "rows": 9508,
+    "mask_combinations": {
+      "both_good": 5124,
+      "fused_only": 9,
+      "own_only": 9,
+      "both_bad": 4366
+    },
+    "groups": {
+      "own_and_fused_good": {
+        "exact": {
+          "rows": 5124,
+          "before_hits": 4169,
+          "after_hits": 4577,
+          "repairs": 644,
+          "damages": 236,
+          "net": 408
+        },
+        "quantile": {
+          "rows": 5124,
+          "before_hits": 4169,
+          "after_hits": 4532,
+          "repairs": 611,
+          "damages": 248,
+          "net": 363
+        }
+      },
+      "own_and_fused_good_box_bad": {
+        "exact": {
+          "rows": 955,
+          "before_hits": 0,
+          "after_hits": 644,
+          "repairs": 644,
+          "damages": 0,
+          "net": 644
+        },
+        "quantile": {
+          "rows": 955,
+          "before_hits": 0,
+          "after_hits": 611,
+          "repairs": 611,
+          "damages": 0,
+          "net": 611
+        }
+      },
+      "fused_good_own_bad": {
+        "exact": {
+          "rows": 9,
+          "before_hits": 5,
+          "after_hits": 5,
+          "repairs": 1,
+          "damages": 1,
+          "net": 0
+        },
+        "quantile": {
+          "rows": 9,
+          "before_hits": 5,
+          "after_hits": 5,
+          "repairs": 1,
+          "damages": 1,
+          "net": 0
+        }
+      },
+      "mask_both_bad": {
+        "exact": {
+          "rows": 4366,
+          "before_hits": 328,
+          "after_hits": 258,
+          "repairs": 68,
+          "damages": 138,
+          "net": -70
+        },
+        "quantile": {
+          "rows": 4366,
+          "before_hits": 328,
+          "after_hits": 237,
+          "repairs": 51,
+          "damages": 142,
+          "net": -91
+        }
+      },
+      "learned_correct": {
+        "exact": {
+          "rows": 4511,
+          "before_hits": 4511,
+          "after_hits": 4135,
+          "repairs": 0,
+          "damages": 376,
+          "net": -376
+        },
+        "quantile": {
+          "rows": 4511,
+          "before_hits": 4511,
+          "after_hits": 4118,
+          "repairs": 0,
+          "damages": 393,
+          "net": -393
+        }
+      },
+      "learned_wrong": {
+        "exact": {
+          "rows": 4997,
+          "before_hits": 0,
+          "after_hits": 713,
+          "repairs": 713,
+          "damages": 0,
+          "net": 713
+        },
+        "quantile": {
+          "rows": 4997,
+          "before_hits": 0,
+          "after_hits": 663,
+          "repairs": 663,
+          "damages": 0,
+          "net": 663
+        }
+      }
+    },
+    "all_rows_edge_errors": {
+      "learned": {
+        "valid_rows": 9508,
+        "max_face_error_median_metres": 0.18142899870872498,
+        "scale_normalized_max_face_error_median": 0.3983641382852672
+      },
+      "exact": {
+        "valid_rows": 9469,
+        "max_face_error_median_metres": 0.23807062953710556,
+        "scale_normalized_max_face_error_median": 0.4195170611077039
+      },
+      "quantile": {
+        "valid_rows": 9469,
+        "max_face_error_median_metres": 0.2223659712076187,
+        "scale_normalized_max_face_error_median": 0.39044896388611844
+      }
+    },
+    "own_mask_member_intersections_cpu_verified": true,
+    "scope": "Same selectedQuery, GT diagnostic groups only; no deployable GT gating or additional formal model"
+  },
+  "protected_trained_model_hits": [
+    5616,
+    4511
+  ],
+  "trained_model_primary_gap": 243,
+  "offline_extent_is_not_a_new_trained_model": true,
+  "optimizer_updates": 0,
+  "new_weights": 0,
+  "native_selected_mask": {
+    "hits25": 5812,
+    "hits50": 5133,
+    "miou_percent": 47.10777325182386
+  },
+  "historical_reproduction": {
+    "query_changes": 0,
+    "strict_hit_label_changes": 0
+  },
+  "CPU_scope": "Actual8 M0 raw-point replay; formal9508 stored member extrema/intersections and quantile neighbor decoding",
+  "formal_data_bytes": 462713589,
+  "terminal_integrity_review_status": "PENDING_FRESH_REVIEW",
+  "single_seed": 2027,
+  "dataset_scope": "ScanRefer development val9508; no Nr3D/Sr3D result"
+}

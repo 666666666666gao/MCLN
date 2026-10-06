@@ -1,0 +1,270 @@
+{
+  "time_cst": "2026-10-07T00:46:43.7456670+08:00",
+  "execution_scope": "SOURCE_AND_CACHED_EVIDENCE",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "backend_identity_attested": false,
+  "scope": "Final cached-reference diagnostic source plus independent pure-stdlib CPU recomputation from the old retained fused_mask_reference initial_formal9508 rows and its four cohort outputs. No active fit or remote inspection.",
+  "source_runner_imported_or_executed_by_reviewer": false,
+  "independent_cached_recomputation_actually_executed": true,
+  "neural_model_evaluations": 0,
+  "optimizer_steps": 0,
+  "ssh_remote_or_gpu_queries": 0,
+  "active_fit_or_observer_modified": false,
+  "old4511_weight_read": false,
+  "packages_installed": false,
+  "deletions_performed": false,
+  "writes_limited_to": [
+    "CACHED_REFERENCE_ERROR_REVIEW.json",
+    "CACHED_REFERENCE_ERROR_REVIEW.md"
+  ],
+  "verified_results": {
+    "source_rows": 9508,
+    "old_retained_model_hits": [
+      5598,
+      4848
+    ],
+    "current_comparison": "Same selected Query coarse/native prior versus neutral Mask reference within old retained step0 rows.",
+    "same_query_coarse_prior_hits": [
+      5615,
+      4495
+    ],
+    "same_query_reference_hits": [
+      5598,
+      4848
+    ],
+    "transitions": {
+      "0.25": {
+        "repairs": 174,
+        "damages": 191,
+        "net": -17
+      },
+      "0.5": {
+        "repairs": 724,
+        "damages": 371,
+        "net": 353
+      }
+    },
+    "loose_damage_cohort": {
+      "rows": 191,
+      "reference_covers_at_least95_percent_of_GT_volume_and_volume_over4_times_GT": 128,
+      "fused_mask_iou_above_point5": 52,
+      "median_reference_to_GT_volume_ratio": 4.880391554027417,
+      "median_max_absolute_face_error_m": 0.5037251710891724,
+      "invalid_reference_rows": 0,
+      "note": "128 and52 are separate marginal counts within191; no intersection or physical-identity claim is implied."
+    },
+    "cross_threshold_damage_overlap": {
+      "damaged_at_both_thresholds": 118,
+      "wide_damage_only": 73,
+      "strict_damage_only": 253
+    },
+    "all_four_cohort_rows_and_features_exact": true,
+    "total_cohort_file_rows_verified": 1460,
+    "all_summary_cohort_numbers_exact": true,
+    "coordinate_recomputed_iou_threshold_flips": {
+      "prior": {
+        "0.25": 0,
+        "0.5": 0
+      },
+      "reference": {
+        "0.25": 0,
+        "0.5": 0
+      }
+    },
+    "coordinate_recomputed_iou_max_abs_difference_from_logged_float32": {
+      "prior": 0.0000028395898118982466,
+      "reference": 0.0000066200876713828904
+    }
+  },
+  "checks": [
+    {
+      "id": "input_identity",
+      "result": "PASS_ACTUAL_LOCAL",
+      "detail": "Source rows SHA40672da53d767bc2262fa280a9904589c813a98b0c419d1cbdac161378144a23 matches receipt, SUMMARY and EXECUTION. Receipt is old initial_formal PASS9508, rec5598/4848. Row IDs are exactly0..9507. Every stored final selected box equals its reference box; iou equals reference_iou."
+    },
+    {
+      "id": "geometry_math",
+      "result": "PASS_SOURCE_AND_INDEPENDENT_CPU",
+      "detail": "Independently formed3D box intervals from center/size, computed clipped axis overlap product, box volume ratios and covered-GT-volume fraction, and took the maximum absolute corresponding lower/upper face difference. Positive finite dimensions checked. Sorted-median calculations reproduce the stored statistics exactly."
+    },
+    {
+      "id": "cohort_labels",
+      "result": "PASS_ACTUAL_INDEPENDENT_CPU",
+      "detail": "Recomputed prior/reference IoUs directly from all9508 stored coordinates rather than trusting logged labels. There are zero threshold flips at.25/.5 despite the expected float64/float32 numeric differences. Independent repaired/damaged row lists match each saved cohort exactly and preserve input order without duplicates."
+    },
+    {
+      "id": "output_values",
+      "result": "PASS_ACTUAL_INDEPENDENT_CPU",
+      "detail": "All1460 saved cohort feature dictionaries match independently derived dictionaries exactly. All four cohort summary dictionaries and118/73/253 overlap counts match. The128 large-volume/95%-coverage count,52 Mask>.5 count and reported medians are verified."
+    },
+    {
+      "id": "execution_provenance",
+      "result": "PASS_WITH_STATED_LIMIT",
+      "detail": "EXECUTION binds current final source SHA db56962e03baf7d4097e5cb0930d3271a7ff6c6f4e8df4b56238849c07eab34d and SUMMARY SHA93dc5c7068369598f3f959a5e5492c3c8962c4ae17c563ff98a7970563873649. Its postexecution simplification statement is retained as provenance; the reviewer did not replay/import that final source or claim a new diagnostic run. Independent recomputation verifies the final numerical definitions against every stored output."
+    },
+    {
+      "id": "comparison_scope",
+      "result": "PASS_SOURCE_AND_CACHED_EVIDENCE",
+      "detail": "Internal same-query prior5615/4495→reference5598/4848 has net−17/+353. This is distinct from the earlier complete protected5616/4511→5598/4848 model comparison net−18/+337, which can include selected-query differences. They must not be merged or substituted."
+    },
+    {
+      "id": "claim_limits",
+      "result": "PASS_SOURCE",
+      "detail": "The source labels thresholds descriptive and explicitly disclaims physical-instance identity and inference GT rules. The analysis consumes old cached boxes/GT solely for diagnosis; it contains no NN/optimizer/network code and proposes no GT inference gate. It neither changes the active control/keep source nor establishes causality or module effectiveness."
+    }
+  ],
+  "qualifications": [
+    "Same-family/provisional review; actual model/backend identity is not independently attested.",
+    "This is deterministic recomputation from saved coordinates and logged Mask IoUs, not a new GPU/model evaluation or raw point/Mask reconstruction. Fused Mask identity itself was not independently recomputed from raw members in this review.",
+    "Reference volume and GT coverage are geometric proxies.128 large-volume cases do not prove physical-instance correctness, outlier contamination or the causal mechanism of the loose-threshold damage.",
+    "Max face error is a box-coordinate diagnostic in the source coordinate units recorded as metres, not a direct physical-boundary observation.",
+    "The pre-simplification source snapshot was not supplied in this bounded packet. The review verifies the final source definitions and existing artifacts, without independently attesting a historical code diff or falsely claiming that final source was rerun.",
+    "This old-cache diagnosis provides no new precision/performance result and does not establish any of the three required effective modules. The ongoing control/keep experiment and its sole observer remain untouched."
+  ],
+  "independent_recomputation": {
+    "status": "INDEPENDENT_STDLIB_CACHED_RECOUNT_PASS",
+    "successful_cpu_recomputations": 1,
+    "python": "3.13.12 (main, Feb  3 2026, 22:53:26) [MSC v.1944 64 bit (AMD64)]",
+    "interpreter": "D:\\Program Files\\UserCache\\gb\\uv\\archive-v0\\geKPaRC13CshUyQNgI7sz\\Scripts\\python.exe",
+    "imports": "Python standard library only: hashlib,json,math,sys,pathlib",
+    "diagnostic_source_replayed": false,
+    "checker_source": "import hashlib,json,math,sys\nfrom pathlib import Path\nbase=Path(r\"C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\")\nsource=base.parent/\"pvground_mask_reference_20261006/complete_fit/fused_mask_reference/initial_formal\"\nout=base/\"cached_reference_errors\"\nrowsfile=source/\"rows.jsonl\"\nreceipt=json.loads((source/\"receipt.json\").read_bytes())\nsummary=json.loads((out/\"SUMMARY.json\").read_bytes())\nexecution=json.loads((out/\"EXECUTION.json\").read_bytes())\nrows=[json.loads(x) for x in rowsfile.read_text(encoding=\"utf-8\").splitlines()]\nassert len(rows)==9508 and [r[\"row_id\"] for r in rows]==list(range(9508))\nassert hashlib.sha256(rowsfile.read_bytes()).hexdigest()==receipt[\"rows_sha256\"]==summary[\"source_rows_sha256\"]==execution[\"input_rows_sha256\"]\nassert hashlib.sha256((out/\"SUMMARY.json\").read_bytes()).hexdigest()==execution[\"summary_sha256\"]\nassert hashlib.sha256((base/\"postrun/analyze_cached_reference_errors.py\").read_bytes()).hexdigest()==execution[\"final_source_sha256\"]\nassert receipt[\"status\"]==\"pass\" and receipt[\"formal_rows\"]==9508 and summary[\"source_model_hits\"]==[5598,4848]\ndef interval_box(box):\n    assert len(box)==6 and all(math.isfinite(v) for v in box) and all(v>0 for v in box[3:])\n    return tuple((c-s/2,c+s/2) for c,s in zip(box[:3],box[3:]))\ndef intersection_vol(a,b):\n    return math.prod(max(0.0,min(x[1],y[1])-max(x[0],y[0])) for x,y in zip(a,b))\ndef median(values):\n    ordered=sorted(values);n=len(ordered)\n    return ordered[n//2] if n%2 else (ordered[n//2-1]+ordered[n//2])/2\nfeatures={}\ncalc={}\nmax_iou_diff={\"prior\":0.0,\"reference\":0.0}\nthreshold_flips={\"prior\":{\"0.25\":0,\"0.5\":0},\"reference\":{\"0.25\":0,\"0.5\":0}}\nfor r in rows:\n    b=r[\"bbs\"];g=r[\"root_box\"];ref=b[\"reference_box\"];prior=b[\"coarse_box\"]\n    assert b[\"box\"]==ref and b[\"iou\"]==b[\"reference_iou\"]\n    gv=math.prod(g[3:]);rv=math.prod(ref[3:])\n    gi=interval_box(g);ri=interval_box(ref);pi=interval_box(prior)\n    intersect=intersection_vol(gi,ri)\n    calc[r[\"row_id\"]]={}\n    for name,box,axes,logged in ((\"prior\",prior,pi,b[\"coarse_iou\"]),(\"reference\",ref,ri,b[\"iou\"])):\n        inter=intersection_vol(gi,axes)\n        iou=inter/(gv+math.prod(box[3:])-inter)\n        calc[r[\"row_id\"]][name]=iou\n        max_iou_diff[name]=max(max_iou_diff[name],abs(iou-logged))\n        for t in (.25,.5):\n            threshold_flips[name][str(t)]+=int((iou>t)!=(logged>t))\n    f={\"row_id\":r[\"row_id\"],\"scan_id\":r[\"scan_id\"],\"target_id\":r[\"target_id\"],\"query\":b[\"query\"],\"prior_iou\":b[\"coarse_iou\"],\"reference_iou\":b[\"iou\"],\"mask_iou\":b[\"mask_iou\"],\"reference_valid\":b[\"reference_valid\"],\"reference_to_gt_volume_ratio\":rv/gv,\"gt_volume_covered\":intersect/gv,\"max_absolute_face_error_m\":max(abs(x[k]-y[k]) for x,y in zip(ri,gi) for k in (0,1)),\"reference_box\":ref,\"prior_box\":prior,\"root_gt\":g}\n    features[r[\"row_id\"]]=f\nresult={}\ncohort_ids={}\nall_features_exact=True\nfor t in (.25,.5):\n    name=str(t)\n    prior_hits=sum(calc[r[\"row_id\"]][\"prior\"]>t for r in rows)\n    reference_hits=sum(calc[r[\"row_id\"]][\"reference\"]>t for r in rows)\n    result[name]={\"prior_hits\":prior_hits,\"reference_hits\":reference_hits}\n    for direction in (\"repaired\",\"damaged\"):\n        key=name+\"_\"+direction\n        expected=[r[\"row_id\"] for r in rows if ((calc[r[\"row_id\"]][\"prior\"]<=t<calc[r[\"row_id\"]][\"reference\"]) if direction==\"repaired\" else (calc[r[\"row_id\"]][\"reference\"]<=t<calc[r[\"row_id\"]][\"prior\"]))]\n        saved=[json.loads(x) for x in (out/(key+\".jsonl\")).read_text(encoding=\"utf-8\").splitlines()]\n        assert [r[\"row_id\"] for r in saved]==expected\n        assert len(expected)==len(set(expected))\n        assert saved==[features[rowid] for rowid in expected],key\n        cohort_ids[key]=expected\n        cohort=[features[i] for i in expected]\n        rec={\"rows\":len(cohort),\"mask_good50\":sum(r[\"mask_iou\"]>.5 for r in cohort),\"invalid_reference\":sum(not r[\"reference_valid\"] for r in cohort),\"gt_covered95_and_reference_volume_over4\":sum(r[\"gt_volume_covered\"]>=.95 and r[\"reference_to_gt_volume_ratio\"]>4 for r in cohort),\"gt_coverage_below95\":sum(r[\"gt_volume_covered\"]<.95 for r in cohort),\"median_reference_to_gt_volume_ratio\":median([r[\"reference_to_gt_volume_ratio\"] for r in cohort]),\"median_gt_volume_covered\":median([r[\"gt_volume_covered\"] for r in cohort]),\"median_max_face_error_m\":median([r[\"max_absolute_face_error_m\"] for r in cohort])}\n        assert rec==summary[\"cohorts\"][key],key\n        result[name][direction]=rec\n    result[name][\"net\"]=result[name][\"repaired\"][\"rows\"]-result[name][\"damaged\"][\"rows\"]\n    assert result[name][\"net\"]==reference_hits-prior_hits\n    assert reference_hits==receipt[\"metrics\"][\"bbs\"][\"rec_hits\"+(\"25\" if t==.25 else \"50\")]\nd25=set(cohort_ids[\"0.25_damaged\"]);d50=set(cohort_ids[\"0.5_damaged\"])\noverlap={\"damaged_at_both_thresholds\":len(d25&d50),\"wide_damage_only\":len(d25-d50),\"strict_damage_only\":len(d50-d25)}\nassert all(summary[k]==v for k,v in overlap.items())\nassert summary[\"new_model_evaluations\"]==summary[\"new_optimizer_steps\"]==summary[\"remote_queries\"]==0\nassert execution[\"new_optimizer_steps\"]==execution[\"remote_queries\"]==0 and execution[\"training_modified\"] is False\npaths=[base/\"postrun/analyze_cached_reference_errors.py\",out/\"SUMMARY.json\",out/\"EXECUTION.json\",source/\"receipt.json\",rowsfile]+[out/(name+\".jsonl\") for name in cohort_ids]\nidentities=[{\"path\":str(p),\"bytes\":p.stat().st_size,\"sha256\":hashlib.sha256(p.read_bytes()).hexdigest()} for p in paths]\nprint(json.dumps({\"status\":\"INDEPENDENT_STDLIB_CACHED_RECOUNT_PASS\",\"python\":sys.version,\"interpreter\":sys.executable,\"source_rows\":len(rows),\"all_final_boxes_equal_reference\":True,\"cohort_feature_rows_checked\":sum(len(v) for v in cohort_ids.values()),\"feature_rows_exact\":True,\"all_summary_fields_exact\":True,\"coordinate_iou_threshold_flips\":threshold_flips,\"coordinate_iou_max_absolute_difference_from_logged_float32\":max_iou_diff,\"recomputed\":result,\"overlap\":overlap,\"reviewed_files\":identities,\"source_runner_imported_or_executed\":False,\"model_inference_or_optimizer_steps\":0,\"remote_queries\":0},ensure_ascii=False))\n",
+    "result": {
+      "0.25": {
+        "prior_hits": 5615,
+        "reference_hits": 5598,
+        "repaired": {
+          "rows": 174,
+          "mask_good50": 109,
+          "invalid_reference": 0,
+          "gt_covered95_and_reference_volume_over4": 0,
+          "gt_coverage_below95": 77,
+          "median_reference_to_gt_volume_ratio": 1.1728057740168252,
+          "median_gt_volume_covered": 0.9786759247287051,
+          "median_max_face_error_m": 0.20392094552516937
+        },
+        "damaged": {
+          "rows": 191,
+          "mask_good50": 52,
+          "invalid_reference": 0,
+          "gt_covered95_and_reference_volume_over4": 128,
+          "gt_coverage_below95": 63,
+          "median_reference_to_gt_volume_ratio": 4.880391554027417,
+          "median_gt_volume_covered": 0.9999999124764934,
+          "median_max_face_error_m": 0.5037251710891724
+        },
+        "net": -17
+      },
+      "0.5": {
+        "prior_hits": 4495,
+        "reference_hits": 4848,
+        "repaired": {
+          "rows": 724,
+          "mask_good50": 655,
+          "invalid_reference": 0,
+          "gt_covered95_and_reference_volume_over4": 0,
+          "gt_coverage_below95": 310,
+          "median_reference_to_gt_volume_ratio": 1.0000001852025966,
+          "median_gt_volume_covered": 0.9815094909352027,
+          "median_max_face_error_m": 0.07746945321559906
+        },
+        "damaged": {
+          "rows": 371,
+          "mask_good50": 234,
+          "invalid_reference": 0,
+          "gt_covered95_and_reference_volume_over4": 86,
+          "gt_coverage_below95": 141,
+          "median_reference_to_gt_volume_ratio": 2.3621483957634934,
+          "median_gt_volume_covered": 0.9999992224408826,
+          "median_max_face_error_m": 0.35921335220336914
+        },
+        "net": 353
+      }
+    },
+    "setup_note": "The first interpreter invocation using E:\\Scripts\\python.exe exited before checker execution with No pyvenv.cfg file. One successful checker run then used the existing verified uv archive interpreter shown above; nothing was installed."
+  },
+  "preserved_existing_reviews": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\SOURCE_REVIEW.json",
+      "bytes": 23830,
+      "sha256": "8979d24261d2f134be619b86dc0e3b94ffd5b6c23f83bcfc6a0d72f092cf0671"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\SOURCE_REVIEW.md",
+      "bytes": 3369,
+      "sha256": "a65b5155a0b311abe9804512c42f5dc3df6b0be315db8b11a00dd5391a81a8c9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\FIT_SOURCE_REVIEW.json",
+      "bytes": 24021,
+      "sha256": "198fe346b629ba98bd46d66a16ba2fcd588ffbc4d0248e804ed6a28c4fef332f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\FIT_SOURCE_REVIEW.md",
+      "bytes": 2691,
+      "sha256": "aa94a12c5c20846c48162514856a2468c78b447b432395e73ce3f44886026ea4"
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\postrun\\analyze_cached_reference_errors.py",
+      "bytes": 4579,
+      "sha256": "db56962e03baf7d4097e5cb0930d3271a7ff6c6f4e8df4b56238849c07eab34d",
+      "review_extent": "final source inspected without import/replay"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\cached_reference_errors\\SUMMARY.json",
+      "bytes": 2150,
+      "sha256": "93dc5c7068369598f3f959a5e5492c3c8962c4ae17c563ff98a7970563873649",
+      "review_extent": "contents and identities used in actual independent cached recomputation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\cached_reference_errors\\EXECUTION.json",
+      "bytes": 539,
+      "sha256": "437009d213a062cab190d4a01baf6814ef343d954895be98770f36bca25ccb33",
+      "review_extent": "execution provenance and hashes verified"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\complete_fit\\fused_mask_reference\\initial_formal\\receipt.json",
+      "bytes": 502,
+      "sha256": "1941b9aac70b16a265486402cccacc9e495b006789867dd07a670961e759c471",
+      "review_extent": "contents and identities used in actual independent cached recomputation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\complete_fit\\fused_mask_reference\\initial_formal\\rows.jsonl",
+      "bytes": 9495752,
+      "sha256": "40672da53d767bc2262fa280a9904589c813a98b0c419d1cbdac161378144a23",
+      "review_extent": "contents and identities used in actual independent cached recomputation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\cached_reference_errors\\0.25_repaired.jsonl",
+      "bytes": 130940,
+      "sha256": "a3d4bde79376012dfd262dde0e559f5901afdfb37248b75e1bfcfdf58eeb2529",
+      "review_extent": "contents and identities used in actual independent cached recomputation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\cached_reference_errors\\0.25_damaged.jsonl",
+      "bytes": 143154,
+      "sha256": "a7ee13c9736dfbcc1442e9119529d168ce5432d2d9fe00fcb20509b7ebc997af",
+      "review_extent": "contents and identities used in actual independent cached recomputation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\cached_reference_errors\\0.5_repaired.jsonl",
+      "bytes": 544662,
+      "sha256": "2eeb60118eb5f9539ee0ecf53cb50526139393ec96bb30c94980e6e9ae59bf82",
+      "review_extent": "contents and identities used in actual independent cached recomputation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\cached_reference_errors\\0.5_damaged.jsonl",
+      "bytes": 278658,
+      "sha256": "f42987637670ad03a3a6c1d84da2845d4d894ff953861db20d18680090b156d2",
+      "review_extent": "contents and identities used in actual independent cached recomputation"
+    }
+  ],
+  "current_goal_complete": false
+}
+

@@ -22764,3 +22764,18 @@ exact@0.25修复174/破坏192/净−18；q005修复167/破坏193/净−26。两�
 SUMMARY、NARRATIVE_REPORT与TERMINAL_EXECUTION_TRACKER保留审查前的pending/in-progress快照以保持被审原字节；最终审查状态以TERMINAL_ACCEPTANCE.json和已返回的EXPERIMENT_AUDIT.json/md为准，不将旧启动快照写成服务器当前状态。
 
 结论：完整预测Mask中存在现有学习框未充分利用的严格几何信息，但376条破坏不支持无条件换框。本次不是新训练模型、不是V99能力已内化，metricbest仍5616/4511，距4754尚差243条。下一项源码正在fresh SOURCE_ONLY审查，计划以完整Mask范围作几何参考，对照原粗框参考；两组共同保留hidden8并重置output2，原粗框保留6维先验，参考改变采样位置及六面坐标系，监督预算保持。39条实际空支撑说明网络无法形成参考时需要保留原粗框先验；这是有效性处理，不是GT质量/双源/版本选择。该新实验尚未部署或获得精度，先真实两步GPU预检，再固定预算训练。研究目标ACTIVE_UNMET，PV-Ground主线、原生唯一bbs及全256候选不变。
+
+
+## 20.376.82 全融合Mask空间参考进入六面训练：共同输出初始化的native/fused对照已启动真实两步预检（2026-10-06T11:00:38.842516+08:00）
+
+承接§81。实际只读9508证明当前同Query完整Mask范围有严格信息，但713修复/376破坏不支持无条件硬换框；训练模型最好仍5616/4511。新实验只研究空间参考，不加attention/质量排名/教师/多seed，不恢复V99双源或七版本选择。
+
+两组完整重建官方PV＋原G＋4511几何delta，保留geometry hidden8，共同将output.weight/output.bias2置零。native_reference以原回归c/s为参考，fused_mask_reference以原生融合logit sigmoid>0.5所支持的真实超点成员极值为参考，覆盖全部256候选。原粗框始终保留6维priorfeatures；新参考控制局部7×16采样和33节点六面分布坐标/DFL目标。109维全实例统计仍保留，1302输入、456102参数/10状态两组相同。范围无法形成时保留原粗框参考：基于§81实测39空支撑，已有有效体积规则；不读取GT或IoU作部署门控、不按当前分数删除候选、不产生第二套答案。
+
+原PV/G/Mask/语言/语义/零输出R冻结，只更新已有geometryhead。native＋G＋匹配DFL及自身Query/fused训练GT确认的未匹配、Box仍不足候选额外几何loss保持，native真实GT主目标、原Hungarian算法和其他已匹配实例排除规则不变。语义头每次forward只执行一次，原生last/bbs、同QueryBox/Mask。参考改变其定位输出会改变匹配结果/额外资格，这是被比较的空间干预，不宣称匹配索引恒定。
+
+seed2027、物理/有效batch8、accum1、LR1e−5、WD5e−4、clip0.1；每组29778输入各一次、3723更新、最后batch2。freshAdam，不承接预检状态。各组初始/终点6887是预训练见过场景的模块留出；另记录新架构零更新initial_formal9508及终点formal9508。声明过的初始/终点与4511比较，若零更新即改善必须标成空间参考初始化效果，而非训练学习增量。保留hidden8累计11169＋3723，重置output2只计本轮3723；官方/G历史另外记录。initial.pth的step0和空Adam须单独实际strict重建，不能用terminal的3723恢复见证代替。新权重按实际原生Acc@0.50保留最佳，闭合非best不归档；官方PV/G、V99必需链和活动恢复文件保护。
+
+fresh-context SOURCE_ONLY初审PASS后，真实readonly前置probe发现旧controller的字段为completed/exit_code、脚本误读status。失败发生在mkdir/upload/GPU之前、0优化步；保留真实错误和初审版本，最小修正两字段并同上下文补审PASS、0未解决阻断。模型/runner/规格没有改动；归属same-family/provisional，backend未attest。sourcePASS不是GPU或精度证据。
+
+实际M0于2026-10-06T10:52:28.464390+08:00提交，已pgrep核对controller703128；两组各2真实更新，检查中性分布等于所选参考、实际raw输入全部256范围、真实39空支撑保留先验、第二步内部梯度、父/R/评分/Mask冻结、CPU模型/Adam严格恢复。现有warm环境与算子缓存复用，不重装。sole observer44835计划11:04:28首查、后续每240s；估时900s。此发布不声称已完成预检、已正式训练或获得准确率。M1未开始；预计完整pair约22000s，首次观察21600s约结束前7min，再240s；依据实际吞吐校正，不重复controller/observer。代码/规格/失败/实际launch/review见refine-logs/pvground_mask_reference_20261006/，fixture二进制和权重不上传Git。目标ACTIVE_UNMET，当前best4511距4754仍243条。

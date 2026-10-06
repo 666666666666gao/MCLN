@@ -1,0 +1,1 @@
+PV-Ground single deployed network; original last/bbs, sameQueryBox/Mask, all256. Claim under test: full predicted instance range as spatial reference permits trained native strict-localization gains versus common-output-reset native-reference control and protected4511. Offline4848 is not a trained method result. Do not claim novelty or Nr/Sr gain before direct formal evidence.

@@ -1,0 +1,648 @@
+{
+  "verdict": "PASS",
+  "report_status": "COMPLETE",
+  "execution_scope": "SOURCE_ONLY",
+  "fresh_context": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "backend_identity": "not_attested",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "not_attested",
+  "actual_reasoning_effort": "not_attested",
+  "reviewed_at_cst": "2026-10-06T10:46:57.366641+08:00",
+  "reviewed_phase": "experiment-bridge Phase 2.5",
+  "scope": "当前模型、runner、实际39例fixture来源、生成过程、M0部署/观察/收集、M1启动/唯一观察/闭合收集；不包含尚未实现的M2最佳权重选择与恢复工具。",
+  "summary": "当前字节未发现阻断性源码错误。允许把本报告用于M0源码门槛；M1仍必须满足两组实际预检闭合的既有门槛。源码PASS不表示已部署、GPU通过或取得准确率提升。",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "N1_RUNTIME_PENDING",
+      "severity": "INFO",
+      "paths": [
+        "run_geometry_fit.py:484",
+        "launch_geometry_fit_authorized.py:17"
+      ],
+      "detail": "两组实际模型构建、2步梯度、raw-point all256 reference、39例执行、冻结状态及CPU载入恢复仍待M0；本轮未运行它们。当前启动源码保留真实闭合及PASS门槛。"
+    },
+    {
+      "id": "N2_STEP0_RESTORE_PENDING_M2",
+      "severity": "INFO",
+      "paths": [
+        "run_geometry_fit.py:245",
+        "run_geometry_fit.py:470",
+        "EXPERIMENT_PLAN.md:26"
+      ],
+      "detail": "新增initial.pth正确记录10个几何state、step0和空AdamW。当前formal恢复分支只接受terminal的3723步；若initial入选最佳，M2必须单独严格重建其完整模型并恢复空优化器，不能引用terminal恢复结果。此项不阻断当前M0/M1源码门槛，M2尚未通过。"
+    },
+    {
+      "id": "N3_CLAIM_SCOPE",
+      "severity": "INFO",
+      "paths": [
+        "EXPERIMENT_PLAN.md:5",
+        "EXPERIMENT_PLAN.md:9",
+        "EXPERIMENT_PLAN.md:24",
+        "research_contract.md:1"
+      ],
+      "detail": "比较是单seed、复用development val，并共同重置output2。初始化的空间reference效果与训练增量必须分别报告；历史4848离线extent和任何step0结果都不能证明学出了refinement。计划已披露。"
+    }
+  ],
+  "correctness_checks": [
+    {
+      "topic": "Reference与无GT推理",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "mask_reference.py:10",
+        "mask_reference.py:42",
+        "pvground_boundary_box_refiner.py:77"
+      ],
+      "detail": "每行全部256候选使用原生scalar-alpha fused logits阈值sigmoid>.5；按实际SP成员min/max组成范围。函数只读取predicted logits、raw member geometry与原粗框；有效性不读取GT/IoU/质量。空或退化范围保留原粗框。"
+    },
+    {
+      "topic": "空间坐标和原始prior",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "mask_reference.py:37",
+        "mask_reference.py:64",
+        "pvground_boundary_box_refiner.py:33",
+        "pvground_boundary_box_refiner.py:81"
+      ],
+      "detail": "reference传给局部采样位置、六面decode和matched/extra DFL targets；whole_range override仍使用native coarse的6维prior features。两组同109 whole features、同local support算子，reference变化会改变实际邻点。"
+    },
+    {
+      "topic": "参数与共同初始化",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "mask_reference.py:69",
+        "run_geometry_fit.py:123",
+        "run_geometry_fit.py:135"
+      ],
+      "detail": "先strict复制4511全部10个几何state，然后两组只共同清零output.weight/bias。结构尺寸独立算得456102参数/10个trainable tensors；其余官方PV/G、Mask/语言/语义及zero-output R均冻结。"
+    },
+    {
+      "topic": "监督与native匹配",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "run_geometry_fit.py:396",
+        "query_supported_geometry.py:15",
+        "models.losses.py:849"
+      ],
+      "detail": "native prefixes顺序proposal,last,0..4，对应matches[1]确为原生final Hungarian；native+G+edge/7+extra公式正确。extra源码与旧版本byte-equal，使用native GT root，own/fused Mask GT-IoU>.5且final Box IoU<=.5并排除所有matched queries；空集合保持原batch分母和零loss。"
+    },
+    {
+      "topic": "数据/seed/预算",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "run_geometry_fit.py:39",
+        "run_geometry_fit.py:166",
+        "run_geometry_fit.py:244",
+        "run_geometry_fit.py:555"
+      ],
+      "detail": "seed2027，physical B8、accumulation1、LR1e-5、WD5e-4、clip.1、29778 rows恰好一次/3723 updates，尾batch2。fit/6887 holdout物理场景分离，formal9508来自val；各进程重建并fresh AdamW，不延续M0 state。"
+    },
+    {
+      "topic": "唯一原生评分和实际GT指标",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "controller.py:36",
+        "run_geometry_fit.py:299",
+        "native_root_bbs.py:4",
+        "models/pv_ground.py:559",
+        "evaluator.py:281",
+        "evaluator.py:641"
+      ],
+      "detail": "模型forward只有原生final semantic head一次；同bbs top query用于Box及fused Mask，全部256保留。native evaluator与手工GT IoU@.25/.50、Mask aggregate互核。每组initial_formal9508、initial/terminal6887、terminal formal9508，formal NPZ保存全部候选prior/reference/final/scores/valid与root GT。"
+    },
+    {
+      "topic": "M0执行门槛和恢复代码",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "run_geometry_fit.py:410",
+        "run_geometry_fit.py:498",
+        "launch_geometry_fit_authorized.py:20"
+      ],
+      "detail": "preflight两步实际更新，zero output验证neutral decode，step2检查hidden8非零梯度；检查parent/R冻结、缓存native score/Mask不变、输出梯度仅qualified、真实39例规则，以及序列化后map_location=cpu和strict模型/优化器值核验。当前不盲目要求旧frame的extra/outside计数。"
+    },
+    {
+      "topic": "SSH生命周期与只读闭合收集",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "deploy_preflight_authorized.py:12",
+        "controller.py:33",
+        "launch_geometry_fit_authorized.py:17",
+        "observe_fit_authorized.py:20",
+        "collect_closed_fit_authorized.py:12"
+      ],
+      "detail": "复用已装环境/既有GPU flock；审查与实际M0闭合门槛存在。M0首查720s、后续240s；M1首查19500s、后续240s、单started标记。成功闭合后再次远端验证exit0/complete，以tar stdout直接流传输，排除.pt/.pth/.tmp，不生成远端大tar；本地只提取manifest中的常规文件，验证destination范围、大小和现有SHA。"
+    }
+  ],
+  "actual_independent_cpu_checks": {
+    "execution": "本地cached uv --offline --no-project --with numpy；未导入torch或执行模型。",
+    "numpy_version": "2.5.3",
+    "primary_python_ast_files": 17,
+    "embedded_remote_python_ast_files": 3,
+    "parameter_count_from_declared_linear_shapes": 456102,
+    "trainable_state_tensors_from_shapes": 10,
+    "paired_spec_differences": [
+      "reference_mode",
+      "root"
+    ],
+    "helper_hashes_verified": 17,
+    "native_evaluator_hash_exact": true,
+    "existing_extra_loss_byte_equal": true,
+    "generator_replay": "prepare_comparison的5个输出、prepare_launchers的4个生命周期脚本、prepare_fit_observer的观察器均在拦截write_text/write_bytes的纯内存重放中byte-exact；当前plan与生成结果文字相同，仅LF/CRLF不同。生产文件未写入。",
+    "stored_fixture": {
+      "source_rows": 9508,
+      "actual_empty_rows": 39,
+      "unique_source_batches": 38,
+      "copied_arrays": 234,
+      "six_fields": [
+        "lower",
+        "upper",
+        "own_logits",
+        "text_logits",
+        "alpha",
+        "prior_box"
+      ],
+      "source_fields_exact": true,
+      "prior_boxes_float32_exact": true,
+      "row_query_point_identity_exact": true,
+      "source_and_history_row_hashes_exact": true,
+      "source_batch_hashes_match_fixture_and_formal_wait": true,
+      "max_empty_fused_logit": -0.1764220893383026,
+      "no_gt_array_fields": true,
+      "scope": "只核对保存的真实证据与其来源；未声称本轮运行extent_reference的torch/GPU实现。"
+    },
+    "initial_manifest_guard": "当前protected_trained_model_hits==[5616,4511]及历史audit WARN/零blocking字段已实际读取核对。"
+  },
+  "resolved_during_review": [
+    {
+      "id": "R1_DEPLOY_SUMMARY_FIELD",
+      "detail": "主代理在执行前将旧metric_best/hits字段改为实际SUMMARY.protected_trained_model_hits；当前生成脚本和deployer均正确，本审查未把该已修问题保留为阻断。"
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/check_invalid_reference.py",
+      "sha256": "71bbb014d6b840388d8d47dfe6b1324057a1ca46bed1a996bfb7c44f85ae693f"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/collect_closed_fit_authorized.py",
+      "sha256": "525df20f55614fed57169d5e2d1f5ae3f7c2fb047362a416ec3a6384ab9135e5"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/collect_preflight_authorized.py",
+      "sha256": "b55b8613579fa0b27d9fa2db1d0017f7e6554e83c3b57046b82885a69a895687"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/controller.py",
+      "sha256": "2fdd5bf31e1581286d348b5dfc0508e9d41fe565c3d754ee0412f1fd38428165"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/deploy_preflight_authorized.py",
+      "sha256": "87097d7ce36545b56ee3e7debd98a9e3949bbfc1673ab6dbf3894ef94edf62de"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/launch_geometry_fit_authorized.py",
+      "sha256": "f25905869984114204b6e7c9f82fa7b7f51e0eebca9abb8d163baa9a0f092d8d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/observe_fit_authorized.py",
+      "sha256": "7857ac98eb58df0d9e924ab70bf969ac1e7ee618e0290973528ba9ff4aa9def7"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/observe_preflight_authorized.py",
+      "sha256": "c2b0289208afe6626bd9b12c949ccd79a231a32b7511358cb7109ef9cf442766"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_comparison.py",
+      "sha256": "762b3c97cfceef2f29a09955d20cff61a1cb75dac66ec0c800870cc944a63c5f"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_fit_observer.py",
+      "sha256": "3d1680dde07f3b487a578b4255b10737decd18d31523407175842e9ef2b81b40"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_invalid_fixture.py",
+      "sha256": "ff60d969fe879ba7e6efd62a81e8413a2e9a85b9489942f11daa16be1ff11306"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_launchers.py",
+      "sha256": "ca19de463fbadff5aff38ad477a8550bd1507437e94391b4f6f8ae4ba3523b91"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/query_supported_geometry.py",
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/record_source_acceptance.py",
+      "sha256": "eecf5c488db351e7f4c2c729486767919704b3d4f9bb11fbedc417f240dbf46b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/record_source_review_call.py",
+      "sha256": "6c3dea33cad86c9d8eb52cb990da8903dc9d248c4cb3b5c892705de27ccefb8a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/run_geometry_fit.py",
+      "sha256": "01565b6d0b8ead1a5d34e588525e114e97f33bcd9650c35d40e0a1a60d7b2747"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/EXPERIMENT_PLAN.md",
+      "sha256": "9e18d4818d9b236522fcc63de06c98a56b52375a2c9a32155f290c2ab92ba048"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/research_contract.md",
+      "sha256": "cab9f0cd4faa5c76e32214addbe468433cf46ff4e24c7c32beb68036a1e6a6de"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fused_mask_reference_spec.json",
+      "sha256": "bfa3507ab0c75166218719a391cacc154e75af8801a7d4be21faf3ab4ac0eb27"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/invalid_reference_fixture.json",
+      "sha256": "e1c711f081a73bd6e14418cc1ef4e842f6b3f0bdcd5c5f73dfe95cdec76eebca"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/invalid_reference_fixture.npz",
+      "sha256": "811956973cd214877773cde8e88ee9d884f5dfdd33cc3f8b74c8f3b6a8388c1d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/install_boundary_evidence_readback.py",
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_final_quality.py",
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_evidence_readback.py",
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py",
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/run_final_quality_fit.py",
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094"
+    },
+    {
+      "path": "C:/Users/gb/.codex_pvground_cs_20261002/refine-logs/pvground_geometry_readback_20261004/revision2/source_preview/PV-Ground/models/pv_ground.py",
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/refine-logs/pvground_candidate_normalization_20261003/complete/source/imported/models.losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/refine-logs/pvground_candidate_normalization_20261003/complete/source/imported/evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/refine-logs/pvground_candidate_normalization_20261003/complete/source/imported/src.joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/run_geometry_fit.py",
+      "sha256": "8d616169b3a022a9d2f1ed8a569ff17a7357f3150bd68d04fe255800a37faee7"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/query_supported_geometry.py",
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/controller.py",
+      "sha256": "33fa6618bf9fbe0202dc3d1dc96dd98a7ca1feea2aa54d5f73514b2061043b52"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/control_spec.json",
+      "sha256": "bd6b065edc9a33fdd4c8fcf4b332019bff5f17ab286b4ae5bf02ff94afb5fc0e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/deploy_preflight_authorized.py",
+      "sha256": "4124b7e48a8318c12d22111b7bde4ed834e28c3294b6f5543804b0f5a00e70f9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/observe_preflight_authorized.py",
+      "sha256": "882b98a2812b3b014aef62893afc5a65434e341dd6b67dfffc73e03ee0425bdc"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/collect_preflight_authorized.py",
+      "sha256": "61bc963619c1bc2ae927248a31dd9b01f6bde822c5d9a86802d9094a6d588a55"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/launch_geometry_fit_authorized.py",
+      "sha256": "4887bc039fa06548f1292566b705b79ee0ce6bcecf71ec13e67ab202d26b388f"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/observe_fit_authorized.py",
+      "sha256": "698a5203af439fc2fe90299c606a95eaa6014bdfa1e8443bf6fe47b8614e96e4"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/rows.jsonl",
+      "sha256": "e01e2413e1eecdf57b678ef46a4bc489b34ddecdb54b08e4f935812c0e2269ae"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal/rows.jsonl",
+      "sha256": "ec73b6acb9691d6c591136c5e5a34e80a8d7d716bedef714ca960bbbd324716c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/formal_wait.json",
+      "sha256": "1368be0f8840d9c5c6ffcb1db44d674f452dd4d4be9f86bf7d72dc97268793d7"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/extent_evidence.py",
+      "sha256": "4dba4e9a4201271456859ee1499baa0920fe11b37e1fc9d08e0f1f6d2d5b32c9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/analysis/SUMMARY.json",
+      "sha256": "7cb03046eff19b3262c0504cbf9b626c14718125c36310272fbf5ebe16b8f922"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/analysis/EXPERIMENT_AUDIT.json",
+      "sha256": "1859031caf8c58f6f0d3ccc5bc5528cf5980612ed1a3766451aa9f3054b11edf"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0025.npz",
+      "sha256": "2b8a9874b0f40191970319a0b52759617b8d2a8f5453a87fc77a94c33adca680"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0046.npz",
+      "sha256": "0ab258395cae0cf4a129fb13027c685b29b4a17fa43c72a971b84c3e0857578b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0095.npz",
+      "sha256": "e7febc2b13692c514528ca64d912e415eaadaee5ade3a75626dc7d41a810fbb3"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0124.npz",
+      "sha256": "7b06dae42feb9222195ca040990aa22e3a1d89e7bd60dadf5d2064977e21f163"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0129.npz",
+      "sha256": "663e647673fb2799004ff680542ddd3f2f054c9b5cef412d4c2ddb0f0bb6feeb"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0130.npz",
+      "sha256": "ad11e6e19b5afc01d0ddda8fbacd40596b349e61ee8fa1bbdf4feec3d993fbcc"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0139.npz",
+      "sha256": "cd794fd947af142f4c0f17ae4242d0f47cc75dfc73e2fadea32c5bfe27ae6f42"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0143.npz",
+      "sha256": "be25dd48fd0765b16ce1927d1b514b8ccf270db92e45d51143f38c4ae74e89b3"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0146.npz",
+      "sha256": "8d0e30e2ddde1620585f501f5cd666a0b0fad63e2a8126071c3fadcfc9fae3e1"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0149.npz",
+      "sha256": "bb728ecba2f556f20156b49c51d85ab017dc79cf1ad19d35bab4acfb1286c7d2"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0150.npz",
+      "sha256": "c498cfa5b897f25c38c819a1d0e8b8f16bf3fdcb51edd2432ffb202b4cb7a275"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0152.npz",
+      "sha256": "9b115b356fbf6285f04120a9c415a05c1c8928a0d9127533fdbab27cfc50809b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0154.npz",
+      "sha256": "961198b07dc170955246641b8c8bb0f188dce248d0849ae916feaaa664130229"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0155.npz",
+      "sha256": "b74785a99313133622c823a6b049580275889da2cad9ceb40683e3c6206fdf29"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0188.npz",
+      "sha256": "6392646815bc94b981bf42b0a689a32a9d52b9338ffdcc0f72a982c744aeec00"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0267.npz",
+      "sha256": "b606091694d2db5344e12b8174bd739261f5b001c37fb0d7ed8ea07953bd1892"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0292.npz",
+      "sha256": "051880371655548923b7fb4632be1ebf7ec4064ab4b87ede297c11ddca640051"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0305.npz",
+      "sha256": "ec46f5d968565fb565adb0a501d408720fe974645010e06f51021e49e528ce7c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0314.npz",
+      "sha256": "e61726d3213b5058cff50bb938fc99d13cafccfe5f2e6f0d37d8d96cb955cedb"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0355.npz",
+      "sha256": "4be477ab725c29b5a30d48ed41e40509fae3ce15ca9c51c258899bf8e8a292d0"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0372.npz",
+      "sha256": "42fd86da95fd68a9fb405fd3e7b5f6af81cd6d021f099c38664c82524646f29c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0382.npz",
+      "sha256": "f577a888b9539010d5e05957c5b4aae03aa7507f223fb7fb28a157dc997ee754"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0402.npz",
+      "sha256": "cd5816c30b1aa55d20b898191ea82b04acc6743daf8301e858d830ed23e55dbe"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0437.npz",
+      "sha256": "dac52f182e84de5e15b4aed317a48f881924fbc85220ee68540dd179cdca3fbe"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0440.npz",
+      "sha256": "312d0e8711d0febc93b1462f3c4dd6fed4f28e8516b5a3f45c68d68a0637bc72"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0455.npz",
+      "sha256": "f0b6e72a04ddde764f6fff0eb026158a03b8db8acab7cd6f1fb8115cd6a9612c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0474.npz",
+      "sha256": "79c0850b2016c0db0002689b3386e10909c8b33ae7060cda7acfea2094f2f6e7"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0509.npz",
+      "sha256": "e92729c3ca2e91c8d3579158d1283c8ef603ce24313879a32fee87fefccea6f9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0511.npz",
+      "sha256": "374a16ee59bd3c123838e364d7099e85160e50efb58aba247bd41d75e7aa6b13"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0513.npz",
+      "sha256": "1a7aa3834e948433fd80003c0a9f2995c9d220a2ace8f3c928b3dd993082d548"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0597.npz",
+      "sha256": "5a1bbd4bdce2bf82b56dfc3bd803a3b0ed3334347a5f5f2c42ea992683775751"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0605.npz",
+      "sha256": "c37575aca70582de1c9ea579fb6297017082c6525ea908037e5d131180de1602"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0786.npz",
+      "sha256": "b1a4149fdfb161c54842f0682b568c52485da20eb131a41fcf881463b4fdc4d0"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0815.npz",
+      "sha256": "a12d004d1f5db50f7776da42bf8746ac0dab21ded7e1e070641eeaa5d25c1855"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0817.npz",
+      "sha256": "e183c4260d11c72fca126e78b1824d0fdd8ace6a2757dbb021a4078f02aff775"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0832.npz",
+      "sha256": "3aa81e79d4ac28286149d8ebd62936abba0b4c2841c0a0847c8d8992beb65000"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_0967.npz",
+      "sha256": "6fac577fd2eda17231b5036872ec4b56c5b36f78b9f22c770a7751041c25e0c9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/formal/batch_1050.npz",
+      "sha256": "60111fb64e370c42bf07e19c6f0b8e9dd80072ec3244a70b939f6310ef1803aa"
+    }
+  ],
+  "source_read_scope": {
+    "primary": [
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/check_invalid_reference.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/collect_closed_fit_authorized.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/collect_preflight_authorized.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/controller.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/deploy_preflight_authorized.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/launch_geometry_fit_authorized.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/mask_reference.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/observe_fit_authorized.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/observe_preflight_authorized.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_comparison.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_fit_observer.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_invalid_fixture.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_launchers.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/query_supported_geometry.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/record_source_acceptance.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/record_source_review_call.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/run_geometry_fit.py",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/EXPERIMENT_PLAN.md",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/research_contract.md",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/native_reference_spec.json",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fused_mask_reference_spec.json",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/invalid_reference_fixture.json",
+      "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/invalid_reference_fixture.npz"
+    ],
+    "full_support": [
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_box_refiner.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_whole_mask_box_refiner.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_tail_support_box_refiner.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_candidate_box_refiner.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_evidence_readback.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/install_boundary_evidence_readback.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+      "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py"
+    ],
+    "targeted_native_source": [
+      "C:/Users/gb/.codex_pvground_cs_20261002/refine-logs/pvground_geometry_readback_20261004/revision2/source_preview/PV-Ground/models/pv_ground.py",
+      "C:/Users/gb/.codex_mcln_g0_20260905/refine-logs/pvground_candidate_normalization_20261003/complete/source/imported/models.losses.py",
+      "C:/Users/gb/.codex_mcln_g0_20260905/refine-logs/pvground_candidate_normalization_20261003/complete/source/imported/evaluator.py",
+      "C:/Users/gb/.codex_mcln_g0_20260905/refine-logs/pvground_candidate_normalization_20261003/complete/source/imported/src.joint_det_dataset.py"
+    ],
+    "helper_hash_only": [
+      "native_final_quality.py",
+      "pvground_observation_query.py",
+      "pvground_source_query.py",
+      "pvground_task_observation_query.py",
+      "run_final_quality_fit.py"
+    ],
+    "admin_documents_read": [
+      "EXPERIMENT_TRACKER.md",
+      "MANIFEST.md"
+    ],
+    "note": "只把已审不可变输入放入reviewed_files；本报告/调用状态和append-only MANIFEST不纳入自身输入清单。"
+  },
+  "not_executed": [
+    "GPU或torch模型forward",
+    "任何网络/SSH请求",
+    "部署/安装",
+    "optimizer update",
+    "新initial/terminal准确率评估",
+    "checkpoint实际恢复",
+    "权重选择/删除/归档"
+  ],
+  "remaining_gates": [
+    "M0两组实际两步PASS及闭合",
+    "M1固定预算及完整actual evaluation闭合",
+    "M2全模型/优化器严格恢复、fresh terminal audit和strict-best retention；若step0入选需它自己的恢复见证"
+  ],
+  "review_trace_owner": "父编排器保留实际native调用/响应；requested model/effort不等于实际backend attestation。"
+}

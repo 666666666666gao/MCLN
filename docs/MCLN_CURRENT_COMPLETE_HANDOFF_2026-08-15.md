@@ -22794,3 +22794,16 @@ M1实际于2026-10-06T11:14:14.214618+08:00提交、pgrep核对controller711378�
 实际启动前GPU空闲，数据盘可用1206886400B、所需reserve960163041B，系统盘463011840B，warm环境/算子缓存复用、无安装。估计总22000秒约17:20:54；sole observer首17:14:14、之后240秒，到闭合后流式收集实际证据、排除权重，不在远端另建大tar。此发布尚未取得M1闭合或新准确率；SourceOnly审查及M0通过不算涨点。结束后fresh terminal审计、所选初始/终点实际strict恢复，并仅保留真实指标最佳已闭合权重，原PV/G与V99必需依赖保护。当前trainedbest仍5616/4511、47.4443%、距4754差243；offline4848仍是§81诊断，目标ACTIVE_UNMET。
 
 已审主源保持原版本；acceptedM0、actualfitlaunch/observer、源码与收集清单见refine-logs/pvground_mask_reference_20261006/accepted_m0_fit_launch/。原始point/NPZ与权重不上传Git；三仓、桌面与远端文档同步仍为append-only原字节前缀。旧§82是当时启动快照，当前状态以本节和M0_ACCEPTANCE_AND_FIT_LAUNCH为准。
+
+
+## 20.376.84 声明候选的严格重建工具已做源码复核，尚未执行终态重载（2026-10-06T11:52:59.106175+08:00）
+
+承接§83的活动完整对照，未重复启动GPU实验，也未修改训练、参考、损失或观察器。11:33:10 UTC+8同一工具批次的现有native观察器27853返回running句柄；本次没有提前SSH查进度，首次远端观察仍17:14:14，之后240秒。当前仍未取得M1新9508结果，trainedbest仍5616/4511，目标ACTIVE_UNMET。
+
+新增的postrun分析器按四份actual9508分开复算initial_formal与formal、全部256 prior/reference/final和原生分数；CPU浮点阈值差异按三类框分别报告，不替代原生主指标。声明最佳选择继续以Acc@0.5优先、同严格命中保留原保护权重。其SOURCE_ONLY复核通过，不代表终态数据已经复算。
+
+当前旧工厂明确只接受step3723，不能把新initial.pth的真实step0改成3723来重载。新增selected_mask_reference_factory保留同样PV/G、几何头和冻结零输出R的构造顺序，直接严格加载候选完整10个几何状态。后续CPU检查会分别验证step0的hidden8与真实父权重一致、output2全零和emptyAdam，或terminal的3723步、10个moment及完整模型状态与原构造路径逐张量一致。旧几何文件仅用于这次构造比较见证；是否确能解除依赖仍须实际执行证明。
+
+三份重载工具及独立发布器已SOURCE_ONLY复核；它们尚未部署或重载候选，没有新的模型CPU重载、GPU前向、完整评估、权重生成或删除。实际调用须在当前controller exit0和两组完整结果之后；CPU重载不宣称独立GPU重放。后续仍需fresh终态审计、实际选中状态恢复和best-only清理。原PV/G、V99与活动恢复保持保护，不建立负结果权重归档。
+
+本节仅公布源码与范围：refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/；未上传原始NPZ、权重或凭据。四本地与远端交接按原字节前缀续写，GitHub同步；不将预检/源码审查写成精度提升。

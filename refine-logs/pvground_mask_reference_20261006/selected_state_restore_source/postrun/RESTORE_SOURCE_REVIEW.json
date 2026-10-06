@@ -1,0 +1,415 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "N1_ACTUAL_EXECUTION_PENDING",
+      "severity": "INFO",
+      "detail": "No actual selected-model construction, checkpoint load, optimizer restore, terminal audit or new9508 result was executed. Source PASS cannot be reported as an actual reload."
+    },
+    {
+      "id": "N2_INDEPENDENT_ANALYSIS_REVIEW_GATE",
+      "severity": "INFO",
+      "detail": "RESOLVED BEFORE FINAL BINDING: independent analysis follow-up is SOURCE_ONLY PASS with no blockers, SHA39e08732d6e009987b752d88405ef6f480bd3ea1d02378d67a3579b7dbd63c61, binding the current analyzer f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d. Wrapper rechecks that gate on execution. No new result was run."
+    },
+    {
+      "id": "N3_HISTORICAL_ENV_IS_NOT_CURRENT_RUNTIME",
+      "severity": "INFO",
+      "detail": "The local historical runtime_bundle env snapshot canonical SHA differs from the current spec; it was not used as current environment proof. Future remote gates must verify the actual pinned runtime."
+    },
+    {
+      "id": "N4_RECONSTRUCTION_SCOPE",
+      "severity": "INFO",
+      "detail": "The RNG statement is equal constructor sequence at an equal entry seed. Full persistent-state equality is a future direct-vs-original-factory check; no actual original-M1 full-state equality, training-continuation RNG restoration or raw Mask replay is claimed."
+    }
+  ],
+  "fresh_context": true,
+  "same_context_followup": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "backend_identity": "not_attested",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "reviewer_agent": "/root/pvg_selected_mask_restore_source_review",
+  "reviewed_at_cst": "2026-10-06T11:46:23.607154+08:00",
+  "summary": "PASS with zero blocking findings for the three CPU restoration sources. Exact current bytes are bound; all actual closed-job and CPU restoration gates remain unexecuted.",
+  "checks": [
+    {
+      "name": "Full construction, initialization and frozen scope",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "selected_mask_reference_factory.py:19-67",
+        "readback_model_factory.py:15-71",
+        "mask_reference.py:69-80",
+        "run_geometry_fit.py:123-143"
+      ],
+      "detail": "Same PV/G/boundary/R/MaskReference construction sequence at seed2027; old geometry load has no RNG draws. Full persistent state count is 1304 by producer assertions. Only the 10 geometry parameters remain trainable. Actual equality is a future CPU assertion, not an executed result."
+    },
+    {
+      "name": "Parameter and optimizer ordering",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "pvground_candidate_box_refiner.py:15-28",
+        "pvground_tail_support_box_refiner.py:10-14",
+        "pvground_whole_mask_box_refiner.py:10-14",
+        "pvground_boundary_box_refiner.py:68-75",
+        "run_geometry_fit.py:154-158,243-244",
+        "restore_candidate_state.py:112-117"
+      ],
+      "detail": "Ten registered parameters in member.0/member.2/condition/aggregate.0/output weight,bias order; 456102 total. Replacement keeps module registration order; original named_parameters values and direct parameters filtering yield the same AdamW order."
+    },
+    {
+      "name": "Real initial checkpoint path",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "run_geometry_fit.py:468-478",
+        "restore_candidate_state.py:49,70-83",
+        "selected_mask_reference_factory.py:15-18,54-61"
+      ],
+      "detail": "Actual initial.pth has step0, empty optimizer, zero output2, and all hidden8 equal protected4511. Complete selected10 tensor set and dtype/shape checks follow. No header rewrite or terminal-for-initial substitution."
+    },
+    {
+      "name": "Real terminal checkpoint and optimizer path",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "run_geometry_fit.py:538-550,568-586",
+        "restore_candidate_state.py:84-94,113-117",
+        "whole_model_preflight_checks.py:30-44"
+      ],
+      "detail": "Actual terminal step3723, retained hidden14892, output3723, unique29778 row ids, train receipt terminal SHA and 10 state entries/steps are asserted. AdamW groups, keys, moments and scalar states are restored and compared exactly by the existing helper."
+    },
+    {
+      "name": "Original factory witness and old geometry dependency",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "readback_model_factory.py:50-62",
+        "restore_candidate_state.py:68,102-111",
+        "selected_mask_reference_factory.py:46-61"
+      ],
+      "detail": "Original factory receives only the protected4511 genuine step3723 payload. It then receives selected complete10 geometry tensors for full-state comparison. Direct factory needs officialPV/G and selected10 but no old geometry file. The checker still requires the old file for this witness; no deletion occurs."
+    },
+    {
+      "name": "Actual closure and source/env/weight gates",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "restore_selected_candidate_authorized.py:16-30,39-54",
+        "restore_candidate_state.py:27-47,71-76"
+      ],
+      "detail": "Actual exit0, complete/protected-parent status, no matching active fit controller, remote/local spec identity, canonical env identity, PV/G/oldgeometry identities, helper identities, MaskReference and source-port contents are gated. This review has no remote closure or environment attestation."
+    },
+    {
+      "name": "Metrics and predeclared candidate association",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "analyze_mask_reference_formal.py:68-128,131-175",
+        "restore_selected_candidate_authorized.py:24-30,79-83",
+        "restore_candidate_state.py:49-51,125"
+      ],
+      "detail": "Selected arm/stage and native bbs hits25/hits50 are linked to the saved formal receipt and analyzer winner. Only a new candidate above4511 is restored. Four initial/terminal candidates and protected parent remain distinct; corrected parent fresh optimizer3723 is separately labelled from total geometry11169. No new evaluation is run."
+    },
+    {
+      "name": "Python and Torch source compatibility",
+      "status": "PASS_STATIC_ONLY",
+      "evidence": [
+        "selected_mask_reference_factory.py",
+        "restore_candidate_state.py",
+        "restore_selected_candidate_authorized.py"
+      ],
+      "detail": "All three sources and the embedded remote closure probe pass Python3.7 grammar AST and in-memory compile under local Python3.12.6. shlex.join is local-only and not called by Python3.7 remote code. Torch APIs are consistent with the active1.10.2 path. No target interpreter/library execution was performed."
+    },
+    {
+      "name": "CPU-only operation and sensitive-output boundary",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "restore_selected_candidate_authorized.py:33-92",
+        "restore_candidate_state.py:54-131",
+        "models/pv_ground.py:168-174"
+      ],
+      "detail": "Remote loads map to CPU and invoke no forward, save, delete or notification API. Wrapper uses the environment credential only for SSH authentication and does not print its value or the env dictionary. Text assets use local_files_only. Only isolated postrun source and receipts would be written on actual authorized execution."
+    },
+    {
+      "name": "Current source identity verification",
+      "status": "PASS_LOCAL_STATIC",
+      "detail": "All17 helper SHA values match both-arm shared spec identities, source-port file matches spec and inspected PVGround file matches its bound digest. The current analyzer change does not alter candidate selection or new candidate step semantics."
+    },
+    {
+      "name": "Independent analysis final source gate",
+      "status": "PASS_SOURCE",
+      "detail": "Read and verified current follow-up report after parent optimizer-history correction. It is PASS with no blockers and binds exact current analyzer bytes; both documents are now included in this review source binding."
+    }
+  ],
+  "architecture": {
+    "expected_full_persistent_state_tensors": 1304,
+    "geometry_state_tensors": 10,
+    "geometry_parameters": 456102,
+    "protected_hidden_state_tensors": 8,
+    "reset_output_state_tensors": 2,
+    "initial_optimizer_updates": 0,
+    "terminal_optimizer_updates": 3723,
+    "retained_hidden_prior_updates": 11169,
+    "retained_hidden_total_updates": 14892,
+    "optimizer_type": "AdamW",
+    "parameter_order": [
+      "member.0.weight",
+      "member.0.bias",
+      "member.2.weight",
+      "member.2.bias",
+      "condition.weight",
+      "condition.bias",
+      "aggregate.0.weight",
+      "aggregate.0.bias",
+      "output.weight",
+      "output.bias"
+    ]
+  },
+  "static_validation": {
+    "local_interpreter": "E:/python.exe",
+    "local_python": "3.12.6",
+    "target_python_grammar": "3.7",
+    "source_AST": "PASS",
+    "source_in_memory_compile": "PASS",
+    "embedded_remote_probe_AST": "PASS",
+    "embedded_remote_probe_in_memory_compile": "PASS",
+    "helper_digests_matching": 17,
+    "target_Torch_runtime_executed": false,
+    "default_python_launcher_failed": "E:/Scripts/python.exe: No pyvenv.cfg file; no reviewed code executed"
+  },
+  "analysis_review_dependency": {
+    "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.json",
+    "observed_report_sha256": "39e08732d6e009987b752d88405ef6f480bd3ea1d02378d67a3579b7dbd63c61",
+    "observed_report_verdict": "PASS",
+    "observed_analyzer_binding": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+    "current_analyzer_sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+    "binding_matches_at_report_write": true,
+    "separate_review_gate_required": true,
+    "independent_followup_accepted": true,
+    "final_report_bound_in_reviewed_files": true
+  },
+  "reviewer_execution": {
+    "local_source_reads": true,
+    "AST_and_in_memory_compile": true,
+    "network_requests": 0,
+    "SSH_sessions": 0,
+    "GPU_queries": 0,
+    "model_constructions": 0,
+    "checkpoint_loads": 0,
+    "optimizer_restores": 0,
+    "analyzer_executions": 0,
+    "training_executions": 0,
+    "deployments": 0,
+    "API_notifications": 0,
+    "weights_created": 0,
+    "weights_deleted": 0,
+    "reviewed_source_mutations": 0,
+    "active_M1_source_mutations": 0,
+    "observer_mutations": 0,
+    "credential_values_read": 0,
+    "publisher_source_read": false
+  },
+  "actual_result_paths_present": {
+    "complete_fit": false,
+    "analysis": false,
+    "selected_candidate_CPU_restore.json": false
+  },
+  "not_attested": [
+    "Actual job completion or current remote liveness",
+    "Any new9508 count or best candidate",
+    "Actual full-model/AdamW reload",
+    "Exact runtime Python3.7/Torch1.10.2 execution",
+    "Training continuation RNG restoration",
+    "Raw Mask recomputation or cross-forward bitwise identity",
+    "Any weight retention or deletion",
+    "Publisher source or backend model identity"
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "bytes": 4680,
+      "review_scope": "full source review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/restore_candidate_state.py",
+      "sha256": "5b1f510424bd148d3024cfbf6f3217ca2395bf4eb234332b4611f4da5e8f5653",
+      "bytes": 7672,
+      "review_scope": "full source review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/restore_selected_candidate_authorized.py",
+      "sha256": "42ad65c9d250eedc1f2c2191482e3ffa2ab55026ddae96b8f174c5d522af1cdc",
+      "bytes": 5558,
+      "review_scope": "full source review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/run_geometry_fit.py",
+      "sha256": "01565b6d0b8ead1a5d34e588525e114e97f33bcd9650c35d40e0a1a60d7b2747",
+      "bytes": 38241,
+      "review_scope": "producer/protocol source authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/controller.py",
+      "sha256": "2fdd5bf31e1581286d348b5dfc0508e9d41fe565c3d754ee0412f1fd38428165",
+      "bytes": 3013,
+      "review_scope": "producer/protocol source authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "bytes": 6461,
+      "review_scope": "producer/protocol source authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc",
+      "bytes": 4414,
+      "review_scope": "producer/protocol source authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fused_mask_reference_spec.json",
+      "sha256": "bfa3507ab0c75166218719a391cacc154e75af8801a7d4be21faf3ab4ac0eb27",
+      "bytes": 4422,
+      "review_scope": "producer/protocol source authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/EXPERIMENT_PLAN.md",
+      "sha256": "8f98749f0a044e7b3c76eba74e5972fe3616ab97a51f48191305c9a2558d7634",
+      "bytes": 5046,
+      "review_scope": "producer/protocol source authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/M0_ACCEPTANCE_AND_FIT_LAUNCH.json",
+      "sha256": "2ad296c1a4f82658e3a1758695589fb1961e6a1055610618177f3fb3009c6b9e",
+      "bytes": 3252,
+      "review_scope": "producer/protocol source authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/analyze_mask_reference_formal.py",
+      "sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+      "bytes": 10984,
+      "review_scope": "current producer-to-analyzer metric and selection interface"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/install_boundary_evidence_readback.py",
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "bytes": 518,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_final_quality.py",
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4",
+      "bytes": 5764,
+      "review_scope": "dependency identity only; SHA checked against spec"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "bytes": 481,
+      "review_scope": "dependency identity only; SHA checked against spec"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_evidence_readback.py",
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "bytes": 4335,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "bytes": 3767,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "bytes": 7683,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py",
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "bytes": 5065,
+      "review_scope": "dependency identity only; SHA checked against spec"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "bytes": 3025,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "bytes": 3655,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "bytes": 2770,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "bytes": 3906,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "bytes": 4754,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "bytes": 8163,
+      "review_scope": "dependency identity only; SHA checked against spec"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/run_final_quality_fit.py",
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+      "bytes": 31540,
+      "review_scope": "dependency identity only; SHA checked against spec"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "bytes": 3629,
+      "review_scope": "dependency identity only; SHA checked against spec"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "bytes": 2436,
+      "review_scope": "source dependency"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_geometry_readback_20261004/revision2/complete_preflight/source_port.json",
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304",
+      "bytes": 10665,
+      "review_scope": "current source-port metadata"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_geometry_readback_20261004/revision2/source_preview/PV-Ground/models/pv_ground.py",
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+      "bytes": 26744,
+      "review_scope": "PVGround construction and local-only text initialization source"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.json",
+      "sha256": "39e08732d6e009987b752d88405ef6f480bd3ea1d02378d67a3579b7dbd63c61",
+      "bytes": 19400,
+      "review_scope": "independent analysis review final current-byte gate; read after metadata follow-up"
+    }
+  ]
+}

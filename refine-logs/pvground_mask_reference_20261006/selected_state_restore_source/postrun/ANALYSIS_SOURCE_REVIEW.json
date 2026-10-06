@@ -1,0 +1,354 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "N1_TERMINAL_EXECUTION_PENDING",
+      "severity": "INFO",
+      "detail": "This validates code and historical baseline only. The four new formal9508 results, intake closure, actual training counts/order and metric-best candidate remain unexecuted terminal-data checks, not current results."
+    },
+    {
+      "id": "N2_NUMERIC_AND_MASK_SCOPE",
+      "severity": "INFO",
+      "detail": "Float64 CPU geometry can disagree at strict thresholds with saved native GPU float32 IoU. The analyzer reports differences and selects using native stored metrics. It does not recompute raw point Masks or establish cross-forward bitwise score/Mask identity."
+    },
+    {
+      "id": "N3_SELECTION_IS_PROVISIONAL",
+      "severity": "INFO",
+      "detail": "metric_best_candidate is a metric comparison, not a retention or restore authorization result. Fresh terminal audit and actual selected initial/terminal model+optimizer restoration remain explicit pending gates."
+    }
+  ],
+  "execution_scope": "SOURCE_ONLY",
+  "fresh_context": false,
+  "same_context_followup": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "backend_identity": "not_attested",
+  "reviewed_at_cst": "2026-10-06T11:44:16.567049+08:00",
+  "summary": "PASS with zero unresolved blockers after the parent-history metadata correction. Protected4511 now reports checkpoint/optimizer3723 separately from cumulative geometry11169. Initial review missed this metadata error; archived reports are preserved. No terminal recount was executed.",
+  "checks": [
+    {
+      "name": "Producer and collected-artifact schema",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py:68",
+        "run_geometry_fit.py:299",
+        "run_geometry_fit.py:320",
+        "controller.py:38",
+        "collect_closed_fit_authorized.py:23"
+      ],
+      "detail": "Controller produces initial_formal/train/formal for each arm. Formal writer saves 9508 ordered rows and seven NPZ fields: row_ids, original_prior, reference, final, scores, reference_valid, root_gt. Analyzer names, stages, receipt metrics and paths match those producers. Sequential batch offsets, 256 candidates, box shapes/positive sizes/finite values, root equality, selected-box equality and final row count are checked; no top-k truncation or reranking is introduced."
+    },
+    {
+      "name": "Closure and intake linkage",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py:132",
+        "collect_closed_fit_authorized.py:12",
+        "collect_closed_fit_authorized.py:55"
+      ],
+      "detail": "Analyzer requires complete status, protected parents and controller exit0, verifies every INTAKE file bytes/SHA, then checks each formal rows.jsonl against its receipt. Collector creates INTAKE only after closed-job gates and exhaustive transfer/bytes/SHA checks, excluding weight files. This source review does not assert that complete_fit now exists or that these gates passed on new terminal data."
+    },
+    {
+      "name": "Historical parent identity and native metric",
+      "status": "PASS_LOCAL_HISTORICAL_AND_SOURCE",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py:42",
+        "postrun/analyze_mask_reference_formal.py:141",
+        "../pvground_auxiliary_target_20261005/complete/control/formal/receipt.json"
+      ],
+      "detail": "Actual historical parent rows have 9508 sequential IDs and SHA ec73b6acb9691d6c591136c5e5a34e80a8d7d716bedef714ca960bbbd324716c matching their receipt; actual strict >.25/>.5 counts are5616/4511. Each new formal row is paired by row_id, scan_id, target_id, root_box and point_sha256. Parent root sizes are finite/positive."
+    },
+    {
+      "name": "Native selected query and Mask scope",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py:91",
+        "postrun/analyze_mask_reference_formal.py:121",
+        "run_geometry_fit.py:339",
+        "runtime_bundle/native_root_bbs.py:4"
+      ],
+      "detail": "Saved selected query must have the maximum native score, including valid tied maxima. The analyzer preserves the producer-selected query, compares the same selected box/Mask record and does not impose a different CPU tie ordering. Mask metrics are explicitly a recount of stored mask_iou, not raw Mask reconstruction."
+    },
+    {
+      "name": "IoU arithmetic and floating-threshold boundary",
+      "status": "PASS_ISOLATED_CPU_AND_SOURCE",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py:32",
+        "postrun/analyze_mask_reference_formal.py:74",
+        "postrun/analyze_mask_reference_formal.py:103",
+        "postrun/analyze_mask_reference_formal.py:125"
+      ],
+      "detail": "Only the isolated pure box_iou function was evaluated on analytic boxes: identical1, one-axis half-overlap1/3, separated0; broadcasting also matched. No analyzer main or dataset path was executed. CPU float64 oracle counts remain separate from native stored IoU metrics. Threshold flips are now reported by original_prior/reference/final and .25/.5, while final all256 oracle label disagreements are reported separately; mismatch counts are not silently forced to zero or used to replace native metrics."
+    },
+    {
+      "name": "Zero-update versus trained outputs",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py:108",
+        "postrun/analyze_mask_reference_formal.py:118",
+        "run_geometry_fit.py:245",
+        "run_geometry_fit.py:468",
+        "runtime_bundle/pvground_boundary_box_refiner.py:18"
+      ],
+      "detail": "Initial_formal requires final==reference for all256, consistent with centered uniform offsets and size-floor-clamped saved reference; native reference also equals original_prior. Initial entries are optimizer_updates0/zero_update_architecture true, terminal entries3723/false. Retained hidden11169 history, terminal total14892 and reset output3723 remain separately stated. Initial gains are not labelled learned gains; selected-state restore remains pending."
+    },
+    {
+      "name": "Actual fit order and extra-loss counts",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py:147",
+        "postrun/analyze_mask_reference_formal.py:162",
+        "postrun/analyze_mask_reference_formal.py:165",
+        "run_geometry_fit.py:555",
+        "query_supported_geometry.py:25"
+      ],
+      "detail": "Both fit receipts must be complete with3723 steps/29778 rows/fresh optimizer/frozen parent and456102 parameters/10 states. Logs require all step numbers,29778 unique row IDs and tail2; batches must have identical order between arms. The source runner independently enforces exact fit partition coverage and B8. Extra candidate and outside-face totals sum the real extra_counts keys emitted by the unchanged additional-loss implementation; these are occurrences, not unique candidates or a proof of a failure cause."
+    },
+    {
+      "name": "Comparisons and metric-best policy",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py:48",
+        "postrun/analyze_mask_reference_formal.py:163",
+        "postrun/analyze_mask_reference_formal.py:167",
+        "EXPERIMENT_PLAN.md"
+      ],
+      "detail": "Parent-relative, initial-to-terminal and native-to-fused repairs/damages use the same strict thresholds and matched rows. Selection includes only protected parent and the four predeclared initial/terminal results. Native rec_hits50 is primary; a primary tie retains protected parent, otherwise rec_hits25 breaks new-candidate ties and stable table order resolves exact ties. Target4754/9508 is50%. No checkpoint is deleted/restored/promoted by this analyzer; fresh terminal audit and selected restore remain pending."
+    },
+    {
+      "name": "Current revision and no new result execution",
+      "status": "PASS_SOURCE_ONLY",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py"
+      ],
+      "detail": "Current AST passes. Reversing only the two parent-table lines (optimizer_updates11169 to3723 and separate total_geometry_fit_updates11169) reproduces preceding source SHA 666fbdc3844512915e1dae4baae79fdb3442a0e2a137ade30e5d200e53d5d909. Comparisons, native metric selection and the separately reported floating-threshold counts are unchanged. All101 original SOURCE_REVIEW-bound files still match; no terminal data or result directory exists."
+    },
+    {
+      "name": "Protected parent checkpoint steps versus cumulative geometry history",
+      "status": "PASS_HISTORICAL_AND_SOURCE",
+      "evidence": [
+        "postrun/analyze_mask_reference_formal.py:143",
+        "../pvground_auxiliary_target_20261005/complete/control/receipt.json:39",
+        "../pvground_auxiliary_target_20261005/complete/run_geometry_fit.py:487",
+        "../pvground_auxiliary_target_20261005/complete/control_spec.json:54",
+        "../pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py:50"
+      ],
+      "detail": "Historical control receipt records fresh_optimizer true and training_steps3723. Its terminal SHA fb9672dce4170a1fd2322bdf28ef581c3cc9ac80e6df1544083893d454c196d6 equals the current protected geometry parent spec. The original save schema sets step=step_number and total_geometry_fit_updates=7446+step_number; the historical spec gives11169. Current factory requires geometry_payload.step==3723. Current table correctly separates optimizer_updates3723 and total_geometry_fit_updates11169; no new checkpoint was opened or restored."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "R1_THRESHOLD_COUNT_REPORTING_SCOPE",
+      "severity_before_fix": "INFO",
+      "status": "RESOLVED",
+      "detail": "The initial revision pooled threshold disagreements across three box types. Current cpu_selected_threshold_flips_by_box_type separates original_prior/reference/final at each threshold, preventing the aggregate event count from being read as final-box row flips. Only those three reporting expressions changed."
+    },
+    {
+      "id": "R2_PARENT_OPTIMIZER_HISTORY_MIXUP",
+      "severity_before_fix": "INCORRECT_METADATA",
+      "status": "RESOLVED_BEFORE_ANALYZER_MAIN",
+      "initial_review_missed": true,
+      "detail": "The first analysis review did not catch that protected parent optimizer_updates11169 mixed cumulative geometry history with the saved checkpoint/optimizer step. The parent agent identified and minimally changed the table to optimizer_updates3723 plus total_geometry_fit_updates11169. The archival receipt/save schema/spec/factory confirm the correction. It does not change accuracy calculations, comparisons or metric-best selection."
+    }
+  ],
+  "analyzer_sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+  "actual_historical_parent": {
+    "rows": 9508,
+    "rec_hits25": 5616,
+    "rec_hits50": 4511,
+    "rows_sha256": "ec73b6acb9691d6c591136c5e5a34e80a8d7d716bedef714ca960bbbd324716c",
+    "optimizer_updates": 3723,
+    "geometry_parent_fit_updates": 7446,
+    "total_geometry_fit_updates": 11169,
+    "terminal_sha256": "fb9672dce4170a1fd2322bdf28ef581c3cc9ac80e6df1544083893d454c196d6"
+  },
+  "future_npz_schema": {
+    "row_ids": [
+      "n"
+    ],
+    "original_prior": [
+      "n",
+      256,
+      6
+    ],
+    "reference": [
+      "n",
+      256,
+      6
+    ],
+    "final": [
+      "n",
+      256,
+      6
+    ],
+    "scores": [
+      "n",
+      256
+    ],
+    "reference_valid": [
+      "n",
+      256
+    ],
+    "root_gt": [
+      "n",
+      6
+    ]
+  },
+  "floating_point_policy": {
+    "native_metric_source": "saved per-row native GPU IoU checked against native receipt",
+    "cpu_dtype": "float64",
+    "threshold_comparison": "strict >",
+    "discrepancies": "reported by box type and threshold; no native metric replacement",
+    "raw_mask_recomputed": false
+  },
+  "selected_metric_policy": {
+    "primary": "native rec_hits50",
+    "parent_primary_tie": "retain protected parent",
+    "other_tie": "rec_hits25, then stable declared table order",
+    "initial_states_included": true,
+    "learned_gain_not_implied_by_initial": true
+  },
+  "reviewer_execution": {
+    "local_source_reads": true,
+    "old_parent_rows_recounted": true,
+    "isolated_analytic_IoU_check": true,
+    "analyzer_main_executions": 0,
+    "new_terminal_data_reads": 0,
+    "synthetic_complete_fit_files": 0,
+    "network_requests": 0,
+    "GPU_queries": 0,
+    "training_source_mutations": 0,
+    "SOURCE_REVIEW_mutations": 0,
+    "publisher_or_observer_mutations": 0
+  },
+  "source_review_preserved": {
+    "json_sha256": "e5849720caf8894ac0ae33b9208a17edc72070e5c72f564fbe3efd58fbac6ed4",
+    "markdown_sha256": "06728ca40b2f83395174d8d0e32ba47c1a012c6629f89e276cb56cbc842d87f3",
+    "bound_inputs_unchanged": 101
+  },
+  "not_attested": [
+    "Any new formal accuracy or all256 terminal count",
+    "Actual terminal completion or current remote liveness",
+    "Selected checkpoint strict restore or weight retention",
+    "Independent reviewer backend identity"
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/analyze_mask_reference_formal.py",
+      "sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/run_geometry_fit.py",
+      "sha256": "01565b6d0b8ead1a5d34e588525e114e97f33bcd9650c35d40e0a1a60d7b2747"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/controller.py",
+      "sha256": "2fdd5bf31e1581286d348b5dfc0508e9d41fe565c3d754ee0412f1fd38428165"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/collect_closed_fit_authorized.py",
+      "sha256": "525df20f55614fed57169d5e2d1f5ae3f7c2fb047362a416ec3a6384ab9135e5"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fused_mask_reference_spec.json",
+      "sha256": "bfa3507ab0c75166218719a391cacc154e75af8801a7d4be21faf3ab4ac0eb27"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/query_supported_geometry.py",
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/EXPERIMENT_PLAN.md",
+      "sha256": "8f98749f0a044e7b3c76eba74e5972fe3616ab97a51f48191305c9a2558d7634"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/SOURCE_REVIEW.json",
+      "sha256": "e5849720caf8894ac0ae33b9208a17edc72070e5c72f564fbe3efd58fbac6ed4"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/SOURCE_REVIEW.md",
+      "sha256": "06728ca40b2f83395174d8d0e32ba47c1a012c6629f89e276cb56cbc842d87f3"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fit_launch.json",
+      "sha256": "1fa5d136dcdbb718e084012a74e3e3142e8de0855b29a6505bf81283d873e947"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal/rows.jsonl",
+      "sha256": "ec73b6acb9691d6c591136c5e5a34e80a8d7d716bedef714ca960bbbd324716c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/formal/receipt.json",
+      "sha256": "09660e1169a9d2e43d4111fb4acbae7eb1a1ef035e885f8ff84cb6d08d9ca016"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control/receipt.json",
+      "sha256": "b8363480385a30c3dc066bb336e3f4e7b57d174d7691307c3691b423901c6d77"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/run_geometry_fit.py",
+      "sha256": "2b61dc95fe14ab4142655603188b25197ba03baf79899d708112f64402cbcbf8"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_auxiliary_target_20261005/complete/control_spec.json",
+      "sha256": "79564f06395c252ca42fcadec3451281c2cf381be016064ef92597fc85d3177a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW_20261006_113148.json",
+      "sha256": "d21a4117598f2d430c04098b54326354ebe3663691dba8732e6c77303ed54dd5"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW_20261006_113148.md",
+      "sha256": "77c1a56d873ac5019db7c8baf0e54e9c603fb75ffda20f5683ef3ada3b07af49"
+    }
+  ],
+  "initial_analysis_reviewed_at_cst": "2026-10-06T11:31:48.090186+08:00",
+  "followup_scope": {
+    "kind": "same-context minimal source followup",
+    "previous_analyzer_sha256": "666fbdc3844512915e1dae4baae79fdb3442a0e2a137ade30e5d200e53d5d909",
+    "current_analyzer_sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+    "changed_lines": [
+      143,
+      144
+    ],
+    "other_comparison_and_selection_bytes_unchanged": true,
+    "original_review_json": {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW_20261006_113148.json",
+      "sha256": "d21a4117598f2d430c04098b54326354ebe3663691dba8732e6c77303ed54dd5"
+    },
+    "original_review_markdown": {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW_20261006_113148.md",
+      "sha256": "77c1a56d873ac5019db7c8baf0e54e9c603fb75ffda20f5683ef3ada3b07af49"
+    }
+  },
+  "historical_preparation_snapshot": {
+    "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/POSTRUN_PREPARATION.json",
+    "time_cst": "2026-10-06T11:32:38.049424+08:00",
+    "analyzer_sha256": "666fbdc3844512915e1dae4baae79fdb3442a0e2a137ade30e5d200e53d5d909",
+    "snapshot_sha256": "022b18e147d144e4f9a16b6bda9e526d76258fd06991bd3840a88195d4118352",
+    "recorder_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/record_postrun_preparation.py",
+    "recorder_sha256": "32b534014e637d16c949695f4586a5c88a147f22cfd345d1e8396274d93c0b8f",
+    "scope": "Unchanged11:32 historical snapshot. This old analyzer hash is not the current analysis gate; use current ANALYSIS_SOURCE_REVIEW bindings. These records were not rerun or rewritten."
+  }
+}

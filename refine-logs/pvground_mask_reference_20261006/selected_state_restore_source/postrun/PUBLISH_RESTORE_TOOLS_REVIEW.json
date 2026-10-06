@@ -1,0 +1,423 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "N1_PUBLICATION_NOT_EXECUTED",
+      "severity": "INFO",
+      "detail": "Actual remote write, three commits, GitHub main push, new guard SHA and publication receipt remain unexecuted. Source PASS is not publication evidence."
+    },
+    {
+      "id": "N2_SELF_REPORT_HASH_BOUNDARY",
+      "severity": "INFO",
+      "detail": "All preexisting payloads and this Markdown have actual SHA bindings. This JSON cannot contain a fixed digest of itself; its actual final digest is delivered separately in reviewer completion output."
+    }
+  ],
+  "fresh_context": false,
+  "same_context_followup": true,
+  "separate_publisher_review": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "backend_identity": "not_attested",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "reviewed_at_cst": "2026-10-06T11:52:19.810277+08:00",
+  "reviewer_agent": "/root/pvg_selected_mask_restore_source_review",
+  "summary": "SOURCE_ONLY PASS with zero blocking findings for the separate Doc84 tools publisher; final executor and actual payload bytes bound; publication not executed.",
+  "checks": [
+    {
+      "name": "Separate source-review gates and previous-review preservation",
+      "status": "PASS_SOURCE_AND_LOCAL",
+      "evidence": [
+        "publish_restore_tools_authorized.py:18-29"
+      ],
+      "detail": "RESTORE_SOURCE_REVIEW and this separate publisher review are checked before network or mutation. Prior RESTORE JSON/md remain byte-identical and all31 prior source bindings match. Current analysis follow-up PASS binds f9c3f6d4...; old11:32 preparation SHA remains historical."
+    },
+    {
+      "name": "Doc83/Doc84 append-only semantics and claims",
+      "status": "PASS_SOURCE_AND_LOCAL",
+      "evidence": [
+        "publish_restore_tools_authorized.py:23-57,103-104,118-119"
+      ],
+      "detail": "Current three HEADs, clean worktrees and four identical Doc83 hashes match prior publication. Doc84 does not exist. New document is old bytes plus one section; tracked Git prefix is separately preserved. All claims concern reviewed source and future actual restore, retain trainedbest5616/4511, and distinguish11:33 local handle from remote observations."
+    },
+    {
+      "name": "Existing Git line-ending behavior",
+      "status": "PASS_LOCAL",
+      "evidence": [
+        "git show HEAD:docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+        "git config --get core.autocrlf",
+        "git check-attr"
+      ],
+      "detail": "All three tracked documents have SHA71989262fe4fa421824e2310599fc8e30df4f8ff9759993bff88d1b3bc570354 and equal exact CRLF-to-LF normalization of the working copies. core.autocrlf=true; no text/eol attributes on this document. This is existing normalization, not an unreviewed content change or a claim of GitHub byte identity with mixed-line-ending working files."
+    },
+    {
+      "name": "Final payload identities and sensitive-data scope",
+      "status": "PASS_SOURCE_AND_LOCAL",
+      "evidence": [
+        "publish_restore_tools_authorized.py:58-68,89-90"
+      ],
+      "detail": "Fourteen fixed files plus one literal .gitattributes. Payloads are source/reviews/tasks/historical prep and existing handle witness, not rawNPZ, weights, env values or credentials. No directory glob or .aris payload. Credential is read only by the future SSH authentication expression, never embedded in bundle or printed."
+    },
+    {
+      "name": "Remote exact destination and write containment",
+      "status": "PASS_SOURCE_ONLY",
+      "evidence": [
+        "publish_restore_tools_authorized.py:70-96"
+      ],
+      "detail": "Remote old document SHA must match. Resolved evidence directory must be the exact data-evidence selected_state_restore_source path and must not exist. All payload paths must resolve below it, are exclusive-created and read back byte-for-byte. Active M1 source/observer paths are not written. Actual remote symlink and state remain unqueried."
+    },
+    {
+      "name": "Local source/doc distribution, staging and main push",
+      "status": "PASS_SOURCE_ONLY",
+      "evidence": [
+        "publish_restore_tools_authorized.py:98-126"
+      ],
+      "detail": "Payload source and manifest append go to first two repos; all three repos and desktop receive appended doc. Allowed changed paths are fixed, staged payload bytes are read back exactly, existing tracked doc prefixes remain, commits require clean worktrees, and one normal non-force HEAD:main push is followed by ls-remote comparison."
+    },
+    {
+      "name": "Guard and truthful receipt/state updates",
+      "status": "PASS_SOURCE_AND_LOCAL",
+      "evidence": [
+        "publish_restore_tools_authorized.py:127-142"
+      ],
+      "detail": "Current guard old SHA has exactly one occurrence in expected_previous_sha. The future replacement targets exactly that64-character value; success receipt/latest_publication/state/memory updates follow remote/doc/commit/main gates and record source publication with candidate_restore_executed/new_accuracy_result false."
+    },
+    {
+      "name": "Python compatibility and final text correction",
+      "status": "PASS_STATIC_ONLY",
+      "evidence": [
+        "publish_restore_tools_authorized.py"
+      ],
+      "detail": "Final publisher and embedded remote script pass Python3.7 grammar AST and in-memory compile under local Python3.12.6. shlex.join stays local. Only final text change narrows no-new-CPU/GPU-run to no-new-model-CPU-restore-or-GPU-forward; reversing it reproduces first reviewed source SHA1d44804fe38b67b31417ae971f2e93740da1c8afb6a64f259a803ccbc9d92594."
+    },
+    {
+      "name": "No execution or active-experiment change",
+      "status": "PASS_REVIEW_SCOPE",
+      "detail": "Reviewer ran only local reads/hashes/AST/compile and read-only git queries; no publisher import/main, network, SSH, GPU, training, candidate restoration or git add/commit/push was executed. Only separate publisher review outputs and local review manifest were written."
+    }
+  ],
+  "publisher_sha256": "03745acb5588375b202834023e05afa57b22aaf660195c27fed47b3503bc5bc6",
+  "final_wording_only_revision": {
+    "initial_reviewed_sha256": "1d44804fe38b67b31417ae971f2e93740da1c8afb6a64f259a803ccbc9d92594",
+    "final_sha256": "03745acb5588375b202834023e05afa57b22aaf660195c27fed47b3503bc5bc6",
+    "reverse_change_reproduces_initial": true,
+    "logic_changed": false
+  },
+  "prior_restore_review_preserved": {
+    "json_sha256": "0de4c4dd66d3471aa928e4fd787d592c0dbce7fa5235ecf2f29a72a063d62193",
+    "markdown_sha256": "697ba48beb072416fe1355bd6fc36059bec0e9d5ecef6896625ad4f6b5a74b19",
+    "bound_inputs": 31,
+    "all_bound_inputs_match": true,
+    "prior_review_bytes_changed": false,
+    "publisher_not_added_to_prior_review": true
+  },
+  "analysis_review": {
+    "verdict": "PASS",
+    "report_sha256": "39e08732d6e009987b752d88405ef6f480bd3ea1d02378d67a3579b7dbd63c61",
+    "analyzer_sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+    "historical_preparation_is_not_current_gate": true
+  },
+  "observed_local_context": {
+    "previous_publication": {
+      "time_cst": "2026-10-06T11:30:03.363049+08:00",
+      "section": "20.376.83",
+      "heads": [
+        "0d0d22bbfaaabad6d758a8205795ceec0c7d9669",
+        "3fad5cd1e6c20c29da8818f1ede29c9940594f6a",
+        "ebfd5352b59f1808c0a281683c504beb018ac62e"
+      ],
+      "handoff_sha256": "17b56cbc76b42f6ceae6b871627a9817dcc7637619b2c6746909be9fde97d1ba",
+      "four_local_and_remote_equal": true,
+      "github_main": "0d0d22bbfaaabad6d758a8205795ceec0c7d9669",
+      "new_accuracy_result": false,
+      "fit_controller": "711378 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -B -u /root/autodl-tmp/pvground_mask_reference_20261006/controller.py --phase fit",
+      "observer_native_session_id": 27853,
+      "source_verdict": "PASS",
+      "payload_count": 36,
+      "raw_npz_published": false,
+      "protected_trained_model_hits": [
+        5616,
+        4511
+      ]
+    },
+    "repo_paths": [
+      "C:/Users/gb/.codex_mcln_g0_20260905",
+      "C:/Users/gb/.codex_pvground_cs_20261002",
+      "C:/Users/gb/.codex_mcln_v99_internal_20260928"
+    ],
+    "heads_checked": [
+      "0d0d22bbfaaabad6d758a8205795ceec0c7d9669",
+      "3fad5cd1e6c20c29da8818f1ede29c9940594f6a",
+      "ebfd5352b59f1808c0a281683c504beb018ac62e"
+    ],
+    "worktrees_clean_at_read": true,
+    "local_document_paths": [
+      "C:/Users/gb/.codex_mcln_g0_20260905/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "C:/Users/gb/.codex_pvground_cs_20261002/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "C:/Users/gb/.codex_mcln_v99_internal_20260928/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md"
+    ],
+    "local_document_sha256": "17b56cbc76b42f6ceae6b871627a9817dcc7637619b2c6746909be9fde97d1ba",
+    "local_document_bytes": 2332574,
+    "Doc84_occurrences": 0,
+    "tracked_document_sha256": "71989262fe4fa421824e2310599fc8e30df4f8ff9759993bff88d1b3bc570354",
+    "tracked_vs_worktree_difference": "only CRLF->LF under existing core.autocrlf=true",
+    "guard_path": "C:/Users/gb/.codex/tmp/sync_cs_handoff_remote_20260923.py",
+    "guard_sha256": "349e8eb21bd462d77979cc325c2cdf62ced194d8aa15f63912decf78301626c8",
+    "guard_old_SHA_occurrences": 1,
+    "active_state_path": "C:/Users/gb/.codex/tmp/pvground_query_supported_geometry_20261005/active_continuation_state.json",
+    "latest_publication_pointer_matches": true,
+    "owned_gpu_job_active_flag": true,
+    "observer_native_session_id": 27853,
+    "remote_current_liveness_attested": false
+  },
+  "intended_scope": {
+    "section": "20.376.84",
+    "payload_items": 15,
+    "payload_source_repos": 2,
+    "document_repos": 3,
+    "desktop_documents": 1,
+    "remote_project": "/home/gb/new butd/butd_detr-main/MCLN-main",
+    "exact_remote_evidence": "/root/autodl-tmp/mcln_published_evidence_20261005/pvground_mask_reference_20261006/selected_state_restore_source",
+    "push_target": "first repository origin HEAD:main",
+    "force_push": false,
+    "active_source_or_observer_mutations": false
+  },
+  "payload_manifest": [
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/analyze_mask_reference_formal.py",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/analyze_mask_reference_formal.py",
+      "sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+      "bytes": 10984
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/ANALYSIS_SOURCE_REVIEW.json",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.json",
+      "sha256": "39e08732d6e009987b752d88405ef6f480bd3ea1d02378d67a3579b7dbd63c61",
+      "bytes": 19400
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/ANALYSIS_SOURCE_REVIEW.md",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.md",
+      "sha256": "4b32e9a7e9859c8df87ca787822e08947f761ea4695c2db37cff4b76b4aca6d9",
+      "bytes": 3647
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/selected_mask_reference_factory.py",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "bytes": 4680
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/restore_candidate_state.py",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/restore_candidate_state.py",
+      "sha256": "5b1f510424bd148d3024cfbf6f3217ca2395bf4eb234332b4611f4da5e8f5653",
+      "bytes": 7672
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/restore_selected_candidate_authorized.py",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/restore_selected_candidate_authorized.py",
+      "sha256": "42ad65c9d250eedc1f2c2191482e3ffa2ab55026ddae96b8f174c5d522af1cdc",
+      "bytes": 5558
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/RESTORE_SOURCE_REVIEW.json",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.json",
+      "sha256": "0de4c4dd66d3471aa928e4fd787d592c0dbce7fa5235ecf2f29a72a063d62193",
+      "bytes": 20594
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/RESTORE_SOURCE_REVIEW.md",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.md",
+      "sha256": "697ba48beb072416fe1355bd6fc36059bec0e9d5ecef6896625ad4f6b5a74b19",
+      "bytes": 5288
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/publish_restore_tools_authorized.py",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/publish_restore_tools_authorized.py",
+      "sha256": "03745acb5588375b202834023e05afa57b22aaf660195c27fed47b3503bc5bc6",
+      "bytes": 10605
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/PUBLISH_RESTORE_TOOLS_REVIEW.json",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RESTORE_TOOLS_REVIEW.json",
+      "sha256": null,
+      "hash_scope": "Self-authored review JSON: final SHA delivered in reviewer completion message; no impossible self-hash binding"
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/postrun/PUBLISH_RESTORE_TOOLS_REVIEW.md",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RESTORE_TOOLS_REVIEW.md",
+      "sha256": "35cd51ff581d3de022870a562fea5b02d7eac3e87dc26e25bae9299272533de8",
+      "bytes": 4790
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/POSTRUN_TASKS.md",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/POSTRUN_TASKS.md",
+      "sha256": "3eecaa9f5338048dd65c8feacaa001a87a7c88a7ec952ce5b9af05c99bf1e5e2",
+      "bytes": 2355
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/POSTRUN_PREPARATION.json",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/POSTRUN_PREPARATION.json",
+      "sha256": "022b18e147d144e4f9a16b6bda9e526d76258fd06991bd3840a88195d4118352",
+      "bytes": 698
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/LIVE_OBSERVER_HANDLE_WITNESS_20261006_113310.json",
+      "local_path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/LIVE_OBSERVER_HANDLE_WITNESS_20261006_113310.json",
+      "sha256": "0d8b2becfba78096df552e78d68fec9068e1d6b45ffc70bb37e2b6955fcebf96",
+      "bytes": 549
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/selected_state_restore_source/.gitattributes",
+      "sha256": "48747480eddba024928d03be9bf83dc579e5515768647507a767e8187a85c9ab",
+      "bytes": 9,
+      "content": "** -text\n",
+      "hash_scope": "Exact literal generated by publisher"
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/analyze_mask_reference_formal.py",
+      "sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+      "bytes": 10984,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.json",
+      "sha256": "39e08732d6e009987b752d88405ef6f480bd3ea1d02378d67a3579b7dbd63c61",
+      "bytes": 19400,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.md",
+      "sha256": "4b32e9a7e9859c8df87ca787822e08947f761ea4695c2db37cff4b76b4aca6d9",
+      "bytes": 3647,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "bytes": 4680,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/restore_candidate_state.py",
+      "sha256": "5b1f510424bd148d3024cfbf6f3217ca2395bf4eb234332b4611f4da5e8f5653",
+      "bytes": 7672,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/restore_selected_candidate_authorized.py",
+      "sha256": "42ad65c9d250eedc1f2c2191482e3ffa2ab55026ddae96b8f174c5d522af1cdc",
+      "bytes": 5558,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.json",
+      "sha256": "0de4c4dd66d3471aa928e4fd787d592c0dbce7fa5235ecf2f29a72a063d62193",
+      "bytes": 20594,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.md",
+      "sha256": "697ba48beb072416fe1355bd6fc36059bec0e9d5ecef6896625ad4f6b5a74b19",
+      "bytes": 5288,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/publish_restore_tools_authorized.py",
+      "sha256": "03745acb5588375b202834023e05afa57b22aaf660195c27fed47b3503bc5bc6",
+      "bytes": 10605,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RESTORE_TOOLS_REVIEW.md",
+      "sha256": "35cd51ff581d3de022870a562fea5b02d7eac3e87dc26e25bae9299272533de8",
+      "bytes": 4790,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/POSTRUN_TASKS.md",
+      "sha256": "3eecaa9f5338048dd65c8feacaa001a87a7c88a7ec952ce5b9af05c99bf1e5e2",
+      "bytes": 2355,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/POSTRUN_PREPARATION.json",
+      "sha256": "022b18e147d144e4f9a16b6bda9e526d76258fd06991bd3840a88195d4118352",
+      "bytes": 698,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/LIVE_OBSERVER_HANDLE_WITNESS_20261006_113310.json",
+      "sha256": "0d8b2becfba78096df552e78d68fec9068e1d6b45ffc70bb37e2b6955fcebf96",
+      "bytes": 549,
+      "review_scope": "actual final payload bytes; publisher source or reviewed supporting artifact"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fit_launch_publication.json",
+      "sha256": "9eb61789d259ddc8866aa8981e10ee08964d39a061377efed11db9cd6e80e111",
+      "bytes": 841,
+      "review_scope": "publication baseline or selected pinned runtime interpreter path"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc",
+      "bytes": 4414,
+      "review_scope": "publication baseline or selected pinned runtime interpreter path"
+    }
+  ],
+  "static_validation": {
+    "local_interpreter": "E:/python.exe",
+    "local_python": "3.12.6",
+    "target_grammar": "Python3.7",
+    "publisher_AST": "PASS",
+    "publisher_in_memory_compile": "PASS",
+    "embedded_remote_AST": "PASS",
+    "embedded_remote_in_memory_compile": "PASS",
+    "source_UFFFD_count": 0,
+    "target_remote_execution": false
+  },
+  "reviewer_execution": {
+    "network_requests": 0,
+    "SSH_sessions": 0,
+    "GPU_queries": 0,
+    "publisher_executions": 0,
+    "model_constructions": 0,
+    "checkpoint_loads": 0,
+    "optimizer_restores": 0,
+    "training_executions": 0,
+    "git_mutating_commands": 0,
+    "git_pushes": 0,
+    "API_notifications": 0,
+    "credential_environment_accessed": false,
+    "credential_values_output": false,
+    "weights_created": 0,
+    "weights_deleted": 0,
+    "publisher_source_mutations": 0,
+    "prior_RESTORE_review_mutations": 0,
+    "active_M1_source_mutations": 0,
+    "observer_mutations": 0,
+    "review_outputs_only": true
+  },
+  "actual_publication_state": {
+    "publication_receipt_exists": false,
+    "complete_fit_exists": false,
+    "analysis_exists": false,
+    "published": false
+  },
+  "not_attested": [
+    "Actual remote symlink/destination state",
+    "Actual remote payload or Doc84 write",
+    "New local commits or GitHub main",
+    "New guard SHA or publication receipt",
+    "Actual selected CPU model/AdamW restore",
+    "Any new accuracy or GPU-forward result",
+    "Actual reviewer backend identity"
+  ]
+}

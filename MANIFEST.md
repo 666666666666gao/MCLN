@@ -266,3 +266,5 @@
 - 2026-10-06T00:29:41.831696+08:00 Support-reference closed-result and strict-best retention tools SOURCE reviewed; formal fit unchanged, tools not executed.
 
 - 2026-10-06T08:47:38.466401+08:00 Actual closed support-reference comparison published; metric-best protected_geometry_parent [5616, 4511], fresh audit WARN same-family/provisional. Two nonbest geometry heads removed, no archive.
+
+- 2026-10-06T09:54:54.418704+08:00 Protected4511 completeMask extent read-only diagnostic: actual raw8 M0 accepted, formal9508 running; no new accuracy or weights.

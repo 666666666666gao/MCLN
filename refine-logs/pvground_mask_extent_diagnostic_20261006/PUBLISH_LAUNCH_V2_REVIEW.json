@@ -1,0 +1,399 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "fresh_context": false,
+  "context_mode": "same-context targeted publication-v2 follow-up",
+  "provisional": true,
+  "reviewer_family_relation": "same-family, not independent-family review",
+  "actual_backend_identity": "NOT_ATTESTED",
+  "reviewed_at": "2026-10-06T09:50:32.865559+08:00",
+  "conclusion": "No blocking source finding in the four exact v2 replacements and the resolved 47-file publication payload. This is a source-only retry review, not proof of the failure root cause or a successful retry. Original publisher and all prior review bytes were preserved.",
+  "read_scope": {
+    "new_full_source": [
+      "prepare_publication_v2.py",
+      "publish_formal_launch_v2.py",
+      "inspect_publication_failure_authorized.py"
+    ],
+    "new_full_evidence": [
+      "PUBLICATION_FAILURE_INSPECTION.json"
+    ],
+    "comparison": "Read v1/v2 source and generation replacements; v2 equals applying exactly the four declared replacements to v1. Remote receiver string is unchanged.",
+    "previous_inputs": "Read current bytes of all 43 previously reviewed immutable inputs and verified their recorded SHA256. Reused same-context review rather than repeating runner/kernel or failure-analyzer review.",
+    "previous_review_reports": "Read previous publication review JSON and preserved JSON/Markdown bytes. Their SHA256 values are now bound as immutable inputs.",
+    "old_handoff_copies": "Read bytes for existing SHA/equality checks, without rereviewing historical prose."
+  },
+  "v2_source_sha256": "69fbf996249cb075e3661eba0e77d6fc32aca69008bcbe9ad29617cb349cb9e2",
+  "original_publisher_sha256": "60f89943ba45fa6a387f48f5c0119ee7d9812899bc3e78604f80ce65d45a078f",
+  "exact_changes": [
+    {
+      "source_line": 17,
+      "change": "Use independent PUBLISH_LAUNCH_V2_REVIEW.json for the existing SOURCE_ONLY, PASS/WARN, zero-blocker and reviewed_files SHA gate."
+    },
+    {
+      "source_line": 68,
+      "change": "Add the two v2 review outputs and the recorded failure inspection to the publication names. root*.py also includes the v2 publisher, its preparation source and the read-only inspection source."
+    },
+    {
+      "source_line": 101,
+      "change": "Explicitly flush stdin after writing the JSON bundle and before channel shutdown_write."
+    },
+    {
+      "source_line": 102,
+      "change": "Collect raw stdout, exit status and stderr, assert remote exit zero with stderr, then parse JSON. A failed receiver can no longer be masked first by json.loads on empty stdout."
+    }
+  ],
+  "failure_evidence": {
+    "publication_native_session_recorded": 87407,
+    "publication_native_exit_recorded": 1,
+    "inspection_exitcode": 0,
+    "inspection_stderr_empty": true,
+    "recorded_remote_snapshot": {
+      "doc_sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1",
+      "evidence_exists": false,
+      "evidence_paths": []
+    },
+    "interpretation": "The saved successful read-only inspection reports the original Doc79 SHA and absent evidence prefix, supporting no publication write at that inspected time. Native publication session/exit are recorded fields supplied to the inspection script, not independently queried by this reviewer.",
+    "root_cause": "UNPROVEN: the original receiver stderr was not captured by this evidence. Explicit flush is a minimal I/O adjustment, not evidence that buffering caused the failure.",
+    "inspection_reexecuted_by_reviewer": false
+  },
+  "preserved_guards": {
+    "old_documents_heads_clean": "Four Doc79 copies remain equal to the prior SHA; all three repos remain at exact old heads and clean. Original old-Git-prefix and allowed staged-path assertions remain textually unchanged.",
+    "remote_bundle": "Same fixed project, old handoff SHA, absent prefix, containment, excluded suffix and exclusive xb checks. Bundle still travels through stdin; no credentials or full bundle in argv or printed success output.",
+    "error_output": "New assertion reports receiver stderr only on nonzero exit. Receiver source and payload have no password value; the password remains an environment lookup used for SSH authentication.",
+    "review_bytes": "All previous review reports remain unchanged and are copied as raw bytes; .gitattributes and staged byte equality protections are unchanged.",
+    "payload_exclusions": "No NPZ, .pt/.pth weights, .aris or complete/formal subtree in the resolved snapshot. Prepared analysis source remains source, not a formal score.",
+    "claim_boundaries": "The unchanged Doc80 reports actual M0 engineering evidence and a recorded formal launch, explicitly no formal9508 terminal result or accuracy gain. Inherited spec update counters are not current training.",
+    "active_runtime_isolation": "No changes to deployment, model, masks, box scoring, query selection, GPU launch/observer or active diagnostic sources. Publication destinations remain the fixed project/repos/docs and administrative records."
+  },
+  "actual_local_preconditions": {
+    "previous_section": "20.376.79",
+    "doc79_sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1",
+    "four_local_handoff_copies_equal": true,
+    "repos": [
+      {
+        "path": "C:/Users/gb/.codex_mcln_g0_20260905",
+        "head": "e34e5478bbdbe508631505bc4ea76bbe430f7fd7",
+        "clean": true,
+        "new_payload_prefix_absent": true
+      },
+      {
+        "path": "C:/Users/gb/.codex_pvground_cs_20261002",
+        "head": "915d0d09a9b2f45fde9b280e1947378bc4be07a4",
+        "clean": true,
+        "new_payload_prefix_absent": true
+      },
+      {
+        "path": "C:/Users/gb/.codex_mcln_v99_internal_20260928",
+        "head": "03e863de65802fba249bde9fcebc7cf480abfd5d",
+        "clean": true,
+        "new_payload_prefix_absent": true
+      }
+    ],
+    "original_43_input_sha_checks_pass": true
+  },
+  "resolved_payload": {
+    "prefix": "refine-logs/pvground_mask_extent_diagnostic_20261006/",
+    "file_count_including_two_current_review_outputs_and_generated_gitattributes": 47,
+    "files": [
+      "analyze_extent.py",
+      "analyze_extent_failures.py",
+      "controller.py",
+      "deploy_preflight_authorized.py",
+      "extent_evidence.py",
+      "inspect_publication_failure_authorized.py",
+      "launch_formal_authorized.py",
+      "observe_collect_formal_authorized.py",
+      "observe_collect_preflight_authorized.py",
+      "prepare_diagnostic.py",
+      "prepare_publication_v2.py",
+      "publish_formal_launch.py",
+      "publish_formal_launch_v2.py",
+      "record_m0_completion.py",
+      "run_extent_diagnostic.py",
+      "spec.json",
+      "EXPERIMENT_PLAN.md",
+      "EXPERIMENT_TRACKER.md",
+      "ACTUAL_EXECUTION_TRACKER.md",
+      "research_contract.md",
+      "MANIFEST.md",
+      "SOURCE_REVIEW.json",
+      "SOURCE_REVIEW.md",
+      "SOURCE_REVIEW_CALL.json",
+      "FORMAL_LAUNCH_REVIEW.json",
+      "FORMAL_LAUNCH_REVIEW.md",
+      "FORMAL_LAUNCH_REVIEW_CALL.json",
+      "PUBLISH_LAUNCH_REVIEW.json",
+      "PUBLISH_LAUNCH_REVIEW.md",
+      "PUBLISH_LAUNCH_V2_REVIEW.json",
+      "PUBLISH_LAUNCH_V2_REVIEW.md",
+      "PUBLICATION_FAILURE_INSPECTION.json",
+      "preflight_launch.json",
+      "preflight_wait.json",
+      "formal_launch.json",
+      "formal_observer_live.json",
+      "FORMAL_LIVE_SESSIONS.json",
+      "complete/preflight/CPU_SUMMARY.json",
+      "complete/preflight/imports.json",
+      "complete/preflight/load.json",
+      "complete/preflight/receipt.json",
+      "complete/preflight/rows.jsonl",
+      "complete/preflight.exit",
+      "complete/preflight.log",
+      "complete/preflight_status.json",
+      "local_cpu_m0/CPU_SUMMARY.json",
+      ".gitattributes"
+    ],
+    "added_since_v1": [
+      "PUBLICATION_FAILURE_INSPECTION.json",
+      "PUBLISH_LAUNCH_V2_REVIEW.json",
+      "PUBLISH_LAUNCH_V2_REVIEW.md",
+      "inspect_publication_failure_authorized.py",
+      "prepare_publication_v2.py",
+      "publish_formal_launch_v2.py"
+    ],
+    "scope_note": "Both v2 report outputs are included as payloads but excluded from their own reviewed_files. Added future root Python files or changed payloads are outside this snapshot."
+  },
+  "actual_static_checks": {
+    "local_CPython": "3.13.12",
+    "python37_grammar_and_compile_only": [
+      "prepare_publication_v2.py",
+      "publish_formal_launch_v2.py",
+      "inspect_publication_failure_authorized.py",
+      "v2 embedded remote receiver",
+      "inspection embedded remote reader"
+    ],
+    "exact_four_replacement_reconstruction": true,
+    "remote_receiver_unchanged": true,
+    "no_entrypoint_import_or_execution": true,
+    "python37_runtime_executed": false
+  },
+  "actual_review_execution": {
+    "publisher_v1_executed": false,
+    "publisher_v2_executed": false,
+    "preparer_executed": false,
+    "inspection_entrypoint_executed": false,
+    "network_operations": 0,
+    "remote_commands": 0,
+    "GPU_calls": 0,
+    "Git_writes_commits_pushes": 0,
+    "model_or_checkpoint_writes": 0,
+    "active_source_mutations": 0,
+    "prior_review_mutations": 0,
+    "deletions": 0,
+    "read_only_Git_commands": [
+      "rev-parse HEAD",
+      "status --porcelain"
+    ],
+    "local_outputs": [
+      "PUBLISH_LAUNCH_V2_REVIEW.json",
+      "PUBLISH_LAUNCH_V2_REVIEW.md"
+    ]
+  },
+  "limitations": [
+    "No retry success, SSH credential validity, backend identity or current remote state is attested. Remote failure state is from the saved inspection only.",
+    "Root cause of the original empty stdout is unproven; the v2 source now surfaces nonzero receiver stderr before parsing.",
+    "Formal controller/observer/score state was not polled or refreshed. Existing launch/live records remain historical observations; no completed formal result is asserted.",
+    "AST grammar/compile checks ran locally without imports or entrypoints; this is not Python3.7 execution or a remote integration test.",
+    "Same-context follow-up, same-family/provisional, backend NOT_ATTESTED."
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/analyze_extent.py",
+      "sha256": "910f31c00b75b81737566aae2d6cf26aa07273a8fc9306622350c0e064074d54"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/analyze_extent_failures.py",
+      "sha256": "2cd36340de519f2c43c509a3e4838bf4d8680b294877af498cfcb91623519a4e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/controller.py",
+      "sha256": "7501044671f48127569ce720719e22142db6fdbe4069a8f9883638e3cc496cc6"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/deploy_preflight_authorized.py",
+      "sha256": "198023e8c5bf477be2daf8a680ce9a45f77e6b83be3147633aefcffbcae30e62"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/extent_evidence.py",
+      "sha256": "4dba4e9a4201271456859ee1499baa0920fe11b37e1fc9d08e0f1f6d2d5b32c9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/launch_formal_authorized.py",
+      "sha256": "4e3642777f556e371fa986efbb480ead350485ee8d2647e47d98a978ad0bf52c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/observe_collect_formal_authorized.py",
+      "sha256": "c2af311ddc8c1975ff43a2204d5123b2acb0c7d799560491ee895c430fa8747a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/observe_collect_preflight_authorized.py",
+      "sha256": "377480225da5e1148dee52f053d76227f91820a069c87d1281ba377eac20ce78"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/prepare_diagnostic.py",
+      "sha256": "5d2a7ab37612631e79ac699bf4fa5ad953fa36cee6f4ce3f4c74f0262be1f666"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/publish_formal_launch.py",
+      "sha256": "60f89943ba45fa6a387f48f5c0119ee7d9812899bc3e78604f80ce65d45a078f"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/record_m0_completion.py",
+      "sha256": "5af5e289e753e5d886f6b6821c9b0b38a154e0f18e952b1b4fd4642535a6fb52"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/run_extent_diagnostic.py",
+      "sha256": "84396a6bc547bf1c85122db40ca2ade817022caa644cc788b3e3c7ba9b867dd0"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/spec.json",
+      "sha256": "b50869541248ee30b4d451674fbe2a5474bc610cc96ca678616b8d570220d7b7"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/EXPERIMENT_PLAN.md",
+      "sha256": "1f871ff9033fabbaa76508c759c3bcb97082a79ba05e5c080fd681f953f6caa0"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/EXPERIMENT_TRACKER.md",
+      "sha256": "f6e63a347aa0848bdc51898fe94f5730ba4e98cc574eb0027e4cb7c9fbcc044e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/ACTUAL_EXECUTION_TRACKER.md",
+      "sha256": "f333cb3cdfad3a623fae26739192185c25153c2c14cdbb1c57656865fc54c704"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/research_contract.md",
+      "sha256": "c114f569abc750a72b9183fb042e60932ce1de347e29a3494efc9e7f5cc3f849"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/MANIFEST.md",
+      "sha256": "c7af9ae14e66d52bcc3a844d2462e20097ea891b95f4ab3c23718bff34c5c88a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/SOURCE_REVIEW.json",
+      "sha256": "bc6c42ec4a839f576e91b9146d5a153a13dd677df2f89a76195f73c095ad2c01"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/SOURCE_REVIEW.md",
+      "sha256": "817ae80103c1ce92ae990a771b6911f999215cddbdfbe77bf4fc6ba8be93dc9b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/SOURCE_REVIEW_CALL.json",
+      "sha256": "7d9048acc1d9ad7801bb97e0a308f55719858757815798a0044d7502724010a1"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/FORMAL_LAUNCH_REVIEW.json",
+      "sha256": "7c5f3e46e82b1ae8eccc1011cbd3d09ae7abbb976de2972ae92a4ae1cfb08524"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/FORMAL_LAUNCH_REVIEW.md",
+      "sha256": "463802c997a8a52e01c971b468e1bf9edb199cdfae178446f898694458e29f5f"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/FORMAL_LAUNCH_REVIEW_CALL.json",
+      "sha256": "1c9ef29c833f4ec92071de6843bb1fe44affdf69eaa82d033534b746428cfd9c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/preflight_launch.json",
+      "sha256": "a79274b69285cf31b6510ae40329ab6d0cc95a48b4680e11b3eef0af3a2620c2"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/preflight_wait.json",
+      "sha256": "697c7d130ecb394b9c2ef71099f8bbb5a232a69eb44ae99e9d716a0728787744"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/formal_launch.json",
+      "sha256": "57842c71b5b69d1d17e1cbe1589a6c38de42f42bacc9e845805f48c517091196"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/formal_observer_live.json",
+      "sha256": "6bee02e5dfb9c79e3ae2e68f349cd0461752af3dfe4b180a0dd73649310aca38"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/FORMAL_LIVE_SESSIONS.json",
+      "sha256": "da103a5fc9c82a51b1dc50658d30b9d574d63524f08ce4f92bb1f951fcf35c26"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/preflight/CPU_SUMMARY.json",
+      "sha256": "15e392b7750acf6037f819ea1ef98b09b15d289e22bbd2961cd0eb2eb42e5b94"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/preflight/imports.json",
+      "sha256": "51fd47332fe71a1ce94c22eedd9256c095346f9808304630395e0f2c24c98a23"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/preflight/load.json",
+      "sha256": "87ed56688989e6b0cca7b3b753d19a7d8f406e5d0e646ba7e1c37e0c39a43b9a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/preflight/receipt.json",
+      "sha256": "1933b9d823fc9631ae9c61a1883ea3b442ea5b32c3c014ea006917c5ca8b4038"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/preflight/rows.jsonl",
+      "sha256": "14f3d4a148c9e4609faa411e169d234be5c1fd1e1a51c3e5ed8c590d056a56de"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/preflight.log",
+      "sha256": "116f841fb774eeb6af4913f15859db5544c84bf2a6c7b66200d912faa44b359e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/complete/preflight_status.json",
+      "sha256": "737b465b049006972b671349381af441ef01df023393f68d4e53e4fe24c48849"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/local_cpu_m0/CPU_SUMMARY.json",
+      "sha256": "86a31f65e1063c0bd8e267c3df02929c394b8f8b395574660f5898e8b0370bb7"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_support_reference_20261005/terminal_publication.json",
+      "sha256": "a8c3bcc86d04a78101d3c98226fa8a343e0d076af916b9ae2dedf047e81cf7c1"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1"
+    },
+    {
+      "path": "C:/Users/gb/.codex_pvground_cs_20261002/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_v99_internal_20260928/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1"
+    },
+    {
+      "path": "C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/prepare_publication_v2.py",
+      "sha256": "66e049976e9850d17559abb551087f881a3a36e470658bec83ecd2f117b2b5d7"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/publish_formal_launch_v2.py",
+      "sha256": "69fbf996249cb075e3661eba0e77d6fc32aca69008bcbe9ad29617cb349cb9e2"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/inspect_publication_failure_authorized.py",
+      "sha256": "d3f43f5cb64f7ce226bffda5a8b545c34ec7a444cb1b255c13121e36ba67255b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/PUBLICATION_FAILURE_INSPECTION.json",
+      "sha256": "97c1b8b4756ed5d2ffa4eebc0e63d5fa7731c9364b7a06886d4a0d0f462bf1e6"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/PUBLISH_LAUNCH_REVIEW.json",
+      "sha256": "def55ad55d08106e85ee169440f1b920cba62a2718ca723a1ad4e79081a407af"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_extent_diagnostic_20261006/PUBLISH_LAUNCH_REVIEW.md",
+      "sha256": "e1e8e7fd7fe42a49a50235098638c1efbccdf52ba4adaa23761ffd8e4b2733c5"
+    }
+  ]
+}

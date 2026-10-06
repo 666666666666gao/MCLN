@@ -22779,3 +22779,18 @@ seed2027、物理/有效batch8、accum1、LR1e−5、WD5e−4、clip0.1；每组
 fresh-context SOURCE_ONLY初审PASS后，真实readonly前置probe发现旧controller的字段为completed/exit_code、脚本误读status。失败发生在mkdir/upload/GPU之前、0优化步；保留真实错误和初审版本，最小修正两字段并同上下文补审PASS、0未解决阻断。模型/runner/规格没有改动；归属same-family/provisional，backend未attest。sourcePASS不是GPU或精度证据。
 
 实际M0于2026-10-06T10:52:28.464390+08:00提交，已pgrep核对controller703128；两组各2真实更新，检查中性分布等于所选参考、实际raw输入全部256范围、真实39空支撑保留先验、第二步内部梯度、父/R/评分/Mask冻结、CPU模型/Adam严格恢复。现有warm环境与算子缓存复用，不重装。sole observer44835计划11:04:28首查、后续每240s；估时900s。此发布不声称已完成预检、已正式训练或获得准确率。M1未开始；预计完整pair约22000s，首次观察21600s约结束前7min，再240s；依据实际吞吐校正，不重复controller/observer。代码/规格/失败/实际launch/review见refine-logs/pvground_mask_reference_20261006/，fixture二进制和权重不上传Git。目标ACTIVE_UNMET，当前best4511距4754仍243条。
+
+
+## 20.376.83 Mask空间参考两组真实预检闭合，固定预算完整对照已提交（2026-10-06T11:27:41.966417+08:00）
+
+承接§82的启动快照。M0实际于2026-10-06 11:08:20.348532闭合，controller703128、最后child707951、exit0；唯一observer44835于11:08:29第二次240秒检查记录闭合，native会话也已exit0，不重启。每组同8条真实fit输入重复2次更新，父模型/R全部状态不变、每组456102参数/10状态，原语义头每普通forward一次；更新后缓存上游评分/Mask重放精确。此不宣称两次fresh forward或跨进程输出逐位一致。
+
+中性33节点分布初始解码精确等于其所选参考中心及既有SIZE_FLOOR尺寸；实际raw点独立核验全部256参考、误差0；39条既存空支撑在CUDA执行确认保留提供的原粗框先验、无GT字段。第二步所有10参数梯度非零、冻结参数无梯度；CPU保存/严格重载模型delta与Adam组/步数/所有moment精确。两组序列化5481547B，0权重文件、0精度结果，全部24实际预检文件154131B已收集/校验。native/fused各461.21/470.05秒，合计controller946.20秒；各峰值allocated3911791616B、reserved5672796160B，仅这次冻结骨干预检，不据此机械扩batch。
+
+小批次也显示范围限制未消失：第一步native匹配DFL目标48面中outside0，Mask参考outside2；额外native143候选/858面中outside120，Mask参考128候选/768面中outside196。第二步相应126/200面。参考不可形成的候选计数1033→1045（每步全部8×256），它们保留原粗参考而没有删除；不把这些小批次计数外推为全验证发生率或失败唯一原因。不修改本轮节点/损失/采样规则。
+
+M1实际于2026-10-06T11:14:14.214618+08:00提交、pgrep核对controller711378，screen pvg_mask_reference_fit_20261006，唯一本地observer27853已启动。各组3723更新、29778输入各一次、B8/effective8/accum1、LR1e−5/WD5e−4/clip0.1；相同官方PV/G/4511、共同重置output2/保留hidden8，从全新Adam开始、不承接M0两步状态。每组初始9508、新fit的6887初始与终点、终点9508；初始架构收益与训练收益分开。只训练已有几何头，原生last/bbs、同QueryBox/Mask、全256保留，不加入新质量排名、teacher或V99双源。
+
+实际启动前GPU空闲，数据盘可用1206886400B、所需reserve960163041B，系统盘463011840B，warm环境/算子缓存复用、无安装。估计总22000秒约17:20:54；sole observer首17:14:14、之后240秒，到闭合后流式收集实际证据、排除权重，不在远端另建大tar。此发布尚未取得M1闭合或新准确率；SourceOnly审查及M0通过不算涨点。结束后fresh terminal审计、所选初始/终点实际strict恢复，并仅保留真实指标最佳已闭合权重，原PV/G与V99必需依赖保护。当前trainedbest仍5616/4511、47.4443%、距4754差243；offline4848仍是§81诊断，目标ACTIVE_UNMET。
+
+已审主源保持原版本；acceptedM0、actualfitlaunch/observer、源码与收集清单见refine-logs/pvground_mask_reference_20261006/accepted_m0_fit_launch/。原始point/NPZ与权重不上传Git；三仓、桌面与远端文档同步仍为append-only原字节前缀。旧§82是当时启动快照，当前状态以本节和M0_ACCEPTANCE_AND_FIT_LAUNCH为准。

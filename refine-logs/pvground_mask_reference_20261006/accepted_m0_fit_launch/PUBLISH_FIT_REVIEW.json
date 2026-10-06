@@ -1,0 +1,425 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "N1_ARCHIVED_RUNTIME_SCOPE",
+      "severity": "INFO",
+      "detail": "The review validates saved M0 receipts/logs/intake and their linkage to reviewed source. It performs no new GPU/model/remote execution or current PID check. Observer native-session exit0 is supplied by the parent execution record; saved wait evidence independently records observer/controller closure."
+    },
+    {
+      "id": "N2_FIT_AND_PUBLICATION_SCOPE",
+      "severity": "INFO",
+      "detail": "M1 is a saved active launch, not a terminal result. Publishing this section, current remote symlink state, Git push and final four-local/remote equality remain publisher execution outcomes. M0 pass is not an accuracy gain; the selected initial/terminal state still requires the planned M2 restore."
+    }
+  ],
+  "execution_scope": "SOURCE_ONLY",
+  "fresh_context": false,
+  "same_context_followup": true,
+  "original_source_review_fresh_context": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "backend_identity": "not_attested",
+  "reviewed_at_cst": "2026-10-06T11:27:03.823545+08:00",
+  "summary": "PASS with zero unresolved blockers for the current Doc83 publisher. Archived actual two-update M0 evidence and the actual fixed-budget M1 launch are represented accurately; no fit completion or new accuracy is certified.",
+  "checks": [
+    {
+      "name": "SOURCE gate and unchanged implementation",
+      "status": "PASS_LOCAL",
+      "evidence": [
+        "publish_fit_launch.py:15",
+        "preflight_complete/SOURCE_REVIEW.json"
+      ],
+      "detail": "Current SOURCE_REVIEW is PASS/SOURCE_ONLY with zero blockers; all 101 bound inputs still match. Collected runner/controller/model/spec/plan/review bytes equal their current reviewed originals. No source, optimizer budget, model or spec changes were made in this followup."
+    },
+    {
+      "name": "24-file M0 intake and closure",
+      "status": "PASS_ARCHIVED_EVIDENCE",
+      "evidence": [
+        "preflight_complete/INTAKE.json",
+        "preflight_complete/preflight_status.json",
+        "preflight_wait.json"
+      ],
+      "detail": "All 24 recorded files match bytes/SHA; sum 154131 B, with no unlisted files except INTAKE.json. Controller JSON equals controller log and saved wait.status; controller and both child exit files are 0. Finished 11:08:20.348532, elapsed 946.1965307965875 s; observer saved closure at 11:08:29.904165 on observation 2. No new remote check was performed."
+    },
+    {
+      "name": "Both actual two-update receipts",
+      "status": "PASS_ARCHIVED_EVIDENCE",
+      "evidence": [
+        "preflight_complete/native_reference/preflight.json",
+        "preflight_complete/fused_mask_reference/preflight.json",
+        "record_m0_and_fit.py:12"
+      ],
+      "detail": "Each receipt equals its raw log payload and binds current runner/spec SHA. Both report 2 optimizer steps, 456102 parameters/10 states, unchanged parent/R, all256 raw extent max error 0, 39 actual empty supports retaining original priors without GT fields, neutral initial decode, all10 positive step2 parameter gradient norms, strict CPU model/Adam restore, 5481547 B in-memory serialization and 0 weight files/accuracy results. All four witnesses have the same 8 fit rows. Exactness of upstream outputs is explicitly limited to cached replay, not repeated fresh forwards."
+    },
+    {
+      "name": "DFL and runtime statements",
+      "status": "PASS_ARCHIVED_EVIDENCE",
+      "evidence": [
+        "publish_fit_launch.py:48",
+        "publish_fit_launch.py:50"
+      ],
+      "detail": "Native matched outside 0/48 both steps; fused outside 2/48 both steps. Native extra outside 120/858 then126/852, candidates143 then142; fused196/768 then200/768, candidates128 both steps. Invalid reference counts1033 then1045 in both arms. Native/fused elapsed461.2119/470.0525 s; each peak allocated3911791616 B/reserved5672796160 B. Text preserves small-batch limits and makes no claim that fused references eliminate range limits."
+    },
+    {
+      "name": "Actual fit launch packet and observation schedule",
+      "status": "PASS_SAVED_LAUNCH",
+      "evidence": [
+        "fit_launch.json",
+        "M0_ACCEPTANCE_AND_FIT_LAUNCH.json",
+        "fit_observer_started.json",
+        "fit_resource_check.json"
+      ],
+      "detail": "Acceptance embeds exactly the actual fit_launch JSON. Controller711378 and sole observer27853 are the saved launched/not-completed state; M0 closure gates are true. Resource object equals saved prelaunch resource file. First check21600 s from11:14:14 is17:14:14; estimate22000 s is17:20:54; later polling240 s. Each arm3723 updates/29778 rows/B8/freshAdam, initial9508 + initial/terminal6887 + terminal9508. No new accuracy or terminal result is claimed."
+    },
+    {
+      "name": "Doc82 baseline and append-only Doc83",
+      "status": "PASS_LOCAL_AND_SOURCE",
+      "evidence": [
+        "publish_fit_launch.py:28",
+        "publish_fit_launch.py:35",
+        "publish_fit_launch.py:59"
+      ],
+      "detail": "Prior section20.376.82; four local copies2329227 B have SHA fe46002afa3ad606a5491dbf0d3f2f86946d6711999bb63e21518ddc571aa62e. Three local HEADs match prior receipt and all are clean. Guard contains old SHA exactly once. New document preserves old bytes and requires exactly one section20.376.83. Prior remote equality is from its publication receipt, not a new connection."
+    },
+    {
+      "name": "Payload names and remote evidence boundary",
+      "status": "PASS_SOURCE_AND_LOCAL",
+      "evidence": [
+        "publish_fit_launch.py:61",
+        "publish_fit_launch.py:78",
+        "publish_fit_launch.py:93"
+      ],
+      "detail": "35 names are unique: 8 fixed inputs, 2 current review outputs and 25 preflight_complete files (24 intake files plus INTAKE). All 33 input files exist. With .gitattributes the payload is36 files. No NPZ/weights/.aris or credential files. Runtime reads existing native_reference_spec.json. Remote prefix resolves exactly to /root/autodl-tmp/mcln_published_evidence_20261005/pvground_mask_reference_20261006/accepted_m0_fit_launch; existing destination is rejected, every child is contained and created with xb, and bytes are checked. Old remote document SHA and append-only prefix are verified."
+    },
+    {
+      "name": "Three-repo publication and corrected state fields",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "publish_fit_launch.py:100",
+        "publish_fit_launch.py:123",
+        "publish_fit_launch.py:131",
+        "publish_fit_launch.py:137"
+      ],
+      "detail": "Evidence goes to first two repos, document to all three and Desktop; changed-file whitelist, index byte equality, append prefix and clean-state gates are retained. Three commits, primary repo HEAD:main push and ls-remote equality, remote document digest and one-occurrence guard replacement precede receipt/state publication. Receipt uses fit_controller; state references fit_launch.json; wording says full fit launched/no retrieved new accuracy. No publication was executed in this review."
+    },
+    {
+      "name": "Generator reproducibility and syntax",
+      "status": "PASS_CPU_ONLY",
+      "evidence": [
+        "prepare_fit_publication.py",
+        "publish_fit_launch.py"
+      ],
+      "detail": "In-memory generator replay with intercepted Path.write_text reproduced the current publisher bytes exactly. AST passed for generator, publisher, record_m0_and_fit.py and embedded remote Python. No publisher imports or top-level body were executed."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "R1_REPLACEMENT_ORDER_STATE_REGRESSION",
+      "severity_before_fix": "BLOCKING",
+      "status": "RESOLVED_BEFORE_PUBLICATION",
+      "detail": "The earlier generator replaced observer44835 before matching the full reference_preflight_launch/observer string, leaving an obsolete preflight reference. Current generator uses an independent reference_fit_launch replacement; replay and final AST confirm fit_launch.json is used."
+    },
+    {
+      "id": "R2_INHERITED_PREFLIGHT_METADATA",
+      "severity_before_fix": "INFO",
+      "status": "RESOLVED_BEFORE_PUBLICATION",
+      "detail": "The receipt process key is fit_controller, docstring describes accepted actual two-update runtime/submitted full-budget pair, and memory text says full fit launched with no retrieved new accuracy. Stale No full fit wording is absent."
+    }
+  ],
+  "observed_previous_publication": {
+    "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_mask_reference_20261006/preflight_launch_publication.json",
+    "section": "20.376.82",
+    "heads": [
+      "6b508d130488a0c3cf9c18a2348b7487fd6f9ff5",
+      "19df3542b027a7eb53c0bd443ee1eb170a59ed85",
+      "1efe81338a13087787eeacbddde06715fe2a8ad3"
+    ],
+    "handoff_sha256": "fe46002afa3ad606a5491dbf0d3f2f86946d6711999bb63e21518ddc571aa62e",
+    "remote_copy_status": "prior receipt only; no new network attestation"
+  },
+  "observed_mutable_state": {
+    "path": "C:/Users/gb/.codex/tmp/pvground_query_supported_geometry_20261005/active_continuation_state.json",
+    "latest_publication": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_reference_20261006\\preflight_launch_publication.json",
+    "note": "Only relevant current fields were inspected. The existing publisher revalidates previous section, heads and document; no new lock or hash scheme was added."
+  },
+  "payload_names": [
+    "prepare_fit_publication.py",
+    "publish_fit_launch.py",
+    "record_m0_and_fit.py",
+    "M0_ACCEPTANCE_AND_FIT_LAUNCH.json",
+    "preflight_wait.json",
+    "fit_launch.json",
+    "fit_resource_check.json",
+    "fit_observer_started.json",
+    "PUBLISH_FIT_REVIEW.json",
+    "PUBLISH_FIT_REVIEW.md",
+    "preflight_complete/check_invalid_reference.py",
+    "preflight_complete/controller.py",
+    "preflight_complete/EXPERIMENT_PLAN.md",
+    "preflight_complete/fused_mask_reference/imports.json",
+    "preflight_complete/fused_mask_reference/load.json",
+    "preflight_complete/fused_mask_reference/preflight.exit",
+    "preflight_complete/fused_mask_reference/preflight.json",
+    "preflight_complete/fused_mask_reference/preflight.log",
+    "preflight_complete/fused_mask_reference_spec.json",
+    "preflight_complete/INTAKE.json",
+    "preflight_complete/invalid_reference_fixture.json",
+    "preflight_complete/mask_reference.py",
+    "preflight_complete/native_reference/imports.json",
+    "preflight_complete/native_reference/load.json",
+    "preflight_complete/native_reference/preflight.exit",
+    "preflight_complete/native_reference/preflight.json",
+    "preflight_complete/native_reference/preflight.log",
+    "preflight_complete/native_reference_spec.json",
+    "preflight_complete/preflight_controller.exit",
+    "preflight_complete/preflight_controller.log",
+    "preflight_complete/preflight_status.json",
+    "preflight_complete/query_supported_geometry.py",
+    "preflight_complete/run_geometry_fit.py",
+    "preflight_complete/SOURCE_REVIEW.json",
+    "preflight_complete/SOURCE_REVIEW.md"
+  ],
+  "payload_count_with_gitattributes": 36,
+  "actual_m0_scope": {
+    "intake_files": 24,
+    "intake_bytes": 154131,
+    "weight_files": 0,
+    "optimizer_steps_per_arm": 2,
+    "rows_per_step": 8,
+    "rows_repeated": true,
+    "native_matched_outside": [
+      0,
+      0
+    ],
+    "fused_matched_outside": [
+      2,
+      2
+    ],
+    "native_extra_outside": [
+      120,
+      126
+    ],
+    "fused_extra_outside": [
+      196,
+      200
+    ],
+    "invalid_reference_candidates_each_arm": [
+      1033,
+      1045
+    ],
+    "new_accuracy_result": false
+  },
+  "resource_snapshot_scope": "GPU_idle and free bytes are the saved prelaunch check, not a statement that the active M1 GPU is currently idle.",
+  "reviewer_execution": {
+    "local_source_reads": true,
+    "local_readonly_git_checks": true,
+    "in_memory_generator_replay": true,
+    "network_requests": 0,
+    "GPU_queries": 0,
+    "model_forwards": 0,
+    "publish_executions": 0,
+    "main_source_or_SOURCE_REVIEW_mutations": 0
+  },
+  "source_review_preserved": {
+    "json_sha256": "e5849720caf8894ac0ae33b9208a17edc72070e5c72f564fbe3efd58fbac6ed4",
+    "markdown_sha256": "06728ca40b2f83395174d8d0e32ba47c1a012c6629f89e276cb56cbc842d87f3"
+  },
+  "not_attested": [
+    "Current remote process or observer liveness",
+    "New M1 accuracy or terminal completion",
+    "Successful Doc83 publication or Git remote result",
+    "Actual reviewer backend identity"
+  ],
+  "review_context_note": "Same-context SOURCE_ONLY followup of the existing reviewer, same-family/provisional. No new fresh invocation or backend attestation is claimed.",
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_fit_publication.py",
+      "sha256": "2a766cd5ea50811e3465ed3cb2de2d4ec393c1cc8a5b6e88575d3fee3543957d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/publish_fit_launch.py",
+      "sha256": "628b6317e0bca3c885f14bcb041c21d7cb520870b2c94582a22620145114e378"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/record_m0_and_fit.py",
+      "sha256": "d199ab5760e42b25d043275217d8f5830429eaa41d0b15c220f5504eaeae8abd"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/M0_ACCEPTANCE_AND_FIT_LAUNCH.json",
+      "sha256": "2ad296c1a4f82658e3a1758695589fb1961e6a1055610618177f3fb3009c6b9e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_wait.json",
+      "sha256": "741ae290de5ec30c610e5e1f7f5b68a1c23342e05034f54c89cbb09e7ae7da0d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fit_launch.json",
+      "sha256": "1fa5d136dcdbb718e084012a74e3e3142e8de0855b29a6505bf81283d873e947"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fit_resource_check.json",
+      "sha256": "daf1bafda72b5c726f2b8ac5cb17cdc39c7d437f35a80605dabc0bdac5f313d6"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fit_observer_started.json",
+      "sha256": "94ac37791ec403264744426e155e488c301a8c66f4d209a14006f0f10da3b5bd"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/check_invalid_reference.py",
+      "sha256": "71bbb014d6b840388d8d47dfe6b1324057a1ca46bed1a996bfb7c44f85ae693f"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/controller.py",
+      "sha256": "2fdd5bf31e1581286d348b5dfc0508e9d41fe565c3d754ee0412f1fd38428165"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/EXPERIMENT_PLAN.md",
+      "sha256": "8f98749f0a044e7b3c76eba74e5972fe3616ab97a51f48191305c9a2558d7634"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/fused_mask_reference/imports.json",
+      "sha256": "4d4eaeaca2c1a1973a150c955c5cc802396c1325ce350a42fbe9172501eece78"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/fused_mask_reference/load.json",
+      "sha256": "4e80f610ce8251a83b33ea1cee4f8ec35cceca57b024676ad1ddd602eb92e22a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/fused_mask_reference/preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/fused_mask_reference/preflight.json",
+      "sha256": "642c3e61431702db6de849a080a0362672616a4d6931fc9442df0d67187aa534"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/fused_mask_reference/preflight.log",
+      "sha256": "12fae9bebbe12f827c4a3d8cb1cdef3a5f992569d32055904aa8c5de9da0d650"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/fused_mask_reference_spec.json",
+      "sha256": "bfa3507ab0c75166218719a391cacc154e75af8801a7d4be21faf3ab4ac0eb27"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/INTAKE.json",
+      "sha256": "25aa10cb7ea8a13b8fe9ccfae05193dc8c759108e5506fbfadb78cf9da37e40e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/invalid_reference_fixture.json",
+      "sha256": "e1c711f081a73bd6e14418cc1ef4e842f6b3f0bdcd5c5f73dfe95cdec76eebca"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/native_reference/imports.json",
+      "sha256": "4d4eaeaca2c1a1973a150c955c5cc802396c1325ce350a42fbe9172501eece78"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/native_reference/load.json",
+      "sha256": "664515bc6876b7b681d7e4aff16b1c6c9e0b2486731f134c70b32543470cdd02"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/native_reference/preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/native_reference/preflight.json",
+      "sha256": "20f58d50b741f36cfd9a864343ad04f0886ed8966e81009ade44fdee97f95a43"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/native_reference/preflight.log",
+      "sha256": "9ff59ae978e2696abcf4d8ba026320811b348ac256d691fd0753a44b827d23ba"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/preflight_controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/preflight_controller.log",
+      "sha256": "bf23183b75aa4e36db81ee001ce3c19683ba41b3e2c4eaebd9c8062d2e98c248"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/preflight_status.json",
+      "sha256": "cfd8df2ba0e0ecde7f606a64f32f4bdf0252feed1fbfa63a6a15906db381cc0c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/query_supported_geometry.py",
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/run_geometry_fit.py",
+      "sha256": "01565b6d0b8ead1a5d34e588525e114e97f33bcd9650c35d40e0a1a60d7b2747"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/SOURCE_REVIEW.json",
+      "sha256": "e5849720caf8894ac0ae33b9208a17edc72070e5c72f564fbe3efd58fbac6ed4"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/preflight_complete/SOURCE_REVIEW.md",
+      "sha256": "06728ca40b2f83395174d8d0e32ba47c1a012c6629f89e276cb56cbc842d87f3"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/SOURCE_REVIEW.json",
+      "sha256": "e5849720caf8894ac0ae33b9208a17edc72070e5c72f564fbe3efd58fbac6ed4"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/SOURCE_REVIEW.md",
+      "sha256": "06728ca40b2f83395174d8d0e32ba47c1a012c6629f89e276cb56cbc842d87f3"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/publish_preflight_launch.py",
+      "sha256": "17ee70986363e14809baf1c36086f368ee7ea771dd37b3dcb9290857b1003dc2"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/prepare_launch_publication.py",
+      "sha256": "963a2b9710d68f67230e99f94bbfc2b2dd16f88443533d0572ba08b52a44c03b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fused_mask_reference_spec.json",
+      "sha256": "bfa3507ab0c75166218719a391cacc154e75af8801a7d4be21faf3ab4ac0eb27"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/PUBLISH_PREFLIGHT_REVIEW.json",
+      "sha256": "97389c17b8b25580def78565b17c7330c58f6a9071b177cad867d7366a6a6725"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/PUBLISH_PREFLIGHT_REVIEW.md",
+      "sha256": "d58d0cde7803ceb0e65df5a906aa8305ef1deb702437f271d9d8afd3ada6ffec"
+    },
+    {
+      "path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_mask_reference_20261006/preflight_launch_publication.json",
+      "sha256": "27ffca932955b429ee09f4e074cffb1067ad94f076f895f933c4c3641acb1931"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "fe46002afa3ad606a5491dbf0d3f2f86946d6711999bb63e21518ddc571aa62e"
+    },
+    {
+      "path": "C:/Users/gb/.codex_pvground_cs_20261002/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "fe46002afa3ad606a5491dbf0d3f2f86946d6711999bb63e21518ddc571aa62e"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_v99_internal_20260928/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "fe46002afa3ad606a5491dbf0d3f2f86946d6711999bb63e21518ddc571aa62e"
+    },
+    {
+      "path": "C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "fe46002afa3ad606a5491dbf0d3f2f86946d6711999bb63e21518ddc571aa62e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/sync_cs_handoff_remote_20260923.py",
+      "sha256": "d100afbf3b31d77cfd0c5d067b8a1c9c7105a5c349d22e7d32af6ef60465820c"
+    }
+  ]
+}

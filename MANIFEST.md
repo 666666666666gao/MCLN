@@ -272,3 +272,5 @@
 - 2026-10-06T10:46:36.021896+08:00 Protected4511 fullMask diagnostic9508 closed: offline exact4848/q4781, no trainedbest promotion; fresh terminal WARN0blocks.
 
 - 2026-10-06T11:00:38.842516+08:00 Protected4511 native/fused Mask spatial-reference pair: SOURCE reviewed,actual2-step sanity launched; no accuracyyet.
+
+- 2026-10-06T11:27:41.966417+08:00 Protected4511 Mask spatial-reference pair: actualM0 accepted,full3723fitperarm submitted; no newaccuracyyet.

@@ -276,3 +276,5 @@
 - 2026-10-06T11:27:41.966417+08:00 Protected4511 Mask spatial-reference pair: actualM0 accepted,full3723fitperarm submitted; no newaccuracyyet.
 
 - 2026-10-06T11:52:59.106175+08:00 Mask-reference closed-state reconstruction and all256 recount tools SOURCE_ONLY reviewed; not executed.
+
+- 2026-10-06T12:17:54.409306+08:00 Best-only fixed-path retention tools SOURCE_ONLY reviewed; not executed.

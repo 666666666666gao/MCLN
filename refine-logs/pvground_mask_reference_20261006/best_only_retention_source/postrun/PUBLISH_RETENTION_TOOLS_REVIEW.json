@@ -1,0 +1,360 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "R1_SCOPE_SENTENCE_OVERBROAD",
+      "severity_before_fix": "CLAIM_PRECISION",
+      "status": "RESOLVED_BY_ROOT_WORDING_ONLY",
+      "detail": "Draft grouped all five candidates as if identical head/formal/train-log checks applied. Final paragraph states five candidate identities, four new candidate head/formal checks, and two terminal train-log SHA checks separately. No publication logic changed.",
+      "draft_publisher_sha256": "f6b32e365f30e2e5b373207370a82ab17b643c755375f0e4d64bb68888ddeaed",
+      "final_publisher_sha256": "458f58903a36dc1bfbf0d93eda66802053d5f1e3f84406c3d2cd17baa3f2e220",
+      "reverse_paragraph_change_reproduces_draft": true
+    }
+  ],
+  "nonblocking_findings": [
+    {
+      "id": "N1_PUBLICATION_PENDING",
+      "severity": "INFO",
+      "detail": "Doc85 write, remote payload, new commits/main and guard update are unexecuted; SOURCE_ONLY PASS is not actual publication or deletion evidence."
+    },
+    {
+      "id": "N2_SELF_JSON_DIGEST",
+      "severity": "INFO",
+      "detail": "The report JSON cannot embed its own fixed digest. Its actual final SHA is supplied separately in reviewer completion output; all other actual payload bytes are bound here."
+    }
+  ],
+  "fresh_context": false,
+  "same_context_followup": true,
+  "separate_publisher_review": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "backend_identity": "not_attested",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "reviewed_at_cst": "2026-10-06T12:17:12.710720+08:00",
+  "reviewer_agent": "/root/pvg_selected_mask_restore_source_review",
+  "summary": "SOURCE_ONLY PASS with zero unresolved blockers for the separate Doc85 retention-tools publisher after a wording-only clarification. Final publisher and relevant payload/input bytes bound. No publication or retention executed.",
+  "checks": [
+    {
+      "name": "Current Doc84 publication baseline",
+      "status": "PASS_LOCAL_AND_SOURCE",
+      "evidence": [
+        "publish_retention_tools_authorized.py:24-41",
+        "restore_tools_publication.json"
+      ],
+      "detail": "Three current HEADs and clean worktrees match actual Doc84 publication. Four local Doc84 copies have equal expected SHA and no Doc85. Active-state latest_publication/owned-job/observer27853 fields match the source gate; this is not a new remote process observation."
+    },
+    {
+      "name": "Retention source gate and preparation identity",
+      "status": "PASS_LOCAL_AND_SOURCE",
+      "evidence": [
+        "publish_retention_tools_authorized.py:18-23,59-64",
+        "RETENTION_SOURCE_REVIEW.json",
+        "RETENTION_PREPARATION.json"
+      ],
+      "detail": "Existing SOURCE_ONLY retention review is PASS/no blockers; all27 bound source identities match. Preparation points to its actual report SHA and labels retention/new accuracy unexecuted. The separate publisher review does not alter any old review."
+    },
+    {
+      "name": "Nine fixed payloads with no runtime execution",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "publish_retention_tools_authorized.py:59-65,90-108"
+      ],
+      "detail": "Eight fixed source/review/preparation files plus literal .gitattributes total9 items. No checkpoint, NPZ, env value, credential, .aris directory or glob is included. Files are transmitted as bytes; publisher invokes neither the retention scripts nor models/observer/training."
+    },
+    {
+      "name": "Symlink-resolved remote destination and append-only document",
+      "status": "PASS_SOURCE_ONLY",
+      "evidence": [
+        "publish_retention_tools_authorized.py:71-99"
+      ],
+      "detail": "Remote checks the old document digest and requires exact resolved data-evidence best_only_retention_source directory, absent before upload. Each file resolves under that directory, is exclusive-created and byte-checked. The new document preserves the old byte prefix. Actual remote symlink/directory state was not queried."
+    },
+    {
+      "name": "Git prefix/LF rules and main synchronization",
+      "status": "PASS_LOCAL_AND_SOURCE",
+      "evidence": [
+        "publish_retention_tools_authorized.py:102-136"
+      ],
+      "detail": "Only first two repos receive source payload/manifest append; all three repos and desktop receive doc. Staging is bounded, payload index bytes are exact, old tracked doc prefix survives, and postcommit trees must be clean. Current three tracked docs differ from working copies solely by CRLF-to-LF normalization. One non-force push targets origin HEAD:main, with ref comparison afterward; no push executed in review."
+    },
+    {
+      "name": "Guard identity, ordered bookkeeping and authorized scope",
+      "status": "PASS_LOCAL_AND_SOURCE",
+      "evidence": [
+        "publish_retention_tools_authorized.py:137-153"
+      ],
+      "detail": "Old Doc84 SHA occurs once in expected_previous_sha. Replacement is limited to that digest; publication/state/memory records follow remote/main/document validation and explicitly say no retention, restore or new accuracy. Operations are the already authorized source/doc publication scope, not execution of future deletion authority."
+    },
+    {
+      "name": "Claims and final single-paragraph clarification",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "publish_retention_tools_authorized.py:46-54"
+      ],
+      "detail": "Doc85 keeps old5616/4511 and correct59.0660%/47.4443%, ACTIVE_UNMET and the unchanged future observation schedule. Final text separately states five identity checks, four new-candidate head/formal checks and two terminal train-log checks. Reversing only that paragraph reproduces the draft source digest; execution logic is unchanged."
+    },
+    {
+      "name": "Compatibility and sensitive-output boundary",
+      "status": "PASS_STATIC_ONLY",
+      "evidence": [
+        "publish_retention_tools_authorized.py"
+      ],
+      "detail": "Final publisher and embedded remote code pass Python3.7 grammar AST and in-memory compile under localPython3.12.6. shlex.join is local-only. Environment password is used for SSH authentication, not payload/log output; no new notification API. No network, publisher or payload execution occurred."
+    }
+  ],
+  "publisher_sha256": "458f58903a36dc1bfbf0d93eda66802053d5f1e3f84406c3d2cd17baa3f2e220",
+  "retention_review": {
+    "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RETENTION_SOURCE_REVIEW.json",
+    "sha256": "6158fb3c9ad36e4c11005eb39222e42c04de5a8a176cf9b8e0f66cd44b7286f6",
+    "verdict": "PASS",
+    "blocking_findings": [],
+    "bound_inputs_verified": 27,
+    "all27_match": true
+  },
+  "observed_local_context": {
+    "previous_publication": {
+      "time_cst": "2026-10-06T11:53:42.795102+08:00",
+      "section": "20.376.84",
+      "heads": [
+        "3d64dde06cc3e739262f538d0ddb2564793cddf2",
+        "e86e783142e7cd2afa368c35f13db8cdb9c59e4c",
+        "8cfecad5e6e24881c76e8639a4b7f2b470145849"
+      ],
+      "handoff_sha256": "beeb8dbeb5a018f88268898b1fa6ef4e527f859678c7169fc76ff4f34cd5c5a0",
+      "four_local_and_remote_equal": true,
+      "github_main": "3d64dde06cc3e739262f538d0ddb2564793cddf2",
+      "payload_count": 15,
+      "execution_scope": "SOURCE_ONLY_TOOLS_PUBLISHED",
+      "candidate_restore_executed": false,
+      "new_accuracy_result": false,
+      "raw_npz_published": false,
+      "weights_changed": false,
+      "observer_native_session_id": 27853
+    },
+    "worktrees_clean_at_read": true,
+    "four_local_documents_equal": true,
+    "local_document_sha256": "beeb8dbeb5a018f88268898b1fa6ef4e527f859678c7169fc76ff4f34cd5c5a0",
+    "local_document_bytes": 2334670,
+    "Doc85_occurrences": 0,
+    "tracked_document_sha256": "e6d1a542a09bbdf56edfe5166bf8875b7b49e81d16e383dd37b050fb2b951840",
+    "tracked_difference": "only existing CRLF->LF normalization",
+    "guard_path": "C:/Users/gb/.codex/tmp/sync_cs_handoff_remote_20260923.py",
+    "guard_sha256": "41eba4f821bd0fb55ed1222f54f684e4ec06c3d98ec6f0750a2d7f4e9a3e2141",
+    "guard_old_SHA_occurrences": 1,
+    "latest_publication_pointer_matches": true,
+    "owned_gpu_job_active_state_flag": true,
+    "observer_native_session_id": 27853,
+    "remote_current_liveness_attested": false
+  },
+  "intended_publication_scope": {
+    "section": "20.376.85",
+    "payload_count": 9,
+    "source_payload_repos": 2,
+    "document_repos": 3,
+    "desktop_documents": 1,
+    "exact_remote_evidence": "/root/autodl-tmp/mcln_published_evidence_20261005/pvground_mask_reference_20261006/best_only_retention_source",
+    "push_target": "first repository origin HEAD:main",
+    "force_push": false,
+    "retention_called": false,
+    "training_or_observer_called": false
+  },
+  "prior_reviews_preserved": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.json",
+      "sha256": "39e08732d6e009987b752d88405ef6f480bd3ea1d02378d67a3579b7dbd63c61"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.md",
+      "sha256": "4b32e9a7e9859c8df87ca787822e08947f761ea4695c2db37cff4b76b4aca6d9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.json",
+      "sha256": "0de4c4dd66d3471aa928e4fd787d592c0dbce7fa5235ecf2f29a72a063d62193"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.md",
+      "sha256": "697ba48beb072416fe1355bd6fc36059bec0e9d5ecef6896625ad4f6b5a74b19"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RESTORE_TOOLS_REVIEW.json",
+      "sha256": "1b4bc17c41634bab7dc5dc277fefa3017de79ac044d57c8f3b04f31afe9c2ba5"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RESTORE_TOOLS_REVIEW.md",
+      "sha256": "35cd51ff581d3de022870a562fea5b02d7eac3e87dc26e25bae9299272533de8"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RETENTION_SOURCE_REVIEW.json",
+      "sha256": "6158fb3c9ad36e4c11005eb39222e42c04de5a8a176cf9b8e0f66cd44b7286f6"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RETENTION_SOURCE_REVIEW.md",
+      "sha256": "3b91edbda71de4b6a16a0f7cf5aa5470874f2e7e16004654f2dee725def5cb05"
+    }
+  ],
+  "payload_manifest": [
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/best_only_retention_source/postrun/retain_metric_best.py",
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/retain_metric_best.py",
+      "sha256": "d7c38bda11a13fc974460e0ac0664dd288b69b12bef9566a17533b94243d5ec0",
+      "bytes": 7014
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/best_only_retention_source/postrun/retain_metric_best_authorized.py",
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/retain_metric_best_authorized.py",
+      "sha256": "1bc3be71301ab9799993448411696cba204c32054f1ea8e78140d55dd8bb592e",
+      "bytes": 4436
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/best_only_retention_source/postrun/RETENTION_SOURCE_REVIEW.json",
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RETENTION_SOURCE_REVIEW.json",
+      "sha256": "6158fb3c9ad36e4c11005eb39222e42c04de5a8a176cf9b8e0f66cd44b7286f6",
+      "bytes": 21991
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/best_only_retention_source/postrun/RETENTION_SOURCE_REVIEW.md",
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RETENTION_SOURCE_REVIEW.md",
+      "sha256": "3b91edbda71de4b6a16a0f7cf5aa5470874f2e7e16004654f2dee725def5cb05",
+      "bytes": 5397
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/best_only_retention_source/postrun/RETENTION_PREPARATION.json",
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RETENTION_PREPARATION.json",
+      "sha256": "51d0dcc695ddb302909cd2dd7d70fd02679adf6adc498db61be41d64928cba6b",
+      "bytes": 516
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/best_only_retention_source/postrun/publish_retention_tools_authorized.py",
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/publish_retention_tools_authorized.py",
+      "sha256": "458f58903a36dc1bfbf0d93eda66802053d5f1e3f84406c3d2cd17baa3f2e220",
+      "bytes": 10365
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/best_only_retention_source/postrun/PUBLISH_RETENTION_TOOLS_REVIEW.json",
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RETENTION_TOOLS_REVIEW.json",
+      "sha256": null,
+      "hash_scope": "Self-authored JSON final SHA supplied in reviewer completion output; no self-hash recursion"
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/best_only_retention_source/postrun/PUBLISH_RETENTION_TOOLS_REVIEW.md",
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RETENTION_TOOLS_REVIEW.md",
+      "sha256": "39b0ecfb8d494d813abb88e06b5ac2f2bdfad4d3d0d15fcad04d5e44e4a890a9",
+      "bytes": 4131
+    },
+    {
+      "name": "refine-logs/pvground_mask_reference_20261006/best_only_retention_source/.gitattributes",
+      "sha256": "48747480eddba024928d03be9bf83dc579e5515768647507a767e8187a85c9ab",
+      "bytes": 9,
+      "content": "** -text\n",
+      "hash_scope": "Exact publisher-generated literal"
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/retain_metric_best.py",
+      "sha256": "d7c38bda11a13fc974460e0ac0664dd288b69b12bef9566a17533b94243d5ec0",
+      "bytes": 7014,
+      "review_scope": "final publisher or actual payload bytes"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/retain_metric_best_authorized.py",
+      "sha256": "1bc3be71301ab9799993448411696cba204c32054f1ea8e78140d55dd8bb592e",
+      "bytes": 4436,
+      "review_scope": "final publisher or actual payload bytes"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RETENTION_SOURCE_REVIEW.json",
+      "sha256": "6158fb3c9ad36e4c11005eb39222e42c04de5a8a176cf9b8e0f66cd44b7286f6",
+      "bytes": 21991,
+      "review_scope": "final publisher or actual payload bytes"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RETENTION_SOURCE_REVIEW.md",
+      "sha256": "3b91edbda71de4b6a16a0f7cf5aa5470874f2e7e16004654f2dee725def5cb05",
+      "bytes": 5397,
+      "review_scope": "final publisher or actual payload bytes"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RETENTION_PREPARATION.json",
+      "sha256": "51d0dcc695ddb302909cd2dd7d70fd02679adf6adc498db61be41d64928cba6b",
+      "bytes": 516,
+      "review_scope": "final publisher or actual payload bytes"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/publish_retention_tools_authorized.py",
+      "sha256": "458f58903a36dc1bfbf0d93eda66802053d5f1e3f84406c3d2cd17baa3f2e220",
+      "bytes": 10365,
+      "review_scope": "final publisher or actual payload bytes"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RETENTION_TOOLS_REVIEW.md",
+      "sha256": "39b0ecfb8d494d813abb88e06b5ac2f2bdfad4d3d0d15fcad04d5e44e4a890a9",
+      "bytes": 4131,
+      "review_scope": "final publisher or actual payload bytes"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/restore_tools_publication.json",
+      "sha256": "e4d25de66f2e6647c4e7a1862a0e826785bf0f3c1e86be45d0f09955adb7fcdf",
+      "bytes": 690,
+      "review_scope": "current Doc84 baseline or pinned runtime interpreter source"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc",
+      "bytes": 4414,
+      "review_scope": "current Doc84 baseline or pinned runtime interpreter source"
+    }
+  ],
+  "static_validation": {
+    "local_interpreter": "E:/python.exe",
+    "local_python": "3.12.6",
+    "target_grammar": "Python3.7",
+    "publisher_AST": "PASS",
+    "publisher_in_memory_compile": "PASS",
+    "embedded_remote_AST": "PASS",
+    "embedded_remote_in_memory_compile": "PASS",
+    "source_UFFFD_count": 0,
+    "remote_runtime_executed": false
+  },
+  "reviewer_execution": {
+    "network_requests": 0,
+    "SSH_sessions": 0,
+    "GPU_queries": 0,
+    "training_progress_queries": 0,
+    "publisher_executions": 0,
+    "retention_executions": 0,
+    "model_loads": 0,
+    "weight_deletions": 0,
+    "git_mutating_commands": 0,
+    "git_pushes": 0,
+    "API_notifications": 0,
+    "credential_environment_accessed": false,
+    "credential_values_output": false,
+    "prior_review_mutations": 0,
+    "publisher_source_mutations_by_reviewer": 0,
+    "active_M1_source_mutations": 0,
+    "observer_mutations": 0,
+    "synthetic_future_artifacts": 0,
+    "review_outputs_only": true
+  },
+  "actual_publication_state": {
+    "published": false,
+    "publication_receipt_exists": false,
+    "retention_receipt_exists": false,
+    "complete_fit_exists": false,
+    "analysis_exists": false
+  },
+  "not_attested": [
+    "Actual Doc85 publication or new GitHub main",
+    "Actual remote symlink/payload state",
+    "Actual guard update",
+    "Actual terminal closure or training progress",
+    "Any actual model restore, deletion or new accuracy",
+    "Actual reviewer backend identity"
+  ]
+}

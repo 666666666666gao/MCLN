@@ -1,0 +1,417 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "R1_REQUIRED_TRAIN_LOG_SHA_MISSING",
+      "severity_before_fix": "BLOCKING_REQUIREMENT_OMISSION",
+      "status": "RESOLVED_BY_ROOT_MINIMAL_PATCH",
+      "evidence": [
+        "run_geometry_fit.py:586",
+        "retain_metric_best.py:87-89,105-109"
+      ],
+      "detail": "Initial draft verified terminal_sha256 but omitted the explicitly required train_log_sha256. Root added the single SHA assertion before any unlink. Removing exactly this line reproduces the initial source digest; no other source change.",
+      "initial_checker_sha256": "f34f6794582ef8a7cf0d8f76e4d4fc8a633430a47f66291a028c5c2c236c9382",
+      "final_checker_sha256": "d7c38bda11a13fc974460e0ac0664dd288b69b12bef9566a17533b94243d5ec0"
+    }
+  ],
+  "nonblocking_findings": [
+    {
+      "id": "N1_ACTUAL_RETENTION_NOT_EXECUTED",
+      "severity": "INFO",
+      "detail": "No actual closure, terminal audit, selected full-model restore or deletion is certified. All future actual-artifact gates remain mandatory."
+    },
+    {
+      "id": "N2_HEAD_VERSUS_FULL_RESTORE_SCOPE",
+      "severity": "INFO",
+      "detail": "Retention validates CPU geometry heads and optimizer metadata. For a new winner, complete-model/AdamW restoration is accepted only from the separate actual M2 receipt bound by the fresh terminal audit."
+    },
+    {
+      "id": "N3_FUTURE_AUDIT_SCHEMA_IS_EXPLICIT_CONTRACT",
+      "severity": "INFO",
+      "detail": "The required future scope/digest schema is this round explicit contract, not a claim that historical EXPERIMENT_AUDIT reports already satisfy it. Old audits cannot substitute for the future result."
+    }
+  ],
+  "fresh_context": false,
+  "same_context_followup": true,
+  "separate_retention_source_review": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "backend_identity": "not_attested",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "reviewer_agent": "/root/pvg_selected_mask_restore_source_review",
+  "reviewed_at_cst": "2026-10-06T12:09:30.705966+08:00",
+  "summary": "SOURCE_ONLY PASS with zero unresolved blockers after the one-line train-log SHA correction. Exact final sources are bound; no actual retention, model load, terminal audit or new result was executed.",
+  "final_source_sha256": {
+    "retain_metric_best.py": "d7c38bda11a13fc974460e0ac0664dd288b69b12bef9566a17533b94243d5ec0",
+    "retain_metric_best_authorized.py": "1bc3be71301ab9799993448411696cba204c32054f1ea8e78140d55dd8bb592e"
+  },
+  "checks": [
+    {
+      "name": "Exactly five deletion candidates",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "retain_metric_best.py:20-37,47-54,89-110"
+      ],
+      "detail": "Only the two M1 arms initial.pth/terminal.pth and the exact protected4511 terminal path enter paths. Resolved roots are constrained, each M1 candidate is unsymlinked at its declared fixed path, and a final candidate-key equality check rejects extra/missing decision entries. PV/G/V99 are never deletion candidates."
+    },
+    {
+      "name": "Validate every candidate before any deletion",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "retain_metric_best.py:38-104,105-110"
+      ],
+      "detail": "All headers, complete10 geometry tensors/456102 parameters, strict CPU head loads, initial parent equality, terminal/fit-log hashes, formal hits and winner/M2 conditions precede the sole unlink loop. No recursive deletion, glob, fallback, try/except, checkpoint save/copy or negative archive path is present."
+    },
+    {
+      "name": "Real closure and observer schema",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "retain_metric_best_authorized.py:17-18",
+        "retain_metric_best.py:23-29",
+        "observe_fit_authorized.py:44-59",
+        "controller.py:47-59"
+      ],
+      "detail": "Observer producer emits observer_closed, terminal.controller_alive and integer exitcode. Local wrapper requires closed/not-alive/exit0; remote requires actual exit0, complete/protected-parent status and no exact fit-controller process. No early poll or observer execution was performed in review."
+    },
+    {
+      "name": "Four actual9508 recounts and zero-disagreement gate",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "retain_metric_best_authorized.py:19-26",
+        "analyze_mask_reference_formal.py:68-128,131-175"
+      ],
+      "detail": "Wrapper accepts only the actual-closed recount summary with fit_order_exact and9508 rows/result. Each nonparent result must have zero per-box-type selected threshold flips and zero all256 oracle mismatches. It does not rerun GPU inference or introduce a GT-dependent inference choice."
+    },
+    {
+      "name": "Winner ordering including protected parent and exact ties",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "retain_metric_best_authorized.py:34-39",
+        "retain_metric_best.py:35,47,51,93-97",
+        "analyze_mask_reference_formal.py:143-167"
+      ],
+      "detail": "Both paths order candidates parent,native initial,native terminal,fused initial,fused terminal and maximize native rec_hits50, then protected-parent flag, then rec_hits25. Stable insertion order handles exact new-candidate ties identically. Both old-parent and new step0/step3723 winner branches are valid; no fabricated scenario was executed."
+    },
+    {
+      "name": "Actual checkpoint provenance and initial/terminal separation",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "retain_metric_best.py:31-42,55-91",
+        "run_geometry_fit.py:468-478,538-550,568-586"
+      ],
+      "detail": "Protected parent SHA and real step3723 are checked. New candidates require actual spec/provenance/reset/history, full tensor shape/dtype/name identity and strict head load. Initial is real step0 with hidden8 equal parent/output2 zero/empty state. Terminal is3723 with hidden14892/output3723/29778 unique rows/10 optimizer states at3723, plus actual checkpoint and training-log SHA checks."
+    },
+    {
+      "name": "New-winner full model and AdamW witness before old-parent retirement",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "retain_metric_best_authorized.py:40-48",
+        "retain_metric_best.py:98-104",
+        "restore_selected_candidate_authorized.py:79-90",
+        "restore_candidate_state.py:102-128"
+      ],
+      "detail": "Actual selected-restore record must be terminal-audit-bound and tied to summary, arm/stage and step. Remote checks its checkpoint digest against the candidate, complete-model equality, exact optimizer witness and direct-factory old-geometry independence. The retention script itself performs CPU head restoration plus optimizer count/step metadata checks, not another full-model/AdamW restore."
+    },
+    {
+      "name": "Explicit future audit contract without historical reuse",
+      "status": "PASS_SOURCE_CONTRACT",
+      "evidence": [
+        "retain_metric_best_authorized.py:27-33,43-45"
+      ],
+      "detail": "The required future contract is TERMINAL_SOURCE_AND_ACTUAL_ARTIFACTS, fresh_context, PASS/WARN with zero blockers, received review call, and relative-path actual_file_digests entries containing sha256 for SUMMARY and, for a new winner, selected restore. Existing old audit examples use other scopes/schemas and are not accepted as this round evidence. No compatibility branch or future audit was fabricated."
+    },
+    {
+      "name": "Retained dependencies and truthful receipt",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "retain_metric_best.py:30-34,105-119"
+      ],
+      "detail": "Exactly four nonwinner paths in the five-candidate set are removed only after validation. Winner file/digest and originalG digest are checked after the loop. Logs/NPZ/PV/G/V99 paths are not deleted and no negative archive is created. Five-before/one-after numbers are scoped to this declared candidate set."
+    },
+    {
+      "name": "Local SSH boundary and Python compatibility",
+      "status": "PASS_STATIC_ONLY",
+      "evidence": [
+        "retain_metric_best_authorized.py:49-75",
+        "retain_metric_best.py"
+      ],
+      "detail": "Local source gate precedes SSH; pinned canonical env is checked, reviewed single script is exclusive-uploaded/read-back-compared, and actual receipt is compared before local write. Environment credential is only used for authentication, not printed or archived. Both final files pass Python3.7 grammar AST and in-memory compile under local3.12.6; shlex.join is local-only."
+    }
+  ],
+  "deletion_scope": {
+    "candidate_count": 5,
+    "paths": [
+      "/root/autodl-tmp/pvground_auxiliary_target_20261005/control/terminal.pth",
+      "/root/autodl-tmp/pvground_mask_reference_20261006/native_reference/initial.pth",
+      "/root/autodl-tmp/pvground_mask_reference_20261006/native_reference/terminal.pth",
+      "/root/autodl-tmp/pvground_mask_reference_20261006/fused_mask_reference/initial.pth",
+      "/root/autodl-tmp/pvground_mask_reference_20261006/fused_mask_reference/terminal.pth"
+    ],
+    "PV_G_V99_excluded": true,
+    "logs_and_NPZ_excluded": true,
+    "recursive_or_wildcard_delete": false,
+    "negative_archive": false,
+    "actual_deleted": 0
+  },
+  "future_audit_contract": {
+    "execution_scope_required": "TERMINAL_SOURCE_AND_ACTUAL_ARTIFACTS",
+    "fresh_context_required": true,
+    "allowed_verdicts": [
+      "PASS",
+      "WARN"
+    ],
+    "blocking_findings_required_empty": true,
+    "call_result_received_required": true,
+    "digest_entry_schema": "actual_file_digests[relative_path][sha256]",
+    "always_bound_relative_paths": [
+      "analysis/SUMMARY.json"
+    ],
+    "new_winner_additional_bound_relative_paths": [
+      "selected_candidate_CPU_restore.json"
+    ],
+    "actual_contract_artifact_created": false
+  },
+  "prior_review_files_preserved": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.json",
+      "sha256": "39e08732d6e009987b752d88405ef6f480bd3ea1d02378d67a3579b7dbd63c61"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.md",
+      "sha256": "4b32e9a7e9859c8df87ca787822e08947f761ea4695c2db37cff4b76b4aca6d9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.json",
+      "sha256": "0de4c4dd66d3471aa928e4fd787d592c0dbce7fa5235ecf2f29a72a063d62193"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.md",
+      "sha256": "697ba48beb072416fe1355bd6fc36059bec0e9d5ecef6896625ad4f6b5a74b19"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RESTORE_TOOLS_REVIEW.json",
+      "sha256": "1b4bc17c41634bab7dc5dc277fefa3017de79ac044d57c8f3b04f31afe9c2ba5"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RESTORE_TOOLS_REVIEW.md",
+      "sha256": "35cd51ff581d3de022870a562fea5b02d7eac3e87dc26e25bae9299272533de8"
+    }
+  ],
+  "future_gate_presence": {
+    "fit_wait.json": false,
+    "analysis/SUMMARY.json": false,
+    "analysis/EXPERIMENT_AUDIT.json": false,
+    "analysis/TERMINAL_REVIEW_CALL.json": false,
+    "selected_candidate_CPU_restore.json": false,
+    "weight_retention.json": false
+  },
+  "static_validation": {
+    "local_interpreter": "E:/python.exe",
+    "local_python": "3.12.6",
+    "target_grammar": "Python3.7",
+    "AST": "PASS",
+    "in_memory_compile": "PASS",
+    "reverse_single_patch_reproduces_initial": true,
+    "unlink_calls_in_remote_source": 1,
+    "any_Torch_import_or_operation_executed": false,
+    "shlex_join_execution_host": "local only"
+  },
+  "reviewer_execution": {
+    "network_requests": 0,
+    "SSH_sessions": 0,
+    "GPU_queries": 0,
+    "model_constructions": 0,
+    "torch_load_calls": 0,
+    "optimizer_restores": 0,
+    "training_executions": 0,
+    "weight_deletions": 0,
+    "weight_archives": 0,
+    "git_mutations": 0,
+    "publisher_executions": 0,
+    "API_notifications": 0,
+    "credential_environment_accessed": false,
+    "retention_source_mutations_by_reviewer": 0,
+    "prior_review_mutations": 0,
+    "active_M1_source_mutations": 0,
+    "observer_mutations": 0,
+    "synthetic_future_artifacts": 0,
+    "review_outputs_only": true
+  },
+  "not_attested": [
+    "Actual M1 terminal closure or current remote liveness",
+    "Four actual new9508 metrics or a winner",
+    "Actual fresh terminal audit",
+    "Actual selected full-model/AdamW restore",
+    "Actual deletion or retention receipt",
+    "Actual reviewer backend identity"
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/retain_metric_best.py",
+      "sha256": "d7c38bda11a13fc974460e0ac0664dd288b69b12bef9566a17533b94243d5ec0",
+      "bytes": 7014,
+      "review_scope": "full final retention source review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/retain_metric_best_authorized.py",
+      "sha256": "1bc3be71301ab9799993448411696cba204c32054f1ea8e78140d55dd8bb592e",
+      "bytes": 4436,
+      "review_scope": "full final retention source review"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/run_geometry_fit.py",
+      "sha256": "01565b6d0b8ead1a5d34e588525e114e97f33bcd9650c35d40e0a1a60d7b2747",
+      "bytes": 38241,
+      "review_scope": "producer, closure schema or experiment retention protocol authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/controller.py",
+      "sha256": "2fdd5bf31e1581286d348b5dfc0508e9d41fe565c3d754ee0412f1fd38428165",
+      "bytes": 3013,
+      "review_scope": "producer, closure schema or experiment retention protocol authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "bytes": 6461,
+      "review_scope": "producer, closure schema or experiment retention protocol authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc",
+      "bytes": 4414,
+      "review_scope": "producer, closure schema or experiment retention protocol authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fused_mask_reference_spec.json",
+      "sha256": "bfa3507ab0c75166218719a391cacc154e75af8801a7d4be21faf3ab4ac0eb27",
+      "bytes": 4422,
+      "review_scope": "producer, closure schema or experiment retention protocol authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/observe_fit_authorized.py",
+      "sha256": "7857ac98eb58df0d9e924ab70bf969ac1e7ee618e0290973528ba9ff4aa9def7",
+      "bytes": 3298,
+      "review_scope": "producer, closure schema or experiment retention protocol authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/EXPERIMENT_PLAN.md",
+      "sha256": "8f98749f0a044e7b3c76eba74e5972fe3616ab97a51f48191305c9a2558d7634",
+      "bytes": 5046,
+      "review_scope": "producer, closure schema or experiment retention protocol authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/M0_ACCEPTANCE_AND_FIT_LAUNCH.json",
+      "sha256": "2ad296c1a4f82658e3a1758695589fb1961e6a1055610618177f3fb3009c6b9e",
+      "bytes": 3252,
+      "review_scope": "producer, closure schema or experiment retention protocol authority"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/analyze_mask_reference_formal.py",
+      "sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+      "bytes": 10984,
+      "review_scope": "winner selection or actual M2 receipt source interface; no actual result executed"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.json",
+      "sha256": "39e08732d6e009987b752d88405ef6f480bd3ea1d02378d67a3579b7dbd63c61",
+      "bytes": 19400,
+      "review_scope": "winner selection or actual M2 receipt source interface; no actual result executed"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/ANALYSIS_SOURCE_REVIEW.md",
+      "sha256": "4b32e9a7e9859c8df87ca787822e08947f761ea4695c2db37cff4b76b4aca6d9",
+      "bytes": 3647,
+      "review_scope": "winner selection or actual M2 receipt source interface; no actual result executed"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "bytes": 4680,
+      "review_scope": "winner selection or actual M2 receipt source interface; no actual result executed"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/restore_candidate_state.py",
+      "sha256": "5b1f510424bd148d3024cfbf6f3217ca2395bf4eb234332b4611f4da5e8f5653",
+      "bytes": 7672,
+      "review_scope": "winner selection or actual M2 receipt source interface; no actual result executed"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/restore_selected_candidate_authorized.py",
+      "sha256": "42ad65c9d250eedc1f2c2191482e3ffa2ab55026ddae96b8f174c5d522af1cdc",
+      "bytes": 5558,
+      "review_scope": "winner selection or actual M2 receipt source interface; no actual result executed"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.json",
+      "sha256": "0de4c4dd66d3471aa928e4fd787d592c0dbce7fa5235ecf2f29a72a063d62193",
+      "bytes": 20594,
+      "review_scope": "winner selection or actual M2 receipt source interface; no actual result executed"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/RESTORE_SOURCE_REVIEW.md",
+      "sha256": "697ba48beb072416fe1355bd6fc36059bec0e9d5ecef6896625ad4f6b5a74b19",
+      "bytes": 5288,
+      "review_scope": "winner selection or actual M2 receipt source interface; no actual result executed"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "bytes": 2436,
+      "review_scope": "previously read construction/optimizer dependency, current identity bound"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208,
+      "review_scope": "previously read construction/optimizer dependency, current identity bound"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "bytes": 3767,
+      "review_scope": "previously read construction/optimizer dependency, current identity bound"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "bytes": 3655,
+      "review_scope": "previously read construction/optimizer dependency, current identity bound"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "bytes": 3906,
+      "review_scope": "previously read construction/optimizer dependency, current identity bound"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "bytes": 3629,
+      "review_scope": "previously read construction/optimizer dependency, current identity bound"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py",
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "bytes": 4754,
+      "review_scope": "previously read construction/optimizer dependency, current identity bound"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/install_boundary_evidence_readback.py",
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "bytes": 518,
+      "review_scope": "previously read construction/optimizer dependency, current identity bound"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_evidence_readback.py",
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "bytes": 4335,
+      "review_scope": "previously read construction/optimizer dependency, current identity bound"
+    }
+  ]
+}

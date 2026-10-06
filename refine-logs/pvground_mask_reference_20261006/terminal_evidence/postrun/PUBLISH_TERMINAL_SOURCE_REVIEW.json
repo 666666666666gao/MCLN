@@ -1,0 +1,547 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "resolved_findings": [],
+  "nonblocking_findings": [],
+  "fresh_context": false,
+  "same_context_followup": true,
+  "separate_publisher_review": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_route_note": "Established source-review context; requested route is not backend attestation.",
+  "backend_identity": "not_attested",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "reviewed_at_cst": "2026-10-06T22:01:46.787+08:00",
+  "reviewer_agent": "/root/pvg_selected_mask_restore_source_review",
+  "summary": "The bounded Doc86 publisher agrees with actual closed results, qualified terminal audit, step0 CPU-restore receipt and subsequent real best-only retention. SOURCE_ONLY PASS, zero blockers; publisher not executed and no new integrity audit conducted.",
+  "publisher_sha256": "80baac9123f25be85cd4a60cfc79368666c4ca7ec25bfbf8884b84b4fcdfc353",
+  "checks": [
+    {
+      "id": "metric_and_training_distinction",
+      "status": "PASS",
+      "detail": "All five hit/percentage rows match actual SUMMARY/audit. Fused initial5598/4848 is step0; trained5593/4832 is3723 steps. Additional fused training has -5/-16, not learning gain."
+    },
+    {
+      "id": "qualification_and_snapshot_preservation",
+      "status": "PASS",
+      "detail": "Actual terminal verdict remains WARN/0blocks and same-family/provisional. Stored-array/raw-Mask and development/single-seed limits are retained. Audit-bound snapshots remain unchanged; later acceptance/retention receipts supply lifecycle state."
+    },
+    {
+      "id": "actual_runtime_gate_schema",
+      "status": "PASS",
+      "detail": "The two initially pending gates arrived during review. Their actual fields and hashes match the publisher contract and current summary/audit/restore; no future record was invented.",
+      "actual_field_checks": {
+        "accepted_status": true,
+        "audit_result_received": true,
+        "selected_restore_complete": true,
+        "audit_sha256": true,
+        "summary_sha256": true,
+        "restore_sha256": true,
+        "retention_status": true,
+        "retention_best": true,
+        "retention_checkpoint": true,
+        "retention_step": true,
+        "retention_counts": true,
+        "retention_release_sum": true,
+        "retention_audit_sha256": true,
+        "retention_summary_sha256": true,
+        "owned_gpu_job_closed": true,
+        "latest_publication_is_doc85": true
+      }
+    },
+    {
+      "id": "fixed_text_payload",
+      "status": "PASS",
+      "detail": "32 explicit text files plus .gitattributes. No weights, raw NPZ, .aris files, credentials or new notification API. Evidence path/SHA references are metadata, not the referenced binary payloads."
+    },
+    {
+      "id": "fixed_remote_and_append_only_document",
+      "status": "PASS",
+      "detail": "Fixed project, exact resolved data-evidence destination, nonexistent destination, path containment, exclusive file creation/readback, prior Doc85 SHA and old document prefix are asserted."
+    },
+    {
+      "id": "local_git_workflow",
+      "status": "PASS",
+      "detail": "Four local Doc85 bytes and three direct-read HEAD refs match the prior receipt. Source checks clean repositories, fixed staged paths, exact staged payload bytes and old tracked doc prefix, then nonforce main push/readback. No Git command was run by reviewer."
+    },
+    {
+      "id": "guard_and_actual_receipt_fields",
+      "status": "PASS",
+      "detail": "Old guard SHA occurs once; replacement follows all doc/Git success checks. Receipt separates step0 best/trained fused, records actual retention bytes, and does not claim a new GPU run or binary publication."
+    }
+  ],
+  "observed_local_context": {
+    "prior_section": "20.376.85",
+    "prior_publication_sha256": "62fbcdcc67fd9b4e7c5b0c89e160a277bd8862b16326d2903b0e6ae2dceb4dd1",
+    "heads": [
+      "fd82ae8789cc582a47c173e47e25e5dac5e8cc68",
+      "f1f47473cdaae3ff6ffa649d26510d9415045b91",
+      "970a27444784f61a16530f375297f729dc4c5aee"
+    ],
+    "head_observation_method": "Direct read of worktree HEAD and referenced branch files; no Git command.",
+    "four_doc_sha256": "8914e08d15966cf9a701e907954fcfaf857e556e1a0905c04988143eb52d79bc",
+    "four_doc_bytes": 2336490,
+    "doc85_section_count": 1,
+    "doc86_section_count": 0,
+    "guard_sha256": "79f2bafc78e1eac25365d6bf5f3168c638cbeedb24941c3056538c1eaa97ea08",
+    "guard_previous_doc_sha_occurrences": 1,
+    "active_state_snapshot": {
+      "latest_publication_is_doc85": true,
+      "owned_gpu_job_active": false
+    },
+    "active_state_hash_bound": false
+  },
+  "actual_evidence": {
+    "summary_sha256": "522208a4a019b815d12cce527d4d0b186d9ccc6837e02764e3f03ae3e1996b79",
+    "audit_sha256": "1003b4320a4263799a19adb90087f60f260a4062b3936ff8f0a9a652eda37a3d",
+    "audit_verdict": "WARN",
+    "audit_blocking_findings": [],
+    "audit_fresh_context": true,
+    "audit_backend_attested": false,
+    "restore_sha256": "c79e87c2dc8bfbc55a9b22c5e224e593247d996735da18e99994491390154f98",
+    "acceptance_sha256": "be954c8cc0ab0a1db8fda5e538658960f6f82cbe110017cb7b3eb11450f6cf85",
+    "retention_sha256": "43a65da29de05f2f15f426d48b986a7e32a5085379e729013f0ce08d0d48831e",
+    "selected_checkpoint_sha256": "2301e90a9391af4e4cd56edae09ce49db1cc8f67463e1c2568352ee2dafaff61",
+    "selected_optimizer_step": 0,
+    "full_state_tensors": 1304,
+    "optimizer_moment_and_step_states": 0,
+    "retention_time_cst": "2026-10-06T21:58:46.967836+08:00",
+    "deleted_count": 4,
+    "released_bytes": 18586454,
+    "weights_after": 1,
+    "prior_acceptance_retention_flag": false,
+    "retention_authority": "Later actual weight_retention.json; earlier acceptance flag is an immutable timestamped snapshot."
+  },
+  "intended_publication_scope": {
+    "section": "20.376.86",
+    "prefix": "refine-logs/pvground_mask_reference_20261006/terminal_evidence/",
+    "remote_project": "/home/gb/new butd/butd_detr-main/MCLN-main",
+    "resolved_evidence": "/root/autodl-tmp/mcln_published_evidence_20261005/pvground_mask_reference_20261006/terminal_evidence",
+    "payload_count": 33,
+    "local_document_copies": 4,
+    "local_git_repositories": 3,
+    "source_evidence_repositories": 2,
+    "remote_document_copy": 1
+  },
+  "payload_manifest": [
+    {
+      "name": "analysis/SUMMARY.json",
+      "sha256": "522208a4a019b815d12cce527d4d0b186d9ccc6837e02764e3f03ae3e1996b79",
+      "bytes": 13775
+    },
+    {
+      "name": "analysis/NARRATIVE_REPORT.md",
+      "sha256": "ae1bfa7b8b0b777c86d81fb84e6de50d1d89c54ecc1a3b85bd752e1db583c8b9",
+      "bytes": 1730
+    },
+    {
+      "name": "analysis/EXPERIMENT_TRACKER.md",
+      "sha256": "939c8886ffec44ec3ccb458c4a056713b9b04ba9d2d7df9095e7d237bf4d65f8",
+      "bytes": 427
+    },
+    {
+      "name": "analysis/EXPERIMENT_AUDIT.json",
+      "sha256": "1003b4320a4263799a19adb90087f60f260a4062b3936ff8f0a9a652eda37a3d",
+      "bytes": 1703566
+    },
+    {
+      "name": "analysis/EXPERIMENT_AUDIT.md",
+      "sha256": "818dd4b24b0dad615ec2a4db9a5f289d0dbbc1d0549f6602243de4456df86231",
+      "bytes": 11780
+    },
+    {
+      "name": "analysis/TERMINAL_ACCEPTANCE.json",
+      "sha256": "be954c8cc0ab0a1db8fda5e538658960f6f82cbe110017cb7b3eb11450f6cf85",
+      "bytes": 1553
+    },
+    {
+      "name": "analysis/TERMINAL_REVIEW_CALL.json",
+      "sha256": "2c99c1e96fe08e0d42b8391554e5400601fea264719fc61692713539608d5f16",
+      "bytes": 888
+    },
+    {
+      "name": "selected_candidate_CPU_restore.json",
+      "sha256": "c79e87c2dc8bfbc55a9b22c5e224e593247d996735da18e99994491390154f98",
+      "bytes": 4885
+    },
+    {
+      "name": "weight_retention.json",
+      "sha256": "43a65da29de05f2f15f426d48b986a7e32a5085379e729013f0ce08d0d48831e",
+      "bytes": 2166
+    },
+    {
+      "name": "fit_wait.json",
+      "sha256": "f4b5909a718a5578c5f5253f4388369ae0d59e369b9ccea18f291fd0856b6274",
+      "bytes": 1158
+    },
+    {
+      "name": "complete_fit/INTAKE.json",
+      "sha256": "3fc9f0eb2a42e348ef7891f93fe29ea2b05fe28d1e56fa1f76f6147d4c60c9e6",
+      "bytes": 899481
+    },
+    {
+      "name": "complete_fit/fit_status.json",
+      "sha256": "0c89f925286c431aff637fdc5424bfe19415708e3191b530230ad7ec646e237d",
+      "bytes": 673
+    },
+    {
+      "name": "complete_fit/fit_controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "name": "native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc",
+      "bytes": 4414
+    },
+    {
+      "name": "fused_mask_reference_spec.json",
+      "sha256": "bfa3507ab0c75166218719a391cacc154e75af8801a7d4be21faf3ab4ac0eb27",
+      "bytes": 4422
+    },
+    {
+      "name": "postrun/selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "bytes": 4680
+    },
+    {
+      "name": "postrun/restore_candidate_state.py",
+      "sha256": "5b1f510424bd148d3024cfbf6f3217ca2395bf4eb234332b4611f4da5e8f5653",
+      "bytes": 7672
+    },
+    {
+      "name": "postrun/publish_terminal_authorized.py",
+      "sha256": "80baac9123f25be85cd4a60cfc79368666c4ca7ec25bfbf8884b84b4fcdfc353",
+      "bytes": 14054
+    },
+    {
+      "name": "postrun/PUBLISH_TERMINAL_SOURCE_REVIEW.json",
+      "sha256": null,
+      "binding": "This JSON is self-referential; use the actual final report SHA supplied out of band."
+    },
+    {
+      "name": "postrun/PUBLISH_TERMINAL_SOURCE_REVIEW.md",
+      "sha256": "eec65eeaa1a16102dc5c5fe8e1ac7f6b167d7109bce201c77bdc57d3b6e426c1",
+      "bytes": 5397
+    },
+    {
+      "name": "complete_fit/native_reference/receipt.json",
+      "sha256": "4dec4862e59d60d028e2fef69c79363dc73089b10e53ed352129535a7d8a892e",
+      "bytes": 1259
+    },
+    {
+      "name": "complete_fit/native_reference/train.jsonl",
+      "sha256": "3b60e74736d2a4f9c2b8829d6ae1ff30a53f2bf589eb45269f2db2f6583ddd8b",
+      "bytes": 4044813
+    },
+    {
+      "name": "complete_fit/native_reference/initial_formal/receipt.json",
+      "sha256": "1df0e7aa5442a51f304493be6209cfeb0e89cacefb73918c988290580286ece7",
+      "bytes": 502
+    },
+    {
+      "name": "complete_fit/native_reference/initial_formal/rows.jsonl",
+      "sha256": "2358feaa2d5ecb3c4738e03b6eb85777fa5b5e3ae546c049b5969b484f1a03fb",
+      "bytes": 9498294
+    },
+    {
+      "name": "complete_fit/native_reference/formal/receipt.json",
+      "sha256": "e461a5dcc10470ca8b39a2e9ed463d2d75aa1b6c9c74680565b285e6addc222c",
+      "bytes": 493
+    },
+    {
+      "name": "complete_fit/native_reference/formal/rows.jsonl",
+      "sha256": "5bf49779f91e181b55b3367a860923c7c6f0ab6d7946360c2ce948be65aba92f",
+      "bytes": 9499047
+    },
+    {
+      "name": "complete_fit/fused_mask_reference/receipt.json",
+      "sha256": "0e07f808da2b3c51c7372c53d954fd9d8c812e06dffd33f07c24aecc1628a510",
+      "bytes": 1260
+    },
+    {
+      "name": "complete_fit/fused_mask_reference/train.jsonl",
+      "sha256": "b13f6af080b864e58ad6469c5bec086381e92026ab4a5640729f17b1147cc4cb",
+      "bytes": 4046601
+    },
+    {
+      "name": "complete_fit/fused_mask_reference/initial_formal/receipt.json",
+      "sha256": "1941b9aac70b16a265486402cccacc9e495b006789867dd07a670961e759c471",
+      "bytes": 502
+    },
+    {
+      "name": "complete_fit/fused_mask_reference/initial_formal/rows.jsonl",
+      "sha256": "40672da53d767bc2262fa280a9904589c813a98b0c419d1cbdac161378144a23",
+      "bytes": 9495752
+    },
+    {
+      "name": "complete_fit/fused_mask_reference/formal/receipt.json",
+      "sha256": "6fa0e274a991299f43aa61b23a09bc14f2ad6914a5e296cea9168af6783a362e",
+      "bytes": 495
+    },
+    {
+      "name": "complete_fit/fused_mask_reference/formal/rows.jsonl",
+      "sha256": "af62b20ebfdf04dbcddf2b4677fdb1a0ed87b30ab1afbc1312c657431c458eae",
+      "bytes": 9497704
+    },
+    {
+      "name": ".gitattributes",
+      "sha256": "48747480eddba024928d03be9bf83dc579e5515768647507a767e8187a85c9ab",
+      "bytes": 9
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/analysis/SUMMARY.json",
+      "sha256": "522208a4a019b815d12cce527d4d0b186d9ccc6837e02764e3f03ae3e1996b79",
+      "bytes": 13775
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/analysis/NARRATIVE_REPORT.md",
+      "sha256": "ae1bfa7b8b0b777c86d81fb84e6de50d1d89c54ecc1a3b85bd752e1db583c8b9",
+      "bytes": 1730
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/analysis/EXPERIMENT_TRACKER.md",
+      "sha256": "939c8886ffec44ec3ccb458c4a056713b9b04ba9d2d7df9095e7d237bf4d65f8",
+      "bytes": 427
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/analysis/EXPERIMENT_AUDIT.json",
+      "sha256": "1003b4320a4263799a19adb90087f60f260a4062b3936ff8f0a9a652eda37a3d",
+      "bytes": 1703566
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/analysis/EXPERIMENT_AUDIT.md",
+      "sha256": "818dd4b24b0dad615ec2a4db9a5f289d0dbbc1d0549f6602243de4456df86231",
+      "bytes": 11780
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/analysis/TERMINAL_REVIEW_CALL.json",
+      "sha256": "2c99c1e96fe08e0d42b8391554e5400601fea264719fc61692713539608d5f16",
+      "bytes": 888
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/selected_candidate_CPU_restore.json",
+      "sha256": "c79e87c2dc8bfbc55a9b22c5e224e593247d996735da18e99994491390154f98",
+      "bytes": 4885
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fit_wait.json",
+      "sha256": "f4b5909a718a5578c5f5253f4388369ae0d59e369b9ccea18f291fd0856b6274",
+      "bytes": 1158
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/INTAKE.json",
+      "sha256": "3fc9f0eb2a42e348ef7891f93fe29ea2b05fe28d1e56fa1f76f6147d4c60c9e6",
+      "bytes": 899481
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/fit_status.json",
+      "sha256": "0c89f925286c431aff637fdc5424bfe19415708e3191b530230ad7ec646e237d",
+      "bytes": 673
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/fit_controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/native_reference_spec.json",
+      "sha256": "d33ca597973257e19a9c7acf6df40807c9120bd6c943a4e6cfc1cb91c20280fc",
+      "bytes": 4414
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/fused_mask_reference_spec.json",
+      "sha256": "bfa3507ab0c75166218719a391cacc154e75af8801a7d4be21faf3ab4ac0eb27",
+      "bytes": 4422
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "bytes": 4680
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/restore_candidate_state.py",
+      "sha256": "5b1f510424bd148d3024cfbf6f3217ca2395bf4eb234332b4611f4da5e8f5653",
+      "bytes": 7672
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/publish_terminal_authorized.py",
+      "sha256": "80baac9123f25be85cd4a60cfc79368666c4ca7ec25bfbf8884b84b4fcdfc353",
+      "bytes": 14054
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/native_reference/receipt.json",
+      "sha256": "4dec4862e59d60d028e2fef69c79363dc73089b10e53ed352129535a7d8a892e",
+      "bytes": 1259
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/native_reference/train.jsonl",
+      "sha256": "3b60e74736d2a4f9c2b8829d6ae1ff30a53f2bf589eb45269f2db2f6583ddd8b",
+      "bytes": 4044813
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/native_reference/initial_formal/receipt.json",
+      "sha256": "1df0e7aa5442a51f304493be6209cfeb0e89cacefb73918c988290580286ece7",
+      "bytes": 502
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/native_reference/initial_formal/rows.jsonl",
+      "sha256": "2358feaa2d5ecb3c4738e03b6eb85777fa5b5e3ae546c049b5969b484f1a03fb",
+      "bytes": 9498294
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/native_reference/formal/receipt.json",
+      "sha256": "e461a5dcc10470ca8b39a2e9ed463d2d75aa1b6c9c74680565b285e6addc222c",
+      "bytes": 493
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/native_reference/formal/rows.jsonl",
+      "sha256": "5bf49779f91e181b55b3367a860923c7c6f0ab6d7946360c2ce948be65aba92f",
+      "bytes": 9499047
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/fused_mask_reference/receipt.json",
+      "sha256": "0e07f808da2b3c51c7372c53d954fd9d8c812e06dffd33f07c24aecc1628a510",
+      "bytes": 1260
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/fused_mask_reference/train.jsonl",
+      "sha256": "b13f6af080b864e58ad6469c5bec086381e92026ab4a5640729f17b1147cc4cb",
+      "bytes": 4046601
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/fused_mask_reference/initial_formal/receipt.json",
+      "sha256": "1941b9aac70b16a265486402cccacc9e495b006789867dd07a670961e759c471",
+      "bytes": 502
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/fused_mask_reference/initial_formal/rows.jsonl",
+      "sha256": "40672da53d767bc2262fa280a9904589c813a98b0c419d1cbdac161378144a23",
+      "bytes": 9495752
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/fused_mask_reference/formal/receipt.json",
+      "sha256": "6fa0e274a991299f43aa61b23a09bc14f2ad6914a5e296cea9168af6783a362e",
+      "bytes": 495
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/complete_fit/fused_mask_reference/formal/rows.jsonl",
+      "sha256": "af62b20ebfdf04dbcddf2b4677fdb1a0ed87b30ab1afbc1312c657431c458eae",
+      "bytes": 9497704
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/analysis/TERMINAL_ACCEPTANCE.json",
+      "sha256": "be954c8cc0ab0a1db8fda5e538658960f6f82cbe110017cb7b3eb11450f6cf85",
+      "bytes": 1553
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/weight_retention.json",
+      "sha256": "43a65da29de05f2f15f426d48b986a7e32a5085379e729013f0ce08d0d48831e",
+      "bytes": 2166
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/retention_tools_publication.json",
+      "sha256": "62fbcdcc67fd9b4e7c5b0c89e160a277bd8862b16326d2903b0e6ae2dceb4dd1",
+      "bytes": 731
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/publish_retention_tools_authorized.py",
+      "sha256": "458f58903a36dc1bfbf0d93eda66802053d5f1e3f84406c3d2cd17baa3f2e220",
+      "bytes": 10365
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_RETENTION_TOOLS_REVIEW.json",
+      "sha256": "0222562a011143bdba253127f833778def225a783a6d9f70789628eeafd06136",
+      "bytes": 18337
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/retain_metric_best.py",
+      "sha256": "d7c38bda11a13fc974460e0ac0664dd288b69b12bef9566a17533b94243d5ec0",
+      "bytes": 7014
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/retain_metric_best_authorized.py",
+      "sha256": "1bc3be71301ab9799993448411696cba204c32054f1ea8e78140d55dd8bb592e",
+      "bytes": 4436
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "8914e08d15966cf9a701e907954fcfaf857e556e1a0905c04988143eb52d79bc",
+      "bytes": 2336490
+    },
+    {
+      "path": "C:/Users/gb/.codex_pvground_cs_20261002/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "8914e08d15966cf9a701e907954fcfaf857e556e1a0905c04988143eb52d79bc",
+      "bytes": 2336490
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_v99_internal_20260928/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "8914e08d15966cf9a701e907954fcfaf857e556e1a0905c04988143eb52d79bc",
+      "bytes": 2336490
+    },
+    {
+      "path": "C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "8914e08d15966cf9a701e907954fcfaf857e556e1a0905c04988143eb52d79bc",
+      "bytes": 2336490
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/sync_cs_handoff_remote_20260923.py",
+      "sha256": "79f2bafc78e1eac25365d6bf5f3168c638cbeedb24941c3056538c1eaa97ea08",
+      "bytes": 1435
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/postrun/PUBLISH_TERMINAL_SOURCE_REVIEW.md",
+      "sha256": "eec65eeaa1a16102dc5c5fe8e1ac7f6b167d7109bce201c77bdc57d3b6e426c1",
+      "bytes": 5397
+    }
+  ],
+  "static_validation": {
+    "source_inspection": "PASS",
+    "json_parse_and_digest_checks": "PASS",
+    "audit_bound_selected_payload_entries_checked": 22,
+    "audit_bound_selected_payload_entry_mismatches": 0,
+    "publisher_source_modified": false,
+    "python_import_or_execution": false,
+    "ast_or_compile_performed": false,
+    "remote_python_compatibility": "Python3.7-compatible source constructs inspected; not executed.",
+    "local_shlex_join": "Remains local; not used in embedded remote code.",
+    "binary_or_literal_secret_markers_found": 0
+  },
+  "reviewer_execution": {
+    "local_read_hash_parse": true,
+    "shell_commands": false,
+    "git_commands": false,
+    "network": false,
+    "ssh": false,
+    "publisher_executed": false,
+    "training_poll": false,
+    "gpu": false,
+    "model_constructed": false,
+    "torch_load": false,
+    "weights_read_or_written": false,
+    "deletion": false,
+    "new_integrity_review": false,
+    "writes": "Only requested new reports, their timestamped copies and local review MANIFEST entries."
+  },
+  "actual_publication_state": {
+    "publisher_executed_by_reviewer": false,
+    "published_by_this_review": false,
+    "actual_retention_receipt_read": true,
+    "retention_executed_by_reviewer": false
+  },
+  "not_attested": {
+    "backend": true,
+    "live_remote_filesystem": true,
+    "remote_weight_bytes": true,
+    "publisher_runtime_success": true,
+    "new_GPU_accuracy": true,
+    "multiseed_or_other_benchmarks": true
+  },
+  "prior_audit_bound_files_modified": false
+}

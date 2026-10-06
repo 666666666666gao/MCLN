@@ -1,0 +1,55 @@
+{
+  "time_cst": "2026-10-06T22:10:53.298754+08:00",
+  "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+  "free_bytes": {
+    "data": 504991744,
+    "system": 445059072
+  },
+  "datasets": {
+    "nr3d": {
+      "spec": "/root/autodl-tmp/mcln_pvground_nr_finetune_20260917_rec_competition_v1/spec.json",
+      "spec_sha256": "b8b602a5209ec16c30b21cb558042d75cf36cbb4adb32fd2bee8c1442045927c",
+      "checkpoint": "/root/autodl-tmp/mcln_pvground_nr_checkpoint_inspection_20260908_v1/PV-Ground_NR3D.pth",
+      "checkpoint_bytes": 829830168,
+      "checkpoint_sha256": "d2d9afaf9c293c54977f3555a46c7bb2a72d9f80163a3f602dd8426032d7fa5d",
+      "partition": "/root/autodl-tmp/mcln_pvground_referit_fit_partitions_20260917_v1/nr3d_partition.json",
+      "partition_sha256": "f17805d1faa8347e000ca7f800fe666742a1acd56bf7d2ae3b0e8d0e7d29d6fc",
+      "fit_rows": 36747,
+      "holdout_rows": 6172,
+      "language_rows": 32919,
+      "detection_base_rows": 1199,
+      "formal_contract": "/root/autodl-tmp/mcln_pvground_referit_formal_preparation_20260917_v1/nr3d_formal_input_contract.json",
+      "formal_contract_exists": true,
+      "input_manifest": "/root/autodl-tmp/mcln_referit3d_appearance_getitem_20260908_v1/manifest.json",
+      "model_source": "/root/autodl-tmp/mcln_pvground_task_observation_source_20260917_v1/PV-Ground",
+      "source_port": "/root/autodl-tmp/mcln_pvground_task_observation_source_20260917_v1/PV-Ground/../source_port.json"
+    },
+    "sr3d": {
+      "spec": "/root/autodl-tmp/mcln_pvground_sr_finetune_20260917_rec_competition_v1/spec.json",
+      "spec_sha256": "756962a74cf3c9e056f65a054e3f6e996dd298bfc5fa4881f4babad23e5bdf35",
+      "checkpoint": "/root/autodl-tmp/mcln_pvground_sr_checkpoint_inspection_20260908_v1/PV-Ground_SR3D.pth",
+      "checkpoint_bytes": 829830168,
+      "checkpoint_sha256": "a4a14b0090947177a648703ad6de094246891d89174fffa56fe454f730dbe3dc",
+      "partition": "/root/autodl-tmp/mcln_pvground_referit_fit_partitions_20260917_v1/sr3d_partition.json",
+      "partition_sha256": "71bb8fd46587f1cd75371f9bf01e9de50412dffed8c5918f2e9f754b267e1c16",
+      "fit_rows": 65558,
+      "holdout_rows": 10328,
+      "language_rows": 65846,
+      "detection_base_rows": 1199,
+      "formal_contract": "/root/autodl-tmp/mcln_pvground_referit_formal_preparation_20260917_v1/sr3d_formal_input_contract.json",
+      "formal_contract_exists": true,
+      "input_manifest": "/root/autodl-tmp/mcln_referit3d_appearance_getitem_20260908_v1/manifest.json",
+      "model_source": "/root/autodl-tmp/mcln_pvground_task_observation_source_20260917_v1/PV-Ground",
+      "source_port": "/root/autodl-tmp/mcln_pvground_task_observation_source_20260917_v1/PV-Ground/../source_port.json"
+    }
+  },
+  "gpu_memory": "0, 1 MiB, 40960 MiB",
+  "related_processes": "766195 /root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python -B -c import datetime,hashlib,json,shutil,subprocess from pathlib import Path def sha(path):     h=hashlib.sha256()     with Path(path).open('rb') as f:         for b in iter(lambda:f.read(8*1024*1024),b''):h.update(b)     return h.hexdigest() runtime=Path('/root/autodl-tmp/mcln_pvground_runtime_20260908_v1') env=json.loads((runtime/'env_spec.json').read_bytes()) result=dict(time_cst=datetime.datetime.now().astimezone().isoformat(),     env_spec_sha256=hashlib.sha256(json.dumps(env,sort_keys=True,separators=(',', ':')).encode()).hexdigest(),     free_bytes=dict(data=shutil.disk_usage('/root/autodl-tmp').free,system=shutil.disk_usage('/').free),datasets={}) for dataset,short in [('nr3d','nr'),('sr3d','sr')]:     p=Path('/root/autodl-tmp/mcln_pvground_'+short+'_finetune_20260917_rec_competition_v1/spec.json')     spec=json.loads(p.read_bytes());cp=Path(spec['checkpoint']['path']);partition=json.loads(Path(spec['partition']).read_bytes())     contract=Path('/root/autodl-tmp/mcln_pvground_referit_formal_preparation_20260917_v1')/(dataset+'_formal_input_contract.json')     result['datasets'][dataset]=dict(spec=str(p),spec_sha256=sha(p),checkpoint=str(cp),checkpoint_bytes=cp.stat().st_size,         checkpoint_sha256=sha(cp),partition=spec['partition'],partition_sha256=sha(spec['partition']),         fit_rows=len(partition['fit_ids']),holdout_rows=len(partition['holdout_ids']),         language_rows=partition['original_language_rows'],detection_base_rows=partition['original_detection_base_rows'],         formal_contract=str(contract),formal_contract_exists=contract.exists(),         input_manifest=spec['input_manifest'],model_source=spec['model_source'],source_port=spec['source_port']) result['gpu_memory']=subprocess.check_output(['nvidia-smi','--query-gpu=index,memory.used,memory.total','--format=csv,noheader']).decode().strip() process=subprocess.run(['pgrep','-af','/venv/bin/python.*(run_geometry|run_final|controller|referit|pvground)'],stdout=subprocess.PIPE) result['related_processes']=process.stdout.decode().strip();result['pgrep_exitcode']=process.returncode result['closed_generated_weight_inventory']=[dict(path=str(p),bytes=p.stat().st_size) for p in sorted(Path('/root/autodl-tmp').glob('pvground*/*/*.pth'))] print(json.dumps(result))",
+  "pgrep_exitcode": 0,
+  "closed_generated_weight_inventory": [
+    {
+      "path": "/root/autodl-tmp/pvground_mask_reference_20261006/fused_mask_reference/initial.pth",
+      "bytes": 1828167
+    }
+  ]
+}

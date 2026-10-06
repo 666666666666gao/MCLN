@@ -1,0 +1,482 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "reviewed_at_cst": "2026-10-06T22:32:46.3614662+08:00",
+  "review_scope": "Fresh correctness review of the fixed four-run Nr3D/Sr3D native/fused real-model preflight source, its native loss/dataset/model dependencies, helper implementations, registration and scoped launcher.",
+  "reviewer": {
+    "task": "/root/pvg_referit_mask_reference_source_review",
+    "same_family": true,
+    "provisional": true,
+    "backend_attested": false,
+    "backend_statement": "Same-family/provisional review. Actual serving backend and independent cross-backend calibration are not attested."
+  },
+  "runtime_attestation": {
+    "actual_M0_attested": false,
+    "actual_model_initialization_attested": false,
+    "actual_forward_backward_attested": false,
+    "actual_optimizer_restore_attested": false,
+    "actual_GPU_capacity_attested": false,
+    "actual_formal_results_attested": false,
+    "statement": "This verdict applies to the reviewed source bytes only. Future actual M0 is not evidence yet. No prior Scan terminal result was re-audited or used as a new Nr3D/Sr3D result."
+  },
+  "reviewer_actions": {
+    "project_scripts_executed": 0,
+    "model_loads": 0,
+    "model_forwards": 0,
+    "optimizer_steps": 0,
+    "SSH_or_network_actions": 0,
+    "GPU_actions": 0,
+    "package_installs": 0,
+    "deletions": 0,
+    "writes": [
+      "SOURCE_REVIEW.json",
+      "SOURCE_REVIEW.md"
+    ],
+    "source_inspection": "Direct local source reads, text searches, byte counts and SHA-256 hashing. A literal source-text reconstruction was hashed in memory; no project Python code was imported or executed."
+  },
+  "resolved_findings": [
+    {
+      "id": "F1",
+      "original_severity": "BLOCKING",
+      "status": "RESOLVED_IN_REVIEWED_SOURCE",
+      "title": "Native versus installed-module comparison used different Gumbel samples",
+      "original_script_sha256": "787d25def619a2386b3a5299f72cf286712e1475a7b7674a778b6b754c484022",
+      "evidence": [
+        "PVGround._generate_queries calls self.gumbel at models/pv_ground.py:316.",
+        "GumbelSampling.forward calls F.gumbel_softmax unconditionally at models/pv_ground.py:609, including eval mode.",
+        "The initial preflight ran its comparison forwards without replaying RNG, so its zero-initialization assertions compared different sampled Queries."
+      ],
+      "resolution": "The final script resets Python, NumPy, torch CPU and all CUDA RNGs immediately before both comparison forwards (referit_model_preflight.py:119 and :136).",
+      "final_script_sha256": "512f21026646458ad68dae8b4b1d37cf18ed3b1bfdb91dec9045a0a08cce2b34",
+      "verification": "Direct source inspection only; actual numerical comparison remains a future M0 check."
+    },
+    {
+      "id": "F2",
+      "original_severity": "BLOCKING",
+      "status": "RESOLVED_IN_REVIEWED_SOURCE",
+      "title": "The first baseline forward preceded installation of the required observed groupers",
+      "affected_initial_and_rng_only_script_sha256": [
+        "787d25def619a2386b3a5299f72cf286712e1475a7b7674a778b6b754c484022",
+        "fd26ca1d6da3f7c8d7990de28039dcb3848103266eb4934bd4278e4e50fcb078"
+      ],
+      "evidence": [
+        "The pinned pv_utils source unconditionally calls spatial_observation for the raw-point and four sparse-feature aggregates.",
+        "runtime_bundle/pvground_observation_query.py:70 reads each grouper.observation; the original OpenPCDet QueryAndGroup implementation does not create this attribute.",
+        "ObservedQueryAndGroup.forward creates observation at helper line 56, and install_observation_query_read replaces the groupers at helper lines 136-140.",
+        "The initial script installed these groupers only after its first full forward."
+      ],
+      "resolution": "The final script installs the task reader immediately after strict official loading (line 92), retains the reader but temporarily sets source_query_read=None and task_read=False (lines 93-95), performs the native decoder forward, and reattaches the same reader with task_read=True (lines 126-127) before moving the completed model to CUDA/eval (line 132). This also avoids passing the task reader's tuple into the native Tensor branch.",
+      "final_script_sha256": "512f21026646458ad68dae8b4b1d37cf18ed3b1bfdb91dec9045a0a08cce2b34",
+      "verification": "Read the final branch directly and verified the observation dependency with the exact registered pv_utils source digest reconstructed from its literal source generator."
+    }
+  ],
+  "source_checks": [
+    {
+      "area": "Native text loss and scaling",
+      "result": "PASS_SOURCE",
+      "evidence": "Native models.losses.py:484-487 uses Nr .6/.2/.2/.1 and Sr .625/.125/.125/.125; lines 944-954 use weight 1 for ReferIt and divide CE/box/GIoU/contrastive by 7. referit_training_targets.py:8-10, 35-37 and 41-70 reproduce the unnormalized token target, entropy term, eos .1 weighting, matched-box denominator and final-layer 1/7 correction."
+    },
+    {
+      "area": "Detection-row protection",
+      "result": "PASS_SOURCE",
+      "evidence": "Native src.joint_det_dataset.py:1264-1270 separates language_dataset=self.test_dataset from sample_dataset=anno.dataset. The new losses branch on sample_dataset and skip scannet (targets lines 20-24 and 78-83). Semantic replacement explicitly checks zero direct detection-logit correction gradients. Extra geometry includes no detection-row loss terms; its boxes.sum()*0 anchor has zero direct box gradient. This is source reasoning, not an observed runtime gradient receipt."
+    },
+    {
+      "area": "Matching and filtered GT indices",
+      "result": "PASS_SOURCE",
+      "evidence": "Native compute_hungarian_loss orders proposal_ before last_ (losses lines 852-853), so matches[1] is the last-layer match. The native criterion filters all targets by box_label_mask (872-884). CE reconstruction and distribution_loss apply that same filter before indexing match target IDs. Both extra-root routes exclude every matched Query, protecting anchor and detection matches."
+    },
+    {
+      "area": "Additional geometry budget",
+      "result": "PASS_SOURCE",
+      "evidence": "extra_geometry_loss selects only real referring rows with own Query Mask IoU>.5 AND fused Mask IoU>.5 AND final Box IoU<=.5; all matched Queries are removed. Native L1/GIoU and DFL are normalized per selected expression, weighted (10,2,1)/7 and averaged over all 8 rows. The separate edge/7 term uses all valid native matched boxes."
+    },
+    {
+      "area": "Real four-ref/four-detection panel",
+      "result": "PASS_SOURCE",
+      "evidence": "The dataset wrapper preserves the saved language-row identity and maps repeated detection occurrences by sampled index. The script builds a native tenfold mixed training dataset, selects four fit IDs from each annotation segment, uses actual train augmentation, asserts the exact 4+4 sample_dataset sequence, and repeats the same collated eight-row batch for exactly two updates. It checks unchanged voxel point order before using point-aligned masks/superpoints."
+    },
+    {
+      "area": "Corresponding official initialization and no Scan weight transfer",
+      "result": "PASS_SOURCE",
+      "evidence": "Each registered run points to its corresponding Nr3D or Sr3D author checkpoint, with hashes matching the recorded prerequisites. The script requires all module. prefixes and exactly 1235 official states, strictly loads the complete set (including the persistent position_ids state), and checks official tensor equality again after the 70 added states. It never calls the Scan-specific build_readback_model factory or loads a Scan G/geometry/R checkpoint. Added reader weights derive only from the corresponding native model plus fresh initialized parameters."
+    },
+    {
+      "area": "Input protocol and single-Query geometry",
+      "result": "PASS_SOURCE",
+      "evidence": "The script preserves butd_cls=True, butd=False and butd_gt=False in the native dataset. Native dataset lines 1366-1372 use scene instance boxes with predicted classes; the plan discloses that protocol. Only point/text/detected-object/superpoint fields enter model inputs; sample_dataset and eligibility GT are attached only to training targets. MaskReferenceBoxRefiner produces one final box for each of 256 existing Queries; no extra ranking path is installed."
+    },
+    {
+      "area": "Zero outputs and reference scope",
+      "result": "PASS_SOURCE",
+      "evidence": "The fresh reader output, geometry output and frozen R output are initialized to zero. MaskReferenceBoxRefiner preserves native coarse features, uses thresholded scalar-alpha fused Mask support over actual raw members, and chooses native or fused reference by registered mode. expected_offset centers uniform probabilities to exact zero. The planned witness independently recomputes every Query extent from raw members and checks zero initial decoded displacement; the revised native comparison replays RNG and uses the native decoder branch."
+    },
+    {
+      "area": "Full forward/backward, devices and in-memory restore",
+      "result": "PASS_SOURCE",
+      "evidence": "The final code constructs the complete PVGround, restores the detached reader before the second model.cuda(), trains native permitted parameters plus the new reader/geometry head with native AdamW, and freezes R. It runs the full native criterion plus corrections, loss.backward(), finite-gradient checks, clipping and optimizer.step() twice, requiring a positive geometry-output task gradient. Full model state and AdamW states are serialized through io.BytesIO, loaded with map_location=cpu, strictly reloaded, compared tensor-for-tensor including moments/groups/steps, and never written as weight files."
+    },
+    {
+      "area": "Import namespaces and pinned source dependencies",
+      "result": "PASS_SOURCE",
+      "evidence": "The dataset namespace is imported from the appearance source before the model namespace; models is asserted absent at that boundary. The source/helper search paths precede model imports. The script checks model-source, helper, checkpoint and partition identities and records actual imported paths/hashes. Local native loss/main_utils/prepare_data, PVGround/modules, pv_backbone and decoder hashes agree with the registered source-port entries. All 17 local helper hashes agree with the spec. Runtime import resolution is still subject to actual M0."
+    },
+    {
+      "area": "Fixed controller and scoped deployment",
+      "result": "PASS_SOURCE",
+      "evidence": "The controller runs Nr-native, Nr-fused, Sr-native, Sr-fused sequentially and waits for each child, requiring its terminal exit and pass receipt. The launcher accepts only a SOURCE_ONLY review with no blockers, rechecks reviewed file bytes and registered payloads, creates only the exact absent isolated root, writes files exclusively with byte readback, and starts one controller in the existing environment. No optimizer continuation, formal evaluation, package installation, protected-weight mutation or deletion is in this launcher."
+    }
+  ],
+  "source_text_reconstruction": {
+    "canonical_relative_path": "models/pv_utils.py",
+    "base_path": "C:\\Users\\gb\\.codex\\tmp\\pvg_observation_source_20260909\\pv_utils.py",
+    "base_sha256": "28a386005e748ea700d7b589530bd78a36b8532d408632d134924a9dff1ecd44",
+    "literal_generator_path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\prepare_pvground_observation_source.py",
+    "bytes": 23949,
+    "sha256": "3e8c069af235970c541aa07d9780e812e609d798d242a013d64abdf89307bc29",
+    "equals_registered_source_port": true,
+    "project_code_executed": false
+  },
+  "registered_file_checks": [
+    {
+      "run": "nr3d_native",
+      "file": "referit_model_preflight.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_native",
+      "file": "referit_training_targets.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_native",
+      "file": "pvground_referit_fit_dataset.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_native",
+      "file": "mask_reference.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_native",
+      "file": "query_supported_geometry.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_native",
+      "file": "preflight_controller.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_fused_mask",
+      "file": "referit_model_preflight.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_fused_mask",
+      "file": "referit_training_targets.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_fused_mask",
+      "file": "pvground_referit_fit_dataset.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_fused_mask",
+      "file": "mask_reference.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_fused_mask",
+      "file": "query_supported_geometry.py",
+      "match": true
+    },
+    {
+      "run": "nr3d_fused_mask",
+      "file": "preflight_controller.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_native",
+      "file": "referit_model_preflight.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_native",
+      "file": "referit_training_targets.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_native",
+      "file": "pvground_referit_fit_dataset.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_native",
+      "file": "mask_reference.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_native",
+      "file": "query_supported_geometry.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_native",
+      "file": "preflight_controller.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_fused_mask",
+      "file": "referit_model_preflight.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_fused_mask",
+      "file": "referit_training_targets.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_fused_mask",
+      "file": "pvground_referit_fit_dataset.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_fused_mask",
+      "file": "mask_reference.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_fused_mask",
+      "file": "query_supported_geometry.py",
+      "match": true
+    },
+    {
+      "run": "sr3d_fused_mask",
+      "file": "preflight_controller.py",
+      "match": true
+    }
+  ],
+  "limitations": [
+    "The four actual M0 runs, real native/output comparisons, optimizer-state restoration and runtime resource adequacy have not been observed by this review.",
+    "Source PASS does not establish Nr3D/Sr3D accuracy, successful formal training, unseen-scene generalization, or improvement over any baseline.",
+    "The prerequisite resource snapshot is historical evidence; the future scoped launcher performs its own immediate resource check. No cleanup permission is inferred.",
+    "This review reports the two concrete defects found and their verified source repairs. It requests no speculative fallback, compatibility layer, new framework, hash design, or unrelated refactor."
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\EXPERIMENT_PLAN.md",
+      "bytes": 4150,
+      "sha256": "82640b7a59556ec74ce711dd5859f6972023b299cd7e7aaaa00798ddd7b2f7fd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\preflight_spec.json",
+      "bytes": 16877,
+      "sha256": "7c9e5272eb9ffc59aa9f3f71a810678795961e01deb09e9626e7ca93e1fb1103"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\referit_model_preflight.py",
+      "bytes": 15252,
+      "sha256": "512f21026646458ad68dae8b4b1d37cf18ed3b1bfdb91dec9045a0a08cce2b34"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\referit_training_targets.py",
+      "bytes": 6631,
+      "sha256": "4718f1480f7f3502eeea0152ed4cb02cacaa3c00fc96ccc3e214ebbdb02c4eb6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\preflight_controller.py",
+      "bytes": 1861,
+      "sha256": "f5959600501270b277ecdeb5e254450c23bf74784b2ca0fcdbc6f30572e55da6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\launch_preflight_authorized.py",
+      "bytes": 4333,
+      "sha256": "e8f70840b406fbc0d69cfbbc1c5a1029edf901168768a8e6cafcf0b711ca42a4"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\pvground_referit_fit_dataset.py",
+      "bytes": 1580,
+      "sha256": "40a050680eb68c73aee47b7285ff2ee88309d7f8a45c9960434faba28a3ded24"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\query_supported_geometry.py",
+      "bytes": 3634,
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\prerequisites.json",
+      "bytes": 5435,
+      "sha256": "d7f28f97ab8d40f6bb28695dacd2fe9a4d0a22974180c89545c4a0392d40e56e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_referit_mask_reference_20261006\\prepare_preflight.py",
+      "bytes": 7692,
+      "sha256": "25dfa184aa391fdb216695878e80ad54e1d49698bbd3d3e813462d5a7eaafa36"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py",
+      "bytes": 518,
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_final_quality.py",
+      "bytes": 5764,
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py",
+      "bytes": 481,
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py",
+      "bytes": 4335,
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "bytes": 4754,
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "bytes": 8163,
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py",
+      "bytes": 31540,
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_mcln_g0_20260905\\refine-logs\\pvground_candidate_normalization_20261003\\complete\\source\\imported\\models.losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_mcln_g0_20260905\\refine-logs\\pvground_candidate_normalization_20261003\\complete\\source\\imported\\main_utils.py",
+      "bytes": 24599,
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_mcln_g0_20260905\\refine-logs\\pvground_candidate_normalization_20261003\\complete\\source\\imported\\src.joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_mcln_g0_20260905\\refine-logs\\pvground_candidate_normalization_20261003\\complete\\source\\imported\\prepare_data.py",
+      "bytes": 19658,
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 26744,
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\modules.py",
+      "bytes": 7068,
+      "sha256": "1f262505e4c9d6fd186609c6da1497bf5cf6f62f982fa7746c7d4f5400d8f2df"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\source_port.json",
+      "bytes": 10665,
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_pretrained_resources_20260908_v1\\source\\models\\pv_backbone.py",
+      "bytes": 2216,
+      "sha256": "8d25ef7bbc18abce9c755cf41718708ff16ec78d8bd32aa11e6cdd484c23ffc9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvg_observation_source_20260909\\pv_utils.py",
+      "bytes": 23469,
+      "sha256": "28a386005e748ea700d7b589530bd78a36b8532d408632d134924a9dff1ecd44"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\prepare_pvground_observation_source.py",
+      "bytes": 3897,
+      "sha256": "cdee96ce0400d658b00acd18b823c7a23a3311baea37db334bbc0919d24c0258"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\scripts\\prepare_pvground_task_observation_source.py",
+      "bytes": 4401,
+      "sha256": "b66f566f302f3b272ba74439b81597e84cfed651ef6ab2d9cf44ba13c92b2556"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_p3_next_20261002\\parent_source\\models\\encoder_decoder_layers.py",
+      "bytes": 21540,
+      "sha256": "e2cb80a29651f8540edd0a84c6d07072c9933430513c55f3bbe254006788d736"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\OpenPCDet\\pcdet\\ops\\pointnet2\\pointnet2_stack\\pointnet2_utils.py",
+      "bytes": 18073,
+      "sha256": "4875fd1e977e02dd29a233b498fb682737fbe9abd3478c8cfedb5ac3e7f98a6c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\wandb_config.yaml",
+      "bytes": 7013,
+      "sha256": "8556a89d2f8e5db0c09e43fd160c9ab8e4ca7b144e0bf686ed644ce6d73072d1"
+    }
+  ]
+}

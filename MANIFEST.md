@@ -280,3 +280,5 @@
 - 2026-10-06T12:17:54.409306+08:00 Best-only fixed-path retention tools SOURCE_ONLY reviewed; not executed.
 
 - 2026-10-06T22:02:37.724183+08:00 Actual Mask-reference pair closed; initial5598/4848 best, trained5593/4832; audit/CPU restore/best-only retention complete.
+
+- 2026-10-06T22:38:35.117011+08:00 Corresponding Nr/Sr initialization, native training roles and four real mixed-row preflights launched; no new formal metrics.

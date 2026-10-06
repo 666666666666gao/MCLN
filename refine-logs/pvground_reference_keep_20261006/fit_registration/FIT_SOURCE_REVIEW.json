@@ -1,0 +1,449 @@
+{
+  "time_cst": "2026-10-07T00:29:35.5749458+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "scope": "Bounded formal control/keep launcher, one timed observer, completed-only artifact collector, their preparer, unchanged reviewed experiment source, and actual completed two-step M0 receipts.",
+  "requested_reviewer": "Astra/max per task request; actual backend identity is not attested",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "backend_identity_attested": false,
+  "formal_runtime_attested": false,
+  "actual_m0_receipts_reviewed": true,
+  "source_or_embedded_remote_code_executed": false,
+  "ssh_network_gpu_training_calls_performed": false,
+  "model_checkpoint_or_optimizer_loaded": false,
+  "package_changes_or_deletion_performed": false,
+  "original_source_review_preserved": true,
+  "writes_limited_to": [
+    "FIT_SOURCE_REVIEW.json",
+    "FIT_SOURCE_REVIEW.md"
+  ],
+  "inherited_review": {
+    "original_files_bound": 49,
+    "original_bound_identities_rechecked": 49,
+    "original_identity_mismatches": 0,
+    "note": "SOURCE_REVIEW.json/md remain unchanged. Their resolved CPU/CUDA index finding is already fixed in the exact runner/loss used by both completed M0s."
+  },
+  "actual_m0": {
+    "closed_cst": "2026-10-07T00:20:36.869134+08:00",
+    "controller_exit": 0,
+    "controller_status": "complete",
+    "controller_alive": false,
+    "completed_runs": [
+      "control/preflight",
+      "keep/preflight"
+    ],
+    "artifact_identity_checks": 28,
+    "artifact_identity_mismatches": 0,
+    "current_vs_collected_execution_source_identity_checks": 10,
+    "current_vs_collected_execution_source_mismatches": 0,
+    "receipt_runner_and_spec_hashes_match_current": true,
+    "all_four_witness_row_lists_equal": true,
+    "head_parameters_per_arm": 456102,
+    "head_state_tensors_per_arm": 10,
+    "no_accuracy_result": true,
+    "arms": [
+      {
+        "arm": "control",
+        "optimizer_steps": 2,
+        "status": "pass",
+        "elapsed_seconds": 463.57990577071905,
+        "serialization_bytes": 5481547,
+        "reference_keep_weight": 0,
+        "first_keep_loss": 0,
+        "second_keep_loss": 7.601548759339494e-7,
+        "second_keep_output_gradient_norm": 0.0036167337093502283,
+        "parent_R_exact": true,
+        "optimizer_restore_exact": true,
+        "accuracy_result": false,
+        "rows": [
+          27845,
+          23527,
+          27285,
+          9781,
+          3314,
+          8523,
+          15720,
+          32718
+        ]
+      },
+      {
+        "arm": "keep",
+        "optimizer_steps": 2,
+        "status": "pass",
+        "elapsed_seconds": 462.2427858412266,
+        "serialization_bytes": 5481547,
+        "reference_keep_weight": 1,
+        "first_keep_loss": 0,
+        "second_keep_loss": 7.601692004755023e-7,
+        "second_keep_output_gradient_norm": 0.0036167686339467764,
+        "parent_R_exact": true,
+        "optimizer_restore_exact": true,
+        "accuracy_result": false,
+        "rows": [
+          27845,
+          23527,
+          27285,
+          9781,
+          3314,
+          8523,
+          15720,
+          32718
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "id": "source_and_receipt_gate",
+      "result": "PASS_SOURCE_AND_LOCAL_RECEIPTS",
+      "detail": "Launcher requires SOURCE_ONLY PASS/WARN with no blockers and exact reviewed-file hashes; verifies closed M0 wait, both2-step PASS receipts, source/spec hashes, frozen parent/R, nativebbs/Mask preservation, all256 extent witness,39-invalid fixture, optimizer equality, keep qualification gradients, initial exact-zero keep loss and positive second keep output gradient. Remote M0 receipts and the existing deployed execution files must equal the reviewed local copies."
+    },
+    {
+      "id": "selected_init_and_budget",
+      "result": "PASS_UNCHANGED_SOURCE",
+      "detail": "The unchanged runner reloads retained5598/4848 step0 fused-reference complete state via the proven official-PV+original-G+selected10-tensor factory, using fresh AdamW, not the M0 updated model. Control/keep specs differ only output root and lambda0/1. One pass29778 fit rows,3723 updates per arm, B8/finalB2, accumulation1, lr1e-5/WD5e-4/clip.1, fixed2027,456102 trainable geometry parameters. Original native/G/DFL/extra loss terms remain."
+    },
+    {
+      "id": "formal_metrics_and_inference",
+      "result": "PASS_UNCHANGED_SOURCE",
+      "detail": "Sequential controller runs initial_formal/train/formal for control then keep. Each arm records initial/end9508 formal and6887 holdout evaluations using unique last/bbs, all256 candidates and sameQuery Box/Mask. Keep loss/GT eligibility is training-only; inference has no GT geometry or new score. Model+Adam terminal restore remains strict. No candidate promotion or module-effectiveness claim is made by the launch."
+    },
+    {
+      "id": "resource_and_single_launch",
+      "result": "PASS_SOURCE",
+      "detail": "Launcher checks prior remote M0 complete/exit0, no fit_status yet, idle compute, selected-best SHA, and actual reserve before starting. Nonblocking existing GPU flock protects one phasefit controller; local fit_launch absence and remote fit_status absence preserve one-launch semantics. Controller verifies protected officialPV/G/selected weights and runner verifies runtime/source identities.",
+      "serialized_m0_bytes": 5481547,
+      "required_reserve_bytes": 960163041,
+      "reserve_formula": "3 * max(actual per-arm M0 serialization_bytes) + 900 * 1024**2",
+      "actual_current_remote_capacity_not_queried_by_reviewer": true
+    },
+    {
+      "id": "observer_schedule",
+      "result": "PASS_SOURCE",
+      "detail": "One observer marker; first query24300s (6h45min) after recorded launch, then240s. Prior full controller receipt measured24787.03s, consistent with the approximately6h53min launcher estimate. Observer reads process/status/exit only, retains observations, and invokes collector only after controller absent, exit0 and complete status. No optimizer/inference replay, early progress query or automatic relaunch occurs."
+    },
+    {
+      "id": "completed_only_collector",
+      "result": "PASS_SOURCE",
+      "detail": "Collector requires the closed successful observer and independently rechecks remote fit_controller.exit0 and complete fit_status. It streams actual output files directly, excludes .pth/.pt/.tmp (all weight/temp formats written by this runner), validates file membership/type/path containment/size/SHA and exact completeness, and writes INTAKE only after successful stream/remote exit. It performs no weight copying, deletion, model load or NN execution."
+    },
+    {
+      "id": "preparer",
+      "result": "PASS_SOURCE",
+      "detail": "prepare_fit_launch.py transforms only prior launcher/observer/collector source into this pair-specific files and compiles the generated strings. Exact produced source was reviewed; control/keep names, fused reference, current best, new goal, M0 checks and24300-second first wait are present. It does not launch anything."
+    },
+    {
+      "id": "goals",
+      "result": "PASS_CONTRACT",
+      "detail": "Current same-checkpoint ScanRefer gate is5620/4764 and three demonstrated effective modules, then independent Sr3D/Nr3D training from corresponding author core weights. Seed2027 only. The current formal run is a bounded loss contrast; M0 is not an accuracy or three-module result."
+    }
+  ],
+  "qualifications": [
+    "SOURCE_ONLY same-family/provisional review; requested Astra/max is a request, not an attested backend identity.",
+    "The two actual M0 receipts were inspected locally and matched their collected/source identities. The reviewer did not rerun M0, execute launcher/observer/collector, query SSH/GPU, load weights or attest current remote capacity or future formal runtime.",
+    "The observed positive keep gradient proves an active computation route on the two-step batch, not improved accuracy. Independent M0 loss values show small floating-point differences; they are not claimed bitwise identical across arms.",
+    "Current retained5598/4848 is a zero-update spatial-reference result. Final improvement must be judged against actual same-budget control and each arm actual initial result; report both thresholds from the same checkpoint.",
+    "Formal result analysis, best selection, selected-model restore and authorized nonbest retention remain later concrete tasks. This launcher/collector neither promotes a model nor performs cleanup.",
+    "6887 holdout scenes were seen by official pretraining; no unseen-scene or cross-benchmark generalization is established. Sr3D/Nr3D formal training remains outside this run."
+  ],
+  "overall_goal_complete": false,
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\prepare_fit_launch.py",
+      "bytes": 5136,
+      "sha256": "3b6bd81ce3688dc0365dbe19f3ba4ad16021316342c910c87538f515cd6b6445",
+      "review_extent": "full source including embedded remote snippets"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\launch_fit_authorized.py",
+      "bytes": 7435,
+      "sha256": "5d8df47987a87c25d1cc15ba2074bfe3b9dd154ece157954b147c6fbb4965598",
+      "review_extent": "full source including embedded remote snippets"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\observe_fit_authorized.py",
+      "bytes": 3772,
+      "sha256": "8fbfc561a1d76604da2ed21b25ee56353da4e88c8369f8660dfb1af2b0fc1cfd",
+      "review_extent": "full source including embedded remote snippets"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\collect_closed_fit_authorized.py",
+      "bytes": 3388,
+      "sha256": "1cc9a9c010875e0dbd49206313e947ba1abeb1b8da6d84d6098675d4092def17",
+      "review_extent": "full source including embedded remote snippets"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\run_reference_keep_fit.py",
+      "bytes": 40234,
+      "sha256": "de531b5e95bcbde20469c34f57d58fa69f7489dff8bffb8df3c3c983e525f025",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\reference_keep.py",
+      "bytes": 3304,
+      "sha256": "d9c462a7fb66a9e8f20215e5dee8dbee88bc202c5775a34343fb2d28d6c8b244",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\controller.py",
+      "bytes": 2960,
+      "sha256": "2d681d9ca50ec2064722e60e52cead0d6bbfa7334e360ee33f78aad6c781a622",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\control_spec.json",
+      "bytes": 4985,
+      "sha256": "dcd14469ae534b1e34cbb253ca222a25d0f7233abd09b5d186845b7f188e91f2",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\keep_spec.json",
+      "bytes": 4982,
+      "sha256": "eddfbf1b0e8cb3ee0cfee973d59c290568c40eb9da82c570b52f8899e23d82c0",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\query_supported_geometry.py",
+      "bytes": 3634,
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\check_invalid_reference.py",
+      "bytes": 1204,
+      "sha256": "71bbb014d6b840388d8d47dfe6b1324057a1ca46bed1a996bfb7c44f85ae693f",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\invalid_reference_fixture.npz",
+      "bytes": 1332461,
+      "sha256": "811956973cd214877773cde8e88ee9d884f5dfdd33cc3f8b74c8f3b6a8388c1d",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\invalid_reference_fixture.json",
+      "bytes": 11486,
+      "sha256": "e1c711f081a73bd6e14418cc1ef4e842f6b3f0bdcd5c5f73dfe95cdec76eebca",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\EXPERIMENT_PLAN.md",
+      "bytes": 4491,
+      "sha256": "5a284b98b721b23b774a2eb082f7332a12c04e51ce4995419f226f0d813d79ba",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\research_contract.md",
+      "bytes": 566,
+      "sha256": "66f3f402588209016063591b75a69093348117c0d8d09b540d6f1dbdd4236cfc",
+      "review_extent": "unchanged original SOURCE_ONLY review reused after exact identity check"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\SOURCE_REVIEW.json",
+      "bytes": 23830,
+      "sha256": "8979d24261d2f134be619b86dc0e3b94ffd5b6c23f83bcfc6a0d72f092cf0671",
+      "review_extent": "original report preserved; all49 bound file identities rechecked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\SOURCE_REVIEW.md",
+      "bytes": 3369,
+      "sha256": "a65b5155a0b311abe9804512c42f5dc3df6b0be315db8b11a00dd5391a81a8c9",
+      "review_extent": "original report preserved; all49 bound file identities rechecked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_wait.json",
+      "bytes": 24415,
+      "sha256": "1580fcb2aa03d9aca97e850834d6c2b4d6ec0cee121534d2bd7c6078ad6a71a8",
+      "review_extent": "actual closed-M0 intake receipt, completion fields, and28 artifact identities"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\run_reference_keep_fit.py",
+      "bytes": 40234,
+      "sha256": "de531b5e95bcbde20469c34f57d58fa69f7489dff8bffb8df3c3c983e525f025",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\reference_keep.py",
+      "bytes": 3304,
+      "sha256": "d9c462a7fb66a9e8f20215e5dee8dbee88bc202c5775a34343fb2d28d6c8b244",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\query_supported_geometry.py",
+      "bytes": 3634,
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\check_invalid_reference.py",
+      "bytes": 1204,
+      "sha256": "71bbb014d6b840388d8d47dfe6b1324057a1ca46bed1a996bfb7c44f85ae693f",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\invalid_reference_fixture.json",
+      "bytes": 11486,
+      "sha256": "e1c711f081a73bd6e14418cc1ef4e842f6b3f0bdcd5c5f73dfe95cdec76eebca",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\control_spec.json",
+      "bytes": 4985,
+      "sha256": "dcd14469ae534b1e34cbb253ca222a25d0f7233abd09b5d186845b7f188e91f2",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\keep_spec.json",
+      "bytes": 4982,
+      "sha256": "eddfbf1b0e8cb3ee0cfee973d59c290568c40eb9da82c570b52f8899e23d82c0",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\controller.py",
+      "bytes": 2960,
+      "sha256": "2d681d9ca50ec2064722e60e52cead0d6bbfa7334e360ee33f78aad6c781a622",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\EXPERIMENT_PLAN.md",
+      "bytes": 4491,
+      "sha256": "5a284b98b721b23b774a2eb082f7332a12c04e51ce4995419f226f0d813d79ba",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\research_contract.md",
+      "bytes": 566,
+      "sha256": "66f3f402588209016063591b75a69093348117c0d8d09b540d6f1dbdd4236cfc",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\SOURCE_REVIEW.json",
+      "bytes": 23830,
+      "sha256": "8979d24261d2f134be619b86dc0e3b94ffd5b6c23f83bcfc6a0d72f092cf0671",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\SOURCE_REVIEW.md",
+      "bytes": 3369,
+      "sha256": "a65b5155a0b311abe9804512c42f5dc3df6b0be315db8b11a00dd5391a81a8c9",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\preflight_controller.log",
+      "bytes": 444,
+      "sha256": "afccff6d6ddef2fa41da19b4cf01bbc0988fb436a7566d7124d1a2f663905f0c",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\preflight_launch.json",
+      "bytes": 891,
+      "sha256": "2bd91dd4ca5b49fe84eba2da2d24e0e37e54414b916179ce879a0c367af73f7b",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\preflight_status.json",
+      "bytes": 498,
+      "sha256": "fe8a6fa654205c531c06f7a04e49f0c805f0390154f8a04f0ee675dec1609b26",
+      "review_extent": "actual M0 receipt/status/exit contents inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\preflight_controller.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_extent": "actual M0 receipt/status/exit contents inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\control\\preflight.log",
+      "bytes": 6840,
+      "sha256": "7ea4812445902ca31eb7e2622a160bbccc1938d015a50cbb454c272166a9245f",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\control\\imports.json",
+      "bytes": 1266,
+      "sha256": "4d4eaeaca2c1a1973a150c955c5cc802396c1325ce350a42fbe9172501eece78",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\control\\load.json",
+      "bytes": 1013,
+      "sha256": "c53e4cc2f5ea2bf73b3e7099ee215b1e2301b06d8245b1085df436e92c3a00ef",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\control\\preflight.json",
+      "bytes": 7570,
+      "sha256": "f82b48cea02bf27df6e6958e49bf57c44d10cf1bd541d1b2f9cf668e710ad8e2",
+      "review_extent": "actual M0 receipt/status/exit contents inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\control\\preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_extent": "actual M0 receipt/status/exit contents inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\keep\\preflight.log",
+      "bytes": 6836,
+      "sha256": "06dd4b17d4826fb13ed885d149a43f1505f5288c173820e6c31fae89e66b2d8a",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\keep\\imports.json",
+      "bytes": 1266,
+      "sha256": "4d4eaeaca2c1a1973a150c955c5cc802396c1325ce350a42fbe9172501eece78",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\keep\\load.json",
+      "bytes": 1013,
+      "sha256": "c090acea9116fac20e4c32e23e4111ac98350a9d2677fb06ae642c9bb0f7a5b7",
+      "review_extent": "actual collected artifact identity checked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\keep\\preflight.json",
+      "bytes": 7566,
+      "sha256": "1e1415ae3d6ea358bf2937db636f27717eb01d4fd762be80db701c2d108c2ff7",
+      "review_extent": "actual M0 receipt/status/exit contents inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\preflight_complete\\keep\\preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_extent": "actual M0 receipt/status/exit contents inspected"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\complete_fit\\fit_status.json",
+      "bytes": 673,
+      "sha256": "0c89f925286c431aff637fdc5424bfe19415708e3191b530230ad7ec646e237d",
+      "review_extent": "prior actual full-pair elapsed time used for first-observation estimate"
+    }
+  ]
+}

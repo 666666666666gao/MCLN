@@ -1,0 +1,13 @@
+# FIT_SOURCE_ONLY review — PASS
+
+Reviewed at 2026-10-07T00:29:35.5749458+08:00. No blocking or nonblocking finding in the reviewed formal launcher, observer, collector and preparer. This is a SOURCE_ONLY, same-family/provisional judgment; actual backend identity and future formal runtime are not attested.
+
+The original SOURCE_REVIEW.json/md are unchanged, and all49 previously bound files still match. All28 collected M0 artifacts match their intake bytes/SHA. Both actual receipts bind the current runner/specs; controller and arm exits are0, closed at 2026-10-07T00:20:36.869134+08:00. Each arm completed2 updates of456102 geometry parameters/10 states, with frozen parent/R and nativebbs/Mask preserved and Adam restoration exact. First keep loss is0; keep-arm second loss is7.6016920e-7 and isolated output-gradient norm0.0036167686. This establishes no accuracy gain.
+
+The formal launcher preserves the current source, verifies the actual M0 and remote deployed files, checks retained4848 SHA, idle compute and960163041 bytes of free space (3×actual5481547-byte M0 serialization +900MiB), then uses the existing nonblocking flock to launch one phasefit controller. The unchanged runner reconstructs the same5598/4848 step0, with fresh optimizer per arm and only lambda0/1 changing the objective:29778 rows once,3723 updates, B8/finalB2, fixed2027,456102 trainable geometry parameters. Initial/end9508 formal and6887 holdout evaluations remain. GT keep qualification is training-only; one last/bbs and sameQuery Box/Mask are preserved.
+
+The sole observer first waits24300 seconds from launch, then polls every240 seconds. The previous actual full controller lasted24787.03 seconds, consistent with the approximately6h53min launcher estimate. It retains observations and calls the collector only after controller absence, exit0 and complete status. The collector independently rechecks terminal files, streams the completed outputs, excludes all current weight/temp suffixes, validates paths/bytes/SHA/completeness, and performs no model load, weight copy, deletion or replay.
+
+The current goal remains same-model5620/4764 AND three effective modules before corresponding-author Sr3D/Nr3D training. Future formal results, capacity, candidate selection, restore and authorized retention require their actual later evidence. No formal completion, accuracy improvement or module-effectiveness claim is made.
+
+FIT_SOURCE_REVIEW.json binds49 reviewed files and receipts with actual paths, byte sizes, SHA256 and review extent. No SSH/GPU/training/source execution, model load, deletion or package change was performed by the reviewer. Only the new FIT_SOURCE_REVIEW.json/md were written.

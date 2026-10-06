@@ -1,0 +1,17 @@
+# Doc88 author-initialization clarification — source-review follow-up
+
+**SOURCE_ONLY PASS; zero unresolved blocking findings.** Refreshed 2026-10-06T23:37:46.573+08:00. Same-context/same-family/provisional; backend not attested. Requested gpt-6-astra/max routing does not attest actual backend identity.
+
+This follow-up checks only four existing input changes: current_research_goals.json, CURRENT_RESEARCH_GOALS.md, current_research_contract.md and the Doc88 sentence in publish_comparison_authorized.py. The existing40-path gate is retained. The other36 input identities matched; the previous full administrative review was not repeated and no gate or publication mechanism was added.
+
+The latest explicit user clarification permits corresponding author-pretrained Sr3D/Nr3D weights. The JSON adds only cross_benchmark_initialization: allowed/preferred corresponding PV-Ground_NR3D.pth and PV-Ground_SR3D.pth, identical corresponding author core start for baseline/full method, one final architecture, independent dataset training, seed2027 and no multiseed. Both goal documents and Doc88 state the same plan. The Scan9508 thresholds5620/4764, three effective modules/direct ablations, Scan-first order and deferred R2/Nr/Sr execution are unchanged.
+
+The publisher changes only its publication prose. Executable publication logic is byte-identical outside the section string. clarify_author_initialization.py is an executor-side one-time recorder, not a publisher-invoked step and not added to this gate. This review neither runs it nor treats the clarification as a new model result.
+
+One concrete regression was found and repaired by the executor: a text rewrite converted current_research_contract.md from LF to CRLF, including the historical tail. The transient SHA was888d1900aa8295030454330b84600ceead4222eb5596b4b6b7e07c84b2cb6673. The final contract is again exactly the clarified goal text encoded with LF, the original history label, and research_contract_before_goal_update.md's original bytes. Final SHA 4ed195685b1eb4bb88e7c17dfa9f2a06b47ea16c17595cc27ae8c919e956fc89; old snapshot and canonical predecessor remain unchanged. No additional defense, fallback or unrelated change was introduced.
+
+The prior refreshed verdict remains byte-for-byte in PUBLISH_COMPARISON_SOURCE_REVIEW_20261006_233236.json and .md, SHA 4e32c1250e64dc83fd09ebf543954f44254dd043a8463a6b39d07094c26f1eac and 9cc27f7c46f334ff4aac196d1ad8d07559362578869e827ae74d9d2b50797e0a. The original23:16 verdict is also retained. Historical verdicts are not presented as binding the new bytes.
+
+The existing reviewed Doc87-to-Doc88 protocol, fixed31-file text payload, exact local/remote contract transition, old handoff prefixes, fixed Git staging/push checks and guard remain unchanged. No future publication receipt or mutable active/observer state is bound. Existing diagnostic closure is not a model-accuracy or M0-success claim. No R2/GPU/training/cleanup/publication is performed by this review.
+
+Only local byte reads, four-file comparison, JSON parsing, existing identity rehashing and report writes were used. No command, SSH/network request, Git command, Python/project-code execution, GPU/model work, polling or deletion occurred. The fixed report pair and new timestamped pair are refreshed; previous timestamped results are untouched. JSON contains the same40 absolute paths, updated sizes and real hashes. Its own digest is supplied separately.

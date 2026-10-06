@@ -282,3 +282,5 @@
 - 2026-10-06T22:02:37.724183+08:00 Actual Mask-reference pair closed; initial5598/4848 best, trained5593/4832; audit/CPU restore/best-only retention complete.
 
 - 2026-10-06T22:38:35.117011+08:00 Corresponding Nr/Sr initialization, native training roles and four real mixed-row preflights launched; no new formal metrics.
+
+- 2026-10-06T23:39:12.839319+08:00 Actual R1 failed before updates; bounded three-forward zero-update diagnostic closed, no new formal metrics.

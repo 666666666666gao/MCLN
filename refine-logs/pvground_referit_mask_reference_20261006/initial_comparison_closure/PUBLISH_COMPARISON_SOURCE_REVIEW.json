@@ -1,0 +1,537 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "INIT-01",
+      "status": "RESOLVED",
+      "issue": "Clarification text rewrite converted the historical old-contract tail from LF to CRLF, violating the previously required original-byte preservation.",
+      "observed_transient_path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/current_research_contract.md",
+      "observed_transient_sha256": "888d1900aa8295030454330b84600ceead4222eb5596b4b6b7e07c84b2cb6673",
+      "observed_transient_bytes": 4846,
+      "correction": "Executor rebuilt current contract from clarified goal text normalized to LF, the original LF history label, and old_contract.read_bytes(). No old snapshot changed.",
+      "final_sha256": "4ed195685b1eb4bb88e7c17dfa9f2a06b47ea16c17595cc27ae8c919e956fc89",
+      "final_bytes": 4785,
+      "exact_old_tail_restored": true
+    }
+  ],
+  "nonblocking_findings": [],
+  "same_context_followup": true,
+  "fresh_context": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_route_note": "Established request, not backend attestation.",
+  "backend_identity": "not_attested",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "reviewer_agent": "/root/pvg_selected_mask_restore_source_review",
+  "reviewed_at_cst": "2026-10-06T23:37:46.573+08:00",
+  "review_revision": "Four existing input deltas only: explicit corresponding author-pretrained initialization; existing40 stable path gate retained.",
+  "summary": "SOURCE_ONLY PASS after repairing one historical-tail newline regression. Author Sr/Nr pretrained initialization is explicitly allowed; corresponding baseline shares the core start. Publication logic, thresholds, single2027, three-module requirement and Scan-first/deferred-R2 order are unchanged.",
+  "publisher_sha256": "3f423532e1dda00e3c15df46ab5d0a05a4b8e7ca2caa9e2e671587657798fd82",
+  "goal_preparer_sha256": "0258721431345b261e8ab0f411a99c0c0ee61547c64cdac6deb46c50d2dac08a",
+  "prior_source_verdict_preserved": {
+    "execution_scope": "SOURCE_ONLY",
+    "verdict": "PASS",
+    "publisher_sha256": "fe4f90f21dca939ffc0e7f379090addde301de649de40ea8f8a87c39ad05c0ab",
+    "saved_publisher_path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/publish_comparison_authorized_before_goal_update.py",
+    "archived_json": {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/PUBLISH_COMPARISON_SOURCE_REVIEW_20261006_231639.json",
+      "bytes": 16761,
+      "sha256": "1a1224a915055b1a5bc1c9e0e4a4772186880d6d4c01c4bf498a927b923828b3"
+    },
+    "archived_markdown": {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/PUBLISH_COMPARISON_SOURCE_REVIEW_20261006_231639.md",
+      "bytes": 5637,
+      "sha256": "6869a091e36329a21afd10a09897361e9527e5a679bae64e998855be4b4011f5"
+    },
+    "archives_exactly_equal_to_old_fixed_reports": true,
+    "old_verdict_applies_to_old_source_only": true
+  },
+  "checks": [
+    {
+      "id": "user_goal_thresholds_and_same_model",
+      "status": "PASS",
+      "detail": "9508 rows, strict >59.1/>50.1 means minimum5620/4764. Current5598/4848 requires22 @.25; same complete model/checkpoint required."
+    },
+    {
+      "id": "three_modules_then_cross_dataset_training",
+      "status": "PASS",
+      "detail": "Three actually effective modules/direct ablations, then one full final structure trained independently on Sr/Nr, explicitly allowing corresponding author pretrained weights with the same corresponding baseline core start. Fixed2027/no multiseed."
+    },
+    {
+      "id": "R2_preparation_and_current_hold",
+      "status": "PASS",
+      "detail": "Goal text and administrative state defer R2/GPU and Nr/Sr formal work; source preparer/publisher performs no training or cleanup."
+    },
+    {
+      "id": "contract_history_identity",
+      "status": "PASS",
+      "detail": "After the recorded LF-to-CRLF regression was repaired, clarified goal text plus LF history heading plus the original full contract bytes match exactly. Old snapshots are unchanged."
+    },
+    {
+      "id": "contract_publication_boundary",
+      "status": "PASS",
+      "detail": "Fixed canonical contract path. Remote predecessor check precedes every write; exact new readback; local writes/staging only first two repos plus fixed remote canonical file."
+    },
+    {
+      "id": "prior_failure_and_review_preserved",
+      "status": "PASS",
+      "detail": "Old report archives and publisher snapshot match. Error receipt points to old connect line91, before authentication/remote publication/local mutations. No retry by reviewer."
+    },
+    {
+      "id": "existing_core_publication_protocol",
+      "status": "PASS",
+      "detail": "27 unchanged core inputs rechecked; Doc87/Doc88 and fixed local/remote/Git/guard behavior retained."
+    },
+    {
+      "id": "fixed_payload_scope",
+      "status": "PASS",
+      "detail": "31 fixed text items plus the explicitly scoped canonical contract writes; no weights/raw NPZ/credentials/.aris publication, new GPU work, deletion or installation."
+    }
+  ],
+  "current_goals": {
+    "rows": 9508,
+    "strict_threshold_percent025": 59.1,
+    "strict_threshold_percent050": 50.1,
+    "minimum_hits025": 5620,
+    "minimum_hits050": 4764,
+    "current_best_hits": [
+      5598,
+      4848
+    ],
+    "remaining_hits025": 22,
+    "same_complete_model_required": true,
+    "effective_modules_required": 3,
+    "direct_ablations_required": true,
+    "unvalidated_or_zero_output_not_counted": true,
+    "then_independent_full_Sr3D_Nr3D_training": true,
+    "seed": 2027,
+    "multiseed": false,
+    "status": "ACTIVE_UNMET",
+    "R2": "SOURCE_PREPARATION_ONLY_DEFERRED",
+    "cross_benchmark_initialization": {
+      "allowed": true,
+      "preferred": "corresponding_author_pretrained_weights",
+      "nr3d": "PV-Ground_NR3D.pth",
+      "sr3d": "PV-Ground_SR3D.pth",
+      "baseline_and_full_method_same_corresponding_core_start": true,
+      "same_final_architecture_across_benchmarks": true,
+      "independent_dataset_training": true,
+      "seed": 2027,
+      "multiseed": false
+    }
+  },
+  "contract_transition": {
+    "path": "idea-stage/docs/research_contract.md",
+    "local_worktrees": [
+      "C:/Users/gb/.codex_mcln_g0_20260905",
+      "C:/Users/gb/.codex_pvground_cs_20261002"
+    ],
+    "old_bytes": 2887,
+    "old_sha256": "f072f9fb91e31338e5a2eea6d9f62e49e4b9844530c478e29dcaf3f67f4ed2b9",
+    "new_bytes": 4785,
+    "new_sha256": "4ed195685b1eb4bb88e7c17dfa9f2a06b47ea16c17595cc27ae8c919e956fc89",
+    "current_canonical_inputs_equal_old": true,
+    "old_history_verbatim_retained": true,
+    "new_goal_text_line_endings": "Clarified goal header LF; original historical tail bytes preserved.",
+    "remote_project": "/home/gb/new butd/butd_detr-main/MCLN-main",
+    "remote_old_contract_checked_before_any_write": true,
+    "third_repo_contract_touched": false
+  },
+  "observed_current_preconditions": {
+    "unchanged_core_inputs_checked": 27,
+    "core_identity_mismatches": 0,
+    "previous_section": "20.376.87",
+    "four_doc_sha256": "2664e61a99500c7fb5803cae5b10acae43f5d34d5947623360e624b1e65ef5c4",
+    "heads": [
+      "c7b9c67fc1d0ad5b8e2c62240e5b3dfbb0ad44f1",
+      "ac5485997db2d905afc7311c78ff35c8baa93739",
+      "d3b1547b5b457238d2d3b31546dd432ac7878fff"
+    ],
+    "guard_sha256": "696b7790f850e5f266b2ac1dd9acb6ed5d9e1d9d750dcf98ebbd9484a361aba6",
+    "guard_old_sha_occurrences": 1,
+    "canonical_contracts_equal_predecessor": true,
+    "first_attempt_status": "SSH_BANNER_FAILURE_BEFORE_AUTHENTICATION_OR_REMOTE_MUTATION",
+    "first_attempt_source_line": 91,
+    "first_attempt_record_sha256": "663d84f7f282792220d9d906b6dda90260cfeda785714d918d217ff8f2139668",
+    "active_state_observation_not_bound": {
+      "owned_gpu_job_active": false,
+      "referit_preflight_r2_deferred_by_user": true,
+      "referit_formal_training_launched": false
+    },
+    "carried_forward_from": "2026-10-06T23:32:36.423+08:00"
+  },
+  "actual_diagnostic_receipts_observed_without_hash_binding": {
+    "observer_closed": true,
+    "controller_alive": false,
+    "controller_exit": 0,
+    "model_forwards": 3,
+    "optimizer_steps": 0,
+    "formal_rows": 0,
+    "new_weights_saved": 0,
+    "scope": "Administrative closure only; no model accuracy, M0 success, causation or integrity re-audit certified."
+  },
+  "intended_publication": {
+    "section": "20.376.88",
+    "receipt": "comparison_publication.json",
+    "execution_scope": "ACTUAL_INITIAL_COMPARISON_NOT_TRAINING",
+    "prefix": "refine-logs/pvground_referit_mask_reference_20261006/initial_comparison_closure/",
+    "remote_project": "/home/gb/new butd/butd_detr-main/MCLN-main",
+    "resolved_evidence": "/root/autodl-tmp/mcln_published_evidence_20261005/pvground_referit_mask_reference_20261006/initial_comparison_closure",
+    "payload_count": 31,
+    "payload_names": [
+      "CURRENT_RESEARCH_GOALS.md",
+      "current_research_goals.json",
+      "current_research_contract.md",
+      "research_contract_before_goal_update.md",
+      "prepare_goal_publication.py",
+      "RUNTIME_FAILURE_SOURCE_DIAGNOSIS.md",
+      "preflight_wait.json",
+      "complete_preflight/nr3d_native/run.log",
+      "complete_preflight/nr3d_native/preflight.exit",
+      "complete_preflight/preflight_controller.exit",
+      "prepare_initial_comparison.py",
+      "publish_comparison_authorized.py",
+      "PUBLISH_COMPARISON_SOURCE_REVIEW.json",
+      "PUBLISH_COMPARISON_SOURCE_REVIEW.md",
+      "initial_comparison/compare_initial.py",
+      "initial_comparison/spec.json",
+      "initial_comparison/launch_comparison_authorized.py",
+      "initial_comparison/referit_training_targets.py",
+      "initial_comparison/pvground_referit_fit_dataset.py",
+      "initial_comparison/mask_reference.py",
+      "initial_comparison/query_supported_geometry.py",
+      "initial_comparison/SOURCE_REVIEW.json",
+      "initial_comparison/SOURCE_REVIEW.md",
+      "initial_comparison/launch.json",
+      "initial_comparison/observer_wait.json",
+      "initial_comparison/observe_comparison_authorized.py",
+      "initial_comparison/wait.json",
+      "initial_comparison/complete/nr3d_native/comparison.json",
+      "initial_comparison/complete/run.log",
+      "initial_comparison/complete/controller.exit",
+      ".gitattributes"
+    ],
+    "additional_canonical_write": "idea-stage/docs/research_contract.md in main/PV and fixed remote project",
+    "new_R2_GPU": false,
+    "new_training": false,
+    "new_cleanup": false,
+    "new_install": false,
+    "weights_published": false,
+    "raw_NPZ_published": false,
+    "aris_files_published": false,
+    "credential_values_published": false
+  },
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/prepare_comparison_publication.py",
+      "bytes": 9323,
+      "sha256": "3678ef81f0390ca18a15fda7c2a23d066dbef4270cc985debc2870d424704ebc"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/publish_preflight_authorized.py",
+      "bytes": 12866,
+      "sha256": "18d9b0413064d9deb4a8412e0fe9c78e7ac6532aa513d3add8f0c8532c491078"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/preflight_publication.json",
+      "bytes": 657,
+      "sha256": "b147728b6d5d742d527c5bcfbd211b5de6086cd9bf1579278670298e65f3c9e8"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/RUNTIME_FAILURE_SOURCE_DIAGNOSIS.md",
+      "bytes": 2571,
+      "sha256": "7f03896e467e8e1eadc38c8511565d211c5bc95d906b74ea8905da21ecd36a02"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/preflight_wait.json",
+      "bytes": 5334,
+      "sha256": "6f85cb88f08ca4f539e67070ab89b7e3c9f47ad746894e6cd8f23e128e81410b"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/complete_preflight/nr3d_native/run.log",
+      "bytes": 1274,
+      "sha256": "24716e5f46b079a8d72e952add38c381460ce1a9faac155c5398496f75a13e24"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/complete_preflight/nr3d_native/preflight.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/complete_preflight/preflight_controller.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/compare_initial.py",
+      "bytes": 12742,
+      "sha256": "08c38af46c4f3ca58fb3d210fa439bf8f798cfa9b8c932ca3f74bd818f0fb9a1"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/spec.json",
+      "bytes": 3626,
+      "sha256": "0fa53812bc2568adf6a0bc452da5af82d13275d99966859ec45c09635bc9f887"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/SOURCE_REVIEW.json",
+      "bytes": 13538,
+      "sha256": "b48a6686e2fb1310fecdcd966026b8773548aa7960db3d6766b206510a11925c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/SOURCE_REVIEW.md",
+      "bytes": 3252,
+      "sha256": "d99a119e6ab98db89f4d64e60b1ba8fab15cec53c26be7d69b7b3906187505c2"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/launch.json",
+      "bytes": 310,
+      "sha256": "4d41ef9a9a4989286ba625610b23530987a86bc0f5f2042920524e57cecff518"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/observe_comparison_authorized.py",
+      "bytes": 3676,
+      "sha256": "810629bdd14cf64f86c165f260b8a6dcd417dbb185214d01a899abb6dbd11667"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/complete_preflight/referit_model_preflight.py",
+      "bytes": 15252,
+      "sha256": "512f21026646458ad68dae8b4b1d37cf18ed3b1bfdb91dec9045a0a08cce2b34"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/preflight_spec.json",
+      "bytes": 16877,
+      "sha256": "7c9e5272eb9ffc59aa9f3f71a810678795961e01deb09e9626e7ca93e1fb1103"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/prepare_initial_comparison.py",
+      "bytes": 5652,
+      "sha256": "6e6c8a558821570a79a073799e5c3b6415bd4a4cd892c459365b7bbdc76c773d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/launch_comparison_authorized.py",
+      "bytes": 4141,
+      "sha256": "d5f136ca5915dc9453c7d39781fc9f83f6ac0a437381e41dd11ca1da9d94d389"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/referit_training_targets.py",
+      "bytes": 6631,
+      "sha256": "4718f1480f7f3502eeea0152ed4cb02cacaa3c00fc96ccc3e214ebbdb02c4eb6"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/pvground_referit_fit_dataset.py",
+      "bytes": 1580,
+      "sha256": "40a050680eb68c73aee47b7285ff2ee88309d7f8a45c9960434faba28a3ded24"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/query_supported_geometry.py",
+      "bytes": 3634,
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "bytes": 2343922,
+      "sha256": "2664e61a99500c7fb5803cae5b10acae43f5d34d5947623360e624b1e65ef5c4"
+    },
+    {
+      "path": "C:/Users/gb/.codex_pvground_cs_20261002/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "bytes": 2343922,
+      "sha256": "2664e61a99500c7fb5803cae5b10acae43f5d34d5947623360e624b1e65ef5c4"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_v99_internal_20260928/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "bytes": 2343922,
+      "sha256": "2664e61a99500c7fb5803cae5b10acae43f5d34d5947623360e624b1e65ef5c4"
+    },
+    {
+      "path": "C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "bytes": 2343922,
+      "sha256": "2664e61a99500c7fb5803cae5b10acae43f5d34d5947623360e624b1e65ef5c4"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/sync_cs_handoff_remote_20260923.py",
+      "bytes": 1435,
+      "sha256": "696b7790f850e5f266b2ac1dd9acb6ed5d9e1d9d750dcf98ebbd9484a361aba6"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/publish_comparison_authorized.py",
+      "bytes": 15018,
+      "sha256": "3f423532e1dda00e3c15df46ab5d0a05a4b8e7ca2caa9e2e671587657798fd82"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/publish_comparison_authorized_before_goal_update.py",
+      "bytes": 12943,
+      "sha256": "fe4f90f21dca939ffc0e7f379090addde301de649de40ea8f8a87c39ad05c0ab"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/prepare_goal_publication.py",
+      "bytes": 9533,
+      "sha256": "0258721431345b261e8ab0f411a99c0c0ee61547c64cdac6deb46c50d2dac08a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/CURRENT_RESEARCH_GOALS.md",
+      "bytes": 1833,
+      "sha256": "6ca130f6e3dbf88b75aba2c92173bbae292beef35dfd4205e715e208d182a8c7"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/current_research_goals.json",
+      "bytes": 1977,
+      "sha256": "3a432106ab43d4f40e852d81b7bbe168affbfb5a305c72f3a4c4629cf7f0753a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/current_research_contract.md",
+      "bytes": 4785,
+      "sha256": "4ed195685b1eb4bb88e7c17dfa9f2a06b47ea16c17595cc27ae8c919e956fc89"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/research_contract_before_goal_update.md",
+      "bytes": 2887,
+      "sha256": "f072f9fb91e31338e5a2eea6d9f62e49e4b9844530c478e29dcaf3f67f4ed2b9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/comparison_publication_first_connection_error.json",
+      "bytes": 335,
+      "sha256": "663d84f7f282792220d9d906b6dda90260cfeda785714d918d217ff8f2139668"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/PUBLISH_COMPARISON_SOURCE_REVIEW_20261006_231639.json",
+      "bytes": 16761,
+      "sha256": "1a1224a915055b1a5bc1c9e0e4a4772186880d6d4c01c4bf498a927b923828b3"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/PUBLISH_COMPARISON_SOURCE_REVIEW_20261006_231639.md",
+      "bytes": 5637,
+      "sha256": "6869a091e36329a21afd10a09897361e9527e5a679bae64e998855be4b4011f5"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/idea-stage/docs/research_contract.md",
+      "bytes": 2887,
+      "sha256": "f072f9fb91e31338e5a2eea6d9f62e49e4b9844530c478e29dcaf3f67f4ed2b9"
+    },
+    {
+      "path": "C:/Users/gb/.codex_pvground_cs_20261002/idea-stage/docs/research_contract.md",
+      "bytes": 2887,
+      "sha256": "f072f9fb91e31338e5a2eea6d9f62e49e4b9844530c478e29dcaf3f67f4ed2b9"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/PUBLISH_COMPARISON_SOURCE_REVIEW.md",
+      "bytes": 3441,
+      "sha256": "f52c0e5698abc623eb256784f7e3b2e38e5276b38ac8e7254c3e74ef6b9e3fa9"
+    }
+  ],
+  "excluded_from_review_gate": {
+    "future_publication_receipt": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/comparison_publication.json",
+    "mutable_active_state": "C:/Users/gb/.codex/tmp/pvground_mask_reference_20261006/../pvground_query_supported_geometry_20261005/active_continuation_state.json",
+    "observer_and_diagnostic_runtime_files": [
+      "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/observer_wait.json",
+      "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/observation.json",
+      "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/wait.json",
+      "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/complete/nr3d_native/comparison.json",
+      "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/complete/run.log",
+      "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/initial_comparison/complete/controller.exit"
+    ],
+    "reason": "Runtime publication/state are not source identity bindings. Closed diagnostic receipts were observed only; no future artifact fabricated."
+  },
+  "static_validation": {
+    "local_source_and_JSON_inspection": "PASS",
+    "threshold_arithmetic": "PASS",
+    "old_contract_tail_byte_equality": "PASS",
+    "stable_SHA_checks": "PASS",
+    "commands": false,
+    "Python_import_or_execution": false,
+    "AST_compile": false,
+    "generator_execution": false,
+    "publisher_execution": false,
+    "remote_Python37": "Compatible constructs by source inspection only.",
+    "local_shlex_join_only": true,
+    "literal_secret_markers": 0,
+    "code_changes_by_reviewer": false,
+    "bounded_author_initialization_delta": "PASS",
+    "executable_publication_logic_unchanged": true
+  },
+  "reviewer_execution": {
+    "local_reads_hashes_JSON_arithmetic": true,
+    "commands": false,
+    "git_commands_or_mutation": false,
+    "SSH": false,
+    "network": false,
+    "GPU": false,
+    "model_or_weight_load": false,
+    "polling": false,
+    "deletion": false,
+    "publication": false,
+    "new_experiment_integrity_review": false,
+    "writes": "Refreshed existing report pair, new timestamped pair and local review MANIFEST; prior timestamped verdicts untouched."
+  },
+  "not_attested": {
+    "backend": true,
+    "live_remote_state": true,
+    "publication_success": true,
+    "new_M0_success": true,
+    "new_model_accuracy": true
+  },
+  "old_timestamped_reports_modified": false,
+  "prior_R1_sources_failure_records_reviews_modified": false,
+  "previous_revision_preserved": {
+    "archived_json": {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/PUBLISH_COMPARISON_SOURCE_REVIEW_20261006_233236.json",
+      "bytes": 21200,
+      "sha256": "4e32c1250e64dc83fd09ebf543954f44254dd043a8463a6b39d07094c26f1eac"
+    },
+    "archived_markdown": {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/PUBLISH_COMPARISON_SOURCE_REVIEW_20261006_233236.md",
+      "bytes": 6197,
+      "sha256": "9cc27f7c46f334ff4aac196d1ad8d07559362578869e827ae74d9d2b50797e0a"
+    },
+    "exact_previous_fixed_bytes": true,
+    "archives_not_modified": true
+  },
+  "delta_review": {
+    "scope": "Only the four requested changed artifacts; no full re-review or new gate.",
+    "changed_inputs": [
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/current_research_goals.json",
+        "bytes": 1977,
+        "sha256": "3a432106ab43d4f40e852d81b7bbe168affbfb5a305c72f3a4c4629cf7f0753a"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/CURRENT_RESEARCH_GOALS.md",
+        "bytes": 1833,
+        "sha256": "6ca130f6e3dbf88b75aba2c92173bbae292beef35dfd4205e715e208d182a8c7"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/current_research_contract.md",
+        "bytes": 4785,
+        "sha256": "4ed195685b1eb4bb88e7c17dfa9f2a06b47ea16c17595cc27ae8c919e956fc89"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/publish_comparison_authorized.py",
+        "bytes": 15018,
+        "sha256": "3f423532e1dda00e3c15df46ab5d0a05a4b8e7ca2caa9e2e671587657798fd82"
+      }
+    ],
+    "unchanged_input_identities_checked": 36,
+    "unchanged_identity_mismatches": 0,
+    "reviewed_path_count": 40,
+    "reviewed_path_set_unchanged": true,
+    "only_new_goal_JSON_field": "cross_benchmark_initialization",
+    "publisher_executable_logic_unchanged": true,
+    "new_gate_added": false,
+    "recorder": {
+      "path": "C:/Users/gb/.codex/tmp/pvground_referit_mask_reference_20261006/clarify_author_initialization.py",
+      "publisher_invokes_it": false,
+      "executed_by_reviewer": false,
+      "added_to_reviewed_files": false
+    },
+    "prior_full_review_carried_forward": true
+  }
+}

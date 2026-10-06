@@ -22858,3 +22858,61 @@ fresh SOURCE_ONLY审查修正两处真实问题：GumbelSampling在eval仍执行
 资源快照22:10:53：A10040GB、GPU仅1MiB，warm env SHA966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c不变，不安装新包。数据盘当时504991744字节、系统盘445059072字节。随后用户明确允许仅删除本地已核对的4756份旧远端NPZ：实际清理时间2026-10-06T22:37:59.217381+08:00，逻辑571823151字节，数据盘清理后1086595072字节；本地原始候选数组、全部文本记录及最佳权重保留。这只是旧远端副本清理，不改变实验结果；正式保存与评估空间仍需按实际配方检查。
 
 M0四项初估20～40分钟；唯一观察器首次在启动后15分钟检查，根据已完成阶段实测耗时修正后续时间，接近结束再以180～300秒复查。正式同起点native/fused适配及完整7899/17726结果待M0和实际空间通过后启动。目标仍是三个基准两阈值超过明确baseline，整体未完成。源码、计划、身份和实际launch见refine-logs/pvground_referit_mask_reference_20261006/preflight_registration/；无权重、原始NPZ、凭据或.aris发布。
+
+
+## 20.376.88 Nr/Sr首次预检的实际失败与零更新三前向诊断（2026-10-06T23:39:12.839319+08:00）
+
+§87启动记录保留，不改写成通过。原控制器766996实际退出1，首个Nr-native在语义allclose之后、Query Mask的allclose(1e-5/1e-5)断言处退出；尚未创建优化器，0更新、0正式评估，其他三项未启动。原失败run.log、源码和审查均保留；旧status的running字段由实际exit文件和已关闭观察器纠正。这是初始化对照检查失败，不是训练后精度负结果。
+
+为区分原路径重复波动和安装路径差异，另启隔离诊断：对应Nr作者权重、相同真实4指代＋4检测增强输入，固定seed2027，各次重置同一RNG、eval/no_grad、fresh dict(inputs)。A/B为相同原生分支，C恢复新reader并安装零初始化几何/全零R；恰好3次前向、0优化步、0权重保存、0正式验证。实际启动2026-10-06T23:08:25.159425+08:00，控制器771418，实际完成2026-10-06T23:14:33.045870+08:00，耗时368.14秒。唯一观察器按启动后五分钟首次查看，随后240秒，实际查询2次。未重跑失败四项、未放宽误差门槛。
+
+实际成对摘要：
+
+```json
+{
+  "native_A_vs_native_B": {
+    "semantic_max_abs": 0.0,
+    "x_query_max_abs": 0.0,
+    "query_xyz_max_abs": 0.0,
+    "center_max_abs": 0.0,
+    "size_max_abs": 0.0,
+    "mask_allclose_rows": 1,
+    "own_sign_changes": 0,
+    "fused_sign_changes": 0,
+    "mask_max_abs": 0.00030517578125,
+    "super_xyz_max_abs": 2.1457672119140625e-06
+  },
+  "native_A_vs_installed_C": {
+    "semantic_max_abs": 0.0,
+    "x_query_max_abs": 0.0,
+    "query_xyz_max_abs": 0.0,
+    "center_max_abs": 0.0,
+    "size_max_abs": 4.107015609741211,
+    "mask_allclose_rows": 1,
+    "own_sign_changes": 0,
+    "fused_sign_changes": 0,
+    "mask_max_abs": 0.000354766845703125,
+    "super_xyz_max_abs": 4.76837158203125e-06
+  },
+  "native_B_vs_installed_C": {
+    "semantic_max_abs": 0.0,
+    "x_query_max_abs": 0.0,
+    "query_xyz_max_abs": 0.0,
+    "center_max_abs": 0.0,
+    "size_max_abs": 4.107015609741211,
+    "mask_allclose_rows": 0,
+    "own_sign_changes": 0,
+    "fused_sign_changes": 0,
+    "mask_max_abs": 0.00029754638671875,
+    "super_xyz_max_abs": 4.0531158447265625e-06
+  }
+}
+```
+
+报告保留逐行Query Mask差值、自身/融合logit符号变化及超点中心差值；语义/x_query/query坐标为全batch最大差。1235官方状态相等见证对应初始化和C前，不是C后恢复声明。全256原始成员空间参考也执行实际见证。SOURCE_ONLY补充审查PASS、0阻断，same-family/provisional、实际backend和运行成功不由审查者认证。
+
+三前向只区分本batch的实际重复波动与跨路径差异，不能独自确定scatter_add_是原因、建立全数据容差或宣称所有安装输出等价。原模型超点中心经GPU scatter_mean/grouping进入Mask分支，几何头位于Mask生成之后；该源码路径只是诊断线索。依据实际数值的最小R2源码修正仅作为准备保留，本节不将诊断替代M0或Nr/Sr完整精度。用户在本次明确调整研究顺序，R2 GPU及Nr/Sr正式训练不启动。
+
+用户最新目标已更新：ScanRefer同一完整模型Acc@0.25严格超过59.1%、Acc@0.5严格超过50.1%，9508条至少5620/4764命中。当前5598/4848，宽松项还差22条，严格项已满足这项新门槛；还需三项有直接消融和实际作用的有效模块，零输出或未验证分支不计作贡献。先在ScanRefer满足两阈值与三模块证据，再固定完整结构、分别加载作者Sr3D/Nr3D对应预训练权重独立训练；对应原版baseline采用相同作者核心起点；不能混合不同最终方法版本或用Scan终点零更新冒充独立训练。候选方向为支撑空间参考、边界观测精修、参考约束几何学习，后两项仍待验证。旧“接近V99即可转Nr/Sr”准入被本次要求替代，当前无活动GPU任务。
+
+Scan best5598/4848及原PV/G/V99保持；用户已许可的4756份旧远端NPZ清理收据在§87，未新增删除。当前固定seed2027，不做多seed挑选/集成。Nr/Sr正式训练仍未启动，三个基准目标未完成。实际源码、原失败文本、诊断和审查见refine-logs/pvground_referit_mask_reference_20261006/initial_comparison_closure/；不发布权重、原始NPZ、凭据或.aris。

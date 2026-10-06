@@ -1,0 +1,134 @@
+{
+  "observer_closed": true,
+  "terminal": {
+    "time_cst": "2026-10-06T22:51:18.186615+08:00",
+    "controller_alive": false,
+    "controller_cmdline": "",
+    "controller_exit": 1,
+    "status": {
+      "status": "running",
+      "started_cst": "2026-10-06T22:36:15.391880+08:00",
+      "completed": [],
+      "dataset": "nr3d",
+      "reference_mode": "native",
+      "child_pid": 766998
+    },
+    "free_bytes": {
+      "data": 1086361600,
+      "system": 430702592
+    },
+    "receipts": {},
+    "log_tails": {
+      "nr3d_native": "Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.bias']\n- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\nLoading train files, take a breath!\nBegin text decoupling......\nEnd text decoupling!\nTraceback (most recent call last):\n  File \"/root/autodl-tmp/pvground_referit_mask_reference_20261006/referit_model_preflight.py\", line 218, in <module>\n    if __name__=='__main__':main()\n  File \"/root/autodl-tmp/pvground_referit_mask_reference_20261006/referit_model_preflight.py\", line 141, in main\n    assert all(torch.allclose(value,old,rtol=1e-5,atol=1e-5) for value,old in zip(predictions['sp_last_pred_masks'],native_masks))\nAssertionError\n"
+    },
+    "child_exits": {
+      "nr3d_native": 1
+    }
+  },
+  "observation_count": 1,
+  "intake": [
+    {
+      "name": "referit_model_preflight.py",
+      "bytes": 15252,
+      "sha256": "512f21026646458ad68dae8b4b1d37cf18ed3b1bfdb91dec9045a0a08cce2b34"
+    },
+    {
+      "name": "referit_training_targets.py",
+      "bytes": 6631,
+      "sha256": "4718f1480f7f3502eeea0152ed4cb02cacaa3c00fc96ccc3e214ebbdb02c4eb6"
+    },
+    {
+      "name": "pvground_referit_fit_dataset.py",
+      "bytes": 1580,
+      "sha256": "40a050680eb68c73aee47b7285ff2ee88309d7f8a45c9960434faba28a3ded24"
+    },
+    {
+      "name": "mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "name": "query_supported_geometry.py",
+      "bytes": 3634,
+      "sha256": "2d231cf4c49e7ad82e17199ac1af58cf34f882b1ec522c552471b0512c32d9ff"
+    },
+    {
+      "name": "preflight_controller.py",
+      "bytes": 1861,
+      "sha256": "f5959600501270b277ecdeb5e254450c23bf74784b2ca0fcdbc6f30572e55da6"
+    },
+    {
+      "name": "preflight_spec.json",
+      "bytes": 16877,
+      "sha256": "7c9e5272eb9ffc59aa9f3f71a810678795961e01deb09e9626e7ca93e1fb1103"
+    },
+    {
+      "name": "SOURCE_REVIEW.json",
+      "bytes": 25328,
+      "sha256": "b6336e5705a76e86ecf219663219e31ac896872b93c82a832ee7f6a10dca4db7"
+    },
+    {
+      "name": "SOURCE_REVIEW.md",
+      "bytes": 5191,
+      "sha256": "21ba953edee4bdf1f24e7abd20eb4cf39b18f09228f98b03f311cd03ebf445a6"
+    },
+    {
+      "name": "preflight_launch.json",
+      "bytes": 152,
+      "sha256": "48d246adf66b78c63f5bf3fc10f568aaac4c8962d91364f51ea16610b7e7c287"
+    },
+    {
+      "name": "preflight_controller.log",
+      "bytes": 204,
+      "sha256": "a5f35f188c7f33d0249c82a6be4cf067cfdc5205db3a2e96b259d58df9159ec8"
+    },
+    {
+      "name": "preflight_status.json",
+      "bytes": 172,
+      "sha256": "5008ecff4977f67293724c9df0e7fa85dd49fd763fd7b561952c25333d830943"
+    },
+    {
+      "name": "preflight_controller.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "name": "nr3d_native/spec.json",
+      "bytes": 3681,
+      "sha256": "f4df4c6ede473258c1a2b49334e67709c67f97774a926e026b7f074f4e9e3ccb"
+    },
+    {
+      "name": "nr3d_native/run.log",
+      "bytes": 1274,
+      "sha256": "24716e5f46b079a8d72e952add38c381460ce1a9faac155c5398496f75a13e24"
+    },
+    {
+      "name": "nr3d_native/imports.json",
+      "bytes": 1059,
+      "sha256": "5fe75f6dc6c1a7be5ebcc5846986d415e5d9e4cea67eb5df9e0946cdb6edcb32"
+    },
+    {
+      "name": "nr3d_native/preflight.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "name": "nr3d_fused_mask/spec.json",
+      "bytes": 3689,
+      "sha256": "fd8f2a625eb6f4bfcd35e76a71e4d20556cb83fee124d960b0581eadd23beff1"
+    },
+    {
+      "name": "sr3d_native/spec.json",
+      "bytes": 3681,
+      "sha256": "8d2fe17b464369de5aff6f3995d7ae56fde7e6177dd462875dffd99497d74546"
+    },
+    {
+      "name": "sr3d_fused_mask/spec.json",
+      "bytes": 3689,
+      "sha256": "2f731797d054e6ad01d73a75294d4dad9f9d14575cf88fa35f892752c3a93223"
+    }
+  ],
+  "model_or_optimizer_replayed": false,
+  "files_copied": 20,
+  "time_cst": "2026-10-06T22:51:21.245944+08:00"
+}

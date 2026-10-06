@@ -1,0 +1,51 @@
+{
+  "updated_cst": "2026-10-06T23:26:37.316629+08:00",
+  "status": "ACTIVE_UNMET",
+  "baseline": "PV-Ground",
+  "seed": 2027,
+  "multiseed": false,
+  "scanrefer": {
+    "rows": 9508,
+    "acc025_strictly_greater_than": 59.1,
+    "acc050_strictly_greater_than": 50.1,
+    "minimum_hits025": 5620,
+    "minimum_hits050": 4764,
+    "current_best_hits025": 5598,
+    "current_best_hits050": 4848,
+    "same_complete_model_required": true
+  },
+  "paper": {
+    "effective_modules_required": 3,
+    "direct_ablations_required": true,
+    "zero_output_or_unvalidated_branches_do_not_count": true
+  },
+  "execution_order": [
+    "ScanRefer thresholds and three effective modules",
+    "Freeze the complete final model and inference",
+    "Independently train Sr3D and Nr3D from fair corresponding initializations"
+  ],
+  "constraints": [
+    "one native last/bbs scoring path",
+    "all256 candidates",
+    "same Query Box and Mask",
+    "no deployed V99 dual ranking or side chain",
+    "single A100 serial execution",
+    "keep best weights and required official/PV/G/V99 dependencies",
+    "retire only authorized closed nonbest generated weights",
+    "scheduled monitoring, no early polling"
+  ],
+  "referit_preflight_r2": "SOURCE_PREPARATION_ONLY_DEFERRED_BY_USER_SCAN_FIRST_PRIORITY",
+  "new_nr_sr_formal_results": 0,
+  "user_request": "更新一下目标吧，我希望我们的ScanRefer的Acc0.25和0.5分别超过59.1和50.1，然后有有效的三模块能支撑起论文，再拿我们完整的模型去训练Sr3D和Nr3D",
+  "cross_benchmark_initialization": {
+    "allowed": true,
+    "preferred": "corresponding_author_pretrained_weights",
+    "nr3d": "PV-Ground_NR3D.pth",
+    "sr3d": "PV-Ground_SR3D.pth",
+    "baseline_and_full_method_same_corresponding_core_start": true,
+    "same_final_architecture_across_benchmarks": true,
+    "independent_dataset_training": true,
+    "seed": 2027,
+    "multiseed": false
+  }
+}

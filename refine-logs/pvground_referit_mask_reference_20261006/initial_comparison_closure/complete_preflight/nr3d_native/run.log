@@ -1,0 +1,12 @@
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.layer_norm.bias', 'lm_head.dense.weight', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.bias']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Loading train files, take a breath!
+Begin text decoupling......
+End text decoupling!
+Traceback (most recent call last):
+  File "/root/autodl-tmp/pvground_referit_mask_reference_20261006/referit_model_preflight.py", line 218, in <module>
+    if __name__=='__main__':main()
+  File "/root/autodl-tmp/pvground_referit_mask_reference_20261006/referit_model_preflight.py", line 141, in main
+    assert all(torch.allclose(value,old,rtol=1e-5,atol=1e-5) for value,old in zip(predictions['sp_last_pred_masks'],native_masks))
+AssertionError

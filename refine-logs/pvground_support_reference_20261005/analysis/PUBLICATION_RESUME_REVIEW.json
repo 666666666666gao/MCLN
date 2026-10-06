@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "review_type": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "generated_at_utc": "2026-10-06T00:59:23.324615+00:00",
+  "fresh_context": false,
+  "context": "Same reviewer context follow-up to the completed fresh terminal experiment audit; not a second terminal empirical review.",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "backend_model_identity_attested": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewed_source_sha256": "05fbef72348e3870311052fd88b345e71c3c6bcd83a2b08d96139c5c13391a98",
+  "scope": "Minimal review of the actual interrupted publication state and the current resume source. Standard-library local reads, Python AST parsing, byte comparisons, read-only local Git status/HEAD/index and whitespace checks only. No publisher/generator entry point was executed.",
+  "original_terminal_audit": {
+    "verdict": "WARN",
+    "blocking_findings": [],
+    "unchanged": true,
+    "json_sha256": "aa75594b83fd7f9bfedef0ac6ed84b3f86e9ddc95199c43a9267e40ef671516d",
+    "md_sha256": "32920240900652309135e66ca550fa89d108bea5db0430f182dc2d04e3ee8b4a"
+  },
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "status": "FIXED_IN_CURRENT_SOURCE",
+      "finding": "The first resume version dynamically included every analysis file but copied/uploaded only the interruption receipt and resume script. Writing these required review reports would make the two repository payload reads fail before commit, and would omit their remote copies.",
+      "previous_source_sha256": "3c6082aba23d3eee0ffbbbe229b89b745f53aa0549438a0ae602d67afc695e52",
+      "fix": "The transfer tuple now explicitly includes analysis/PUBLICATION_RESUME_REVIEW.json and analysis/PUBLICATION_RESUME_REVIEW.md. They are copied to both repositories and uploaded/read back before all-payload byte checks and staging. The generator contains the same change.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:60",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:78",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:90",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/prepare_terminal_publication_resume.py:56"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "partial_state",
+      "status": "PASS",
+      "finding": "All three local repository HEADs still equal section 20.376.78 recorded heads. Main contains staged Doc79 and payloads plus exactly one closed-publication MANIFEST entry. PV contains the written Doc79/payloads with no matching MANIFEST entry and no new commit; R has only the modified document. terminal_publication.json is absent. Source accepts this observed state, checks unchanged HEADs and does not append Doc79 again.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:13",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:32",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:37",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:40",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:46",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:95"
+      ],
+      "verification": "Read-only git rev-parse/status and actual local file reads."
+    },
+    {
+      "id": "original_report_preservation",
+      "status": "PASS",
+      "finding": "Both historical complete/SOURCE_REVIEW files remain byte-equal between source and both repository worktrees, and main index bytes equal the originals. They are additionally excluded from the first strict whitespace check, while the second check still covers all selected files with only blank-at-eof disabled. Both current main-index checks returned exit 0. No source trims or rewrites the original reports.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:63",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:90",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:103",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:107"
+      ],
+      "raw_source_report_sha256": {
+        "json": "1f31ef4ce946e598979757f527d60073bb8dedba9a23fa2437af42d0baed1939",
+        "md": "889d2eaf1f3046e8c0daeb68b00ceeab33b03b247e46c4f0d0a11b1c77d31ff1"
+      }
+    },
+    {
+      "id": "payload_and_stage_scope",
+      "status": "PASS",
+      "finding": "Current changed paths in each repository are within its computed stage set. All pre-existing selected payload worktree bytes equal the source; all present main-index payload Git blob IDs equal hashes calculated from the source bytes. Current missing copies are exactly the new files handled by the explicit transfer tuple, plus the two review reports this review now creates. Main and PV stage only the document, MANIFEST and explicit/dynamically enumerated complete/analysis payloads; R stages only the document. The .gitattributes payload disables text conversion for evidence, and the resume source verifies every payload against its Git index bytes before commit.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:51",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:60",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:64",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:78",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:90",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:94",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:100",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:107"
+      ]
+    },
+    {
+      "id": "manifest",
+      "status": "PASS",
+      "finding": "Main MANIFEST is read and required to contain exactly one observed closed-publication line; its bytes are not appended again. PV must lack that exact line and appends the same line once. R MANIFEST is excluded from staging.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:46",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:50",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:95"
+      ]
+    },
+    {
+      "id": "documents_and_remote_transfer",
+      "status": "PASS",
+      "finding": "All four local documents are byte-identical, contain exactly one Doc79 header, and have SHA256 001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1. The existing main index document retains its preceding Git document as an exact prefix. The source rechecks the remote document by SHA256 on remote CPU and requires exit 0, then uploads only the four new small files and reads each back. It does not rewrite any document or retransfer complete raw files. Per-repository Git index history-prefix and single-section checks remain before commits.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:37",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:70",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:78",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:109"
+      ],
+      "local_document_bytes": 2318744,
+      "remote_rechecked_by_reviewer": false
+    },
+    {
+      "id": "completion_schema_gates",
+      "status": "PASS",
+      "finding": "Actual current summary/review/audit/wait/retention/resources fields satisfy source gates: analyzed status; exact fit order; review received; terminal WARN with no blockers; observed closed controller exit 0; removed closed nonbest weights; deleted paths absent; empty recorded GPU process list; protected_geometry_parent with [5616,4511] agrees with summary; two deleted heads and no local weight archive. This is schema/state verification, not a new remote cleanup or model/metric audit.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:17",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:23",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:28"
+      ]
+    },
+    {
+      "id": "commit_guard_state",
+      "status": "PASS",
+      "finding": "Original commit, clean-tree, main push and remote-main-head checks remain in sequence. Only after successful push/head confirmation does the code replace the single previous document digest in the sync guard, recheck four local documents, write terminal_publication.json and update the continuation state to Doc79 with actual heads, [5616,4511], strict gap 243 and existing experiment facts. The local guard currently contains the previous digest exactly once. No training, cleanup or weight archive entry is invoked.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:112",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:115",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:118",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:123",
+        "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py:134"
+      ]
+    }
+  ],
+  "observed_local_state": {
+    "heads": [
+      "109269e82892e006b36ef014a89c5379d033b80a",
+      "b7ab48e64e7dbd62d3ca42a409742d948b907d53",
+      "e4a44da3d43c20f9b3d1e8de38ef5d4b0b118636"
+    ],
+    "terminal_publication_exists": false,
+    "main_closed_manifest_entries": 1,
+    "pv_closed_manifest_entries": 0,
+    "all_changed_paths_within_stage": true,
+    "preexisting_payload_worktree_byte_mismatches": [],
+    "main_present_payload_index_byte_mismatches": [],
+    "strict_whitespace_check_exitcode": 0,
+    "all_payload_except_blank_at_eof_check_exitcode": 0,
+    "four_local_document_sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1",
+    "main_index_history_prefix_pass": true,
+    "guard_previous_digest_count": 1
+  },
+  "provenance_notes": [
+    "PUBLICATION_INTERRUPTION.json records native session 64090 exit 1 and the two EOF-whitespace diagnostics. It is an author-generated interruption receipt; this reviewer did not replay or independently observe that native session. The inspected local Git state and failing original source location are consistent with the supplied interruption.",
+    "The interruption receipt original_publisher_sha256 is 60f7ff6b8961ef7b2ca4b5be45dc9145c98b646d0c25d9e8ca87051949f1baed: this is exactly SHA256 of read_text(...).encode() after newline normalization, as generator line 22 specifies. The actual fast publisher raw-byte SHA256 is 062ddb93fc7ab544dc244728021e657b00705d74c930525bf584944030f847e9 and is separately recorded below.",
+    "existing_closed_payloads_verified_by_remote_SHA256 in the eventual resume receipt carries forward the first publisher's completed verification; the resume itself rechecks the remote document and four newly uploaded files. It does not run that complete-file probe again."
+  ],
+  "limitations": [
+    "No SSH, network read/write, credential or personal-memory access, publisher/generator execution, git add/commit/push, cleanup or weight read was performed by this reviewer.",
+    "Remote prior writes and the failed native session are supplied execution evidence, not a newly observed remote state. Successful resumed publication remains unperformed and unclaimed.",
+    "Only the observed first-failure state is accepted; this is not a generic restart or idempotence framework.",
+    "No terminal experiment result, provenance claim, Mask/Full256 boundary, statistical stability or generalization conclusion was re-audited or changed."
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_resume.py",
+      "sha256": "05fbef72348e3870311052fd88b345e71c3c6bcd83a2b08d96139c5c13391a98",
+      "bytes": 10850,
+      "review_scope": "full source"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/prepare_terminal_publication_resume.py",
+      "sha256": "c5661df1897df01d640e98a5032672443fdb73217934fb6fdaf680de4a35cb2f",
+      "bytes": 5370,
+      "review_scope": "full source and minimal changed transfer list"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/postrun/publish_reference_terminal_fast.py",
+      "sha256": "062ddb93fc7ab544dc244728021e657b00705d74c930525bf584944030f847e9",
+      "bytes": 16977,
+      "review_scope": "full source comparison"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/PUBLICATION_INTERRUPTION.json",
+      "sha256": "73fdeba4508a9c4a4474e56888f8033b32569b85a3afd8bc61b7a612ed5440ed",
+      "bytes": 576,
+      "review_scope": "full receipt"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/complete/SOURCE_REVIEW.json",
+      "sha256": "1f31ef4ce946e598979757f527d60073bb8dedba9a23fa2437af42d0baed1939",
+      "bytes": 46825,
+      "review_scope": "byte preservation only; not terminal acceptance evidence"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/complete/SOURCE_REVIEW.md",
+      "sha256": "889d2eaf1f3046e8c0daeb68b00ceeab33b03b247e46c4f0d0a11b1c77d31ff1",
+      "bytes": 7452,
+      "review_scope": "byte preservation only; not terminal acceptance evidence"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/analysis/EXPERIMENT_AUDIT.json",
+      "sha256": "aa75594b83fd7f9bfedef0ac6ed84b3f86e9ddc95199c43a9267e40ef671516d",
+      "bytes": 139272,
+      "review_scope": "existing verdict and blocking gate only"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/analysis/EXPERIMENT_AUDIT.md",
+      "sha256": "32920240900652309135e66ca550fa89d108bea5db0430f182dc2d04e3ee8b4a",
+      "bytes": 35961,
+      "review_scope": "unchanged bytes only"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/analysis/SUMMARY.json",
+      "sha256": "33132935bc40c475d3db5f3fabd3311a0c7c83fb0b89d9600b3f05aa0601b84b",
+      "bytes": 5084,
+      "review_scope": "schema gate only; no repeated metric audit"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/analysis/TERMINAL_REVIEW_CALL.json",
+      "sha256": "2206f31dfdeb01b7d6ab520fd768b2730bbdc13b77a96d49af67df2ea866027e",
+      "bytes": 1365,
+      "review_scope": "result_received gate only"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/weight_retention.json",
+      "sha256": "1becca1a1185be28e52080682f802dc73899625feee07273909afb0311912c25",
+      "bytes": 1277,
+      "review_scope": "completion schema and best/deletion gate only"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/CLOSED_RESOURCES.json",
+      "sha256": "219a34652a9de11f5b2f3e2b90eb3e7b423cc9785366bc4c2ffda7f46c5b3aa1",
+      "bytes": 940,
+      "review_scope": "completion schema gate only"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/fit_wait.json",
+      "sha256": "0fb0a7067f263ed6ffad3cd38a7da85334b9de77db4ec0542840c27c0461a793",
+      "bytes": 9297,
+      "review_scope": "closure schema gate only"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_reference_20261005/retention_tools_publication.json",
+      "sha256": "22decafabd5dd430993ed695ec9121a1f161c613f9006364b42f5d536b7c9738",
+      "bytes": 2239,
+      "review_scope": "previous heads/section/document digest"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_query_supported_geometry_20261005/active_continuation_state.json",
+      "sha256": "cdedc66b78c99501ef26654992eed068aa2a5207d74f165c2be52a2f3d91bea2",
+      "bytes": 18996,
+      "review_scope": "current continuation fields only"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/sync_cs_handoff_remote_20260923.py",
+      "sha256": "39210c709152b153337bf396b5538df4ed2f5eb2cef45c084fa8234995ccc9d3",
+      "bytes": 1435,
+      "review_scope": "previous digest occurrence only; no credential access"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1",
+      "bytes": 2318744,
+      "review_scope": "byte identity/section count and Git history prefix checks"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/MANIFEST.md",
+      "sha256": "1b84ee0cb4d120eb3c7a15929b5153966464ba1d7eaaaa3a14c53ae359fe6fd6",
+      "bytes": 36716,
+      "review_scope": "existing closed-publication line presence only"
+    },
+    {
+      "path": "C:/Users/gb/.codex_pvground_cs_20261002/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1",
+      "bytes": 2318744,
+      "review_scope": "byte identity/section count and Git history prefix checks"
+    },
+    {
+      "path": "C:/Users/gb/.codex_pvground_cs_20261002/MANIFEST.md",
+      "sha256": "b4ff7da27e0371915952aa61ce65fd16e767fc188c831698c9810e516a9ae000",
+      "bytes": 36059,
+      "review_scope": "existing closed-publication line presence only"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_v99_internal_20260928/docs/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1",
+      "bytes": 2318744,
+      "review_scope": "byte identity/section count and Git history prefix checks"
+    },
+    {
+      "path": "C:/Users/gb/.codex_mcln_v99_internal_20260928/MANIFEST.md",
+      "sha256": "5be24b3a8366ff2572b2d3c4dd463a25474f9f4c2a443342986c936a4680097f",
+      "bytes": 21329,
+      "review_scope": "existing closed-publication line presence only"
+    },
+    {
+      "path": "C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md",
+      "sha256": "001e8e40bcd91f8d2aff3a5be320ef9d5a4868d0e599e2e65c88ae717fdbdbc1",
+      "bytes": 2318744,
+      "review_scope": "byte identity and section count"
+    }
+  ],
+  "writes": [
+    "analysis/PUBLICATION_RESUME_REVIEW.json",
+    "analysis/PUBLICATION_RESUME_REVIEW.md"
+  ]
+}

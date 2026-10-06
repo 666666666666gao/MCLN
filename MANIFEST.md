@@ -284,3 +284,5 @@
 - 2026-10-06T22:38:35.117011+08:00 Corresponding Nr/Sr initialization, native training roles and four real mixed-row preflights launched; no new formal metrics.
 
 - 2026-10-06T23:39:12.839319+08:00 Actual R1 failed before updates; bounded three-forward zero-update diagnostic closed, no new formal metrics.
+
+- 2026-10-07T00:21:43.102113+08:00 Reference-preservation-only ScanRefer loss contrast actual M0 launched; no new formal metrics.

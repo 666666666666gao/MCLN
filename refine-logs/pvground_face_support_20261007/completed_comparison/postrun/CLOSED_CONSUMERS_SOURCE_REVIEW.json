@@ -1,0 +1,343 @@
+{
+  "schema_version": 1,
+  "review_name": "Closed negative face-pair inspection and cleanup consumers",
+  "created_at_utc": "2026-10-07 12:47:37 UTC",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "findings": [],
+  "reviewer_identity": {
+    "same_family": true,
+    "provisional": true,
+    "independent_backend_attested": false,
+    "model_identity_attested": false
+  },
+  "scope": {
+    "sole_inspection_entrypoint": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\inspect_closed_face_weights_authorized.py",
+    "sole_cleanup_entrypoint": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\cleanup_closed_face_pair_authorized.py",
+    "direct_worker_execution_approved": false,
+    "fixed_supported_winner": "protected_geometry_parent",
+    "supported_case": "This already closed negative face_center/face_region pair only; no implementation or approval for an unobserved alternative winner.",
+    "source_review_is_runtime_witness": false,
+    "fresh_terminal_audit_performed_by_this_reviewer": false,
+    "inspection_or_cleanup_executed_by_this_reviewer": false
+  },
+  "actual_input_observations": {
+    "summary_status": "ACTUAL_CLOSED_SHARED_PARENT_FACE_PAIR_RECOUNTED",
+    "summary_metric_best": "protected_geometry_parent",
+    "summary_hits": {
+      "protected_geometry_parent": [
+        5598,
+        4848
+      ],
+      "face_center/formal": [
+        5593,
+        4832
+      ],
+      "face_region/formal": [
+        5593,
+        4832
+      ]
+    },
+    "formal_rows": 9508,
+    "train_receipt_status": "complete",
+    "steps_per_arm": 3723,
+    "parameters_per_arm": 456102,
+    "producer_root_receipt": "receipt.json",
+    "producer_root_train_log": "train.jsonl",
+    "actual_train_log_sha256": "822bf43fa5f73cf4c135fdf073242c80e297299f84a9b1fc35407dbb287bcce4",
+    "train_log_sha_matches_actual_root_receipt": true,
+    "observer_closed": true,
+    "controller_exitcode": 0,
+    "closed_status_protected_parents_exact": true,
+    "new_closed_weight_inspection_exists_at_review": false,
+    "new_experiment_audit_exists_at_review": false,
+    "new_weight_retention_exists_at_review": false,
+    "new_array_cleanup_receipt_exists_at_review": false,
+    "limitation": "The reported counts and closure fields are read from existing local artifacts to check consumer compatibility, not independently recounted or newly accepted by this source review."
+  },
+  "standing_authorization": {
+    "policy_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\CLEANUP_POLICY.json",
+    "policy_sha256": "1e2812de4088aa65369a8e2d50279edc3c9fdbdef9c931628e7b7837290da68b",
+    "user_reply": "清理，以后不用我审批无用的权重这些",
+    "source_reply_literals_match_actual_policy": true,
+    "future_repeated_approval_required": false,
+    "new_permission_request_required_for_this_scope": false,
+    "authorized_scope": "Closed nonbest generated experimental weights and temporary candidate arrays whose complete local archives are verified; preserve protected best, required PV/G/V99 dependencies, active recovery state, datasets, results and text.",
+    "historical_policy_manifest_field": "The policy's current_cleanup_manifest_sha256 is the earlier reference-keep manifest. It is not used as the face-pair target binding: the explicit standing scope covers future closed work, and this wrapper binds the actual current face manifest separately by SHA256.",
+    "current_face_manifest_sha256": "6d91967b39c139b63c9e7a491e3db720bb6b738417d19b50841b9926302b63c5",
+    "runtime_gates_still_required": "The CPU inspection receipt and a fresh accepted terminal audit bound to that receipt and SUMMARY must exist before cleanup. No result or cleanup receipt is prefilled."
+  },
+  "source_checks": [
+    {
+      "id": "F1",
+      "verdict": "PASS",
+      "topic": "Actual producer paths and checkpoint schema",
+      "evidence": "inspect_closed_face_weights.py:44-65; complete_fit/paired_geometry_loop.py:219-257,425-462; complete_fit/run_face_support_pair.py:36-53",
+      "assessment": "The producer writes train.jsonl and the training receipt directly under spec.root, not under per-arm directories. It writes exactly face_center/terminal.pth and face_region/terminal.pth, with prefixed geometry state_delta, Adam state, declared sampling_mode, step, row IDs and the metadata asserted by the inspection. The actual root receipt and formal receipt have the consumer-used fields. Producer terminalization replaces latest.pth; it does not create duplicate neutral initial checkpoints."
+    },
+    {
+      "id": "F2",
+      "verdict": "PASS",
+      "topic": "CPU inspection of only the two trained geometries/optimizers",
+      "evidence": "inspect_closed_face_weights.py:49-76; whole_model_preflight_checks.py:30-44; unchanged FaceRegionBoxRefiner",
+      "assessment": "Each fixed terminal is hash-bound to the root producer receipt and must declare step3723, its own sampler, head_only, current spec/sampler/dependency hashes, fused_mask, keep0, extra1 and the existing update history. Inspection requires 10 candidate_box_refiner states totaling456102 values, strips only that prefix, strictly loads the declared CPU sampler, checks tensor equality, loads AdamW, checks every moment/step/group through the actual helper, and requires10 optimizer states at3723. It performs no model forward, backward, optimizer step, GPU move or weight save/delete."
+    },
+    {
+      "id": "F3",
+      "verdict": "PASS",
+      "topic": "Fixed protected winner and reuse of existing full-model CPU proof",
+      "evidence": "inspect_closed_face_weights.py:20-41,77-88; existing selected_candidate_CPU_restore.json.receipt; prior restoration wrapper and prior reference-keep inspection",
+      "assessment": "The worker rejects any winner other than protected_geometry_parent. It re-hashes the exact selected initial.pth and original G, checks protected step0/zero-update and zero output tensors, reconstructs the same count ranking (dual gate, strict hits, wide hits, protected on exact ties), and requires the old full-CPU receipt to be pass, for the same selected checkpoint SHA, with exact geometry and full-model equality. The local old witness is an envelope whose receipt contains these fields; the prior wrapper proves the worker's exact remote receipt path. The previous actual reference-keep inspection also records that remote receipt's SHA. No retired4511 checkpoint dependency or speculative other-winner branch is introduced."
+    },
+    {
+      "id": "F4",
+      "verdict": "PASS",
+      "topic": "Inspection wrapper gates and returned witness",
+      "evidence": "inspect_closed_face_weights_authorized.py:11-59",
+      "assessment": "Before SSH, the wrapper requires this SOURCE_ONLY review and all reviewed hashes, actual closed SUMMARY with9508 rows and the fixed protected winner, zero selected-threshold/oracle mismatch counts, and a closed observer exit0. It verifies the remote environment, uploads only the reviewed worker with exclusive creation/readback, invokes CPU inspection, and requires the returned status/winner/script SHA and zero mutation counters. The fetched remote inspection JSON must equal stdout before the local receipt is written."
+    },
+    {
+      "id": "F5",
+      "verdict": "PASS",
+      "topic": "Cleanup requires actual completed inspection and a bound fresh audit",
+      "evidence": "cleanup_closed_face_pair_authorized.py:19-54",
+      "assessment": "Before SSH, cleanup requires no prior cleanup receipts, this source review and its bound hashes, real local inspection and audit files, the protected winner, fresh_context, the exact terminal-audit execution scope, accepted PASS/WARN with no blockers, and audit digests matching current SUMMARY and inspection. It reads the actual standing policy, verifies every current-manifest item against INTAKE and every local archived array size/SHA, and requires the closed observer exit0. Missing inspection/audit files stop this path; they are not created by these gates or included in this source report's reviewed_files."
+    },
+    {
+      "id": "F6",
+      "verdict": "PASS",
+      "topic": "Fixed current scope and all checks before either deletion loop",
+      "evidence": "cleanup_closed_face_pair.py:19-68",
+      "assessment": "The remote worker requires the resolved exact face-pair root, no previous receipts, complete/exit0/protected status and no matching fit controller process. It binds the remote inspection to the passed SHA and summary; verifies protected parent/G and exact manifest/policy digests; requires two exact array directories,2378 unique entries and330047051 bytes. It validates every array's two-part allowed path, batch_ basename/.npz suffix, resolved containment, size and SHA, then validates both literal terminal paths against the inspection identities. Only after both entire validation loops succeed can either unlink loop begin."
+    },
+    {
+      "id": "F7",
+      "verdict": "PASS",
+      "topic": "Minimal nonrecursive cleanup and protected dependencies",
+      "evidence": "cleanup_closed_face_pair.py:69-90; cleanup_closed_face_pair_authorized.py:61-79",
+      "assessment": "Deletion calls only individual Path.unlink() on the two validated terminal paths and the2378 validated NPZ paths. There is no recursive/glob/directory deletion and no local archive deletion. Parent best and G are re-hashed afterward; official PV/V99, datasets, text and all other paths are outside the fixed deletion set. The worker records actual inspected terminal sizes/hashes, array file-byte totals, preserved archive location and separate free-space values; the wrapper fetches the two produced receipts only after successful exit and exact deletion counts."
+    },
+    {
+      "id": "F8",
+      "verdict": "PASS",
+      "topic": "Bounded stage ownership",
+      "evidence": "All four consumers and explicit wrapper-only task scope",
+      "assessment": "Inspection is allowed after actual closed-array recount and produces the CPU evidence that the fresh audit can subsequently consume. Cleanup is allowed only after that fresh audit binds the produced inspection and SUMMARY. Authorization, audit and source checks owned by the wrappers are accepted as part of the complete call chains; standalone worker invocation is outside this review. No fallback, compatibility layer, guessed winner, new approval loop or unrelated refactor is requested."
+    }
+  ],
+  "fixed_cleanup_scope": {
+    "remote_root": "/root/autodl-tmp/pvground_face_support_20261007",
+    "terminal_paths": [
+      "/root/autodl-tmp/pvground_face_support_20261007/face_center/terminal.pth",
+      "/root/autodl-tmp/pvground_face_support_20261007/face_region/terminal.pth"
+    ],
+    "terminal_count": 2,
+    "terminal_byte_total": "To be read from the actual future CPU inspection; not prefilled here.",
+    "manifest_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\archived_array_cleanup_manifest.json",
+    "manifest_sha256": "6d91967b39c139b63c9e7a491e3db720bb6b738417d19b50841b9926302b63c5",
+    "arrays_count": 2378,
+    "arrays_bytes": 330047051,
+    "directories": [
+      {
+        "directory": "initial_formal",
+        "count": 1189,
+        "bytes": 143770808
+      },
+      {
+        "directory": "formal",
+        "count": 1189,
+        "bytes": 186276243
+      }
+    ],
+    "unique_manifest_names": 2378,
+    "manifest_to_intake_mismatches": 0,
+    "bad_name_or_batch_index_count": 0,
+    "names": "Each allowed directory contains batch_00000.npz through batch_09504.npz, step8.",
+    "local_archive": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit",
+    "archive_arrays_rehashed_by_this_reviewer": false,
+    "remote_files_observed_by_this_reviewer": false,
+    "actual_local_and_remote_array_hashing_required_by_execution": true
+  },
+  "prior_full_cpu_witness": {
+    "checkpoint_sha256": "2301e90a9391af4e4cd56edae09ce49db1cc8f67463e1c2568352ee2dafaff61",
+    "checkpoint_actual_step": 0,
+    "remote_receipt_path": "/root/autodl-tmp/pvground_mask_reference_20261006/postrun_restoration/fused_mask_reference_initial_formal.json",
+    "remote_receipt_sha256_recorded_by_prior_actual_inspection": "02d88b5770b395815e77df115f0a9d9e04f64032d65a0ad30b0362f08a6d7a22",
+    "local_envelope_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\selected_candidate_CPU_restore.json",
+    "relevant_field": "receipt",
+    "full_model_state_count_in_existing_witness": 1304,
+    "new_cpu_restore_performed_by_this_review": false,
+    "remote_receipt_freshly_read_by_this_review": false
+  },
+  "execution_record": {
+    "performed": [
+      "Local source and JSON reads",
+      "Static producer/consumer schema and control-flow review",
+      "Current manifest-to-INTAKE structural comparison",
+      "Local stable input byte counts/SHA256; train-log SHA compared to receipt",
+      "Writing only the four requested report files"
+    ],
+    "consumer_source_scripts_executed": false,
+    "checkpoint_or_model_loaded": false,
+    "optimizer_updates": 0,
+    "nn_forwards": 0,
+    "ssh_or_network_calls": 0,
+    "deleted_files": 0,
+    "input_files_modified": false,
+    "installations": false,
+    "future_inspection_or_audit_prefilled": false,
+    "written_reports": [
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\CLOSED_CONSUMERS_SOURCE_REVIEW.json",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\CLOSED_CONSUMERS_SOURCE_REVIEW.md",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\INSPECTION_SOURCE_REVIEW.json",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\INSPECTION_SOURCE_REVIEW.md"
+    ]
+  },
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\inspect_closed_face_weights.py",
+      "bytes": 5742,
+      "sha256": "aaad0d677dab15759482ec7841aa38635ace4b81fe410f52782543fdab0a1d0a",
+      "review_extent": "full source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\inspect_closed_face_weights_authorized.py",
+      "bytes": 3697,
+      "sha256": "1e5b32c0e9c771b8b62174b824cac94669400e880a581bf5c3aa68be38ebe29b",
+      "review_extent": "full source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\cleanup_closed_face_pair.py",
+      "bytes": 5330,
+      "sha256": "389bd786253348748e645e965ac900827b0f9df4412b9c3738d2f3d81efb090a",
+      "review_extent": "full source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\postrun\\cleanup_closed_face_pair_authorized.py",
+      "bytes": 4584,
+      "sha256": "0b8256f04fb28b3ac44e60bf43998dba12b586c2a71ab9c5f2672ae1f19d9b10",
+      "review_extent": "full source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\CLEANUP_POLICY.json",
+      "bytes": 688,
+      "sha256": "1e2812de4088aa65369a8e2d50279edc3c9fdbdef9c931628e7b7837290da68b",
+      "review_extent": "full policy"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\archived_array_cleanup_manifest.json",
+      "bytes": 399789,
+      "sha256": "6d91967b39c139b63c9e7a491e3db720bb6b738417d19b50841b9926302b63c5",
+      "review_extent": "complete names/counts/bytes/unique paths and exact INTAKE item comparison"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\pair_spec.json",
+      "bytes": 5099,
+      "sha256": "27192eca7added76f03210e088aea2ffdd8174acd657b165ad7edd470486a0ce",
+      "review_extent": "full specification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\analysis\\SUMMARY.json",
+      "bytes": 13951,
+      "sha256": "1d24e87ded2d99a5d83a05ab53d3fad72b0a6c7e8da54b064c2687226f34e2cd",
+      "review_extent": "consumer-used status/selection/table and CPU recount fields; this is not a new result audit"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\fit_wait.json",
+      "bytes": 979,
+      "sha256": "0620ba80be565f07d3dbc3772c933babe13448005238497b1eec0fe02b98da4d",
+      "review_extent": "full closed observer record"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\INTAKE.json",
+      "bytes": 406563,
+      "sha256": "abce04111775d0d4b7650bc3df95a51dfcf21336cbf075328dd7797bb18337e2",
+      "review_extent": "top-level intake status and all targeted array entries"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\receipt.json",
+      "bytes": 2003,
+      "sha256": "001e1f9b85c72b66114fd09bf9d29727571792a84e6cb4499d6bebb553695608",
+      "review_extent": "full actual root training receipt"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\formal\\receipt.json",
+      "bytes": 766,
+      "sha256": "4d7a5bbff8d6d838b704ffc00f89f08dfc2328fe799587acc6a49546a9033354",
+      "review_extent": "full actual formal receipt"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\fit_status.json",
+      "bytes": 509,
+      "sha256": "ba7943ca4b0a4b4a3eeee5225d91fc6a50bccbd1d8c8d67c04cb019d0cdb6577",
+      "review_extent": "full actual closed status"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\fit_controller.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "review_extent": "full exit marker"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\train.jsonl",
+      "bytes": 7358612,
+      "sha256": "822bf43fa5f73cf4c135fdf073242c80e297299f84a9b1fc35407dbb287bcce4",
+      "review_extent": "actual byte count/SHA compared with root receipt; no training replay"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\paired_geometry_loop.py",
+      "bytes": 30530,
+      "sha256": "eac195c9bb06d1c8ecb2c1b7cd6f926e625428b50805658fe8c33d6ce2c25ed1",
+      "review_extent": "producer payload/save/restore/evaluation receipt/train-log/terminalization sections"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\controller.py",
+      "bytes": 3072,
+      "sha256": "c94034525b63d2e03ad6f19e4ae32191b925601b2a463c0670c262745333b0d2",
+      "review_extent": "full producer controller"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\run_face_support_pair.py",
+      "bytes": 17046,
+      "sha256": "9771da159ead4bd51172b45aa9bfb1b2e670e00af10dfad07cd76c799fb93cf9",
+      "review_extent": "producer output-root and dependency/schema checks"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\face_region_box_refiner.py",
+      "bytes": 3802,
+      "sha256": "5700066a669b5c45dec89860824402d7cb3605575128549f4e2e30840678db4a",
+      "review_extent": "full sampler previously reviewed in this session; actual identical SHA rechecked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "review_extent": "full inherited implementation previously reviewed in this session; actual identical SHA rechecked"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "review_extent": "full helper, especially optimizer_restore_exact"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\selected_candidate_CPU_restore.json",
+      "bytes": 4885,
+      "sha256": "c79e87c2dc8bfbc55a9b22c5e224e593247d996735da18e99994491390154f98",
+      "review_extent": "full existing CPU witness record, with receipt fields used here"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\postrun\\restore_selected_candidate_authorized.py",
+      "bytes": 5558,
+      "sha256": "42ad65c9d250eedc1f2c2191482e3ffa2ab55026ddae96b8f174c5d522af1cdc",
+      "review_extent": "full existing wrapper, used only to establish the remote prior receipt path and local envelope"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\closed_weight_inspection.json",
+      "bytes": 3314,
+      "sha256": "0a4a27bf86dd771099eb62e7d335d4588a59a3dc99490c84c728646974c79f0c",
+      "review_extent": "full prior actual inspection record, used only to confirm previously reused remote full-CPU witness identity"
+    }
+  ]
+}

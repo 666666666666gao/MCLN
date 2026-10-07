@@ -298,3 +298,5 @@
 - 2026-10-07T09:00:56.947445+08:00 Face-member actual M0 completed: two independent heads and CPU restore passed; formal fit awaits capacity.
 
 - 2026-10-07T11:50:34.662684+08:00 Authorized archived-array cleanup completed and shared-parent face-member formal fit started; no new accuracy yet.
+
+- 2026-10-07T21:24:56.987063+08:00 Closed paired face-support ablation: both5593/4832, protected5598/4848 retained; actual nonbest weights and archived arrays cleaned.

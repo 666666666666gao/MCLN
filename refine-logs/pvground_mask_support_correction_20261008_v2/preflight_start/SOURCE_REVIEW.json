@@ -1,0 +1,482 @@
+{
+  "generated_at": "2026-10-08T03:01:03.824793+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "reviewer_task": "/root/pvg_mask_support_source_review",
+  "review_kind": "SAME_CONTEXT_RESCUE_AFTER_ACTUAL_IMPORT_FAILURE",
+  "skill": "experiment-bridge RESCUE_ON_FAILURE",
+  "fresh_context": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "actual_reviewer_backend": "UNATTESTED",
+  "actual_reviewer_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_model_effort_is_backend_attestation": false,
+  "source_acceptance_scope": "Prepared v2 import repair and only its real M0 launch path. No formal-fit launcher or execution acceptance.",
+  "original_runtime_result": {
+    "status": "FAILED_PRESERVED",
+    "exit_code": 1,
+    "completed_modes": [],
+    "controller_pid": 870103,
+    "child_pid": 870116,
+    "finished_cst": "2026-10-08T02:23:14.613804+08:00",
+    "controller_alive_at_closed_observation": false,
+    "observer_closed": true,
+    "error": "ModuleNotFoundError: No module named 'torch_scatter'",
+    "error_location": "run_mask_support_pair.py111 -> paired_support_loop.py18 -> matched_mask_objective.py3",
+    "execution_boundary": "The failure precedes build_support_model at runner123 and all model forward/optimizer steps. It does not establish that CUDA was never initialized.",
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "log_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\preflight_complete\\preflight.log",
+    "log_sha256": "13e56642dc0b723c9b2898e837c0ba1321e7f50ae81e3d649f95043deba8015e",
+    "wait_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\preflight_wait.json",
+    "wait_sha256": "686aa02f6e5fcad65f024a0af5c4fe4ad4d8bde25e0aad6ef7f5341cb1f7632a",
+    "failure_inferred_from_timeout": false,
+    "prior_source_pass_did_not_validate_imports": true,
+    "prior_review_missed_issue": "The earlier source review did not catch the new external torch_scatter import conflicting with the actual ported native criterion and warm environment. Its prior SOURCE_ONLY PASS did not prevent this real startup failure; the failure is not relabeled as success."
+  },
+  "repair": {
+    "changed_nn_file": "matched_mask_objective.py",
+    "old_import": "from torch_scatter import scatter_mean",
+    "new_import": "from models.losses import dice_loss, sigmoid_focal_loss, scatter_mean",
+    "native_export": "models/losses.py23 imports scatter_mean from utils.scatter_util",
+    "loss_source_sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "scatter_source_sha256": "87674206eb44f07925e1111e0220f54c8b7be3758a04c3fedd4cc40bb097a0fe",
+    "non_import_ast_unchanged": true,
+    "other_seven_core_files_byte_identical": true,
+    "pv_forward_overlay_byte_identical": true,
+    "install_or_environment_rebuild": false,
+    "new_fallback": false,
+    "loss_or_target_or_optimizer_change": false,
+    "note": "The same exported function object used by the actual criterion is now used for the new majority-superpoint target reduction. The separately generated deterministic scatter variant was read only to disambiguate the source and does not match this port."
+  },
+  "checks": {
+    "target_shapes_and_semantics": "Native scatter_mean broadcasts a1D superpoint index over the matchedGT-by50000 target tensor with dim=-1, sums by native IDs and divides by native per-ID counts. The native majority>.5 rule, actual frozen-parent HungarianGT responsibilities and5/1/10/2 loss coefficients remain unchanged.",
+    "prior_corrections": "The corrected same-integrated-forward cached-input/output witness and complete6887 Query/Box drift reporting are byte-identical to the prior supplement. No independent-backbone tolerance gate has returned. CPU1314-state rebuild and actual GPU new-head/Adam restore remain required and still unexecuted for v2.",
+    "roots_and_port": "root/model_source/source_port and source-port model_source/source_root all name the new v2 root. The98-file manifest and PV overlay are identical to v1. Spec new-runner and source-port digests match actual v2 files.",
+    "warm_environment": "Exact local ledger requires reuse of the existing Python3.7/Torch1.10.2+cu111 runtime, no rebuild or install, and real model/batch-capacity/state-restore checks before formal fit. Canonical env digest remains966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c; all17 declared existing helper digests match.",
+    "deployment": "Deployer gates on v2 SOURCE_REVIEW, verifies existing dependencies, stages only98declared files plus the one overlay/new scripts, retains INITIAL_IMPORT_FAILURE, and launches controller --phase preflight under the existing lock. The formal-fit launcher is absent from its payload and command.",
+    "observer": "Same sole observer code, first declared check720seconds after launch and later240seconds; only closed text artifacts collected. No observer or remote query was started by this review.",
+    "old_evidence": "Original v1 failure log/wait are exact-bound in INITIAL_IMPORT_FAILURE. Archived objective/runner equal the preserved v1 sources. Old source FAIL57bindings and supplement PASS53bindings remain unchanged; their source-only scope and missed dependency are explicit."
+  },
+  "static_validation": {
+    "m0_python_sources_parsed": 13,
+    "embedded_remote_programs_parsed": 2,
+    "grammar": "Python3.7 via stdlib ast feature_version=(3,7)",
+    "import_repair_nonimport_ast_equivalent": true,
+    "new_runner_bindings": 8,
+    "reused_helper_bindings": 17,
+    "declared_port_files": 98,
+    "actual_runtime_import_test_executed": false,
+    "original_6887_checker_rerun": false,
+    "old_failure_records_rewritten": false
+  },
+  "actual_review_execution": {
+    "interpreter": "C:\\Users\\gb\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+    "stdlib_only": true,
+    "torch_imports": 0,
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "checkpoints_loaded": 0,
+    "gpu_commands": 0,
+    "ssh_calls": 0,
+    "network_calls": 0,
+    "deployments": 0,
+    "publications": 0,
+    "source_edits": 0,
+    "output_writes": [
+      "v2/SOURCE_REVIEW.json",
+      "v2/SOURCE_REVIEW.md"
+    ]
+  },
+  "exclusions": [
+    "launch_fit_authorized.py remains source-prepared, is not reviewed/accepted here and must not be run under this M0-only review.",
+    "OldDoc98 publication/line-ending repair is outside this review; no old publication source or bindings were modified."
+  ],
+  "runtime_gates_still_pending": [
+    "Successful v2 warm-runtime import and model construction",
+    "Real2-step M0 gradients/frozen state/capacity",
+    "Complete CPU reconstruction, GPU head/optimizer restore and same-forward native integration equality",
+    "Separate formal-launch review, fresh full fit and full9508 evaluation"
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\mask_support_corrector.py",
+      "bytes": 4360,
+      "sha256": "d62f114f2b49041f5a0d353068006a9d5501eda303f14d1e8cce0697c3510300",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\mask_support_model_factory.py",
+      "bytes": 1521,
+      "sha256": "819888fc82ae0c67f7117ce1b7a9b97115311586a14134b8457d9f19f4f75535",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\matched_mask_objective.py",
+      "bytes": 3057,
+      "sha256": "dfa0851f5c2a4ccbc72d361a3c1f2e950795055071d5b0e3fa07416fdf56167c",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\paired_support_loop.py",
+      "bytes": 26038,
+      "sha256": "1e6aa7dfb54f7aa3c2b7a7b2939c38b38653a1e78af89fbbf93474a04c70206b",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\run_mask_support_pair.py",
+      "bytes": 14700,
+      "sha256": "7a2b175daee114a870a9942b3ae215b6304264c65cf57f1d2696180defc1f72b",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\support_pair_forward.py",
+      "bytes": 2512,
+      "sha256": "9170cfed2cf82002097c0929d3acaa8bcfed2700549fb4ee304ae26058b88321",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\controller.py",
+      "bytes": 3185,
+      "sha256": "23c06558f41f3d2078b797e87f10cef9b093f9bde4e67691be0aebee6cb8ad94",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\deploy_preflight_authorized.py",
+      "bytes": 6326,
+      "sha256": "60a6ea0857427ce3ce0f82859d79b5995a7fa894c1ce85a6a375a51476ff1f74",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\observe_preflight_authorized.py",
+      "bytes": 4226,
+      "sha256": "4e6f1dccd34d37a0b729a4027a60a4867707f9c2e830a5b8a27d09a030c413db",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\check_prepared_sources.py",
+      "bytes": 1811,
+      "sha256": "27e1f73ad565eb6c30cd39613335caf591309032129ac47b1947b93e5d61fb22",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\runtime_overlay\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 27544,
+      "sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\pair_spec.json",
+      "bytes": 6024,
+      "sha256": "b96fa3b137d839a2309a5fa95f2510b2126663569e1f8acde242f63166d5eb59",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\source_port.json",
+      "bytes": 11168,
+      "sha256": "765a47c0c07758f3e42a426036b27a840df8ea010b63df3682439ff5455e9eff",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\EXPERIMENT_PLAN.md",
+      "bytes": 7935,
+      "sha256": "9872affe789eda595545e957f5e7f6c73cceb896e86f657e7c54d11542a824d7",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\INITIAL_IMPORT_FAILURE.json",
+      "bytes": 865,
+      "sha256": "01acc265a4b7f8247faefdc6f3405ed9ba7922a0ac5eef7294ceb3d7135f6aec",
+      "review_scope": "v2 M0-scoped implementation, source or failure manifest"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\mask_support_corrector.py",
+      "bytes": 4360,
+      "sha256": "d62f114f2b49041f5a0d353068006a9d5501eda303f14d1e8cce0697c3510300",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\mask_support_model_factory.py",
+      "bytes": 1521,
+      "sha256": "819888fc82ae0c67f7117ce1b7a9b97115311586a14134b8457d9f19f4f75535",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\matched_mask_objective.py",
+      "bytes": 3026,
+      "sha256": "c21a399d8e8319a0fa4917b4ea45be4ebd07c48ddadc977774c44ce81db166cc",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\paired_support_loop.py",
+      "bytes": 26038,
+      "sha256": "1e6aa7dfb54f7aa3c2b7a7b2939c38b38653a1e78af89fbbf93474a04c70206b",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\run_mask_support_pair.py",
+      "bytes": 14700,
+      "sha256": "7a2b175daee114a870a9942b3ae215b6304264c65cf57f1d2696180defc1f72b",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\support_pair_forward.py",
+      "bytes": 2512,
+      "sha256": "9170cfed2cf82002097c0929d3acaa8bcfed2700549fb4ee304ae26058b88321",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\controller.py",
+      "bytes": 3185,
+      "sha256": "23c06558f41f3d2078b797e87f10cef9b093f9bde4e67691be0aebee6cb8ad94",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\deploy_preflight_authorized.py",
+      "bytes": 6261,
+      "sha256": "d54134fae5ad58a7eab928a1001b9d353d4c7cafff88e5a9c7be91b4a92a0606",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\observe_preflight_authorized.py",
+      "bytes": 4226,
+      "sha256": "4e6f1dccd34d37a0b729a4027a60a4867707f9c2e830a5b8a27d09a030c413db",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\check_prepared_sources.py",
+      "bytes": 1811,
+      "sha256": "27e1f73ad565eb6c30cd39613335caf591309032129ac47b1947b93e5d61fb22",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\runtime_overlay\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 27544,
+      "sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\pair_spec.json",
+      "bytes": 5779,
+      "sha256": "c98b121947ef502a150df21e0b4fe078a42c4e5751ac0f68e9e3678fcff1ce66",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\source_port.json",
+      "bytes": 11162,
+      "sha256": "76e58ce537cd0f664f1b37287552acebb7933b02fa25cc0fbcf3a7cec0e81c0a",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\EXPERIMENT_PLAN.md",
+      "bytes": 6641,
+      "sha256": "bd410a34299f4019cedaba44958cd3eb9cac16b60e6a7bea54888319c7d27aad",
+      "review_scope": "preserved v1 source, compared to v2 without modification"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\prepare_import_fixed_retry.py",
+      "bytes": 5716,
+      "sha256": "87a9cb1b0f4601cc663e9000535ee821c9b57e2fdc25e864ada36f953b30627b",
+      "review_scope": "actual closed failure / prior source review / import-repair preparation provenance"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\preflight_wait.json",
+      "bytes": 4632,
+      "sha256": "686aa02f6e5fcad65f024a0af5c4fe4ad4d8bde25e0aad6ef7f5341cb1f7632a",
+      "review_scope": "actual closed failure / prior source review / import-repair preparation provenance"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\preflight_complete\\preflight.log",
+      "bytes": 735,
+      "sha256": "13e56642dc0b723c9b2898e837c0ba1321e7f50ae81e3d649f95043deba8015e",
+      "review_scope": "actual closed failure / prior source review / import-repair preparation provenance"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\SOURCE_REVIEW.json",
+      "bytes": 26835,
+      "sha256": "8b08f5497b6a6e0bdd4f43da75c0da1022d3489b9b9eb58be563cc9f4bbf7755",
+      "review_scope": "actual closed failure / prior source review / import-repair preparation provenance"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\SOURCE_REVIEW_SUPPLEMENT.json",
+      "bytes": 27529,
+      "sha256": "73690015b1f146e23b735d608ad9afb56a7b65849aca0d02b15b1bf35eef7515",
+      "review_scope": "actual closed failure / prior source review / import-repair preparation provenance"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\preflight_complete\\matched_mask_objective.py",
+      "bytes": 3026,
+      "sha256": "c21a399d8e8319a0fa4917b4ea45be4ebd07c48ddadc977774c44ce81db166cc",
+      "review_scope": "actual closed failure / prior source review / import-repair preparation provenance"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\preflight_complete\\run_mask_support_pair.py",
+      "bytes": 14700,
+      "sha256": "7a2b175daee114a870a9942b3ae215b6304264c65cf57f1d2696180defc1f72b",
+      "review_scope": "actual closed failure / prior source review / import-repair preparation provenance"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "review_scope": "actual port-bound criterion and scatter export"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\source\\utils\\scatter_util.py",
+      "bytes": 1786,
+      "sha256": "87674206eb44f07925e1111e0220f54c8b7be3758a04c3fedd4cc40bb097a0fe",
+      "review_scope": "actual98-file port-bound native scatter implementation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\generated\\utils\\scatter_util.py",
+      "bytes": 7185,
+      "sha256": "cba321fca2e3b473001c26348618510b75210707e63eb84630c742b4965efef0",
+      "review_scope": "read for disambiguation only; NOT selected by current source port"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json",
+      "bytes": 2938,
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+      "review_scope": "unchanged canonical warm environment binding"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\.aris\\compute\\ssh_pvground.md",
+      "bytes": 836,
+      "sha256": "21715344810e99e96181b27726fe50cb5a5f78523b38b4be4d8f54f289db3505",
+      "review_scope": "private local warm ledger; no credentials and no remote execution"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py",
+      "bytes": 518,
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_final_quality.py",
+      "bytes": 5764,
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py",
+      "bytes": 481,
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py",
+      "bytes": 4335,
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "bytes": 4754,
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "bytes": 8163,
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py",
+      "bytes": 31540,
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "review_scope": "existing helper bytes/hash binding; earlier same-context source conclusions retained"
+    }
+  ],
+  "reviewed_file_bindings": 62,
+  "summary": "SOURCE_ONLY PASS for the specific v2 import repair/M0 preparation,0blocking findings. The original actual M0 remainsFAILED(exit1,0forwards/updates); v2 has not run. Same-context/same-family/provisional; actual backend/effort UNATTESTED."
+}

@@ -302,3 +302,5 @@
 - 2026-10-07T21:24:56.987063+08:00 Closed paired face-support ablation: both5593/4832, protected5598/4848 retained; actual nonbest weights and archived arrays cleaned.
 
 - 2026-10-08T01:32:32.792494+08:00 Closed191-case support/boundary diagnosis; protected5598/4848 retained; verified archived temporary arrays cleaned.
+
+- 2026-10-08T02:24:12.493435+08:00 Mask-support correction implementation and real M0 launch; no new accuracy claim.

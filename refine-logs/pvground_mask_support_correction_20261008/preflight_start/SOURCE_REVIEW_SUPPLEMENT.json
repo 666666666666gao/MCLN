@@ -1,0 +1,437 @@
+{
+  "generated_at": "2026-10-08T02:21:40.711504+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "reviewer_task": "/root/pvg_mask_support_source_review",
+  "review_kind": "SAME_CONTEXT_SOURCE_SUPPLEMENT",
+  "fresh_context": false,
+  "original_review_was_fresh_context": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "performance_acceptance": false,
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_model_effort_is_backend_attestation": false,
+  "actual_reviewer_backend": "UNATTESTED",
+  "actual_reviewer_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "original_review": {
+    "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\SOURCE_REVIEW.json",
+    "sha256": "8b08f5497b6a6e0bdd4f43da75c0da1022d3489b9b9eb58be563cc9f4bbf7755",
+    "verdict": "FAIL",
+    "blocking_findings": 2,
+    "reviewed_file_bindings": 57,
+    "report_and_snapshot_unchanged": true
+  },
+  "changed_prepared_files": [
+    "EXPERIMENT_PLAN.md",
+    "pair_spec.json",
+    "paired_support_loop.py",
+    "deploy_preflight_authorized.py",
+    "LOCAL_SOURCE_PREPARATION.json",
+    "publish_start_authorized.py"
+  ],
+  "finding_disposition": [
+    {
+      "id": "B1",
+      "status": "RESOLVED_AT_SOURCE_LEVEL_RUNTIME_PENDING",
+      "evidence": [
+        "paired_support_loop.py195-206 registers a pre-hook on the actual restored corrector and clones Query, per-cloud support features, raw points, coarse center/size, Text masks, original Query masks, native scalar alpha and superpoint IDs before the overlay replaces sp_last_pred_masks.",
+        "Only one observed_readback_forward occurs per restored arm in this witness. The output hook captures the actual corrector return; both hooks are removed before paired helper replay. len(captured_inputs)==len(captured_outputs)==1 is asserted.",
+        "The paired helper receives those cached original fields. Its support_geometry_query is the same unchanged tail geometry Query from this integrated forward. The refiner reads per-cloud superpoint IDs, so the cloned per-cloud list preserves its indexing contract.",
+        "Both corrected Query masks and final Box tensors are checked exactly against the actual integrated output. Output-hook masks are separately compared. The native semantic head call count is one, zero-R before/after semantic Query equality is asserted, and the parent state remains exact.",
+        "Complete1314-tensor CPU reconstruction and actual GPU head/Adam state restoration remain. The previous independent-backbone 2e-6 gate is removed rather than relaxed. No coldGPUparentrestore or actual M0PASS is claimed."
+      ]
+    },
+    {
+      "id": "B2",
+      "status": "RESOLVED_AT_SOURCE_LEVEL_RUNTIME_PENDING",
+      "evidence": [
+        "Cross-holdout completion checks retain row ID, point hash and rootGT Box identity plus exact frozen parent state; they no longer assert independent-pass Query or threshold-derived parent Box equality.",
+        "Both original per-pass rows remain saved. frozen_parent_repeat_drift.json stores every row ID, old/new selected Query, whether it changed, maximum Box difference, and aggregate counts; the receipt explicitly says this drift is not support-head gain.",
+        "Initial formal evaluation keeps the full9508 order and compares both zero heads with the current same-forward parent counts. Historical5598/4848 is retained separately with signed differences, historical_best_updated=False and zero_output_head_gain_claim=False. No historical metric is rewritten."
+      ]
+    }
+  ],
+  "resolved_preparation_issue": {
+    "id": "PUBLISH_EVIDENCE_INPUT",
+    "observed_error": "FileNotFoundError for the publisher-declared N/REPEATABILITY_EVIDENCE.json; the existing file was only under initial_source_review_failure.",
+    "resolution": "Reviewer copied the already frozen JSON byte-for-byte to the publisher-declared top-level input. The original evidence and all NN/source files were untouched; no checker rerun or new experiment evidence.",
+    "evidence_sha256": "a48afdc08b5c0e12bc32fec235f2a1b8fb6dcb48765da66712f24cebff9414ff",
+    "status": "RESOLVED"
+  },
+  "checks": {
+    "loss_and_method": "Unchanged native actual-GT Hungarian correspondence, coefficients5/1/10/2 and valid-GT denominator; no /7, expanded positives, quality loss, Box-to-Mask gradient or extra variants. Corrector architecture, source overlay and deployed helper imports remain the same as the initial reviewed sources.",
+    "independent_parameters": "The CPU-built restored head is loaded from its arm payload; helper replay uses the corresponding independent training head with the same saved state. Captured inputs are cloned before mutation. The witness does not compare a value merely with itself for Mask/Box equality and does not synthesize or reseed a second backbone result to create equality.",
+    "semantic_route": "Native semantic equality in the helper uses the shared integrated score; its source justification is the actual one-head forward observation, frozen native semantic parameters and the separately asserted zero-R input/output Query equality. This is a same-forward claim only.",
+    "dataset_and_evaluation": "Training and evaluation GT construction, the two independent optimizers,29778rows/3723updates, all256 candidates, full9508 ordering and native bbs evaluator checks are unchanged. Each same-forward parent/control comparison remains available; cross-pass numerical drift is preserved without method-gain attribution.",
+    "gates": "Deployment and publication now require SOURCE_REVIEW_SUPPLEMENT with zero blockers. Both retain original FAIL and supplement reports. Publication additionally includes the now-present original repeatability evidence. Deployment still starts only M0 under the existing lock; no formal launcher was included or approved by this review.",
+    "publication": "Updated text reports98 original declared port files, the first failed review and its actual counterexamples, same-forward exact integration checks, separate historical baseline differences, and pending M0/accuracy. Request trace stays private and is absent from both payload lists by the parent's explicit direction.",
+    "bindings": "Current17-file preparation bindings, all8 new-runner bindings and source-port binding match; only6 prepared files differ from the preserved initial source snapshot. No old source port path, warm environment or parent weights were modified by this review."
+  },
+  "actual_execution": {
+    "interpreter": "C:\\Users\\gb\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+    "stdlib_only": true,
+    "prepared_python_sources_parsed_with_python37_grammar": 17,
+    "embedded_remote_programs_parsed": 3,
+    "original_6887_row_checker_rerun": false,
+    "new_closed_data_comparisons": 0,
+    "first_combined_check_exit": "1 after successful syntax/binding checks, when opening the missing top-level evidence JSON; resolved by exact artifact copy",
+    "subsequent_payload_presence_check": "PASS, with only future supplement outputs and real launch/resource receipts pending their owning actions",
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "torch_imports": 0,
+    "checkpoints_loaded": 0,
+    "gpu_commands": 0,
+    "ssh_calls": 0,
+    "network_calls": 0,
+    "deployments": 0,
+    "publications": 0,
+    "nn_source_edits": 0,
+    "review_artifact_writes": [
+      "REPEATABILITY_EVIDENCE.json (identical copy)",
+      "REVIEW_REQUEST_TRACE.json",
+      "SOURCE_REVIEW_SUPPLEMENT.json",
+      "SOURCE_REVIEW_SUPPLEMENT.md"
+    ]
+  },
+  "request_trace": {
+    "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\REVIEW_REQUEST_TRACE.json",
+    "sha256": "ef8855e60789eddf3750b645dca9b54b787b18139af0bade4148d8dcf225df35",
+    "received_task_messages": 2,
+    "raw_spawn_tool_arguments": "UNAVAILABLE",
+    "raw_followup_tool_arguments": "UNAVAILABLE",
+    "backend_telemetry": "UNATTESTED",
+    "scope": "Private exact received task-message text, not raw tool-call or model identity attestation"
+  },
+  "runtime_gates_still_pending": [
+    "Real two-step M0 task gradients, frozen state and capacity",
+    "Full CPU rebuild plus actual GPU new-head/optimizer restore",
+    "Actual one-integrated-forward cached Mask/Box equality",
+    "Complete formal fit/evaluation and performance/contribution decisions"
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\EXPERIMENT_PLAN.md",
+      "bytes": 6641,
+      "sha256": "bd410a34299f4019cedaba44958cd3eb9cac16b60e6a7bea54888319c7d27aad",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\EXPERIMENT_PLAN.md",
+      "bytes": 5005,
+      "sha256": "638c0adb1353f42acbcb5112444ec282893550811fc6f8949fb80cdb5a817201",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\pair_spec.json",
+      "bytes": 5779,
+      "sha256": "c98b121947ef502a150df21e0b4fe078a42c4e5751ac0f68e9e3678fcff1ce66",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\pair_spec.json",
+      "bytes": 5779,
+      "sha256": "be28dfe58fdee19fea30d7e8e7eca79a0c08b128b3a7bc26e57adad754a7148c",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\mask_support_corrector.py",
+      "bytes": 4360,
+      "sha256": "d62f114f2b49041f5a0d353068006a9d5501eda303f14d1e8cce0697c3510300",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\mask_support_corrector.py",
+      "bytes": 4360,
+      "sha256": "d62f114f2b49041f5a0d353068006a9d5501eda303f14d1e8cce0697c3510300",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\matched_mask_objective.py",
+      "bytes": 3026,
+      "sha256": "c21a399d8e8319a0fa4917b4ea45be4ebd07c48ddadc977774c44ce81db166cc",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\matched_mask_objective.py",
+      "bytes": 3026,
+      "sha256": "c21a399d8e8319a0fa4917b4ea45be4ebd07c48ddadc977774c44ce81db166cc",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\support_pair_forward.py",
+      "bytes": 2512,
+      "sha256": "9170cfed2cf82002097c0929d3acaa8bcfed2700549fb4ee304ae26058b88321",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\support_pair_forward.py",
+      "bytes": 2512,
+      "sha256": "9170cfed2cf82002097c0929d3acaa8bcfed2700549fb4ee304ae26058b88321",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\mask_support_model_factory.py",
+      "bytes": 1521,
+      "sha256": "819888fc82ae0c67f7117ce1b7a9b97115311586a14134b8457d9f19f4f75535",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\mask_support_model_factory.py",
+      "bytes": 1521,
+      "sha256": "819888fc82ae0c67f7117ce1b7a9b97115311586a14134b8457d9f19f4f75535",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\paired_support_loop.py",
+      "bytes": 26038,
+      "sha256": "1e6aa7dfb54f7aa3c2b7a7b2939c38b38653a1e78af89fbbf93474a04c70206b",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\paired_support_loop.py",
+      "bytes": 23231,
+      "sha256": "62f4106d917e1df49c934bb1ae58b0811fa459ba64d197cabef3e9fbac582bfa",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\run_mask_support_pair.py",
+      "bytes": 14700,
+      "sha256": "7a2b175daee114a870a9942b3ae215b6304264c65cf57f1d2696180defc1f72b",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\run_mask_support_pair.py",
+      "bytes": 14700,
+      "sha256": "7a2b175daee114a870a9942b3ae215b6304264c65cf57f1d2696180defc1f72b",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\runtime_overlay\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 27544,
+      "sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\runtime_overlay\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 27544,
+      "sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\source_port.json",
+      "bytes": 11162,
+      "sha256": "76e58ce537cd0f664f1b37287552acebb7933b02fa25cc0fbcf3a7cec0e81c0a",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\source_port.json",
+      "bytes": 11162,
+      "sha256": "76e58ce537cd0f664f1b37287552acebb7933b02fa25cc0fbcf3a7cec0e81c0a",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\controller.py",
+      "bytes": 3185,
+      "sha256": "23c06558f41f3d2078b797e87f10cef9b093f9bde4e67691be0aebee6cb8ad94",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\controller.py",
+      "bytes": 3185,
+      "sha256": "23c06558f41f3d2078b797e87f10cef9b093f9bde4e67691be0aebee6cb8ad94",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\deploy_preflight_authorized.py",
+      "bytes": 6261,
+      "sha256": "d54134fae5ad58a7eab928a1001b9d353d4c7cafff88e5a9c7be91b4a92a0606",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\deploy_preflight_authorized.py",
+      "bytes": 6183,
+      "sha256": "1e4f6683d8fca75ebf4dec350ca86d1e7b1b59b48cd2c68fcff76b7cdf9824ad",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\prepare_model_patch.py",
+      "bytes": 1872,
+      "sha256": "2ad77efb6cf8871252cfbe75df32806143b33812ba10b99503179f89e171ecda",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\prepare_model_patch.py",
+      "bytes": 1872,
+      "sha256": "2ad77efb6cf8871252cfbe75df32806143b33812ba10b99503179f89e171ecda",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\prepare_support_runner.py",
+      "bytes": 8407,
+      "sha256": "e3a38d272b012f9802e75be6d1feb07dd99c525d523ddb2dfca344b635c4601a",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\prepare_support_runner.py",
+      "bytes": 8407,
+      "sha256": "e3a38d272b012f9802e75be6d1feb07dd99c525d523ddb2dfca344b635c4601a",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\check_prepared_sources.py",
+      "bytes": 1811,
+      "sha256": "27e1f73ad565eb6c30cd39613335caf591309032129ac47b1947b93e5d61fb22",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\check_prepared_sources.py",
+      "bytes": 1811,
+      "sha256": "27e1f73ad565eb6c30cd39613335caf591309032129ac47b1947b93e5d61fb22",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\LOCAL_SOURCE_PREPARATION.json",
+      "bytes": 1918,
+      "sha256": "65cdc41a05d0e51a6392e592e3c9932ebf8124e7c72c5973be6f3ab1ff47c6a6",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\LOCAL_SOURCE_PREPARATION.json",
+      "bytes": 1610,
+      "sha256": "6bfcc0486f2c116a54560166ba472d03a1b74a3fc77c9156368dc0cf6b98f35d",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\observe_preflight_authorized.py",
+      "bytes": 4226,
+      "sha256": "4e6f1dccd34d37a0b729a4027a60a4867707f9c2e830a5b8a27d09a030c413db",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\observe_preflight_authorized.py",
+      "bytes": 4226,
+      "sha256": "4e6f1dccd34d37a0b729a4027a60a4867707f9c2e830a5b8a27d09a030c413db",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\prepare_observer.py",
+      "bytes": 787,
+      "sha256": "660e24c9c34e04063e1e3f5efe64b3db66f5261137165dfe264aa81ea40e747b",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\prepare_observer.py",
+      "bytes": 787,
+      "sha256": "660e24c9c34e04063e1e3f5efe64b3db66f5261137165dfe264aa81ea40e747b",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\publish_start_authorized.py",
+      "bytes": 13093,
+      "sha256": "f9a599bac9c9f9ab62d2e457057831e5c176407e1863ad48131cea74f6d770e7",
+      "review_scope": "current prepared source: inspected diff or unchanged byte identity in the same review context"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\source\\publish_start_authorized.py",
+      "bytes": 12267,
+      "sha256": "256db39c3ddf7434be613121939be890dc582072e822ed7f7c63acf865b4e105",
+      "review_scope": "preserved initial source: compared against current source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\SOURCE_REVIEW.json",
+      "bytes": 26835,
+      "sha256": "8b08f5497b6a6e0bdd4f43da75c0da1022d3489b9b9eb58be563cc9f4bbf7755",
+      "review_scope": "original FAIL report, preserved"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\SOURCE_REVIEW.md",
+      "bytes": 5103,
+      "sha256": "b8626253c955247a4e57288f4d5cffb7517f9448f640e72eb095d273c09a47e0",
+      "review_scope": "original FAIL report, preserved"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\SOURCE_REVIEW.json",
+      "bytes": 26835,
+      "sha256": "8b08f5497b6a6e0bdd4f43da75c0da1022d3489b9b9eb58be563cc9f4bbf7755",
+      "review_scope": "frozen initial FAIL copy"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\SOURCE_REVIEW.md",
+      "bytes": 5103,
+      "sha256": "b8626253c955247a4e57288f4d5cffb7517f9448f640e72eb095d273c09a47e0",
+      "review_scope": "frozen initial FAIL copy"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\INITIAL_FAILURE_SNAPSHOT.json",
+      "bytes": 9439,
+      "sha256": "9fc996d20c7f11067d77cbd67e900358f48f2a4e8462d035c9786b6c52555ccd",
+      "review_scope": "original snapshot manifest, checked for preservation"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\initial_source_review_failure\\REPEATABILITY_EVIDENCE.json",
+      "bytes": 24508,
+      "sha256": "a48afdc08b5c0e12bc32fec235f2a1b8fb6dcb48765da66712f24cebff9414ff",
+      "review_scope": "existing frozen evidence, unchanged; original checker not rerun"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\REPEATABILITY_EVIDENCE.json",
+      "bytes": 24508,
+      "sha256": "a48afdc08b5c0e12bc32fec235f2a1b8fb6dcb48765da66712f24cebff9414ff",
+      "review_scope": "byte-identical prepared publication copy of existing evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\REVIEW_REQUEST_TRACE.json",
+      "bytes": 7312,
+      "sha256": "ef8855e60789eddf3750b645dca9b54b787b18139af0bade4148d8dcf225df35",
+      "review_scope": "private received-message trace; excluded from deployment/public payload"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "review_scope": "downstream member_support per-batch superpoint indexing"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "review_scope": "downstream whole_range and superpoint indexing"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "review_scope": "downstream refiner helper source search"
+    }
+  ],
+  "reviewed_file_bindings": 53,
+  "summary": "PASS for corrected source preparation only: initialB1/B2 are resolved in source. OriginalFAIL57bindings and closed evidence remain preserved. Supplement is same-context/same-family/provisional; actual backend/effort un-attested and all new neural/runtime results pending."
+}

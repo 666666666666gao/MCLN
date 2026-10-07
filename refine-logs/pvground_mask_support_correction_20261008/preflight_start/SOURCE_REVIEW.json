@@ -1,0 +1,460 @@
+{
+  "generated_at": "2026-10-08T02:09:56.108878+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "FAIL",
+  "fresh_context": true,
+  "reviewer_task": "/root/pvg_mask_support_source_review",
+  "skill": "experiment-bridge Phase2.5",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_reviewer_backend": "UNATTESTED",
+  "actual_reviewer_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "requested_model_effort_is_backend_attestation": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "severity": "BLOCKING",
+      "title": "Independent native forwards are used as the implementation-equivalence witness",
+      "source": "paired_support_loop.py",
+      "lines": [
+        191,
+        192,
+        194,
+        195,
+        199,
+        204,
+        207
+      ],
+      "evidence": [
+        "The paired output at line194 and integrated output at line199 are produced by separate complete native forwards, with reset_rng between them. Mask equality is then gated at 2e-6.",
+        "The existing revision2 evidence_hidden/evidence_visible preflight records explicitly report same-RNG, fresh-input complete-forward drift. Query-mask maxima across their recorded arrays range from 4.1961669921875e-05 to 0.0001201629638671875. Text masks and alpha also drift. These are actual old records, not a new execution or a speculative numerical case."
+      ],
+      "consequence": "This M0 gate cannot distinguish a correct correction-head integration from the native repeatability already violated in this runtime; it can reject the unchanged/correct route. Hard Mask thresholds also make Box differences discontinuous, so increasing one scalar tolerance does not repair the witness.",
+      "required_fix": "Validate helper versus installed native correction/refiner using the same captured original native inputs from one actual integrated forward, retaining the complete CPU rebuild and actual GPU head/optimizer restoration. Treat independent complete-forward differences as recorded diagnostics, with honest limits, instead of implementation equality. Do not widen tolerances until PASS or add a fallback.",
+      "new_runtime_failure_claimed": false
+    },
+    {
+      "id": "B2",
+      "severity": "BLOCKING",
+      "title": "Formal-fit completion requires cross-pass parent Box equality that existing full data contradicts",
+      "source": "paired_support_loop.py",
+      "lines": [
+        359,
+        360,
+        361,
+        362
+      ],
+      "evidence": [
+        "The final train path asserts old[\"parent_box\"] == new[\"parent_box\"] after initial and terminal independent 6887-row passes.",
+        "The previous face-support loop records geometry_reference_center/size as reference_box (paired_geometry_loop.py309,341). A stdlib comparison of all6887 original initial/terminal rows found row_id, point_sha256, Query and coarse_box all equal, but reference_box differs at row16804. Both references are valid.",
+        "row16804 initial reference_box=[-1.0175853967666626,-2.9135074615478516,0.9893376231193542,0.2782527804374695,0.6530201435089111,0.5007940530776978]; terminal=[-1.0312237739562988,-2.9135074615478516,1.0065933465957642,0.3055294156074524,0.6530201435089111,0.5353055000305176]. Max absolute difference=0.034511446952819824."
+      ],
+      "consequence": "A real known native support-threshold drift can terminate the controller after3723 updates and terminal holdout evaluation, before its receipt and complete9508 formal mode, although frozen model state and inputs remain correct.",
+      "required_fix": "Keep exact input/row/GT and frozen-state checks. Preserve both per-pass parent outputs and report the observed parent/reference differences; verify arm scoring equality within each shared native forward. Do not require independent threshold-derived Box equality as the frozen-state proof.",
+      "new_runtime_failure_claimed": false
+    }
+  ],
+  "nonblocking_findings": [],
+  "corrected_briefing_fact": {
+    "original_briefed_port_files": 95,
+    "actual_old_and_new_port_files": 98,
+    "same_path_set": true,
+    "changed_files": [
+      "models/pv_ground.py"
+    ],
+    "parent_acknowledged_description_correction": true
+  },
+  "actual_execution": {
+    "stdlib_only": true,
+    "interpreter": "C:\\Users\\gb\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+    "discovered_with": "existing uv python find --offline",
+    "network_calls": 0,
+    "ssh_calls": 0,
+    "torch_imports": 0,
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "checkpoints_loaded": 0,
+    "source_edits": 0,
+    "syntax_validation": "17 prepared Python files and3 embedded remote programs parsed using ast feature_version=(3,7); not a runtime/import test",
+    "closed_evidence_comparison_rows": 6887
+  },
+  "checks": {
+    "architecture": "Two27841-parameter/10-state heads, same initialized weights, separate storage/optimizers. Inputs are32+32+5+1+9=79. Only explicit coarse-Box mean/lower/upper relations are zeroed in control; common native Query/SP features already contain geometry.",
+    "native_loss": "Original losses.py hash equals isolated port binding. Majority-SP masks and actual native Hungarian target indices are preserved. Dataset max132GT is below256Queries, so native matched-count and valid-GT-count denominators coincide. The active coefficients5/1/10/2 sit outside /7. Hard pseudo-target/correspondence terms and frozen semantic/Text/Box paths cannot update this head.",
+    "gradient_route": "Parent forward is no_grad; both correction graphs are independent. Matched Query and native-alpha fused logits retain correction gradients. Mask-reference threshold/extrema detach. No Box-loss-to-Mask claim or expanded positives.",
+    "integration": "Overlay is only the new None declaration and correction call after native masks/before original refiner. Native query and superpoint feature shapes match the new head. Both inherited reference helpers are byte-identical to previous sources. Runtime equivalence still blocked byB1.",
+    "evaluation": "Native bbs scorer and original evaluator use actual dataset GT. Full9508 ordering is source-prepared for initial_formal/formal; same selected Query delivers Box and native-alpha fused Mask. All256 retained. Existing subset evidence is not historical recovery or new module acceptance.",
+    "budgets": "Seed2027, batch8, one29778-row pass,3723updates/arm, fixedAdamW1e-5/5e-4/clip0.1. Fresh subprocess reconstructs new heads/optimizers after M0. No sweep or extra variant.",
+    "recovery": "Original official/G/selected Mask-reference dependencies are retained. Payload contains10new state tensors plus optimizer; complete CPU reconstruction and GPU head/optimizer restoration are implemented as checks, not executed here. No coldGPUparentrestore claim.",
+    "binding": "All8 new-runner file hashes,17 declared reused helper hashes, local14-file preparation receipt, model overlay, native loss/evaluator, source port and canonical warm environment digest agree. Source port contains98existing files; only models/pv_ground.py changes.",
+    "deployment": "Existing lock wraps onlypreflight. Staging copies only old declared source list into a new isolated root, substitutesonePVfile, checks originalbest/old closure/GPU idle/free reserve, and does not rebuild environment. Remote resource/closure assertions remain unexecuted.",
+    "management": "Added observer is the prior observer with arm paths and marker changed; first estimated check then240seconds, closed text-only intake. Publisher gates SOURCE_ONLY acceptance and actual launch/observer, preserves Doc97 prefix, publishes named source/text artifacts only, and makes no M0PASS/accuracy claim. Its repeated-forward wording must followB1 resolution."
+  },
+  "existing_repeatability_evidence": {
+    "holdout_rows": 6887,
+    "different_counts": {
+      "row_id": 0,
+      "point_sha256": 0,
+      "query": 0,
+      "coarse_box": 0,
+      "reference_box": 1,
+      "reference_valid": 0
+    },
+    "example_row": 16804,
+    "example_max_reference_box_abs_difference": 0.034511446952819824,
+    "scope": "Existing closed artifacts read with stdlib; not new NN evidence and not historical prediction recovery"
+  },
+  "limitations": [
+    "This is source-level provisional review, not performance acceptance or a real M0 result.",
+    "The actual new preflight, capacity, gradients, restore, integrated GPU behavior and complete formal evaluations have not run in this review.",
+    "Publisher/observer and deployment shell programs were parsed/reviewed, not executed.",
+    "Source files must be minimally corrected and independently re-reviewed before deployment."
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\EXPERIMENT_PLAN.md",
+      "bytes": 5005,
+      "sha256": "638c0adb1353f42acbcb5112444ec282893550811fc6f8949fb80cdb5a817201",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\pair_spec.json",
+      "bytes": 5779,
+      "sha256": "be28dfe58fdee19fea30d7e8e7eca79a0c08b128b3a7bc26e57adad754a7148c",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\mask_support_corrector.py",
+      "bytes": 4360,
+      "sha256": "d62f114f2b49041f5a0d353068006a9d5501eda303f14d1e8cce0697c3510300",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\matched_mask_objective.py",
+      "bytes": 3026,
+      "sha256": "c21a399d8e8319a0fa4917b4ea45be4ebd07c48ddadc977774c44ce81db166cc",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\support_pair_forward.py",
+      "bytes": 2512,
+      "sha256": "9170cfed2cf82002097c0929d3acaa8bcfed2700549fb4ee304ae26058b88321",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\mask_support_model_factory.py",
+      "bytes": 1521,
+      "sha256": "819888fc82ae0c67f7117ce1b7a9b97115311586a14134b8457d9f19f4f75535",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\paired_support_loop.py",
+      "bytes": 23231,
+      "sha256": "62f4106d917e1df49c934bb1ae58b0811fa459ba64d197cabef3e9fbac582bfa",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\run_mask_support_pair.py",
+      "bytes": 14700,
+      "sha256": "7a2b175daee114a870a9942b3ae215b6304264c65cf57f1d2696180defc1f72b",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\runtime_overlay\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 27544,
+      "sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\source_port.json",
+      "bytes": 11162,
+      "sha256": "76e58ce537cd0f664f1b37287552acebb7933b02fa25cc0fbcf3a7cec0e81c0a",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\controller.py",
+      "bytes": 3185,
+      "sha256": "23c06558f41f3d2078b797e87f10cef9b093f9bde4e67691be0aebee6cb8ad94",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\deploy_preflight_authorized.py",
+      "bytes": 6183,
+      "sha256": "1e4f6683d8fca75ebf4dec350ca86d1e7b1b59b48cd2c68fcff76b7cdf9824ad",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\prepare_model_patch.py",
+      "bytes": 1872,
+      "sha256": "2ad77efb6cf8871252cfbe75df32806143b33812ba10b99503179f89e171ecda",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\prepare_support_runner.py",
+      "bytes": 8407,
+      "sha256": "e3a38d272b012f9802e75be6d1feb07dd99c525d523ddb2dfca344b635c4601a",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\check_prepared_sources.py",
+      "bytes": 1811,
+      "sha256": "27e1f73ad565eb6c30cd39613335caf591309032129ac47b1947b93e5d61fb22",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\LOCAL_SOURCE_PREPARATION.json",
+      "bytes": 1610,
+      "sha256": "6bfcc0486f2c116a54560166ba472d03a1b74a3fc77c9156368dc0cf6b98f35d",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\observe_preflight_authorized.py",
+      "bytes": 4226,
+      "sha256": "4e6f1dccd34d37a0b729a4027a60a4867707f9c2e830a5b8a27d09a030c413db",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\prepare_observer.py",
+      "bytes": 787,
+      "sha256": "660e24c9c34e04063e1e3f5efe64b3db66f5261137165dfe264aa81ea40e747b",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008\\publish_start_authorized.py",
+      "bytes": 12267,
+      "sha256": "256db39c3ddf7434be613121939be890dc582072e822ed7f7c63acf865b4e105",
+      "review_scope": "prepared implementation and management source"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\ported\\models\\losses.py",
+      "bytes": 40468,
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\run_face_support_pair.py",
+      "bytes": 17046,
+      "sha256": "9771da159ead4bd51172b45aa9bfb1b2e670e00af10dfad07cd76c799fb93cf9",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\paired_geometry_loop.py",
+      "bytes": 30530,
+      "sha256": "eac195c9bb06d1c8ecb2c1b7cd6f926e625428b50805658fe8c33d6ce2c25ed1",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 26744,
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\source_port.json",
+      "bytes": 10665,
+      "sha256": "99eb0c92822eec9c28543a7324d761c1322573ecc88f01e175902a12c8f16304",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_preflight_checks.py",
+      "bytes": 8163,
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_root_bbs.py",
+      "bytes": 481,
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py",
+      "bytes": 6208,
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_evidence_readback.py",
+      "bytes": 4335,
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\install_boundary_evidence_readback.py",
+      "bytes": 518,
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\PV-Ground\\src\\grounding_evaluator.py",
+      "bytes": 41473,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json",
+      "bytes": 2938,
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_boundary_cases_20261007\\analysis\\ACTUAL_EVIDENCE_REVIEW.json",
+      "bytes": 71651,
+      "sha256": "1951f87cc5aec3ba5e45311569ebfca5cc1a509de30fa56e5a73ed5fd5fb0ad0",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_boundary_cases_20261007\\remaining_weight_inventory_20261008.json",
+      "bytes": 1312,
+      "sha256": "47ccb4cd0e5de081f955b6989373202d80098c9b3ee4f2ee1ec3792603d68d23",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\observe_preflight_authorized.py",
+      "bytes": 4146,
+      "sha256": "b812e54c0c533df91dca044895d9d16aa2f1f9c2a8b4c01b3a869039df216523",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\weight_retention.json",
+      "bytes": 1850,
+      "sha256": "abd73bef4227d6ad49aad0e6646aac3be761e1b68f7a1ca0b5cb03593f246704",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_boundary_cases_20261007\\terminal_publication.json",
+      "bytes": 829,
+      "sha256": "6e2111ffbb56ff9e90249411bb680c625eb420bc09a1b37516ea3b418f489e55",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\evidence_hidden\\preflight.json",
+      "bytes": 19416,
+      "sha256": "ac861d581022dcdc7c18e69a817216f6ea4d5b44ecb2eb34f3a7637cd358ba9d",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\complete_preflight\\evidence_visible\\preflight.json",
+      "bytes": 19352,
+      "sha256": "eb0cd165c613837219e2a988d8d379cff4c5b271730feaf22362b4dcf9334037",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\initial\\rows.jsonl",
+      "bytes": 9565899,
+      "sha256": "9bcb5b344935cde11ac22332eddc0dc666be4151cce90746bb1382d80ffeab96",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\complete_fit\\terminal\\rows.jsonl",
+      "bytes": 9573134,
+      "sha256": "bb73012824f0142e7ed8b521a68382561cd2c63d2bffeea727ccc85dcc08aa79",
+      "review_scope": "direct primary source or existing closed evidence"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\native_final_quality.py",
+      "bytes": 5764,
+      "sha256": "b101f5b1cb4f9ca6eacb8a6f6edfa8630e3dd5361e5af47b0f88f4f9387a3bb4",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_candidate_box_refiner.py",
+      "bytes": 3767,
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_observation_query.py",
+      "bytes": 7683,
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_semantic_assignment.py",
+      "bytes": 5065,
+      "sha256": "3bf9c5f50095e7e447af91e7f61a34c930bf04ec8590f7e4da54134b859cf773",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_source_query.py",
+      "bytes": 3025,
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_tail_support_box_refiner.py",
+      "bytes": 3655,
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_task_observation_query.py",
+      "bytes": 2770,
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_whole_mask_box_refiner.py",
+      "bytes": 3906,
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\readback_model_factory.py",
+      "bytes": 4754,
+      "sha256": "c235461179969fdd0f50d503a831512f27c083d9866479ab1777857a507c3763",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\run_final_quality_fit.py",
+      "bytes": 31540,
+      "sha256": "47457bc0a95161287e633aa423274de4f701a7cc482bfc95f9a890d9207a5379",
+      "review_scope": "declared reused helper bytes/hash binding only"
+    }
+  ]
+}

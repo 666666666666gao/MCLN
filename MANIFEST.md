@@ -306,3 +306,5 @@
 - 2026-10-08T02:24:12.493435+08:00 Mask-support correction implementation and real M0 launch; no new accuracy claim.
 
 - 2026-10-08T03:16:12.754909+08:00 Preserve failed M0 and publish native-import repair/v2 preflight start, no accuracy claim.
+
+- 2026-10-08T03:35:03.393672+08:00 Publish actual passed M0 and complete Mask-support fit start, no accuracy claim.

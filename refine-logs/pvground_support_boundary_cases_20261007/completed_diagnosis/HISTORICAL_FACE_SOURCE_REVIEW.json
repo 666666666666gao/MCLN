@@ -1,0 +1,112 @@
+{
+  "generated_at": "2026-10-07T23:42:23.829954+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "reviewer_task": "/root/pvg_support_boundary_source_review",
+  "review_context": "same-context bounded historical-face supplement",
+  "fresh_context": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend_identity": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "summary": "The coordinate-only certainty rules are sufficient for the stated conservative historical-face provenance claims. They do not reconstruct the old foreground, recover a Query, or identify which compatible superpoint was selected. No concrete source defect found.",
+  "checks": {
+    "information_sufficiency": "For a valid old mask-range face, at least one selected raw member attained that extremum. The helper takes a conservative superset of every raw point coordinate-compatible within2e-6m. If all candidates are background, any actual extremal member must be background. If all candidate source superpoints are pure background, any actual source must be pure background. Target/background ties remain ambiguous. Possible mixed sources alone do not imply old selection.",
+    "no_fresh_prediction_dependency": "historical_faces reads only xyz, target, superpoint and root_gt from the fresh archive; its face coordinates and annotation Query index come from cached historical records. No fresh mask, score, Query feature or fresh reference box affects the result. Both current_masks_used and historical_foreground_reconstructed are false.",
+    "old_extent_and_tolerance": "The unchanged valid mask reference is the min/max of actual superpoint members. All191 bound cached references are valid, and their stored centers/sizes are exactly float32-representable. Minimum size is0.01806473731994629m, so the1e-6 native size floor does not alter these faces. Using the declared float32 center=(low+high)/2 and size=high-low arithmetic, the largest half-center-ULP plus quarter-size-ULP face reconstruction bound is2.39349901676178e-7m, below the fixed2e-6m matching tolerance. Every actual row still must have nonempty coordinate candidates at execution.",
+    "real_gt_and_identity": "Target labels are the actual dataset object member indices, not predicted-mask labels. The previously reviewed collector enforces exact historical XYZRGB identity, scene/target identity and rootGT before saving its arrays. This supplement rechecks the historical point identity, intake NPZ bytes/SHA and exact rootGT, then counts target/background members and complete superpoint purity from those archived labels.",
+    "missing_face_diagnosis": "Observed target members beyond each old face are counted directly in the raw coordinates, with the same fixed tolerance. Signed GT-box extent and observed-member support remain separate. A missing GT face without observed target members beyond it is explicitly an input-support observation, not a universal impossibility claim.",
+    "execution_and_claim_gates": "Requires the existing191-case CPU summary and CLOSED_ARTIFACTS_COLLECTED/no-replay intake, then reads and verifies every bound row_ID NPZ. The manifest contains191 unique historical cases and the run asserts191 outputs. Summary explicitly excludes old Query/foreground recovery, new overall accuracy, effective-module, optimization and neural-forward claims; overlapping row categories are disclosed. No deployment logic is changed.",
+    "local_source_evidence": "All3 new Python files parse under Python3.7 grammar. The existing synthetic receipt records3 actual checks: pure background, coincident target/background ambiguity, and a background extremum from a mixed superpoint. Its source implements those checks. This reviewer did not rerun that checker or the actual191-case analyzer."
+  },
+  "deterministic_source_checks": {
+    "new_python_sources_parsed": 3,
+    "cached_reference_records_inspected": 191,
+    "all_cached_reference_valid": true,
+    "all_stored_reference_boxes_exact_float32": true,
+    "maximum_face_center_size_roundoff_bound_m": 2.39349901676178e-07,
+    "coordinate_tolerance_m": 2e-06
+  },
+  "execution_record": {
+    "actual_collected_npz_loaded": 0,
+    "historical_analyzer_executions": 0,
+    "synthetic_checker_reexecutions": 0,
+    "ssh_calls": 0,
+    "neural_forwards": 0,
+    "gpu_calls": 0,
+    "weight_loads": 0,
+    "deployment_changes": 0
+  },
+  "limits": [
+    "Coordinate candidates are a conservative superset; compatibility does not establish that any particular candidate or mixed superpoint was selected.",
+    "This review does not accept future191-case results, complete intake, CPU summary or actual-auditor cross-check. Those must pass on actual artifacts.",
+    "The Gumbel/full-sequence limitation remains. This supplement neither repairs nor repeats the failed historical-Query recovery assertion.",
+    "Same-context, same-family provisional review; actual Astra/max backend and effort remain unattested. Current ANALYSIS_SOURCE_REVIEW WARN0 and prior reviews remain unchanged."
+  ],
+  "reviewed_files": [
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\historical_face_provenance.py",
+      "bytes": 3114,
+      "sha256": "17a0b5719bcf5865e85341e6381158e4bb778c2820e311adb56728b91e4763bd"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\analyze_historical_faces.py",
+      "bytes": 4351,
+      "sha256": "29053f1d1d276ca9f19e9201c14b4b6c9f467021b54973c660b641f154298ef3"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\check_historical_face_provenance.py",
+      "bytes": 1795,
+      "sha256": "f3b3307556e0956531d8af1172359449a252ba1a9f8b5fc0c4696d0d4c86d321"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\HISTORICAL_FACE_LOCAL_CHECK.json",
+      "bytes": 279,
+      "sha256": "4fab2b9f02ba4b8cb9377b9405f13a0b708a882059e649f3a64ce63caa97de98"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\EXPERIMENT_PLAN.md",
+      "bytes": 7360,
+      "sha256": "ccb975b11e94590b12cf29c555ef978799a3b07a62ef0a79ac642639b8397f72"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\case_manifest.json",
+      "bytes": 258936,
+      "sha256": "6c91d2c53920970bee0f522cdb58ef4cd091a01ad81eee1ebb463df4bb5b9224"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\collect_support_cases.py",
+      "bytes": 12082,
+      "sha256": "52dea7026ecce66849b675a9b2eaf94d2f944cba6b08704c116b58cfaccbd646"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\mask_reference.py",
+      "bytes": 6461,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\analyze_closed.py",
+      "bytes": 6395,
+      "sha256": "f6ea97c0376ce7c768c5b06c9c00bdb1d56a514811c93eba3131184a0aadfa0c"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\collect_closed_authorized.py",
+      "bytes": 3002,
+      "sha256": "f50316c274b8a637de806fda67cb947b30ed75e004ac5e36c981adb47a09522f"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_g_p2_20261002\\complete\\source\\joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py",
+      "bytes": 3629,
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    }
+  ]
+}

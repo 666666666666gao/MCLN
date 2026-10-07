@@ -1,0 +1,91 @@
+{
+  "audit_skill": "experiment-audit",
+  "phase": "PRELIMINARY",
+  "verdict": "WARN",
+  "reason_code": "PARTIAL_ARCHIVE_AND_HISTORICAL_RNG_NONREPLAY",
+  "execution_scope": "ACTUAL_ARTIFACTS",
+  "fresh_context": true,
+  "reviewer_task": "/root/pvg_support_boundary_actual_audit",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning_effort": "max",
+  "actual_reviewer_backend": "UNATTESTED",
+  "actual_reviewer_reasoning_effort": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "final_archive_acceptance": false,
+  "generated_at": "2026-10-07T23:13:58.707123+08:00",
+  "snapshot_file": "PRELIMINARY_CPU_CHECK.json",
+  "snapshot_sha256": "eb1f360bb3556d29cd64e74c542348ea930bbc9dac316bca828241089c77260a",
+  "checker_file": "audit_actual_support_independent.py",
+  "checker_sha256": "4abd263f94766274b494114433b556fc80edf11afe03e75940da01b5f1912454",
+  "actual_execution_counts": {
+    "collected_json_rows_read": 191,
+    "historical_identity_rows_read": 9508,
+    "cohort_rows_read": 191,
+    "scenes": 52,
+    "scene_target_pairs": 83,
+    "unique_input_files_hashed": 84,
+    "npz_files_executed": 61,
+    "npz_array_members_loaded": 854,
+    "role_slices_executed": 122,
+    "face_records_independently_checked": 732,
+    "point_labels_independently_checked": 3050000,
+    "missing_npz_at_snapshot": 130,
+    "project_helper_imports": 0,
+    "torch_imports": 0,
+    "reviewer_neural_forwards": 0,
+    "reviewer_checkpoint_reads": 0,
+    "reviewer_network_calls": 0,
+    "reviewer_optimizer_updates": 0
+  },
+  "all191_recorded_query_changes": 167,
+  "recorded_query_changes_by_group": {
+    "overextended": 108,
+    "missing_gt_extent": 59
+  },
+  "all191_recorded_role_validity": {
+    "deployed_valid": 191,
+    "historical_numeric_slot_valid": 190,
+    "historical_numeric_slot_invalid": 1
+  },
+  "actual_npz_comparison": {
+    "tolerance": 0.000002,
+    "historical_numeric_slot_coarse_box_changed": 61,
+    "historical_numeric_slot_reference_box_changed": 23,
+    "same_selected_query_number_rows": 9,
+    "same_selected_query_number_but_coarse_box_changed": 9,
+    "maximum_reference_bound_error_m": 1.1920928955078125e-7,
+    "maximum_target_member_to_gt_bound_error_m": 2.086162567138672e-7,
+    "maximum_fusion_logit_error": 0.0
+  },
+  "checks": {
+    "gt_provenance": {"status": "PASS", "scope": "Imported source and archived GT member chain; raw dataset payload not reopened"},
+    "score_normalization": {"status": "PASS", "scope": "Native all256 score path and archived argmax; original all256 token logits are not archived"},
+    "result_existence": {"status": "WARN", "scope": "All191 JSON rows; only61 actual complete archives executed; no final intake or summary acceptance"},
+    "dead_code": {"status": "PASS", "scope": "Collector helper actually reached; future analyzer execution not inferred"},
+    "scope": {"status": "WARN", "scope": "Historical-error cohort with fresh stochastic subset predictions; numeric Query identity does not recover original predictions"},
+    "eval_type": "real_gt"
+  },
+  "blocking_findings": [
+    {
+      "id": "P1_INCOMPLETE_LOCAL_ARCHIVE",
+      "blocks": "Final archive and CPU analysis acceptance",
+      "details": "130 of191 archives and final intake/summary were not accepted at the snapshot."
+    },
+    {
+      "id": "P2_HISTORICAL_PREDICTIONS_NOT_RESTORED",
+      "blocks": "Original-error paired causal attribution or claims that historical support was recovered",
+      "details": "Eval Gumbel sampling remains stochastic; selected B8 subset does not restore original full-sequence RNG states. Historical role is the historical numeric slot in the fresh forward. All61 executed old-slot coarse boxes differ from historical boxes, including all9 unchanged selected Query numbers.",
+      "source_evidence": ["collect_support_cases.py:117", "collect_support_cases.py:120", "collect_support_cases.py:153", "models/pv_ground.py:316", "models/pv_ground.py:609"]
+    }
+  ],
+  "limitations": [
+    "Requested Astra/max actual serving backend and effort are unattested; same-family provisional only.",
+    "No RGB is archived. Full XYZRGB point SHA cannot be independently regenerated here.",
+    "No raw dataset payload or model checkpoint was reopened.",
+    "Raw semantic logits and language maps needed to reconstruct all256 scores are not archived.",
+    "The preliminary61 archives are a row-ordered incoming subset, not a representative cohort sample.",
+    "No new9508 accuracy, no effective module, no training and no restored historical support claim."
+  ],
+  "required_followup": "After complete INTAKE and actual CPU SUMMARY exist, execute the independent checker in final mode for all191 and write a separate final analysis/ACTUAL_EVIDENCE_REVIEW.json and .md. Preserve this preliminary report."
+}

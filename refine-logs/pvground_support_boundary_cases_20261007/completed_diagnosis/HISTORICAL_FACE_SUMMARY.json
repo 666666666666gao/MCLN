@@ -1,0 +1,46 @@
+{
+  "status": "ACTUAL_CACHED_FACE_COORDINATE_PROVENANCE",
+  "cases": 191,
+  "groups": {
+    "missing_gt_extent": {
+      "rows": 63,
+      "only_background_extreme_rows": 44,
+      "all_possible_sources_pure_background_rows": 44,
+      "any_possible_mixed_source_rows": 2,
+      "only_background_extreme_faces": 173,
+      "all_possible_sources_pure_background_faces": 172,
+      "all_possible_sources_mixed_faces": 8,
+      "ambiguous_member_faces": 22,
+      "gt_missing_faces": 164,
+      "gt_missing_faces_with_observed_target_beyond": 164,
+      "gt_missing_faces_without_observed_target_beyond": 0
+    },
+    "overextended": {
+      "rows": 128,
+      "only_background_extreme_rows": 128,
+      "all_possible_sources_pure_background_rows": 128,
+      "any_possible_mixed_source_rows": 7,
+      "only_background_extreme_faces": 648,
+      "all_possible_sources_pure_background_faces": 648,
+      "all_possible_sources_mixed_faces": 9,
+      "ambiguous_member_faces": 6,
+      "gt_missing_faces": 13,
+      "gt_missing_faces_with_observed_target_beyond": 13,
+      "gt_missing_faces_without_observed_target_beyond": 0
+    }
+  },
+  "coordinate_tolerance_m": 2e-06,
+  "current_predicted_masks_used": false,
+  "old_query_or_foreground_recovered": false,
+  "optimizer_updates": 0,
+  "neural_forwards": 0,
+  "new_overall_accuracy_claim": false,
+  "effective_module_claim": false,
+  "scope": "Possible extremal members at old cached reference coordinates in identical input points; no old mask recovery",
+  "limitations": [
+    "A background-only face is certain only when all coordinate candidates are background",
+    "Possible mixed source does not prove the old mask selected it; row categories overlap",
+    "GT qualification remains offline and never changes inference",
+    "No observed target beyond a missing GT face is an input-support diagnostic, not a universal impossibility claim"
+  ]
+}

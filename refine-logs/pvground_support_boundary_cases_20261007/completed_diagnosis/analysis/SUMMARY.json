@@ -1,0 +1,102 @@
+{
+  "status": "ACTUAL_TARGETED_SUPPORT_DIAGNOSIS_RECOUNTED",
+  "cases": 191,
+  "source_groups": {
+    "overextended": 128,
+    "missing_gt_extent": 63
+  },
+  "groups": {
+    "missing_gt_extent/deployed": {
+      "rows": 63,
+      "invalid_ranges": 0,
+      "any_pure_background_extreme_rows": 46,
+      "any_mixed_extreme_rows": 2,
+      "any_background_extremal_point_rows": 47,
+      "excessive_faces": 145,
+      "missing_faces": 159,
+      "pure_background_extreme_faces": 179,
+      "mixed_extreme_faces": 8,
+      "excessive_background_extreme_faces": 145,
+      "coarse_hits25": 58,
+      "reference_hits25": 4,
+      "coarse_hits50": 31,
+      "reference_hits50": 2,
+      "query_changed_rows": 59
+    },
+    "missing_gt_extent/historical": {
+      "rows": 63,
+      "invalid_ranges": 1,
+      "any_pure_background_extreme_rows": 44,
+      "any_mixed_extreme_rows": 2,
+      "any_background_extremal_point_rows": 44,
+      "excessive_faces": 141,
+      "missing_faces": 150,
+      "pure_background_extreme_faces": 174,
+      "mixed_extreme_faces": 7,
+      "excessive_background_extreme_faces": 141,
+      "coarse_hits25": 54,
+      "reference_hits25": 8,
+      "coarse_hits50": 25,
+      "reference_hits50": 5,
+      "query_changed_rows": 59
+    },
+    "overextended/deployed": {
+      "rows": 128,
+      "invalid_ranges": 0,
+      "any_pure_background_extreme_rows": 127,
+      "any_mixed_extreme_rows": 7,
+      "any_background_extremal_point_rows": 127,
+      "excessive_faces": 631,
+      "missing_faces": 16,
+      "pure_background_extreme_faces": 637,
+      "mixed_extreme_faces": 9,
+      "excessive_background_extreme_faces": 631,
+      "coarse_hits25": 127,
+      "reference_hits25": 6,
+      "coarse_hits50": 87,
+      "reference_hits50": 3,
+      "query_changed_rows": 108
+    },
+    "overextended/historical": {
+      "rows": 128,
+      "invalid_ranges": 0,
+      "any_pure_background_extreme_rows": 125,
+      "any_mixed_extreme_rows": 7,
+      "any_background_extremal_point_rows": 125,
+      "excessive_faces": 623,
+      "missing_faces": 21,
+      "pure_background_extreme_faces": 631,
+      "mixed_extreme_faces": 9,
+      "excessive_background_extreme_faces": 623,
+      "coarse_hits25": 116,
+      "reference_hits25": 11,
+      "coarse_hits50": 62,
+      "reference_hits50": 5,
+      "query_changed_rows": 108
+    }
+  },
+  "current_vs_historical_selected_query_changes": 167,
+  "exact_point_and_gt_identities": true,
+  "actual_nn_forwards": 161,
+  "optimizer_updates": 0,
+  "weights_created": 0,
+  "new_overall_accuracy_claim": false,
+  "effective_module_claim": false,
+  "retained_best_hits": [
+    5598,
+    4848
+  ],
+  "eval_gumbel_sampling": true,
+  "historical_full_sequence_rng_reproduced": false,
+  "historical_role": "Fresh-forward numeric Query slot of the historical selected index; not historical prediction recovery",
+  "scope": "Selected191 historical development errors, not full validation incidence or new training targets",
+  "excessive_or_missing_face_tolerance_m": 1e-06,
+  "limitations": [
+    "Descriptive GT grouping only; no GT rule or new scoring enters deployment",
+    "A mixed superpoint is a real member-label mixture, not proof every member is wrong",
+    "Row-level background and mixed-extreme groups overlap; their counts must not be summed",
+    "Current and historical Query roles are explicit; changed predictions are not erased",
+    "Native eval still samples Gumbel weights; subset execution does not reproduce the old full-sequence RNG",
+    "Historical grouping identifies expressions only; numeric-slot evidence cannot establish historical paired prediction causality"
+  ]
+}

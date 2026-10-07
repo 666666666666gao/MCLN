@@ -300,3 +300,5 @@
 - 2026-10-07T11:50:34.662684+08:00 Authorized archived-array cleanup completed and shared-parent face-member formal fit started; no new accuracy yet.
 
 - 2026-10-07T21:24:56.987063+08:00 Closed paired face-support ablation: both5593/4832, protected5598/4848 retained; actual nonbest weights and archived arrays cleaned.
+
+- 2026-10-08T01:32:32.792494+08:00 Closed191-case support/boundary diagnosis; protected5598/4848 retained; verified archived temporary arrays cleaned.

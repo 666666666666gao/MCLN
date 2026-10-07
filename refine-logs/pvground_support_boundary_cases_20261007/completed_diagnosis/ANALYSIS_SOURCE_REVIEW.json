@@ -1,0 +1,84 @@
+{
+  "generated_at": "2026-10-07T23:16:42.895436+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "W1",
+      "type": "acknowledged_interpretation_limit",
+      "details": "Native eval retains F.gumbel_softmax sampling. The 161-batch subset resets RNG once before iteration and does not advance through omitted original batches. The historical role therefore records a fresh-forward numeric Query slot, not the historical prediction/support. The analyzer now states this limit explicitly; no further code change is required for the bounded descriptive report."
+    }
+  ],
+  "reviewer_task": "/root/pvg_support_boundary_source_review",
+  "review_context": "same-context bounded re-review after Gumbel limitation disclosure",
+  "fresh_context": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend_identity": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "summary": "The metadata-only correction correctly limits this analysis to fresh-forward support on a historical expression cohort. Closed-intake and 191-slice checks remain intact. Source accepted with the stated interpretation warning and no blockers.",
+  "checks": {
+    "native_eval_randomness": "pv_ground.py calls _generate_queries in forward, which calls self.gumbel; GumbelSampling.forward calls F.gumbel_softmax unconditionally at line609. eval mode disables Dropout but does not bypass this sampling.",
+    "subset_rng_and_numeric_slots": "collect_support_cases.py:117-126 creates the selected original B8 subset and resets RNG before its loop. Both queries at line153 are indexed into the same fresh predictions at lines154-173. Preserving point identities and batch slots does not reproduce the omitted full-sequence RNG draws; matching numeric indices also do not certify recovered historical predictions.",
+    "corrected_metadata": "Summary now records eval_gumbel_sampling=True, historical_full_sequence_rng_reproduced=False, and defines historical_role as the fresh-forward numeric slot of the historical selected index. Its limitations explicitly reject historical paired-prediction causality. Current support and pure/mixed/background GT-member evidence remain descriptive.",
+    "unchanged_archive_gates": "Analyzer still requires dead-controller/closed-observer/exit0, CLOSED_ARTIFACTS_COLLECTED with no replay, 191 receipt cases with zero updates/weights, exact 191-row IDs, each NPZ size/SHA and evidence reconciliation. No gate is relaxed; no analyzer or archive was run or loaded in this review.",
+    "unchanged_claim_and_math_boundaries": "Strict native-clamped Box IoU, separate Query roles, overlapping-count warning and descriptive1e-6 face groups are unchanged. No new full9508 accuracy, module-effectiveness, training-target or inference-rule claim is permitted.",
+    "source_checks": "Changed analyzer parses with Python3.7 grammar; required limitation/claim flags were checked from its AST only. Six other bound files match the original source-review digests, including the collector and actual model source."
+  },
+  "execution_record": {
+    "analyzer_ast_checks": 1,
+    "unchanged_bound_files_verified": 6,
+    "analyzer_executions": 0,
+    "actual_collected_npz_loaded": 0,
+    "ssh_calls": 0,
+    "neural_forwards": 0,
+    "gpu_calls": 0,
+    "weight_loads": 0,
+    "credential_reads": 0
+  },
+  "limits": [
+    "The supplied167 changed selected indices were not recounted here; this re-review inspects source only.",
+    "No completed intake, receipt, actual audit, NPZ archive or future analysis output was loaded or accepted. Full original archive intake must finish before the analyzer is run.",
+    "The pre-Gumbel analysis review backups and original SOURCE/CLEANUP reviews are preserved. Same-context, same-family provisional attribution; actual Astra/max backend and effort remain unattested."
+  ],
+  "reviewed_files": [
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\analyze_closed.py",
+      "bytes": 6395,
+      "sha256": "f6ea97c0376ce7c768c5b06c9c00bdb1d56a514811c93eba3131184a0aadfa0c"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\collect_support_cases.py",
+      "bytes": 12082,
+      "sha256": "52dea7026ecce66849b675a9b2eaf94d2f944cba6b08704c116b58cfaccbd646"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\support_evidence.py",
+      "bytes": 3803,
+      "sha256": "1749e11681f68f6c1a883ec9aba51dba6c394bdf83188e87654676412875d6ea"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\case_manifest.json",
+      "bytes": 258936,
+      "sha256": "6c91d2c53920970bee0f522cdb58ef4cd091a01ad81eee1ebb463df4bb5b9224"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\diagnostic_spec.json",
+      "bytes": 3740,
+      "sha256": "28aed20f5eb182960d861c53ef299356d79e668ea1863e81f1f5a718a8817479"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_support_boundary_cases_20261007\\collect_closed_authorized.py",
+      "bytes": 3002,
+      "sha256": "f50316c274b8a637de806fda67cb947b30ed75e004ac5e36c981adb47a09522f"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\source_preview\\PV-Ground\\models\\pv_ground.py",
+      "bytes": 26744,
+      "sha256": "8d2aad665ce7d5e19f7423309ef0ba05ba406f302159c6460a36323cbae1d1c9"
+    }
+  ]
+}

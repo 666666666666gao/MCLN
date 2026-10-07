@@ -1,0 +1,96 @@
+{
+  "review_type": "experiment-bridge transfer resume source review",
+  "reviewed_at": "2026-10-07T22:32:06+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "actual_backend": "UNATTESTED",
+  "reviewer": "/root/pvg_transfer_resume_source_review",
+  "attribution_note": "Fresh delegated Codex review; the requested Astra/max configuration is not an attestation of the runtime backend. No cross-family acceptance is claimed.",
+  "executor_supplied_context": "The original serial SFTP collector is still running after 22 local NPZ files in about 14 minutes and will be intentionally closed before the resume starts. This review did not independently measure throughput or observe process closure.",
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_boundary_cases_20261007\\resume_closed_collection_authorized.py",
+      "bytes": 3543,
+      "sha256": "fc8e9b1755e291ee57716572852201f47170aabf713c0db0eeae7a58c6031b97"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_boundary_cases_20261007\\collect_closed_authorized.py",
+      "bytes": 3002,
+      "sha256": "f50316c274b8a637de806fda67cb947b30ed75e004ac5e36c981adb47a09522f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_boundary_cases_20261007\\wait.json",
+      "bytes": 563,
+      "sha256": "252195d103d433fec20db75a893a1d42bc12b7ab8e0292503cd5b2f031b3a559"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_boundary_cases_20261007\\diagnostic_spec.json",
+      "bytes": 3740,
+      "sha256": "28aed20f5eb182960d861c53ef299356d79e668ea1863e81f1f5a718a8817479"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_support_boundary_cases_20261007\\complete\\receipt.json",
+      "bytes": 644,
+      "sha256": "29c5a102032d36cd7929769f9bc7437a4590f0ffc309c80262e6b19d5af772ae"
+    }
+  ],
+  "verified_source_properties": [
+    {
+      "property": "Original collector closure is a preconnection prerequisite",
+      "evidence": "resume lines 12-17 reject an existing final INTAKE, require transfer_stop.original_collector_closed and the measured_serial_sftp_slow reason, and retain the completed diagnosis/closed observer checks before opening SSH."
+    },
+    {
+      "property": "Only byte/SHA-equal local files are skipped",
+      "evidence": "resume lines 45-48 require both size and SHA256 equality before continue; an unequal existing file stops collection without overwrite."
+    },
+    {
+      "property": "Missing artifacts are prefetched and verified before local writes",
+      "evidence": "resume lines 49-53 open the exact root/name in rb mode, prefetch the recorded size, read, verify bytes and SHA256, then write locally."
+    },
+    {
+      "property": "The original closed diagnosis and artifact selection are preserved",
+      "evidence": "The embedded remote inventory source is exactly unchanged from the original collector: 14 fixed artifacts plus exactly 191 row_*.npz files. The remote receipt, complete status, exit 0, optimizer_updates=0 and weights_created=0 gates remain. The supplied wait and receipt both describe the original completed 191-case diagnosis."
+    },
+    {
+      "property": "Trust boundary remains restricted to the existing authorized collection",
+      "evidence": "The existing SSH target is unchanged; load_system_host_keys is retained without accepting unknown keys. shlex.join quotes the remote command arguments. The embedded program uses only stdlib inventory/hash reads; SFTP files are opened rb. Absolute or parent-traversal local paths are rejected. No diagnostic source is executed by this collection code."
+    },
+    {
+      "property": "No NN, model load, training, weight transfer, deletion or remote source edit is added",
+      "evidence": "The source contains no such operation. The allowlist contains diagnosis metadata, logs, source copies as data, and NPZ slices, with no checkpoint or model-weight file. Only missing local artifact files and final local INTAKE are written."
+    },
+    {
+      "property": "Collection completion is recorded only after the full loop succeeds",
+      "evidence": "resume lines 54-58 close the SFTP/SSH clients and write CLOSED_ARTIFACTS_COLLECTED only after every selected file has passed verification."
+    }
+  ],
+  "checks": {
+    "local_python38_ast": "PASS 2/2",
+    "embedded_remote_python38_ast": "PASS 2/2",
+    "json_parse": "PASS 3/3",
+    "remote_inventory_exactly_unchanged": true,
+    "fixed_artifacts": 14,
+    "required_npz_artifacts": 191,
+    "total_required_artifacts": 205,
+    "target_scripts_executed": 0,
+    "ssh_connections": 0,
+    "transfers_performed": 0,
+    "nn_or_model_loads": 0,
+    "deletions": 0,
+    "source_edits": 0,
+    "credentials_or_AUTH_inspected": false
+  },
+  "runtime_preconditions_not_attested": [
+    "The executor must actually close the original serial collector before creating the truthful transfer_stop.json record and launching this resume. transfer_stop.json and live process state were outside the five-file review scope.",
+    "This source-only PASS does not attest transfer completion or achieved prefetch throughput."
+  ],
+  "conclusion": "The minimal resume change correctly implements the requested continuation on the reviewed source. No concrete blocking defect or additional machinery is warranted."
+}

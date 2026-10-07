@@ -296,3 +296,5 @@
 - 2026-10-07T08:44:33.238404+08:00 Face-member observation contrast: SOURCE reviewed and actual two-step M0 started; no new accuracy.
 
 - 2026-10-07T09:00:56.947445+08:00 Face-member actual M0 completed: two independent heads and CPU restore passed; formal fit awaits capacity.
+
+- 2026-10-07T11:50:34.662684+08:00 Authorized archived-array cleanup completed and shared-parent face-member formal fit started; no new accuracy yet.

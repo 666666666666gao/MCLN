@@ -1,0 +1,162 @@
+{
+  "time_cst": "2026-10-07T07:22:00.2607017+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "backend_identity_attested": false,
+  "source_or_preparer_executed": false,
+  "analyzer_imported": false,
+  "new_terminal_artifacts_read_or_recounted": false,
+  "ssh_gpu_model_or_active_training_access": false,
+  "source_files_modified": false,
+  "writes_limited_to": [
+    "postrun/ANALYSIS_SOURCE_REVIEW.json",
+    "postrun/ANALYSIS_SOURCE_REVIEW.md"
+  ],
+  "scope": "Prepared unexecuted terminal analyzer and its actual preparer at the W root. Read-only review of source, unchanged collector/controller/runner dependencies, plan and old retained5598/4848 reference identity; no current fit status or artifact inspection.",
+  "checks": [
+    {
+      "id": "closed_only",
+      "result": "PASS_SOURCE",
+      "locations": [
+        "analyze_reference_keep_formal.py:131-140",
+        "collect_closed_fit_authorized.py:12-15,23-27,57-63",
+        "controller.py:36-59"
+      ],
+      "detail": "Before any analysis output directory is created, main requires complete fit_status with protected_parents_exact, fit_controller.exit0, and INTAKE. Every intake member size/SHA is checked. The already-reviewed collector writes INTAKE only after completed successful controller, exact tar membership/content validation and successful remote exit. The controller marks complete only after all six sequential initial_formal/train/formal commands return0."
+    },
+    {
+      "id": "formal_rows_and_array_recount",
+      "result": "PASS_SOURCE",
+      "locations": [
+        "analyze_reference_keep_formal.py:32-39,68-128"
+      ],
+      "detail": "Each of four arm/stage results requires PASS receipt,9508 rows/formal_rows, rows-file SHA, exact row_ids0..9507 and native hit totals matching receipt. Ordered NPZ row_ids cover9508 exactly; scores/reference_valid have(n,256) shape; each prior/reference/final array has(n,256,6), finite values and positive dimensions. CPU float64 IoU is computed for all candidates against stored GT. All256 oracle counts and selected/oracle threshold disagreements are explicitly reported. Initial final/reference arrays must be exactly equal."
+    },
+    {
+      "id": "pairing",
+      "result": "PASS_SOURCE",
+      "locations": [
+        "analyze_reference_keep_formal.py:42-65,88-107,141-165"
+      ],
+      "detail": "Every current result pairs with the old retained9508 reference on row_id, scan_id, target_id, root_box and point_sha256. Array GT and selected boxes must equal the row-level GT/boxes. Selected query score must be a native maximum. Cross-arm and within-arm initial-to-formal comparisons repeat pairing; selected-query changes are reported rather than silently assumed absent."
+    },
+    {
+      "id": "budget_and_loss_contrast",
+      "result": "PASS_SOURCE",
+      "locations": [
+        "analyze_reference_keep_formal.py:147-168,182-187"
+      ],
+      "detail": "Each arm requires complete3723-step/29778-row fit receipt, fresh optimizer, frozen parent/R,10 states/456102 parameters, lambda0 or1 and unchanged extra weight1. Training logs require steps1..3723,29778 unique row IDs, finalB2 and identical per-update row sequences across arms. Keep loss and match/additional/degradation occurrence totals remain descriptive."
+    },
+    {
+      "id": "protected_reference",
+      "result": "PASS_SOURCE_AND_IDENTITY",
+      "locations": [
+        "analyze_reference_keep_formal.py:141-144",
+        "prepare_closed_analysis.py:7-10"
+      ],
+      "detail": "Old reference path is retained fused_mask_reference/initial_formal rows, not retired4511. Hits5598/4848 are asserted; parent candidate is explicitly step0/zero_update_architecture with historical hidden-update count preserved. Old reference file SHA40672da53d767bc2262fa280a9904589c813a98b0c419d1cbdac161378144a23 matches the previously independently recounted stable input. No old checkpoint is opened."
+    },
+    {
+      "id": "selection",
+      "result": "PASS_SOURCE",
+      "locations": [
+        "analyze_reference_keep_formal.py:169-181",
+        "prepare_closed_analysis.py:13-15"
+      ],
+      "detail": "Lexicographic key is(joint5620/4764 gate, strict hits, wide hits, protected-parent flag). Thus any joint-pass candidate precedes all failures; within a gate class strict then wide determines order, and the old protected parent wins only when both hit counts tie. If no candidate jointly passes, the same strict/wide order applies to all. The two gate metrics are read from one candidate row; no checkpoint-column splice occurs."
+    },
+    {
+      "id": "claim_separation",
+      "result": "PASS_SOURCE",
+      "locations": [
+        "analyze_reference_keep_formal.py:171-191"
+      ],
+      "detail": "same_checkpoint_scan_gate_passed is separate from three_effective_modules_established=False. Each candidate retains step0-versus3723 status; both own-initial adaptation and same-budget arm comparison are emitted. fresh_terminal_audit_pending and selected_checkpoint_restore_pending remain true and weight_retention_executed false. Metric selection is not a three-module result, restore receipt or deletion action."
+    },
+    {
+      "id": "preparer",
+      "result": "PASS_SOURCE",
+      "locations": [
+        "prepare_closed_analysis.py:4-20"
+      ],
+      "detail": "Actual preparer is W/prepare_closed_analysis.py, not postrun/prepare_closed_analysis.py. Its bounded source transformations update arms, old reference, weights, gate and selection rule. Read-only diff confirms actual generated analyzer differs from prior reviewed analyzer in those intended sections. Preparer only compiles/writes the draft; analyzer only consumes local artifacts and writes analysis/SUMMARY.json."
+    }
+  ],
+  "qualifications": [
+    "Same-family/provisional SOURCE_ONLY review; actual backend identity is not attested.",
+    "Neither analyzer nor preparer was run or imported. This review supplies no current complete-fit status, terminal result, actual CPU-recount PASS, model reload, selection acceptance or cleanup authorization.",
+    "Selected and oracle CPU threshold differences are recorded, not asserted zero. rec_hits and the tentative metric_best_candidate use the native receipt-consistent logged IoUs. The pending actual terminal audit must inspect these disagreement fields before accepting a candidate; SOURCE PASS does not resolve them.",
+    "The CPU scope is saved all256 boxes/scores/GT plus saved Mask IoUs; it does not reconstruct raw Mask support or physical identity.",
+    "A numeric gate pass or a zero-update candidate winning the table does not establish learned benefit or any of the three effective modules. Same-checkpoint5620/4764 and actual three-module evidence remain distinct requirements before corresponding-author Sr3D/Nr3D training.",
+    "The old reference SHA was checked locally and its earlier cached recount reused. No new current-fit arrays, logs, status or observer output were inspected."
+  ],
+  "overall_goal_complete": false,
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\postrun\\analyze_reference_keep_formal.py",
+      "bytes": 12272,
+      "sha256": "4c3c882c9c91ecf38f8a12dc43c009c3ef6c82621f2314af37cd04fbc8c39cb9",
+      "review_extent": "source or contract inspected read-only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\prepare_closed_analysis.py",
+      "bytes": 2993,
+      "sha256": "e7862b121de4f5c46140b60e40834a5a6bcc1f8012f3716df07a9997afee570d",
+      "review_extent": "source or contract inspected read-only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\collect_closed_fit_authorized.py",
+      "bytes": 3388,
+      "sha256": "1cc9a9c010875e0dbd49206313e947ba1abeb1b8da6d84d6098675d4092def17",
+      "review_extent": "source or contract inspected read-only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\controller.py",
+      "bytes": 2960,
+      "sha256": "2d681d9ca50ec2064722e60e52cead0d6bbfa7334e360ee33f78aad6c781a622",
+      "review_extent": "source or contract inspected read-only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\run_reference_keep_fit.py",
+      "bytes": 40234,
+      "sha256": "de531b5e95bcbde20469c34f57d58fa69f7489dff8bffb8df3c3c983e525f025",
+      "review_extent": "unchanged earlier reviewed runner identity and output contract"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\EXPERIMENT_PLAN.md",
+      "bytes": 4491,
+      "sha256": "5a284b98b721b23b774a2eb082f7332a12c04e51ce4995419f226f0d813d79ba",
+      "review_extent": "source or contract inspected read-only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_reference_keep_20261006\\research_contract.md",
+      "bytes": 566,
+      "sha256": "66f3f402588209016063591b75a69093348117c0d8d09b540d6f1dbdd4236cfc",
+      "review_extent": "source or contract inspected read-only"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\postrun\\analyze_mask_reference_formal.py",
+      "bytes": 10984,
+      "sha256": "f9c3f6d4b4fda3a71819b2b89f2bdd416fbd93ebaf98ebe310f14a15f7a7f42d",
+      "review_extent": "prior analyzer source comparison"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\complete_fit\\fused_mask_reference\\initial_formal\\rows.jsonl",
+      "bytes": 9495752,
+      "sha256": "40672da53d767bc2262fa280a9904589c813a98b0c419d1cbdac161378144a23",
+      "review_extent": "old retained-reference identity only; earlier recount reused"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\complete_fit\\fused_mask_reference\\initial_formal\\receipt.json",
+      "bytes": 502,
+      "sha256": "1941b9aac70b16a265486402cccacc9e495b006789867dd07a670961e759c471",
+      "review_extent": "old retained-reference identity only; earlier recount reused"
+    }
+  ]
+}
+

@@ -290,3 +290,5 @@
 - 2026-10-07T00:35:40.668252+08:00 Reference-preservation real M0 PASS and same-budget formal fit launched; no new formal metrics.
 
 - 2026-10-07T00:52:08.170717+08:00 Cached same-Query reference geometry diagnosis; no training or model replay.
+
+- 2026-10-07T08:16:46.920194+08:00 Closed reference-keep comparison: no metric gain; original best retained and closed nonbest weights cleared.

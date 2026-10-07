@@ -294,3 +294,5 @@
 - 2026-10-07T08:16:46.920194+08:00 Closed reference-keep comparison: no metric gain; original best retained and closed nonbest weights cleared.
 
 - 2026-10-07T08:44:33.238404+08:00 Face-member observation contrast: SOURCE reviewed and actual two-step M0 started; no new accuracy.
+
+- 2026-10-07T09:00:56.947445+08:00 Face-member actual M0 completed: two independent heads and CPU restore passed; formal fit awaits capacity.

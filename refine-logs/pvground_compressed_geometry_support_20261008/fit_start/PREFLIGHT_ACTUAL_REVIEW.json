@@ -1,0 +1,1362 @@
+{
+  "audit_skill": "experiment-audit",
+  "execution_scope": "ACTUAL_PREFLIGHT",
+  "verdict": "WARN",
+  "engineering_verdict": "PASS",
+  "reason_code": "actual_m0_pass_with_bounded_tensor_provenance_inactive_witnesses_and_gpu_scope",
+  "blocking_findings": [],
+  "fresh_context": true,
+  "requested_backend": "codex",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_task": "/root/pvg_compressed_support_m0_actual_audit",
+  "generated_at": "2026-10-08T04:47:29Z",
+  "date": "2026-10-08",
+  "summary": "The original M0 completed with exit0 and supports the declared two-step supervised engineering checks: warm initialization, independent heads/optimizers, valid-GT native loss, geometry gradients, frozen state, complete CPU reconstruction and resident-parent same-cache GPU integration. No blocking defect was found. Overall WARN preserves absent independent raw-tensor reconstruction, inactive inherited witnesses, external byte-provenance limits and explicit no cold-GPU/full-evaluation scope. No new accuracy, checkpoint, signed-log efficacy or historical causal result is established.",
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_wait.json",
+      "bytes": 18895,
+      "lines": 589,
+      "sha256": "84a9103e5b38f4b6bea06694efa3ed2ed4255d6acba7b9f7b214d3f9e4550a41"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+      "bytes": 11809,
+      "lines": 423,
+      "sha256": "6a8588ce69388af05fe963a082920263c9c00d849c3c5162e0be328e06141c6c"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight_status.json",
+      "bytes": 491,
+      "lines": 21,
+      "sha256": "d4fb0ceac6b14e82482856365cbca7c9263736345ebbe4178b91b958a2716a8f"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight_controller.exit",
+      "bytes": 2,
+      "lines": 1,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.exit",
+      "bytes": 2,
+      "lines": 1,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.log",
+      "bytes": 2348,
+      "lines": 13,
+      "sha256": "65ac2862c024a5d9d9afc23a03b2b39a3cf6f85400ffb99ddbe2ff752a72ebc6"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/load.json",
+      "bytes": 634,
+      "lines": 18,
+      "sha256": "2b97862fcaa0747a146b33abddca1eede09d8fac7fed9c58c794d5217cc18345"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/imports.json",
+      "bytes": 1286,
+      "lines": 18,
+      "sha256": "6b1f42cf80a5b3c29e383b383d38974221cbe4b00dcd71ef5c268ea88e3aac09"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+      "bytes": 6480,
+      "lines": 104,
+      "sha256": "9ef8d5b967d3a19fd33d9f47c6566f0262a0383530401450490b4ef4b311c1b1"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/SOURCE_REVIEW.json",
+      "bytes": 58136,
+      "lines": 1152,
+      "sha256": "cd6995afe8556fca169e96f0d31e2fcce55e06376010ab2725fc1963079885b8"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/observation.json",
+      "bytes": 13766,
+      "lines": 449,
+      "sha256": "d383bff183815fcdf11f637498412c6b7bff78c1fa2efbcc7d1e269a0bf66a91"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/observer_started.json",
+      "bytes": 349,
+      "lines": 10,
+      "sha256": "01932da5f382ec85dae56e5a58dff9e86111468ee6a4752410296d6b4c726f30"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_launch.json",
+      "bytes": 1263,
+      "lines": 30,
+      "sha256": "72bed9ef468bf18983992cb2e622e39c4172602d31b6e52a630153149b2c41c6"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+      "bytes": 3421,
+      "lines": 17,
+      "sha256": "922764f3411a324de200f5a14234cc616b2c85d47e5f3bf1c48ff3a15897e75e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+      "bytes": 14475,
+      "lines": 262,
+      "sha256": "376149ccf75e1751688d6ba1c17e29224336e6ea080201f53c043d979d90bab8"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+      "bytes": 29051,
+      "lines": 447,
+      "sha256": "557f53b7d801e2f823fd83c036f78e7d8220ee4c2218f409628c849c9a56a48a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/matched_mask_objective.py",
+      "bytes": 3000,
+      "lines": 57,
+      "sha256": "67d05d069e1b748477af1a3c84b586375effbc21f1fd99b328ec7029f7e17788"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+      "bytes": 4458,
+      "lines": 84,
+      "sha256": "14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_model_factory.py",
+      "bytes": 1634,
+      "lines": 30,
+      "sha256": "c75309954e2c571bb3f28b3ebc173102e0ab50e69231d174f19fff899b0c4b83"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "lines": 71,
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/support_pair_forward.py",
+      "bytes": 2512,
+      "lines": 40,
+      "sha256": "9170cfed2cf82002097c0929d3acaa8bcfed2700549fb4ee304ae26058b88321"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_reference.py",
+      "bytes": 6461,
+      "lines": 117,
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/controller.py",
+      "bytes": 3210,
+      "lines": 63,
+      "sha256": "5a1aabf5ba9ec8fc6bbae37c5a095aca87a489220f77ca9d81bfb7a1f874b03d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+      "bytes": 8163,
+      "lines": 145,
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "lines": 44,
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094"
+    }
+  ],
+  "reviewer_actions": {
+    "specified_project_files_read": 25,
+    "required_skill": "C:/Users/gb/.codex/skills/experiment-audit/SKILL.md",
+    "skill_policy_references_read": 4,
+    "static_source_review": true,
+    "full_json_parsing": true,
+    "independent_saved_scalar_arithmetic": true,
+    "sha256_binding_and_end_recheck": true,
+    "archived_runtime_evidence_review_only": true,
+    "personal_memory_reads": 0,
+    "ssh_calls": 0,
+    "neural_executions": 0,
+    "optimizer_steps": 0,
+    "package_installs": 0,
+    "outside_reviewer_calls": 0,
+    "project_source_modifications": 0,
+    "additional_experiments": 0,
+    "raw_tensor_reconstruction_by_reviewer": false,
+    "report_and_trace_outputs_only": true
+  },
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "scope": "Visible dataset-to-supervision route and completed runtime assertions",
+      "details": "The supervised target uses annotation box_label_mask, center_label, size_gts, gt_masks and language maps. The uncorrected frozen parent is matched to actual valid targets once per batch; both arms share that assignment within a step. Superpoint targets are majority reductions of GT masks, not predictions. Model-side fused-mask extents are inference references and must not be confused with supervision. The run selected a training batch; actual witnesses record 8 valid GT and 8 matched queries per arm at each step. Raw dataset bytes and the imported external dataset/matcher implementation were not supplied, so the reviewer traced the visible route and hashed import receipts rather than independently re-establishing every original annotation.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/matched_mask_objective.py",
+          "line": 6,
+          "detail": "Annotation target construction and valid-GT filtering."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/matched_mask_objective.py",
+          "line": 20,
+          "detail": "Frozen-parent matching against annotation targets."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/matched_mask_objective.py",
+          "line": 40,
+          "detail": "Majority-superpoint GT target."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 159,
+          "detail": "Scan object annotation boxes."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 196,
+          "detail": "Training-split dataset instantiation."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 232,
+          "detail": "Inference input fields are separated from supervision batch fields."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 104,
+          "detail": "Single assignment reused by both heads."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 119,
+          "detail": "Valid GT and matched-query witness, also at lines 163,291,335."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_reference.py",
+          "line": 18,
+          "detail": "Prediction-derived extents belong to the model, not GT."
+        }
+      ]
+    },
+    "B_score_and_loss_normalization": {
+      "status": "PASS",
+      "details": "The active scalar is 5*query_focal + query_dice + 10*fused_focal + 2*fused_dice with the actual valid-GT count as the loss denominator; no division by seven. M0 actually calls the imported criterion.loss_masks and compares the four active terms at rtol=atol=1e-6. All four receipt losses equal their recorded native active loss. Independent arithmetic on saved scalar components gives maximum absolute discrepancy 8.381903171539307e-9; recombining the ten saved parameter-gradient norms gives maximum absolute discrepancy 3.096140115121937e-9. This independently checks the saved numbers, not the absent underlying loss/gradient tensors. Signed-log coordinates, detached coarse-size division, and fixed log1p(50000) member-count scaling are input operations, not self-normalized performance scores. Native IoU/accuracy evaluation is outside the executed M0 branch.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/matched_mask_objective.py",
+          "line": 35,
+          "detail": "Actual valid-GT denominator."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/matched_mask_objective.py",
+          "line": 51,
+          "detail": "Four native active coefficients."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 87,
+          "detail": "Native criterion numerical witness."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 126,
+          "detail": "Witness is called in both preflight steps."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 95,
+          "detail": "Step-one loss and native value at line103."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 267,
+          "detail": "Step-two loss and native value at line275."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+          "line": 32,
+          "detail": "Feature coordinate scaling and signed-log transform."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+          "line": 45,
+          "detail": "Fixed count denominator."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 126,
+          "detail": "Inherited semantic /7 route is inactive here."
+        }
+      ]
+    },
+    "C_artifact_existence_and_actual_completion": {
+      "status": "PASS",
+      "details": "All 25 supplied files exist and are bound to SHA256. The original launch/observer identity is controller PID902030; child PID902033 completed only preflight, controller and child exit files both contain0, the log ends in PAIRED_SUPPORT_PREFLIGHT_COMPLETE, and archived status is complete. The observer says closed/controller absent and one observation. The first scheduled check was launch+720s; the actual observation was +724.948348s, after completion, with later interval240s unused. preflight_wait.terminal equals observation.json; all embedded receipt/status copies are structurally identical to the supplied complete files. Twenty supplied intake files match their recorded bytes/hash; the two additional inventory entries were not supplied and are not claimed read. The eight new runners and two provided helpers match pair_spec, and all13 supplied files overlapping the prior source review retain its hashes. Runtime imports record paths/hashes for dataset, model, loss, preparation, utilities and native evaluator; the evaluator hash matches pair_spec. Runtime gates check additional remote source/manifests/checkpoints, but those remote bytes were not independently rehashed by this reviewer.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_launch.json",
+          "line": 5,
+          "detail": "Original controller PID and exact preflight launch command."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/observer_started.json",
+          "line": 6,
+          "detail": "Observer binds the original controller and scheduled first check."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_launch.json",
+          "line": 25,
+          "detail": "720/900/240 schedule."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/observation.json",
+          "line": 2,
+          "detail": "Actual first observation and closed status."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_wait.json",
+          "line": 2,
+          "detail": "Closed observer, absent controller, exit0."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_wait.json",
+          "line": 475,
+          "detail": "22-file intake inventory."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_wait.json",
+          "line": 588,
+          "detail": "Exactly one observation."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight_status.json",
+          "line": 15,
+          "detail": "Exit0 and completion timestamp."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight_controller.exit",
+          "line": 1,
+          "detail": "Controller exit0."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.exit",
+          "line": 1,
+          "detail": "Child exit0."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.log",
+          "line": 13,
+          "detail": "Completion marker."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/imports.json",
+          "line": 2,
+          "detail": "Recorded import paths and SHA256."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 45,
+          "detail": "Runtime source/helper/dataset/environment binding gates."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 112,
+          "detail": "Actual import path assertions and digest recording."
+        }
+      ]
+    },
+    "D_active_versus_inactive_routines": {
+      "status": "WARN",
+      "details": "The completed preflight path runs PairedSupportRun.step twice, native_mask_witness, per-head backward/optimizer steps, frozen-state comparisons, and restore_and_integration_witness. observed_readback_forward calls geometry_snapshot and fixed_geometry_and_masks; optimizer_restore_exact is active for CPU and GPU. evaluate, save and restore_terminals do not run in M0; importing the official evaluator is not evaluation. Inherited reference_bounds_witness, native_bbs_witness, zero_readback_cached_native_head, repeated_forward_differences, readback_semantic_route and whole_range_loss_routes are not called in this path. Thus no independent all256 raw-point extent recomputation or native BBS-gradient witness is established by this M0. These inactive inherited functions do not invalidate the declared engineering checks and require no new experiment.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 255,
+          "detail": "Direct runner instantiation and dispatch."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 387,
+          "detail": "Executed preflight branch."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 402,
+          "detail": "Two step calls then integration/restore."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 412,
+          "detail": "Return before evaluation/training/save."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 19,
+          "detail": "Active observed native forward."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 54,
+          "detail": "Active frozen same-forward geometry check."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+          "line": 30,
+          "detail": "Active optimizer equality comparison."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_reference.py",
+          "line": 83,
+          "detail": "Dormant independent raw-member extent witness."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 71,
+          "detail": "Dormant repeated-forward diagnostic."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 90,
+          "detail": "Dormant cached semantic replay."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 103,
+          "detail": "Dormant native BBS gradient witness."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 126,
+          "detail": "Dormant semantic loss route."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+          "line": 5,
+          "detail": "Dormant whole-range gradient route."
+        }
+      ]
+    },
+    "E_scope": {
+      "status": "PASS",
+      "details": "The actual scope is seed2027, two independent warmed27841-parameter heads, the same eight selected training expressions used for two updates per head (16 row exposures per arm), and two post-update integration forwards, one per restored head. Scene identifiers/counts are absent from the receipt. This is no new6887 holdout or9508 ScanRefer development evaluation and supports no generalization, trained signed-log advantage, historical-spike causality, threshold-gate achievement, three-contribution claim or Sr3D/Nr3D completion. Six of eight parent query assignments change between the two steps despite the same CPU batch and frozen states, so the loss change is not an isolated efficacy estimate. Recorded peak allocated/reserved memory is9.6005315781/10.826171875GiB; runner/controller elapsed479.433/489.232s. The frozen plan/source-review status was historical source preparation, not a claim that these later runtime files do not exist.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+          "line": 73,
+          "detail": "Single seed2027."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+          "line": 88,
+          "detail": "27841 trainable parameters per arm."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 238,
+          "detail": "First selected eight row IDs."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 410,
+          "detail": "Same row IDs on second step."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 172,
+          "detail": "Step-one assignments."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 344,
+          "detail": "Step-two assignments."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 2,
+          "detail": "Explicit accuracy_result=false and runtime/memory."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+          "line": 7,
+          "detail": "Historical diagnostic claim ceiling."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+          "line": 13,
+          "detail": "Planned fit/holdout/formal scope and crosspass caveat."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+          "line": 17,
+          "detail": "Outstanding user gates."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/SOURCE_REVIEW.json",
+          "line": 3,
+          "detail": "Prior source-only scope."
+        }
+      ]
+    },
+    "F_evaluation_type_classification": {
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "classifications": [
+        {
+          "component": "actual M0 supervised two-step loss/gradient check",
+          "type": "real_gt",
+          "subtype": "engineering/integration preflight; accuracy_result=false"
+        },
+        {
+          "component": "full-state/optimizer reconstruction and same-cache equality",
+          "type": "engineering_invariant",
+          "subtype": "self-consistency assertion, not predictive accuracy or synthetic-proxy GT"
+        },
+        {
+          "component": "predicted fused-mask extent reference",
+          "type": "model_component",
+          "subtype": "inference geometry, not GT"
+        },
+        {
+          "component": "6887 holdout / 9508 native development evaluation",
+          "type": "real_gt",
+          "execution_status": "NOT_EXECUTED_IN_REVIEWED_M0"
+        }
+      ],
+      "details": "Actual supervised preflight targets are dataset-derived. Internal reconstruction/equality assertions are engineering invariants and are not being presented as a performance dataset. No simulation-only or human evaluation was performed.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/matched_mask_objective.py",
+          "line": 6,
+          "detail": "Dataset annotation target provenance."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 216,
+          "detail": "Internal full-state equality invariant."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 265,
+          "detail": "Same-cache integration invariant."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 405,
+          "detail": "Explicit no-accuracy classification."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_reference.py",
+          "line": 18,
+          "detail": "Inference reference construction."
+        }
+      ]
+    }
+  },
+  "implementation_checks": [
+    {
+      "id": "I1",
+      "status": "PASS",
+      "title": "Original process closure and sparse observation",
+      "details": "Archived launch/observer metadata bind controller902030, and the child902033 reports only completed mode preflight. Both exit artifacts contain0; first recorded observation is12:34:18.715293+08:00 against scheduled12:34:13.766945+08:00, with one observation and no duplicate observers recorded. Completion at12:30:29.591888+08:00 preceded the first observation by229.123405s. No live process query or observer implementation rerun was performed by this reviewer.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_launch.json",
+          "line": 5,
+          "detail": "Original controller identity."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/observer_started.json",
+          "line": 6,
+          "detail": "Original PID and one observer."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_wait.json",
+          "line": 2,
+          "detail": "Original observation archive closes successfully."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/observation.json",
+          "line": 2,
+          "detail": "Observed time."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight_status.json",
+          "line": 16,
+          "detail": "Completion time."
+        }
+      ]
+    },
+    {
+      "id": "I2",
+      "status": "PASS",
+      "title": "Exact warm initialization with only inactive geometry columns zeroed",
+      "details": "The active constructor loads the SHA-bound content step3723 support delta with10 keys, checks parent dependency hashes and nonzero output weights, zeros only member.0.weight[:,-9:], and checks every tensor against that exact expected transformation. The treatment is a deepcopy with disjoint parameter storage. At step0 both arms have exact same-cache Query Masks, Boxes and semantic scores; each corrected Mask is also compared to a separately instantiated original warmed content head before its geometry columns are zeroed. This is preservation of warmed content behavior, not equality to the uncorrected parent masks. The load receipt's actual_checkpoint_step0 denotes the frozen selected Box-reference payload, not an untrained support head. The second-step warm flags are false because self.steps!=0 and the initialization-only check is not applied; they are not failed assertions.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 35,
+          "detail": "Warm checkpoint content/step3723 and hash binding."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 47,
+          "detail": "Exact last9-column transformation."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 54,
+          "detail": "Identical but separately stored heads."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 74,
+          "detail": "Exact both-arm initial Mask/Box/score assertions."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 113,
+          "detail": "Original warmed content Mask comparison."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 138,
+          "detail": "Initialization-only flags."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 121,
+          "detail": "Step-one warm equality flags are true."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 293,
+          "detail": "Step-two initialization flags are inapplicable."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/load.json",
+          "line": 2,
+          "detail": "Selected reference checkpoint step."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/load.json",
+          "line": 8,
+          "detail": "Support output is explicitly not zero."
+        }
+      ]
+    },
+    {
+      "id": "I3",
+      "status": "PASS",
+      "title": "Two independent AdamW updates and geometry gradients",
+      "details": "The two heads have separate parameter storage and fresh AdamW objects. Each actual step requires finite own gradients, no other-head gradients, no parent gradients, exact other-head tensors after update, and a finite clipped update. Both receipt steps have one frozen parent forward and one final native semantic-head call. The two raw total gradient norms are0.044874060899/0.032589044422 for content and0.044874776155/0.032591305673 for treatment; all are below the0.1 clip threshold in this M0. Geometry-column norms are exactly0 in content at both steps and0.0002528732584323734 then0.00031825166661292315 in treatment. Native-loss equality is recorded for all four arm-step combinations. The restored optimizer states assert step2 for all10 parameter states; raw gradient tensors and initial/final parameter deltas were not supplied for independent reproduction.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 58,
+          "detail": "Disjoint parameter storage and fresh optimizers."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 128,
+          "detail": "Backward and own/other/parent gradient assertions."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 140,
+          "detail": "Observed geometry-column gradient."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 145,
+          "detail": "Optimizer update and other-state invariance."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 230,
+          "detail": "Actual optimizer step2 assertion."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 402,
+          "detail": "Exactly two actual steps."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 92,
+          "detail": "Step-one treatment geometry norm."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 136,
+          "detail": "Step-one content geometry norm."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 264,
+          "detail": "Step-two treatment geometry norm."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 308,
+          "detail": "Step-two content geometry norm."
+        }
+      ]
+    },
+    {
+      "id": "I4",
+      "status": "PASS",
+      "title": "Frozen parent, Box, semantic route and protected files",
+      "details": "All1304 parent state tensors are captured before M0 and compared exactly after every step and each integration. Parent parameters require no gradients and receive none. Box/refiner and zero-output R remain frozen; native semantic output is carried into both arms. The active observed forward hooks verify order refiner/readback/native semantic head, one invocation, exact actual native input/output and unchanged geometry/masks across readback. The controller compares official/G/selected/warm checkpoint hashes before and after its child and reports protected_parents_exact. These are completed runtime assertions, not a fresh reviewer-side rehash of inaccessible checkpoint bytes.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 124,
+          "detail": "1304 frozen-parent state construction."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 128,
+          "detail": "No parent trainables and initial state capture."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 81,
+          "detail": "All-state exact comparison."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 154,
+          "detail": "Post-step frozen state check."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 275,
+          "detail": "Post-integration frozen state check."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/support_pair_forward.py",
+          "line": 10,
+          "detail": "Frozen geometry and zero-output R routing."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 48,
+          "detail": "Actual native call-order and input/output assertions."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/controller.py",
+          "line": 21,
+          "detail": "Protected parent paths and initial hashes."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/controller.py",
+          "line": 58,
+          "detail": "Post-run parent hash check."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight_status.json",
+          "line": 18,
+          "detail": "Actual protected-parent result."
+        }
+      ]
+    },
+    {
+      "id": "I5",
+      "status": "PASS",
+      "title": "Complete CPU reconstruction plus same-cache resident-GPU integration",
+      "details": "For each head the payload is serialized to357957 bytes in BytesIO, reloaded, and used with official/G/selected dependencies to rebuild a complete1314-state-tensor CPU model. Every state key/tensor is compared against the original1304 parent plus updated10-key support delta. CPU and GPU AdamW restores compare all groups, keys, moment and step values. The restored head alone moves to CUDA and is inserted into the resident parent for an actual native forward; a pre-hook captures uncorrected inputs from that same forward for pair replay. All recorded Box and Query Mask errors are zero. The semantic comparison reuses the integrated parent score; its equality is an invariant of that route, with the separate hook asserting actual native semantic input/output, not an independently recomputed second score or a BBS-gradient check. gpu_parent_cold_reconstruction_executed=false for both arms. Raw tensors/BytesIO payloads were not supplied to this reviewer.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 205,
+          "detail": "Per-arm in-memory serialization and CPU rebuild."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 216,
+          "detail": "Every reconstructed state key/tensor compared."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 221,
+          "detail": "CPU and GPU AdamW restore comparisons."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 236,
+          "detail": "Capture actual same-forward uncorrected inputs."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 248,
+          "detail": "Restored head installed into resident GPU model."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 256,
+          "detail": "Integrated parent snapshot used for pair replay."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/support_pair_forward.py",
+          "line": 18,
+          "detail": "Semantic score carried from parent."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 265,
+          "detail": "Zero-error exact Mask/Box integration checks."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 281,
+          "detail": "Explicit no cold-GPU-parent reconstruction."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_model_factory.py",
+          "line": 28,
+          "detail": "Full1314-state construction assertion."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+          "line": 30,
+          "detail": "All optimizer groups/moments/steps exact."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 8,
+          "detail": "Both completed restoration receipts."
+        }
+      ]
+    },
+    {
+      "id": "I6",
+      "status": "PASS",
+      "title": "No M0 checkpoint or accuracy result; two-step states discarded",
+      "details": "M0 returns immediately after the receipt and completion marker. Its only support payload serialization is in memory, while terminal path saves and metric evaluation belong to other modes. Both restore receipts and the top-level receipt declare0 weight files and accuracy_result=false; the supplied archive inventory contains no weight artifact. The reviewer did not survey the entire remote filesystem, so0 files is supported by the active source route and receipts rather than an independent global absence proof. The preflight process has ended; no two-step checkpoint is carried forward. A later explicit fit controller starts separate initial_formal/train/formal subprocesses, and construction reloads the original warm checkpoint with fresh optimizers. Planned3723 further updates would yield7446 support updates, excluding M0; no fit or formal phase was executed here or requested by this audit.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 208,
+          "detail": "BytesIO serialization."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 177,
+          "detail": "Disk checkpoint writer belongs to train mode."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 387,
+          "detail": "Preflight branch."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 404,
+          "detail": "No-weight/no-accuracy receipt and return."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/controller.py",
+          "line": 42,
+          "detail": "Separate phase subprocesses."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 35,
+          "detail": "Original warm checkpoint reloaded on construction."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 60,
+          "detail": "Fresh optimizers."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 174,
+          "detail": "Disclosed support update accounting."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 76,
+          "detail": "No weight files reported."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight_status.json",
+          "line": 4,
+          "detail": "Only preflight completed."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+          "line": 11,
+          "detail": "Discard requirement stated."
+        }
+      ]
+    },
+    {
+      "id": "I7",
+      "status": "PASS",
+      "title": "Reviewed bytes, source-review overlap and runtime import bindings",
+      "details": "All25 supplied inputs are hashed. Every provided new runner matches pair_spec (8/8), both provided helper files match runner_files (2/2), all13 overlaps with SOURCE_REVIEW match, both load and preflight receipts carry the exact local pair_spec hash, and20 supplied copied intake artifacts match archive hashes and sizes. Native evaluator digest matches both imports and pair_spec. Current import receipts do not enumerate the custom eight runner __file__ paths; their local byte binding and completed runtime digest gates support the source linkage, while module-resolution exclusivity for every unseen remote file is not independently attested. Source manifests/environment/checkpoint bytes not supplied remain bounded runtime assertions. No file content from prior review's unprovided citations was read or treated as newly verified.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+          "line": 29,
+          "detail": "Eight active runner digests."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+          "line": 53,
+          "detail": "Helper digests."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 73,
+          "detail": "Exact spec hash."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/load.json",
+          "line": 15,
+          "detail": "Exact spec hash."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/imports.json",
+          "line": 2,
+          "detail": "Imported path+hash receipt."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_wait.json",
+          "line": 476,
+          "detail": "Archived source/result digests."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 45,
+          "detail": "Runtime source helper rehash checks."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 97,
+          "detail": "Module routing setup and explicit dataset import assertion."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 112,
+          "detail": "Import receipt coverage."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/SOURCE_REVIEW.json",
+          "line": 21,
+          "detail": "Prior reviewed-byte set,13 overlaps rechecked here."
+        }
+      ]
+    }
+  ],
+  "warnings": [
+    {
+      "id": "W1",
+      "severity": "nonblocking",
+      "title": "Completed runtime assertions are not independent tensor reconstruction",
+      "details": "The report accepts successful assertions on the completed source path together with mutually consistent receipts/logs. No raw supervision tensors, model state tensors, raw gradients or serialized in-memory optimizer payloads were supplied. Independent reviewer checks cover hashes, source routing, archived structure, timing and saved-number arithmetic; they do not reproduce training or1314 tensor comparisons from raw bytes.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 209,
+          "detail": "Payload exists only as BytesIO serialization in the run."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 276,
+          "detail": "Receipt summarizes runtime assertions."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 8,
+          "detail": "Summary restoration evidence."
+        }
+      ]
+    },
+    {
+      "id": "W2",
+      "severity": "nonblocking",
+      "title": "Inherited witnesses and actual evaluation are inactive",
+      "details": "The all256 raw-member extent witness, native BBS-gradient witness and other inherited diagnostic helpers are uncalled. The official evaluator is imported and hashed but its evaluation method is not reached in M0. Do not claim that these checks ran.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_reference.py",
+          "line": 83,
+          "detail": "Uncalled raw-member extent witness."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 103,
+          "detail": "Uncalled BBS-gradient witness."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 387,
+          "detail": "M0 dispatch."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 412,
+          "detail": "Preflight exits before evaluate."
+        }
+      ]
+    },
+    {
+      "id": "W3",
+      "severity": "nonblocking",
+      "title": "GPU and semantic comparison limits",
+      "details": "The full CPU model was reconstructed; the restored head and optimizer were checked on the resident GPU parent. A cold complete GPU parent reconstruction was explicitly not executed. Same-cache semantic-score equality carries the same integrated parent logits into replay; actual native head input/output is separately hooked, but this is not an independent score/BBS recomputation.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 19,
+          "detail": "Explicit false cold-parent GPU flag."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 50,
+          "detail": "Same scope in content arm."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 257,
+          "detail": "Replay starts from integrated parent outputs."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/support_pair_forward.py",
+          "line": 18,
+          "detail": "Unchanged parent semantic logits reused."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "line": 51,
+          "detail": "Separate actual native semantic input/output hook assertion."
+        }
+      ]
+    },
+    {
+      "id": "W4",
+      "severity": "nonblocking",
+      "title": "Bounded external artifact and absence evidence",
+      "details": "The imported native loss/dataset/model source files, remote checkpoint bytes, environment and data manifests are not among the supplied bytes. Their gates ran according to the successful hash-bound source/receipt chain, but the reviewer did not independently reread them. Likewise zero M0 weight files is supported by the active in-memory-only path and archive, not a global remote-filesystem survey. Only20 of22 intake artifacts were supplied; SOURCE_REVIEW.md and preflight_controller.log are inventory-only entries.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 49,
+          "detail": "External dataset manifests."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 58,
+          "detail": "External environment and interface gates."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+          "line": 76,
+          "detail": "External protected checkpoint checks."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/imports.json",
+          "line": 2,
+          "detail": "Recorded imports outside supplied paths."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_wait.json",
+          "line": 537,
+          "detail": "Two inventory-only artifacts."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 208,
+          "detail": "No checkpoint path in M0 serialization."
+        }
+      ]
+    },
+    {
+      "id": "W5",
+      "severity": "nonblocking",
+      "title": "Engineering evidence has no accuracy or causal claim",
+      "details": "Eight training expressions and two updates cannot establish generalization, new9508 performance, trained signed-log efficacy, a historical spike's cause, or the user's research gates. Parent matching changes for6/8 rows between steps; the observed loss decrease is not an isolated same-cache learning effect. Historical5598/4856 counts and the prior58-row derivative panel are background metadata in the provided plan/source review and were not newly re-evaluated.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 2,
+          "detail": "No accuracy result."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 172,
+          "detail": "First parent assignment set."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/preflight_complete/preflight.json",
+          "line": 344,
+          "detail": "Changed second assignment set."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+          "line": 5,
+          "detail": "Historical count context."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+          "line": 7,
+          "detail": "Diagnostic limitations."
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+          "line": 17,
+          "detail": "Unmet larger goals."
+        }
+      ]
+    },
+    {
+      "id": "W6",
+      "severity": "nonblocking",
+      "title": "Reviewer routing is requested, not backend attestation",
+      "details": "Requested gpt-6-astra and max are preserved as routing metadata. Actual backend, model and reasoning effort are UNATTESTED. Review uses fresh context and remains same-family/provisional; no outside reviewer was called.",
+      "evidence": []
+    }
+  ],
+  "deterministic_validation": {
+    "status": "PASS",
+    "files": 25,
+    "copy_inventory": {
+      "reported": 22,
+      "listed": 22,
+      "supplied_matched": 20,
+      "all_hashes_exact": true,
+      "excluded": [
+        "SOURCE_REVIEW.md",
+        "preflight_controller.log"
+      ]
+    },
+    "receipt_same_as_wait": true,
+    "receipt_same_as_observation": true,
+    "status_same_as_wait": true,
+    "status_same_as_observation": true,
+    "observation_same_as_terminal": true,
+    "new_runner_hashes": [
+      {
+        "name": "mask_reference.py",
+        "exact": true
+      },
+      {
+        "name": "mask_support_corrector.py",
+        "exact": true
+      },
+      {
+        "name": "mask_support_model_factory.py",
+        "exact": true
+      },
+      {
+        "name": "matched_mask_objective.py",
+        "exact": true
+      },
+      {
+        "name": "paired_support_loop.py",
+        "exact": true
+      },
+      {
+        "name": "run_mask_support_pair.py",
+        "exact": true
+      },
+      {
+        "name": "selected_mask_reference_factory.py",
+        "exact": true
+      },
+      {
+        "name": "support_pair_forward.py",
+        "exact": true
+      }
+    ],
+    "helper_hashes": [
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+        "exact": true
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+        "exact": true
+      }
+    ],
+    "prior_source_overlap": {
+      "count": 13,
+      "all_equal": true
+    },
+    "spec_binding": true,
+    "native_evaluator_hash_matches": true,
+    "schedule": {
+      "scheduled_delay_seconds": 720,
+      "observed_delay_seconds": 724.948348,
+      "scheduled_observer_target_matches": true,
+      "first_observation_late_seconds": 4.948348,
+      "seconds_after_finish": 229.123405,
+      "observations": 1,
+      "closed": true,
+      "controller_alive": false,
+      "controller_exit": 0,
+      "timestamp_arithmetic": "Microsecond-precision parsing of supplied ISO timestamps"
+    },
+    "losses": [
+      {
+        "step": 1,
+        "arm": "box_conditioned",
+        "reported_loss": 0.5625209808349609,
+        "scalar_loss_recomputed": 0.5625209724530578,
+        "loss_abs_error": 8.381903171539307e-9,
+        "native_loss_exact": true,
+        "reported_grad": 0.044874776154756546,
+        "gradient_norm_from_named_norms": 0.044874776476802915,
+        "grad_abs_error": 3.220463687392261e-10,
+        "geometry_norm": 0.0002528732584323734,
+        "valid_gt": 8,
+        "matched_queries": 8
+      },
+      {
+        "step": 1,
+        "arm": "content",
+        "reported_loss": 0.5625209808349609,
+        "scalar_loss_recomputed": 0.5625209724530578,
+        "loss_abs_error": 8.381903171539307e-9,
+        "native_loss_exact": true,
+        "reported_grad": 0.04487406089901924,
+        "gradient_norm_from_named_norms": 0.044874063995159356,
+        "grad_abs_error": 3.096140115121937e-9,
+        "geometry_norm": 0,
+        "valid_gt": 8,
+        "matched_queries": 8
+      },
+      {
+        "step": 2,
+        "arm": "box_conditioned",
+        "reported_loss": 0.5498047471046448,
+        "scalar_loss_recomputed": 0.5498047438450158,
+        "loss_abs_error": 3.259629011154175e-9,
+        "native_loss_exact": true,
+        "reported_grad": 0.032591305673122406,
+        "gradient_norm_from_named_norms": 0.032591304079230755,
+        "grad_abs_error": 1.5938916506086365e-9,
+        "geometry_norm": 0.00031825166661292315,
+        "valid_gt": 8,
+        "matched_queries": 8
+      },
+      {
+        "step": 2,
+        "arm": "content",
+        "reported_loss": 0.5498047471046448,
+        "scalar_loss_recomputed": 0.5498047522269189,
+        "loss_abs_error": 5.122274160385132e-9,
+        "native_loss_exact": true,
+        "reported_grad": 0.03258904442191124,
+        "gradient_norm_from_named_norms": 0.0325890435367973,
+        "grad_abs_error": 8.851139404741915e-10,
+        "geometry_norm": 0,
+        "valid_gt": 8,
+        "matched_queries": 8
+      }
+    ],
+    "scope": {
+      "rows_each_step": [
+        [
+          27845,
+          23527,
+          27285,
+          9781,
+          3314,
+          8523,
+          15720,
+          32718
+        ],
+        [
+          27845,
+          23527,
+          27285,
+          9781,
+          3314,
+          8523,
+          15720,
+          32718
+        ]
+      ],
+      "unique_rows": 8,
+      "row_exposures_per_arm": 16,
+      "optimizer_steps_per_arm": 2,
+      "heads": 2,
+      "seed": 2027,
+      "steps": [
+        1,
+        2
+      ],
+      "assignment_rows_changed_between_steps": 6
+    },
+    "memory_gib": {
+      "allocated": 9.600531578063965,
+      "reserved": 10.826171875
+    },
+    "source_hashes_unchanged_at_end": true,
+    "arithmetic_limit": "Saved scalar arithmetic only; no raw gradients/GT/model/optimizer tensors independently reproduced"
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "The original M0 process completed with exit0 at the scheduled first observation.",
+      "impact": "SUPPORTED_BY_ARCHIVED_PROCESS_STATUS_AND_MATCHING_SOURCE",
+      "qualification": "Observer timing was4.948348s later than target; no live process re-query by reviewer."
+    },
+    {
+      "id": "C2",
+      "claim": "Both independent warmed heads executed two actual optimizer updates with real-GT native Mask terms.",
+      "impact": "SUPPORTED_BY_COMPLETED_RUNTIME_ASSERTIONS_AND_NUMERICAL_RECEIPTS",
+      "qualification": "Underlying GT/gradient/state tensors were not independently reconstructed."
+    },
+    {
+      "id": "C3",
+      "claim": "Initial corrected masks preserve the original warm content behavior and both arms' Mask/Box/score outputs agree.",
+      "impact": "SUPPORTED_ON_THE_TESTED_SAME_PARENT_CACHE",
+      "qualification": "This is an initialization check; false flags at step2 mean not applicable, and uncorrected-parent outputs are not the intended warm reference."
+    },
+    {
+      "id": "C4",
+      "claim": "Full1314-state CPU rebuild and restored-head/AdamW GPU integration preserve exact same-cache behavior.",
+      "impact": "SUPPORTED_BY_RUNTIME_ASSERTIONS",
+      "qualification": "Resident GPU parent; semantic replay carries parent logits; no cold GPU parent rebuild or independent BBS-gradient check."
+    },
+    {
+      "id": "C5",
+      "claim": "M0 wrote no support checkpoint and no accuracy result, and its two-step states are discarded.",
+      "impact": "SUPPORTED_BY_CLOSED_SOURCE_PATH_AND_RECEIPTS",
+      "qualification": "No global remote filesystem survey; later fit restart remains source-defined, not executed."
+    },
+    {
+      "id": "C6",
+      "claim": "M0 can establish a signed-log accuracy advantage,9508 validation, generalization, historical causal explanation or completed research goals.",
+      "impact": "UNSUPPORTED"
+    },
+    {
+      "id": "C7",
+      "claim": "A later fresh3723-update continuation would total7446 support updates excluding M0.",
+      "impact": "SOURCE_SUPPORTED_FUTURE_ACCOUNTING_NOT_AN_EXECUTED_RESULT"
+    },
+    {
+      "id": "C8",
+      "claim": "Historical protected5598/4856 is newly reproduced by this M0.",
+      "impact": "UNSUPPORTED"
+    }
+  ],
+  "required_disposition": [
+    "Record actual M0 engineering PASS with this report's WARN qualifiers and same-family/provisional attribution.",
+    "Keep the original audited source/result bytes and required parent dependencies unchanged.",
+    "Do not count M0 steps in a later formal fit, promote a checkpoint, or treat this as a9508 accuracy/generalization/causal result.",
+    "No source repair or additional experiment is requested by this review."
+  ],
+  "trace_path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run03/",
+  "report_markdown": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/PREFLIGHT_ACTUAL_REVIEW.md"
+}

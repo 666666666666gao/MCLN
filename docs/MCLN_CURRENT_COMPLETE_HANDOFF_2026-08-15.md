@@ -23207,3 +23207,22 @@ ACTUAL_PREFLIGHT审查WARN/0阻塞，fresh-context、same-family/provisional，a
 用户再次授权“清理，以后不用我审批无用的权重这些”。本次在排除活动实验目录的只读远端清单中，剩余6份均为现行最佳及必要官方Scan/Nr/Sr、G、Mask参考恢复依赖；最佳本地/远端SHA一致，自有PV临时目录无残留权重，无新增可删的闭合负权重。§101此前188659678字节清理不重复执行；本次新增删除0、释放0。独有复现trace、数据、文本、本地完整候选证据和当前恢复依赖继续保留；不再逐项申请审批。
 
 全目标仍ACTIVE_UNMET：保护5598/4856，宽松命中仍差22；三项真实有效贡献和固定完整模型之后的Nr/Sr作者预训练公平独立训练尚未成立。不恢复MCLN/V99双源，不做多seed，不硬删低排名Query，不因当前等待启动重复训练。证据位于refine-logs/pvground_compressed_geometry_support_20261008/postrun_source/。
+
+
+## 20.376.106 — 闭合终点汇总待完整复核，CPU冷重建检查修正（2026-10-08）
+
+原配对controller于20:20:50.538844北京时间正常结束，initial_formal/train/formal全部exit0，每组完成3723新增更新；原唯一观察器20:22:45确认关闭。此处只发布实际闭合回执、小型终点汇总及消费者源码修正，不宣称完整数组CPU复核、实际冷恢复、最佳晋级或清理已经完成。
+
+原生完整9508条last/bbs终点汇总：content与signed-log box_conditioned均为5599/4859（58.8873%/51.1043%），同次未修正父输出5598/4848；两组各修复/破坏13/12与33/22。相对保护的content5598/4856，原生计数差为+1/+3；不能在独立前向漂移尚未完整复核时将此差全部归因于训练。两组Box命中相同，不支持显式压缩几何在控制上有独立精度收益。完整产物2423文件/230030167字节（2378份NPZ）由原收集进程一次流式归档，已经读取的8份小型回执另有字节/SHA记录；它们不能替代完整INTAKE、全部候选CPU重算与fresh实际结果审查。
+
+新增的最佳归档/清理脚本仍未执行：必须先完成全部数组归档、真实结果审查及两个终点的CPU恢复检查，才复制选出的单份最佳并核对字节/SHA。预定清理仅为闭合负box_conditioned终点、被新最佳替代的旧远端content终点及已完整留在本地的2378份远端NPZ；保留新最佳、官方Scan/Nr/Sr、原G、Mask参考恢复依赖、全部本地候选数组、旧暖起点的本地复现副本、文本和数据。不再逐项申请用户审批，资格成立前不删除。最终选择仍以实际完整结果和既定5620/4764共同门槛优先规则为准。
+
+fresh SOURCE_ONLY存储审查发现原准备检查器的真实阻塞B1：第一次构建保存1304父状态，两个终点再各自冷构建后比较全部1314张量，却没有恢复CPU RNG；未写入依赖或support delta的零输出R隐藏Linear/attention/face embedding仍会随机初始化，完整相等断言将失败。此为执行前源码诊断，原失败SHA a2e34fa034d0b36c1751b1d2d09fe0611896fe32bb3d3a8a42fb1f8b74ba44d5及FAIL报告原样保留，没有实际CPU运行失败或删除。
+
+独立修正版inspect_closed_terminals_rng_replay_authorized.py（SHA 1d17e095bfdca9a5caec2defbd31627bdec6c5b26168d6c8e9cce5db8005ae0c）只在初次CPU构建前设置seed2027并捕获RNG，在每次终点构建前重放；原28条嵌入断言、1314逐张量相等、一个support头、零Box输出、CPU状态和CUDA未初始化检查均保留。另加4个范围字段，明确未保存的零R隐藏状态只保证这些CPU构建之间一致，不声称等于历史正式GPU全部状态，不声称GPU冷重建。原训练、模型factory和正式输出未改。
+
+同一最初fresh的审查代理复查修正版SOURCE_ONLY PASS、0阻塞，外层AST除嵌入源码字符串外不变，嵌入AST仅3条RNG语句及4个回执字段变化；归档/清理脚本字节未改、接口兼容。初始FAIL与run05四份trace原样保留，修订run06另存；same-family/provisional，requested gpt-6-astra/max，actual backend/model/effort UNATTESTED。源码通过不替代ACTUAL_CLOSED_TRAINED_PAIR审查或实际执行，后续必须用修正版检查器。
+
+截至本节，正式保护记录仍是5598/4856，尚未晋级原生终点汇总。全目标ACTIVE_UNMET：同一模型须严格超过59.1%/50.1%，即5620/4764；本轮汇总宽松命中尚差21。三项有效贡献未成立，未启动新Nr/Sr训练；完整方法固定后，两者可加载各自作者PV预训练公平同起点独立训练。继续单seed2027、全部256候选、一套原生评分、同Query框/Mask，不恢复V99双源。下一步先接收完整归档并复核本轮，不启动重复训练。
+
+证据：refine-logs/pvground_compressed_geometry_support_20261008/cpu_rng_source_correction/。完整原始候选数组继续保存在本地complete_fit；本节没有发布NPZ或权重。

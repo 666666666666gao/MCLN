@@ -1,0 +1,515 @@
+{
+  "audit_skill": "experiment-audit",
+  "execution_scope": "SOURCE_ONLY",
+  "review_scope": "BOUNDED_RNG_CORRECTION_REVISION_ONLY",
+  "verdict": "PASS",
+  "overall_verdict": "PASS",
+  "reason_code": "B1_resolved_by_exact_cpu_rng_replay_without_weakening_checks",
+  "blocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "B1",
+      "status": "RESOLVED_SOURCE_ONLY",
+      "old_path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+      "old_sha256": "a2e34fa034d0b36c1751b1d2d09fe0611896fe32bb3d3a8a42fb1f8b74ba44d5",
+      "new_path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py",
+      "new_sha256": "1d17e095bfdca9a5caec2defbd31627bdec6c5b26168d6c8e9cce5db8005ae0c",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py:59",
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py:81",
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py:83",
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py:96"
+      ],
+      "details": "The CPU RNG is seeded and captured immediately before baseline construction, and the identical state is restored immediately before every terminal construction. Complete key-set/count/exact-tensor comparison is retained. Intended success is explicitly limited to cold CPU build consistency."
+    }
+  ],
+  "source_only_runtime_unproved": true,
+  "fresh_context": false,
+  "fresh_context_at_initial_spawn": true,
+  "revision_same_reviewer": true,
+  "review_context_note": "Same initially fresh reviewer resumed for a bounded revision; this revision is not a new fresh-context spawn.",
+  "agent_id": "/root/pvg_compressed_support_storage_source_audit",
+  "agent_id_kind": "canonical task identity",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "runtime_identity_evidence": "No tool evidence attests actual backend, model or reasoning effort. Existing request metadata is not backend attestation.",
+  "generated_at": "2026-10-08T13:17:22.806841+00:00",
+  "date": "2026-10-08",
+  "request_path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run06/001-rng-correction.request.md",
+  "trace_path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run06",
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/archive_retained_content_authorized.py",
+      "sha256": "3e241d7d5ebac4c710d9bb205dc7f413580dffb1219e8c00c216d3308295869d",
+      "bytes": 3385,
+      "read_scope": "direct relevant-source review",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/retire_closed_nonbest_authorized.py",
+      "sha256": "28814335500a02bf70a523e4b3c36e93e4c92ee1eb71673dea22898ed5ebeda0",
+      "bytes": 7774,
+      "read_scope": "direct relevant-source review",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+      "sha256": "a2e34fa034d0b36c1751b1d2d09fe0611896fe32bb3d3a8a42fb1f8b74ba44d5",
+      "bytes": 7438,
+      "read_scope": "direct relevant-source review",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+      "sha256": "ae5c1e38948409f62ac36c9589d36c41258c207b881f6fc19d6e86eba5fa7d3d",
+      "bytes": 14945,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_model_factory.py",
+      "sha256": "c75309954e2c571bb3f28b3ebc173102e0ab50e69231d174f19fff899b0c4b83",
+      "bytes": 1634,
+      "read_scope": "direct relevant-source review",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "bytes": 4680,
+      "read_scope": "direct relevant-source review",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+      "sha256": "9ef8d5b967d3a19fd33d9f47c6566f0262a0383530401450490b4ef4b311c1b1",
+      "bytes": 6480,
+      "read_scope": "direct relevant-source review",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/fit_wait.json",
+      "sha256": "9ea940273cf4ea1a2a9a829e3de851f171ec2c90dba171139b78eba9c48bd012",
+      "bytes": 936,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/CLEANUP_FOLLOWUP_20261008_1645.json",
+      "sha256": "a299b888ef8e58750578e35d6468604673758149a187df656db3f74b10925b24",
+      "bytes": 1429,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/closed_metrics/INTAKE.json",
+      "sha256": "8b85be4bd895b4581b5947a783dc811d150c988550c3dd8a2a30d5e3791e18bd",
+      "bytes": 1489,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/closed_metrics/formal/receipt.json",
+      "sha256": "1e480dc4f918ccefaf9dc85e148cd76f6a35dfaf2ed6609db60dfd1c76041541",
+      "bytes": 939,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/postrun/checkpoint_inspection.json",
+      "sha256": "07c7ed00337718a99037b5c055a15daf84906f449c983cc7ed5d3991efee8e50",
+      "bytes": 2392,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_support_boundary_cases_20261007/CLEANUP_STANDING_AUTHORIZATION_20261008.json",
+      "sha256": "87cd29912b08ad5fcc0fbfdc1854b7d60340715ba906807d82c9c5c53aa7d080",
+      "bytes": 701,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/run_mask_support_pair.py",
+      "sha256": "376149ccf75e1751688d6ba1c17e29224336e6ea080201f53c043d979d90bab8",
+      "bytes": 14475,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/support_pair_forward.py",
+      "sha256": "9170cfed2cf82002097c0929d3acaa8bcfed2700549fb4ee304ae26058b88321",
+      "bytes": 2512,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+      "sha256": "14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a",
+      "bytes": 4458,
+      "read_scope": "direct relevant-source review",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/collect_closed_fit_authorized.py",
+      "sha256": "589e027aace699687439f7720a26c86d67592ff506fd656b1ff14aedda6d1ef5",
+      "bytes": 3358,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+      "sha256": "557f53b7d801e2f823fd83c036f78e7d8220ee4c2218f409628c849c9a56a48a",
+      "bytes": 29051,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "bytes": 6461,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/install_boundary_evidence_readback.py",
+      "sha256": "531e7dbaa365d14deb870f9f205b2fb8b4654c8ea8356c06d844950aeca10fad",
+      "bytes": 518,
+      "read_scope": "direct relevant-source review",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_evidence_readback.py",
+      "sha256": "ef3460373bc02533bbcff5e8e9e4b62e45836f601cc3bfd5e7d2304ec310aa4a",
+      "bytes": 4335,
+      "read_scope": "direct relevant-source review",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "bytes": 481,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "bytes": 2770,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "bytes": 7683,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "bytes": 3025,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_whole_mask_box_refiner.py",
+      "sha256": "4a701338bcbf042a4eb7793209999434d68c269e563ac09008e758228fc72118",
+      "bytes": 3906,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_candidate_box_refiner.py",
+      "sha256": "e971346230d0e0547139823c106e48f970c58a0b0ef26ef46b75beaa672f6212",
+      "bytes": 3767,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_tail_support_box_refiner.py",
+      "sha256": "665e94c150492a9fc3d52ddca7da2b7dca7d7ddbd981e759640f15846bb3f757",
+      "bytes": 3655,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/source_port.json",
+      "sha256": "765a47c0c07758f3e42a426036b27a840df8ea010b63df3682439ff5455e9eff",
+      "bytes": 11168,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/runtime_overlay/PV-Ground/models/pv_ground.py",
+      "sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d",
+      "bytes": 27544,
+      "read_scope": "unchanged original evidence hash check; initial semantic review retained, not rerun as actual audit",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py",
+      "sha256": "1d17e095bfdca9a5caec2defbd31627bdec6c5b26168d6c8e9cce5db8005ae0c",
+      "bytes": 7760,
+      "read_scope": "full direct revision review",
+      "ast_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/CPU_RNG_REPLAY_SOURCE_CORRECTION.json",
+      "sha256": "e23716473d700aa1e542234839c3f990c59cb430e0b183d76b30f1210646cf98",
+      "bytes": 748,
+      "read_scope": "full direct revision review",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/STORAGE_SOURCE_REVIEW.md",
+      "sha256": "86b95b6c7d6132c931e838755d0919f37c8d623ca689b8d7e84b0b421efb9de9",
+      "bytes": 14755,
+      "read_scope": "direct prior-review read and preservation hash check"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/STORAGE_SOURCE_REVIEW.json",
+      "sha256": "b8da314c1b3cb6e967a500e1c2bfc314bc95e35a6b3152b1ed1065ebd2c39dfa",
+      "bytes": 30180,
+      "read_scope": "direct prior-review read and preservation hash check",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run06/001-rng-correction.request.md",
+      "sha256": "541b969f07bea30359e7bb156b6b42824ba7e55b64044e354884d9587d04262e",
+      "bytes": 1938,
+      "read_scope": "revision instruction read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run05/001-storage-source.meta.json",
+      "sha256": "c7a3a00c7676d0a4eaf8ddd8e83f6266a6e108f5a36cb44a6114c70a2e169df0",
+      "bytes": 1052,
+      "read_scope": "original trace preservation hash check; run.meta.json also directly parsed/read",
+      "json_parse_status": "PASS"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run05/001-storage-source.request.md",
+      "sha256": "a009e7622d5d86188e96bddef826a70d22dcff1d10f5874be662f6d238de7ab7",
+      "bytes": 3131,
+      "read_scope": "original trace preservation hash check; run.meta.json also directly parsed/read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run05/001-storage-source.response.md",
+      "sha256": "86b95b6c7d6132c931e838755d0919f37c8d623ca689b8d7e84b0b421efb9de9",
+      "bytes": 14755,
+      "read_scope": "original trace preservation hash check; run.meta.json also directly parsed/read"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run05/run.meta.json",
+      "sha256": "3b6ada7ba78fe822e7f4dbf793720e5d3c58c5b943f727825aafab3215f7c9e5",
+      "bytes": 403,
+      "read_scope": "original trace preservation hash check; run.meta.json also directly parsed/read",
+      "json_parse_status": "PASS"
+    }
+  ],
+  "checks": {
+    "rng_replay": {
+      "status": "PASS",
+      "details": "Seed 2027 and captured CPU RNG precede baseline build; saved CPU RNG precedes each arm build. No intervening checkpoint load remains after replay and before the model call.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py:59",
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py:81"
+      ]
+    },
+    "full_state_comparison": {
+      "status": "PASS",
+      "details": "All 28 embedded assertions are AST-identical. Complete key set, 1314 state tensors and torch.equal across all expected state tensors remain required.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py:83"
+      ]
+    },
+    "source_change_scope": {
+      "status": "PASS",
+      "details": "Outer AST unchanged except embedded literal. Embedded AST differs only by three RNG statements and four receipt fields. All 31 original evidence files retain their original hashes."
+    },
+    "consumer_schema": {
+      "status": "PASS",
+      "inspection_fields_read": [
+        "full_cpu_state_tensors",
+        "neural_forwards",
+        "required_dependencies",
+        "status",
+        "weights"
+      ],
+      "details": "All consumed top-level fields and their existing nested weight/dependency construction remain unchanged. Archive and deletion scripts are byte-identical.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/archive_retained_content_authorized.py:17",
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/archive_retained_content_authorized.py:36",
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/retire_closed_nonbest_authorized.py:17",
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/retire_closed_nonbest_authorized.py:27",
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/retire_closed_nonbest_authorized.py:40"
+      ]
+    },
+    "runtime_claim_scope": {
+      "status": "PASS",
+      "details": "Future output expressly limits unsaved zero-output R hidden-state matching to CPU builds, sets historical formal GPU all-state identity false, and retains GPU cold reconstruction false. No actual runtime success is inferred here.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py:94",
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/CPU_RNG_REPLAY_SOURCE_CORRECTION.json:2"
+      ]
+    },
+    "prior_artifact_preservation": {
+      "status": "PASS",
+      "details": "Both initial FAIL reports and all four run05 trace files retain exact pre-review hashes."
+    },
+    "actual_audit_gate_preserved": {
+      "status": "PASS",
+      "details": "ACTUAL_CLOSED_TRAINED_PAIR, fresh_context true, accepted verdict without blockers, required input set and current hashes remain required. This source-only revision cannot satisfy that gate.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py:14"
+      ]
+    }
+  },
+  "carried_forward_initial_A_F": {
+    "status": "qualified original findings retained; no actual experiment re-audit",
+    "source_report": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/STORAGE_SOURCE_REVIEW.json",
+    "source_report_sha256": "b8da314c1b3cb6e967a500e1c2bfc314bc95e35a6b3152b1ed1065ebd2c39dfa",
+    "statuses": {
+      "gt_provenance": "PASS",
+      "score_normalization": "PASS",
+      "result_existence": "WARN",
+      "dead_code": "PASS",
+      "scope": "WARN",
+      "eval_type": "PASS"
+    },
+    "notes": [
+      "Dataset-derived GT, ordinary metric denominators and real_gt classification remain source conclusions.",
+      "Result existence/full-array integrity and evaluated scope retain their initial WARN limitations.",
+      "The RNG change establishes no metric gain, geometry advantage, multiseed result, full goal completion or runtime restoration."
+    ]
+  },
+  "explicit_proposed_receipt_fields": {
+    "cpu_parent_rng_seed": 2027,
+    "cpu_parent_rng_replayed_per_build": true,
+    "uncheckpointed_zero_R_hidden_states_matched_between_cpu_builds_only": true,
+    "original_formal_gpu_all_state_identity_verified": false,
+    "full_gpu_cold_reconstruction": false,
+    "interpretation": "source-declared fields emitted only after successful runtime comparisons; no runtime emission observed by this review"
+  },
+  "validation": {
+    "status": "PASS",
+    "read_input_count": 40,
+    "unchanged_original_evidence_count": 31,
+    "python_file_ast_count": 24,
+    "embedded_python_ast_count": 4,
+    "embedded_python": [
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/retire_closed_nonbest_authorized.py",
+        "outer_line": 41,
+        "sha256": "693f83896b70b0677054019b814dd3a7a1e6e73f21a99d0e9c713dedbba3df61",
+        "lines": 64,
+        "ast_status": "PASS"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+        "outer_line": 24,
+        "sha256": "d62768705e6e3572511d572edb08481c6e76b7745e7a7053093d8ce1859f428d",
+        "lines": 71,
+        "ast_status": "PASS"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/collect_closed_fit_authorized.py",
+        "outer_line": 23,
+        "sha256": "01036cd191291277fecde656cd5c881ef65ecdc0fd3da017171875b027b0dbca",
+        "lines": 14,
+        "ast_status": "PASS"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_rng_replay_authorized.py",
+        "outer_line": 24,
+        "sha256": "7944dddc61ae4ffe85ba2f2d58a16db7d724781ad0c461ef9e5bb229ef73b702",
+        "lines": 76,
+        "ast_status": "PASS"
+      }
+    ],
+    "json_parse_count": 12,
+    "outer_ast_unchanged_except_embedded_literal": true,
+    "all_original_embedded_assertions_preserved": true,
+    "preserved_embedded_assertion_count": 28,
+    "inner_ast_equal_after_removing_exact_three_rng_statements_and_four_fields": true,
+    "all_storage_consumed_inspection_fields_preserved": true,
+    "correction_receipt_paths_and_hashes_match_actual_bytes": true,
+    "source_execution": false,
+    "parser": "Python 3.12.6 standard-library ast under E:/python.exe",
+    "tooling_note": "An initial AST diff helper selected the dependency loop instead of the arm loop and stopped; selecting the explicit arm loop corrected the review helper, and the complete static comparison passed. No reviewed program was executed."
+  },
+  "preserved_original_artifacts": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/STORAGE_SOURCE_REVIEW.md",
+      "sha256_before": "86b95b6c7d6132c931e838755d0919f37c8d623ca689b8d7e84b0b421efb9de9",
+      "sha256_after": "86b95b6c7d6132c931e838755d0919f37c8d623ca689b8d7e84b0b421efb9de9",
+      "byte_identical": true
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/STORAGE_SOURCE_REVIEW.json",
+      "sha256_before": "b8da314c1b3cb6e967a500e1c2bfc314bc95e35a6b3152b1ed1065ebd2c39dfa",
+      "sha256_after": "b8da314c1b3cb6e967a500e1c2bfc314bc95e35a6b3152b1ed1065ebd2c39dfa",
+      "byte_identical": true
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run05/001-storage-source.request.md",
+      "sha256_before": "a009e7622d5d86188e96bddef826a70d22dcff1d10f5874be662f6d238de7ab7",
+      "sha256_after": "a009e7622d5d86188e96bddef826a70d22dcff1d10f5874be662f6d238de7ab7",
+      "byte_identical": true
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run05/001-storage-source.response.md",
+      "sha256_before": "86b95b6c7d6132c931e838755d0919f37c8d623ca689b8d7e84b0b421efb9de9",
+      "sha256_after": "86b95b6c7d6132c931e838755d0919f37c8d623ca689b8d7e84b0b421efb9de9",
+      "byte_identical": true
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run05/001-storage-source.meta.json",
+      "sha256_before": "c7a3a00c7676d0a4eaf8ddd8e83f6266a6e108f5a36cb44a6114c70a2e169df0",
+      "sha256_after": "c7a3a00c7676d0a4eaf8ddd8e83f6266a6e108f5a36cb44a6114c70a2e169df0",
+      "byte_identical": true
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run05/run.meta.json",
+      "sha256_before": "3b6ada7ba78fe822e7f4dbf793720e5d3c58c5b943f727825aafab3215f7c9e5",
+      "sha256_after": "3b6ada7ba78fe822e7f4dbf793720e5d3c58c5b943f727825aafab3215f7c9e5",
+      "byte_identical": true
+    }
+  ],
+  "runtime_limits": {
+    "trained_pair_integrity_audited": false,
+    "complete_array_transfer_verified": false,
+    "cpu_recount_executed": false,
+    "cpu_inspection_executed": false,
+    "checkpoint_reconstruction_verified": false,
+    "historical_formal_gpu_all_state_identity_verified": false,
+    "archive_or_retention_executed": false,
+    "cleanup_executed": false,
+    "actual_closed_trained_pair_report_written": false
+  },
+  "actions_performed": {
+    "ssh_connections": 0,
+    "credential_or_AUTH_file_reads": 0,
+    "checkpoint_loads": 0,
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "source_edits": 0,
+    "deletions": 0,
+    "further_agents": 0,
+    "writes": "four distinct revision report/trace files only"
+  },
+  "conclusion": "B1 is resolved in the exact corrected inspector at source level with unchanged strict checks. No blocking revision findings. Actual collection, recount, closed-pair audit, CPU inspection and storage actions still require their own real prerequisites and successful execution."
+}

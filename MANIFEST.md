@@ -320,3 +320,5 @@
 - 2026-10-08T12:52:50.232177+08:00 Actual warm M0 closed0; compressed support formal pair started; §20.376.104.
 
 - 2026-10-08T13:18:18.769069+08:00 Reviewed future compressed support CPU consumers and closed-weight cleanup recheck; section20.376.105; no new accuracy.
+
+- 2026-10-08T21:53:00.097341+08:00 Correct CPU construction RNG replay; closed native receipts await full recount and actual restoration/storage; section20.376.106.

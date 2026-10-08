@@ -1,0 +1,607 @@
+{
+  "audit_skill": "experiment-audit",
+  "date": "2026-10-08",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "reason_code": "source_only_runtime_evidence_pending",
+  "blocking_findings": [],
+  "summary": "No blocking source finding in the two prepared closed-result consumers. Static checks pass. Their execution, new performance, and terminal reconstruction are not established by this review.",
+  "fresh_context": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "agent_id": "/root/pvg_compressed_support_postrun_source_audit",
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/prepare_closed_analysis.py",
+      "sha256": "97bd7674b60a505d059449eebbf6fb27f22a9fd745f0b3fcfcf5bd94dc451059"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/CLOSED_ANALYSIS_PREPARED.json",
+      "sha256": "971588383b423b82700cffeffc8aef8f6f69925b26d573673564981c1d88ff55"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+      "sha256": "ae5c1e38948409f62ac36c9589d36c41258c207b881f6fc19d6e86eba5fa7d3d"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+      "sha256": "a2e34fa034d0b36c1751b1d2d09fe0611896fe32bb3d3a8a42fb1f8b74ba44d5"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+      "sha256": "9ef8d5b967d3a19fd33d9f47c6566f0262a0383530401450490b4ef4b311c1b1"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+      "sha256": "922764f3411a324de200f5a14234cc616b2c85d47e5f3bf1c48ff3a15897e75e"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/collect_closed_fit_authorized.py",
+      "sha256": "589e027aace699687439f7720a26c86d67592ff506fd656b1ff14aedda6d1ef5"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+      "sha256": "557f53b7d801e2f823fd83c036f78e7d8220ee4c2218f409628c849c9a56a48a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_model_factory.py",
+      "sha256": "c75309954e2c571bb3f28b3ebc173102e0ab50e69231d174f19fff899b0c4b83"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+      "sha256": "14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/postrun/analyze_support_correction_formal.py",
+      "sha256": "6ad1d01f0af25117396951e6dc850edb583b5a625e19af43e4f42c6c1d263a74"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/postrun/RETAINED_BEST.json",
+      "sha256": "31442de3dddd6b740b845dd9c9287a69bdc084b02e73010e2402623599a5e70f"
+    },
+    {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/analysis/SUMMARY.json",
+      "sha256": "d04c6328da1ec5a0e400530ac5298b586a4d0dc7d42681e6a29774ff7a0b2973"
+    }
+  ],
+  "checks": {
+    "A": {
+      "status": "PASS",
+      "label": "Ground-truth provenance, source trace only",
+      "classification": "real_gt",
+      "details": "The producer takes root boxes from batch center_label/size_gts and masks from batch gt_masks. Parent outputs are explicit comparison baselines, not evaluation truth. Native last_/bbs hit counts are reconciled with the provided evaluator. The consumer checks archived root_gt against row root_box. Original dataset files and the external evaluator implementation were outside the read scope.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 304,
+          "details": "Dataset-label root box"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 333,
+          "details": "Dataset-label target mask"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 352,
+          "details": "Native evaluator hit reconciliation"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 87,
+          "details": "Archived truth equals per-row dataset-label box"
+        }
+      ]
+    },
+    "B": {
+      "status": "PASS",
+      "label": "Metric normalization and thresholds",
+      "details": "N is fixed at 9508. Hits and repairs/damages use strict IoU >0.25/>0.5, percentages divide by N, and exact rational arithmetic confirms strict >59.1/>50.1 requires 5620/4764. scores.max only verifies query selection. Signed-log geometry and fixed log1p(50000) count scaling are input features, not metric normalization.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 15,
+          "details": "Fixed denominator"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 46,
+          "details": "Strict hit and repair/damage predicates"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 91,
+          "details": "Maximum score is a selection check"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 140,
+          "details": "Raw hits and fixed-denominator accuracy"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 145,
+          "details": "Joint 5620/4764 target"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+          "line": 36,
+          "details": "Exact sign(x)*log1p(abs(x)) input transform"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+          "line": 45,
+          "details": "Fixed feature-count normalization"
+        }
+      ]
+    },
+    "C": {
+      "status": "WARN",
+      "label": "Real artifacts versus source preparation",
+      "details": "All 13 allowlisted files exist and were hashed. CLOSED_ANALYSIS_PREPARED.json explicitly says SOURCE_PREPARED_NOT_EXECUTED and new_result_claim=false. Its generated/base hashes match, and the preparer reproduces the analysis source byte-for-byte in a stdlib-only static reconstruction. No new result artifact was read or asserted to exist. The historical SUMMARY and retained record agree on the content model's 5598/4856 hits and identity; their underlying predictions/checkpoint were not re-audited here.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/CLOSED_ANALYSIS_PREPARED.json",
+          "line": 2,
+          "details": "Source preparation status"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/CLOSED_ANALYSIS_PREPARED.json",
+          "line": 8,
+          "details": "No new result claim"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/postrun/RETAINED_BEST.json",
+          "line": 4,
+          "details": "Historical retained content identity/hits"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/analysis/SUMMARY.json",
+          "line": 377,
+          "details": "Historical metric-best record"
+        }
+      ]
+    },
+    "D": {
+      "status": "PASS",
+      "label": "Active and dead paths",
+      "details": "The analyzer's __main__ invokes main, which runs recount for both initial_formal/formal; all metric helpers feed SUMMARY. Inspector top-level guards precede remote construction and loop over both configured support_modes. Collector writes INTAKE only after successful closed-status collection and byte/hash verification. The consumers are future entry points; no actual execution is claimed.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 193,
+          "details": "Both formal stages call recount"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 248,
+          "details": "Live analyzer entry point"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 11,
+          "details": "Live audit/summary guards"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 64,
+          "details": "Both terminal payloads inspected"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/collect_closed_fit_authorized.py",
+          "line": 60,
+          "details": "INTAKE written after completed transfer validation"
+        }
+      ]
+    },
+    "E": {
+      "status": "WARN",
+      "label": "Scope and attribution",
+      "details": "One seed2027; 29778 fit rows, 3723 new support updates, 3723 prior support updates, total7446, with 6887 training-scene holdout distinct from 9508 formal expressions. Warm initial parity is between arms, not the uncorrected parent. Same-forward parent/control comparisons are labeled separately from historical/cross-pass differences; prior archived results already document nonzero cross-pass drift. Initial rows cannot enter checkpoint selection. No new efficacy, three effective contributions, or overall completion is established.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/EXPERIMENT_PLAN.md",
+          "line": 13,
+          "details": "Fit, support history, holdout/formal scope and cross-pass caveat"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 118,
+          "details": "Warm arm-only parity"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 138,
+          "details": "Prior/new/total support updates"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 200,
+          "details": "Only protected/formal rows are selection candidates"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 203,
+          "details": "Explicit comparison scopes"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 240,
+          "details": "Contribution and overall-completion claims remain false"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/analysis/SUMMARY.json",
+          "line": 364,
+          "details": "Historical nonzero cross-pass query/box drift"
+        }
+      ]
+    },
+    "F": {
+      "status": "PASS",
+      "label": "Evaluation type classification",
+      "classification": "real_gt",
+      "details": "Proposed Box and selected Mask metrics use dataset ground truth. This SOURCE_ONLY audit is static evidence, not an executed evaluation. Same-forward and historical comparisons are real-GT metric deltas, not model-output ground truth.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 304,
+          "details": "Real-GT Box construction"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/paired_support_loop.py",
+          "line": 333,
+          "details": "Real-GT Mask construction"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 209,
+          "details": "Historical reference is a labeled metric comparison"
+        }
+      ]
+    }
+  },
+  "consumer_contract_checks": [
+    {
+      "status": "PASS",
+      "name": "actual_closed_full_intake_gate",
+      "details": "Analyzer requires actual closed INTAKE, completed fit status, zero controller exit, each manifest file size/hash, 3723 training records covering29778 unique rows once, native5/1/10/2 coefficients, and exact optimizer-restore receipts; recount requires9508 rows and1189 all256 batches per formal stage. Collector requires closed observer/controller evidence and excludes .pth/.pt/.tmp.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 157,
+          "details": "Closed intake/status/hash gate"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 167,
+          "details": "Full fit accounting"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 183,
+          "details": "Optimizer restore receipt"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 64,
+          "details": "Full formal scope"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 121,
+          "details": "Exact all256 batch/row coverage"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/collect_closed_fit_authorized.py",
+          "line": 14,
+          "details": "Controller closure gate"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/collect_closed_fit_authorized.py",
+          "line": 30,
+          "details": "Checkpoint suffix exclusion"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "name": "protected_trained_content_identity",
+      "details": "Protected rows use prior complete_fit/formal/rows.jsonl and arms.content, not the old uncorrected parent schema. Aggregate5598/4856 is checked and identities/GT/points align with new rows. The new summary records the actual protected-row digest and warm checkpoint SHA. Supplied pair_spec warm checkpoint path/hash match RETAINED_BEST; runtime verification of raw protected bytes remains for the actual audit.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 186,
+          "details": "Correct retained trained-content source/schema"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 189,
+          "details": "Protected aggregate check"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 199,
+          "details": "Protected-row identity alignment"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 232,
+          "details": "Protected rows and model hashes recorded"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+          "line": 94,
+          "details": "Warm retained identity"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/postrun/RETAINED_BEST.json",
+          "line": 10,
+          "details": "Matching retained path/hash"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "name": "all256_cpu_recomputation_and_saved_mask_scope",
+      "details": "All256 Box IoUs and qualification are recomputed from archived boxes/GT in float64. Selected-threshold flips and all256 oracle-label differences are reported. Primary hit tables preserve saved native IoUs, so actual audit must assess those difference counters. Mask scope is accurately labeled as saved-IoU recount; pointwise masks are not independently reconstructed.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 34,
+          "details": "CPU float64 Box IoU"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 94,
+          "details": "All256 box shape"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 103,
+          "details": "All256 qualification recomputation"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 108,
+          "details": "CPU/native discrepancy counters"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 124,
+          "details": "Primary table uses saved native IoUs"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 128,
+          "details": "Saved Mask-IoU recount"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 141,
+          "details": "Explicit stored-recount label"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "name": "promotion_eligibility",
+      "details": "Initial diagnostics are excluded. Candidates are ranked by joint5620/4764 gate, then strict hit count, then wide hit count, with exact ties retaining the protected model. Source only computes a metric candidate; it does not promote/copy/delete weights.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 200,
+          "details": "Candidate filtering and rank tuple"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 236,
+          "details": "Warm diagnostics are ineligible"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 238,
+          "details": "No weights deleted"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "name": "fresh_actual_audit_and_required_hashes",
+      "details": "Inspector requires an ACTUAL_CLOSED_TRAINED_PAIR fresh audit with PASS/WARN and no blocking findings. Reviewed-file coverage must include analysis/SUMMARY.json, complete_fit/INTAKE.json and local pair_spec.json, and every supplied reviewed-file digest is revalidated. This SOURCE_ONLY report cannot satisfy that scope gate.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 12,
+          "details": "Actual recount summary required"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 15,
+          "details": "Actual fresh audit scope required"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 17,
+          "details": "Minimum required file/hash coverage"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "name": "both_terminal_cpu_state_and_signed_log",
+      "details": "Inspector loops over the two specified arms, checks terminal hashes from formal_restore, step3723/prior3723/total7446, exact arm geometry metadata, coefficients, dependency/source/warm hashes,10 finite head tensors and10 finite optimizer-state records. It rebuilds each arm on CPU, requires exact full1314-key state equality against protected1304+delta10, one deployed head, zero R output, and uninitialized CUDA. The local factory enforces geometry metadata/prefix/strict state load; the corrector implements the exact signed-log formula.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 22,
+          "details": "Both expected terminal hashes"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 42,
+          "details": "Source/helper digest checks"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 64,
+          "details": "Both payloads and metadata"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 79,
+          "details": "Exact full1314 CPU reconstruction check"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 86,
+          "details": "CPU-only state and CUDA assertion"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_model_factory.py",
+          "line": 18,
+          "details": "Exact geometry metadata"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+          "line": 36,
+          "details": "Signed-log implementation"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+          "line": 79,
+          "details": "Strict head load"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "name": "no_consumer_neural_optimizer_delete_copy_operations",
+      "details": "Visible consumer paths contain no neural forward, backward, optimizer construction/step, CUDA transfer, deletion, or checkpoint copying. Inspector intentionally constructs and compares CPU model states, reads serialized optimizer tensors without restoring/updating an optimizer, and records full_gpu_cold_reconstruction=false. Transitive external builders are hash-pinned but not source-expanded by this bounded review. No consumer was executed in this audit.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 59,
+          "details": "CPU model construction only"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 76,
+          "details": "Read-only optimizer tensor checks"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 93,
+          "details": "Explicit zero-operation scope and no GPU cold reconstruction"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 238,
+          "details": "Analysis has no replay/delete"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/collect_closed_fit_authorized.py",
+          "line": 30,
+          "details": "No checkpoint copying in collection"
+        }
+      ]
+    }
+  ],
+  "nonblocking_qualifications": [
+    {
+      "id": "Q1",
+      "details": "No new performance, terminal payload, or reconstruction output was examined. Source acceptance cannot replace actual closed-result audit or runtime inspection.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/CLOSED_ANALYSIS_PREPARED.json",
+          "line": 2,
+          "details": "Prepared, not executed"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/inspect_closed_terminals_authorized.py",
+          "line": 15,
+          "details": "Separate actual closed-result audit required"
+        }
+      ]
+    },
+    {
+      "id": "Q2",
+      "details": "CPU Box/native-IoU discrepancy counters are recorded rather than asserted zero. Existing historical counters are zero, but future actual audit must judge the new counters before accepting performance. This is not evidence that a discrepancy currently exists.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 108,
+          "details": "Threshold flips recorded"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 112,
+          "details": "Oracle differences recorded"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 124,
+          "details": "Saved native IoUs drive headline hits"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/analysis/SUMMARY.json",
+          "line": 231,
+          "details": "Historical zero threshold-flip counters"
+        }
+      ]
+    },
+    {
+      "id": "Q3",
+      "details": "Mask recount validates saved IoU values/hits/mean only; it is not independent pointwise Mask recomputation or new neural evaluation.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 128,
+          "details": "Saved per-row Mask-IoU validation"
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/postrun/analyze_compressed_geometry_formal.py",
+          "line": 141,
+          "details": "Stored-recount disclosure"
+        }
+      ]
+    }
+  ],
+  "static_validation": {
+    "status": "PASS",
+    "python_sources_ast_parsed": 8,
+    "embedded_python_sources_ast_parsed": 2,
+    "prepared_source_and_base_hashes_match": true,
+    "generator_reproduces_analysis_bytes": true,
+    "reviewed_runner_source_hashes_match": true,
+    "warm_retained_path_hash_hits_match": true,
+    "strict_percentage_gate_hits": [
+      5620,
+      4764
+    ],
+    "support_updates": 7446
+  },
+  "audit_actions": {
+    "personal_memory_read": false,
+    "external_reviewers": false,
+    "packages_installed": false,
+    "ssh": false,
+    "training_polling": false,
+    "source_module_execution": false,
+    "neural_execution": false,
+    "cuda_execution": false,
+    "optimizer_execution": false,
+    "model_reconstruction": false,
+    "checkpoint_copy": false,
+    "deletion": false,
+    "audited_source_edit": false,
+    "read_scope": "13 supplied project files plus the experiment-audit skill and its applicable policy references"
+  },
+  "trace_path": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/.aris/traces/experiment-audit/2026-10-08_run04/",
+  "generated_at": "2026-10-08 05:13:12 UTC"
+}
+

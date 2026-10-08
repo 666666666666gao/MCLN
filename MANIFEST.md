@@ -318,3 +318,5 @@
 - 2026-10-08T12:23:50.862175+08:00 Closed derivative diagnostic, warmed compressed geometry M0 started; §20.376.103.
 
 - 2026-10-08T12:52:50.232177+08:00 Actual warm M0 closed0; compressed support formal pair started; §20.376.104.
+
+- 2026-10-08T13:18:18.769069+08:00 Reviewed future compressed support CPU consumers and closed-weight cleanup recheck; section20.376.105; no new accuracy.

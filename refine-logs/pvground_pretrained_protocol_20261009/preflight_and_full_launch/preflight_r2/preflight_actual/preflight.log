@@ -1,0 +1,36 @@
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.decoder.weight', 'lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.bias', 'lm_head.dense.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Loading val files, take a breath!
+Begin text decoupling......
+End text decoupling!
+Traceback (most recent call last):
+  File "/root/autodl-tmp/pvground_pretrained_protocol_20261009/preflight_r2/evaluate_parent_batches.py", line 240, in <module>
+    main()
+  File "/root/autodl-tmp/pvground_pretrained_protocol_20261009/preflight_r2/evaluate_parent_batches.py", line 161, in main
+    output = model(inputs)
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/root/autodl-tmp/mcln_pvground_task_observation_source_20260917_v1/PV-Ground/models/pv_ground.py", line 369, in forward
+    end_points = self._run_backbones(inputs)
+  File "/root/autodl-tmp/mcln_pvground_task_observation_source_20260917_v1/PV-Ground/models/pv_ground.py", line 284, in _run_backbones
+    voxel_batch = self.backbone_net(inputs)        
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/root/autodl-tmp/mcln_pvground_task_observation_source_20260917_v1/PV-Ground/models/pv_backbone.py", line 46, in forward
+    batch_dict = self.vsa(batch_dict)
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/root/autodl-tmp/mcln_pvground_task_observation_source_20260917_v1/PV-Ground/models/pv_utils.py", line 602, in forward
+    for aggregate in [self.SA_rawpoints] + list(self.SA_layers)]
+  File "/root/autodl-tmp/mcln_pvground_task_observation_source_20260917_v1/PV-Ground/models/pv_utils.py", line 602, in <listcomp>
+    for aggregate in [self.SA_rawpoints] + list(self.SA_layers)]
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/autograd/grad_mode.py", line 28, in decorate_context
+    return func(*args, **kwargs)
+  File "/root/autodl-tmp/mcln_pvground_scanrefer_formal_20260918_semantic_assignment_v1/pvground_observation_query.py", line 70, in spatial_observation
+    return torch.cat([g.observation for g in aggregate.groupers] +
+  File "/root/autodl-tmp/mcln_pvground_scanrefer_formal_20260918_semantic_assignment_v1/pvground_observation_query.py", line 70, in <listcomp>
+    return torch.cat([g.observation for g in aggregate.groupers] +
+  File "/root/miniconda3/envs/bdetr/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1178, in __getattr__
+    type(self).__name__, name))
+AttributeError: 'QueryAndGroup' object has no attribute 'observation'

@@ -1,0 +1,24 @@
+{
+  "status": "PRIMARY_CODE_PROTOCOL_FACTS_NOT_ISOLATED_METRIC_CAUSES",
+  "source_commit": "262e2592589baec7bb83a0d46aae6542d4ccedfb",
+  "sampler_ast_equal": {
+    "PVGround._generate_queries": true,
+    "GumbelSampling.forward": true
+  },
+  "inference_sampler": "F.gumbel_softmax is unconditional in GumbelSampling.forward; model.eval does not replace it with deterministic softmax.",
+  "batch_padding": "Tokenizer uses padding=longest; native bbf computes similarity token softmax without excluding padded columns.",
+  "official_eval_entry": "test_scanrefer.sh batch24; train_dist_mod.py seed_all invocation commented out. rng_seed option existence does not itself seed Torch.",
+  "current_control": "seed2027, separate RNG reset per batch protocol, full native bbs/bbf recorded separately; not a multiseed search.",
+  "causality": "Batch8/batch24 comparison tests the aggregate batch protocol including sampled candidate and padding changes; it does not isolate either one alone or prove the whole author-log gap.",
+  "author_rng_snapshot_available": false,
+  "new_main_architecture": false,
+  "current_best_hits": [
+    5599,
+    4859
+  ],
+  "target_hits": [
+    5658,
+    4850
+  ],
+  "evidence_manifest_sha256": "6c7ddbd3c460ba68064b7db5377d0f805b2d33255945451236669123f77f1486"
+}

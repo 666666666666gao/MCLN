@@ -1,0 +1,17 @@
+# Warm content versus compressed geometry
+
+Status: SOURCE_PREPARED_NOT_EXECUTED. No new accuracy or trained checkpoint.
+
+The retained content model has 5598/4856 hits on the 9508 ScanRefer development expressions. The user requires strictly >59.1/>50.1, i.e. at least 5620/4764 hits on the same native last/bbs model, three effective contributions, then independent Sr3D/Nr3D training with corresponding author weights allowed. Single seed2027; all256 candidates; same selected Query Box and Mask.
+
+Closed prior raw geometry training had 346 clipped updates versus content52. The fresh58-expression zero-output derivative panel contains a matched amplitude8175157.5 and a batch gradient45358.3125, versus signed-log0.4641097486 at identical loss. This supports testing input scale, not a claim of historical causality or trained efficacy. The precise query responsible for the recorded floor event is not proven by saved tensors.
+
+Both arms load the retained trained content head's10 state tensors, then zero only the first member layer's last9 input weight columns. These columns were inactive for the content parent; M0 checks exact same-cache warm Masks and both-arm Box/Mask/score parity. Both independent AdamW optimizers are reinitialized. Control keeps geometry9 zero. Treatment supplies sign(x)*log1p(abs(x)) for the existing mean/min/max member coordinates relative to the detached coarse center/size. No new filtering, fallback, positive expansion, teacher, scoring, backbone or reference change. Each deployed head remains27841 parameters; parent Box head and zero R remain frozen dependencies.
+
+M0: two actual updates per arm, native Mask-loss equality, both-arm initialization equality, independent gradients/optimizer updates, complete CPU reconstruction and same-cache native GPU integration, exact state+optimizer save/reload in memory. Zero checkpoint files. These two-step states are discarded; formal phases restart the original trained content checkpoint with fresh optimizers.
+
+Fit:29778 rows once,3723 additional updates per arm, batch8/effective8/accumulation1/LR1e-5/WD5e-4/clip0.1. Prior support updates3723; terminal support total7446, plus disclosed prior G/Mask-reference training. Original valid-GT matched native Query/fused Mask losses5/1/10/2; no altered normalization.6887 module holdout is pretrained-seen training-scene evidence, separate from9508 official development evaluation. Native evaluator and all256 arrays remain. Compare initial and terminal, same-forward frozen parent, control and protected best; record repairs/damages. Repeated independent forwards can drift from native Gumbel sampling even with frozen states; do not assume crosspass bitwise equality.
+
+Single warm A10040GB, existing environment and flock. Preflight estimated~15min, first observation at12min then240s; no early progress polling. Full fit scheduling will use observed M0 and prior actual paired fit25415s; no automatic fit launch before actual M0 closure/audit. Protect required weights/datasets/unique evidence; remove our closed nonbest checkpoints and redundant remote arrays after verified local archival under standing user authorization, without new approval requests.
+
+Selection: joint5620/4764 gate first, then Acc@0.5, then Acc@0.25; ties preserve current best. Beating a degraded continuation control alone is insufficient. Three effective contributions and full Nr/Sr training remain unmet.

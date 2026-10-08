@@ -1,0 +1,181 @@
+{
+  "status": "FULL_SAVED_PARENT_PREDICTION_CPU_RECOUNT_PASS",
+  "rows_each": 9508,
+  "seed": 2027,
+  "multiseed": false,
+  "batches": {
+    "8": {
+      "rows": 9508,
+      "modes": {
+        "bbs": {
+          "hits": [
+            5579,
+            4381
+          ],
+          "percent": [
+            58.67690366007573,
+            46.076987799747585
+          ],
+          "mask_hits_from_saved_iou": [
+            5816,
+            5104
+          ],
+          "max_saved_iou_difference": 5.364418029785156e-07
+        },
+        "bbf": {
+          "hits": [
+            5608,
+            4395
+          ],
+          "percent": [
+            58.981909970551115,
+            46.22423222549432
+          ],
+          "mask_hits_from_saved_iou": [
+            5838,
+            5129
+          ],
+          "max_saved_iou_difference": 5.364418029785156e-07
+        }
+      },
+      "full256_oracle_hits": [
+        8923,
+        7789
+      ],
+      "seconds": 872.2952726185322,
+      "weight_state_unchanged": true,
+      "candidate_box_iou_recomputations": 2434048
+    },
+    "24": {
+      "rows": 9508,
+      "modes": {
+        "bbs": {
+          "hits": [
+            5582,
+            4416
+          ],
+          "percent": [
+            58.70845603702145,
+            46.44509886411443
+          ],
+          "mask_hits_from_saved_iou": [
+            5816,
+            5118
+          ],
+          "max_saved_iou_difference": 4.76837158203125e-07
+        },
+        "bbf": {
+          "hits": [
+            5603,
+            4420
+          ],
+          "percent": [
+            58.92932267564156,
+            46.48716870004207
+          ],
+          "mask_hits_from_saved_iou": [
+            5839,
+            5129
+          ],
+          "max_saved_iou_difference": 4.76837158203125e-07
+        }
+      },
+      "full256_oracle_hits": [
+        8927,
+        7787
+      ],
+      "seconds": 732.741301394999,
+      "weight_state_unchanged": true,
+      "candidate_box_iou_recomputations": 2434048
+    }
+  },
+  "input_identity_differences": {
+    "row_id": 0,
+    "scan_id": 0,
+    "target_id": 0,
+    "utterance": 0,
+    "root_box": 0,
+    "point_sha256": 0,
+    "detector_sha256": 0,
+    "native_maps_sha256": 0
+  },
+  "batch24_vs_batch8": {
+    "bbs": {
+      "025": {
+        "batch24_gain": 165,
+        "batch24_loss": 162,
+        "net": 3
+      },
+      "050": {
+        "batch24_gain": 303,
+        "batch24_loss": 268,
+        "net": 35
+      }
+    },
+    "bbf": {
+      "025": {
+        "batch24_gain": 150,
+        "batch24_loss": 155,
+        "net": -5
+      },
+      "050": {
+        "batch24_gain": 303,
+        "batch24_loss": 278,
+        "net": 25
+      }
+    }
+  },
+  "historical_batch8_inputs": {
+    "row_id": 0,
+    "scan_id": 0,
+    "target_id": 0,
+    "root_box": 0,
+    "point_sha256": 0
+  },
+  "historical_batch8_comparison": {
+    "bbs": {
+      "old_hits": [
+        5579,
+        4381
+      ],
+      "new_batch8_hits": [
+        5579,
+        4381
+      ]
+    },
+    "bbf": {
+      "old_hits": [
+        5608,
+        4395
+      ],
+      "new_batch8_hits": [
+        5608,
+        4395
+      ]
+    }
+  },
+  "candidate_box_iou_recomputations": 4868096,
+  "all256_box_max_absolute_batch_difference": 9.233067512512207,
+  "all_native_score_max_absolute_batch_difference": 1.6108131408691406,
+  "same_query_slot_counts": {
+    "bbs": 947,
+    "bbf": 939
+  },
+  "current_method_best_unchanged": true,
+  "current_method_best_hits": [
+    5599,
+    4859
+  ],
+  "current_method_target_hits": [
+    5658,
+    4850
+  ],
+  "new_accuracy_claim_scope": "Official-parent evaluation protocol only; neither arm is a new method or a promoted checkpoint.",
+  "limits": [
+    "Saved Box predictions and saved root boxes recomputed; no author raw-data/cache rebuild.",
+    "Mask IoUs recounted from saved values, not raw point Masks.",
+    "Batch changes also change Gumbel draw grouping and text padding; individual causes are not isolated.",
+    "Query slot coincidence is not physical-instance identity.",
+    "Detector box hashes do not cover detector label-mask or class-ID tensors."
+  ]
+}

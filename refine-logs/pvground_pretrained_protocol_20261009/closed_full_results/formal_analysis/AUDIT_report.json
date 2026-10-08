@@ -1,0 +1,802 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "artifact_recount_pass_with_provenance_and_reproduction_limits",
+  "summary": "All 164 completed deterministic checks pass. No blocking defect for the scoped saved-Box and saved-Mask-IoU recount or aggregate batch comparison. Broader reproduction, full-input identity and causal claims require limits; earlier helper digest metadata needs a normalization label.",
+  "generated_at": "2026-10-08T18:28:47.975892+00:00",
+  "date": "2026-10-08",
+  "agent_id": "/root/pvg_parent_batch_protocol_actual_audit",
+  "verdict_id": "/root/pvg_parent_batch_protocol_actual_audit",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "reviewer_model_observed": null,
+  "reviewer_reasoning_observed": null,
+  "reviewer_family": "openai",
+  "backend_route": "native Codex collaboration",
+  "actual_identity_attestation": "No independently verifiable actual backend model/effort attestation is present in this agent context. Requested Astra/max routing is not identity evidence.",
+  "deterministic_verification_status": "PASS",
+  "deterministic_checks_executed": 164,
+  "audited_input_count": 83,
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\FORMAL_ACTUAL_AUDIT_REQUEST.txt": {
+      "sha256": "e518030fa697654b696f02c7fc66bf6eba74839e9d26d1cfe0b366fda65d9287",
+      "bytes": 3155,
+      "lines": 25
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py": {
+      "sha256": "6f0101f9b2d31c91aaf14629613bb79e252bc52e3df206049ed9b57273087055",
+      "bytes": 15855,
+      "lines": 248
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\spec.json": {
+      "sha256": "f53c2df78b933629b6d0758c8cefed55711160df9be5a0f0aaec7b39fd922d60",
+      "bytes": 2063,
+      "lines": 39
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\actual_env_spec.json": {
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+      "bytes": 2938,
+      "lines": 77
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\analyze_parent_batch_results.py": {
+      "sha256": "2f159b07f09b28927cbbcb7b69ecf0afb301b204a3d42f3b2e261e40b553df5d",
+      "bytes": 6061,
+      "lines": 76
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\input_manifest.json": {
+      "sha256": "14d03c98380779f9a632a5cf395bce6bb2f63af8358900e616fabb4081552f89",
+      "bytes": 161881,
+      "lines": 1577
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_joint_det_dataset.py": {
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "bytes": 75981,
+      "lines": 1906
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_visual_data_handlers.py": {
+      "sha256": "6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177",
+      "bytes": 10126,
+      "lines": 271
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_pv_utils.py": {
+      "sha256": "190c0f70e075482e0c1ea136ca46e840d6c4159a426a7f096f05eb8a39e731fd",
+      "bytes": 23024,
+      "lines": 599
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_prepare_data.py": {
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "bytes": 19658,
+      "lines": 466
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\parent_pv_ground.py": {
+      "sha256": "20c353512939ac9087cd8f3d07b82a648bcefe42510563e26afc37235facdb7c",
+      "bytes": 24844,
+      "lines": 588
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\parent_source_port.json": {
+      "sha256": "0375886f9df2b3ac18a63ce7571d672ceb433613b6defdfcd9f8d244a20bf855",
+      "bytes": 11283,
+      "lines": 123
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\FINDINGS.json": {
+      "sha256": "713aace4b6f87cab6f319ffac6bb33e00047a5520eb5535b63269d503913f8f1",
+      "bytes": 6795,
+      "lines": 162
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\INFERENCE_PROTOCOL_FACTS.json": {
+      "sha256": "4095332ec45ab3ae8259312938324f0b1cab7ab0bd6782ee53574c6a0b7bd462",
+      "bytes": 1310,
+      "lines": 24
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\PREFLIGHT_AND_FORMAL_NOTES.md": {
+      "sha256": "aaac8c079856b5d3f6b52e9be3df2610c131dedc2a8f686317477ad9e340e96d",
+      "bytes": 3062,
+      "lines": 16
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_and_formal_publication.json": {
+      "sha256": "e54a9459b1df3074bbfaf1a6b0716a9bbafba2d922cb97f4bc11f7ca11201761",
+      "bytes": 1036,
+      "lines": 31
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\SOURCE_INTAKE.json": {
+      "sha256": "a324040b8a9a3eb1d58e00f876e579b9fb789f0184c3c04b9d808917499ddf0e",
+      "bytes": 1841,
+      "lines": 45
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\PARENT_ENTRY_INTAKE.json": {
+      "sha256": "7916ed7f825df91df061754e3cde663eea140e32cd14078e1bdefca3ddb2d763",
+      "bytes": 5594,
+      "lines": 119
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\HELPER_SOURCE_COMPARISON.json": {
+      "sha256": "adf94815c271f65a2e077a688e10971a6c9fc1dcec28189502ea1b968670c4e0",
+      "bytes": 453,
+      "lines": 13
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\trace_character_spans.py": {
+      "sha256": "e55c89770b75da8f22034dcef4a0abec8bcedc6d5e48f00e8156e132f3ad4871",
+      "bytes": 3871,
+      "lines": 80
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\CAPTION_SOURCE.json": {
+      "sha256": "74acb56f238720e5fbcde0ae9b73a6b2f5514b2616ae25b1831df6c39e89a122",
+      "bytes": 464,
+      "lines": 7
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\historical_parsed_captions.json": {
+      "sha256": "5ae0f03446f9bc0d954733fc78ec2780fe92be2ea1524a76bb3d505ad16513ec",
+      "bytes": 1497208,
+      "lines": 1
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\parser_mappings_actual\\INTAKE.json": {
+      "sha256": "a20e1e2ee5347bb5339bc96a5e7b3069ae364ace48f7fa27b9694c983518a4b1",
+      "bytes": 1349,
+      "lines": 33
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\official_entry_sources\\INTAKE.json": {
+      "sha256": "6c7ddbd3c460ba68064b7db5377d0f805b2d33255945451236669123f77f1486",
+      "bytes": 1115,
+      "lines": 26
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\official_entry_sources\\train_dist_mod.py": {
+      "sha256": "e604249b116309737e98e86dda1e21631d4538778dca739d7e6484855e7db750",
+      "bytes": 16973,
+      "lines": 409
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\official_entry_sources\\main_utils.py": {
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "bytes": 24599,
+      "lines": 642
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\official_entry_sources\\models\\pv_ground.py": {
+      "sha256": "fca2dcb6b5dd1dd59b9f4e12f999664f1aa6730374aef6ed09a66fe0a2f0a2f7",
+      "bytes": 24178,
+      "lines": 577
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\official_entry_sources\\scripts\\test_scanrefer.sh": {
+      "sha256": "66826dda453ca38da7a751072438b74fdc46141e3bd04b67006914b70d3f7e31",
+      "bytes": 773,
+      "lines": 20
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_compressed_geometry_support_20261008\\pretrained_reproduction_question\\author_grounding_evaluator.py": {
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "bytes": 41473,
+      "lines": 902
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_compressed_geometry_support_20261008\\pretrained_reproduction_question\\PV-Ground_ScanRefer.txt": {
+      "sha256": "cc02fec42d9b7ea101e8603190aa7d3601e2c623ad472001c11bb7bdd2a4a24d",
+      "bytes": 4921,
+      "lines": 64
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\losses.py": {
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "bytes": 40468,
+      "lines": 973
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\encoder_decoder_layers.py": {
+      "sha256": "e2cb80a29651f8540edd0a84c6d07072c9933430513c55f3bbe254006788d736",
+      "bytes": 21540,
+      "lines": 536
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\pv_utils.py": {
+      "sha256": "3e8c069af235970c541aa07d9780e812e609d798d242a013d64abdf89307bc29",
+      "bytes": 23949,
+      "lines": 612
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\pv_backbone.py": {
+      "sha256": "8d25ef7bbc18abce9c755cf41718708ff16ec78d8bd32aa11e6cdd484c23ffc9",
+      "bytes": 2216,
+      "lines": 50
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\src\\joint_det_dataset.py": {
+      "sha256": "ee4ebfacedb0d45873b0ff5db0f056a8055e544bca516cf22d9b440681916618",
+      "bytes": 58210,
+      "lines": 1460
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\src\\visual_data_handlers.py": {
+      "sha256": "8858aa1d7019aa5f06065bd13fcc35fe130e347787c088269c3535939806060a",
+      "bytes": 9855,
+      "lines": 271
+    },
+    "C:\\Users\\gb\\.codex_mcln_g0_20260905\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\pvground_source_query.py": {
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "bytes": 3025,
+      "lines": 63
+    },
+    "C:\\Users\\gb\\.codex_mcln_g0_20260905\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\pvground_observation_query.py": {
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "bytes": 7683,
+      "lines": 142
+    },
+    "C:\\Users\\gb\\.codex_mcln_g0_20260905\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\pvground_task_observation_query.py": {
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "bytes": 2770,
+      "lines": 62
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\formal_analysis\\SUMMARY.json": {
+      "sha256": "33b256f2230804a0ee9726014356f4cd47427f9d9c7c4b8c771dc5c6c1895fd8",
+      "bytes": 4289,
+      "lines": 181
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\INTAKE.json": {
+      "sha256": "3aa32d82de0f509a1faf2a309626e496cda97fd894cc80d315d34738ce36cb7b",
+      "bytes": 2079,
+      "lines": 67
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal_receipt.json": {
+      "sha256": "e7a7287b98da48d1c1834197358afaa706236e09ae15c8e63d4ad0e8ce80223d",
+      "bytes": 3230,
+      "lines": 109
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal_imports.json": {
+      "sha256": "46c1733bd6a9fffd685399c7dbd7e988ce53280106ba6e46757bbd8f33a6b91f",
+      "bytes": 1353,
+      "lines": 26
+    },
+    "C:\\Users\\gb\\.codex_mcln_g0_20260905\\refine-logs\\pvground_scanrefer_formal_20260918_semantic_assignment_v1\\published_parent\\receipt.json": {
+      "sha256": "b3db10496234299acef08bd569ded05a68cb625bab1d593449c4d951e1609727",
+      "bytes": 893,
+      "lines": 30
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_env_spec.json": {
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+      "bytes": 2938,
+      "lines": 77
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\historical_parent_rows.jsonl": {
+      "sha256": "3b8f6a871083b27c07d503d92bc452b07617f89c5cc2dbe721dd2b274134212e",
+      "bytes": 6477817,
+      "lines": 9508
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_parser\\__init__.py": {
+      "sha256": "e7b3fb44d24872c61761550d05a669e54dbd10647f0c425f50af56aa15d19915",
+      "bytes": 433,
+      "lines": 18
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_parser\\database.py": {
+      "sha256": "4f998ec8ed2b39ce88c338b3d1050cd274015785b5eeb41bc909002354534aa9",
+      "bytes": 1076,
+      "lines": 42
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_parser\\parser.py": {
+      "sha256": "a459ddc48d669d50f90905d401ed52ea2b10197bf9ee82450893091713c2b93a",
+      "bytes": 3925,
+      "lines": 126
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_parser\\utils.py": {
+      "sha256": "fa1091a72a161cc2b45d5c9993737547a03ccfe9caa35ddd2c00b70fc5f49b1d",
+      "bytes": 1865,
+      "lines": 59
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_parser\\backends\\__init__.py": {
+      "sha256": "3ea95ec57c00fbcdaab3be13b1d1470fa791b89de481e32bef856c033e9a4627",
+      "bytes": 326,
+      "lines": 13
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_parser\\backends\\backend.py": {
+      "sha256": "1cb360f0489b4d141182aa1225e80d517e7c89ad8db6034d4acbe60d624f2666",
+      "bytes": 567,
+      "lines": 23
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_parser\\backends\\spacy_parser.py": {
+      "sha256": "252f40a8136b32e76be1e5d313b4b3441516169ad26a05a7fd39b08593add829",
+      "bytes": 33406,
+      "lines": 767
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\author_runtime_parser\\__init__.py": {
+      "sha256": "86b115359b38eb7074e0c2a2413482ce5b45ce6ec715ece34a3ee0fee3d86fdb",
+      "bytes": 415,
+      "lines": 18
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\author_runtime_parser\\database.py": {
+      "sha256": "906ef11369bd8a251533e0275277c484a24119b676e7e7ee37524b127395c68a",
+      "bytes": 1035,
+      "lines": 42
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\author_runtime_parser\\parser.py": {
+      "sha256": "f3d4645fe4b0f36599b4e3f99db8da981a93da0253464ed4e6d9757d474604b2",
+      "bytes": 3799,
+      "lines": 126
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\author_runtime_parser\\utils.py": {
+      "sha256": "1fe0947ebc9b74632d2e1b92e30748bafe15ee713eedb15d112a1d4e03fc1c31",
+      "bytes": 1806,
+      "lines": 59
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\author_runtime_parser\\backends\\__init__.py": {
+      "sha256": "f0b1df90f4ed0b2a3400d3988880ad1e89c327b20c4ab6d0f081f2398420c2c5",
+      "bytes": 313,
+      "lines": 13
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\author_runtime_parser\\backends\\backend.py": {
+      "sha256": "9e9ce8b998ca5cf498e1262a52be10aafd28af2e31597117cc350eef2f26bbe3",
+      "bytes": 544,
+      "lines": 23
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\author_runtime_parser\\backends\\spacy_parser.py": {
+      "sha256": "78aaa214d59eef1754580718c498008ae81ec6fb9e93893a53aacc295f354a4a",
+      "bytes": 28997,
+      "lines": 673
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "lines": 1
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal.log": {
+      "sha256": "552ff4ae628a7c28f7ffac43bb8900c4b4b2a19e14fecefd34b80c267165c003",
+      "bytes": 7035,
+      "lines": 44
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch24\\boxes.npy": {
+      "sha256": "5bf83c6ae5248bacbe80713dabb9eeea6d126ac4e12d6183a8dca3a0d96f8a00",
+      "bytes": 58417280
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch24\\receipt.json": {
+      "sha256": "0305634811f822aa04bbbc0a2fa85610d3638528d6d108bae200c184b5763e1a",
+      "bytes": 1259,
+      "lines": 47
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch24\\rows.jsonl": {
+      "sha256": "ff15989bbe588225edcda7434f008d1cd3e648c61e732b56479eda9a6ee6ca21",
+      "bytes": 9321946,
+      "lines": 9508
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch24\\scores.npy": {
+      "sha256": "35e480b377adba1e0b3db08bd252a82b1b08fe746e39588daa89e2bc93d1d362",
+      "bytes": 19472512
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch8\\boxes.npy": {
+      "sha256": "4d1c8716672376bb7fe717832aa47a5b4dba5a52ff6410869f9ee55ffc7318c2",
+      "bytes": 58417280
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch8\\receipt.json": {
+      "sha256": "26a4153036861436ae223a11e68cae984dc9a1899dcf3fffb1878fcfeb58280c",
+      "bytes": 1258,
+      "lines": 47
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch8\\rows.jsonl": {
+      "sha256": "70a43c294d4b47ceaa375f3fb5b279c9b7b3c0129e70d0ab85083d6194b4903b",
+      "bytes": 9320454,
+      "lines": 9508
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch8\\scores.npy": {
+      "sha256": "5ff8014a25f3ad27abe28d55494af618d8253e48e5a5547935cdcd4c272ab4d2",
+      "bytes": 19472512
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\parser_mappings_actual\\actual_dataset.json": {
+      "sha256": "bf286abc15663e25c3197a01c7bb90cb20f3478b600a6256ad974bb40c0e239f",
+      "bytes": 10320,
+      "lines": 1
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\parser_mappings_actual\\parent_model.json": {
+      "sha256": "bf286abc15663e25c3197a01c7bb90cb20f3478b600a6256ad974bb40c0e239f",
+      "bytes": 10320,
+      "lines": 1
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\parser_mappings_actual\\author_runtime.json": {
+      "sha256": "bf286abc15663e25c3197a01c7bb90cb20f3478b600a6256ad974bb40c0e239f",
+      "bytes": 10320,
+      "lines": 1
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\span_trace_actual\\INTAKE.json": {
+      "sha256": "77a7355ec0747807832021905f55b8ac895514955379830b06e1b7f55c1bccc4",
+      "bytes": 787,
+      "lines": 28
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\span_trace_actual\\span_trace.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2,
+      "lines": 1
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\span_trace_actual\\span_trace.log": {
+      "sha256": "17a11716fbfff1d0cf4c3e8cf45527851c7c258e8b550dd3bdd159037cf9070f",
+      "bytes": 2448,
+      "lines": 19
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\span_trace_actual\\SPAN_TRACE_ROWS.jsonl": {
+      "sha256": "2131306632a1428c0507cdb4b986b481e7133570b2d265a70d78c9b8f9ae58e3",
+      "bytes": 1311757,
+      "lines": 9508
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_pretrained_protocol_20261009\\span_trace_actual\\SPAN_TRACE_RECEIPT.json": {
+      "sha256": "a8c6ad17d3806864e10975c85b0daac67c3ef4b51d1195a6096fc13c15ddca1c",
+      "bytes": 829,
+      "lines": 20
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": {
+      "sha256": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+      "bytes": 2948,
+      "lines": 48
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\reviewer-independence.md": {
+      "sha256": "1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0",
+      "bytes": 1843,
+      "lines": 68
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\experiment-integrity.md": {
+      "sha256": "22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60",
+      "bytes": 2355,
+      "lines": 49
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": {
+      "sha256": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+      "bytes": 4433,
+      "lines": 144
+    },
+    "C:\\Users\\gb\\.codex\\skills\\experiment-audit\\SKILL.md": {
+      "sha256": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+      "bytes": 10983,
+      "lines": 292
+    }
+  },
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "details": "The inspected active path loads ScanRefer scene/object annotations and cached ScanNet object points. GT boxes/masks are derived from annotated objects, not model predictions. Full raw-dataset/cache reconstruction was not performed.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_joint_det_dataset.py",
+          "line": 594
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_joint_det_dataset.py",
+          "line": 636
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_joint_det_dataset.py",
+          "line": 1086
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_visual_data_handlers.py",
+          "line": 132
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_visual_data_handlers.py",
+          "line": 225
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 184
+        }
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "REC and saved Mask-hit rates divide integer strict-IoU-threshold hits by 9508 expressions per arm. Box and Mask IoUs use intersection/union. Prediction softmax and token-map arithmetic are ranking operations, not performance rescaling. No performance denominator based on prediction maximum/minimum/mean was found.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 195
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 210
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 225
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\analyze_parent_batch_results.py",
+          "line": 52
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_compressed_geometry_support_20261008\\pretrained_reproduction_question\\author_grounding_evaluator.py",
+          "line": 296
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_compressed_geometry_support_20261008\\pretrained_reproduction_question\\author_grounding_evaluator.py",
+          "line": 897
+        }
+      ]
+    },
+    "C_result_existence_and_consistency": {
+      "status": "WARN",
+      "core_result_status": "PASS",
+      "details": "Both complete result arms, receipts and successful exit/log exist; hashes and recounted numbers agree. The earlier helper-comparison metadata calls an LF-normalized digest actual_source_sha256 without labeling normalization. This does not invalidate the formal input hash or Box results. Earlier FINDINGS/publication documents are explicitly launch-era snapshots, not current completion records.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\INTAKE.json",
+          "line": 2
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal.log",
+          "line": 25
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal.log",
+          "line": 44
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal_receipt.json",
+          "line": 2
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\HELPER_SOURCE_COMPARISON.json",
+          "line": 3
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal_imports.json",
+          "line": 8
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_and_formal_publication.json",
+          "line": 26
+        }
+      ]
+    },
+    "D_metric_call_paths": {
+      "status": "PASS",
+      "details": "The formal runner calls the checksum-pinned author GroundingEvaluator.evaluate, which calls both Box branches and both Mask branches. Native top-1 Box counters are explicitly asserted against saved-row counts. The runner also calculates and saves selected Mask IoUs, but does not assert equality to native Mask accumulators; this audit only recounts saved Mask IoUs. No claimed metric was found to rely on an uncalled metric function.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 83
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 178
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 227
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_compressed_geometry_support_20261008\\pretrained_reproduction_question\\author_grounding_evaluator.py",
+          "line": 194
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_compressed_geometry_support_20261008\\pretrained_reproduction_question\\author_grounding_evaluator.py",
+          "line": 650
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_compressed_geometry_support_20261008\\pretrained_reproduction_question\\author_grounding_evaluator.py",
+          "line": 755
+        }
+      ]
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "Each arm contains 9508 expressions across 141 scenes and 2068 scene-target pairs, using one pinned parent checkpoint and seed 2027, once at batch8 and once at batch24. The 312 verified superpoint files are a manifest count, not the number of evaluated scenes. This is inference/evaluation, not training, a new method, multi-seed robustness, an isolated causal test, or proof of author-log reproduction.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 137
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 146
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 159
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal_receipt.json",
+          "line": 102
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal_receipt.json",
+          "line": 106
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\formal_analysis\\SUMMARY.json",
+          "line": 173
+        }
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": "The two REC evaluations and the original recorded Mask evaluations target dataset-provided GT. The present CPU Mask check is an artifact recount of real-GT evaluation, not raw-Mask reconstruction and not synthetic/self-supervised proxy evaluation. The all256 oracle is GT-assisted candidate coverage, not deployable top-1 accuracy. The character-span trace is a software-consistency diagnostic, not an accuracy evaluation.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_joint_det_dataset.py",
+          "line": 1100
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\actual_joint_det_dataset.py",
+          "line": 1389
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 209
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\analyze_parent_batch_results.py",
+          "line": 53
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\trace_character_spans.py",
+          "line": 30
+        }
+      ]
+    }
+  },
+  "blocking_findings": [],
+  "blocking_scope": "None for the explicitly scoped local artifact recount and batch comparison.",
+  "nonblocking_findings": [
+    {
+      "id": "N1",
+      "finding": "Earlier helper digest metadata is normalized, not raw.",
+      "detail": "Actual imported helper raw SHA256 is 6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177. Replacing its 271 CRLF endings with LF yields 8858aa1d7019aa5f06065bd13fcc35fe130e347787c088269c3535939806060a, the value called actual_source_sha256 in HELPER_SOURCE_COMPARISON/FINDINGS. The raw formal import/spec match and the normalized source/AST equality both pass.",
+      "action": "Label the latter digest LF-normalized; retain the raw digest for imported-file identity.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\HELPER_SOURCE_COMPARISON.json",
+          "line": 3
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\FINDINGS.json",
+          "line": 108
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal_imports.json",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "id": "N2",
+      "finding": "Historical batch8 Mask IoUs are not identical at two expressions.",
+      "detail": "In both bbs and bbf, row 382 changes from 0.6515151262283325 to 0.631321370601654; row 3407 changes from 0.8547626733779907 to 0.8754024505615234. All historical/current selected Box fields and Box-IoU decisions match; Mask threshold decisions also match. No cause for these Mask differences is established by the saved artifacts.",
+      "action": "Say identical recorded Box/score array digests and identical REC/Mask hit decisions; do not say all-output or exact Mask replay identity.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\historical_parent_rows.jsonl",
+          "line": 383
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch8\\rows.jsonl",
+          "line": 383
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\historical_parent_rows.jsonl",
+          "line": 3408
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\formal_actual\\formal\\batch8\\rows.jsonl",
+          "line": 3408
+        }
+      ]
+    },
+    {
+      "id": "N3",
+      "finding": "Input hashes cover selected input fields and declarations, not the full original environment.",
+      "detail": "Point, detector-box and five-map digest strings agree across all rows. Underlying raw point/map/detector tensors are absent locally. Detector class IDs/validity masks, token IDs and padding masks, per-row superpoints, GT masks and complete scan caches are not certified by those three row hashes. Checkpoint byte/state claims are executable-source assertions plus completion records, not a fresh local weight inspection.",
+      "action": "Retain explicit provenance and tensor-coverage limits.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 190
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 166
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 54
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\preflight_r3\\evaluate_parent_batches.py",
+          "line": 230
+        }
+      ]
+    },
+    {
+      "id": "N4",
+      "finding": "Batch comparison has one run per setting and does not reproduce the published author log.",
+      "detail": "Aggregate batch changes include Gumbel draw layout, padding, and any batch-dependent numerical behavior. The public test script requests batch24, but does not attest the exact configuration/RNG state/checkpoint bytes behind the published log. Matching batch24 does not close the same-mode log gap.",
+      "action": "Report an aggregate fixed-seed batch-protocol comparison and an unresolved author-log discrepancy.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\parent_pv_ground.py",
+          "line": 293
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\parent_pv_ground.py",
+          "line": 586
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\official_entry_sources\\train_dist_mod.py",
+          "line": 392
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\official_entry_sources\\scripts\\test_scanrefer.sh",
+          "line": 7
+        },
+        {
+          "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_compressed_geometry_support_20261008\\pretrained_reproduction_question\\PV-Ground_ScanRefer.txt",
+          "line": 4
+        }
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "Saved native REC counts and paired batch24-versus-batch8 changes",
+      "impact": "supported"
+    },
+    {
+      "id": "C2",
+      "claim": "Saved Mask-IoU hit counts",
+      "impact": "supported_with_qualifier",
+      "qualifier": "Recount only; no reconstruction of raw masks or independent equality assertion against native Mask accumulators."
+    },
+    {
+      "id": "C3",
+      "claim": "Historical batch8 reproduction",
+      "impact": "supported_with_qualifier",
+      "qualifier": "Same selected Box/query/IoU values and hit decisions; current complete arrays match historical receipt digests. Two saved Mask IoUs differ. Historical array bytes were unavailable locally."
+    },
+    {
+      "id": "C4",
+      "claim": "Frozen official-parent evaluation without a learned reader or training",
+      "impact": "supported_with_qualifier",
+      "qualifier": "Locally ported model path, ten parameter-free observation wrappers, strict persistent-state checks and completion receipts; no independent local checkpoint/tensor inspection."
+    },
+    {
+      "id": "C5",
+      "claim": "All raw inputs or author environment are identical",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C6",
+      "claim": "Author log discrepancy is caused solely by Gumbel sampling, padding, parser, or batch size",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C7",
+      "claim": "Batch24 reproduces author REC values or provides a new method/checkpoint",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C8",
+      "claim": "Three parser dictionaries are byte-identical and saved span trace has zero differences",
+      "impact": "supported_with_qualifier",
+      "qualifier": "528-entry current dictionary exports and recorded 96739 shadow calls; not complete legacy parser/spaCy/runtime replay."
+    },
+    {
+      "id": "C9",
+      "claim": "Helper source is byte-identical before newline normalization",
+      "impact": "unsupported",
+      "qualifier": "LF-normalized bytes and checked method ASTs agree; raw digests differ."
+    },
+    {
+      "id": "C10",
+      "claim": "The main-method retained-best values or promotion tracker were independently audited here",
+      "impact": "not_audited",
+      "qualifier": "5599/4859 and target 5658/4850 are contextual declarations in supplied files; this audit verifies the official-parent protocol arms."
+    }
+  ],
+  "unsupported_stronger_claims": [
+    "C5",
+    "C6",
+    "C7",
+    "C9"
+  ],
+  "verification_script": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\formal_analysis\\AUDIT_verify.py",
+  "verification_script_sha256": "2cf56b24be5f40ca00c2fb5044ed0f09a70fcb68b73ed0185ada728b471160a7",
+  "evidence_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\formal_analysis\\AUDIT_evidence.json",
+  "selected_row_evidence_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\formal_analysis\\AUDIT_selected_box_recount.jsonl",
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_pretrained_protocol_20261009\\formal_analysis\\AUDIT_trace",
+  "limits": [
+    "No reconstruction of raw GT or scan caches, detector inputs, native maps, or superpoints; stored input digest values are compared, not independently recomputed from absent underlying tensors.",
+    "No raw masks/logits/pointwise GT masks are saved here; Mask validation is a recount of recorded IoUs.",
+    "No independent checkpoint byte hash or 1234-tensor comparison; state claims are supported by inspected source assertions and completion receipts.",
+    "The historical selected rows were directly read and hashed. Historical array comparison uses their published receipt digests.",
+    "Author log is a rounded aggregate record without sampled inputs/RNG snapshot; this audit does not establish author-environment equivalence or isolated causality."
+  ],
+  "new_model_forwards": 0,
+  "remote_calls": 0,
+  "new_gpu_jobs": 0,
+  "weights_modified": 0
+}

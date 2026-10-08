@@ -1,0 +1,60 @@
+{
+  "pid": 973371,
+  "screen": "pvg_support_identity_fit_20261009",
+  "command": [
+    "flock",
+    "-n",
+    "/root/autodl-tmp/mcln_v99_backbone_gpu0.lock",
+    "env",
+    "CUDA_HOME=/usr/local/cuda",
+    "CUDA_VISIBLE_DEVICES=0",
+    "HF_HUB_OFFLINE=1",
+    "MAX_JOBS=4",
+    "MKL_NUM_THREADS=1",
+    "OMP_NUM_THREADS=1",
+    "OPENBLAS_NUM_THREADS=1",
+    "PYTHONPATH=/root/autodl-tmp/pvground_support_identity_20261009:/root/autodl-tmp/pvground_compressed_geometry_support_20261008:/root/autodl-tmp/pvground_final_quality_20261005/quality:/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/PV-Ground/pointnet2:/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/PV-Ground:/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/OpenPCDet",
+    "TOKENIZERS_PARALLELISM=false",
+    "TORCH_CUDA_ARCH_LIST=8.0",
+    "TRANSFORMERS_OFFLINE=1",
+    "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+    "-B",
+    "-u",
+    "/root/autodl-tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+    "--spec",
+    "/root/autodl-tmp/pvground_support_identity_20261009/campaign_spec.json"
+  ],
+  "status": "ACTUAL_PAIRED_IDENTITY_CAMPAIGN_STARTED_NOT_COMPLETE",
+  "root": "/root/autodl-tmp/pvground_support_identity_20261009",
+  "time_cst": "2026-10-09T04:17:29.418064+08:00",
+  "first_observation_cst": "2026-10-09T12:12:29.418064+08:00",
+  "estimated_finish_cst": "2026-10-09T12:17:29.418064+08:00",
+  "later_poll_seconds": 240,
+  "optimizer_steps_planned_per_arm": 3723,
+  "fit_examples_planned_per_arm": 29778,
+  "seed": 2027,
+  "multiseed": false,
+  "historical_best_hits": [
+    5599,
+    4859
+  ],
+  "target_hits": [
+    5658,
+    4850
+  ],
+  "resources": {
+    "gpu": {
+      "index": 0,
+      "name": "NVIDIA A100-PCIE-40GB",
+      "used_mib": 1,
+      "total_mib": 40960
+    },
+    "data_free": 816177152,
+    "system_free": 393121792,
+    "environment_rebuilt": false,
+    "new_packages": 0,
+    "preflight_closed_exit0": true
+  },
+  "preflight_updates_carried": false,
+  "formal_accuracy_result": false
+}

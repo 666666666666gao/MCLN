@@ -1,0 +1,474 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "blocking_findings": [],
+  "summary": "No concrete blocking defect was found in the inspected prepared paired campaign, launcher, or collector. This is a source review supported by the already captured actual M0 artifacts, not formal execution, accuracy, endpoint-restoration, or resource certification.",
+  "review_date": "2026-10-09",
+  "routing_requested": {
+    "provider": "native",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "context": "fresh source review requested by parent"
+  },
+  "identity_attestation": {
+    "status": "UNATTESTED",
+    "actual_backend_model": null,
+    "actual_backend_effort": null,
+    "acceptance": "same-family provisional",
+    "independently_attested": false
+  },
+  "nonblocking_findings": [
+    {
+      "id": "N1",
+      "kind": "required_post_run_validation",
+      "title": "Formal saved-terminal reconstruction is still a next step",
+      "detail": "The campaign saves an eight-tensor prefixed head delta, optimizer state, parent/spec references and RNG states, then checks the saved head tensors. It does not rebuild a complete model or reload the formal endpoint optimizer. The actual M0 rebuilt 1299 tensors and reloaded eight optimizer states using an in-memory head/optimizer payload; that supports the installation design but is a different payload boundary from a saved formal terminal. No current artifact establishes terminal reconstruction or independently repeated full-forward identity.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "363-371"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_preflight.py",
+          "lines": "179-201"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/actual/preflight.json",
+          "lines": "24-88"
+        }
+      ],
+      "required_action": "After actual completion, consume the real formal terminal schema, validate the complete reconstructed state and optimizer, and check the integrated native forward before promotion. This is not a request to repeat the already closed M0 or a source blocker to the prepared comparison."
+    },
+    {
+      "id": "N2",
+      "kind": "claim_scope",
+      "title": "The paired experiment isolates candidate-specific support pooling on a fixed parent",
+      "detail": "The two heads share initialization, capacity, inputs, optimizer budget and native CE+G recipe. Their sole implemented treatment is fused candidate-specific versus common Text foreground pooling. A win over the shared_text arm would support that treatment at seed 2027 and this parent. It would not itself establish three effective contributions, geometry-head/G necessity, an end-to-end matched-budget baseline, or cross-dataset generalization. Detector perturbation is explicitly disabled in both new arms; FORMAL_PLAN discloses that earlier Mask-head fitting enabled it, so the historical best is not this adaptation control.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/support_identity_readout.py",
+          "lines": "26-53"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "131-143,317-361"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/FORMAL_PLAN.md",
+          "lines": "7-9,17-19"
+        }
+      ],
+      "required_action": "Report the paired treatment result separately from progress against 5599/4859 and the joint 5658/4850 goal. Do not count source/M0 success as an effective contribution; retain the stated later three-contribution and independent Nr3D/Sr3D requirements."
+    },
+    {
+      "id": "N3",
+      "kind": "claim_scope",
+      "title": "Cached counterfactual results are not independent deployment measurements",
+      "detail": "Formal scoring runs one frozen parent and two extra native semantic-subhead calls on the same cached query/masks/boxes. This is a valid paired comparison and the code explicitly records the two counterfactual calls. Its actual_deployment_native_head_calls=1 receipt field is a source/M0-backed architectural statement, not an observation of a rebuilt formal terminal during that evaluation. Likewise, an initial_formal versus later formal difference can include independent parent-forward variation; the same-forward parent rows are the appropriate repair/damage reference.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "209-224,249-305"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py",
+          "lines": "508-515,580-587"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "lines": "19-57"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/FORMAL_PLAN.md",
+          "lines": "7,11,15"
+        }
+      ],
+      "required_action": "Keep the cached-forward/deployment distinction in result reporting. Use the recorded same-forward parent for attribution, and leave full restored-terminal deployment validation to the actual result gate."
+    },
+    {
+      "id": "N4",
+      "kind": "claim_scope",
+      "title": "Holdout and development validation do not provide an untouched final generalization test",
+      "detail": "The new fit uses exactly the declared 29778 training expressions once and excludes the 6887 expression holdout by physical-scene grouping. The supplied plan correctly describes that holdout as drawn from author-seen training scenes. The full 9508 ScanRefer split is also the development target for the protected lineage. These scopes are suitable for this declared development experiment, but neither makes the inherited full model independent of those training scenes or erases prior development selection.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "57-61,153-163,310-318,361,372-380"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/FORMAL_PLAN.md",
+          "lines": "3,11,19"
+        }
+      ],
+      "required_action": "Retain these scope descriptions in later tables. Do not describe the holdout as unseen by all inherited training or the 9508 target as an untouched final test."
+    }
+  ],
+  "source_checks": [
+    {
+      "area": "Source routing and existing bindings",
+      "conclusion": "The loader is imported from manifest.model_source before model imports; computational model/loss/processor imports are asserted to come from parent_spec.model_source. The evaluator is loaded explicitly by file and checked against the existing native evaluator digest. Locally checked declared bindings match. The supplied actual dataset export is bound by SOURCE_INTAKE to the intended appearance-loader remote path; it is not the older task-observation model tree's dataset.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "53-76,94-118"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/SOURCE_INTAKE.json",
+          "lines": "actual_joint_det_dataset.py file entry"
+        }
+      ]
+    },
+    {
+      "area": "Split, exact exposure and augmentation",
+      "conclusion": "The scene-salt fold is recomputed before annotation parsing and compared with the sealed row IDs; fit/holdout physical scene sets must be disjoint. One shuffled non-dropping B8 pass is checked by Counter against all 29778 fit IDs, with batch size 2 at update 3723. Both arms consume each same prepared batch. Point-cloud/native target augmentation is enabled only during fitting; detector boxes track spatial transforms while extra detector corruption remains disabled. Evaluation disables augmentation.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "153-207,310-322,350-374"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/actual_joint_det_dataset.py",
+          "lines": "823-919,1086-1119,1189-1256,1269-1275"
+        }
+      ]
+    },
+    {
+      "area": "GT boundary",
+      "conclusion": "prepare sends only points/voxels, text, superpoints and detected object inputs to the parent. The residual reads frozen semantic queries, predicted masks/alpha, visual features and actual member counts. Ground-truth boxes/masks are joined only for training/evaluation. butd_gt and butd_cls are disabled. Root ranking maps are parsed language spans; the active parser uses first_object selection from text, not target_id/object-name injection.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "190,199-206,328-337"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/support_identity_readout.py",
+          "lines": "18-53"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/actual_joint_det_dataset.py",
+          "lines": "981-1082,1360-1372,1784-1786,1872-1899"
+        }
+      ]
+    },
+    {
+      "area": "Support feature/readout semantics",
+      "conclusion": "Actual superpoint native_ids and bincount members define the point-weighted mean. The candidate arm thresholds the same alpha*Text+(1-alpha)*corrected-Query mask used in deployment; the common arm uses the Text foreground. An empty foreground produces a zero visual input without an alternate region or score. The observed M0 candidate empty-query counts are 990 then 998 of 2048; these are not the earlier selected-reference-invalid count.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/support_identity_readout.py",
+          "lines": "25-53"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+          "lines": "54-66"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py",
+          "lines": "12-37"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/actual/preflight.json",
+          "lines": "witnesses"
+        }
+      ]
+    },
+    {
+      "area": "Independent train graphs and optimizers",
+      "conclusion": "The head state is copied exactly but parameter storage differs. Each head owns a fresh AdamW optimizer; parent tensors are frozen, forward-cached under no_grad and detached. Shallow prediction dictionaries share only frozen parent outputs; each arm replaces its own semantic tensor and builds its own graph. Gradients are cleared after each arm; the other head and parent are checked for absent gradients. The active criterion creates target/intermediate tensors rather than mutating the shared GT or parent tensors used by the other arm.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "127-143,209-224,323-348,361-362"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/losses.py",
+          "lines": "202-264,458-559,562-778,849-973"
+        }
+      ]
+    },
+    {
+      "area": "Native CE and G matching",
+      "conclusion": "The criterion orders proposal_, last_, then five intermediate heads, making matching[1] the actual final assignment. The unchanged native loss weights final CE by 0.5/7. G uses detached final boxes, IoU>0.5 and the complement of every Hungarian-matched query; it replaces only the existing eos-weighted last-layer CE target using the native ScanRefer token weights. Matching itself is recomputed for each arm's logits, as in the native criterion. No enlarged positive-query loss, regression gradient, or contrastive-projection update is introduced.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "331-341"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/main_utils.py",
+          "lines": "267-280"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/losses.py",
+          "lines": "298-381,458-515,808-846,852-853,943-955"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py",
+          "lines": "9-50"
+        }
+      ]
+    },
+    {
+      "area": "Native bbs, Box/Mask and row arrays",
+      "conclusion": "The score helper matches the native root position-aligned bbs reduction, including main-map binarization and auxiliary language-map signs/weights. All 256 boxes and all three bbs score arrays are retained. Each row's Box IoU and fused Mask IoU use the same descending-score top query; repair/damage and top16/32/64/256 coverage use GT only after scoring. Totals are checked against native bbs counts and native mask_pos mean. Native evaluate also computes its historical bbf counters internally, but those do not select the saved answers or participate in a combined score.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "234-307"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+          "lines": "4-9"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/src/grounding_evaluator.py",
+          "lines": "194-206,209-303,535-553,557-653,879-902"
+        }
+      ]
+    },
+    {
+      "area": "Protected parent and saved payload",
+      "conclusion": "The official/G/reference/content parent chain is loaded read-only and frozen. The fit asserts parent state equality and unchanged parent checkpoint hashes; generated endpoints are written only under the new campaign arm directories. The payload records the identity head delta and its optimizer with the parent support digest, spec digest and step/exposure metadata. It does not claim the delta is a standalone model or automatically promote/delete the protected best.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "74-76,120-130,363-380"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py",
+          "lines": "13-71"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_model_factory.py",
+          "lines": "9-30"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/FORMAL_PLAN.md",
+          "lines": "17-19"
+        }
+      ]
+    },
+    {
+      "area": "Deployment and sole scheduled collector",
+      "conclusion": "The launcher requires this SOURCE_ONLY gate with no blockers, closed M0, matching staged source, absence of a prior campaign, an idle sole GPU and data free space >400000000 bytes before one flock-protected launch. It does not install packages or relaunch on observation failure. The first observation is estimated finish minus 300 seconds (7h55m after the launch receipt for the current 8h estimate), then 240 seconds while that original process remains live. On an exit marker, the collector archives the original campaign's files with byte/SHA checks and distinguishes exit 0 from failures. Current runtime resource availability, duration, transfer success and completion are not attested by this review.",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/launch_identity_campaign_authorized.py",
+          "lines": "13-80"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/collect_identity_campaign_authorized.py",
+          "lines": "12-68"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/campaign_spec.json",
+          "lines": "32-35"
+        }
+      ]
+    }
+  ],
+  "actual_m0_artifact_checks": {
+    "source": "Previously captured actual artifacts only; reviewer did not repeat M0.",
+    "intake_exit_code": 0,
+    "intake_process_live": false,
+    "actual_exit_marker_cst": "2026-10-09T03:20:46.787804+08:00",
+    "observed_cst": "2026-10-09T03:23:32.948981+08:00",
+    "intake_file_byte_and_digest_matches": [
+      "preflight.exit",
+      "preflight.log",
+      "preflight.json"
+    ],
+    "log_json_equals_report": true,
+    "status": "PASS_ACTUAL_B8_TWO_STEP_SUPPORT_IDENTITY_PREFLIGHT",
+    "batch_size": 8,
+    "steps_per_arm": 2,
+    "head_parameters": 107040,
+    "head_state_tensors": 8,
+    "parent_state_tensors": 1314,
+    "restored_full_state_tensors": 1299,
+    "optimizer_states_per_arm": 8,
+    "parent_state_unchanged": true,
+    "m0_full_native_loss_vs_last_ce_plus_g_gradients_checked": true,
+    "weight_files_created": 0,
+    "formal_accuracy_result": false,
+    "independent_full_forward_identity_claim": false
+  },
+  "existing_binding_checks": {
+    "status": "MATCH_FOR_LOCALLY_CHECKED_EXISTING_BINDINGS",
+    "checks_performed": [
+      "campaign_spec.files: identity readout and campaign runner",
+      "preflight_spec.new_files: identity readout and M0 runner",
+      "campaign_spec.preflight_sha256 and parent_spec_sha256",
+      "pair_spec.source_port_sha256 and source_port.files: pv_ground.py, losses.py, main_utils.py, prepare_data.py",
+      "pair_spec.native_evaluator_sha256 against supplied evaluator",
+      "pair_spec.new_runner_files: both factories, mask_support_corrector.py, mask_reference.py",
+      "pair_spec.runner_files: native_root_bbs.py, readback_preflight_checks.py, pvground_semantic_assignment.py, whole_mask_range.py, whole_model_preflight_checks.py",
+      "actual/INTAKE.json byte counts and SHA256 for all three M0 files",
+      "pretrained protocol SOURCE_INTAKE.json actual_joint_det_dataset.py bytes/path/SHA256"
+    ],
+    "not_independently_rechecked_here": [
+      "Remote current checkpoint bytes, remote free memory/disk and running-process state",
+      "Full dataset contents, actual row-ID split file and superpoint inventory on the remote machine",
+      "Remote appearance_source_manifest contents; campaign code checks the existing declared binding at launch"
+    ],
+    "new_fingerprint_scheme_added": false
+  },
+  "reviewed_files": [
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/FORMAL_SOURCE_REVIEW_REQUEST.txt",
+      "scope": "full review request"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/FORMAL_PLAN.md",
+      "scope": "full file, lines 1-21"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/support_identity_readout.py",
+      "scope": "full file, lines 1-75"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+      "scope": "full file, lines 1-387"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/campaign_spec.json",
+      "scope": "full file, lines 1-36"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/launch_identity_campaign_authorized.py",
+      "scope": "full source, including embedded resource and launch programs; no execution"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/collect_identity_campaign_authorized.py",
+      "scope": "full source, including embedded observation program; no execution"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_preflight.py",
+      "scope": "full file, lines 1-206; source only"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/actual/preflight.json",
+      "scope": "entire parsed artifact; all four witnesses, both restores, summary fields"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/actual/INTAKE.json",
+      "scope": "full artifact and all recorded byte/digest comparisons"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_model_factory.py",
+      "scope": "full file, lines 1-30"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py",
+      "scope": "full file, lines 1-71"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+      "scope": "full file, lines 1-104"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py",
+      "scope": "lines 270-312 and 326-590: parent forward, support correction, refinement and deferred final semantic head"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/losses.py",
+      "scope": "lines 1-381 and 441-973: geometry, point loss, matching, active CE/box/Mask/contrastive objectives, ordered loss assembly"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/main_utils.py",
+      "scope": "lines 1-32 and 267-280: imports and actual criterion construction"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/src/grounding_evaluator.py",
+      "scope": "lines 56-122, 194-414, 535-781 and 879-902: active native bbs/Mask reductions, bbf side effects and GT parsers; disabled visualization tails not reviewed"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+      "scope": "full file, lines 1-9"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+      "scope": "full file, lines 1-145"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py",
+      "scope": "full file, lines 1-93"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/actual_joint_det_dataset.py",
+      "scope": "imports/method index plus lines 84-177, 200-287, 341-401, 585-735, 823-921, 981-1161, 1189-1489 and 1784-1906: ScanRefer active loader/parse/GT/augmentation/input routes"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_corrector.py",
+      "scope": "full file, lines 1-84"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_reference.py",
+      "scope": "full file, lines 1-117"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py",
+      "scope": "member_statistics lines 12-37 and mask_range_evidence lines 40-67"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+      "scope": "optimizer_restore_exact lines 30-44"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/prepare_data.py",
+      "scope": "imports, generator setup, DataProcessor construction, voxel transformation lines 194-241 and active collation branches 366-385; not all unused processor methods"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/wandb_config.yaml",
+      "scope": "DATA_PROCESSOR lines 1-27 and active model configuration inspected; campaign loads the existing runtime copy"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/source_port.json",
+      "scope": "parsed existing bindings for the inspected model/loss/criterion/processor files"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/input_manifest.json",
+      "scope": "parsed routing, split-salt/protocol and source-binding metadata; no dataset execution"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/SOURCE_INTAKE.json",
+      "scope": "actual_joint_det_dataset.py export entry only"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/parent_source_port.json",
+      "scope": "model_source/parent_source identity and dataset digest inspected to distinguish this older model tree from the actual appearance loader"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/preflight_spec.json",
+      "scope": "full file and both new_files binding checks"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/actual/preflight.exit",
+      "scope": "actual exit value and intake byte/digest match"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/actual/preflight.log",
+      "scope": "startup text and final report parsed; final JSON compared to actual/preflight.json, byte/digest checked"
+    }
+  ],
+  "review_operations": {
+    "performed": [
+      "Read-only local source/artifact inspection",
+      "Local existing SHA256/byte comparisons",
+      "Parsed M0 log/report equality check",
+      "Wrote these two review reports"
+    ],
+    "not_performed": [
+      "SSH or remote queries",
+      "GPU/CPU model execution",
+      "Package installation",
+      "Credential/AUTH reads",
+      "Goal-tool calls",
+      "Implementation mutations",
+      "Sub-agent launch",
+      "Formal campaign execution",
+      "Python AST/import validation"
+    ]
+  },
+  "acceptance_boundary": "No source blocker identified for the declared paired development campaign. Formal launch, actual endpoint completion, CPU recount, fresh result review and complete reconstruction/promotion gates remain separate. Protected best 5599/4859 and the full 5658/4850 plus three-contribution and independent Nr3D/Sr3D goal are not advanced by this review."
+}

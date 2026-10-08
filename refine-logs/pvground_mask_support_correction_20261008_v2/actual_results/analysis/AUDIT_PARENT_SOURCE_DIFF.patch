@@ -1,0 +1,29 @@
+--- C:\Users\gb\.codex\tmp\pvground_geometry_readback_20261004\revision2\source_preview\PV-Ground\models\pv_ground.py
++++ C:\Users\gb\.codex\tmp\pvground_mask_support_correction_20261008_v2\complete_fit\PV-Ground\models\pv_ground.py
+@@ -275,6 +275,7 @@
+         # Init
+         self.init_bn_momentum()
+         self.candidate_box_refiner = None
++        self.candidate_support_corrector = None
+         self.boundary_evidence_readback = None
+ 
+ 
+@@ -556,6 +557,18 @@
+         end_points['adaptive_weights']=adaptive_weight_lists
+         end_points['super_xyz_list'] = super_xyz_list 
+ 
++        end_points['support_geometry_query'] = tail_geometry_query
++        end_points['support_query_features'] = query_last
++        end_points['support_super_features'] = super_features
++        if self.candidate_support_corrector is not None:
++            support_points = inputs['points'][:, 1:].view(inputs['batch_size'], 50000, 6)
++            end_points['support_parent_query_masks'] = sp_pred_masks
++            corrected, geometries = self.candidate_support_corrector(
++                query_last, super_features, support_points, end_points['last_center'],
++                end_points['last_pred_size'], end_points)
++            end_points['sp_last_pred_masks'] = corrected
++            end_points['support_member_geometry'] = geometries
++
+         if self.candidate_box_refiner is not None:
+             raw_points = inputs['points'][:, 1:].view(inputs['batch_size'], 50000, 6)
+             refined_center, refined_size = self.candidate_box_refiner(

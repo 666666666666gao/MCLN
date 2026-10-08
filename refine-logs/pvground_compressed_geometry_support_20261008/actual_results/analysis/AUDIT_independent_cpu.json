@@ -1,0 +1,1279 @@
+{
+  "status": "PASS_DETERMINISTIC_CHECKS_WITH_EXPLICIT_SCOPE_LIMITS",
+  "generated_at": "2026-10-08T15:40:31.437105+00:00",
+  "python": "3.13.12 (main, Feb  3 2026, 22:53:26) [MSC v.1944 64 bit (AMD64)]",
+  "numpy": "2.5.3",
+  "command": "uv run --offline --with numpy python -B -X utf8 analysis/AUDIT_independent_cpu.py",
+  "execution_scope": "ACTUAL_CLOSED_TRAINED_PAIR",
+  "neural_forwards": 0,
+  "torch_imports": 0,
+  "ssh_calls": 0,
+  "archive": {
+    "files": 2423,
+    "bytes": 230030167,
+    "npz_files": 2378,
+    "exact_inventory": true,
+    "every_hash_and_size_matches": true
+  },
+  "source_bindings": [
+    "mask_reference.py",
+    "mask_support_corrector.py",
+    "mask_support_model_factory.py",
+    "matched_mask_objective.py",
+    "paired_support_loop.py",
+    "run_mask_support_pair.py",
+    "selected_mask_reference_factory.py",
+    "support_pair_forward.py"
+  ],
+  "training": {
+    "content": {
+      "updates": 3723,
+      "samples": 29778,
+      "clipped_updates": 324,
+      "gradient_min": 0.0030475184321403503,
+      "gradient_max": 0.359512060880661,
+      "loss_min": 0.12436281144618988,
+      "loss_max": 1.365213394165039,
+      "loss_mean": 0.5189696142318394,
+      "max_coefficient_reconstruction_error": 8.568167686462402e-08
+    },
+    "box_conditioned": {
+      "updates": 3723,
+      "samples": 29778,
+      "clipped_updates": 360,
+      "gradient_min": 0.0030567285139113665,
+      "gradient_max": 0.359576016664505,
+      "loss_min": 0.12435000389814377,
+      "loss_max": 1.3652009963989258,
+      "loss_mean": 0.5189511655756551,
+      "max_coefficient_reconstruction_error": 7.543712854385376e-08
+    }
+  },
+  "fit_id_partition": {
+    "unique_samples": 29778,
+    "total_source_train_rows": 36665,
+    "holdout_rows": 6887,
+    "exact_disjoint_exhaustive_ids": true,
+    "caveat": "Original raw split manifest and raw dataset were not independently rebuilt."
+  },
+  "stages": {
+    "initial_formal": {
+      "rows": 9508,
+      "scan_count": 141,
+      "physical_scene_count": 141,
+      "npz_count": 1189,
+      "recomputed_candidate_ious": 7302144,
+      "metrics": {
+        "parent": {
+          "native_selected_hits": {
+            "0.25": 5598,
+            "0.5": 4848
+          },
+          "cpu_selected_hits": {
+            "0.25": 5598,
+            "0.5": 4848
+          },
+          "native_selected_iou_range": {
+            "minimum": 0.0,
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 107,
+            "greater_than_one_rows": [
+              92,
+              690,
+              708,
+              867,
+              887,
+              908,
+              942,
+              981,
+              1052,
+              1061,
+              1076,
+              1104,
+              1108,
+              1202,
+              1464,
+              1501,
+              1511,
+              1735,
+              1745,
+              1942,
+              2806,
+              2817,
+              2835,
+              2836,
+              2853,
+              2879,
+              3246,
+              3310,
+              3317,
+              3327,
+              3721,
+              3753,
+              3760,
+              3779,
+              3969,
+              4002,
+              4019,
+              4051,
+              4064,
+              4685,
+              4796,
+              4808,
+              5005,
+              5021,
+              5044,
+              5045,
+              5048,
+              5063,
+              5067,
+              5078,
+              5083,
+              5088,
+              5527,
+              5544,
+              5574,
+              5578,
+              5582,
+              5663,
+              5713,
+              5753,
+              5768,
+              5795,
+              5796,
+              5797,
+              5805,
+              5888,
+              5895,
+              5943,
+              5945,
+              6323,
+              6404,
+              6516,
+              6556,
+              6559,
+              6565,
+              7114,
+              7133,
+              7162,
+              7586,
+              7592,
+              7647,
+              7831,
+              7852,
+              7906,
+              7921,
+              7928,
+              7957,
+              7966,
+              8271,
+              8274,
+              8280,
+              8331,
+              8364,
+              8365,
+              8489,
+              8774,
+              8779,
+              8786,
+              8788,
+              8789,
+              9139,
+              9158,
+              9164,
+              9176,
+              9189,
+              9199,
+              9225
+            ]
+          },
+          "full256_oracle_hits": {
+            "0.25": 8925,
+            "0.5": 8163
+          },
+          "cpu_float32_full256_oracle_hits": {
+            "0.25": 8925,
+            "0.5": 8163
+          }
+        },
+        "content": {
+          "native_selected_hits": {
+            "0.25": 5598,
+            "0.5": 4856
+          },
+          "cpu_selected_hits": {
+            "0.25": 5598,
+            "0.5": 4856
+          },
+          "native_selected_iou_range": {
+            "minimum": 0.0,
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 108,
+            "greater_than_one_rows": [
+              92,
+              690,
+              708,
+              867,
+              887,
+              908,
+              942,
+              981,
+              1052,
+              1061,
+              1076,
+              1104,
+              1108,
+              1202,
+              1464,
+              1501,
+              1511,
+              1735,
+              1745,
+              1942,
+              2806,
+              2817,
+              2835,
+              2836,
+              2853,
+              2879,
+              3246,
+              3310,
+              3317,
+              3327,
+              3721,
+              3753,
+              3760,
+              3779,
+              3869,
+              3969,
+              4002,
+              4019,
+              4051,
+              4064,
+              4685,
+              4796,
+              4808,
+              5005,
+              5021,
+              5044,
+              5045,
+              5048,
+              5063,
+              5067,
+              5078,
+              5083,
+              5088,
+              5527,
+              5544,
+              5574,
+              5578,
+              5582,
+              5663,
+              5713,
+              5753,
+              5768,
+              5795,
+              5796,
+              5797,
+              5805,
+              5888,
+              5895,
+              5943,
+              5945,
+              6323,
+              6404,
+              6516,
+              6556,
+              6559,
+              6565,
+              7114,
+              7133,
+              7162,
+              7586,
+              7592,
+              7647,
+              7831,
+              7852,
+              7906,
+              7921,
+              7928,
+              7957,
+              7966,
+              8271,
+              8274,
+              8280,
+              8331,
+              8364,
+              8365,
+              8489,
+              8774,
+              8779,
+              8786,
+              8788,
+              8789,
+              9139,
+              9158,
+              9164,
+              9176,
+              9189,
+              9199,
+              9225
+            ]
+          },
+          "full256_oracle_hits": {
+            "0.25": 8923,
+            "0.5": 8167
+          },
+          "cpu_float32_full256_oracle_hits": {
+            "0.25": 8923,
+            "0.5": 8167
+          },
+          "mask_saved_iou_recount": {
+            "hits": {
+              "0.25": 5812,
+              "0.5": 5126
+            },
+            "miou": 47.082638361846314
+          },
+          "same_forward_parent_transition": {
+            "0.25": {
+              "before": 5598,
+              "after": 5598,
+              "repairs": 6,
+              "damages": 6
+            },
+            "0.5": {
+              "before": 4848,
+              "after": 4856,
+              "repairs": 14,
+              "damages": 6
+            }
+          },
+          "invalid_selected_references": 40
+        },
+        "box_conditioned": {
+          "native_selected_hits": {
+            "0.25": 5598,
+            "0.5": 4856
+          },
+          "cpu_selected_hits": {
+            "0.25": 5598,
+            "0.5": 4856
+          },
+          "native_selected_iou_range": {
+            "minimum": 0.0,
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 108,
+            "greater_than_one_rows": [
+              92,
+              690,
+              708,
+              867,
+              887,
+              908,
+              942,
+              981,
+              1052,
+              1061,
+              1076,
+              1104,
+              1108,
+              1202,
+              1464,
+              1501,
+              1511,
+              1735,
+              1745,
+              1942,
+              2806,
+              2817,
+              2835,
+              2836,
+              2853,
+              2879,
+              3246,
+              3310,
+              3317,
+              3327,
+              3721,
+              3753,
+              3760,
+              3779,
+              3869,
+              3969,
+              4002,
+              4019,
+              4051,
+              4064,
+              4685,
+              4796,
+              4808,
+              5005,
+              5021,
+              5044,
+              5045,
+              5048,
+              5063,
+              5067,
+              5078,
+              5083,
+              5088,
+              5527,
+              5544,
+              5574,
+              5578,
+              5582,
+              5663,
+              5713,
+              5753,
+              5768,
+              5795,
+              5796,
+              5797,
+              5805,
+              5888,
+              5895,
+              5943,
+              5945,
+              6323,
+              6404,
+              6516,
+              6556,
+              6559,
+              6565,
+              7114,
+              7133,
+              7162,
+              7586,
+              7592,
+              7647,
+              7831,
+              7852,
+              7906,
+              7921,
+              7928,
+              7957,
+              7966,
+              8271,
+              8274,
+              8280,
+              8331,
+              8364,
+              8365,
+              8489,
+              8774,
+              8779,
+              8786,
+              8788,
+              8789,
+              9139,
+              9158,
+              9164,
+              9176,
+              9189,
+              9199,
+              9225
+            ]
+          },
+          "full256_oracle_hits": {
+            "0.25": 8923,
+            "0.5": 8167
+          },
+          "cpu_float32_full256_oracle_hits": {
+            "0.25": 8923,
+            "0.5": 8167
+          },
+          "mask_saved_iou_recount": {
+            "hits": {
+              "0.25": 5812,
+              "0.5": 5126
+            },
+            "miou": 47.082638361846314
+          },
+          "same_forward_parent_transition": {
+            "0.25": {
+              "before": 5598,
+              "after": 5598,
+              "repairs": 6,
+              "damages": 6
+            },
+            "0.5": {
+              "before": 4848,
+              "after": 4856,
+              "repairs": 14,
+              "damages": 6
+            }
+          },
+          "invalid_selected_references": 40
+        }
+      },
+      "selected_cpu_native_threshold_mismatches": {
+        "parent": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "content": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "box_conditioned": {
+          "0.25": 0,
+          "0.5": 0
+        }
+      },
+      "max_selected_iou_absolute_error": {
+        "parent": 6.6200876713828904e-06,
+        "content": 6.6200876713828904e-06,
+        "box_conditioned": 6.6200876713828904e-06
+      },
+      "candidate_iou_range": {
+        "parent": {
+          "float32": {
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 6638
+          },
+          "float64": {
+            "maximum": 1.0,
+            "greater_than_one": 0
+          }
+        },
+        "content": {
+          "float32": {
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 6653
+          },
+          "float64": {
+            "maximum": 1.0,
+            "greater_than_one": 0
+          }
+        },
+        "box_conditioned": {
+          "float32": {
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 6653
+          },
+          "float64": {
+            "maximum": 1.0,
+            "greater_than_one": 0
+          }
+        }
+      },
+      "oracle_mismatches": {
+        "content": {
+          "0.25": {
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "256": 0
+          },
+          "0.5": {
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "256": 0
+          }
+        },
+        "box_conditioned": {
+          "0.25": {
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "256": 0
+          },
+          "0.5": {
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "256": 0
+          }
+        }
+      },
+      "oracle_mismatch_examples": [],
+      "score_boundary_ties": {
+        "1": 0,
+        "16": 1,
+        "32": 2,
+        "64": 0
+      },
+      "arm_all256_changed_values": 0,
+      "arm_all256_changed_expressions": 0,
+      "same_forward_control_treatment_transition": {
+        "0.25": {
+          "before": 5598,
+          "after": 5598,
+          "repairs": 0,
+          "damages": 0
+        },
+        "0.5": {
+          "before": 4856,
+          "after": 4856,
+          "repairs": 0,
+          "damages": 0
+        }
+      }
+    },
+    "formal": {
+      "rows": 9508,
+      "scan_count": 141,
+      "physical_scene_count": 141,
+      "npz_count": 1189,
+      "recomputed_candidate_ious": 7302144,
+      "metrics": {
+        "parent": {
+          "native_selected_hits": {
+            "0.25": 5598,
+            "0.5": 4848
+          },
+          "cpu_selected_hits": {
+            "0.25": 5598,
+            "0.5": 4848
+          },
+          "native_selected_iou_range": {
+            "minimum": 0.0,
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 107,
+            "greater_than_one_rows": [
+              92,
+              690,
+              708,
+              867,
+              887,
+              908,
+              942,
+              981,
+              1052,
+              1061,
+              1076,
+              1104,
+              1108,
+              1202,
+              1464,
+              1501,
+              1511,
+              1735,
+              1745,
+              1942,
+              2806,
+              2817,
+              2835,
+              2836,
+              2853,
+              2879,
+              3246,
+              3310,
+              3317,
+              3327,
+              3721,
+              3753,
+              3760,
+              3779,
+              3969,
+              4002,
+              4019,
+              4051,
+              4064,
+              4685,
+              4796,
+              4808,
+              5005,
+              5021,
+              5044,
+              5045,
+              5048,
+              5063,
+              5067,
+              5078,
+              5083,
+              5088,
+              5527,
+              5544,
+              5574,
+              5578,
+              5582,
+              5663,
+              5713,
+              5753,
+              5768,
+              5795,
+              5796,
+              5797,
+              5805,
+              5888,
+              5895,
+              5943,
+              5945,
+              6323,
+              6404,
+              6516,
+              6556,
+              6559,
+              6565,
+              7114,
+              7133,
+              7162,
+              7586,
+              7592,
+              7647,
+              7831,
+              7852,
+              7906,
+              7921,
+              7928,
+              7957,
+              7966,
+              8271,
+              8274,
+              8280,
+              8331,
+              8364,
+              8365,
+              8489,
+              8774,
+              8779,
+              8786,
+              8788,
+              8789,
+              9139,
+              9158,
+              9164,
+              9176,
+              9189,
+              9199,
+              9225
+            ]
+          },
+          "full256_oracle_hits": {
+            "0.25": 8925,
+            "0.5": 8163
+          },
+          "cpu_float32_full256_oracle_hits": {
+            "0.25": 8925,
+            "0.5": 8163
+          }
+        },
+        "content": {
+          "native_selected_hits": {
+            "0.25": 5599,
+            "0.5": 4859
+          },
+          "cpu_selected_hits": {
+            "0.25": 5599,
+            "0.5": 4859
+          },
+          "native_selected_iou_range": {
+            "minimum": 0.0,
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 107,
+            "greater_than_one_rows": [
+              92,
+              690,
+              708,
+              867,
+              887,
+              908,
+              942,
+              981,
+              1052,
+              1061,
+              1076,
+              1104,
+              1108,
+              1202,
+              1464,
+              1501,
+              1511,
+              1735,
+              1745,
+              1942,
+              2806,
+              2817,
+              2835,
+              2836,
+              2853,
+              2879,
+              3246,
+              3310,
+              3317,
+              3327,
+              3721,
+              3753,
+              3760,
+              3779,
+              3969,
+              4002,
+              4019,
+              4051,
+              4064,
+              4685,
+              4796,
+              4808,
+              5005,
+              5021,
+              5044,
+              5045,
+              5048,
+              5063,
+              5067,
+              5078,
+              5083,
+              5088,
+              5527,
+              5544,
+              5574,
+              5578,
+              5582,
+              5663,
+              5713,
+              5753,
+              5768,
+              5795,
+              5796,
+              5797,
+              5805,
+              5888,
+              5895,
+              5943,
+              5945,
+              6323,
+              6404,
+              6516,
+              6556,
+              6559,
+              6565,
+              7114,
+              7133,
+              7162,
+              7586,
+              7592,
+              7647,
+              7831,
+              7852,
+              7906,
+              7921,
+              7928,
+              7957,
+              7966,
+              8271,
+              8274,
+              8280,
+              8331,
+              8364,
+              8365,
+              8489,
+              8774,
+              8779,
+              8786,
+              8788,
+              8789,
+              9139,
+              9158,
+              9164,
+              9176,
+              9189,
+              9199,
+              9225
+            ]
+          },
+          "full256_oracle_hits": {
+            "0.25": 8929,
+            "0.5": 8157
+          },
+          "cpu_float32_full256_oracle_hits": {
+            "0.25": 8929,
+            "0.5": 8157
+          },
+          "mask_saved_iou_recount": {
+            "hits": {
+              "0.25": 5816,
+              "0.5": 5131
+            },
+            "miou": 47.08693100341866
+          },
+          "same_forward_parent_transition": {
+            "0.25": {
+              "before": 5598,
+              "after": 5599,
+              "repairs": 13,
+              "damages": 12
+            },
+            "0.5": {
+              "before": 4848,
+              "after": 4859,
+              "repairs": 33,
+              "damages": 22
+            }
+          },
+          "invalid_selected_references": 40
+        },
+        "box_conditioned": {
+          "native_selected_hits": {
+            "0.25": 5599,
+            "0.5": 4859
+          },
+          "cpu_selected_hits": {
+            "0.25": 5599,
+            "0.5": 4859
+          },
+          "native_selected_iou_range": {
+            "minimum": 0.0,
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 107,
+            "greater_than_one_rows": [
+              92,
+              690,
+              708,
+              867,
+              887,
+              908,
+              942,
+              981,
+              1052,
+              1061,
+              1076,
+              1104,
+              1108,
+              1202,
+              1464,
+              1501,
+              1511,
+              1735,
+              1745,
+              1942,
+              2806,
+              2817,
+              2835,
+              2836,
+              2853,
+              2879,
+              3246,
+              3310,
+              3317,
+              3327,
+              3721,
+              3753,
+              3760,
+              3779,
+              3969,
+              4002,
+              4019,
+              4051,
+              4064,
+              4685,
+              4796,
+              4808,
+              5005,
+              5021,
+              5044,
+              5045,
+              5048,
+              5063,
+              5067,
+              5078,
+              5083,
+              5088,
+              5527,
+              5544,
+              5574,
+              5578,
+              5582,
+              5663,
+              5713,
+              5753,
+              5768,
+              5795,
+              5796,
+              5797,
+              5805,
+              5888,
+              5895,
+              5943,
+              5945,
+              6323,
+              6404,
+              6516,
+              6556,
+              6559,
+              6565,
+              7114,
+              7133,
+              7162,
+              7586,
+              7592,
+              7647,
+              7831,
+              7852,
+              7906,
+              7921,
+              7928,
+              7957,
+              7966,
+              8271,
+              8274,
+              8280,
+              8331,
+              8364,
+              8365,
+              8489,
+              8774,
+              8779,
+              8786,
+              8788,
+              8789,
+              9139,
+              9158,
+              9164,
+              9176,
+              9189,
+              9199,
+              9225
+            ]
+          },
+          "full256_oracle_hits": {
+            "0.25": 8931,
+            "0.5": 8159
+          },
+          "cpu_float32_full256_oracle_hits": {
+            "0.25": 8931,
+            "0.5": 8159
+          },
+          "mask_saved_iou_recount": {
+            "hits": {
+              "0.25": 5816,
+              "0.5": 5131
+            },
+            "miou": 47.08695283362765
+          },
+          "same_forward_parent_transition": {
+            "0.25": {
+              "before": 5598,
+              "after": 5599,
+              "repairs": 13,
+              "damages": 12
+            },
+            "0.5": {
+              "before": 4848,
+              "after": 4859,
+              "repairs": 33,
+              "damages": 22
+            }
+          },
+          "invalid_selected_references": 40
+        }
+      },
+      "selected_cpu_native_threshold_mismatches": {
+        "parent": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "content": {
+          "0.25": 0,
+          "0.5": 0
+        },
+        "box_conditioned": {
+          "0.25": 0,
+          "0.5": 0
+        }
+      },
+      "max_selected_iou_absolute_error": {
+        "parent": 6.6200876713828904e-06,
+        "content": 6.6200876713828904e-06,
+        "box_conditioned": 6.6200876713828904e-06
+      },
+      "candidate_iou_range": {
+        "parent": {
+          "float32": {
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 6639
+          },
+          "float64": {
+            "maximum": 1.0,
+            "greater_than_one": 0
+          }
+        },
+        "content": {
+          "float32": {
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 6707
+          },
+          "float64": {
+            "maximum": 1.0,
+            "greater_than_one": 0
+          }
+        },
+        "box_conditioned": {
+          "float32": {
+            "maximum": 1.0000050067901611,
+            "greater_than_one": 6711
+          },
+          "float64": {
+            "maximum": 1.0,
+            "greater_than_one": 0
+          }
+        }
+      },
+      "oracle_mismatches": {
+        "content": {
+          "0.25": {
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "256": 0
+          },
+          "0.5": {
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "256": 0
+          }
+        },
+        "box_conditioned": {
+          "0.25": {
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "256": 0
+          },
+          "0.5": {
+            "16": 0,
+            "32": 0,
+            "64": 0,
+            "256": 0
+          }
+        }
+      },
+      "oracle_mismatch_examples": [],
+      "score_boundary_ties": {
+        "1": 0,
+        "16": 0,
+        "32": 0,
+        "64": 1
+      },
+      "arm_all256_changed_values": 24612,
+      "arm_all256_changed_expressions": 3506,
+      "same_forward_control_treatment_transition": {
+        "0.25": {
+          "before": 5599,
+          "after": 5599,
+          "repairs": 0,
+          "damages": 0
+        },
+        "0.5": {
+          "before": 4859,
+          "after": 4859,
+          "repairs": 0,
+          "damages": 0
+        }
+      }
+    }
+  },
+  "original_candidate_ious_recomputed": 14604288,
+  "identity_alignment": {
+    "historical_initial_final_rows": 9508,
+    "keys": [
+      "row_id",
+      "scan_id",
+      "target_id",
+      "root_box",
+      "point_sha256"
+    ],
+    "all_exact": true
+  },
+  "cross_pass_drift": {
+    "scores": {
+      "changed_elements": 2387463,
+      "changed_expressions": 9508,
+      "max_abs_difference": 0.5019110422581434
+    },
+    "parent": {
+      "changed_elements": 5092286,
+      "changed_expressions": 9508,
+      "max_abs_difference": 2.146235942840576
+    },
+    "queries": 3,
+    "selected_parent_boxes": 40
+  },
+  "independent_pass_initial_to_final": {
+    "content": {
+      "0.25": {
+        "before": 5598,
+        "after": 5599,
+        "repairs": 7,
+        "damages": 6
+      },
+      "0.5": {
+        "before": 4856,
+        "after": 4859,
+        "repairs": 19,
+        "damages": 16
+      }
+    },
+    "box_conditioned": {
+      "0.25": {
+        "before": 5598,
+        "after": 5599,
+        "repairs": 7,
+        "damages": 6
+      },
+      "0.5": {
+        "before": 4856,
+        "after": 4859,
+        "repairs": 19,
+        "damages": 16
+      }
+    }
+  },
+  "historical_to_final": {
+    "content": {
+      "0.25": {
+        "before": 5598,
+        "after": 5599,
+        "repairs": 7,
+        "damages": 6
+      },
+      "0.5": {
+        "before": 4856,
+        "after": 4859,
+        "repairs": 19,
+        "damages": 16
+      }
+    },
+    "box_conditioned": {
+      "0.25": {
+        "before": 5598,
+        "after": 5599,
+        "repairs": 7,
+        "damages": 6
+      },
+      "0.5": {
+        "before": 4856,
+        "after": 4859,
+        "repairs": 19,
+        "damages": 16
+      }
+    }
+  },
+  "selection": {
+    "historical_gate": [
+      5620,
+      4764
+    ],
+    "metric_best": "content",
+    "metric_best_hits": {
+      "0.25": 5599,
+      "0.5": 4859
+    },
+    "current_user_minimum_hits": [
+      5658,
+      4850
+    ],
+    "historical_gate_met": false,
+    "current_user_joint_goal_met": false,
+    "best_tie_between_new_arms": true,
+    "new_arm_tiebreak": "ARMS order selects content; historic rule does not separately prescribe new-arm ties"
+  },
+  "raw_mask_recomputed": false,
+  "raw_dataset_rebuilt": false,
+  "gpu_restoration_executed": false,
+  "terminal_weights_independently_loaded": false,
+  "elapsed_seconds": 23.732454299984965
+}

@@ -1,0 +1,112 @@
+{
+  "status": "PASS_SCOPED_SOURCE_AND_EXECUTED_RECEIPT_BINDING",
+  "generated_at": "2026-10-08T15:44:57.804046+00:00",
+  "ast_parsed_files": 36,
+  "logs": {
+    "initial_formal": {
+      "complete_markers": 1,
+      "receipt_matches": true
+    },
+    "formal": {
+      "complete_markers": 1,
+      "receipt_matches": true
+    },
+    "training": {
+      "progress_markers": 31,
+      "first_step": 1,
+      "last_step": 3723
+    }
+  },
+  "preflight": {
+    "status": "actual_archived_pass",
+    "steps_per_arm": 2,
+    "weight_files_created": 0,
+    "full_cpu_reconstruction_tensors": 1314,
+    "same_cache_native_gpu_integration": true,
+    "gpu_parent_cold_reconstruction": false,
+    "formal_terminal_cpu_reconstruction": false
+  },
+  "dataset_sources": {
+    "_get_target_boxes": {
+      "parent_source_lines": [
+        703,
+        736
+      ],
+      "imported_source_lines": [
+        1086,
+        1119
+      ],
+      "equal_ast": true
+    },
+    "_get_scene_objects": {
+      "parent_source_lines": [
+        738,
+        774
+      ],
+      "imported_source_lines": [
+        1121,
+        1157
+      ],
+      "equal_ast": true
+    },
+    "_get_token_positive_map_by_parse": {
+      "parent_source_lines": [
+        598,
+        699
+      ],
+      "imported_source_lines": [
+        981,
+        1082
+      ],
+      "equal_ast": true
+    },
+    "_get_detected_objects": {
+      "parent_source_lines": [
+        806,
+        874
+      ],
+      "imported_source_lines": [
+        1189,
+        1257
+      ],
+      "equal_ast": false
+    }
+  },
+  "dataset_source_interpretation": "Actual imported detection-aligned source is hash-bound; the model-tree dataset is different. Target-box/mask, scene-object and token-map method ASTs match. Detection augmentation order in the actual source applies flips before rotations, unlike the unused model-tree dataset.",
+  "raw_dataset_rebuilt": false,
+  "original_imported_visual_data_helper_hash_bound": false,
+  "previous_source_review_used_as_runtime_evidence": false,
+  "pending_postrun_artifacts": {
+    "checkpoint_inspection.json": false,
+    "RETAINED_BEST.json": false,
+    "cleanup_receipt.json": false,
+    "actual_results_publication.json": false
+  },
+  "cleanup": {
+    "local_previous_best_hash_verified": true,
+    "prior_weight_required_by_final_factory": false,
+    "protected_dependency_paths": [
+      "/root/autodl-tmp/mcln_pvground_nr_checkpoint_inspection_20260908_v1/PV-Ground_NR3D.pth",
+      "/root/autodl-tmp/mcln_pvground_scan_checkpoint_inspection_20260908_v1/PV-Ground_ScanRefer.pth",
+      "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/terminal.pth",
+      "/root/autodl-tmp/mcln_pvground_sr_checkpoint_inspection_20260908_v1/PV-Ground_SR3D.pth",
+      "/root/autodl-tmp/pvground_mask_reference_20261006/fused_mask_reference/initial.pth"
+    ],
+    "expected_retained_weight_count_after_new_best": 6,
+    "planned_deletion": "only new box_conditioned terminal, superseded warm-start remote copy, and exact 2378 already archived remote NPZ files",
+    "cleanup_executed_by_auditor": false,
+    "authorization_files_read": false
+  },
+  "current_target": {
+    "minimum_hits": [
+      5658,
+      4850
+    ],
+    "historical_selection_gate": [
+      5620,
+      4764
+    ],
+    "source_record_separates_them": true
+  },
+  "no_neural_or_remote_execution": true
+}

@@ -1,0 +1,63 @@
+{
+  "updated_cst": "2026-10-08T23:26:05.519814+08:00",
+  "status": "ACTIVE_UNMET",
+  "baseline": "PV-Ground",
+  "seed": 2027,
+  "multiseed": false,
+  "scanrefer": {
+    "rows": 9508,
+    "acc025_strictly_greater_than": 59.5,
+    "acc050_strictly_greater_than": 51.0,
+    "minimum_hits025": 5658,
+    "minimum_hits050": 4850,
+    "current_best_hits025": 5598,
+    "current_best_hits050": 4856,
+    "same_complete_model_required": true,
+    "current_best_checkpoint": "/root/autodl-tmp/pvground_mask_support_correction_20261008_v2/content/terminal.pth",
+    "current_best_checkpoint_sha256": "09e60496cd0a87c355083126557639447ab270d262ae85a2cb95b77b1b9e46da"
+  },
+  "paper": {
+    "effective_modules_required": 3,
+    "direct_ablations_required": true,
+    "zero_output_or_unvalidated_branches_do_not_count": true
+  },
+  "execution_order": [
+    "ScanRefer thresholds and three effective modules",
+    "Freeze the complete final model and inference",
+    "Independently train Sr3D and Nr3D from fair corresponding initializations"
+  ],
+  "constraints": [
+    "one native last/bbs scoring path",
+    "all256 candidates",
+    "same Query Box and Mask",
+    "no deployed V99 dual ranking or side chain",
+    "single A100 serial execution",
+    "keep best weights and required official/PV/G/V99 dependencies",
+    "retire only authorized closed nonbest generated weights",
+    "scheduled monitoring, no early polling"
+  ],
+  "referit_preflight_r2": "SOURCE_PREPARATION_ONLY_DEFERRED_BY_USER_SCAN_FIRST_PRIORITY",
+  "new_nr_sr_formal_results": 0,
+  "user_request": "更新一下目标，Scanrefer的0.25要超过59.5，0.5超过51",
+  "cross_benchmark_initialization": {
+    "allowed": true,
+    "preferred": "corresponding_author_pretrained_weights",
+    "nr3d": "PV-Ground_NR3D.pth",
+    "sr3d": "PV-Ground_SR3D.pth",
+    "baseline_and_full_method_same_corresponding_core_start": true,
+    "same_final_architecture_across_benchmarks": true,
+    "independent_dataset_training": true,
+    "seed": 2027,
+    "multiseed": false
+  },
+  "latest_user_initialization_instruction": "nr3d和sr3d也可以加载作者的预训练权重",
+  "standing_cleanup_policy": "C:\\Users\\gb\\.codex\\tmp\\pvground_face_support_20261007\\CLEANUP_POLICY.json",
+  "standing_cleanup_approval_required": false,
+  "previous_scanrefer_targets": {
+    "acc025_strictly_greater_than": 59.1,
+    "acc050_strictly_greater_than": 50.1,
+    "minimum_hits025": 5620,
+    "minimum_hits050": 4764,
+    "closed_experiment_selection_rules_unchanged": true
+  }
+}

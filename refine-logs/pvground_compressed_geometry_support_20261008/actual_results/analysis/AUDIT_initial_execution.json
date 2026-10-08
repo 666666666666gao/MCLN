@@ -1,0 +1,15 @@
+{
+  "command": "uv run --offline --with numpy python -B -X utf8 C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/analysis/AUDIT_independent_cpu.py",
+  "exit_code": 1,
+  "wall_time_seconds": 7.6100504,
+  "failure": "Initial auditor script asserted every CPU float32 all-candidate IoU <= 1.000001. This assertion failed at overlap() called for iou32 in check_stage().",
+  "traceback": "main line 296 -> check_stage line 126 -> overlap line 56 -> AssertionError",
+  "correction": "Preserve unmodified CPU ratios and record every greater-than-one count and maximum by precision/arm/stage instead of imposing an unverified float32 upper tolerance. Finite and nonnegative checks remain. No prediction, result, or experimental source was changed.",
+  "second_execution": {
+    "session_id": 77387,
+    "exit_code": 1,
+    "traceback": "main line 300 -> check_stage line 155 -> AssertionError",
+    "failure": "Saved native selected IoUs also exceeded 1; direct row inspection showed maximum 1.0000050067901611.",
+    "correction": "Record the native greater-than-one row IDs, counts and maxima explicitly while retaining raw values and testing every CPU/native threshold comparison. No clamping or normalization."
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "status": "EXECUTED_CURRENT_RETAINED_MODEL_DESCRIPTIVE_ERROR_ANALYSIS",
+  "generated_cst": "2026-10-09T02:40:50.757722+08:00",
+  "source_rows_sha256": "06f2d283d6a34a9c09fb9c655b400e9e7b40fe6d107582882033e9dcedb9211b",
+  "checkpoint_sha256": "6f9109cb690399880b8dc3bcf6e4b98d1053145732ee2a6b504bfaecbd1eaac2",
+  "retained_hits": [
+    5599,
+    4859
+  ],
+  "target_hits": [
+    5658,
+    4850
+  ],
+  "rows": 9508,
+  "scenes": 141,
+  "referenced_gt_instances": 2068,
+  "partitions": {
+    "0.25": {
+      "errors": 3909,
+      "mask_good_box_bad": 110,
+      "invalid_reference_errors": 39,
+      "another_referenced_gt_higher_overlap": 3367,
+      "another_referenced_gt_iou_above025": 2673,
+      "groups": {
+        "zero_root_overlap": {
+          "rows": 3074,
+          "mask_iou_above05": 0,
+          "median_root_coverage": 0.0,
+          "median_box_precision": 0.0
+        },
+        "root_half_covered_low_box_precision": {
+          "rows": 344,
+          "mask_iou_above05": 74,
+          "median_root_coverage": 0.9999999664774318,
+          "median_box_precision": 0.13996916355533806
+        },
+        "high_box_precision_low_root_coverage": {
+          "rows": 106,
+          "mask_iou_above05": 30,
+          "median_root_coverage": 0.1688924895179218,
+          "median_box_precision": 0.9986926654707027
+        },
+        "other_partial_overlap": {
+          "rows": 385,
+          "mask_iou_above05": 6,
+          "median_root_coverage": 0.08391071453696403,
+          "median_box_precision": 0.05734508521243679
+        }
+      }
+    },
+    "0.5": {
+      "errors": 4649,
+      "mask_good_box_bad": 544,
+      "invalid_reference_errors": 40,
+      "another_referenced_gt_higher_overlap": 3461,
+      "another_referenced_gt_iou_above025": 2844,
+      "groups": {
+        "zero_root_overlap": {
+          "rows": 3074,
+          "mask_iou_above05": 0,
+          "median_root_coverage": 0.0,
+          "median_box_precision": 0.0
+        },
+        "root_half_covered_low_box_precision": {
+          "rows": 838,
+          "mask_iou_above05": 342,
+          "median_root_coverage": 0.9999999048297203,
+          "median_box_precision": 0.29238600712983365
+        },
+        "high_box_precision_low_root_coverage": {
+          "rows": 261,
+          "mask_iou_above05": 139,
+          "median_root_coverage": 0.31654723168605486,
+          "median_box_precision": 0.9999964325744141
+        },
+        "other_partial_overlap": {
+          "rows": 476,
+          "mask_iou_above05": 63,
+          "median_root_coverage": 0.11900127333055531,
+          "median_box_precision": 0.08633278452027444
+        }
+      }
+    }
+  },
+  "member_case_panel": {
+    "case_counts": {
+      "same_input_cases": 191,
+      "still_wrong025": 180,
+      "still_wrong050": 187,
+      "current_mask_iou_above05": 56,
+      "valid_reference_cases": 190,
+      "any_overextending_face": 168,
+      "overextending_background_certain": 168,
+      "overextending_pure_background_superpoint_certain": 168,
+      "invalid_reference": 1
+    },
+    "face_counts": {
+      "missing_faces": 180,
+      "missing_faces_with_observed_target_outside": 180,
+      "overextending_faces": 761,
+      "overextending_background_certain": 761,
+      "overextending_pure_background_superpoint_certain": 760
+    },
+    "coordinate_tolerance_m": 2e-06
+  },
+  "neural_forwards": 0,
+  "optimizer_updates": 0,
+  "new_weights": 0,
+  "new_metric_promotion": false,
+  "review_independence": "executor_descriptive_analysis_not_independent_audit",
+  "limits": [
+    "Geometry overlap groups and nearest referenced GT are proxies, not language or physical-instance identity.",
+    "GT pool contains only expressed targets represented in these9508 rows, not every scene object.",
+    "Saved Mask IoU is not raw Mask reconstruction.",
+    "191 member cases were selected using old-model errors; this is not a random or full-validation subgroup.",
+    "Current point hash and target equal the archived member slice; current foreground sets and Query Mask logits are not available.",
+    "Face source is conservative possible-coordinate provenance, not proof of the selected superpoint membership.",
+    "No existing inference, score, foreground threshold, or trained checkpoint was changed."
+  ]
+}

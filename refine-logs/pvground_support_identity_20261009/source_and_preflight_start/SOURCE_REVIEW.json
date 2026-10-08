@@ -1,0 +1,170 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "blocking_findings": [],
+  "summary": "No blocking implementation or current binding defect found in the reviewed source. The candidate-specific versus shared-Text support comparison, one native semantic residual, protected parent reconstruction, and native last CE+G gradient responsibility are consistent. Actual B8 M0, capacity, restore execution, accuracy and effectiveness remain unproven.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "backend_identity_status": "UNATTESTED",
+  "attribution": "Native delegated Codex source review in fresh task context; requested routing is recorded without claiming runtime backend identity or cross-family independence.",
+  "protected_contract": {
+    "model_family": "PV-Ground",
+    "retained_rows": 9508,
+    "retained_hits": [5599, 4859],
+    "required_joint_target_hits": [5658, 4850],
+    "retained_support_checkpoint_sha256": "6f9109cb690399880b8dc3bcf6e4b98d1053145732ee2a6b504bfaecbd1eaac2",
+    "seed": 2027,
+    "native_scoring": "last/bbs, all 256 candidates, same selected Query for Box and fused Mask",
+    "new_head_parameters": 107040,
+    "new_head_state_tensors": 8,
+    "replacement_scope": "Replaces the existing zero-output boundary_evidence_readback branch; 107040 is the new head size, not a claim of 107040 net additional model parameters.",
+    "third_effective_contribution_established": false,
+    "full_goal_complete": false
+  },
+  "source_findings": [
+    {
+      "id": "N1",
+      "severity": "LOW",
+      "blocking": false,
+      "title": "Invalid reference count does not establish an empty-foreground count",
+      "description": "The comment says empty foreground was observed in 40 selected validation rows. The supplied summary counts invalid references, and validity requires both a nonempty support and positive extent along all three axes. Current foreground sets are explicitly unavailable. The count therefore cannot be relabeled as 40 empty foregrounds. This does not change the simple zero-mass pooling behavior or block M0.",
+      "evidence": [
+        "support_identity_readout.py:42",
+        "../pvground_compressed_geometry_support_20261008/mask_reference.py:24",
+        "../pvground_current_error_partition_20261009/SUMMARY.json:54",
+        "../pvground_current_error_partition_20261009/SUMMARY.json:116"
+      ],
+      "minimal_action": "Describe the observed count as invalid Mask references, without asserting that all 40 foregrounds are empty. No fallback, retry, or model branch is requested."
+    }
+  ],
+  "nonblocking_qualifications": [
+    {
+      "id": "Q1",
+      "title": "The reviewed program is a prepared M0, not evidence that M0 passed",
+      "description": "The runner prepares two updates per arm on one B8 fit batch, parameter-gradient and frozen-state checks, in-memory head/Adam serialization, parent rebuild, and integrated forward checks. None was executed by this review. Its PASS status is only an output the program would write after those checks succeed. Full-fit training and full9508 evaluation are subsequent work.",
+      "evidence": ["EXPERIMENT_PLAN.md:3", "EXPERIMENT_PLAN.md:51", "EXPERIMENT_PLAN.md:59", "run_identity_preflight.py:122", "run_identity_preflight.py:135", "run_identity_preflight.py:180", "run_identity_preflight.py:201"]
+    },
+    {
+      "id": "Q2",
+      "title": "Parity and restore claims have a deliberately limited scope",
+      "description": "Zero initialization is checked by replaying each head and the native semantic head on the same cached parent Query. Geometry and Mask equality are checked immediately before and after the readback within each complete forward. After two updates, head and Adam states are serialized in BytesIO, the parent is reconstructed, full replacement states are compared, and an integrated forward is replay-checked. There is no separate integrated zero-init forward, no equality check between independent pre-save/post-load complete forwards, and no resumed optimization step. The report explicitly declines an independent-full-forward identity claim. Retain these limits when reporting actual results.",
+      "evidence": ["run_identity_preflight.py:137", "run_identity_preflight.py:147", "run_identity_preflight.py:181", "run_identity_preflight.py:187", "run_identity_preflight.py:192", "run_identity_preflight.py:195", "run_identity_preflight.py:199", "../pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py:36", "../pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py:57"]
+    },
+    {
+      "id": "Q3",
+      "title": "Identity, effectiveness and held-out generalization remain empirical questions",
+      "description": "The 2068-instance pool contains expressed targets, other-object overlap is a geometry proxy, the 191 cases were selected using historical errors, and current foregrounds were not reconstructed. These artifacts support a hypothesis rather than a causal identity diagnosis. The 6887-row holdout is author-seen-scene development. A third effective module and the joint 5658/4850 target require the planned matched control and complete-model evaluation.",
+      "evidence": ["EXPERIMENT_PLAN.md:13", "EXPERIMENT_PLAN.md:21", "EXPERIMENT_PLAN.md:68", "EXPERIMENT_PLAN.md:71", "../pvground_current_error_partition_20261009/SUMMARY.json:111"]
+    },
+    {
+      "id": "Q4",
+      "title": "Runtime bindings and resource readiness were inspected only as source",
+      "description": "Existing local digest bindings for the current new files, parent pair specification, four parent factory files, 17 available helper files, source-port JSON and seven relevant native source files matched. Remote files, live resource state, compiled operators and actual imported modules were not inspected. The data-loader import is intentionally bound to manifest.model_source before native model_source is added; the native model snapshot's different Joint3DDataset is not the loader selected by the runner.",
+      "evidence": ["run_identity_preflight.py:28", "run_identity_preflight.py:37", "run_identity_preflight.py:63", "run_identity_preflight.py:68", "run_identity_preflight.py:78", "../pvground_pretrained_protocol_20261009/input_manifest.json:1558", "../pvground_pretrained_protocol_20261009/actual_joint_det_dataset.py:91"]
+    }
+  ],
+  "correctness_assessment": [
+    {
+      "topic": "Support semantics and tensor layout",
+      "status": "SOURCE_CONSISTENT",
+      "detail": "The parent exposes superpoint features [288,S], corrected Query Mask [256,S], repeated Text Mask [1,256,S], scalar alpha and observed member IDs/counts. The readout selects those observed IDs, uses sigmoid(fused logits)>0.5 for treatment and sigmoid(Text logits)>0.5 for control, pools with actual counts, and preserves all 256 candidates. Shared Text foreground is genuinely the same across candidates because the parent expands one selected text-mask row. No GT localization, teacher, score mixture or quality scalar enters this head.",
+      "evidence": ["support_identity_readout.py:18", "support_identity_readout.py:26", "support_identity_readout.py:38", "support_identity_readout.py:44", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py:439", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py:545", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py:562", "../pvground_compressed_geometry_support_20261008/mask_support_corrector.py:61", "../pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py:15"]
+    },
+    {
+      "topic": "One semantic residual and native score",
+      "status": "SOURCE_CONSISTENT",
+      "detail": "Parameter count is 2*(288*64+64)+(256*128+128)+(128*288+288)=107040 in eight tensors. The zeroed output makes the new initial residual zero. Installation checks the old output is zero and replaces its hook. The final prediction head is deferred, contrastive queries are computed earlier, and exactly one native final semantic call remains in each integrated forward. Additional cached head calls in the paired sanity loop are diagnostic/training calls, not extra deployed score branches. Existing bbs uses one token-probability reduction over all256; the Box and Mask evaluators use that same ranking and fused foreground rule.",
+      "evidence": ["support_identity_readout.py:11", "support_identity_readout.py:15", "support_identity_readout.py:56", "support_identity_readout.py:73", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py:502", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py:514", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py:580", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/modules.py:170", "../pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py:4", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/src/grounding_evaluator.py:281", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/src/grounding_evaluator.py:600", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/src/grounding_evaluator.py:641"]
+    },
+    {
+      "topic": "Protected reconstruction and matched control",
+      "status": "SOURCE_CONSISTENT_NOT_EXECUTED",
+      "detail": "Official1234 plus G/source-reader37, selected reference10, zero-output R23 and support10 yield the protected1314-tensor parent. Official, G, selected reference and support payloads are loaded with explicit key/shape/dtype or strict-load checks. The content support arm and7446 total updates are required. Both new heads are identical copies with fresh separate AdamW optimizers; the sole treatment switch is candidate_specific. All old model parameters are frozen. Replacing R23 by the identity head8 implies1299 state tensors for the resulting model; the runner compares the actual reconstructed key set instead of assuming it still has1314.",
+      "evidence": ["run_identity_preflight.py:79", "run_identity_preflight.py:89", "run_identity_preflight.py:178", "run_identity_preflight.py:185", "../pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py:22", "../pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py:34", "../pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py:40", "../pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py:55", "../pvground_compressed_geometry_support_20261008/mask_support_model_factory.py:17", "../../archives/pvg_compressed_support_best_20261008/RESTORATION_MANIFEST.json:7"]
+    },
+    {
+      "topic": "Native last CE plus existing G responsibility",
+      "status": "SOURCE_CONSISTENT_NOT_EXECUTED",
+      "detail": "The native criterion keeps boxes, labels, masks and contrastive alignment. Prefix order is proposal,last,0head...4head, so matching[1] is the actual last-layer assignment. Native ScanRefer CE weight is0.5/7. Existing G replaces only eos-weighted unmatched queries with detached root IoU>0.5, protects every Hungarian matched query and uses the original root token weights. The parent forward runs under no_grad and the new head only replaces last_sem_cls_scores. Thus its differentiable route is final CE plus G; the updated runner explicitly compares complete-loss and isolated-route gradients before backward. Matching algorithm and full target construction are retained; matching assignments and scalar detached loss values need not remain identical after the two semantic heads diverge.",
+      "evidence": ["run_identity_preflight.py:137", "run_identity_preflight.py:149", "run_identity_preflight.py:153", "run_identity_preflight.py:159", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/main_utils.py:270", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/losses.py:852", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/losses.py:872", "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/losses.py:945", "../pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py:9", "../pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py:34"]
+    }
+  ],
+  "launch_script_assessment": {
+    "status": "SOURCE_CONSISTENT_NOT_EXECUTED",
+    "scope_added_during_review": true,
+    "detail": "Checks SOURCE_ONLY/WARN-or-PASS/no blockers and existing new-file bindings; uses the existing environment-variable credential channel and system host keys without reading or printing the credential value in this review. The remote resource check requires the prior parent evaluation to have exited0, the old process absent, one idle A100 and sufficient disk. It creates only the fixed new experiment directory, uploads the named source/spec/plan/reports, reuses the warm interpreter/environment and existing nonblocking GPU flock, starts one detached two-step M0, and records an observed process as STARTED_NOT_PASSED. No package install, environment rebuild, checkpoint deletion, full training or accuracy evaluation is launched by this code.",
+    "evidence": ["deploy_identity_preflight_authorized.py:11", "deploy_identity_preflight_authorized.py:20", "deploy_identity_preflight_authorized.py:29", "deploy_identity_preflight_authorized.py:40", "deploy_identity_preflight_authorized.py:47", "deploy_identity_preflight_authorized.py:51", "deploy_identity_preflight_authorized.py:56", "deploy_identity_preflight_authorized.py:64"]
+  },
+  "collector_script_assessment": {
+    "status": "SOURCE_CONSISTENT_NOT_EXECUTED",
+    "scope_added_during_review": true,
+    "detail": "Waits locally until the launch record's planned first observation, then reads only the original PID presence, exit marker and metadata/content for preflight.exit, preflight.log and preflight.json. Remote operations are read-only. It writes local observations/intake, collects the exited job, and only polls again after240seconds while the original PID is present. A missing PID without an exit marker raises an assertion instead of restarting. PID presence is a liveness observation, not an independent process-identity attestation. It does not rerun the model or promote accuracy.",
+    "evidence": ["collect_identity_preflight_authorized.py:12", "collect_identity_preflight_authorized.py:17", "collect_identity_preflight_authorized.py:25", "collect_identity_preflight_authorized.py:35", "collect_identity_preflight_authorized.py:44", "collect_identity_preflight_authorized.py:53"]
+  },
+  "validation_performed": {
+    "direct_source_and_artifact_read": true,
+    "existing_digest_comparisons": "All compared current bindings matched; no new hash system was added.",
+    "current_new_source_sha256": {
+      "support_identity_readout.py": "11f67cc8ae9e2d29e3e24b32b93296f375fcda9ad932ac124a65fac85edf1003",
+      "run_identity_preflight.py": "e3789253fb78e9c6aeb09133ad5e8bc08674d7fc7568cbb3fdfe046a0e748388"
+    },
+    "python_ast_validation": "NOT_COMPLETED: default local python exited before reading stdin with 'No pyvenv.cfg file'; no interpreter installation or environment repair was attempted.",
+    "new_neural_forwards": 0,
+    "optimizer_updates": 0,
+    "checkpoint_loads": 0,
+    "ssh_calls": 0,
+    "credential_values_read": 0,
+    "goal_tool_calls": 0,
+    "package_installs": 0,
+    "deployment_scripts_executed": 0,
+    "cached_review_verdicts_used": false,
+    "accuracy_recount_executed": false
+  },
+  "gate_scope": {
+    "source_gate_for_prepared_M0": "WARN_NO_BLOCKERS",
+    "actual_M0_pass": "NOT_ESTABLISHED",
+    "formal_training_gate": "NOT_SATISFIED_BY_THIS_REVIEW",
+    "accuracy_or_contribution_promotion": "NOT_SUPPORTED"
+  },
+  "reviewed_files_path_base": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009",
+  "reviewed_files": [
+    {"path": "SOURCE_REVIEW_REQUEST.txt", "scope": "full"},
+    {"path": "EXPERIMENT_PLAN.md", "scope": "full"},
+    {"path": "support_identity_readout.py", "scope": "full"},
+    {"path": "run_identity_preflight.py", "scope": "full current206-line version including added gradient witness"},
+    {"path": "preflight_spec.json", "scope": "full current version"},
+    {"path": "deploy_identity_preflight_authorized.py", "scope": "full; additional source/network review only"},
+    {"path": "collect_identity_preflight_authorized.py", "scope": "full; additional source/network review only"},
+    {"path": "../pvground_current_error_partition_20261009/analyze_current_errors.py", "scope": "full, not executed"},
+    {"path": "../pvground_current_error_partition_20261009/SUMMARY.json", "scope": "full; existing descriptive artifact, not recounted"},
+    {"path": "../pvground_compressed_geometry_support_20261008/mask_support_model_factory.py", "scope": "full"},
+    {"path": "../pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py", "scope": "full"},
+    {"path": "../pvground_compressed_geometry_support_20261008/mask_reference.py", "scope": "full"},
+    {"path": "../pvground_compressed_geometry_support_20261008/mask_support_corrector.py", "scope": "full"},
+    {"path": "../pvground_compressed_geometry_support_20261008/pair_spec.json", "scope": "full"},
+    {"path": "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py", "scope": "full"},
+    {"path": "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/losses.py", "scope": "full"},
+    {"path": "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/main_utils.py", "scope": "full"},
+    {"path": "../pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py", "scope": "full"},
+    {"path": "../pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py", "scope": "full"},
+    {"path": "../pvground_final_quality_20261005/runtime_bundle/pvground_semantic_assignment.py", "scope": "full"},
+    {"path": "../../archives/pvg_compressed_support_best_20261008/RESTORATION_MANIFEST.json", "scope": "full metadata; no checkpoint loaded"},
+    {"path": "../../../.codex_mcln_g0_20260905/.aris/compute/ssh_pvground.md", "scope": "runtime metadata lines1-14; credential/auth-related line15 omitted"},
+    {"path": "../pvground_mask_support_correction_20261008_v2/source_port.json", "scope": "full"},
+    {"path": "../pvground_final_quality_20261005/runtime_bundle/whole_mask_range.py", "scope": "full"},
+    {"path": "../pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py", "scope": "full"},
+    {"path": "../pvground_final_quality_20261005/runtime_bundle/install_boundary_evidence_readback.py", "scope": "full"},
+    {"path": "../pvground_final_quality_20261005/runtime_bundle/pvground_boundary_evidence_readback.py", "scope": "full"},
+    {"path": "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/modules.py", "scope": "relevant semantic head/deferred forward sections96-179 and search context"},
+    {"path": "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/src/grounding_evaluator.py", "scope": "relevant bbs Box/Mask, foreground and GT-map parsing sections; not full file"},
+    {"path": "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/prepare_data.py", "scope": "shuffle_points section and search context; existing full-file digest compared"},
+    {"path": "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/wandb_config.yaml", "scope": "data/processor lines1-32 and search context; existing full-file digest compared"},
+    {"path": "../pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/src/joint_det_dataset.py", "scope": "constructor/import sections18-162 and relevant searches; recognized as not the runner-selected loader"},
+    {"path": "../pvground_pretrained_protocol_20261009/input_manifest.json", "scope": "source/data/split metadata at start/end; bulk superpoint manifest display truncated"},
+    {"path": "../pvground_pretrained_protocol_20261009/actual_joint_det_dataset.py", "scope": "constructor/source selection searches and scene-graph/ScanRefer sections275-286,381-419,578-682"}
+  ]
+}

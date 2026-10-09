@@ -1,0 +1,11 @@
+--- R1/prepare_retention_plan.py
++++ R2/prepare_retention_plan.py
+@@ -59,7 +59,7 @@
+     checkpoint_inspection_sha256=hashlib.sha256(inspection_path.read_bytes()).hexdigest(),
+     actual_audit_sha256=hashlib.sha256(audit_path.read_bytes()).hexdigest(),
+     archived_terminals=2, current_best_marker_changed=False, automatic_promotion=False,
+-    new_weights_created=False, ssh_queries=0, deletions=0)
++    new_trained_weights_created=False, archived_terminal_copies=2, ssh_queries=0, deletions=0)
+ (archive / 'ARCHIVE_MANIFEST.json').write_text(json.dumps(plan, indent=2) + '\n')
+ (results / 'RETENTION_PLAN.json').write_text(json.dumps(plan, indent=2) + '\n')
+ print(json.dumps(plan), flush=True)

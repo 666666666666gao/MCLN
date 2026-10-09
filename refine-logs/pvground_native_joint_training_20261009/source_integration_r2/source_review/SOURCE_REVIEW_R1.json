@@ -1,0 +1,457 @@
+{
+  "audit_skill": "experiment-audit",
+  "execution_scope": "SOURCE_ONLY",
+  "fresh_context": true,
+  "agent_id": "/root/pvg_native_joint_source_20261009",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning": "max",
+  "actual_reviewer_model": "UNATTESTED",
+  "actual_reviewer_reasoning": "UNATTESTED",
+  "actual_route": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "generated_at": "2026-10-09T12:13:18.344472+00:00",
+  "date": "2026-10-09",
+  "verdict": "FAIL",
+  "overall_verdict": "FAIL",
+  "integrity_status": "fail",
+  "reason_code": "resume_best_checkpoint_unreachable",
+  "summary": "Native forward, criterion, optimizer and epoch wiring are present, but resume creates a new directory without preserving historical best weights/path. Fix B1 before resumable deployment. Source review is not M0.",
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "severity": "P1",
+      "title": "Training resume loses the retained best checkpoint in the newly created experiment directory",
+      "evidence": [
+        {
+          "path": "source/main_utils.py",
+          "lines": [
+            134,
+            139,
+            188,
+            194,
+            361,
+            362,
+            378,
+            380,
+            382
+          ]
+        }
+      ],
+      "trigger": "Resume a valid native latest.pth and finish later epochs without strictly improving the saved retained metrics.",
+      "effect": "The run writes latest.pth but returns new-log-dir/best.pth although no best file was saved there; the true prior best weights may differ from resumed latest weights.",
+      "required_fix": "Keep the actual retained best checkpoint reachable during resume, with metrics attached to those weights. Reuse the original experiment directory or explicitly preserve the prior best identity and path.",
+      "verification": "Static source control-flow proof; no checkpoint/model/training execution."
+    }
+  ],
+  "warnings": [
+    {
+      "id": "W1",
+      "status": "WARN",
+      "title": "Exact G delta key set and full initialization lineage are not yet attested",
+      "evidence": [
+        "source/native_model_initialization.py:36-42",
+        "source/native_model_initialization.py:54-57",
+        "selected_mask_reference_factory.py:38-42",
+        "paired_span_loop.py:38-40"
+      ],
+      "details": "Current G guards establish 1072 supplied existing names and their shapes/dtypes, not equality with the original expected trainable-plus-buffer set. Optional Span checks source mode/support SHA only. No concrete native initialization spec or checkpoint was inspected; this is not an observed wrong payload."
+    },
+    {
+      "id": "W2",
+      "status": "WARN",
+      "title": "Runtime, one-rank launch, data/overlay and M0 remain unexecuted",
+      "details": "The requested ledger is absent. One rank is assumed, not asserted. Actual imports, constructor counts, initialization equivalence, gradients, complete restore, memory/storage and full9508 runtime scope must be admitted later."
+    }
+  ],
+  "explicitly_pending_requirements": [
+    "sealed_native_initialization_spec_and_full_parent_identity",
+    "exact_g_delta_expected_name_set",
+    "runtime_dependency_overlay_and_actual_import_bindings",
+    "native_train_eval_dataset_and_yaml_binding",
+    "world_size_one_admission",
+    "torch_1_10_2_and_compiled_dependencies",
+    "actual_constructor_state_and_trainable_parameter_counts",
+    "actual_initial_prediction_equivalence",
+    "actual_loss_and_gradient_witnesses",
+    "complete_checkpoint_round_trip",
+    "train_eval_memory_and_storage_admission",
+    "actual_m0_approval",
+    "normal_joint_training_results",
+    "accuracy_results",
+    "three_effective_contributions_evidence"
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\SOURCE_REVIEW_REQUEST.txt",
+      "sha256": "7478e13410e39afbfe0163ca7cd672c8f1731d76a0e70c8a45f0e51f8a6575de",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\001_SOURCE_REVIEW_REQUEST.txt"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\SOURCE_PREPARATION.json",
+      "sha256": "7c9f5e20becab1371367fe6dcb987197417291925688b315a81aa8b146c88e80",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\002_SOURCE_PREPARATION.json"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\ENTRY_PREPARATION.json",
+      "sha256": "f7589355310201c5d4d7d9c36923e47c4464a2a4369fa695ebb34e44806b748d",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\003_ENTRY_PREPARATION.json"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\METRIC_PREPARATION.json",
+      "sha256": "98ff16e79aebf2be6b0f4ec98caf4a8b5a1a522cf6494f78c721f0772c23e2de",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\004_METRIC_PREPARATION.json"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\prepare_native_sources.py",
+      "sha256": "3b6518c35d1fed4d5ccff64cda8008f5c7f084ac782e3f9ae32f2fa9aa99f82f",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\005_prepare_native_sources.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\integrate_native_entry.py",
+      "sha256": "19878ca6792e7b378b6aa99e3882e1fcae2219fb2de55a58be58b9d393321c4e",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\006_integrate_native_entry.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\finish_native_metrics.py",
+      "sha256": "ec4b19bf6c0e44b6cdb058280aafebb349c5c8e55ca786b4274e35cf87808adf",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\007_finish_native_metrics.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\extremal_span_mixer.py",
+      "sha256": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\008_extremal_span_mixer.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\main_utils.py",
+      "sha256": "62245d57455a2c175f91358030cf5befb0293d28b36cfe7d65bfd66ca5d3a10c",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\009_main_utils.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\mask_support_corrector.py",
+      "sha256": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\010_mask_support_corrector.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\models\\losses.py",
+      "sha256": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\011_losses.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\models\\pv_ground.py",
+      "sha256": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\012_pv_ground.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_mask_geometry.py",
+      "sha256": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\013_native_mask_geometry.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_model_initialization.py",
+      "sha256": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\014_native_model_initialization.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\015_native_root_bbs.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_observation_query.py",
+      "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\016_pvground_observation_query.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_semantic_assignment.py",
+      "sha256": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\017_pvground_semantic_assignment.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_source_query.py",
+      "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\018_pvground_source_query.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_task_observation_query.py",
+      "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\019_pvground_task_observation_query.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\selected_query_mask_objective.py",
+      "sha256": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\020_selected_query_mask_objective.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source\\train_dist_mod.py",
+      "sha256": "cc72ce5ae017c65f47e4f7a8243b488ac14695bd431a9f0b6feac7803ab1adf5",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\021_train_dist_mod.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\entry_r0_snapshots\\main_utils.py",
+      "sha256": "8d091e6b19ef78967ef220101a5c54514a4e5e8469fe710aca7e040a563b7107",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\022_main_utils.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\entry_r0_snapshots\\train_dist_mod.py",
+      "sha256": "91cb49992c63206e9c05e7a3cc656088be2e6220625062cae4d479365a3d40b5",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\023_train_dist_mod.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\entry_r1_snapshots\\main_utils.py",
+      "sha256": "7a1325539f62f8c001dd96ce554e5e3640083555699acbefb1ecf7831421a611",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\024_main_utils.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\entry_r1_snapshots\\train_dist_mod.py",
+      "sha256": "bc5b394ff711ebf1bbfaeaa478d45c982164ac7f17ba5f19ca7c300b1df882dc",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\025_train_dist_mod.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\026_main_utils.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\models_losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\027_models_losses.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\models_pv_ground.py",
+      "sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\028_models_pv_ground.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\native_evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\029_native_evaluator.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\prepare_data.py",
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\030_prepare_data.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\SOURCE_IMPORTS.json",
+      "sha256": "6b1f42cf80a5b3c29e383b383d38974221cbe4b00dcd71ef5c268ea88e3aac09",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\031_SOURCE_IMPORTS.json"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\SOURCE_INTAKE.json",
+      "sha256": "0c6326cc18ba1b4abbb01521be587de1b09f20b6aa2766842dd0909cb0af8deb",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\032_SOURCE_INTAKE.json"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\src_joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\033_src_joint_det_dataset.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\selected_query_mask_objective.py",
+      "sha256": "3d917a0ca8a14e11ae327875b65179cd0ea4df5de89fa12fc8debe831c3eb702",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\034_selected_query_mask_objective.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\mask_support_corrector.py",
+      "sha256": "14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\035_mask_support_corrector.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\036_mask_reference.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\037_selected_mask_reference_factory.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\extremal_span_mixer.py",
+      "sha256": "523203b7a5304ba41ca3bfb66c6911777adb0b55287806ddfed57d8ae9566adf",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\038_extremal_span_mixer.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\span_refinement_model.py",
+      "sha256": "1139094df8f282715a795469cedc0dd6c4c95fea3f6b68ce13ab56b4a6ffb68b",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\039_span_refinement_model.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\paired_span_loop.py",
+      "sha256": "33cec963d2a1277a85c861dfd8dd1049604e9123e75c6887c4c23209f6272154",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\040_paired_span_loop.py"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\pair_spec.json",
+      "sha256": "ceaa2bbeeaa124f86aa46b091aa63a3c9f00587fd4a291f8f73a088d52c2527e",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\041_pair_spec.json"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex_pvground_cs_20261002\\refine-logs\\pvground_pretrained_resources_20260908_v1\\source\\train_dist_mod.py",
+      "sha256": "e604249b116309737e98e86dda1e21631d4538778dca739d7e6484855e7db750",
+      "snapshot": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r1_snapshots\\042_train_dist_mod.py"
+    }
+  ],
+  "all_current_computational_sources_bound": true,
+  "metric_preparation_bound": true,
+  "source_files_count": 14,
+  "captured_files_count": 42,
+  "python_files_ast_parsed": 35,
+  "actual_runtime": false,
+  "actual_runtime_executed": false,
+  "actual_accuracy": false,
+  "accuracy_result": false,
+  "three_effective_contributions": false,
+  "three_effective_contributions_confirmed": false,
+  "trained_module_effectiveness_confirmed": false,
+  "actual_gpu_preflight_passed": false,
+  "actual_m0_approval": false,
+  "native_joint_training_started": false,
+  "model_imported": false,
+  "torch_imported": false,
+  "checkpoint_or_pickle_loaded": false,
+  "training_or_weight_changes": false,
+  "implementation_changed_by_reviewer": false,
+  "active_frozen_pair_changed": false,
+  "declared_parameter_arithmetic": {
+    "source/mask_support_corrector.py": {
+      "linear_shapes": [
+        [
+          288,
+          32
+        ],
+        [
+          288,
+          32
+        ],
+        [
+          64,
+          1
+        ],
+        [
+          79,
+          64
+        ],
+        [
+          64,
+          64
+        ]
+      ],
+      "declared_parameter_arithmetic": 27841,
+      "state_tensor_arithmetic": 10,
+      "expected": 27841
+    },
+    "source/extremal_span_mixer.py": {
+      "linear_shapes": [
+        [
+          288,
+          32
+        ],
+        [
+          288,
+          32
+        ],
+        [
+          32,
+          1
+        ],
+        [
+          41,
+          32
+        ],
+        [
+          32,
+          32
+        ],
+        [
+          105,
+          64
+        ],
+        [
+          64,
+          32
+        ]
+      ],
+      "declared_parameter_arithmetic": 29793,
+      "state_tensor_arithmetic": 14,
+      "expected": 29793
+    },
+    "native_state_arithmetic": {
+      "base": 1234,
+      "reader": 37,
+      "support": 10,
+      "span": 14,
+      "total": 1295
+    }
+  },
+  "actual_constructor_counts_verified": false,
+  "exact_mid_epoch_resume_claimed": false,
+  "checks": {
+    "gt_provenance": {
+      "status": "PASS",
+      "classification": "real_gt_source_path_only",
+      "actual_runtime": false
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "details": "Native hit counts use expression denominators, not prediction statistics."
+    },
+    "result_claims": {
+      "status": "PASS",
+      "details": "No native joint-training numerical result is claimed by this review."
+    },
+    "model_forward": {
+      "status": "PASS",
+      "scope": "source_only"
+    },
+    "native_criterion": {
+      "status": "PASS",
+      "scope": "source_only_world_size_1_six_decoder_layers"
+    },
+    "selected_mask_loss": {
+      "status": "PASS",
+      "scope": "source_only_dynamic_native_matching"
+    },
+    "initialization": {
+      "status": "WARN",
+      "actual_payloads_checked": false
+    },
+    "optimizer_and_epochs": {
+      "status": "PASS",
+      "scope": "source_only"
+    },
+    "checkpoint_restore": {
+      "status": "WARN",
+      "details": "Full state load/save wiring exists; actual roundtrip pending and retention fails B1."
+    },
+    "best_latest_retention": {
+      "status": "FAIL",
+      "blocker": "B1"
+    },
+    "data_binding": {
+      "status": "WARN",
+      "pending": true
+    },
+    "metric_scope": {
+      "status": "PASS",
+      "scope": "source assertions only; full9508 not run"
+    },
+    "runtime_and_m0": {
+      "status": "WARN",
+      "pending": true
+    }
+  },
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\.aris\\traces\\experiment-audit\\2026-10-09_native_r1",
+  "raw_response_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\RAW_RESPONSE_R1.md",
+  "seal_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\SOURCE_REVIEW_R1.seal.json",
+  "native_failures_preserved": [
+    "default_python_No_pyvenv_cfg",
+    "command_lookup_exit_1",
+    "audit_verifier_StopIteration_workspace_junction"
+  ],
+  "trace_limitations": [
+    "Initial bootstrap request/skill/policy/inventory native tool outputs were not in the JS receipt store. Exact prompt/policy/source bytes are preserved; the original outputs remain in the conversation. All native failures are retained in R1_NATIVE_TOOL_RECEIPTS.json."
+  ]
+}

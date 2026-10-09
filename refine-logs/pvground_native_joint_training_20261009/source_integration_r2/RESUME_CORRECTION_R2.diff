@@ -1,0 +1,29 @@
+--- R1/main_utils.py
++++ R2/main_utils.py
+@@ -184,14 +184,18 @@
+         """Initialize."""
+         name = args.log_dir.split('/')[-1]  # log_dir: './logs/eda', name: eda
+         
+-        # Create log dir
+-        args.log_dir = os.path.join(
+-            args.log_dir,
+-            ','.join(args.dataset),
+-            args.exp,
+-            f'{int(time.time())}'
+-        )
+-        os.makedirs(args.log_dir, exist_ok=True)
++        # Resume in the original experiment so its retained best stays reachable.
++        if args.checkpoint_path and not args.eval:
++            args.log_dir = os.path.dirname(os.path.abspath(args.checkpoint_path))
++            assert os.path.isfile(os.path.join(args.log_dir, 'best.pth'))
++        else:
++            args.log_dir = os.path.join(
++                args.log_dir,
++                ','.join(args.dataset),
++                args.exp,
++                f'{int(time.time())}'
++            )
++            os.makedirs(args.log_dir, exist_ok=True)
+ 
+         # Create logger
+         self.logger = setup_logger(

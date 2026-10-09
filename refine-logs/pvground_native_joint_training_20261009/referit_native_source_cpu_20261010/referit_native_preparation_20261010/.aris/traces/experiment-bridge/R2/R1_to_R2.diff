@@ -1,0 +1,174 @@
+--- C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/revision1_before_metric_correction/source/main_utils.py
++++ C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/main_utils.py
+@@ -165,12 +165,12 @@
+ 
+ 
+ def native_metric_order(metrics):
+-    return (metrics['hits025'] >= 5658 and metrics['hits050'] >= 4850,
+-            metrics['hits050'] >= 4850, metrics['hits025'], metrics['hits050'])
++    # Nr/Sr each select strict REC first, then wide REC on the same checkpoint.
++    return (metrics['hits050'], metrics['hits025'])
+ 
+ 
+ def record_native_metrics(args, epoch, metrics):
+-    assert metrics['rows'] == 9508 and metrics['primary_score'] == 'last/bbs'
++    assert metrics['primary_score'] == 'last/bbs'
+     path = os.path.join(args.log_dir, 'native_metrics.jsonl')
+     with open(path, 'a') as stream:
+         stream.write(json.dumps(dict(epoch=epoch, **metrics)) + '\n')
+--- C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/revision1_before_metric_correction/source/train_dist_mod.py
++++ C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/train_dist_mod.py
+@@ -214,6 +214,7 @@
+         )
+ 
+         # NOTE Main eval branch
++        expected_rows = len(test_loader.dataset)
+         test_loader = tqdm(test_loader, ascii=True)
+         for batch_idx, batch_data in enumerate(test_loader):
+             # note forward and compute loss
+@@ -251,8 +252,8 @@
+                 evaluator.print_stats()
+         keys = [('last_', threshold, 1, 'bbs') for threshold in (.25, .5)]
+         rows = [int(evaluator.gts[key]) for key in keys]
+-        assert rows == [9508, 9508]
+-        return dict(rows=9508, hits025=int(evaluator.dets[keys[0]]),
++        assert rows == [expected_rows, expected_rows]
++        return dict(rows=expected_rows, hits025=int(evaluator.dets[keys[0]]),
+                     hits050=int(evaluator.dets[keys[1]]), primary_score='last/bbs',
+                     same_complete_model=True)
+ 
+--- C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/revision1_before_metric_correction/check_native_targets_cpu.py
++++ C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/check_native_targets_cpu.py
+@@ -1,5 +1,6 @@
+ """Synthetic CPU CE/mask target checks, not real dataset or model evaluation."""
+ import importlib.util
++import inspect
+ import json
+ from pathlib import Path
+ import sys
+@@ -10,6 +11,8 @@
+ bundle = json.loads((root / 'CPU_INPUTS.json').read_bytes())
+ sys.path.insert(0, bundle['native_model_source'])
+ from models.losses import SetCriterion
++criterion_source = Path(inspect.getfile(SetCriterion)).resolve()
++assert criterion_source == (Path(bundle['native_model_source']) / 'models/losses.py').resolve()
+ sys.path.insert(0, str(root / 'source'))
+ 
+ 
+@@ -114,7 +117,7 @@
+     torch_version=torch.__version__, CUDA_visible_devices=__import__('os').environ['CUDA_VISIBLE_DEVICES'],
+     seed=2027, rows_per_language=3, candidate_count=5, token_count=8, point_count=8,
+     evaluation_type='synthetic_target_and_gradient_engineering_not_accuracy',
+-    criterion_source=str(Path(bundle['native_model_source']) / 'models/losses.py'),
++    criterion_source=str(criterion_source),
+     ScanRefer_original_loss_and_gradient_values_identical=True, results=results,
+     full_PV_factory_checked=False, author_checkpoints_loaded=False,
+     real_dataset_rows=0, full_goal_complete=False)), flush=True)
+--- C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/revision1_before_metric_correction/run_native_targets_cpu_authorized.py
++++ C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/run_native_targets_cpu_authorized.py
+@@ -10,7 +10,7 @@
+ 
+ root = Path(__file__).resolve().parent
+ parent = root.parent
+-audit_path = root / 'source_review/EXPERIMENT_CODE_REVIEW.json'
++audit_path = root / 'source_review/EXPERIMENT_CODE_REVIEW_R2.json'
+ audit = json.loads(audit_path.read_bytes())
+ assert audit['verdict'].upper() in ('PASS', 'WARN') and audit['blocking_issue_count'] == 0
+ for name, expected in audit['audited_input_hashes'].items():
+@@ -42,7 +42,9 @@
+  path.parent.mkdir(parents=True,exist_ok=True);raw=base64.b64decode(encoded)
+  assert hashlib.sha256(raw).hexdigest()==b['file_sha256'][name]
+  path.write_bytes(raw)
+-environment=dict(os.environ,CUDA_VISIBLE_DEVICES='',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1')
++runtime_spec=json.loads(Path('/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/env_spec.json').read_bytes())
++environment=dict(os.environ,**runtime_spec['env'])
++environment.update(CUDA_VISIBLE_DEVICES='',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1')
+ argv=['/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python','-B','-u',str(root/'check_native_targets_cpu.py')]
+ started=datetime.datetime.now().astimezone().isoformat()
+ response=subprocess.run(argv,cwd=str(root),env=environment,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+--- C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/revision1_before_metric_correction/SOURCE_ADAPTER_PREPARATION.json
++++ C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/SOURCE_ADAPTER_PREPARATION.json
+@@ -1,7 +1,8 @@
+ {
+-  "status": "REFERIT_NATIVE_SOURCE_ADAPTERS_PREPARED_NOT_EXECUTED",
+-  "time_cst": "2026-10-10T06:20:34.955533+08:00",
++  "status": "REFERIT_NATIVE_SOURCE_ADAPTERS_R2_PREPARED_NOT_EXECUTED",
++  "time_cst": "2026-10-10T06:35:52.184861+08:00",
+   "changed_files": [
++    "main_utils.py",
+     "models/losses.py",
+     "native_model_initialization.py",
+     "pvground_semantic_assignment.py",
+@@ -35,7 +36,7 @@
+   },
+   "prepared_source_sha256": {
+     "extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+-    "main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
++    "main_utils.py": "ba3f32759d4cf09c2ab0d277fe2c92dcccac67398f01f6e2533cdc8e5f93e6ad",
+     "mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+     "native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+     "native_model_initialization.py": "492e37e83f8b24170011ec98190a62ff7111453831479e9bce6e51b18d815571",
+@@ -45,7 +46,7 @@
+     "pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+     "pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+     "selected_query_mask_objective.py": "229c4c02794abfec8a14cf45ac5117439d6976e7e5e73d7b9c449962509608a3",
+-    "train_dist_mod.py": "78eb42d1b14e92c233a75a45a4856756101176215c7d79d32990c4b2e0711aed",
++    "train_dist_mod.py": "8b22b60eaf444edace0fc5bdd1a0907d6c358b0ab55c5d6e3dd3c0e6b9db7812",
+     "models/losses.py": "bebf992cdd579c8389a326eb578722417bf1aa207268e02919c74e461bf570d3",
+     "models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef"
+   },
+@@ -126,5 +127,14 @@
+   "real_dataset_rows_checked": 0,
+   "source_review_pending": true,
+   "any_Nr_Sr_training_launched": false,
+-  "full_goal_complete": false
++  "full_goal_complete": false,
++  "source_revision": 2,
++  "first_source_review": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source_review\\EXPERIMENT_CODE_REVIEW.json",
++  "first_source_review_sha256": "e00e51fff481624376633f3058f213c2decd269ca02e15f130873d48f07d32f8",
++  "first_revision_snapshot": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\revision1_before_metric_correction",
++  "fresh_B_initial_gate": 0.0,
++  "fresh_B_initial_geometry": "Mask_reference",
++  "evaluation_rows": "actual complete loader dataset length",
++  "Nr_Sr_selection": "hits050_then_hits025_same_checkpoint",
++  "runtime_CPU_environment": "same observed runtime env_spec env/PYTHONPATH then CUDA disabled"
+ }
+--- C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/revision1_before_metric_correction/refine-logs/EXPERIMENT_PLAN.md
++++ C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/refine-logs/EXPERIMENT_PLAN.md
+@@ -11,7 +11,7 @@
+ ## 初始化
+ 
+ - 原核心：严格加载对应作者 Nr3D 或 Sr3D 的 `model` 状态，不加载 ScanRefer 的 G 1072 项 delta，也不承接 d06/f989。
+-- 新增 G 读取结构、A、B：新初始化，固定 seed2027；C 无参数。A 输出层为零；B 中性门控为固定 0.5 的初始值，因此整个方法的 E0 不等于原版作者模型。
++- 新增 G 读取结构、A、B：新初始化，固定 seed2027；C 无参数。A 输出层为零；B 输出层为零，经 clamp 后门值为 0，初始直接使用 Mask 空间参考，因此整个方法的 E0 不等于原版作者模型。
+ - 预计结构状态数仍为 1234→1271→1295，实际构建与完整保存／恢复尚待验证，不能将源码断言计为验证通过。
+ - 使用完整正常训练入口，优化器与调度器重新初始化。后续采用与 ScanRefer 相同的训练职责，不把冻结头适配替代成跨基准完整训练。
+ 
+@@ -28,7 +28,7 @@
+ 
+ | 阶段 | 内容 | 当前状态 |
+ |---|---|---|
+-| 源码 | 14 文件隔离副本，仅改初始化、入口、G/C 和 criterion 调用，共 5 文件；保持活动来源原字节 | AST 已通过，独立源码复核待完成 |
++| 源码 | 14 文件隔离副本；初始化、入口、G/C、criterion 调用以及必要的记录／选模适配，共 6 文件；保持活动来源原字节 | AST 已通过，独立源码复核待完成 |
+ | CPU 工程 | 同输入 ScanRefer 旧／新目标一致；Nr/Sr 对原 criterion 的 CE 及梯度一致；非空 anchor 和检测行保护 | 未执行 |
+ | 真实接口 | Nr/Sr 真实 annotation、有效 root／anchor、对象输入、原生 bbs、数据长度；严格加载作者权重、优化器与冷恢复 | 未执行，需 ScanRefer 单卡任务结束后安排 |
+ | 完整训练 | 同一最终架构各自完整 train/val，E0、固定终点和预定 best；对应 PV 控制与外部 MCLN 参照分开报告 | 未启动 |
+@@ -43,3 +43,7 @@
+ - 真实跨基准训练保持单 seed、单 A100 串行；保留最好及活动恢复权重，已归档无效状态及时清理。没有当前精度或显存证据就不自动排队训练。
+ 
+ 成功要求：同一完整方法在两个基准的原生 REC 两阈值超过对应公平控制，目标、对象协议与训练历史如实报告；源码或 CPU 检查不是成功指标。
++
++## 初次独立复核后的必要修正
++
++原 ScanRefer 验证／记录的 9508 硬断言及 5658/4850 保存门槛不能用于 Nr/Sr。Nr/Sr 验证改为核对实际完整 loader 数据集长度，两者分别按 Acc@0.5 命中、再 Acc@0.25 命中选择同一 best，仍报告固定终点。选模规则不是成功门槛；两项相对对应 baseline 的要求保留。CPU 工程子进程按已有实际 import 检查读取同一 runtime env/PYTHONPATH，再显式关闭 CUDA；原复核失败报告及本轮修正前源码已保存，活动训练未修改。
+--- C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/revision1_before_metric_correction/refine-logs/EXPERIMENT_TRACKER.md
++++ C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/refine-logs/EXPERIMENT_TRACKER.md
+@@ -3,7 +3,7 @@
+ | 任务 | 状态 | 证据与下一步 |
+ |---|---|---|
+ | 对应作者初始化 | SOURCE_PREPARED | 两份 init.json，不载入 ScanRefer 状态；真实权重构建尚未执行 |
+-| 原生 G／C 标签适配 | SOURCE_PREPARED | 14 文件 AST；5 文件必要变更，等待独立复核 |
++| 原生 G／C 标签适配 | SOURCE_PREPARED | 14 文件 AST；6 文件必要变更，等待独立复核 |
+ | CPU loss／梯度检查 | NOT_RUN | 不计为真实数据或准确率 |
+ | 真实 Nr／Sr loader 与 GPU M0 | NOT_RUN | 待 ScanRefer 正常训练结束及最终架构固定 |
+ | Nr3D 完整独立训练 | NOT_STARTED | 单 seed2027，使用对应作者权重 |

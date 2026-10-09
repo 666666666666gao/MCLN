@@ -1,0 +1,201 @@
+[
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/train_dist_mod.py",
+    "sha256": "78eb42d1b14e92c233a75a45a4856756101176215c7d79d32990c4b2e0711aed",
+    "excerpts": [
+      {
+        "start": 208,
+        "end": 214,
+        "text": "208:         evaluator = GroundingEvaluator(\n209:             only_root=True, thresholds=[0.25, 0.5],     # TODO only_root=True\n210:             topks=[1, 5, 10], prefixes=prefixes,\n211:             filter_non_gt_boxes=args.butd_cls,\n212:             logger=self.logger,\n213:             model=args.model\n214:         )"
+      },
+      {
+        "start": 252,
+        "end": 257,
+        "text": "252:         keys = [('last_', threshold, 1, 'bbs') for threshold in (.25, .5)]\n253:         rows = [int(evaluator.gts[key]) for key in keys]\n254:         assert rows == [9508, 9508]\n255:         return dict(rows=9508, hits025=int(evaluator.dets[keys[0]]),\n256:                     hits050=int(evaluator.dets[keys[1]]), primary_score='last/bbs',\n257:                     same_complete_model=True)"
+      },
+      {
+        "start": 405,
+        "end": 415,
+        "text": "405:     opt = parse_option()\n406:     assert opt.model == 'PVGround' and opt.test_dataset in ('nr3d', 'sr3d')\n407:     assert opt.dataset == [opt.test_dataset] and opt.num_decoder_layers == 6\n408:     assert opt.rng_seed == 2027 and opt.use_color and not opt.use_height and not opt.use_multiview\n409:     assert opt.butd and not opt.butd_cls and not opt.butd_gt and not opt.joint_det\n410:     assert opt.use_soft_token_loss and opt.use_contrastive_align\n411:     assert not opt.frozen and not opt.small_lr and opt.batch_size == 8\n412:     random.seed(opt.rng_seed)\n413:     np.random.seed(opt.rng_seed)\n414:     torch.manual_seed(opt.rng_seed)\n415:     torch.cuda.manual_seed_all(opt.rng_seed)"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/main_utils.py",
+    "sha256": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "excerpts": [
+      {
+        "start": 167,
+        "end": 176,
+        "text": "167: def native_metric_order(metrics):\n168:     return (metrics['hits025'] >= 5658 and metrics['hits050'] >= 4850,\n169:             metrics['hits050'] >= 4850, metrics['hits025'], metrics['hits050'])\n170: \n171: \n172: def record_native_metrics(args, epoch, metrics):\n173:     assert metrics['rows'] == 9508 and metrics['primary_score'] == 'last/bbs'\n174:     path = os.path.join(args.log_dir, 'native_metrics.jsonl')\n175:     with open(path, 'a') as stream:\n176:         stream.write(json.dumps(dict(epoch=epoch, **metrics)) + '\\n')"
+      },
+      {
+        "start": 365,
+        "end": 385,
+        "text": "365:         assert args.val_freq == 1 and args.start_epoch <= args.max_epoch\n366:         if not args.checkpoint_path:\n367:             initial = self.evaluate_one_epoch(0, test_loader, model, criterion, set_criterion, args)\n368:             args._retained_native_metrics = initial\n369:             record_native_metrics(args, 0, initial)\n370:             save_checkpoint(args, 0, model, optimizer, scheduler)\n371:         for epoch in range(args.start_epoch, args.max_epoch + 1):\n372:             train_loader.sampler.set_epoch(epoch)\n373:             train_loader.generator.manual_seed(args.rng_seed + epoch)\n374:             tic = time.time()\n375:             self.train_one_epoch(epoch, train_loader, model, criterion, set_criterion,\n376:                                  optimizer, scheduler, args)\n377:             self.logger.info('epoch {}, total time {:.2f}, lr_core {:.6f}, lr_backbone {:.6f}, lr_modules {:.6f}'.format(\n378:                 epoch, time.time() - tic, optimizer.param_groups[0]['lr'],\n379:                 optimizer.param_groups[1]['lr'], optimizer.param_groups[3]['lr']))\n380:             metrics = self.evaluate_one_epoch(epoch, test_loader, model, criterion, set_criterion, args)\n381:             record_native_metrics(args, epoch, metrics)\n382:             if native_metric_order(metrics) > native_metric_order(args._retained_native_metrics):\n383:                 args._retained_native_metrics = metrics\n384:                 save_checkpoint(args, epoch, model, optimizer, scheduler)\n385:             save_checkpoint(args, epoch, model, optimizer, scheduler, save_cur=True)"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/extremal_span_mixer.py",
+    "sha256": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "excerpts": [
+      {
+        "start": 25,
+        "end": 27,
+        "text": "25:         self.output = nn.Linear(32, 1)\n26:         nn.init.zeros_(self.output.weight)\n27:         nn.init.zeros_(self.output.bias)"
+      },
+      {
+        "start": 97,
+        "end": 105,
+        "text": "97:         raw_gate = self.output(self.axis_decoder(decoder_input)).squeeze(-1)\n98:         # A bounded trust coefficient is the parameterization, not a score gate.\n99:         # The same coefficient for center and size keeps each axis ordered.\n100:         gate = raw_gate.clamp(0, 1)\n101:         center = (1 - gate) * mask_center + gate * native_center\n102:         size = (1 - gate) * mask_size + gate * native_size\n103:         return center, size, dict(axis_gate=gate, raw_axis_gate=raw_gate,\n104:                                   face_tokens=face_tokens, source_fraction=source_fraction,\n105:                                   reference_valid=reference_valid)"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/native_model_initialization.py",
+    "sha256": "492e37e83f8b24170011ec98190a62ff7111453831479e9bce6e51b18d815571",
+    "excerpts": [
+      {
+        "start": 18,
+        "end": 43,
+        "text": "18: def configure_native_model(model, spec_path, initialize_weights):\n19:     spec = json.loads(Path(spec_path).read_bytes())\n20:     assert spec['dataset'] in ('nr3d', 'sr3d') and spec['seed'] == 2027\n21:     assert spec['new_module_initialization'] == 'fresh'\n22:     assert spec['g_checkpoint'] is None and spec['support_checkpoint'] is None and spec['span_checkpoint'] is None\n23:     assert spec['span_source_mode'] in ('whole_support', 'extremal_support')\n24:     assert model.candidate_box_refiner is None and model.boundary_evidence_readback is None\n25:     assert model.candidate_support_corrector is None and model.candidate_span_mixer is None\n26:     original_trainable = {name for name, parameter in model.named_parameters() if parameter.requires_grad}\n27:     position_ids = torch.arange(model.text_encoder.config.max_position_embeddings).expand((1, -1))\n28:     assert torch.equal(model.text_encoder.embeddings.position_ids, position_ids)\n29:     model.text_encoder.embeddings.register_buffer('position_ids', position_ids, persistent=False)\n30:     assert len(model.state_dict()) == 1234\n31:     if initialize_weights:\n32:         official = checked_payload(spec['official_checkpoint'], spec['official_checkpoint_sha256'])\n33:         initial = {name[7:]: value for name, value in official['model'].items()}\n34:         assert all(name.startswith('module.') for name in official['model'])\n35:         model.load_state_dict(initial, strict=True)\n36:     install_task_observation_query_read(model)\n37:     assert len(model.state_dict()) == 1271\n38:     model.candidate_support_corrector = CandidateMaskSupportCorrector(False)\n39:     assert sum(parameter.numel() for parameter in model.candidate_support_corrector.parameters()) == 27841\n40:     model.candidate_span_mixer = ExtremalSpanMixer(spec['span_source_mode'])\n41:     assert len(model.state_dict()) == 1295\n42:     assert all(parameter.requires_grad for name, parameter in model.named_parameters() if name in original_trainable)\n43:     assert not any(parameter.requires_grad for parameter in model.text_encoder.parameters())"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/refine-logs/EXPERIMENT_PLAN.md",
+    "sha256": "86393ce92c09f9aa6b27fee5438058027acfda59bd43dead28831d656d658416",
+    "excerpts": [
+      {
+        "start": 13,
+        "end": 16,
+        "text": "13: - 原核心：严格加载对应作者 Nr3D 或 Sr3D 的 `model` 状态，不加载 ScanRefer 的 G 1072 项 delta，也不承接 d06/f989。\n14: - 新增 G 读取结构、A、B：新初始化，固定 seed2027；C 无参数。A 输出层为零；B 中性门控为固定 0.5 的初始值，因此整个方法的 E0 不等于原版作者模型。\n15: - 预计结构状态数仍为 1234→1271→1295，实际构建与完整保存／恢复尚待验证，不能将源码断言计为验证通过。\n16: - 使用完整正常训练入口，优化器与调度器重新初始化。后续采用与 ScanRefer 相同的训练职责，不把冻结头适配替代成跨基准完整训练。"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/check_native_targets_cpu.py",
+    "sha256": "5874e92b8cce09cad993f64a5883362bb988a23e16eeeb1dc39b05b2abd5bf18",
+    "excerpts": [
+      {
+        "start": 9,
+        "end": 29,
+        "text": "9: root = Path(__file__).resolve().parent\n10: bundle = json.loads((root / 'CPU_INPUTS.json').read_bytes())\n11: sys.path.insert(0, bundle['native_model_source'])\n12: from models.losses import SetCriterion\n13: sys.path.insert(0, str(root / 'source'))\n14: \n15: \n16: def load(name, path):\n17:     spec = importlib.util.spec_from_file_location(name, str(path))\n18:     module = importlib.util.module_from_spec(spec)\n19:     spec.loader.exec_module(module)\n20:     return module\n21: \n22: \n23: old_g = load('old_scan_g', root / 'original/pvground_semantic_assignment.py')\n24: old_c = load('old_scan_c', root / 'original/selected_query_mask_objective.py')\n25: new_g = load('new_referit_g', root / 'source/pvground_semantic_assignment.py')\n26: new_c = load('new_referit_c', root / 'source/selected_query_mask_objective.py')\n27: torch.set_num_threads(1)\n28: torch.manual_seed(2027)\n29: criterion = SetCriterion(matcher=None, losses={}, eos_coef=.1)"
+      },
+      {
+        "start": 73,
+        "end": 120,
+        "text": "73:     ce = criterion.loss_pos_align(output, targets, indices, 2 * count, None)['loss_ce']\n74:     predictions['last__loss_ce'] = ce\n75:     return predictions, batch, targets, indices\n76: \n77: \n78: p, b, targets, indices = panel('scanrefer', 2)\n79: old_g_loss, _ = old_g.semantic_assignment_correction(p, b, indices, .1)\n80: new_g_loss, _ = new_g.semantic_assignment_correction(p, b, indices, .1, 6)\n81: assert torch.equal(old_g_loss, new_g_loss)\n82: old_g_gradient = torch.autograd.grad(old_g_loss, p['last_sem_cls_scores'], retain_graph=True)[0]\n83: new_g_gradient = torch.autograd.grad(new_g_loss, p['last_sem_cls_scores'], retain_graph=True)[0]\n84: assert torch.equal(old_g_gradient, new_g_gradient)\n85: old_c_loss, old_c_record = old_c.selected_query_mask_loss(p, b, indices, targets)\n86: new_c_loss, new_c_record = new_c.selected_query_mask_loss(p, b, indices, targets)\n87: assert torch.equal(old_c_loss, new_c_loss) and old_c_record['extra_rows'] == new_c_record['extra_rows'] == 1\n88: for language in ('scanrefer', 'nr3d', 'sr3d'):\n89:     p, b, targets, indices = panel(language, 3)\n90:     correction, record = new_g.semantic_assignment_correction(p, b, indices, .1, 6)\n91:     native_check = new_g.verify_native_replacement(p, b, indices, .1, correction, 6)\n92:     qualified = new_g.qualified_unmatched(p, b, indices)\n93:     assert bool(qualified[:2, 2].all()) and not bool(qualified[2].any())\n94:     change_gradient = torch.autograd.grad(correction, p['last_sem_cls_scores'], retain_graph=True)[0]\n95:     assert bool((change_gradient[2] == 0).all())\n96:     for bid, (queries, _) in enumerate(indices):\n97:         assert bool((change_gradient[bid, queries] == 0).all())\n98:     extra, mask_record = new_c.selected_query_mask_loss(p, b, indices, targets)\n99:     assert mask_record['extra_rows'] == 1\n100:     assert [row['role'] for row in mask_record['rows']] == ['unmatched', 'matched_other', 'detection']\n101:     gradients = torch.autograd.grad(extra, p['sp_last_pred_masks'], retain_graph=True, allow_unused=True)\n102:     assert bool((gradients[0][4].abs().sum() > 0))\n103:     assert bool((gradients[0][:4] == 0).all())\n104:     assert gradients[1] is None and gradients[2] is None\n105:     text_and_alpha = torch.autograd.grad(extra, p['last_pred_masks'][0] + p['adaptive_weights'][:1], retain_graph=True)\n106:     assert all(bool(value.abs().sum() > 0) for value in text_and_alpha)\n107:     expected_root = torch.tensor([.3125,0,.0625,.0625,.0625,0,0,0]) if language == 'sr3d' else torch.tensor([.3,0,.1,.1,.05,0,0,0])\n108:     assert torch.equal(new_g.root_token_target(b)[0], expected_root)\n109:     results.append(dict(language=language, CE_correction=float(correction), extra_mask_loss=float(extra),\n110:         native_CE_and_gradient_check=native_check, protected_detection_and_all_matches=True,\n111:         selected_unmatched_mask_has_gradient=True, extra_rows=1))\n112: \n113: print(json.dumps(dict(status='CPU_SYNTHETIC_NATIVE_TARGET_CHECKS_PASS',\n114:     torch_version=torch.__version__, CUDA_visible_devices=__import__('os').environ['CUDA_VISIBLE_DEVICES'],\n115:     seed=2027, rows_per_language=3, candidate_count=5, token_count=8, point_count=8,\n116:     evaluation_type='synthetic_target_and_gradient_engineering_not_accuracy',\n117:     criterion_source=str(Path(bundle['native_model_source']) / 'models/losses.py'),\n118:     ScanRefer_original_loss_and_gradient_values_identical=True, results=results,\n119:     full_PV_factory_checked=False, author_checkpoints_loaded=False,\n120:     real_dataset_rows=0, full_goal_complete=False)), flush=True)"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/run_native_targets_cpu_authorized.py",
+    "sha256": "ded9e9c360dddb145cafc49fd94de80d6bd94a85e928e952bb5cdc7e9b37ddcd",
+    "excerpts": [
+      {
+        "start": 13,
+        "end": 17,
+        "text": "13: audit_path = root / 'source_review/EXPERIMENT_CODE_REVIEW.json'\n14: audit = json.loads(audit_path.read_bytes())\n15: assert audit['verdict'].upper() in ('PASS', 'WARN') and audit['blocking_issue_count'] == 0\n16: for name, expected in audit['audited_input_hashes'].items():\n17:     assert hashlib.sha256(Path(name).read_bytes()).hexdigest() == expected.removeprefix('sha256:')"
+      },
+      {
+        "start": 35,
+        "end": 54,
+        "text": "35: b=json.load(sys.stdin);root=Path(b['root'])\n36: assert root==Path('/root/autodl-tmp/pvground_referit_native_targets_cpu_20261010') and not root.exists()\n37: for name,digest in b['original_sha256'].items():\n38:  assert hashlib.sha256((Path(b['original_source'])/name).read_bytes()).hexdigest()==digest\n39: root.mkdir()\n40: for name,encoded in b['files'].items():\n41:  path=root/name;assert root in path.resolve().parents\n42:  path.parent.mkdir(parents=True,exist_ok=True);raw=base64.b64decode(encoded)\n43:  assert hashlib.sha256(raw).hexdigest()==b['file_sha256'][name]\n44:  path.write_bytes(raw)\n45: environment=dict(os.environ,CUDA_VISIBLE_DEVICES='',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1')\n46: argv=['/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python','-B','-u',str(root/'check_native_targets_cpu.py')]\n47: started=datetime.datetime.now().astimezone().isoformat()\n48: response=subprocess.run(argv,cwd=str(root),env=environment,stdout=subprocess.PIPE,stderr=subprocess.PIPE)\n49: (root/'CPU_STDOUT.json').write_bytes(response.stdout);(root/'CPU_STDERR.txt').write_bytes(response.stderr)\n50: out=dict(started_cst=started,finished_cst=datetime.datetime.now().astimezone().isoformat(),exit_code=response.returncode,\n51:  argv=argv,cuda_visible_devices='',current_training_status_reads=0,GPU_calls=0,\n52:  stdout_base64=base64.b64encode(response.stdout).decode(),stderr_base64=base64.b64encode(response.stderr).decode())\n53: (root/'CPU_EXIT.json').write_text(json.dumps({k:v for k,v in out.items() if not k.endswith('_base64')},indent=2)+'\\n')\n54: print(json.dumps(out));sys.exit(response.returncode)"
+      },
+      {
+        "start": 66,
+        "end": 81,
+        "text": "66: (attempt / 'CPU_REMOTE_RAW_STDOUT.json').write_bytes(response.stdout)\n67: (attempt / 'CPU_REMOTE_RAW_STDERR.txt').write_bytes(response.stderr)\n68: (attempt / 'CPU_TRANSPORT_EXIT.json').write_text(json.dumps(dict(exit_code=response.returncode)) + '\\n', encoding='utf-8')\n69: assert response.stdout, 'No CPU receipt; preserve transport failure and verify remote state before another attempt'\n70: receipt = json.loads(response.stdout)\n71: (attempt / 'CPU_STDOUT.json').write_bytes(base64.b64decode(receipt.pop('stdout_base64')))\n72: (attempt / 'CPU_STDERR.txt').write_bytes(base64.b64decode(receipt.pop('stderr_base64')))\n73: receipt.update(source_audit_sha256=hashlib.sha256(audit_path.read_bytes()).hexdigest(),\n74:     purpose='synthetic_CE_and_mask_targets_only', full_PV_or_author_state_checked=False,\n75:     normal_training_queried=False, Nr_Sr_training_launched=False)\n76: (attempt / 'CPU_EXECUTION.json').write_text(json.dumps(receipt, indent=2) + '\\n', encoding='utf-8')\n77: assert response.returncode == receipt['exit_code'] == 0\n78: result = json.loads((attempt / 'CPU_STDOUT.json').read_bytes())\n79: (attempt / 'CPU_PARSED_RESULT.json').write_text(json.dumps(result, indent=2) + '\\n', encoding='utf-8')\n80: print(json.dumps(dict(status=result['status'], exit_code=receipt['exit_code'],\n81:     real_dataset_rows=result['real_dataset_rows'], normal_training_status_reads=0, GPU_calls=0)), flush=True)"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/model_source/models/__init__.py",
+    "sha256": "2ca09339e49e64e99d7fae6da86eb56eb5fe9ebcf3edd4ffe7ecf2b8fb931649",
+    "excerpts": [
+      {
+        "start": 7,
+        "end": 10,
+        "text": "7: from .pv_ground import PVGround\n8: \n9: from .ap_helper import APCalculator, parse_predictions, parse_groundtruths\n10: from .losses import HungarianMatcher, SetCriterion, compute_hungarian_loss"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/check_native_runtime_imports_r2_authorized.py",
+    "sha256": "b1c23801fd515978da0a10af46a80f76b92ff0507d7d01c9cfe5b0c8ffff849c",
+    "excerpts": [
+      {
+        "start": 13,
+        "end": 20,
+        "text": "13: code = r'''import hashlib,importlib,json,os,sys\n14: from pathlib import Path\n15: b=json.load(sys.stdin);source=Path(b['model_source']);assert Path.cwd()==source\n16: environment=json.loads(Path('/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/env_spec.json').read_bytes())\n17: assert hashlib.sha256(json.dumps(environment,sort_keys=True,separators=(',',':')).encode()).hexdigest()==b['env_spec_sha256']\n18: os.environ.update(environment['env']);os.environ['CUDA_VISIBLE_DEVICES']=''\n19: sys.path=[str(source)]+environment['env']['PYTHONPATH'].split(':')+sys.path\n20: "
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/NATIVE_RUNTIME_IMPORTS_CPU.json",
+    "sha256": "52fedc130709d38727c5bb1848c70ea3a80138928105087acc7f28c612c016a3",
+    "excerpts": [
+      {
+        "start": 81,
+        "end": 90,
+        "text": "81:   \"torch_version\": \"1.10.2+cu111\",\n82:   \"warm_env_spec_sha256\": \"966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c\",\n83:   \"pcdet_import_path\": \"/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/OpenPCDet/pcdet/__init__.py\",\n84:   \"cuda_initialized\": false,\n85:   \"actual_model_constructor\": false,\n86:   \"neural_forwards\": 0,\n87:   \"optimizer_updates\": 0,\n88:   \"training_status_reads\": 0,\n89:   \"gpu_queries\": 0,\n90:   \"time_cst\": \"2026-10-09T22:42:48.001782+08:00\""
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_extremal_span_evidence_20261009/runner_v1/source_review/snapshots/038_joint_det_dataset.py",
+    "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "excerpts": [
+      {
+        "start": 1055,
+        "end": 1081,
+        "text": "1055:         # NOTE text position label\n1056:         target_positive_map[:1] = gt_map_t          # main object\n1057:         modify_positive_map[:1] = gt_map_m          # attribute\n1058:         pron_positive_map[:1]   = gt_map_p          # pron\n1059:         other_entity_positive_map[:1] = gt_map_o    # auxi obj\n1060:         rel_positive_map[:1]   = gt_map_r           # relation\n1061: \n1062:         # auxi\n1063:         auxi_entity_positive_map = np.zeros((MAX_NUM_OBJ, 256))\n1064:         if auxi_box is not None:\n1065:             auxi_entity = anno[\"auxi_entity\"]['target_char_span']\n1066:             num_a = 0\n1067:             # char span\n1068:             auxi_entity_char_span = np.zeros((MAX_NUM_OBJ, 2))\n1069:             for a, auxi in enumerate(auxi_entity):\n1070:                 auxi_entity_char_span[a] = auxi\n1071:                 num_a = a+1\n1072:             # position label\n1073:             gt_map_a = get_positive_map(tokenized, auxi_entity_char_span[:num_a])\n1074:             gt_map_a = gt_map_a.sum(axis=0)\n1075:             auxi_entity_positive_map[:1] = gt_map_a\n1076: \n1077:             # note SR3D \n1078:             if anno['dataset'] == 'sr3d':\n1079:                 target_positive_map[1] = gt_map_a\n1080: \n1081:         return target_char_span, target_positive_map, modify_positive_map, pron_positive_map, \\"
+      },
+      {
+        "start": 1086,
+        "end": 1119,
+        "text": "1086:     def _get_target_boxes(self, anno, scan):\n1087:         \"\"\"Return gt boxes to detect.\"\"\"\n1088:         bboxes = np.zeros((MAX_NUM_OBJ, 6))\n1089:         if isinstance(anno['target_id'], list):\n1090:             tids = anno['target_id']\n1091:         else:  # referit dataset\n1092:             tids = [anno['target_id']]\n1093:             # TODO SR3D: anchor object\n1094:             if self.detect_intermediate:\n1095:                 # tids += anno.get('anchor_ids', [])    # BUTD-DETR\n1096:                 # EDA\n1097:                 if anno['auxi_entity'] is not None and len(anno['anchor_ids']):\n1098:                     tids.append(anno['anchor_ids'][0])\n1099:         point_instance_label = -np.ones(len(scan.pc))\n1100:         gt_masks = np.zeros((MAX_NUM_OBJ, len(scan.pc)))\n1101:         for t, tid in enumerate(tids):\n1102:             point_instance_label[scan.three_d_objects[tid]['points']] = t\n1103:             gt_masks[t][scan.three_d_objects[tid]['points']] = 1\n1104:         \n1105:         bboxes[:len(tids)] = np.stack([\n1106:             scan.get_object_bbox(tid).reshape(-1) for tid in tids\n1107:         ])\n1108:         bboxes = np.concatenate((\n1109:             (bboxes[:, :3] + bboxes[:, 3:]) * 0.5,\n1110:             bboxes[:, 3:] - bboxes[:, :3]\n1111:         ), 1)\n1112:         if self.split == 'train' and self.augment:  # jitter boxes\n1113:             bboxes[:len(tids)] *= (0.95 + 0.1*np.random.random((len(tids), 6)))\n1114:         bboxes[len(tids):, :3] = 1000\n1115:         \n1116:         box_label_mask = np.zeros(MAX_NUM_OBJ)\n1117:         box_label_mask[:len(tids)] = 1\n1118:         \n1119:         return bboxes, box_label_mask, point_instance_label, gt_masks"
+      },
+      {
+        "start": 1264,
+        "end": 1272,
+        "text": "1264:         # Benchmark identity used by the legacy language-loss recipe.  This is\n1265:         # intentionally distinct from the annotation source in joint batches.\n1266:         language_dataset = self.test_dataset\n1267: \n1268:         # step Read annotation and point clouds\n1269:         anno = self.annos[index]\n1270:         sample_dataset = anno.get('dataset')\n1271:         if not isinstance(sample_dataset, str) or not sample_dataset:\n1272:             raise ValueError(\"annotation dataset must be a non-empty string\")"
+      },
+      {
+        "start": 1339,
+        "end": 1348,
+        "text": "1339:         ##########################\n1340:         # STEP Get text position #\n1341:         ##########################\n1342:         if anno['dataset'] == 'scannet':\n1343:             tokens_positive, positive_map, modify_positive_map, pron_positive_map, \\\n1344:                 other_entity_map, auxi_entity_positive_map, rel_positive_map = self._get_token_positive_map(anno)\n1345:         else:\n1346:             # note text parsing\n1347:             tokens_positive, positive_map, modify_positive_map, pron_positive_map, \\\n1348:                 other_entity_map, auxi_entity_positive_map, rel_positive_map = self._get_token_positive_map_by_parse(anno, auxi_box)"
+      },
+      {
+        "start": 1402,
+        "end": 1403,
+        "text": "1402:             \"language_dataset\": language_dataset,\n1403:             \"sample_dataset\": sample_dataset,"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_extremal_span_evidence_20261009/runner_v1/source_review/snapshots/036_grounding_evaluator.py",
+    "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "excerpts": [
+      {
+        "start": 251,
+        "end": 281,
+        "text": "251:             # Keep scores for annotated objects only\n252:             num_obj = int(end_points['box_label_mask'][bid].sum())\n253:             pmap = positive_map[bid, :num_obj]\n254:             scores_main = (\n255:                 sem_scores[bid].unsqueeze(0)    \n256:                 * pmap.unsqueeze(1)             \n257:             ).sum(-1)\n258: \n259:             # score\n260:             pmap_modi = modify_positive_map[bid, :1]\n261:             pmap_pron = pron_positive_map[bid, :1]\n262:             pmap_other = other_entity_map[bid, :1]\n263:             pmap_rel = rel_positive_map[bid, :1]    # num_obj\n264:             scores_modi = (\n265:                 sem_scores[bid].unsqueeze(0)    \n266:                 * pmap_modi.unsqueeze(1)             \n267:             ).sum(-1)\n268:             scores_pron = (\n269:                 sem_scores[bid].unsqueeze(0)    \n270:                 * pmap_pron.unsqueeze(1)             \n271:             ).sum(-1)\n272:             scores_other = (\n273:                 sem_scores[bid].unsqueeze(0)    \n274:                 * pmap_other.unsqueeze(1)             \n275:             ).sum(-1)\n276:             scores_rel = (\n277:                 sem_scores[bid].unsqueeze(0)    \n278:                 * pmap_rel.unsqueeze(1)             \n279:             ).sum(-1)\n280: \n281:             scores = scores_main + scores_modi + scores_pron + scores_rel - scores_other"
+      },
+      {
+        "start": 534,
+        "end": 553,
+        "text": "534:     # BRIEF Get the postion label of the decoupled text component.\n535:     def _parse_gt(self, end_points):\n536:         positive_map = torch.clone(end_points['positive_map'])                  # main\n537:         modify_positive_map = torch.clone(end_points['modify_positive_map'])    # attribute\n538:         pron_positive_map = torch.clone(end_points['pron_positive_map'])        # pron\n539:         other_entity_map = torch.clone(end_points['other_entity_map'])          # other(including auxi)\n540:         auxi_entity_positive_map = torch.clone(end_points['auxi_entity_positive_map'])  # auxi\n541:         rel_positive_map = torch.clone(end_points['rel_positive_map'])\n542: \n543:         positive_map[positive_map > 0] = 1                      \n544:         gt_center = end_points['center_label'][:, :, 0:3]       \n545:         gt_size = end_points['size_gts']                        \n546:         gt_bboxes = torch.cat([gt_center, gt_size], dim=-1)     # GT box cxcyczwhd\n547:         \n548:         if self.only_root:\n549:             positive_map = positive_map[:, :1]  # (B, 1, 256)\n550:             gt_bboxes = gt_bboxes[:, :1]        # (B, 1, 6)\n551:         \n552:         return positive_map, modify_positive_map, pron_positive_map, other_entity_map, auxi_entity_positive_map, \\\n553:             rel_positive_map, gt_bboxes"
+      }
+    ]
+  },
+  {
+    "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_import_attempt1/NATIVE_RUNTIME_IMPORTS_CPU_STDERR.txt",
+    "sha256": "4da2e92a030b39bf55e2e389075252817bc93c74d2d8b43db508c07cb1cae223",
+    "raw_stderr": "Traceback (most recent call last):\n  File \"<string>\", line 12, in <module>\n  File \"/root/miniconda3/envs/bdetr/lib/python3.7/importlib/__init__.py\", line 127, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n  File \"<frozen importlib._bootstrap>\", line 1006, in _gcd_import\n  File \"<frozen importlib._bootstrap>\", line 983, in _find_and_load\n  File \"<frozen importlib._bootstrap>\", line 967, in _find_and_load_unlocked\n  File \"<frozen importlib._bootstrap>\", line 677, in _load_unlocked\n  File \"<frozen importlib._bootstrap_external>\", line 728, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 219, in _call_with_frames_removed\n  File \"/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/train_dist_mod.py\", line 20, in <module>\n    from main_utils import parse_option, BaseTrainTester\n  File \"/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/main_utils.py\", line 27, in <module>\n    from models import HungarianMatcher, SetCriterion, compute_hungarian_loss\n  File \"/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/models/__init__.py\", line 7, in <module>\n    from .pv_ground import PVGround\n  File \"/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/models/pv_ground.py\", line 19, in <module>\n    from .pv_backbone import pv_backbone\n  File \"/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/models/pv_backbone.py\", line 2, in <module>\n    from .pv_utils import MeanVFE, VoxelBackBone8x, VoxelSetAbstraction, HeightCompression# , BEVCompression , Conv2DCollapse\n  File \"/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/models/pv_utils.py\", line 1, in <module>\n    from pvground_observation_query import bev_observation, spatial_observation\n  File \"/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/pvground_observation_query.py\", line 11, in <module>\n    from pcdet.ops.pointnet2.pointnet2_stack import pointnet2_utils\nModuleNotFoundError: No module named 'pcdet'\n",
+    "historical": true,
+    "executed_in_this_review": false
+  }
+]

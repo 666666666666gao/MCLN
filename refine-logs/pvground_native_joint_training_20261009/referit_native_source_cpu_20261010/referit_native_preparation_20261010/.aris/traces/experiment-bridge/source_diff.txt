@@ -1,0 +1,202 @@
+diff --git "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/models/losses.py" "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/models/losses.py"
+index ee8faa1..6baf60f 100644
+--- "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/models/losses.py"
++++ "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/models/losses.py"
+@@ -959,7 +959,7 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
+     if end_points['native_joint_training']:
+         if end_points['use_g_supervision']:
+             from pvground_semantic_assignment import semantic_assignment_correction
+-            correction, record = semantic_assignment_correction(end_points, end_points, last_indices, set_criterion.eos_coef)
++            correction, record = semantic_assignment_correction(end_points, end_points, last_indices, set_criterion.eos_coef, num_decoder_layers)
+             loss = loss + correction
+             end_points['g_reassigned_queries'] = record['reassigned_queries']
+         if end_points['use_selected_mask_supervision']:
+diff --git "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/native_model_initialization.py" "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/native_model_initialization.py"
+index 8b720d7..4a67ccc 100644
+--- "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/native_model_initialization.py"
++++ "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/native_model_initialization.py"
+@@ -17,7 +17,9 @@ def checked_payload(path, digest):
+ 
+ def configure_native_model(model, spec_path, initialize_weights):
+     spec = json.loads(Path(spec_path).read_bytes())
+-    assert spec['dataset'] == 'scanrefer' and spec['seed'] == 2027
++    assert spec['dataset'] in ('nr3d', 'sr3d') and spec['seed'] == 2027
++    assert spec['new_module_initialization'] == 'fresh'
++    assert spec['g_checkpoint'] is None and spec['support_checkpoint'] is None and spec['span_checkpoint'] is None
+     assert spec['span_source_mode'] in ('whole_support', 'extremal_support')
+     assert model.candidate_box_refiner is None and model.boundary_evidence_readback is None
+     assert model.candidate_support_corrector is None and model.candidate_span_mixer is None
+@@ -33,30 +35,9 @@ def configure_native_model(model, spec_path, initialize_weights):
+         model.load_state_dict(initial, strict=True)
+     install_task_observation_query_read(model)
+     assert len(model.state_dict()) == 1271
+-    if initialize_weights:
+-        parent_g = checked_payload(spec['g_checkpoint'], spec['g_checkpoint_sha256'])
+-        state = model.state_dict()
+-        assert len(parent_g['state_delta']) == 1072
+-        for name, value in parent_g['state_delta'].items():
+-            assert name in state and state[name].shape == value.shape and state[name].dtype == value.dtype
+-        state.update(parent_g['state_delta'])
+-        model.load_state_dict(state, strict=True)
+     model.candidate_support_corrector = CandidateMaskSupportCorrector(False)
+     assert sum(parameter.numel() for parameter in model.candidate_support_corrector.parameters()) == 27841
+-    if initialize_weights:
+-        support = checked_payload(spec['support_checkpoint'], spec['support_checkpoint_sha256'])
+-        assert support['arm'] == 'selected_query' and support['geometry_encoding'] == 'zero'
+-        prefix = 'candidate_support_corrector.'
+-        assert len(support['state_delta']) == 10
+-        assert all(name.startswith(prefix) for name in support['state_delta'])
+-        model.candidate_support_corrector.load_state_dict(
+-            {name[len(prefix):]: value for name, value in support['state_delta'].items()}, strict=True)
+     model.candidate_span_mixer = ExtremalSpanMixer(spec['span_source_mode'])
+-    if initialize_weights and spec['span_checkpoint'] is not None:
+-        span = checked_payload(spec['span_checkpoint'], spec['span_checkpoint_sha256'])
+-        assert span['source_mode'] == spec['span_source_mode']
+-        assert span['parent_identity']['parent_support_terminal_sha256'] == spec['support_checkpoint_sha256']
+-        model.candidate_span_mixer.load_state_dict(span['mixer_state'], strict=True)
+     assert len(model.state_dict()) == 1295
+     assert all(parameter.requires_grad for name, parameter in model.named_parameters() if name in original_trainable)
+     assert not any(parameter.requires_grad for parameter in model.text_encoder.parameters())
+@@ -71,5 +52,7 @@ def configure_native_model(model, spec_path, initialize_weights):
+         mask_reference_is_discrete=True, separate_deployed_ranking=False,
+         use_g_supervision=model.use_g_supervision,
+         use_selected_mask_supervision=model.use_selected_mask_supervision,
+-        dataset='scanrefer', seed=2027)
++        dataset=spec['dataset'], seed=2027,
++        pretrained_core='corresponding_author_checkpoint', new_module_initialization='fresh',
++        scanrefer_core_or_module_state_loaded=False)
+     return model
+diff --git "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/pvground_semantic_assignment.py" "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/pvground_semantic_assignment.py"
+index 03b2a6f..1071a01 100644
+--- "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/pvground_semantic_assignment.py"
++++ "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/pvground_semantic_assignment.py"
+@@ -15,28 +15,40 @@ def qualified_unmatched(predictions, batch, indices):
+     hi = torch.minimum(boxes[..., :3] + size / 2, root[:, None, :3] + root_size / 2)
+     intersection = (hi - lo).clamp(min=0).prod(-1)
+     iou = intersection / (size.prod(-1) + root_size.prod(-1) - intersection).clamp(min=1e-6)
+-    assert bool(batch['box_label_mask'][:, 0].all()) and bool(torch.isfinite(iou).all())
++    assert all(name in ('scanrefer', 'nr3d', 'sr3d', 'scannet') for name in batch['sample_dataset'])
++    expression = torch.tensor([name != 'scannet' for name in batch['sample_dataset']],
++                              device=iou.device, dtype=torch.bool)
++    assert bool(batch['box_label_mask'][expression, 0].all()) and bool(torch.isfinite(iou).all())
+     matched = torch.zeros_like(iou, dtype=torch.bool)
+     for bid, (queries, targets) in enumerate(indices):
+-        assert int((targets == 0).sum()) == 1
++        if bool(expression[bid]):
++            assert int((targets == 0).sum()) == 1
+         matched[bid, queries] = True
+-    return (iou > .5) & ~matched
++    return (iou > .5) & ~matched & expression[:, None]
+ 
+ 
+ def root_token_target(batch):
+-    # Exact ScanRefer native weighting, including its unnormalized target mass.
++    assert len(set(batch['language_dataset'])) == 1
++    assert batch['language_dataset'][0] in ('scanrefer', 'nr3d', 'sr3d')
++    if batch['language_dataset'][0] == 'sr3d':
++        return (batch['positive_map'][:, 0] * .625
++                + batch['modify_positive_map'][:, 0] * .125
++                + batch['pron_positive_map'][:, 0] * .125
++                + batch['rel_positive_map'][:, 0] * .125).detach()
++    # Exact ScanRefer/Nr3D native weighting, including unnormalized mass.
+     return (batch['positive_map'][:, 0] * .6
+             + batch['modify_positive_map'][:, 0] * .2
+             + batch['pron_positive_map'][:, 0] * .2
+             + batch['rel_positive_map'][:, 0] * .1).detach()
+ 
+ 
+-def semantic_assignment_correction(predictions, batch, indices, eos_coef):
+-    assert eos_coef == .1 and all(x == 'scanrefer' for x in batch['language_dataset'])
++def semantic_assignment_correction(predictions, batch, indices, eos_coef, num_decoder_layers):
++    assert eos_coef == .1 and num_decoder_layers == 6
+     logp = predictions['last_sem_cls_scores'].log_softmax(-1)
+     selected = qualified_unmatched(predictions, batch, indices)
+     target = root_token_target(batch)
+-    assert bool((target[:, -1] == 0).all()) and bool((target.sum(-1) > 0).all())
++    active = selected.any(-1)
++    assert bool((target[active, -1] == 0).all()) and bool((target[active].sum(-1) > 0).all())
+     num_boxes = sum(len(queries) for queries, _ in indices)
+     entropy = (torch.log(target + 1e-6) * target).sum(-1)
+     replacement = entropy[:, None] - (logp * target[:, None]).sum(-1)
+@@ -44,13 +56,14 @@ def semantic_assignment_correction(predictions, batch, indices, eos_coef):
+     original = torch.log(torch.ones_like(logp[..., -1]) + 1e-6) - logp[..., -1]
+     old_ce = original[selected].sum() * eos_coef / num_boxes
+     new_ce = replacement[selected].sum() * eos_coef / num_boxes
+-    correction = (new_ce - old_ce) * (.5 / 7)
++    coefficient = .5 if batch['language_dataset'][0] == 'scanrefer' else 1.0
++    correction = (new_ce - old_ce) * (coefficient / (num_decoder_layers + 1))
+     return correction, dict(reassigned_queries=int(selected.sum()),
+         reassigned_samples=int(selected.any(-1).sum()), matched_queries=num_boxes,
+         replaced_ce_old=float(old_ce), replaced_ce_new=float(new_ce))
+ 
+ 
+-def verify_native_replacement(predictions, batch, indices, eos_coef, correction):
++def verify_native_replacement(predictions, batch, indices, eos_coef, correction, num_decoder_layers):
+     """Zero-update real-batch witness against the actual native criterion tensor."""
+     logits = predictions['last_sem_cls_scores']
+     logp = logits.log_softmax(-1)
+@@ -61,7 +74,10 @@ def verify_native_replacement(predictions, batch, indices, eos_coef, correction)
+         valid = batch['box_label_mask'][bid].bool()
+         maps = [batch[key][bid][valid][targets] for key in
+                 ['positive_map', 'modify_positive_map', 'pron_positive_map', 'rel_positive_map']]
+-        target[bid, queries] = maps[0] * .6 + maps[1] * .2 + maps[2] * .2 + maps[3] * .1
++        if batch['language_dataset'][0] == 'sr3d':
++            target[bid, queries] = maps[0] * .625 + maps[1] * .125 + maps[2] * .125 + maps[3] * .125
++        else:
++            target[bid, queries] = maps[0] * .6 + maps[1] * .2 + maps[2] * .2 + maps[3] * .1
+         weights[bid, queries] = 1
+     denominator = sum(len(q) for q, _ in indices)
+ 
+@@ -74,8 +90,9 @@ def verify_native_replacement(predictions, batch, indices, eos_coef, correction)
+     selected = qualified_unmatched(predictions, batch, indices)
+     changed = target.clone()
+     changed[selected] = root_token_target(batch)[:, None].expand_as(changed)[selected]
+-    expected = ce(changed) * (.5 / 7)
+-    corrected = actual * (.5 / 7) + correction
++    coefficient = .5 if batch['language_dataset'][0] == 'scanrefer' else 1.0
++    expected = ce(changed) * (coefficient / (num_decoder_layers + 1))
++    corrected = actual * (coefficient / (num_decoder_layers + 1)) + correction
+     assert torch.allclose(expected, corrected, rtol=1e-6, atol=1e-6)
+     grad = torch.autograd.grad(corrected, logits, retain_graph=True)[0]
+     expected_grad = torch.autograd.grad(expected, logits, retain_graph=True)[0]
+diff --git "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/selected_query_mask_objective.py" "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/selected_query_mask_objective.py"
+index 2657b43..6e0cae2 100644
+--- "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/selected_query_mask_objective.py"
++++ "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/selected_query_mask_objective.py"
+@@ -10,7 +10,12 @@ def selected_query_mask_loss(predictions, batch, indices, targets):
+     total = predictions['sp_last_pred_masks'][0].sum() * 0
+     records = []
+     for bid, (matched_queries, matched_targets) in enumerate(indices):
+-        assert batch['language_dataset'][bid] == 'scanrefer'
++        assert batch['language_dataset'][bid] in ('scanrefer', 'nr3d', 'sr3d')
++        assert batch['sample_dataset'][bid] in ('scanrefer', 'nr3d', 'sr3d', 'scannet')
++        if batch['sample_dataset'][bid] == 'scannet':
++            records.append(dict(query=int(selected[bid]), supervised=False, role='detection',
++                target_gt_slot=None, reason='joint_detection_row_preserved'))
++            continue
+         valid = batch['box_label_mask'][bid].bool().nonzero().flatten()
+         assert int(valid[0]) == 0
+         assert int((matched_targets == 0).sum()) == 1
+@@ -36,7 +41,7 @@ def selected_query_mask_loss(predictions, batch, indices, targets):
+     assert torch.isfinite(total)
+     return total, dict(extra_rows=sum(row['supervised'] for row in records), rows=records,
+         selected_roles={role:sum(row['role']==role for row in records)
+-                        for role in ('matched_root','matched_other','unmatched')},
++                        for role in ('matched_root','matched_other','unmatched','detection')},
+         budget='one selected unmatched Query per expression; empty expressions contribute zero',
+         score_path_frozen=False, selection_gradient_stopped=True, original_matched_instances_preserved=True,
+         native_coefficients=[5,1,10,2], loss=float(total))
+diff --git "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/train_dist_mod.py" "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/train_dist_mod.py"
+index dbee5c1..7f0041d 100644
+--- "a/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source/train_dist_mod.py"
++++ "b/C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\referit_native_preparation_20261010\\source/train_dist_mod.py"
+@@ -403,7 +403,8 @@ if __name__ == '__main__':
+     # seed_all(0)
+     
+     opt = parse_option()
+-    assert opt.model == 'PVGround' and opt.dataset == ['scanrefer'] and opt.test_dataset == 'scanrefer'
++    assert opt.model == 'PVGround' and opt.test_dataset in ('nr3d', 'sr3d')
++    assert opt.dataset == [opt.test_dataset] and opt.num_decoder_layers == 6
+     assert opt.rng_seed == 2027 and opt.use_color and not opt.use_height and not opt.use_multiview
+     assert opt.butd and not opt.butd_cls and not opt.butd_gt and not opt.joint_det
+     assert opt.use_soft_token_loss and opt.use_contrastive_align

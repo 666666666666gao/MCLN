@@ -1,0 +1,441 @@
+PREPARED VERSUS PARENT LOSS DIFF
+--- ../source/models/losses.py
++++ source/models/losses.py
+@@ -959,7 +959,7 @@
+     if end_points['native_joint_training']:
+         if end_points['use_g_supervision']:
+             from pvground_semantic_assignment import semantic_assignment_correction
+-            correction, record = semantic_assignment_correction(end_points, end_points, last_indices, set_criterion.eos_coef)
++            correction, record = semantic_assignment_correction(end_points, end_points, last_indices, set_criterion.eos_coef, num_decoder_layers)
+             loss = loss + correction
+             end_points['g_reassigned_queries'] = record['reassigned_queries']
+         if end_points['use_selected_mask_supervision']:
+
+{
+  "AST_source_files": 9,
+  "AST_remote_blocks": 1,
+  "AST_status": "PASS",
+  "script_calls": [
+    {
+      "line": 11,
+      "function": "json.loads"
+    },
+    {
+      "line": 12,
+      "function": "sys.path.insert"
+    },
+    {
+      "line": 14,
+      "function": "Path(inspect.getfile(SetCriterion)).resolve"
+    },
+    {
+      "line": 16,
+      "function": "sys.path.insert"
+    },
+    {
+      "line": 26,
+      "function": "load"
+    },
+    {
+      "line": 27,
+      "function": "load"
+    },
+    {
+      "line": 28,
+      "function": "load"
+    },
+    {
+      "line": 29,
+      "function": "load"
+    },
+    {
+      "line": 30,
+      "function": "torch.set_num_threads"
+    },
+    {
+      "line": 31,
+      "function": "torch.manual_seed"
+    },
+    {
+      "line": 32,
+      "function": "SetCriterion"
+    },
+    {
+      "line": 81,
+      "function": "panel"
+    },
+    {
+      "line": 82,
+      "function": "old_g.semantic_assignment_correction"
+    },
+    {
+      "line": 83,
+      "function": "new_g.semantic_assignment_correction"
+    },
+    {
+      "line": 84,
+      "function": "torch.equal"
+    },
+    {
+      "line": 87,
+      "function": "torch.equal"
+    },
+    {
+      "line": 88,
+      "function": "old_c.selected_query_mask_loss"
+    },
+    {
+      "line": 89,
+      "function": "new_c.selected_query_mask_loss"
+    },
+    {
+      "line": 116,
+      "function": "print"
+    },
+    {
+      "line": 10,
+      "function": "Path(__file__).resolve"
+    },
+    {
+      "line": 11,
+      "function": "(root / 'CPU_INPUTS.json').read_bytes"
+    },
+    {
+      "line": 15,
+      "function": "(Path(bundle['native_model_source']) / 'models/losses.py').resolve"
+    },
+    {
+      "line": 16,
+      "function": "str"
+    },
+    {
+      "line": 20,
+      "function": "importlib.util.spec_from_file_location"
+    },
+    {
+      "line": 21,
+      "function": "importlib.util.module_from_spec"
+    },
+    {
+      "line": 22,
+      "function": "spec.loader.exec_module"
+    },
+    {
+      "line": 37,
+      "function": "torch.randn"
+    },
+    {
+      "line": 40,
+      "function": "logits.requires_grad_"
+    },
+    {
+      "line": 41,
+      "function": "torch.zeros"
+    },
+    {
+      "line": 44,
+      "function": "centers.requires_grad_"
+    },
+    {
+      "line": 45,
+      "function": "torch.full"
+    },
+    {
+      "line": 46,
+      "function": "dict"
+    },
+    {
+      "line": 57,
+      "function": "torch.zeros"
+    },
+    {
+      "line": 58,
+      "function": "torch.zeros"
+    },
+    {
+      "line": 71,
+      "function": "dict"
+    },
+    {
+      "line": 75,
+      "function": "dict"
+    },
+    {
+      "line": 85,
+      "function": "torch.autograd.grad"
+    },
+    {
+      "line": 86,
+      "function": "torch.autograd.grad"
+    },
+    {
+      "line": 90,
+      "function": "torch.equal"
+    },
+    {
+      "line": 92,
+      "function": "panel"
+    },
+    {
+      "line": 93,
+      "function": "new_g.semantic_assignment_correction"
+    },
+    {
+      "line": 94,
+      "function": "new_g.verify_native_replacement"
+    },
+    {
+      "line": 95,
+      "function": "new_g.qualified_unmatched"
+    },
+    {
+      "line": 98,
+      "function": "bool"
+    },
+    {
+      "line": 99,
+      "function": "enumerate"
+    },
+    {
+      "line": 101,
+      "function": "new_c.selected_query_mask_loss"
+    },
+    {
+      "line": 104,
+      "function": "torch.autograd.grad"
+    },
+    {
+      "line": 105,
+      "function": "bool"
+    },
+    {
+      "line": 106,
+      "function": "bool"
+    },
+    {
+      "line": 108,
+      "function": "torch.autograd.grad"
+    },
+    {
+      "line": 109,
+      "function": "all"
+    },
+    {
+      "line": 111,
+      "function": "torch.equal"
+    },
+    {
+      "line": 112,
+      "function": "results.append"
+    },
+    {
+      "line": 116,
+      "function": "json.dumps"
+    },
+    {
+      "line": 14,
+      "function": "Path"
+    },
+    {
+      "line": 20,
+      "function": "str"
+    },
+    {
+      "line": 53,
+      "function": "torch.zeros"
+    },
+    {
+      "line": 61,
+      "function": "dict"
+    },
+    {
+      "line": 68,
+      "function": "indices.append"
+    },
+    {
+      "line": 69,
+      "function": "torch.randn"
+    },
+    {
+      "line": 70,
+      "function": "torch.randn"
+    },
+    {
+      "line": 76,
+      "function": "criterion.loss_pos_align"
+    },
+    {
+      "line": 96,
+      "function": "bool"
+    },
+    {
+      "line": 97,
+      "function": "torch.autograd.grad"
+    },
+    {
+      "line": 98,
+      "function": "(change_gradient[2] == 0).all"
+    },
+    {
+      "line": 100,
+      "function": "bool"
+    },
+    {
+      "line": 106,
+      "function": "(gradients[0][:4] == 0).all"
+    },
+    {
+      "line": 110,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 110,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 112,
+      "function": "dict"
+    },
+    {
+      "line": 116,
+      "function": "dict"
+    },
+    {
+      "line": 10,
+      "function": "Path"
+    },
+    {
+      "line": 14,
+      "function": "inspect.getfile"
+    },
+    {
+      "line": 48,
+      "function": "torch.ones"
+    },
+    {
+      "line": 49,
+      "function": "torch.zeros"
+    },
+    {
+      "line": 49,
+      "function": "torch.full"
+    },
+    {
+      "line": 64,
+      "function": "range"
+    },
+    {
+      "line": 65,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 65,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 66,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 66,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 69,
+      "function": "range"
+    },
+    {
+      "line": 70,
+      "function": "range"
+    },
+    {
+      "line": 96,
+      "function": "qualified[:2, 2].all"
+    },
+    {
+      "line": 96,
+      "function": "bool"
+    },
+    {
+      "line": 100,
+      "function": "(change_gradient[bid, queries] == 0).all"
+    },
+    {
+      "line": 105,
+      "function": "gradients[0][4].abs().sum"
+    },
+    {
+      "line": 109,
+      "function": "bool"
+    },
+    {
+      "line": 111,
+      "function": "new_g.root_token_target"
+    },
+    {
+      "line": 15,
+      "function": "Path"
+    },
+    {
+      "line": 61,
+      "function": "torch.cat"
+    },
+    {
+      "line": 68,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 68,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 73,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 74,
+      "function": "torch.tensor"
+    },
+    {
+      "line": 96,
+      "function": "qualified[2].any"
+    },
+    {
+      "line": 112,
+      "function": "float"
+    },
+    {
+      "line": 112,
+      "function": "float"
+    },
+    {
+      "line": 120,
+      "function": "str"
+    },
+    {
+      "line": 73,
+      "function": "range"
+    },
+    {
+      "line": 74,
+      "function": "range"
+    },
+    {
+      "line": 105,
+      "function": "gradients[0][4].abs"
+    },
+    {
+      "line": 109,
+      "function": "value.abs().sum"
+    },
+    {
+      "line": 117,
+      "function": "__import__"
+    },
+    {
+      "line": 109,
+      "function": "value.abs"
+    }
+  ]
+}
+

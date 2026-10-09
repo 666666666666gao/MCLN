@@ -1,0 +1,63 @@
+@'
+import ast, base64, datetime, hashlib, json
+from pathlib import Path
+
+root = Path(r'C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010')
+required = [
+'ACTUAL_CPU_AUDIT_REQUEST.txt','check_native_targets_cpu.py','run_native_targets_cpu_authorized.py','CPU_INPUTS.json','ACTUAL_CPU_TARGET_INTAKE.json',
+'cpu_execution/CPU_EXECUTION.json','cpu_execution/CPU_PARSED_RESULT.json','cpu_execution/CPU_STDOUT.json','cpu_execution/CPU_STDERR.txt',
+'cpu_execution/CPU_REMOTE_RAW_STDOUT.json','cpu_execution/CPU_REMOTE_RAW_STDERR.txt','cpu_execution/CPU_TRANSPORT_EXIT.json',
+'source/pvground_semantic_assignment.py','source/selected_query_mask_objective.py','source/native_root_bbs.py',
+'original/pvground_semantic_assignment.py','original/selected_query_mask_objective.py',
+'source_review/EXPERIMENT_CODE_REVIEW_R2.md','source_review/EXPERIMENT_CODE_REVIEW_R2.json',
+'source_review/R2_CLOSED_TRACKER_INPUT.md','source_review/R2_SEALED_TRACKER_SNAPSHOT.json',
+'SOURCE_ADAPTER_PREPARATION_R2.json','refine-logs/EXPERIMENT_PLAN.md','refine-logs/EXPERIMENT_TRACKER.md','idea-stage/docs/research_contract.md','../source/models/losses.py']
+def digest(p):
+    return hashlib.sha256(p.read_bytes()).hexdigest()
+audit = json.loads((root/'source_review/EXPERIMENT_CODE_REVIEW_R2.json').read_bytes())
+execution = json.loads((root/'cpu_execution/CPU_EXECUTION.json').read_bytes())
+raw = json.loads((root/'cpu_execution/CPU_REMOTE_RAW_STDOUT.json').read_bytes())
+parsed = json.loads((root/'cpu_execution/CPU_PARSED_RESULT.json').read_bytes())
+stdout = (root/'cpu_execution/CPU_STDOUT.json').read_bytes()
+stderr = (root/'cpu_execution/CPU_STDERR.txt').read_bytes()
+transport = json.loads((root/'cpu_execution/CPU_TRANSPORT_EXIT.json').read_bytes())
+manifest = json.loads((root/'SOURCE_ADAPTER_PREPARATION_R2.json').read_bytes())
+alias = json.loads((root/'source_review/R2_SEALED_TRACKER_SNAPSHOT.json').read_bytes())
+r2_checks = []
+for name, expected in audit['audited_input_hashes'].items():
+    p = Path(name)
+    actual = digest(p)
+    r2_checks.append(dict(path=name,resolved_path=str(p.resolve()),expected=expected,observed=actual,match=actual==expected.removeprefix('sha256:')))
+aliases = []
+for name, item in alias.items():
+    p, snap = Path(name), Path(item['snapshot_path'])
+    aliases.append(dict(original_path=name,resolved_path=str(p.resolve()),snapshot_path=str(snap),resolved_snapshot_path=str(snap.resolve()),snapshot_hash=digest(snap),declared_hash=item['sha256'],snapshot_matches_declared=digest(snap)==item['sha256'],matches_R2_expected=digest(snap)==audit['audited_input_hashes'][str(root/'refine-logs/EXPERIMENT_TRACKER.md').replace('\\','/')],current_tracker_hash=digest(p),current_differs_from_snapshot=p.read_bytes()!=snap.read_bytes()))
+prepared = {name: digest(root/'source'/name)==expected for name,expected in manifest['prepared_source_sha256'].items()}
+parents = {name: digest(root.parent/'source'/name)==expected for name,expected in manifest['original_source_sha256'].items()}
+current_required = {str(root/f).replace('\\','/'): 'sha256:'+digest(root/f) for f in required}
+same_fields = {k:execution[k]==v for k,v in raw.items() if not k.endswith('_base64')}
+intake=json.loads((root/'ACTUAL_CPU_TARGET_INTAKE.json').read_bytes())
+path_aliases={k:dict(path=intake[k],resolved=str(Path(intake[k]).resolve()),same_file=Path(intake[k]).samefile(root/local)) for k,local in [('execution','cpu_execution/CPU_EXECUTION.json'),('result','cpu_execution/CPU_PARSED_RESULT.json'),('source_review','source_review/EXPERIMENT_CODE_REVIEW_R2.json'),('original_source_tracker_exact_snapshot','source_review/R2_CLOSED_TRACKER_INPUT.md')]}
+report=dict(
+review_generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+canonical_root=str(root),resolved_root=str(root.resolve()),required_file_count=len(required),
+audited_input_hashes=current_required,
+r2_hash_count=len(r2_checks),r2_direct_matches=sum(x['match'] for x in r2_checks),r2_mismatches=[x for x in r2_checks if not x['match']],
+archived_tracker_aliases=aliases,prepared_source_hash_checks=prepared,parent_source_hash_checks=parents,
+fixed_preparation_equals_R2=(root/'SOURCE_ADAPTER_PREPARATION.json').read_bytes()==(root/'SOURCE_ADAPTER_PREPARATION_R2.json').read_bytes(),
+execution_source_audit_hash_matches=digest(root/'source_review/EXPERIMENT_CODE_REVIEW_R2.json')==execution['source_audit_sha256'],
+stdout_decoded_equals_copy=base64.b64decode(raw['stdout_base64'])==stdout,
+stderr_decoded_equals_copy=base64.b64decode(raw['stderr_base64'])==stderr,
+parsed_json_equals_stdout=json.loads(stdout)==parsed,
+stdout_bytes=len(stdout),stderr_bytes=len(stderr),remote_stderr_bytes=(root/'cpu_execution/CPU_REMOTE_RAW_STDERR.txt').stat().st_size,
+exit_codes=dict(transport=transport['exit_code'],remote_child=raw['exit_code'],execution_copy=execution['exit_code']),
+raw_receipt_fields_equal_execution_copy=same_fields,
+intake_path_aliases=path_aliases,
+timestamps=dict(source_R2=audit['created_at'],CPU_started=raw['started_cst'],CPU_finished=raw['finished_cst'],intake=intake['time_cst']),
+named_results=parsed,
+R1_fixed_report_hashes={str(root/'source_review'/f).replace('\\','/'):digest(root/'source_review'/f) for f in ['EXPERIMENT_CODE_REVIEW.md','EXPERIMENT_CODE_REVIEW.json']},
+transported_python_count=len(list((root/'source').rglob('*.py')))+len(list((root/'original').rglob('*.py'))),
+r2_all_file_hash_checks=r2_checks)
+print(json.dumps(report,ensure_ascii=False,indent=2))
+'@ | & 'C:/Users/gb/AppData/Roaming/uv/python/cpython-3.13-windows-x86_64-none/python.exe' -B -X utf8 -
+

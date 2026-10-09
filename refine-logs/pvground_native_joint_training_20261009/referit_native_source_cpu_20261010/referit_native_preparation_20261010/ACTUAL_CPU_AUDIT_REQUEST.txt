@@ -1,0 +1,41 @@
+Apply experiment-audit to the closed result artifacts below. Read direct artifacts and code; this request supplies paths/checklist, not an interpretation of the result. No remote/neural/GPU/model/checkpoint execution or current training query. Do not modify inputs.
+
+Root C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010
+Files:
+check_native_targets_cpu.py
+run_native_targets_cpu_authorized.py
+CPU_INPUTS.json
+ACTUAL_CPU_TARGET_INTAKE.json
+cpu_execution/CPU_EXECUTION.json
+cpu_execution/CPU_PARSED_RESULT.json
+cpu_execution/CPU_STDOUT.json
+cpu_execution/CPU_STDERR.txt
+cpu_execution/CPU_REMOTE_RAW_STDOUT.json
+cpu_execution/CPU_REMOTE_RAW_STDERR.txt
+cpu_execution/CPU_TRANSPORT_EXIT.json
+source/pvground_semantic_assignment.py
+source/selected_query_mask_objective.py
+source/native_root_bbs.py
+original/pvground_semantic_assignment.py
+original/selected_query_mask_objective.py
+source_review/EXPERIMENT_CODE_REVIEW_R2.md
+source_review/EXPERIMENT_CODE_REVIEW_R2.json
+source_review/R2_CLOSED_TRACKER_INPUT.md
+source_review/R2_SEALED_TRACKER_SNAPSHOT.json
+SOURCE_ADAPTER_PREPARATION_R2.json
+refine-logs/EXPERIMENT_PLAN.md
+refine-logs/EXPERIMENT_TRACKER.md
+idea-stage/docs/research_contract.md
+Parent source/models/losses.py (actual local native criterion source)
+
+Checklist from experiment-audit:
+A. Locate targets/reference origins from actual code, independent of what producer calls them. Distinguish dataset GT, hand-constructed targets, prediction-derived reference, and engineering consistency checks.
+B. Check any normalization/metric denominators and what they can support.
+C. Check result existence, raw transport/child exits and raw encoded/copy equality, named keys, tracker status, actual script path/result provenance. Parsed JSON is a reencoding of same stdout, not an independent run.
+D. Identify executed vs merely transported/defined code; distinguish direct native method calls from full criterion/Hungarian/PV factory/native epochs and author checkpoint loads.
+E. Bound sample/model/gradient/evaluation scope honestly. Verify protection/target checks only to extent actual fixture and scripts support. Do not approve full accuracy or training from narrow evidence.
+F. Classify evaluation type with precise wording even if broader checklist taxonomy is imperfect. Do not turn synthetic consistency into REC accuracy.
+
+Existing source review artifact continuity: input hashes may be checked read-only. One pre-execution tracker input was archived exactly at R2_CLOSED_TRACKER_INPUT.md before current tracker status changed; R2_SEALED_TRACKER_SNAPSHOT.json records that alias. Preserve chronology rather than confusing reviewed source and later runtime status. Parent source and original R1 reports remain protected; verify relevant unchanged files without reinterpreting historical accuracy.
+
+Write actual_CPU_review/EXPERIMENT_AUDIT.md/.json and raw request/response/trace under .aris/traces/experiment-audit/referit_native_CPU_20261010. Include PASS/WARN/FAIL, blocking count and bounded scope, actual observed paths/hashes, scientific/GPU admission scope, actual reviewer identity if attested otherwise UNATTESTED, requested route separately, same-family/provisional. Seal these outputs. Do not copy personal context snapshots. Do not read MEMORY.md, AUTH, askpass/known-hosts or credentials. If workspace bootstrap reads are mandated, disclose them but use none as evidence. No speculative new mechanisms, compatibility layers or hash systems; report actual bugs and minimum fixes only. Do not mutate implementation or repeat execution.

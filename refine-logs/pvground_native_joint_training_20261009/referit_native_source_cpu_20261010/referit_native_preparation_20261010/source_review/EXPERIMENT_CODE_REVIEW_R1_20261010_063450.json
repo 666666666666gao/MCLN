@@ -1,0 +1,217 @@
+{
+  "schema": "experiment_bridge_source_review",
+  "revision": "R1",
+  "created_at": "2026-10-10T06:34:50.217524+08:00",
+  "verdict": "FAIL",
+  "blocking_issue_count": 2,
+  "nonblocking_issue_count": 1,
+  "requested_reviewer_route": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "context": "fresh delegated source review"
+  },
+  "actual_reviewer_identity": {
+    "agent": "/root/pvg_referit_native_source_20261010",
+    "model": "UNATTESTED",
+    "reasoning_effort": "UNATTESTED",
+    "host_role": "Codex reviewer; exact model/effort not attested"
+  },
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "context_limitation": {
+    "extra_bootstrap_reads": [
+      "C:/Users/gb/SOUL.md",
+      "C:/Users/gb/USER.md",
+      "C:/Users/gb/memory/2026-10-10.md",
+      "C:/Users/gb/memory/2026-10-09.md"
+    ],
+    "tool_output_truncated": true,
+    "contents_used_as_evidence": false,
+    "contents_copied": false,
+    "strict_zero_context_review": false,
+    "private_or_auth_files_not_read": [
+      "MEMORY.md",
+      "AUTH",
+      "credentials",
+      "askpass contents",
+      "known-host contents"
+    ]
+  },
+  "supported_scope": "Local source-only inspection of isolated Nr3D/Sr3D preparation, exact native-source comparison and synthetic checker/runner review. No accuracy or deployment acceptance.",
+  "findings": [
+    {
+      "id": "B1",
+      "severity": "BLOCKING",
+      "title": "Nr/Sr evaluation and retained-best contract is still hard-coded to ScanRefer",
+      "locations": [
+        "source/train_dist_mod.py:252-257",
+        "source/main_utils.py:167-176",
+        "source/main_utils.py:365-385"
+      ],
+      "evidence": "evaluate_one_epoch asserts [9508, 9508] and returns rows=9508; record_native_metrics separately asserts rows==9508. Fresh main() evaluates E0 before any epoch. native_metric_order retains absolute ScanRefer hit gates 5658/4850.",
+      "impact": "A native split with a different actual row count aborts at E0. Removing only that assertion leaves incorrect denominator reporting/recording and ScanRefer-dependent best-checkpoint ordering.",
+      "recommendation": "Use the actual complete Nr/Sr validation denominator in both evaluation and recording, and explicitly define the intended native REC best-checkpoint order without the ScanRefer hit gates. Keep the native evaluator and bbs scorer unchanged. main_utils.py needs a narrow change; update the intended changed-file list and plan from five to six if that fix is applied.",
+      "status": "OPEN",
+      "proof_type": "SOURCE_ONLY"
+    },
+    {
+      "id": "B2",
+      "severity": "BLOCKING",
+      "title": "CPU runner omits the already-proven native import environment binding",
+      "locations": [
+        "check_native_targets_cpu.py:9-13",
+        "run_native_targets_cpu_authorized.py:45-48",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/model_source/models/__init__.py:7-10",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/check_native_runtime_imports_r2_authorized.py:16-19"
+      ],
+      "evidence": "The checker imports models.losses before loading prepared helpers. Native models/__init__.py imports PVGround first, and the recorded native import chain reaches pvground_observation_query and pcdet. Archived attempt1 stderr ends in ModuleNotFoundError for pcdet. The successful historical R2 explicitly hydrated env_spec.json env and PYTHONPATH; this new wrapper only inherits ambient os.environ and adds CPU/thread variables.",
+      "impact": "The proposed CPU execution does not reproduce the known working import binding and can fail before any target/gradient assertion. This is an evidenced dependency issue, not a hypothetical compatibility concern. The new checker has not been executed, so this report does not claim a new observed failure.",
+      "recommendation": "Reuse the existing audited runtime env/PYTHONPATH hydration before importing the native criterion, then explicitly keep CUDA_VISIBLE_DEVICES empty. Preserve the intended original native SetCriterion versus prepared G/C helper comparison. Do not install packages or add fallback imports.",
+      "status": "OPEN",
+      "proof_type": "SOURCE_AND_ARCHIVED_IMPORT_EVIDENCE"
+    },
+    {
+      "id": "W1",
+      "severity": "NON_BLOCKING",
+      "title": "Fresh B gate is documented as 0.5 but the unchanged constructor produces 0",
+      "locations": [
+        "refine-logs/EXPERIMENT_PLAN.md:14",
+        "source/extremal_span_mixer.py:25-27",
+        "source/extremal_span_mixer.py:97-102",
+        "source/native_model_initialization.py:40"
+      ],
+      "evidence": "The fresh mixer zeros its output weight and bias, then computes raw_gate.clamp(0,1). Hence its initial gate is 0 and its initial box is the Mask reference; no span checkpoint is loaded.",
+      "impact": "The documented E0 initialization is inaccurate. It is not evidence that the model starts at a fixed-half mixture or matches the author-only E0.",
+      "recommendation": "Correct the preparation text to gate 0/full Mask reference if preserving the current architecture, as this task requires. Do not silently modify the mixer to make the prose true.",
+      "status": "OPEN",
+      "proof_type": "SOURCE_ONLY"
+    }
+  ],
+  "source_evidence": {
+    "compared_source_files": 14,
+    "changed_files": [
+      "models/losses.py",
+      "native_model_initialization.py",
+      "pvground_semantic_assignment.py",
+      "selected_query_mask_objective.py",
+      "train_dist_mod.py"
+    ],
+    "unchanged_files": [
+      "extremal_span_mixer.py",
+      "main_utils.py",
+      "mask_support_corrector.py",
+      "models/pv_ground.py",
+      "native_mask_geometry.py",
+      "native_root_bbs.py",
+      "pvground_observation_query.py",
+      "pvground_source_query.py",
+      "pvground_task_observation_query.py"
+    ],
+    "all_14_current_hashes_match_supplied_original_manifest": true,
+    "all_14_prepared_hashes_match_supplied_prepared_manifest": true,
+    "two_original_helper_copies_match_current_source": true,
+    "local_active_source_edited": false,
+    "remote_active_source_queried": false,
+    "parsed_python_files": 33,
+    "parsed_embedded_remote_code_blocks": 1,
+    "AST_status": "PASS",
+    "actual_initialization_state_keys_or_values_verified": false,
+    "source_comparison_trace": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/.aris/traces/experiment-bridge/source_comparison.json"
+  },
+  "correct_in_scope": [
+    "G uses root slot 0, protects every Hungarian matched query, and excludes annotation sample_dataset=scannet; language_dataset controls the native task recipe.",
+    "G root target weights match native loss_pos_align: ScanRefer/Nr 0.6/0.2/0.2/0.1 and Sr 0.625/0.125/0.125/0.125. For the intended single-rank six-decoder setup its external coefficients match 0.5/7 and 1/7, preserving the native eos weight and target entropy.",
+    "Dataset snapshot creates expression root first, optional first anchor afterwards, and consecutive valid GT slots. Native criterion filters these slots without reordering. This supports the source root/anchor mapping, not observed real-data validation.",
+    "C skips matched-root, matched-other and detection rows before assigning any new target; it uses the filtered root mask for only the chosen unmatched query and divides by the whole actual batch.",
+    "Current synthetic checker correctly uses allow_unused=True and expects None for the skipped independent matched-other and detection mask leaves in its chosen panel; no residual assertion bug was found in that path.",
+    "Checker directly calls actual SetCriterion.loss_pos_align with synthetic tensors and manual indices. Its check is target/gradient engineering, not full native criterion, Hungarian, loader, model or accuracy execution.",
+    "Fresh initialization loads the corresponding manifest author core before adding G/A/B; G copies the loaded core fusion/attention pieces, A output is zero, B gate is zero, C has no parameters. ScanRefer G1072/support/span overlay loading is removed.",
+    "Nine byte-identical files preserve forward, G readers, A/B modules, mask geometry and root bbs implementation. Native scorer matches the supplied evaluator root-map operations. No new ranking, evaluator replacement, dataset-specific inference gate or fallback was added.",
+    "CPU runner retains raw stdout/stderr/exit before its result assertions, uses a separate fixed output directory and disables CUDA visibility; it does not query current training state in its source."
+  ],
+  "execution": {
+    "SSH_calls": 0,
+    "GPU_calls": 0,
+    "current_training_status_queries": 0,
+    "model_imports": 0,
+    "model_constructors": 0,
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "synthetic_checker_executed": false,
+    "author_checkpoints_loaded": false,
+    "real_dataset_rows_checked": 0,
+    "implementation_files_modified": 0,
+    "stdlib_AST_only": true
+  },
+  "tooling_notes": [
+    "Initial PATH python failed before executing the stdlib script: No pyvenv.cfg file. This was not a checker run.",
+    "Source-only AST then passed via the already-installed uv run --offline python -B -X utf8 interpreter; no installation was performed.",
+    "The historical import success/failure records describe a previous source binding; they do not establish present runtime success.",
+    "The unrelated dataset_source/utils/scatter_util.py was not read or substituted for the actual PV runtime utility."
+  ],
+  "remaining_actual_checks": [
+    "Resolve B1 and B2, correct W1 documentation, and re-review the minimal patch before any CPU deployment.",
+    "Run the authorized isolated synthetic CPU checker with the native hydrated import environment, preserve its real exit/stdout/stderr and validate actual imported module origins.",
+    "After the existing task permits real runtime work: inspect actual Nr/Sr annotation/root/anchor rows, tokenizer maps, object-input protocol and full loader lengths.",
+    "Construct each model from its corresponding author checkpoint and verify complete keys/shapes/dtypes, state counts, source values and preserved trainability; strict=True source code alone is insufficient.",
+    "Check real single-rank criterion/Hungarian integration, optimizer grouping, normal training steps, full save and cold restore, and true validation denominators.",
+    "Fix the final shared architecture, predeclare the independent training budget and best-checkpoint metric, then execute full fair Nr/Sr training and native REC evaluation. No cross-benchmark scientific claim follows from this review."
+  ],
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/models/losses.py": "bebf992cdd579c8389a326eb578722417bf1aa207268e02919c74e461bf570d3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/native_model_initialization.py": "492e37e83f8b24170011ec98190a62ff7111453831479e9bce6e51b18d815571",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/pvground_semantic_assignment.py": "9ed9d5b757457d088142d9bf313b57cb26221e192f596302b3db2708d869473b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/selected_query_mask_objective.py": "229c4c02794abfec8a14cf45ac5117439d6976e7e5e73d7b9c449962509608a3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/source/train_dist_mod.py": "78eb42d1b14e92c233a75a45a4856756101176215c7d79d32990c4b2e0711aed",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/train_dist_mod.py": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/original/pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/original/selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/REVIEW_REQUEST.txt": "bba17d308c08a1bce27a06ea71268674b1e9a1d96d26a144dd54a5f87b02a873",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/refine-logs/EXPERIMENT_PLAN.md": "86393ce92c09f9aa6b27fee5438058027acfda59bd43dead28831d656d658416",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/refine-logs/EXPERIMENT_TRACKER.md": "858dff226d0237e03e685040f4279123c2f3f328b1246370badd58b37a4b462c",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/idea-stage/docs/research_contract.md": "d2c84201eac369a4656f342933589c2f7ce2890186e6df0251d70c84351f7489",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/SOURCE_ADAPTER_PREPARATION.json": "74905e8baf7d41e58184824adb50ee753b410ff2460497755f1a9c530a5e5544",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/nr3d/init.json": "c22fa73d5d3facb1b06f0dd69dd11717f53f9dbf8c6fd61622d8893b74f4f9f3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/sr3d/init.json": "0467e525637c9f654d031bc71d7534f66e865da12715714c6910b0ad95fece77",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/CPU_INPUTS.json": "f5b7ab101bef2e34db93317b3f7634656d3668828512c739bff1beebc96f41de",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/check_native_targets_cpu.py": "5874e92b8cce09cad993f64a5883362bb988a23e16eeeb1dc39b05b2abd5bf18",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/run_native_targets_cpu_authorized.py": "ded9e9c360dddb145cafc49fd94de80d6bd94a85e928e952bb5cdc7e9b37ddcd",
+    "C:/Users/gb/.codex/tmp/pvground_extremal_span_evidence_20261009/runner_v1/source_review/snapshots/038_joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "C:/Users/gb/.codex/tmp/pvground_extremal_span_evidence_20261009/runner_v1/source_review/snapshots/036_grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/model_source/models/__init__.py": "2ca09339e49e64e99d7fae6da86eb56eb5fe9ebcf3edd4ffe7ecf2b8fb931649",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/NATIVE_RUNTIME_IMPORTS_CPU.json": "52fedc130709d38727c5bb1848c70ea3a80138928105087acc7f28c612c016a3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/check_native_runtime_imports_r2_authorized.py": "b1c23801fd515978da0a10af46a80f76b92ff0507d7d01c9cfe5b0c8ffff849c",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/NATIVE_SOURCE_PORT.json": "8f9020f8be4864e31e602e2044fc8e04d49297b163f5037dbc019964b47a140b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_import_attempt1/NATIVE_RUNTIME_IMPORTS_CPU_STDERR.txt": "4da2e92a030b39bf55e2e389075252817bc93c74d2d8b43db508c07cb1cae223",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_import_attempt1/NATIVE_RUNTIME_IMPORTS_CPU_EXIT.json": "054a76e7744b2c305a4c5b5baccbd7459725cc0b83cba02929a2f737d4fdd757"
+  },
+  "raw_trace_directory": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010/.aris/traces/experiment-bridge",
+  "full_goal_complete": false,
+  "path_roots": {
+    "prepared": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010",
+    "current_source": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source",
+    "historical_import_artifacts": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009"
+  }
+}

@@ -23797,3 +23797,24 @@ CPU 检查使用真实 d06/f989 的模块状态，但输入为 **1×256 Query、
 实际报告：`native_direct_controls_20261010/actual_CPU_review/EXPERIMENT_AUDIT.{md,json}`；CPU 回执：`native_direct_controls_20261010/cpu_transport_attempt2/`；关闭记录：`ACTUAL_CONTROL_CPU_AUDIT_CLOSURE.json`。本节静态包位于 `refine-logs/pvground_native_joint_training_20261009/native_control_cpu_closure_20261010/`，不包含私密 SSH 调试输出、个人启动文档内容或凭据。
 
 ScanRefer 目标继续为同一正式模型 **Acc@0.25 >59.5%、Acc@0.5 >51%**，9508 条至少 **5658／4850**。保留的冻结适配版本为 **5677／4920**，不是当前正常训练成绩。三个有效机制及最终完整架构的 Nr3D／Sr3D 独立训练仍未完成，目标状态保持 **ACTIVE_UNMET**。
+
+
+## 20.376.132 Nr3D／Sr3D 的正常训练接口准备与隔离 CPU 目标检查（2026-10-10）
+
+本节继续执行已发布 B4，不更改活动 ScanRefer 正常训练、不查询其提前进度、不启动跨基准 GPU 任务。原定 **08:19:04.678479（北京时间）** 的唯一首次观察仍由原任务负责。当前没有新增正式准确率，冻结适配的 5677／4920 不替代正常训练结果。
+
+Nr／Sr 使用各自作者 PV-Ground 核心权重，新 G/A/B 结构重新初始化，C 无新增参数；不将 ScanRefer 的 G1072、d06、f989 叠到两个作者核心上。预计仍是当前 1234→1271→1295 的结构布局，真实构建、权重 shape/dtype、完整恢复尚未执行。新增 B 的初始输出实际为 0，clamp 后初始使用预测 Mask 参考；不是文档初稿所写的固定 0.5，且不能将方法 E0 当作作者原版模型。
+
+独立源码复核确实发现并修正了两个阻塞：原验证／记录仍写死 ScanRefer9508条及5658/4850选模门槛；CPU 子进程没有沿用已验证的 runtime env/PYTHONPATH。修正后，Nr／Sr 验证核对实际完整 loader 表达数，分别按严格命中、再宽松命中选取同一 best，并报告固定终点；成功门槛仍是两项超过对应公平 baseline，不由这个选模排序替代。CPU 使用已有实际环境再显式关闭 CUDA。第一版失败报告和修改前源码保留，第二版源码复核 **WARN、限定源码 0 阻塞**，不是训练或精度通过。
+
+其余必要适配是原生标签职责：Nr 的文本权重沿用0.6/0.2/0.2/0.1，Sr为0.625/0.125/0.125/0.125，Nr／Sr末层CE修正外部系数为1/(6+1)。G/C依据真实 `sample_dataset` 排除Scannet检测行，依据run-level `language_dataset`使用原criterion权重；表达root与anchor按实际GT槽对应，全部已匹配Query的原职责保留。forward、A/B结构和唯一bbs均未增加dataset推理门控。仅六份必要训练源改变；活动ScanRefer十四份源保持原字节。
+
+隔离CPU执行已在 **06:41:35.030744（北京时间）** 完成，子进程退出0。它调用实际原生 `SetCriterion.loss_pos_align`，但使用每语言三行、五候选、八token、八点的手工面板和手工匹配索引；验证G原／新ScanRefer损失及梯度、C损失一致（没有单独断言C原／新梯度等值），Nr／Sr对原生CE及梯度对应，以及已匹配其他实例／检测行保护。**真实数据行数为0**，没有运行Hungarian、完整PV模型、作者权重加载、优化器／恢复或正式REC评估，不能将这个CPU结果计作跨基准训练。
+
+当前证据包：`refine-logs/pvground_native_joint_training_20261009/referit_native_source_cpu_20261010/`；准备与源码报告、两份作者初始化spec、CPU原始回执及其结果复核分别保留。复核请求路由与实际身份分开：实际身份不可独立证明，按UNATTESTED、same-family、provisional记录；个人启动背景内容与凭据不发布。
+
+下一步先读取活动ScanRefer的真实E0／epoch结果并验证正常训练效果、必要直接控制，固定最终完整架构；之后才安排Nr／Sr真实loader、root／anchor与对象协议、完整作者状态及GPU训练／恢复检查，再分别独立完整训练。**三个有效机制、Nr3D和Sr3D正式结果仍未完成，目标保持ACTIVE_UNMET。**
+
+实际CPU结果复核已封存：总体WARN、限定检查PASS、0阻塞、1项非阻塞措辞限制；原始汇总字段需限定为G的损失与梯度等值、C仅损失等值。逐字节回执和封存输入核验通过。CPU调用的是实际父模型源码中的CE方法与新G/C辅助函数，没有导入本轮准备的完整criterion，也没有执行完整Hungarian或训练流程。当前tracker/入库记录保留其复核前历史状态，最新闭合状态见ACTUAL_REFERIT_CPU_AUDIT_CLOSURE.json；不改写已经封存的输入。
+
+本节首次静态同步出现SSH认证失败，保留退出255和空stdout。经既有授权连接作一次只读确认：远端仍为§131/e2b5f2cb，新增证据目录不存在，未读取训练状态。后续使用单独的第二次静态发布，原失败回执保留；没有重跑CPU实验或训练。

@@ -1,0 +1,1 @@
+- 2026-10-10T06:34:50.217524+08:00 R1 source-only FAIL: EXPERIMENT_CODE_REVIEW_R1_20261010_063450.md; EXPERIMENT_CODE_REVIEW_R1_20261010_063450.json; fixed EXPERIMENT_CODE_REVIEW.md/json updated. Raw trace: ../.aris/traces/experiment-bridge/.

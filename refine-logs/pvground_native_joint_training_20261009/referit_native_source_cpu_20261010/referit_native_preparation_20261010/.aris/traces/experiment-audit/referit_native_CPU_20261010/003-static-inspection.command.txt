@@ -1,0 +1,15 @@
+@'
+import ast, difflib, hashlib, json
+from pathlib import Path
+root=Path(r'C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_preparation_20261010')
+a=(root.parent/'source/models/losses.py').read_text(encoding='utf-8')
+b=(root/'source/models/losses.py').read_text(encoding='utf-8')
+print('PREPARED VERSUS PARENT LOSS DIFF')
+print(''.join(difflib.unified_diff(a.splitlines(True),b.splitlines(True),fromfile='../source/models/losses.py',tofile='source/models/losses.py')))
+paths=['check_native_targets_cpu.py','run_native_targets_cpu_authorized.py','source/pvground_semantic_assignment.py','source/selected_query_mask_objective.py','source/native_root_bbs.py','original/pvground_semantic_assignment.py','original/selected_query_mask_objective.py','../source/models/losses.py','source/models/losses.py']
+trees={p:ast.parse((root/p).read_bytes(),filename=p) for p in paths}
+remote=[n.value.value for n in ast.walk(trees['run_native_targets_cpu_authorized.py']) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='code' for t in n.targets)][0]
+ast.parse(remote)
+print(json.dumps(dict(AST_source_files=len(trees),AST_remote_blocks=1,AST_status='PASS',script_calls=[dict(line=n.lineno,function=ast.unparse(n.func)) for n in ast.walk(trees['check_native_targets_cpu.py']) if isinstance(n,ast.Call)]),ensure_ascii=False,indent=2))
+'@ | & 'C:/Users/gb/AppData/Roaming/uv/python/cpython-3.13-windows-x86_64-none/python.exe' -B -X utf8 -
+

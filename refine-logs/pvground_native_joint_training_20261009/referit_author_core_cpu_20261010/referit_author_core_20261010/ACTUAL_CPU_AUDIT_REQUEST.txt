@@ -1,0 +1,11 @@
+限定复核一次实际CPU模型工厂加载结果。源审查R3已封存，SHA87f68880f93a224aaf89fc4f5bfc67504b135c1d1187d4ae97ed85c3f0e4e287。仅当CPU执行回执已完整保存、退出码有终态时才复核。
+
+输入：source_review/EXPERIMENT_CODE_REVIEW_R3.md/json及其trace；SOURCE_PREPARATION.json；PLAN.md；本目录source、nr3d/init.json、sr3d/init.json；parent/referit_author_core_20261010_check_cpu.py、run_referit_author_core_cpu_authorized.py、prepare_referit_author_core.py；parent/AUTHOR_CORE_INVENTORY_LOCAL_COMPARISON.json及所指三份原归档inventory、两个旧Nr/Sr strict_load.py/json；parent/NATIVE_SOURCE_PORT.json、NORMAL_NATIVE_RUN_PROTOCOL.json；本目录cpu_execution所有原始传输/输出/执行/结果记录。
+
+检查：stdout/stderr及独立result字节从原始base64回执解码一致；传输与子进程退出码；实际torch版本/CPU/CUDA未初始化；调用实际TrainTester.get_model与隔离模块路径；作者sha、1235作者键->1234保留core->1295完整结构的实际断言；全部core key/shape/dtype/value相等断言真实执行；A/B输出层为0、G/A/B新初始化和ScanRefer状态未加载的证据范围；114 R3输入与R2当前source/spec未变；已封存R1/R2报告及03bca旧tracker归档例外。注意core值比较不是独立参考数值计算，但确实检查目标作者state原样载入。
+
+只允许局部源码/记录读与stdlib哈希或JSON/base64检查。禁止SSH、模型导入/构造/运行、GPU、当前训练状态查询、改输入、重跑CPU和训练。不要读取MEMORY、SOUL、USER、日记、AUTH或askpass内容；之前的agent bootstrap差异如需写明，只引用已有metadata。
+
+支持范围最多：两次CPU真实工厂构造和作者核心加载；没有模型forward、完整criterion、真实loader、optimizer、保存/恢复、正式训练或REC精度。CPU构造继承ScanRefer形状参数，不等于Nr/Sr作者实际训练/对象输入协议相同；若记录flags不同须指出。最终Nr/Sr训练须待同一方法定型与真实协议检查。
+
+请保存 actual_CPU_review/EXPERIMENT_AUDIT.md/json和OUTPUT_SHA256.json，完整原始trace放 .aris/traces/experiment-audit/author_core_CPU_20261010。JSON需verdict、blocking_issue_count、audited_input_hashes及明确支持/不支持范围。请求Astra/max单列；无法核实实际identity记UNATTESTED、same-family/provisional，不宣称独立品牌或模型身份。

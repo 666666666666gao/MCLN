@@ -1,0 +1,25 @@
+--- R2/native_model_initialization.py
++++ R3/native_model_initialization.py
+@@ -26,13 +26,20 @@
+     original_trainable = {name for name, parameter in model.named_parameters() if parameter.requires_grad}
+     position_ids = torch.arange(model.text_encoder.config.max_position_embeddings).expand((1, -1))
+     assert torch.equal(model.text_encoder.embeddings.position_ids, position_ids)
+-    model.text_encoder.embeddings.register_buffer('position_ids', position_ids, persistent=False)
+-    assert len(model.state_dict()) == 1234
++    assert len(model.state_dict()) == 1235
+     if initialize_weights:
+         official = checked_payload(spec['official_checkpoint'], spec['official_checkpoint_sha256'])
+         initial = {name[7:]: value for name, value in official['model'].items()}
+         assert all(name.startswith('module.') for name in official['model'])
++        assert len(initial) == 1235
++        assert torch.equal(initial['text_encoder.embeddings.position_ids'], position_ids)
+         model.load_state_dict(initial, strict=True)
++    # Both actual Nr/Sr author states include this deterministic buffer.
++    # Load it strictly first; retained full-method states use the existing
++    # nonpersistent convention only after the author core has been loaded.
++    assert torch.equal(model.text_encoder.embeddings.position_ids, position_ids)
++    model.text_encoder.embeddings.register_buffer('position_ids', position_ids, persistent=False)
++    assert len(model.state_dict()) == 1234
+     install_task_observation_query_read(model)
+     assert len(model.state_dict()) == 1271
+     model.candidate_support_corrector = CandidateMaskSupportCorrector(False)

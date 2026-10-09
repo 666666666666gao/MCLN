@@ -1,0 +1,48 @@
+--- R4/launch_span_authorized.py
++++ R5/launch_span_authorized.py
+@@ -114,8 +114,9 @@
+             stream.write(data)
+         with sftp.open(spec['root'] + '/' + name, 'rb') as stream:
+             assert stream.read() == data
+-command = shlex.join(['flock', '-n', env['resource_limits']['gpu_lock'],
+-    spec['runtime'] + '/venv/bin/python', '-B', '-u', spec['root'] + '/span_controller.py', '--phase', phase])
++controller_argv = [spec['runtime'] + '/venv/bin/python', '-B', '-u',
++                   spec['root'] + '/span_controller.py', '--phase', phase]
++command = shlex.join(['flock', '-n', env['resource_limits']['gpu_lock']] + controller_argv)
+ shell = command + ' > ' + shlex.quote(spec['root'] + '/' + phase + '_controller.log') + ' 2>&1; code=$?; printf "%s\\n" "$code" > ' + shlex.quote(spec['root'] + '/' + phase + '_controller.exit') + '; exit "$code"'
+ screen = 'pvg_extremal_span_' + phase + '_20261009'
+ _, stdout, stderr = client.exec_command(shlex.join(['screen', '-dmS', screen, 'bash', '-c', shell]), timeout=30)
+@@ -136,7 +137,7 @@
+ started = datetime.datetime.now().astimezone()
+ receipt = dict(status=phase.upper() + '_STARTED_NOT_COMPLETED', phase=phase,
+     time_cst=started.isoformat(), root=spec['root'], controller_pid=int(process.split()[0]),
+-    process=process, screen=screen, resources=json.loads(raw),
++    process=process, controller_argv=controller_argv, screen=screen, resources=json.loads(raw),
+     estimated_seconds=estimated, first_check_seconds=first, later_poll_seconds=240,
+     first_observation_cst=(started + datetime.timedelta(seconds=first)).isoformat(),
+     estimate_basis='preflight480s from actual previous paired M0; fit uses completed prior frozen-parent paired fit/formal elapsed, heads/output differ so timing remains estimated',
+--- R4/observe_span_authorized.py
++++ R5/observe_span_authorized.py
+@@ -26,9 +26,9 @@
+ time.sleep(max(0, first.timestamp() - time.time()))
+ code = '''import datetime,json,sys
+ from pathlib import Path
+-root=Path(sys.argv[1]);pid=sys.argv[2];phase=sys.argv[3];proc=Path('/proc')/pid;alive=proc.exists()
+-command=(proc/'cmdline').read_bytes().replace(bytes([0]),b' ').decode() if alive else ''
+-assert not alive or str(root)+'/span_controller.py --phase '+phase in command
++root=Path(sys.argv[1]);pid=sys.argv[2];phase=sys.argv[3];expected=json.loads(sys.argv[4]);proc=Path('/proc')/pid;alive=proc.exists()
++argv=[part.decode() for part in (proc/'cmdline').read_bytes().split(bytes([0]))[:-1]] if alive else []
++assert not alive or argv==expected
+ status=json.loads((root/(phase+'_status.json')).read_bytes())
+ print(json.dumps(dict(time_cst=datetime.datetime.now().astimezone().isoformat(),controller_alive=alive,
+     status=status,exitcode=int((root/(phase+'_controller.exit')).read_text())
+@@ -43,7 +43,8 @@
+     client.connect('region-9.autodl.pro', port=33476, username='root',
+                    password=os.environ['MCLN_SSH_PASSWORD'], timeout=30)
+     _, stdout, stderr = client.exec_command(shlex.join([spec['runtime'] + '/venv/bin/python',
+-        '-B', '-c', code, launch['root'], str(launch['controller_pid']), phase]), timeout=30)
++        '-B', '-c', code, launch['root'], str(launch['controller_pid']), phase,
++        json.dumps(launch['controller_argv'])]), timeout=30)
+     raw, error = stdout.read(), stderr.read()
+     exit_code = stdout.channel.recv_exit_status()
+     client.close()

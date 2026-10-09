@@ -1,0 +1,156 @@
+{
+  "audit_skill": "experiment-audit",
+  "review_round": "R3",
+  "date": "2026-10-09",
+  "generated_at": "2026-10-09T07:36:01.439Z",
+  "agent_id": "/root/pvg_extremal_span_runner_source_20261009",
+  "verdict_id": "/root/pvg_extremal_span_runner_source_20261009@R3",
+  "fresh_context": false,
+  "original_R1_fresh_context": true,
+  "review_context": "same reviewer narrow source follow-up",
+  "requested_backend": "UNATTESTED",
+  "requested_model": "UNATTESTED",
+  "requested_reasoning_effort": "UNATTESTED",
+  "original_R1_requested_route": {
+    "backend": "codex",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max"
+  },
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict_scope": "STATIC_ONLY",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "source_verdict": "PASS",
+  "core_neural_source_verdict": "PASS_UNCHANGED_STATIC_CONTRACTS",
+  "reviewed_source_sha256": "33cec963d2a1277a85c861dfd8dd1049604e9123e75c6887c4c23209f6272154",
+  "prior_source_sha256": "c6b8328aee7ae7369d5636b11ce31eb06b53267af1358e4667cc3e8e88df0d5d",
+  "pair_template_sha256": "ed77e229932b6cdf0ba574109fbfbad12ab649515d28de72b215fbc762c04d31",
+  "preparation_sha256": "f98ae7edcb910333c2338fa055158121bcf10a7d82183db1f684ebd20cc474ec",
+  "blocking_neural_findings": [],
+  "findings": [],
+  "resolved_findings": [
+    {
+      "id": "W_R2_1_RECEIPT_SELECTOR_IDENTITY",
+      "status": "RESOLVED_STATIC",
+      "evidence": [
+        "paired_span_loop.py:93",
+        "paired_span_loop.py:310"
+      ],
+      "details": "Witness now uses the same descending argsort expression and rank zero as formal evaluation.",
+      "actual_tie_observed": false,
+      "actual_disagreement_observed": false
+    }
+  ],
+  "native_tensor_contracts": "R2 shape/indexing review carries forward unchanged",
+  "membership_reconstruction": {
+    "source_evidence_sufficient": true,
+    "all256_foreground": true,
+    "all_geometry_statistics": true,
+    "raw_point_and_sp_ids": true,
+    "empty_vs_degenerate_reconstructable": true,
+    "extremal_ties_reconstructable": true,
+    "dtype_conversion_must_match_native": true,
+    "actual_reconstruction_executed": false
+  },
+  "logit_scope": {
+    "explicit": true,
+    "description": "formal-expression native winner plus every original matched query",
+    "all256_raw_logits": false
+  },
+  "gradient_groups": {
+    "names": [
+      "query_projection",
+      "support_projection",
+      "face_encoder",
+      "axis_decoder"
+    ],
+    "statistic": "sum of per-parameter L2 gradient norms",
+    "observations_only": true,
+    "all_groups_positivity_claimed": false,
+    "aggregate_positive_does_not_establish_each_group_positive": true
+  },
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "scope": "STATIC_ONLY"
+    },
+    "B_score_normalization_and_selector": {
+      "status": "PASS",
+      "scope": "STATIC_ONLY"
+    },
+    "C_result_existence": {
+      "status": "PASS",
+      "scope": "source preparation only"
+    },
+    "D_called_paths": {
+      "status": "PASS",
+      "scope": "preflight only; no neural replay"
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "No actual model/M0/archive/gradients/restore/metrics"
+    },
+    "F_evaluation_type": {
+      "status": "WARN",
+      "classification": "STATIC_ONLY_SOURCE_FOLLOWUP",
+      "intended_type": "real_gt"
+    }
+  },
+  "verification": {
+    "file": "R3_STATIC_VERIFICATION.json",
+    "actual_exit_code": 0,
+    "python": "3.7.6",
+    "interpreter": "E:\\anaconda\\python.exe",
+    "flags": [
+      "-I",
+      "-S",
+      "-B"
+    ],
+    "failed_R3_invocations": 1,
+    "failed_R3_cause": "Reviewer-only unresolved-versus-resolved parent path comparison at .codex junction; original and receipt retained",
+    "successful_R3_attempt": 2,
+    "prior_R1_R2_artifacts_preserved": 98,
+    "R3_inputs_snapshotted": 19,
+    "Python_files_parsed": 11,
+    "runner_files_bound": 11,
+    "publication_contract_files": 13,
+    "exact_one_line_source_change": true,
+    "ranking_AST_equals_formal": true,
+    "selected_rank": 0,
+    "no_new_tie_branch_or_fallback": true,
+    "other_10_runner_bytes_unchanged": true,
+    "pending_parent_predicates_reject": true
+  },
+  "input_hash_manifest": "INPUT_MANIFEST_R3.json",
+  "snapshots": "r3_snapshots",
+  "raw_report": "RAW_RESPONSE_R3.md",
+  "source_diff": "R3_LOOP.diff",
+  "native_tool_receipts": "R3_NATIVE_TOOL_RECEIPTS.json",
+  "exact_request": "R3_EXACT_REQUEST.txt",
+  "actual_M0": false,
+  "actual_neural_forwards": 0,
+  "actual_gradients": false,
+  "actual_serialization_restore": false,
+  "actual_formal_metrics": false,
+  "actual_support_npz_generated": false,
+  "model_simulations": 0,
+  "torch_imports": 0,
+  "numpy_imports": 0,
+  "project_module_imports": 0,
+  "ssh_queries": 0,
+  "gpu_queries": 0,
+  "packages_installed": 0,
+  "credentials_read": false,
+  "main_MEMORY_read": false,
+  "global_notes_written": false,
+  "experiment_source_edits": 0,
+  "parent_selection_finalized": false,
+  "launch_approved": false
+}

@@ -1,0 +1,26 @@
+--- R4_VERIFY_ATTEMPT_1_ORIGINAL.py
++++ verify_static_r4.py
+@@ -49,7 +49,8 @@
+ canonical=read_json(runner/'RUNNER_PREPARATION.json')
+ r3_manifest=read_json(out/'INPUT_MANIFEST_R3.json')
+ r3_bound={Path(row['path']).name:row['sha256'] for row in r3_manifest
+-    if Path(row['path']).parent.resolve()==runner}
++    if Path(row['path']).parent.resolve()==runner and
++       (Path(row['path']).suffix=='.py' or Path(row['path']).name in ('pair_spec_template.json','RUNNER_PREPARATION.json'))}
+ assert len(r3_bound)==13
+ for name,digest in spec['new_runner_files'].items():
+     assert sha(runner/name)==digest==canonical['files'][name]==r3_bound[name]
+@@ -113,11 +114,11 @@
+         any(alias.name.split('.')[0] in ('torch','numpy') for alias in node.names)
+         for node in ast.walk(embedded[name]))
+ remote_launcher=embedded['launcher']
+-assert all(isinstance(statement(remote_launcher,line),ast.Assert) for line in (4,5,6,7,9,11,12,17))
++assert all(isinstance(statement(remote_launcher,line),ast.Assert) for line in (4,5,6,7,8,10,12,13,18))
+ assert 'spec_sha256' in ast.dump(remote_launcher) and 'new_runner_files' in ast.dump(remote_launcher)
+ formal_expr=simple_assignment(launcher,'formal_bytes').value
+ formal_bytes=eval(compile(ast.Expression(formal_expr),'<static-storage-arithmetic>','eval'),{'math':math})
+-assert formal_bytes==321734144
++assert formal_bytes==321733888
+ preflight_base=256*1024**2
+ fit_base=formal_bytes+130*1024**2
+ # Explicit raw exit receipts precede success assertions.

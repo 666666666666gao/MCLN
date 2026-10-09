@@ -1,0 +1,27 @@
+# Deployment-tool source follow-up - R5
+
+Date: 2026-10-09. **Verdict: PASS; execution_scope=SOURCE_ONLY; blocking_findings=[]**. Verification is STATIC_ONLY. This is the same R1-R4 reviewer context, not a new independent context. Actual backend/model/reasoning effort remain UNATTESTED; same-family/provisional acceptance. The original requested Codex/gpt-6-astra/max route is not an attestation.
+
+R4-B1 is resolved at source level. launch_span_authorized.py:117-119 constructs controller_argv from the exact six arguments previously embedded after flock, then constructs the launched command from the existing lock prefix plus that list. Line140 writes the same list to the launch receipt. The verifier compares the new argv AST against the former inline command suffix; no executable, option, controller path or phase argument changed.
+
+observe_span_authorized.py:45-47 passes JSON of that recorded argv as the fourth remote argument. Its read-only query decodes /proc/cmdline as NUL-separated arguments and, when the captured PID is alive, requires argv==expected (lines29-31). This is complete list equality rather than substring membership. Existing handling for an exited process is unchanged. No actual PID reuse, wrong process, identity mismatch or successful process observation has been observed or simulated.
+
+The observer's code string is still defined once before the loop. The loop does not reassign code or launch; query status continues to use exit_code. Thus repeated iterations send the same query source and recorded launch identity. No branch, fallback, retry, time-based terminal inference or restart was added.
+
+R5_SOURCE.diff preserves the complete exact two-file delta. Native verification proves that applying only the stated replacements to the R4 snapshots produces the current files. The other32 R4 inputs are unchanged, and all13 canonical R3 publication files remain byte-identical. LAUNCH_TOOL_PREPARATION.json changes only the two tool hashes and preparation-status text. Current hashes are:
+
+- finalize_parent.py: 0b7218d1a2802977984e06eddcab95f67a14b9a09c78e9bed1074a683ba0e5f4
+- launch_span_authorized.py: 4cfe370c1a404012fab4d82ae37b7dba48292bd0d994fc094d34c2e4a3bfb975
+- observe_span_authorized.py: 8789bd232e261ff13cbe2fbcdba3855c98f233d14d895ace4e7bc3cc1530f7f0
+- collect_span_authorized.py: 25f847c47ad76131b58cbab83ba6475ab346e6ef7bd9f0ccc3d62d4975f5b6d6
+- LAUNCH_TOOL_PREPARATION.json: 99f8924f5f6ddaa56bb13629c8828e19151e94e185fe97ae9156fe1f55d712d5
+
+R4's other source findings carry forward unchanged: explicit prior exit0 closure, full9508/11169 recount, fresh actual audit and both CPU reconstruction receipts precede explicit retained-parent finalization; final-spec/source gates precede SSH; fit requires separately closed and freshly audited actual M0 bound to the final spec. Runtime/environment, single idle A10040GB, disk reserve, protected parent hashes, dedicated directories/flock, one preflight source upload, fit source/spec invariance, failure preservation, schedule and archive-byte/path/count checks are unchanged. No promotion or deletion is added. These are source gates and future evidence requirements, not currently satisfied experimental results.
+
+Preservation is explicit. Before updating either review alias, the exact R4 FAIL files were copied to LAUNCH_SOURCE_REVIEW_R4.md/json. The R4 JSON retains SHA711ff42a4d7c1e77d5636dc9adbaf101f23cc2529bd888bea402cb33a1589cdb; its markdown and unchanged RAW_RESPONSE_R4.md retain SHA726f0390ad06cab10beb95c354420c03324d6dba507ed583f69957d589f774a0. R5_PRIOR_PRESERVATION_BASELINE.json maps all187 prior artifact contents to their preserved paths:185 original paths stay unchanged and the two explicit aliases have versioned R4 copies before refresh. R4's historical FAIL is not rewritten.
+
+INPUT_MANIFEST_R5.json and r5_snapshots preserve40 exact inputs; reviewed_files contains their exact live paths/SHA values, including all four tools, all11 canonical files/controller, pending template, preparation metadata, R3 evidence and preserved R4 evidence. R5_EXACT_REQUEST.txt preserves the exact request. The launch-consumed aliases LAUNCH_SOURCE_REVIEW.md/json are exact copies of LAUNCH_SOURCE_REVIEW_R5.md/json; RAW_RESPONSE_R5.md is the complete same report.
+
+Actual local verification ran once successfully under existing E:\anaconda\python.exe, Python3.7.6, with -I -S -B. It parsed20 Python inputs, compared complete source/metadata changes, verified preservation/hashes and AST data flow, and checked both parent-selection predicates still reject the pending template. It also performed JSON/NUL encoding round trips using the two phase argv lists derived from actual template literals. Those are stdlib metadata checks, not observed /proc data, process simulations, neural execution or model-runtime witnesses. No Paramiko, NumPy, Torch or project module was imported. There were no failed R5 verification invocations; all earlier failures remain preserved.
+
+The final spec, finalization receipt, preflight launch/wait/proof/audit and fit launch remain absent locally. The existing original experiment was not queried or modified. No finalized parent, deployment, watcher, M0, new weight, gradient/reconstruction result or metric is claimed. Source PASS supplies only this version's source-review result; actual closure, explicit decision, separate M0 review and all existing execution gates remain required. It grants no launch approval and establishes no target achievement or three effective contributions.

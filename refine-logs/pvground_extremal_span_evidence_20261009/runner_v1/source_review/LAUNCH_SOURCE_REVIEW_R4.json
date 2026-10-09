@@ -1,0 +1,340 @@
+{
+  "review_id": "PVGROUND_EXTREMAL_SPAN_LAUNCH_SOURCE_R4_20261009",
+  "audit_skill": "experiment-audit",
+  "review_round": "R4",
+  "review_date": "2026-10-09",
+  "generated_at": "2026-10-09T08:02:54.659Z",
+  "execution_scope": "SOURCE_ONLY",
+  "verification_scope": "STATIC_ONLY",
+  "verdict": "FAIL",
+  "overall_verdict": "FAIL",
+  "blocking_findings": [
+    {
+      "id": "R4-B1",
+      "priority": "P2",
+      "status": "BLOCKING_SOURCE_CONTRACT_GAP",
+      "file": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\observe_span_authorized.py",
+      "line": 31,
+      "related_file": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\launch_span_authorized.py",
+      "related_lines": [
+        128,
+        139
+      ],
+      "summary": "Observer checks command substring membership instead of exact launch identity.",
+      "details": "The captured PID is observed, but /proc/cmdline is accepted if controller path and phase occur within the flattened command. This does not implement the explicitly requested exact command/argv match.",
+      "actual_pid_reuse_observed": false,
+      "actual_wrong_process_observed": false,
+      "minimal_change": "Bind the exact intended controller argv in the launch receipt, pass it to the existing observer query, and compare complete NUL-separated argv equality. No fallback, retry or neural edit."
+    }
+  ],
+  "non_blocking_findings": [],
+  "agent_id": "/root/pvg_extremal_span_runner_source_20261009",
+  "fresh_context": false,
+  "review_context": "same R1-R3 reviewer continuing a deployment-tool source review",
+  "original_R1_requested_route": {
+    "backend": "codex",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max"
+  },
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "request_file": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\LAUNCH_SOURCE_AUDIT_REQUEST.txt",
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\finalize_parent.py",
+      "sha256": "0b7218d1a2802977984e06eddcab95f67a14b9a09c78e9bed1074a683ba0e5f4"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\launch_span_authorized.py",
+      "sha256": "1e061846d96f2107f5a760e937182d925964e989713739dea49aabdb66175328"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\observe_span_authorized.py",
+      "sha256": "ac50ac13b92f8ebab6d6c9cd68d3117357a2899a134c232aff8082f4a1d83d5f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\collect_span_authorized.py",
+      "sha256": "25f847c47ad76131b58cbab83ba6475ab346e6ef7bd9f0ccc3d62d4975f5b6d6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\extremal_span_mixer.py",
+      "sha256": "523203b7a5304ba41ca3bfb66c6911777adb0b55287806ddfed57d8ae9566adf"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\mask_support_corrector.py",
+      "sha256": "14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\mask_support_model_factory.py",
+      "sha256": "e9fd9ad7dab0d18dfc4c9089d85af57eb958d86768ec750c5f609551a8c87ab6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\matched_mask_objective.py",
+      "sha256": "67d05d069e1b748477af1a3c84b586375effbc21f1fd99b328ec7029f7e17788"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\matched_span_objective.py",
+      "sha256": "fa2df7209430d9587891b6519b447b6dc0c23aef37e6c89b609f6bd337a145c8"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\paired_span_loop.py",
+      "sha256": "33cec963d2a1277a85c861dfd8dd1049604e9123e75c6887c4c23209f6272154"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\run_span_pair.py",
+      "sha256": "ab44f57fd062c6a5ba03da1740a3a1e000523321e020bb8b48509b3fb90eba2c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\span_controller.py",
+      "sha256": "45042c3690e42e3f0855141eeeee380ec07717675425b134404cc848a687d6ac"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\span_refinement_model.py",
+      "sha256": "1139094df8f282715a795469cedc0dd6c4c95fea3f6b68ce13ab56b4a6ffb68b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\pair_spec_template.json",
+      "sha256": "ed77e229932b6cdf0ba574109fbfbad12ab649515d28de72b215fbc762c04d31"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\RUNNER_PREPARATION.json",
+      "sha256": "f98ae7edcb910333c2338fa055158121bcf10a7d82183db1f684ebd20cc474ec"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\LAUNCH_TOOL_PREPARATION.json",
+      "sha256": "bb1f939acf93d145c8ede1ea196b7102689024fe7f967715de9f4d21d236c4b7"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\LAUNCH_SOURCE_AUDIT_REQUEST.txt",
+      "sha256": "c4ae2eb9604e8ee97e1f0fd18eeb520c93085daa03dbe9397e936a4b4ab0047a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\SOURCE_REVIEW_R3.md",
+      "sha256": "bf89b1c79f859ace6281ba6073bbae616be2609cd5c65df2d51d4ed32571c915"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\SOURCE_REVIEW_R3.json",
+      "sha256": "589145875237c4594d1244ae49ee4417e9d5402254c4c588a03f4993abc737b9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\INPUT_MANIFEST_R3.json",
+      "sha256": "f7d74c7674fa0be800461d96e41c350d3011c48539d71bf9b2bb728e3bb20c23"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\R3_STATIC_VERIFICATION.json",
+      "sha256": "7087ba147720f0ef360ea5c83d279336952efaff8d758458f12a9307a0921763"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\R3_FINAL_VERIFICATION.json",
+      "sha256": "4c9056cb4b3dc465a290f015f77273ad457dcf9825e4dc4c68b4f6d05db8be1c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_source\\analyze_selected_pair.py",
+      "sha256": "1d6a0b9e1717bae8e80320f06d1eb86b32c22e7b54157c38c68524d6b3ca92f6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_source\\inspect_closed_terminals_authorized.py",
+      "sha256": "22fdb3cb2014594f3d759904ec78cee791351a807cf83fa874fec0218280e38a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_source\\collect_closed_pair_authorized.py",
+      "sha256": "cc1cd9a783bcf42cae30b69ff1875e3006d5a2e122d68181ea30140149f3b683"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\controller.py",
+      "sha256": "d9a944cc721332b0b46ff71eee1c8fe6a330146d4b6e499c26fa0bb12d09d360"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\observe_fit_authorized.py",
+      "sha256": "42c731e7de9f720115f9ed97618703fa3e5b306b42ab231b2e6a7e2764437a70"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\pair_spec.json",
+      "sha256": "fcdccf7dc1694a266927552057268f9b5d7c90593e23fce37a545a92d45d4a56"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\fit_launch.json",
+      "sha256": "37e33ec1ee75d2de0b7dfeb52934c2abc2fedd426f09501f3c8f3f51e55d906d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\POSTRUN_SOURCE_NOTES.md",
+      "sha256": "9852a7cc41cf12080364162c67c9da2e781f418c9d8b9ff4f515fe1305bca6c5"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_source_review_20261009\\SOURCE_REVIEW_R3.md",
+      "sha256": "9451506da13cc60ca50ca03f5b0079bf159df61f80f6370bf0e8514e8a83d9b7"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_source_review_20261009\\SOURCE_REVIEW_R3.json",
+      "sha256": "b9be8153569071efe1f4dee47cbb86d26ae1bb29e3ef2b38583cd9b8c917f8d7"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\LAUNCH_SOURCE_REVIEW.json",
+      "sha256": "08178ea92c5389b9f4b8f03991b4d7e9d7e7c3b5c59e11431d43edd4c858fbeb"
+    }
+  ],
+  "component_verdicts": {
+    "parent_finalizer": "PASS_STATIC",
+    "launcher": "PASS_STATIC",
+    "observer": "FAIL_EXACT_COMMAND_IDENTITY",
+    "collector": "PASS_STATIC",
+    "canonical_R3_sources": "PASS_UNCHANGED"
+  },
+  "checks": {
+    "parent_finalization": {
+      "status": "PASS",
+      "evidence": [
+        "finalize_parent.py:9",
+        "finalize_parent.py:35",
+        "finalize_parent.py:39",
+        "finalize_parent.py:44"
+      ],
+      "scope": "actual prior closure/recount/fresh audit/both CPU reconstruction and explicit retained decision are required, not supplied by source review"
+    },
+    "local_admission_gates": {
+      "status": "PASS",
+      "evidence": [
+        "launch_span_authorized.py:19",
+        "launch_span_authorized.py:37",
+        "launch_span_authorized.py:63"
+      ],
+      "source_and_fit_actual_gates_before_SSH": true
+    },
+    "remote_runtime_and_resource_admission": {
+      "status": "PASS",
+      "evidence": [
+        "launch_span_authorized.py:66",
+        "launch_span_authorized.py:69",
+        "launch_span_authorized.py:117"
+      ],
+      "actual_resource_availability_verified": false
+    },
+    "source_upload_and_invariance": {
+      "status": "PASS",
+      "evidence": [
+        "launch_span_authorized.py:55",
+        "launch_span_authorized.py:94",
+        "launch_span_authorized.py:110"
+      ],
+      "unique_uploaded_preflight_files": 14,
+      "canonical_sources": 11,
+      "source_upload_once_preflight_only": true
+    },
+    "failure_preservation": {
+      "status": "PASS",
+      "evidence": [
+        "launch_span_authorized.py:106",
+        "launch_span_authorized.py:124",
+        "launch_span_authorized.py:132",
+        "observe_span_authorized.py:51",
+        "span_controller.py:57"
+      ]
+    },
+    "observer_identity": {
+      "status": "FAIL",
+      "finding": "R4-B1",
+      "evidence": [
+        "observe_span_authorized.py:29",
+        "observe_span_authorized.py:31"
+      ]
+    },
+    "timing_and_observer_lifetime": {
+      "status": "PASS",
+      "evidence": [
+        "launch_span_authorized.py:59",
+        "observe_span_authorized.py:26",
+        "observe_span_authorized.py:40",
+        "observe_span_authorized.py:70"
+      ],
+      "remote_code_not_overwritten": true,
+      "later_poll_seconds": 240,
+      "no_time_based_terminal_inference_or_restart": true
+    },
+    "archive_integrity": {
+      "status": "PASS",
+      "evidence": [
+        "collect_span_authorized.py:20",
+        "collect_span_authorized.py:33",
+        "collect_span_authorized.py:49",
+        "collect_span_authorized.py:55",
+        "collect_span_authorized.py:59",
+        "collect_span_authorized.py:68"
+      ],
+      "preflight_weights": 0,
+      "fit_weights": 2,
+      "actual_collection": false
+    },
+    "scope": {
+      "status": "WARN",
+      "details": "No actual prior closure/parent finalization/deployment/M0/reconstruction/metrics supplied by this audit"
+    }
+  },
+  "verification": {
+    "artifact": "R4_STATIC_VERIFICATION.json",
+    "interpreter": "E:\\anaconda\\python.exe",
+    "python_version": "3.7.6",
+    "flags": [
+      "-I",
+      "-S",
+      "-B"
+    ],
+    "successful_attempt": 2,
+    "failed_attempts": 1,
+    "failed_attempt_reason": "Reviewer R3 publication filter counted its request file; corrected reviewer script only",
+    "additional_reviewer_corrections_before_attempt2": [
+      "embedded remote-source assert line references",
+      "storage arithmetic expected literal"
+    ],
+    "prior_artifacts_preserved": 134,
+    "inputs_snapshotted": 35,
+    "python_inputs_parsed": 20,
+    "embedded_remote_sources_parsed_not_executed": 3,
+    "canonical_R3_publication_files_unchanged": 13,
+    "postrun_source_hashes_match_existing_R3_review": true,
+    "formal_array_archive_reserve_bytes": 321733888,
+    "fit_base_reserve_bytes": 458048768,
+    "preflight_base_reserve_bytes": 268435456,
+    "upload_bytes_added": true
+  },
+  "input_manifest": "INPUT_MANIFEST_R4.json",
+  "raw_response": "RAW_RESPONSE_R4.md",
+  "native_receipts": "R4_NATIVE_TOOL_RECEIPTS.json",
+  "exact_request": "R4_EXACT_REQUEST.txt",
+  "limits": [
+    "Python3.7 AST checks do not certify the entire local Paramiko/shlex launcher runtime; no deployment module was executed.",
+    "CPU prior-terminal reconstruction is between the source-reviewed CPU builds, not original formal GPU all-state identity.",
+    "Actual wait closure, M0, resources, hashes on the remote machine and achieved metrics remain unproven here."
+  ],
+  "actual_deployment": false,
+  "actual_M0": false,
+  "actual_metrics": false,
+  "parent_finalized": false,
+  "actual_gpu_availability_verified": false,
+  "launch_approved": false,
+  "current_training_queried": false,
+  "watcher_started": false,
+  "ssh_queries": 0,
+  "gpu_queries": 0,
+  "torch_imports": 0,
+  "numpy_imports": 0,
+  "paramiko_imports": 0,
+  "project_imports": 0,
+  "model_simulations": 0,
+  "package_installs": 0,
+  "credentials_read": false,
+  "main_MEMORY_read": false,
+  "global_notes_written": false,
+  "experiment_source_edits": 0,
+  "deployment_source_edits": 0
+}

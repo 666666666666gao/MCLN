@@ -1,0 +1,35 @@
+# Isolated span runner source follow-up - R3
+
+Date: 2026-10-09. Scope: STATIC_ONLY. Continuing reviewer: /root/pvg_extremal_span_runner_source_20261009. Actual backend/model/reasoning effort: UNATTESTED. Independence: same-family; acceptance provisional. This is the continuing R1/R2 context, not a fresh or cross-family review.
+
+**Source verdict: PASS. Overall disposition: WARN because execution evidence remains unavailable.** R3 resolves R2's receipt-selector source warning with the exact formal selection expression. No concrete neural source blocker is identified in this narrow revision. This is not M0, deployment, accuracy or launch approval.
+
+This report binds paired_span_loop.py SHA256 33cec963d2a1277a85c861dfd8dd1049604e9123e75c6887c4c23209f6272154. R2 remains preserved against c6b8328aee7ae7369d5636b11ce31eb06b53267af1358e4667cc3e8e88df0d5d; its warning is not retrospectively rewritten.
+
+The exact request is preserved as R3_EXACT_REQUEST.txt, SHA256 d74b43026833579f14e2b89956499a942c8ec0cbcbed6b8a6b50f909b56d5688. INPUT_MANIFEST_R3.json contains 19 exact inputs with live paths, byte counts, hashes and snapshots. Its first 13 entries are the 11 bound runner Python files, pair_spec_template.json and RUNNER_PREPARATION.json. The remaining six entries bind the request and prior review evidence. The template hash is ed77e229932b6cdf0ba574109fbfbad12ab649515d28de72b215fbc762c04d31; the preparation hash is f98ae7edcb910333c2338fa055158121bcf10a7d82183db1f684ebd20cc474ec. R3_PRIOR_PRESERVATION_BASELINE.json and the actual verifier confirm all 98 prior R1/R2 artifacts unchanged.
+
+The only source difference from R2 is paired_span_loop.py:93:
+
+```python
+selected = int(scores[bid].argsort(descending=True)[0])
+```
+
+R3_LOOP.diff preserves the one-line replacement of argmax(). The verifier proves that replacing that exact line in the captured R2 file produces the complete R3 file. It also compares the witness ranking AST with formal evaluation's scores[bid].argsort(descending=True) at lines310-311 and confirms rank zero. Therefore W_R2_1_RECEIPT_SELECTOR_IDENTITY is RESOLVED_STATIC. No tie branch, fallback, score normalization, neural computation, matcher, loss, optimizer, model state or formal metric change was introduced. No actual tied maximum or selector disagreement has been observed or simulated.
+
+All other ten runner Python files are byte-identical to R2. The template differs only in the loop hash; preparation metadata differs only in the loop hash and time_cst. All 11 current source hashes agree with both sealed documents. The re-seal time is 15:27:53.895381 CST.
+
+R2's detailed shape and witness review carries forward unchanged. Native Text is list[B] of (1,256,S), so [bid][0] gives (256,S); Query is already (256,S). Observed logits are (K,S), where K is the union of the formal-expression winner and all original matched queries. The witness retains all256 foreground, scores, validity, native/Mask boxes and each arm's (256,3,2) source fractions, actual (50000,6) points, their native SP IDs, and the complete member-statistics dictionary. Present native SP IDs are retained separately from the logits' slot extent S. Saved GT arrays remain actual valid targets selected from dataset GT; their matched indices refer to the saved valid-target rows, and GT remains provenance rather than a mixer inference input.
+
+Those planned fields support later membership, empty-versus-degenerate, extrema, tied-source and count-weighted fraction reconstruction. Reconstruction must preserve the native float64 member-statistics calculation and the native prediction-dtype cast before extrema/equality. This is static evidence-schema sufficiency. No NPZ capture or reconstruction exists from this audit. The raw-logit subset is explicit; all256 raw Text/Query logits are not saved, so foreground outside that subset cannot independently be rederived from archived raw logits. That scope is unchanged and accurately stated by the receipt.
+
+Gradient summaries still report the sum of constituent parameter L2 gradient norms for query_projection, support_projection, face_encoder and axis_decoder. They are observations for later inspection, not separate positive-gradient assertions. The existing positive aggregate does not establish that each named group is positive. Complete per-parameter norms remain recorded. No actual group norm or positivity result is claimed. This is an interpretation requirement for future M0 evidence, not a demonstrated gradient defect or a reason to alter the neural path.
+
+The witness call remains conditional on preflight=True, and formal evaluation does not call it. R2's verification that receipt-only additions leave the core loop AST unchanged from R1 still applies. The shared native parent/cache, independent heads and optimizers, real-GT frozen matching/native box weights, source-mode/full1328 restore contract, same-forward formal controls/evaluator and formal9508 count logic are unchanged by R3. Their actual execution remains pending.
+
+Actual local verification used E:\anaconda\python.exe, Python 3.7.6, with -I -S -B. It parsed all 11 runner Python files, checked all 19 live originals against their snapshots, checked the 98 prior artifacts, evaluated only the two extracted static parent-selection predicates, and compared the exact source/metadata changes. No NumPy, Torch or project module was imported. Both parent predicates remain false for the PENDING template: run_span_pair.py:43 and span_controller.py:18. The actual entrypoint/controller was not executed.
+
+One R3 verifier invocation failed in the reviewer's final publication-file filter because Path(__file__).resolve() followed the existing C:\Users\gb\.codex junction to D:\Program Files\UserCache\gb\codex, while manifest parents were unresolved C: paths. Earlier source assertions in that invocation had passed. R3_VERIFY_ATTEMPT_1_ORIGINAL.py and R3_NATIVE_VERIFICATION_ATTEMPT_1.json preserve that failure. The reviewer-only correction resolves both parents before comparison; attempt2 exited0 and selected exactly13 files. R3_STATIC_VERIFICATION.json and raw native receipts preserve the actual result. R1's pyodbc/uv failures and original verifier failure, and all R2 evidence, remain intact. Nothing was installed or rebuilt.
+
+A-F disposition: GT provenance PASS static; scoring/selection PASS static; result-existence claims PASS as source preparation only; called-path isolation PASS static; experimental scope WARN because actual M0/archive/gradients/restore/formal metrics are absent; evaluation classification STATIC_ONLY_SOURCE_FOLLOWUP, with intended future real_gt evaluation. Historical proposal wording and future launcher/output-directory provisioning remain the preparation limits recorded in R1.
+
+No SSH/GPU queries, neural execution or simulation, package work, credential access, main MEMORY access, global-note writes, experiment-source edits or parent finalization were performed. The current experiment was not operated on. Actual backend/model/effort remain UNATTESTED, and this same-family provisional source review grants no launch approval.

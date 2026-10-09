@@ -1,0 +1,796 @@
+{
+  "audit_skill": "experiment-audit",
+  "date": "2026-10-09",
+  "generated_at": "2026-10-09T10:53:45.977732+00:00",
+  "agent_id": "/root/pvg_span_preflight_actual_20261009",
+  "verdict_id": "/root/pvg_span_preflight_actual_20261009@ACTUAL_PREFLIGHT",
+  "execution_scope": "ACTUAL_PREFLIGHT",
+  "verification_scope": "LOCAL_READONLY_ACTUAL_ARTIFACTS",
+  "fresh_context": true,
+  "review_context": "New reviewer; one context across source preread and sealed raw-intake stages; no source-authoring role.",
+  "requested_backend": "codex",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "blocking_findings": [],
+  "non_blocking_findings": [
+    {
+      "id": "W1",
+      "blocking": false,
+      "reason_code": "two_step_eight_row_single_seed_engineering_scope",
+      "details": "One B8 training batch from eight scenes is reused for two optimizer steps per arm at seed 2027. No full validation, efficacy, three-contribution or research-target conclusion."
+    },
+    {
+      "id": "W2",
+      "blocking": false,
+      "reason_code": "unexercised_multigt_ties_and_nonempty_degeneracy",
+      "details": "All 16 row-step cases have one GT. There are no selected-score ties, no tied extremal faces and no nonempty degenerate references. Source handling of those cases is not actual empirical validation."
+    },
+    {
+      "id": "W3",
+      "blocking": false,
+      "reason_code": "raw_and_restoration_coverage_boundary",
+      "details": "Raw logits cover the exact 23 selected-plus-matched query cases; all256 foreground/member arrays cover 4096 cases. Updated per-candidate final boxes/gates and raw gradient tensors were not exported. Actual gradient/restoration claims use closed hash-bound native assertions and receipts. CPU reconstruction and same-parent-cache GPU output checks do not prove original cold-GPU or separate-forward bitwise identity."
+    },
+    {
+      "id": "W4",
+      "blocking": false,
+      "reason_code": "frozen_state_not_separate_forward_output_identity",
+      "details": "With identical raw points and GT, eight winners and six matching assignments change across the two parent forwards. Both arms share each current parent cache. Native forward includes Gumbel sampling."
+    },
+    {
+      "id": "W5",
+      "blocking": false,
+      "reason_code": "unused_legacy_metric_not_a_result",
+      "details": "The formal evaluator is imported but no formal accuracy call runs in preflight. Legacy calculate_diou_3d has only commented loss invocation and supports no DIoU result."
+    }
+  ],
+  "reason_code": "limited_actual_preflight_scope",
+  "summary": "Closed actual two-step span engineering preflight is supported with zero blocking findings; no accuracy or contribution claim.",
+  "checks": {
+    "gt_provenance": {
+      "check": "A",
+      "status": "PASS",
+      "details": "Dataset-derived boxes/masks with native augmentation/jitter; not model-generated GT. Inference support and mixing do not consume GT.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\run_span_pair.py:164",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\run_span_pair.py:237",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\matched_mask_objective.py:6",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\paired_span_loop.py:126",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\src_joint_det_dataset.py:1086"
+      ]
+    },
+    "score_normalization": {
+      "check": "B",
+      "status": "PASS",
+      "details": "Native center L1 plus 0.5 size L1 and GIoU, target-count normalization, coefficients 10/2 and seven-output average. Independent first neutral-step recount matches native float32 within stated errors.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\matched_span_objective.py:5",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\models_losses.py:518",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\models_losses.py:831",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\models_losses.py:948"
+      ]
+    },
+    "result_existence": {
+      "check": "C",
+      "status": "PASS",
+      "details": "All 41 intake files and current/collected computational source bindings are exact; original controller/child closed exit 0; explicit retained parent identity and restoration receipts reconcile.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_wait.json:6",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\INTAKE.json:2",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight.json:8",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\FINAL_SPEC_RECEIPT.json:3"
+      ]
+    },
+    "dead_code": {
+      "check": "D",
+      "status": "WARN",
+      "details": "Actual native wrapper and span objective are called. Formal evaluator is not executed in preflight; legacy DIoU helper is unused and no result is attributed to it.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\paired_span_loop.py:126",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\paired_span_loop.py:246",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\paired_span_loop.py:369",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\models_losses.py:103",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\models_losses.py:546"
+      ]
+    },
+    "scope": {
+      "check": "E",
+      "status": "WARN",
+      "details": "Engineering scope only: eight rows/scenes, one GT per row, seed 2027, two steps; scope boundaries are explicit and nonblocking.",
+      "evidence": [
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\pair_spec.json:103",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight.json:2",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight.json:247",
+        "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight.json:570"
+      ]
+    },
+    "eval_type": {
+      "check": "F",
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": "Real-GT supervised Box loss plus engineering diagnostics, not benchmark accuracy or synthetic-proxy accuracy."
+    }
+  },
+  "evaluation_type": "real_gt",
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\PREFLIGHT_ACTUAL_REVIEW_REQUEST.txt",
+      "sha256": "fcf77d68bde8413b7791f50c4281f0e88e4a9f04bd74ce86b64683286feaf3ca"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\pair_spec.json",
+      "sha256": "ceaa2bbeeaa124f86aa46b091aa63a3c9f00587fd4a291f8f73a088d52c2527e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\FINAL_SPEC_RECEIPT.json",
+      "sha256": "01ca56bdbb3271f950a1dd85914c540d9d9ba213f471bf73b638e67f4138601c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_launch.json",
+      "sha256": "1661464ddc20ec12dc504a95a5289b3c067681d8d82858dea840c1c44c7ab7db"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_wait.json",
+      "sha256": "78514915f1d3b5e4abce837502d74e53ae795066ab83e8e92ae46b2d244cdea1"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\LAUNCH_SOURCE_REVIEW.json",
+      "sha256": "54babd38d0bd4cd5cc7175551e1bfeb6036391814d64eeaaafc8d0d7dd45a344"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\SOURCE_REVIEW_R3.json",
+      "sha256": "589145875237c4594d1244ae49ee4417e9d5402254c4c588a03f4993abc737b9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\LAUNCH_SOURCE_REVIEW_R5.json",
+      "sha256": "54babd38d0bd4cd5cc7175551e1bfeb6036391814d64eeaaafc8d0d7dd45a344"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\INTAKE.json",
+      "sha256": "e39b3eae7360f78df9dacedfa7b7ac1ee634085ab44c8db1fc3800415e0c88ff"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\extremal_span_mixer.py",
+      "sha256": "523203b7a5304ba41ca3bfb66c6911777adb0b55287806ddfed57d8ae9566adf"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\mask_support_corrector.py",
+      "sha256": "14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\mask_support_model_factory.py",
+      "sha256": "e9fd9ad7dab0d18dfc4c9089d85af57eb958d86768ec750c5f609551a8c87ab6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\matched_mask_objective.py",
+      "sha256": "67d05d069e1b748477af1a3c84b586375effbc21f1fd99b328ec7029f7e17788"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\matched_span_objective.py",
+      "sha256": "fa2df7209430d9587891b6519b447b6dc0c23aef37e6c89b609f6bd337a145c8"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\paired_span_loop.py",
+      "sha256": "33cec963d2a1277a85c861dfd8dd1049604e9123e75c6887c4c23209f6272154"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\run_span_pair.py",
+      "sha256": "ab44f57fd062c6a5ba03da1740a3a1e000523321e020bb8b48509b3fb90eba2c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\span_controller.py",
+      "sha256": "45042c3690e42e3f0855141eeeee380ec07717675425b134404cc848a687d6ac"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\span_refinement_model.py",
+      "sha256": "1139094df8f282715a795469cedc0dd6c4c95fea3f6b68ce13ab56b4a6ffb68b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\FINAL_SPEC_RECEIPT.json",
+      "sha256": "01ca56bdbb3271f950a1dd85914c540d9d9ba213f471bf73b638e67f4138601c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\LAUNCH_SOURCE_REVIEW.json",
+      "sha256": "54babd38d0bd4cd5cc7175551e1bfeb6036391814d64eeaaafc8d0d7dd45a344"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\extremal_span_mixer.py",
+      "sha256": "523203b7a5304ba41ca3bfb66c6911777adb0b55287806ddfed57d8ae9566adf"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\imports.json",
+      "sha256": "6b1f42cf80a5b3c29e383b383d38974221cbe4b00dcd71ef5c268ea88e3aac09"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\load.json",
+      "sha256": "6626c90aa9f90b66b25acc2186fd1751a6f5676e4fa5a943b12fb2887c888282"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\mask_reference.py",
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\mask_support_corrector.py",
+      "sha256": "14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\mask_support_model_factory.py",
+      "sha256": "e9fd9ad7dab0d18dfc4c9089d85af57eb958d86768ec750c5f609551a8c87ab6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\matched_mask_objective.py",
+      "sha256": "67d05d069e1b748477af1a3c84b586375effbc21f1fd99b328ec7029f7e17788"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\matched_span_objective.py",
+      "sha256": "fa2df7209430d9587891b6519b447b6dc0c23aef37e6c89b609f6bd337a145c8"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\pair_spec.json",
+      "sha256": "ceaa2bbeeaa124f86aa46b091aa63a3c9f00587fd4a291f8f73a088d52c2527e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\paired_span_loop.py",
+      "sha256": "33cec963d2a1277a85c861dfd8dd1049604e9123e75c6887c4c23209f6272154"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight.json",
+      "sha256": "629a478aad3f5536cd4451463e4ed1fa7f8be1e4fdcf9df6289b09e02ff76d83"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight.log",
+      "sha256": "1e013b7d91e3925f0323a3d907a5c20e7ceadca525615ce523842bc106ba1c04"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_controller.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_controller.log",
+      "sha256": "f72b743286ac441fe3c43e2945ea2517a7d109a78a95ed96dedf19ba0f054ae6"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_launch.json",
+      "sha256": "1661464ddc20ec12dc504a95a5289b3c067681d8d82858dea840c1c44c7ab7db"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_status.json",
+      "sha256": "9cd3612b9cadbb8f02341c2694fc83c3ff214989282bdd5bc7cd61fbf673b52f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_1\\receipt.json",
+      "sha256": "08656f118dcddc5eca22b7eaa84e90d0ee5082093faf29d26a59fcb4a08a730f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_1\\row_00.npz",
+      "sha256": "1ff71fc805569f7f12edc4b6d02df38a280ec3db47520c4f54041be873e07f2e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_1\\row_01.npz",
+      "sha256": "a809ef3ac40eca0d7e0e75d81030d4b08d9a14b772c76eb38de24eb4c6ec0e3c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_1\\row_02.npz",
+      "sha256": "ec78a78d9de7089fd1c3aff273d41cb99cd88f326bb20d1d1a502bcd58127c10"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_1\\row_03.npz",
+      "sha256": "c9bd0f397aceb8bf836ce9d7bd4c2f95841c439e73de52b9fe8645271854fd5f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_1\\row_04.npz",
+      "sha256": "a5cc137897a740fc359b0cd1179e199e31348e62baf132bdac1b0407318a3502"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_1\\row_05.npz",
+      "sha256": "4acfaebe8e10e2891b8aaddf5183b44512128c7356c74fe608c4febce060c98f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_1\\row_06.npz",
+      "sha256": "e979a516124ee1c1159176ac9dec5622380d236d5c62787bb301569acca6a1d1"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_1\\row_07.npz",
+      "sha256": "794dbc073f234785504cb8f4c1e0bac58f62de7ae09829891c52bcfd259b27ba"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_2\\receipt.json",
+      "sha256": "acaa36f45db747064ffd663ea78d1f32cc14812b33f9dab37c5e7673983b9e72"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_2\\row_00.npz",
+      "sha256": "a25dc7bf251225f40b74840d02699d66a4dae11971cd9b74bbf1329868aa6ae1"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_2\\row_01.npz",
+      "sha256": "4570278c6f090432cd1c6c2f6a43ce74f484b0a3c6ee34d03d4bf463bc727369"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_2\\row_02.npz",
+      "sha256": "0512e3511cc4d3311c49f8396a741228603aa313e1b5325a6f95ff8d50b6d1cd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_2\\row_03.npz",
+      "sha256": "b81b5f808efffe276410c52edb885f0d372f6a2d19b9fca0f3a3d3f0de944fcd"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_2\\row_04.npz",
+      "sha256": "eafb6a2f5f5ba6350e80d1a25261f6702f42b5f80b9338cbd5c2a8f409265699"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_2\\row_05.npz",
+      "sha256": "5a04b8bd9b5af9f822e1b16944a903447dec9aabc903bbd9e7380c1b1ba4301a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_2\\row_06.npz",
+      "sha256": "36699f86d3c9e3a4c7c606fc58ca178e4044e7a8a48fd51c22e42f58b53bd5ce"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\preflight_support_step_2\\row_07.npz",
+      "sha256": "b40eb43433abf9c040b63fa4d6f52a35d834c8bdabd14f86cd5a348ed5d8dcc2"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\run_span_pair.py",
+      "sha256": "ab44f57fd062c6a5ba03da1740a3a1e000523321e020bb8b48509b3fb90eba2c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\selected_mask_reference_factory.py",
+      "sha256": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\span_controller.py",
+      "sha256": "45042c3690e42e3f0855141eeeee380ec07717675425b134404cc848a687d6ac"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_complete\\span_refinement_model.py",
+      "sha256": "1139094df8f282715a795469cedc0dd6c4c95fea3f6b68ce13ab56b4a6ffb68b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\RETAINED_PARENT_DECISION.json",
+      "sha256": "5df71e15401e7697f03700ee36ff922b1488b79d0e73580a88cbe0714a264075"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\checkpoint_inspection.json",
+      "sha256": "769ba60974ab2c079322da145c5c1b4646f6695e2ec5df49d1d735e5c2802cce"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\CPU_RECOUNT.json",
+      "sha256": "76dd6ad6f13bb06f3d01fc971775a796c3abf1acb08025c4d932af4a1c8124e9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\EXPERIMENT_AUDIT.json",
+      "sha256": "bc8f53eb0d61b1634bf4080a5db398ca0d642bb850ce7bffeb2f9d78a52ef289"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\RETIREMENT_RECEIPT.json",
+      "sha256": "07efdcdf9ea87231332d292f0001e2d91c1820b721a7a9440de4998b9fedffaa"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\SOURCE_INTAKE.json",
+      "sha256": "0c6326cc18ba1b4abbb01521be587de1b09f20b6aa2766842dd0909cb0af8deb"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\native_evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\models_losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\models_pv_ground.py",
+      "sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\main_utils.py",
+      "sha256": "14bd101eb78ec3d729968aff0a975684efa8388574583ca9e4b0f512877b4f5c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\prepare_data.py",
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_results\\audit_sources\\src_joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\r2_snapshots\\019_whole_mask_range.py",
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\r2_snapshots\\020_native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\snapshots\\022_readback_preflight_checks.py",
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\snapshots\\023_whole_model_preflight_checks.py",
+      "sha256": "115aa821de0fbc27d73aff9689354ad3b1f18796fdc23aab09b77d52b7666094"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\snapshots\\035_pvground_boundary_box_refiner.py",
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461"
+    }
+  ],
+  "actual_scope": {
+    "optimizer_steps_per_arm": 2,
+    "trainable_parameters_per_arm": 29793,
+    "trainable_state_tensors_per_arm": 14,
+    "independent_heads": 2,
+    "independent_optimizers": 2,
+    "deployed_heads_per_model": 1,
+    "frozen_parent_state_tensors": 1314,
+    "full_rebuilt_state_tensors": 1328,
+    "seed": 2027,
+    "physical_batch": 8,
+    "distinct_rows": 8,
+    "distinct_scenes": 8,
+    "raw_row_step_witnesses": 16,
+    "actual_gt_cases": 16,
+    "max_gt_per_row": 1,
+    "formal_accuracy_rows": 0,
+    "accuracy_result": false
+  },
+  "parent_binding": {
+    "parent_support_terminal": "/root/autodl-tmp/pvground_selected_mask_training_20261009/selected_query/terminal.pth",
+    "parent_support_terminal_sha256": "d06adb8ed227d98d46afa8e3970dcb9fbe31ab2613c675883b80162f830f4cb6",
+    "parent_decision_sha256": "5df71e15401e7697f03700ee36ff922b1488b79d0e73580a88cbe0714a264075",
+    "checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+    "base_terminal_sha256": "0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522",
+    "selected_terminal_sha256": "2301e90a9391af4e4cd56edae09ce49db1cc8f67463e1c2568352ee2dafaff61",
+    "source_port_sha256": "765a47c0c07758f3e42a426036b27a840df8ea010b63df3682439ff5455e9eff",
+    "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+    "starting_hits": [
+      5606,
+      4881
+    ]
+  },
+  "intake_verification": {
+    "status": "PASS_SEALED_INTAKE_HASHES_AND_RUNTIME_BINDINGS",
+    "generated_at": "2026-10-09T10:48:58.748701+00:00",
+    "files": 41,
+    "total_bytes": 22794801,
+    "intake_sha256": "e39b3eae7360f78df9dacedfa7b7ac1ee634085ab44c8db1fc3800415e0c88ff",
+    "pair_spec_sha256": "ceaa2bbeeaa124f86aa46b091aa63a3c9f00587fd4a291f8f73a088d52c2527e",
+    "preflight_wait_sha256": "78514915f1d3b5e4abce837502d74e53ae795066ab83e8e92ae46b2d244cdea1",
+    "preflight_sha256": "629a478aad3f5536cd4451463e4ed1fa7f8be1e4fdcf9df6289b09e02ff76d83",
+    "canonical_collected_sources_exact": 11,
+    "imported_source_bytes_exact": 6,
+    "original_controller_and_child_exit": 0,
+    "source_snapshots_unchanged": true,
+    "weight_files_in_intake": 0
+  },
+  "numeric_verification": {
+    "status": "PASS_INDEPENDENT_NUMERIC_WITNESSES",
+    "generated_at": "2026-10-09T10:49:04.989924+00:00",
+    "elapsed_seconds": 0.7911690999972052,
+    "python": "3.13.12 (main, Feb  3 2026, 22:53:26) [MSC v.1944 64 bit (AMD64)]",
+    "numpy_version": "2.5.3",
+    "torch_imported": false,
+    "project_modules_imported": false,
+    "pickle_allowed": false,
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "raw_npz_files": 16,
+    "unique_training_rows": 8,
+    "scenes": 8,
+    "all256_query_cases": 4096,
+    "raw_logit_query_cases": 23,
+    "actual_gt_cases": 16,
+    "max_gt_per_row": 1,
+    "selected_score_tie_rows": 0,
+    "empty_queries": 2087,
+    "degenerate_nonempty_queries": 0,
+    "extremal_multi_sp_tied_faces": 0,
+    "max_extremal_sp_tie": 1,
+    "first_step_loss_recount": [
+      {
+        "step": 1,
+        "arm": "extremal_support",
+        "recomputed_float64_l1": 0.16207887046039104,
+        "recomputed_float64_giou": 0.39366257770882723,
+        "l1_error": 1.862645149230957e-09,
+        "giou_error": 1.134075057751538e-07
+      },
+      {
+        "step": 1,
+        "arm": "whole_support",
+        "recomputed_float64_l1": 0.16207887046039104,
+        "recomputed_float64_giou": 0.39366257770882723,
+        "l1_error": 1.862645149230957e-09,
+        "giou_error": 1.134075057751538e-07
+      }
+    ]
+  },
+  "native_restore": {
+    "extremal_support": {
+      "actual_native_dictionary_model_call": true,
+      "actual_native_gpu_integration": true,
+      "comparison_scope": "actual wrapper versus restored same-parent-cache head; not repeated-backbone identity",
+      "cpu_and_cuda_numpy_python_rng_restored": true,
+      "deployed_mixer_calls": 1,
+      "full_cpu_state_exact": true,
+      "full_state_tensors": 1328,
+      "gpu_head_and_optimizer_restore": {
+        "all_keys_moments_steps_and_groups_exact": true,
+        "moment_and_step_states": 14,
+        "param_groups": 1
+      },
+      "gpu_parent_cold_reconstruction_executed": false,
+      "original_parent_calls": 1,
+      "original_semantic_calls": 1,
+      "parent_cpu_state_tensors": 1314,
+      "serialization_bytes": 384417,
+      "source_mode_exact": true,
+      "updated_same_cache_output_exact": true,
+      "weight_files_created": 0
+    },
+    "whole_support": {
+      "actual_native_dictionary_model_call": true,
+      "actual_native_gpu_integration": true,
+      "comparison_scope": "actual wrapper versus restored same-parent-cache head; not repeated-backbone identity",
+      "cpu_and_cuda_numpy_python_rng_restored": true,
+      "deployed_mixer_calls": 1,
+      "full_cpu_state_exact": true,
+      "full_state_tensors": 1328,
+      "gpu_head_and_optimizer_restore": {
+        "all_keys_moments_steps_and_groups_exact": true,
+        "moment_and_step_states": 14,
+        "param_groups": 1
+      },
+      "gpu_parent_cold_reconstruction_executed": false,
+      "original_parent_calls": 1,
+      "original_semantic_calls": 1,
+      "parent_cpu_state_tensors": 1314,
+      "serialization_bytes": 384417,
+      "source_mode_exact": true,
+      "updated_same_cache_output_exact": true,
+      "weight_files_created": 0
+    }
+  },
+  "gradient_witnesses": [
+    {
+      "step": 1,
+      "arms": {
+        "extremal_support": {
+          "raw_parameter_gradient_norms": {
+            "axis_decoder.0.bias": 0.0,
+            "axis_decoder.0.weight": 0.0,
+            "axis_decoder.2.bias": 0.0,
+            "axis_decoder.2.weight": 0.0,
+            "face_encoder.0.bias": 0.0,
+            "face_encoder.0.weight": 0.0,
+            "face_encoder.2.bias": 0.0,
+            "face_encoder.2.weight": 0.0,
+            "output.bias": 0.10711922496557236,
+            "output.weight": 0.024384191259741783,
+            "query_projection.bias": 0.0,
+            "query_projection.weight": 0.0,
+            "support_projection.bias": 0.0,
+            "support_projection.weight": 0.0
+          },
+          "upstream_group_grad_norms": {
+            "axis_decoder": 0.0,
+            "face_encoder": 0.0,
+            "query_projection": 0.0,
+            "support_projection": 0.0
+          },
+          "direct_output_gradient": {
+            "matched_norms": [
+              1.1531955003738403,
+              0.5519325137138367
+            ],
+            "matched_queries": 8,
+            "unmatched_nonzero": 0
+          },
+          "neutral_same_forward_exact": true,
+          "axis_gate_min": 0.0,
+          "axis_gate_max": 0.0
+        },
+        "whole_support": {
+          "raw_parameter_gradient_norms": {
+            "axis_decoder.0.bias": 0.0,
+            "axis_decoder.0.weight": 0.0,
+            "axis_decoder.2.bias": 0.0,
+            "axis_decoder.2.weight": 0.0,
+            "face_encoder.0.bias": 0.0,
+            "face_encoder.0.weight": 0.0,
+            "face_encoder.2.bias": 0.0,
+            "face_encoder.2.weight": 0.0,
+            "output.bias": 0.10711922496557236,
+            "output.weight": 0.0257001630961895,
+            "query_projection.bias": 0.0,
+            "query_projection.weight": 0.0,
+            "support_projection.bias": 0.0,
+            "support_projection.weight": 0.0
+          },
+          "upstream_group_grad_norms": {
+            "axis_decoder": 0.0,
+            "face_encoder": 0.0,
+            "query_projection": 0.0,
+            "support_projection": 0.0
+          },
+          "direct_output_gradient": {
+            "matched_norms": [
+              1.1531955003738403,
+              0.5519325137138367
+            ],
+            "matched_queries": 8,
+            "unmatched_nonzero": 0
+          },
+          "neutral_same_forward_exact": true,
+          "axis_gate_min": 0.0,
+          "axis_gate_max": 0.0
+        }
+      }
+    },
+    {
+      "step": 2,
+      "arms": {
+        "extremal_support": {
+          "raw_parameter_gradient_norms": {
+            "axis_decoder.0.bias": 9.865750598692102e-07,
+            "axis_decoder.0.weight": 1.8689055423237733e-06,
+            "axis_decoder.2.bias": 3.136328814434819e-06,
+            "axis_decoder.2.weight": 1.5410148535011103e-06,
+            "face_encoder.0.bias": 6.511541528197995e-08,
+            "face_encoder.0.weight": 1.0263564576007411e-07,
+            "face_encoder.2.bias": 2.2487736828225025e-07,
+            "face_encoder.2.weight": 9.149336932523511e-08,
+            "output.bias": 0.10991983860731125,
+            "output.weight": 0.02429230697453022,
+            "query_projection.bias": 1.9000766826593463e-07,
+            "query_projection.weight": 2.2535953121405328e-06,
+            "support_projection.bias": 1.663486060010655e-08,
+            "support_projection.weight": 4.888033444672146e-08
+          },
+          "upstream_group_grad_norms": {
+            "axis_decoder": 7.532824270128913e-06,
+            "face_encoder": 4.841217986495394e-07,
+            "query_projection": 2.4436029804064674e-06,
+            "support_projection": 6.551519504682801e-08
+          },
+          "direct_output_gradient": {
+            "matched_norms": [
+              1.1531957387924194,
+              0.5519326329231262
+            ],
+            "matched_queries": 8,
+            "unmatched_nonzero": 0
+          },
+          "neutral_same_forward_exact": false,
+          "axis_gate_min": 0.0,
+          "axis_gate_max": 2.7826423320220783e-05
+        },
+        "whole_support": {
+          "raw_parameter_gradient_norms": {
+            "axis_decoder.0.bias": 1.047861360348179e-06,
+            "axis_decoder.0.weight": 2.4761252461757977e-06,
+            "axis_decoder.2.bias": 3.0952012366469717e-06,
+            "axis_decoder.2.weight": 1.888255951598694e-06,
+            "face_encoder.0.bias": 7.75025199573065e-08,
+            "face_encoder.0.weight": 1.304924950318309e-07,
+            "face_encoder.2.bias": 2.410824890830554e-07,
+            "face_encoder.2.weight": 1.0226232660670576e-07,
+            "output.bias": 0.10992002487182617,
+            "output.weight": 0.0259627066552639,
+            "query_projection.bias": 2.294514018785776e-07,
+            "query_projection.weight": 2.7070891519542783e-06,
+            "support_projection.bias": 2.0875141615306347e-08,
+            "support_projection.weight": 5.5248261077167626e-08
+          },
+          "upstream_group_grad_norms": {
+            "axis_decoder": 8.507443794769642e-06,
+            "face_encoder": 5.513398306788986e-07,
+            "query_projection": 2.936540553832856e-06,
+            "support_projection": 7.612340269247397e-08
+          },
+          "direct_output_gradient": {
+            "matched_norms": [
+              1.153195858001709,
+              0.5519326329231262
+            ],
+            "matched_queries": 8,
+            "unmatched_nonzero": 0
+          },
+          "neutral_same_forward_exact": false,
+          "axis_gate_min": 0.0,
+          "axis_gate_max": 3.111776095465757e-05
+        }
+      }
+    }
+  ],
+  "native_proofs": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\.aris\\traces\\experiment-audit\\2026-10-09_actual_preflight_run01\\STATIC_VERIFICATION.json",
+      "sha256": "717d46b80c8c1f4472ffc02dfccaa62f024314d21429dbd06aa00f6070c28c5d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\.aris\\traces\\experiment-audit\\2026-10-09_actual_preflight_run01\\INTAKE_VERIFICATION.json",
+      "sha256": "d58a62701bb4e09577ffc88165565760e3bfab04e01c9bf7262f5a8e1c50891f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\.aris\\traces\\experiment-audit\\2026-10-09_actual_preflight_run01\\NUMERIC_VERIFICATION.json",
+      "sha256": "5528310f574a0a3d2c0fa7c1337df1a0bc4f78d3109cadfa8afd23a56ff06874"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\.aris\\traces\\experiment-audit\\2026-10-09_actual_preflight_run01\\GT_COORDINATE_VERIFICATION.json",
+      "sha256": "2df79e6061c336d378f047e23fc4fa76af043127fde04ad9b1a0d69bff078406"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\.aris\\traces\\experiment-audit\\2026-10-09_actual_preflight_run01\\NUMERIC_NATIVE_RECEIPT.json",
+      "sha256": "47a2fa82520375972248bbd4e21b9bf03f6b933334850edf754b39a3337692d0"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\.aris\\traces\\experiment-audit\\2026-10-09_actual_preflight_run01\\native_tool_receipts.json",
+      "sha256": "4b1aa18f041247869a903e1e21d7c70575e56c9b001ee3d1c32d4e79fd0b930f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\.aris\\traces\\experiment-audit\\2026-10-09_actual_preflight_run01\\verify_raw_witnesses.py",
+      "sha256": "d1b4a489ed46436166a3da377807e68d604f198480432ba8a8d7eeda843a1feb"
+    }
+  ],
+  "native_command_failures": [],
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\.aris\\traces\\experiment-audit\\2026-10-09_actual_preflight_run01",
+  "request_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\PREFLIGHT_ACTUAL_REVIEW_REQUEST.txt",
+  "request_sha256": "fcf77d68bde8413b7791f50c4281f0e88e4a9f04bd74ce86b64683286feaf3ca",
+  "full_raw_response": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\preflight_results\\EXPERIMENT_AUDIT.raw.md",
+  "claimed_results": {
+    "two_step_engineering_preflight": "supported_with_scope_limits",
+    "full_9508_accuracy": "not_supported_by_this_preflight",
+    "effective_span_module": "not_established",
+    "three_effective_contributions": "not_established",
+    "original_cold_gpu_identity": "not_claimed",
+    "every_group_nonzero_from_aggregate": "not_claimed",
+    "unexercised_multigt_ties_degeneracy": "not_claimed"
+  },
+  "staged_intake_rule": {
+    "raw_arrays_accessed_before_sealed_message": false,
+    "same_reviewer_context_across_stages": true
+  },
+  "auditor_actions": {
+    "ssh_queries": 0,
+    "gpu_queries": 0,
+    "torch_imports": 0,
+    "project_module_imports": 0,
+    "model_replays": 0,
+    "optimizer_updates": 0,
+    "pickle_loads": 0,
+    "package_downloads": 0,
+    "experiment_computational_edits": 0,
+    "weight_files_read": 0,
+    "weight_files_written": 0,
+    "deletions": 0,
+    "training_launched": false,
+    "global_MEMORY_read": false
+  },
+  "trace_notes": [
+    "Standard workspace SOUL.md, USER.md and daily startup notes for 2026-10-09/2026-10-08 were read under session instructions; they were not used as audit evidence. No global MEMORY.md was read.",
+    "Several initial display reads were clipped; exact source snapshots and omitted source windows were retained/read. Command errors: none.",
+    "Historical source R3/R5 attribution is source-only and same-context within that historical review; it is not this actual fresh verdict."
+  ]
+}

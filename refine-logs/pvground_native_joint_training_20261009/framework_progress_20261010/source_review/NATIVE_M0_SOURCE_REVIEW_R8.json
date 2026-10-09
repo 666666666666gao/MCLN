@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "round": "R8",
+  "created_at": "2026-10-10T01:44:18.384557+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "FAIL",
+  "preflight_minimal_correction_verdict": "PASS",
+  "launcher_source_verdict": "FAIL",
+  "blocking_findings": [
+    {
+      "id": "B8.1",
+      "severity": "BLOCKING",
+      "status": "OPEN",
+      "category": "bound_remote_Python_standard_library_mismatch",
+      "file": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\launch_authorized.py",
+      "lines": [
+        66,
+        69
+      ],
+      "embedded_code_lines": [
+        38,
+        41
+      ],
+      "title": "New remote code calls shlex.join under the unchanged Python 3.7 warm environment",
+      "evidence": [
+        "R5 sealed actual importlib traceback path contains lib/python3.7",
+        "Unchanged source port binds cpython-37m extension and same environment SHA",
+        "shlex.join added in Python 3.8 per official documentation",
+        "Both calls execute inside the remote code, not local Python"
+      ],
+      "source": "https://docs.python.org/3/library/shlex.html#shlex.join",
+      "predicted_effect": "AttributeError before screen/controller start, after new output directory/helper/admission writes",
+      "actual_second_attempt_failure_observed": false,
+      "minimal_correction": "Replace only the two embedded remote shlex.join calls with explicit space-join of shlex.quote on the corresponding argv; no fallback or environment change"
+    }
+  ],
+  "task": "/root/pvg_native_joint_source_20261009",
+  "original_review_fresh_context": true,
+  "fresh_context": false,
+  "same_original_review_task": true,
+  "new_independent_review": false,
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "actual_route": "UNATTESTED",
+  "review_family": "same-family",
+  "assurance": "provisional",
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_joint_preflight.py": "bb0c738366cea59c1091ed725432f81ffb64836b824c976750cbf7432752b87d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_controller.py": "ab22a78a31884e86905d6a79e18816969bcffa56e0b6f6fef13c3c73f49513e0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\NORMAL_NATIVE_RUN_PROTOCOL.json": "e0ae1f2b333ce2e43282b846dfed27b26b17333ef2b1f44fce662c491a1a6b95",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\SOURCE_MANIFEST.json": "becb34f349cd368493b3aa1953a247aa3beca4a4c9b73414c3589c09210fa174",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\launch_authorized.py": "54a3d4c2d7cd05ebe1c747c2eeb26e966fb6fee700b51bd21d62c7daa6949052",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\observe_authorized.py": "398ff13e318e6d39a1eb4e29c876807a15a46cf6d96aa65c724c0bd26bc85d56",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_failed_attempt1\\INTAKE.json": "6b89ea3cce52db9158865a8d0c0bb717d24be5bbf6254dbd3034eb38b8276f67",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_failed_attempt1\\native_joint_preflight.py": "0e7f1742f9da5dc5a8a024f11edfe7a5c516f4c0ffba459f03343268e86365d3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_failed_attempt1\\whole_support.log": "a33d0ea9219d801ad45377024d815d53bafcdc6db8d036d11c6a531ad58a380d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\NATIVE_PREFLIGHT_WAIT.json": "fa37445e1ac4689e4c5e2f0d43d0e6f41643db0b1f16855f2a9d64fccaea0405",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\NATIVE_SOURCE_PORT.json": "7f5f72c13c90f88fe56712259ea222bdfb7068c4631bb04d7fa3bfb5fd219173",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\NATIVE_M0_SOURCE_REVIEW_R5.json": "8199636511b1e61e99c1226a21c55d852d52aba049413a0094b04c9ecd77c8b0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\NATIVE_M0_SOURCE_REVIEW_R5.seal.json": "0d54ad9ee7c059f13d1238313c87e9469c92317d9126f7f057eda651cfd59f7d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\NATIVE_NORMAL_LAUNCH_SOURCE_REVIEW_R7.json": "88c1a4dfae16c688e51472c1c9ff90988cfa2b3904d45d084577cb33c55b5131",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\NATIVE_NORMAL_LAUNCH_SOURCE_REVIEW_R7.seal.json": "d7846be40c039bdd90dd76dc02041d9b6d3859dd5aae6740baf4a5e055528754",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\train_dist_mod.py": "cc72ce5ae017c65f47e4f7a8243b488ac14695bd431a9f0b6feac7803ab1adf5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r5_native_m0_snapshots\\011_NATIVE_RUNTIME_IMPORTS_CPU.json": "52fedc130709d38727c5bb1848c70ea3a80138928105087acc7f28c612c016a3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\r5_native_m0_snapshots\\026_NATIVE_RUNTIME_IMPORTS_CPU_STDERR.txt": "4da2e92a030b39bf55e2e389075252817bc93c74d2d8b43db508c07cb1cae223"
+  },
+  "reviewed_input_count": 31,
+  "attempt2_six_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_joint_preflight.py": "bb0c738366cea59c1091ed725432f81ffb64836b824c976750cbf7432752b87d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_controller.py": "ab22a78a31884e86905d6a79e18816969bcffa56e0b6f6fef13c3c73f49513e0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\NORMAL_NATIVE_RUN_PROTOCOL.json": "e0ae1f2b333ce2e43282b846dfed27b26b17333ef2b1f44fce662c491a1a6b95",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\SOURCE_MANIFEST.json": "becb34f349cd368493b3aa1953a247aa3beca4a4c9b73414c3589c09210fa174",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\launch_authorized.py": "54a3d4c2d7cd05ebe1c747c2eeb26e966fb6fee700b51bd21d62c7daa6949052",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\observe_authorized.py": "398ff13e318e6d39a1eb4e29c876807a15a46cf6d96aa65c724c0bd26bc85d56"
+  },
+  "source_files": {
+    "extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "models/losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "train_dist_mod.py": "cc72ce5ae017c65f47e4f7a8243b488ac14695bd431a9f0b6feac7803ab1adf5"
+  },
+  "all_14_computational_sources_unchanged_from_R7": true,
+  "source_port_sha256": "7f5f72c13c90f88fe56712259ea222bdfb7068c4631bb04d7fa3bfb5fd219173",
+  "source_port_file_count": 116,
+  "source_port_manifest_unchanged": true,
+  "remote_116_file_hashes_not_executed": true,
+  "R5": {
+    "seal_sha256": "0d54ad9ee7c059f13d1238313c87e9469c92317d9126f7f057eda651cfd59f7d",
+    "artifact_count": 69,
+    "artifact_drift": []
+  },
+  "R7": {
+    "seal_sha256": "d7846be40c039bdd90dd76dc02041d9b6d3859dd5aae6740baf4a5e055528754",
+    "artifact_count": 42,
+    "artifact_drift": []
+  },
+  "static_checks": {
+    "R5_all_69_sealed_artifacts_preserved": true,
+    "R7_all_42_sealed_artifacts_preserved": true,
+    "failed_preflight_matches_R5_sealed_source": true,
+    "failure_source_and_log_match_INTAKE": true,
+    "original_failure_closed_exit1_and_not_promoted": true,
+    "exact_preflight_diff_only_diagnostic_and_span_aggregate": true,
+    "core_backbone_support_still_positive_every_step": true,
+    "span_output_aggregate_positive_without_missing_value_fallback": true,
+    "finite_gradient_and_loss_checks_preserved": true,
+    "four_groups_actual_parameter_update_assertion_unchanged": true,
+    "full_checkpoint_and_all_recovery_assertions_unchanged": true,
+    "diagnostic_after_actual_update_collection_before_acceptance": true,
+    "raw_gate_fields_separate_negative_and_zero_without_new_forward": true,
+    "diagnostic_raw_gate_producer_exists_in_unchanged_model": true,
+    "all_four_Python_sources_and_two_embedded_scripts_parse_Python37": true,
+    "all_three_helper_hashes_and_sizes_match_manifest": true,
+    "controller_protocol_unchanged_from_R5": true,
+    "observer_unchanged_from_R7": true,
+    "all_14_computational_sources_unchanged": true,
+    "source_port_116_file_manifest_unchanged": true,
+    "protocol_binds_same_source_port_and_model": true,
+    "launcher_checks_reviewed_three_helper_and_self_bytes": true,
+    "remote_root_exact_new_parent_resolved": true,
+    "old_failure_remote_exit_and_dead_PID_checked": true,
+    "remote_116_source_and_both_modes_three_weight_SHA_checks_present": true,
+    "reserve_matches_R5_and_precedes_root_creation": true,
+    "one_idle_A100_40GB_checked_before_creation": true,
+    "flock_wraps_controller_in_independent_screen": true,
+    "controller_only_serial_engineering_modes_no_normal_auto_start": true,
+    "observer_uses_attempt_local_launch_PID_argv_and_240s": true,
+    "bound_warm_Python37_evidence_present": true,
+    "remote_standard_library_calls_supported_by_bound_Python37": false,
+    "all_six_attempt2_resolved_D_paths_and_bare_SHA": true
+  },
+  "static_check_count": 33,
+  "static_checks_passed": 32,
+  "static_failed_checks": [
+    "remote_standard_library_calls_supported_by_bound_Python37"
+  ],
+  "exact_preflight_diff_verified": true,
+  "gradient_rule": {
+    "span_output": "sum of two per-step norms > 0",
+    "backbone_core_support": "each step > 0",
+    "finite_gradient_hook_unchanged": true,
+    "four_group_actual_update_assertion_unchanged": true,
+    "full_checkpoint_recovery_assertions_unchanged": true
+  },
+  "diagnostic": {
+    "path": "NATIVE_M0_TRAINING_DIAGNOSTIC.json",
+    "write_order": "after actual two-step loop and parameter deltas; before post-training gradient/update acceptance",
+    "contains": [
+      "gradient_norms",
+      "updates",
+      "losses",
+      "raw gate min/max",
+      "raw<0 count",
+      "raw==0 count",
+      "raw>1 count",
+      "element count"
+    ],
+    "producer": "models/pv_ground.py:612",
+    "new_neural_forwards": 0,
+    "formal_accuracy": null
+  },
+  "prior_failure": {
+    "intake_sha256": "6b89ea3cce52db9158865a8d0c0bb717d24be5bbf6254dbd3034eb38b8276f67",
+    "wait_sha256": "fa37445e1ac4689e4c5e2f0d43d0e6f41643db0b1f16855f2a9d64fccaea0405",
+    "controller_exit": 1,
+    "observer_closed": true,
+    "specific_zero_group_unknown": true,
+    "post_assert_update_and_recovery_not_completed": true,
+    "intake_new_neural_calls_is_collection_scope": true,
+    "normal_training_started": false
+  },
+  "launch_source_contract": {
+    "remote_root": "/root/autodl-tmp/pvground_native_joint_training_20261009/preflight_attempt2",
+    "exact_root_new_directory_resolved_parent": true,
+    "prior_actual_M0_exit_required": 1,
+    "prior_PID_absent_required": true,
+    "reviewed_helper_count": 3,
+    "reviewed_launcher_self_hash_required": true,
+    "both_mode_three_parent_payload_SHA_required": true,
+    "reserve_bytes": 2605151860,
+    "single_idle_A100_40GB_required": true,
+    "lock": "existing warm environment nonblocking flock",
+    "original_span_closed_fields": "inherited historical evidence; not a fresh original-span process query",
+    "controller_only_engineering_modes": true,
+    "normal_training_auto_start": false,
+    "observer_interval_seconds": 240
+  },
+  "deferred_scope": [
+    "attempt2 collect/retire/normal launcher path binding R9 files",
+    "actual successful receipts; none fabricated"
+  ],
+  "pending": [
+    "B8.1 minimal remote API correction and R8.1 sealed verification",
+    "Actual second GPU M0 and diagnostics",
+    "Actual two-mode parameter updates and full checkpoint recovery",
+    "Current remote source/weights/GPU/lock/storage admission",
+    "Actual successful receipt review and later normal-training path binding",
+    "Normal training and formal results"
+  ],
+  "actual_attempt2_launched_by_reviewer": false,
+  "actual_attempt2_GPU_preflight": false,
+  "actual_M0_pass": false,
+  "actual_checkpoint_save_restore": false,
+  "actual_normal_training": false,
+  "actual_accuracy": false,
+  "reviewer_SSH": false,
+  "reviewer_GPU_query": false,
+  "reviewer_Torch_or_model_import": false,
+  "reviewer_checkpoint_load": false,
+  "reviewer_AUTH_credentials_private_askpass_known_hosts_read": false,
+  "reviewer_global_MEMORY_read": false,
+  "reviewer_get_goal": false,
+  "implementation_changed_by_reviewer": false,
+  "native_tool_failures": [
+    {
+      "chunk_id": "2fcf05",
+      "exit_code": 1,
+      "reason": "Reviewer reader used R7-style artifacts field on R5 artifact_hashes schema; corrected reader after inspecting schema; no implementation change"
+    }
+  ],
+  "web_reference_attempts": [
+    {
+      "url": "https://docs.python.org/3.8/library/shlex.html",
+      "status": "tool inaccessible"
+    },
+    {
+      "url": "https://docs.python.org/3/library/shlex.html",
+      "status": "read official version annotation; short excerpt retained"
+    }
+  ],
+  "trace_notes": [
+    "Native tool receipts are full returned outputs. External Python documentation evidence is an explicitly bounded excerpt, not a complete-page snapshot.",
+    "Only 14 computational file identities and the required raw gate producer were checked; no broad semantic re-review of 116 source files."
+  ],
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\.aris\\traces\\experiment-audit\\2026-10-10_native_m0_r8",
+  "raw_review_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\RAW_REVIEW_R8.md",
+  "raw_response_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\RAW_RESPONSE_R8.md",
+  "seal_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\source_review\\NATIVE_M0_SOURCE_REVIEW_R8.seal.json"
+}

@@ -1,0 +1,29 @@
+[32m[10/10 01:48:17 whole_support]: [0mFull config saved to /root/autodl-tmp/pvground_native_joint_training_20261009/preflight_attempt2/whole_support/scanrefer/engineering_two_batch_preflight/1791568097/config.json
+[32m[10/10 01:48:17 whole_support]: [0m{'native_init_spec': '/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/init_manifests/whole_support.json', 'lr_modules': 1e-05, 'num_target': 256, 'sampling': 'kps', 'num_encoder_layers': 3, 'num_decoder_layers': 6, 'self_position_embedding': 'loc_learned', 'self_attend': True, 'model': 'PVGround', 'query_points_obj_topk': 4, 'use_contrastive_align': True, 'use_soft_token_loss': True, 'detect_intermediate': False, 'joint_det': False, 'batch_size': 8, 'dataset': ['scanrefer'], 'test_dataset': 'scanrefer', 'data_root': '/root/autodl-tmp/DATA_ROOT_mcln_meshsp/', 'use_height': False, 'use_color': True, 'use_multiview': False, 'wo_obj_name': 'None', 'butd': True, 'butd_gt': False, 'butd_cls': False, 'augment_det': False, 'num_workers': 4, 'start_epoch': 1, 'max_epoch': 3, 'optimizer': 'adamW', 'weight_decay': 0.0005, 'lr': 1e-06, 'lr_backbone': 1e-06, 'text_encoder_lr': 1e-05, 'lr_scheduler': 'step', 'lr_decay_epochs': [280, 340], 'lr_decay_rate': 0.1, 'clip_norm': 0.1, 'bn_momentum': 0.1, 'syncbn': False, 'warmup_epoch': -1, 'warmup_multiplier': 100, 'frozen': False, 'small_lr': False, 'checkpoint_path': None, 'log_dir': '/root/autodl-tmp/pvground_native_joint_training_20261009/preflight_attempt2/whole_support/scanrefer/engineering_two_batch_preflight/1791568097', 'exp': 'engineering_two_batch_preflight', 'print_freq': 1, 'save_freq': 10, 'val_freq': 1, 'local_rank': 0, 'ap_iou_thresholds': [0.25, 0.5], 'rng_seed': 2027, 'debug': False, 'eval': False, 'eval_train': False, 'pp_checkpoint': None, 'reduce_lr': False}
+Loading datasets: ['scanrefer']
+Loading train files, take a breath!
+Begin text decoupling......
+End text decoupling!
+Loading val files, take a breath!
+Begin text decoupling......
+End text decoupling!
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.decoder.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+  0%|          | 0/2 [00:00<?, ?it/s][32m[10/10 01:57:43 whole_support]: [0mTrain: [1][1/2]  
+[32m[10/10 01:57:43 whole_support]: [0madaptive_weight_loss_dice 0.1554 	adaptive_weight_loss_mask 0.0055 	corresponding_loss_dice 0.0980 	corresponding_loss_mask 0.0027 	loss 14.5394 	loss_bbox 1.0849 	loss_ce 41.2589 	loss_dice 0.1394 	loss_giou 2.4322 	loss_mask 0.0048 	loss_sem_align 108.7911 	query_points_generation_loss 0.0000 	selected_query_mask_extra_loss 0.2670 	sp_loss_dice 0.1687 	sp_loss_mask 0.0057 	
+ 50%|#####     | 1/2 [00:21<00:21, 21.45s/it][32m[10/10 01:57:46 whole_support]: [0mTrain: [1][2/2]  
+[32m[10/10 01:57:46 whole_support]: [0madaptive_weight_loss_dice 0.1284 	adaptive_weight_loss_mask 0.0040 	corresponding_loss_dice 0.1769 	corresponding_loss_mask 0.0052 	loss 14.9367 	loss_bbox 1.0908 	loss_ce 39.4563 	loss_dice 0.2150 	loss_giou 2.2776 	loss_mask 0.0059 	loss_sem_align 106.1651 	query_points_generation_loss 0.0000 	selected_query_mask_extra_loss 0.6626 	sp_loss_dice 0.1353 	sp_loss_mask 0.0041 	
+100%|##########| 2/2 [00:24<00:00, 10.87s/it]100%|##########| 2/2 [00:24<00:00, 12.46s/it]
+Saved complete native checkpoint /root/autodl-tmp/pvground_native_joint_training_20261009/preflight_attempt2/whole_support/scanrefer/engineering_two_batch_preflight/1791568097/best.pth
+Some weights of the model checkpoint at /root/autodl-tmp/DATA_ROOT_mcln_meshsp/roberta-base/ were not used when initializing RobertaModel: ['lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.weight', 'lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.decoder.weight']
+- This IS expected if you are initializing RobertaModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing RobertaModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Traceback (most recent call last):
+  File "/root/autodl-tmp/pvground_native_joint_training_20261009/preflight_attempt2/native_joint_preflight.py", line 199, in <module>
+    restored_model = tester.get_model(args)  # Architecture only, never reloads official/G/support weights.
+  File "/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/train_dist_mod.py", line 128, in get_model
+    return configure_native_model(model, args.native_init_spec, initialize_weights=not bool(args.checkpoint_path))
+  File "/root/autodl-tmp/pvground_native_joint_training_20261009/PV-Ground/native_model_initialization.py", line 28, in configure_native_model
+    assert len(model.state_dict()) == 1234
+AssertionError

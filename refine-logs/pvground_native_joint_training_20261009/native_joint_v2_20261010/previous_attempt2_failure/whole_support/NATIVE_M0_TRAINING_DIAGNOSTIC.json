@@ -1,0 +1,79 @@
+{
+  "status": "TWO_ACTUAL_NATIVE_UPDATES_BEFORE_ACCEPTANCE",
+  "source_mode": "whole_support",
+  "gradient_norms": [
+    {
+      "span_output": 0.4733645021915436,
+      "span_internal": 0.0,
+      "support_corrector": 0.10679778456687927,
+      "original_core_and_G_reader": 27.684396743774414,
+      "backbone": 1.4841099977493286
+    },
+    {
+      "span_output": 0.0,
+      "span_internal": 0.0,
+      "support_corrector": 0.640390932559967,
+      "original_core_and_G_reader": 106.83133697509766,
+      "backbone": 6.051445484161377
+    }
+  ],
+  "updates": {
+    "original_core_and_G_reader": {
+      "changed_parameters": 693,
+      "changed_elements": 22713723,
+      "maximum_change": 2.0265579223632812e-06
+    },
+    "backbone": {
+      "changed_parameters": 102,
+      "changed_elements": 3196685,
+      "maximum_change": 2.0265579223632812e-06
+    },
+    "support_corrector": {
+      "changed_parameters": 10,
+      "changed_elements": 27265,
+      "maximum_change": 1.9991770386695862e-05
+    },
+    "span_internal": {
+      "changed_parameters": 0,
+      "changed_elements": 0,
+      "maximum_change": 0.0
+    },
+    "span_output": {
+      "changed_parameters": 2,
+      "changed_elements": 33,
+      "maximum_change": 1.6700463675078936e-05
+    }
+  },
+  "losses": [
+    {
+      "step": 1,
+      "total_loss": 14.539384841918945,
+      "raw_gate_min": 0.0,
+      "raw_gate_max": 0.0,
+      "raw_gate_negative_count": 0,
+      "raw_gate_zero_count": 6144,
+      "raw_gate_above_one_count": 0,
+      "raw_gate_elements": 6144,
+      "g_reassigned_queries": 222,
+      "selected_query_mask_extra_rows": 6,
+      "selected_query_mask_extra_loss": 0.2669673562049866
+    },
+    {
+      "step": 2,
+      "total_loss": 15.334111213684082,
+      "raw_gate_min": -7.6505915785674e-05,
+      "raw_gate_max": -1.9640830942080356e-05,
+      "raw_gate_negative_count": 6144,
+      "raw_gate_zero_count": 0,
+      "raw_gate_above_one_count": 0,
+      "raw_gate_elements": 6144,
+      "g_reassigned_queries": 289,
+      "selected_query_mask_extra_rows": 8,
+      "selected_query_mask_extra_loss": 1.058288812637329
+    }
+  ],
+  "gradient_acceptance": "Core, backbone, support positive each step; clamped Span output positive across both steps",
+  "actual_updates": 2,
+  "formal_accuracy": null,
+  "normal_epoch_training_started": false
+}

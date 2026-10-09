@@ -1,0 +1,232 @@
+{
+  "schema": "SOURCE_ENGINEERING_REVIEW_V1",
+  "round": "native_joint_v2 R1",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "FAIL",
+  "time_cst": "2026-10-10T02:37:27.782614+08:00",
+  "blocking_findings": [
+    {
+      "id": "Bv2.1",
+      "status": "OPEN",
+      "category": "CONTROLLER_RECEIPT_FIELD_NOT_CHECKED",
+      "file": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\engineering_controller.py",
+      "line": 41,
+      "evidence": "receipt.get('new_optimizer_steps',2)==(0 if index==0 else 2) uses default 2 for extremal receipt, whose real field is actual_updates.",
+      "effect": "The controller's extremal update-count check is tautological for the emitted receipt. The helper still strictly checks two steps; this is a receipt-admission defect, not evidence of missing actual training.",
+      "minimal_correction": "Use the known stage to assert receipt['new_optimizer_steps']==0 for previous_whole_recovery and receipt['actual_updates']==2 for extremal_support, with no missing-field default."
+    },
+    {
+      "id": "Bv2.2",
+      "status": "OPEN",
+      "category": "REVIEW_TO_EXECUTION_MANIFEST_BINDING_INCOMPLETE",
+      "file": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\launch_engineering_authorized.py",
+      "line": 25,
+      "evidence": "The audited-input hash loop binds five uploaded files, itself, local train_dist_mod.py and local extremal spec, but omits NATIVE_SOURCE_PORT.json and VSA_CONFIGURATION_WITNESS.json.",
+      "effect": "The remote 116-file acceptance uses hashes supplied by the current unbound port, and local CPU eligibility uses the unbound witness. Current artifacts are consistent; actual drift is not alleged. Their identity is not enforced against the source review at launch.",
+      "minimal_correction": "Add root/'NATIVE_SOURCE_PORT.json' and root/'VSA_CONFIGURATION_WITNESS.json' to the existing audited_input_hashes comparison loop."
+    }
+  ],
+  "warnings": [
+    {
+      "id": "Wv2.1",
+      "category": "INITIALIZATION_RECEIPT_AMBIGUITY",
+      "file": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_joint_preflight.py",
+      "line": 242,
+      "evidence": "initial_span_zero=False is emitted without an assertion that initial predicted gates are nonzero. The formula and bounded-gate checks legitimately also accept all-zero predicted gates.",
+      "recommendation": "Describe retained-checkpoint initialization with its exact verified path/SHA rather than imply observed nonzero initial output; do not add a gate-nonzero requirement."
+    },
+    {
+      "id": "Wv2.2",
+      "category": "ACTUAL_GPU_ENGINEERING_PENDING",
+      "detail": "Whole cold GPU restoration, extremal retained-head initialization and two real native updates plus full recovery are not yet executed or accepted in this review. CPU VSA structure evidence is narrower."
+    },
+    {
+      "id": "Wv2.3",
+      "category": "ASYNC_LAUNCH_RECEIPT_LIMIT",
+      "detail": "Popen PID/poll reports launch handoff only, not lock acquisition or successful M0. flock --no-fork holds the declared lock for the controller; later actual status/receipts must determine completion. No relaunch is implied by pending or failed admission."
+    },
+    {
+      "id": "Wv2.4",
+      "category": "RESTORE_SCOPE_LIMIT",
+      "detail": "Exact serialized model/Adam/scheduler/four-RNG restoration does not establish end-to-end mid-epoch sampler reproduction or performance. New retained-head initialization is a separate budget/lineage change."
+    }
+  ],
+  "checks": [
+    {
+      "id": "C1",
+      "result": "PASS",
+      "detail": "Only import copy and per-call deepcopy differ in the 14 computational sources; model/loss/optimizer mathematics unchanged."
+    },
+    {
+      "id": "C2",
+      "result": "PASS",
+      "detail": "Whole tester is initialized with a new log directory before args.checkpoint_path is assigned; no train_one_epoch, forward, optimizer.step, or checkpoint save in recovery helper. Original failure directory is only read."
+    },
+    {
+      "id": "C3",
+      "result": "PASS",
+      "detail": "Whole checkpoint size/SHA are verified before torch.load; original 1295 tensors, architecture strict loading, Adam tensor/non-tensor fields and param groups, scheduler, epoch and Python/NumPy/Torch/all-CUDA RNG comparisons retained."
+    },
+    {
+      "id": "C4",
+      "result": "PASS",
+      "detail": "Whole spec retained in the 116-file deployed port matches original; actual source counts 1234/1271/1295 remain in initializer."
+    },
+    {
+      "id": "C5",
+      "result": "PASS",
+      "detail": "Ext initial initializer verifies official/G/support/span SHA, source_mode and support parent then strict mixer load; fresh optimizer, two actual normal-trainer batches, no old whole state input."
+    },
+    {
+      "id": "C6",
+      "result": "PASS",
+      "detail": "Ext initial checks use bounded finite gate and exact original center/size mixing formula instead of neutral output; shape and positive size checks retained."
+    },
+    {
+      "id": "C7",
+      "result": "PASS",
+      "detail": "Before acceptance the helper writes real loss/gate/gradient/update diagnostics; core/backbone/support per-step gradients remain, output/internal aggregate gradients and actual updates required."
+    },
+    {
+      "id": "C8",
+      "result": "PASS",
+      "detail": "Ext full checkpoint save and strict full model/Adam/scheduler/four-RNG recovery assertion block unchanged byte-for-byte."
+    },
+    {
+      "id": "C9",
+      "result": "PASS",
+      "detail": "Controller runs previous_whole_recovery then extremal_support serially, one CUDA device/rank, new-source-first PYTHONPATH and warm environment SHA. No normal training or cleanup stage."
+    },
+    {
+      "id": "C10",
+      "result": "PASS",
+      "detail": "Remote launcher fixes independent v2 root, checks 116 current file hashes, four parent checkpoint hashes, one idle A100 and 846014332+67108864 free bytes; writes helpers only into a fresh engineering directory."
+    },
+    {
+      "id": "C11",
+      "result": "PASS",
+      "detail": "Remote uses direct flock --no-fork and Popen PID, stdin DEVNULL/stdout file/new session; no screen/pgrep admission race. No remote shlex.join; Python 3.7 AST syntax checks passed."
+    },
+    {
+      "id": "C12",
+      "result": "PASS",
+      "detail": "Actual CPU receipt reports shared VSA state layouts 126 then 186; copied layouts 126/126 equal first; exit 0, no CUDA initialization or forward. This review performs no neural execution."
+    },
+    {
+      "id": "C13",
+      "result": "FAIL",
+      "finding": "Bv2.1"
+    },
+    {
+      "id": "C14",
+      "result": "FAIL",
+      "finding": "Bv2.2"
+    }
+  ],
+  "verification": {
+    "cpu_witness_counts": {
+      "shared_first_state": 126,
+      "shared_second_state": 186,
+      "copied_first_state": 126,
+      "copied_second_state": 126
+    },
+    "cpu_witness_copied_layouts_equal": true,
+    "cpu_deploy_exit": 0,
+    "cuda_initialized": false,
+    "neural_forwards": 0,
+    "full_model_recovery_verified": false,
+    "original_computational_source_count": 14,
+    "changed_computational_sources": [
+      "train_dist_mod.py"
+    ],
+    "recovery_assertion_tail_exact_for_both": true,
+    "python37_ast_syntax_passed": true,
+    "port_file_count": 116,
+    "current_port_trainer_and_both_specs_match": true,
+    "previous_checkpoint_identity": {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261009/preflight_attempt2/whole_support/scanrefer/engineering_two_batch_preflight/1791568097/best.pth",
+      "bytes": 841675936,
+      "sha256": "588cb2100985ab27baea57592b5d4b3470e857a34972401891b5620fec8b5b6b"
+    }
+  },
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\prepare_native_v2_engineering.py": "737022035cf6bedcd47fc03e31e6d05fba9d97d4dc027bd3982f73add206b5e3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\prepare_native_v2.py": "a1c754300249b3bd9899445cc2df653fc293d14758a41b4b3e8842fd64c4b1ea",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_vsa_configuration_witness.py": "e89264225d966a5e867ecd69febc1140eeb4b0a94eb7207a781ad15fd8ed646a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\deploy_native_v2_cpu_witness_authorized.py": "3b6e3b2dba3394b8591431fc911c94221453b300b8eca0a81df59c031fdb81e6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\launch_engineering_authorized.py": "2ae3759fa0a665484486a840e3bdeb8fc45ae1b6a052210982990435eed4b3ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\engineering_controller.py": "f99d3f520cc317aa66cb33b7ed46c3229eb7698b5e2a54a8752b123f16189049",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_joint_preflight.py": "cefc34b99231e0d6dad4a01f6431a5f7192a039bb7e95fcc5e221d83e05ca76b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\recover_previous_whole.py": "cd92d22c4af347731b1e808e8976cfd08368bb101165affc85d68d48f2494ef0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NORMAL_NATIVE_RUN_PROTOCOL.json": "c41ce21dc0f3cd94947b24fb8f77ec2de9a2091389d11c49672fac434cb95150",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\PREVIOUS_ENGINEERING_CHECKPOINT.json": "dffbf4b2e730b35a4d96a07a81ed00012b615edf5bee63267a8bc10ada9c111c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\PREPARATION.json": "d6f74fdcaf456309f83fb2707678678a262355e17e0efc872f7eebc2c6ccc401",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_PREPARATION.json": "c5c84488d8bbf06efbe511523e87eb6da85bf6d066a3fe42858dd403b3add6a2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\init_manifests\\extremal_support.json": "3a01b645d1d8716af9e4250514c8bfe7dabc29b55b1a3cc364890cb9e61334b6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NATIVE_SOURCE_PORT.json": "8f9020f8be4864e31e602e2044fc8e04d49297b163f5037dbc019964b47a140b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\VSA_CONFIGURATION_WITNESS.json": "c5f92e0bb276cde72250e98963752bf4e3c3686c47461703dc1b0179ec2e26c9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\CPU_DEPLOY_EXIT.json": "302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\CPU_DEPLOY_STDERR.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\CPU_DEPLOY_STDOUT.json": "09018c2305b6b54e28bef82964968737e6a04e964fb3933c2aae39e1ef3168fa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\init_manifests\\whole_support.json": "20acde2db7c25a1efc1962b4948a41dbf8ea549db37a9c7139d4c0dd6e0c666b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\SPAN_BEST_RETENTION_DECISION.json": "5d18c57c584d7e687133ad6edb3b14669ae2d6eeef49dc0290d974a943c3698c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\NATIVE_SOURCE_PORT.json": "7f5f72c13c90f88fe56712259ea222bdfb7068c4631bb04d7fa3bfb5fd219173",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\NORMAL_NATIVE_RUN_PROTOCOL.json": "e0ae1f2b333ce2e43282b846dfed27b26b17333ef2b1f44fce662c491a1a6b95",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_joint_preflight.py": "bb0c738366cea59c1091ed725432f81ffb64836b824c976750cbf7432752b87d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_failed_attempt2\\INTAKE.json": "a0dd6e0f680b8e0f21c6a1537e1cbc1fd45424401241cb4546d5015f7a44ba30",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_failed_attempt2\\whole_support\\NATIVE_M0_TRAINING_DIAGNOSTIC.json": "50d21edfe3cdf0f5bf6f2c71174d7fa84584f4d5a0be9925c45286a2afcf3b5d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\train_dist_mod.py": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\train_dist_mod.py": "cc72ce5ae017c65f47e4f7a8243b488ac14695bd431a9f0b6feac7803ab1adf5"
+  },
+  "review_attribution": {
+    "original_fresh_context": true,
+    "current_continuation_is_fresh": false,
+    "task": "/root/pvg_native_joint_source_20261009",
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_model": "UNATTESTED",
+    "actual_reasoning_effort": "UNATTESTED",
+    "actual_route": "UNATTESTED",
+    "review_independence": "same-family",
+    "confidence_qualification": "provisional"
+  },
+  "restrictions": [
+    "No SSH",
+    "No Torch/model imports or construction",
+    "No GPU calls",
+    "No launchers executed",
+    "No checkpoint/pickle loading",
+    "No credentials/AUTH/private askpass/known-host reads",
+    "No computational source edits"
+  ],
+  "actual_gpu_engineering_passed": false,
+  "normal_training_started": false,
+  "performance_result": false,
+  "original_failure_evidence_modified": false
+}

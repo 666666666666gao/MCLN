@@ -1,0 +1,138 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "review_round": "R1",
+  "verdict": "WARN",
+  "blocking_findings": [],
+  "non_blocking_findings": [
+    {
+      "id": "W1",
+      "severity": "medium",
+      "blocking": false,
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_source\\analyze_selected_pair.py",
+      "line": 138,
+      "title": "qualified_but_unselected mixes CPU oracle qualification with native selected qualification",
+      "evidence": "coverage/any() comes from recomputed float32 CPU IoU (primary), while selected failure comes from the saved native GPU IoU. The field is emitted as qualified_but_unselected at line 157. Lines 134-135 already recognize that these predicates may differ.",
+      "consequence": "When CPU selected IoU passes a threshold and its saved native IoU does not, this formula can count that selected query as evidence of an unselected qualifying candidate. The reverse disagreement can hide a CPU selection failure. Native primary hit counts, repairs/damages, and the transfer are unaffected.",
+      "minimal_correction": "Report native unselected coverage from the saved native full256 oracle label together with the saved native selected IoU. Separately report CPU unselected coverage using primary.any(...) together with chosen. Keep the existing CPU/native threshold and oracle mismatch counts. Do not add a tolerance, fallback, or rerun.",
+      "limitation": "No actual completed artifacts were examined; this is a source-level inconsistency, not a claim that this run exhibits a threshold flip.",
+      "disposition": "Non-blocking for collection and native metric recount; correct the diagnostic before using it to claim a selection bottleneck."
+    }
+  ],
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewed_at_utc": "2026-10-09T04:57:47.452Z",
+  "reviewed_files": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_source\\collect_closed_pair_authorized.py",
+      "sha256": "cc1cd9a783bcf42cae30b69ff1875e3006d5a2e122d68181ea30140149f3b683"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\postrun_source\\analyze_selected_pair.py",
+      "sha256": "067832af16755860d6b9e1a57fff8de41e0e11b7d323286b11dd6583cbb18015"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\pair_spec.json",
+      "sha256": "fcdccf7dc1694a266927552057268f9b5d7c90593e23fce37a545a92d45d4a56"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\paired_support_loop.py",
+      "sha256": "3d5ce836c19eb90de6a69aa7c2e0fbe27eeb3e731c2d211f0e69a64db8acd484"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\selected_query_mask_objective.py",
+      "sha256": "3d917a0ca8a14e11ae327875b65179cd0ea4df5de89fa12fc8debe831c3eb702"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\matched_mask_objective.py",
+      "sha256": "67d05d069e1b748477af1a3c84b586375effbc21f1fd99b328ec7029f7e17788"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\support_pair_forward.py",
+      "sha256": "74d0c3d2347aabf7087be42e1de4f9a32ffcba8d65b51f831106813cffa8ac9a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\run_mask_support_pair.py",
+      "sha256": "51413967adca1a644731040565f312856f5854ca85f881c23791bca20b1ab69a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\controller.py",
+      "sha256": "d9a944cc721332b0b46ff71eee1c8fe6a330146d4b6e499c26fa0bb12d09d360"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_selected_mask_training_20261009\\observe_fit_authorized.py",
+      "sha256": "42c731e7de9f720115f9ed97618703fa3e5b306b42ab231b2e6a7e2764437a70"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_compressed_geometry_support_20261008\\collect_closed_fit_authorized.py",
+      "sha256": "589e027aace699687439f7720a26c86d67592ff506fd656b1ff14aedda6d1ef5"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_compressed_geometry_support_20261008\\postrun\\analyze_compressed_geometry_formal.py",
+      "sha256": "ae5c1e38948409f62ac36c9589d36c41258c207b881f6fc19d6e86eba5fa7d3d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\experiment-bridge\\SKILL.md",
+      "sha256": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md",
+      "sha256": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783"
+    }
+  ],
+  "source_edits_performed": false,
+  "actual_artifacts_inspected": false,
+  "ssh_or_network_actions_performed": false,
+  "gpu_or_nn_execution_performed": false,
+  "pickle_or_checkpoint_loading_performed": false,
+  "authentication_or_memory_files_read": false,
+  "installations_performed": false,
+  "collector_conclusion": "Source is correct for the authorized closed-fit transfer. It checks local observer closure and original exit/status, repeats remote exit/status checks, streams every generated non-.pt/non-.tmp file including exactly content/terminal.pth and selected_query/terminal.pth, verifies sizes and SHA256 before intake completion, and performs no replay, deletion, or promotion.",
+  "analyzer_conclusion": "Native full9508 terminal metric recount is source-consistent with its producer. One candidate-selection diagnostic mixes execution precisions (W1). No other concrete source defects found.",
+  "confirmed_behaviors": [
+    "Analyzer accepts the actual completed directory via --actual, verifies every intake file before reading result semantics, requires successful controller closure and unique output, and never imports torch or loads checkpoints.",
+    "Only formal full9508 terminal results are analyzed. The controller source runs train then formal, with no new initial-formal or 6887-row accuracy pass.",
+    "Training recount requires all 3723 step numbers, exact batch sizes, and exactly the 29778 original fit IDs once, compared to the supplied split protocol.",
+    "Producer creates two independent parameter copies and separate fresh AdamW optimizers; both consume one frozen parent forward per batch and the same frozen matcher assignment.",
+    "The shared native matched loss retains its valid-GT-count denominator. Treatment adds only a selected unmatched Query root-Mask term averaged across the batch, with coefficients [5,1,10,2].",
+    "actual_gt_ids in the stored assignment are filtered target indices. Root is index 0 because the objective asserts the first valid dataset slot is 0; analyzer root/other/unmatched classification is consistent with that contract.",
+    "Every selected role and supervised flag is checked against the saved assignment; control expansion stays zero. Actual per-row losses remain in the collected train.jsonl; analyzer checks finite losses, gradient norms, and treatment total/native/extra decomposition.",
+    "Formal selected row boxes match the saved all256 box tensors; the saved selected Query attains the maximum native bbs score without imposing a CPU tie-break order.",
+    "The loop covers exactly 1189 formal batches and 9508 rows, all256 candidates for parent/content/selected_query, giving 7302144 float32 box IoU recomputations. Float64 calculations are secondary diagnostics.",
+    "Primary hits and repairs/damages use saved native IoUs and are reconciled against formal receipts. CPU/native selected threshold flips and full256 oracle disagreements remain explicit.",
+    "Protected historical 5599/4859 counts and row_id, scan_id, target_id, root_box, point_sha256 alignment are verified. The report distinguishes independent historical forward comparisons from the same-frame uncorrected Mask-reference parent.",
+    "Per-arm target success requires the same complete arm to reach both 5658 and 4850. Neither best weights nor goal/contribution completion is automatically promoted.",
+    "Saved GT provenance is explicitly limited to dataset root labels. Mask metrics are explicitly only a recount of stored point-mask IoUs.",
+    "Terminal bytes are SHA-checked against formal restore receipts, and recorded optimizer key/moment/step/group exactness is required; this is receipt verification, not a new optimizer or model replay."
+  ],
+  "checks": {
+    "static_source_inspection": "completed",
+    "existing_spec_hashes": "Read hashes for paired_support_loop.py, selected_query_mask_objective.py, matched_mask_objective.py, support_pair_forward.py, and run_mask_support_pair.py match the values already recorded in pair_spec.json.",
+    "optional_ast_only_check": {
+      "status": "UNAVAILABLE",
+      "command_kind": "stdlib ast.parse/compile only; no project import or execution",
+      "actual_output": "No pyvenv.cfg file",
+      "exit_code": 1,
+      "interpreter": "E:\\Scripts\\python.exe",
+      "interpretation": "The local interpreter could not start. No syntax-check pass is claimed; no interpreter installation or alternate backend was attempted."
+    },
+    "numeric_toy_checks": "not run",
+    "actual_training_metrics": "not inspected",
+    "terminal_restore": "source and receipt contract only; no payload loaded"
+  },
+  "execution_guidance": [
+    "Collection remains conditional on the actual original closed observer receipt and successful remote exit/status required by the collector.",
+    "Correct W1 before relying on qualified_but_unselected as a selection-bottleneck diagnostic. The parent has proposed the matching native/native and CPU/CPU split described above.",
+    "No change to the running fit, no new forward pass, and no automatic checkpoint promotion is warranted by this review."
+  ],
+  "limits": [
+    "Fresh same-family source review only, with requested Astra/max attribution and actual backend UNATTESTED.",
+    "No evidence is provided here about whether the still-running experiment completes, its actual hit counts, actual role frequencies, or actual floating-point discrepancies.",
+    "The reviewed producer uses dataset batch labels, but raw ScanNet labels were not reconstructed or independently read.",
+    "Summary JSON preserves role counts and eligibility; scalar and per-row training losses remain in the actual collected train.jsonl rather than being re-summarized into the report.",
+    "No proof of three effective contributions, author-initialized Nr/Sr results, or completion of the full research goal follows from this source review."
+  ]
+}

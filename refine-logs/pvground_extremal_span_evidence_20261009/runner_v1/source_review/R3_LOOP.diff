@@ -1,0 +1,11 @@
+--- R2/paired_span_loop.py
++++ R3/paired_span_loop.py
+@@ -90,7 +90,7 @@
+         scores = native_root_bbs(parent['last_sem_cls_scores'], batch)
+         records = []
+         for bid, (queries, gt_ids) in enumerate(indices):
+-            selected = int(scores[bid].argmax())
++            selected = int(scores[bid].argsort(descending=True)[0])
+             observed_queries = torch.unique(torch.cat([queries, queries.new_tensor([selected])]), sorted=True)
+             text, own, alpha = (parent['last_pred_masks'][bid][0],
+                                 parent['sp_last_pred_masks'][bid], parent['adaptive_weights'][bid])

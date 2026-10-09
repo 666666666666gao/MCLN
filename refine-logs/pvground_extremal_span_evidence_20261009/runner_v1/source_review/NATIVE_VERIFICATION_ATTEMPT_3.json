@@ -1,0 +1,11 @@
+{
+  "stage": "static_verification_attempt_3_same_discovered_python_isolated_stdlib",
+  "cmd": "& 'E:\\anaconda\\python.exe' -I -S -B 'C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\verify_static_r1.py'",
+  "result": {
+    "chunk_id": "b77cec",
+    "wall_time_seconds": 1.199309,
+    "exit_code": 1,
+    "original_token_count": 264,
+    "output": "Environment configured. Type 'openclaw' to start.\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\verify_static_r1.py\", line 100, in <module>\r\n    assert gates['span_controller.py']['line'] < calls(controller, 'subprocess.Popen')[0].lineno\r\n  File \"C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\verify_static_r1.py\", line 41, in calls\r\n    return [n for n in ast.walk(node) if isinstance(n, ast.Call) and fullname(n.func) == name]\r\n  File \"C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\verify_static_r1.py\", line 41, in <listcomp>\r\n    return [n for n in ast.walk(node) if isinstance(n, ast.Call) and fullname(n.func) == name]\r\n  File \"C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\verify_static_r1.py\", line 37, in fullname\r\n    return fullname(node.value) + '.' + node.attr\r\nTypeError: unsupported operand type(s) for +: 'NoneType' and 'str'\r\n"
+  }
+}

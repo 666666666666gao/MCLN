@@ -1,0 +1,194 @@
+{
+  "audit_skill": "experiment-audit",
+  "review_round": "R1",
+  "date": "2026-10-09",
+  "generated_at": "2026-10-09T07:11:21.413Z",
+  "agent_id": "/root/pvg_extremal_span_runner_source_20261009",
+  "verdict_id": "/root/pvg_extremal_span_runner_source_20261009@R1",
+  "requested_backend": "codex",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "overall_verdict": "WARN",
+  "verdict": "WARN",
+  "source_verdict": "PASS",
+  "verdict_scope": "STATIC_ONLY",
+  "reason_code": "core_source_contracts_consistent_runtime_and_full_m0_evidence_pending",
+  "blocking_findings": [],
+  "required_core_neural_source_changes": [],
+  "nonblocking_findings": [
+    {
+      "id": "W1_M0_EVIDENCE_COVERAGE",
+      "status": "WARN",
+      "evidence": [
+        "M0_AND_CONTROL_PLAN.md:17-28",
+        "METHOD_PROPOSAL.md:46",
+        "paired_span_loop.py:109-119",
+        "paired_span_loop.py:131-134",
+        "paired_span_loop.py:336-341",
+        "extremal_span_mixer.py:42-88"
+      ],
+      "details": "All gradient norms are recorded, but second-step positivity is gated only as an upstream aggregate; actual SP membership/mapping and extremal ties are not recorded. This does not establish every promised source-specific M0 witness.",
+      "minimal_action": "Before claiming the complete planned M0 witness, record actual membership/tie and fixture/GT identity evidence and inspect or gate the named upstream groups. No neural behavior change indicated.",
+      "gradient_gap_classification": "DEFERRED_RAW_RECORD_INTERPRETATION; named raw norms already permit actual group-wise audit; separate assertions are not mandatory",
+      "membership_gap_classification": "CONCRETE_M0_RECEIPT_OMISSION; source membership/mapping and ties are not persisted"
+    },
+    {
+      "id": "W2_STALE_PREPARATION_WORDING",
+      "status": "WARN",
+      "evidence": [
+        "METHOD_PROPOSAL.md:48",
+        "RUNNER_PREPARATION.json:2,24-32"
+      ],
+      "details": "Proposal predates prepared runner; preparation metadata is current. No runtime claim follows."
+    },
+    {
+      "id": "W3_DEPLOYMENT_AND_ACTUAL_TESTS_PENDING",
+      "status": "WARN",
+      "evidence": [
+        "pair_spec_template.json:58",
+        "run_span_pair.py:43",
+        "span_controller.py:18",
+        "paired_span_loop.py:146-150,236-237"
+      ],
+      "details": "Parent remains pending, no launcher or GPU admission reviewed; future provisioning must supply arm output directories. Actual M0, restoration, full fit/formal evaluation and retention decisions are unavailable."
+    }
+  ],
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "scope": "STATIC_ONLY",
+      "evaluation_type": "real_gt",
+      "details": "Native dataset GT and split/augmentation copied; shared frozen-parent assignment preserves valid GT instances; inference has no GT-derived boxes."
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "scope": "STATIC_ONLY",
+      "details": "Native bbs formula and same selected Query; unchanged scores/Masks; fixed-half prior control; no own-output metric normalization or sweep."
+    },
+    "C_result_existence": {
+      "status": "PASS",
+      "scope": "SOURCE_PREPARATION_ONLY",
+      "details": "11 sources/hash bindings and historical entry text reproduced. No new neural results claimed."
+    },
+    "D_dead_code_and_integration": {
+      "status": "WARN",
+      "scope": "STATIC_ONLY",
+      "details": "Core intended entry/train/restore/formal call paths wired; actual code unexecuted; M0 receipt coverage narrower than the full plan."
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "No actual B8/M0 or full9508 results. Launch/parent/resource/retention remain pending."
+    },
+    "F_evaluation_type": {
+      "status": "WARN",
+      "classification": "STATIC_ONLY_SOURCE_AUDIT",
+      "intended_model_evaluation": "real_gt",
+      "actual_model_evaluation": false
+    }
+  },
+  "verification": {
+    "file": "STATIC_VERIFICATION_R1.json",
+    "native_python": "3.7.6",
+    "interpreter": "E:\\anaconda\\python.exe",
+    "flags": [
+      "-I",
+      "-S",
+      "-B"
+    ],
+    "offline_uv_discovery": "SUCCESS",
+    "offline_uv_run": "FAILED_EXISTING_INVALID_PYODBC_METADATA",
+    "actual_successful_exit_code": 0,
+    "failed_invocations": 3,
+    "failures": [
+      "NATIVE_VERIFICATION_ATTEMPT_1.json",
+      "NATIVE_VERIFICATION_ATTEMPT_2.json",
+      "NATIVE_VERIFICATION_ATTEMPT_3.json"
+    ],
+    "failure_3_scope": "reviewer-only AST verifier bug; original source preserved",
+    "successful_invocation": "NATIVE_VERIFICATION_ATTEMPT_4.json",
+    "input_snapshot_hashes_matched": 38,
+    "runner_source_hashes_matched": 11,
+    "python_input_files_parsed": 23,
+    "AST_protocol_copied": [
+      "FitDataset",
+      "FormalDataset",
+      "loader",
+      "prepare",
+      "box_iou"
+    ],
+    "declared_trainable_parameters_per_arm": 29793,
+    "declared_state_tensors_per_arm": 14,
+    "native_dictionary_signatures_match": true,
+    "pending_parent_predicates_reject": true,
+    "historical_entry_nine_replacements_exact": true,
+    "current_entry_ten_replacements_exact": true
+  },
+  "actual_runner_present": true,
+  "actual_runner_deployed": false,
+  "parent_selection_finalized": false,
+  "actual_M0": "NOT_AVAILABLE",
+  "launch_approved": false,
+  "actual_model_builds": 0,
+  "actual_neural_forwards": 0,
+  "actual_optimizer_updates": 0,
+  "actual_serialization_or_restoration": false,
+  "actual_gradient_witness": false,
+  "actual_formal_rows": 0,
+  "new_weights": 0,
+  "packages_installed": 0,
+  "ssh_queries": 0,
+  "gpu_queries": 0,
+  "torch_imports": 0,
+  "project_module_imports": 0,
+  "credentials_read": false,
+  "main_memory_read": false,
+  "experiment_source_edits": 0,
+  "global_notes_written": false,
+  "input_hash_manifest": "INPUT_MANIFEST.json",
+  "source_snapshots": "snapshots",
+  "raw_report_path": "RAW_RESPONSE_R1.md",
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review",
+  "native_tool_receipts": "NATIVE_TOOL_RECEIPTS_R1.json",
+  "deferred_requirements": [
+    "prior pair actual closure and audits",
+    "retained complete parent decision/finalized bound spec",
+    "reviewed launcher and single-GPU exclusion",
+    "output arm directory provisioning",
+    "actual B8 two-step M0 with required source-specific evidence",
+    "actual composed1328 CPU state and CPU/GPU optimizer/RNG restoration",
+    "full one-pass29778 fit and9508 formal results",
+    "independent raw archive recount and end audits",
+    "consumer closure/recovery/retention decision"
+  ],
+  "claims": [
+    {
+      "claim": "prepared bound source",
+      "impact": "supported_static_only"
+    },
+    {
+      "claim": "actual M0 or deployment",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "accuracy or targets5658/4850",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "three effective contributions",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "launch authorization",
+      "impact": "not_approved"
+    }
+  ]
+}
+

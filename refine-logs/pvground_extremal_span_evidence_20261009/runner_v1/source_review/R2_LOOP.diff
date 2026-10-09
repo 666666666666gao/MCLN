@@ -1,0 +1,73 @@
+--- R1/paired_span_loop.py
++++ R2/paired_span_loop.py
+@@ -82,10 +82,52 @@
+                 assert torch.count_nonzero(value['span_axis_gate']) == 0
+         return parent, pair, call
+ 
++    def support_input_witness(self, parent, pair, inputs, batch, indices, targets):
++        """Record real input/member provenance; no prediction or target is changed."""
++        directory = self.output / ('preflight_support_step_%d' % (self.steps + 1))
++        directory.mkdir()
++        raw = inputs['points'][:, 1:].reshape(inputs['batch_size'], 50000, 6)
++        scores = native_root_bbs(parent['last_sem_cls_scores'], batch)
++        records = []
++        for bid, (queries, gt_ids) in enumerate(indices):
++            selected = int(scores[bid].argmax())
++            observed_queries = torch.unique(torch.cat([queries, queries.new_tensor([selected])]), sorted=True)
++            text, own, alpha = (parent['last_pred_masks'][bid][0],
++                                parent['sp_last_pred_masks'][bid], parent['adaptive_weights'][bid])
++            foreground = (alpha * text + (1 - alpha) * own).sigmoid() > .5
++            geometry = parent['support_member_geometry'][bid]
++            path = directory / ('row_%02d.npz' % bid)
++            actual_points = raw[bid].detach().cpu().numpy()
++            point_sha = hashlib.sha256(actual_points.tobytes()).hexdigest()
++            assert point_sha == hashlib.sha256(batch['point_clouds'][bid].cpu().numpy().tobytes()).hexdigest()
++            arrays = dict(raw_points=actual_points, superpoints=parent['superpoints'][bid].cpu().numpy(),
++                scores=scores[bid].cpu().numpy(), foreground_sp=foreground.cpu().numpy(),
++                reference_valid=parent['mask_reference_valid'][bid].cpu().numpy(),
++                observed_queries=observed_queries.cpu().numpy(),
++                observed_text_logits=text[observed_queries].cpu().numpy(),
++                observed_query_logits=own[observed_queries].cpu().numpy(), alpha=alpha.cpu().numpy(),
++                mask_center=parent['last_center'][bid].cpu().numpy(), mask_size=parent['last_pred_size'][bid].cpu().numpy(),
++                native_center=parent['native_coarse_center'][bid].cpu().numpy(), native_size=parent['native_coarse_size'][bid].cpu().numpy(),
++                matched_queries=queries.cpu().numpy(), matched_gt_ids=gt_ids.cpu().numpy(),
++                actual_gt_boxes=targets[bid]['boxes'].cpu().numpy(), actual_gt_masks=targets[bid]['masks'].cpu().numpy())
++            arrays.update({'member_' + name: np.asarray(value) for name, value in geometry.items()})
++            arrays.update({arm + '_source_fraction': pair[arm]['span_source_fraction'][bid].detach().cpu().numpy() for arm in ARMS})
++            np.savez_compressed(path, **arrays)
++            records.append(dict(row_id=int(batch['local_training_id'][bid]), bid=bid,
++                selected_query=selected, observed_queries=observed_queries.cpu().tolist(),
++                raw_points_sha256=point_sha, scene=batch['scan_ids'][bid], path=str(path),
++                bytes=path.stat().st_size, sha256=self.sha(path), candidate_count=256,
++                raw_logits_scope='native winner plus every original matched query; foreground/members cover all256',
++                gt_scope='actual dataset boxes/masks for provenance only; not an inference input'))
++        self.write_json(directory / 'receipt.json', dict(status='ACTUAL_SUPPORT_INPUTS_CAPTURED',
++            step=self.steps + 1, rows=records, neural_replays=0, targets_or_predictions_changed=False))
++        return records
++
+     def step(self, batch_cpu, criterion, preflight=False):
+         inputs, batch = self.prepare(batch_cpu, 'train')
+         parent, pair, call = self.forward_pair(inputs)
+         indices, targets = frozen_parent_assignments(parent, batch, criterion.matcher)
++        support_witness = self.support_input_witness(parent, pair, inputs, batch, indices, targets) if preflight else None
+         records = {}
+         for arm in ARMS:
+             other = ARMS[1 - ARMS.index(arm)]
+@@ -111,6 +153,9 @@
+                 upstream = sum(value for name, value in norms.items() if not name.startswith('output.'))
+                 assert upstream > 0 if self.steps else upstream == 0
+                 record.update(raw_parameter_gradient_norms=norms,
++                    upstream_group_grad_norms={group: sum(value for name, value in norms.items()
++                        if name.startswith(group + '.')) for group in
++                        ('query_projection', 'support_projection', 'face_encoder', 'axis_decoder')},
+                     neutral_same_forward_exact=self.steps == 0,
+                     axis_gate_min=float(pair[arm]['span_axis_gate'].min()),
+                     axis_gate_max=float(pair[arm]['span_axis_gate'].max()),
+@@ -131,6 +176,7 @@
+         return dict(step=self.steps, rows=batch['local_training_id'].cpu().tolist(), arms=records,
+             frozen_parent_forwards_per_batch=1, final_semantic_head_calls=call['final_semantic_head_calls'],
+             original_parent_assignment=[dict(queries=q.tolist(), actual_gt_ids=t.tolist()) for q, t in indices],
++            support_input_witness=support_witness,
+             expanded_positive_queries=0)
+ 
+     def payload(self, arm):

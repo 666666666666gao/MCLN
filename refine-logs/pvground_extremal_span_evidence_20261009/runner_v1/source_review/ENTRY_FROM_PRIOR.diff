@@ -1,0 +1,84 @@
+--- run_mask_support_pair.py
++++ run_span_pair.py
+@@ -1,4 +1,4 @@
+-"""Native Mask support correction, matched parent responsibility, one frozen PV."""
++"""Native geometry span control, original matched responsibility, one frozen PV."""
+ import argparse
+ from collections import Counter
+ import importlib.util
+@@ -31,15 +31,16 @@
+     begin = time.perf_counter()
+     parser = argparse.ArgumentParser()
+     parser.add_argument('--spec', type=Path, required=True)
+-    parser.add_argument('--mode', choices=['preflight', 'train', 'initial_formal', 'formal'], required=True)
++    parser.add_argument('--mode', choices=['preflight', 'train', 'formal'], required=True)
+     args = parser.parse_args()
+     spec = json.loads(args.spec.read_bytes())
+     output = Path(spec['root'])
+     runtime = Path(spec['runtime'])
+     assert spec['batch_size'] == 8 and spec['seed'] == 2027
+     assert spec['lr'] == 1e-5 and spec['weight_decay'] == .0005 and spec['clip_norm'] == .1
+-    assert spec['starting_hits']==[5599,4859] and spec['head_only']
+-    assert spec['support_modes'] == ['content', 'selected_query']
++    assert spec['candidate_gate_hits']==[5658,4850] and spec['head_only']
++    assert spec['support_modes'] == ['whole_support', 'extremal_support']
++    assert spec['parent_selection_status'] == 'FINALIZED_AFTER_PRIOR_PAIR_CLOSED'
+     assert spec['shared_frozen_parent_forward'] and spec['parent_and_box_head_frozen']
+     assert spec['reference_mode'] == 'fused_mask' and spec['mask_loss_coefficients'] == [5, 1, 10, 2]
+     for name, digest in spec['new_runner_files'].items():
+@@ -108,7 +109,7 @@
+     from prepare_data import DataProcessor
+     from pcdet.config import cfg, cfg_from_yaml_file
+     from mask_support_model_factory import build_support_model
+-    from paired_support_loop import PairedSupportRun
++    from paired_span_loop import PairedSpanRun
+     imported = {name: str(Path(sys.modules[name].__file__).resolve()) for name in
+         ('src.joint_det_dataset', 'models.pv_ground', 'models.losses', 'main_utils', 'prepare_data')}
+     for name in ('models.pv_ground', 'models.losses', 'main_utils', 'prepare_data'):
+@@ -120,8 +121,12 @@
+     assert selected_payload['reference_mode']=='fused_mask' and not selected_payload['optimizer']['state']
+     official_payload=torch.load(official_weight['path'],map_location='cpu')
+     g_payload=torch.load(spec['base_terminal'],map_location='cpu')
+-    model,config,load=build_support_model(cfg,official_payload,g_payload,selected_payload,manifest['data_root'])
+-    assert load['full_state_tensors']==1304 and not load['old_geometry_checkpoint_required']
++    assert sha(spec['parent_support_terminal']) == spec['parent_support_terminal_sha256']
++    parent_support_payload = torch.load(spec['parent_support_terminal'], map_location='cpu')
++    model,config,load=build_support_model(cfg,official_payload,g_payload,selected_payload,manifest['data_root'],parent_support_payload)
++    assert load['full_state_tensors']==1314 and not load['old_geometry_checkpoint_required']
++    for parameter in model.parameters():
++        parameter.requires_grad_(False)
+     assert torch.count_nonzero(model.candidate_box_refiner.output.weight)==0
+     assert torch.count_nonzero(model.candidate_box_refiner.output.bias)==0
+     model.cuda()
+@@ -129,8 +134,8 @@
+     initial={name:value.detach().cpu().clone() for name,value in model.state_dict().items()}
+     model.eval()
+     load.update(status='pass', spec_sha256=sha(args.spec), parent_and_box_head_frozen=True,
+-        added_support_parameters_per_arm=27841, initial_support_output_zero=False, warm_support_restore_required=True,
+-        only_mask_correction_trainable=True, fresh_optimizers_required=True)
++        added_span_parameters_per_arm=29793, initial_span_output_zero=True, parent_support_restore_required=True,
++        only_span_mixer_trainable=True, fresh_optimizers_required=True)
+     write_json(output/'load.json',load)
+     training=copy.copy(config)
+     training.lr=training.lr_backbone=spec['lr']
+@@ -138,7 +143,7 @@
+     _,set_criterion=BaseTrainTester.get_criterion(training)
+     processors={mode:DataProcessor(cfg.DATA_PROCESSOR,np.asarray(cfg.DATA_CONFIG.POINT_CLOUD_RANGE),mode=='train',6)
+                 for mode in ('train','eval')}
+-    formal = args.mode in ('initial_formal','formal')
++    formal = args.mode == 'formal'
+     assert spec['fit_passes'] == 1 and spec['updates'] == 3723
+     assert spec['primary_mode'] == 'bbs' and spec['primary_threshold'] == .5
+     verify_scanrefer_superpoints(manifest['data_root'], 'val' if formal else 'train',
+@@ -252,9 +257,9 @@
+         assert torch.isfinite(iou).all()
+         return iou
+ 
+-    runner=PairedSupportRun(model,config,spec,output,args,initial,prepare,loader,dataset,
++    runner=PairedSpanRun(model,config,spec,output,args,initial,prepare,loader,dataset,
+         partitions,reset_rng,box_iou,GroundingEvaluator,sha,write_json,cfg,official_payload,
+-        g_payload,selected_payload,manifest['data_root'])
++        g_payload,selected_payload,manifest['data_root'],parent_support_payload)
+     runner.run(set_criterion,manifest,begin)
+ 
+ 

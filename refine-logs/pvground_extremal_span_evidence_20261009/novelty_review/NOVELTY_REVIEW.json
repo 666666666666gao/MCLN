@@ -1,0 +1,198 @@
+{
+  "review_date": "2026-10-09",
+  "requested_backend": "codex",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "review_context": "fresh read-only reviewer",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict": "PROCEED WITH CAUTION",
+  "early_pilot_gate_cleared": true,
+  "implementation_gate_passed": false,
+  "experiment_gate_passed": false,
+  "novelty_score": null,
+  "score_limit": "No numerical novelty or performance promise; decision is qualitative and tied to concrete deltas.",
+  "named_published_complete_containment": null,
+  "abandon_qualified": false,
+  "caution_reason": "C1 and C2 combine known boundary feature extraction and regression/Mask fusion; no trained comparison demonstrates that exact extremal source provenance outperforms generic support or simpler adaptive mixing.",
+  "reviewed_code_sha256": {
+    "extremal_span_mixer.py": "d8cdc33486b8d248ac4af86359145a44a328d3c3467ac8d94fdeb2b356f5bfcb",
+    "span_refinement_model.py": "fe43685e4859a7ae7a322de4830604818eadc4f4d3aecdf141a6deaa5a603e96",
+    "matched_span_objective.py": "fa2df7209430d9587891b6519b447b6dc0c23aef37e6c89b609f6bd337a145c8",
+    "selected_query_mask_objective.py": "3d917a0ca8a14e11ae327875b65179cd0ea4df5de89fa12fc8debe831c3eb702"
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "description": "All actual member-extremum-producing foreground SPs pooled into six source tokens, including ties.",
+      "closest_sources": [
+        "S04",
+        "S06",
+        "S05",
+        "S25"
+      ],
+      "verdict": "PROCEED WITH CAUTION",
+      "delta": "Exact current fused-Mask coordinate-extremum SP ownership instead of generic support or interpolated predicted-border features.",
+      "status": "SOURCE_PREPARED_UNTRAINED",
+      "controls": [
+        "same-capacity whole_support versus extremal_support",
+        "conditional follow-up: generic boundary/center-neighborhood or matched-mass source shuffle"
+      ]
+    },
+    {
+      "id": "C2",
+      "description": "Three prediction-only convex native-regression/Mask coefficients, center and size sharing each axis coefficient.",
+      "closest_sources": [
+        "S03",
+        "S08",
+        "S23",
+        "S07"
+      ],
+      "verdict": "PROCEED WITH CAUTION",
+      "delta": "Extremal-source-conditioned axis mixing for two predictions belonging to the same fixed native query.",
+      "status": "SOURCE_PREPARED_UNTRAINED",
+      "not": [
+        "calibrated uncertainty",
+        "independent six-face distribution",
+        "score selection",
+        "new candidate pruning"
+      ],
+      "controls": [
+        "native versus Mask versus fixed0.5 versus whole/extremal adaptive same-forward outputs",
+        "conditional follow-up: train-only scalar/global and geometry/query-only adaptive gate",
+        "tie three axes to one to test axis dependence"
+      ]
+    },
+    {
+      "id": "C3",
+      "description": "Extra root Mask objective for native winner only if unmatched to every original GT; preserve all native matches.",
+      "closest_sources": [
+        "S15",
+        "S16",
+        "S21",
+        "S22",
+        "S19"
+      ],
+      "verdict": "PROCEED",
+      "delta": "Repair unchanged-score deployed winner's root Mask responsibility, without replacing original match roles or adding ranking.",
+      "status": "SOURCE_IMPLEMENTED_ACTIVE_TRAINING_REPORTED_NO_ENDPOINT_SUPPLIED",
+      "controls": [
+        "matched-only same-budget continuation",
+        "equal extra-positive budget with prespecified alternative choice if claiming winner specificity"
+      ],
+      "exclusions": [
+        "root-matched winners",
+        "other-instance-matched winners"
+      ]
+    }
+  ],
+  "combination": {
+    "more_promising_than_three_independent_blocks": true,
+    "prospective_finding": "Whether prediction-time extremal source contamination identifies when to interpolate a fixed candidate's regression/Mask extent.",
+    "coupling_status": "Sequential parent Mask/support dependence only; no joint gradients or synergy demonstrated.",
+    "span_loss_extra_unmatched_root_geometry_queries": 0,
+    "required_interaction_control": "C3 off/on x whole/extremal from matched parent states",
+    "three_effective_contributions": false
+  },
+  "evidence": {
+    "historical_same_forward_rows": 9508,
+    "historical_native_hits": [
+      5615,
+      4495
+    ],
+    "historical_mask_hits": [
+      5598,
+      4848
+    ],
+    "historical_fixed50_hits": [
+      5671,
+      4839
+    ],
+    "retained_model_hits": [
+      5599,
+      4859
+    ],
+    "target_hits": [
+      5658,
+      4850
+    ],
+    "cross_forward_hypothesis_hits": [
+      5676,
+      4840
+    ],
+    "cross_forward_current_model_endpoint": false,
+    "gt_least_squares_hits": [
+      5790,
+      5319
+    ],
+    "gt_used_for_coefficients": true,
+    "gt_diagnostic_deployable": false,
+    "gt_diagnostic_head_accuracy": false,
+    "gt_diagnostic_iou_upper_bound": false,
+    "gt_diagnostic_training_labels_allowed": false,
+    "gt_diagnostic_interior_axes": 7836,
+    "gt_diagnostic_damages_each_threshold": 22,
+    "current_zero_root_box_overlap_rows": 3074,
+    "zero_box_overlap_proves_mask_disjoint": false,
+    "biased_member_case_panel": 191,
+    "member_case_provenance_current_membership_proven": false,
+    "new_mixer_endpoint": null,
+    "c3_endpoint": null,
+    "full_goal_complete": false
+  },
+  "search": {
+    "window_start": "2026-04-09",
+    "window_end": "2026-10-09",
+    "minimum_distinct_query_formulations_per_core_claim": 3,
+    "initial_query_receipts": {
+      "C1": "web_raw/01_search_C1.json",
+      "C2": "web_raw/02_search_C2.json",
+      "C3": "web_raw/03_search_C3.json"
+    },
+    "recent_sources": [
+      "S03",
+      "S16",
+      "S17",
+      "S20",
+      "S21",
+      "S22",
+      "S27"
+    ],
+    "database_limits": "Google Scholar/Semantic Scholar domain attempts returned mostly irrelevant results; no comprehensive API scan or completeness certification.",
+    "missing_exact_code_match_used_as_proof": false,
+    "primary_access_limits": [
+      "S25 publisher preview only",
+      "S26 publisher preview only",
+      "S27 abstract only",
+      "No distinct AQS-3D identity; source index refers to AQ3D",
+      "BS-O2G exact displayed publication day unresolved"
+    ]
+  },
+  "scope": {
+    "ssh_queries": 0,
+    "gpu_forwards": 0,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "installs": 0,
+    "experimental_code_edits": 0,
+    "credentials_read": false,
+    "main_memory_read": false,
+    "global_notes_edited": false,
+    "public_downloads_within_output": true,
+    "new_subagents_spawned": 0,
+    "runtime_integration_limit": "Parent applied API/metadata-only wrapper fixes; revised wrapper read separately, SHA256 1139094df8f282715a795469cedc0dd6c4c95fea3f6b68ce13ab56b4a6ffb68b. Preserved R1 input snapshots retained. Mechanism verdict unchanged; actual M0/restore PASS still unestablished."
+  },
+  "artifacts": {
+    "report": "NOVELTY_REVIEW.md",
+    "raw_response": "RAW_RESPONSE.md",
+    "exact_request": "EXACT_REQUEST.txt",
+    "input_manifest": "INPUT_MANIFEST.json",
+    "source_index": "SOURCE_INDEX.json",
+    "source_manifest": "SOURCE_MANIFEST.json",
+    "queries": "SEARCH_QUERIES.json",
+    "trace": "trace/"
+  }
+}

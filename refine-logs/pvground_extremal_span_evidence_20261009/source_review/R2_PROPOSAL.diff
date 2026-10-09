@@ -1,0 +1,11 @@
+--- r1_source_snapshots/METHOD_PROPOSAL.md
++++ r2_source_snapshots/METHOD_PROPOSAL.md
+@@ -30,7 +30,7 @@
+ - `whole_support`和`extremal_support`具有完全相同网络及参数量，只改变读取全前景还是决定边界的来源。
+ - 已有39个所选无效范围支持显式缺观测状态；空聚合的零分子和分母下限1只定义零证据，不增加框fallback。原生非正尺寸沿用原布局／评估器的1e-6定义。
+ 
+-`span_refinement_model.py`把冻结父模型与该头组成一个模型前向：父模型调用一次，直接复用其已有`support_member_geometry`，精修后写入`last_center/last_pred_size`。原生语义输出和Mask对象保留，同一Query输出Box／Mask，无新评分头或候选裁剪。
++`span_refinement_model.py`把冻结父模型与该头组成一个模型前向：采用原生单个输入字典调用，父模型调用一次，直接复用其已有`support_member_geometry`，精修后写入`last_center/last_pred_size`。原生语义输出和Mask对象保留，同一Query输出Box／Mask，无新评分头或候选裁剪。小头检查点显式记录读取模式、头部状态、优化器、更新次数和冻结父模型身份；恢复必须使用同一模式和父模型。该合同只经过源码修正，实际保存恢复仍属于后续真实M0。
+ 
+ `matched_span_objective.py`复用原criterion的末层L1／GIoU，系数10／2及七输出平均不改。采用冻结父模型实际GT匹配，对所有原匹配实例保留职责。第一版没有再加入额外几何正例、分布监督、质量loss、教师或参考保持loss。
+ 

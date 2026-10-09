@@ -1,0 +1,16 @@
+--- r1_source_snapshots/extremal_span_mixer.py
++++ r2_source_snapshots/extremal_span_mixer.py
+@@ -72,9 +72,10 @@
+                     selected = active & (observed[None] == extreme[:, None])
+                 weights = selected.to(query.dtype) * count[None]
+                 total = weights.sum(1)
+-                # Empty evidence is actually observed in39 selected references.
+-                # Zero numerator/one denominator defines its zero evidence token;
+-                # it does not create another candidate or choose another box.
++                # The archive has39 invalid references, absent or degenerate.
++                # Zero numerator/one denominator defines zero pooled evidence;
++                # the face encoder can still produce its learned bias token.
++                # This does not create a candidate or choose another box.
+                 normalized = weights / total.clamp_min(1)[:, None]
+                 content = normalized @ support_content
+                 masks = (normalized[..., None] * mask_state).sum(1)

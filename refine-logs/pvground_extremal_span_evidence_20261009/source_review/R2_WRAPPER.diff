@@ -1,0 +1,29 @@
+--- r1_source_snapshots/span_refinement_model.py
++++ r2_source_snapshots/span_refinement_model.py
+@@ -38,7 +38,24 @@
+         assert len(self.mixer.state_dict()) == 14
+         self.eval()
+ 
+-    def forward(self, **inputs):
++    def forward(self, inputs):
+         with torch.no_grad():
+-            predictions = self.parent(**inputs)
++            predictions = self.parent(inputs)
+         return apply_span_mixer(self.mixer, predictions, predictions['support_member_geometry'])
++
++
++def span_checkpoint_payload(model, optimizer, step, parent_identity):
++    """Save the small head with the exact frozen-parent and source-mode contract."""
++    return dict(source_mode=model.mixer.source_mode,
++                mixer_state=model.mixer.state_dict(),
++                optimizer=optimizer.state_dict(), step=step,
++                parent_identity=parent_identity)
++
++
++def restore_span_checkpoint(model, optimizer, payload, parent_identity):
++    """Restore only against the same parent and the same evidence source."""
++    assert payload['source_mode'] == model.mixer.source_mode
++    assert payload['parent_identity'] == parent_identity
++    model.mixer.load_state_dict(payload['mixer_state'], strict=True)
++    optimizer.load_state_dict(payload['optimizer'])
++    return payload['step']

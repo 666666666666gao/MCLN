@@ -1,0 +1,324 @@
+{
+  "audit_skill": "experiment-audit",
+  "review_round": "R2",
+  "date": "2026-10-09",
+  "generated_at": "2026-10-09T14:35:44.305323+08:00",
+  "agent_id": "/root/pvg_extremal_span_source_20261009",
+  "verdict_id": "/root/pvg_extremal_span_source_20261009@R2",
+  "fresh_context": false,
+  "original_R1_fresh_context": true,
+  "review_context": "same reviewer minimal follow-up after preserving R1; no new reviewer call",
+  "requested_backend": "codex",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict": "PASS",
+  "overall_verdict": "PASS",
+  "verdict_scope": "STATIC_ONLY",
+  "source_verdict": "PASS",
+  "reason_code": "r1_native_forward_and_mode_restoration_source_contracts_resolved",
+  "blocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "B1_NATIVE_DICTIONARY_FORWARD_CONTRACT",
+      "status": "RESOLVED_STATIC_ONLY",
+      "evidence": [
+        "span_refinement_model.py:41-44",
+        "R2_STATIC_VERIFICATION.json"
+      ],
+      "details": "Single positional inputs argument; exactly one parent(inputs) call; native signature binds."
+    },
+    {
+      "id": "B2_SOURCE_MODE_RESTORATION_IDENTITY",
+      "status": "RESOLVED_STATIC_ONLY",
+      "evidence": [
+        "span_refinement_model.py:47-61",
+        "R2_STATIC_VERIFICATION.json"
+      ],
+      "details": "Payload stores source_mode/head/optimizer/step/parent_identity; both identity checks precede strict head and optimizer load."
+    },
+    {
+      "id": "W1_INVALID_NOT_PROVEN_EMPTY",
+      "status": "RESOLVED_COMMENTS_ONLY",
+      "evidence": [
+        "extremal_span_mixer.py:75-78",
+        "R2_MIXER_COMMENTS.diff"
+      ],
+      "details": "Distinguishes absent/degenerate references and zero pooled input versus biased encoded token; executable AST unchanged."
+    }
+  ],
+  "diagnostic": {
+    "verdict": "WARN",
+    "deterministic_arithmetic": "PASS_FROM_R1",
+    "changed_inputs": false,
+    "replayed_in_R2": false,
+    "classification": "real_gt_conditioned_offline_representational_diagnostic",
+    "deployment_valid": false,
+    "model_metric": false,
+    "iou_upper_bound": false,
+    "training_label_dataset": false
+  },
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "scope": "STATIC_ONLY inference code",
+      "runtime_limit": "Future matching and split wiring unverified; R1 cached-GT warning preserved"
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "scope": "STATIC_ONLY"
+    },
+    "C_result_existence": {
+      "status": "PASS",
+      "scope": "source repair exists; no runner/M0 claimed"
+    },
+    "D_dead_code": {
+      "status": "WARN",
+      "details": "Only AST/hash/signature verification executed; neural/checkpoint helpers unexecuted"
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "Minimal source follow-up; no actual initialization, optimizer restoration, GPU gradients or performance"
+    },
+    "F_evaluation_type": {
+      "status": "WARN",
+      "classification": "STATIC_ONLY_SOURCE_PREPARATION",
+      "actual_model_evaluation": false
+    }
+  },
+  "unchanged_architecture": {
+    "trainable_parameters_per_arm": 29793,
+    "trainable_tensors_per_arm": 14,
+    "mixer_executable_AST_unchanged": true,
+    "objective_bytes_unchanged": true,
+    "all256_preserved_static": true
+  },
+  "deferred_requirements": [
+    "Actual runner derives and verifies exact frozen-parent identity and reconstructs the parent.",
+    "Both arms share one frozen parent cache and one pre-span actual-GT assignment; initial hidden tensors match with independent storage and optimizers.",
+    "Parent remains eval/frozen, including buffers; same-cache or defined RNG replay handles parent stochastic sampling.",
+    "Only after active job closure and required handling: real B8 two-step M0, first-output/second-hidden gradients, actual same-mode/parent state and optimizer serialization/restoration.",
+    "Record actual runtime version, memory/throughput, all256 masks/scores/candidates, empty/degenerate/tie witnesses and exact native loss reconciliation."
+  ],
+  "actual_M0": "NOT_AVAILABLE",
+  "actual_runner_present": false,
+  "launch_approved": false,
+  "actual_model_builds": 0,
+  "actual_neural_forwards": 0,
+  "actual_optimizer_updates": 0,
+  "actual_serialization_or_restoration": false,
+  "actual_gradient_witness": false,
+  "packages_installed": 0,
+  "ssh_queries": 0,
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\SOURCE_AUDIT_REQUEST.txt": {
+      "sha256": "65277716d133ea881ebf6bdb02611a195ef98e8c33587e93473f91ed307d07a9",
+      "bytes": 3887
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\analyze_axis_span_diagnostic.py": {
+      "sha256": "88092b64614629eb407c4c8b7fcf8bccc1f3eba04fe13c5ccf08ed3f3b35191d",
+      "bytes": 5020
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\AXIS_SPAN_DIAGNOSTIC.json": {
+      "sha256": "1071449004d7ea7004734d58a56259e6aa255d1d23214de323a901496e5d1ec4",
+      "bytes": 2357
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\extremal_span_mixer.py": {
+      "sha256": "523203b7a5304ba41ca3bfb66c6911777adb0b55287806ddfed57d8ae9566adf",
+      "bytes": 7606
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\span_refinement_model.py": {
+      "sha256": "1139094df8f282715a795469cedc0dd6c4c95fea3f6b68ce13ab56b4a6ffb68b",
+      "bytes": 3071
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\matched_span_objective.py": {
+      "sha256": "fa2df7209430d9587891b6519b447b6dc0c23aef37e6c89b609f6bd337a145c8",
+      "bytes": 1036
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\METHOD_PROPOSAL.md": {
+      "sha256": "f210fa47bf8628d93d74f38df13400e352a7aa49c743c9ad54b66222c5a289d8",
+      "bytes": 6635
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_box_controls_20261009\\SUMMARY.json": {
+      "sha256": "42c65841e0d1db1d73216ab8a3e0ba2e496e614894899f61a6516596beb918fa",
+      "bytes": 4567
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_box_controls_20261009\\SELECTED_BOX_ROWS.jsonl": {
+      "sha256": "db8ad8f8869218aef4444f71465b9d3d59a6cc284f1328645d47c59a1342b976",
+      "bytes": 10319959
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_box_controls_20261009\\audit\\EXPERIMENT_AUDIT.json": {
+      "sha256": "07c797481a6842e22fd393931539f9405f174388ce56ece58679cc8c3b6846a9",
+      "bytes": 281087
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_box_controls_20261009\\analyze_fixed_query_boxes.py": {
+      "sha256": "019ec315da5e1baade056e0998fbd16eaa008474a099b7bc514791bab35fe96a",
+      "bytes": 9904
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_compressed_geometry_support_20261008\\mask_support_corrector.py": {
+      "sha256": "14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a",
+      "bytes": 4458
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_compressed_geometry_support_20261008\\mask_reference.py": {
+      "sha256": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "bytes": 6461
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\pv_ground.py": {
+      "sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d",
+      "bytes": 27544
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\losses.py": {
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "bytes": 40468
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_selected_mask_training_20261009\\matched_mask_objective.py": {
+      "sha256": "67d05d069e1b748477af1a3c84b586375effbc21f1fd99b328ec7029f7e17788",
+      "bytes": 3000
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_selected_mask_training_20261009\\pair_spec.json": {
+      "sha256": "fcdccf7dc1694a266927552057268f9b5d7c90593e23fce37a545a92d45d4a56",
+      "bytes": 6900
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_selected_mask_training_20261009\\support_pair_forward.py": {
+      "sha256": "74d0c3d2347aabf7087be42e1de4f9a32ffcba8d65b51f831106813cffa8ac9a",
+      "bytes": 2550
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_selected_mask_training_20261009\\paired_support_loop.py": {
+      "sha256": "3d5ce836c19eb90de6a69aa7c2e0fbe27eeb3e731c2d211f0e69a64db8acd484",
+      "bytes": 29281
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py": {
+      "sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+      "bytes": 3629
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\pvground_boundary_box_refiner.py": {
+      "sha256": "88debfef64f4295f87d697b7b9d4cd1eab17b39f4041f6d9ae773fc65dda9461",
+      "bytes": 6208
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_reference_20261006\\run_geometry_fit.py": {
+      "sha256": "01565b6d0b8ead1a5d34e588525e114e97f33bcd9650c35d40e0a1a60d7b2747",
+      "bytes": 38241
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_geometry_readback_20261004\\revision2\\readback_preflight_checks.py": {
+      "sha256": "1a0be39f8dc0b1b10c0ace1a0e5d560280d4ac9e2dc2c5694a4b5cff571094d3",
+      "bytes": 8163
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_runtime_bundle_20260908_v1\\env_spec.json": {
+      "sha256": "3ce5df048f09ed28f1908c2db1907cb51b354f54f954666ad3a9cd452868b5ee",
+      "bytes": 2385
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json": {
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+      "bytes": 2938
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\source_review\\torch_v1_10_2_FunctionsManual.cpp": {
+      "sha256": "e9f5ca4806af72e7770ceb9df595fe4dcb24c5682b976566c95c91c099b1c8b3",
+      "bytes": 166036
+    },
+    "C:\\Users\\gb\\.codex\\skills\\experiment-audit\\SKILL.md": {
+      "sha256": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+      "bytes": 10983
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": {
+      "sha256": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+      "bytes": 2948
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\reviewer-independence.md": {
+      "sha256": "1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0",
+      "bytes": 1843
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\experiment-integrity.md": {
+      "sha256": "22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60",
+      "bytes": 2355
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": {
+      "sha256": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+      "bytes": 4433
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\integration-contract.md": {
+      "sha256": "5d393c31b36e98ae99c17ab9cf5879853c0cb595bbd9f4973ffe7bcd6549f4e7",
+      "bytes": 18658
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\source_review\\torch_v1_10_2_module.py.txt": {
+      "sha256": "76c52ad030a3b87f7291642df5800bc2df1b729e3b3004ebc83c9df4413a883b",
+      "bytes": 78396
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\SOURCE_R2_REQUEST.txt": {
+      "sha256": "a6887b33909946e95c972d122a2a319705e3f6d72886e01d45e81bc83ef9f836",
+      "bytes": 1778
+    }
+  },
+  "source_snapshots": [
+    {
+      "source": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\span_refinement_model.py",
+      "snapshot": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\source_review\\r2_source_snapshots\\span_refinement_model.py",
+      "sha256": "1139094df8f282715a795469cedc0dd6c4c95fea3f6b68ce13ab56b4a6ffb68b",
+      "bytes": 3071
+    },
+    {
+      "source": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\METHOD_PROPOSAL.md",
+      "snapshot": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\source_review\\r2_source_snapshots\\METHOD_PROPOSAL.md",
+      "sha256": "f210fa47bf8628d93d74f38df13400e352a7aa49c743c9ad54b66222c5a289d8",
+      "bytes": 6635
+    },
+    {
+      "source": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\extremal_span_mixer.py",
+      "snapshot": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\source_review\\r2_source_snapshots\\extremal_span_mixer.py",
+      "sha256": "523203b7a5304ba41ca3bfb66c6911777adb0b55287806ddfed57d8ae9566adf",
+      "bytes": 7606
+    },
+    {
+      "source": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\matched_span_objective.py",
+      "snapshot": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\source_review\\r2_source_snapshots\\matched_span_objective.py",
+      "sha256": "fa2df7209430d9587891b6519b447b6dc0c23aef37e6c89b609f6bd337a145c8",
+      "bytes": 1036
+    },
+    {
+      "source": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\SOURCE_R2_REQUEST.txt",
+      "snapshot": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\source_review\\r2_source_snapshots\\SOURCE_R2_REQUEST.txt",
+      "sha256": "a6887b33909946e95c972d122a2a319705e3f6d72886e01d45e81bc83ef9f836",
+      "bytes": 1778
+    }
+  ],
+  "R1_preserved_artifacts_verified": 38,
+  "R1_manifest_sha256": "d5b863ee908795cc1d2460265d23c0db5cf885228b216111bfb7853398bd052b",
+  "prior_review_json_sha256": "fc62cc77fa26c665f19593ebe4f486de267b2a2010492cb842e1eb0c3279fb10",
+  "raw_report_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\source_review\\RAW_RESPONSE_R2.md",
+  "raw_report_sha256": "946fe4b28ab4b42966b701d681d60614ac7e3fe44d1ea5dc734a0ed6c07d168f",
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\source_review",
+  "input_hash_manifest": "R2_INPUT_HASHES.json",
+  "verification": {
+    "path": "R2_STATIC_VERIFICATION.json",
+    "sha256": "1d570e100adf16ab1d4497378e35f54456e68adbf40aa89ea950acfe99ce145d",
+    "script": "verify_r2_source.py",
+    "script_sha256": "952df5b6d64ad4b5b69c6563d84227ce1d170d126755d607e18cddddb224aba3",
+    "actual_exit_code": 0,
+    "chunk_id": "601b7c",
+    "invocation": "verify_r2_002.invocation.json"
+  },
+  "actual_failed_invocations": [
+    {
+      "invocation": "verify_r2_001.invocation.json",
+      "log": "verify_r2_001.log",
+      "source": "verify_r2_source.failed001.py",
+      "source_sha256": "465a0c8a31894994f98c4fe3efe22bcac9ea1cdfba36f35c3752fc01478e96bd",
+      "exit_code": 1,
+      "chunk_id": "332dcc",
+      "reason": "Expected-unchanged mixer hash detected the newly authorized comment revision; corrected scope explicitly binds new hash and requires unchanged executable AST."
+    }
+  ],
+  "neural_metric_reported": false,
+  "checkpoint_exists": false,
+  "current_source_edits_by_reviewer": false,
+  "global_notes_modified": false,
+  "weight_promotion_eligible": false,
+  "three_effective_contributions": false,
+  "full_goal_complete": false
+}

@@ -1,0 +1,13 @@
+{
+  "status": "REMOTE_DOC_AND_EVIDENCE_WRITTEN_MAIN_STAGED_BEFORE_LOCAL_DIFF_CHECK_FAILED",
+  "native_chunk_id": "0b7463",
+  "native_exit_code": 1,
+  "stopping_command": "git diff --cached --check",
+  "reason": "Original review diff artifacts contain literal single-space context lines; Git treats these embedded patch lines as trailing whitespace. Raw review bytes and hashes must remain intact.",
+  "affected_files": ["source_review/R2_PROPOSAL.diff", "source_review/R2_WRAPPER.diff"],
+  "remote_receipts": ["REMOTE_SYNC_STDOUT.json", "REMOTE_SYNC_STDERR.txt", "REMOTE_SYNC_EXIT.json"],
+  "minimal_fix": "Unset the whitespace attribute only for source_review/*.diff while preserving ordinary source/document checks; resume the known partial local publication without repeating the remote document write.",
+  "new_neural_forwards": 0,
+  "training_status_reads": 0,
+  "retained_best_changed": false
+}

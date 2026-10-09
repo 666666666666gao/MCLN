@@ -1,0 +1,56 @@
+{
+  "status": "EXECUTED_GT_ONLY_CONSTRAINED_LEAST_SQUARES_AXIS_SPAN_DIAGNOSTIC",
+  "time_cst": "2026-10-09T14:24:35.122099+08:00",
+  "rows": 9508,
+  "source_snapshot": "20261006_initial_formal",
+  "source_rows_sha256": "db8ad8f8869218aef4444f71465b9d3d59a6cc284f1328645d47c59a1342b976",
+  "source_controls_summary_sha256": "42c65841e0d1db1d73216ab8a3e0ba2e496e614894899f61a6516596beb918fa",
+  "source_controls_audit_sha256": "07c797481a6842e22fd393931539f9405f174388ce56ece58679cc8c3b6846a9",
+  "source_script_sha256": "88092b64614629eb407c4c8b7fcf8bccc1f3eba04fe13c5ccf08ed3f3b35191d",
+  "gt_used_to_compute_coefficients": true,
+  "deployment_valid": false,
+  "iou_upper_bound": false,
+  "candidate_query_changes": 0,
+  "positive_size_by_axis_shared_convex_coefficients": true,
+  "zero_length_axis_spans": 117,
+  "both_boxes_identical_rows": 39,
+  "coefficient_zero_axes": 12213,
+  "coefficient_one_axes": 8475,
+  "interior_coefficient_axes": 7836,
+  "objective": "Per-axis squared error in center and size, equal coordinate weights; not IoU maximization.",
+  "mask_baseline_hits": [
+    5598,
+    4848
+  ],
+  "diagnostic_gt_conditioned_hits": [
+    5790,
+    5319
+  ],
+  "comparisons": {
+    "0.25": {
+      "repairs": 214,
+      "damages": 22,
+      "net": 192
+    },
+    "0.5": {
+      "repairs": 493,
+      "damages": 22,
+      "net": 471
+    }
+  },
+  "neural_forwards": 0,
+  "optimizer_updates": 0,
+  "ssh_queries": 0,
+  "new_weights": 0,
+  "retained_best_changed": false,
+  "full_goal_complete": false,
+  "three_effective_contributions": false,
+  "limits": [
+    "Uses validation GT to choose coefficients offline; forbidden as inference, new-method performance, or model promotion.",
+    "Least-squares error decreases by construction but IoU and threshold hits need not increase per row.",
+    "Not the optimum IoU over the permitted family and not a geometric oracle upper bound.",
+    "Historical one-snapshot diagnostic of representational space; a trainable head must infer weights from prediction-only evidence.",
+    "A convex axis span cannot reach a GT range beyond both priors; this does not resolve instance-selection errors by itself.",
+    "The same coefficient applies to center and size for each axis; this retains positive sizes without independent-face crossing fixes."
+  ]
+}

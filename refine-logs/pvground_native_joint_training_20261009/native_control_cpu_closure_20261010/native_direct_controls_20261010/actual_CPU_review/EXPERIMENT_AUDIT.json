@@ -1,0 +1,418 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "closed_cpu_module_evidence_supported_with_strict_scope_limits",
+  "summary": "The closed artifact chain supports the declared synthetic CPU module checks. No blocking mismatch was found within that narrow engineering scope. Full PV integration, native losses, recovery and accuracy remain untested by this execution.",
+  "blocking_issue_count": 0,
+  "blocking_issues": [],
+  "blocking_issue_count_scope": "Acceptance of this closed synthetic CPU module engineering evidence only; not GPU/training admission or scientific-result approval.",
+  "execution_scope": "CLOSED_CPU_SYNTHETIC_MODULE_ENGINEERING_NOT_PV_OR_ACCURACY",
+  "bounded_cpu_engineering_evidence_supported": true,
+  "audit_result_approval": false,
+  "formal_accuracy_approved": false,
+  "gpu_admission": false,
+  "control_training_admitted": false,
+  "generated_at": "2026-10-09T21:57:36.9853062Z",
+  "date": "2026-10-10",
+  "auditor": "Fresh delegated Codex reviewer with disclosed additional bootstrap context; actual identity UNATTESTED",
+  "task_name": "/root/pvg_native_controls_cpu_actual_20261010",
+  "agent_id": "UNATTESTED",
+  "verdict_id": "/root/pvg_native_controls_cpu_actual_20261010",
+  "executor_model": "UNATTESTED",
+  "executor_family": "openai",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning": "max",
+  "actual_reviewer_model": "UNATTESTED",
+  "actual_reviewer_reasoning": "UNATTESTED",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "model_attestation_available": false,
+  "actual_identity_note": "The requested route is not an actual-model/effort attestation. No independent actual-identity token was available.",
+  "additional_context_disclosure": {
+    "additional_workspace_bootstrap_context_read": true,
+    "files_read": [
+      "SOUL.md",
+      "USER.md",
+      "memory/2026-10-10.md",
+      "memory/2026-10-09.md"
+    ],
+    "daily_note_tool_output_truncated": true,
+    "used_as_audit_evidence": false,
+    "contents_or_snapshots_copied_to_outputs": false,
+    "MEMORY_md_read": false,
+    "AUTH_credentials_askpass_known_hosts_read": false,
+    "limitation": "The agent began from a delegated task but subsequently received workspace bootstrap context. It is not a pristine paths-only context. Findings were derived from directly reviewed artifacts, not the historical summaries.",
+    "parent_notified_and_continue_instruction_received": true
+  },
+  "trace_path": "D:/Program Files/UserCache/gb/codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/experiment-audit/2026-10-10_native_controls_actual_CPU",
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\cpu_transport_attempt2\\CPU_MODULE_EXECUTION.json": "sha256:73482b870febff16c09b0a898085731c71cc5af02325bdd99ab81c1dbd35507d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\cpu_transport_attempt2\\CPU_MODULE_STDERR.txt": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\cpu_transport_attempt2\\CPU_MODULE_STDOUT.json": "sha256:077cadc8679e3715410b46bd4e6482f730bbb44a698a49f3e2a3616f17436eb3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\cpu_transport_attempt2\\CPU_MODULE_WITNESS.json": "sha256:cef013029af1fed30a23a7062d7d49b48c0a82327aa367dad9ed5b68462cec14",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\cpu_transport_attempt2\\CPU_REMOTE_RAW_STDERR.txt": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\cpu_transport_attempt2\\CPU_REMOTE_RAW_STDOUT.json": "sha256:22ba8e62ba8796459d331d80c9b813be59d0c734bdc4f2bc3a075245a8189a65",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\cpu_transport_attempt2\\CPU_TRANSPORT_EXIT.json": "sha256:302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\CPU_BUNDLE.json": "sha256:2f26382fbb109c536f942d00315c283e08ee508b56cdb9899beaee6a5880354a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\DIRECT_CONTROL_PREPARATION.json": "sha256:fc44cfb0ad1f6d3434299b0201fb6d749bbd250b97ad0db4ddafaf3073826ea6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\DIRECT_CONTROLS.md": "sha256:4f4441072669997ecd03f5a26f6a9b3d29691ce2297ad878f2ad6c418fa5ab79",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\check_direct_control_modules_cpu.py": "sha256:c5657a5f2a7be265d573984cc0bf5209d03f5128566db8ef93ad054a2e92e12f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\actual_source_review\\EXPERIMENT_AUDIT.json": "sha256:fbf78ec995c84a0fd6adcc929a51fd0f8c09e046eba1418adfad58bedfb648b9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\actual_source_review\\EXPERIMENT_AUDIT.md": "sha256:36d5a4266fbfd91b77dd9ef0017bfeb0bb3810bc6d57c28eee44a83502fb54f0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\actual_source_review\\SEAL.json": "sha256:c61eb527182d28a867c3adc801a309707922995c6b34b4917b9cb08d9002e22f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\CPU_TRANSPORT_EXIT.json": "sha256:5d9bc2b1052210fde4a2c47472c6234601114657edb60ba92ea42f7f1af6b84a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\CPU_REMOTE_RAW_STDERR.txt": "sha256:f49ba1169d4c870a339fe13a4fb0ae8315793f6e5f0f90e7e09e1ebdad0e6862",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\CPU_STATIC_ROOT_READ_EXIT.json": "sha256:5d9bc2b1052210fde4a2c47472c6234601114657edb60ba92ea42f7f1af6b84a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\CPU_STATIC_ROOT_READ_STDERR.txt": "sha256:f49ba1169d4c870a339fe13a4fb0ae8315793f6e5f0f90e7e09e1ebdad0e6862",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py": "sha256:5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py": "sha256:5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "sha256:8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\mask_support_corrector.py": "sha256:765b727cd77c2fd73c6dd238a89a5c11ce91dc7fed927935cd7214d52b6875e5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\extremal_span_mixer.py": "sha256:c6db8a041acc8005825da4325caeda599f52d86710b5989d02e461a544a99d94",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\native_model_initialization.py": "sha256:f0250e806255f56e6a06c737d88b0d827ec00bf36b18f6aec629ce87d2be0bf1",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\run_direct_control_modules_cpu_attempt2_authorized.py": "sha256:64f6ca07977b4ead586a0e56e3529c977b9efbd90f4b4ccf967f8f1dad7be547",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\prepare_static_cpu_recovery_attempts.py": "sha256:6344aa5201da391027c78f293dc60786d2b6da0c926a2c7a3f5787a908d74471",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\STATIC_CPU_ATTEMPT2_PREPARATION.json": "sha256:c69dbb7924a8e8d5a1991f19446470961f267c8dc9cead32f16699164c6b5d40",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\read_only_static_diagnostic_20261010_attempt1\\REMOTE_STATIC_WITNESS.json": "sha256:15df6dfb084a5fa5cdd613e849b8ada7ee5b8e20523853bb0e604a196b80aa0b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\read_only_static_diagnostic_20261010_attempt1\\TRANSPORT.json": "sha256:c14a715896476052ae35e8278702e85b2c5d1958f7fc5c7f1ec50053d893d57d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\source_review\\snapshots\\034_whole_mask_range.py": "sha256:22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\common_behavior_check\\init.json": "sha256:a774bd431e1f0ea9fecf6d98c5e0ad16076169ec004d47873bb91e1cf5aa2be0"
+  },
+  "required_input_count": 30,
+  "supplemental_semantic_input_count": 1,
+  "audited_input_count": 31,
+  "supplemental_semantic_inputs": [
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\common_behavior_check\\init.json",
+      "sha256": "a774bd431e1f0ea9fecf6d98c5e0ad16076169ec004d47873bb91e1cf5aa2be0"
+    }
+  ],
+  "hash_only_prior_source_inputs": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\main_utils.py": "sha256:b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py": "sha256:00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py": "sha256:ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py": "sha256:683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py": "sha256:b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_observation_query.py": "sha256:cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_semantic_assignment.py": "sha256:bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_source_query.py": "sha256:e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_task_observation_query.py": "sha256:39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\selected_query_mask_objective.py": "sha256:6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\train_dist_mod.py": "sha256:99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\main_utils.py": "sha256:b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\models\\losses.py": "sha256:00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\models\\pv_ground.py": "sha256:ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\native_mask_geometry.py": "sha256:8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\native_root_bbs.py": "sha256:b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\pvground_observation_query.py": "sha256:cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\pvground_semantic_assignment.py": "sha256:bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\pvground_source_query.py": "sha256:e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\pvground_task_observation_query.py": "sha256:39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\selected_query_mask_objective.py": "sha256:6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\source\\train_dist_mod.py": "sha256:99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\fixed_half_geometry\\init.json": "sha256:290e74bbf314468542c9dcb0a102c1ed7167c67ff48d58d25caa7c26cc799bc6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\support_bypass\\init.json": "sha256:5dee15dcb0b168301488559a85bcb314879ac0f2c97e05b4f3d9a9ed6bfb9259",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\support_content_only\\init.json": "sha256:0a9a1189cab95b6c5a1398e83e8dc8689e419e1ffd550db9547325dcd35ca965",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\common_behavior_check\\NORMAL_NATIVE_RUN_PROTOCOL.json": "sha256:ffbc06350dfd12aa0db3bc9e98c0a648f63d54e1c749b4f1331c407ebb5ce4ed",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\fixed_half_geometry\\NORMAL_NATIVE_RUN_PROTOCOL.json": "sha256:1251ce70a6481606ea1100ded82128f11c000c8d033f0bbd6f7ceece1499138f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\support_bypass\\NORMAL_NATIVE_RUN_PROTOCOL.json": "sha256:638267605cbd7b9732f12956662e5d552ad935e04532f0cb1aca07bdeacd627c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\support_content_only\\NORMAL_NATIVE_RUN_PROTOCOL.json": "sha256:b7bd9b958aec13081751e396b50f6c73711cb6656656649274db1f1223d36385",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\common_behavior_check\\normal_joint_controller.py": "sha256:a55ae418f42a776395290a68a799cc121abf9f4cb936bd8f32a36162365484d9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\fixed_half_geometry\\normal_joint_controller.py": "sha256:a55ae418f42a776395290a68a799cc121abf9f4cb936bd8f32a36162365484d9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\support_bypass\\normal_joint_controller.py": "sha256:a55ae418f42a776395290a68a799cc121abf9f4cb936bd8f32a36162365484d9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\support_content_only\\normal_joint_controller.py": "sha256:a55ae418f42a776395290a68a799cc121abf9f4cb936bd8f32a36162365484d9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_direct_controls_20261010\\EXPERIMENT_TRACKER.md": "sha256:3b32bb044f133de077586da81314a92f192e8cc7d1000bec23716012caa15162",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\prepare_normal_direct_controls.py": "sha256:7450beadea5bbd0f7229a7f3eee9bb9c03bec232fe277408704f8673189c6721",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\prepare_direct_control_cpu_bundle.py": "sha256:d023aa3a4dc21fef84e693aa6cf3c0d134bb8ba8bd12472f90cf1a327e724bb1",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\run_direct_control_modules_cpu_authorized.py": "sha256:abfa88b02f1c200a0a262d14c72aaa2568c9b561888e510807761aa38927071d"
+  },
+  "hash_only_prior_source_input_count": 37,
+  "hash_only_inputs_semantically_reaudited": false,
+  "instruction_input_hashes": {
+    "D:/Program Files/UserCache/gb/codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/experiment-audit/2026-10-10_native_controls_actual_CPU/request.txt": "sha256:2fab947940ad9f8ade32b40a079b82eb76a37d282631ea45bf8a5649bf3a80c5",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\reviewer-independence.md": "sha256:1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\experiment-integrity.md": "sha256:22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": "sha256:b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:\\Users\\gb\\.codex\\skills\\experiment-audit\\SKILL.md": "sha256:0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": "sha256:7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395"
+  },
+  "citation_roots": {
+    "R/": "D:/Program Files/UserCache/gb/codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/",
+    "C/": "D:/Program Files/UserCache/gb/codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/native_direct_controls_20261010/",
+    "P/": "D:/Program Files/UserCache/gb/codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/",
+    "M": "D:/Program Files/UserCache/gb/codex/tmp/pvground_extremal_span_evidence_20261009/runner_v1/source_review/snapshots/034_whole_mask_range.py"
+  },
+  "checks": {
+    "gt_provenance": {
+      "status": "PASS",
+      "scope": "explicitly labeled synthetic engineering fixture",
+      "details": "Random embeddings/masks/points provide inputs, original modules provide consistency references, and fixed fusion provides an algebraic reference. Prediction-derived geometry is not GT. No real dataset accuracy was evaluated.",
+      "evidence": [
+        "C/check_direct_control_modules_cpu.py:44-53",
+        "C/check_direct_control_modules_cpu.py:73-88",
+        "C/check_direct_control_modules_cpu.py:94-121",
+        "R/native_mask_geometry.py:13-23",
+        "M:12-37"
+      ]
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "details": "No performance score is divided by model prediction statistics. Exact-value assertions and raw maximum absolute content/full mask difference are engineering diagnostics; feature count/pooling/geometry normalizations are not accuracy normalization.",
+      "evidence": [
+        "C/check_direct_control_modules_cpu.py:104-138",
+        "C/check_direct_control_modules_cpu.py:152",
+        "C/source/mask_support_corrector.py:43-53",
+        "C/source/extremal_span_mixer.py:72-106"
+      ]
+    },
+    "result_existence": {
+      "status": "PASS",
+      "scope": "current closed CPU receipts only",
+      "details": "All 30 requested files exist and were read. Transport/module exits are 0, stderr is empty, raw receipt bytes decode exactly to local outputs, parsed witness agrees, source-audit hash is bound, and old failed 255 receipts remain distinct. Historical accuracy literals were not certified.",
+      "evidence": [
+        "C/cpu_transport_attempt2/CPU_MODULE_EXECUTION.json:2-19",
+        "C/cpu_transport_attempt2/CPU_MODULE_WITNESS.json:63-83",
+        "P/run_direct_control_modules_cpu_attempt2_authorized.py:72-85",
+        "C/CPU_TRANSPORT_EXIT.json:1",
+        "C/CPU_STATIC_ROOT_READ_EXIT.json:1"
+      ]
+    },
+    "dead_code": {
+      "status": "WARN",
+      "details": "All claimed standalone module assertions lie on the successful checker path. configure_native_model, native criterion/optimizer/recovery and the snapshot mask_range_evidence helper are not called. Hashing or transporting source does not establish its execution.",
+      "evidence": [
+        "C/check_direct_control_modules_cpu.py:38-71",
+        "C/check_direct_control_modules_cpu.py:94-138",
+        "C/source/native_model_initialization.py:18-85",
+        "M:40-67"
+      ]
+    },
+    "scope": {
+      "status": "WARN",
+      "details": "One CPU synthetic fixture at seed 2027 exercises seven standalone module objects and selected gradients. It is not four full control-model training runs. Fixed-half gradients are local to independent materialized references, and strict loads/value equality do not constitute dtype/full-state guarantees.",
+      "evidence": [
+        "C/check_direct_control_modules_cpu.py:73-88",
+        "C/check_direct_control_modules_cpu.py:125-138",
+        "C/check_direct_control_modules_cpu.py:156-159",
+        "C/DIRECT_CONTROLS.md:10-35",
+        "R/native_mask_geometry.py:19-21"
+      ]
+    },
+    "evaluation_type": {
+      "status": "PASS",
+      "actual": "synthetic_module_engineering_fixture_not_accuracy_evaluation",
+      "checklist_taxonomy": "synthetic_proxy",
+      "not_real_gt": true,
+      "details": "Original-module consistency, algebraic checks and selected local autograd checks only.",
+      "evidence": [
+        "C/cpu_transport_attempt2/CPU_MODULE_WITNESS.json:2-16",
+        "C/cpu_transport_attempt2/CPU_MODULE_WITNESS.json:76-83",
+        "C/check_direct_control_modules_cpu.py:73-74",
+        "C/check_direct_control_modules_cpu.py:140-159"
+      ]
+    }
+  },
+  "warnings": [
+    {
+      "id": "W1",
+      "title": "Exact-half gradient is conditional on an independent, already materialized reference",
+      "blocking": false,
+      "details": "Only new native_coarse_center/size leaves receive gradients; the stored mask reference was formed earlier from different non-grad tensors. This is a partial local derivative of summed outputs with positive sizes. If an invalid reference in full PV retains the same native prior, the positive-size/full-center derivative can be 1, not 0.5. It is not a native-loss or full-network gradient guarantee.",
+      "evidence": [
+        "C/check_direct_control_modules_cpu.py:109-110",
+        "C/check_direct_control_modules_cpu.py:131-137",
+        "R/native_mask_geometry.py:19-21",
+        "C/source/extremal_span_mixer.py:100-106"
+      ]
+    },
+    {
+      "id": "W2",
+      "title": "Standalone module execution leaves full native integration untested",
+      "blocking": false,
+      "details": "The factory is not called; freezing is manual. No full 1295-state construction, official/G initialization, native forward/loss equality, content-only task gradients, optimizer groups, scheduler, save/recovery, real input, formal evaluator or trained control is evidenced by this run.",
+      "evidence": [
+        "C/check_direct_control_modules_cpu.py:38-71",
+        "C/check_direct_control_modules_cpu.py:94-138",
+        "C/source/native_model_initialization.py:18-85",
+        "M:40-67",
+        "C/check_direct_control_modules_cpu.py:156-159"
+      ]
+    },
+    {
+      "id": "W3",
+      "title": "Equality and payload checks have narrower identity coverage than their labels",
+      "blocking": false,
+      "details": "The reported bitwise equality fields are backed by torch.equal/np.array_equal and strict standalone loads; there is no explicit payload-dtype comparison or tensor storage-byte comparison. Only 10 A and 14 B state entries are loaded. Payload bytes were not independently opened by this reviewer. The span-to-support parent identity assertion exists in the uncalled initializer, not the executed checker.",
+      "evidence": [
+        "C/check_direct_control_modules_cpu.py:44-70",
+        "C/check_direct_control_modules_cpu.py:104-117",
+        "C/source/native_model_initialization.py:48-61"
+      ]
+    },
+    {
+      "id": "W4",
+      "title": "Receipt copies, literal counters and hashes are not independent attestation",
+      "blocking": false,
+      "details": "Local witness JSON is a CRLF pretty reencoding of module stdout, which itself is decoded from one remote receipt. It is not a second independent run/witness. Zero GPU/status counters and original_source_unchanged are literal fields; static source and CPU placement support the bounded interpretation, but there is no post-run remote source rehash or signed execution/model identity attestation.",
+      "evidence": [
+        "P/run_direct_control_modules_cpu_attempt2_authorized.py:51-60",
+        "P/run_direct_control_modules_cpu_attempt2_authorized.py:77-85",
+        "C/check_direct_control_modules_cpu.py:34-37",
+        "C/check_direct_control_modules_cpu.py:159"
+      ]
+    },
+    {
+      "id": "W5",
+      "title": "Single synthetic fixture and trained-parent history cannot establish scientific effectiveness",
+      "blocking": false,
+      "details": "One seed, one synthetic batch, eight equal-population superpoints and positive native sizes give limited module coverage. Accuracy, all invalid/degenerate/tied-support cases, extremal-source value, equal-active-capacity controls, never-used-module training histories and target attainment remain unsupported. Historical result literals are outside this verification.",
+      "evidence": [
+        "C/check_direct_control_modules_cpu.py:73-88",
+        "C/DIRECT_CONTROLS.md:10-23",
+        "C/DIRECT_CONTROLS.md:35-41"
+      ]
+    }
+  ],
+  "observed_closed_execution": {
+    "started_cst": "2026-10-10T05:50:34.790431+08:00",
+    "finished_cst": "2026-10-10T05:50:36.915157+08:00",
+    "elapsed_seconds": 2.124726,
+    "elapsed_source": "difference of two remote subprocess receipt timestamps",
+    "transport_exit_code": 0,
+    "module_exit_code": 0,
+    "stderr_bytes": 0,
+    "torch_version": "1.10.2+cu111",
+    "cuda_visible_devices": "",
+    "reported_tensor_devices": [
+      "cpu",
+      "cpu"
+    ],
+    "fixture": {
+      "seed": 2027,
+      "batch": 1,
+      "candidates": 256,
+      "superpoints": 8,
+      "points": 50000
+    },
+    "A_state_tensors": 10,
+    "B_state_tensors": 14,
+    "A_registered_parameters": 27841,
+    "B_registered_parameters": 29793,
+    "standalone_module_objects": 7,
+    "actual_full_control_training_runs_evidenced": 0,
+    "real_dataset_rows_evaluated": 0,
+    "content_vs_full_mask_max_abs_difference": 0.10565423965454102,
+    "value_not_recomputed_by_reviewer": true,
+    "support_payload_sha256": "d06adb8ed227d98d46afa8e3970dcb9fbe31ab2613c675883b80162f830f4cb6",
+    "span_payload_sha256": "f9898c5dc7a5e97bf152421efc9072c23ef255618c64477a4bfacf996f2b3b19",
+    "source_audit_sha256": "fbf78ec995c84a0fd6adcc929a51fd0f8c09e046eba1418adfad58bedfb648b9",
+    "formal_accuracy": null
+  },
+  "supported_module_checks": [
+    "Common A mask values equal old A on the one fixture; their NumPy member-statistics arrays also agree.",
+    "Common B center/size and each evidence tensor equal old B for the materialized common-A reference.",
+    "A bypass returns the original query-mask tensor object.",
+    "Content-only A member-input columns 64:70 are exactly zero.",
+    "Fixed B reported raw/effective gates and center/size mixing formula are exactly 0.5.",
+    "Manual requires_grad freezing applies to bypass A and fixed B parameters.",
+    "Common A query input and output weight have nonzero gradients for mean squared output.",
+    "Fixed B summed-output gradients to independent positive-size native-box leaves are exactly 0.5; its frozen parameters have no gradients."
+  ],
+  "untested_by_this_execution": [
+    "Complete PV factory, 1234/1271/1295-state construction and official/G initialization",
+    "Explicit checkpoint dtype equality and raw tensor storage byte identity",
+    "Span payload parent_identity linkage to support payload as asserted by native initializer",
+    "Complete model common/native same-input outputs and native criterion/loss equality",
+    "All intended per-arm native task gradients and optimizer-group membership",
+    "Optimizer/scheduler update, complete checkpoint save and cold recovery",
+    "Real inputs, actual dataset/evaluator provenance, REC/Mask accuracy",
+    "Formal A/B/C effectiveness, extremal-source-specific advantage, target attainment, Nr3D/Sr3D",
+    "Current normal training status or current remote filesystem state"
+  ],
+  "gradient_scope": {
+    "differentiated_inputs": "New independent native_coarse_center and native_coarse_size leaves only",
+    "held_independent": "Already materialized mask-reference center/size and other p entries",
+    "objective": "sum(fixed centers) + sum(fixed sizes), not native loss",
+    "native_size_region": "Positive fixture values above clamp floor",
+    "asserted_partial_derivative": 0.5,
+    "full_chain_half_derivative_guaranteed": false,
+    "invalid_reference_note": "If the same native prior supplies an invalid reference, both half-weighted paths can depend on the same native input; in the positive-size region the full derivative can be 1."
+  },
+  "evidence_limits": {
+    "receipt_copies_independent": false,
+    "witness_construction": "Local Windows CRLF JSON pretty reencoding of decoded module stdout",
+    "reported_zero_counters_independent_telemetry": false,
+    "remote_original_hash_checks": "15 expected hashes asserted before module operations; report copies bundle map",
+    "remote_original_sources_post_execution_rehashed": false,
+    "reviewer_parent_checkpoint_bytes_read": false,
+    "old_source_audit_authorizes_gpu_training": false,
+    "preparation_documents_are_sealed_historical_snapshots": true,
+    "static_receipt_clocks_cross_host_synchronized": false,
+    "static_clock_note": "Static witness remote timestamp is later than the local transport finish timestamp; no cross-host exact ordering or duration is inferred. Root-absence proof is a recorded snapshot, and the CPU transport reasserts root absence before creation."
+  },
+  "deterministic_verification": {
+    "status": "DETERMINISTIC_LOCAL_HASH_JSON_RECEIPT_AND_AST_CHECKS_PASS",
+    "artifact": "D:/Program Files/UserCache/gb/codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/experiment-audit/2026-10-10_native_controls_actual_CPU/DETERMINISTIC_CHECKS.json",
+    "required_inputs_hashed": 30,
+    "prior_audit_input_hashes_rechecked": 49,
+    "prior_seal_report_hashes_verified": 2,
+    "original_bundle_hashes_verified": 15,
+    "prepared_bundle_hashes_verified": 27,
+    "python_files_AST_parsed": 10,
+    "embedded_remote_program_AST_parsed": true,
+    "base64_stdout_stderr_byte_comparisons_pass": true,
+    "stdout_witness_JSON_equality_pass": true,
+    "local_witness_CRLF_byte_serialization_pass": true,
+    "first_verifier_attempt": "Preserved failure: expected LF instead of observed Windows CRLF in witness serialization; parsed JSON and raw decode checks had already passed.",
+    "second_verifier_attempt": "PASS after explicit observed CRLF assertion; no experiment rerun or input mutation."
+  },
+  "claims": [
+    {
+      "id": "closed_CPU_module_checks",
+      "impact": "supported_with_fixture_and_receipt_limits"
+    },
+    {
+      "id": "full_PV_native_loss_optimizer_recovery",
+      "impact": "unsupported_by_this_execution"
+    },
+    {
+      "id": "all_native_box_gradients_always_half",
+      "impact": "unsupported_and_false_for_some_full_chain_dependencies"
+    },
+    {
+      "id": "dtype_or_raw_storage_bitwise_identity",
+      "impact": "not_explicitly_tested"
+    },
+    {
+      "id": "real_accuracy_A_B_C_effectiveness_or_goal_complete",
+      "impact": "unsupported"
+    },
+    {
+      "id": "GPU_training_admission",
+      "impact": "not_granted_by_this_review"
+    }
+  ],
+  "reviewer_activities": {
+    "local_static_reads_hash_JSON_AST_only": true,
+    "neural_calls": 0,
+    "gpu_calls": 0,
+    "ssh_calls": 0,
+    "current_training_status_queries": 0,
+    "reviewed_input_mutations": 0,
+    "checkpoint_loads": 0,
+    "AUTH_credential_askpass_known_hosts_reads": 0,
+    "MEMORY_md_reads": 0,
+    "additional_bootstrap_files_read": 4,
+    "additional_bootstrap_contents_used_as_evidence": false
+  },
+  "action_items": [
+    "Retain this sealed report with the original closed receipts and failed attempts; qualify future references to exactly this CPU fixture.",
+    "Do not count stdout and witness as independent observations or expand the local half-gradient result.",
+    "Complete separately required full PV/native-loss/per-arm-gradient/optimizer/recovery and real-data checks before using their conclusions; this review starts none of that work."
+  ]
+}

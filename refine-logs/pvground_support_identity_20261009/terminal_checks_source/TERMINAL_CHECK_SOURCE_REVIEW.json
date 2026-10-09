@@ -1,0 +1,527 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "review_date": "2026-10-09",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "summary": "两份新终点检查及新增发布脚本未发现需要阻断执行的确定源码、导入或schema缺陷。WARN表示实际终点尚未收取、CPU重算/GPU恢复尚未执行及下列解释边界，不是实际CPU/GPU PASS。",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "N1",
+      "kind": "interpretation_limit",
+      "title": "Top-k 分歧与边界并列是独立汇总，尚未逐行归因",
+      "detail": "CPU 使用稳定 NumPy 降序排序，正式源码使用 Torch argsort。新脚本分别报告覆盖分歧数量与边界并列行数，没有求两者行集合的交集。因此可报告实际分歧和并列计数，不能声称全部分歧已证明由并列引起。选中 Query 只要求是一个最大分数项，允许原 Torch 合法选取不同的并列最大项，这点正确。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/analyze_identity_campaign.py",
+          "lines": "101-132,170-174"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "271-278"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/publish_terminal_check_preparation_authorized.py",
+          "lines": "37"
+        }
+      ],
+      "required_action": "结果解读保留未逐行归因的限制；如调整发布文字，最小表述为“Top-k 覆盖分歧与边界并列行数分别报告”。当前没有实际分歧数据，不据此制造运行阻断。",
+      "source_defect": false
+    },
+    {
+      "id": "N2",
+      "kind": "measurement_scope",
+      "title": "Box 为保存的真实 GT 框重算，Mask 与 bbs 不属于重新推理",
+      "detail": "Box IoU 确实从 float32 全256框和保存的数据集 root_box 重算；root_box 源于原数据集 center_label/size_gts。CPU 脚本没有重建原始扫描标注。Mask 只重计保存的点级 mask_iou；bbs 来自正式保存的原生分数数组，没有从语义 logits 重新求 softmax。限制已经写在脚本中，不能扩大为原始点 Mask 或独立原始数据重建。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/analyze_identity_campaign.py",
+          "lines": "90-115,128-129,170-174"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "252-278"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+          "lines": "4-9"
+        }
+      ],
+      "required_action": "沿用当前报告中的 saved-point-IoU 和 saved-dataset-label 限定，无源码修复要求。",
+      "source_defect": false
+    },
+    {
+      "id": "N3",
+      "kind": "recovery_scope",
+      "title": "每组前8条集成恢复前向不是完整9508恢复复现",
+      "detail": "恢复脚本读正式 terminal.pth，重建完整1299状态并重载3723步 AdamW，然后各执行一个 B8 完整模型前向。cached_readout_replay_exact 只比较同次前向缓存 Query 上的新回读头输出；没有对正式9508数组作重新恢复前向，也没有恢复终点 RNG 去继续训练。源码明确写 independent_formal_9508_restore_replay=False，范围正确。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/check_identity_terminal_recovery.py",
+          "lines": "101-109,113-153,156-160"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "lines": "19-68"
+        }
+      ],
+      "required_action": "实际完成后仅记录所执行的完整状态/Adam/B8检查；不得标成完整9508恢复逐位一致或新精度结果。",
+      "source_defect": false
+    },
+    {
+      "id": "N4",
+      "kind": "acceptance_scope",
+      "title": "联合命中门槛是待审查诊断，不能单独晋级或计作三项贡献",
+      "detail": "joint_development_thresholds_passed 只检查正式命中是否达到5658/4850；candidate_fused 对 shared_text、同帧 parent 的修复/破坏另列，历史5599/4859增量另列。决策字段名为 pending_recovery_and_fresh_review，且 best_updated/full_goal_complete 均为 false。正式计划要求对公共Text控制及强起点的收益仍由后续实际结果审查判断；本次审查不能代替这些证据。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/analyze_identity_campaign.py",
+          "lines": "133-145,151-174"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/FORMAL_PLAN.md",
+          "lines": "15-19"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/TERMINAL_CHECK_PLAN.md",
+          "lines": "3-11"
+        }
+      ],
+      "required_action": "保留当前待审查标记；原任务完成和实际检查前不得写 CPU/GPU PASS、权重晋级、三项贡献成立或 Nr3D/Sr3D 完成。",
+      "source_defect": false
+    }
+  ],
+  "must_fix_source_issues": [],
+  "routing_requested": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none",
+    "agent": "/root/pvg_identity_terminal_source_review",
+    "evidence": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/TERMINAL_CHECK_SOURCE_REVIEW_REQUEST.txt"
+  },
+  "identity_attestation": {
+    "status": "UNATTESTED",
+    "actual_backend_model": null,
+    "actual_backend_effort": null,
+    "independently_attested": false
+  },
+  "source_checks": [
+    {
+      "area": "三阶段、完整256候选与数据集GT",
+      "conclusion": "源码遍历 initial_formal=9508、holdout=6887、formal=9508，读取每阶段 (N,256,6) float32 框，并用保存的真实 root_box 重算所有候选 IoU；原写出端从 batch['center_label'][:,0] 与 batch['size_gts'][:,0] 获得该框，不用父模型答案作为GT。预计实际执行时共计算6,631,168个候选Box IoU；本次未执行。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/analyze_identity_campaign.py",
+          "lines": "26-37,82-95,143-145"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "252-269"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/actual_joint_det_dataset.py",
+          "lines": "1086-1119,1328-1329,1387-1392"
+        }
+      ]
+    },
+    {
+      "area": "正式文件schema与阈值",
+      "conclusion": "INTAKE的exitcode/files[name,bytes,sha256]与收取器输出一致；阶段 rows.jsonl、boxes.npy、三个scores.npy及metrics字段与正式写出端一致。Box阈值均为严格 >0.25 和 >0.5；联合命中条件 >=5658/4850 等价于9508条严格 >59.5%/>51.0%。CPU坚持float32框运算，要求选择IoU差<1e-5且阈值命中逐条一致。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/collect_identity_campaign_authorized.py",
+          "lines": "29-33,43-60"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/analyze_identity_campaign.py",
+          "lines": "57-67,87-115,157-159"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "226-232,238-241,269-301,305-306,380-381"
+        }
+      ]
+    },
+    {
+      "area": "原生bbs、选择、修复/破坏与排名",
+      "conclusion": "原正式分数由 native_root_bbs 保存；CPU核对所选分数等于行最大值及保存的 score/box，按原正式 query 使用重算IoU，从而不强制NumPy替换Torch并列最大项。三组相对同帧父模型及 candidate_fused 对 shared_text 的repair/damage均重算，并核对原receipt的两组repair/damage。Top16/32/64/256覆盖差异如实保留，不能自动归因并列。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+          "lines": "4-9"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "258-259,271-285"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/analyze_identity_campaign.py",
+          "lines": "40-46,97-139"
+        }
+      ]
+    },
+    {
+      "area": "fit完整覆盖和阶段身份",
+      "conclusion": "3723个连续step逐个存在，前3722组8条、末组2条；Counter与split.fit完全一致且fit唯一数29778。两个arm逐step存在，损失/CE/G/梯度范数有限，父模型每batch一次。initial_formal与formal的row/scene/target/text/root GT和点云/检测/超点标识逐项相同。历史输入差异只报告，不冒称历史独立前向等于同帧控制。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/analyze_identity_campaign.py",
+          "lines": "68-80,86,140-156,162-166"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "153-183,350-362,366"
+        }
+      ]
+    },
+    {
+      "area": "正式8状态delta到完整1299状态",
+      "conclusion": "恢复端与正式terminal payload的arm/candidate_specific/step/new_identity_updates/parent依赖/spec字段一致。父链通过官方1234状态、G、Mask参考和内容Mask修正器重建1314状态；installer严格加载新8状态，替换旧23状态回读头，1314-23+8=1299。恢复端对完整key集合和每个tensor逐一相等核验；父模型冻结，仅新头107040参数保留trainability。readback_model_factory是被阅读的旧比较工厂，实际恢复导入的是build_support_model→build_selected_mask_reference_model。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "363-371"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/check_identity_terminal_recovery.py",
+          "lines": "113-135"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/support_identity_readout.py",
+          "lines": "56-75"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_model_factory.py",
+          "lines": "9-30"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py",
+          "lines": "19-71"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py",
+          "lines": "62-69"
+        }
+      ]
+    },
+    {
+      "area": "Adam、设备和源导入",
+      "conclusion": "恢复先CPU加载父权重与终点、核对完整状态，再model.cuda().eval()，之后按同一head参数顺序构造AdamW并load_state_dict；检查全部8份moment/step/param_groups及每步3723。数据集从manifest.model_source先导入并核验__file__，随后模型目录优先；prepare_data使用已导入的src数据集，models.pv_ground/prepare_data位置被断言核对。没有发现具体导入顺序或CPU/CUDA放置错误。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/check_identity_terminal_recovery.py",
+          "lines": "34-52,64-94,96-109,130-139"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+          "lines": "94-112,131-136"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/prepare_data.py",
+          "lines": "1-11"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py",
+          "lines": "6-10"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+          "lines": "30-44"
+        }
+      ]
+    },
+    {
+      "area": "实际集成单次末层语义头的检查实现",
+      "conclusion": "不是仅调用小头：observed_readback_forward执行model(dict(inputs))，记录refiner→readback→native_semantic_head事件、确认为1次，并检查语义输入输出和同次前向readback前后的框/Mask逐位不变。PVGround在存在readback时延后原生最后头，回读之后唯一调用。后续cached head replay不再次调用原生语义头。无optimizer.step、无新权重写出，并在前向后核验1299状态与正式文件未变。实际执行结果仍未产生。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/check_identity_terminal_recovery.py",
+          "lines": "140-160"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+          "lines": "19-68"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py",
+          "lines": "508-515,560-587"
+        }
+      ]
+    },
+    {
+      "area": "新增发布脚本的操作范围和路径",
+      "conclusion": "源码只生成/同步文档及terminal_checks_source归档文件、更新指定本地Git/doc/Desktop和状态记录；嵌入远端程序仅处理路径、字节和文档，没有/proc、nvidia-smi、训练日志/状态查询、torch或NN命令。远端archive leaf必须resolve为明确的/root/autodl-tmp/mcln_published_evidence_20261005/.../terminal_checks_source，承接前次formal_start相同映射；当前远端状态未查询。前两个Git仓归档证据+文档，第三个只改文档，主仓推origin main；先要求三个仓干净且HEAD等于前次receipt，git add限定selected。只读本地检查证实当前三HEAD/干净状态/四份文档匹配、三个目标目录尚不存在。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/publish_terminal_check_preparation_authorized.py",
+          "lines": "14-32,43-72,84-118"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/publish_identity_campaign_start_authorized.py",
+          "lines": "54,69-74"
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/campaign_start_publication.json",
+          "lines": "1-28"
+        }
+      ]
+    }
+  ],
+  "static_local_checks": {
+    "scope": "Only local bytes, parsed metadata, existing bindings and local Git read-only commands; no model imports/execution.",
+    "preparation_source_bytes_and_existing_digest_match": {
+      "analyze_identity_campaign.py": true,
+      "check_identity_terminal_recovery.py": true
+    },
+    "campaign_existing_source_bindings_match": {
+      "support_identity_readout.py": true,
+      "run_identity_campaign.py": true
+    },
+    "split_protocol": {
+      "path": "C:/Users/gb/.codex_mcln_g0_20260905/refine-logs/scanrefer_local_visual_mesh_pair_20260906_v1/split_protocol.json",
+      "fit_rows": 29778,
+      "fit_unique_rows": 29778,
+      "holdout_rows": 6887,
+      "holdout_unique_rows": 6887,
+      "fit_holdout_disjoint": true,
+      "existing_manifest_digest_match": true
+    },
+    "local_publication_preconditions": {
+      "three_repos_clean": true,
+      "heads_match_prior_publication": true,
+      "three_repo_docs_and_desktop_match_prior": true,
+      "new_archive_directories_absent": true,
+      "heads": [
+        "1e53203f9babcb4ad3535b0d57ec75387b8e32d2",
+        "2159d603cc2d7c24b19dcf233f9f65738ff2e61b",
+        "e669f428ddb839e2f46ef5aa864944299b394020"
+      ]
+    },
+    "python37_ast_current_review": "NOT_EXECUTED_SUCCESSFULLY",
+    "prior_preparation_claims_python37_ast": true,
+    "tool_environment_note": "A stdlib-only Python metadata/AST attempt failed before running: default python resolves to E:\\Scripts\\python.exe and reported 'No pyvenv.cfg file'; 'py' is not installed. No source execution was attempted through another Python. Required metadata and existing-binding checks were completed with PowerShell. This is not an inspected script failure or runtime certification.",
+    "new_hash_scheme_added": false
+  },
+  "reviewed_files": [
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/analyze_identity_campaign.py",
+      "bytes": 11981,
+      "lines": 180,
+      "scope": "full source, lines 1-180"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/check_identity_terminal_recovery.py",
+      "bytes": 10743,
+      "lines": 166,
+      "scope": "full source, lines 1-166"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/TERMINAL_CHECK_PLAN.md",
+      "bytes": 1819,
+      "lines": 11,
+      "scope": "full file"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/TERMINAL_CHECK_PREPARATION.json",
+      "bytes": 1186,
+      "lines": 28,
+      "scope": "full file; compared its two existing byte/digest records"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_campaign.py",
+      "bytes": 25857,
+      "lines": 387,
+      "scope": "full source, lines 1-387"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/run_identity_preflight.py",
+      "bytes": 14148,
+      "lines": 206,
+      "scope": "full source, lines 1-206; not executed"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/support_identity_readout.py",
+      "bytes": 3932,
+      "lines": 75,
+      "scope": "full source, lines 1-75"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/campaign_spec.json",
+      "bytes": 1243,
+      "lines": 36,
+      "scope": "full file and its two existing source bindings"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/FORMAL_PLAN.md",
+      "bytes": 4060,
+      "lines": 21,
+      "scope": "full file"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/FORMAL_SOURCE_REVIEW.json",
+      "bytes": 27266,
+      "lines": 474,
+      "scope": "full prior review; context only, current verdict independently reasoned from source"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/publish_terminal_check_preparation_authorized.py",
+      "bytes": 10134,
+      "lines": 119,
+      "scope": "full source including embedded remote program, lines 1-119; not executed"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/TERMINAL_CHECK_SOURCE_REVIEW_REQUEST.txt",
+      "bytes": 3165,
+      "lines": 31,
+      "scope": "full request-scope record"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/campaign_start_publication.json",
+      "bytes": 845,
+      "lines": 28,
+      "scope": "full prior publication receipt; not current remote-state evidence"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/EXPERIMENT_TRACKER.md",
+      "bytes": 2447,
+      "lines": 21,
+      "scope": "full file"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/publish_identity_campaign_start_authorized.py",
+      "bytes": 13888,
+      "lines": 128,
+      "scope": "existing remote publication mapping only, lines 54 and 69-74"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/collect_identity_campaign_authorized.py",
+      "bytes": 3665,
+      "lines": 68,
+      "scope": "intake-producing schema only, lines 13-17,29-33,43-68; no execution or credential wrapper review"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/mask_support_model_factory.py",
+      "bytes": 1634,
+      "lines": 30,
+      "scope": "full source, lines 1-30"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/selected_mask_reference_factory.py",
+      "bytes": 4680,
+      "lines": 71,
+      "scope": "full source, lines 1-71"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_model_factory.py",
+      "bytes": 4754,
+      "lines": 75,
+      "scope": "full source, lines 1-75; comparison factory, not recovery import"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/readback_preflight_checks.py",
+      "bytes": 8163,
+      "lines": 145,
+      "scope": "full source, lines 1-145"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/whole_model_preflight_checks.py",
+      "bytes": 2436,
+      "lines": 44,
+      "scope": "full source, lines 1-44"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle/native_root_bbs.py",
+      "bytes": 481,
+      "lines": 9,
+      "scope": "full source, lines 1-9"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/models/pv_ground.py",
+      "bytes": 27544,
+      "lines": 624,
+      "scope": "full source, lines 1-624"
+    },
+    {
+      "file": "C:/Users/gb/.codex_mcln_g0_20260905/refine-logs/scanrefer_local_visual_mesh_pair_20260906_v1/split_protocol.json",
+      "bytes": 246139,
+      "lines": 1,
+      "scope": "parsed complete row_ids; counts, uniqueness, disjointness and existing manifest digest checked"
+    },
+    {
+      "file": "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md",
+      "bytes": 2948,
+      "lines": 48,
+      "scope": "full policy"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_compressed_geometry_support_20261008/pair_spec.json",
+      "bytes": 6480,
+      "lines": 104,
+      "scope": "full file"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/input_manifest.json",
+      "bytes": 161881,
+      "lines": 1577,
+      "scope": "routing/split/source-binding metadata parsed; superpoint digest listing not independently validated"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/actual_joint_det_dataset.py",
+      "bytes": 75981,
+      "lines": 1906,
+      "scope": "imports lines 1-100, gt_masks matches, active root GT/output lines 1080-1122 and 1320-1453"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/main_utils.py",
+      "bytes": 24599,
+      "lines": 642,
+      "scope": "imports and header lines 1-75"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/prepare_data.py",
+      "bytes": 19658,
+      "lines": 466,
+      "scope": "imports/voxel wrapper lines 1-70"
+    },
+    {
+      "file": "C:/Users/gb/.codex/tmp/pvground_pretrained_protocol_20261009/SOURCE_INTAKE.json",
+      "bytes": 1841,
+      "scope": "parsed metadata and inspected actual_joint_det_dataset.py export entry lines 11-16; no remote export performed"
+    }
+  ],
+  "review_operations": {
+    "performed": [
+      "Direct local source reads and static reasoning",
+      "Parsed local split and source/preparation/publication metadata",
+      "Compared already-declared byte/digest bindings",
+      "Read-only local Git status/HEAD and document comparison",
+      "Wrote review JSON, Markdown, raw final response and output manifest"
+    ],
+    "not_performed": [
+      "SSH or any remote training/status query",
+      "GPU/CPU neural model execution or import",
+      "Original preflight rerun",
+      "Actual formal CPU metric recount",
+      "Formal terminal checkpoint loading or recovery",
+      "Publisher execution, git commit or git push",
+      "Credential/environment-secret reads",
+      "Active experiment/model/source modification",
+      "Package/environment modification",
+      "New training experiments or sub-agent launch"
+    ]
+  },
+  "runtime_results": {
+    "cpu_recount_executed": false,
+    "terminal_recovery_executed": false,
+    "publisher_executed": false,
+    "actual_cpu_pass": null,
+    "actual_gpu_pass": null,
+    "independent_formal_9508_restore_replay": false,
+    "best_updated": false,
+    "three_effective_contributions_proven": false,
+    "full_goal_complete": false
+  },
+  "acceptance_boundary": "No concrete source blocker found for these prepared checks and publisher. After the original scheduled collector actually finishes, actual saved-artifact recount, actual formal-file full-state/Adam/B8 recovery and fresh result review remain required. This review does not advance protected best5599/4859, joint5658/4850, three effective contributions or independent Nr3D/Sr3D training.",
+  "raw_final_response_file": "C:/Users/gb/.codex/tmp/pvground_support_identity_20261009/TERMINAL_CHECK_SOURCE_REVIEW_RESPONSE.md"
+}

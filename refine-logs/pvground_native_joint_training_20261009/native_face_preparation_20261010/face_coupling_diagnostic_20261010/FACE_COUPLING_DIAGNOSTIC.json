@@ -1,0 +1,74 @@
+{
+  "status": "CLOSED_SELECTED_QUERY_FACE_COUPLING_OFFLINE_DIAGNOSTIC",
+  "time_cst": "2026-10-10T04:08:37.507479+08:00",
+  "rows": 9508,
+  "source_scope": "Closed frozen Span pair selected Query boxes, not ongoing normal training",
+  "source_formal_rows_sha256": "7b29b1646e52e8d3d253b3167b6895df9d789e7325022b0d9440814ec143c7b9",
+  "source_CPU_recount_sha256": "d577412d3bb2485eadd7e26cd2f8297b365b5297c2582e790e0d0bcfa0ecd6c5",
+  "counts": {
+    "native": [
+      5615,
+      4495
+    ],
+    "mask": [
+      5606,
+      4881
+    ],
+    "fixed_half": [
+      5675,
+      4857
+    ],
+    "whole_support": [
+      5676,
+      4921
+    ],
+    "extremal_support": [
+      5677,
+      4920
+    ]
+  },
+  "table": {
+    "all": {
+      "rows": 9508,
+      "opposite_faces_prefer_different_endpoints": 6738,
+      "opposite_preferences_both_margins_over_2cm": 3519,
+      "coupled_projection_upper_bound_below_half": 3883,
+      "independent_GT_face_projection_above_half": 5472,
+      "independent_projection_qualifies_but_all_coupled_axis_gates_excluded_by_bound": 9
+    },
+    "selected_strict_errors": {
+      "rows": 4588,
+      "opposite_faces_prefer_different_endpoints": 3936,
+      "opposite_preferences_both_margins_over_2cm": 2210,
+      "coupled_projection_upper_bound_below_half": 3883,
+      "independent_GT_face_projection_above_half": 552,
+      "independent_projection_qualifies_but_all_coupled_axis_gates_excluded_by_bound": 9
+    },
+    "own_selected_fused_mask_qualified_strict_errors": {
+      "rows": 499,
+      "opposite_faces_prefer_different_endpoints": 447,
+      "opposite_preferences_both_margins_over_2cm": 312,
+      "coupled_projection_upper_bound_below_half": 127,
+      "independent_GT_face_projection_above_half": 316,
+      "independent_projection_qualifies_but_all_coupled_axis_gates_excluded_by_bound": 3
+    }
+  },
+  "upper_bound_method": "Exact piecewise-affine 1D IoU maxima at endpoints and GT-face crossings, then min across axes",
+  "independent_projection_method": "GT-clipped target faces within each native/Mask endpoint interval; one feasible six-face choice, not maximized IoU",
+  "opposite_face_preference_method": "Lower absolute GT face error; source preference margins over2cm is diagnostic subgroup only",
+  "numerical_scope": "float64 bound/projection with1e-6 exclusion and qualification margins; deployed count recheck float32",
+  "maximum_observed_bound_violation": 3.3306690738754696e-16,
+  "constant_lower_slopes": 129,
+  "constant_upper_slopes": 129,
+  "diagnostic_uses_GT": true,
+  "deployable_oracle": false,
+  "new_training_rule": false,
+  "fresh_diagnostic_review_pending": true,
+  "network_source_changed": false,
+  "SSH_calls": 0,
+  "remote_status_queries": 0,
+  "GPU_calls": 0,
+  "neural_calls": 0,
+  "new_formal_accuracy": null,
+  "full_goal_complete": false
+}

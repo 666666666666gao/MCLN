@@ -1,0 +1,114 @@
+{
+  "status": "FORMAL_TERMINAL_FULL_MODEL_AND_ADAM_RECOVERY_COMPLETE",
+  "arms": {
+    "shared_text": {
+      "checkpoint_sha256": "0d1aebe0d1df3e10d5357cb3aeaaebf830f1b50f4518ff6d56729d4fe0ce0fbb",
+      "checkpoint_bytes": 1395159,
+      "full_state_tensors": 1299,
+      "strict_state_reconstruction": true,
+      "optimizer": {
+        "moment_and_step_states": 8,
+        "param_groups": 1,
+        "all_keys_moments_steps_and_groups_exact": true
+      },
+      "optimizer_step": 3723,
+      "actual_deployment_forward": {
+        "order": [
+          "refiner",
+          "readback",
+          "native_semantic_head"
+        ],
+        "final_semantic_head_calls": 1,
+        "native_semantic_input_output_exact": true,
+        "fixed_geometry": {
+          "exact_tensor_keys": [
+            "last_center",
+            "last_pred_size",
+            "p3_coarse_center",
+            "p3_coarse_size",
+            "boundary_logits",
+            "boundary_size_floored",
+            "whole_mask_range_evidence",
+            "last_proj_queries"
+          ],
+          "exact_list_keys": [
+            "last_pred_masks",
+            "sp_last_pred_masks",
+            "adaptive_weights"
+          ]
+        },
+        "fixed_scope": "same complete forward, immediately before versus after readback"
+      },
+      "cached_readout_replay_exact": true,
+      "native_score_shape": [
+        8,
+        256
+      ],
+      "independent_formal_9508_restore_replay": false
+    },
+    "candidate_fused": {
+      "checkpoint_sha256": "a449bc9f5ebd912993f7eb3b7825f46b949a295b83d8727b1bccbc7c1b7afbac",
+      "checkpoint_bytes": 1395159,
+      "full_state_tensors": 1299,
+      "strict_state_reconstruction": true,
+      "optimizer": {
+        "moment_and_step_states": 8,
+        "param_groups": 1,
+        "all_keys_moments_steps_and_groups_exact": true
+      },
+      "optimizer_step": 3723,
+      "actual_deployment_forward": {
+        "order": [
+          "refiner",
+          "readback",
+          "native_semantic_head"
+        ],
+        "final_semantic_head_calls": 1,
+        "native_semantic_input_output_exact": true,
+        "fixed_geometry": {
+          "exact_tensor_keys": [
+            "last_center",
+            "last_pred_size",
+            "p3_coarse_center",
+            "p3_coarse_size",
+            "boundary_logits",
+            "boundary_size_floored",
+            "whole_mask_range_evidence",
+            "last_proj_queries"
+          ],
+          "exact_list_keys": [
+            "last_pred_masks",
+            "sp_last_pred_masks",
+            "adaptive_weights"
+          ]
+        },
+        "fixed_scope": "same complete forward, immediately before versus after readback"
+      },
+      "cached_readout_replay_exact": true,
+      "native_score_shape": [
+        8,
+        256
+      ],
+      "independent_formal_9508_restore_replay": false
+    }
+  },
+  "actual_validation_rows": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "scope": "Strict complete state restoration, Adam restoration and one actual integrated B8 deployment forward per arm; not a repeated 9508 metric run.",
+  "parent_dependencies_unchanged": true,
+  "no_optimizer_update": true,
+  "no_weight_files_written": true,
+  "peak_allocated_bytes": 4379314688,
+  "peak_reserved_bytes": 6092226560,
+  "seconds": 174.2140012010932,
+  "source_sha256": "ff23ed7385510d3df3dd66b08b85462d5172e10a912d035660d0fb65a168e3a6",
+  "best_updated": false
+}

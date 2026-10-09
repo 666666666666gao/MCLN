@@ -1,0 +1,351 @@
+{
+  "schema_version": 1,
+  "review_id": "pvground_novelty_overlap_20261009",
+  "review_date": "2026-10-09",
+  "recommendation": "PROCEED WITH CAUTION",
+  "novelty_score": 5,
+  "score_anchor": "5 = named neighbors with a defensible, testable delta worth a pilot",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "fresh_context": true,
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "agent_id": "/root/pvg_novelty_overlap_20261009",
+  "exact_brief_path": "TASK_BRIEF.md",
+  "full_raw_response_path": "RAW_RESPONSE.md",
+  "primary_report_path": "NOVELTY_REVIEW.md",
+  "source_index_path": "SOURCE_INDEX.json",
+  "source_manifest_path": "SOURCE_MANIFEST.json",
+  "global_reason": "No specific published paper was found to contain the complete precise C1+C2+C3 proposal. C1 overlaps established mask-derived 3D boxes; C2 is a small native-feature residual MLP without mechanism controls; C3 has a distinguishable intervention but remains unimplemented. Three effective contributions are not established.",
+  "abandon_qualification_met": false,
+  "exact_duplicate_paper": null,
+  "target": {
+    "benchmark": "ScanRefer",
+    "denominator": 9508,
+    "thresholds_are_strict": true,
+    "target_percent": [
+      59.5,
+      51
+    ],
+    "minimum_hits": [
+      5658,
+      4850
+    ],
+    "retained_hits": [
+      5599,
+      4859
+    ],
+    "retained_percent": [
+      58.88725283971392,
+      51.10433319310055
+    ],
+    "wide_hit_gap": 59,
+    "strict_hit_margin_over_minimum": 9,
+    "seed": 2027,
+    "additional_seeds_requested": false,
+    "three_effective_contributions": false,
+    "nr3d_sr3d_gate": "After one final complete ScanRefer model meets both metrics and three direct effective-contribution controls; independently initialize each dataset model from the corresponding author pretrained core."
+  },
+  "execution": {
+    "ssh_calls": 0,
+    "gpu_forwards": 0,
+    "training_jobs": 0,
+    "dependency_installs": 0,
+    "experiment_source_modifications": 0,
+    "pretrained_reproduction_reopened": false,
+    "source_operations": "Read/hash specified experiment artifacts; downloaded public papers and source into report directory; generated reports.",
+    "credential_files_read": false,
+    "memory_md_read": false,
+    "startup_note": "SOUL/USER and daily continuity files were read under supplied session instructions; daily output was inadvertently excessive and truncated, not used as scientific evidence and not exported in this report."
+  },
+  "baseline_overlap": [
+    {
+      "source": "P1",
+      "features": [
+        "sparse voxel pyramid",
+        "voxel-to-keypoint VSA",
+        "text-guided differentiable sampling",
+        "text-conditioned 256-query features"
+      ],
+      "novel": false
+    },
+    {
+      "source": "P1/P2/CODE1",
+      "features": [
+        "MCLN decoder and multi-task box/mask heads",
+        "relative superpoint aggregation",
+        "query-specific SP masks",
+        "text-SP masks",
+        "adaptive fusion",
+        "0.5 threshold"
+      ],
+      "novel": false
+    },
+    {
+      "source": "P2/P7/CODE1",
+      "features": [
+        "common referring score selects the corresponding box and mask",
+        "256 candidates and width 288"
+      ],
+      "novel": false
+    },
+    {
+      "source": "CODE1",
+      "features": [
+        "original decoded boxes come from direct prediction heads before final mask generation"
+      ],
+      "delta_exists": "Current predicted support extrema subsequently determine candidate geometry."
+    }
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "status": "IMPLEMENTED_REFERENCE_MECHANISM; historical efficacy not reaudited here",
+      "recommendation": "PROCEED WITH CAUTION",
+      "code_evidence": [
+        "mask_reference.py:18-28",
+        "mask_reference.py:83-117",
+        "pvground_boundary_box_refiner.py:18-30",
+        "mask_support_corrector.py:70-74"
+      ],
+      "verified_delta": "For every retained PV candidate, threshold its native text/query-fused support, aggregate extrema of the observed sampled SP members, and use that box directly in the zero-offset reference state.",
+      "closest_prior": [
+        {
+          "source": "P3",
+          "name": "EG-3DVG",
+          "overlap": "SP mask lifted to points, tight mask box, MLP/mask box combination",
+          "difference": "Current uses native fused candidate masks and pure reference extent at zero offset; EG uses a 0.5 final blend."
+        },
+        {
+          "source": "P4",
+          "name": "UniVLG",
+          "overlap": "mask-based 3D localization and mask-box supervision; outlier-induced box inflation",
+          "difference": "Current is a frozen-PV terminal intervention, not its joint RGB/RGB-D language-conditioned decoder."
+        },
+        {
+          "source": "P5",
+          "name": "Mask DINO",
+          "overlap": "predicted masks initialize reference boxes",
+          "difference": "2D encoder-to-decoder anchors versus final candidate 3D observed-member support."
+        },
+        {
+          "source": "P6",
+          "name": "D-FINE",
+          "overlap": "reference-box residual edge distributions/nonuniform offsets",
+          "difference": "3D six-face use is an adaptation; current strongest output is zero, not evidence of learned distribution gains."
+        }
+      ],
+      "thin_delta_reason": "The actual strongest operator is already a mask-to-box construction; changing its attachment point or alpha is a narrow design choice without direct comparators.",
+      "cannot_claim": [
+        "first mask-to-3D-box",
+        "first actual point-support bounding extent",
+        "first mask-enhanced reference",
+        "first distribution boundary decoder",
+        "effective learned six-face head in the zero-output state"
+      ],
+      "required_direct_controls": [
+        "Same-parent original box vs pure-mask box vs 0.5 blend",
+        "Text-only/query-only/fused support if fusion is claimed essential",
+        "SP representative-coordinate extent vs member extent if the member distinction is claimed",
+        "Zero-output versus trained geometry state reported separately"
+      ]
+    },
+    {
+      "id": "C2",
+      "status": "IMPLEMENTED; small seed2027 same-forward formal gain",
+      "recommendation": "PROCEED WITH CAUTION",
+      "parameters": 27841,
+      "code_evidence": [
+        "mask_support_corrector.py:16-52",
+        "mask_support_corrector.py:70-84",
+        "mask_support_model_factory.py:17-28",
+        "matched_mask_objective.py:39-57"
+      ],
+      "verified_delta": "A terminal Query/SP residual MLP reads existing content, response/fusion state and member count, alters Query mask logits, and leaves native ranking unchanged.",
+      "closest_prior": [
+        {
+          "source": "P2/P7",
+          "name": "MCLN / 3DRefTR",
+          "overlap": "language-conditioned query-SP masks and native referring-score selection",
+          "difference": "Current adds a terminal pairwise residual logit function with mask-state and count inputs."
+        },
+        {
+          "source": "P11",
+          "name": "Relation3D",
+          "overlap": "query-driven SP refinement and mask-derived geometry",
+          "difference": "It updates SP features through cross-attention with contrastive supervision, not the frozen-PV residual logit pathway."
+        },
+        {
+          "source": "P12",
+          "name": "AQ3D",
+          "overlap": "SPs read queries before masks are recomputed",
+          "difference": "Its decoder feature refinement, adaptive query count and quality scoring differ from fixed-all256 frozen-score correction."
+        }
+      ],
+      "evidence": {
+        "same_forward_hit_gain": [
+          1,
+          11
+        ],
+        "historical_independent_pass_hit_gain": [
+          1,
+          3
+        ],
+        "historical_gain_causal_attribution": "not established because parent forward drift was observed",
+        "box_geometry_input_gain": "not established; arms tie"
+      },
+      "thin_delta_reason": "The new operator is a conventional small residual MLP; no input ablation yet separates its purported support interaction from extra capacity or fine-tuning.",
+      "cannot_claim": [
+        "first language-conditioned mask repair",
+        "first query-to-SP refinement",
+        "broad robust gain",
+        "effective explicit box geometry"
+      ],
+      "required_direct_controls": [
+        "Zero residual/frozen same-forward parent",
+        "Equal-capacity response-only control lacking Query/SP content",
+        "Same-budget native mask-projection fine-tuning for a standalone method claim",
+        "Paired selected-query support and box repairs/damages under identical cached parent forwards"
+      ]
+    },
+    {
+      "id": "C3",
+      "status": "PROPOSED_NOT_IMPLEMENTED_NOT_EFFECTIVE",
+      "recommendation": "PROCEED",
+      "early_novelty_gate": "CLEARS",
+      "verified_current_code_gap": "matched_mask_objective indexes only Hungarian-matched queries and records expanded_positive_queries=0.",
+      "exact_proposal": "Add root Query/fused Mask supervision only to q*=argmax native last/bbs if q* is absent from every original frozen-parent match; preserve all existing matched-instance responsibility, original matched loss, frozen score path and all256 inference candidates.",
+      "closest_prior": [
+        {
+          "source": "P8",
+          "name": "MS-DETR",
+          "overlap": "extra positive supervision in a primary query decoder",
+          "difference": "GT-conditioned top-K matching and additional prediction supervision versus exactly the deployed native winner, only if unmatched, with score frozen."
+        },
+        {
+          "source": "P9",
+          "name": "iFAN",
+          "overlap": "training/inference query-quality mismatch and unmatched competitors",
+          "difference": "It changes quality calibration/ranking and distills layers; C3 repairs support of the same fixed winner."
+        },
+        {
+          "source": "P13",
+          "name": "BS-O2G",
+          "overlap": "useful non-owner queries excluded from positive ownership",
+          "difference": "Graph messages/gradient sharing preserve labels; C3 explicitly adds one mask responsibility."
+        },
+        {
+          "source": "P14",
+          "name": "SegmentAnyTreeV2",
+          "overlap": "3D one-to-many mask supervision",
+          "difference": "GT instance identity of query seed determines its assignment, not native language-score winner eligibility."
+        },
+        {
+          "source": "P10",
+          "name": "3DRP-Net",
+          "overlap": "supervision designed around selecting a better grounding candidate",
+          "difference": "IoU-ranked soft referring-score targets, not fixed-score selected-query mask training."
+        }
+      ],
+      "sensible_next_pilot": true,
+      "expected_accuracy_gain": null,
+      "qualification": "Training q* status frequencies and recoverable support errors are unmeasured in supplied artifacts; eligibility cannot be inferred from box overlap proxies. q* already matched to a non-root instance stays untouched.",
+      "cannot_claim": [
+        "first inference-aware learning",
+        "first one-to-many supervision",
+        "first unmatched-query training",
+        "preserves a strictly one-to-one total objective",
+        "proven third effective contribution"
+      ],
+      "required_direct_controls": [
+        "Matched-only versus matched+selected-unmatched; same initialization/seed2027/data/budget",
+        "Record q* matched-root/matched-other/unmatched counts on train data",
+        "Keep original matched loss normalization unchanged; report new loss normalization and weight",
+        "Equal-extra-positive-count control (e.g. random unmatched or prescribed GT-conditioned positive)",
+        "Exact unchanged score values/selected indices and original matching responsibilities"
+      ]
+    }
+  ],
+  "mechanism_status": [
+    {
+      "name": "fused member-extents reference",
+      "state": "implemented and protected; no new historical efficacy audit"
+    },
+    {
+      "name": "content support corrector",
+      "state": "audited limited same-forward seed2027 gain"
+    },
+    {
+      "name": "signed-log box-conditioned corrector",
+      "state": "no incremental Box-label gain over content; 5599/4859 tie"
+    },
+    {
+      "name": "support identity shared_text",
+      "state": "raw completed negative result; independent terminal audit pending",
+      "hits": [
+        5586,
+        4829
+      ],
+      "net_parent": [
+        -13,
+        -30
+      ]
+    },
+    {
+      "name": "support identity candidate_fused",
+      "state": "raw completed negative result; independent terminal audit pending",
+      "hits": [
+        5582,
+        4827
+      ],
+      "net_parent": [
+        -17,
+        -32
+      ]
+    },
+    {
+      "name": "C3 selected-unmatched responsibility",
+      "state": "unimplemented hypothesis"
+    }
+  ],
+  "error_evidence": {
+    "source": "pvground_current_error_partition_20261009/SUMMARY.json",
+    "wide_errors": 3909,
+    "zero_root_box_overlap": 3074,
+    "another_expressed_gt_higher_overlap": 3367,
+    "expressed_gt_pool_instances": 2068,
+    "scenes": 141,
+    "member_panel_cases": 191,
+    "overextending_faces": 761,
+    "pure_background_only_possible_source_faces": 760,
+    "missing_faces": 180,
+    "missing_faces_with_observed_target_outside": 180,
+    "limits": [
+      "Box-overlap proxies do not establish semantic instance identity",
+      "GT pool omits unexpressed objects",
+      "191 cases were selected on old-model errors, not representative",
+      "Current selected foreground memberships were not reconstructed"
+    ]
+  },
+  "gradient_constraint": {
+    "evidence": "mask_reference.py:18-23",
+    "finding": "Mask logits and alpha are detached before threshold and min/max.",
+    "implication": "Appending a box loss to this existing extent output does not train the mask corrector through that path; support-target losses act on the live logit path."
+  },
+  "prioritized_optimization": [
+    "Preserve retained5599/4859 and finish separate identity-terminal audit; no pretrained reproduction reopening.",
+    "Measure train-only native winner assignment status; run minimal C3 paired pilot with count-matched extra-supervision control and frozen-score witnesses.",
+    "Resolve C1 pure-mask versus original-box versus 0.5-blend attribution; resolve C2 content-versus-capacity attribution.",
+    "Only if remaining observed support failures justify it, study a live-gradient support-boundary objective; no unsupported mixed-SP subdivision or extra ranking module.",
+    "Require three direct effective-contribution ablations and same-model joint ScanRefer threshold before independent Nr3D/Sr3D author-initialized training."
+  ],
+  "positioning": "On a PV-Ground model with native text ranking and all candidates fixed, use predicted support for localization and test whether supplementing the deployed winner's mask responsibility repairs support errors missed by matched-only training.",
+  "search_limitations": [
+    "Broad primary-source search including 2025-2026 and April-October 2026 is not a proof of global absence.",
+    "BS-O2G source date text conflicts with its arXiv identifier month; exact month is not relied upon.",
+    "Local provenance hashes establish inspected bytes, not a new independent performance audit."
+  ]
+}

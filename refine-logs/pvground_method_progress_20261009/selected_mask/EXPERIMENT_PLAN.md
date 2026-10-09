@@ -1,0 +1,11 @@
+# Selected-Query Mask responsibility pilot — prepared, not launched
+
+User stopped pretrained-reproduction work. Goal is same-model ScanRefer >59.5/>51, three effective contributions, then author-initialized Nr/Sr, seed2027 only.
+
+Start from retained support content 5599/4859; both independent heads use the exact same nonzero 7446-update state and fresh Adam. Frozen PV/G/ref/semantic/contrast/geometry, all256 kept. Control continues native matched Query/fused Mask focal/Dice [5,1,10,2]. Treatment adds the same four Mask terms only on the actual native-bbs-selected Query when it is unmatched to every native GT. If already matched to root or another instance, do not override its role. GT is dataset root Mask, native majority-superpoint construction. The extra budget is one Query per expression, averaged over the actual batch; no score loss, quality ranking or new inference parameters.
+
+This tests whether the actual delivered Query support can be repaired rather than teaching another ranking head. Query intention is a training hypothesis, not proof of physical instance identity. Shared correction parameters can still harm other candidates; no guarantee of improving either threshold.
+
+Real B8 two-update sanity: frozen states, gradients, old native loss reconciliation, selected-only direct Mask gradient, matched-instance exclusion, initial/current-best Mask/Box equivalence, full1314-state and Adam restoration/integrated forward. No preflight updates carried to fit. Formal fit begins directly after successful sanity and source review: batch8, effective8, seed2027, LR1e-5, WD.0005, clip.1, 29778 fit rows once/3723 updates. All9508 formal validation afterward; no additional initial full or author-seen6887 runs. Total learned support history becomes11169 updates, plus originalG history.
+
+Promote only after full metric/recovery/independent audit, relative to same-budget control and retained5599/4859. While current strict target is already met, require >=4850 strict hits, prioritize wide hits toward5658, strict as tie breaker. Three effective contributions remain unproven. Mask-to-Box overlaps Mask DINO/EG-3DVG; inference-aware supervision has iFAN/MS-DETR neighbors. Novelty review is in progress, no claim of first Mask/Box cooperation.

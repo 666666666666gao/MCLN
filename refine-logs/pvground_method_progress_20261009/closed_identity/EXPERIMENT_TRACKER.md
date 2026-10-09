@@ -1,0 +1,28 @@
+# 支撑内容判别实验进度
+
+用户目标：同一完整9508条ScanRefer模型严格>59.5%／>51.0%，至少5658／4850；三项有直接有效性证据的贡献之后，固定完整方法独立训练Nr3D／Sr3D。允许作者对应预训练权重，seed2027，不做多seed。
+
+保留最好：5599／4859，未晋级新模型。
+
+| 项目 | 实际状态 | 证据 |
+|---|---|---|
+| 当前错误分析 | 已执行，3909条宽松错误，3074条所选框与root无交集，110条Mask合格／框不合格 | ../pvground_current_error_partition_20261009/SUMMARY.json |
+| 原始B8预检 | 已完成exit0，2026-10-09 03:20:46 CST实际结束；两组各两步，无新权重／正式精度 | actual/preflight.json、actual/INTAKE.json |
+| 正式源码审查 | SOURCE_ONLY WARN，0阻断；完整终点恢复、缓存归因和验证范围仍需保留限制 | FORMAL_SOURCE_REVIEW.json |
+| 正式配对实验 | 原始PID973371，04:17:29 CST实际启动，初始9508评估在fit之前；正式终态与更新数尚未观测 | CAMPAIGN_LAUNCH.json |
+| 正式结果收取 | 唯一原收取session9320已启动本地等待；首次远端检查12:12:29 CST，预计12:17:29结束，之后240秒 | ORIGINAL_CAMPAIGN_COLLECTOR.json |
+| 文档及代码发布 | §20.376.112，主仓库1e53203；四本地文档及远端／Git已核对 | campaign_start_publication.json |
+| 终点CPU重算／完整恢复／结果审查 | 等原实验实际完成后执行，尚未通过 | 待实际原始终点 |
+| 晋级及清理 | 未晋级；活动数组和所有必要权重继续保留，完整归档审查后清理负终点 | 当前无新正式成绩 |
+| 三有效贡献、Nr3D／Sr3D | 尚未完成，不因本次工程检查通过而计为已达目标 | 后续直接控制与真实独立训练 |
+
+本轮每组重新建立零输出107040参数头和空Adam，不承接M0优化；同帧冻结父模型、框／Mask全部相同，唯一变量公共Text／各Query融合前景的视觉内容。native＋G、B8、累积1、LR1e-5、WD5e-4、clip0.1、29778输入一次／3723更新。历史G／Mask修正器训练预算和检测扰动差异完整披露；6887模块holdout是作者见过训练场景的开发集，不是未见最终测试。
+
+终点检查源码已准备并通过Python3.7语法解析，仅为静态检查。完整CPU重算、正式文件完整模型／Adam恢复、实际结果审查均未执行；不改变当前最佳或正在运行的原实验。
+
+终点检查源码及仅同步文档的发布器已完成独立上下文SOURCE_ONLY审查：WARN、0阻断，同族provisional、实际后端UNATTESTED。Top-k分歧和边界并列仅分别汇总，Mask仅重计保存IoU，B8恢复不等于9508复现。实际CPU／GPU检查仍未执行，等待原收取器。
+
+- 2026-10-09T11:09:34.318103+08:00: Prepared run_terminal_recovery_authorized.py; Python 3.7 AST passed; source review pending. Requires original campaign intake exit 0, warm runtime and serial GPU lock. No SSH/NN invocation, weights or accuracy claim.
+
+- 2026-10-09T12:03:48.152338+08:00: Actual original campaign ended 2026-10-09 08:03:33 CST (exit0), observed by one user-requested status check at11:36. Original local native collector handle missing; no matching Python collector process found; collected only original closed campaign via session16941 (exit0). 25 remote files /293068238 bytes verified into campaign_actual/INTAKE.json. No original NN relaunch. First forecast was too conservative; future timings use actual3h46 campaign/5h16 prior Mask-pair durations.
+- Actual CPU_RECOUNT.json rechecked all phases/all256 Box predictions and formal counts: parent5599/4859, shared_text5586/4829, candidate_fused5582/4827. Actual terminal recovery session73457 closed exit0, both1299-state models and Adam restored exactly, integrated first8 validation rows perarm; this is not a repeated full9508 restore replay. Best not updated; fresh actual audit pending.

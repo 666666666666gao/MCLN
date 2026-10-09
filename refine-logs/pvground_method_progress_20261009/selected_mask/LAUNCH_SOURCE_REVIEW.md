@@ -1,0 +1,141 @@
+# Selected-query Mask launcher source review
+
+**Verdict: PASS.** No blocking or non-blocking source findings were found. Execution scope is `SOURCE_ONLY`. This is a fresh-context, same-family, provisional review. Requested routing: `gpt-6-astra` / `max`; actual backend/model/effort: **UNATTESTED**.
+
+The four launcher/control scripts are consistent with the current selected-query Mask pilot and generated receipt schema. No blocking source defect was found. This is source acceptance only: M0 must still close successfully, and a separate fresh ACTUAL_PREFLIGHT review must pass before fit.
+
+The exact request is preserved in `SOURCE_LAUNCH_REQUEST.txt`. The structured report is `LAUNCH_SOURCE_REVIEW.json`. Review sealed at 2026-10-09T04:18:02.560Z.
+
+## Blocking findings
+
+None. No source patch is required by this review.
+
+## Source findings and evidence
+
+### 1. M0-only deployment and existing source review gate — PASS
+
+Deployment requires the computational SOURCE_REVIEW.json to have review_type SOURCE_ONLY, PASS/WARN, no blockers, source_seal.pair_spec_sha256, and source_seal.python_files matching disk. It also checks this launch review's source paths. The command launches only controller --phase preflight under the existing GPU flock.
+
+Evidence: `deploy_preflight_authorized.py:13-22`; `deploy_preflight_authorized.py:68-87`; `controller.py:13-15`; `controller.py:45-48`.
+
+### 2. Closed old campaign, warmed runtime, idle A100 and existing dependency protection — PASS
+
+Before creating the new experiment directory the remote probe requires old campaign.exit=0 and campaign/receipt.json status complete, zero compute processes, exactly one A100 with 40,000-45,000 MiB and less than 500 MiB used, and sufficient disk. The verified existing runtime is reused. Official/G/mask-reference/current-best checkpoint bytes are checked by the controller before and after the phase; the runner also checks source/data/evaluator dependencies. The reviewed code does not delete or overwrite protected parents.
+
+Evidence: `deploy_preflight_authorized.py:28-56`; `controller.py:21-24`; `controller.py:61-65`; `run_mask_support_pair.py:45-79`.
+
+### 3. Current M0 receipts support the separate actual-review fit gate — PASS
+
+Observer output is local preflight_wait.json with observer_closed, controller_alive, exitcode, and nested status; collected M0 is preflight_complete/preflight.json. Fit expects those exact paths and fields, requires a fresh ACTUAL_PREFLIGHT PASS/WARN report with no blockers and hashes for the wait, M0 and current spec, and verifies two updates, zero weight files, separate optimizers, 27,841 parameters per arm, complete 1,314-state CPU restore, exact GPU head/Adam restore, same-cache native integration, and initial warm equivalence. The fit controller additionally requires passing selected-only output-gradient witnesses and an exact M0 spec hash.
+
+Evidence: `observe_preflight_authorized.py:26-30`; `observe_preflight_authorized.py:46-70`; `launch_fit_authorized.py:15-44`; `controller.py:25-33`; `paired_support_loop.py:217-294`; `paired_support_loop.py:399-423`.
+
+### 4. Selected-query scalar and direct output-gradient witness after current source update — PASS
+
+The current witness signature and call agree. It reconciles actual root dataset masks and the [5,1,10,2] scalar averaged over the actual batch, then asserts a nonzero extra gradient only on eligible native-bbs-selected unmatched outputs and zero direct extra gradients on every matched and unselected output. These are runtime assertions still awaiting actual M0 evidence.
+
+Evidence: `selected_query_mask_objective.py:7-42`; `selected_query_mask_objective.py:45-92`; `paired_support_loop.py:130-139`.
+
+### 5. Exact two-arm fit schedule and no M0 optimizer carryover — PASS
+
+A new train subprocess starts both independent existing heads from the same protected 7,446-update warm state with fresh AdamW. It processes the exact 29,778 fit rows once, 3,723 updates per arm at batch size 8 with the final batch of 2, using one shared frozen parent forward. The only scheduled evaluation is formal over all 9,508 validation rows in a separate subprocess. The retained initial_formal CLI option is not in the authorized controller schedule; there is no new 6,887-row evaluation.
+
+Evidence: `controller.py:45-48`; `paired_support_loop.py:36-68`; `paired_support_loop.py:392-447`; `run_mask_support_pair.py:141-200`; `run_mask_support_pair.py:225-230`.
+
+### 6. Model identity, native ranking, ground truth and promotion scope — PASS
+
+Both arms keep all 256 queries, native semantic/bbs scores, the same selected query for Box and Mask, frozen parent/geometry and only 27,841 trainable Mask correction parameters per arm. Formal metrics use dataset root GT and reconcile counts to the native evaluator. Seed is 2027. Protected 5,599/4,859 hits and candidate 5,658/4,850 gates are retained. No automatic promotion or author-replication restart is introduced.
+
+Evidence: `support_pair_forward.py:5-40`; `mask_support_model_factory.py:9-29`; `mask_support_corrector.py:24-52`; `paired_support_loop.py:297-389`; `pair_spec.json`; `EXPERIMENT_PLAN.md:5-11`.
+
+### 7. Exit and failure evidence — PASS
+
+Each child exit is written before branching on nonzero status; the controller records a failed status and stops rather than starting the next mode. Each supervisor shell records its controller exit. The observer saves the terminal observation, fetches logs and JSON/exit files for either exit code, and writes a closed wait receipt without converting failure to success. It does not restart NN work.
+
+Evidence: `controller.py:49-65`; `deploy_preflight_authorized.py:68-73`; `launch_fit_authorized.py:83-88`; `observe_preflight_authorized.py:41-77`.
+
+### 8. Disk reserve arithmetic — PASS
+
+The fit reserve correctly covers the actual saved fields: three all-256 6D Box arrays, scores, root GT and int64 row IDs, plus per-archive overhead, 128 MiB for rows/logs and 2 MiB for the two small head/Adam payloads. M0 reserves 256 MiB plus uploaded bytes and writes no weight files.
+
+Evidence: `launch_fit_authorized.py:55-58`; `paired_support_loop.py:172-193`; `paired_support_loop.py:317-321`.
+
+### 9. Runtime estimates and observation cadence — PASS
+
+M0 estimate 480 s comes from prior 479.433 s, with first check at 300 s and later checks 240 s apart. Fit estimate is round(18,990.032 - 2,927.655 - 2,893.475 + 3,868.926) = 17,038 s; first check is 16,738 s (300 s before estimated finish), then 240 s. Elapsed time is not treated as completion and triggers no automatic restart.
+
+Evidence: `deploy_preflight_authorized.py:79-84`; `observe_preflight_authorized.py:16-20`; `observe_preflight_authorized.py:74-77`; `launch_fit_authorized.py:93-100`.
+
+The fit reserve calculation is:
+
+```text
+ceil(9508 / 8) = 1189 padded batches
+8 × (3 × 256 × 6 + 256 + 6) × 4 + 8 × 8 = 155,904 bytes/batch
+1189 × (155,904 + 16,384) = 204,850,432 bytes
++ 128 MiB rows/logs + 2 MiB head checkpoints = 341,165,312 bytes
+= 325.360595703125 MiB
+```
+
+This matches the arrays actually saved by `evaluate()`. Checkpoint retention here is two head-delta/Adam payloads; the four protected parent dependencies are reused. Actual remote free space must still satisfy the launch probe.
+
+## Review gates and receipt schema
+
+`deploy_preflight_authorized.py` expects the computational review alias `SOURCE_REVIEW.json` to supply `review_type = SOURCE_ONLY`, a PASS/WARN verdict with an empty `blocking_findings`, and `source_seal.pair_spec_sha256` plus the `source_seal.python_files` mapping. The R2 report was deliberately not read or included in this source seal while it was being produced. Deployment itself must validate that alias and its current hashes.
+
+The current observer produces `preflight_wait.json` with `observer_closed`, `controller_alive`, `exitcode`, and a nested controller `status`; the actual M0 receipt is copied to `preflight_complete/preflight.json`. These paths and fields match the fit launcher. The separate `PREFLIGHT_ACTUAL_REVIEW.json` must declare `execution_scope = ACTUAL_PREFLIGHT`, `fresh_context = true`, a PASS/WARN verdict with no blockers, and current `reviewed_files` hashes including all of:
+
+- `preflight_wait.json`
+- `preflight_complete/preflight.json`
+- `pair_spec.json`
+
+Fit remains gated by actual two-update proof, exact full-state/head/Adam restore, frozen parent and Box state, warm-output equivalence, and passing selected-only extra-output-gradient witnesses. This source PASS does not replace that actual review. No author-replication rerun or automatic candidate promotion is requested.
+
+## Validation and limits
+
+- **source_read:** All fifteen source/plan/spec inputs in reviewed_files were read; changed computational inputs and pair_spec were reread before sealing.
+- **new_runner_hash_consistency:** PASS: all nine pair_spec.new_runner_files digests match the current local files.
+- **arithmetic:** Recomputed locally without importing any experiment module.
+- **automated_python_ast_check:** NOT_RUN: the attempted standard-library-only python -B command stopped before the script with 'No pyvenv.cfg file' from E:\Scripts\python.exe. Manual source review continued; no syntax-test success is claimed.
+- **execution:** No launcher, experiment module, SSH connection, GPU query, NN work, pickle load, installation, credential access or memory access was performed.
+
+During the review the operator added the R2 scalar/root-GT witness, changing paired_support_loop.py, selected_query_mask_objective.py and pair_spec.json. Those current inputs were reread and sealed. The four launchers were unchanged. This review does not hash or consume the concurrently written computational R2 report.
+
+- Source review cannot attest remote files, available disk, GPU idleness, actual gradients, memory use, successful restore, achieved accuracy, or actual model/effort routing.
+- Remote helper/official model sources were not independently reread here; their existing hash checks and the separate computational R2 review remain the relevant gates.
+- A source PASS allows the operator to proceed through the existing M0 gate once computational R2 passes; it is not an actual-M0 pass or fit completion.
+
+## Reviewed source snapshot
+
+All fifteen digests were rechecked immediately before sealing. No source file was changed by this reviewer. Existing project hashes were verified; no new hashing or security mechanism was added.
+
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\controller.py`
+  SHA-256: `d9a944cc721332b0b46ff71eee1c8fe6a330146d4b6e499c26fa0bb12d09d360`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\deploy_preflight_authorized.py`
+  SHA-256: `495162b5b259e177f28b1a74e5607afbb3b1fb4eadf4523e208ca12fd9a2c0c1`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\observe_preflight_authorized.py`
+  SHA-256: `5c9bd5190db4548fc1dd32b7471b8220befe26537cc4fa736069b837a44d2fd9`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\launch_fit_authorized.py`
+  SHA-256: `2d9b74d90aea4fe40cb9a50bcb68c3999d80222d741888f59add9d893ceb9b0f`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\pair_spec.json`
+  SHA-256: `fcdccf7dc1694a266927552057268f9b5d7c90593e23fce37a545a92d45d4a56`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\EXPERIMENT_PLAN.md`
+  SHA-256: `4deff45cbe072c5ad6d6b02f447e580c43570b11408b45af5f2e20d734bd5fbb`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\run_mask_support_pair.py`
+  SHA-256: `51413967adca1a644731040565f312856f5854ca85f881c23791bca20b1ab69a`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\paired_support_loop.py`
+  SHA-256: `3d5ce836c19eb90de6a69aa7c2e0fbe27eeb3e731c2d211f0e69a64db8acd484`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\selected_query_mask_objective.py`
+  SHA-256: `3d917a0ca8a14e11ae327875b65179cd0ea4df5de89fa12fc8debe831c3eb702`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\support_pair_forward.py`
+  SHA-256: `74d0c3d2347aabf7087be42e1de4f9a32ffcba8d65b51f831106813cffa8ac9a`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\mask_support_model_factory.py`
+  SHA-256: `e9fd9ad7dab0d18dfc4c9089d85af57eb958d86768ec750c5f609551a8c87ab6`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\mask_support_corrector.py`
+  SHA-256: `14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\matched_mask_objective.py`
+  SHA-256: `67d05d069e1b748477af1a3c84b586375effbc21f1fd99b328ec7029f7e17788`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\selected_mask_reference_factory.py`
+  SHA-256: `09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84`
+- `C:\Users\gb\.codex\tmp\pvground_selected_mask_training_20261009\mask_reference.py`
+  SHA-256: `fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce`
+

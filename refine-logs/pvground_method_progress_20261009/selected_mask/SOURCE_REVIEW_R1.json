@@ -1,0 +1,282 @@
+{
+  "revision": "R1",
+  "review_date_local": "2026-10-09",
+  "review_type": "SOURCE_ONLY",
+  "verdict": "FAIL",
+  "launch_gate": "BLOCKED_PENDING_SOURCE_FIX_AND_REVIEW",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend": "UNATTESTED",
+  "independence": "same-family/provisional; not an externally attested independent review",
+  "reviewed_root": "C:/Users/gb/.codex/tmp/pvground_selected_mask_training_20261009",
+  "exact_request_file": "SOURCE_REVIEW_REQUEST_R1.txt",
+  "full_response_file": "SOURCE_REVIEW_R1.md",
+  "execution_scope": {
+    "ssh": false,
+    "gpu": false,
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "pickle_loads": 0,
+    "dependency_installs": 0,
+    "computational_source_edits": 0,
+    "credentials_read": false,
+    "memory_read": false,
+    "old_evidence_overwritten": false
+  },
+  "source_seal": {
+    "pair_spec_sha256": "17eb93ae6b8821bc849719185f2b00d05b700e8c44215143d651026dd390982d",
+    "experiment_plan_sha256": "4deff45cbe072c5ad6d6b02f447e580c43570b11408b45af5f2e20d734bd5fbb",
+    "python_files": {
+      "mask_reference.py": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+      "mask_support_corrector.py": "14c37bec1babb36d4f7b8fc2cc5883f6487fd403f9543e258e04c0a6c7cc4b7a",
+      "mask_support_model_factory.py": "e9fd9ad7dab0d18dfc4c9089d85af57eb958d86768ec750c5f609551a8c87ab6",
+      "matched_mask_objective.py": "67d05d069e1b748477af1a3c84b586375effbc21f1fd99b328ec7029f7e17788",
+      "paired_support_loop.py": "e53337ce73354fb8e1bb0d02aa5767559fee14f8f2b7efe27503e8ea0f16508f",
+      "run_mask_support_pair.py": "51413967adca1a644731040565f312856f5854ca85f881c23791bca20b1ab69a",
+      "selected_mask_reference_factory.py": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+      "selected_query_mask_objective.py": "d31b488d8956862d752adb6013fb6673ba0b53b60668885fe11deea596f445c3",
+      "support_pair_forward.py": "74d0c3d2347aabf7087be42e1de4f9a32ffcba8d65b51f831106813cffa8ac9a"
+    },
+    "all_nine_python_ast_pass": true,
+    "all_nine_spec_hashes_match": true,
+    "new_runner_manifest_exact_file_set": true,
+    "all_seventeen_existing_helper_hashes_match_local_mirror": true
+  },
+  "historical_best_identity": {
+    "source": "C:/Users/gb/.codex/archives/pvg_compressed_support_best_20261008/RESTORATION_MANIFEST.json",
+    "arm": "content",
+    "path": "/root/autodl-tmp/pvground_compressed_geometry_support_20261008/content/terminal.pth",
+    "sha256": "6f9109cb690399880b8dc3bcf6e4b98d1053145732ee2a6b504bfaecbd1eaac2",
+    "step": 3723,
+    "total_support_updates": 7446,
+    "geometry_encoding": "zero",
+    "historical_hits": [
+      5599,
+      4859
+    ],
+    "new_accuracy_measurement": false,
+    "checkpoint_deserialized_in_this_review": false
+  },
+  "blocking_findings": [
+    {
+      "id": "B1",
+      "severity": "P1",
+      "locations": [
+        "pair_spec.json:54",
+        "run_mask_support_pair.py:143"
+      ],
+      "title": "Every run mode fails the primary-threshold assertion",
+      "evidence": "The spec stores a descriptive string in primary_threshold; the entrypoint requires numeric 0.5. Evaluation of this exact AST assertion against the sealed JSON returned false, without importing the training code.",
+      "impact": "preflight, train, initial_formal and formal all stop before constructing their dataset/runner; the check occurs after model loading and CUDA initialization.",
+      "minimal_fix": "Restore primary_threshold to numeric 0.5. Keep the strict-gate/wide-first policy in selection_rule or a separately named policy field. Reseal and review the revised spec."
+    },
+    {
+      "id": "B2",
+      "severity": "P1",
+      "locations": [
+        "EXPERIMENT_PLAN.md:9",
+        "paired_support_loop.py:127",
+        "paired_support_loop.py:130",
+        "paired_support_loop.py:134",
+        "paired_support_loop.py:408",
+        "paired_support_loop.py:410"
+      ],
+      "title": "The required new-objective preflight witnesses are absent",
+      "evidence": "preflight computes the matched objective, adds the selected-query objective, and checks gradients of their sum on head parameters. No isolated gradient with respect to corrected Query-mask logits is checked. The native reconciliation only checks the matched loss. The branch that skips already matched queries is present in selected_query_mask_objective.py:18, but preflight has no executable witness showing the extra objective's direct gradient excludes matched-root, matched-other and all nonselected queries or that an ineligible row contributes exactly zero.",
+      "impact": "A preflight can report status=pass even if the new extra term is ineffective or its direct gradient support violates the declared responsibility rule; native matched loss alone can satisfy the current parameter-gradient assertions. This does not prove the present selected loss formula is wrong, but leaves the explicitly required sanity gate incomplete.",
+      "minimal_fix": "Before backward during actual B8 preflight, isolate the extra objective and assert its direct gradient support on the corrected mask logits: only the native-bbs-selected unmatched Query may receive nonzero gradient; matched-root/matched-other rows and every nonselected Query must receive zero. Reconcile the extra scalar using root GT majority-superpoint masks, coefficients [5,1,10,2], and actual batch size. Record observed eligibility/role counts and do not claim an unobserved branch was exercised. Keep these as preflight checks, with no preflight optimizer state carried into fit."
+    }
+  ],
+  "nonblocking_findings": [
+    {
+      "id": "W1",
+      "severity": "reporting",
+      "locations": [
+        "matched_mask_objective.py:57",
+        "paired_support_loop.py:127",
+        "paired_support_loop.py:133",
+        "paired_support_loop.py:156",
+        "paired_support_loop.py:164"
+      ],
+      "title": "Treatment logging retains a matched-only zero-expansion field",
+      "evidence": "matched_mask_loss returns expanded_positive_queries=0 and loss equal to the matched loss. The same record becomes arms.selected_query after the extra objective is added; those fields are not renamed or updated. The top-level expansion map and nested selected_query_objective are correct, so the training expression itself is unaffected.",
+      "minimal_fix": "Make the component scope explicit (for example matched_loss and matched_expanded_positive_queries), or update the treatment record with total_loss and its actual extra_rows. Preserve the separately reconciled native component."
+    }
+  ],
+  "checks": [
+    {
+      "id": "state_lineage",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        "paired_support_loop.py:36",
+        "paired_support_loop.py:38",
+        "paired_support_loop.py:45",
+        "paired_support_loop.py:48",
+        "paired_support_loop.py:56",
+        "paired_support_loop.py:62",
+        "paired_support_loop.py:180"
+      ],
+      "detail": "The pinned warm path/hash matches the current archived content best with 7446 support updates. Both independent heads receive the same nonzero state; optimizers are fresh AdamW instances. The inherited zeroing of the last nine input columns is a no-op for the pinned content lineage: that lineage starts those columns at zero and trains only zero geometry inputs. No pickle was read here, so actual tensor equality remains a runtime obligation."
+    },
+    {
+      "id": "no_preflight_carry",
+      "status": "SOURCE_PASS_WITH_LAUNCH_PRECONDITION",
+      "evidence": [
+        "paired_support_loop.py:408",
+        "paired_support_loop.py:411",
+        "paired_support_loop.py:418",
+        "paired_support_loop.py:62"
+      ],
+      "detail": "preflight returns without saving weight files; a separate train invocation recreates warm heads and optimizers. The reviewed entrypoint does not itself enforce the preceding source/preflight receipts; the launch workflow must do so."
+    },
+    {
+      "id": "frozen_model_and_single_score",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        "mask_support_model_factory.py:13",
+        "paired_support_loop.py:71",
+        "paired_support_loop.py:137",
+        "support_pair_forward.py:10",
+        "support_pair_forward.py:16",
+        "support_pair_forward.py:18"
+      ],
+      "detail": "One frozen parent forward feeds both heads. Geometry and the zero-output readback remain frozen; semantic logits are copied from the one native head invocation. The train loss uses only Query/fused Mask terms; no ranking, quality or score loss is added. All 256 candidates remain."
+    },
+    {
+      "id": "native_selection_and_roles",
+      "status": "SOURCE_PASS_RUNTIME_WITNESS_MISSING_B2",
+      "evidence": [
+        "selected_query_mask_objective.py:8",
+        "selected_query_mask_objective.py:18",
+        "matched_mask_objective.py:20"
+      ],
+      "detail": "Selection uses native_root_bbs then descending argsort, matching the sealed official bbs evaluator formula. Native assignments are computed once from frozen uncorrected-parent outputs and retained for both arms. Extra supervision skips any query matched to any target, including root and other instances."
+    },
+    {
+      "id": "root_gt_and_loss",
+      "status": "SOURCE_PASS_RUNTIME_WITNESS_MISSING_B2",
+      "evidence": [
+        "matched_mask_objective.py:6",
+        "selected_query_mask_objective.py:14",
+        "selected_query_mask_objective.py:21",
+        "selected_query_mask_objective.py:22",
+        "selected_query_mask_objective.py:27",
+        "selected_query_mask_objective.py:31"
+      ],
+      "detail": "The verified dataset mirror puts ScanRefer target_id first, appends an auxiliary anchor only afterward, and builds point masks from scan object membership. Targets therefore use real root GT slot 0. Both objectives threshold scatter_mean at >0.5. The extra terms are [5,1,10,2], one selected unmatched Query maximum per expression, divided by len(indices), including ineligible rows as zero. The final B2 minibatch is normalized by 2, not 8."
+    },
+    {
+      "id": "same_architecture_and_factory",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        "mask_support_model_factory.py:6",
+        "mask_support_model_factory.py:18",
+        "mask_support_model_factory.py:24",
+        "paired_support_loop.py:46",
+        "paired_support_loop.py:57"
+      ],
+      "detail": "content and selected_query use the same 27841-parameter, 10-state-tensor corrector with geometry disabled. Factory supports both current checkpoint arm names and geometry_encoding=zero. The inherited signed-log branch is unreachable for these arms and is not an active treatment difference."
+    },
+    {
+      "id": "restoration_and_integration",
+      "status": "SOURCE_PASS_NOT_EXECUTED",
+      "evidence": [
+        "paired_support_loop.py:211",
+        "paired_support_loop.py:222",
+        "paired_support_loop.py:227",
+        "paired_support_loop.py:235",
+        "paired_support_loop.py:257",
+        "paired_support_loop.py:273",
+        "mask_support_model_factory.py:28"
+      ],
+      "detail": "The preflight code reconstructs all 1314 CPU tensors and compares every state tensor, restores actual AdamW states on CPU and GPU, and compares the installed native-forward head with the paired path on captured identical inputs. It checks exact Mask/Box/score outputs and one native semantic-head call. This is not a full cold GPU-parent reconstruction; the receipt explicitly says so."
+    },
+    {
+      "id": "warm_equivalence_scope",
+      "status": "SOURCE_PASS_WITH_LIMIT",
+      "evidence": [
+        "paired_support_loop.py:76",
+        "paired_support_loop.py:115",
+        "paired_support_loop.py:124",
+        "paired_support_loop.py:144"
+      ],
+      "detail": "At step 0 the two warm arms' masks, boxes and scores are directly compared; masks are also compared to a head loaded from the unmodified historical warm state. Box equivalence to that historical head follows from those identical masks and the same frozen reference path; no separate full historical GPU forward is performed."
+    },
+    {
+      "id": "source_seals_and_dependencies",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        "run_mask_support_pair.py:45",
+        "run_mask_support_pair.py:58",
+        "run_mask_support_pair.py:69",
+        "run_mask_support_pair.py:77",
+        "run_mask_support_pair.py:215"
+      ],
+      "detail": "All nine Python files parse and match new_runner_files. All 17 helper files match the spec in the existing local runtime bundle. Native losses/PV source match the pinned source_port manifest. The dataset mirror matches its source manifest, and the official evaluator matches native_evaluator_sha256. No new third-party dependency or runtime rebuild is introduced."
+    },
+    {
+      "id": "budget_and_fit_schedule",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        "run_mask_support_pair.py:39",
+        "run_mask_support_pair.py:56",
+        "run_mask_support_pair.py:229",
+        "paired_support_loop.py:419",
+        "paired_support_loop.py:424",
+        "paired_support_loop.py:428",
+        "paired_support_loop.py:434"
+      ],
+      "detail": "seed=2027, batch=8, LR=1e-5, WD=.0005, clip=.1; one exact 29778-row fit pass, 3723 updates, final batch 2, cumulative support updates 11169. The train path no longer runs initial or terminal 6887-row validation. initial_formal remains an explicitly callable legacy mode but is not called by train."
+    },
+    {
+      "id": "formal_evaluation_and_provenance",
+      "status": "SOURCE_PASS_NOT_EXECUTED",
+      "evidence": [
+        "run_mask_support_pair.py:176",
+        "run_mask_support_pair.py:193",
+        "run_mask_support_pair.py:215",
+        "paired_support_loop.py:189",
+        "paired_support_loop.py:312",
+        "paired_support_loop.py:357",
+        "paired_support_loop.py:375"
+      ],
+      "detail": "Formal mode reconstructs the current terminal heads, verifies checkpoint lineage and exactly-once fit IDs, then evaluates all 9508 rows using the pinned native evaluator. Row records and all256 box/score arrays support later audit; computed strict/wide counts are reconciled to evaluator detections. Historical 5599/4859 is labeled historical and no new initial accuracy is claimed."
+    },
+    {
+      "id": "history_and_stale_names",
+      "status": "SOURCE_PASS_EXCEPT_W1",
+      "evidence": [
+        "paired_support_loop.py:39",
+        "paired_support_loop.py:180",
+        "paired_support_loop.py:196",
+        "selected_mask_reference_factory.py:18",
+        "matched_mask_objective.py:57"
+      ],
+      "detail": "7446 denotes prior support updates and 11169 denotes terminal support updates; local round step3723 remains correct. retained_hidden_prior_updates=11169 belongs to the inherited selected geometry checkpoint lineage, not an additional new support run. No active box_conditioned arm or signed_log payload remains. The matched-only zero expansion field remains ambiguous as W1."
+    }
+  ],
+  "local_source_provenance": {
+    "native_source_port": {
+      "path": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/source_port.json",
+      "sha256": "765a47c0c07758f3e42a426036b27a840df8ea010b63df3682439ff5455e9eff"
+    },
+    "native_model_sha256": "95fa2d5ef2989c2ac9c078ec38aa7d92281727ca20f3b1f9cd15e86b9ea7c25d",
+    "native_losses_sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "dataset_mirror": "C:/Users/gb/.codex/tmp/pvground_g_p2_20261002/complete/source/joint_det_dataset.py",
+    "dataset_sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "dataset_source_manifest_sha256": "75cd5f87a8e715c15b458ed1964c2e6f1d35046bb6beffca1b3388d5903bbe36",
+    "helper_mirror": "C:/Users/gb/.codex/tmp/pvground_final_quality_20261005/runtime_bundle",
+    "official_evaluator_mirror": "C:/Users/gb/.codex/tmp/pvground_runtime_bundle_20260908_v1/PV-Ground/src/grounding_evaluator.py",
+    "official_evaluator_sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "python_ast_runtime": "C:/Users/gb/AppData/Roaming/uv/python/cpython-3.13-windows-x86_64-none/python.exe"
+  },
+  "limitations": [
+    "Source gate only: no empirical sanity, checkpoint load, result audit, metric or performance claim was performed.",
+    "The source runner expects output/content and output/selected_query directories to exist before save at paired_support_loop.py:185; the deployment launcher is outside this review and must provision them.",
+    "The launcher must bind the revised spec/source seals and passed actual preflight before invoking train. The entrypoint itself does not read a prior preflight receipt.",
+    "Remote runtime/data existence was not probed; local source mirrors and manifests were checked only.",
+    "C3 remains a hypothesis under separate novelty review; this report establishes neither novelty nor three effective contributions."
+  ],
+  "disposition": "Fix B1 and complete B2 in the isolated source, refresh seals, obtain a new source review, then run actual B8 sanity. Do not treat this R1 report as an authorization or actual-result PASS."
+}
+

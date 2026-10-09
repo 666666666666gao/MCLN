@@ -1,0 +1,110 @@
+{
+  "status": "ACTUAL_NATIVE_NORMAL_TRAINER_TWO_STEP_AND_FULL_RECOVERY_COMPLETE",
+  "source_mode": "extremal_support",
+  "time_cst": "2026-10-10T02:57:00.243424+08:00",
+  "real_train_dataset_rows": 36665,
+  "real_formal_dataset_rows": 9508,
+  "normal_epoch_updates": 4583,
+  "actual_updates": 2,
+  "actual_input_rows": 16,
+  "real_training_batches": 2,
+  "native_train_one_epoch_called": true,
+  "original_trainable_core_jointly_updated": true,
+  "original_roberta_frozen": true,
+  "full_state_tensors": 1295,
+  "gradient_norms": [
+    {
+      "span_output": 0.6669670343399048,
+      "span_internal": 0.15803773701190948,
+      "support_corrector": 0.08340024948120117,
+      "original_core_and_G_reader": 28.751426696777344,
+      "backbone": 1.487788438796997
+    },
+    {
+      "span_output": 0.1465936005115509,
+      "span_internal": 0.07698365300893784,
+      "support_corrector": 0.6337350606918335,
+      "original_core_and_G_reader": 104.5566635131836,
+      "backbone": 5.9138312339782715
+    }
+  ],
+  "updates": {
+    "original_core_and_G_reader": {
+      "changed_parameters": 692,
+      "changed_elements": 22816562,
+      "maximum_change": 2.0265579223632812e-06
+    },
+    "backbone": {
+      "changed_parameters": 102,
+      "changed_elements": 3196887,
+      "maximum_change": 2.0265579223632812e-06
+    },
+    "support_corrector": {
+      "changed_parameters": 10,
+      "changed_elements": 27265,
+      "maximum_change": 1.9978731870651245e-05
+    },
+    "span_internal": {
+      "changed_parameters": 12,
+      "changed_elements": 29760,
+      "maximum_change": 1.997128129005432e-05
+    },
+    "span_output": {
+      "changed_parameters": 2,
+      "changed_elements": 33,
+      "maximum_change": 1.6629695892333984e-05
+    }
+  },
+  "losses": [
+    {
+      "step": 1,
+      "total_loss": 14.188469886779785,
+      "raw_gate_min": -0.16573648154735565,
+      "raw_gate_max": 0.30013710260391235,
+      "raw_gate_negative_count": 299,
+      "raw_gate_zero_count": 0,
+      "raw_gate_above_one_count": 0,
+      "raw_gate_elements": 6144,
+      "g_reassigned_queries": 193,
+      "selected_query_mask_extra_rows": 7,
+      "selected_query_mask_extra_loss": 0.34957677125930786
+    },
+    {
+      "step": 2,
+      "total_loss": 15.322652816772461,
+      "raw_gate_min": -0.09232791513204575,
+      "raw_gate_max": 0.35642996430397034,
+      "raw_gate_negative_count": 280,
+      "raw_gate_zero_count": 0,
+      "raw_gate_above_one_count": 0,
+      "raw_gate_elements": 6144,
+      "g_reassigned_queries": 293,
+      "selected_query_mask_extra_rows": 8,
+      "selected_query_mask_extra_loss": 1.05842125415802
+    }
+  ],
+  "gradient_acceptance": "Core, backbone, support positive each step; Span output and internal positive across two steps",
+  "pretrained_span_initial_mix_formula_verified": true,
+  "full_recovery_exact": true,
+  "span_initialization": "retained_pretrained_checkpoint",
+  "span_initialization_identity": "f9898c5dc7a5e97bf152421efc9072c23ef255618c64477a4bfacf996f2b3b19",
+  "checkpoint_sha256": "8146f63fb472acf45a3cb2015694b266703cc7aa17d6ed6e4bf5a2457e16cff6",
+  "checkpoint_bytes": 841675936,
+  "saved_retained_metrics": null,
+  "restored_optimizer_states": 820,
+  "step_seconds": 25.3311795219779,
+  "peak_memory_bytes": {
+    "allocated": 22177941504,
+    "reserved": 25218252800
+  },
+  "formal_accuracy": null,
+  "actual_imports": {
+    "train_dist_mod": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/train_dist_mod.py",
+    "main_utils": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/main_utils.py",
+    "native_model_initialization": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/native_model_initialization.py",
+    "models.pv_ground": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/models/pv_ground.py",
+    "models.losses": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/models/losses.py"
+  },
+  "preflight_weights_used_for_formal_training": false,
+  "actual_normal_epoch_training_started": false
+}

@@ -1,0 +1,79 @@
+{
+  "status": "TWO_ACTUAL_NATIVE_UPDATES_BEFORE_ACCEPTANCE",
+  "source_mode": "extremal_support",
+  "gradient_norms": [
+    {
+      "span_output": 0.6669670343399048,
+      "span_internal": 0.15803773701190948,
+      "support_corrector": 0.08340024948120117,
+      "original_core_and_G_reader": 28.751426696777344,
+      "backbone": 1.487788438796997
+    },
+    {
+      "span_output": 0.1465936005115509,
+      "span_internal": 0.07698365300893784,
+      "support_corrector": 0.6337350606918335,
+      "original_core_and_G_reader": 104.5566635131836,
+      "backbone": 5.9138312339782715
+    }
+  ],
+  "updates": {
+    "original_core_and_G_reader": {
+      "changed_parameters": 692,
+      "changed_elements": 22816562,
+      "maximum_change": 2.0265579223632812e-06
+    },
+    "backbone": {
+      "changed_parameters": 102,
+      "changed_elements": 3196887,
+      "maximum_change": 2.0265579223632812e-06
+    },
+    "support_corrector": {
+      "changed_parameters": 10,
+      "changed_elements": 27265,
+      "maximum_change": 1.9978731870651245e-05
+    },
+    "span_internal": {
+      "changed_parameters": 12,
+      "changed_elements": 29760,
+      "maximum_change": 1.997128129005432e-05
+    },
+    "span_output": {
+      "changed_parameters": 2,
+      "changed_elements": 33,
+      "maximum_change": 1.6629695892333984e-05
+    }
+  },
+  "losses": [
+    {
+      "step": 1,
+      "total_loss": 14.188469886779785,
+      "raw_gate_min": -0.16573648154735565,
+      "raw_gate_max": 0.30013710260391235,
+      "raw_gate_negative_count": 299,
+      "raw_gate_zero_count": 0,
+      "raw_gate_above_one_count": 0,
+      "raw_gate_elements": 6144,
+      "g_reassigned_queries": 193,
+      "selected_query_mask_extra_rows": 7,
+      "selected_query_mask_extra_loss": 0.34957677125930786
+    },
+    {
+      "step": 2,
+      "total_loss": 15.322652816772461,
+      "raw_gate_min": -0.09232791513204575,
+      "raw_gate_max": 0.35642996430397034,
+      "raw_gate_negative_count": 280,
+      "raw_gate_zero_count": 0,
+      "raw_gate_above_one_count": 0,
+      "raw_gate_elements": 6144,
+      "g_reassigned_queries": 293,
+      "selected_query_mask_extra_rows": 8,
+      "selected_query_mask_extra_loss": 1.05842125415802
+    }
+  ],
+  "gradient_acceptance": "Core, backbone, support positive each step; Span output and internal positive across two steps",
+  "actual_updates": 2,
+  "formal_accuracy": null,
+  "normal_epoch_training_started": false
+}

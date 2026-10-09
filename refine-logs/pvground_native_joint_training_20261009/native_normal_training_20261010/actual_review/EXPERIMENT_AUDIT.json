@@ -1,0 +1,787 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-10T03:18:30.744094+08:00",
+  "task": "/root/pvg_native_m0_actual_20261010",
+  "round": "native_joint_v2",
+  "execution_scope": "ACTUAL_NATIVE_PREFLIGHT",
+  "verdict": "WARN",
+  "engineering_contract_verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "Wv2.1",
+      "severity": "NON_BLOCKING",
+      "category": "BOUNDED_EXECUTION_EVIDENCE",
+      "finding": "The full recovery checks executed in the real engineering helpers, but the checkpoint binaries were not copied into this review.",
+      "effect": "Adequate for the specified engineering execution/recovery gate with bound receipts, helper sources, logs, checkpoint digests and completed stages. It is not an independent reviewer checkpoint reopen, rerun or bitwise next-step reproduction."
+    },
+    {
+      "id": "Wv2.2",
+      "severity": "NON_BLOCKING",
+      "category": "INITIALIZATION_AND_BUDGET_CHANGED",
+      "finding": "The new extremal run loads the retained f9898c... Span checkpoint with 3723 prior Span updates; the previous whole engineering attempt used zero-initialized Span output.",
+      "effect": "The new successful Span internal activity cannot be attributed solely to the config-copy repair. This is a selected-parent continuation with changed initialization/budget, not a matched two-arm accuracy experiment or evidence for three contributions."
+    },
+    {
+      "id": "Wv2.3",
+      "severity": "NON_BLOCKING",
+      "category": "METRIC_AND_CONTINUATION_SCOPE",
+      "finding": "Only two new native training batches and exact checkpoint restoration were checked. Formal accuracy is null.",
+      "effect": "No normal training success, accuracy improvement, every-parameter usefulness, mid-epoch dataloader replay, next-step determinism or three-contribution claim is established. Grouped core/G activity does not separately prove every G parameter useful."
+    },
+    {
+      "id": "Wv2.4",
+      "severity": "NON_BLOCKING",
+      "category": "HISTORICAL_PREPARATION_METADATA",
+      "finding": "ENGINEERING_PREPARATION.json retains the earlier probe hash cefc34b99231e0d6dad4a01f6431a5f7192a039bb7e95fcc5e221d83e05ca76b. The executed probe is 95fdaee5cc3a5bdf63eb6bf1505633988a25219b52d25ad0858a8c949920563b.",
+      "effect": "The preparation file is not treated as the execution manifest. Source R3 audited hashes, actual admission, collected helper bytes and intake agree on the executed hash; no operative identity mismatch exists."
+    }
+  ],
+  "checks": [
+    {
+      "check": "source_namespace_and_configuration_fix",
+      "result": "PASS",
+      "evidence": "Isolated 20261010 source; 116 manifest entries retained. Only train_dist_mod.py and extremal initialization spec content hashes differ from the previous port. Trainer adds import copy and passes copy.deepcopy(self.model_cfg) on each construction."
+    },
+    {
+      "check": "actual_CPU_VSA_configuration_witness",
+      "result": "PASS_CPU_SCOPE",
+      "evidence": "Actual CPU witness: shared first VSA layout 126 entries; second shared layout 186; both copied layouts exactly equal the first 126-key/shape map. No forward, optimizer step or initialized CUDA. This alone is not GPU/full-model recovery."
+    },
+    {
+      "check": "old_whole_two_updates_to_zero_update_recovery",
+      "result": "PASS_BOUND_ACTUAL_EXECUTION",
+      "evidence": "The preserved attempt2 diagnostic/log proves two original B8 native updates; new recovery helper hashes the old 841675936-byte checkpoint (588cb210...8b5b6b), reconstructs a fresh model in a separate process, strictly loads and compares all 1295 states and 820 Adam states, scheduler and all four RNG sources; no new forward, training batch, backward or optimizer step."
+    },
+    {
+      "check": "retained_extremal_initialization",
+      "result": "PASS_BOUND_ACTUAL_EXECUTION",
+      "evidence": "Actual admission binds source R3 and f9898c...f2b3b19. Unchanged native initialization checks official/G/support/Span payload digests, Span mode and support-parent identity and uses strict state loading. Actual receipt records the same retained Span identity and initial deployed box mixing formula validation."
+    },
+    {
+      "check": "actual_data_and_native_training_batches",
+      "result": "PASS_BOUND_ACTUAL_EXECUTION",
+      "evidence": "Actual receipt/helper/logs: ScanRefer train36665, val9508, full native epoch4583/drop_last batches; two actual B8 batches/16 rows. Ordinary train_one_epoch runs loss.backward, native clip_norm0.1, AdamW and scheduler.step. No replacement toy model, synthetic batch or pseudo-ground-truth performance metric."
+    },
+    {
+      "check": "original_core_and_backbone_gradients_updates",
+      "result": "PASS_GROUP_LEVEL",
+      "evidence": "Both pre-clip gradient norms are positive in original_core_and_G_reader and backbone; actual changed elements22816562 and3196887. Group evidence does not establish every parameter's activity."
+    },
+    {
+      "check": "support_and_span_internal_output_activity",
+      "result": "PASS_GROUP_LEVEL",
+      "evidence": "Support, Span internal and Span output are positive at each actual step, exceeding the across-two-step Span acceptance rule. Changed elements are27265,29760 and33 respectively."
+    },
+    {
+      "check": "original_text_freeze_and_native_criterion",
+      "result": "PASS_BOUND_SOURCE_AND_EXECUTION",
+      "evidence": "Original RoBERTa parameters stay frozen by native policy and helper assertions. Hash-unchanged native model/loss uses deployed last_center/last_pred_size in native criterion against annotation-derived targets; observed_loss requires deployed predictions to carry gradients. Parameter freezing does not imply text dropout eval mode."
+    },
+    {
+      "check": "new_extremal_full_save_fresh_reconstruction_load",
+      "result": "PASS_BOUND_ACTUAL_EXECUTION",
+      "evidence": "New841675936-byte checkpoint8146f63f...16cff6; exact1295 model states, complete Adam param_groups/state tensors/non-tensors, scheduler and Python/fullNumPy/TorchCPU/allCUDA RNG checks all precede emitted receipt. Saved Adam steps are2; retained_metrics null. Collector rehash matches receipt checkpoint digest."
+    },
+    {
+      "check": "both_recovery_implementations",
+      "result": "PASS_SOURCE_IDENTITY",
+      "evidence": "Old whole and new extremal use AST-identical model/Adam/scheduler/four-RNG equality checks. New extremal save/recovery block is byte-identical to the prior R5/R8 block. No relaxed 1234/1271/1295 or strict-load assertion."
+    },
+    {
+      "check": "single_GPU_original_owner_timing",
+      "result": "PASS_BOUND_EXECUTION",
+      "evidence": "Original controller46770 under flock --no-fork, single device0/worldsize1 and sequential stages. Admission checks an idle single A100 and parent/source hashes. One original observer at03:06:48.348953 after due03:06:48.347050; exact localPID48608 handle signaled03:06:51.742911, first reviewer retrieval03:08:09. No reviewer remote polling."
+    },
+    {
+      "check": "actual_intake_and_source_hashes",
+      "result": "PASS",
+      "evidence": "All19 actual text/config/log/helper/receipt files match bytes/SHA. Five actual helpers/protocol/old-checkpoint identity match local and R3 hashes; actual admission binds R3 SHA1f8af798...0c62091. Collector rehashes all116 deployed files and its returned port equals the local reviewed port. Seventeen local source copies independently match manifest entries, plus initialization specs checked separately."
+    },
+    {
+      "check": "engineering_state_separation_from_normal",
+      "result": "PASS_SOURCE_SCOPE_ONLY",
+      "evidence": "Normal controller forbids --checkpoint_path and constructs from original official/G/support plus retained f9898c... parents with a fresh optimizer. Both engineering fitted checkpoints are outside that initialization path. No future normal run has been certified or launched by this reviewer."
+    },
+    {
+      "check": "original_failures_immutable",
+      "result": "PASS",
+      "evidence": "Both prior actual FAIL seals and all192 sealed artifacts verified unchanged. New recovery evidence is separate; original failed attempt verdicts remain FAIL."
+    }
+  ],
+  "fresh_context": false,
+  "original_review_fresh_context": true,
+  "new_independent_review": false,
+  "same_original_review_task": true,
+  "independent_engineering_source_namespace": true,
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_backend": "codex",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "actual_backend": "UNATTESTED",
+  "actual_route": "UNATTESTED",
+  "review_family": "same-family",
+  "review_independence": "same-family",
+  "assurance": "provisional",
+  "actual_native_v2_engineering_pass": true,
+  "required_engineering_contract_satisfied": true,
+  "actual_checkpoint_recovery_evidence_adequate_for_specified_gate": true,
+  "checkpoint_evidence_level": "Bound actual helper execution and receipt/log/collector hash evidence; no independent reviewer binary reopen",
+  "whole_stage": {
+    "kind": "RECOVERY_ONLY_OF_PRESERVED_ACTUAL_TWO_UPDATE_WHOLE_CHECKPOINT",
+    "original_training_attempt": 2,
+    "original_updates": 2,
+    "new_optimizer_steps": 0,
+    "new_training_batches": 0,
+    "new_neural_forwards": 0,
+    "full_state_tensors": 1295,
+    "restored_optimizer_states": 820,
+    "full_recovery_exact": true,
+    "saved_optimizer_step": 2,
+    "checkpoint_identity": {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261009/preflight_attempt2/whole_support/scanrefer/engineering_two_batch_preflight/1791568097/best.pth",
+      "bytes": 841675936,
+      "sha256": "588cb2100985ab27baea57592b5d4b3470e857a34972401891b5620fec8b5b6b"
+    },
+    "fresh_process_reconstruction": true,
+    "original_failure_not_rewritten": true
+  },
+  "extremal_stage": {
+    "kind": "RETAINED_PARENT_INITIALIZATION_TWO_REAL_NATIVE_BATCHES_AND_FULL_RECOVERY",
+    "real_training_batches": 2,
+    "actual_updates": 2,
+    "actual_input_rows": 16,
+    "real_train_dataset_rows": 36665,
+    "real_formal_dataset_rows": 9508,
+    "normal_epoch_updates": 4583,
+    "full_state_tensors": 1295,
+    "restored_optimizer_states": 820,
+    "full_recovery_exact": true,
+    "saved_optimizer_step": 2,
+    "gradient_norms": [
+      {
+        "span_output": 0.6669670343399048,
+        "span_internal": 0.15803773701190948,
+        "support_corrector": 0.08340024948120117,
+        "original_core_and_G_reader": 28.751426696777344,
+        "backbone": 1.487788438796997
+      },
+      {
+        "span_output": 0.1465936005115509,
+        "span_internal": 0.07698365300893784,
+        "support_corrector": 0.6337350606918335,
+        "original_core_and_G_reader": 104.5566635131836,
+        "backbone": 5.9138312339782715
+      }
+    ],
+    "updates": {
+      "original_core_and_G_reader": {
+        "changed_parameters": 692,
+        "changed_elements": 22816562,
+        "maximum_change": 2.0265579223632812e-06
+      },
+      "backbone": {
+        "changed_parameters": 102,
+        "changed_elements": 3196887,
+        "maximum_change": 2.0265579223632812e-06
+      },
+      "support_corrector": {
+        "changed_parameters": 10,
+        "changed_elements": 27265,
+        "maximum_change": 1.9978731870651245e-05
+      },
+      "span_internal": {
+        "changed_parameters": 12,
+        "changed_elements": 29760,
+        "maximum_change": 1.997128129005432e-05
+      },
+      "span_output": {
+        "changed_parameters": 2,
+        "changed_elements": 33,
+        "maximum_change": 1.6629695892333984e-05
+      }
+    },
+    "losses": [
+      {
+        "step": 1,
+        "total_loss": 14.188469886779785,
+        "raw_gate_min": -0.16573648154735565,
+        "raw_gate_max": 0.30013710260391235,
+        "raw_gate_negative_count": 299,
+        "raw_gate_zero_count": 0,
+        "raw_gate_above_one_count": 0,
+        "raw_gate_elements": 6144,
+        "g_reassigned_queries": 193,
+        "selected_query_mask_extra_rows": 7,
+        "selected_query_mask_extra_loss": 0.34957677125930786
+      },
+      {
+        "step": 2,
+        "total_loss": 15.322652816772461,
+        "raw_gate_min": -0.09232791513204575,
+        "raw_gate_max": 0.35642996430397034,
+        "raw_gate_negative_count": 280,
+        "raw_gate_zero_count": 0,
+        "raw_gate_above_one_count": 0,
+        "raw_gate_elements": 6144,
+        "g_reassigned_queries": 293,
+        "selected_query_mask_extra_rows": 8,
+        "selected_query_mask_extra_loss": 1.05842125415802
+      }
+    ],
+    "checkpoint_sha256": "8146f63fb472acf45a3cb2015694b266703cc7aa17d6ed6e4bf5a2457e16cff6",
+    "checkpoint_bytes": 841675936,
+    "step_seconds": 25.3311795219779,
+    "peak_memory_bytes": {
+      "allocated": 22177941504,
+      "reserved": 25218252800
+    },
+    "fresh_model_optimizer_scheduler_objects": true,
+    "cold_reconstruction_within_same_training_process": true,
+    "initial_mix_formula_verified": true
+  },
+  "initialization_budget": {
+    "original_whole_span_initialization": "zero-initialized output; no Span parent checkpoint",
+    "new_extremal_span_initialization": "retained previously trained extremal Span",
+    "span_checkpoint_sha256": "f9898c5dc7a5e97bf152421efc9072c23ef255618c64477a4bfacf996f2b3b19",
+    "span_prior_updates": 3723,
+    "support_prior_updates": 11169,
+    "official_checkpoint_sha256": "6f24c67cc3409f44befdef188f14383497a824d8ab309b8fd572a999ae8bdec3",
+    "g_checkpoint_sha256": "0575dfae333dabdf288a470fc09d8967f9867d1853a5f61d9cfc3cbcf7964522",
+    "support_checkpoint_sha256": "d06adb8ed227d98d46afa8e3970dcb9fbe31ab2613c675883b80162f830f4cb6",
+    "retained_span_is_not_a_new_engineering_checkpoint": true,
+    "initialization_change_separate_from_configuration_fix": true,
+    "engineering_success_not_accuracy_effect_of_copy_fix": true,
+    "equal_initialization_two_arm_comparison": false,
+    "normal_optimizer_reinitialized_by_source": true,
+    "prior_training_counts_basis": "Bound initialization spec and protocol; parent retention digest/source identity. This audit does not independently rerun the parent training."
+  },
+  "recovery_verified_by_bound_execution": {
+    "full_model_state_keys_and_all_tensor_values": true,
+    "optimizer_param_groups_state_keys_all_tensor_and_non_tensor_values": true,
+    "scheduler_complete_state": true,
+    "python_random_full_state": true,
+    "numpy_rng_algorithm_key_array_position_gaussian_cache": true,
+    "torch_CPU_rng_state": true,
+    "CUDA_rng_list_cardinality_and_all_values": true,
+    "initial_epoch_restored_as_1": true
+  },
+  "recovery_not_claimed": {
+    "independent_reviewer_checkpoint_reopen": true,
+    "independent_reviewer_neural_rerun": true,
+    "next_step_bitwise_determinism": true,
+    "mid_epoch_dataloader_resume_determinism": true,
+    "extremal_fresh_process_resume": true
+  },
+  "formal_accuracy": null,
+  "saved_retained_metrics": null,
+  "formal_training_result_verified": false,
+  "three_effective_contributions_verified": false,
+  "full_parameter_usefulness_verified": false,
+  "formal_training_started_at_intake": false,
+  "formal_state_separation_evidence": "Source contract and pre-formal engineering receipts; later execution is outside this audit",
+  "reviewer_launch_or_cleanup_authorization": "This report is bounded technical evidence only; the reviewer performs no normal launch, cleanup, deletion, publication or promotion.",
+  "ownership": {
+    "controller_pid": 46770,
+    "world_size": 1,
+    "visible_GPU": "0",
+    "stages_sequential": true,
+    "observation_count": 1,
+    "first_due_cst": "2026-10-10T03:06:48.347050+08:00",
+    "first_actual_observation_cst": "2026-10-10T03:06:48.348953+08:00",
+    "engineering_completed_cst": "2026-10-10T02:57:09.170482+08:00",
+    "engineering_elapsed_seconds": 615.4795027822256,
+    "original_observer_handle": {
+      "status": "ORIGINAL_OBSERVER_HANDLE_SIGNALED",
+      "original_pid": 48608,
+      "expected_creation": "2026-10-10T02:46:59.421129+08:00",
+      "actual_creation": "2026-10-09T18:46:59.421129+00:00",
+      "opened_at": "2026-10-10T02:49:07.536720+08:00",
+      "observer": "read-only local Windows WaitForSingleObject",
+      "remote_calls": 0,
+      "gpu_queries": 0,
+      "nn_calls": 0,
+      "original_process_modified": false,
+      "closed_at": "2026-10-10T03:06:51.742911+08:00",
+      "elapsed_seconds": 1064.2062455999985,
+      "observer_exit_code": 0
+    },
+    "reviewer_first_handle_result_cst": "2026-10-10T03:08:09+08:00",
+    "clock_note": "Launch/observer and remote admission/controller timestamps come from different clocks; local launch time precedes the remote admission stamp by about5s."
+  },
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_INTAKE.json": "d48b80652095983fa8539a02d0c1146777cba1736a219a8e97483d80e48a6c75",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_LAUNCH.json": "599a9fad92914a4ec7d0fd453c766304767ff03b21dd5e58cf3d905c71a9b333",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_LAUNCH_EXIT.json": "302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_LAUNCH_STDERR.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_LAUNCH_STDOUT.json": "8a3ac252093cea4b1f4950978ac8f4c0009aaa2d872824938778ef5346d154c0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_OBSERVATIONS.json": "0b8ec8b994c451fac02cae4945202dbd594f213771b6ec4772b600b937321635",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_OBSERVER_OWNER.json": "311eee7cfb0383cb7a1e17e150f0d008d89a426c5b66bfa6c33d3948d981f2d0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\CPU_DEPLOY_STDOUT.json": "09018c2305b6b54e28bef82964968737e6a04e964fb3933c2aae39e1ef3168fa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\CPU_DEPLOY_STDERR.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\CPU_DEPLOY_EXIT.json": "302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\VSA_CONFIGURATION_WITNESS.json": "c5f92e0bb276cde72250e98963752bf4e3c3686c47461703dc1b0179ec2e26c9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\PREVIOUS_ENGINEERING_CHECKPOINT.json": "dffbf4b2e730b35a4d96a07a81ed00012b615edf5bee63267a8bc10ada9c111c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NATIVE_SOURCE_PORT.json": "8f9020f8be4864e31e602e2044fc8e04d49297b163f5037dbc019964b47a140b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_ENGINEERING_REVIEW.json": "1f8af79840cbd8da1e94aab2f1c6ec6160b60e0da0cf33c23e6a49cf80c62091",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_ENGINEERING_REVIEW.md": "9e8aa925327f8be6e773825500d66c0d3b1aa8f2b5d4fa8c3687d72c1785c110",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_ENGINEERING_REVIEW.seal.json": "0a61caef84935d34885d92bd523e0941b8169bbe0147eae5ca2e6fb875761306",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_REVIEW.json": "2f707e2a4627a12fa2d2176a9304413fa4f1cdc29acfae234a731e6bf7165537",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_REVIEW.md": "2d141c5f98316758f875601a057915e8ca3aa9ea5805ceff32ba8337920950c3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_REVIEW.seal.json": "419ae2ef660e71bb1bead6e1b06f871ef15cb161d6d6b362ab78fd69085d4788",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_OWNER_SUPPLEMENT.json": "83a4bba332ab3637ff0f160235ee8043cdb4be72f8cd3619e649734b624d0271",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_OWNER_SUPPLEMENT.seal.json": "4c17ffdd7440c5d52573a0110f41c3d5b91c1adc4e0557216d1c0b95e6715aa6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\engineering_controller.py": "c972a398e7d7a4ccb7dcb33b474731ccd2c7cf7e4e7709a7f3353c238acfc6fe",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\recover_previous_whole.py": "cd92d22c4af347731b1e808e8976cfd08368bb101165affc85d68d48f2494ef0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_joint_preflight.py": "95fdaee5cc3a5bdf63eb6bf1505633988a25219b52d25ad0858a8c949920563b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NORMAL_NATIVE_RUN_PROTOCOL.json": "c41ce21dc0f3cd94947b24fb8f77ec2de9a2091389d11c49672fac434cb95150",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\init_manifests\\extremal_support.json": "3a01b645d1d8716af9e4250514c8bfe7dabc29b55b1a3cc364890cb9e61334b6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_joint_controller.py": "ec8ee18144229bbc3e103634762550d9f71bab30ea804bb1dddf590ee3c33a4c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\launch_engineering_authorized.py": "1422706ea34a10f2502315813ebdf952e6b37398e111f6eea2702af6f06bfdd3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\observe_engineering_authorized.py": "e0e93fe45026692d8a1948faa3a0bf5d740dfcfa11f2e8a0e92bd85191b33b5e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\launch_normal_authorized.py": "d70bc893e85e2498f21b0843ddb8912bf41098a4e830ce515c9ea7ded3534374",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\continue_after_engineering_authorized.py": "094fb8264b6c1f738070fd0f208e7ae7d531e0abe63387c6813b3be25baff664",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\PREPARATION.json": "d6f74fdcaf456309f83fb2707678678a262355e17e0efc872f7eebc2c6ccc401",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_PREPARATION.json": "c5c84488d8bbf06efbe511523e87eb6da85bf6d066a3fe42858dd403b3add6a2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\admission.json": "16810923dc25c91d2c00946198e64046fe9a08a5343c48e7dc7b1611f2398794",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\controller.log": "b9ea573fa1acb608ff90318b2fc399609cf9f99351fca886bca7495e91bae644",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\engineering_controller.py": "c972a398e7d7a4ccb7dcb33b474731ccd2c7cf7e4e7709a7f3353c238acfc6fe",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\engineering_status.json": "94df6aee1a28e1f74f49c949c1342c03c0ad4e0d5be65cb84ecc93a9bb0d1ffa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\NATIVE_M0_RECEIPT.json": "40e2465fd76a7e246a1a23ca50ee6fb2b4b2179a60dc78ea2d9156f16a415b32",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\NATIVE_M0_TRAINING_DIAGNOSTIC.json": "de21640b17c5017ac29f7d5c1a33f3f3a277bfda3ab344b8b0a558983d2ec9a7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\scanrefer\\engineering_two_batch_preflight\\1791571650\\config.json": "e5845de2a85964b555d07e55c1eedf657212102649087c0adcfe0c2543357467",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\scanrefer\\engineering_two_batch_preflight\\1791571650\\log.txt": "683eb892b0cde64e825e35ce887ae513eebe56bd285872cc8644b1479ceb5019",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support.log": "6a0ce508d97d217ecb5a5cd372e9d2d0e70873e0f7a0af1126ae7bbf5fe30630",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\native_joint_preflight.py": "95fdaee5cc3a5bdf63eb6bf1505633988a25219b52d25ad0858a8c949920563b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\NORMAL_NATIVE_RUN_PROTOCOL.json": "c41ce21dc0f3cd94947b24fb8f77ec2de9a2091389d11c49672fac434cb95150",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\PREVIOUS_ENGINEERING_CHECKPOINT.json": "dffbf4b2e730b35a4d96a07a81ed00012b615edf5bee63267a8bc10ada9c111c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\RECOVERY_RECEIPT.json": "214936ecc8606d13d03fc4921359b05fe468ba95d9eadf196b3b248b20053a8d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\scanrefer\\recovery_only_previous_whole\\1791571623\\config.json": "3c837f957660874c6c29de88db23b571db8d2dad2af0825a5e8fe4b5cc3a8f1a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\scanrefer\\recovery_only_previous_whole\\1791571623\\log.txt": "0376c095843fdc9984b51ed7a650e781c98a7f53a5b97fd18b8beb480d09f566",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery.log": "42963d8bf0cdc97e2d97262e4bc629e68f44e6fab881feee48a1d08c0101fb9f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\recover_previous_whole.py": "cd92d22c4af347731b1e808e8976cfd08368bb101165affc85d68d48f2494ef0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\train_dist_mod.py": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\pv_backbone.py": "8d25ef7bbc18abce9c755cf41718708ff16ec78d8bd32aa11e6cdd484c23ffc9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\pv_utils.py": "3e8c069af235970c541aa07d9780e812e609d798d242a013d64abdf89307bc29",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_vsa_configuration_witness.py": "e89264225d966a5e867ecd69febc1140eeb4b0a94eb7207a781ad15fd8ed646a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\deploy_native_v2_cpu_witness_authorized.py": "3b6e3b2dba3394b8591431fc911c94221453b300b8eca0a81df59c031fdb81e6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\SPAN_BEST_RETENTION_DECISION.json": "5d18c57c584d7e687133ad6edb3b14669ae2d6eeef49dc0290d974a943c3698c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\init_manifests\\whole_support.json": "20acde2db7c25a1efc1962b4948a41dbf8ea549db37a9c7139d4c0dd6e0c666b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\NATIVE_SOURCE_PORT.json": "7f5f72c13c90f88fe56712259ea222bdfb7068c4631bb04d7fa3bfb5fd219173",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\NATIVE_RUNTIME_IMPORTS_CPU.json": "52fedc130709d38727c5bb1848c70ea3a80138928105087acc7f28c612c016a3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_joint_preflight.py": "bb0c738366cea59c1091ed725432f81ffb64836b824c976750cbf7432752b87d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_failed_attempt2\\INTAKE.json": "a0dd6e0f680b8e0f21c6a1537e1cbc1fd45424401241cb4546d5015f7a44ba30",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_failed_attempt2\\whole_support.log": "ca989af64e04993dc2109db02121eeaffb9563416b86ca44936036367aa3f85b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_failed_attempt2\\whole_support\\NATIVE_M0_TRAINING_DIAGNOSTIC.json": "50d21edfe3cdf0f5bf6f2c71174d7fa84584f4d5a0be9925c45286a2afcf3b5d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_results\\EXPERIMENT_AUDIT.json": "d791f4d9d0c38996f8c0b8ca5114cebb68201c74d91752e0989d4558f10c0034",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_results\\EXPERIMENT_AUDIT.md": "9475b78a673bf977d2e7b2eae6a6af94b01e851fdcdf91c10924066a35bb7fae",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_results\\EXPERIMENT_AUDIT.seal.json": "c8b0a226818c82b3e6ba04a8bc22584582e82d28ec8c17b801b01c3d8d212a06",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_results\\EXPERIMENT_AUDIT.json": "b5cf6c4699d271c1363867a7307956688f89eb082d435e4fb0af11f6b3d43079",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_results\\EXPERIMENT_AUDIT.md": "0a045275ef2aaa7e682307f96d628bae46fe52f6a39a2a7332268944394209c7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_results\\EXPERIMENT_AUDIT.seal.json": "8d60de10d6285809643dd4a86cf05fec4fba59470439133fd910c05615401a2e"
+  },
+  "reviewed_files": [
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_INTAKE.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_LAUNCH.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_LAUNCH_EXIT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_LAUNCH_STDERR.txt",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_LAUNCH_STDOUT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_OBSERVATIONS.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_OBSERVER_OWNER.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\CPU_DEPLOY_STDOUT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\CPU_DEPLOY_STDERR.txt",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\CPU_DEPLOY_EXIT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\VSA_CONFIGURATION_WITNESS.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\PREVIOUS_ENGINEERING_CHECKPOINT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NATIVE_SOURCE_PORT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_ENGINEERING_REVIEW.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_ENGINEERING_REVIEW.md",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_ENGINEERING_REVIEW.seal.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_REVIEW.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_REVIEW.md",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_REVIEW.seal.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_OWNER_SUPPLEMENT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_NORMAL_OWNER_SUPPLEMENT.seal.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\engineering_controller.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\recover_previous_whole.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_joint_preflight.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NORMAL_NATIVE_RUN_PROTOCOL.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\init_manifests\\extremal_support.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_joint_controller.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\launch_engineering_authorized.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\observe_engineering_authorized.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\launch_normal_authorized.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\continue_after_engineering_authorized.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\PREPARATION.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_PREPARATION.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\admission.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\controller.log",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\engineering_controller.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\engineering_status.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\NATIVE_M0_RECEIPT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\NATIVE_M0_TRAINING_DIAGNOSTIC.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\scanrefer\\engineering_two_batch_preflight\\1791571650\\config.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\scanrefer\\engineering_two_batch_preflight\\1791571650\\log.txt",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support.exit",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support.log",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\native_joint_preflight.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\NORMAL_NATIVE_RUN_PROTOCOL.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\PREVIOUS_ENGINEERING_CHECKPOINT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\RECOVERY_RECEIPT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\scanrefer\\recovery_only_previous_whole\\1791571623\\config.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\scanrefer\\recovery_only_previous_whole\\1791571623\\log.txt",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery.exit",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery.log",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\recover_previous_whole.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\main_utils.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_observation_query.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_semantic_assignment.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_source_query.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_task_observation_query.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\selected_query_mask_objective.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\train_dist_mod.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\pv_backbone.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\pv_utils.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_vsa_configuration_witness.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\deploy_native_v2_cpu_witness_authorized.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\SPAN_BEST_RETENTION_DECISION.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\init_manifests\\whole_support.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\NATIVE_SOURCE_PORT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\NATIVE_RUNTIME_IMPORTS_CPU.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_joint_preflight.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_failed_attempt2\\INTAKE.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_failed_attempt2\\whole_support.log",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_failed_attempt2\\whole_support\\NATIVE_M0_TRAINING_DIAGNOSTIC.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_results\\EXPERIMENT_AUDIT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_results\\EXPERIMENT_AUDIT.md",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_results\\EXPERIMENT_AUDIT.seal.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_results\\EXPERIMENT_AUDIT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_results\\EXPERIMENT_AUDIT.md",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_results\\EXPERIMENT_AUDIT.seal.json"
+  ],
+  "reviewed_file_count": 85,
+  "reviewed_file_scope": "Direct new actual evidence and changed helpers; unchanged source semantics inherited within this same task and independently hash-bound. The original collector executed all116 remote source hashes, not this reviewer.",
+  "required_actual_intake_and_receipt_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_INTAKE.json": "d48b80652095983fa8539a02d0c1146777cba1736a219a8e97483d80e48a6c75",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\RECOVERY_RECEIPT.json": "214936ecc8606d13d03fc4921359b05fe468ba95d9eadf196b3b248b20053a8d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\NATIVE_M0_RECEIPT.json": "40e2465fd76a7e246a1a23ca50ee6fb2b4b2179a60dc78ea2d9156f16a415b32"
+  },
+  "required_launch_contract_satisfied": true,
+  "no_placeholder_hashes": true,
+  "bound_actual_diagnostic": {
+    "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\NATIVE_M0_TRAINING_DIAGNOSTIC.json",
+    "sha256": "de21640b17c5017ac29f7d5c1a33f3f3a277bfda3ab344b8b0a558983d2ec9a7"
+  },
+  "bound_source_review": {
+    "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\SOURCE_ENGINEERING_REVIEW.json",
+    "sha256": "1f8af79840cbd8da1e94aab2f1c6ec6160b60e0da0cf33c23e6a49cf80c62091"
+  },
+  "bound_actual_admission": {
+    "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\admission.json",
+    "sha256": "16810923dc25c91d2c00946198e64046fe9a08a5343c48e7dc7b1611f2398794"
+  },
+  "source_identity": {
+    "generated_at": "2026-10-10T03:14:29.413720+08:00",
+    "verified_intake_files": [
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\NORMAL_NATIVE_RUN_PROTOCOL.json",
+        "bytes": 3364,
+        "sha256": "c41ce21dc0f3cd94947b24fb8f77ec2de9a2091389d11c49672fac434cb95150"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\PREVIOUS_ENGINEERING_CHECKPOINT.json",
+        "bytes": 275,
+        "sha256": "dffbf4b2e730b35a4d96a07a81ed00012b615edf5bee63267a8bc10ada9c111c"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\admission.json",
+        "bytes": 1220,
+        "sha256": "16810923dc25c91d2c00946198e64046fe9a08a5343c48e7dc7b1611f2398794"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\controller.log",
+        "bytes": 362,
+        "sha256": "b9ea573fa1acb608ff90318b2fc399609cf9f99351fca886bca7495e91bae644"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\engineering_controller.py",
+        "bytes": 2754,
+        "sha256": "c972a398e7d7a4ccb7dcb33b474731ccd2c7cf7e4e7709a7f3353c238acfc6fe"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\engineering_status.json",
+        "bytes": 394,
+        "sha256": "94df6aee1a28e1f74f49c949c1342c03c0ad4e0d5be65cb84ecc93a9bb0d1ffa"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\NATIVE_M0_RECEIPT.json",
+        "bytes": 4054,
+        "sha256": "40e2465fd76a7e246a1a23ca50ee6fb2b4b2179a60dc78ea2d9156f16a415b32"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\NATIVE_M0_TRAINING_DIAGNOSTIC.json",
+        "bytes": 2441,
+        "sha256": "de21640b17c5017ac29f7d5c1a33f3f3a277bfda3ab344b8b0a558983d2ec9a7"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\scanrefer\\engineering_two_batch_preflight\\1791571650\\config.json",
+        "bytes": 1702,
+        "sha256": "e5845de2a85964b555d07e55c1eedf657212102649087c0adcfe0c2543357467"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\scanrefer\\engineering_two_batch_preflight\\1791571650\\log.txt",
+        "bytes": 2759,
+        "sha256": "683eb892b0cde64e825e35ce887ae513eebe56bd285872cc8644b1479ceb5019"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support.exit",
+        "bytes": 2,
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support.log",
+        "bytes": 5052,
+        "sha256": "6a0ce508d97d217ecb5a5cd372e9d2d0e70873e0f7a0af1126ae7bbf5fe30630"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\native_joint_preflight.py",
+        "bytes": 13444,
+        "sha256": "95fdaee5cc3a5bdf63eb6bf1505633988a25219b52d25ad0858a8c949920563b"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\RECOVERY_RECEIPT.json",
+        "bytes": 841,
+        "sha256": "214936ecc8606d13d03fc4921359b05fe468ba95d9eadf196b3b248b20053a8d"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\scanrefer\\recovery_only_previous_whole\\1791571623\\config.json",
+        "bytes": 1701,
+        "sha256": "3c837f957660874c6c29de88db23b571db8d2dad2af0825a5e8fe4b5cc3a8f1a"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\scanrefer\\recovery_only_previous_whole\\1791571623\\log.txt",
+        "bytes": 1822,
+        "sha256": "0376c095843fdc9984b51ed7a650e781c98a7f53a5b97fd18b8beb480d09f566"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery.exit",
+        "bytes": 2,
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery.log",
+        "bytes": 3366,
+        "sha256": "42963d8bf0cdc97e2d97262e4bc629e68f44e6fab881feee48a1d08c0101fb9f"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\recover_previous_whole.py",
+        "bytes": 4308,
+        "sha256": "cd92d22c4af347731b1e808e8976cfd08368bb101165affc85d68d48f2494ef0"
+      }
+    ],
+    "helpers": [
+      {
+        "name": "engineering_controller.py",
+        "sha256": "c972a398e7d7a4ccb7dcb33b474731ccd2c7cf7e4e7709a7f3353c238acfc6fe",
+        "collected_and_local_and_review_equal": true
+      },
+      {
+        "name": "native_joint_preflight.py",
+        "sha256": "95fdaee5cc3a5bdf63eb6bf1505633988a25219b52d25ad0858a8c949920563b",
+        "collected_and_local_and_review_equal": true
+      },
+      {
+        "name": "recover_previous_whole.py",
+        "sha256": "cd92d22c4af347731b1e808e8976cfd08368bb101165affc85d68d48f2494ef0",
+        "collected_and_local_and_review_equal": true
+      },
+      {
+        "name": "NORMAL_NATIVE_RUN_PROTOCOL.json",
+        "sha256": "c41ce21dc0f3cd94947b24fb8f77ec2de9a2091389d11c49672fac434cb95150",
+        "collected_and_local_and_review_equal": true
+      },
+      {
+        "name": "PREVIOUS_ENGINEERING_CHECKPOINT.json",
+        "sha256": "dffbf4b2e730b35a4d96a07a81ed00012b615edf5bee63267a8bc10ada9c111c",
+        "collected_and_local_and_review_equal": true
+      }
+    ],
+    "collected_port_matches_deployed_manifest": true,
+    "deployed_manifest_file_count": 116,
+    "source_content_changes_from_previous": [
+      "train_dist_mod.py",
+      "init_manifests/extremal_support.json"
+    ],
+    "local_source_identities": [
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py",
+        "port_name": "extremal_span_mixer.py",
+        "sha256": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\main_utils.py",
+        "port_name": "main_utils.py",
+        "sha256": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py",
+        "port_name": "mask_support_corrector.py",
+        "sha256": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+        "port_name": "models/losses.py",
+        "sha256": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py",
+        "port_name": "models/pv_ground.py",
+        "sha256": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py",
+        "port_name": "native_mask_geometry.py",
+        "sha256": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py",
+        "port_name": "native_model_initialization.py",
+        "sha256": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py",
+        "port_name": "native_root_bbs.py",
+        "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_observation_query.py",
+        "port_name": "pvground_observation_query.py",
+        "sha256": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_semantic_assignment.py",
+        "port_name": "pvground_semantic_assignment.py",
+        "sha256": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_source_query.py",
+        "port_name": "pvground_source_query.py",
+        "sha256": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_task_observation_query.py",
+        "port_name": "pvground_task_observation_query.py",
+        "sha256": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\selected_query_mask_objective.py",
+        "port_name": "selected_query_mask_objective.py",
+        "sha256": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\train_dist_mod.py",
+        "port_name": "train_dist_mod.py",
+        "sha256": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\pv_backbone.py",
+        "port_name": "models/pv_backbone.py",
+        "sha256": "8d25ef7bbc18abce9c755cf41718708ff16ec78d8bd32aa11e6cdd484c23ffc9"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\pv_utils.py",
+        "port_name": "models/pv_utils.py",
+        "sha256": "3e8c069af235970c541aa07d9780e812e609d798d242a013d64abdf89307bc29"
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+        "port_name": "src/joint_det_dataset.py",
+        "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+      }
+    ],
+    "actual_receipt_diagnostic_equal": true,
+    "full_recovery_assertion_AST_equal_for_both_stages": true,
+    "R5_R8_extremal_save_recovery_block_unchanged": true,
+    "receipt_checkpoint_sha_matches_collector_independent_remote_file_hash": true,
+    "whole_checkpoint_sha_matches_prior_CPU_hash": true,
+    "reviewer_binary_reopened": false,
+    "CPU_VSA_layout_first": 126,
+    "CPU_VSA_layout_shared_second": 186,
+    "CPU_copies_equal": true,
+    "one_original_observation_at_or_after_due": true,
+    "required_receipt_hashes": {
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\ENGINEERING_INTAKE.json": "d48b80652095983fa8539a02d0c1146777cba1736a219a8e97483d80e48a6c75",
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\previous_whole_recovery\\RECOVERY_RECEIPT.json": "214936ecc8606d13d03fc4921359b05fe468ba95d9eadf196b3b248b20053a8d",
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_engineering\\extremal_support\\NATIVE_M0_RECEIPT.json": "40e2465fd76a7e246a1a23ca50ee6fb2b4b2179a60dc78ea2d9156f16a415b32"
+    }
+  },
+  "previous_failures_preserved": {
+    "generated_at": "2026-10-10T03:14:29.413720+08:00",
+    "reviews": [
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_preflight_results\\EXPERIMENT_AUDIT.seal.json",
+        "sha256": "c8b0a226818c82b3e6ba04a8bc22584582e82d28ec8c17b801b01c3d8d212a06",
+        "artifacts_verified": 96
+      },
+      {
+        "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\preflight_attempt2\\native_preflight_results\\EXPERIMENT_AUDIT.seal.json",
+        "sha256": "8d60de10d6285809643dd4a86cf05fec4fba59470439133fd910c05615401a2e",
+        "artifacts_verified": 96
+      }
+    ],
+    "original_verdicts_unchanged": true
+  },
+  "original_attempt1_verdict": "FAIL",
+  "original_attempt2_verdict": "FAIL",
+  "no_matched_original_two_arm_PASS_retroactively_claimed": true,
+  "computational_source_change": "copy.deepcopy(self.model_cfg) per construction only; math/loss/optimizer bytes unchanged",
+  "reviewer_actions": {
+    "SSH_calls": 0,
+    "remote_queries": 0,
+    "GPU_queries": 0,
+    "neural_calls": 0,
+    "model_imports": 0,
+    "checkpoint_loads": 0,
+    "training_launches": 0,
+    "source_mutations": 0,
+    "cleanup_actions": 0,
+    "publications": 0,
+    "credential_AUTH_askpass_known_host_contents_read": false,
+    "local_native_Windows_process_handle_wait": true,
+    "original_artifacts_modified": false
+  },
+  "native_tool_notes": [
+    "Initial broad CPU-witness/intake outputs were truncated; subsequent compact JSON comparisons and complete local file hashing covered all used content.",
+    "One attempted local whole_support v2 spec read found no separate local file; the unchanged spec is inherited in the116 manifest from the original root and its local original SHA was verified.",
+    "No original observer result or new engineering logs were read before the specified first observation node.",
+    "Actual runtime/route attestation remains UNATTESTED; this is a continuation, not a new independent or cross-family review."
+  ],
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\.aris\\traces\\experiment-audit\\2026-10-10_actual_native_v2",
+  "raw_review_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_review\\RAW_REVIEW\\RAW_REVIEW.md",
+  "seal_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\actual_review\\EXPERIMENT_AUDIT.seal.json"
+}

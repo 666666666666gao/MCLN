@@ -1,0 +1,43 @@
+{
+  "call_number": 1,
+  "purpose": "current-method-review",
+  "timestamp": null,
+  "recorded_at": "2026-10-09 19:19:01 UTC",
+  "timestamp_note": "Host did not expose spawn timestamp; recording time is not substituted for call time",
+  "tool": "spawn_agent",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "fork_turns": "none",
+  "model_fields_describe": "requested route, not independently attested runtime identity",
+  "files_referenced": [
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/novelty/NOVELTY_INPUT.md",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/mask_support_corrector.py",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/extremal_span_mixer.py",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/selected_query_mask_objective.py",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/native_mask_geometry.py",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/pv_ground.py",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/native_model_initialization.py",
+    "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground",
+    "C:/Users/gb/.codex/skills/novelty-check/SKILL.md",
+    "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md",
+    "C:/Users/gb/.codex/skills/shared-references/review-tracing.md"
+  ],
+  "prompt": "Use installed novelty-check workflow Phase C/D as a fresh read-only reviewer. You are reviewing the CURRENT implemented PV-Ground method, not an aspirational architecture. Read C:\\Users\\gb\\.codex\\skills\\novelty-check\\SKILL.md and shared-references/local-codex-policy.md/review-tracing.md as needed. Input method and primary-source search records: C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\novelty\\NOVELTY_INPUT.md. Compute sources (READ ONLY): ...\\native_joint_v2\\source\\mask_support_corrector.py, extremal_span_mixer.py, selected_query_mask_objective.py, native_mask_geometry.py, models\\pv_ground.py, models\\losses.py, native_model_initialization.py. Baseline owner sources under C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground and the paper URLs in NOVELTY_INPUT. Verify primary-source methods yourself where obtainable, use only primary sources for technical claims, record inaccessible CVF/other readings rather than inventing details. Review A/B/C novelty specifically versus PV-Ground/MCLN, MaskDINO/TGNN, ordinary residual mask refinement, generic learned mask-box fusion, MS/CoDETR and latest HYDRA (preprint). Do not confuse motivating oracle gaps with a new finding or extremal whole control+1/-1 with evidence of effective delta. No SSH, GPU, model/data construction, training/installation, source edits, experiment restarts, or new compute controls. Produce NOVELTY_REVIEW.md/json/seal under native_joint_v2\\novelty, with exact sources/code references, honest unavailable/actual route attribution, and a direct-control table. Use per-component cautious judgments, no promise of three effective contributions. Preserve review trace under native_joint_v2\\.aris\\traces\\novelty-check\\2026-10-10_run01; original source snapshot/file SHA plus raw response. You can finish literature checking asynchronously while a distinct engineering observer waits; never inspect its live remote status.\n\n=== NOVELTY VERDICT LIMITS (these bound how you judge, never how widely you search) ===\nSearch exhaustively; judge calibrated. Two failures waste months equally:\npassing an idea a published paper already contains, and killing a viable idea\nbecause the territory has neighbors.\n1. Proximity is information, not a verdict. Someone working nearby goes in the\n   report; it is not by itself a reason to reject.\n2. ABANDON has exactly one qualification: a specific published paper already\n   contains this result — name that paper. No named paper, no ABANDON.\n3. Crowded-but-deltaed is PROCEED: state the delta in one sentence a reviewer\n   could verify. Thin or contested delta is PROCEED WITH CAUTION — say what\n   would make it carry, not why it should die. CAUTION is not a safe middle:\n   if you cannot name the specific thing that makes the delta thin, the\n   verdict is PROCEED.\n4. Concurrent or competing work is not a veto. That is a race — report it and\n   let the user decide whether to run it.\n5. A direct attack on a central problem is legitimate novelty when nobody has\n   executed it well. \"This area is hot\" does not mean \"this area is taken.\"\n6. This check is an early gate, never the last one — more triage, pilots, or\n   external review still stand between any idea and a paper, whatever order\n   this run uses. A wrongly passed idea dies cheaply at one of them; a wrongly\n   killed idea is never seen again. When torn between two verdicts, choose the\n   more permissive one.\nSay plainly when an idea clears the check. Do not manufacture overlap.",
+  "prompt_provenance": "Full initial task message delivered to this fresh reviewer, transcribed verbatim",
+  "parent_followups": [
+    {
+      "record_type": "verbatim received message",
+      "message": "Actual spawn request metadata: fork_turns='none', model='gpt-6-astra', reasoning_effort='max', native spawn_agent response gives only task_name. Host provides no independently attested actual model/effort/backend, so actual route UNATTESTED / same-family / provisional. Primary PhaseB raw search outputs + primary-open result are now archived in ...\\native_joint_v2\\.aris\\traces\\novelty-check\\2026-10-10_run01\\SEARCH_CAPTURE.json (169420 chars), no remote training state reads. Keep original result independent; reported currentbest counts are method evidence boundary, not novel-effect pass. Please treat geometry count as actual input members, not proven de-duplicated visible full-scene observation."
+    },
+    {
+      "record_type": "verbatim received message",
+      "message": "额外 ICLR2026/NeurIPS2025/ICML2025 查询已存同trace目录 VENUE_SEARCH_CAPTURE.json，包含原queries/raw。可挑真正相关primary论文，其余弱检索不必制造重叠。核心current方法没有cached-output selector、new scores、GT probe；B actualhead novelty正效应仍需whole and generic-axis gate directcontrols，A coordinatesZERO注意命名边界。请用任何你真正读到的论文内容判断，而非输入摘要断言。"
+    },
+    {
+      "record_type": "verbatim received message",
+      "message": "可用helper C:\\Users\\gb\\.codex\\tmp\\pvground_final_quality_20261005\\runtime_bundle\\whole_mask_range.py；实际116-port绑定SHA22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c，3629B，你可确认本地字节后用。Pristine upstream请用 N\\runtime_binding\\source...如果无完整树就GitHub作者官方代码；complete_fit目录确为owner含已修改overlay，不可称纯baseline。同意你自己001-current-method-review等trace命名，root只写了两个SEARCH_CAPTURE。记录TGNN已提出边界FP→BBox极值错误，不包装新motivation。你不需改变训练计划，仅完成calibrated report。"
+    }
+  ],
+  "source_manifest": "REVIEWER_SOURCE_SNAPSHOT_MANIFEST.json"
+}

@@ -1,0 +1,607 @@
+{
+  "schema_version": "1.0",
+  "title": "Current implemented PV-Ground: Phase C/D novelty review",
+  "review_date": "2026-10-10",
+  "timezone": "Asia/Shanghai",
+  "review_status": "completed",
+  "overall": {
+    "verdict": "PROCEED WITH CAUTION",
+    "novelty_score": 5,
+    "score_scale": 10,
+    "score_anchor": "5 = clear neighbors with a defensible delta worth evaluating; 1–3 reserved for a result identified in a named published paper",
+    "identified_exact_published_duplicate": null,
+    "exact_duplication_gate": "clears this bounded search; universal absence not proven",
+    "three_effective_contributions_established": false,
+    "scientific_acceptance": false,
+    "substantive_reason": "The precise residual inputs, extremal-source gate inputs, and selected-unmatched-winner mask target remain distinguishable from the primary passages read. Each is a narrow delta with a specific unresolved direct contrast; B's supplied contrast does not demonstrate an extremal-specific gain.",
+    "combination_status": "plausible interaction hypothesis, not an established finding",
+    "new_experimental_setting": false,
+    "new_failure_mode_finding_established": false
+  },
+  "reviewer_route": {
+    "tool": "native collaboration.spawn_agent",
+    "reviewer_task": "/root/pvg_normal_framework_novelty_20261010",
+    "fork_turns": "none",
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "requested_backend": "codex",
+    "actual_model": "UNATTESTED",
+    "actual_reasoning_effort": "UNATTESTED",
+    "actual_backend_identity": "UNATTESTED",
+    "route_evidence": "Parent-supplied request metadata; spawn response exposed only task_name",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "reviewer_response_available": true,
+    "cross_family_acceptance": false
+  },
+  "scope": {
+    "target": "Current snapshotted source, conditional initialization/configuration, and supplied closed frozen-adaptation summary",
+    "model_sources_imported": false,
+    "model_or_data_constructed": false,
+    "source_modified": false,
+    "ssh_used": false,
+    "gpu_used": false,
+    "training_or_installation_performed": false,
+    "experiment_restarted": false,
+    "live_training_status_inspected": false,
+    "controls_created_or_executed": false,
+    "remote_engineering_observer_inspected": false,
+    "actual_joint_run_outcome": "not reviewed",
+    "reported_counts_independently_recounted": false,
+    "source_snapshot_manifest": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/novelty-check/2026-10-10_run01/REVIEWER_SOURCE_SNAPSHOT_MANIFEST.json",
+    "primary_source_snapshot_manifest": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/novelty-check/2026-10-10_run01/PRIMARY_SOURCE_SNAPSHOT_MANIFEST.json",
+    "current_source_file_count": 14,
+    "owner_tree_status": "contains project overlays; not pristine upstream",
+    "author_loss_matches_owner_loss": true,
+    "author_loss_sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de"
+  },
+  "implemented_invariants": [
+    {
+      "id": "native_inheritance",
+      "fact": "Shared text masks, per-query masks, alpha logit fusion, and original mask losses are inherited.",
+      "refs": [
+        "primary_source_snapshots/upstream_pv_ground.py:527-539",
+        "primary_source_snapshots/upstream_losses.py:574-627"
+      ]
+    },
+    {
+      "id": "A_geometry_zero",
+      "fact": "Initialization disables A's nine coordinate channels.",
+      "refs": [
+        "source/native_model_initialization.py:44-53",
+        "source/mask_support_corrector.py:28-45"
+      ]
+    },
+    {
+      "id": "counts",
+      "fact": "Bincount measures input-member multiplicity; the helper does not deduplicate coordinates.",
+      "refs": [
+        "runtime_helper/whole_mask_range.py:12-37"
+      ],
+      "helper_sha256": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c"
+    },
+    {
+      "id": "hard_geometry",
+      "fact": "Detached fused mask logits determine hard foreground and extents; absent/degenerate extents retain the native prior.",
+      "refs": [
+        "source/native_mask_geometry.py:12-43"
+      ]
+    },
+    {
+      "id": "B_gate",
+      "fact": "One clamped gate per axis mixes center and size, coupling both faces on that axis.",
+      "refs": [
+        "source/extremal_span_mixer.py:86-105"
+      ]
+    },
+    {
+      "id": "C_selection",
+      "fact": "Native winner selection is detached; score computation itself remains trainable through the ordinary network.",
+      "refs": [
+        "source/native_root_bbs.py:4-9",
+        "source/selected_query_mask_objective.py:7-35"
+      ]
+    },
+    {
+      "id": "C_matching",
+      "fact": "Any original last-layer matched query is excluded from C; preserving the matching algorithm does not freeze assignments.",
+      "refs": [
+        "source/selected_query_mask_objective.py:18-24",
+        "source/models/losses.py:917-969"
+      ]
+    },
+    {
+      "id": "training_scope",
+      "fact": "Core native trainability and RoBERTa freezing are retained; C/G activation is read from the spec. Source presence does not attest execution.",
+      "refs": [
+        "source/native_model_initialization.py:18-74"
+      ]
+    },
+    {
+      "id": "G_not_C",
+      "fact": "Earlier G changes token loss on qualifying unmatched high-box-IoU queries and is separate inherited work.",
+      "refs": [
+        "source/pvground_semantic_assignment.py:9-48"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "A",
+      "name": "Candidate mask-state/count-conditioned residual",
+      "verdict": "PROCEED WITH CAUTION",
+      "novelty_score": 4,
+      "identified_exact_published_duplicate": null,
+      "delta": "Before inherited alpha fusion, a candidate/superpoint residual uses native shared-text/own-query mask state and input-member count.",
+      "refs": [
+        "source/mask_support_corrector.py:13-67",
+        "source/native_model_initialization.py:44-53",
+        "source/models/pv_ground.py:567-574"
+      ],
+      "closest_primary_ids": [
+        "PVGround",
+        "MCLN",
+        "FlowSeg",
+        "AQ3D"
+      ],
+      "specific_thinness": "Small statistical conditioning added to an ordinary content-conditioned residual; coordinates are zero and specialized conditioning is not isolated.",
+      "evidence_that_would_carry": "The briefing's same-capacity content-only residual comparison supports a useful effect attributable to mask-state/count inputs.",
+      "effectiveness_status": "unproven by supplied direct controls",
+      "claim_limits": [
+        "No new original mask fusion",
+        "No demonstrated geometric-position contribution",
+        "No calibrated full-scene observation count",
+        "No first residual mask refinement claim"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Extremal-source-conditioned per-axis interpolation",
+      "verdict": "PROCEED WITH CAUTION",
+      "novelty_score": 5,
+      "identified_exact_published_duplicate": null,
+      "delta": "Gate inputs pair opposite-face tokens pooled from all tied superpoints that supply the actual hard mask extent.",
+      "refs": [
+        "source/extremal_span_mixer.py:40-105",
+        "source/native_mask_geometry.py:12-43",
+        "source/models/pv_ground.py:593-613"
+      ],
+      "closest_primary_ids": [
+        "TGNN",
+        "MaskDINO",
+        "PVGround"
+      ],
+      "generic_control_is_named_paper": false,
+      "specific_thinness": "Distinctive source selection is not shown useful by the +1/-1 whole-support contrast; fixed-half mixing passes the numerical target.",
+      "evidence_that_would_carry": "Benefit attributable to extremal evidence beyond the briefing's same-capacity whole-support and generic/constant gate controls.",
+      "effectiveness_status": "no demonstrated extremal-specific improvement in supplied contrast",
+      "claim_limits": [
+        "No first mask-to-box claim",
+        "No new boundary-sensitivity finding",
+        "No six independent face confidence estimates",
+        "No fully differentiable mask-to-box path",
+        "No proof learned mixing is necessary"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "Unmatched native winner root-mask supervision",
+      "verdict": "PROCEED WITH CAUTION",
+      "novelty_score": 5,
+      "identified_exact_published_duplicate": null,
+      "delta": "At most one native highest-scoring root query receives its own/fused root-mask target only when absent from every existing match.",
+      "refs": [
+        "source/selected_query_mask_objective.py:7-42",
+        "source/native_root_bbs.py:4-9",
+        "source/models/losses.py:917-969"
+      ],
+      "closest_primary_ids": [
+        "MSDETR",
+        "CoDETR",
+        "iFAN",
+        "HYDRA",
+        "BeyondHungarian",
+        "MDSDETR",
+        "LNDETR"
+      ],
+      "specific_thinness": "A narrow extra-positive rule in mixed-supervision literature; motivation overlaps inference-aware learning and no isolated normal-training C result is supplied.",
+      "evidence_that_would_carry": "The briefing's native-loss versus C contrast at fixed A/B, G, initialization, inference, and update budget establishes a useful effect.",
+      "effectiveness_status": "unproven by supplied direct controls",
+      "claim_limits": [
+        "No first extra-positive supervision claim",
+        "No novel oracle-gap motivation claim",
+        "No new score head or post-hoc selector",
+        "Matching algorithm is unchanged, assignments need not be identical",
+        "Joint score pathway is not globally frozen"
+      ]
+    }
+  ],
+  "direct_controls": [
+    {
+      "claim": "A",
+      "control": "Same residual capacity using Query/SP content alone versus mask-state/count conditioning",
+      "status": "identified in input; no isolating result supplied",
+      "created_or_run_by_reviewer": false
+    },
+    {
+      "claim": "B",
+      "control": "whole_support versus extremal_support, same capacity",
+      "status": "reported closed frozen evidence; not independently recounted",
+      "whole_support": [
+        5676,
+        4921
+      ],
+      "extremal_support": [
+        5677,
+        4920
+      ],
+      "denominator": 9508,
+      "metric_order": [
+        "Acc@0.25",
+        "Acc@0.5"
+      ],
+      "difference_successes": [
+        1,
+        -1
+      ],
+      "difference_percentage_points": [
+        0.01051745898190997,
+        -0.01051745898190997
+      ],
+      "inference": "no demonstrated extremal-specific gain; totals insufficient for paired disagreement test",
+      "created_or_run_by_reviewer": false
+    },
+    {
+      "claim": "B",
+      "control": "constant/fixed-half, scalar, or generic axis gate without extremal provenance",
+      "status": "fixed-half reported to pass target; generic learned-gate evidence absent",
+      "inference": "target pass does not prove learned-gate necessity",
+      "created_or_run_by_reviewer": false
+    },
+    {
+      "claim": "C",
+      "control": "native mask criterion versus selected unmatched winner extra mask term, all other settings fixed",
+      "status": "identified in input; no isolated normal joint outcome supplied",
+      "created_or_run_by_reviewer": false
+    },
+    {
+      "claim": "combination",
+      "control": "component contrasts under delivered architecture and same recipe",
+      "status": "three effective components and cross-dataset final-model claims unresolved",
+      "created_or_run_by_reviewer": false
+    }
+  ],
+  "results_boundary": {
+    "source": "NOVELTY_INPUT.md",
+    "protocol": "reported closed frozen adaptation; not current normal joint run",
+    "whole_support_percent": [
+      59.69709718132099,
+      51.75641564997896
+    ],
+    "extremal_support_percent": [
+      59.7076146403029,
+      51.74589819099705
+    ],
+    "strict_target_percent": [
+      59.5,
+      51
+    ],
+    "target_clearance_reported": true,
+    "mechanism_specific_efficacy_clearance": false,
+    "paired_disagreement_counts_available": false,
+    "actual_normal_joint_results_reviewed": false,
+    "Nr3D_or_Sr3D_results_reviewed": false
+  },
+  "primary_literature": [
+    {
+      "id": "PVGround",
+      "title": "PV-Ground: Text-Guided Point-Voxel Interaction for 3D Visual Grounding",
+      "year": 2026,
+      "venue": "CVPR 2026",
+      "urls": [
+        "https://github.com/AaNnWwTt/PV-Ground",
+        "https://raw.githubusercontent.com/AaNnWwTt/PV-Ground/main/models/pv_ground.py",
+        "https://raw.githubusercontent.com/AaNnWwTt/PV-Ground/main/models/losses.py"
+      ],
+      "reading_level": "official code read and downloaded; indexed primary abstract; CVF full paper unavailable",
+      "verified_overlap": "Inherited mask branches, alpha, and criterion",
+      "full_paper_read": false
+    },
+    {
+      "id": "MCLN",
+      "title": "Multi-branch Collaborative Learning Network for 3D Visual Grounding",
+      "year": 2024,
+      "venue": "ECCV 2024",
+      "urls": [
+        "https://arxiv.org/html/2407.05363v1"
+      ],
+      "reading_level": "primary method §§3.2–3.4",
+      "verified_overlap": "REC/RES collaboration, mask alignment, and adaptive fusion"
+    },
+    {
+      "id": "TGNN",
+      "title": "Text-Guided Graph Neural Networks for Referring 3D Instance Segmentation",
+      "year": 2021,
+      "venue": "AAAI 2021",
+      "urls": [
+        "https://cdn.aaai.org/ojs/16253/16253-13-19747-1-2-20210518.pdf"
+      ],
+      "reading_level": "original PDF; grounding discussion printed p.1615",
+      "verified_overlap": "XYZ min/max mask boxes and boundary-to-box sensitivity"
+    },
+    {
+      "id": "MaskDINO",
+      "title": "Mask DINO: Towards A Unified Transformer-based Framework for Object Detection and Segmentation",
+      "year": 2023,
+      "venue": "CVPR 2023",
+      "urls": [
+        "https://arxiv.org/html/2206.02777v3"
+      ],
+      "reading_level": "primary §§3.4–3.5 and hybrid-matching description",
+      "verified_overlap": "Shared queries and mask-enhanced anchor-box initialization"
+    },
+    {
+      "id": "MSDETR",
+      "title": "MS-DETR: Efficient DETR Training with Mixed Supervision",
+      "year": 2024,
+      "venue": "CVPR 2024",
+      "urls": [
+        "https://arxiv.org/html/2401.03989v1"
+      ],
+      "reading_level": "primary §§3.2–3.3",
+      "verified_overlap": "Main decoder mixed one-to-one/one-to-many supervision"
+    },
+    {
+      "id": "CoDETR",
+      "title": "DETRs with Collaborative Hybrid Assignments Training",
+      "year": 2023,
+      "venue": "ICCV 2023",
+      "urls": [
+        "https://arxiv.org/html/2211.12860v6"
+      ],
+      "reading_level": "primary §§3.2–3.3",
+      "verified_overlap": "Auxiliary assignment heads and generated positive decoder queries"
+    },
+    {
+      "id": "FlowSeg",
+      "title": "FlowSeg: Dynamic Semantic Guidance for LLM-Conditioned Segmentation",
+      "year": 2026,
+      "venue": "arXiv preprint; conference status unverified",
+      "urls": [
+        "https://arxiv.org/html/2605.29461"
+      ],
+      "reading_level": "primary method including §3.4",
+      "verified_overlap": "Bounded residual mask correction at morphological boundaries"
+    },
+    {
+      "id": "AQ3D",
+      "title": "AQ3D: Adaptive Query Transformer for 3D Instance Segmentation",
+      "year": 2026,
+      "venue": "arXiv preprint",
+      "urls": [
+        "https://arxiv.org/html/2608.30618v1"
+      ],
+      "reading_level": "primary method",
+      "verified_overlap": "Mask-feature-to-query reverse attention and recomputation"
+    },
+    {
+      "id": "iFAN",
+      "title": "iFAN: Inference-Aware Learning for Plain Mask Transformers",
+      "year": 2026,
+      "venue": "arXiv preprint",
+      "urls": [
+        "https://arxiv.org/html/2608.03216",
+        "https://arxiv.org/abs/2608.03216"
+      ],
+      "reading_level": "v2 primary method and inference equations",
+      "verified_overlap": "Inference/matching mismatch; quality ranking and cross-layer distillation",
+      "difference": "Changes scores through a quality head; C directly teaches an unmatched winner's mask"
+    },
+    {
+      "id": "HYDRA",
+      "title": "Queries Knew More Than We Thought: Uncovering Latent Knowledge in Segmentation Models",
+      "year": 2026,
+      "venue": "arXiv preprint; publication not independently verified",
+      "urls": [
+        "https://arxiv.org/html/2609.20283",
+        "https://arxiv.org/abs/2609.20283"
+      ],
+      "reading_level": "primary §§2–4 and submission metadata",
+      "verified_overlap": "Hidden useful queries and matching-induced specialization; cached-output selector",
+      "metadata_discrepancy": "Abstract page lists v1 2026-07-30 despite 2609 identifier; unresolved, no inferred priority date",
+      "difference": "Current source has no post-hoc selector and retains native ranking formula"
+    },
+    {
+      "id": "BeyondHungarian",
+      "title": "Beyond Hungarian: Match-Free Supervision for End-to-End Object Detection",
+      "year": 2026,
+      "venue": "arXiv preprint",
+      "urls": [
+        "https://arxiv.org/html/2603.08514"
+      ],
+      "reading_level": "primary §§3.1–3.4",
+      "verified_overlap": "GT-probe learned correspondences and sparse broadcast supervision"
+    },
+    {
+      "id": "MDSDETR",
+      "title": "MDS-DETR: DETR with Masked Duplicate Suppressor",
+      "year": 2026,
+      "venue": "arXiv preprint",
+      "urls": [
+        "https://arxiv.org/html/2605.23507"
+      ],
+      "reading_level": "primary method section IV",
+      "verified_overlap": "Layer-wise mixed assignments and confidence-ordered masked attention"
+    },
+    {
+      "id": "LNDETR",
+      "title": "Effective Lymph Nodes Detection in CT Scans Using Location Debiased Query Selection and Contrastive Query Representation in Transformer",
+      "year": 2024,
+      "venue": "ECCV 2024",
+      "urls": [
+        "https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/05850.pdf"
+      ],
+      "reading_level": "primary §§3.2–3.3",
+      "verified_overlap": "IoU-calibrated selection and matched/unmatched contrast"
+    },
+    {
+      "id": "LESS",
+      "title": "LESS: Label-Efficient and Single-Stage Referring 3D Segmentation",
+      "year": 2024,
+      "venue": "NeurIPS 2024",
+      "urls": [
+        "https://proceedings.neurips.cc/paper_files/paper/2024/file/150fe800c9e6ed36d16f6a157eedb6e1-Paper-Conference.pdf"
+      ],
+      "reading_level": "primary §§3.2–3.4",
+      "verified_overlap": "Query-sentence weighted mask assembly and region/contrastive supervision"
+    }
+  ],
+  "other_screened_primary": [
+    {
+      "name": "Query Refinement Transformer for 3D Instance Segmentation",
+      "urls": [
+        "https://doi.org/10.1109/ICCV51070.2023.01697"
+      ],
+      "reading_level": "primary abstract and indexed CVF fragments; full PDF failed",
+      "exact_overlap_conclusion": "not established"
+    },
+    {
+      "name": "Spatial Matters",
+      "urls": [
+        "https://openaccess.thecvf.com/content/CVPR2026/html/Wang_Spatial_Matters_Position-Guided_3D_Referring_Expression_Segmentation_CVPR_2026_paper.html"
+      ],
+      "reading_level": "parent indexed primary abstract; reviewer full-page fetch failed",
+      "exact_overlap_conclusion": "unresolved"
+    },
+    {
+      "name": "Text-Guided Refinement for Referring Image Segmentation",
+      "urls": [
+        "https://www.mdpi.com/2076-3417/15/9/5047"
+      ],
+      "reading_level": "parent method summary not independently adopted; reviewer fetch failed",
+      "exact_overlap_conclusion": "unresolved"
+    },
+    {
+      "name": "EG-3DVG",
+      "urls": [
+        "https://github.com/Gwan9Wook/EG3DVG"
+      ],
+      "reading_level": "author project repository; full method not read",
+      "exact_overlap_conclusion": "not established"
+    },
+    {
+      "name": "QAGaussian / Beyond Similarity Matching",
+      "urls": [
+        "https://arxiv.org/html/2608.16103"
+      ],
+      "reading_level": "primary abstract/introduction and returned method excerpt",
+      "exact_overlap_conclusion": "different representation; no exact duplication established"
+    },
+    {
+      "name": "RUFNet",
+      "urls": [
+        "https://arxiv.org/abs/2607.05035"
+      ],
+      "reading_level": "primary abstract only",
+      "exact_overlap_conclusion": "different meaning of support/query; no exact duplication established"
+    },
+    {
+      "name": "Talk2Sensors",
+      "urls": [
+        "https://arxiv.org/abs/2608.04568"
+      ],
+      "reading_level": "primary abstract only",
+      "exact_overlap_conclusion": "adjacent setting"
+    },
+    {
+      "name": "AgentGrounder",
+      "urls": [
+        "https://arxiv.org/abs/2605.25901"
+      ],
+      "reading_level": "primary abstract only",
+      "exact_overlap_conclusion": "adjacent setting"
+    },
+    {
+      "name": "PruneGround",
+      "urls": [
+        "https://arxiv.org/abs/2606.31148"
+      ],
+      "reading_level": "primary abstract only",
+      "exact_overlap_conclusion": "adjacent setting"
+    }
+  ],
+  "access_failures": [
+    {
+      "name": "PV-Ground CVF PDF/HTML",
+      "result": "Internal Error",
+      "alternative": "official author code used"
+    },
+    {
+      "name": "QueryFormer CVF PDF",
+      "result": "Internal Error",
+      "alternative": "primary abstract/indexed text only"
+    },
+    {
+      "name": "Spatial Matters CVF HTML",
+      "result": "Internal Error",
+      "alternative": "no independent full-method reading"
+    },
+    {
+      "name": "Text-Guided Refinement publisher HTML",
+      "result": "Internal Error",
+      "alternative": "no independent full-method reading"
+    }
+  ],
+  "search_provenance": {
+    "independent_reviewer_web_calls": 17,
+    "route": "tools.web__run",
+    "raw_captures": [
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/novelty-check/2026-10-10_run01/REVIEWER_WEB_CAPTURE.json",
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/novelty-check/2026-10-10_run01/REVIEWER_WEB_SUPPLEMENT_017.json"
+    ],
+    "parent_phase_B_captures": [
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/novelty-check/2026-10-10_run01/SEARCH_CAPTURE.json",
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/novelty-check/2026-10-10_run01/VENUE_SEARCH_CAPTURE.json"
+    ],
+    "independent_from_parent_readings": true,
+    "recent_window": [
+      "2026-04-10",
+      "2026-10-10"
+    ],
+    "primary_only_technical_claims": true,
+    "universal_absence_proven": false,
+    "query_families": {
+      "A": [
+        "\"3D\" \"referring\" \"mask refinement\" residual query superpoint 2024 2025 2026",
+        "\"3D visual grounding\" \"mask\" \"disagreement\" refinement",
+        "\"segmentation\" \"residual\" \"query\" \"uncertainty\" mask refinement 2025 2026"
+      ],
+      "B": [
+        "\"3D\" \"grounding\" \"mask\" \"box fusion\"",
+        "\"bounding box\" \"extreme points\" \"segmentation\" \"confidence\" fusion 2024 2025 2026",
+        "\"3D\" \"bounding box\" \"mask\" \"axis\" \"gate\" refinement 2024 2025 2026"
+      ],
+      "C": [
+        "\"DETR\" \"unmatched queries\" \"mask\" supervision 2025 2026",
+        "\"segmentation\" \"top-ranked query\" \"supervision\" 2024 2025 2026",
+        "\"Hungarian\" \"selected\" \"referring\" \"mask\" training 2025 2026",
+        "\"segmentation\" \"deployment\" \"winner\" \"auxiliary\" loss query 2024 2025 2026"
+      ],
+      "recent": [
+        "\"3D referring\" \"extreme\" \"mask\" after:2026-04-10 before:2026-10-11",
+        "\"3D visual grounding\" segmentation refinement after:2026-04-10 before:2026-10-11",
+        "\"inference-aware\" \"unmatched\" \"segmentation\" after:2026-04-10 before:2026-10-11"
+      ],
+      "followups": [
+        "\"EG-3DVG\"",
+        "\"3D\" \"mask\" \"box\" \"fusion\" \"ScanRefer\"",
+        "\"extremal\" \"superpoint\"",
+        "\"MDS-DETR\" arxiv"
+      ]
+    }
+  },
+  "recommended_positioning": "In a PV-Ground-derived model, condition Query Mask residuals on native two-mask state and input-member multiplicity, condition per-axis box interpolation on hard-extremum source tokens, and give an unmatched native winner direct root-mask supervision without replacing the inference score formula.",
+  "markdown_report": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/novelty/NOVELTY_REVIEW.md",
+  "trace_response": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/.aris/traces/novelty-check/2026-10-10_run01/001-current-method-review.response.md",
+  "integrity_seal": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/novelty/NOVELTY_REVIEW.seal.json"
+}

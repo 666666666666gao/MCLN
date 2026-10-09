@@ -1,0 +1,16 @@
+{
+  "tool": "exec_command",
+  "args": {
+    "cmd": "$auditRoot='C:\\Users\\gb\\.codex\\tmp\\pvground_mask_box_controls_20261009\\audit'; $report=Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $auditRoot 'EXPERIMENT_AUDIT.json') | ConvertFrom-Json; $rawHash=(Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $auditRoot 'RAW_REVIEW_REPORT.md')).Hash.ToLowerInvariant(); if($rawHash -ne $report.raw_report_sha256) {throw 'raw report hash mismatch'}; $traceHash=(Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $auditRoot '.aris\\traces\\experiment-audit\\2026-10-09_run01\\001-actual-audit.response.md')).Hash.ToLowerInvariant(); if($traceHash -ne $rawHash) {throw 'trace response mismatch'}; if($report.deterministic_verification_status -ne 'PASS' -or $report.verdict -ne 'WARN' -or $report.blocking_findings.Count -ne 0 -or $report.actual_model -ne 'UNATTESTED' -or $report.actual_reasoning_effort -ne 'UNATTESTED' -or $report.acceptance_status -ne 'provisional') {throw 'audit metadata mismatch'}; $out=@(); foreach($name in @('RAW_REVIEW_REPORT.md','EXPERIMENT_AUDIT.md','EXPERIMENT_AUDIT.json','INVOCATION_ERRORS.json','REVIEWED_FILE_HASHES.json','VERIFIED_ARRAY_HASHES.json','DETERMINISTIC_VERIFY.json','SUPPLEMENTARY_VERIFY.json')) { $p=Join-Path $auditRoot $name; $out += [pscustomobject]@{path=$p;bytes=(Get-Item -LiteralPath $p).Length;sha256=(Get-FileHash -Algorithm SHA256 -LiteralPath $p).Hash.ToLowerInvariant()} }; $out | ConvertTo-Json -Depth 4 | Set-Content -Encoding UTF8 -LiteralPath (Join-Path $auditRoot 'FINAL_ARTIFACT_HASHES.json'); [pscustomobject]@{status='PASS';verdict=$report.verdict;blocking_findings=$report.blocking_findings.Count;reviewed_sources=$report.audited_input_hashes.PSObject.Properties.Count;arrays=@($report.audited_array_hashes.PSObject.Properties).Count;raw_report_sha256=$rawHash;report_json_sha256=(Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $auditRoot 'EXPERIMENT_AUDIT.json')).Hash.ToLowerInvariant()} | ConvertTo-Json -Compress",
+    "workdir": "C:\\Users\\gb",
+    "max_output_tokens": 1500,
+    "login": false
+  },
+  "result": {
+    "chunk_id": "4506cc",
+    "wall_time_seconds": 0.3086362,
+    "exit_code": 0,
+    "original_token_count": 91,
+    "output": "{\"status\":\"PASS\",\"verdict\":\"WARN\",\"blocking_findings\":0,\"reviewed_sources\":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],\"arrays\":1189,\"raw_report_sha256\":\"1262c0b333727a133e1b093db342370579b56535dcb75bac6fc5d53ed97a60c1\",\"report_json_sha256\":\"07c797481a6842e22fd393931539f9405f174388ce56ece58679cc8c3b6846a9\"}\r\n"
+  }
+}

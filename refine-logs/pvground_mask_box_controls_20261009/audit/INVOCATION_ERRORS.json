@@ -1,0 +1,50 @@
+{
+  "audit_agent": "/root/pvg_fixed_geometry_actual_audit_20261009",
+  "errors": [
+    {
+      "tool": "exec_command",
+      "chunk_id": "c06209",
+      "exit_code": 1,
+      "operation": "Numbered UTF-8 reads of analyze_fixed_query_boxes.py, SUMMARY.json, and the originally requested pair_spec.json",
+      "missing_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\pair_spec.json",
+      "raw_error_excerpt": "Get-Content: \r\nLine |\r\n   2 |  … ut $file; $n=0; Get-Content -Encoding UTF8 -LiteralPath $file | ForEa …\r\n     |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n     | 找不到路径“C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\pair_spec.json”，因为该路径不存在。\r\n",
+      "preservation_note": "Verbatim error excerpt and actual exit metadata from the tool response; successful preceding numbered file content is not duplicated here.",
+      "resolution": "Parent corrected the request to fused_mask_reference_spec.json; successful read chunk e04a27. Request-path correction, not scientific evidence."
+    },
+    {
+      "tool": "exec_command",
+      "chunk_id": "379d77",
+      "exit_code": 1,
+      "status": "AUDITOR_PATH_ALIAS_ASSERTION_FAILURE",
+      "raw_log": "verify_001.log",
+      "invocation": "verify_001.invocation.json",
+      "diagnostic": "verify_001.diagnostic.json",
+      "source": "independent_verify_attempt001.py",
+      "resolution": "Preserve specified absolute path instead of resolving the Windows directory junction; source files unchanged."
+    },
+    {
+      "tool": "exec_command/write_stdin",
+      "initial_chunk": "99c28a",
+      "session_id": 21138,
+      "completion_chunk": "8279bc",
+      "exit_code": 1,
+      "status": "AUDITOR_FLOAT32_RANGE_ASSERTION_FAILURE",
+      "raw_log": "verify_002.log",
+      "invocation": "verify_002.invocation.json",
+      "completion": "verify_002.completion.json",
+      "diagnostic": "verify_002.diagnostic.json",
+      "source": "independent_verify_attempt002.py",
+      "resolution": "Observed float32 excursions above one are reported without clipping; threshold counts verified in completed attempt 003."
+    }
+  ],
+  "nonerror_nonzero_discoveries": [
+    {
+      "tool": "exec_command",
+      "chunk_id": "cd9aaf",
+      "exit_code": 1,
+      "operation": "rg --files in old complete_fit and current experiment directories with -g '*.pth'",
+      "reason": "Normal no-match result; checkpoints are outside those two experiment directories, in the archive."
+    }
+  ],
+  "scientific_failure_hidden": false
+}

@@ -1,0 +1,145 @@
+{
+  "status": "EXECUTED_CLOSED_SAME_FORWARD_FIXED_QUERY_GEOMETRY_CONTROLS",
+  "generated_cst": "2026-10-09T13:19:53.744861+08:00",
+  "source_stage": "20261006_initial_formal",
+  "source_directory": "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_reference_20261006\\complete_fit\\fused_mask_reference\\initial_formal",
+  "source_rows_sha256": "40672da53d767bc2262fa280a9904589c813a98b0c419d1cbdac161378144a23",
+  "source_receipt_sha256": "1941b9aac70b16a265486402cccacc9e495b006789867dd07a670961e759c471",
+  "source_script_sha256": "019ec315da5e1baade056e0998fbd16eaa008474a099b7bc514791bab35fe96a",
+  "array_manifest_sha256": "12805c11865d605a9796dbc1675c5b07526caf72cba509e2e104742387bc6beb",
+  "output_rows_sha256": "db8ad8f8869218aef4444f71465b9d3d59a6cc284f1328645d47c59a1342b976",
+  "table": [
+    {
+      "condition": "native_regression",
+      "rows": 9508,
+      "hits25": 5615,
+      "hits50": 4495,
+      "accuracy25": 59.05553218342449,
+      "accuracy50": 47.27597812368532,
+      "float64_hits": [
+        5615,
+        4495
+      ],
+      "float32_float64_threshold_flips": {
+        "0.25": 0,
+        "0.5": 0
+      },
+      "meets_numerical_dual_gate": false
+    },
+    {
+      "condition": "mask_reference",
+      "rows": 9508,
+      "hits25": 5598,
+      "hits50": 4848,
+      "accuracy25": 58.876735380732015,
+      "accuracy50": 50.98864114429954,
+      "float64_hits": [
+        5598,
+        4848
+      ],
+      "float32_float64_threshold_flips": {
+        "0.25": 0,
+        "0.5": 0
+      },
+      "meets_numerical_dual_gate": false
+    },
+    {
+      "condition": "fixed_half_blend",
+      "rows": 9508,
+      "hits25": 5671,
+      "hits50": 4839,
+      "accuracy25": 59.64450988641145,
+      "accuracy50": 50.893984013462344,
+      "float64_hits": [
+        5671,
+        4839
+      ],
+      "float32_float64_threshold_flips": {
+        "0.25": 0,
+        "0.5": 0
+      },
+      "meets_numerical_dual_gate": false
+    }
+  ],
+  "comparisons": {
+    "native_to_mask": {
+      "0.25": {
+        "before_hits": 5615,
+        "after_hits": 5598,
+        "repairs": 174,
+        "damages": 191,
+        "net": -17
+      },
+      "0.5": {
+        "before_hits": 4495,
+        "after_hits": 4848,
+        "repairs": 724,
+        "damages": 371,
+        "net": 353
+      }
+    },
+    "native_to_half_blend": {
+      "0.25": {
+        "before_hits": 5615,
+        "after_hits": 5671,
+        "repairs": 127,
+        "damages": 71,
+        "net": 56
+      },
+      "0.5": {
+        "before_hits": 4495,
+        "after_hits": 4839,
+        "repairs": 539,
+        "damages": 195,
+        "net": 344
+      }
+    },
+    "mask_to_half_blend": {
+      "0.25": {
+        "before_hits": 5598,
+        "after_hits": 5671,
+        "repairs": 121,
+        "damages": 48,
+        "net": 73
+      },
+      "0.5": {
+        "before_hits": 4848,
+        "after_hits": 4839,
+        "repairs": 207,
+        "damages": 216,
+        "net": -9
+      }
+    }
+  },
+  "saved_gpu_cpu_float32_threshold_flips": {
+    "native_regression": {
+      "0.25": 0,
+      "0.5": 0
+    },
+    "mask_reference": {
+      "0.25": 0,
+      "0.5": 0
+    }
+  },
+  "invalid_selected_references": 39,
+  "independent_selected_iou_values_per_precision": 28524,
+  "coefficient_search": false,
+  "neural_forwards": 0,
+  "optimizer_updates": 0,
+  "ssh_queries": 0,
+  "new_weights": 0,
+  "retained_best_changed": false,
+  "live_training_changed": false,
+  "three_effective_contributions": false,
+  "full_goal_complete": false,
+  "review_status": "PENDING_FRESH_ACTUAL_AUDIT",
+  "limits": [
+    "This is the archived October 6 zero-offset reference snapshot, not the October 8 retained Mask-corrector checkpoint.",
+    "The 50/50 condition applies only the named prior geometry formula to PV outputs; it does not reproduce the full EG-3DVG model.",
+    "All three conditions reuse the identical saved native-bbs winner, input and dataset GT from one original forward.",
+    "The new blended output is a CPU diagnostic, not a trained model result or a checkpoint eligible for promotion.",
+    "Reference-invalid rows retain the existing archived original-prior behavior; no new fallback is added.",
+    "All256 candidates were preserved by the original pipeline; this analysis evaluates selected geometry only, not a new candidate-coverage audit.",
+    "No GT, threshold result or per-row oracle selects among the three fixed conditions at inference."
+  ]
+}

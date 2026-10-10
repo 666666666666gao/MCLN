@@ -1,0 +1,19 @@
+# 原生Query Mask匹配：真实批次工程预检准备
+
+本目录仅SOURCE_ONLY。当前三轮C-off没有结束，不能启动本目录的GPU检查或另一个训练；`text.json`与`query.json`的`serial_gpu_preflight_admitted`均为false，检查入口在导入Torch之前拒绝执行。没有创建部署器、GPU控制器或排队任务。
+
+该准备对应已审查并实际CPU验证的两个原生源文件修改。14份源与query_mask_assignment_20261011/source逐字节一致；其余PV依赖仍须通过原来完整运行时绑定部署到独立目录，不能把这14份局部源码直接冒充完整可运行的PV仓库。
+
+两份配置共同从原保留5677/4920的E0模型状态重建，保持G、关闭C，核心/骨干/G/A/B正常联合更新，保留原生RoBERTa冻结。只有训练matcher的直接Mask成本来源text/query不同。batch8、seed2027、核心及骨干LR1e-6、新模块LR1e-5、weight decay0.0005、clip0.1都不变。父状态已有C适配历史，不是从未训练过C的从头消融。
+
+复用已通过实际A100检查的native_c_off_preflight.py，每种模式计划使用真实训练loader前两个增强batch，共16行和2次更新。保留完整原生criterion、训练epoch函数、梯度/更新检查、1295个模型状态、Adam/scheduler/Python/NumPy/Torch/CUDA RNG保存与冷恢复验证；预检更新后的状态不进入正式训练。
+
+新增只读匹配观察：在同一前向的输出与有效GT上，比较配置来源与另一来源的原生匹配，实际loss始终使用配置来源。记录每条真实输入的全部有效GT和对应Query、改变的配对数、最终框IoU、Query Mask点级交并数及原生0.0002加权二值不一致成本。无Mask的六个早期prefix不新增比较；末层每步一次。观察器不修改分数、GT、原匹配结果或新增loss，不按GT槽0把其他实例改成root。
+
+新增模式参数保存在checkpoint config中，并在冷恢复时通过同一显式参数重新构建criterion。原生load_checkpoint不从config自动覆盖CLI；恢复或正式运行必须明确携带`--matcher_mask_source`，不得把模型权重恢复称为匹配模式也自动恢复。
+
+这项预检仍不是9508条精度评估，也不证明候选身份更正确、三模块有效或正常训练涨点。两个模式按相同seed及loader规则构造；是否实际输入相同、匹配变化的幅度和成本尺度，应在真实执行中核对，不能以合成人为平局结果外推。
+
+当前正式微调继续使用ScanRefer表达，不包含作者完整混合ScanNet检测配方，相关detect_intermediate/joint_det/augment_det差别保持公开。该预检没有验证检测混合行、Nr3D或Sr3D。
+
+先等C-off三轮终态及结果判断，再审定是否做这项预检；执行前确认独立完整源、父权重、空闲A100、GPU锁和保存空间。若工程预检通过，再决定是否开展同起点同预算正常训练。正式比较必须同时超过对应控制，并检验是否超过E0的5677/4920；不能以两步loss下降作为增量。

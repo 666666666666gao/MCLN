@@ -1,0 +1,257 @@
+{
+  "status": "SOURCE_ONLY_NATIVE_MATCHER_GPU_PREFLIGHT_REVIEW_COMPLETE",
+  "recorded_cst": "2026-10-11T03:44:42.272267+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "source_correctness_verdict": "PASS",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_role": "secondary_fresh_source_reviewer",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "actual_identity_attestation": "UNATTESTED",
+  "identity_note": "Requested routing is not proof of runtime model or effort identity.",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "warnings": [
+    "No target project execution occurred; actual GPU compatibility, two-step losses/gradients/updates, input equality and full restore success remain unverified.",
+    "Same seed and loader rules are source-defined. Recorded batch_row/step diagnostic fields alone do not attest cross-mode actual augmented-input equality.",
+    "The alternate matcher is observed on the same outputs within each trajectory; second-step cross-mode outputs may already come from different parameter states.",
+    "Review identity is UNATTESTED and acceptance is same-family/provisional."
+  ],
+  "checks": [
+    {
+      "id": "source_copy_and_reconstruction",
+      "status": "PASS",
+      "detail": "14 source files are byte-equal to the reviewed Q variant and match both manifests, protocol source maps and all 14 prior source-review pins. The generator literal transformations reconstruct the complete helper byte-for-byte. All 60 baseline assertions remain among 71 total assertions; group, observed_loss and TwoNativeBatches are AST-identical.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source_review/trace/VERIFICATION.json",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source_review/trace/PREFLIGHT_DIFF.txt"
+      ]
+    },
+    {
+      "id": "protocol_parity_and_admission_gate",
+      "status": "PASS",
+      "detail": "The protocols differ only in matcher_mask_source. Common arguments equal the original C-off protocol and init is byte-equal. Both GPU/full-training admissions are false. The false admission assertion is line 26, before mkdir line 31 and Torch import line 35. No deployment/controller/queue is defined in the inspected preparation. Full runtime dependencies remain explicitly deferred.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:25",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/text.json:1",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/query.json:1",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/EXPERIMENT_PLAN.md:3"
+      ]
+    },
+    {
+      "id": "configured_return_and_prefix_step_count",
+      "status": "PASS",
+      "detail": "The observer first calls the original configured matcher; no-Mask outputs return immediately. The current native path has Mask only at last_, and the auxiliary matcher call is commented out. observed_loss increments current_step before criterion; each two-step run is statically expected to record steps 1 and 2 and assert two last records. The returned object remains the original configured list. Static expectation is 14 configured calls and 2 diagnostic alternative calls per mode, not a runtime observation.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:155",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:206",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:242",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py:819",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py:854",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py:912"
+      ]
+    },
+    {
+      "id": "gt_indices_shapes_devices_and_metrics",
+      "status": "PASS",
+      "detail": "Both assignments are sorted by GT index and cover all valid GT with unique queries. These are positions in the filtered target list, not forced root-slot indices. CPU int64 matcher indices use the same valid advanced-index pattern as native losses. Native text masks have [1,256,S], own masks [256,S], and superpoint gathers share the model-input device. The paired-box IoU diagonal and own-mask raw-point intersection/union are computed from the same output and targets. Local index sorting does not mutate the configured return list.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:162",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py:387",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py:523",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py:874",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/pv_ground.py:429",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/pv_ground.py:548"
+      ]
+    },
+    {
+      "id": "mask_cost_semantics_and_labels",
+      "status": "PASS",
+      "detail": "Configured matcher costs are asserted as class=1,bbox=0,giou=2,Mask=.0002. Native binary-GT assertions support .0002 times disagreement count as the mask L1 component. own_query_mask_cost is explicitly separate from matching_mask_source/matching_mask_cost; the text control is not mislabeled with its own-query diagnostic. Existing >0 threshold and raw-point superpoint mapping are preserved. The observer is no_grad and does not add RNG-consuming construction or operations.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:75",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:179",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/main_utils.py:392",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py:279",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py:329"
+      ]
+    },
+    {
+      "id": "native_training_and_parent_state_preserved",
+      "status": "PASS",
+      "detail": "The original real-loader two-B8-batch path, normal train_one_epoch, full criterion, optimizer/scheduler, clipping, gradient and parameter-change checks remain. Common seed2027, native trainability and RoBERTa freeze remain. G is enabled, C is disabled, and the initial model must match all 1295 E0 states with the disclosed C architecture-flag difference. The shared E0 has historical C adaptation and is not a never-trained-C ablation.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:48",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:67",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:80",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:238",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:264",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/main_utils.py:295",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/main_utils.py:431"
+      ]
+    },
+    {
+      "id": "mode_and_full_state_restore_definition",
+      "status": "PASS",
+      "detail": "The helper explicitly passes matcher_mask_source through CLI, verifies saved config, and rebuilds criterion after load to verify its source against saved config. Native load_checkpoint does not override CLI. Existing full model, optimizer groups/state and step=2, scheduler and Python/NumPy/Torch/CUDA RNG restore checks remain. Constructor-only criterion reconstruction consumes no RNG. This defines a same-process object reconstruction check; it is not an executed cross-process or next-step continuation test.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:43",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:274",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:286",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/main_utils.py:135",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/main_utils.py:279",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py:442"
+      ]
+    },
+    {
+      "id": "scope_and_prior_evidence",
+      "status": "WARN",
+      "detail": "No new runtime result exists. Prior CPU evidence is the limited constructed-input check and is not GPU or full-criterion evidence. Same seed/loader rules do not establish observed cross-mode augmented-input equality; the helper receipt records step/batch_row rather than an equality comparison. Each alternative assignment is local to its own training trajectory. The plan discloses train-augmentation diagnostics, partial source packaging, historical C initialization, non-author-mixed recipe and absent Nr3D/Sr3D evaluation.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/EXPERIMENT_PLAN.md:5",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/EXPERIMENT_PLAN.md:15",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:193",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/CPU_CHECK_SUMMARY.json"
+      ]
+    }
+  ],
+  "suggested_patches": [],
+  "conclusion": "No actionable source defect was found in the bounded preparation changes. The source contract passes; the overall WARN retains source-only and attribution limits. This review grants no GPU or normal-training admission.",
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/EXPERIMENT_PLAN.md": "b4b7e10a8aec79e2e292b4173418c92aaea2b43fdb837451893b9ca384d7a888",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/PREPARATION.json": "b86400651a2bb8495a4d6d94d56890438fc8f9c1ad50ed8c9a35ec87a8bf7365",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/text.json": "acd276216fc06df13c775403748ef84155ba5f80516571b3b611038fee68c853",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/query.json": "ec7821edcf7e83a89145313d97fc18da042143e34f899eaacac523bd9b1abdd4",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/init.json": "d8b57d9d1c5d9f8a98c9500da7677b00ac139448740303cae7f1d11eefd0bcd4",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/SOURCE_HASHES.json": "a426b8a162f269bf3960f377963c13a8beeb35042803a399f590592f30a8abfa",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py": "c584ab700b52b6abc30a4b9be8e49b9ac3a33633737f76023fdcc9ab04457eab",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/refresh_preparation.py": "dee1ec4f39ff858c97f25665b1924ff34b3dcc4d2c669c46ffde0d3e8f918fa7",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/prepare_query_mask_assignment_gpu_20261011.py": "354dee2b7105d9f87af4860befe32ce6303b22a40d705502f15719324805ef4f",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/native_c_off_preflight.py": "a442ac8a439b108315840f3324c306f01cba3bc119343897888e89b97c6c2ffd",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/init.json": "d8b57d9d1c5d9f8a98c9500da7677b00ac139448740303cae7f1d11eefd0bcd4",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/NORMAL_NATIVE_RUN_PROTOCOL.json": "c4db3c565a1ad5a885e5974882aef8f9e75be84b3095016be066c0e83605f1c5",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/SOURCE_HASHES.json": "a426b8a162f269bf3960f377963c13a8beeb35042803a399f590592f30a8abfa",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/CPU_CHECK_SUMMARY.json": "ccd1bfa11a6d7509fb1f8a936887750665ed7d74ce97611f76bd28292d98b294",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source_review/SOURCE_REVIEW.json": "4800e84c329d883588ca67dea89880ab68d6e46cc5c133f9b6c3c7e17a462aec",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_actual_review/ACTUAL_REVIEW.json": "8b5296eb00c94dce3e2d0eb3122566c2cee2e90f0d2320e38551b192e0d1cfb0",
+    "C:/Users/gb/.codex/skills/experiment-bridge/SKILL.md": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+    "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/main_utils.py": "a16c469a216258ab11664a805e82b11c61bb1a596d6ae3a16d0ae3c8d5575751",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/main_utils.py": "a16c469a216258ab11664a805e82b11c61bb1a596d6ae3a16d0ae3c8d5575751",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/losses.py": "d0b30f644441502e419d5632e64fb6d557c3a2ec188fdf21de909fcaba1475a1",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py": "d0b30f644441502e419d5632e64fb6d557c3a2ec188fdf21de909fcaba1475a1",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source/train_dist_mod.py": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/train_dist_mod.py": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68"
+  },
+  "audited_input_count": 46,
+  "static_verification": {
+    "copied_native_source_files_byte_equal": 14,
+    "prior_source_review_pins_equal": 14,
+    "protocol_difference_keys": [
+      "matcher_mask_source"
+    ],
+    "generator_helper_byte_exact": true,
+    "baseline_assertions_preserved": 60,
+    "generated_assertions": 71,
+    "ast_parsed_python_files": 32,
+    "original_C_off_helper_reused": true,
+    "old_GPU_history_reaudited": false
+  },
+  "limitations": [
+    "This review reads local source and supplied historical review records; it neither executes nor freshly attests remote inputs or prior CPU/GPU runs.",
+    "The 14 source files are a partial overlay. Full runtime/source/parent/resource/lock/storage admission is explicitly deferred by the plan.",
+    "Preserved assertions describe future checks. PREPARATION fields about reconstruction/checking are source-definition claims, not observed restoration.",
+    "GT indices are filtered-target positions. Own-mask agreement and box IoU on augmented training inputs are not benchmark accuracy or semantic identity evidence.",
+    "Mask-cost diagnostics are semantically equivalent binary disagreement terms; no new floatwise runtime matrix recomputation was performed.",
+    "Frozen RoBERTa means frozen parameters under the original native policy, not a newly enforced eval-mode behavior.",
+    "The E0 parent includes prior C adaptation; C-off here is not a from-scratch never-trained-C ablation.",
+    "Checkpoint recovery is same-process object reconstruction with explicit current CLI mode; load_checkpoint does not auto-restore matcher mode from config.",
+    "No evidence of three effective contributions, ScanRefer training gain, full-model Nr3D/Sr3D results or complete goal achievement is produced."
+  ],
+  "admission": {
+    "source_review_completed": true,
+    "source_blocking_findings": false,
+    "actual_GPU_preflight_completed": false,
+    "serial_gpu_preflight_admitted": false,
+    "gpu_admitted": false,
+    "full_training_admitted": false,
+    "training_admitted": false,
+    "new_training_started": false,
+    "final_method_admitted": false,
+    "three_effective_contributions_proven": false,
+    "full_Nr3D_Sr3D_results_proven": false,
+    "formal_accuracy": null,
+    "full_goal_complete": false
+  },
+  "required_order": "Current C-off three-epoch terminal result and decision must precede any new GPU preflight admission.",
+  "preserved_observation_constraint": {
+    "observer_id": 52851,
+    "native_pid": 51540,
+    "next_main_observation_cst": "2026-10-11T05:00:40.968644+08:00",
+    "queried": false,
+    "activity_freshly_verified": false,
+    "modified": false
+  },
+  "reviewer_execution": {
+    "local_source_and_archive_reads": true,
+    "stdlib_static_checks": true,
+    "project_imports": 0,
+    "target_cpu_check_runs": 0,
+    "target_gpu_preflight_runs": 0,
+    "model_forwards": 0,
+    "criterion_calls": 0,
+    "backward_calls": 0,
+    "dataset_rows": 0,
+    "optimizer_updates": 0,
+    "gpu_operations": 0,
+    "ssh_calls": 0,
+    "network_calls": 0,
+    "training_status_queries": 0,
+    "reviewed_input_mutations": 0,
+    "active_training_source_mutations": 0,
+    "deployment_or_queue_actions": 0,
+    "written_scope": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source_review"
+  },
+  "tooling_notes": [
+    {
+      "tool_chunk_id": "b7ad50",
+      "command": "python trace/verify_static.py",
+      "exit_code": 1,
+      "result": "PATH interpreter E:/Scripts/python.exe failed at startup: No pyvenv.cfg file. The script did not run."
+    },
+    {
+      "tool_chunk_id": "4944b7",
+      "interpreter": "C:/Users/gb/AppData/Roaming/uv/python/cpython-3.11.14-windows-x86_64-none/python.exe",
+      "exit_code": 0,
+      "result": "STATIC_CHECKS_PASS; 14 source files, 46 audited inputs, 32 AST parses, all 60 baseline assertions preserved among 71 assertions."
+    }
+  ],
+  "verification_trace": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source_review/trace/VERIFICATION.json",
+  "trace_path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source_review/trace"
+}

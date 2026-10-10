@@ -1,0 +1,373 @@
+{
+  "status": "NORMAL_TERMINAL_DIAGNOSIS_AND_C_OFF_ENGINEERING_LAUNCH_RECORDED",
+  "prepared_cst": "2026-10-10T19:35:04.641168+08:00",
+  "started_cst": "2026-10-10T03:19:09.576037+08:00",
+  "completed_cst": "2026-10-10T17:57:10.138008+08:00",
+  "observed_cst": "2026-10-10T18:03:39.518142+08:00",
+  "exit_code": 0,
+  "elapsed_seconds": 52680.56200923771,
+  "metrics": [
+    {
+      "epoch": 0,
+      "rows": 9508,
+      "hits025": 5677,
+      "hits050": 4920,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 59.7076146403029,
+      "acc050_percent": 51.74589819099705,
+      "delta_hits025_from_E0": 0,
+      "delta_hits050_from_E0": 0
+    },
+    {
+      "epoch": 1,
+      "rows": 9508,
+      "hits025": 5652,
+      "hits050": 4596,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 59.44467816575516,
+      "acc050_percent": 48.33824148085822,
+      "delta_hits025_from_E0": -25,
+      "delta_hits050_from_E0": -324
+    },
+    {
+      "epoch": 2,
+      "rows": 9508,
+      "hits025": 5552,
+      "hits050": 4552,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 58.392932267564156,
+      "acc050_percent": 47.87547328565419,
+      "delta_hits025_from_E0": -125,
+      "delta_hits050_from_E0": -368
+    },
+    {
+      "epoch": 3,
+      "rows": 9508,
+      "hits025": 5576,
+      "hits050": 4488,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 58.64535128313,
+      "acc050_percent": 47.202355910811946,
+      "delta_hits025_from_E0": -101,
+      "delta_hits050_from_E0": -432
+    }
+  ],
+  "prescribed_best_epoch": 0,
+  "fixed_terminal_epoch": 3,
+  "fixed_terminal_delta_from_E0": [
+    -101,
+    -432
+  ],
+  "numeric_gates_passed_by_initial_adapted_model": true,
+  "normal_training_net_gain": false,
+  "three_effective_mechanisms_proved": false,
+  "training_rows": 36665,
+  "batch_size": 8,
+  "drop_last": true,
+  "updates_per_epoch": 4583,
+  "total_optimizer_updates": 13749,
+  "processed_training_rows": 109992,
+  "seed": 2027,
+  "learning_rate_core_and_backbone": 1e-06,
+  "learning_rate_new_modules": 1e-05,
+  "weight_decay": 0.0005,
+  "gradient_clip": 0.1,
+  "original_normal_configuration_unchanged": true,
+  "weights": [
+    {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/best.pth",
+      "bytes": 615023752,
+      "sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4"
+    },
+    {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/latest.pth",
+      "bytes": 841676832,
+      "sha256": "a000a1d3ea56db3ec9bcb44b49c1db68933dfaaae7c807c351ee0e5e76c2ca2f"
+    }
+  ],
+  "full_cold_recovery": {
+    "status": "NORMAL_BEST_AND_FIXED_E3_FULL_COLD_RECOVERY_COMPLETE",
+    "time_cst": "2026-10-10T18:16:52.295455+08:00",
+    "checkpoints": [
+      {
+        "name": "best",
+        "identity": {
+          "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/best.pth",
+          "bytes": 615023752,
+          "sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4"
+        },
+        "saved_epoch": 0,
+        "full_state_tensors": 1295,
+        "optimizer_states": 0,
+        "optimizer_step_values": [],
+        "restored_start_epoch": 1,
+        "full_recovery_exact": true,
+        "retained_metrics": {
+          "rows": 9508,
+          "hits025": 5677,
+          "hits050": 4920,
+          "primary_score": "last/bbs",
+          "same_complete_model": true
+        }
+      },
+      {
+        "name": "latest",
+        "identity": {
+          "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/latest.pth",
+          "bytes": 841676832,
+          "sha256": "a000a1d3ea56db3ec9bcb44b49c1db68933dfaaae7c807c351ee0e5e76c2ca2f"
+        },
+        "saved_epoch": 3,
+        "full_state_tensors": 1295,
+        "optimizer_states": 820,
+        "optimizer_step_values": [
+          13749
+        ],
+        "restored_start_epoch": 4,
+        "full_recovery_exact": true,
+        "retained_metrics": {
+          "rows": 9508,
+          "hits025": 5677,
+          "hits050": 4920,
+          "primary_score": "last/bbs",
+          "same_complete_model": true
+        }
+      }
+    ],
+    "actual_native_factory": true,
+    "actual_native_checkpoint_loader": true,
+    "scheduler_epoch_updates": 4583,
+    "new_neural_forwards": 0,
+    "new_optimizer_steps": 0,
+    "new_training_batches": 0,
+    "formal_accuracy_not_rerun": true,
+    "source": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground",
+    "actual_imports": {
+      "train_dist_mod": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/train_dist_mod.py",
+      "main_utils": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/main_utils.py",
+      "native_model_initialization": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/native_model_initialization.py",
+      "models.pv_ground": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/models/pv_ground.py"
+    },
+    "full_goal_complete": false,
+    "root": "/root/autodl-tmp/pvground_normal_terminal_recovery_20261010_attempt2",
+    "environment_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+    "source_hashes_verified": 14,
+    "original_normal_configuration_unchanged": true,
+    "recovery_exit_code": 0,
+    "normal_training_restarted": false
+  },
+  "integrity_verdict": "WARN",
+  "hard_integrity_failures": 0,
+  "review_independence": "same-family",
+  "review_acceptance": "provisional",
+  "runtime_attestation": "UNATTESTED",
+  "independently_recomputed_per_row_IoU": false,
+  "unique_expression_coverage_verified": false,
+  "control_source_review": "WARN_SOURCE_ONLY_ZERO_BLOCKING_SOURCE_FINDINGS",
+  "control_runtime_preflight_and_admission_complete": false,
+  "control_requires_post_E0_degradation_assessment": true,
+  "Nr3D_or_Sr3D_training_launched": false,
+  "archive_status": "RUNNING_NO_DELETION_AT_PREPARATION",
+  "full_goal_complete": false,
+  "best_and_latest_full_local_archive_complete": true,
+  "full_archive": {
+    "files": [
+      {
+        "status": "NORMAL_LATEST_FULL_STATE_LOCALLY_ARCHIVED_SHA_VERIFIED",
+        "local": "C:\\Users\\gb\\.codex\\archives\\pvg_native_normal_20261010\\latest.pth",
+        "identity": {
+          "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/latest.pth",
+          "bytes": 841676832,
+          "sha256": "a000a1d3ea56db3ec9bcb44b49c1db68933dfaaae7c807c351ee0e5e76c2ca2f"
+        },
+        "time_cst": "2026-10-10T18:41:12.012401+08:00",
+        "elapsed_seconds": 920.9411411000037,
+        "deletions": 0
+      },
+      {
+        "status": "NORMAL_BEST_FULL_STATE_LOCALLY_ARCHIVED_SHA_VERIFIED",
+        "local": "C:\\Users\\gb\\.codex\\archives\\pvg_native_normal_20261010\\best.pth",
+        "identity": {
+          "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/best.pth",
+          "bytes": 615023752,
+          "sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4"
+        },
+        "time_cst": "2026-10-10T18:51:48.015576+08:00",
+        "elapsed_seconds": 1556.9443175000051,
+        "deletions": 0
+      }
+    ],
+    "deletions": 0
+  },
+  "inferior_E3_remote_retirement": {
+    "status": "ONLY_ARCHIVED_INFERIOR_E3_WEIGHT_RETIRED",
+    "time_cst": "2026-10-10T19:26:10.305821+08:00",
+    "files": [
+      {
+        "status": "NORMAL_LATEST_FULL_STATE_LOCALLY_ARCHIVED_SHA_VERIFIED",
+        "local": "C:\\Users\\gb\\.codex\\archives\\pvg_native_normal_20261010\\latest.pth",
+        "identity": {
+          "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/latest.pth",
+          "bytes": 841676832,
+          "sha256": "a000a1d3ea56db3ec9bcb44b49c1db68933dfaaae7c807c351ee0e5e76c2ca2f"
+        },
+        "time_cst": "2026-10-10T18:41:12.012401+08:00",
+        "elapsed_seconds": 920.9411411000037,
+        "deletions": 0
+      }
+    ],
+    "deleted_count": 1,
+    "deleted_bytes": 841676832,
+    "data_free_before": 1623257088,
+    "data_free_after": 2464935936,
+    "best_and_all_author_G_support_span_dependencies_preserved": true,
+    "datasets_runtime_and_V99_untouched": true,
+    "local_full_archives_preserved": true,
+    "new_neural_calls": 0
+  },
+  "same64_panel": {
+    "status": "READ_ONLY_RETAINED_E0_VS_FIXED_E3_SAME64_VALIDATION_INPUTS_COMPLETE",
+    "time_cst": "2026-10-10T19:05:44.176054+08:00",
+    "results": [
+      {
+        "checkpoint": "best",
+        "saved_epoch": 0,
+        "identity": {
+          "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/best.pth",
+          "bytes": 615023752,
+          "sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4"
+        },
+        "rows": 64,
+        "selected_hits025": 33,
+        "selected_hits050": 28,
+        "selected_reference_hits050": 28,
+        "selected_native_hits050": 30,
+        "selected_fused_mask_hits050": 33,
+        "full256_final_qualified_rows": 54,
+        "all_query_gate_mean": 0.0951821431517601,
+        "all_query_gate_zero_fraction": 0.03948974609375,
+        "all_query_gate_one_fraction": 0.0
+      },
+      {
+        "checkpoint": "latest",
+        "saved_epoch": 3,
+        "identity": {
+          "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/latest.pth",
+          "bytes": 841676832,
+          "sha256": "a000a1d3ea56db3ec9bcb44b49c1db68933dfaaae7c807c351ee0e5e76c2ca2f"
+        },
+        "rows": 64,
+        "selected_hits025": 36,
+        "selected_hits050": 29,
+        "selected_reference_hits050": 27,
+        "selected_native_hits050": 21,
+        "selected_fused_mask_hits050": 35,
+        "full256_final_qualified_rows": 58,
+        "all_query_gate_mean": 0.23159916698932648,
+        "all_query_gate_zero_fraction": 0.2986857096354167,
+        "all_query_gate_one_fraction": 0.0006306966145833334
+      }
+    ],
+    "primary_score": "last/bbs",
+    "full256_retained": true,
+    "real_dataset_ground_truth": true,
+    "same_cached_inputs": true,
+    "same_inference_random_states": true,
+    "root_correspondence": "Native ScanRefer valid GT slot0; Query slot equality is not physical instance identity",
+    "new_optimizer_steps": 0,
+    "model_or_source_mutations": 0,
+    "checkpoint_mutations": 0,
+    "formal_full9508_result": false,
+    "fixed_panel_representative_of_full_validation": false,
+    "actual_neural_forwards": 16,
+    "elapsed_seconds": 30.321315422654152,
+    "peak_memory_bytes": {
+      "allocated": 4085191680,
+      "reserved": 5746196480
+    }
+  },
+  "same64_panel_does_not_explain_full_validation_decline": true,
+  "selected_mask_off_launch": {
+    "admission": {
+      "status": "C_OFF_NATIVE_ENGINEERING_ADMITTED",
+      "time_cst": "2026-10-10T19:26:27.564154+08:00",
+      "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+      "runtime": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "data_free_bytes": 2464931840,
+      "reserve_bytes": 913123196,
+      "helpers": {
+        "native_c_off_preflight.py": "a442ac8a439b108315840f3324c306f01cba3bc119343897888e89b97c6c2ffd",
+        "c_off_engineering_controller.py": "3580c502b76a9494c9bdb125bf138d6a8133698b543524f5542c255287e08b4c"
+      },
+      "source_review_sha256": "af28bd24f2a302ea00df1d2ed534eb8907ca5791c9ceaf3e2910ff99ec687dad",
+      "normal_E0_checkpoint": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/best.pth",
+      "normal_E0_sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4",
+      "normal_training_started": false,
+      "formal_accuracy": null
+    },
+    "controller_pid": 183638,
+    "controller_argv": [
+      "flock",
+      "--no-fork",
+      "-n",
+      "/root/autodl-tmp/mcln_v99_backbone_gpu0.lock",
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/engineering/c_off_engineering_controller.py"
+    ],
+    "root": "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/engineering",
+    "model_source": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground",
+    "status": "C_OFF_NATIVE_ENGINEERING_LAUNCHED_NOT_COMPLETED",
+    "time_cst": "2026-10-10T19:26:22.055547+08:00",
+    "first_observation_cst": "2026-10-10T19:31:22.055547+08:00",
+    "first_check_seconds": 300,
+    "later_poll_seconds": 240,
+    "normal_training_started": false
+  },
+  "source_reviews": {
+    "engineering": {
+      "verdict": "WARN",
+      "execution_scope": "SOURCE_ONLY",
+      "blocking_findings": [],
+      "actual_runtime_model": "UNATTESTED",
+      "independence": "same-family",
+      "acceptance": "provisional"
+    },
+    "normal": {
+      "verdict": "WARN",
+      "execution_scope": "SOURCE_ONLY",
+      "blocking_findings": [],
+      "actual_runtime_model": "UNATTESTED",
+      "independence": "same-family",
+      "acceptance": "provisional"
+    }
+  },
+  "selected_mask_off_latest_observation": {
+    "time_cst": "2026-10-10T19:31:22.056109+08:00",
+    "controller_alive": true,
+    "status": {
+      "status": "running",
+      "started_cst": "2026-10-10T19:26:27.606811+08:00",
+      "stage": "selected_mask_off_native_preflight",
+      "formal_accuracy": null,
+      "normal_training_started": false
+    }
+  },
+  "selected_mask_off_actual_M0_completion_observed": false,
+  "selected_mask_off_normal_training_launched": false,
+  "mask_off_engineering_never_used_for_formal_training": true,
+  "historical_pretrained_parents_already_C_adapted": true,
+  "no_history_never_C_claim": true,
+  "normal_storage_reserve_bytes": 2605151860,
+  "normal_storage_after_E3_retirement_bytes": 2464935936,
+  "normal_storage_gap_before_M0_bytes": 140215924,
+  "no_normal_resource_gate_relaxed": true,
+  "retired_SR_cache_archive_complete": false,
+  "retired_SR_cache_deleted": false,
+  "next_action": "Collect original engineering observer at planned 240-second cadence; actual audit; verified cache cleanup; one normal C-off arm."
+}

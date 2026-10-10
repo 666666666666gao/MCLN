@@ -1,0 +1,230 @@
+{
+  "status": "SINGLE_SCHEDULED_NORMAL_OBSERVATION",
+  "observed_cst": "2026-10-10T18:03:39.518142+08:00",
+  "controller_alive": false,
+  "child_alive": false,
+  "remote_status": {
+    "status": "complete",
+    "phase": "ordinary_joint_training",
+    "source_mode": "extremal_support",
+    "started_cst": "2026-10-10T03:19:09.576037+08:00",
+    "planned_epochs": 3,
+    "formal_result": null,
+    "original_core_frozen": false,
+    "paired_other_arm_training_started": false,
+    "child_pid": 47931,
+    "child_argv": [
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/train_dist_mod.py",
+      "--model",
+      "PVGround",
+      "--dataset",
+      "scanrefer",
+      "--test_dataset",
+      "scanrefer",
+      "--data_root",
+      "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+      "--use_color",
+      "--use_soft_token_loss",
+      "--use_contrastive_align",
+      "--self_attend",
+      "--butd",
+      "--rng_seed",
+      "2027",
+      "--batch_size",
+      "8",
+      "--num_workers",
+      "4",
+      "--num_target",
+      "256",
+      "--num_decoder_layers",
+      "6",
+      "--num_encoder_layers",
+      "3",
+      "--self_position_embedding",
+      "loc_learned",
+      "--lr",
+      "1e-6",
+      "--lr_backbone",
+      "1e-6",
+      "--lr_modules",
+      "1e-5",
+      "--weight_decay",
+      "0.0005",
+      "--clip_norm",
+      "0.1",
+      "--max_epoch",
+      "3",
+      "--start_epoch",
+      "1",
+      "--val_freq",
+      "1",
+      "--lr-scheduler",
+      "step",
+      "--lr_decay_epochs",
+      "280",
+      "340",
+      "--warmup-epoch",
+      "-1",
+      "--native_init_spec",
+      "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/init_manifests/extremal_support.json",
+      "--log_dir",
+      "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs",
+      "--exp",
+      "extremal_support",
+      "--print_freq",
+      "128"
+    ],
+    "completed_cst": "2026-10-10T17:57:10.138008+08:00",
+    "elapsed_seconds": 52680.56200923771,
+    "exit_code": 0,
+    "metrics": [
+      {
+        "epoch": 0,
+        "rows": 9508,
+        "hits025": 5677,
+        "hits050": 4920,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      },
+      {
+        "epoch": 1,
+        "rows": 9508,
+        "hits025": 5652,
+        "hits050": 4596,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      },
+      {
+        "epoch": 2,
+        "rows": 9508,
+        "hits025": 5552,
+        "hits050": 4552,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      },
+      {
+        "epoch": 3,
+        "rows": 9508,
+        "hits025": 5576,
+        "hits050": 4488,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      }
+    ],
+    "weights": [
+      {
+        "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/best.pth",
+        "bytes": 615023752,
+        "sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4"
+      },
+      {
+        "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/latest.pth",
+        "bytes": 841676832,
+        "sha256": "a000a1d3ea56db3ec9bcb44b49c1db68933dfaaae7c807c351ee0e5e76c2ca2f"
+      }
+    ],
+    "preflight_states_used": false,
+    "actual_full_checkpoint_cold_recovery_pending": true,
+    "formal_result_audit_pending": true,
+    "no_result_promoted": true
+  },
+  "metrics": [
+    {
+      "epoch": 0,
+      "rows": 9508,
+      "hits025": 5677,
+      "hits050": 4920,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 1,
+      "rows": 9508,
+      "hits025": 5652,
+      "hits050": 4596,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 2,
+      "rows": 9508,
+      "hits025": 5552,
+      "hits050": 4552,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 3,
+      "rows": 9508,
+      "hits025": 5576,
+      "hits050": 4488,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    }
+  ],
+  "files": [
+    {
+      "name": "logs/scanrefer/extremal_support/1791573559/native_metrics.jsonl",
+      "bytes": 476,
+      "sha256": "cf6406b84900e1bad037366584530b725efc4fe76879dd49d3da3be48ba9d590"
+    },
+    {
+      "name": "normal_status.json",
+      "bytes": 3179,
+      "sha256": "df83e555f7e3efcc3c47dcdf4f94e2d7652464c4a555a4ecd5ae12abd536cc6d"
+    },
+    {
+      "name": "train.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "name": "controller.log",
+      "bytes": 2639,
+      "sha256": "31ca5b6514cd3abfb19356b86d3922b1768e533083aab03435605431fe6a0675"
+    },
+    {
+      "name": "admission.json",
+      "bytes": 1522,
+      "sha256": "c170fc81b08d7c1cf4422d3d018c13105730d66067aad76c8db59cabb26e4859"
+    }
+  ],
+  "train_log_bytes": 1085691,
+  "storage": [
+    {
+      "path": "/",
+      "total_bytes": 32212254720,
+      "free_bytes": 319688704
+    },
+    {
+      "path": "/root/autodl-tmp",
+      "total_bytes": 53687091200,
+      "free_bytes": 1626402816
+    }
+  ],
+  "gpu_csv": "0, 0, 1, 40960",
+  "weight_file_metadata": [
+    {
+      "name": "logs/scanrefer/extremal_support/1791573559/best.pth",
+      "bytes": 615023752,
+      "mtime_unix": 1791575501.2121778
+    },
+    {
+      "name": "logs/scanrefer/extremal_support/1791573559/latest.pth",
+      "bytes": 841676832,
+      "mtime_unix": 1791626218.2591457
+    }
+  ],
+  "weights_reloaded_or_rehashed": false,
+  "new_neural_calls": 0,
+  "weight_promoted": false,
+  "first_due_cst": "2026-10-10T18:03:32.292305+08:00",
+  "observation_count": 1,
+  "later_poll_seconds": 240,
+  "later_node_requires_actual_progress_estimate": true,
+  "formal_results_unaudited": true,
+  "full_goal_complete": false
+}

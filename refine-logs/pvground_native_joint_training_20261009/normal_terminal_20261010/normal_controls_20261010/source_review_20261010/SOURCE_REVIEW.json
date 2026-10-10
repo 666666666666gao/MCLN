@@ -1,0 +1,114 @@
+{
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "blocking_findings": [],
+  "blocking_source_findings": [],
+  "deployment_gates_pending": [
+    {
+      "id": "D1",
+      "requirement": "Inspect the already-audited post-E0 degradation and decide C-off execution under the plan; main recovery/result audit are completed within their stated scope.",
+      "evidence": [
+        "normal_controls_20261010/EXPERIMENT_PLAN_SOURCE.md:48",
+        "terminal_actual_review_20261010/EXPERIMENT_AUDIT.json:291",
+        "terminal_actual_review_20261010/EXPERIMENT_AUDIT.json:317"
+      ]
+    },
+    {
+      "id": "D2",
+      "requirement": "Control-specific actual wiring/constructor/engineering and E0 equivalence evidence plus admission",
+      "evidence": [
+        "normal_controls_20261010/CONTROL_PREPARATION.json:44",
+        "normal_controls_20261010/normal_joint_controller.py:11",
+        "normal_controls_20261010/EXPERIMENT_PLAN_SOURCE.md:40"
+      ]
+    },
+    {
+      "id": "D3",
+      "requirement": "Current space, idle approved GPU, protected parents, source/data/environment and resource ownership",
+      "evidence": [
+        "normal_controls_20261010/EXPERIMENT_PLAN_SOURCE.md:87",
+        "launch_normal_authorized.py:53",
+        "launch_normal_authorized.py:83",
+        "launch_normal_authorized.py:103"
+      ]
+    }
+  ],
+  "nonblocking_findings": [
+    {
+      "id": "N1",
+      "finding": "Historical plan/status progress flags are superseded by later actual main-run recovery/audit receipts; preserve originals.",
+      "evidence": [
+        "normal_controls_20261010/EXPERIMENT_PLAN_SOURCE.md:31",
+        "normal_epoch3_boundary_observation/normal_status.json:75",
+        "normal_terminal_recovery_20261010/attempt2/RECOVERY_RESULT.json:2",
+        "terminal_actual_review_20261010/EXPERIMENT_AUDIT.json:264"
+      ]
+    }
+  ],
+  "claim_scope": "Incremental C effect during equal-budget three-epoch continuation from common parents already carrying C-related adaptation; no no-C full-history claim.",
+  "source_checks_file": "SOURCE_CHECKS.json",
+  "full_report": "SOURCE_REVIEW.md",
+  "input_sha_snapshot": "INPUT_SHA256.json",
+  "full_response_trace": "002-source-review-supplement.response.md",
+  "requested_primary_input_count": 13,
+  "archived_input_count": 31,
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\EXPERIMENT_PLAN_SOURCE.md": "2bb4f20f2b272fcf77e2f279fe587fe7c90eb6c71d51ba5b6b17d036fc06d60e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\CONTROL_PREPARATION.json": "1eae8249a3d57b9dfb7439e9181ab8c701c03c161d0f2152a88695876a84cf9a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\init.json": "d8b57d9d1c5d9f8a98c9500da7677b00ac139448740303cae7f1d11eefd0bcd4",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_NATIVE_RUN_PROTOCOL.json": "c4db3c565a1ad5a885e5974882aef8f9e75be84b3095016be066c0e83605f1c5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_joint_controller.py": "a55ae418f42a776395290a68a799cc121abf9f4cb936bd8f32a36162365484d9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NORMAL_NATIVE_RUN_PROTOCOL.json": "c41ce21dc0f3cd94947b24fb8f77ec2de9a2091389d11c49672fac434cb95150",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\init_manifests\\extremal_support.json": "3a01b645d1d8716af9e4250514c8bfe7dabc29b55b1a3cc364890cb9e61334b6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\train_dist_mod.py": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_epoch3_boundary_observation\\normal_status.json": "df83e555f7e3efcc3c47dcdf4f94e2d7652464c4a555a4ecd5ae12abd536cc6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_joint_controller.py": "ec8ee18144229bbc3e103634762550d9f71bab30ea804bb1dddf590ee3c33a4c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\prepare_selected_mask_control.py": "f8f5abc941ccacded23dcac714993b0c427df516c8344592acd9e0114dc0ac80",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NATIVE_SOURCE_PORT.json": "8f9020f8be4864e31e602e2044fc8e04d49297b163f5037dbc019964b47a140b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\launch_normal_authorized.py": "d70bc893e85e2498f21b0843ddb8912bf41098a4e830ce515c9ea7ded3534374",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_epoch3_boundary_observation\\admission.json": "c170fc81b08d7c1cf4422d3d018c13105730d66067aad76c8db59cabb26e4859",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\NATIVE_CHECKPOINT_SPACE_ESTIMATE.json": "a77f93efb51d3baab8001e6d0299778305f300fb56dd99e29dfd4ef5bd3b241e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_terminal_recovery_20261010\\attempt2\\RECOVERY_RESULT.json": "fdaf46b7a4054a3b02c2c5a2846dfa0ddc7ad87675163ce12755d3bcbc2b65c2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\terminal_actual_review_20261010\\EXPERIMENT_AUDIT.json": "37c377e3a598894c0cc4e4d42f0a5dd7789b6299e9afb089b382b9e0ca71fcc1"
+  },
+  "actual_deployment_admitted": false,
+  "runtime_model_or_weight_validation_performed": false,
+  "new_accuracy_findings": false,
+  "input_bytes_unchanged_at_completion": true,
+  "ssh_calls": 0,
+  "gpu_queries": 0,
+  "neural_calls": 0,
+  "training_launches": 0,
+  "deletions": 0,
+  "time_cst": "2026-10-10T18:29:11.865062+08:00",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "runtime_model_attestation_available": false,
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "agent_id": "/root/pvg_native_c_off_source_review_20261010",
+  "report_version": "R2_after_parent_supplement",
+  "supplemental_requested_input_count": 2,
+  "main_terminal_cold_recovery_supplied_and_audited": true,
+  "main_result_audit_supplied": true,
+  "main_result_audit_verdict": "WARN",
+  "main_result_audit_scope": "Qualified descriptive report and exact state recovery; independent benchmark reproduction not established.",
+  "immutable_original_status_pending_flags_are_historical": true
+}

@@ -1,0 +1,79 @@
+{
+  "status": "REFERIT_NATIVE_GPU_CHECK_SOURCE_REVIEWED_NOT_ADMITTED",
+  "prepared_cst": "2026-10-10T22:45:35.992779+08:00",
+  "result": {
+    "status": "REFERIT_C_OFF_NATIVE_GPU_CHECK_SOURCE_PREPARED_NOT_ADMITTED",
+    "source_files_copied_unchanged": 15,
+    "initialization_only_change": "C disabled in provisional Nr/Sr manifests",
+    "check_script_sha256": "c4a5b710a7f6a85ee27a6f421c9a83bddbdaf7bf4a40bc44828843f35c276e98",
+    "base_same_query_publication_section": "20.376.143",
+    "real_execution_completed": false,
+    "source_deployed": false,
+    "GPU_training_admission": false,
+    "final_method_selected": false,
+    "formal_accuracy": null,
+    "full_goal_complete": false
+  },
+  "review": {
+    "source_verdict": "WARN",
+    "blocking_findings": [],
+    "non_blocking_findings": [
+      {
+        "id": "NB-01",
+        "severity": "WARN",
+        "category": "provisional_and_unexecuted_scope",
+        "blocking": false,
+        "finding": "This is a C-off preparation for a possible final-method choice. Full native dataset counts, resource availability, two-step gradients, memory, and recovery remain pending execution. Earlier data evidence was capped at 128 annotations/source; the same-query receipt covers five synthetic evaluator fixtures.",
+        "evidence": [
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/PREPARATION_PROTOCOL.json",
+            "field": "final_method_admitted",
+            "value": false
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/cpu_execution/REFERIT_DATA_CPU_RESULT.json",
+            "field": "full_dataset_lengths_verified",
+            "value": false
+          }
+        ],
+        "remedy": "Keep all admission and final-method flags false; interpret later real receipts within their actual scope. This source verdict does not authorize GPU work."
+      },
+      {
+        "id": "NB-02",
+        "severity": "WARN",
+        "category": "bounded_witness_semantics",
+        "blocking": false,
+        "finding": "The planned 8 referring/8 detection rows are a deliberate two-batch engineering subset. G protection is a direct loss/logit-gradient invariant, not unchanged detection predictions after shared parameter updates. There is no assertion that qualified unmatched G queries are nonempty; the recorded count can be zero. Sr3D selection ensures nonempty anchor IDs and two valid GT slots, without a separate nonempty-anchor-point-mask assertion.",
+        "evidence": [
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/native_referit_preflight.py",
+            "line": 75
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/native_referit_preflight.py",
+            "line": 89
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/native_referit_preflight.py",
+            "line": 184
+          }
+        ],
+        "remedy": "Preserve these boundaries when interpreting the eventual receipt. Do not describe this check as a full epoch, proof of G effectiveness, or C training/deployment equivalence; no expanded runtime test is requested here."
+      }
+    ],
+    "execution_scope": "SOURCE_ONLY",
+    "actual_execution_review": null,
+    "actual_runtime_model": "UNATTESTED",
+    "independence": "same-family",
+    "acceptance": "provisional"
+  },
+  "source_prepared": true,
+  "source_deployed": false,
+  "GPU_training_admission": false,
+  "final_method_selected": false,
+  "real_execution_completed": false,
+  "formal_accuracy": null,
+  "normal_training_status_queries": 0,
+  "active_training_source_changed": false,
+  "full_goal_complete": false
+}

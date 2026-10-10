@@ -1,0 +1,290 @@
+{
+  "schema": "experiment_code_review_v1",
+  "generated_at": "2026-10-10T22:43:19.921906+08:00",
+  "date": "2026-10-10",
+  "round": 2,
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "preparation_source_verdict": "PASS",
+  "reason_code": "MINIMAL_PREPARATION_IDENTITY_FIX_VERIFIED_RUNTIME_AND_FINAL_METHOD_NOT_ADMITTED",
+  "summary": "No remaining blocking source defect. The raw-byte receipt mismatch is resolved and all other audited inputs are unchanged. Provisional C-off two-batch preparation remains unexecuted and does not admit GPU or final-method use.",
+  "blocking_findings": [],
+  "non_blocking_findings": [
+    {
+      "id": "NB-01",
+      "severity": "WARN",
+      "category": "provisional_and_unexecuted_scope",
+      "blocking": false,
+      "finding": "This is a C-off preparation for a possible final-method choice. Full native dataset counts, resource availability, two-step gradients, memory, and recovery remain pending execution. Earlier data evidence was capped at 128 annotations/source; the same-query receipt covers five synthetic evaluator fixtures.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/PREPARATION_PROTOCOL.json",
+          "field": "final_method_admitted",
+          "value": false
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/cpu_execution/REFERIT_DATA_CPU_RESULT.json",
+          "field": "full_dataset_lengths_verified",
+          "value": false
+        }
+      ],
+      "remedy": "Keep all admission and final-method flags false; interpret later real receipts within their actual scope. This source verdict does not authorize GPU work."
+    },
+    {
+      "id": "NB-02",
+      "severity": "WARN",
+      "category": "bounded_witness_semantics",
+      "blocking": false,
+      "finding": "The planned 8 referring/8 detection rows are a deliberate two-batch engineering subset. G protection is a direct loss/logit-gradient invariant, not unchanged detection predictions after shared parameter updates. There is no assertion that qualified unmatched G queries are nonempty; the recorded count can be zero. Sr3D selection ensures nonempty anchor IDs and two valid GT slots, without a separate nonempty-anchor-point-mask assertion.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/native_referit_preflight.py",
+          "line": 75
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/native_referit_preflight.py",
+          "line": 89
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/native_referit_preflight.py",
+          "line": 184
+        }
+      ],
+      "remedy": "Preserve these boundaries when interpreting the eventual receipt. Do not describe this check as a full epoch, proof of G effectiveness, or C training/deployment equivalence; no expanded runtime test is requested here."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "B-01",
+      "severity": "BLOCKING",
+      "category": "existing_source_identity_receipt_defect",
+      "finding": "SOURCE_PREPARATION.json.check_script_sha256 described normalized LF text, not the written CRLF preflight file.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/SOURCE_PREPARATION.json",
+          "line": 5
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/prepare_referit_native_gpu_check.py",
+          "line": 138,
+          "version": "round1 snapshot"
+        }
+      ],
+      "observed_raw_sha256": "4ba83e46e22080e79e20bcc5345c631ea5794a15a0db7d02bf9ecbd9b7364017",
+      "recorded_sha256": "d3788754842c305e16ae462651482536ae4858d2d89a527126b532852dc51132",
+      "cause": "The preparer hashed content.encode() while Windows write_text converted all 325 line endings to CRLF.",
+      "minimal_remedy": "Hash the written preflight with read_bytes() and refresh its existing metadata; no runtime rerun or new hash scheme.",
+      "status": "RESOLVED_IN_ROUND2",
+      "resolution": "Parent changed only the preparer, the fresh-span receipt key, and SOURCE_PREPARATION.json; independent raw-byte and exact-diff checks passed."
+    }
+  ],
+  "checks": [
+    {
+      "id": "C01",
+      "status": "PASS",
+      "finding": "All 15 prepared Python files are byte-identical to prior same-query sources and match the existing 116-entry warm manifest. Both init JSON differences are exactly use_selected_mask_supervision true to false."
+    },
+    {
+      "id": "C02",
+      "status": "PASS",
+      "finding": "Required native dataset_source/src/joint_det_dataset.py raw SHA is 3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d, matching both warm manifests. The model_source dataset class was not substituted."
+    },
+    {
+      "id": "C03",
+      "status": "PASS",
+      "finding": "The false final_method_admitted assertion is at preflight line 24, before numpy/Torch/project imports, output creation, CUDA, or distributed initialization. No launcher exists in this preparation directory."
+    },
+    {
+      "id": "C04",
+      "status": "PASS",
+      "finding": "Nr/Sr manifests bind their corresponding author checkpoints. Strict 1235-state author loading precedes nonpersistent position_ids conversion (1234), fresh G insertion (1271), and fresh support/span installation (1295). G/support/span checkpoint entries are null, and no ScanRefer state overlay is loaded."
+    },
+    {
+      "id": "C05",
+      "status": "PASS",
+      "finding": "Native TrainTester.get_loaders constructs full train and val datasets. Debug/eval/eval_train are asserted false, avoiding debug train-to-val substitution and the dataset overfit 128 cap. Native joint_det uses ScanNet multiplicity 10. Counts are obtained by len() only at runtime."
+    },
+    {
+      "id": "C06",
+      "status": "PASS",
+      "finding": "The subset interleaves 8 real referring and 8 real detection entries into two B8 batches. Sr selection requires auxi_entity plus nonempty anchor_ids and checks two valid GT slots. Detection rows require multiple valid GT slots; actual availability is an execution-time gate."
+    },
+    {
+      "id": "C07",
+      "status": "PASS",
+      "finding": "The observer calls the original SetCriterion.forward unchanged, records exactly seven calls, and takes last_ from index 1 because prefix order is proposal_, last_, 0head_ through 4head_. Target matching completeness is checked against all valid GT slots."
+    },
+    {
+      "id": "C08",
+      "status": "PASS",
+      "finding": "G selects detached-box IoU>0.5 unmatched expression queries, excludes every matched query and all ScanNet rows, and adds only a token-loss correction. Nr target weights are .6/.2/.2/.1; Sr weights are .625/.125/.125/.125. Both Nr/Sr use native total coefficient 1/7, not ScanRefer .5/7."
+    },
+    {
+      "id": "C09",
+      "status": "PASS",
+      "finding": "Direct autograd checks require G correction gradients to be zero outside selected logits. The original Hungarian matches, native detection loss and regression computations are not mutated. C is false in protocol/spec/model/output and extra-C result keys must be absent."
+    },
+    {
+      "id": "C10",
+      "status": "PASS",
+      "finding": "Gradient hooks separately aggregate original_core, backbone, G_reader, support_corrector, span_output, and span_internal. Finite values and positive group gradients/parameter changes are gated. Fresh zero-output heads permit zero internal gradients at step 1; span output/internal positivity is assessed across two steps."
+    },
+    {
+      "id": "C11",
+      "status": "PASS",
+      "finding": "Normal train_one_epoch supplies native forward, full criterion, AdamW, norm clipping and scheduler for exactly two batches. LR 1e-6 core/backbone and 1e-5 support/span is an explicit engineering recipe, not evidence for an author full-budget schedule."
+    },
+    {
+      "id": "C12",
+      "status": "PASS",
+      "finding": "The checkpoint stores all 1295 model tensors/buffers, Adam state and groups, scheduler, and Python/NumPy/Torch/all-CUDA RNG. Reconstructed architecture skips author/module checkpoint reload, strict state loading and exact equality checks cover every saved model/optimizer/RNG element. Actual restoration remains unexecuted."
+    },
+    {
+      "id": "C13",
+      "status": "PASS",
+      "finding": "No old 36665/9508/4583/6887 count constant is present in the preflight. The preflight does not call formal evaluation or carry ScanRefer E0 scores; retained_metrics and formal_accuracy are None. The 15 unchanged source files retain descriptive historical comments only."
+    },
+    {
+      "id": "C14",
+      "status": "PASS",
+      "finding": "The same-query evaluator retains author bbs scene-overlap multiplication and descending sort, caches the root winner, and uses it for both Mask paths. The earlier synthetic receipt is bounded evidence, not real accuracy or a C-equivalence result."
+    },
+    {
+      "id": "C15",
+      "status": "PASS",
+      "finding": "35 initial Python files parse in Python 3.7 grammar mode; the two changed Python files also parse after revision. This is syntax-only compatibility, not a Python 3.7 import, CUDA-extension or runtime test."
+    },
+    {
+      "id": "C16",
+      "status": "PASS",
+      "finding": "Round 2 changes exactly three inputs. Raw preflight SHA c4a5b710a7f6a85ee27a6f421c9a83bddbdaf7bf4a40bc44828843f35c276e98 equals the refreshed receipt, the preparer hashes read_bytes(), and the fresh-span field replaces the inherited pretrained-span wording. Other 55 audited inputs are unchanged."
+    }
+  ],
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/PLAN.md": "b88006e79184d858e71f113a2352b9c529d1b2107a4dcea42ae8246f570dbafb",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/PREPARATION_PROTOCOL.json": "696212feaacfe24ce6063b9b30177cd8a54abbea7e9265b93c7b73d4f5d06af0",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/SOURCE_PREPARATION.json": "fc302266ebb5d527028211cb908b346bc8e7980d76ada9c6f56452ad5f9d4434",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/SOURCE_HASHES.json": "4df0a8df8352773c3bb60235cbbafb4512e21dd6dfdde1274a3708cf924ec1c8",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/native_referit_preflight.py": "c4a5b710a7f6a85ee27a6f421c9a83bddbdaf7bf4a40bc44828843f35c276e98",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/init_manifests/nr3d.json": "914ffc27bc5c64be449522f9829de5d8573f291968a13383e6385b324353b2f4",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/init_manifests/sr3d.json": "dc15cf616fd6ab311300828cae4093dc9de1ccdb2b2ace55765ce894d2d4b4c5",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/main_utils.py": "ba3f32759d4cf09c2ab0d277fe2c92dcccac67398f01f6e2533cdc8e5f93e6ad",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/models/losses.py": "bebf992cdd579c8389a326eb578722417bf1aa207268e02919c74e461bf570d3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/native_model_initialization.py": "2db0c25f9a178df258e060d52f6399e0842f403e4b3bff3c2e46351da1590c14",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/pvground_semantic_assignment.py": "9ed9d5b757457d088142d9bf313b57cb26221e192f596302b3db2708d869473b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/selected_query_mask_objective.py": "229c4c02794abfec8a14cf45ac5117439d6976e7e5e73d7b9c449962509608a3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/src/grounding_evaluator.py": "cb1675934ac74d541a483d60fa6b36b088f1ea4a855f3ee39088199b21d82f82",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source/train_dist_mod.py": "7c3a73b96323ca1484a82266010c6a53547f880f9a73845ecf2d03185cc4af00",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/prepare_referit_native_gpu_check.py": "7806f928f95727846c21ce2a1775bd8727856e123b38fe23c584e28bbd3b460b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/native_joint_preflight.py": "95fdaee5cc3a5bdf63eb6bf1505633988a25219b52d25ad0858a8c949920563b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/main_utils.py": "ba3f32759d4cf09c2ab0d277fe2c92dcccac67398f01f6e2533cdc8e5f93e6ad",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/models/losses.py": "bebf992cdd579c8389a326eb578722417bf1aa207268e02919c74e461bf570d3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/native_model_initialization.py": "2db0c25f9a178df258e060d52f6399e0842f403e4b3bff3c2e46351da1590c14",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/pvground_semantic_assignment.py": "9ed9d5b757457d088142d9bf313b57cb26221e192f596302b3db2708d869473b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/selected_query_mask_objective.py": "229c4c02794abfec8a14cf45ac5117439d6976e7e5e73d7b9c449962509608a3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/src/grounding_evaluator.py": "cb1675934ac74d541a483d60fa6b36b088f1ea4a855f3ee39088199b21d82f82",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/train_dist_mod.py": "7c3a73b96323ca1484a82266010c6a53547f880f9a73845ecf2d03185cc4af00",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/nr3d/init.json": "c22fa73d5d3facb1b06f0dd69dd11717f53f9dbf8c6fd61622d8893b74f4f9f3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/sr3d/init.json": "0467e525637c9f654d031bc71d7534f66e865da12715714c6910b0ad95fece77",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/WARM_SOURCE_HASHES.json": "a10df62418a0bce49221a0131b1980d9edc9d73064e7bcdbbdc10f14cbb8eaac",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source_review/EXPERIMENT_CODE_REVIEW.json": "65cd156e6be898c3003518dd83dc6440430579dda8220d6149263e56ae1158fb",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/actual_review/EXPERIMENT_AUDIT.json": "2b90f1c6d4880466bdbfbed8cf6a24923fea1cf9969998a23ea30c322783459b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/cpu_execution/CPU_EXECUTION.json": "ca308bbdc05345ee34edd29a4e202b20765605eb01334ad8aeb732ec803c2b8d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/cpu_execution/SAME_QUERY_CPU_RESULT.json": "e8f2afe50c37155e94e71244e93cabb5c3c561c9d820c785084230912e1d6b5f",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/check_native_referit_data_cpu.py": "6fc5f9905e50ce32cd5de17924de9861293fd69f592979b0d5bd7ce014bf9047",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/CHECK_SPEC.json": "1f4c8199b9f105bc5e092e1cb4785e54cd180bd7a768cfaa714b83c7e5b26d89",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/WARM_SOURCE_HASHES.json": "f91d774a215a24992b5cba294e3f661711a07e57cafc5a3074d094f6d69efcde",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/cpu_execution/REFERIT_DATA_CPU_RESULT.json": "7dc70177bc9988f6d7f132f3dc5668eebacf5c18289ee4badd354c2908e93b81",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/src/joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "C:/Users/gb/.codex/skills/experiment-bridge/SKILL.md": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+    "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:/Users/gb/.codex/skills/shared-references/review-tracing.md": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+    "C:/Users/gb/.codex/skills/shared-references/output-versioning.md": "de8e7ac23069de6c5d0c482d4cef117dd5a543e00b57e2dc6c62560a457290c5",
+    "C:/Users/gb/.codex/skills/shared-references/output-manifest.md": "e767083e0ef97a7adf7a4e8a574090067a59c0655d5aca422a3747cd32b6afde",
+    "C:/Users/gb/.codex/skills/shared-references/output-language.md": "0f1447579bd7a2195fd4a074be70ae6345b5c368f1a70d327e89748bf5a378f9",
+    "C:/Users/gb/.codex/skills/shared-references/integration-contract.md": "5d393c31b36e98ae99c17ab9cf5879853c0cb595bbd9f4973ffe7bcd6549f4e7"
+  },
+  "raw_hash_convention": "Exact file bytes, SHA256 raw lowercase hex, absolute C:/ paths; no normalized-text hashes.",
+  "audited_input_count": 58,
+  "computation_source_files": 15,
+  "initial_python37_AST_files": 35,
+  "scope": "Preparation and native model/loss/data call paths reviewed statically, plus prior captured evidence as context only.",
+  "actions": {
+    "project_imports": 0,
+    "preflight_executions": 0,
+    "dataset_constructors": 0,
+    "PV_model_constructors": 0,
+    "PV_forwards": 0,
+    "criterion_calls": 0,
+    "optimizer_steps": 0,
+    "saved_weights": 0,
+    "SSH_calls": 0,
+    "GPU_calls": 0,
+    "network_calls": 0,
+    "current_training_queries": 0,
+    "input_edits": 0,
+    "delegated_reviewers": 0,
+    "stdlib_source_capture_and_AST_only": true
+  },
+  "source_review_completed": true,
+  "GPU_training_admission": false,
+  "runtime_admission": false,
+  "final_method_admitted": false,
+  "final_architecture_decided": false,
+  "actual_preflight_executed": false,
+  "full_dataset_lengths_verified_by_reviewer": false,
+  "full_training_budget_verified": false,
+  "C_training_deployment_equivalence_proved": false,
+  "formal_accuracy": null,
+  "full_goal_complete": false,
+  "not_proved": [
+    "Dependency imports and remote source deployment",
+    "Real full train/val counts and preprocessing completion",
+    "Nonempty qualified unmatched G examples or nonempty Sr anchor point masks",
+    "Actual two-step gradients, resource use, checkpoint restoration, or runtime completion",
+    "Unchanged detection predictions after shared-weight updates",
+    "Full-budget Nr/Sr training or accuracy",
+    "C training/deployment Query equivalence",
+    "Final architecture choice or GPU admission"
+  ],
+  "deterministic_checks_paths": [
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source_review/STATIC_CHECKS.json",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source_review/SOURCE_DETAIL_CHECKS.json",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source_review/ROUND2_STATIC_CHECKS.json"
+  ],
+  "private_snapshot_manifest": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source_review/FINAL_INPUT_SNAPSHOTS.json",
+  "initial_snapshot_manifest": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source_review/RAW_INPUT_SNAPSHOTS.json",
+  "trace_path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source_review/.aris/traces/experiment-bridge/2026-10-10_run01",
+  "report_path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_native_gpu_preparation_20261010/source_review/EXPERIMENT_CODE_REVIEW.md",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_task": "/root/pvg_referit_native_gpu_preparation_source_review_20261010",
+  "agent_id": "/root/pvg_referit_native_gpu_preparation_source_review_20261010",
+  "agent_id_kind": "native_canonical_task_name",
+  "opaque_agent_id": null,
+  "model_attribution_evidence": "The parent requested Astra/max. No tool-attested actual model or reasoning-effort identity was supplied.",
+  "fresh_context": true,
+  "cross_family_claim": false
+}

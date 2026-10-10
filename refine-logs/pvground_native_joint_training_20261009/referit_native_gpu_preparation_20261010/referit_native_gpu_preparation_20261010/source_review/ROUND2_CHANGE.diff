@@ -1,0 +1,41 @@
+--- round1/SOURCE_PREPARATION.json
++++ round2/SOURCE_PREPARATION.json
+@@ -2,7 +2,7 @@
+   "status": "REFERIT_C_OFF_NATIVE_GPU_CHECK_SOURCE_PREPARED_NOT_ADMITTED",
+   "source_files_copied_unchanged": 15,
+   "initialization_only_change": "C disabled in provisional Nr/Sr manifests",
+-  "check_script_sha256": "d3788754842c305e16ae462651482536ae4858d2d89a527126b532852dc51132",
++  "check_script_sha256": "c4a5b710a7f6a85ee27a6f421c9a83bddbdaf7bf4a40bc44828843f35c276e98",
+   "base_same_query_publication_section": "20.376.143",
+   "real_execution_completed": false,
+   "source_deployed": false,
+--- round1/native_referit_preflight.py
++++ round2/native_referit_preflight.py
+@@ -310,7 +310,7 @@
+     original_trainable_core_jointly_updated=True, original_roberta_frozen=True,
+     full_state_tensors=1295, gradient_norms=gradient_norms, updates=updates, losses=loss_records,
+     gradient_acceptance=diagnostic['gradient_acceptance'],
+-    pretrained_span_initial_mix_formula_verified=True, full_recovery_exact=True,
++    fresh_span_initial_mix_formula_verified=True, full_recovery_exact=True,
+     span_initialization='fresh_corresponding_author_core',
+     span_initialization_identity=json.loads(Path(args.native_init_spec).read_bytes())['official_checkpoint_sha256'],
+     checkpoint_sha256=checkpoint_sha, checkpoint_bytes=checkpoint_bytes,
+--- round1/prepare_referit_native_gpu_check.py
++++ round2/prepare_referit_native_gpu_check.py
+@@ -101,6 +101,7 @@
+     ("'ACTUAL_NATIVE_NORMAL_TRAINER_TWO_STEP_AND_FULL_RECOVERY_COMPLETE'", "'ACTUAL_NATIVE_REFERIT_C_OFF_TWO_MIXED_BATCHES_AND_FULL_RECOVERY_COMPLETE'"),
+     ("Core, backbone, support positive each step; Span output and internal positive across two steps", "Core, backbone, G reader and support positive each step; Span output and internal positive across two steps"),
+     ("span_initialization='retained_pretrained_checkpoint'", "span_initialization='fresh_corresponding_author_core'"),
++    ("pretrained_span_initial_mix_formula_verified=True", "fresh_span_initial_mix_formula_verified=True"),
+     ("span_initialization_identity=json.loads(Path(args.native_init_spec).read_bytes())['span_checkpoint_sha256']", "span_initialization_identity=json.loads(Path(args.native_init_spec).read_bytes())['official_checkpoint_sha256']"),
+     ("    real_training_batches=2, native_train_one_epoch_called=True,", "    real_training_batches=2, native_train_one_epoch_called=True,\n    dataset=options.dataset, referencing_rows=8, joint_detection_rows=8,\n    full_native_dataset_counts_observed=True, full_epoch_completed=False,\n    selected_annotation_indices=selected_indices, debug_used=False,\n    actual_normal_dataset_loading_and_augmentation_used=True,"),
+ ]
+@@ -135,7 +136,7 @@
+ (destination / 'SOURCE_PREPARATION.json').write_text(json.dumps(dict(
+     status='REFERIT_C_OFF_NATIVE_GPU_CHECK_SOURCE_PREPARED_NOT_ADMITTED',
+     source_files_copied_unchanged=15, initialization_only_change='C disabled in provisional Nr/Sr manifests',
+-    check_script_sha256=hashlib.sha256(content.encode()).hexdigest(),
++    check_script_sha256=hashlib.sha256((destination / 'native_referit_preflight.py').read_bytes()).hexdigest(),
+     base_same_query_publication_section='20.376.143',
+     real_execution_completed=False, source_deployed=False, GPU_training_admission=False,
+     final_method_selected=False, formal_accuracy=None, full_goal_complete=False), indent=2)+'\n', encoding='utf-8')

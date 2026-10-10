@@ -1,0 +1,261 @@
+{
+  "status": "ACTUAL_NATIVE_MATCHER_CONTROLLED_CPU_CHECK_COMPLETE",
+  "evaluation_type": "simulation_only",
+  "fixture_count": 9,
+  "matcher_calls": 9,
+  "neural_model_forward_calls": 0,
+  "criterion_calls": 0,
+  "optimizer_updates": 0,
+  "dataset_rows": 0,
+  "formal_accuracy": null,
+  "gpu_calls": 0,
+  "active_training_source_mutations": 0,
+  "current_training_queries": 0,
+  "source_sha256": {
+    "models/losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a"
+  },
+  "actual_losses_path": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/models/losses.py",
+  "actual_import_bindings": {
+    "utils": {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/utils/__init__.py",
+      "sha256": "d0f1d31d6e0207a37dcb8a33315a409226d651670a8d0a238223009a4118f57b"
+    },
+    "utils.scatter_util": {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/utils/scatter_util.py",
+      "sha256": "87674206eb44f07925e1111e0220f54c8b7be3758a04c3fedd4cc40bb097a0fe"
+    }
+  },
+  "torch_version": "1.10.2+cu111",
+  "records": [
+    {
+      "name": "single_base",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "single_swapped_own",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "swap_own",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "single_changed_shared_text",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "change_shared_text",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "single_no_mask_key",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "remove_mask",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "two_gt_base",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3,
+            17
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "two_gt_swapped_own",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "swap_own",
+      "assignments": [
+        {
+          "query": [
+            3,
+            17
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "two_gt_changed_shared_text",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "change_shared_text",
+      "assignments": [
+        {
+          "query": [
+            3,
+            17
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mixed_batch_base",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            17
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mixed_batch_swapped_own",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "swap_own",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            17
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "single_own",
+      "maximum_native_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "name": "multi_own",
+      "maximum_native_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "name": "mixed_batch_own",
+      "maximum_native_cost_difference": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "single_shared_text",
+      "batch_index": 0,
+      "first_row_column_shift": [
+        0.0003999471664428711
+      ],
+      "maximum_column_shift_spread": 1.1920928955078125e-07
+    },
+    {
+      "name": "single_mask_component",
+      "batch_index": 0,
+      "first_row_column_shift": [
+        0.0
+      ],
+      "maximum_column_shift_spread": 0.0
+    },
+    {
+      "name": "two_gt_shared_text",
+      "batch_index": 0,
+      "first_row_column_shift": [
+        0.0003999471664428711,
+        -0.0004000663757324219
+      ],
+      "maximum_column_shift_spread": 2.384185791015625e-07
+    }
+  ],
+  "scope": "Native matcher behavior with deliberately constructed CPU inputs; no causal training or benchmark claim."
+}

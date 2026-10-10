@@ -1,0 +1,582 @@
+{
+  "audit_skill": "experiment-audit",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "blocking_findings": [],
+  "warnings": [
+    {
+      "id": "W1",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "固定 matcher 输入的直接成本检查不能解释完整模型中的 Mask 作用或训练掉点",
+      "details": "正常模型启用预测 Mask 几何参考和 ExtremalSpanMixer；Text/Query Mask 可先改变 last_center/last_pred_size，再进入 matcher 的 GIoU 成本。fixture 固定 boxes/logits，只改变 mask 键，未覆盖该间接路径、梯度或训练动态。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 45,
+          "line_end": 84
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/native_model_initialization.py",
+          "line_start": 44,
+          "line_end": 65
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/pv_ground.py",
+          "line_start": 593,
+          "line_end": 610
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/native_mask_geometry.py",
+          "line_start": 13,
+          "line_end": 43
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/extremal_span_mixer.py",
+          "line_start": 46,
+          "line_end": 53
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/extremal_span_mixer.py",
+          "line_start": 97,
+          "line_end": 121
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 899,
+          "line_end": 917
+        }
+      ]
+    },
+    {
+      "id": "W2",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "SOURCE_ONLY，尚无实际 CPU 成功/实际 import 绑定见证",
+      "details": "本轮只读源码、计算本地 SHA256 和比较 JSON；MATCHER_CPU_RESULT.json/cpu_execution 均不存在。runner 的远端校验及 check 的实际 import 路径断言尚未执行；当前报告不能作为实际执行回执、当前主训练状态或 GPU 准入。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/run_authorized.py",
+          "line_start": 13,
+          "line_end": 16
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/run_authorized.py",
+          "line_start": 29,
+          "line_end": 44
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 25,
+          "line_end": 30
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 123,
+          "line_end": 132
+        }
+      ]
+    },
+    {
+      "id": "W3",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "结果回执仅保留成本差摘要，且包含一个零成本阴性对照",
+      "details": "捕获完整原生成本矩阵后只在内存保留，最终 JSON 保存分配、最大差、首行列偏移和列偏移散布；没有持久化逐元素矩阵。single_mask_component 的原 Text Mask 恰好等于唯一 GT，基线 mask cost 为零，因此不能单独证明非零 mask 项生效。改变 shared text 的两项才给出源码可推导的非零偏移；本轮没有观察数值。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 37,
+          "line_end": 39
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 56,
+          "line_end": 65
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 109,
+          "line_end": 132
+        }
+      ]
+    },
+    {
+      "id": "W4",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "进口路径校验边界仍窄于完整环境封存",
+      "details": "新 check/runner 核对 utils 与 utils.scatter_util 的路径/哈希；匹配 NATIVE_SOURCE_PORT 的 lr_scheduler/logger 本地字节也已审读，其顶层只导入/定义，没有训练、数据加载或日志写调用。但 runner 未单独核对这两个传递依赖，也未封存 torch/scipy 的全部包字节；不把本次有限绑定说成完整环境验证。无当前源码证据显示这些依赖会执行被禁止的工作，故不是单次 CPU 检查的阻断项。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/CHECK_SPEC.json",
+          "line_start": 10,
+          "line_end": 13
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 25,
+          "line_end": 30
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/run_authorized.py",
+          "line_start": 31,
+          "line_end": 35
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/utils/__init__.py",
+          "line_start": 6,
+          "line_end": 7
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/utils/lr_scheduler.py",
+          "line_start": 7,
+          "line_end": 11
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/utils/logger.py",
+          "line_start": 6,
+          "line_end": 13
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/utils/logger.py",
+          "line_start": 33,
+          "line_end": 98
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/NATIVE_SOURCE_PORT.json",
+          "line_start": 626,
+          "line_end": 638
+        }
+      ]
+    }
+  ],
+  "evaluation_type": "simulation_only",
+  "summary": "源码未发现阻止单次受控原生 matcher CPU 检查的缺陷。脚本忠实执行实际 losses.HungarianMatcher 并透传 SciPy 分配；合成输入、实际结果待运行以及完整模型的间接 Mask→box 路径必须明确披露。",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_identity_attestation": "UNATTESTED",
+  "agent_id": "/root/pvg_native_matcher_mask_role_review_20261011",
+  "generated_at": "2026-10-11T02:42:38.2229446+08:00",
+  "audited_input_hashes": {
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\matcher_mask_role_cpu_20261011\\check_native_matcher_cpu.py": "fb3f3ac5e7da18c44361dc73926b07220b652bf352366dd8c0175ea677d3ed39",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\matcher_mask_role_cpu_20261011\\CHECK_SPEC.json": "0ddfb1c4fcc4481c463f623983c70764d87e26a009bc535558045b43eb6214fe",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\matcher_mask_role_cpu_20261011\\run_authorized.py": "d196ef4630f0b41d2f14c28ec49613b5a24a2356133079c8d6cbb7702327ec14",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\CONTROL_PREPARATION.json": "1eae8249a3d57b9dfb7439e9181ab8c701c03c161d0f2152a88695876a84cf9a",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_LAUNCH.json": "0cf2d55540c57f1a54b17b375428b80175dc07ce6d4d1ced84a2ffab29de894c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\train_dist_mod.py": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\init.json": "d8b57d9d1c5d9f8a98c9500da7677b00ac139448740303cae7f1d11eefd0bcd4",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_NATIVE_RUN_PROTOCOL.json": "c4db3c565a1ad5a885e5974882aef8f9e75be84b3095016be066c0e83605f1c5",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_joint_controller.py": "a55ae418f42a776395290a68a799cc121abf9f4cb936bd8f32a36162365484d9",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\utils\\__init__.py": "c8492a3a72276c121d314ff5bac28fe8ee290b110c99855663204337a577b62a",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\utils\\scatter_util.py": "cba321fca2e3b473001c26348618510b75210707e63eb84630c742b4965efef0",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\utils\\lr_scheduler.py": "0d73ea2e0625d1b7ab2c0f6100b1d8587e60dd79960bf5867775ff7e13fcb0c3",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\utils\\logger.py": "d8fedf464be6510ce1fe56ba4250c1ef5a5d4444b0aaef4d79a11ad70cec97bf",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_factory_cpu_20261010\\source_review\\private\\snapshots\\039_env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_factory_cpu_20261010\\actual_review\\private\\snapshots\\001_env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NATIVE_SOURCE_PORT.json": "8f9020f8be4864e31e602e2044fc8e04d49297b163f5037dbc019964b47a140b",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\utils\\__init__.py": "d0f1d31d6e0207a37dcb8a33315a409226d651670a8d0a238223009a4118f57b",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\utils\\scatter_util.py": "87674206eb44f07925e1111e0220f54c8b7be3758a04c3fedd4cc40bb097a0fe",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\utils\\lr_scheduler.py": "6ef012a837653b970ecd46854b96a6155283db9831bf1d2b2465f25c506034a7",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\utils\\logger.py": "2ce0527f96cdfdfece74a344e7a4e0b581515648a1bf568aa961adceecd5837c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\matcher_mask_role_cpu_20261011\\SOURCE_FINDING.md": "b2c23aa2e8a03041d2ec15c982e4fafd33a496f30134f817207e711e31a6797a"
+  },
+  "primary_artifacts": {
+    "check": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+    "spec": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/CHECK_SPEC.json",
+    "runner": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/run_authorized.py",
+    "loss": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+    "pv": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/pv_ground.py",
+    "main": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/main_utils.py",
+    "dataset": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/normal_source_review/private/audited_inputs/runtime_binding/dataset_source/src/joint_det_dataset.py",
+    "prep": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/CONTROL_PREPARATION.json",
+    "launch": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/NORMAL_LAUNCH.json",
+    "geom": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/native_mask_geometry.py",
+    "span": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/extremal_span_mixer.py",
+    "init": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/native_model_initialization.py",
+    "train": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/train_dist_mod.py",
+    "control": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/init.json",
+    "protocol": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/NORMAL_NATIVE_RUN_PROTOCOL.json",
+    "controller": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/normal_joint_controller.py",
+    "port": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/NATIVE_SOURCE_PORT.json",
+    "uinit": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/utils/__init__.py",
+    "scatter": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/utils/scatter_util.py",
+    "scheduler": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/utils/lr_scheduler.py",
+    "logger": "C:/Users/gb/.codex/tmp/pvground_mask_support_correction_20261008_v2/complete_fit/PV-Ground/utils/logger.py",
+    "env": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/face_native_factory_cpu_20261010/actual_review/private/snapshots/001_env_spec.json",
+    "source_finding": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/SOURCE_FINDING.md"
+  },
+  "source_safety": {
+    "planned_cpu_execution_source_admissible": true,
+    "actual_execution_verified": false,
+    "gpu_training_admission": false,
+    "reviewer_ssh_calls": 0,
+    "reviewer_target_script_runs": 0,
+    "reviewer_model_imports": 0,
+    "reviewer_dataset_loads": 0,
+    "reviewer_gpu_calls": 0,
+    "reviewer_training_calls": 0,
+    "reviewer_active_source_mutations": 0,
+    "reviewer_write_scope": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/source_review"
+  },
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "classification": "simulation_only",
+      "details": "fixture 人工构造 boxes/positive_map/masks，且故意把目标框写入 query 3/17；不是数据集样本，也不是精度结果。正常训练 GT 则由 scan.three_d_objects 实例点集及目标 bbox 构造并按 box_label_mask 进入 criterion。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 45,
+          "line_end": 69
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/normal_source_review/private/audited_inputs/runtime_binding/dataset_source/src/joint_det_dataset.py",
+          "line_start": 1086,
+          "line_end": 1119
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/normal_source_review/private/audited_inputs/runtime_binding/dataset_source/src/joint_det_dataset.py",
+          "line_start": 1328,
+          "line_end": 1329
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/normal_source_review/private/audited_inputs/runtime_binding/dataset_source/src/joint_det_dataset.py",
+          "line_start": 1387,
+          "line_end": 1392
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 872,
+          "line_end": 885
+        }
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "没有性能归一化或以预测自身最大值做分母；分类 softmax、原生 GIoU 和 0.0002 L1 mask 项是 matcher 原始计算。检查只对真实总成本计算差值/列偏移。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 321,
+          "line_end": 378
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 103,
+          "line_end": 120
+        }
+      ]
+    },
+    "C_result_existence": {
+      "status": "WARN",
+      "details": "未运行，未发现结果文件或 cpu_execution；源码中的 COMPLETE 仅在各断言后写入，当前没有完成数字可背书。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 93,
+          "line_end": 134
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/run_authorized.py",
+          "line_start": 65,
+          "line_end": 78
+        }
+      ]
+    },
+    "D_native_call_and_dead_code": {
+      "status": "PASS",
+      "details": "从固定路径加载原生模块并构造 HungarianMatcher(1,0,2,True)。capture_assignment 复制矩阵并将原 tensor 原样交给原 SciPy 函数，返回值原样透传；不伪造/替换成本或分配。九次 run 调用确实走 matcher.forward；SetCriterion/compute_hungarian_loss 只定义、不调用。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 17,
+          "line_end": 42
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 75,
+          "line_end": 101
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 267,
+          "line_end": 390
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 808,
+          "line_end": 846
+        }
+      ]
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "9 个确定性 fixture，9 次 matcher.forward、11 次预期 SciPy 分配，B=1/2、Q=T=256、P=4、GT=1/2。无真实数据、多 seed、前向、criterion、反向或优化器。不能覆盖实际训练精度/因果和间接 Mask→box 路径。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/CHECK_SPEC.json",
+          "line_start": 14,
+          "line_end": 22
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 93,
+          "line_end": 101
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 123,
+          "line_end": 131
+        }
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "value": "simulation_only",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 1,
+          "line_end": 4
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 124,
+          "line_end": 131
+        }
+      ]
+    },
+    "source_identity": {
+      "status": "PASS",
+      "details": "三原生源码本地完整 SHA256 与 CHECK_SPEC 和 CONTROL_PREPARATION 一致；warm_source 与 NORMAL_LAUNCH.model_source 一致；两 env 快照 canonical hash 均与 spec 一致。正确 utils 四份本地副本均与 NATIVE_SOURCE_PORT 完整 SHA256 一致；dataset_source 的不同 utils 副本仅用作比较。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/CHECK_SPEC.json",
+          "line_start": 3,
+          "line_end": 13
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/CONTROL_PREPARATION.json",
+          "line_start": 13,
+          "line_end": 18
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/NORMAL_LAUNCH.json",
+          "line_start": 43,
+          "line_end": 43
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/NATIVE_SOURCE_PORT.json",
+          "line_start": 598,
+          "line_end": 603
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/NATIVE_SOURCE_PORT.json",
+          "line_start": 626,
+          "line_end": 638
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/NATIVE_SOURCE_PORT.json",
+          "line_start": 668,
+          "line_end": 673
+        }
+      ]
+    },
+    "source_finding": {
+      "status": "PASS",
+      "details": "逐条对照原生源码，SOURCE_FINDING.md 的直接 Mask 列常数推导、Query Mask 间接几何路径、成本矩阵仅内存捕获/摘要回执及非因果/非精度边界准确。MAX_NUM_OBJ=132 与 dataset:62 一致。第3行不声称重新核验当前训练存活；第29行历史实验及第35行前作不是本轮独立复核对象。第33行仅是将来比较原则，未实施或准入新训练/匹配策略。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/SOURCE_FINDING.md",
+          "line_start": 3,
+          "line_end": 3
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/SOURCE_FINDING.md",
+          "line_start": 7,
+          "line_end": 27
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/SOURCE_FINDING.md",
+          "line_start": 29,
+          "line_end": 35
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/normal_source_review/private/audited_inputs/runtime_binding/dataset_source/src/joint_det_dataset.py",
+          "line_start": 62,
+          "line_end": 62
+        }
+      ]
+    }
+  },
+  "normal_path_findings": [
+    {
+      "finding": "PV 先选择一个 text query 得到单一 Text Mask，再 expand(1,256,S)；Query Mask 由 geometry query 与 superpoint feature 得到，二者分别写 last_pred_masks/sp_last_pred_masks。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/pv_ground.py",
+          "line_start": 529,
+          "line_end": 562
+        }
+      ]
+    },
+    {
+      "finding": "主训练把 batch 数据附到 end_points 后调用 compute_hungarian_loss；其最后层输出同时传入 pred_masks、sp_pred_masks、adaptive_weights。SetCriterion 先 matcher，再各 loss。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/main_utils.py",
+          "line_start": 276,
+          "line_end": 289
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/main_utils.py",
+          "line_start": 450,
+          "line_end": 458
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 899,
+          "line_end": 917
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 808,
+          "line_end": 846
+        }
+      ]
+    },
+    {
+      "finding": "HungarianMatcher 的直接 mask term 只用 pred_masks，以 >0 二值化再按 superpoints 展开；不读取 sp_pred_masks 或 adaptive_weights。总成本为 0*L1_boxes + 1*class + 2*GIoU + 0.0002*L1_masks。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 279,
+          "line_end": 296
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 327,
+          "line_end": 342
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 349,
+          "line_end": 384
+        }
+      ]
+    },
+    {
+      "finding": "当 Text Mask 在 Q 行完全相同且 GT数<=Q，直接 mask term 对每个 GT 列是常数；实数算术中为所有完整 GT 分配加同一总偏移。float32 加法的细微舍入与 near-tie 一般性不由这些易分配 fixture 证明。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/pv_ground.py",
+          "line_start": 548,
+          "line_end": 549
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 342,
+          "line_end": 342
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 372,
+          "line_end": 390
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+          "line_start": 113,
+          "line_end": 120
+        }
+      ]
+    },
+    {
+      "finding": "Query Mask 在匹配后用 idx0 取出，接受自身 focal/dice、对应损失和自适应融合损失；Text Mask 同时受原生 loss 监督。C-off 只关 selected_query_mask_loss 增量，不关这些原生 Mask 损失。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 574,
+          "line_end": 627
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py",
+          "line_start": 949,
+          "line_end": 970
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/init.json",
+          "line_start": 12,
+          "line_end": 13
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/NORMAL_LAUNCH.json",
+          "line_start": 25,
+          "line_end": 25
+        }
+      ]
+    },
+    {
+      "finding": "正常 current continuation 为 ScanRefer 且 detect_intermediate/joint_det/augment_det 均 false；多 GT fixture 只是机制测试，并非实际 author mixed training 复现。",
+      "evidence": [
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/NORMAL_NATIVE_RUN_PROTOCOL.json",
+          "line_start": 60,
+          "line_end": 71
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/train_dist_mod.py",
+          "line_start": 405,
+          "line_end": 410
+        },
+        {
+          "file": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/normal_controls_20261010/normal_source_review/private/audited_inputs/runtime_binding/dataset_source/src/joint_det_dataset.py",
+          "line_start": 1089,
+          "line_end": 1098
+        }
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "claim": "指定原生 matcher 的直接输入/成本/分配实现已完成源码核查",
+      "impact": "supported_source_only"
+    },
+    {
+      "claim": "九个 fixture 已实际通过",
+      "impact": "unsupported_until_execution_receipt"
+    },
+    {
+      "claim": "该结果证明 Query Mask 对正常训练匹配无作用或解释掉点",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "该结果是正式精度/真实 GT 评测/模型训练证据",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "在固定 boxes/logits 下检验直接 mask-cost 角色",
+      "impact": "appropriate_simulation_only_scope"
+    }
+  ],
+  "validation": {
+    "local_sha256_files": 28,
+    "native_three_hashes_match_spec_and_control_preparation": true,
+    "canonical_environment_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+    "exact_utils_copies_match_deployment_manifest": true,
+    "local_result_exists": false,
+    "local_cpu_execution_exists": false,
+    "python_syntax_parse": "NOT_COMPLETED: local python launcher returned 'No pyvenv.cfg file' before the stdlib audit body; no target module/script ran. No installation or environment repair attempted.",
+    "actual_training_state": "NOT_QUERIED"
+  }
+}
+

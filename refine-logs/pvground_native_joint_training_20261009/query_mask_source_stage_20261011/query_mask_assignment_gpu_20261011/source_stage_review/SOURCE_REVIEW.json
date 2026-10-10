@@ -1,0 +1,239 @@
+{
+  "status": "SOURCE_ONLY_NATIVE_SOURCE_STAGING_REVIEW_COMPLETE",
+  "recorded_cst": "2026-10-11T05:25:19.885369+08:00",
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "source_correctness_verdict": "PASS",
+  "reviewer_role": "fresh_source_reviewer",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "actual_identity_attestation": "UNATTESTED",
+  "identity_note": "Requested routing is recorded as requested; runtime model and reasoning-effort identity were not independently attested.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "required_changes": [],
+  "warnings": [
+    "WARN records evidence and attribution limits, not an actionable defect: source correctness passes and no source change is required before the authorized source-only staging step.",
+    "Remote staging has not been executed or verified by this reviewer. The 116 remote original file bytes, remote Python 3.7 parsing and actual copied files remain future checks.",
+    "The 116-file manifest is a bound partial deployment that depends on the existing shared runtime and data roots. utils/scatter.py is not separately listed; this review does not claim an independently self-contained repository or working imports.",
+    "Actual import origins, constructors, compiled-extension compatibility, GPU preflight, training, and accuracy remain unverified for the new tree. Both GPU/full-training admissions stay false.",
+    "Identity is UNATTESTED and acceptance is same-family/provisional."
+  ],
+  "checks": [
+    {
+      "id": "all_24_pins_and_review_gate",
+      "status": "PASS",
+      "detail": "All 24 supplied SHA256 pins match, including this staging script, source plan, parent manifest, four assets, prior review, readiness summary and all 14 overlay files. The stager checks a SOURCE_ONLY PASS/WARN review with no blockers and rehashes every audited input before SSH. The current prior source review is WARN with no blockers; all 14 overlay digests also match its audited source map.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:12",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/SOURCE_STAGE_REVIEW_INPUTS.json",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source_review/SOURCE_REVIEW.json"
+      ]
+    },
+    {
+      "id": "parent_bundle_and_exact_overlay",
+      "status": "PASS",
+      "detail": "The bound parent manifest contains exactly 116 files and 24,660,224 bytes. Every listed parent path is under its declared original PV-Ground directory; all relative keys are safe. The remote body verifies each original byte count and SHA256 before writing, verifies overlay payload length/SHA256, and rehashes every final source file. The overlay has exactly 14 entries and differs from the parent only in main_utils.py and models/losses.py; the remote body asserts this exact final change set. Expected post-overlay source bytes are 24,660,643, not a measured remote result. The existing PointNet binary is copied as bytes, with no build or install.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:18",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:47",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:58",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:72",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/NATIVE_SOURCE_PORT.json"
+      ]
+    },
+    {
+      "id": "isolation_and_side_effects",
+      "status": "PASS",
+      "detail": "The remote destination is fixed to /root/autodl-tmp/pvground_query_mask_assignment_20261011; it must not exist before mkdir. All source and asset target paths are checked to remain inside that new destination. Original source and env_spec are read only. There is no delete, move, package install, training query, GPU query, process control, model/data constructor, controller start or retry loop. Only the new source/assets/manifest and local transport receipt/log files are written. A partial destination is retained on failure.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:39",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:50",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:64",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:99"
+      ]
+    },
+    {
+      "id": "four_assets_and_closed_admission",
+      "status": "PASS",
+      "detail": "Exactly native_query_mask_matcher_preflight.py, init.json, text.json and query.json are staged as data. Both protocols contain JSON false for serial_gpu_preflight_admitted and full_training_admitted; both source maps equal the 14 overlay hashes. Their only differing key is matcher_mask_source. Model/init paths point to the new isolated tree. The preflight admission assertion precedes output mkdir, NumPy/Torch imports and any constructor; the stager never invokes it. Init and parent env_spec_sha256 match.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:28",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:68",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/native_query_mask_matcher_preflight.py:26",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/text.json",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/query.json",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/init.json"
+      ]
+    },
+    {
+      "id": "stdlib_only_execution_body_and_syntax",
+      "status": "PASS",
+      "detail": "The stager imports only stdlib modules locally; its embedded remote body imports ast, base64, datetime, hashlib, json, sys and pathlib. Project files and the preflight are read/copied and ast-parsed, never imported, compiled into executed code, or invoked. All 16 pinned local Python files parse with the local stdlib AST parser. The 14 overlay files, preflight and embedded remote body also pass Python 3.7 grammar parsing through ast.parse(feature_version=(3,7)). This is static syntax evidence, not execution under Python 3.7 or successful import of the 116 remote originals.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:2",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:37",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:60",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:66"
+      ]
+    },
+    {
+      "id": "existing_authenticated_transport",
+      "status": "PASS",
+      "detail": "The process argv uses the existing Windows OpenSSH executable, root@region-9.autodl.pro port 33476, ProxyCommand=none, StrictHostKeyChecking=yes and the existing known_hosts file. That public file contains [region-9.autodl.pro]:33476 with ssh-ed25519, matching the public transport witness algorithm. The fixed AskPass executable exists; only its path/existence was inspected. Credentials are inherited through the existing environment and are not printed by this script. Remote command arguments are shell-quoted with shlex.join; JSON payload is sent through stdin. No SSH connection was attempted and the private authorization wrapper was not read.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:87",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:91",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/SCP_TRANSPORT_WITNESS.json",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_scp_known_hosts"
+      ]
+    },
+    {
+      "id": "receipt_and_failure_boundaries",
+      "status": "PASS",
+      "detail": "The future stage receipt explicitly retains shared_existing_runtime_required=true, actual_import_origins_verified=false, both admission flags false, and zero/not-started constructor, GPU, training and optimizer fields. It does not copy parent success claims. Return stdout, private stderr and exact exit code are preserved before a nonzero-return assertion; no retry, cleanup or current-training restart is encoded. A successful receipt is written only after transport success and source-count/change-set checks.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:74",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/stage_native_source_authorized_20261011.py:99"
+      ]
+    }
+  ],
+  "audited_input_count": 24,
+  "audited_input_hashes": {
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\stage_native_source_authorized_20261011.py": "a7be61a797087cdc4c053b8e6e661552542e171b85563b28ce9862fe76984310",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\SOURCE_STAGING_PLAN.md": "8161f97754c7b4bd3dfcc650a9581a4323d76cfc6386bcacc6ca99b898026311",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NATIVE_SOURCE_PORT.json": "8f9020f8be4864e31e602e2044fc8e04d49297b163f5037dbc019964b47a140b",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\SOURCE_HASHES.json": "a426b8a162f269bf3960f377963c13a8beeb35042803a399f590592f30a8abfa",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\native_query_mask_matcher_preflight.py": "c584ab700b52b6abc30a4b9be8e49b9ac3a33633737f76023fdcc9ab04457eab",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\init.json": "d8b57d9d1c5d9f8a98c9500da7677b00ac139448740303cae7f1d11eefd0bcd4",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\text.json": "acd276216fc06df13c775403748ef84155ba5f80516571b3b611038fee68c853",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\query.json": "ec7821edcf7e83a89145313d97fc18da042143e34f899eaacac523bd9b1abdd4",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source_review\\SOURCE_REVIEW.json": "330f87fce677d3d2431fed1fbeedca0a24deea8da2baa88049fcfef854bd4d2f",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\SOURCE_READINESS_SUMMARY.json": "642d6ed90f0c061633851348ed12305d8d9490bea91e5f9621eb0e07d1bb44ce",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\main_utils.py": "a16c469a216258ab11664a805e82b11c61bb1a596d6ae3a16d0ae3c8d5575751",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\models\\losses.py": "d0b30f644441502e419d5632e64fb6d557c3a2ec188fdf21de909fcaba1475a1",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\train_dist_mod.py": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68"
+  },
+  "supplementary_public_or_policy_input_hashes": {
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/SOURCE_STAGE_REVIEW_INPUTS.json": "37605aa1ab3fd2dc7594d97ab0c59b1b0d44e89923278096806838b7ae3522d4",
+    "C:/Users/gb/.codex/skills/experiment-bridge/SKILL.md": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+    "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/SCP_TRANSPORT_WITNESS.json": "046d4b8f70aaa0c6f21e3fa652adad80bb1d017aa7fb2f4d41da2fc53c2f5933",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_scp_known_hosts": "d5f3e19590b42f354de3691e3082b767c4b0214b12356bbb6bf10536c5eb20a6"
+  },
+  "static_verification": {
+    "all_24_pinned_input_hashes_match": true,
+    "all_14_overlay_hashes_match_prior_source_review": true,
+    "local_pinned_python_files_ast_parsed": 16,
+    "python37_grammar_overlay_and_preflight_files": 15,
+    "python37_grammar_embedded_remote_body": true,
+    "parent_file_count": 116,
+    "parent_source_bytes": 24660224,
+    "parent_paths_outside_declared_source_root": [],
+    "unsafe_relative_keys": [],
+    "overlay_files": 14,
+    "changed_parent_source_files": [
+      "main_utils.py",
+      "models/losses.py"
+    ],
+    "expected_variant_source_bytes": 24660643,
+    "expected_variant_source_bytes_measured_remotely": false,
+    "assets": [
+      "native_query_mask_matcher_preflight.py",
+      "init.json",
+      "text.json",
+      "query.json"
+    ],
+    "protocol_difference_keys": [
+      "matcher_mask_source"
+    ],
+    "admission_flags_exact_json_false": true,
+    "local_source_stage_receipt_exists": false,
+    "shared_runtime_required": true,
+    "utils_scatter_py_separately_manifested": false
+  },
+  "admission": {
+    "source_review_completed": true,
+    "source_staging_has_no_blocking_source_findings": true,
+    "remote_source_staging_executed_by_reviewer": false,
+    "remote_copy_verified": false,
+    "actual_import_origins_verified": false,
+    "actual_model_or_data_constructor_verified": false,
+    "serial_gpu_preflight_admitted": false,
+    "full_training_admitted": false,
+    "actual_gpu_preflight_completed": false,
+    "new_training_started": false,
+    "formal_accuracy": null,
+    "three_effective_contributions_proven": false,
+    "full_Nr3D_Sr3D_results_proven": false,
+    "full_goal_complete": false
+  },
+  "preserved_observation_constraint": {
+    "active_run": "single-A100 C-off training; task-supplied state, not queried",
+    "next_main_observation_cst": "2026-10-11T09:07:13.156040+08:00",
+    "source": "current review task and SOURCE_STAGING_PLAN.md",
+    "historical_readiness_summary_observation_time_not_used": true,
+    "queried": false,
+    "modified": false,
+    "required_order": "Current C-off terminal result and decision must precede any new GPU preflight admission."
+  },
+  "reviewer_execution": {
+    "local_source_and_public_transport_metadata_reads": true,
+    "stdlib_static_checks": true,
+    "reviewed_script_executions": 0,
+    "remote_embedded_body_executions": 0,
+    "project_imports": 0,
+    "torch_imports": 0,
+    "model_or_data_constructor_calls": 0,
+    "gpu_queries": 0,
+    "training_status_queries": 0,
+    "neural_calls": 0,
+    "optimizer_updates": 0,
+    "ssh_calls": 0,
+    "scp_calls": 0,
+    "network_calls": 0,
+    "package_installs": 0,
+    "private_authorization_wrapper_reads": 0,
+    "global_memory_reads": 0,
+    "reviewed_input_mutations": 0,
+    "active_training_source_mutations": 0,
+    "deployment_or_queue_actions": 0,
+    "written_outputs": [
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source_stage_review/SOURCE_REVIEW.md",
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/source_stage_review/SOURCE_REVIEW.json",
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_gpu_20261011/MANIFEST.md"
+    ]
+  },
+  "tooling_notes": [
+    {
+      "command": "python -S -B - (stdlib-only static check via stdin)",
+      "exit_code": 1,
+      "result": "PATH interpreter failed before the static check with No pyvenv.cfg file. No reviewed code ran."
+    },
+    {
+      "interpreter": "C:/Users/gb/AppData/Roaming/uv/python/cpython-3.11.14-windows-x86_64-none/python.exe",
+      "options": [
+        "-S",
+        "-B"
+      ],
+      "exit_code": 0,
+      "result": "All pin, manifest, protocol and AST static checks passed. Use this working explicit local interpreter instead of the broken bare PATH python for the later authorized invocation."
+    }
+  ],
+  "conclusion": "No actionable defect was found in the bounded staging script. Source correctness PASS; overall WARN preserves source-only, shared-runtime and attribution limits. No required source changes. This review permits workflow progress only to the already-authorized isolated source-copy step, and grants no GPU or training admission."
+}

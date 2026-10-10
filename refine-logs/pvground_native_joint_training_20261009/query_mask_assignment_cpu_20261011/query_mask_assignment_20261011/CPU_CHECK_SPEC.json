@@ -1,0 +1,47 @@
+{
+  "execution_scope": "ISOLATED_NATIVE_MATCHER_AND_BOXES_ONLY_CRITERION_CPU",
+  "warm_source": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground",
+  "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+  "original_losses_sha256": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+  "query_losses_sha256": "d0b30f644441502e419d5632e64fb6d557c3a2ec188fdf21de909fcaba1475a1",
+  "import_binding_sha256": {
+    "utils/__init__.py": "d0f1d31d6e0207a37dcb8a33315a409226d651670a8d0a238223009a4118f57b",
+    "utils/scatter_util.py": "87674206eb44f07925e1111e0220f54c8b7be3758a04c3fedd4cc40bb097a0fe"
+  },
+  "constructed_cases": [
+    "root_only",
+    "root_anchor",
+    "mixed_gt_batch"
+  ],
+  "query_count": 256,
+  "token_count": 256,
+  "superpoint_count": 4,
+  "input_point_count": 6,
+  "seed": 2027,
+  "threads": 1,
+  "CUDA_VISIBLE_DEVICES": "",
+  "expected_matcher_calls": 33,
+  "expected_boxes_only_criterion_calls": 6,
+  "check_scope": [
+    "Default and text equal unchanged warm matcher",
+    "Query Mask mutations alter direct cost and assignment",
+    "All GT retain unique one-to-one assignments",
+    "No-Mask intermediate path unchanged",
+    "Native SetCriterion boxes-only loss routes direct box gradients to newly assigned queries"
+  ],
+  "excluded": [
+    "PV model forward",
+    "real dataset",
+    "full native loss",
+    "Mask loss",
+    "optimizer",
+    "GPU",
+    "benchmark accuracy",
+    "current main training query",
+    "active source edit",
+    "new normal training"
+  ],
+  "estimated_cpu_seconds": 10,
+  "estimated_transport_seconds": 60,
+  "next_main_training_observation_cst": "2026-10-11T05:00:40.968644+08:00"
+}

@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "execution_scope": "SOURCE_ONLY",
+  "verdict": "WARN",
+  "source_executability_assessment": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "W01",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "静态通过不代表实跑完成",
+      "detail": "本轮只读取本地源码、计算摘要并执行 stdlib AST/compile；没有执行任何待审模块、CPU 检查或 SSH。实际环境导入、SciPy tie 选择、Tensor 运算和 backward 仍须在主流程原授权的限定 CPU 检查中观察；本报告不授予 GPU 或训练准入。"
+    },
+    {
+      "id": "W02",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "合成案例的覆盖范围必须保留",
+      "detail": "两候选被刻意设置为几何/语义相同，query Mask 的 raw L1 差为6，乘 .0002 后理想差为 .0012，足以打破该人为平局。text/no-Mask 断言固定预期低索引；本轮未实跑确认该 runtime 的 tie 结果。B2 只改变 GT 数，仍是同4SP/6点结构；no_masks 验证 matcher 的共同无Mask分支，没有运行六个真实中间层输出。不能据此估计真实匹配变化频率、GT收益/损害或训练性能。无需为此扩大本轮检查范围。"
+    },
+    {
+      "id": "W03",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "直接梯度与报告范围",
+      "detail": "运行时断言针对加权 L1+GIoU 的合成目标及合成 pred_boxes 叶张量；两项原生源码均按匹配 query 取值，但脚本没有分别对两项 backward，也没有证明网络参数、其他损失或完整训练梯度。unmatched_direct_gradient_max=0. 是在 active==expected 断言之后记录的结论值，并非另行测量出的最大值；对本固定有限梯度案例可用，转述应保持直接框梯度这一口径。"
+    }
+  ],
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_identity_attestation": "UNATTESTED",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_task": "/root/pvg_query_mask_assignment_cpu_source_review_20261011",
+  "review_date_local": "2026-10-11",
+  "evidence_timezone": "Asia/Shanghai",
+  "review_completed_cst": "2026-10-11T03:21:27.207668+08:00",
+  "scope": {
+    "candidate_root": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011",
+    "substantive_review": "New isolated CPU checker and its fixed runner; prior source report and old CPU scripts used as references. No full-project re-audit.",
+    "audited_input_count": 7,
+    "prior_source_review_is_reference_not_new_runtime_evidence": true,
+    "postprocessor_reviewed": false,
+    "credential_or_old_authorization_wrapper_contents_read": false,
+    "current_observer_preserved": {
+      "session_id": 52851,
+      "pid": 51540,
+      "next_observation_cst": "2026-10-11T05:00:40.968644+08:00",
+      "source": "Task context only; not queried"
+    }
+  },
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py": "dec2c8343537bb5787c68d375e09c55151b4f489a98a3388b00f7039bc2b9552",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py": "fae03ac4d06a68ca54a4581feffb8c8c0721d18d14b775ff721ffe1434136e3b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/CPU_CHECK_SPEC.json": "39e1534178b532c65360bdd86a0389e754a1e4fb52c784393e3542978a555ccc",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py": "d0b30f644441502e419d5632e64fb6d557c3a2ec188fdf21de909fcaba1475a1",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source_review/SOURCE_REVIEW.json": "4800e84c329d883588ca67dea89880ab68d6e46cc5c133f9b6c3c7e17a462aec",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/CHECK_SPEC.json": "0ddfb1c4fcc4481c463f623983c70764d87e26a009bc535558045b43eb6214fe",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py": "fb3f3ac5e7da18c44361dc73926b07220b652bf352366dd8c0175ea677d3ed39"
+  },
+  "checks": [
+    {
+      "id": "S01",
+      "status": "PASS",
+      "title": "脚本语法和既有依赖绑定",
+      "detail": "四份 Python 输入及 run_cpu_authorized.py 内嵌 remote_code 通过本地 stdlib AST/compile 静态检查，三份 JSON 可解析。warm/source、原 losses、utils 两项及 runtime env spec 摘要与旧 CHECK_SPEC 一致；候选 losses 实际摘要与本次 CPU spec 及既有 source review 一致。load_losses 直接加载两份 losses，warm 路径置前且实际 utils 路径/摘要在运行时断言。此次没有导入项目、读取远端或独立重验远端可用性。",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:18",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:24",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:32",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:28",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/CHECK_SPEC.json:3",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_source_review/STATIC_TRACE.json"
+      ]
+    },
+    {
+      "id": "S02",
+      "status": "PASS",
+      "title": "受限 CPU 可达调用",
+      "detail": "子进程开始前覆盖 CUDA_VISIBLE_DEVICES=''、OMP/MKL=1，并以 -B 禁止写 pyc。检查脚本只构造 CPU tensors、设置线程1及 seed2027；不实例化 PV 模型、数据集或优化器。boxes-only SetCriterion.forward 所需 auxi_box/auxi_entity_positive_map 均由 fixture 提供，outputs 首项为 CPU pred_logits，num_boxes 非零；未初始化分布式组。get_loss 仅调 loss_boxes，唯一显式 .cuda() 位于未调用的 loss_masks。末尾 cuda.is_initialized() 为待执行的状态断言，不能当作本轮 GPU 观测。",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:39",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:43",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:15",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:85",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:108",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:622",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:800",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:810"
+      ]
+    },
+    {
+      "id": "S03",
+      "status": "PASS",
+      "title": "成本来源与原生规则",
+      "detail": "四个 matcher 都显式使用 class1/bbox0/GIoU2/soft_token=True，并断言 Mask 权重 .0002。候选原生 forward 中 query 读取该样本 sp_pred_masks，text/default 读取共享 pred_masks；保留 >0 二值化、superpoints gather 到 raw 点、L1 cdist 与分批 Hungarian。fixture 的 4SP->6 点映射 [0,0,1,2,3,3] 与 GT raw masks 维度一致，无候选过滤、推理打分或新模型参数。此脚本直接构造 matcher，不重验正常训练工厂/CLI。",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:40",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:65",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:84",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:279",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:328",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:374"
+      ]
+    },
+    {
+      "id": "S04",
+      "status": "PASS",
+      "title": "对照、完整成本和一对一断言",
+      "detail": "预先保留真实 SciPy assignment 函数，再包装两份模块记录其实际待求解成本，不会递归调用自己或替换匹配算法。每例检查原/default/text 成本逐元素相等、text 不受 own-mask swap 影响、query 不受共享 Text 改动影响、移除两路 Mask 后 text/query 成本一致。交换候选自身 Mask 要求每个样本成本发生变化，且明确检查匹配由高 query 索引转至低索引；每个 GT 恰好分配一次，query 不重复。输入在各 run 中重新构造，梯度任务不会污染后续案例。",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:47",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:75",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:103",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:123",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:137"
+      ]
+    },
+    {
+      "id": "S05",
+      "status": "PASS",
+      "title": "原生框梯度路由",
+      "detail": "每例分别以 text/query matcher 调用原生 SetCriterion.forward(losses=['boxes'])。pred_boxes 为 requires_grad 的叶张量；匹配仍 no_grad。原生 loss_boxes 先按匹配索引选框再计算 L1/GIoU，合成中心 .05 偏移提供非零梯度。脚本对 10*L1+2*GIoU 合成目标 backward，并把非零梯度 query 集与返回的匹配 query 集逐样本精确比较；可以检查直接框梯度随分配改变。没有声称 mask 可微匹配、完整损失反传或模型参数更新。",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:72",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:106",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:299",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:520",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:783",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:819"
+      ]
+    },
+    {
+      "id": "S06",
+      "status": "PASS",
+      "title": "隔离写入和固定 SSH 路径",
+      "detail": "runner 先检查本报告 SOURCE_ONLY、非阻断 verdict 及已审输入摘要，再创建一次性本地 cpu_execution。上传集合固定为检查脚本、CPU spec 和隔离 losses；远端仅在独立 pvground_query_mask_assignment_cpu_20261011 目录写这三项、stdout/stderr及结果。warm/runtime 只读，-B 避免向 warm 写 pyc；不写活动训练源、检查点或观察器，也无训练状态查询/进程终止/重启调用。SSH 使用参数数组、shlex.join、严格已知主机及既有 AskPass 路由；认证封装、凭据和 known-host 内容按限定未读。",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:10",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:20",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:25",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:35",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:43",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:54",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:66"
+      ]
+    },
+    {
+      "id": "S07",
+      "status": "PASS",
+      "title": "次数、结果及失败记录口径",
+      "detail": "每个 case 为9次直接 matcher 加2次 boxes-only criterion，criterion 内各调一次 matcher：总33 matcher/6 criterion、44 assignment problems、66 GT pairs。脚本按 records 动态统计，CPU spec 固定33/6一致。成功 receipt 在全部断言和 backward 完成之后才写，formal_accuracy=None、simulation_only 和限制明确；runner 保存原始 transport stdout/stderr/exit 及 CPU stdout/stderr，要求双层退出0且结果存在才打印成功。不宣称端到端训练通过或 CPU 运行已完成。",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:137",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:160",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:45",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:66",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/CPU_CHECK_SPEC.json:23"
+      ]
+    }
+  ],
+  "planned_execution_counts": {
+    "constructed_cases": 3,
+    "per_case_direct_matcher_calls": 9,
+    "per_case_boxes_only_criterion_calls": 2,
+    "matcher_calls": 33,
+    "native_boxes_only_criterion_calls": 6,
+    "assignment_problems": 44,
+    "assigned_gt_pairs": 66,
+    "per_case": [
+      {
+        "name": "root_only",
+        "gt_counts": [
+          1
+        ],
+        "matcher_calls": 11,
+        "assignment_problems": 11,
+        "assigned_gt_pairs": 11
+      },
+      {
+        "name": "root_anchor",
+        "gt_counts": [
+          2
+        ],
+        "matcher_calls": 11,
+        "assignment_problems": 11,
+        "assigned_gt_pairs": 22
+      },
+      {
+        "name": "mixed_gt_batch",
+        "gt_counts": [
+          1,
+          2
+        ],
+        "matcher_calls": 11,
+        "assignment_problems": 22,
+        "assigned_gt_pairs": 33
+      }
+    ],
+    "evidence_kind": "STATIC_EXPECTATION_ONLY"
+  },
+  "static_checks": {
+    "syntax_checks": [
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py",
+        "status": "PASS",
+        "method": "ast.parse and compile only; no execution"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py",
+        "status": "PASS",
+        "method": "ast.parse and compile only; no execution"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py",
+        "status": "PASS",
+        "method": "ast.parse and compile only; no execution"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/check_native_matcher_cpu.py",
+        "status": "PASS",
+        "method": "ast.parse and compile only; no execution"
+      },
+      {
+        "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py::remote_code",
+        "status": "PASS",
+        "method": "literal extraction, ast.parse and compile only; no execution"
+      }
+    ],
+    "json_parse_count": 3,
+    "binding_checks": {
+      "warm_source_matches_previous_spec": true,
+      "runtime_spec_hash_matches_previous_spec": true,
+      "original_losses_hash_matches_previous_spec": true,
+      "utils_binding_hashes_match_previous_spec": true,
+      "modified_losses_hash_matches_current_file": true,
+      "modified_losses_hash_matches_prior_review": true,
+      "prior_source_review_is_nonblocking_source_only": true,
+      "matcher_call_count_matches_cpu_spec": true,
+      "criterion_call_count_matches_cpu_spec": true,
+      "case_names_match_cpu_spec": true
+    },
+    "trace": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_source_review/STATIC_TRACE.json"
+  },
+  "execution_record": {
+    "local_source_reads": true,
+    "local_sha256_comparisons": true,
+    "stdlib_ast_parse_and_compile": true,
+    "target_project_imports": 0,
+    "target_source_executions": 0,
+    "candidate_cpu_check_executions": 0,
+    "matcher_calls": 0,
+    "criterion_calls": 0,
+    "model_forwards": 0,
+    "backward_calls": 0,
+    "dataset_rows": 0,
+    "optimizer_updates": 0,
+    "gpu_calls": 0,
+    "ssh_calls": 0,
+    "network_calls": 0,
+    "training_status_queries": 0,
+    "reviewed_input_mutations": 0,
+    "active_training_source_mutations": 0,
+    "report_files_written": [
+      "SOURCE_REVIEW.md",
+      "SOURCE_REVIEW.json",
+      "STATIC_TRACE.json"
+    ],
+    "reviewer_tool_failures": "Two local stdlib analyzer attempts failed before report creation; both recorded in STATIC_TRACE.json. No target source was executed or modified."
+  },
+  "admission": {
+    "source_review_completed": true,
+    "limited_cpu_source_gate": "NO_BLOCKING_SOURCE_FINDINGS",
+    "cpu_check_completed": false,
+    "gpu_preflight_completed": false,
+    "gpu_admitted": false,
+    "training_started": false,
+    "training_admitted": false,
+    "final_method_admitted": false
+  },
+  "limitations": [
+    "Source-only executability is provisional; no actual CPU/GPU or transport success is established.",
+    "Synthetic tied inputs only; no real dataset, benchmark score, causality or new-contribution evidence.",
+    "No full native training criterion or PV model was run.",
+    "Existing C-off training and sole observer were not queried, changed or restarted.",
+    "Credential/authorization-helper contents and newly prepared summarization postprocessor were outside this review."
+  ]
+}

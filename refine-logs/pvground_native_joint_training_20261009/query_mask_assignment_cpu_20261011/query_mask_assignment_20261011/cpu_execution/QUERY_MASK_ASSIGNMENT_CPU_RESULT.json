@@ -1,0 +1,1055 @@
+{
+  "status": "ACTUAL_ISOLATED_QUERY_MASK_ASSIGNMENT_CPU_CHECK_COMPLETE",
+  "evaluation_type": "simulation_only",
+  "constructed_case_count": 3,
+  "matcher_calls": 33,
+  "assignment_problems": 44,
+  "assigned_gt_pairs": 66,
+  "native_boxes_only_criterion_calls": 6,
+  "neural_model_forward_calls": 0,
+  "full_native_criterion_calls": 0,
+  "Mask_loss_calls": 0,
+  "dataset_rows": 0,
+  "optimizer_updates": 0,
+  "gpu_calls": 0,
+  "current_training_queries": 0,
+  "active_training_source_mutations": 0,
+  "formal_accuracy": null,
+  "source_losses_path": "/root/autodl-tmp/pvground_query_mask_assignment_cpu_20261011/source/models/losses.py",
+  "original_losses_path": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/models/losses.py",
+  "actual_import_bindings": {
+    "utils": {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/utils/__init__.py",
+      "sha256": "d0f1d31d6e0207a37dcb8a33315a409226d651670a8d0a238223009a4118f57b"
+    },
+    "utils.scatter_util": {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/utils/scatter_util.py",
+      "sha256": "87674206eb44f07925e1111e0220f54c8b7be3758a04c3fedd4cc40bb097a0fe"
+    }
+  },
+  "torch_version": "1.10.2+cu111",
+  "spec": {
+    "execution_scope": "ISOLATED_NATIVE_MATCHER_AND_BOXES_ONLY_CRITERION_CPU",
+    "warm_source": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground",
+    "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+    "original_losses_sha256": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "query_losses_sha256": "d0b30f644441502e419d5632e64fb6d557c3a2ec188fdf21de909fcaba1475a1",
+    "import_binding_sha256": {
+      "utils/__init__.py": "d0f1d31d6e0207a37dcb8a33315a409226d651670a8d0a238223009a4118f57b",
+      "utils/scatter_util.py": "87674206eb44f07925e1111e0220f54c8b7be3758a04c3fedd4cc40bb097a0fe"
+    },
+    "constructed_cases": [
+      "root_only",
+      "root_anchor",
+      "mixed_gt_batch"
+    ],
+    "query_count": 256,
+    "token_count": 256,
+    "superpoint_count": 4,
+    "input_point_count": 6,
+    "seed": 2027,
+    "threads": 1,
+    "CUDA_VISIBLE_DEVICES": "",
+    "expected_matcher_calls": 33,
+    "expected_boxes_only_criterion_calls": 6,
+    "check_scope": [
+      "Default and text equal unchanged warm matcher",
+      "Query Mask mutations alter direct cost and assignment",
+      "All GT retain unique one-to-one assignments",
+      "No-Mask intermediate path unchanged",
+      "Native SetCriterion boxes-only loss routes direct box gradients to newly assigned queries"
+    ],
+    "excluded": [
+      "PV model forward",
+      "real dataset",
+      "full native loss",
+      "Mask loss",
+      "optimizer",
+      "GPU",
+      "benchmark accuracy",
+      "current main training query",
+      "active source edit",
+      "new normal training"
+    ],
+    "estimated_cpu_seconds": 10,
+    "estimated_transport_seconds": 60,
+    "next_main_training_observation_cst": "2026-10-11T05:00:40.968644+08:00"
+  },
+  "records": [
+    {
+      "name": "root_only_original",
+      "mode": "original",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_only_default",
+      "mode": "default",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_only_text",
+      "mode": "text",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_only_query",
+      "mode": "query",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            17
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_only_query_swapped_own",
+      "mode": "query",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "swap_own",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_only_text_swapped_own",
+      "mode": "text",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "swap_own",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_only_query_changed_text",
+      "mode": "query",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "change_text",
+      "assignments": [
+        {
+          "query": [
+            17
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_only_no_mask_text",
+      "mode": "text",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "no_masks",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_only_no_mask_query",
+      "mode": "query",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "no_masks",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_only_text_box_gradient",
+      "mode": "text",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": {
+        "loss_bbox": 0.05000000074505806,
+        "loss_giou": 0.0952380895614624,
+        "directly_supervised_queries": [
+          [
+            3
+          ]
+        ],
+        "unmatched_direct_gradient_max": 0.0,
+        "criterion_scope": "Native SetCriterion.forward with boxes-only requested losses; no full training loss."
+      }
+    },
+    {
+      "name": "root_only_query_box_gradient",
+      "mode": "query",
+      "gt_counts": [
+        1
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            17
+          ],
+          "gt": [
+            0
+          ]
+        }
+      ],
+      "gradient": {
+        "loss_bbox": 0.05000000074505806,
+        "loss_giou": 0.0952380895614624,
+        "directly_supervised_queries": [
+          [
+            17
+          ]
+        ],
+        "unmatched_direct_gradient_max": 0.0,
+        "criterion_scope": "Native SetCriterion.forward with boxes-only requested losses; no full training loss."
+      }
+    },
+    {
+      "name": "root_anchor_original",
+      "mode": "original",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_anchor_default",
+      "mode": "default",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_anchor_text",
+      "mode": "text",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_anchor_query",
+      "mode": "query",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            17,
+            45
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_anchor_query_swapped_own",
+      "mode": "query",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "swap_own",
+      "assignments": [
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_anchor_text_swapped_own",
+      "mode": "text",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "swap_own",
+      "assignments": [
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_anchor_query_changed_text",
+      "mode": "query",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "change_text",
+      "assignments": [
+        {
+          "query": [
+            17,
+            45
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_anchor_no_mask_text",
+      "mode": "text",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "no_masks",
+      "assignments": [
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_anchor_no_mask_query",
+      "mode": "query",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "no_masks",
+      "assignments": [
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "root_anchor_text_box_gradient",
+      "mode": "text",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": {
+        "loss_bbox": 0.05000009387731552,
+        "loss_giou": 0.09523826837539673,
+        "directly_supervised_queries": [
+          [
+            3,
+            31
+          ]
+        ],
+        "unmatched_direct_gradient_max": 0.0,
+        "criterion_scope": "Native SetCriterion.forward with boxes-only requested losses; no full training loss."
+      }
+    },
+    {
+      "name": "root_anchor_query_box_gradient",
+      "mode": "query",
+      "gt_counts": [
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            17,
+            45
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": {
+        "loss_bbox": 0.05000009387731552,
+        "loss_giou": 0.09523826837539673,
+        "directly_supervised_queries": [
+          [
+            17,
+            45
+          ]
+        ],
+        "unmatched_direct_gradient_max": 0.0,
+        "criterion_scope": "Native SetCriterion.forward with boxes-only requested losses; no full training loss."
+      }
+    },
+    {
+      "name": "mixed_gt_batch_original",
+      "mode": "original",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "mixed_gt_batch_default",
+      "mode": "default",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "mixed_gt_batch_text",
+      "mode": "text",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "mixed_gt_batch_query",
+      "mode": "query",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            17
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            17,
+            45
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "mixed_gt_batch_query_swapped_own",
+      "mode": "query",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "swap_own",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "mixed_gt_batch_text_swapped_own",
+      "mode": "text",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "swap_own",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "mixed_gt_batch_query_changed_text",
+      "mode": "query",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "change_text",
+      "assignments": [
+        {
+          "query": [
+            17
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            17,
+            45
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "mixed_gt_batch_no_mask_text",
+      "mode": "text",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "no_masks",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "mixed_gt_batch_no_mask_query",
+      "mode": "query",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "no_masks",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": null
+    },
+    {
+      "name": "mixed_gt_batch_text_box_gradient",
+      "mode": "text",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            3
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            3,
+            31
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": {
+        "loss_bbox": 0.050000060349702835,
+        "loss_giou": 0.09523820877075195,
+        "directly_supervised_queries": [
+          [
+            3
+          ],
+          [
+            3,
+            31
+          ]
+        ],
+        "unmatched_direct_gradient_max": 0.0,
+        "criterion_scope": "Native SetCriterion.forward with boxes-only requested losses; no full training loss."
+      }
+    },
+    {
+      "name": "mixed_gt_batch_query_box_gradient",
+      "mode": "query",
+      "gt_counts": [
+        1,
+        2
+      ],
+      "mutation": "none",
+      "assignments": [
+        {
+          "query": [
+            17
+          ],
+          "gt": [
+            0
+          ]
+        },
+        {
+          "query": [
+            17,
+            45
+          ],
+          "gt": [
+            0,
+            1
+          ]
+        }
+      ],
+      "gradient": {
+        "loss_bbox": 0.050000060349702835,
+        "loss_giou": 0.09523820877075195,
+        "directly_supervised_queries": [
+          [
+            17
+          ],
+          [
+            17,
+            45
+          ]
+        ],
+        "unmatched_direct_gradient_max": 0.0,
+        "criterion_scope": "Native SetCriterion.forward with boxes-only requested losses; no full training loss."
+      }
+    }
+  ],
+  "checks": [
+    {
+      "fixture": "root_only",
+      "check": "default_matches_warm",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_only",
+      "check": "explicit_text_matches_warm",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_only",
+      "check": "text_ignores_own_mutation",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_only",
+      "check": "query_ignores_shared_text_mutation",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_only",
+      "check": "no_mask_prefix_unchanged",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_only",
+      "check": "query_own_mutation_changes_cost_and_assignment",
+      "maximum_cost_difference": [
+        0.001199960708618164
+      ]
+    },
+    {
+      "fixture": "root_anchor",
+      "check": "default_matches_warm",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_anchor",
+      "check": "explicit_text_matches_warm",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_anchor",
+      "check": "text_ignores_own_mutation",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_anchor",
+      "check": "query_ignores_shared_text_mutation",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_anchor",
+      "check": "no_mask_prefix_unchanged",
+      "maximum_cost_difference": [
+        0.0
+      ]
+    },
+    {
+      "fixture": "root_anchor",
+      "check": "query_own_mutation_changes_cost_and_assignment",
+      "maximum_cost_difference": [
+        0.001199960708618164
+      ]
+    },
+    {
+      "fixture": "mixed_gt_batch",
+      "check": "default_matches_warm",
+      "maximum_cost_difference": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "fixture": "mixed_gt_batch",
+      "check": "explicit_text_matches_warm",
+      "maximum_cost_difference": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "fixture": "mixed_gt_batch",
+      "check": "text_ignores_own_mutation",
+      "maximum_cost_difference": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "fixture": "mixed_gt_batch",
+      "check": "query_ignores_shared_text_mutation",
+      "maximum_cost_difference": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "fixture": "mixed_gt_batch",
+      "check": "no_mask_prefix_unchanged",
+      "maximum_cost_difference": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "fixture": "mixed_gt_batch",
+      "check": "query_own_mutation_changes_cost_and_assignment",
+      "maximum_cost_difference": [
+        0.001199960708618164,
+        0.001199960708618164
+      ]
+    }
+  ],
+  "limitation": "Deliberately tied geometry isolates Mask influence; this does not estimate real assignment changes, training benefit or new contributions."
+}

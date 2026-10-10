@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "audit_skill": "experiment-audit",
+  "execution_scope": "ACTUAL_CPU_ONLY",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "WARN",
+  "bounded_engineering_check": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "W01",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "Deliberately tied simulation only",
+      "detail": "Preserve the constructed-input qualifier; this result does not estimate real assignment changes, training benefit, benchmark accuracy, or an effective new contribution."
+    },
+    {
+      "id": "W02",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "Matrices and gradients retained only as summaries",
+      "detail": "Full matrices were compared at runtime but not archived. This review checks retained cost differences, assignments and gradient summaries against code and receipts; it does not freshly recompute native matrices or gradients."
+    },
+    {
+      "id": "W03",
+      "severity": "WARN",
+      "blocking": false,
+      "title": "Combined objective and conclusion-valued gradient field",
+      "detail": "The six backward calls test a combined 10*L1+2*GIoU objective on synthetic pred_boxes leaves. The unmatched maximum field is assigned after the support-set assertion, not separately measured. Keep the claim limited to direct box-output gradient routing."
+    }
+  ],
+  "summary": "Archived actual CPU execution supports the limited own-mask cost/assignment and native boxes-only direct-gradient engineering check. No blocking finding; synthetic and retained-summary limitations remain.",
+  "reason_code": "bounded_simulation_and_retained_summary_limits",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_identity_attestation": "UNATTESTED",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_task": "/root/pvg_query_mask_assignment_cpu_actual_review_20261011",
+  "agent_id": "/root/pvg_query_mask_assignment_cpu_actual_review_20261011",
+  "verdict_id": "/root/pvg_query_mask_assignment_cpu_actual_review_20261011",
+  "review_completed_cst": "2026-10-11T03:28:30.738571+08:00",
+  "evidence_timezone": "Asia/Shanghai",
+  "evaluation_type": "simulation_only",
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/CPU_EXECUTION.json": "53ec10621d8bcc491375e37ff927c3e662935395fbafcc89c291634b1a6abc6b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/QUERY_MASK_ASSIGNMENT_CPU_RESULT.json": "932c1dfb2aab13dcede2b2c5411e36dde19b4f9433e8bc0d1bce141f24319207",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/CPU_STDOUT.txt": "ac87127c04f062d8271478d1eddc74204c28f47f30b00c7c1c86a56cd4783f5b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/TRANSPORT_EXIT.json": "302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py": "dec2c8343537bb5787c68d375e09c55151b4f489a98a3388b00f7039bc2b9552",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py": "fae03ac4d06a68ca54a4581feffb8c8c0721d18d14b775ff721ffe1434136e3b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/CPU_CHECK_SPEC.json": "39e1534178b532c65360bdd86a0389e754a1e4fb52c784393e3542978a555ccc",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py": "d0b30f644441502e419d5632e64fb6d557c3a2ec188fdf21de909fcaba1475a1",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_source_review/SOURCE_REVIEW.md": "32cd78e255d3fe716a69fa897a248f441cb363d29f0964dc32d9cbf840e2a573",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_source_review/SOURCE_REVIEW.json": "e3ae1bc12e6b5d2fa6ab50b1f9783789ae5b13d884c5a573fe51c6d6c855e7c6",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/summarize_cpu_check.py": "bbb5188268da5f66d558f97e0b1133f3c05c0c5dbfd06ce2d3dec9431da5fbe6",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/CHECK_SPEC.json": "0ddfb1c4fcc4481c463f623983c70764d87e26a009bc535558045b43eb6214fe",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/models/losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6"
+  },
+  "scope": {
+    "candidate_root": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011",
+    "audited_input_count": 13,
+    "substantive_review": "Only the supplied completed CPU archive, its checker/runner/losses/specs, prior CPU source review, original losses reference, and prepared postprocessor definition.",
+    "previous_source_review_is_reference_not_actual_execution": true,
+    "postprocessor_reviewed": true,
+    "postprocessor_executed_by_reviewer": false,
+    "credential_or_authorization_helper_contents_read": false,
+    "current_observer": {
+      "session_id": 52851,
+      "pid": 51540,
+      "next_observation_cst": "2026-10-11T05:00:40.968644+08:00",
+      "evidence_basis": "Task context only; not queried, changed or recreated by reviewer"
+    }
+  },
+  "actual_execution": {
+    "started_cst": "2026-10-11T03:22:09.318415+08:00",
+    "finished_cst": "2026-10-11T03:22:11.623140+08:00",
+    "elapsed_seconds": 2.304725,
+    "execution_exit_code": 0,
+    "transport_exit_code": 0,
+    "torch_version": "1.10.2+cu111",
+    "constructed_case_count": 3,
+    "query_count": 256,
+    "token_count": 256,
+    "superpoint_count": 4,
+    "raw_point_count": 6,
+    "seed": 2027,
+    "threads": 1,
+    "matcher_calls": 33,
+    "assignment_problems": 44,
+    "assigned_gt_pairs": 66,
+    "native_boxes_only_criterion_calls": 6,
+    "per_case": [
+      {
+        "case": "root_only",
+        "gt_counts": [
+          1
+        ],
+        "matcher_calls": 11,
+        "direct_matcher_calls": 9,
+        "boxes_only_criterion_calls": 2,
+        "assignment_problems": 11,
+        "assigned_gt_pairs": 11
+      },
+      {
+        "case": "root_anchor",
+        "gt_counts": [
+          2
+        ],
+        "matcher_calls": 11,
+        "direct_matcher_calls": 9,
+        "boxes_only_criterion_calls": 2,
+        "assignment_problems": 11,
+        "assigned_gt_pairs": 22
+      },
+      {
+        "case": "mixed_gt_batch",
+        "gt_counts": [
+          1,
+          2
+        ],
+        "matcher_calls": 11,
+        "direct_matcher_calls": 9,
+        "boxes_only_criterion_calls": 2,
+        "assignment_problems": 22,
+        "assigned_gt_pairs": 33
+      }
+    ],
+    "scope_zero_fields": {
+      "neural_model_forward_calls": 0,
+      "full_native_criterion_calls": 0,
+      "Mask_loss_calls": 0,
+      "dataset_rows": 0,
+      "optimizer_updates": 0,
+      "gpu_calls": 0,
+      "current_training_queries": 0,
+      "active_training_source_mutations": 0
+    },
+    "formal_accuracy": null,
+    "gpu_calls_semantics": "Zero CUDA initialization/operations; the checker explicitly calls torch.cuda.is_initialized() as a status assertion.",
+    "receipt_support": "Existing local execution/transport/result/stdout archive plus source consistency; not a reviewer rerun or new remote attestation."
+  },
+  "checks": [
+    {
+      "id": "A",
+      "status": "PASS",
+      "title": "Ground-truth provenance",
+      "detail": "Targets and predictions are explicitly constructed constants: fixed GT boxes/masks, two equal candidate boxes per GT with a 0.05 center offset, zero semantic logits, and hand-designed opposite own masks. No dataset GT or neural model output is used. The evidence is openly simulation_only; root_anchor is a two-GT fixture name, not a real anchored-language evaluation.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:60",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:68",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:84",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/QUERY_MASK_ASSIGNMENT_CPU_RESULT.json:3"
+      ]
+    },
+    {
+      "id": "B",
+      "status": "PASS",
+      "title": "Score and normalization definitions",
+      "detail": "The reported quantities are cost-difference summaries, assignments, and raw native L1/GIoU box losses. The native box loss normalizer is the number of matched GT pairs, which equals the constructed GT count here; no benchmark score is divided by prediction statistics. formal_accuracy is null. Mask cost retains >0 binarization, the 4-SP to 6-point map, raw-point L1 distance, and weight 0.0002.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:334",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:344",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:545",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:833",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/QUERY_MASK_ASSIGNMENT_CPU_RESULT.json:17"
+      ]
+    },
+    {
+      "id": "C",
+      "status": "PASS",
+      "title": "Actual execution archive and existence",
+      "detail": "CPU_EXECUTION and TRANSPORT_EXIT both record exit 0. The subprocess interval is 2026-10-11 03:22:09.318415 to 03:22:11.623140 +08:00 (2.304725 s). The stdout subset matches the stored result. The runner emits success only after receiving an exit-zero result, and the checker writes that result after its assertions and six backward calls. This supports one completed bounded CPU engineering check from the supplied archive; the reviewer did not rerun it or freshly attest the remote environment. The duration is receipt timing, not a benchmark.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/CPU_EXECUTION.json:2",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/TRANSPORT_EXIT.json:1",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/CPU_STDOUT.txt:1",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:43",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/run_cpu_authorized.py:75",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:160"
+      ]
+    },
+    {
+      "id": "D",
+      "status": "PASS",
+      "title": "Reached native code and excluded code",
+      "detail": "The script directly imports original and isolated losses, keeps the native SciPy assignment function before wrapping it for in-memory cost capture, and calls the native HungarianMatcher. Six calls instantiate modified.SetCriterion(losses=[boxes]), execute its forward, dispatch only loss_boxes, and backward through 10*loss_bbox+2*loss_giou. SetCriterion is AST-identical to the original. compute_hungarian_loss, mask/label/contrastive losses, PV forward, dataset and optimizer paths are not reached. An explicit torch.cuda.is_initialized() status assertion is reached; gpu_calls=0 means no CUDA initialization/operations, not no reference to torch.cuda. The .cuda() at losses.py:622 belongs to uncalled loss_masks.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:32",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:47",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:106",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:160",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:520",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:622",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:800",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:819"
+      ]
+    },
+    {
+      "id": "E",
+      "status": "WARN",
+      "title": "Scope and retained evidence boundaries",
+      "detail": "Three handcrafted fixtures use B=1/1/2, Q=256, T=256, 4 superpoints, 6 raw points, and GT counts [1]/[2]/[1,2], with seed2027 and one thread. Thirty-three matcher records are repeated cases, not 33 independent experiments; 44 assignment problems and 66 GT pairs are repeated processing counts, not scenes or distinct dataset annotations. Full cost matrices were compared in memory and are not archived; only check differences and assignment/gradient summaries remain. no_masks exercises the common matcher branch on fixed tensors, not six real decoder-prefix outputs. These are nonblocking limits for this engineering check.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/CPU_CHECK_SPEC.json:11",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:51",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:90",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:137",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:171",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/QUERY_MASK_ASSIGNMENT_CPU_RESULT.json:920"
+      ]
+    },
+    {
+      "id": "F",
+      "status": "PASS",
+      "title": "Evaluation type",
+      "evaluation_type": "simulation_only",
+      "detail": "simulation_only is the correct classification for manually constructed deterministic tensors. It is not real_gt, a benchmark, or new formal accuracy. The small tied example demonstrates a specific engineered causal path, not the frequency or benefit of reassignment on real data.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:1",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:60",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:162",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:172"
+      ]
+    },
+    {
+      "id": "G",
+      "status": "PASS",
+      "title": "Source and receipt bindings",
+      "detail": "All 13 reviewed inputs have plain SHA256 entries. The local original losses hash matches both specs; the isolated losses hash matches this spec. The result embeds the exact CPU spec and records the expected utils bindings; the environment digest and warm path agree across receipts/specs. The CPU receipt binds to the exact current source-review JSON. All five directly reviewed overlapping source-review pins match. A normalized-text comparison confirms only the mask_source parameter, stored attribute, and mask-source selection differ from the original losses. Other source-review dependencies and remote files were not reread in this limited audit.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/CPU_CHECK_SPEC.json:3",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/CPU_EXECUTION.json:7",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/QUERY_MASK_ASSIGNMENT_CPU_RESULT.json:18",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_source_review/SOURCE_REVIEW.json:55",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/matcher_mask_role_cpu_20261011/CHECK_SPEC.json:3",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_actual_review/trace/VERIFICATION.json:1"
+      ]
+    },
+    {
+      "id": "H",
+      "status": "PASS",
+      "title": "33/44/66/6 count reconciliation",
+      "detail": "Each case has nine direct matcher calls plus two boxes-only criterion calls; criterion forward calls matcher once. Independently recounting all stored records gives 33 matcher calls, 44 sample-level Hungarian problems, 66 assigned GT pairs and 6 boxes-only criterion/backward calls. Every stored assignment covers GT indices 0..count-1 exactly once and has unique query indices in [0,255]. The auxiliary matcher line is commented out, so it adds no calls.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:137",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:819",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:830",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/QUERY_MASK_ASSIGNMENT_CPU_RESULT.json:5",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_actual_review/trace/VERIFICATION.json:1"
+      ]
+    },
+    {
+      "id": "I",
+      "status": "PASS",
+      "title": "Cost controls and assignment change",
+      "detail": "The 18 stored checks comprise five equality controls and one own-mask change per case. Default/text versus original, text under own-mask swapping, query under shared-text mutation, and text/query without masks all have maximum cost difference 0. Own-mask swapping changes each of the four sample-level matrices by maximum 0.001199960708618164, consistent with a raw-point L1 difference of 6 times 0.0002 subject to float rounding. Query mode chooses 17 (and 45 for the second GT); swapping own masks changes this to 3 (and 31). Original/default/text and no-mask controls choose 3/31. Identical box and semantic costs make these deliberately tied examples; this is not evidence of real-data improvement.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:64",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:72",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:128",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:147",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/QUERY_MASK_ASSIGNMENT_CPU_RESULT.json:920"
+      ]
+    },
+    {
+      "id": "J",
+      "status": "PASS",
+      "title": "Direct box-output gradient routing",
+      "detail": "All six gradient records match the returned assignment query sets: text uses [3] / [3,31] / [[3],[3,31]], query uses [17] / [17,45] / [[17],[17,45]]. Native box losses are positive and identical between text/query for each case, as expected from tied boxes: the gradient recipients change, not the box-loss values. The active==expected runtime assertion supports direct gradient routing for the combined weighted objective. unmatched_direct_gradient_max=0 is a conclusion field written after that assertion, not an independently measured archived maximum. No full gradient tensors, separate per-loss backward, differentiable mask matching, model-parameter gradient, or optimizer update is established.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:107",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:114",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/check_query_mask_assignment_cpu.py:117",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:299",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/source/models/losses.py:523",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/QUERY_MASK_ASSIGNMENT_CPU_RESULT.json:498",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_execution/QUERY_MASK_ASSIGNMENT_CPU_RESULT.json:832"
+      ]
+    },
+    {
+      "id": "K",
+      "status": "PASS",
+      "title": "Prepared postprocessor definition",
+      "detail": "summarize_cpu_check.py was read and AST-parsed, not executed. It requires this ACTUAL_CPU_ONLY nonblocking review, exact audited input hashes, matching counters, zero excluded-scope fields and null accuracy, then writes a limited local summary. Its engineering booleans agree with the reviewed records when read with the fixed-input/simulation limitations. It keeps full criterion, GPU preflight, new training, three effective contributions and full goal completion false. It does not query SSH or modify training. No postprocessing output is claimed here.",
+      "evidence": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/summarize_cpu_check.py:12",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/summarize_cpu_check.py:23",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/summarize_cpu_check.py:38",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/summarize_cpu_check.py:44",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/summarize_cpu_check.py:52"
+      ]
+    }
+  ],
+  "verification_trace": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_actual_review/trace/VERIFICATION.json",
+  "trace_path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_actual_review/trace",
+  "limitations": [
+    "Preserve the constructed-input qualifier; this result does not estimate real assignment changes, training benefit, benchmark accuracy, or an effective new contribution.",
+    "Full matrices were compared at runtime but not archived. This review checks retained cost differences, assignments and gradient summaries against code and receipts; it does not freshly recompute native matrices or gradients.",
+    "The six backward calls test a combined 10*L1+2*GIoU objective on synthetic pred_boxes leaves. The unmatched maximum field is assigned after the support-set assertion, not separately measured. Keep the claim limited to direct box-output gradient routing.",
+    "No PV model forward, real dataset, compute_hungarian_loss/full joint criterion, mask loss, optimizer, GPU computation or benchmark accuracy was executed in the reviewed check.",
+    "The no-mask check covers the common matcher branch with fixed inputs, not actual six intermediate-prefix model outputs.",
+    "The reviewer did not rerun CPU/SSH/GPU, reread remote utils/env files, or inspect private authorization material.",
+    "Review identity is UNATTESTED; same-family/provisional is the available attribution, not cross-family acceptance."
+  ],
+  "claims": [
+    {
+      "id": "limited_engineering_check",
+      "impact": "SUPPORTED",
+      "qualifier": "Only the archived deliberately tied CPU simulation."
+    },
+    {
+      "id": "own_mask_cost_changes_assignment",
+      "impact": "SUPPORTED",
+      "qualifier": "Only fixed constructed boxes/logits and the native query-mask matching path."
+    },
+    {
+      "id": "direct_box_gradient_follows_assignment",
+      "impact": "SUPPORTED",
+      "qualifier": "Only native boxes-only combined weighted loss on synthetic pred_boxes leaves."
+    },
+    {
+      "id": "real_data_training_benefit_or_accuracy",
+      "impact": "NOT_ESTABLISHED"
+    },
+    {
+      "id": "full_joint_criterion_or_gpu_preflight",
+      "impact": "NOT_EXECUTED"
+    },
+    {
+      "id": "three_effective_contributions_and_full_Nr3D_Sr3D_training",
+      "impact": "NOT_ESTABLISHED"
+    },
+    {
+      "id": "ScanRefer9508_Acc025_gt59p5_and_Acc05_gt51",
+      "impact": "NOT_ESTABLISHED_BY_THIS_CHECK"
+    }
+  ],
+  "admission": {
+    "limited_actual_cpu_check_completed": true,
+    "limited_engineering_findings_blocking": false,
+    "native_full_criterion_completed": false,
+    "gpu_preflight_completed": false,
+    "gpu_admitted": false,
+    "new_training_started": false,
+    "training_admitted": false,
+    "final_method_admitted": false,
+    "three_effective_contributions_proven": false,
+    "full_goal_complete": false
+  },
+  "reviewer_execution": {
+    "local_source_and_archive_reads": true,
+    "stdlib_archive_arithmetic": true,
+    "local_sha256_inputs": 13,
+    "target_project_imports": 0,
+    "target_cpu_check_runs": 0,
+    "model_forwards": 0,
+    "criterion_calls": 0,
+    "backward_calls": 0,
+    "dataset_rows": 0,
+    "optimizer_updates": 0,
+    "gpu_operations": 0,
+    "ssh_calls": 0,
+    "network_calls": 0,
+    "training_status_queries": 0,
+    "reviewed_input_mutations": 0,
+    "active_training_source_mutations": 0,
+    "postprocessor_executions": 0,
+    "written_scope": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/query_mask_assignment_20261011/cpu_actual_review"
+  }
+}

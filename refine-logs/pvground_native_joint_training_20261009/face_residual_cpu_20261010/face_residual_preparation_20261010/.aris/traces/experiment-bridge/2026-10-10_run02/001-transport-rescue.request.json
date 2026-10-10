@@ -1,0 +1,13 @@
+{
+  "call_number": 1,
+  "purpose": "round-2-transport-rescue-source-review",
+  "timestamp": "2026-10-10T07:49:42.293943+08:00",
+  "tool": "collaboration.spawn_agent",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_fork_turns": "none",
+  "agent_id": "/root/pvg_face_cpu_route_rescue_20261010",
+  "reviewer_identity": "UNATTESTED",
+  "prompt": "按 experiment-bridge 的实际传输失败 rescue/fresh review 要求，请进行一次范围限定的源码复核。你是 fresh reviewer；不得 SSH、GPU、读当前训练状态、执行待审CPU程序、改变待审文件。只写 source_review 与 .aris/traces 审查产物。读 C:\\Users\\gb\\.codex\\skills\\experiment-bridge\\SKILL.md 与 shared-references\\local-codex-policy.md 的需要部分。\n\nF=C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010。模型 face_residual_span_mixer.py 和 check_face_residual_modules_cpu.py 未变；R1 PASS 后第一次 SSH exit255、stdout0、133字节stderr，主机密钥校验失败，CPU未被证明启动。已保留 transport_attempt1/REVIEWED_LAUNCHER_ATTEMPT1.py 与R1报告、原始传输证据（stderr不要公开或整段引用）。\n\n具体可复核证据：CPU_CHECK_PLAN.md；run_face_residual_cpu_authorized.py 当前版；TRANSPORT_FIX_PREPARATION.json；STATIC_CPU_ROOT_READ.json 和 STATIC_CPU_ROOT_TRANSPORT_EXIT.json；transport_attempt1 的原始审查及旧launcher；cpu_execution 的原始失败。必要旧 A/B/geometry source 在父目录 source/，NATIVE_SOURCE_PORT.json，以及其旧A实际依赖whole_mask_range的必要本地副本。新旧代码的唯一变化是：attempt2输出目录、SSH_ASKPASS和UserKnownHostsFile恢复为早已实际成功使用的 C:/ 正斜杠无空格路径，以及读取已实际观察的静态CPU目标目录不存在作为重试前提。没有关StrictHostKeyChecking，没有 fallback，没有重试循环，也未重新启动当前训练。\n\n静态只读调用使用同样已成功路径返回：2026-10-10T07:47:14.188669+08:00 isolated root /root/autodl-tmp/pvground_face_residual_cpu_20261010 exists=False、CPU receipt不存在；当前训练查询0。旧路径由Path.resolve经Ctmp junction成为D:\\Program Files\\...，OpenSSH -o/askpass路径解析与原无空格C路径不同。请准确区分“已证明静态路由恢复、目标未启动”与未经证明的精确内部SSH解析根因；无需读认证脚本/askpass内容。\n\n验证当前helper只在上述未启动证据+fresh review后执行唯一限定CPU任务；模块检查仅合成Torch、旧A/B严格加载、零输出等价、两步新head梯度、供应残差面交叉解码和module-only内存恢复；不称fullPV1301/native criterion/真实训练/REC。不得提新哈希方案、兼容/fallback、防御或无关重构；可报告已有hash/protocol代码真实缺陷。\n\n输出 F/source_review/EXPERIMENT_CODE_REVIEW_R2.md/json，并把同字节报告写 canonical EXPERIMENT_CODE_REVIEW.md/json 供runner使用。JSON至少 verdict PASS/WARN/FAIL、blocking_issue_count、blocking_issues、supported_scope、unsupported_scope、audited_input_hashes（实际输入绝对路径→裸SHA256；不要将会覆盖的canonical输出包含为输入）。R1原报告及旧launcher留存，不伪称历史可变路径仍匹配；通过归档旧launcher校验历史 SHA 即可。身份UNATTESTED，无独立凭据；requested model gpt-6-astra/max/fork none，same-family/provisional。保存收到的原始请求、实际响应和必要工具trace。复核完不要执行CPU或训练，报告结果即可。"
+}
+

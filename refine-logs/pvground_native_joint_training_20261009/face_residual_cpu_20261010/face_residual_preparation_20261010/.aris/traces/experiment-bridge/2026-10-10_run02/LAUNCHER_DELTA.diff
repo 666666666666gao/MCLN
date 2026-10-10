@@ -1,0 +1,28 @@
+--- ARCHIVED_ATTEMPT1
++++ CURRENT_ATTEMPT2
+@@ -14,7 +14,10 @@
+ assert review['verdict'] in ('PASS','WARN') and review['blocking_issue_count'] == 0
+ for name,digest in review['audited_input_hashes'].items():
+     assert hashlib.sha256(Path(name).read_bytes()).hexdigest() == digest.removeprefix('sha256:')
+-attempt = root/'cpu_execution'
++static_root = json.loads((root/'STATIC_CPU_ROOT_READ.json').read_bytes())
++assert static_root['root'] == '/root/autodl-tmp/pvground_face_residual_cpu_20261010'
++assert static_root['exists'] is False and static_root['CPU_execution_receipt_exists'] is False
++attempt = root/'cpu_execution_attempt2'
+ assert not attempt.exists()
+ attempt.mkdir()
+ port = json.loads((v/'NATIVE_SOURCE_PORT.json').read_bytes())
+@@ -60,11 +63,11 @@
+ print(json.dumps(out));sys.exit(response.returncode)
+ '''
+ witness = json.loads((v.parent/'SCP_TRANSPORT_WITNESS.json').read_bytes())
+-environment = dict(os.environ,SSH_ASKPASS=str(v.parent/'NativeSshAskPass.exe'),
++environment = dict(os.environ,SSH_ASKPASS='C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/NativeSshAskPass.exe',
+     SSH_ASKPASS_REQUIRE='force',DISPLAY='codex-byte-transfer')
+ runtime = '/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python'
+ argv = ['C:/Windows/System32/OpenSSH/ssh.exe','-T','-p','33476','-o','ProxyCommand=none',
+-    '-o','StrictHostKeyChecking=yes','-o','UserKnownHostsFile='+str(v.parent/'native_scp_known_hosts'),
++    '-o','StrictHostKeyChecking=yes','-o','UserKnownHostsFile=C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_scp_known_hosts',
+     '-o','HostKeyAlgorithms='+witness['negotiated_host_key_algorithm'],'-o','NumberOfPasswordPrompts=1',
+     'root@region-9.autodl.pro',shlex.join([runtime,'-B','-u','-c',code])]
+ response = subprocess.run(argv,env=environment,input=json.dumps(payload).encode(),

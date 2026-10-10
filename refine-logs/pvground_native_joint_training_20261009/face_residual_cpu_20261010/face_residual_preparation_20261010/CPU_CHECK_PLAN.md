@@ -1,0 +1,11 @@
+# Face residual: bounded CPU module check
+
+The unchanged prepared `FaceResidualSpanMixer` responds to the closed geometry analysis of axis-wise coupling. It wraps the retained29793-parameter axis prior and adds23425 face-residual parameters. This check does not admit the candidate to the running ScanRefer training or claim a formal gain. The main normal run and C-off-first control order remain unchanged.
+
+Use the existing Torch1.10.2+cu111 runtime, `CUDA_VISIBLE_DEVICES=''`, one CPU thread, seed2027. Read only the protected d06 support and f989 span states and the unchanged A/B/geometry source. No full-PV imports, data loaders, real scene forward, native criterion, GPU, active-job observation, or new weight file.
+
+The engineering fixture contains random embeddings/coordinates/logits,256queries,8superpoints and50000points. Actual old A constructs geometry, old B loads the retained f989 state, and the prepared wrapper executes around that prior. Check both source-evidence modes at zero output: exact center/size equality with the retained prior;53218 parameters and20 module state tensors; six newly added state tensors; identical initial module outputs despite source hiding. Observe the hidden source-token/fraction columns directly.
+
+A separate explicit synthetic `refine_one` fixture with interior0.5 prior gates checks two in-memory AdamW updates of the new head: output gradients on the first backward; encoder gradients after an output update; finite positive sizes. This is a gradient fixture, not full-model learning or accuracy. A separate supplied-face-residual fixture checks the actual Torch decoding/ordering path for the demonstrated inverted-endpoint case. It does not claim the learned network predicted that residual. Finally, module-only state roundtrip through an in-memory buffer must restore identical evaluation output. No filesystem weight is saved.
+
+Before CPU execution, require the experiment-bridge fresh source review. After execution, require a fresh bounded outcome review under experiment-audit. Both identities must be reported honestly as same-family/provisional unless independently attested. Neither review grants GPU training admission or proves the future1301-state native constructor/recovery.

@@ -1,0 +1,111 @@
+{
+  "verdict": "PASS",
+  "blocking_issue_count": 0,
+  "blocking_issues": [],
+  "non_blocking_issues": [],
+  "review_scope": "SOURCE_ONLY_BOUNDED_FACE_RESIDUAL_SYNTHETIC_CPU_MODULE_CHECK",
+  "reviewer_identity": "UNATTESTED",
+  "reviewer_agent": "/root/pvg_face_residual_cpu_source_20261010",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_fork_turns": "none",
+  "model_identity_attestation": null,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewed_at_cst": "2026-10-10T07:44:50.427529+08:00",
+  "supported_scope": [
+    "限定 CPU runner 的源代码准备正确性；实际运行尚未执行。",
+    "固定 d06/f989 checkpoint 路径、现有 SHA 检查与 A/B strict state loading 的代码路径。",
+    "29793 参数旧轴先验加 23425 参数六面残差；53218 参数、20 项状态、6 项新增状态的结构算式。",
+    "两个来源模式的合成零输出等价断言，以及新增 head token/fraction 隐藏列的直接观测断言。",
+    "独立 0.5 gate 梯度夹具中两次新 head AdamW 更新的断言设计。",
+    "供应 residual 的面倒置解码，以及独立梯度模块 state 的内存 refine_one evaluation roundtrip。",
+    "现有 SSH launcher 的固定只读源/权重和专属新 CPU 输出目录边界；不改变正常训练或 C-off 顺序。"
+  ],
+  "unsupported_scope": [
+    "任何实际 Torch CPU 执行通过结论。",
+    "远端当前状态、当前训练进度及远端权重内容的本次直接观测。",
+    "完整 PV1295/1301 工厂、真实 loader、真实场景或 native criterion。",
+    "完整 optimizer recovery、f989 包装器完整 forward 恢复和新增头在真实已加载 gate 上的梯度表现。",
+    "GPU、REC、精度增益、正式训练准入及整体研究目标完成。",
+    "重新推导 CLOSED_ALGEBRA_WITNESS 的 9508 行统计或审查未列入的 native_face_model_initialization 工厂。"
+  ],
+  "runtime_executed": false,
+  "SSH_calls": 0,
+  "GPU_calls": 0,
+  "current_training_state_reads": 0,
+  "audited_source_modified": false,
+  "audited_input_hashes": {
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\CPU_CHECK_PLAN.md": "df588b842f6c2e998c229d15cc2c4e9d19cad1ae9e8262d1c36a4c024f35c0df",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\face_residual_span_mixer.py": "6c06ad455b88b70a3ce651a5c22bdd6afc26a91b95c9d9f5778e8434ae77e90d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\check_face_residual_modules_cpu.py": "94d1163c132ae833d7deac5bfe5804a64e8a77a878173750bea9334613b9c941",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\run_face_residual_cpu_authorized.py": "af231e30a21a7c06dab27c50350928423187e430d936081a6d050e7ac0d73a00",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\source_conditioned_init.json": "1fe73223d8dda5319814c7f2a9fa2d3bdd16f8492bf38512f26cbcf71aaf1a68",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\CLOSED_ALGEBRA_WITNESS.json": "a9efd5f843723e426bc784b37c54f268697f1d9c70cb896374d90f3b9e9a2d98",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\METHOD_PREPARATION.md": "3e9008134697d7657604f6af91effdbe3ef6fa7c680c6c30c768ab0ece98d740",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NATIVE_SOURCE_PORT.json": "8f9020f8be4864e31e602e2044fc8e04d49297b163f5037dbc019964b47a140b",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_whole_mask_range_20261003\\whole_mask_range.py": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\env_spec.json": "3ce5df048f09ed28f1908c2db1907cb51b354f54f954666ad3a9cd452868b5ee",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "C:\\Users\\gb\\.codex\\skills\\experiment-bridge\\SKILL.md": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\output-versioning.md": "de8e7ac23069de6c5d0c482d4cef117dd5a543e00b57e2dc6c62560a457290c5",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\output-manifest.md": "e767083e0ef97a7adf7a4e8a574090067a59c0655d5aca422a3747cd32b6afde",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\output-language.md": "0f1447579bd7a2195fd4a074be70ae6345b5c368f1a70d327e89748bf5a378f9"
+  },
+  "audited_sections": {
+    "NATIVE_SOURCE_PORT.json": "model_source, env_spec_sha256 and the three explicit sources plus whole_mask_range dependency entries; unrelated model/data entries are not reviewed.",
+    "env_spec.json": "canonical JSON digest comparison and the PYTHONPATH field consumed by the launcher; no remote environment inspection."
+  },
+  "static_evidence": {
+    "python_sources_ast_parsed": [
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\face_residual_span_mixer.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\check_face_residual_modules_cpu.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\run_face_residual_cpu_authorized.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_whole_mask_range_20261003\\whole_mask_range.py"
+    ],
+    "embedded_remote_python37_ast": "PASS",
+    "source_sha_matches_port": {
+      "mask_support_corrector.py": true,
+      "extremal_span_mixer.py": true,
+      "native_mask_geometry.py": true
+    },
+    "whole_mask_range_sha_matches_port": true,
+    "analytical_parameters": {
+      "new_face": 23425,
+      "axis_prior": 29793,
+      "combined": 53218
+    },
+    "env_spec_local_comparisons": [
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\env_spec.json",
+        "canonical_sha256": "c73eed09e0e952c981d616ea55ff5da683c99ea7a0ebd21f8f8740896a501ae4",
+        "matches_port": false,
+        "PYTHONPATH_present": true
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json",
+        "canonical_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+        "matches_port": true,
+        "PYTHONPATH_present": true
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\env_spec.json",
+        "canonical_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+        "matches_port": true,
+        "PYTHONPATH_present": true
+      }
+    ]
+  },
+  "module_roundtrip_limit": "Independent gradient-module state_dict in BytesIO, strict load and refine_one output equality only; prior is freshly constructed, not f989, and full wrapper forward/optimizer is not exercised.",
+  "report_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\source_review\\EXPERIMENT_CODE_REVIEW.md",
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\.aris\\traces\\experiment-bridge\\CPU_SOURCE"
+}

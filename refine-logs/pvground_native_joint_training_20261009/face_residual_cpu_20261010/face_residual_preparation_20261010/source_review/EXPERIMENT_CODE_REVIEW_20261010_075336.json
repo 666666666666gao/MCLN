@@ -1,0 +1,200 @@
+{
+  "verdict": "PASS",
+  "blocking_issue_count": 0,
+  "blocking_issues": [],
+  "nonblocking_issues": [],
+  "status": "SOURCE_ONLY_TRANSPORT_RESCUE_PASS",
+  "review_round": 2,
+  "time_cst": "2026-10-10T07:51:12.190639+08:00",
+  "reviewer_agent_id": "/root/pvg_face_cpu_route_rescue_20261010",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_fork_turns": "none",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "reviewer_identity": "UNATTESTED",
+  "independent_identity_evidence": null,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "supported_scope": [
+    "在已有静态未启动证据及本次审查通过后，由当前 helper 执行一次限定合成 Torch CPU 模块检查的源码准入。",
+    "首轮传输失败原件、归档原件、静态 exit 0/root absence 证据之间的一致性，以及当前传输路径最小修复的范围。",
+    "既有 fresh review/input 校验、local attempt2 与 remote isolated-root 单次执行边界。",
+    "固定 d06/f989 checkpoint 与旧 A/B strict state loading 的源码路径；三份 source 和 whole_mask_range 本地副本与 port 一致。",
+    "两个来源模式的合成零输出等价断言和新增 head token/fraction 隐藏列观测断言。",
+    "独立内部 gate 夹具中两步新 head 梯度、供应残差倒置解码与 module-only 内存 refine_one 恢复的源码正确性。",
+    "R1 历史 launcher digest 由归档旧 launcher 核实；本轮报告只绑定本轮实际输入，不错误验证历史可变路径。"
+  ],
+  "unsupported_scope": [
+    "任何实际 Torch CPU 执行通过结论；本次审查未执行待审程序或 SSH。",
+    "OpenSSH 精确内部路径解析根因；现有证据只支持静态路由恢复及首轮限定 CPU checker 未启动。",
+    "本次直接观测远端当前训练状态、权重内容或运行环境。",
+    "完整 PV1295/1301 工厂、真实 loader/场景、native criterion、full optimizer recovery 或 f989 包装器完整 forward 恢复。",
+    "新 head 在真实已加载 gate 上的梯度表现，或网络已学习供应的倒置面残差。",
+    "GPU、真实训练、REC、精度增益、正式训练准入或整体研究目标完成。"
+  ],
+  "audited_input_hashes": {
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\CPU_CHECK_PLAN.md": "df588b842f6c2e998c229d15cc2c4e9d19cad1ae9e8262d1c36a4c024f35c0df",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\run_face_residual_cpu_authorized.py": "599161fe51f152d71d3348ad98cba6718b0122d1e6a478cfa5b4457782d3da4f",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\face_residual_span_mixer.py": "6c06ad455b88b70a3ce651a5c22bdd6afc26a91b95c9d9f5778e8434ae77e90d",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\check_face_residual_modules_cpu.py": "94d1163c132ae833d7deac5bfe5804a64e8a77a878173750bea9334613b9c941",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\TRANSPORT_FIX_PREPARATION.json": "d28b800400d045472c68f4f836d8edb2233d2af0b726b732fdf0ae54ddf1ac8f",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\STATIC_CPU_ROOT_READ.json": "e0e42488191dc4db70456606e0ed7df20aba0b98c6472628fa99aaa62d70b9fe",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\STATIC_CPU_ROOT_TRANSPORT_EXIT.json": "302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\source_conditioned_init.json": "1fe73223d8dda5319814c7f2a9fa2d3bdd16f8492bf38512f26cbcf71aaf1a68",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\transport_attempt1\\EXPERIMENT_CODE_REVIEW_R1.md": "8f3f3dab5666d7871462dfce44a4040ec34670a33b8c921ca063bd95e41e5bc0",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\transport_attempt1\\EXPERIMENT_CODE_REVIEW_R1.json": "d2b486d8b7c9ee90439c1b9464ca9580861355628483b2b9eaa4339f136520d9",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\transport_attempt1\\REVIEWED_LAUNCHER_ATTEMPT1.py": "af231e30a21a7c06dab27c50350928423187e430d936081a6d050e7ac0d73a00",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\transport_attempt1\\RAW_STDERR.txt": "d8faf8a752f6c1e8a2eb6ebff3ce69140b90bbc7ebce18673f9becd745af07cc",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\transport_attempt1\\RAW_STDOUT.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\transport_attempt1\\TRANSPORT_EXIT.json": "5d9bc2b1052210fde4a2c47472c6234601114657edb60ba92ea42f7f1af6b84a",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\cpu_execution\\RAW_STDERR.txt": "d8faf8a752f6c1e8a2eb6ebff3ce69140b90bbc7ebce18673f9becd745af07cc",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\cpu_execution\\RAW_STDOUT.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\cpu_execution\\TRANSPORT_EXIT.json": "5d9bc2b1052210fde4a2c47472c6234601114657edb60ba92ea42f7f1af6b84a",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\NATIVE_SOURCE_PORT.json": "8f9020f8be4864e31e602e2044fc8e04d49297b163f5037dbc019964b47a140b",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\SCP_TRANSPORT_WITNESS.json": "046d4b8f70aaa0c6f21e3fa652adad80bb1d017aa7fb2f4d41da2fc53c2f5933",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_whole_mask_range_20261003\\whole_mask_range.py": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "C:\\Users\\gb\\.codex\\skills\\experiment-bridge\\SKILL.md": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\output-versioning.md": "de8e7ac23069de6c5d0c482d4cef117dd5a543e00b57e2dc6c62560a457290c5",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\output-manifest.md": "e767083e0ef97a7adf7a4e8a574090067a59c0655d5aca422a3747cd32b6afde",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\output-language.md": "0f1447579bd7a2195fd4a074be70ae6345b5c368f1a70d327e89748bf5a378f9"
+  },
+  "audited_sections": {
+    "NATIVE_SOURCE_PORT.json": "model_source, env_spec_sha256, three explicit sources and whole_mask_range dependency entries only",
+    "source_conditioned_init.json": "CPU bundle consumes support/span checkpoint paths and digests; no full PV initialization review",
+    "SCP_TRANSPORT_WITNESS.json": "success status and negotiated_host_key_algorithm only; no authentication/askpass/known-host file content read",
+    "env_spec.json": "canonical digest and consumed PYTHONPATH existence; no remote environment inspection",
+    "RAW_STDERR.txt": "read locally only to verify byte count and host-key verification error; raw text not published"
+  },
+  "static_evidence": {
+    "checks": {
+      "only_requested_launcher_changes": true,
+      "embedded_remote_program_unchanged": true,
+      "old_launcher_matches_R1_historical_digest": true,
+      "current_launcher_differs_from_R1_historical_digest": true,
+      "old_launcher_matches_fix_preparation": true,
+      "current_launcher_matches_fix_preparation": true,
+      "unchanged_reviewed_inputs_match_R1": true,
+      "archived_failure_bytes_match_original": true,
+      "R1_archived_reports_match_timestamped_original": true,
+      "failed_transport_exit_255": true,
+      "failed_transport_stdout_empty": true,
+      "failed_transport_stderr_133_bytes": true,
+      "failed_transport_has_host_key_verification_error": true,
+      "static_transport_exit_0": true,
+      "static_root_target_exact": true,
+      "static_root_and_receipt_absent": true,
+      "static_observation_no_training_queries": true,
+      "static_record_marks_host_key_route_verified": true,
+      "local_attempt2_absent": true,
+      "source_sha_matches_port": true,
+      "whole_mask_range_sha_matches_port": true,
+      "env_canonical_hash_matches_port": true,
+      "env_has_PYTHONPATH": true,
+      "new_parameter_count_23425": true,
+      "prior_parameter_count_29793": true,
+      "combined_parameter_count_53218": true,
+      "canonical_review_outputs_excluded_from_inputs": true
+    },
+    "static_check_count": 27,
+    "python_sources_ast_parsed": [
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\run_face_residual_cpu_authorized.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\face_residual_span_mixer.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\check_face_residual_modules_cpu.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\transport_attempt1\\REVIEWED_LAUNCHER_ATTEMPT1.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_whole_mask_range_20261003\\whole_mask_range.py"
+    ],
+    "embedded_remote_python37_ast": "PASS",
+    "source_sha_matches_port": {
+      "mask_support_corrector.py": true,
+      "extremal_span_mixer.py": true,
+      "native_mask_geometry.py": true
+    },
+    "unchanged_inputs_R1": {
+      "CPU_CHECK_PLAN.md": true,
+      "face_residual_span_mixer.py": true,
+      "check_face_residual_modules_cpu.py": true,
+      "source_conditioned_init.json": true
+    },
+    "original_and_archived_failure_same_bytes": {
+      "RAW_STDERR.txt": true,
+      "RAW_STDOUT.json": true,
+      "TRANSPORT_EXIT.json": true
+    },
+    "R1_archived_reports_unchanged": {
+      "md": true,
+      "json": true
+    },
+    "analytical_parameters": {
+      "new_face": 23425,
+      "axis_prior": 29793,
+      "combined": 53218
+    },
+    "analytical_module_states": {
+      "axis_prior": 14,
+      "new_face": 6,
+      "combined": 20
+    },
+    "static_cpu_root_observation": {
+      "root": "/root/autodl-tmp/pvground_face_residual_cpu_20261010",
+      "exists": false,
+      "CPU_execution_receipt_exists": false,
+      "training_status_queries": 0,
+      "time_cst": "2026-10-10T07:47:14.188669+08:00",
+      "unchanged_host_key_route_verified": true
+    },
+    "first_transport": {
+      "exit_code": 255,
+      "stdout_bytes": 0,
+      "stderr_bytes": 133,
+      "error_kind": "HOST_KEY_VERIFICATION_FAILED",
+      "raw_stderr_published": false
+    },
+    "local_root_resolution": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010",
+    "env_spec_review": {
+      "canonical_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+      "PYTHONPATH_present": true
+    }
+  },
+  "historical_provenance": {
+    "archived_launcher": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\transport_attempt1\\REVIEWED_LAUNCHER_ATTEMPT1.py",
+    "archived_launcher_sha256": "af231e30a21a7c06dab27c50350928423187e430d936081a6d050e7ac0d73a00",
+    "current_launcher": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\run_face_residual_cpu_authorized.py",
+    "current_launcher_sha256": "599161fe51f152d71d3348ad98cba6718b0122d1e6a478cfa5b4457782d3da4f",
+    "archive_matches_R1_historical_launcher_digest": true,
+    "current_mutable_launcher_is_not_R1_bytes": true,
+    "R1_reports_preserved": true
+  },
+  "transport_causality": {
+    "observed": "首轮 host-key transport failure；无 stdout/CPU receipt；修复路径后保存的静态只读调用 exit 0 且固定 CPU root/receipt 不存在。",
+    "supported_inference": "静态路由已恢复；结合 launcher 创建根后才启动 checker 的顺序，首轮限定 CPU checker 未启动。",
+    "not_proven": "OpenSSH 内部具体 option/askpass/路径解析层面的精确失败根因；当前修改后的完整 CPU 执行仍未进行。"
+  },
+  "module_roundtrip_limit": "独立梯度模块 state_dict 经 BytesIO strict reload，只比较 refine_one evaluation 输出；prior 是新建 prior，不证明 f989 wrapper 全 forward 或 optimizer/full PV recovery。",
+  "reviewer_actions": {
+    "candidate_source_changed": false,
+    "audited_program_executed": false,
+    "SSH_calls": 0,
+    "GPU_calls": 0,
+    "current_training_status_queries": 0,
+    "authentication_files_read": false
+  },
+  "review_tool_observations": [
+    "默认 python.exe 解析到 E:/Scripts/python.exe；沿已有 R1 工具证据，用 uv python find --no-python-downloads 找到现存 CPython 3.13 仅运行 stdlib AST/hash/diff 审查脚本，未安装软件。",
+    "python.exe/py.exe 联合只读发现命令 exit 1，输出仅找到 python.exe；该工具发现状态已原样保留，不是待审 CPU 程序失败。"
+  ],
+  "required_after_actual_cpu_execution": "fresh bounded experiment-audit outcome review",
+  "report_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\source_review\\EXPERIMENT_CODE_REVIEW_R2.md",
+  "canonical_report_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\source_review\\EXPERIMENT_CODE_REVIEW.md",
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\.aris\\traces\\experiment-bridge\\2026-10-10_run02"
+}
+

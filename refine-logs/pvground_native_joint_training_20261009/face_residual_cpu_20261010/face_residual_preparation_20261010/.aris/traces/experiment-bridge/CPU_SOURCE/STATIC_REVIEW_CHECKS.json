@@ -1,0 +1,62 @@
+{
+  "static_evidence": {
+    "python_sources_ast_parsed": [
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\face_residual_span_mixer.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\check_face_residual_modules_cpu.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_residual_preparation_20261010\\run_face_residual_cpu_authorized.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\mask_support_corrector.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py",
+      "C:\\Users\\gb\\.codex\\tmp\\pvground_whole_mask_range_20261003\\whole_mask_range.py"
+    ],
+    "embedded_remote_python37_ast": "PASS",
+    "source_sha_matches_port": {
+      "mask_support_corrector.py": true,
+      "extremal_span_mixer.py": true,
+      "native_mask_geometry.py": true
+    },
+    "whole_mask_range_sha_matches_port": true,
+    "analytical_parameters": {
+      "new_face": 23425,
+      "axis_prior": 29793,
+      "combined": 53218
+    },
+    "env_spec_local_comparisons": [
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_runtime_bundle_20260908_v1\\env_spec.json",
+        "canonical_sha256": "c73eed09e0e952c981d616ea55ff5da683c99ea7a0ebd21f8f8740896a501ae4",
+        "matches_port": false,
+        "PYTHONPATH_present": true
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_cs_restart_20261002\\env_spec.json",
+        "canonical_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+        "matches_port": true,
+        "PYTHONPATH_present": true
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\env_spec.json",
+        "canonical_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+        "matches_port": true,
+        "PYTHONPATH_present": true
+      }
+    ]
+  },
+  "review_tool_errors": [
+    {
+      "command": "python -B -",
+      "output": "No pyvenv.cfg file",
+      "scope": "Review-time stdlib helper never started; no candidate code executed.",
+      "resolution": "Use existing interpreter returned by uv python find --no-python-downloads, without installation."
+    },
+    {
+      "command": "Review-time stdlib AST/hash helper with pvground_runtime_bundle_20260908_v1/env_spec.json",
+      "output": "Traceback (most recent call last):\n  File \"<stdin>\", line 17, in <module>\nAssertionError",
+      "scope": "AST checks had completed; reviewer-selected historical env copy differed from target canonical hash.",
+      "resolution": "Read-only comparison found two already-existing copies with canonical hash equal to NATIVE_SOURCE_PORT; no candidate/runtime source change."
+    }
+  ],
+  "reviewer_executed_audited_module_or_runner": false,
+  "SSH_calls": 0,
+  "GPU_calls": 0
+}

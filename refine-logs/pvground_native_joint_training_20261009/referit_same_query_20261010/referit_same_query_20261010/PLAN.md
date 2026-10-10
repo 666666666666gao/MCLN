@@ -1,0 +1,25 @@
+# Nr/Sr原生bbs与对应Mask的同Query报告
+
+接续作者入口R1，保留R1源码及审查不改。新目录沿用R1的14份源码和各自作者初始化配置，只增加与真实warm来源绑定的src/grounding_evaluator.py修订。
+
+真实warm来源的评估器是runtime_binding/model_source/src/grounding_evaluator.py，SHA39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677，与保存的作者upstream文件一致。dataset_source中的新版b77376d…不是此warm来源。本轮不使用新版候选有效性排除规则。
+
+## 唯一改变
+
+原生bbox_by_pos_align保持原token汇总、任意场景对象IoU>0.25后分数乘零、排序、框IoU及REC计数。仅保存每条表达的bbs第一名Query。两条Mask评估直接读取该Query的融合Mask，不再各自重排候选。原生bbf框计数继续作为诊断，不能作为另一套部署答案。
+
+Mask的旧mask_pos/mask_sem计数名称保留以复用统计输出；其意义现在都是“last/bbs所选Query的Mask”，其中原有Mask Acc和子群累加也沿用这一Query。该Mask协议与作者原来的独立选择不同，必须如实标注；作者和新模型的本地对应比较要使用同一协议。REC排名与公式不改变，不能将这项报告修正算作新增REC方法收益。
+
+作者分数乘零后，负分候选或全部候选均不与场景对象重叠时仍可能选到不合格Query。新修订保留这一原生行为，不添加回退、目标GT筛选、另一排名或强制mask/box同时判错。框与Mask各自对真实GT计算，但来自同一所选Query。
+
+原C训练项仍依据未过滤的原生token分数选训练Query，不能宣称它已经在Nr/Sr严格等于作者对象过滤后的部署Query。如果最终保留C，需要单独解决其职责；本轮不改该损失，不改变正在运行的C-off实验。
+
+## 有限CPU检查
+
+在既有真实Torch1.10.2/原生GroundingEvaluator上检查5个显式合成输入，每个B1/Q256/T256/P4：正分对象过滤、无对象过滤、有效候选负分、全部预测框在场景对象外、双GT下root-only。每个分别运行未改作者评估器与新评估器。
+
+要求全部原bbs/bbf框计数与分母相同，新Mask计数等于实际bbs第一名Query的Mask IoU。正分过滤样例故意令原Box选Query1、原Mask选择Query0/2，而Query1 Mask较差；修订后Mask命中下降也要通过，不允许挑最好Mask报告。双GT检查只覆盖root-only评估计数，不是多GT训练损失保护。
+
+源码复核通过后执行一次CPU检查。CPU运行目录独立，复制既有116项warm文件并仅覆盖准备源码；CUDA隐藏、单线程，不调用数据类、PV网络、criterion、优化器、GPU、活动训练查询或保存权重。结果是合成评估接口证据，不是Nr/Sr真实精度、正常训练入口执行、完整模型准入或三项创新验证。
+
+ScanRefer活动源码保持不变，原观察器21631/PID48772仍于10月11日01:03:05首查。Nr/Sr完整GPU检查及训练等待最终ScanRefer模型和单卡时段。

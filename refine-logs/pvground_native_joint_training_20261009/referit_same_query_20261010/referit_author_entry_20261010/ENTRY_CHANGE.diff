@@ -1,0 +1,12 @@
+--- prior/source/train_dist_mod.py
++++ prepared/source/train_dist_mod.py
+@@ -407,7 +407,8 @@
+     assert opt.model == 'PVGround' and opt.test_dataset in ('nr3d', 'sr3d')
+     assert opt.dataset == [opt.test_dataset] and opt.num_decoder_layers == 6
+     assert opt.rng_seed == 2027 and opt.use_color and not opt.use_height and not opt.use_multiview
+-    assert opt.butd and not opt.butd_cls and not opt.butd_gt and not opt.joint_det
++    assert opt.butd_cls and opt.joint_det and opt.detect_intermediate
++    assert not opt.butd and not opt.butd_gt and not opt.augment_det
+     assert opt.use_soft_token_loss and opt.use_contrastive_align
+     assert not opt.frozen and not opt.small_lr and opt.batch_size == 8
+     random.seed(opt.rng_seed)

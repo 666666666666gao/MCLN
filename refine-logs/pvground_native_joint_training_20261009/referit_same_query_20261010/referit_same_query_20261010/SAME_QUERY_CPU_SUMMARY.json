@@ -1,0 +1,185 @@
+{
+  "status": "SYNTHETIC_NATIVE_EVALUATOR_SAME_QUERY_CPU_REVIEWED",
+  "prepared_cst": "2026-10-10T22:19:55.670184+08:00",
+  "result": {
+    "status": "SYNTHETIC_NATIVE_EVALUATOR_SAME_QUERY_CPU_PASS",
+    "cases": [
+      {
+        "name": "positive_scene_filter",
+        "bbox_counters_equal_to_original": true,
+        "selected_query": 1,
+        "both_mask_counters_equal_selected_query_IoU": true,
+        "synthetic_selected_mask_IoU": 0.0
+      },
+      {
+        "name": "unfiltered",
+        "bbox_counters_equal_to_original": true,
+        "selected_query": 0,
+        "both_mask_counters_equal_selected_query_IoU": true,
+        "synthetic_selected_mask_IoU": 1.0
+      },
+      {
+        "name": "negative_valid_scores",
+        "bbox_counters_equal_to_original": true,
+        "selected_query": 176,
+        "both_mask_counters_equal_selected_query_IoU": true,
+        "synthetic_selected_mask_IoU": 0.0
+      },
+      {
+        "name": "all_candidates_outside_scene",
+        "bbox_counters_equal_to_original": true,
+        "selected_query": 176,
+        "both_mask_counters_equal_selected_query_IoU": true,
+        "synthetic_selected_mask_IoU": 0.0
+      },
+      {
+        "name": "multi_GT_root_only",
+        "bbox_counters_equal_to_original": true,
+        "selected_query": 1,
+        "both_mask_counters_equal_selected_query_IoU": true,
+        "synthetic_selected_mask_IoU": 0.0
+      }
+    ],
+    "fixture_shape": {
+      "batch": 1,
+      "queries": 256,
+      "tokens": 256,
+      "points": 4
+    },
+    "known_Box_Mask_disagreement_fixture_detected": true,
+    "evaluator_instances": 10,
+    "native_evaluate_calls": 10,
+    "elapsed_seconds": 0.07662984728813171,
+    "CUDA_initialized": false,
+    "PV_model_constructors": 0,
+    "PV_forwards": 0,
+    "dataset_constructors": 0,
+    "criterion_calls": 0,
+    "optimizer_steps": 0,
+    "saved_weights": 0,
+    "current_training_queries": 0,
+    "formal_accuracy": null,
+    "full_benchmark_evaluation_completed": false,
+    "GPU_training_admission": false,
+    "full_goal_complete": false
+  },
+  "execution_receipt": {
+    "started_cst": "2026-10-10T22:07:50.433169+08:00",
+    "finished_cst": "2026-10-10T22:08:00.912904+08:00",
+    "exit_code": 0,
+    "warm_source": "/root/autodl-tmp/pvground_referit_author_core_cpu_20261010/PV-Ground",
+    "isolated_source": "/root/autodl-tmp/pvground_referit_same_query_cpu_20261010/PV-Ground",
+    "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+    "current_training_queries": 0,
+    "source_review_sha256": "65cd156e6be898c3003518dd83dc6440430579dda8220d6149263e56ae1158fb"
+  },
+  "review": {
+    "source_verdict": "PASS",
+    "actual_verdict": "WARN",
+    "execution_scope": "SYNTHETIC_NATIVE_EVALUATOR_SAME_QUERY_CPU",
+    "blocking_findings": [],
+    "non_blocking_findings": [
+      {
+        "id": "NB-01",
+        "severity": "WARN",
+        "blocking": false,
+        "category": "bounded_fixture_coverage",
+        "finding": "One CPU run with five fixed B1/Q256/T256/P4 last_/root-only fixtures uses alpha=0 and identity superpoints. Real-data mapping, nonzero fusion, larger batches, full model/loss and GPU behavior are untested.",
+        "evidence": [
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/check_native_same_query_cpu.py",
+            "line_start": 23,
+            "line_end": 84
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/check_native_same_query_cpu.py",
+            "line_start": 117,
+            "line_end": 126
+          }
+        ],
+        "remedy": "Retain simulation_only and the exact fixture scope; obtain separate authorized evidence before broader claims."
+      },
+      {
+        "id": "NB-02",
+        "severity": "WARN",
+        "blocking": false,
+        "preexisting": true,
+        "category": "deferred_C_training_deployment_semantics",
+        "finding": "C selects unfiltered native token scores, while filtered Nr/Sr bbs deployment includes a scene-overlap multiplier. Both unused init specs enable C. This checker does not run C or establish equivalence.",
+        "evidence": [
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/selected_query_mask_objective.py",
+            "line_start": 8,
+            "line_end": 9
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/native_root_bbs.py",
+            "line_start": 4,
+            "line_end": 9
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/src/grounding_evaluator.py",
+            "line_start": 243,
+            "line_end": 290
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/nr3d/init.json",
+            "line_start": 12,
+            "line_end": 12
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/sr3d/init.json",
+            "line_start": 12,
+            "line_end": 12
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/PLAN.md",
+            "line_start": 15,
+            "line_end": 15
+          }
+        ],
+        "remedy": "If C is retained, resolve or explicitly define its training/deployment role separately before final Nr/Sr use; leave independent active training outside this audit."
+      },
+      {
+        "id": "NB-03",
+        "severity": "WARN",
+        "blocking": false,
+        "category": "mask_protocol_claim_boundary",
+        "finding": "Legacy mask_pos and mask_sem now both report the last/bbs-selected Query Mask. This changes the Mask reporting protocol, preserves native zero/negative/tie selection, and establishes no REC-method gain.",
+        "evidence": [
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/src/grounding_evaluator.py",
+            "line_start": 650,
+            "line_end": 657
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/source/src/grounding_evaluator.py",
+            "line_start": 755,
+            "line_end": 804
+          },
+          {
+            "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_same_query_20261010/PLAN.md",
+            "line_start": 9,
+            "line_end": 13
+          }
+        ],
+        "remedy": "Identify and apply the same Mask protocol in later author/new-model comparisons. Do not infer real Nr/Sr accuracy or REC improvement from this check."
+      }
+    ],
+    "actual_runtime_model": "UNATTESTED",
+    "independence": "same-family",
+    "acceptance": "provisional"
+  },
+  "best_retained_counts": [
+    5677,
+    4920
+  ],
+  "formal_accuracy": null,
+  "normal_training_status_queries": 0,
+  "active_training_source_changed": false,
+  "full_benchmark_evaluation_completed": false,
+  "GPU_training_admission": false,
+  "C_training_vs_filtered_deployment_Query_equivalence_verified": false,
+  "final_method_selection_pending": true,
+  "full_goal_complete": false
+}

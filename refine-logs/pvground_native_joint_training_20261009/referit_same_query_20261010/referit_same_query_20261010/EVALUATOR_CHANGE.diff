@@ -1,0 +1,38 @@
+--- author/src/grounding_evaluator.py
++++ same_query/src/grounding_evaluator.py
+@@ -234,6 +234,9 @@
+         assert (pred_size < 0).sum() == 0
+         pred_bbox = torch.cat([pred_center, pred_size], dim=-1) # ([B, 256, 6])
+ 
++        end_points[prefix + "bbs_selected_query"] = torch.empty(
++            len(positive_map), dtype=torch.long, device=sem_scores.device)
++
+         # Highest scoring box -> iou
+         for bid in range(len(positive_map)):
+             is_correct = None
+@@ -284,6 +287,7 @@
+                 scores = scores * is_correct[None]
+ 
+             top = scores.argsort(1, True)[:, :10]
++            end_points[prefix + "bbs_selected_query"][bid] = top[0, 0]
+             pbox = pred_bbox[bid, top.reshape(-1)]
+ 
+             ious, _ = _iou3d_par(
+@@ -643,7 +647,7 @@
+             if is_correct is not None:
+                 scores = scores * is_correct[None]
+ 
+-            top = scores.argsort(1, True)[:, :1]  # top-1 mask
++            top = end_points[prefix + "bbs_selected_query"][bid].reshape(1, 1)
+             pmasks = pred_masks[bid, top.reshape(-1)]
+ 
+             # comupte mask iou
+@@ -748,7 +752,7 @@
+             if is_correct is not None:
+                 scores = scores * is_correct[None]
+ 
+-            top = scores.argsort(1, True)[:, :1]
++            top = end_points[prefix + "bbs_selected_query"][bid].reshape(1, 1)
+             pmasks = pred_masks[bid, top.reshape(-1)]
+ 
+             # compute IoU

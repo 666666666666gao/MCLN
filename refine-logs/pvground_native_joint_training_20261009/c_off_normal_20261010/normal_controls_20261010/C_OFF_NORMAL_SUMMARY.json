@@ -1,0 +1,637 @@
+{
+  "status": "C_OFF_ACTUAL_PREFLIGHT_COMPLETE_AND_NORMAL_NATIVE_ENTRY_LAUNCHED",
+  "prepared_cst": "2026-10-10T20:07:55.708080+08:00",
+  "started_cst": "2026-10-10T03:19:09.576037+08:00",
+  "completed_cst": "2026-10-10T17:57:10.138008+08:00",
+  "observed_cst": "2026-10-10T18:03:39.518142+08:00",
+  "exit_code": 0,
+  "elapsed_seconds": 52680.56200923771,
+  "metrics": [
+    {
+      "epoch": 0,
+      "rows": 9508,
+      "hits025": 5677,
+      "hits050": 4920,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 59.7076146403029,
+      "acc050_percent": 51.74589819099705,
+      "delta_hits025_from_E0": 0,
+      "delta_hits050_from_E0": 0
+    },
+    {
+      "epoch": 1,
+      "rows": 9508,
+      "hits025": 5652,
+      "hits050": 4596,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 59.44467816575516,
+      "acc050_percent": 48.33824148085822,
+      "delta_hits025_from_E0": -25,
+      "delta_hits050_from_E0": -324
+    },
+    {
+      "epoch": 2,
+      "rows": 9508,
+      "hits025": 5552,
+      "hits050": 4552,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 58.392932267564156,
+      "acc050_percent": 47.87547328565419,
+      "delta_hits025_from_E0": -125,
+      "delta_hits050_from_E0": -368
+    },
+    {
+      "epoch": 3,
+      "rows": 9508,
+      "hits025": 5576,
+      "hits050": 4488,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 58.64535128313,
+      "acc050_percent": 47.202355910811946,
+      "delta_hits025_from_E0": -101,
+      "delta_hits050_from_E0": -432
+    }
+  ],
+  "prescribed_best_epoch": 0,
+  "fixed_terminal_epoch": 3,
+  "fixed_terminal_delta_from_E0": [
+    -101,
+    -432
+  ],
+  "numeric_gates_passed_by_initial_adapted_model": true,
+  "normal_training_net_gain": false,
+  "three_effective_mechanisms_proved": false,
+  "training_rows": 36665,
+  "batch_size": 8,
+  "drop_last": true,
+  "updates_per_epoch": 4583,
+  "total_optimizer_updates": 13749,
+  "processed_training_rows": 109992,
+  "seed": 2027,
+  "learning_rate_core_and_backbone": 1e-06,
+  "learning_rate_new_modules": 1e-05,
+  "weight_decay": 0.0005,
+  "gradient_clip": 0.1,
+  "original_normal_configuration_unchanged": true,
+  "weights": [
+    {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/best.pth",
+      "bytes": 615023752,
+      "sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4"
+    },
+    {
+      "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/latest.pth",
+      "bytes": 841676832,
+      "sha256": "a000a1d3ea56db3ec9bcb44b49c1db68933dfaaae7c807c351ee0e5e76c2ca2f"
+    }
+  ],
+  "full_cold_recovery": {
+    "status": "NORMAL_BEST_AND_FIXED_E3_FULL_COLD_RECOVERY_COMPLETE",
+    "time_cst": "2026-10-10T18:16:52.295455+08:00",
+    "checkpoints": [
+      {
+        "name": "best",
+        "identity": {
+          "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/best.pth",
+          "bytes": 615023752,
+          "sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4"
+        },
+        "saved_epoch": 0,
+        "full_state_tensors": 1295,
+        "optimizer_states": 0,
+        "optimizer_step_values": [],
+        "restored_start_epoch": 1,
+        "full_recovery_exact": true,
+        "retained_metrics": {
+          "rows": 9508,
+          "hits025": 5677,
+          "hits050": 4920,
+          "primary_score": "last/bbs",
+          "same_complete_model": true
+        }
+      },
+      {
+        "name": "latest",
+        "identity": {
+          "path": "/root/autodl-tmp/pvground_native_joint_training_20261010/normal/logs/scanrefer/extremal_support/1791573559/latest.pth",
+          "bytes": 841676832,
+          "sha256": "a000a1d3ea56db3ec9bcb44b49c1db68933dfaaae7c807c351ee0e5e76c2ca2f"
+        },
+        "saved_epoch": 3,
+        "full_state_tensors": 1295,
+        "optimizer_states": 820,
+        "optimizer_step_values": [
+          13749
+        ],
+        "restored_start_epoch": 4,
+        "full_recovery_exact": true,
+        "retained_metrics": {
+          "rows": 9508,
+          "hits025": 5677,
+          "hits050": 4920,
+          "primary_score": "last/bbs",
+          "same_complete_model": true
+        }
+      }
+    ],
+    "actual_native_factory": true,
+    "actual_native_checkpoint_loader": true,
+    "scheduler_epoch_updates": 4583,
+    "new_neural_forwards": 0,
+    "new_optimizer_steps": 0,
+    "new_training_batches": 0,
+    "formal_accuracy_not_rerun": true,
+    "source": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground",
+    "actual_imports": {
+      "train_dist_mod": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/train_dist_mod.py",
+      "main_utils": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/main_utils.py",
+      "native_model_initialization": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/native_model_initialization.py",
+      "models.pv_ground": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/models/pv_ground.py"
+    },
+    "full_goal_complete": false,
+    "root": "/root/autodl-tmp/pvground_normal_terminal_recovery_20261010_attempt2",
+    "environment_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+    "source_hashes_verified": 14,
+    "original_normal_configuration_unchanged": true,
+    "recovery_exit_code": 0,
+    "normal_training_restarted": false
+  },
+  "integrity_verdict": "WARN",
+  "hard_integrity_failures": 0,
+  "review_independence": "same-family",
+  "review_acceptance": "provisional",
+  "runtime_attestation": "UNATTESTED",
+  "independently_recomputed_per_row_IoU": false,
+  "unique_expression_coverage_verified": false,
+  "control_source_review": "WARN_SOURCE_ONLY_ZERO_BLOCKING_SOURCE_FINDINGS",
+  "control_runtime_preflight_and_admission_complete": false,
+  "control_requires_post_E0_degradation_assessment": true,
+  "Nr3D_or_Sr3D_training_launched": false,
+  "archive_status": "RUNNING_NO_DELETION_AT_PREPARATION",
+  "full_goal_complete": false,
+  "c_off_actual_M0": {
+    "status": "complete",
+    "started_cst": "2026-10-10T19:26:27.606811+08:00",
+    "stage": "selected_mask_off_native_preflight",
+    "formal_accuracy": null,
+    "normal_training_started": false,
+    "completed_cst": "2026-10-10T19:37:14.683892+08:00",
+    "elapsed_seconds": 647.0771946460009,
+    "full_recovery_exact": true,
+    "initial_model_state_exactly_matches_normal_E0": true
+  },
+  "c_off_actual_M0_receipt": {
+    "status": "ACTUAL_NATIVE_C_OFF_TWO_STEP_INITIAL_E0_EQUALITY_AND_FULL_RECOVERY_COMPLETE",
+    "selected_mask_supervision_disabled": true,
+    "initial_model_state_exactly_matches_normal_E0": true,
+    "source_mode": "extremal_support",
+    "time_cst": "2026-10-10T19:37:05.169751+08:00",
+    "real_train_dataset_rows": 36665,
+    "real_formal_dataset_rows": 9508,
+    "normal_epoch_updates": 4583,
+    "actual_updates": 2,
+    "actual_input_rows": 16,
+    "real_training_batches": 2,
+    "native_train_one_epoch_called": true,
+    "original_trainable_core_jointly_updated": true,
+    "original_roberta_frozen": true,
+    "full_state_tensors": 1295,
+    "gradient_norms": [
+      {
+        "span_output": 0.6669713258743286,
+        "span_internal": 0.15803898870944977,
+        "support_corrector": 0.07341060787439346,
+        "original_core_and_G_reader": 28.29050064086914,
+        "backbone": 1.4587503671646118
+      },
+      {
+        "span_output": 0.14655552804470062,
+        "span_internal": 0.07697833329439163,
+        "support_corrector": 0.4114381968975067,
+        "original_core_and_G_reader": 93.7052001953125,
+        "backbone": 5.356160640716553
+      }
+    ],
+    "updates": {
+      "original_core_and_G_reader": {
+        "changed_parameters": 693,
+        "changed_elements": 22783133,
+        "maximum_change": 2.0265579223632812e-06
+      },
+      "backbone": {
+        "changed_parameters": 102,
+        "changed_elements": 3197173,
+        "maximum_change": 2.0265579223632812e-06
+      },
+      "support_corrector": {
+        "changed_parameters": 10,
+        "changed_elements": 27263,
+        "maximum_change": 1.9982457160949707e-05
+      },
+      "span_internal": {
+        "changed_parameters": 12,
+        "changed_elements": 29759,
+        "maximum_change": 1.996941864490509e-05
+      },
+      "span_output": {
+        "changed_parameters": 2,
+        "changed_elements": 33,
+        "maximum_change": 1.6623176634311676e-05
+      }
+    },
+    "losses": [
+      {
+        "step": 1,
+        "total_loss": 13.838889122009277,
+        "raw_gate_min": -0.16573642194271088,
+        "raw_gate_max": 0.30013713240623474,
+        "raw_gate_negative_count": 299,
+        "raw_gate_zero_count": 0,
+        "raw_gate_above_one_count": 0,
+        "raw_gate_elements": 6144,
+        "g_reassigned_queries": 193,
+        "selected_mask_supervision_disabled": true
+      },
+      {
+        "step": 2,
+        "total_loss": 14.264213562011719,
+        "raw_gate_min": -0.0923284962773323,
+        "raw_gate_max": 0.35643070936203003,
+        "raw_gate_negative_count": 280,
+        "raw_gate_zero_count": 0,
+        "raw_gate_above_one_count": 0,
+        "raw_gate_elements": 6144,
+        "g_reassigned_queries": 293,
+        "selected_mask_supervision_disabled": true
+      }
+    ],
+    "gradient_acceptance": "Core, backbone, support positive each step; Span output and internal positive across two steps",
+    "pretrained_span_initial_mix_formula_verified": true,
+    "full_recovery_exact": true,
+    "span_initialization": "retained_pretrained_checkpoint",
+    "span_initialization_identity": "f9898c5dc7a5e97bf152421efc9072c23ef255618c64477a4bfacf996f2b3b19",
+    "checkpoint_sha256": "c3f151d0fed401a79dede2f9e052e7572a24d8a9f9b16b7b725efa856e5aaa65",
+    "checkpoint_bytes": 841675936,
+    "saved_retained_metrics": null,
+    "restored_optimizer_states": 820,
+    "step_seconds": 25.904242292046547,
+    "peak_memory_bytes": {
+      "allocated": 22181649408,
+      "reserved": 25220349952
+    },
+    "formal_accuracy": null,
+    "actual_imports": {
+      "train_dist_mod": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/train_dist_mod.py",
+      "main_utils": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/main_utils.py",
+      "native_model_initialization": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/native_model_initialization.py",
+      "models.pv_ground": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/models/pv_ground.py",
+      "models.losses": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/models/losses.py"
+    },
+    "preflight_weights_used_for_formal_training": false,
+    "actual_normal_epoch_training_started": false
+  },
+  "c_off_actual_audit": {
+    "verdict": "WARN",
+    "execution_scope": "ACTUAL_NATIVE_C_OFF_PREFLIGHT",
+    "blocking_findings": [],
+    "actual_runtime_model": "UNATTESTED",
+    "independence": "same-family",
+    "acceptance": "provisional"
+  },
+  "duplicate_old_initial_array_deduplication": {
+    "status": "EXACT_FIVE_CLOSED_IDENTICAL_INITIAL_ARRAY_PATHS_SHARE_ONE_STORAGE_COPY",
+    "time_cst": "2026-10-10T19:46:29.529284+08:00",
+    "sha256": "c5b7bc1da6c71cf3c7631e3f1c95060ccc9490e654cc0a300b60a9f0e63a0a36",
+    "files": [
+      {
+        "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260909_observation_v1/initial/boxes.npy",
+        "bytes": 42313856,
+        "sha256": "c5b7bc1da6c71cf3c7631e3f1c95060ccc9490e654cc0a300b60a9f0e63a0a36",
+        "device": 2064,
+        "inode": 21927803,
+        "links": 1
+      },
+      {
+        "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_fixed_memory_v1/initial/boxes.npy",
+        "bytes": 42313856,
+        "sha256": "c5b7bc1da6c71cf3c7631e3f1c95060ccc9490e654cc0a300b60a9f0e63a0a36",
+        "device": 2064,
+        "inode": 1518463,
+        "links": 1
+      },
+      {
+        "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_rec_competition_v1/initial/boxes.npy",
+        "bytes": 42313856,
+        "sha256": "c5b7bc1da6c71cf3c7631e3f1c95060ccc9490e654cc0a300b60a9f0e63a0a36",
+        "device": 2064,
+        "inode": 12329241,
+        "links": 1
+      },
+      {
+        "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_task_observation_v1/initial/boxes.npy",
+        "bytes": 42313856,
+        "sha256": "c5b7bc1da6c71cf3c7631e3f1c95060ccc9490e654cc0a300b60a9f0e63a0a36",
+        "device": 2064,
+        "inode": 4299163553,
+        "links": 1
+      },
+      {
+        "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/initial/boxes.npy",
+        "bytes": 42313856,
+        "sha256": "c5b7bc1da6c71cf3c7631e3f1c95060ccc9490e654cc0a300b60a9f0e63a0a36",
+        "device": 2064,
+        "inode": 8605266670,
+        "links": 1
+      }
+    ],
+    "operations": [
+      {
+        "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_fixed_memory_v1/initial/boxes.npy",
+        "canonical": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260909_observation_v1/initial/boxes.npy",
+        "bytes_preserved": 42313856
+      },
+      {
+        "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_rec_competition_v1/initial/boxes.npy",
+        "canonical": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260909_observation_v1/initial/boxes.npy",
+        "bytes_preserved": 42313856
+      },
+      {
+        "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260917_task_observation_v1/initial/boxes.npy",
+        "canonical": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260909_observation_v1/initial/boxes.npy",
+        "bytes_preserved": 42313856
+      },
+      {
+        "path": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260918_semantic_assignment_v1/initial/boxes.npy",
+        "canonical": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260909_observation_v1/initial/boxes.npy",
+        "bytes_preserved": 42313856
+      }
+    ],
+    "canonical": "/root/autodl-tmp/mcln_pvground_scanrefer_finetune_20260909_observation_v1/initial/boxes.npy",
+    "same_device": 2064,
+    "canonical_inode": 21927803,
+    "links": 5,
+    "duplicate_physical_copies_removed": 4,
+    "duplicate_file_bytes": 169255424,
+    "data_free_before": 1622896640,
+    "data_free_after": 1792176128,
+    "all_five_paths_and_bytes_preserved": true,
+    "weights_data_runtime_V99_untouched": true,
+    "new_neural_calls": 0
+  },
+  "c_off_normal_launch": {
+    "admission": {
+      "status": "NATIVE_NORMAL_JOINT_TRAINING_ADMITTED",
+      "time_cst": "2026-10-10T20:03:10.114333+08:00",
+      "source_mode": "extremal_support",
+      "env_spec_sha256": "966235b2ead7fa5a1de63e9537745b457374a4e5749ac4a7a26566b7b630c82c",
+      "helpers": {
+        "normal_joint_controller.py": "a55ae418f42a776395290a68a799cc121abf9f4cb936bd8f32a36162365484d9",
+        "NORMAL_NATIVE_RUN_PROTOCOL.json": "c4db3c565a1ad5a885e5974882aef8f9e75be84b3095016be066c0e83605f1c5",
+        "init.json": "d8b57d9d1c5d9f8a98c9500da7677b00ac139448740303cae7f1d11eefd0bcd4"
+      },
+      "helper_files": {
+        "normal_joint_controller.py": "a55ae418f42a776395290a68a799cc121abf9f4cb936bd8f32a36162365484d9",
+        "NORMAL_NATIVE_RUN_PROTOCOL.json": "c4db3c565a1ad5a885e5974882aef8f9e75be84b3095016be066c0e83605f1c5",
+        "init.json": "d8b57d9d1c5d9f8a98c9500da7677b00ac139448740303cae7f1d11eefd0bcd4"
+      },
+      "actual_M0_complete_and_audited": true,
+      "actual_audit_sha256": "9c5fca25f7958492d5d3c8f06f3e7812bcd31123421679723017fca1166ea1d9",
+      "source_review_sha256": "34333e46f43eef3b883275adbd4bd38249ecbf6c1297d34791bb65db350b609e",
+      "engineering_intake_sha256": "2bc5fb70340c612c647d6552b6b075adcc00859ec2d60099847b03c5536c4453",
+      "actual_receipt_sha256": "0cda3fceb47a49ed1a2828c936a803d7f0be151723d321efa47cd5f862dd6563",
+      "preflight_states_not_used": true,
+      "retained_span_init_sha256": "f9898c5dc7a5e97bf152421efc9072c23ef255618c64477a4bfacf996f2b3b19",
+      "initial1295_tensors_equal_normal_E0": true,
+      "selected_mask_supervision_disabled": true,
+      "parent_pretraining_updates_disclosed": true,
+      "data_free_bytes": 2633846784,
+      "normal_reserve_bytes": 2605151860,
+      "prior_metrics_not_assumed_to_reproduce_in_native_pipeline": true
+    },
+    "controller_pid": 185395,
+    "controller_argv": [
+      "flock",
+      "--no-fork",
+      "-n",
+      "/root/autodl-tmp/mcln_v99_backbone_gpu0.lock",
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/normal_joint_controller.py"
+    ],
+    "root": "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off",
+    "model_source": "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground",
+    "retirement": {
+      "status": "ONLY_UNSCORED_FULLY_RECOVERED_C_OFF_M0_CHECKPOINT_RETIRED",
+      "removed": {
+        "name": "witness/scanrefer/engineering_two_batch_preflight/1791631598/best.pth",
+        "bytes": 841675936,
+        "path": "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/engineering/witness/scanrefer/engineering_two_batch_preflight/1791631598/best.pth",
+        "sha256": "c3f151d0fed401a79dede2f9e052e7572a24d8a9f9b16b7b725efa856e5aaa65"
+      },
+      "actual_audit_sha256": "9c5fca25f7958492d5d3c8f06f3e7812bcd31123421679723017fca1166ea1d9",
+      "best_and_all_parent_dependencies_untouched": true,
+      "local_recovery_and_text_evidence_retained": true
+    },
+    "status": "C_OFF_ORDINARY_JOINT_TRAINING_CONTROLLER_LAUNCHED_NOT_COMPLETED",
+    "time_cst": "2026-10-10T20:03:05.277556+08:00",
+    "formal_accuracy": null,
+    "first_observation_seconds": 18000,
+    "later_poll_seconds": 240,
+    "planned_epochs": 3,
+    "ordinary_training_child_witness_pending": true,
+    "full_goal_complete": false
+  },
+  "c_off_start_witness": {
+    "status": "ORDINARY_NATIVE_ENTRY_ALIVE",
+    "time_cst": "2026-10-10T20:04:26.116891+08:00",
+    "controller_pid": 185395,
+    "child_pid": 185396,
+    "child_argv": [
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/train_dist_mod.py",
+      "--model",
+      "PVGround",
+      "--dataset",
+      "scanrefer",
+      "--test_dataset",
+      "scanrefer",
+      "--data_root",
+      "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+      "--use_color",
+      "--use_soft_token_loss",
+      "--use_contrastive_align",
+      "--self_attend",
+      "--butd",
+      "--rng_seed",
+      "2027",
+      "--batch_size",
+      "8",
+      "--num_workers",
+      "4",
+      "--num_target",
+      "256",
+      "--num_decoder_layers",
+      "6",
+      "--num_encoder_layers",
+      "3",
+      "--self_position_embedding",
+      "loc_learned",
+      "--lr",
+      "1e-6",
+      "--lr_backbone",
+      "1e-6",
+      "--lr_modules",
+      "1e-5",
+      "--weight_decay",
+      "0.0005",
+      "--clip_norm",
+      "0.1",
+      "--max_epoch",
+      "3",
+      "--start_epoch",
+      "1",
+      "--val_freq",
+      "1",
+      "--lr-scheduler",
+      "step",
+      "--lr_decay_epochs",
+      "280",
+      "340",
+      "--warmup-epoch",
+      "-1",
+      "--native_init_spec",
+      "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/init.json",
+      "--log_dir",
+      "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/logs",
+      "--exp",
+      "extremal_support",
+      "--print_freq",
+      "128"
+    ],
+    "remote_status": {
+      "status": "running",
+      "phase": "ordinary_joint_training",
+      "source_mode": "extremal_support",
+      "started_cst": "2026-10-10T20:03:10.211860+08:00",
+      "planned_epochs": 3,
+      "formal_result": null,
+      "original_core_frozen": false,
+      "paired_other_arm_training_started": false,
+      "child_pid": 185396,
+      "child_argv": [
+        "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+        "-B",
+        "-u",
+        "/root/autodl-tmp/pvground_native_joint_training_20261010/PV-Ground/train_dist_mod.py",
+        "--model",
+        "PVGround",
+        "--dataset",
+        "scanrefer",
+        "--test_dataset",
+        "scanrefer",
+        "--data_root",
+        "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+        "--use_color",
+        "--use_soft_token_loss",
+        "--use_contrastive_align",
+        "--self_attend",
+        "--butd",
+        "--rng_seed",
+        "2027",
+        "--batch_size",
+        "8",
+        "--num_workers",
+        "4",
+        "--num_target",
+        "256",
+        "--num_decoder_layers",
+        "6",
+        "--num_encoder_layers",
+        "3",
+        "--self_position_embedding",
+        "loc_learned",
+        "--lr",
+        "1e-6",
+        "--lr_backbone",
+        "1e-6",
+        "--lr_modules",
+        "1e-5",
+        "--weight_decay",
+        "0.0005",
+        "--clip_norm",
+        "0.1",
+        "--max_epoch",
+        "3",
+        "--start_epoch",
+        "1",
+        "--val_freq",
+        "1",
+        "--lr-scheduler",
+        "step",
+        "--lr_decay_epochs",
+        "280",
+        "340",
+        "--warmup-epoch",
+        "-1",
+        "--native_init_spec",
+        "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/init.json",
+        "--log_dir",
+        "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/logs",
+        "--exp",
+        "extremal_support",
+        "--print_freq",
+        "128"
+      ]
+    },
+    "gpu_processes": "",
+    "train_log_bytes": 1811,
+    "native_entry_not_engineering_probe": true,
+    "neural_calls_by_witness": 0,
+    "accuracy_files_read": 0,
+    "formal_accuracy": null,
+    "initial_evaluation_or_fit_phase_requires_log_read": true,
+    "ordinary_training_completed": false,
+    "three_contributions_proven": false,
+    "full_goal_complete": false
+  },
+  "c_off_observer_owner": {
+    "status": "SINGLE_PLANNED_NORMAL_OBSERVER_WAITING",
+    "local_pid": 48772,
+    "runtime_executable": "D:\\Program Files\\UserCache\\gb\\uv\\builds-v0\\.tmpD1rw4M\\Scripts\\python.exe",
+    "created_cst": "2026-10-10T20:04:32.647034+08:00",
+    "first_due_cst": "2026-10-11T01:03:05.277556+08:00",
+    "later_poll_seconds": 240,
+    "remote_controller_pid": 185395,
+    "remote_child_pid": 185396,
+    "planned_observations": 1,
+    "estimate_basis": "Prior ordinary three-epoch run took14.63349hours including initial validation; first node fivehours after launch, then use measured progress",
+    "later_node_requires_actual_progress_estimate": true
+  },
+  "c_off_normal_training_controller_started": true,
+  "c_off_optimizer_updates_observed": false,
+  "c_off_new_formal_accuracy": null,
+  "c_off_engineering_checkpoint_retired": {
+    "status": "ONLY_UNSCORED_FULLY_RECOVERED_C_OFF_M0_CHECKPOINT_RETIRED",
+    "removed": {
+      "name": "witness/scanrefer/engineering_two_batch_preflight/1791631598/best.pth",
+      "bytes": 841675936,
+      "path": "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/engineering/witness/scanrefer/engineering_two_batch_preflight/1791631598/best.pth",
+      "sha256": "c3f151d0fed401a79dede2f9e052e7572a24d8a9f9b16b7b725efa856e5aaa65"
+    },
+    "actual_audit_sha256": "9c5fca25f7958492d5d3c8f06f3e7812bcd31123421679723017fca1166ea1d9",
+    "best_and_all_parent_dependencies_untouched": true,
+    "local_recovery_and_text_evidence_retained": true
+  },
+  "historical_pretrained_parents_already_C_adapted": true,
+  "no_history_never_C_claim": true,
+  "active_training_source_modified": false,
+  "publication_neural_calls": 0,
+  "publication_training_status_queries": 0
+}

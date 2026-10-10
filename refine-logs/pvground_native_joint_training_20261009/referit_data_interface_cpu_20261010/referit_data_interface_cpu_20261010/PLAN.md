@@ -1,0 +1,13 @@
+# Nr3D/Sr3D真实数据接口CPU检查
+
+承接已有Nr/Sr作者核心加载与输入协议准备。仅核对后续独立训练需要的真实数据张量、目标映射和联合检测身份；不构建PV网络或执行REC推理，不新增GPU训练，不改变活动C-off实验。原生文本预处理仍会使用本地spaCy/sng_parser的CPU模型，不能称为完全不调用任何模型。
+
+复用已经构建的`pvground_referit_author_core_cpu_20261010/PV-Ground`与其真实Joint3DDataset。按已保存作者配置use_color=true、use_height/use_multiview=false、butd/butd_gt=false、butd_cls/joint_det/detect_intermediate=true构建训练和验证数据。butd_cls是标注实例框＋cls_results预测类别，不能写成纯预测检测框或GT类别。
+
+为避免重复解析完整语料，直接调用原数据类的overfit=true接口，每种来源只取前128条注释；保留真实train/val split及训练增强，不能使用会将训练split换为val的原生debug入口。每个基准读取训练指代表达、联合ScanNet检测行和验证表达，训练两行用真实PyTorch DataLoader/default collate组装。不改写注释源文件、GT文件或原数据类逻辑。检测行在内存中生成目标列表沿用原生行为。重复collation的训练行正常重新增强，不声称与之前单条读取逐位相同。四次构建串行释放对象；样本数和有限注释构建必须如实记录，不能据此确认完整数据集长度或公平训练预算。
+
+检查点云颜色输入、点级GT/超点对应、原生文本映射、对象proposal来源、root槽0与检测行身份。检测行的language_dataset仍为nr3d/sr3d，sample_dataset为scannet；不把检测行当作唯一root表达。真实GT来自原数据类与场景成员，不从模型输出产生。本检查不调用G/C或criterion，也不证明多GT损失保护已经实际运行。
+
+执行前复核源码并绑定warm源116项及既有author_core overlay；只部署小脚本与配置。要求既有train/val_v3scans.pkl存在，避免触发原数据类的生成路径；先记录可用RAM和两个pickle字节数，依据真实资源决定是否启动。只创建专属检查目录内日志/JSON，不保存权重或数组。CUDA不可见，线程1，检查前后未初始化CUDA。
+
+先源码审查，再单次CPU执行，再独立实际审查。当前只有计划和代码准备；没有真实样本执行结果，没有正式指标，没有GPU准入。最终跨基准训练仍等待ScanRefer完整方法与单卡资源。当前研究目标ACTIVE_UNMET。

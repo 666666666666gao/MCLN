@@ -1,0 +1,342 @@
+{
+  "schema": "experiment-code-review-source-only-v1",
+  "verdict": "PASS",
+  "execution_scope": "SOURCE_ONLY",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "summary": "No source-level blocker found for one bounded native Nr3D/Sr3D CPU data-interface check. Not an execution result, GPU admission, accuracy assessment or training approval.",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "identity_evidence": "No service identity or reasoning-effort attestation was available.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "cross_family_claim": false,
+  "reviewer_task": "/root/pvg_referit_native_data_cpu_source_review_20261010",
+  "reviewer_actions": {
+    "experiment_executions": 0,
+    "source_imports": 0,
+    "dataset_or_model_loaders": 0,
+    "SSH_calls": 0,
+    "GPU_queries": 0,
+    "training_queries": 0,
+    "subagents_spawned": 0,
+    "runtime_mutations": 0,
+    "input_mutations": 0,
+    "write_scope": "source_review only"
+  },
+  "source_conclusions": {
+    "native_class_import_binding": "PASS",
+    "author_training_flags_not_CPU_factory_flags": "PASS",
+    "real_train_val_splits_and_native_augmentation": "PASS",
+    "annotation_cap_applied_before_language_parsing": "PASS",
+    "scannet_weighted_annotation_repeat": "Native 10-fold repeat after per-source cap",
+    "GT_mask_shape": [
+      132,
+      50000
+    ],
+    "GT_mask_dtype": "int64",
+    "collated_GT_mask_shape": [
+      2,
+      132,
+      50000
+    ],
+    "target_mapping": "annotation target or first generated ScanNet detection target; optional intermediate anchor slots",
+    "native_dataset_constructors": 4,
+    "real_item_calls_on_success": 10,
+    "distinct_selected_annotations_on_success": 6,
+    "train_collations_on_success": 2,
+    "global_current_lifetime": "Safe for current synchronous serial order; no retained dataset in returned metadata",
+    "new_retry_fallback_deletion_logic": false,
+    "no_active_training_operations": "PASS by source inspection",
+    "CUDA_hidden_policy": "PASS by source inspection only",
+    "writes_isolated_check_artifacts": "PASS by source inspection",
+    "claim_scope": "No full length, budget, G/C loss-protection, accuracy, GPU admission or full-goal completion claim"
+  },
+  "limitations": [
+    "Every constructor loads the full split pickle and split superpoints before annotation slicing; overfit does not impose a memory cap.",
+    "At most 128 source annotations may yield 1,408 training rows because ScanNet rows are repeated ten times. Limited lengths are not full lengths.",
+    "GT masks have 132 padded slots; the checker verifies root mask/label consistency and point-axis size rather than every target/anchor mask or multi-GT loss.",
+    "butd_cls uses native scene GT proposals, with native training jitter, plus cls_results predicted classes. GroupFree files are read first and their logits retained.",
+    "Native CPU spaCy/sng_parser preprocessing loads and calls an NLP model; final PV-only counters accurately scope the zero counts.",
+    "Resource observations are snapshots and serialized byte counts, not a measured peak-memory bound.",
+    "Environment-spec and source hash checks are coded gates; this source-only audit did not attest the live remote environment or installed package contents.",
+    "No actual-data runtime result, model-factory validation, REC accuracy, GPU admission or training approval is supplied."
+  ],
+  "syntax_probe": {
+    "kind": "Local AST-only probe",
+    "result": "UNAVAILABLE",
+    "exit_code": 1,
+    "output": "No pyvenv.cfg file",
+    "source_imported": false,
+    "interpretation": "Local python launcher failed before parsing; no syntax validation result claimed."
+  },
+  "final_revision_note": "Executor revised PLAN/checker wording and PV-only counters during review. Final bytes were re-read directly and bound; earlier unqualified counters are not a remaining finding.",
+  "review_timestamp_cst": "2026-10-10T21:09:45.1716612+08:00",
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/PLAN.md": "f338449afdb2292a019cc5248954f43b394a134907a56f8add42aff0c452277c",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/check_native_referit_data_cpu.py": "6fc5f9905e50ce32cd5de17924de9861293fd69f592979b0d5bd7ce014bf9047",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/prepare.py": "2c8bbc0aa0b9df98ee77e8da8250dbaf5e09cec8df9348cefc94ba9fc17ff6bd",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/run_authorized.py": "67bec84577f3d9b8c4113dd2a7ba7e8d5e2125b2c112742a0a00f1b3947931f4",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/inspect_cpu_resources_authorized.py": "5921c7147453a6b56488e69fb67ddb879b374905eecffb9cf3821416508ffc39",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/CHECK_SPEC.json": "1f4c8199b9f105bc5e092e1cb4785e54cd180bd7a768cfaa714b83c7e5b26d89",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/WARM_SOURCE_HASHES.json": "f91d774a215a24992b5cba294e3f661711a07e57cafc5a3074d094f6d69efcde",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/RESOURCE_INTAKE.json": "2f686fec5187bc5af5037d7d1578a8b0ad607c4a421c60ed4ceaa1b6c09c0a18",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/RESOURCE_STDOUT.json": "8b909d8d3af4fa9232d9c969fa359b9a0a910491bbf8626bfa40dc4bd870ae2e",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/RESOURCE_EXIT.json": "302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/src/joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/src/visual_data_handlers.py": "6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/src/scannet_classes.py": "4421d10da4c768faccf4bf1b87a06b3e982489b2cdeb3cc0ca9a70f4edde5d60",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/src/legacy_scene_graph_cache.py": "803534953854bb8ea7a8d1ec9acf7bc407337c3fdf1f01699afca8ebb72dbe47",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/src/structured_annotations.py": "cb2f453bf0ec007264f7951ba191ab6c5176056f5468cf3c66f422ad6506af7a",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/data/model_util_scannet.py": "053bc869498cd324898b47cd191e27f13608fe37972925aab8b91f47c380365c",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/data/scannet_utils.py": "84d2270a5a5e4dcbaa3afaf4290be0c671066acc756afd832b9f85a0eb4c35b0",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/sng_parser/__init__.py": "e7b3fb44d24872c61761550d05a669e54dbd10647f0c425f50af56aa15d19915",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/sng_parser/parser.py": "a459ddc48d669d50f90905d401ed52ea2b10197bf9ee82450893091713c2b93a",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/sng_parser/backends/__init__.py": "3ea95ec57c00fbcdaab3be13b1d1470fa791b89de481e32bef856c033e9a4627",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/sng_parser/backends/spacy_parser.py": "252f40a8136b32e76be1e5d313b4b3441516169ad26a05a7fd39b08593add829",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/sng_parser/database.py": "4f998ec8ed2b39ce88c338b3d1050cd274015785b5eeb41bc909002354534aa9",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/sng_parser/utils.py": "fa1091a72a161cc2b45d5c9993737547a03ccfe9caa35ddd2c00b70fc5f49b1d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/runtime_binding/dataset_source/sng_parser/backends/backend.py": "1cb360f0489b4d141182aa1225e80d517e7c89ad8db6034d4acbe60d624f2666",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/main_utils.py": "ba3f32759d4cf09c2ab0d277fe2c92dcccac67398f01f6e2533cdc8e5f93e6ad",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/models/losses.py": "bebf992cdd579c8389a326eb578722417bf1aa207268e02919c74e461bf570d3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/models/pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/native_model_initialization.py": "2db0c25f9a178df258e060d52f6399e0842f403e4b3bff3c2e46351da1590c14",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/pvground_semantic_assignment.py": "9ed9d5b757457d088142d9bf313b57cb26221e192f596302b3db2708d869473b",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/selected_query_mask_objective.py": "229c4c02794abfec8a14cf45ac5117439d6976e7e5e73d7b9c449962509608a3",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/source/train_dist_mod.py": "8b22b60eaf444edace0fc5bdd1a0907d6c358b0ab55c5d6e3dd3c0e6b9db7812",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_author_core_20261010/cpu_execution/AUTHOR_CORE_CPU_RESULT.json": "af6bd6632437239c730e39b292b13b7b0145ec89d6ff99309bb726056ab56d6f",
+    "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/NATIVE_SOURCE_PORT.json": "8f9020f8be4864e31e602e2044fc8e04d49297b163f5037dbc019964b47a140b",
+    "C:/Users/gb/.codex/skills/experiment-bridge/SKILL.md": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+    "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:/Users/gb/.codex/skills/shared-references/review-tracing.md": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+    "C:/Users/gb/.codex/skills/shared-references/integration-contract.md": "5d393c31b36e98ae99c17ab9cf5879853c0cb595bbd9f4973ffe7bcd6549f4e7",
+    "C:/Users/gb/.codex/skills/shared-references/output-versioning.md": "de8e7ac23069de6c5d0c482d4cef117dd5a543e00b57e2dc6c62560a457290c5",
+    "C:/Users/gb/.codex/skills/shared-references/output-manifest.md": "e767083e0ef97a7adf7a4e8a574090067a59c0655d5aca422a3747cd32b6afde",
+    "C:/Users/gb/.codex/skills/shared-references/output-language.md": "0f1447579bd7a2195fd4a074be70ae6345b5c368f1a70d327e89748bf5a378f9"
+  },
+  "audited_input_count": 48,
+  "input_roles": [
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    },
+    {
+      "input_path": null,
+      "role": null
+    }
+  ],
+  "deterministic_checks": {
+    "warm_source_hash_count": 116,
+    "reconstructed_hash_count": 116,
+    "warm_manifest_difference_paths": [],
+    "warm_manifest_extra_paths": [],
+    "all_14_author_overlay_hashes_match": true,
+    "author_core_receipt_raw_sha_matches": true,
+    "author_flag_dictionaries_match": {
+      "nr3d": true,
+      "sr3d": true
+    },
+    "env_spec_sha_matches_original_port": true,
+    "raw_resource_observations_match_intake": true,
+    "resource_transport_exit_code": 0,
+    "resource_admitted_by_executor": true,
+    "trace_helper_resolution": "No helper at ARIS_REPO/tools, project/tools, or installed skill path; project install manifest absent. Trace files written directly under authorized review output."
+  },
+  "report_path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/source_review/EXPERIMENT_CODE_REVIEW.md",
+  "private_trace_path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/source_review/.aris/traces/experiment-bridge/2026-10-10_run01",
+  "private_snapshot_manifest": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/referit_data_interface_cpu_20261010/source_review/.aris/traces/experiment-bridge/2026-10-10_run01/RAW_INPUT_SNAPSHOTS.json"
+}

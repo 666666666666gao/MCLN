@@ -1,0 +1,925 @@
+{
+  "audit_skill": "experiment-audit",
+  "execution_scope": "ACTUAL_NATIVE_FACE_PREFLIGHT_PAIR",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "engineering_verdict": "PASS",
+  "blocking_findings": [],
+  "reason_code": "bounded_engineering_evidence_with_scope_limits",
+  "summary": "No blocker to the stated actual initialization/gradient/save-restore engineering claims. Both real runs completed exit 0 with identical recorded collated inputs. WARN preserves remote-payload, same-process and non-accuracy limits.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_identity": "UNATTESTED",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning_effort": "UNATTESTED",
+  "requested_reviewer_model_by_policy": "gpt-6-astra",
+  "requested_reasoning_effort_by_policy": "max",
+  "reviewer_family": "openai",
+  "agent_id": "/root/pvg_face_v2_actual_pair_integrity_20261011",
+  "verdict_id": "pvg_face_v2_actual_pair_integrity_20261011",
+  "generated_at": "2026-10-11T12:11:04.464164+08:00",
+  "date": "2026-10-11",
+  "input_manifest": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_pair_review\\REVIEW_INPUTS.json",
+  "input_manifest_sha256": "1584191295e37ae90e187e984018691fbb59dbda9f90b263a08da3ee95fcd1c3",
+  "manifest_input_count": 38,
+  "manifest_hash_match_count": 38,
+  "supplemental_source_count": 6,
+  "experiment_evidence_input_count_including_manifest": 45,
+  "context_only_input_count": 9,
+  "generated_check_input_count": 1,
+  "audited_input_count": 55,
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\ENGINEERING_without_additional_source_INTAKE.json": "cb4b6d91a2a3e020deb6e08e88c17fb838353b3e28da8ff2dcf57217b58a6ece",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\witness\\NATIVE_M0_RECEIPT.json": "418c708d50e8bf98bafea279a3247364437bc8b40da0abee41f44d4b59a9ac2c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\witness\\INITIAL_OUTPUT_COMPARISON.json": "6cf9c16d08757ca36407ed31813b7b084829748e1e44ed04f4cfd6118ca25d16",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\witness\\NATIVE_M0_TRAINING_DIAGNOSTIC.json": "998cdca09591e30707cef917707edfae797674277cb24b8d997f283fa01e7eb3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\preflight.log": "83c94f9493a9af065723e68f2167867c5480a383419d4ae894be953c11d0e3d3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\preflight.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\admitted_protocol.json": "c7f62673275b608088cdc0eddae84221eec2da1221cf7a23b1111205b13c30af",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\admission.json": "a78c16fdbb24fd2916ed8a22a05f6d8ae5e36cd44d8b986fada1f77122e6915f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\engineering_status.json": "3ed6ddc6e384c5a21c0410f44288318502574f4d9bc275e23906b43e65ea3955",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\without_additional_source.json": "c90c5b2231d62155f7e49f839f51cdffe1e76e0314eac8d66bf468ec1d9f2aa4",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\without_additional_source_init.json": "f67f1ee9e167310cdc6229895f77a9c1fa1bfff0d95a9a1803cac8cdb616fb20",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\ENGINEERING_source_conditioned_INTAKE.json": "574e7ea20ef4c272c38b7926ad2238dd19174bd8efabe2b72a013976aaf9460b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\witness\\NATIVE_M0_RECEIPT.json": "128141ba8b6065bcc3897d69e9d0e54a309d01ee30353a0b612edd67b534f4f9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\witness\\INITIAL_OUTPUT_COMPARISON.json": "6cf9c16d08757ca36407ed31813b7b084829748e1e44ed04f4cfd6118ca25d16",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\witness\\NATIVE_M0_TRAINING_DIAGNOSTIC.json": "354f038eb3bdf2ba65e9e13e102c918a557bb95c10be60dbf65f442aa04a2886",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\preflight.log": "666a3d0611c89f844c541bb5f6bc76a8388837f6000c9db8de8067acf085ef62",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\preflight.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\admitted_protocol.json": "e4066a0cf250144e72c3a48782d2d9a238c929d096026af9db0ef03fda3fdad6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\admission.json": "eee5b40a2c42aa6f22639d7b7ab05c715dffcccadf6518144838e69a42a835d5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\engineering_status.json": "da5e3703bb5888695664d12fbcdce634483027862b453d173786b43a80782439",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source_conditioned.json": "d9b1393ebf0421c42cbe0d0ddcdf332f71470cf92d5b731aed2981ff5dcae1dd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source_conditioned_init.json": "5771d3f69360809338987c826255c9090be1f3a99a5c865b0431b1455d50c8a9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\ACTUAL_FACE_PAIR_ANALYSIS.json": "c80a1a053f236501998e055f1c188d61f369872f3bfab40d774fe134a8def874",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\SOURCE_HASHES.json": "de21e8e562299258d463c6c8996582f7ceabacd568dbf00a0f105cff2732cb14",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\SOURCE_STAGE_RECEIPT.json": "37a2fff7a1322b8c6327b7dccf5a2b532a8949965ed835c49251ceed41697ec3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py": "08b01fc7c17513d79fb9754bd952889bc8902704a3128a7991933e4b47bc2bad",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\face_engineering_controller.py": "7fff442e74a128aef7df7aefe44b2e813be69cc300a1556db6b951c9bbcb5e36",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\stage_source_authorized.py": "45cc306695cdf9029f3dcaf140e276717bbbeab2826c2d1165701d196749b15e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\launch_engineering_authorized.py": "b10eae163ea1ba0d0cf8f623f2ca421cc6a7d70dcc46322b74b084cb5940e34a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\observe_engineering_authorized.py": "b9636d615ec00377c0f68a35005cb51583f3d2c926ff6c088d922d13920b8c3b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source_review\\SOURCE_REVIEW.json": "4965b9ff18c61dd25d557bfd341ac13e440d6fd66b0b7c647f3592cb84b11450",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\source_review\\SOURCE_REVIEW.json": "6ad13c8ff19ac60f3b146971dd4f62f120f5efed4a9f28e527fc74d8de2671f7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\normal_joint_controller.py": "14d6b5ecbac82718881238037fca7faee3a70c25fe5a2e65702c5e0753ee9f13",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\launch_normal_authorized.py": "f4f7b2d1f62ca0d5774e0892299ca9df7d17b03470878ac7f2b71fe0e986a74c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\face_residual_span_mixer.py": "f62b0d2fa026cdbd720028b29f7188a03c2f43c591d57bd2e2856a387dbf9a19",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py": "5b66b8ff538ebde1d776f81503aa14e4072f3bbc6fcc2ff3cc70553602b76274",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\native_face_model_initialization.py": "ea504de1ca747fc051e55e19748f520e56f87c58745815bb1b92438411b7b2c2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py": "bf2cbb75f4a6036e374718b6746b3654978d17167cd540bfb27d146d2acecb6f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_pair_review\\REVIEW_INPUTS.json": "1584191295e37ae90e187e984018691fbb59dbda9f90b263a08da3ee95fcd1c3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "C:\\Users\\gb\\SOUL.md": "95c467f710183b2c0397c29ec4ef886bb723671a39ee767dc4d59165f723b68f",
+    "C:\\Users\\gb\\USER.md": "561c286b119706b8c747da21cedb54e7679054b9addf925a60c62802db57c1b4",
+    "C:\\Users\\gb\\memory\\2026-10-11.md": "2b2d97b51c5e32d4dbe6cd14135d95b4b2fdc8883f18c7cdbb0b89121d0f337e",
+    "C:\\Users\\gb\\memory\\2026-10-10.md": "52f9291345ba990ba644be938cd8a70e17c01e923b23f1028107e995a6287aa8",
+    "C:\\Users\\gb\\.codex\\skills\\experiment-audit\\SKILL.md": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\reviewer-independence.md": "1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\experiment-integrity.md": "22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_pair_review\\DETERMINISTIC_CHECKS.json": "9d3e655849d67f6fc68a7f14b2b3708e77bfa076dcdda1ba566d9e773a7e9726"
+  },
+  "context_only_input_hashes": {
+    "C:\\Users\\gb\\SOUL.md": "95c467f710183b2c0397c29ec4ef886bb723671a39ee767dc4d59165f723b68f",
+    "C:\\Users\\gb\\USER.md": "561c286b119706b8c747da21cedb54e7679054b9addf925a60c62802db57c1b4",
+    "C:\\Users\\gb\\memory\\2026-10-11.md": "2b2d97b51c5e32d4dbe6cd14135d95b4b2fdc8883f18c7cdbb0b89121d0f337e",
+    "C:\\Users\\gb\\memory\\2026-10-10.md": "52f9291345ba990ba644be938cd8a70e17c01e923b23f1028107e995a6287aa8",
+    "C:\\Users\\gb\\.codex\\skills\\experiment-audit\\SKILL.md": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\reviewer-independence.md": "1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\experiment-integrity.md": "22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395"
+  },
+  "context_files_are_experimental_evidence": false,
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "PASS",
+      "details": "Real Joint3DDataset training batches supply center_label, size_gts, gt_masks and language maps after model.forward. Prediction-only mask references are model geometry, not GT. Native corresponding_loss terms also use predicted query masks as auxiliary consistency targets; they are training losses, not reported accuracy. Raw dataset contents and original batch tensors were not independently reloaded by this reviewer.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py",
+          "line_start": 55,
+          "line_end": 97
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py",
+          "line_start": 132,
+          "line_end": 175
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py",
+          "line_start": 443,
+          "line_end": 458
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 856,
+          "line_end": 917
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 579,
+          "line_end": 627
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py",
+          "line_start": 5,
+          "line_end": 43
+        }
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "Neither preflight computes formal performance. Raw per-step losses agree with cumulative loss averages in native logs. saved_retained_metrics and formal_accuracy are null. The normal evaluator source uses dataset GT hit counts, not normalization by the maximum of model predictions; the normal entry requires both denominators 9508. This evaluator was not executed in these preflights.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 285,
+          "line_end": 350
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py",
+          "line_start": 473,
+          "line_end": 501
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py",
+          "line_start": 237,
+          "line_end": 257
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 289,
+          "line_end": 303
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 535,
+          "line_end": 553
+        }
+      ]
+    },
+    "C_result_existence": {
+      "status": "PASS",
+      "details": "All 38 manifest input digests match. Each arm has nine directly checked intake file bindings, an exit-0 status/log, receipt, matching training diagnostic and initial comparison. Remote checkpoint inventory hashes and lengths equal their receipts, but model bytes were not independently downloaded or locally loaded. Original protocol timestamps/runtime-false fields are source-preparation snapshots; actual controller status and intake establish completion.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_pair_review\\REVIEW_INPUTS.json",
+          "line_start": 1
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\ENGINEERING_without_additional_source_INTAKE.json",
+          "line_start": 94,
+          "line_end": 171
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\ENGINEERING_source_conditioned_INTAKE.json",
+          "line_start": 94,
+          "line_end": 171
+        }
+      ]
+    },
+    "D_dead_code_and_actual_calls": {
+      "status": "WARN",
+      "details": "The helper calls native train_one_epoch; its observation wrapper calls and returns the original criterion loss. The native method performs forward, GT attachment, backward, clipping, AdamW and scheduler steps, supported by logs and changed parameters. No evaluate_one_epoch call occurs in the helper. The dormant DIoU function has only commented call sites in the inspected loss; it has no attributed result. Future evaluator source presence is not credited as an executed result.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 203,
+          "line_end": 249
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py",
+          "line_start": 428,
+          "line_end": 470
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\preflight.log",
+          "line_start": 13,
+          "line_end": 22
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\preflight.log",
+          "line_start": 13,
+          "line_end": 22
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 103,
+          "line_end": 133
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 546,
+          "line_end": 557
+        }
+      ]
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "Two configurations at seed 2027, same two B8 collated inputs, 16 row presentations and two optimizer updates per arm. Constructed train/validation lengths are 36665/9508; 9508 is not a completed evaluation. Unique scenes and unique annotation count are not established by stored hashes alone. Evidence supports initialization, gradient reachability, parameter changes and same-process save/restore. It does not establish accuracy, new best, module efficacy, complete training, complete source removal, cold-process or next-batch continuity.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 65,
+          "line_end": 98
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 285,
+          "line_end": 350
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\face_residual_span_mixer.py",
+          "line_start": 35,
+          "line_end": 41
+        }
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "WARN",
+      "details": "Classification: real_gt supervised training engineering preflight, with native auxiliary prediction-consistency losses. Formal accuracy evaluation was not executed. No model-generated reference is presented as benchmark accuracy.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 856,
+          "line_end": 886
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 285,
+          "line_end": 350
+        }
+      ]
+    }
+  },
+  "engineering_checks": [
+    {
+      "id": "E1",
+      "status": "PASS",
+      "details": "Both actual input_batch_sha256 lists are equal. Original protocols differ only in native_init_spec and face_residual_mode; initializer specs differ only in face_residual_mode. Admitted protocol copies change only status and serial_gpu_preflight_admitted. Equality covers recorded collated inputs, not bitwise cross-process trajectories.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 65,
+          "line_end": 98
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\witness\\NATIVE_M0_RECEIPT.json",
+          "line_start": 16,
+          "line_end": 19
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\witness\\NATIVE_M0_RECEIPT.json",
+          "line_start": 16,
+          "line_end": 19
+        }
+      ]
+    },
+    {
+      "id": "E2",
+      "status": "PASS",
+      "details": "Strict official/G/support/span initialization precedes Face wrapping. The executed helper asserts that the 1295 retained E0 states match exactly after explicit axis-prior prefix remapping; six new Face state entries yield 1301. Face adds 23425 parameters and complete span has 53218. Both admissions record retained E0 SHA ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4. That ancestor had C enabled; this C-off configuration is not never-C-trained.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\native_model_initialization.py",
+          "line_start": 18,
+          "line_end": 74
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\native_face_model_initialization.py",
+          "line_start": 9,
+          "line_end": 29
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 107,
+          "line_end": 130
+        }
+      ]
+    },
+    {
+      "id": "E3",
+      "status": "PASS",
+      "details": "Each arm records bitwise initial center/size equality against its own retained axis formula, zero Face movement, zero differing size elements, 46 sizes below 1e-6 and minimum 9.99999883788405e-7. Both native/reference inputs are floored at 1e-6 and gates are bounded. The minimum is exactly one binary32 ULP below binary32(1e-6)=9.999999974752427e-7, supporting float32 convex-mix rounding. This does not compare full output tensors between processes or independently run a baseline forward.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 163,
+          "line_end": 187
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\face_residual_span_mixer.py",
+          "line_start": 51,
+          "line_end": 67
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\extremal_span_mixer.py",
+          "line_start": 98,
+          "line_end": 105
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py",
+          "line_start": 35,
+          "line_end": 43
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\witness\\INITIAL_OUTPUT_COMPARISON.json",
+          "line_start": 1,
+          "line_end": 10
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\witness\\INITIAL_OUTPUT_COMPARISON.json",
+          "line_start": 1,
+          "line_end": 10
+        }
+      ]
+    },
+    {
+      "id": "E4",
+      "status": "PASS",
+      "details": "Native Text-mask matching uses class/bbox/GIoU/mask costs 1/0/2/0.0002. Native query-mask and corresponding/fused-mask losses remain. G correction is enabled and records 193 then 293 reassigned queries. Only C extra selected-query-mask supervision is off; helper asserts the C extra-loss keys are absent.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py",
+          "line_start": 277,
+          "line_end": 289
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 267,
+          "line_end": 390
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 908,
+          "line_end": 970
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 206,
+          "line_end": 232
+        }
+      ]
+    },
+    {
+      "id": "E5",
+      "status": "PASS",
+      "details": "Both Face output steps have positive pre-clipping gradient norms. With the zero output layer, first-step Face internal gradient is zero; second-step internal gradient is positive and both Face groups change parameters. Core/backbone/support have positive gradients each step and retained span groups also have gradients and changes. The combined original_core_and_G_reader gradient is not isolated G causal evidence.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 137,
+          "line_end": 153
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 196,
+          "line_end": 202
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 256,
+          "line_end": 282
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_without_additional_source\\witness\\NATIVE_M0_RECEIPT.json",
+          "line_start": 23,
+          "line_end": 78
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_engineering_source_conditioned\\witness\\NATIVE_M0_RECEIPT.json",
+          "line_start": 23,
+          "line_end": 78
+        }
+      ]
+    },
+    {
+      "id": "E6",
+      "status": "PASS",
+      "details": "Both saves contain 1301 model states and 826 Adam states, all Adam steps equal 2. Rebuilt model/optimizer/scheduler are compared for exact model values, optimizer keys/groups/values, scheduler and Python/NumPy/Torch/CUDA global RNG. This occurs within one process; engineering epoch 0 restores start_epoch 1. DataLoader generator/worker/sampler progress, next batch and cold-process trajectory recovery are not tested.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 285,
+          "line_end": 329
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py",
+          "line_start": 133,
+          "line_end": 164
+        }
+      ]
+    },
+    {
+      "id": "E7",
+      "status": "PASS",
+      "details": "All 118 staging hash entries equal SOURCE_HASHES and both protocol catalogs; paths match the isolated PV root. Six locally read original source bodies match those pins. Nine recorded PV module origins map into the catalog; pcdet.config is recorded under the established external runtime. The controller rehashes every source before execution and the observer rehashes them after closure. This review does not freshly inspect all remote source bodies or the external runtime payload.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\SOURCE_STAGE_RECEIPT.json",
+          "line_start": 1
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\face_engineering_controller.py",
+          "line_start": 19,
+          "line_end": 35
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\observe_engineering_authorized.py",
+          "line_start": 49,
+          "line_end": 63
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\native_face_preflight.py",
+          "line_start": 348,
+          "line_end": 349
+        }
+      ]
+    },
+    {
+      "id": "E8",
+      "status": "PASS",
+      "details": "without_additional_source zeros only added Face residual tokens and source_fraction. The retained source-aware axis prior, prior gates, geometry, query and parameter capacity are common. This is control of additional direct Face source evidence, not a source-free model or complete source ablation.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\face_residual_span_mixer.py",
+          "line_start": 35,
+          "line_end": 49
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\face_residual_span_mixer.py",
+          "line_start": 69,
+          "line_end": 77
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\extremal_span_mixer.py",
+          "line_start": 61,
+          "line_end": 105
+        }
+      ]
+    },
+    {
+      "id": "E9",
+      "status": "PASS",
+      "details": "The existing normal launcher requires this exact ACTUAL_NATIVE_FACE_PREFLIGHT_PAIR audit, bound intakes/receipts and its SOURCE_ONLY review. Its normal child forbids checkpoint_path and loads fresh native initializer weights, not M0 model/Adam. This audit satisfies only the engineering-audit prerequisite; live source/environment/ancestor/process/GPU/disk gates and a separate launch action remain necessary.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\launch_normal_authorized.py",
+          "line_start": 20,
+          "line_end": 60
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\launch_normal_authorized.py",
+          "line_start": 65,
+          "line_end": 120
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\normal_joint_controller.py",
+          "line_start": 34,
+          "line_end": 38
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py",
+          "line_start": 128,
+          "line_end": 129
+        }
+      ]
+    }
+  ],
+  "non_blocking_findings": [
+    {
+      "id": "W1",
+      "category": "REMOTE_PAYLOAD",
+      "finding": "Engineering checkpoint bytes are receipt-bound remote artifacts, not independent local payload audits. Each is 841963854 bytes and unscored. Cleanup is not verified or performed."
+    },
+    {
+      "id": "W2",
+      "category": "RESTORE_SCOPE",
+      "finding": "Same-process object reconstruction and global state equality only; not cold-process, DataLoader/worker state restoration, next-batch or continuous replay."
+    },
+    {
+      "id": "W3",
+      "category": "CLAIM_SCOPE",
+      "finding": "No formal 9508 accuracy, new best, three effective modules, normal three-epoch completion or Nr3D/Sr3D result."
+    },
+    {
+      "id": "W4",
+      "category": "CONTROL_SCOPE",
+      "finding": "Both arms retain source through the old axis prior/common network. Only added Face direct evidence is suppressed; C-off also retains C-trained ancestor states."
+    },
+    {
+      "id": "W5",
+      "category": "GRADIENT_ATTRIBUTION",
+      "finding": "Pre-clipping group gradients and parameter changes do not isolate every G parameter or establish efficacy."
+    },
+    {
+      "id": "W6",
+      "category": "REVIEW_ASSURANCE",
+      "finding": "Same-family/provisional; actual reviewer model/effort UNATTESTED. Fresh invocation was not blinded: executor summaries and mandatory session context were supplied. Primary experiment artifacts were independently inspected and hashed."
+    },
+    {
+      "id": "W7",
+      "category": "PAIR_EQUALITY",
+      "finding": "Recorded collated input identity and per-arm prior-formula equality do not prove bitwise trajectories. First-step losses differ by about 9.54e-7."
+    }
+  ],
+  "validation": {
+    "manifest_inputs": 38,
+    "manifest_mismatches": [],
+    "stage_source_count": 118,
+    "stage_hash_catalog_exact": true,
+    "stage_paths_exact": true,
+    "stage_assets_match": {
+      "native_face_preflight.py": true,
+      "face_engineering_controller.py": true,
+      "source_conditioned.json": true,
+      "without_additional_source.json": true,
+      "source_conditioned_init.json": true,
+      "without_additional_source_init.json": true
+    },
+    "stage_review_binding": true,
+    "arms": {
+      "without_additional_source": {
+        "directly_bound_intake_files": [
+          {
+            "name": "admission.json",
+            "match": true
+          },
+          {
+            "name": "admitted_protocol.json",
+            "match": true
+          },
+          {
+            "name": "engineering_status.json",
+            "match": true
+          },
+          {
+            "name": "face_engineering_controller.py",
+            "match": true
+          },
+          {
+            "name": "preflight.exit",
+            "match": true
+          },
+          {
+            "name": "preflight.log",
+            "match": true
+          },
+          {
+            "name": "witness/INITIAL_OUTPUT_COMPARISON.json",
+            "match": true
+          },
+          {
+            "name": "witness/NATIVE_M0_RECEIPT.json",
+            "match": true
+          },
+          {
+            "name": "witness/NATIVE_M0_TRAINING_DIAGNOSTIC.json",
+            "match": true
+          }
+        ],
+        "terminal_status_matches_intake": true,
+        "exit_zero": true,
+        "controller_closed": true,
+        "duration_wall_seconds": 628.837161,
+        "duration_receipt_seconds": 628.8369479253888,
+        "duration_agreement_ms": 0.2130746112243287,
+        "protocol_admission_hash_matches": true,
+        "helper_admission_hash_matches": true,
+        "source_review_admission_hash_matches": true,
+        "source_catalog_matches": true,
+        "admitted_protocol_changed_fields": [
+          "status",
+          "serial_gpu_preflight_admitted"
+        ],
+        "diagnostic_receipt_equal_fields": {
+          "gradient_norms": true,
+          "updates": true,
+          "losses": true,
+          "source_mode": true,
+          "face_residual_mode": true,
+          "gradient_acceptance": true,
+          "actual_updates": true,
+          "formal_accuracy": true
+        },
+        "comparison": {
+          "status": "ACTUAL_INITIAL_OUTPUT_COMPARISON",
+          "expected_submicrometer_size_elements": 46,
+          "expected_minimum_size": 9.99999883788405e-07,
+          "actual_minimum_size": 9.99999883788405e-07,
+          "differing_size_elements": 0,
+          "maximum_absolute_size_difference": 0.0,
+          "center_bitwise_equal": true,
+          "size_bitwise_equal": true
+        },
+        "checkpoint_matches_remote_inventory": true,
+        "core_backbone_support_gradient_each_step": true,
+        "face_output_gradient_both_steps": true,
+        "face_internal_second_positive": true,
+        "all_group_parameters_changed": true,
+        "train_loss_logs_match_rounded": true,
+        "actual_imports": {
+          "train_dist_mod": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/train_dist_mod.py",
+          "main_utils": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/main_utils.py",
+          "native_model_initialization": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/native_model_initialization.py",
+          "native_face_model_initialization": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/native_face_model_initialization.py",
+          "face_residual_span_mixer": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/face_residual_span_mixer.py",
+          "models.pv_ground": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/models/pv_ground.py",
+          "models.losses": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/models/losses.py",
+          "utils": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/utils/__init__.py",
+          "utils.scatter_util": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/utils/scatter_util.py",
+          "pcdet.config": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/OpenPCDet/pcdet/config.py"
+        }
+      },
+      "source_conditioned": {
+        "directly_bound_intake_files": [
+          {
+            "name": "admission.json",
+            "match": true
+          },
+          {
+            "name": "admitted_protocol.json",
+            "match": true
+          },
+          {
+            "name": "engineering_status.json",
+            "match": true
+          },
+          {
+            "name": "face_engineering_controller.py",
+            "match": true
+          },
+          {
+            "name": "preflight.exit",
+            "match": true
+          },
+          {
+            "name": "preflight.log",
+            "match": true
+          },
+          {
+            "name": "witness/INITIAL_OUTPUT_COMPARISON.json",
+            "match": true
+          },
+          {
+            "name": "witness/NATIVE_M0_RECEIPT.json",
+            "match": true
+          },
+          {
+            "name": "witness/NATIVE_M0_TRAINING_DIAGNOSTIC.json",
+            "match": true
+          }
+        ],
+        "terminal_status_matches_intake": true,
+        "exit_zero": true,
+        "controller_closed": true,
+        "duration_wall_seconds": 618.470092,
+        "duration_receipt_seconds": 618.4698750153184,
+        "duration_agreement_ms": 0.21698468162867357,
+        "protocol_admission_hash_matches": true,
+        "helper_admission_hash_matches": true,
+        "source_review_admission_hash_matches": true,
+        "source_catalog_matches": true,
+        "admitted_protocol_changed_fields": [
+          "status",
+          "serial_gpu_preflight_admitted"
+        ],
+        "diagnostic_receipt_equal_fields": {
+          "gradient_norms": true,
+          "updates": true,
+          "losses": true,
+          "source_mode": true,
+          "face_residual_mode": true,
+          "gradient_acceptance": true,
+          "actual_updates": true,
+          "formal_accuracy": true
+        },
+        "comparison": {
+          "status": "ACTUAL_INITIAL_OUTPUT_COMPARISON",
+          "expected_submicrometer_size_elements": 46,
+          "expected_minimum_size": 9.99999883788405e-07,
+          "actual_minimum_size": 9.99999883788405e-07,
+          "differing_size_elements": 0,
+          "maximum_absolute_size_difference": 0.0,
+          "center_bitwise_equal": true,
+          "size_bitwise_equal": true
+        },
+        "checkpoint_matches_remote_inventory": true,
+        "core_backbone_support_gradient_each_step": true,
+        "face_output_gradient_both_steps": true,
+        "face_internal_second_positive": true,
+        "all_group_parameters_changed": true,
+        "train_loss_logs_match_rounded": true,
+        "actual_imports": {
+          "train_dist_mod": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/train_dist_mod.py",
+          "main_utils": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/main_utils.py",
+          "native_model_initialization": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/native_model_initialization.py",
+          "native_face_model_initialization": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/native_face_model_initialization.py",
+          "face_residual_span_mixer": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/face_residual_span_mixer.py",
+          "models.pv_ground": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/models/pv_ground.py",
+          "models.losses": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/models/losses.py",
+          "utils": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/utils/__init__.py",
+          "utils.scatter_util": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/utils/scatter_util.py",
+          "pcdet.config": "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/OpenPCDet/pcdet/config.py"
+        }
+      }
+    },
+    "same_batch_fingerprints": true,
+    "pair_protocol_differing_fields": [
+      "native_init_spec",
+      "face_residual_mode"
+    ],
+    "pair_init_differing_fields": [
+      "face_residual_mode"
+    ],
+    "initial_comparison_files_identical": true,
+    "float32_floor": 9.999999974752427e-07,
+    "reported_minimum_equals_one_float32_ulp_below_floor": true,
+    "supplemental_inputs": {
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\query_mask_assignment_gpu_20261011\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8"
+    },
+    "python_source_ast_count": 17,
+    "embedded_remote_ast_count": 4,
+    "normal_launcher_source_review_hash_bound": true,
+    "embedded_remote_ast_sources": [
+      "stage_source_authorized.py",
+      "launch_engineering_authorized.py",
+      "observe_engineering_authorized.py",
+      "normal_training/launch_normal_authorized.py"
+    ],
+    "additional_cross_checks": {
+      "without_additional_source": {
+        "mode_exact": true,
+        "updates_rows_dataset_counts": true,
+        "exact_initialization_and_recovery_flags": true,
+        "state_counts": true,
+        "no_formal_result": true,
+        "remote_initial_hash": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4",
+        "environment_pin_exact": true,
+        "first_face_movement_zero": true,
+        "second_face_movement_positive": true,
+        "native_import_catalog_paths": {
+          "train_dist_mod": true,
+          "main_utils": true,
+          "native_model_initialization": true,
+          "native_face_model_initialization": true,
+          "face_residual_span_mixer": true,
+          "models.pv_ground": true,
+          "models.losses": true,
+          "utils": true,
+          "utils.scatter_util": true
+        },
+        "pair_summary_checkpoint_exact": true,
+        "pair_summary_gradient_exact": true,
+        "pair_summary_initial_comparison_exact": true
+      },
+      "source_conditioned": {
+        "mode_exact": true,
+        "updates_rows_dataset_counts": true,
+        "exact_initialization_and_recovery_flags": true,
+        "state_counts": true,
+        "no_formal_result": true,
+        "remote_initial_hash": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4",
+        "environment_pin_exact": true,
+        "first_face_movement_zero": true,
+        "second_face_movement_positive": true,
+        "native_import_catalog_paths": {
+          "train_dist_mod": true,
+          "main_utils": true,
+          "native_model_initialization": true,
+          "native_face_model_initialization": true,
+          "face_residual_span_mixer": true,
+          "models.pv_ground": true,
+          "models.losses": true,
+          "utils": true,
+          "utils.scatter_util": true
+        },
+        "pair_summary_checkpoint_exact": true,
+        "pair_summary_gradient_exact": true,
+        "pair_summary_initial_comparison_exact": true
+      }
+    }
+  },
+  "actual_runs": {
+    "without_additional_source": {
+      "started_cst": "2026-10-11T11:19:57.699848+08:00",
+      "completed_cst": "2026-10-11T11:30:26.537009+08:00",
+      "elapsed_seconds": 628.8369479253888,
+      "exit_code": 0,
+      "actual_input_rows": 16,
+      "actual_updates": 2,
+      "input_batch_sha256": [
+        "8e775089188d7c475658a15b344cace39b6b2c3c13b8326b3b91f97382ce0d30",
+        "293d97ae2ad630e3a8293a188a84459fcfcc448a4a8b484c258735752a4eabf7"
+      ],
+      "checkpoint_bytes": 841963854,
+      "checkpoint_sha256": "a657f014073b6fb6fc6f3ff094069e4438abee8e02f33c408848ea1fe9044a5e",
+      "full_state_tensors": 1301,
+      "restored_optimizer_states": 826,
+      "face_output_gradients": [
+        0.3264526128768921,
+        0.06731867045164108
+      ],
+      "second_face_internal_gradient": 2.0552264686557464e-05,
+      "face_internal_changed_elements": 20176,
+      "face_output_changed_elements": 33
+    },
+    "source_conditioned": {
+      "started_cst": "2026-10-11T11:32:50.453065+08:00",
+      "completed_cst": "2026-10-11T11:43:08.923157+08:00",
+      "elapsed_seconds": 618.4698750153184,
+      "exit_code": 0,
+      "actual_input_rows": 16,
+      "actual_updates": 2,
+      "input_batch_sha256": [
+        "8e775089188d7c475658a15b344cace39b6b2c3c13b8326b3b91f97382ce0d30",
+        "293d97ae2ad630e3a8293a188a84459fcfcc448a4a8b484c258735752a4eabf7"
+      ],
+      "checkpoint_bytes": 841963854,
+      "checkpoint_sha256": "26cf4b0885f5aee3ba23fc07405c1e75739f5f30bb336b754d839c862c8e31f1",
+      "full_state_tensors": 1301,
+      "restored_optimizer_states": 826,
+      "face_output_gradients": [
+        0.3265463411808014,
+        0.06723404675722122
+      ],
+      "second_face_internal_gradient": 2.06050190172391e-05,
+      "face_internal_changed_elements": 21694,
+      "face_output_changed_elements": 33
+    }
+  },
+  "claims": [
+    {
+      "claim": "Two real native B8 inputs and two optimizer updates per mode",
+      "impact": "supported"
+    },
+    {
+      "claim": "1295 retained initial states, prior-formula equality, Face gradients and recorded full save/restore",
+      "impact": "supported_with_receipt_and_same_process_qualifiers"
+    },
+    {
+      "claim": "9508 accuracy gain/new best/three effective modules/Nr3D or Sr3D result",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "Cold-process or next-batch exact continuation",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "Complete source ablation or never-C initialization",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "Remote engineering checkpoint cleanup complete",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "Existing normal launcher engineering-audit prerequisite",
+      "impact": "satisfied_only; not full admission or launch"
+    }
+  ],
+  "evaluation_type": "real_gt_training_engineering_with_native_auxiliary_prediction_consistency",
+  "formal_accuracy_evaluation_executed": false,
+  "actual_accuracy_result": null,
+  "normal_launcher_audit_prerequisite": "SATISFIED_ONLY_FOR_BOUND_EXISTING_LAUNCHER",
+  "normal_launcher_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\launch_normal_authorized.py",
+  "normal_launcher_sha256": "f4f7b2d1f62ca0d5774e0892299ca9df7d17b03470878ac7f2b71fe0e986a74c",
+  "full_training_admitted": false,
+  "full_goal_complete": false,
+  "checkpoint_cleanup_verified": false,
+  "checkpoint_model_bytes_independently_audited_locally": false,
+  "reviewer_actions": {
+    "ssh_calls": 0,
+    "gpu_queries": 0,
+    "torch_imports": 0,
+    "dataset_loads": 0,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "training_launches": 0,
+    "source_modifications": 0,
+    "remote_deletions": 0,
+    "review_output_writes_only": true
+  },
+  "action_items": [
+    "Retain all seven scope/assurance qualifiers. No new GPU recomputation is required for these bounded engineering claims.",
+    "Use the unchanged reviewed normal launcher for any separately authorized next admission; its live gates remain required.",
+    "Claim exact checkpoint cleanup only after a separately evidenced action.",
+    "Obtain complete formal runs, cold recovery and an actual-result audit before accuracy or efficacy claims."
+  ],
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\actual_pair_review\\.aris\\traces\\experiment-audit\\2026-10-11_actual_pair",
+  "markdown_report": "EXPERIMENT_AUDIT.md",
+  "markdown_sha256": "2fd74bebc5da0beb0eef1fd7e51a5b99ace7ce73430697c3a5bdff258236d729"
+}

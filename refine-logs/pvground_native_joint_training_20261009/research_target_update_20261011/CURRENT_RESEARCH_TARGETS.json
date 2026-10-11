@@ -1,0 +1,85 @@
+{
+  "updated_cst": "2026-10-11T09:04:28.793706+08:00",
+  "status": "ACTIVE_UNMET",
+  "baseline": "PV-Ground",
+  "user_request": "继续优化我们的创新点，然后看看能不能在Scanrefer上把0.25和0.5分别推进到60.0以及52.0，根据找到的问题进行优化或改进我们的模块，可以借鉴其他领域已经开源的代码模块，可以加入诊断指标进行判断为什么会失败，也可以根据实际问题来尝试加入新的模块或者改进我们的模块，另外注意一下我们的模块与原来baseline的是否有冲突可以修复，在Scanrefer上如果很接近目标了但怎么改进也没有办法的话则可以试一下调参，达到目标后可以加载baseline的nr3d和sr3d的权重先做一次验证，看看预训练权重指标能有多少，然后再训练我们的模块，因为数据集个性不同，可能需要在保证我们的网络模型以及模块不变的情况下，针对不同的数据集有些模块的参数可能需要调整才能适配，这两个数据集的指标也要超过我们baseline论文里汇报的值",
+  "seed": 2027,
+  "multiseed": false,
+  "scanrefer": {
+    "rows": 9508,
+    "acc025_at_least_percent": 60.0,
+    "acc050_at_least_percent": 52.0,
+    "minimum_hits025": 5705,
+    "minimum_hits050": 4945,
+    "same_complete_model_required": true,
+    "current_best_hits025": 5677,
+    "current_best_hits050": 4920,
+    "remaining_hits025": 28,
+    "remaining_hits050": 25,
+    "current_best_joint_target_passed": false,
+    "current_best_scope": "retained E0, not a new normal-joint-training improvement"
+  },
+  "paper": {
+    "effective_modules_required": 3,
+    "direct_ablations_required": true,
+    "zero_output_or_unvalidated_branches_do_not_count": true,
+    "reuse_requires_problem_specific_adaptation": true,
+    "check_conflicts_with_baseline": true
+  },
+  "optimization": {
+    "priority": "diagnosis-grounded module improvement in normal network training",
+    "diagnostics_allowed": true,
+    "new_or_revised_modules_allowed": true,
+    "open_source_cross_domain_reuse_allowed": true,
+    "hyperparameter_tuning_allowed_after_near_target_structure_improvement_stalls": true,
+    "no_unbounded_same_configuration_extension": true
+  },
+  "cross_benchmark": {
+    "order": [
+      "Reach ScanRefer target with the complete method",
+      "Evaluate each corresponding author Nr3D/Sr3D checkpoint before adaptation",
+      "Train the unchanged complete network/modules independently on Nr3D and Sr3D"
+    ],
+    "author_pretrained_initialization_allowed": true,
+    "unchanged_network_and_module_structure": true,
+    "dataset_specific_module_parameter_adjustment_allowed": true,
+    "parameter_changes_must_be_disclosed": true,
+    "exceed_baseline_paper_on_corresponding_protocol": true,
+    "author_paper_two_stage_accuracy_percent": {
+      "nr3d": 62.1,
+      "sr3d": 68.9
+    },
+    "author_paper_single_stage_accuracy_percent": {
+      "nr3d": 51.3,
+      "sr3d": 56.5
+    },
+    "paper_metric": "ReferIt3D object-candidate selection accuracy, not a reported Acc@0.5 column",
+    "native_box_acc025_acc050_also_recorded": true,
+    "paper_to_native_evaluation_protocol_equivalence_still_requires_verification": true
+  },
+  "constraints": [
+    "one native scoring path",
+    "all 256 candidates",
+    "same Query box and mask",
+    "normal forward and criterion integration",
+    "no V99 deployed dual ranking or side chain",
+    "single A100 serial execution",
+    "seed2027 only",
+    "retire proven unused generated weights; protect best and required dependencies",
+    "scheduled observations; 180-300 seconds only as needed near completion"
+  ],
+  "active_experiment_selection_rule_unchanged": true,
+  "future_experiment_selection_rule_must_use_updated_targets": true,
+  "active_training_source_changed": false,
+  "new_neural_calls": 0,
+  "training_restarted": false,
+  "full_goal_complete": false,
+  "baseline_paper_source": {
+    "url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Shang_PV-Ground_Text-Guided_Point-Voxel_Interaction_for_3D_Visual_Grounding_CVPR_2026_paper.pdf",
+    "local_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_novelty_20261009\\PV-Ground.pdf",
+    "sha256": "ad96d075ca310f5cc48d875074cf5dc6af594938904811be3d734df0416287d2",
+    "table": 2,
+    "pdf_page": 7,
+    "verified_by_actual_pdf_text_extraction": true
+  }
+}

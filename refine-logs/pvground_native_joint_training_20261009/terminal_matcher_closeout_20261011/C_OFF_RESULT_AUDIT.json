@@ -1,0 +1,876 @@
+{
+  "audit_skill": "experiment-audit",
+  "audit_id": "pvg_c_off_terminal_integrity_20261011",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "qualified_receipt_supported_results_with_source_and_scope_limits",
+  "summary": "All 34 hashes match. Existing source, terminal outputs and recovery receipts support four full-9508 C-off metric rows, three completed epochs/13749 updates and exact cold restoration of stored model/AdamW/scheduler/global RNG state. E0 remains best; no net continuation gain. Evidence does not establish new accuracy, causal C effects, archive completion or overall goal completion.",
+  "blocking_findings": [],
+  "warnings": [
+    {
+      "id": "W1",
+      "category": "data_and_prediction_provenance",
+      "details": "No annotation JSON/TXT, scene pickle, Scan implementation, per-expression IDs, saved predictions/IoUs, or upstream official evaluator manifest is bound. Source and aggregate receipts support real_gt/full-9508 reporting, but no new independent dataset-byte authentication or per-row recomputation occurred.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "line_start": 205,
+          "line_end": 226
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "line_start": 585,
+          "line_end": 649
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "line_start": 1085,
+          "line_end": 1119
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\logs\\scanrefer\\extremal_support\\1791633800\\native_metrics.jsonl",
+          "line_start": 1,
+          "line_end": 4
+        }
+      ]
+    },
+    {
+      "id": "W2",
+      "category": "runtime_identity",
+      "details": "init/environment/port/config and full dependency bytes are absent from this 34-file set. Actual runtime dataset/evaluator import paths are not recorded in its training receipts. Fourteen local source pins are verified, while remote source verification claims remain receipt-supported.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\launch_c_off_normal_authorized.py",
+          "line_start": 40,
+          "line_end": 64
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 57,
+          "line_end": 69
+        }
+      ]
+    },
+    {
+      "id": "W3",
+      "category": "recovery_claim_ceiling",
+      "details": "RECOVERY_RESULT plus the exact helper source and zero exit support actual state restoration. Raw remote RECOVERY_RECEIPT/stdout, recovery launcher, checkpoint bytes and assertions-enabled process argv are not bound. No independent neural replay, subsequent optimizer update, data-loader replay or complete local dependency archive was audited.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\recover_normal_terminal.py",
+          "line_start": 12,
+          "line_end": 18
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\recover_normal_terminal.py",
+          "line_start": 43,
+          "line_end": 104
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 53,
+          "line_end": 70
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_EXIT.json",
+          "line_start": 1,
+          "line_end": 4
+        }
+      ]
+    },
+    {
+      "id": "W4",
+      "category": "metric_metadata",
+      "details": "latest.pth retained_metrics is the retained E0 pair 5677/4920, not E3 accuracy. E3 comes from native_metrics.jsonl line 4: 5571/4519. Non-last logged zeroes are unexecuted-prefix placeholders.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 27,
+          "line_end": 47
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 150,
+          "line_end": 169
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 380,
+          "line_end": 385
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\logs\\scanrefer\\extremal_support\\1791633800\\native_metrics.jsonl",
+          "line_start": 4
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py",
+          "line_start": 224,
+          "line_end": 231
+        }
+      ]
+    },
+    {
+      "id": "W5",
+      "category": "comparison_and_scope",
+      "details": "The historical C-on E3 pair exists only in a summary within this input set. Its -5/+31 comparison is arithmetic on unverified baseline inputs, not a freshly verified baseline result or causal C evidence. Prior learned initialization prevents any never-C interpretation.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\C_OFF_TERMINAL_SUMMARY_20261011.json",
+          "line_start": 71,
+          "line_end": 79
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\CONTROL_PREPARATION.json",
+          "line_start": 30,
+          "line_end": 42
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\native_model_initialization.py",
+          "line_start": 29,
+          "line_end": 59
+        }
+      ]
+    },
+    {
+      "id": "W6",
+      "category": "training_coverage",
+      "details": "13749 updates and epoch 3 are independently present in the existing recovery receipt and consistent with the fixed loop. The full 1080178-byte train log and training annotation inventory are unbound; the 40000-byte tail starts at final-validation batch 555/1189. Do not claim a fresh recount of every train expression or every update log line.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_EPOCH3_FOLLOWUP_OBSERVATION.json",
+          "line_start": 210
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\train_tail.txt",
+          "line_start": 1
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 33,
+          "line_end": 40
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_NATIVE_RUN_PROTOCOL.json",
+          "line_start": 74,
+          "line_end": 83
+        }
+      ]
+    }
+  ],
+  "execution_scope": "READ_ONLY_EXISTING_FILES",
+  "evaluation_type": "real_gt",
+  "audit_method": "Read all 34 bound text files directly; SHA-256, JSON consistency and arithmetic with Python standard library only. No SSH, weight loading, neural imports, dataset construction, tests, GPU calls, new jobs or source changes.",
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\CONTROL_PREPARATION.json": "1eae8249a3d57b9dfb7439e9181ab8c701c03c161d0f2152a88695876a84cf9a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\C_OFF_TERMINAL_SUMMARY_20261011.json": "34a635a5f92be9ee21fc4983a3c70ec7e59cd205bec8c78463a88415a0e019c7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_EPOCH3_FOLLOWUP_OBSERVATION.json": "c8b528d15059a81bbe21afe63f13b2188b2c5717e0029e677712e640f406fb73",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_EPOCH3_FOLLOWUP_OBSERVATION_EXIT.json": "302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_LAUNCH.json": "0cf2d55540c57f1a54b17b375428b80175dc07ce6d4d1ced84a2ffab29de894c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_NATIVE_RUN_PROTOCOL.json": "c4db3c565a1ad5a885e5974882aef8f9e75be84b3095016be066c0e83605f1c5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_START_WITNESS.json": "35a921c530a10fcd655336eaeb8ec38ef9645acb635fc91a345ea71a82136f93",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_EXIT.json": "e7584f9fa7c8953d01b3e2635e0ce7e8198ef5fbaecb5a37bf1908040b42db5e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json": "647dd3d6a17c49e6c79e922862610d522964d812277fd09e9c0a95eb7487dbde",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\recover_normal_terminal.py": "3e9e9ffa8a8e77df2d99150f02da081c4b1b6f05c8e592781e0ba8094f7338ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\launch_c_off_normal_authorized.py": "5f68bff083b0fb3195e9c3f4fd561da1efa3bbcb2ba464df55e977d452647cd9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\admission.json": "42754b56df513611a7035c8056d2a4a9b5c47f9bd228b698eb21b3ab47606958",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\controller.log": "cac774adeaa7fbf5267522cc34372dda42cba7fb45daea04e2c26cfcf0171c20",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\logs\\scanrefer\\extremal_support\\1791633800\\native_metrics.jsonl": "3f5c6ce7fe23b9ae5b97dbdfdd2e2555bc7dab500cb2c51110e66d23a8b2e135",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\normal_status.json": "a8bb7b767e9eea94f4cc376d7d4d45cd77c5a10bb496ede099bab20ceb27f0fd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\train.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\train_tail.txt": "f76f81d6ee03891b76b2a304d69f7fab13779ed0d83a14426aca9bff3b9bf759",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_joint_controller.py": "a55ae418f42a776395290a68a799cc121abf9f4cb936bd8f32a36162365484d9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py": "b1706a8c63923c2b8fc470155081615930ee446dd3c465055fdfc3485b308f4a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\pvground_observation_query.py": "cc92906f9b6f388c8da702f555a099faf07d619fefa2772bfb229693ebae7742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\pvground_source_query.py": "e0fcc6a30402ebeba7a9ffa1be907515350b64e408602a8b47b702e83a5d05ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\pvground_task_observation_query.py": "39349bf1fe8f3f51149f0872911020ecd0ede98fc9a8278cecb5ae466ed8643d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\selected_query_mask_objective.py": "6909a1454eb7d6ac6d81cce1aaa3a6e0941be648ee6d089ace897ac41ca23050",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py": "99a130d34442946c8b6c95703816063d7e47655e19b0a06d9fd8a049e51f1e68",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+  },
+  "input_manifest": {
+    "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\terminal_result_audit_20261011\\AUDIT_INPUTS.json",
+    "sha256": "c87be92143d18f69f288c80eb8adf965570f53d66f13c935bf3893adbd9a05b6",
+    "bound_input_count": 34,
+    "bound_bytes": 365115
+  },
+  "checks": {
+    "input_hashes": {
+      "status": "PASS",
+      "details": "All 34 bound existing paths were read; 365115 bytes total. Every SHA-256 matches AUDIT_INPUTS.json. Every key equals Python Path.resolve(). Fourteen CONTROL_PREPARATION source pins, two bound helper pins, and all five observation file size/hash bindings also agree.",
+      "input_count": 34,
+      "matched_count": 34,
+      "mismatches": [],
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\CONTROL_PREPARATION.json",
+          "line_start": 13,
+          "line_end": 27
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_EPOCH3_FOLLOWUP_OBSERVATION.json",
+          "line_start": 168,
+          "line_end": 193
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\admission.json",
+          "line_start": 6,
+          "line_end": 15
+        }
+      ]
+    },
+    "gt_provenance": {
+      "status": "PASS",
+      "details": "Source-level real-GT chain: ScanRefer_filtered_val JSON/TXT supplies scene/object IDs; val_v3scans.pkl supplies Scan objects; target boxes come from scan.get_object_bbox(target_id), masks from annotated instance points. GroundingEvaluator reads center_label/size_gts, not prediction-derived reference. Model inputs use GroupFree predicted detections, with butd_gt and butd_cls false. Dataset asset bytes and Scan implementation are outside these 34 inputs, so original benchmark-byte provenance is not newly attested.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "line_start": 205,
+          "line_end": 226
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "line_start": 585,
+          "line_end": 649
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "line_start": 1085,
+          "line_end": 1119
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "line_start": 1188,
+          "line_end": 1226
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "line_start": 1324,
+          "line_end": 1393
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py",
+          "line_start": 132,
+          "line_end": 175
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py",
+          "line_start": 405,
+          "line_end": 410
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 534,
+          "line_end": 553
+        }
+      ]
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "details": "Primary hits are counts of GT boxes with top-1 IoU strictly greater than 0.25/0.50. Denominator is number of evaluated GT targets, asserted to be 9508 for both thresholds. Softmax is candidate token scoring; geometry normalization and training losses are not the reported accuracy denominator. All percentages exactly equal 100*hits/9508.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 217,
+          "line_end": 303
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 35,
+          "line_end": 75
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py",
+          "line_start": 237,
+          "line_end": 257
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\logs\\scanrefer\\extremal_support\\1791633800\\native_metrics.jsonl",
+          "line_start": 1,
+          "line_end": 4
+        }
+      ]
+    },
+    "result_existence": {
+      "status": "PASS",
+      "details": "native_metrics.jsonl contains E0/E1/E2/E3. Its records agree with controller.log, normal_status.json, observation and summary; summary percentages and E0 deltas recompute exactly. Terminal train.exit and observation exit are zero. E3 raw log reaches 1189/1189, prints 0.58593/0.47528, and saves latest.pth. Only the narrow current C-off records are accepted; historical C-on numbers lack bound primary evidence.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\logs\\scanrefer\\extremal_support\\1791633800\\native_metrics.jsonl",
+          "line_start": 1,
+          "line_end": 4
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\train.exit",
+          "line_start": 1
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\train_tail.txt",
+          "line_start": 643,
+          "line_end": 650
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\train_tail.txt",
+          "line_start": 710
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\normal_status.json",
+          "line_start": 75,
+          "line_end": 127
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\C_OFF_TERMINAL_SUMMARY_20261011.json",
+          "line_start": 8,
+          "line_end": 69
+        }
+      ]
+    },
+    "dead_code": {
+      "status": "WARN",
+      "details": "The claimed last/bbs path is live: main calls evaluate_one_epoch; it instantiates GroundingEvaluator and calls evaluate for last_; that invokes bbox/mask position and semantic routines. E3 logger output corroborates execution. Proposal and 0head-4head printed zeroes are unevaluated accumulator placeholders because the loop skips non-last prefixes; they are not measured results. calculate_diou_3d is defined but only a commented call exists, and no DIoU result is claimed.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 365,
+          "line_end": 385
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py",
+          "line_start": 208,
+          "line_end": 257
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 193,
+          "line_end": 206
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 123,
+          "line_end": 143
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\train_tail.txt",
+          "line_start": 647,
+          "line_end": 674
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 102,
+          "line_end": 133
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\models\\losses.py",
+          "line_start": 546,
+          "line_end": 557
+        }
+      ]
+    },
+    "same_complete_model_and_checkpoint_selection": {
+      "status": "PASS",
+      "details": "Both primary thresholds are accumulated from one model evaluation and returned as one metric record. The loop does not reload or choose a different checkpoint by threshold. Complete checkpoints serialize all model state and retain a single metric pair. Initial construction explicitly combines pinned official/G/support/span learned components; this is disclosed initialization, not a claim of single-source pretraining. No score or per-example checkpoint splice is observed in the audited path.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 150,
+          "line_end": 176
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 365,
+          "line_end": 386
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\native_model_initialization.py",
+          "line_start": 29,
+          "line_end": 60
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py",
+          "line_start": 218,
+          "line_end": 257
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 286,
+          "line_end": 303
+        }
+      ]
+    },
+    "epochs_and_update_budget": {
+      "status": "PASS",
+      "details": "Protocol and actual child argv specify start_epoch=1, max_epoch=3, B=8, seed=2027; no resume or preflight checkpoint is passed. The source performs one optimizer.step per training batch. Terminal has E0-E3 and exit 0; the recovery receipt reads saved_epoch=3 and 820 optimizer states with sole step value 13749, matching 3*4583. Accepted as source/receipt-supported completion. The bound 40000-byte log tail covers only final validation; the advertised 36665 train expression count is expected, not independently recounted from dataset bytes here.",
+      "completed_epochs": 3,
+      "updates_per_epoch": 4583,
+      "actual_optimizer_updates_receipt": 13749,
+      "train_expression_count_independently_recounted": false,
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_NATIVE_RUN_PROTOCOL.json",
+          "line_start": 20,
+          "line_end": 56
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_NATIVE_RUN_PROTOCOL.json",
+          "line_start": 74,
+          "line_end": 85
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_joint_controller.py",
+          "line_start": 31,
+          "line_end": 49
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 371,
+          "line_end": 385
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 441,
+          "line_end": 470
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 26,
+          "line_end": 40
+        }
+      ]
+    },
+    "source_and_protocol_identity": {
+      "status": "WARN",
+      "details": "All 14 bound source copies match CONTROL_PREPARATION. Protocol/controller hashes match admission; protocol arguments match start and terminal argv, and launch admission equals collected admission. The 34-file set does not contain init.json, env_spec.json, NATIVE_SOURCE_PORT.json, wandb_config.yaml or the full imported runtime. The launch source verifies port/environment/parent hashes but the referenced manifest bytes are outside this set. Recovery records four core import paths and a count of 14 checked sources, not a full bound runtime attestation; training evaluator/dataset import origins are not recorded here. No upstream-official bitwise evaluator identity claim is made.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\CONTROL_PREPARATION.json",
+          "line_start": 13,
+          "line_end": 35
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_LAUNCH.json",
+          "line_start": 2,
+          "line_end": 43
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\launch_c_off_normal_authorized.py",
+          "line_start": 40,
+          "line_end": 64
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\admission.json",
+          "line_start": 5,
+          "line_end": 24
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_joint_controller.py",
+          "line_start": 15,
+          "line_end": 24
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py",
+          "line_start": 21,
+          "line_end": 30
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 57,
+          "line_end": 69
+        }
+      ]
+    },
+    "cold_recovery": {
+      "status": "PASS",
+      "details": "Existing recovery execution is receipt-supported, not rerun in this audit. The helper hashes each entire checkpoint, creates new native model/AdamW/scheduler objects, uses DDP and native load_checkpoint, and compares all 1295 model state entries, optimizer groups/state entries, scheduler state, start epoch and Python/NumPy/Torch CPU/all CUDA RNG states. Receipt reports exact recovery for E0 best and E3 latest with exit 0. E0 has zero optimizer states because it was saved before the first update; E3 has 820 states at step 13749. No forward, resumed batch, update or accuracy replay was performed.",
+      "checkpoints": [
+        {
+          "name": "best",
+          "identity": {
+            "path": "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/logs/scanrefer/extremal_support/1791633800/best.pth",
+            "bytes": 615023752,
+            "sha256": "c33869d7c08cfb5c56ef708cbb1fd86ef77970ae4dc9c739417cc82c3caa8a5c"
+          },
+          "saved_epoch": 0,
+          "full_state_tensors": 1295,
+          "optimizer_states": 0,
+          "optimizer_step_values": [],
+          "restored_start_epoch": 1,
+          "full_recovery_exact": true,
+          "retained_metrics": {
+            "rows": 9508,
+            "hits025": 5677,
+            "hits050": 4920,
+            "primary_score": "last/bbs",
+            "same_complete_model": true
+          }
+        },
+        {
+          "name": "latest",
+          "identity": {
+            "path": "/root/autodl-tmp/pvground_native_joint_controls_20261010/selected_mask_off/logs/scanrefer/extremal_support/1791633800/latest.pth",
+            "bytes": 841676832,
+            "sha256": "8a8a9ab67328b715d9e1bf4eebd633c9cf1203fd940dd35fa7c12de392fd8484"
+          },
+          "saved_epoch": 3,
+          "full_state_tensors": 1295,
+          "optimizer_states": 820,
+          "optimizer_step_values": [
+            13749
+          ],
+          "restored_start_epoch": 4,
+          "full_recovery_exact": true,
+          "retained_metrics": {
+            "rows": 9508,
+            "hits025": 5677,
+            "hits050": 4920,
+            "primary_score": "last/bbs",
+            "same_complete_model": true
+          }
+        }
+      ],
+      "comparison_scope": [
+        "model_state",
+        "optimizer_param_groups",
+        "optimizer_state",
+        "scheduler_state",
+        "start_epoch",
+        "python_rng",
+        "numpy_rng",
+        "torch_cpu_rng",
+        "torch_cuda_rng_all"
+      ],
+      "accuracy_replayed": false,
+      "resumed_training_executed": false,
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\recover_normal_terminal.py",
+          "line_start": 43,
+          "line_end": 92
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 132,
+          "line_end": 145
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 4,
+          "line_end": 55
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_EXIT.json",
+          "line_start": 1,
+          "line_end": 4
+        }
+      ]
+    },
+    "scope": {
+      "status": "WARN",
+      "details": "One C-off continuation arm, one seed 2027, one ScanRefer validation set, four epoch evaluations. This is not training from scratch or a never-C initialization: learned official/G/support/span components and prior span training are disclosed. No C-on primary terminal record, multi-seed robustness, three effective mechanism proof, or completed full Nr3D/Sr3D experiment is bound. No local archive completion evidence is bound. Current overall project goal remains ACTIVE_UNMET.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\CONTROL_PREPARATION.json",
+          "line_start": 30,
+          "line_end": 42
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_NATIVE_RUN_PROTOCOL.json",
+          "line_start": 70,
+          "line_end": 85
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_NATIVE_RUN_PROTOCOL.json",
+          "line_start": 104,
+          "line_end": 108
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\C_OFF_TERMINAL_SUMMARY_20261011.json",
+          "line_start": 71,
+          "line_end": 105
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\native_model_initialization.py",
+          "line_start": 29,
+          "line_end": 59
+        }
+      ]
+    },
+    "evaluation_type": {
+      "status": "PASS",
+      "value": "real_gt",
+      "details": "The recorded ScanRefer evaluations use dataset-provided GT. The audit itself is static verification of existing source/results/receipts. Checkpoint recovery is engineering state restoration and produces no new accuracy; it is not a simulated benchmark.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "line_start": 1085,
+          "line_end": 1119
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 534,
+          "line_end": 550
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 50,
+          "line_end": 56
+        }
+      ]
+    }
+  },
+  "metrics": [
+    {
+      "epoch": 0,
+      "rows": 9508,
+      "hits025": 5677,
+      "hits050": 4920,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 59.7076146403029,
+      "acc050_percent": 51.74589819099705
+    },
+    {
+      "epoch": 1,
+      "rows": 9508,
+      "hits025": 5644,
+      "hits050": 4604,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 59.360538493899874,
+      "acc050_percent": 48.422381152713506
+    },
+    {
+      "epoch": 2,
+      "rows": 9508,
+      "hits025": 5615,
+      "hits050": 4598,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 59.05553218342448,
+      "acc050_percent": 48.35927639882205
+    },
+    {
+      "epoch": 3,
+      "rows": 9508,
+      "hits025": 5571,
+      "hits050": 4519,
+      "primary_score": "last/bbs",
+      "same_complete_model": true,
+      "acc025_percent": 58.59276398822045,
+      "acc050_percent": 47.528397139251155
+    }
+  ],
+  "accepted_claims": [
+    {
+      "id": "A1",
+      "claim": "All 34 exact bound inputs and the internal source/helper/observation hashes checked in this audit are consistent.",
+      "basis": "deterministic_local_file_verification",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\CONTROL_PREPARATION.json",
+          "line_start": 13,
+          "line_end": 27
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\NORMAL_EPOCH3_FOLLOWUP_OBSERVATION.json",
+          "line_start": 168,
+          "line_end": 193
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "claim": "Existing native ScanRefer last/bbs records report E0 5677/4920, E1 5644/4604, E2 5615/4598 and E3 5571/4519, with 9508 GT targets per row and both thresholds from the same complete model evaluation.",
+      "basis": "source_and_existing_execution_receipts",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\logs\\scanrefer\\extremal_support\\1791633800\\native_metrics.jsonl",
+          "line_start": 1,
+          "line_end": 4
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py",
+          "line_start": 208,
+          "line_end": 257
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 286,
+          "line_end": 303
+        }
+      ]
+    },
+    {
+      "id": "A3",
+      "claim": "The existing C-off ordinary continuation completed three epochs with total 13749 AdamW steps (3*4583), supported by terminal exit and recovered epoch/optimizer state.",
+      "basis": "source_and_existing_execution_receipts",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\train.exit",
+          "line_start": 1
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_joint_controller.py",
+          "line_start": 43,
+          "line_end": 59
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 371,
+          "line_end": 385
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 441,
+          "line_end": 470
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 33,
+          "line_end": 40
+        }
+      ]
+    },
+    {
+      "id": "A4",
+      "claim": "E0 remains the retained best. E3 is lower by 106/401 hits and this continuation produced no net gain over E0.",
+      "basis": "exact_arithmetic_on_bound_metrics",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_epoch3_followup_observation\\logs\\scanrefer\\extremal_support\\1791633800\\native_metrics.jsonl",
+          "line_start": 1,
+          "line_end": 4
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 6,
+          "line_end": 24
+        }
+      ]
+    },
+    {
+      "id": "A5",
+      "claim": "Existing recovery receipts support cold rebuilding and exact stored-state restoration of both best(E0) and latest(E3): model, AdamW, scheduler, start epoch and Python/NumPy/Torch CPU/CUDA RNG. No new forward/update/accuracy evaluation was performed.",
+      "basis": "bound_recovery_source_result_and_exit_only",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\recover_normal_terminal.py",
+          "line_start": 43,
+          "line_end": 104
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_RESULT.json",
+          "line_start": 4,
+          "line_end": 56
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\RECOVERY_EXIT.json",
+          "line_start": 1,
+          "line_end": 4
+        }
+      ]
+    },
+    {
+      "id": "A6",
+      "claim": "No prediction-statistic accuracy normalization or threshold-specific checkpoint/score splice is observed in the bound primary evaluation code. Initialization from learned component parents is explicitly disclosed.",
+      "basis": "static_source_trace",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\native_model_initialization.py",
+          "line_start": 29,
+          "line_end": 60
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\main_utils.py",
+          "line_start": 365,
+          "line_end": 385
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\native_joint_v2\\source\\train_dist_mod.py",
+          "line_start": 237,
+          "line_end": 257
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\normal_source_review\\private\\audited_inputs\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+          "line_start": 281,
+          "line_end": 303
+        }
+      ]
+    }
+  ],
+  "rejected_claims": [
+    {
+      "id": "R1",
+      "claim": "This audit reran or independently recomputed full9508 neural accuracy.",
+      "reason": "Only existing static files were read; per-row outputs and dataset bytes are unbound."
+    },
+    {
+      "id": "R2",
+      "claim": "E3/latest achieves 5677/4920.",
+      "reason": "Those are retained E0 metrics. The E3 row is 5571/4519."
+    },
+    {
+      "id": "R3",
+      "claim": "The C-off continuation improves on E0 or establishes C as the cause of the regression.",
+      "reason": "Every post-E0 row is lower; this evidence does not isolate the cause."
+    },
+    {
+      "id": "R4",
+      "claim": "The C-on comparison is freshly verified, or this is a never-C/from-scratch ablation.",
+      "reason": "Historical C-on primary files are absent and pretrained component history is retained."
+    },
+    {
+      "id": "R5",
+      "claim": "State equality proves exact future training/prediction replay or a portable complete archive.",
+      "reason": "No resumed batch/forward/update was executed and full local dependency/checkpoint archival evidence is absent."
+    },
+    {
+      "id": "R6",
+      "claim": "All runtime/upstream source and dataset identities are newly attested.",
+      "reason": "Only the 34 bound files and their internal bindings were authenticated; important referenced assets are outside the set."
+    },
+    {
+      "id": "R7",
+      "claim": "Non-last printed zero scores are evaluated metrics, or the auxiliary mask/semantic reports are interchangeable with last/bbs.",
+      "reason": "Non-last prefixes are skipped; auxiliary semantic/mask routines use distinct scoring paths."
+    },
+    {
+      "id": "R8",
+      "claim": "Three effective mechanisms, completed full Nr3D/Sr3D experiments or overall project completion are established.",
+      "reason": "These outcomes are outside the demonstrated scope; overall project goal is ACTIVE_UNMET."
+    }
+  ],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "identity": "UNATTESTED",
+  "reviewer_identity": "UNATTESTED",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning": "max",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "reviewer_family": "openai",
+  "executor_model": "UNATTESTED",
+  "executor_family": "openai",
+  "agent_id": "UNATTESTED",
+  "agent_task_path": "/root/pvg_c_off_terminal_integrity_20261011",
+  "identity_note": "Requested route follows the applied skill. No tool-level actual model/effort attestation was supplied to this reviewer; do not label this as attested Astra/max or cross-family acceptance.",
+  "generated_at": "2026-10-11T01:48:36.131151+00:00",
+  "date": "2026-10-11",
+  "project_goal_status": "ACTIVE_UNMET",
+  "full_goal_complete": false,
+  "local_archival_completed": false,
+  "local_archival_completion_claimed": false,
+  "neural_metric_reruns": 0,
+  "source_mutations": 0,
+  "new_jobs_started": 0,
+  "snapshot_note": "Earlier terminal/status snapshots legitimately mark recovery/audit pending. The later 09:31 recovery record supports the narrower subsequent state-restoration claim; historical input files were not changed.",
+  "trace_note": "This file is the fresh reviewer result. The calling executor owns preservation of its actual spawn request/response trace under the experiment-audit review-tracing policy."
+}

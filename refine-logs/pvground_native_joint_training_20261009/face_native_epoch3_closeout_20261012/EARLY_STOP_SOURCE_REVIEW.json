@@ -1,0 +1,302 @@
+{
+  "verdict": "PASS",
+  "execution_scope": "SOURCE_ONLY_PLUS_CPU_FIXTURE",
+  "summary": "限定范围通过；未发现须修复的逻辑、接口或数据作用域缺陷。4920→4599→4625不触发停止。仅验证源码及CPU控制流程，未完成未来接线或真实训练验证。",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "model_requested": "gpt-6-astra",
+  "reasoning_requested": "max",
+  "model_actual": "UNATTESTED",
+  "reasoning_actual": "UNATTESTED",
+  "identity_attestation": "No verifiable actual model/effort identity was exposed; requested settings are not actual identity evidence.",
+  "review_context": {
+    "fresh_reviewer": true,
+    "prior_review_reports_read": false,
+    "additional_review_agents_started": 0,
+    "scope": "Direct source/local evidence review under experiment-bridge Phase 2.5 and local-codex-policy"
+  },
+  "recorded_cst": "2026-10-12T00:17:30.6920639+08:00",
+  "root": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012",
+  "resolved_root": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012",
+  "original_actual_main_sha256": "5b66b8ff538ebde1d776f81503aa14e4072f3bbc6fcc2ff3cc70553602b76274",
+  "follows_doc_command": true,
+  "documented_command": "& 'C:\\Users\\gb\\AppData\\Roaming\\uv\\python\\cpython-3.11.14-windows-x86_64-none\\python.exe' -B -X utf8 'C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\check_native_decline_loop.py' --output-dir 'C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\reviewer_cpu_fixture'",
+  "actual_command": "& 'C:\\Users\\gb\\AppData\\Roaming\\uv\\python\\cpython-3.11.14-windows-x86_64-none\\python.exe' -B -X utf8 'C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\check_native_decline_loop.py' --output-dir 'C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\reviewer_cpu_fixture'",
+  "actual_exit_code": 0,
+  "execution_receipt": {
+    "chunk_id": "258eff",
+    "wall_time_seconds": 2.858615,
+    "exit_code": 0,
+    "stdout": "{\"status\": \"CPU_DECLINE_RULE_AND_PATCHED_NATIVE_LOOP_FIXTURE_PASS\", \"scope\": \"CPU_STDLIB_AST_CONTROL_FLOW_ONLY\", \"actual_neural_forwards\": 0, \"actual_training_updates\": 0, \"actual_checkpoints_saved\": 0, \"actual_current_stop_triggered\": false}\r\n"
+  },
+  "fixture_result": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\reviewer_cpu_fixture\\RESULT.json",
+  "fixture_result_sha256": "ab969295871a74fc2288f0625786d621c293195734ec3d6c56b5f85bcf6f5978",
+  "fixture_cases": [
+    {
+      "case": "actual_face_E0_E1_E2",
+      "hits050": [
+        4920,
+        4599,
+        4625
+      ],
+      "trained_epochs": [
+        1,
+        2
+      ],
+      "stop": false
+    },
+    {
+      "case": "historical_C_off_stops_at_E2",
+      "hits050": [
+        4920,
+        4604,
+        4598,
+        4519
+      ],
+      "trained_epochs": [
+        1,
+        2
+      ],
+      "stop": true
+    },
+    {
+      "case": "simulated_one_new_decline_after_rebound",
+      "hits050": [
+        4920,
+        4599,
+        4625,
+        4624
+      ],
+      "trained_epochs": [
+        1,
+        2,
+        3
+      ],
+      "stop": false
+    },
+    {
+      "case": "simulated_second_new_decline_stops",
+      "hits050": [
+        4920,
+        4599,
+        4625,
+        4624,
+        4623,
+        4626
+      ],
+      "trained_epochs": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "stop": true
+    },
+    {
+      "case": "simulated_equal_resets_then_two_declines",
+      "hits050": [
+        4920,
+        4910,
+        4910,
+        4909,
+        4908,
+        4912
+      ],
+      "trained_epochs": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "stop": true
+    }
+  ],
+  "checks": [
+    {
+      "id": "R1",
+      "result": "PASS",
+      "evidence": "source/native_decline_policy.py:6-17",
+      "conclusion": "Complete consecutive E0..En 9508-row last/bbs records; only a strictly lower hits050 increments the streak; equality/increase resets; stop is streak >= 2; no hits025/loss dependency."
+    },
+    {
+      "id": "R2",
+      "result": "PASS",
+      "evidence": "source/main_utils.py:381-390",
+      "conclusion": "Validation record, original conditional best selection/save, latest save, then decision and break."
+    },
+    {
+      "id": "R3",
+      "result": "PASS",
+      "evidence": "Actual Face main_utils.py SHA256 5b66b8ff538ebde1d776f81503aa14e4072f3bbc6fcc2ff3cc70553602b76274; whole-file diff",
+      "conclusion": "Exactly one helper import and four stop lines added. Model/data/loss/optimizer/scheduler/seed/selection/checkpoint format and recovery logic unchanged."
+    },
+    {
+      "id": "R4",
+      "result": "PASS_SOURCE_ONLY",
+      "evidence": "source/main_utils.py:134-146,188-199; source/native_decline_policy.py:20-25",
+      "conclusion": "Existing native recovery keeps the checkpoint directory as log_dir and restores optimizer, scheduler, retained metrics, epoch and RNG. Stop history comes from that directory native_metrics.jsonl. No new checkpoint-state fallback. Not a cold-recovery execution."
+    },
+    {
+      "id": "R5",
+      "result": "PASS_SOURCE_ONLY",
+      "evidence": "source/normal_joint_controller.py:19-20,50-61,70-75",
+      "conclusion": "Plan matches --max_epoch; complete contiguous actual history and recomputed decision required; early completion needs stop; earlier ignored stop rejected; actual completed_epochs, planned_epochs and stop_reason remain distinct."
+    },
+    {
+      "id": "R6",
+      "result": "PASS_SOURCE_ONLY",
+      "evidence": "source/normal_joint_controller.py:12-29; original controller diff and original protocol",
+      "conclusion": "Admission/source/face-mode/goal/selected-mask/environment/helper checks preserved. Historical protocol confirms actual original main identity and planned 3 equals --max_epoch 3. No future admission or launcher claimed."
+    },
+    {
+      "id": "R7",
+      "result": "PASS_SOURCE_ONLY",
+      "evidence": "Face source/train_dist_mod.py:208-257; source/main_utils.py:173-177",
+      "conclusion": "Unchanged native evaluator returns last/bbs integer hits and requires both GT totals to be 9508. No new diagnostic or pseudo-target metric. No full dataset/GT recomputation."
+    },
+    {
+      "id": "R8",
+      "result": "PASS",
+      "evidence": "check_native_decline_loop.py; reviewer_cpu_fixture/RESULT.json; chunk 258eff exit 0",
+      "conclusion": "Exact documented command ran once; five stdlib AST/callback cases passed, including persisted metric history and latest-save callback before decision. No model imports/updates/weight saves."
+    }
+  ],
+  "current_recorded_hits050": [
+    4920,
+    4599,
+    4625
+  ],
+  "current_decline_streak": 0,
+  "current_stop_triggered": false,
+  "audited_input_hashes": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\POLICY.md",
+      "sha256": "01e8048b62b34690fa27d9b5eb7b13e522d15e2779e1f412c5f3a29d2670e53c",
+      "bytes": 1111,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\RUN_INSTRUCTIONS.md",
+      "sha256": "f35a6dcdca5f254fe4e9ee0feb60772c2355f2f44b5dacaf0420a90e3f8fee58",
+      "bytes": 2583,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\PREPARATION.json",
+      "sha256": "664aaa40c3d5466a8082e7d610252306c81fafd07d84ed22bbf473f15ddd559d",
+      "bytes": 1465,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\source\\main_utils.py",
+      "sha256": "aa1d432982ba7c9be8f8605a7b52550e1821c81b35718d75dedcfd6200a00f09",
+      "bytes": 24677,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\source\\native_decline_policy.py",
+      "sha256": "937dedc001b96622af1987a02bdd8d877d482a95e66c2befbed27d13ad7aa3cd",
+      "bytes": 1111,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\source\\normal_joint_controller.py",
+      "sha256": "6db59c02d292eb18ec4b5565e28fc220ee6a943fe880f1fca41092abd0e9a87f",
+      "bytes": 4806,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\check_native_decline_loop.py",
+      "sha256": "79ae64943227f3c4b3355bd9bad613bd880eec4c1fd52b56fa6cf08ee431ed5a",
+      "bytes": 5882,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\cpu_fixture_1\\RESULT.json",
+      "sha256": "ab969295871a74fc2288f0625786d621c293195734ec3d6c56b5f85bcf6f5978",
+      "bytes": 7236,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\reviewer_cpu_fixture\\RESULT.json",
+      "sha256": "ab969295871a74fc2288f0625786d621c293195734ec3d6c56b5f85bcf6f5978",
+      "bytes": 7236,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py",
+      "sha256": "5b66b8ff538ebde1d776f81503aa14e4072f3bbc6fcc2ff3cc70553602b76274",
+      "bytes": 24402,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\normal_joint_controller.py",
+      "sha256": "14d6b5ecbac82718881238037fca7faee3a70c25fe5a2e65702c5e0753ee9f13",
+      "bytes": 4019,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\source_conditioned_PROTOCOL.json",
+      "sha256": "649e9abde9afc666eee032a58f50e69c441ff12c526920bf8ad6954f3ae620b5",
+      "bytes": 16245,
+      "read_scope": "Arguments, scope, budget and original main/entry identity; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\NORMAL_source_conditioned_EPOCH2_COMPLETION.json",
+      "sha256": "4cd193baca7047290aebe8c37537d29a2d2964f480b1a60683aaf77d510e6f3d",
+      "bytes": 3700,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\C_OFF_TERMINAL_SUMMARY_20261011.json",
+      "sha256": "34a635a5f92be9ee21fc4983a3c70ec7e59cd205bec8c78463a88415a0e019c7",
+      "bytes": 3028,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py",
+      "sha256": "bf2cbb75f4a6036e374718b6746b3654978d17167cd540bfb27d146d2acecb6f",
+      "bytes": 18949,
+      "read_scope": "Native evaluation and metric-return excerpts; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\experiment-bridge\\SKILL.md",
+      "sha256": "ba0a305c9fc250966092ec2789d3ddc67007486cf9d1106691edd425276d7e35",
+      "bytes": 16880,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md",
+      "sha256": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+      "bytes": 2948,
+      "read_scope": "Direct contents and/or whole-file diff inspected; full-file digest recorded"
+    }
+  ],
+  "audited_input_hash_scope": "Requested hashes of existing audit evidence; no new runtime hash mechanism. Ambient personal session context is not experiment audit evidence.",
+  "limitations": [
+    "Acceptance is limited to three candidate source files and the documented CPU control-flow fixture; no actual neural/GPU training, checkpoint-save, cold-restore, accuracy or full-goal acceptance.",
+    "Fixture train/evaluate/save are callbacks and all cases start at epoch 1. Real checkpoint load/save and controller subprocess are not executed.",
+    "Future deployment remains unwired: place the same helper in model-source and controller directories and include it in existing source/helper lists. No launcher/admission or future budget supplied.",
+    "Future planned_epochs/--max_epoch must be selected consistently; actual sample/update accounting must come from the admitted run/loader, not old intended 13749 updates. Current controller records actual completed epochs and stop reason, not an actual sample/update receipt.",
+    "Stored Face E0/E1/E2 and historical C-off results are local fixture inputs, not a fresh current-training observation or causal performance comparison.",
+    "Actual model and reasoning identity UNATTESTED; same-family review is provisional, not cross-family acceptance."
+  ],
+  "future_wiring_complete": false,
+  "new_budget_selected": false,
+  "actual_native_training_execution": false,
+  "actual_controller_execution": false,
+  "actual_full_checkpoint_recovery": false,
+  "actual_neural_forwards": 0,
+  "actual_training_updates": 0,
+  "actual_checkpoints_saved": 0,
+  "SSH_calls": 0,
+  "GPU_queries": 0,
+  "active_training_source_changed": false,
+  "candidate_sources_changed_by_reviewer": false,
+  "full_goal_complete": false,
+  "private_trace": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\source_review\\private\\review_trace.json",
+  "raw_report": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\source_review\\private\\raw_report.md"
+}
+

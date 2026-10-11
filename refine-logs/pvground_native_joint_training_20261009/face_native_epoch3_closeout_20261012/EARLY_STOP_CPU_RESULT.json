@@ -1,0 +1,385 @@
+{
+  "status": "CPU_DECLINE_RULE_AND_PATCHED_NATIVE_LOOP_FIXTURE_PASS",
+  "scope": "CPU_STDLIB_AST_CONTROL_FLOW_ONLY",
+  "actual_neural_forwards": 0,
+  "actual_training_updates": 0,
+  "actual_checkpoints_saved": 0,
+  "SSH_calls": 0,
+  "active_training_source_changed": false,
+  "original_user_selected_rule": "two consecutive Acc@0.5 decreases versus previous epoch",
+  "actual_current_history": [
+    {
+      "epoch": 0,
+      "rows": 9508,
+      "hits025": 5677,
+      "hits050": 4920,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 1,
+      "rows": 9508,
+      "hits025": 5645,
+      "hits050": 4599,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 2,
+      "rows": 9508,
+      "hits025": 5619,
+      "hits050": 4625,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    }
+  ],
+  "actual_current_stop_triggered": false,
+  "simulated_rows_are_not_experiment_accuracy": true,
+  "cases": [
+    {
+      "case": "actual_face_E0_E1_E2",
+      "trained_epochs": [
+        1,
+        2
+      ],
+      "latest_save_callbacks": [
+        1,
+        2
+      ],
+      "stop": false,
+      "events": [
+        [
+          "train",
+          1
+        ],
+        [
+          "validate",
+          1
+        ],
+        [
+          "save_latest",
+          1
+        ],
+        [
+          "decide",
+          1,
+          false
+        ],
+        [
+          "train",
+          2
+        ],
+        [
+          "validate",
+          2
+        ],
+        [
+          "save_latest",
+          2
+        ],
+        [
+          "decide",
+          2,
+          false
+        ]
+      ],
+      "callbacks_only_not_real_model_updates_or_weight_saves": true
+    },
+    {
+      "case": "historical_C_off_stops_at_E2",
+      "trained_epochs": [
+        1,
+        2
+      ],
+      "latest_save_callbacks": [
+        1,
+        2
+      ],
+      "stop": true,
+      "events": [
+        [
+          "train",
+          1
+        ],
+        [
+          "validate",
+          1
+        ],
+        [
+          "save_latest",
+          1
+        ],
+        [
+          "decide",
+          1,
+          false
+        ],
+        [
+          "train",
+          2
+        ],
+        [
+          "validate",
+          2
+        ],
+        [
+          "save_latest",
+          2
+        ],
+        [
+          "decide",
+          2,
+          true
+        ]
+      ],
+      "callbacks_only_not_real_model_updates_or_weight_saves": true
+    },
+    {
+      "case": "simulated_one_new_decline_after_rebound",
+      "trained_epochs": [
+        1,
+        2,
+        3
+      ],
+      "latest_save_callbacks": [
+        1,
+        2,
+        3
+      ],
+      "stop": false,
+      "events": [
+        [
+          "train",
+          1
+        ],
+        [
+          "validate",
+          1
+        ],
+        [
+          "save_latest",
+          1
+        ],
+        [
+          "decide",
+          1,
+          false
+        ],
+        [
+          "train",
+          2
+        ],
+        [
+          "validate",
+          2
+        ],
+        [
+          "save_latest",
+          2
+        ],
+        [
+          "decide",
+          2,
+          false
+        ],
+        [
+          "train",
+          3
+        ],
+        [
+          "validate",
+          3
+        ],
+        [
+          "save_latest",
+          3
+        ],
+        [
+          "decide",
+          3,
+          false
+        ]
+      ],
+      "callbacks_only_not_real_model_updates_or_weight_saves": true
+    },
+    {
+      "case": "simulated_second_new_decline_stops",
+      "trained_epochs": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "latest_save_callbacks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "stop": true,
+      "events": [
+        [
+          "train",
+          1
+        ],
+        [
+          "validate",
+          1
+        ],
+        [
+          "save_latest",
+          1
+        ],
+        [
+          "decide",
+          1,
+          false
+        ],
+        [
+          "train",
+          2
+        ],
+        [
+          "validate",
+          2
+        ],
+        [
+          "save_latest",
+          2
+        ],
+        [
+          "decide",
+          2,
+          false
+        ],
+        [
+          "train",
+          3
+        ],
+        [
+          "validate",
+          3
+        ],
+        [
+          "save_latest",
+          3
+        ],
+        [
+          "decide",
+          3,
+          false
+        ],
+        [
+          "train",
+          4
+        ],
+        [
+          "validate",
+          4
+        ],
+        [
+          "save_latest",
+          4
+        ],
+        [
+          "decide",
+          4,
+          true
+        ]
+      ],
+      "callbacks_only_not_real_model_updates_or_weight_saves": true
+    },
+    {
+      "case": "simulated_equal_resets_then_two_declines",
+      "trained_epochs": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "latest_save_callbacks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "stop": true,
+      "events": [
+        [
+          "train",
+          1
+        ],
+        [
+          "validate",
+          1
+        ],
+        [
+          "save_latest",
+          1
+        ],
+        [
+          "decide",
+          1,
+          false
+        ],
+        [
+          "train",
+          2
+        ],
+        [
+          "validate",
+          2
+        ],
+        [
+          "save_latest",
+          2
+        ],
+        [
+          "decide",
+          2,
+          false
+        ],
+        [
+          "train",
+          3
+        ],
+        [
+          "validate",
+          3
+        ],
+        [
+          "save_latest",
+          3
+        ],
+        [
+          "decide",
+          3,
+          false
+        ],
+        [
+          "train",
+          4
+        ],
+        [
+          "validate",
+          4
+        ],
+        [
+          "save_latest",
+          4
+        ],
+        [
+          "decide",
+          4,
+          true
+        ]
+      ],
+      "callbacks_only_not_real_model_updates_or_weight_saves": true
+    }
+  ],
+  "input_sha256": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\source\\main_utils.py": "aa1d432982ba7c9be8f8605a7b52550e1821c81b35718d75dedcfd6200a00f09",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\source\\native_decline_policy.py": "937dedc001b96622af1987a02bdd8d877d482a95e66c2befbed27d13ad7aa3cd",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\native_decline_policy_20261012\\check_native_decline_loop.py": "79ae64943227f3c4b3355bd9bad613bd880eec4c1fd52b56fa6cf08ee431ed5a"
+  }
+}

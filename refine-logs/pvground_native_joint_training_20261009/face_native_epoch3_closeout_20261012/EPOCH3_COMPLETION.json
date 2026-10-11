@@ -1,0 +1,205 @@
+{
+  "status": "SINGLE_SCHEDULED_NORMAL_OBSERVATION",
+  "observed_cst": "2026-10-12T07:04:30.411275+08:00",
+  "controller_alive": false,
+  "child_alive": false,
+  "remote_status": {
+    "status": "complete",
+    "phase": "ordinary_joint_training",
+    "source_mode": "extremal_support",
+    "started_cst": "2026-10-11T12:12:25.267943+08:00",
+    "planned_epochs": 3,
+    "face_residual_mode": "source_conditioned",
+    "formal_result": null,
+    "original_core_frozen": false,
+    "paired_other_arm_training_started": false,
+    "child_pid": 241447,
+    "child_argv": [
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground/train_dist_mod.py",
+      "--model",
+      "PVGround",
+      "--dataset",
+      "scanrefer",
+      "--test_dataset",
+      "scanrefer",
+      "--data_root",
+      "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+      "--use_color",
+      "--use_soft_token_loss",
+      "--use_contrastive_align",
+      "--self_attend",
+      "--butd",
+      "--rng_seed",
+      "2027",
+      "--batch_size",
+      "8",
+      "--num_workers",
+      "4",
+      "--num_target",
+      "256",
+      "--num_decoder_layers",
+      "6",
+      "--num_encoder_layers",
+      "3",
+      "--self_position_embedding",
+      "loc_learned",
+      "--lr",
+      "1e-6",
+      "--lr_backbone",
+      "1e-6",
+      "--lr_modules",
+      "1e-5",
+      "--weight_decay",
+      "0.0005",
+      "--clip_norm",
+      "0.1",
+      "--max_epoch",
+      "3",
+      "--start_epoch",
+      "1",
+      "--val_freq",
+      "1",
+      "--lr-scheduler",
+      "step",
+      "--lr_decay_epochs",
+      "280",
+      "340",
+      "--warmup-epoch",
+      "-1",
+      "--native_init_spec",
+      "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/normal/source_conditioned/init.json",
+      "--log_dir",
+      "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/normal/source_conditioned/logs",
+      "--exp",
+      "extremal_support",
+      "--print_freq",
+      "128"
+    ],
+    "completed_cst": "2026-10-12T01:59:52.653895+08:00",
+    "elapsed_seconds": 49647.38585310429,
+    "exit_code": 0,
+    "metrics": [
+      {
+        "epoch": 0,
+        "rows": 9508,
+        "hits025": 5677,
+        "hits050": 4920,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      },
+      {
+        "epoch": 1,
+        "rows": 9508,
+        "hits025": 5645,
+        "hits050": 4599,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      },
+      {
+        "epoch": 2,
+        "rows": 9508,
+        "hits025": 5619,
+        "hits050": 4625,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      },
+      {
+        "epoch": 3,
+        "rows": 9508,
+        "hits025": 5551,
+        "hits050": 4476,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      }
+    ],
+    "weights": [
+      {
+        "path": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/normal/source_conditioned/logs/scanrefer/extremal_support/1791691955/best.pth",
+        "bytes": 615120706,
+        "sha256": "166d825100076f363d60bcbc0aa09cfb37a49ab2389f98d5cd64bd26e940fa36"
+      },
+      {
+        "path": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/normal/source_conditioned/logs/scanrefer/extremal_support/1791691955/latest.pth",
+        "bytes": 841964750,
+        "sha256": "b7efbf0c25c23c6b537fa7a4627f7c06be2fdb2dd4e2f347e43c7bf3f302efe6"
+      }
+    ],
+    "preflight_states_used": false,
+    "actual_full_checkpoint_cold_recovery_pending": true,
+    "formal_result_audit_pending": true,
+    "no_result_promoted": true
+  },
+  "metrics": [
+    {
+      "epoch": 0,
+      "rows": 9508,
+      "hits025": 5677,
+      "hits050": 4920,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 1,
+      "rows": 9508,
+      "hits025": 5645,
+      "hits050": 4599,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 2,
+      "rows": 9508,
+      "hits025": 5619,
+      "hits050": 4625,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 3,
+      "rows": 9508,
+      "hits025": 5551,
+      "hits050": 4476,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    }
+  ],
+  "files": [
+    {
+      "name": "logs/scanrefer/extremal_support/1791691955/native_metrics.jsonl",
+      "bytes": 476,
+      "sha256": "9e8c07f80656ff226cea5975999276c74006ab5d6f262c09bc66428ebf45bad6"
+    },
+    {
+      "name": "normal_status.json",
+      "bytes": 3257,
+      "sha256": "d126d131d64e5bac064a1349daf2c623ad42f79d890a7ce5fcee91bb31369e2a"
+    },
+    {
+      "name": "train.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "name": "controller.log",
+      "bytes": 2715,
+      "sha256": "04c9b71a4d6a57019c0b7ddfe2299bd6c8c9edf8c5c23c6cf01655389e785797"
+    },
+    {
+      "name": "admission.json",
+      "bytes": 1244,
+      "sha256": "874b8ba809786f5841ea84d755e631f73a45fca9388b120b3f406b8906ff23ad"
+    }
+  ],
+  "train_log_bytes": 1080923,
+  "new_neural_calls": 0,
+  "weight_promoted": false,
+  "first_due_cst": "2026-10-12T02:01:40.667057+08:00",
+  "observation_count": 1,
+  "later_poll_seconds": 240,
+  "later_node_requires_actual_progress_estimate": true,
+  "formal_results_unaudited": true,
+  "full_goal_complete": false
+}

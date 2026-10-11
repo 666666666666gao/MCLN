@@ -1,0 +1,263 @@
+{
+  "status": "SOURCE_REVIEW_COMPLETE",
+  "verdict": "WARN",
+  "source_only_verdict": "SOURCE_ONLY_PASS",
+  "classification": "NON-BLOCKING",
+  "execution_scope": "SOURCE_ONLY",
+  "review_time_cst": "2026-10-11T18:19:38.295846+08:00",
+  "model_requested": "gpt-6-astra",
+  "reasoning": "max",
+  "model_actual": "UNATTESTED",
+  "reasoning_actual": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "identity_attestation": "UNATTESTED",
+  "blocking_findings": [],
+  "non_blocking_findings": [
+    {
+      "id": "NB-01",
+      "classification": "NON-BLOCKING",
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\launch_buffer_diagnostic_authorized.py",
+      "line": 91,
+      "title": "Use the existing explicit local Python 3.11 interpreter",
+      "evidence": "Bare python is E:\\anaconda\\python.exe 3.7.6 and shlex.join is absent. The existing project owner specifies Python 3.11.14; shlex.join presence and embedded-command quote roundtrip were verified there.",
+      "requested_action": "Use C:\\Users\\gb\\AppData\\Roaming\\uv\\python\\cpython-3.11.14-windows-x86_64-none\\python.exe explicitly; no fallback/compatibility logic needed."
+    }
+  ],
+  "source_review_scope": "Fixed-E3 BN-buffer-only paired native replay, state invariant, actual model/evaluator wiring, best/latest cold recovery, serial stage controller and explicit sanity/full SSH launcher. No remote runtime execution.",
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\EXPERIMENT_PLAN.md": "ce2a7643268207d90c968b89ad2a0a256788ed886fb3a868283caa277015a94b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py": "2947d3bef7e94752eb85984b85e6e16559c6298a0bfeede5d288545e151147cd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\batchnorm_buffer_intervention.py": "ee5da1d8c5887b3964c466b456788183f595b4bb6ab5c01bc6764acceacadece",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\cpu_buffer_only_invariant.py": "7d2a56e13eeb12d6f4b9504b2b3ca3d5d8f7648058e656149b55717c9f89cf62",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\CPU_BUFFER_ONLY_INVARIANT.json": "0bf36d64cc7131269b0e2b9cd220bf319ae810c61c6bdf4cc07e3a1328632e00",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\source_conditioned_PROTOCOL.json": "649e9abde9afc666eee032a58f50e69c441ff12c526920bf8ad6954f3ae620b5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\normal_joint_controller.py": "14d6b5ecbac82718881238037fca7faee3a70c25fe5a2e65702c5e0753ee9f13",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source_conditioned_init.json": "5771d3f69360809338987c826255c9090be1f3a99a5c865b0431b1455d50c8a9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\SOURCE_STAGE_RECEIPT.json": "37a2fff7a1322b8c6327b7dccf5a2b532a8949965ed835c49251ceed41697ec3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py": "5b66b8ff538ebde1d776f81503aa14e4072f3bbc6fcc2ff3cc70553602b76274",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py": "bf2cbb75f4a6036e374718b6746b3654978d17167cd540bfb27d146d2acecb6f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\native_face_model_initialization.py": "ea504de1ca747fc051e55e19748f520e56f87c58745815bb1b92438411b7b2c2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\face_residual_span_mixer.py": "f62b0d2fa026cdbd720028b29f7188a03c2f43c591d57bd2e2856a387dbf9a19",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\models\\losses.py": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\recover_face_normal_terminal.py": "1229f5ddcf856582e32ca651eac24900b740af14766cfd7456161b95466aab98",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\buffer_diagnostic_controller.py": "e1e1818dbbe23b5a58c0fd8a831ae4a89f3991c91e00ce80c7c7ef17ba339d61",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\launch_buffer_diagnostic_authorized.py": "6b851ba348ad74db6b5910ad41e34f7f5134621f002a265d78acecaddd721ebe",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\prepare_data.py": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\joint_det_dataset.py": "ee4ebfacedb0d45873b0ff5db0f056a8055e544bca516cf22d9b440681916618",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\recover_normal_terminal.py": "3e9e9ffa8a8e77df2d99150f02da081c4b1b6f05c8e592781e0ba8094f7338ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\launch_normal_authorized.py": "f4f7b2d1f62ca0d5774e0892299ca9df7d17b03470878ac7f2b71fe0e986a74c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_factory_cpu_20261010\\source_review\\private\\snapshots\\039_env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\SCP_TRANSPORT_WITNESS.json": "046d4b8f70aaa0c6f21e3fa652adad80bb1d017aa7fb2f4d41da2fc53c2f5933",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\NORMAL_source_conditioned_OBSERVER_OWNER.json": "17f1e0f1f4f58c5d3f6a30c8edeb10fabc97e6cace78767b3937f617a0627b4e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\STATIC_PREPARATION.json": "0e4ce0c9a7a91e9db03751711858e7f59b3b19ae2230bb92b929e915154a96d9"
+  },
+  "inputs": [
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\EXPERIMENT_PLAN.md",
+      "sha256": "ce2a7643268207d90c968b89ad2a0a256788ed886fb3a868283caa277015a94b",
+      "bytes": 2888,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py",
+      "sha256": "2947d3bef7e94752eb85984b85e6e16559c6298a0bfeede5d288545e151147cd",
+      "bytes": 12551,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\batchnorm_buffer_intervention.py",
+      "sha256": "ee5da1d8c5887b3964c466b456788183f595b4bb6ab5c01bc6764acceacadece",
+      "bytes": 902,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\cpu_buffer_only_invariant.py",
+      "sha256": "7d2a56e13eeb12d6f4b9504b2b3ca3d5d8f7648058e656149b55717c9f89cf62",
+      "bytes": 2185,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\CPU_BUFFER_ONLY_INVARIANT.json",
+      "sha256": "0bf36d64cc7131269b0e2b9cd220bf319ae810c61c6bdf4cc07e3a1328632e00",
+      "bytes": 649,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\source_conditioned_PROTOCOL.json",
+      "sha256": "649e9abde9afc666eee032a58f50e69c441ff12c526920bf8ad6954f3ae620b5",
+      "bytes": 16245,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\normal_joint_controller.py",
+      "sha256": "14d6b5ecbac82718881238037fca7faee3a70c25fe5a2e65702c5e0753ee9f13",
+      "bytes": 4019,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source_conditioned_init.json",
+      "sha256": "5771d3f69360809338987c826255c9090be1f3a99a5c865b0431b1455d50c8a9",
+      "bytes": 1888,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\SOURCE_STAGE_RECEIPT.json",
+      "sha256": "37a2fff7a1322b8c6327b7dccf5a2b532a8949965ed835c49251ceed41697ec3",
+      "bytes": 53871,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py",
+      "sha256": "5b66b8ff538ebde1d776f81503aa14e4072f3bbc6fcc2ff3cc70553602b76274",
+      "bytes": 24402,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py",
+      "sha256": "bf2cbb75f4a6036e374718b6746b3654978d17167cd540bfb27d146d2acecb6f",
+      "bytes": 18949,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\native_face_model_initialization.py",
+      "sha256": "ea504de1ca747fc051e55e19748f520e56f87c58745815bb1b92438411b7b2c2",
+      "bytes": 1824,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\face_residual_span_mixer.py",
+      "sha256": "f62b0d2fa026cdbd720028b29f7188a03c2f43c591d57bd2e2856a387dbf9a19",
+      "bytes": 4619,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py",
+      "sha256": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+      "bytes": 4541,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py",
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+      "bytes": 481,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py",
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+      "bytes": 41473,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\models\\losses.py",
+      "sha256": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+      "bytes": 40468,
+      "role": "required"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\recover_face_normal_terminal.py",
+      "sha256": "1229f5ddcf856582e32ca651eac24900b740af14766cfd7456161b95466aab98",
+      "bytes": 5584,
+      "role": "supplement_requested"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\buffer_diagnostic_controller.py",
+      "sha256": "e1e1818dbbe23b5a58c0fd8a831ae4a89f3991c91e00ce80c7c7ef17ba339d61",
+      "bytes": 3620,
+      "role": "supplement_requested"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\launch_buffer_diagnostic_authorized.py",
+      "sha256": "6b851ba348ad74db6b5910ad41e34f7f5134621f002a265d78acecaddd721ebe",
+      "bytes": 6408,
+      "role": "supplement_requested"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py",
+      "sha256": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+      "bytes": 42352,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py",
+      "sha256": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+      "bytes": 29438,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\prepare_data.py",
+      "sha256": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+      "bytes": 19658,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\joint_det_dataset.py",
+      "sha256": "ee4ebfacedb0d45873b0ff5db0f056a8055e544bca516cf22d9b440681916618",
+      "bytes": 58210,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+      "bytes": 75981,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\recover_normal_terminal.py",
+      "sha256": "3e9e9ffa8a8e77df2d99150f02da081c4b1b6f05c8e592781e0ba8094f7338ab",
+      "bytes": 5521,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\launch_normal_authorized.py",
+      "sha256": "f4f7b2d1f62ca0d5774e0892299ca9df7d17b03470878ac7f2b71fe0e986a74c",
+      "bytes": 10661,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_factory_cpu_20261010\\source_review\\private\\snapshots\\039_env_spec.json",
+      "sha256": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+      "bytes": 2938,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\SCP_TRANSPORT_WITNESS.json",
+      "sha256": "046d4b8f70aaa0c6f21e3fa652adad80bb1d017aa7fb2f4d41da2fc53c2f5933",
+      "bytes": 539,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\NORMAL_source_conditioned_OBSERVER_OWNER.json",
+      "sha256": "17f1e0f1f4f58c5d3f6a30c8edeb10fabc97e6cace78767b3937f617a0627b4e",
+      "bytes": 648,
+      "role": "supporting"
+    },
+    {
+      "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\STATIC_PREPARATION.json",
+      "sha256": "0e4ce0c9a7a91e9db03751711858e7f59b3b19ae2230bb92b929e915154a96d9",
+      "bytes": 572,
+      "role": "supporting"
+    }
+  ],
+  "actual_native_sanity_completed": false,
+  "actual_native_full9508_completed": false,
+  "actual_PV_forward": false,
+  "actual_formal_accuracy": null,
+  "causal_degradation_diagnosis_proven": false,
+  "best_promoted": false,
+  "normal_training_fix_validated": false,
+  "source_preconditions": [
+    "Invoke launcher using the existing explicit local Python 3.11 interpreter.",
+    "Normal source_conditioned E3 must be terminal and all source/GPU lock gates must pass.",
+    "Actual cold recovery and real first batch sanity must pass before explicit full launch."
+  ],
+  "private_trace": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\source_review\\private\\SOURCE_TRACE_20261011T181938.json",
+  "raw_report": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\source_review\\private\\REVIEWER_RAW_REPORT_20261011T181938.md"
+}

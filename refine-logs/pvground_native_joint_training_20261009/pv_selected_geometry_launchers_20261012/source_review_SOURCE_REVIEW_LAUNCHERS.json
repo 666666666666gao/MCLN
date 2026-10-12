@@ -1,0 +1,267 @@
+{
+  "verdict": "WARN",
+  "scope": "SOURCE_ONLY",
+  "execution_scope": "STATIC_LAUNCHER_AND_RESPONSIBILITY_DIAGNOSTICS_REVIEW",
+  "source_preparation_verdict": "PASS",
+  "source_preparation_pass": true,
+  "scoped_blockers": [],
+  "review_round": "LAUNCHERS",
+  "reuses_closed_review": "R2",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_context": "Same delegated reviewer, bounded launcher addition; reuses closed R2, no newly fresh reviewer claim.",
+  "production_source_modified_by_reviewer": false,
+  "source_edits_by_reviewer": false,
+  "actual_SSH_calls": 0,
+  "actual_GPU_queries": 0,
+  "actual_neural_forwards": 0,
+  "actual_training_calls": 0,
+  "active_MCLN_progress_queries": 0,
+  "active_MCLN_status": "NOT_QUERIED_NOT_ATTESTED",
+  "observer_37188_or_1905_schedule_modified": false,
+  "R1_R2_reports_preserved": true,
+  "R2_five_overlay_files_preserved": true,
+  "saved_R2_stage_receipt_preserved": true,
+  "saved_R2_stage_receipt_timestamp": "2026-10-12T18:00:08.966986+08:00",
+  "saved_R2_stage_source_files": 117,
+  "saved_R2_stage_record_is_current_remote_revalidation": false,
+  "new_R3_stage_executed_by_reviewer": false,
+  "actual_device_admission_verified": false,
+  "actual_pair_preflight_complete_verified": false,
+  "actual_pair_integrity_audit_completed": false,
+  "actual_normal_training_complete_verified": false,
+  "formal_accuracy": null,
+  "full_goal_complete": false,
+  "cold_resume_supported": false,
+  "closed_findings": [
+    {
+      "id": "GEN-LAUNCHER-R1",
+      "status": "CLOSED",
+      "description": "Saved failed preparer reproduces EOL while scanning string literal at generated normal controller line46. Current preparer line13 uses raw triple string; exact generated controller and main bytes parse. It also records GPU_device_checked=True after the locked checks; neither change affects the objective.",
+      "failed_source": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/prepare_launcher_sources_r1_failed.py",
+      "repaired_source": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/prepare_launcher_sources.py:13",
+      "evidence": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_review/.aris/traces/experiment-bridge/2026-10-12_run03/GENERATOR_REPAIR.patch"
+    }
+  ],
+  "checks": [
+    {
+      "name": "actual_sources_and_generation",
+      "status": "PASS",
+      "detail": "Six actual saved execution sources plus the preparer parse on Python3.7, zero CRCRLF. All three embedded fragments parse and actual SSH argv round-trip. Current generator reproduces controller and main exactly."
+    },
+    {
+      "name": "training_diagnostics_only",
+      "status": "PASS_AST_EQUIVALENCE",
+      "detail": "After removing exactly new If branches at main_utils.py lines460,484,529, the complete module AST equals R2. Reads the existing detached record only, counts only strategy, does not change loss/matching/optimizer/seed/loop/checkpoints/inference."
+    },
+    {
+      "name": "existing_serial_GPU_lock",
+      "status": "PASS_STATIC",
+      "detail": "Both launchers construct flock --no-fork -n using the same resource_limits.gpu_lock setting and environment file as the existing MCLN launcher. Device checks are in the locked controllers before neural child launch; no actual lock acquired by this review."
+    },
+    {
+      "name": "preflight_pair_admission",
+      "status": "PASS_STATIC",
+      "detail": "Requires actual original MCLN normal terminal observation and absent original pids; controller repeats exact terminal and checks source/helpers/env/device/disk. Runs control then strategy with wait, verifies two updates/arm, input equality, saved recovery and positive strategy eligibility/direct gradient. Does not auto-launch normal training."
+    },
+    {
+      "name": "normal_admission_and_arm_order",
+      "status": "PASS_STATIC",
+      "detail": "Requires actual pair complete with four updates and matching audited intake in a separate actual_pair_review/EXPERIMENT_AUDIT.json of ACTUAL scope. Rechecks remote receipts and terminal states; selected_geometry requires control complete. Locked controller validates device/storage/env/117 source files before fresh native train_dist_mod command."
+    },
+    {
+      "name": "staging_write_boundary",
+      "status": "PASS_STATIC",
+      "detail": "Only updates this already staged experiment while preflight/normal directories are absent. Archives original R2 manifest/main bytes, writes the three explicit files, retains 117 source entries and verifies their bytes. Embedded stager has no model/GPU/progress-query calls."
+    },
+    {
+      "name": "transport_and_run_receipts",
+      "status": "PASS_STATIC",
+      "detail": "Fixed OpenSSH argv, strict known host, existing askpass, quoted remote code and environment-only credentials. Popen+poll returning a live process is only a launch acknowledgement, not device admission or successful runtime."
+    }
+  ],
+  "responsibility_count_semantics": {
+    "strategy_only": true,
+    "source": "existing selected_geometry_extra_record after _compute_loss",
+    "new_if_lines": [
+      460,
+      484,
+      529
+    ],
+    "fields": [
+      "epoch",
+      "batches",
+      "rows",
+      "extra_rows",
+      "extra_loss_sum",
+      "matched_root",
+      "matched_other",
+      "unmatched"
+    ],
+    "extra_loss_sum": "Sum of the existing already-batch-normalized extra loss values, not per-qualified-query mean or accuracy.",
+    "emission": "One JSONL record only after a whole native training epoch finishes.",
+    "rank_scope": "Existing single-rank WORLD_SIZE=1 contract.",
+    "objective_or_optimizer_change": false
+  },
+  "remaining_runtime_gates": [
+    "Actually execute the isolated launcher/source update and verify its receipt; this review did not stage anything.",
+    "Use an actual MCLN normal terminal intake from the existing observer; independently satisfy lock/device/storage/source assertions at launch. This report does not certify current availability.",
+    "Actually complete the two native engineering arms and inspect matching inputs, full factory/get_loss/final-B gradients, group updates and same-process recovery. Produce the required fresh actual integrity review of that exact intake.",
+    "Start formal native_control fresh, then selected_geometry only after control ends. Do not use engineering checkpoints. Verify full identical-source initialization/E0, normal updates, 9508-row metrics, responsibility counts, retained best/latest and stop history.",
+    "Do not equate same-process preflight restore or stored state with normal cold resume; it remains unsupported.",
+    "Assess actual paired benefits and harms and the same-model ScanRefer60/52, three effective contributions, Nr3D/Sr3D goals; neither these diagnostics nor launcher engineering count as a contribution or accuracy result."
+  ],
+  "timing_metadata": {
+    "preflight_estimate_seconds": 1300,
+    "preflight_first_observation_after_seconds": 1120,
+    "subsequent_poll_seconds": 240,
+    "normal_initial_observation_after_seconds": 1500,
+    "estimate_is_runtime_measurement": false,
+    "existing_observer_changed": false,
+    "note": "Metadata for future scheduling; not an installed observer or a reason to query the active MCLN task. Re-estimate from actual throughput after launch."
+  },
+  "R2_evidence_boundaries_retained": {
+    "same_8_augmented_inputs_repeated_observations": 16,
+    "saved_geometry": "Mask endpoint, not uncached B final",
+    "full_factory_or_model_or_full_get_loss_CPU_acceptance": false,
+    "all_G_no_object_conflicts_resolved": false
+  },
+  "trace_dir": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_review/.aris/traces/experiment-bridge/2026-10-12_run03",
+  "final_response": "追加审查完成：**源码准备 PASS；综合 WARN，SOURCE_ONLY / same-family provisional**，`scoped_blockers=[]`。\n\n已核对两类 launcher 的锁与准入顺序、preflight 串行两组及正式组顺序。新增计数之外，`main_utils.py` 的 AST 与 R2 完全一致。原 R1/R2 报告、五个 R2 overlay 和 18:00 staging 回执均保留。\n\n必要 CPU 解析/生成/引号检查通过；本轮 **0 SSH、0 GPU 查询、0 NN/训练**。新 staging、真实 device admission、pair 完成及 fresh integrity 审查、正常训练和精度验收仍待实际执行；冷启动续训继续 unsupported。未查询或修改活动 MCLN/观察器。\n\n报告：[SOURCE_REVIEW_LAUNCHERS.md](C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_review/SOURCE_REVIEW_LAUNCHERS.md) · [JSON](C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_review/SOURCE_REVIEW_LAUNCHERS.json)。完整请求、输入快照/哈希、CPU 回执和 FINAL_RESPONSE 已存 run03；requested Astra/max，actual UNATTESTED。",
+  "completed_at_utc": "2026-10-12T11:29:00.466677+00:00",
+  "all_inputs_unchanged_at_finalization": true,
+  "input_count": 30,
+  "cpu_result": {
+    "status": "PASS_SOURCE_ONLY_LAUNCHERS_DIAGNOSTICS",
+    "scope": "SOURCE_ONLY",
+    "executable": "E:\\anaconda\\python.exe",
+    "python": "3.7.6 (default, Jan  8 2020, 20:23:39) [MSC v.1916 64 bit (AMD64)]",
+    "input_count": 30,
+    "all_inputs_unchanged": true,
+    "R1_R2_reports_exactly_preserved": true,
+    "R2_five_overlay_files_unchanged": true,
+    "saved_18h_stage_receipt_preserved": true,
+    "saved_stage_timestamp": "2026-10-12T18:00:08.966986+08:00",
+    "saved_stage_receipt_requeried_remotely": false,
+    "syntax": [
+      {
+        "name": "gpu_preflight_pair_controller.py",
+        "py37_parse": true,
+        "crcrlf": 0,
+        "sha256": "3131d422fab14027d656d1fbb395030c2281118630924c642be087b369974c95"
+      },
+      {
+        "name": "launch_gpu_preflight_pair_authorized.py",
+        "py37_parse": true,
+        "crcrlf": 0,
+        "sha256": "647552c3643330a6d93a7b48c6d623571cfa51cfab5ad19c34b74c31b498d4fc"
+      },
+      {
+        "name": "launch_normal_arm_authorized.py",
+        "py37_parse": true,
+        "crcrlf": 0,
+        "sha256": "e0a88e1db48bc380567d289fda4fc938839b34d8263b35a13d303666b5549ed1"
+      },
+      {
+        "name": "normal_run_controller_v3.py",
+        "py37_parse": true,
+        "crcrlf": 0,
+        "sha256": "583cae6321f3e7b40a34a78f310a9d3c08749d5f4ee260b577142f5d8c877246"
+      },
+      {
+        "name": "stage_launcher_sources_authorized.py",
+        "py37_parse": true,
+        "crcrlf": 0,
+        "sha256": "b5e4031f9e852dedbc8f84de0f8f350c5cd79a1e305b969ec82c29ddfd472efa"
+      },
+      {
+        "name": "source_overlay_v3/main_utils.py",
+        "py37_parse": true,
+        "crcrlf": 0,
+        "sha256": "5d85013e96abb85881bafaaee695809db6e7f7a9ded3440972948ddbcda1ac9c"
+      },
+      {
+        "name": "prepare_launcher_sources.py",
+        "py37_parse": true,
+        "crcrlf": 0,
+        "sha256": "39e5a5778a79afe7c6a98d81924ceed53e3024ecb6b3fa83735aeec20e9112c6"
+      }
+    ],
+    "saved_execution_source_count": 6,
+    "embedded": [
+      {
+        "name": "launch_gpu_preflight_pair_authorized.py",
+        "py37_parse": true,
+        "argv_quote_roundtrip": true
+      },
+      {
+        "name": "launch_normal_arm_authorized.py",
+        "py37_parse": true,
+        "argv_quote_roundtrip": true
+      },
+      {
+        "name": "stage_launcher_sources_authorized.py",
+        "py37_parse": true,
+        "argv_quote_roundtrip": true
+      }
+    ],
+    "exact_generator_outputs": true,
+    "prior_generator_failure_reproduced": {
+      "type": "SyntaxError",
+      "message": "EOL while scanning string literal",
+      "generated_lineno": 46,
+      "generated_line": "(root / 'admission.json').write_text(json.dumps(admission, indent=2) + '\n"
+    },
+    "diagnostics_only_if_lines": [
+      460,
+      484,
+      529
+    ],
+    "all_other_main_AST_identical_to_R2": true,
+    "lock_commands": [
+      {
+        "launcher": "launch_gpu_preflight_pair_authorized.py",
+        "argv": [
+          "flock",
+          "--no-fork",
+          "-n",
+          "EXISTING_LOCK_TOKEN",
+          "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+          "-B",
+          "-u",
+          "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/preflight/gpu_preflight_pair_controller.py"
+        ]
+      },
+      {
+        "launcher": "launch_normal_arm_authorized.py",
+        "argv": [
+          "flock",
+          "--no-fork",
+          "-n",
+          "EXISTING_LOCK_TOKEN",
+          "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+          "-B",
+          "-u",
+          "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/normal/native_control/normal_run_controller.py"
+        ]
+      }
+    ],
+    "same_existing_lock_setting": true,
+    "remote_stager_no_GPU_or_progress_query_source": true,
+    "actual_wrapper_or_controller_entry_execution": false,
+    "actual_SSH_calls": 0,
+    "actual_GPU_queries": 0,
+    "actual_neural_calls": 0,
+    "actual_training_calls": 0,
+    "actual_device_admission": false,
+    "actual_source_update": false,
+    "actual_pair_complete": false,
+    "actual_normal_training_complete": false,
+    "formal_accuracy": null,
+    "cold_resume_supported": false
+  }
+}

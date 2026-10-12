@@ -1,0 +1,129 @@
+{
+  "status": "PASS_SOURCE_ONLY_LAUNCHERS_DIAGNOSTICS",
+  "scope": "SOURCE_ONLY",
+  "executable": "E:\\anaconda\\python.exe",
+  "python": "3.7.6 (default, Jan  8 2020, 20:23:39) [MSC v.1916 64 bit (AMD64)]",
+  "input_count": 30,
+  "all_inputs_unchanged": true,
+  "R1_R2_reports_exactly_preserved": true,
+  "R2_five_overlay_files_unchanged": true,
+  "saved_18h_stage_receipt_preserved": true,
+  "saved_stage_timestamp": "2026-10-12T18:00:08.966986+08:00",
+  "saved_stage_receipt_requeried_remotely": false,
+  "syntax": [
+    {
+      "name": "gpu_preflight_pair_controller.py",
+      "py37_parse": true,
+      "crcrlf": 0,
+      "sha256": "3131d422fab14027d656d1fbb395030c2281118630924c642be087b369974c95"
+    },
+    {
+      "name": "launch_gpu_preflight_pair_authorized.py",
+      "py37_parse": true,
+      "crcrlf": 0,
+      "sha256": "647552c3643330a6d93a7b48c6d623571cfa51cfab5ad19c34b74c31b498d4fc"
+    },
+    {
+      "name": "launch_normal_arm_authorized.py",
+      "py37_parse": true,
+      "crcrlf": 0,
+      "sha256": "e0a88e1db48bc380567d289fda4fc938839b34d8263b35a13d303666b5549ed1"
+    },
+    {
+      "name": "normal_run_controller_v3.py",
+      "py37_parse": true,
+      "crcrlf": 0,
+      "sha256": "583cae6321f3e7b40a34a78f310a9d3c08749d5f4ee260b577142f5d8c877246"
+    },
+    {
+      "name": "stage_launcher_sources_authorized.py",
+      "py37_parse": true,
+      "crcrlf": 0,
+      "sha256": "b5e4031f9e852dedbc8f84de0f8f350c5cd79a1e305b969ec82c29ddfd472efa"
+    },
+    {
+      "name": "source_overlay_v3/main_utils.py",
+      "py37_parse": true,
+      "crcrlf": 0,
+      "sha256": "5d85013e96abb85881bafaaee695809db6e7f7a9ded3440972948ddbcda1ac9c"
+    },
+    {
+      "name": "prepare_launcher_sources.py",
+      "py37_parse": true,
+      "crcrlf": 0,
+      "sha256": "39e5a5778a79afe7c6a98d81924ceed53e3024ecb6b3fa83735aeec20e9112c6"
+    }
+  ],
+  "saved_execution_source_count": 6,
+  "embedded": [
+    {
+      "name": "launch_gpu_preflight_pair_authorized.py",
+      "py37_parse": true,
+      "argv_quote_roundtrip": true
+    },
+    {
+      "name": "launch_normal_arm_authorized.py",
+      "py37_parse": true,
+      "argv_quote_roundtrip": true
+    },
+    {
+      "name": "stage_launcher_sources_authorized.py",
+      "py37_parse": true,
+      "argv_quote_roundtrip": true
+    }
+  ],
+  "exact_generator_outputs": true,
+  "prior_generator_failure_reproduced": {
+    "type": "SyntaxError",
+    "message": "EOL while scanning string literal",
+    "generated_lineno": 46,
+    "generated_line": "(root / 'admission.json').write_text(json.dumps(admission, indent=2) + '\n"
+  },
+  "diagnostics_only_if_lines": [
+    460,
+    484,
+    529
+  ],
+  "all_other_main_AST_identical_to_R2": true,
+  "lock_commands": [
+    {
+      "launcher": "launch_gpu_preflight_pair_authorized.py",
+      "argv": [
+        "flock",
+        "--no-fork",
+        "-n",
+        "EXISTING_LOCK_TOKEN",
+        "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+        "-B",
+        "-u",
+        "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/preflight/gpu_preflight_pair_controller.py"
+      ]
+    },
+    {
+      "launcher": "launch_normal_arm_authorized.py",
+      "argv": [
+        "flock",
+        "--no-fork",
+        "-n",
+        "EXISTING_LOCK_TOKEN",
+        "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+        "-B",
+        "-u",
+        "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/normal/native_control/normal_run_controller.py"
+      ]
+    }
+  ],
+  "same_existing_lock_setting": true,
+  "remote_stager_no_GPU_or_progress_query_source": true,
+  "actual_wrapper_or_controller_entry_execution": false,
+  "actual_SSH_calls": 0,
+  "actual_GPU_queries": 0,
+  "actual_neural_calls": 0,
+  "actual_training_calls": 0,
+  "actual_device_admission": false,
+  "actual_source_update": false,
+  "actual_pair_complete": false,
+  "actual_normal_training_complete": false,
+  "formal_accuracy": null,
+  "cold_resume_supported": false
+}

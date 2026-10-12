@@ -1,0 +1,577 @@
+{
+  "audit_skill": "experiment-audit",
+  "execution_scope": "REAL_SAVED_SUPERPOINT_BOUNDARY_TRAINING_PILOT",
+  "supplemental_execution_scope": "REAL_RETAINED_9508_SAME_FORWARD_GEOMETRY_CONTROL_COUNTS",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "WARN",
+  "blocking_findings": [],
+  "reason_code": "numeric_checks_pass_with_required_saved_data_scope_limits",
+  "summary": "Independent CPU recomputation confirms both saved summaries. Scope warnings remain: the point pilot covers only eight augmented training rows, provided-label purity is not physical purity, final B is absent, and retained whole/extremal controls do not establish a strictly better extremal feature contribution.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "executor_model": "UNATTESTED",
+  "reviewer_family": "openai",
+  "executor_family": "openai",
+  "requested_reviewer_model_by_skill": "gpt-6-astra",
+  "requested_reasoning_effort_by_skill": "max",
+  "actual_runtime_model_attribution": "UNATTESTED",
+  "attribution_note": "Requested skill routing is not runtime attestation. No runtime model/effort identifier was supplied to this reviewer.",
+  "reviewer_task_path": "/root/pv_superpoint_boundary_pilot_audit_20261012",
+  "generated_at": "2026-10-12T15:14:05.901272+00:00",
+  "date": "2026-10-12",
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py": "5a4b20f724be44cbc4368498c634ba6fadf831f19dfee60b2ba263efb2faad51",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\RESULT.json": "0910eb6907c7a80e3be811e640ddcc470eb7e45fdd188ead376ff75a54326b99",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\preflight_support_step_1\\receipt.json": "08656f118dcddc5eca22b7eaa84e90d0ee5082093faf29d26a59fcb4a08a730f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py": "33cec963d2a1277a85c861dfd8dd1049604e9123e75c6887c4c23209f6272154",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\check_saved_responsibility_cpu.py": "5f5c290cd4264d02c7292e15f6ba2dc141d2707495188936a3613ba447933d16",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\matched_mask_objective.py": "67d05d069e1b748477af1a3c84b586375effbc21f1fd99b328ec7029f7e17788",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\mask_reference.py": "fe3075a600359ace30b0660b5afb5b1eb5237b2da0e9eb2ad1f9dd6b727463ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\run_span_pair.py": "ab44f57fd062c6a5ba03da1740a3a1e000523321e020bb8b48509b3fb90eba2c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\mask_support_model_factory.py": "e9fd9ad7dab0d18dfc4c9089d85af57eb958d86768ec750c5f609551a8c87ab6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\selected_mask_reference_factory.py": "09995a92ff93db5d475e2e64430219e83c77ed181213b8210695b88c5a991f84",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\imports.json": "6b1f42cf80a5b3c29e383b383d38974221cbe4b00dcd71ef5c268ea88e3aac09",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\preflight_support_step_1\\row_00.npz": "1ff71fc805569f7f12edc4b6d02df38a280ec3db47520c4f54041be873e07f2e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\preflight_support_step_1\\row_01.npz": "a809ef3ac40eca0d7e0e75d81030d4b08d9a14b772c76eb38de24eb4c6ec0e3c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\preflight_support_step_1\\row_02.npz": "ec78a78d9de7089fd1c3aff273d41cb99cd88f326bb20d1d1a502bcd58127c10",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\preflight_support_step_1\\row_03.npz": "c9bd0f397aceb8bf836ce9d7bd4c2f95841c439e73de52b9fe8645271854fd5f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\preflight_support_step_1\\row_04.npz": "a5cc137897a740fc359b0cd1179e199e31348e62baf132bdac1b0407318a3502",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\preflight_support_step_1\\row_05.npz": "4acfaebe8e10e2891b8aaddf5183b44512128c7356c74fe608c4febce060c98f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\preflight_support_step_1\\row_06.npz": "e979a516124ee1c1159176ac9dec5622380d236d5c62787bb301569acca6a1d1",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\preflight_support_step_1\\row_07.npz": "794dbc073f234785504cb8f4c1e0bac58f62de7ae09829891c52bcfd259b27ba",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\summarize_retained_geometry_controls.py": "c2f8e52d51b0df4457358778324ea9848004906089734252aabf9e318d518fcf",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\retained_geometry_controls_20261012\\RESULT.json": "4ebc792a3ad896202eb50ef6847d9c2961ff301a7b9fd20993ee7fd67a671fa9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\formal\\rows.jsonl": "7b29b1646e52e8d3d253b3167b6895df9d789e7325022b0d9440814ec143c7b9"
+  },
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\trace\\2026-10-12_run01",
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "details": "The exact historical dataset source hash matches imports.json. GT masks are filled from scan.three_d_objects[tid][points] and copied through batch gt_masks into saved targets; the pilot does not derive truth from model predictions. Raw original annotation/scan files were not reopened, so physical segmentation correctness is outside this saved-data audit.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "start_line": 1085,
+          "end_line": 1119
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "start_line": 1324,
+          "end_line": 1329
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "start_line": 1387,
+          "end_line": 1396
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\matched_mask_objective.py",
+          "start_line": 6,
+          "end_line": 30
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py",
+          "start_line": 103,
+          "end_line": 123
+        }
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "Point IoU uses intersection/union, with strict IoU > 0.5. Geometric IoU is recomputed from saved boxes and the same row GT box. No metric is divided by a model-output maximum.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 58,
+          "end_line": 63
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\run_span_pair.py",
+          "start_line": 252,
+          "end_line": 257
+        }
+      ]
+    },
+    "C_result_existence_hashes_numbers": {
+      "status": "PASS",
+      "details": "23 input files have fresh raw SHA-256 hashes. All eight NPZ file byte lengths/file hashes/raw point-byte hashes match receipt; all result input bindings match. The full primary JSON including all 381 numerical leaves and the full supplement JSON including all 39 numerical leaves match independent recomputation.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 11,
+          "end_line": 20
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\summarize_retained_geometry_controls.py",
+          "start_line": 10,
+          "end_line": 32
+        }
+      ]
+    },
+    "D_dead_code_and_execution": {
+      "status": "PASS",
+      "details": "Pilot computations and summaries are top-level executed code in the source; the original capture is called on preflight from step(). This audit independently reproduced outputs without executing either supplied analysis, the historical runner, the CPU responsibility probe, or any project module. Existing gradient/protection-test results were not rerun or newly attested.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py",
+          "start_line": 126,
+          "end_line": 130
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 16,
+          "end_line": 97
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\summarize_retained_geometry_controls.py",
+          "start_line": 10,
+          "end_line": 37
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\check_saved_responsibility_cpu.py",
+          "start_line": 63,
+          "end_line": 123
+        }
+      ]
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "Primary: eight observations, eight distinct row IDs and scenes, only step 1, selected native-score winner per row. Step 2 from the separate responsibility script is not an additional independent sample. Supplemental 9508 historical rows have a separate scope and cannot supply missing point-level superpoint incidence.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\check_saved_responsibility_cpu.py",
+          "start_line": 35,
+          "end_line": 36
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\check_saved_responsibility_cpu.py",
+          "start_line": 119,
+          "end_line": 123
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 74,
+          "end_line": 91
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\summarize_retained_geometry_controls.py",
+          "start_line": 30,
+          "end_line": 34
+        }
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": "Saved real-GT training-input diagnostic plus a separate historical real-GT geometry-control recount. Neither is synthetic self-reference. Classification does not remove scope or causal limitations."
+    },
+    "mask_logit_and_extent_reconstruction": {
+      "status": "PASS",
+      "details": "All 13 observed query-logit pairs reconstruct their stored superpoint masks exactly; all eight selected queries are unique saved-score maxima. All eight selected member extents reconstruct saved center/size exactly. All 1,013 valid reference candidates also reconstruct exactly. All 2,048 reference-valid flags match raw support validity. No all-256 raw-logit reconstruction is claimed because only selected/matched logits were saved."
+    },
+    "superpoint_categories_and_extrema": {
+      "status": "PASS",
+      "details": "Independent set-based GT and non-GT memberships partition every false positive into mixed or pure-background categories relative to provided point labels; all 48 faces and their extrema labels agree exactly. Zero mixed superpoints is a property of these samples, not evidence for universal physical purity."
+    },
+    "separate_supplemental_geometry_controls": {
+      "status": "PASS",
+      "execution_scope": "REAL_RETAINED_9508_SAME_FORWARD_GEOMETRY_CONTROL_COUNTS",
+      "details": "All five methods, all strict-threshold hits and all eight paired transition tables reproduce from saved boxes and root GT. Both float32 and float64 reconstruction give identical 0.25/0.5 decisions to cached IoUs; fixed_half boxes are exactly the float32 average of native and Mask. Historical source selects one query and one parent forward shared by controls and arms.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py",
+          "start_line": 290,
+          "end_line": 329
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\summarize_retained_geometry_controls.py",
+          "start_line": 10,
+          "end_line": 34
+        }
+      ]
+    }
+  },
+  "scope_warnings": [
+    {
+      "id": "W1",
+      "finding": "Eight distinct retained augmented training rows, step 1, are a pilot only.",
+      "action": "Keep the denominator as eight selected rows from one historical augmented training batch; do not report a full-validation boundary-failure rate.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 13,
+          "end_line": 16
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 74,
+          "end_line": 91
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py",
+          "start_line": 367,
+          "end_line": 380
+        }
+      ]
+    },
+    {
+      "id": "W2",
+      "finding": "All 12,423 present row-superpoint instances have constant provided GT membership; there are zero mixed-label superpoints in these eight samples.",
+      "action": "Say pure background relative to the provided root point GT. The zero mixed count supplies no cases with which to test a mixed-superpoint mechanism, and does not establish true physical purity.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "start_line": 1099,
+          "end_line": 1103
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\matched_mask_objective.py",
+          "start_line": 6,
+          "end_line": 16
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 38,
+          "end_line": 45
+        }
+      ]
+    },
+    {
+      "id": "W3",
+      "finding": "The pilot reconstructs the saved A-corrected Mask member extent. Final B boxes are absent.",
+      "action": "Keep Mask endpoint and final B/deployed behavior distinct. Do not use this pilot as an explanation of final-model validation errors.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py",
+          "start_line": 95,
+          "end_line": 114
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\check_saved_responsibility_cpu.py",
+          "start_line": 63,
+          "end_line": 69
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 78,
+          "end_line": 91
+        }
+      ]
+    },
+    {
+      "id": "W4",
+      "finding": "GT member extent differs from the actual training box in all eight rows; maximum face gaps range from 0.025558680295944214 to 0.14195895195007324 m.",
+      "action": "Retain both references and label outward distance as relative to GT member extent. Do not equate it with the training-box residual or formal box error.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "start_line": 1105,
+          "end_line": 1113
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 37,
+          "end_line": 37
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 59,
+          "end_line": 71
+        }
+      ]
+    },
+    {
+      "id": "W5",
+      "finding": "No within-face ties occur in the 48 selected faces. The bad-mask row 27285 reuses point 47338 on two faces, producing six point-face incidences but five unique points.",
+      "action": "Keep face counts and point counts separate; in general category presence counts can overlap when extrema tie. In this pilot the seven good-mask outward faces have seven distinct witnesses.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 47,
+          "end_line": 57
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_saved_superpoint_boundary_pilot.py",
+          "start_line": 84,
+          "end_line": 91
+        }
+      ]
+    },
+    {
+      "id": "W6",
+      "finding": "The supplement is a recount of historical shared-forward 9508-row outputs, not a new neural evaluation. Extremal versus whole support is +1 hit at 0.25 and -1 at 0.5.",
+      "action": "Preserve the fixed-half comparison as an observed historical count difference; do not claim strict extremal-feature superiority, multi-seed significance, three independently effective contributions, or completion of a performance goal.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\summarize_retained_geometry_controls.py",
+          "start_line": 14,
+          "end_line": 34
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py",
+          "start_line": 290,
+          "end_line": 329
+        }
+      ]
+    },
+    {
+      "id": "W7",
+      "finding": "Historical float32 Mask IoUs exceed 1 by roundoff in 112 rows (maximum 1.0000050067901611). Float64 box recomputation is bounded by 1 and reproduces every 0.25/0.5 decision.",
+      "action": "Do not claim bitwise equality of all continuous IoUs. Keep the historical raw scores; no clipping or score normalization was applied by the audit.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py",
+          "start_line": 321,
+          "end_line": 327
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\run_span_pair.py",
+          "start_line": 252,
+          "end_line": 257
+        }
+      ]
+    }
+  ],
+  "execution": {
+    "python": "E:/anaconda/python.exe",
+    "numerical_runtime": "NumPy",
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "GPU_calls": 0,
+    "SSH_calls": 0,
+    "remote_queries": 0,
+    "active_job_queries": 0,
+    "model_loads": 0,
+    "installs": 0,
+    "raw_dataset_reload": false,
+    "private_MEMORY_loaded": false
+  },
+  "deterministic_verification": {
+    "primary_checks": 770,
+    "supplemental_checks": 51,
+    "failed_checks": 0,
+    "primary_result_numeric_leaves": 381,
+    "supplement_result_numeric_leaves": 39,
+    "full_result_json_equal": true,
+    "input_hashes_unchanged_on_final_read": true
+  },
+  "primary_summary": {
+    "scope": "REAL_ONE_AUGMENTED_TRAINING_BATCH_POINT_MEMBERSHIP_PILOT",
+    "observations": 8,
+    "unique_training_rows": 8,
+    "steps_used": [
+      1
+    ],
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "GPU_calls": 0,
+    "remote_queries": 0,
+    "final_B_boxes_available": false,
+    "geometry": "saved A-corrected Mask member range before B, not final deployed box",
+    "reference": "actual root point membership extent, kept separate from actual training box",
+    "masks_good_rows": 7,
+    "good_mask_rows_with_mixed_superpoint_false_points": 0,
+    "good_mask_rows_with_pure_background_superpoint_false_points": 5,
+    "good_mask_rows_with_outward_extent": 4,
+    "good_mask_outward_faces_with_mixed_superpoint_false_extrema": 0,
+    "good_mask_outward_faces_with_pure_background_false_extrema": 7,
+    "accuracy": null,
+    "interpretation": "Small real training pilot, not a validation failure rate or causal proof; extreme points may tie across both categories, so face counts are not disjoint. No claim about final B outputs or noise as the sole cause."
+  },
+  "supplemental_summary": {
+    "scope": "REAL_RETAINED_9508_SAME_FORWARD_GEOMETRY_CONTROL_COUNTS",
+    "rows": 9508,
+    "metrics": {
+      "native": {
+        "hits025": 5615,
+        "hits050": 4495
+      },
+      "mask": {
+        "hits025": 5606,
+        "hits050": 4881
+      },
+      "fixed_half": {
+        "hits025": 5675,
+        "hits050": 4857
+      },
+      "whole_support": {
+        "hits025": 5676,
+        "hits050": 4921
+      },
+      "extremal_support": {
+        "hits025": 5677,
+        "hits050": 4920
+      }
+    },
+    "comparisons": {
+      "native__to__extremal_support": {
+        "025": {
+          "repairs": 158,
+          "breaks": 96,
+          "net": 62
+        },
+        "050": {
+          "repairs": 686,
+          "breaks": 261,
+          "net": 425
+        }
+      },
+      "mask__to__extremal_support": {
+        "025": {
+          "repairs": 87,
+          "breaks": 16,
+          "net": 71
+        },
+        "050": {
+          "repairs": 103,
+          "breaks": 64,
+          "net": 39
+        }
+      },
+      "fixed_half__to__extremal_support": {
+        "025": {
+          "repairs": 33,
+          "breaks": 31,
+          "net": 2
+        },
+        "050": {
+          "repairs": 156,
+          "breaks": 93,
+          "net": 63
+        }
+      },
+      "whole_support__to__extremal_support": {
+        "025": {
+          "repairs": 1,
+          "breaks": 0,
+          "net": 1
+        },
+        "050": {
+          "repairs": 3,
+          "breaks": 4,
+          "net": -1
+        }
+      }
+    },
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "GPU_calls": 0,
+    "remote_queries": 0,
+    "retained_checkpoint_changed": false,
+    "interpretation": "Previously evaluated outputs, same selected Query and shared parent forward. Learned axis mixing has a positive comparison to fixed-half geometry; extremal versus whole features has no strict advantage (-1) and cannot support a claim that extremal features independently improve accuracy. Historical model selection is unchanged; no multi-seed significance or new model accuracy is claimed."
+  },
+  "primary_row_ids": [
+    27845,
+    23527,
+    27285,
+    9781,
+    3314,
+    8523,
+    15720,
+    32718
+  ],
+  "superpoint_purity": {
+    "definition": "Relative to provided root point membership only",
+    "present_row_superpoint_instances": 12423,
+    "mixed_label_instances": 0,
+    "physical_purity_verified": false,
+    "dataset_source_hash_matches_historical_import": true
+  },
+  "continuous_iou_precision": {
+    "native": {
+      "max_abs": 4.172325134277344e-07,
+      "exact_iou_rows": 6529,
+      "total_rows": 9508,
+      "float32_max_iou": 0.9572820067405701,
+      "float64_max_iou": 0.9572816993656026,
+      "saved_max_iou": 0.9572818279266357,
+      "saved_rows_above_one": 0,
+      "max_abs_float64_vs_saved": 2.8395898118982466e-06
+    },
+    "mask": {
+      "max_abs": 6.556510925292969e-07,
+      "exact_iou_rows": 6398,
+      "total_rows": 9508,
+      "float32_max_iou": 1.0000050067901611,
+      "float64_max_iou": 1.0,
+      "saved_max_iou": 1.0000050067901611,
+      "saved_rows_above_one": 112,
+      "max_abs_float64_vs_saved": 6.6200876713828904e-06
+    },
+    "fixed_half": {
+      "max_abs": 5.960464477539062e-07,
+      "exact_iou_rows": 6485,
+      "total_rows": 9508,
+      "float32_max_iou": 0.9773566722869873,
+      "float64_max_iou": 0.9773563734486674,
+      "saved_max_iou": 0.9773566722869873,
+      "saved_rows_above_one": 0,
+      "max_abs_float64_vs_saved": 3.2120334879648382e-06
+    },
+    "whole_support": {
+      "max_abs": 4.76837158203125e-07,
+      "exact_iou_rows": 6400,
+      "total_rows": 9508,
+      "float32_max_iou": 0.9878784418106079,
+      "float64_max_iou": 0.9878784547936567,
+      "saved_max_iou": 0.9878784418106079,
+      "saved_rows_above_one": 0,
+      "max_abs_float64_vs_saved": 5.5039801317713355e-06
+    },
+    "extremal_support": {
+      "max_abs": 5.960464477539062e-07,
+      "exact_iou_rows": 6388,
+      "total_rows": 9508,
+      "float32_max_iou": 0.987943172454834,
+      "float64_max_iou": 0.9879430836727436,
+      "saved_max_iou": 0.9879429936408997,
+      "saved_rows_above_one": 0,
+      "max_abs_float64_vs_saved": 4.023970051392212e-06
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "Seven of these eight selected training-row masks have point IoU > 0.5; five of those seven include provided-GT-background points and four extend beyond provided-GT-member extent, with seven outward faces witnessed by background-superpoint points.",
+      "impact": "supported_with_exact_pilot_scope"
+    },
+    {
+      "id": "C2",
+      "claim": "Mixed-superpoint contamination is absent generally, or the scene superpoints are physically pure.",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C3",
+      "claim": "The pilot establishes a causal explanation of final B failures, a validation incidence, or new model performance.",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C4",
+      "claim": "Retained extremal support has 63 more historical IoU > 0.5 hits than fixed-half geometry on the same 9508 selected rows.",
+      "impact": "supported_as_existing_output_comparison"
+    },
+    {
+      "id": "C5",
+      "claim": "Extremal support independently improves on whole support or proves three effective contributions.",
+      "impact": "unsupported"
+    }
+  ],
+  "audit_diagnostics_note": "Two exploratory assertions were corrected without changing any audited input: (1) invalid mask references need not equal raw native sizes, because their stored sizes empirically match max(native_size,1e-6); all selected and valid references are exact. (2) a strict float32 IoU <= 1 check was inappropriate for cancellation at identical boxes; original raw roundoff and float64 threshold checks are retained. First-attempt scripts/evidence and diagnostics are preserved and are not hidden source-result failures.",
+  "evidence_files": [
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\independent_recompute.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\recomputed_evidence.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\independent_controls_recompute.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\supplement_recomputed_evidence.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\independent_recompute_first_attempt.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\recomputed_evidence_first_attempt.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\additional_candidate_differences.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\independent_controls_recompute_first_attempt.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\supplement_recomputed_evidence_first_attempt.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\superpoint_boundary_pilot_20261012\\review\\supplement_float_rounding_diagnostic.json"
+  ]
+}

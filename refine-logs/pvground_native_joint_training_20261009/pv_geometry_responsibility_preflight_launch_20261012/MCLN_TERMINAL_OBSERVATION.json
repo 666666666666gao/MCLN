@@ -1,0 +1,141 @@
+{
+  "observed_cst": "2026-10-12T23:15:11.096726+08:00",
+  "stage": "normal_training",
+  "controller_alive": false,
+  "child_alive": false,
+  "remote_status": {
+    "status": "complete",
+    "started_cst": "2026-10-12T14:30:12.589048+08:00",
+    "child_argv": [
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/normal_training/train_native_mcln_portable.py",
+      "--source",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/MCLN",
+      "--spec",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/TRANSFER_SPEC.json",
+      "--output",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/normal_training/training",
+      "--max-epochs",
+      "8"
+    ],
+    "source": "/root/autodl-tmp/mcln_portable_best_transfer_20261012/MCLN",
+    "scope": "FULL_NATIVE_MCLN_TRAINING_MAX8_DECLINE2",
+    "child_pid": 271903,
+    "exit_code": 0,
+    "completed_cst": "2026-10-12T23:11:36.120282+08:00",
+    "elapsed_seconds": 31283.531297832727,
+    "result": {
+      "status": "complete",
+      "max_epochs": 8,
+      "actual_training_dataset_rows": 48655,
+      "training_batches_per_epoch": 6081,
+      "training_batch_size": 8,
+      "loader_generator_seed": 2027,
+      "train_sampler_seed": 2027,
+      "actual_training_flags": {
+        "joint_det": true,
+        "detect_intermediate": true,
+        "augment_det": true,
+        "butd": true
+      },
+      "checkpoint_history": "E71 core plus PV-trained A/B; fresh optimizer; no engineering-check state",
+      "PV_best_unchanged": true,
+      "full_goal_complete": false,
+      "epoch": 2,
+      "metrics": {
+        "epoch": 2,
+        "rows": 9508,
+        "primary_score": "last/bbs",
+        "hits025": 5525,
+        "acc025_percent": 58.10896087505259,
+        "hits050": 4579,
+        "acc050_percent": 48.159444678165755,
+        "completed_cst": "2026-10-12T23:11:21.295765+08:00",
+        "epoch_training_and_validation_seconds": 15913.265758737922
+      },
+      "best": {
+        "epoch": 0,
+        "rows": 9508,
+        "primary_score": "last/bbs",
+        "hits025": 5473,
+        "acc025_percent": 57.56205300799327,
+        "hits050": 4777,
+        "acc050_percent": 50.241901556583926,
+        "completed_cst": "2026-10-12T15:05:16.546653+08:00"
+      },
+      "early_stop": {
+        "epoch": 2,
+        "patience": 2,
+        "monitor": "complete9508_last/bbs_hits050",
+        "consecutive_declines": 2,
+        "stop": true,
+        "equality_or_increase_resets_streak": true,
+        "hits050": [
+          4777,
+          4596,
+          4579
+        ]
+      },
+      "optimizer_updates": 12162,
+      "updated_cst": "2026-10-12T23:11:24.995120+08:00",
+      "stop_reason": "two_consecutive_strict_declines",
+      "formal_training_completed": true,
+      "completed_cst": "2026-10-12T23:11:24.998714+08:00"
+    }
+  },
+  "files": [
+    {
+      "name": "status.json",
+      "bytes": 2611,
+      "sha256": "e18f7166a293efe5fe1ed42ed033bcd9391790f40fcb4214d9a7712c576221f1"
+    },
+    {
+      "name": "admission.json",
+      "bytes": 4026,
+      "sha256": "32aaed050b24d5229e9e4fbf8429e40782fa9aae97d113085f5e1b49cc2be031"
+    },
+    {
+      "name": "child.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "name": "training/RESULT.json",
+      "bytes": 1609,
+      "sha256": "ae985571be87844f05e237ffd4430f26e449a5339cb30239a69067e630841d9a"
+    },
+    {
+      "name": "training/PROGRESS.json",
+      "bytes": 1609,
+      "sha256": "ae985571be87844f05e237ffd4430f26e449a5339cb30239a69067e630841d9a"
+    },
+    {
+      "name": "training/native_metrics.jsonl",
+      "bytes": 775,
+      "sha256": "f2287793f81ae0b160c5d08ff6a1f89a353c0b9b9a9d3b0d7a3774b1b049ca01"
+    },
+    {
+      "name": "ENGINEERING_WEIGHT_RETIREMENT.json",
+      "bytes": 315,
+      "sha256": "e4917ac263ed9fdb17368049b1d3a1b0c56aa0a59117ad2ca6dc6569775e1aff"
+    }
+  ],
+  "tails": [
+    {
+      "name": "training.log",
+      "total_bytes": 992311
+    },
+    {
+      "name": "controller.log",
+      "total_bytes": 0
+    }
+  ],
+  "new_neural_forwards": 0,
+  "new_GPU_queries": 0,
+  "new_optimizer_updates": 0,
+  "first_due_cst": "2026-10-12T23:15:00+08:00",
+  "best_promoted": false,
+  "full_goal_complete": false
+}

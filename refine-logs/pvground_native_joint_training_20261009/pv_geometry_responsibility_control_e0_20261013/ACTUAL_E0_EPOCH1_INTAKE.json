@@ -1,0 +1,129 @@
+{
+  "observed_cst": "2026-10-13T01:39:20.556774+08:00",
+  "stage": "native_control",
+  "root": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/normal/native_control",
+  "controller_pid": 298293,
+  "controller_alive": true,
+  "child_alive": true,
+  "remote_status": {
+    "status": "running",
+    "phase": "native_normal_training",
+    "arm": "native_control",
+    "started_cst": "2026-10-13T00:50:42.438600+08:00",
+    "max_epochs": 8,
+    "patience": 2,
+    "actual_metrics": null,
+    "preflight_states_used": false,
+    "child_pid": 298296,
+    "child_argv": [
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/train_dist_mod.py",
+      "--model",
+      "PVGround",
+      "--dataset",
+      "scanrefer",
+      "--test_dataset",
+      "scanrefer",
+      "--data_root",
+      "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+      "--use_color",
+      "--use_soft_token_loss",
+      "--use_contrastive_align",
+      "--self_attend",
+      "--butd",
+      "--rng_seed",
+      "2027",
+      "--batch_size",
+      "8",
+      "--num_workers",
+      "4",
+      "--num_target",
+      "256",
+      "--num_decoder_layers",
+      "6",
+      "--num_encoder_layers",
+      "3",
+      "--self_position_embedding",
+      "loc_learned",
+      "--lr",
+      "1e-6",
+      "--lr_backbone",
+      "1e-6",
+      "--lr_modules",
+      "1e-5",
+      "--weight_decay",
+      "0.0005",
+      "--clip_norm",
+      "0.1",
+      "--max_epoch",
+      "8",
+      "--start_epoch",
+      "1",
+      "--val_freq",
+      "1",
+      "--lr-scheduler",
+      "step",
+      "--lr_decay_epochs",
+      "280",
+      "340",
+      "--warmup-epoch",
+      "-1",
+      "--native_init_spec",
+      "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/native_control_initialization.json",
+      "--log_dir",
+      "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/normal/native_control/logs",
+      "--exp",
+      "native_control",
+      "--print_freq",
+      "128"
+    ]
+  },
+  "files": [
+    {
+      "name": "normal_status.json",
+      "bytes": 1673,
+      "sha256": "98cf158170e6daf558832ae6c26139c15591507e6ebe658764cfc370afd6b6e3"
+    },
+    {
+      "name": "admission.json",
+      "bytes": 45667,
+      "sha256": "3e12e7e69944c6061306db724f5b9d3c03f69d871f2bbd768c8492e60ef6dba7"
+    },
+    {
+      "name": "logs/scanrefer/native_control/1791823853/native_diagnostic_epoch000.json",
+      "bytes": 1030,
+      "sha256": "609c6666bac513bb1bdaafb81073a9a8b7a1e93f537a9e2e04b588e9df279529"
+    },
+    {
+      "name": "logs/scanrefer/native_control/1791823853/native_metrics.jsonl",
+      "bytes": 119,
+      "sha256": "6ac44cde3118796ed70b1d8a9c0e564eab3bcf5785383b508051e6cbc6cc0914"
+    },
+    {
+      "name": "protocol.json",
+      "bytes": 2094,
+      "sha256": "3781872c4972b015d074379f63d9c7c7f6d492be5a64255c2fcc6e06df3c732b"
+    }
+  ],
+  "tails": [
+    {
+      "name": "controller.log",
+      "total_bytes": 0
+    },
+    {
+      "name": "train.log",
+      "total_bytes": 74659
+    }
+  ],
+  "receipts": {},
+  "weights": [],
+  "new_neural_forwards": 0,
+  "new_GPU_queries": 0,
+  "new_optimizer_updates": 0,
+  "first_due_cst": "2026-10-13T01:39:10.255223+08:00",
+  "actual_weights_loaded": false,
+  "best_promoted": false,
+  "full_goal_complete": false
+}

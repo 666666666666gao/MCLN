@@ -1,0 +1,11 @@
+{
+  "finding": "The first successful CPU fixture used runtime_binding/dataset_source/src/grounding_evaluator.py; actual staged PV uses runtime_binding/model_source/src/grounding_evaluator.py",
+  "effect": "Earlier PASS proves the dataset-source math fixture only; it does not prove the staged PV evaluator was executed",
+  "original_receipt_preserved": "EVAL_DIAGNOSTIC_CPU_CHECK_DATASET_EVALUATOR.json",
+  "original_script_preserved": "check_eval_diagnostics_cpu_r2_dataset_evaluator.py",
+  "repair": "Bind the actual model-source evaluator SHA256 to SOURCE_STAGE_R3_RECEIPT.json, extract its own two native methods and rerun in a new explicit engineering fixture directory",
+  "training_source_changed_by_repair": false,
+  "actual_dataset_evaluation": false,
+  "actual_GPU_calls": 0,
+  "actual_model_forwards": 0
+}

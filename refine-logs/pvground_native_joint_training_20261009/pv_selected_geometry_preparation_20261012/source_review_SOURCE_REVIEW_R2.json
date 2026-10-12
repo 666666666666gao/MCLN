@@ -1,0 +1,1380 @@
+{
+  "verdict": "WARN",
+  "scope": "SOURCE_ONLY",
+  "review_round": "R2",
+  "source_preparation_verdict": "PASS",
+  "source_preparation_pass": true,
+  "scoped_blockers": [],
+  "deployment_ready": false,
+  "actual_runtime_acceptance": false,
+  "formal_accuracy": null,
+  "full_goal_complete": false,
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_continuity": "R2 continuation by the R1 delegated reviewer; not a newly fresh R2 reviewer.",
+  "source_review_can_admit_static_staging_only": true,
+  "actual_stage_executed": false,
+  "actual_factory_executed": false,
+  "actual_full_get_loss_executed": false,
+  "actual_normal_training_loop_executed": false,
+  "actual_preflight_executed": false,
+  "actual_model_or_optimizer_checkpoint_recovery_executed": false,
+  "actual_cold_resume_supported": false,
+  "active_MCLN_progress": "NOT_QUERIED_NOT_ATTESTED",
+  "actual_remote_calls": 0,
+  "actual_GPU_calls": 0,
+  "actual_neural_forwards": 0,
+  "actual_optimizer_updates": 0,
+  "historical_objective_evidence_boundary": {
+    "saved_geometry": "Mask endpoint, not an uncached final B endpoint",
+    "unique_augmented_input_rows": 8,
+    "repeated_step_observations": 16,
+    "cached_mask_slices_only": true,
+    "full_factory_or_native_score_forward_proven": false,
+    "formal_accuracy_proven": false
+  },
+  "closed_findings": [
+    {
+      "id": "SRC-01",
+      "round": "R1",
+      "status": "CLOSED_IN_R2",
+      "description": "CRLF normalization plus write_bytes removes the actual CRCRLF parser failures. All five saved R2 overlay files parse on Python 3.7.6; original R1 bytes and FAIL reports remain unchanged.",
+      "source_paths": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/prepare_source_overlay_v2.py:17",
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/prepare_source_overlay_v2.py:24"
+      ],
+      "evidence": "CPU_VERIFICATION_R2.json"
+    },
+    {
+      "id": "R2-TRANSPORT-01",
+      "round": "R2_addendum",
+      "status": "CLOSED",
+      "description": "Observed shlex.join absent in the mandated Python 3.7.6 CPU runtime. Parent clarified the intended transport wrapper was Python 3.11; no claim of failure under 3.11. Parent nevertheless replaced the single call with explicit quote/join. Actual current argv round-trip now passes under 3.7.6; before-fix bytes and receipt retained.",
+      "source_paths": [
+        "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/stage_source_authorized.py:87"
+      ],
+      "evidence": [
+        ".aris/traces/experiment-bridge/2026-10-12_run02/CPU_SHLEX_RECEIPT.json",
+        ".aris/traces/experiment-bridge/2026-10-12_run02/STAGE_MINIMAL_FIX.patch",
+        "CPU_VERIFICATION_R2_ADDENDUM.json"
+      ]
+    }
+  ],
+  "source_checks": [
+    {
+      "name": "actual_saved_bytes_and_generation",
+      "status": "PASS",
+      "detail": "Five exact R2 overlay files, no CRCRLF, Py3.7 syntax; manifest hashes and reproductions of both generators agree."
+    },
+    {
+      "name": "objective_and_factory_forward_loss_flags",
+      "status": "PASS_STATIC",
+      "detail": "Objective bytes identical to R1; factory/model/loss hook logical text unchanged except line-ending repair. Current last_indices and compact targets retained; native box loss and strict point-mask eligibility; actual B denominator; old selected-mask extra off in both arms; training-only gate."
+    },
+    {
+      "name": "common_normal_loop",
+      "status": "PASS_STATIC_AND_EXTRACTED_CONTROL_FLOW",
+      "detail": "Both arms share main_utils.py and native train_dist_mod.py. E0 participates, adjacent strict decreases count, ties/increases reset, stop at second decrease or epoch8, latest saved before break, goal-first/strict/loose best and strict > preserves earlier ties. Actual train/eval/checkpoint calls stubbed in CPU fixtures."
+    },
+    {
+      "name": "execution_protocol_and_preflight_source",
+      "status": "PASS_STATIC_AND_ARGUMENT_PARSE",
+      "detail": "Two protocols differ only arm, initialization path, and geometry flag. Actual extracted parse_option accepts intended arguments. Preflight text exactly derives from existing native preflight; actual entry was never invoked."
+    },
+    {
+      "name": "controller_scope",
+      "status": "PASS_STATIC",
+      "detail": "Future controller requires pair preflight/fresh states/MCLN release admission; launches native normal entry then checks full row counts, epoch continuity, stop history and existence of best/latest. It does not inspect checkpoint contents or provide the missing queue/admission launcher."
+    },
+    {
+      "name": "staging_transport_source",
+      "status": "PASS_STATIC_AND_ARGV_QUOTING",
+      "detail": "116 recorded base files plus five overlay entries yield 117; known-host checking strict, fixed SSH argv and quoted remote Python, credentials inherited in environment, writes isolated absent destination. Embedded remote code imports no model/torch/process/GPU query library. Actual SSH not executed."
+    }
+  ],
+  "normal_loop_policy": {
+    "primary_score": "last/bbs",
+    "formal_rows": 9508,
+    "target_hits": [
+      5705,
+      4945
+    ],
+    "E0_included": true,
+    "max_epochs": 8,
+    "consecutive_adjacent_strict_declines": 2,
+    "equality_or_increase_resets": true,
+    "best_order": [
+      "both_targets_met",
+      "hits050",
+      "hits025"
+    ],
+    "ties_keep_earlier": true,
+    "latest_saved_before_stop": true,
+    "fresh_start_only": true,
+    "cold_resume_supported": false,
+    "historical_read_only_sequence": [
+      4920,
+      4599,
+      4625,
+      4476
+    ],
+    "historical_terminal_decline_streak": 1,
+    "historical_sequence_is_new_experiment_result": false
+  },
+  "deployment_pending_conditions": [
+    {
+      "id": "DEP-01",
+      "condition": "Actually stage the reviewed source under separate authorization, confirm runtime import origins, and implement the missing serial A100 admission/launch path after real MCLN terminal/device release. No current MCLN progress is certified."
+    },
+    {
+      "id": "DEP-02",
+      "condition": "Run both actual native GPU two-step preflights on the intended identical inputs; validate factory, forward, full get_loss, native final B gradients, original groups and same-process model/Adam/scheduler/RNG recovery. All remain unexecuted."
+    },
+    {
+      "id": "DEP-03",
+      "condition": "Start fresh formal arms without preflight state, verify identical initialization/source/seeds and full 9508-row E0, then native full data loops using this common policy. Checkpoint contents, true retained-best selection and complete per-epoch outputs need actual result audit."
+    },
+    {
+      "id": "DEP-04",
+      "condition": "Normal cold-resume is explicitly unsupported: history is saved in config but not restored by native load_checkpoint; main rejects training checkpoint_path. Same-process preflight restoration must not be promoted to cold full-loop resume acceptance."
+    },
+    {
+      "id": "DEP-05",
+      "condition": "Actual paired results must justify benefits and harms against both the common native control and retained strong point, same-model ScanRefer60/52, three valid contributions, and Nr3D/Sr3D. CPU passing does not satisfy these goals."
+    }
+  ],
+  "semantic_and_novelty_boundary": "New unmatched selected-query geometry supervision can coexist with original no-object/not-mentioned and contrastive responsibilities. Existing G semantic reassignment uses its own BoxIoU>0.5 condition; this mask-qualified objective need not meet it. No claim all conflicts disappear. Treat as a bounded training-responsibility change until causal paired gains support more; do not count it as a third effective module by construction.",
+  "trace_dir": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_review/.aris/traces/experiment-bridge/2026-10-12_run02",
+  "prior_review_preserved": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_review/SOURCE_REVIEW.md",
+  "final_response": "R2 已结案：**源码准备 PASS，综合 verdict WARN（SOURCE_ONLY / same-family provisional）**，`scoped_blockers=[]`。\n\nR1 的 CRCRLF 语法阻断已闭合，原 FAIL 报告及失败源字节保留。R2 common loop、追加 preflight/controller/协议及修复后的 staging 静态核对通过。CPU 只执行语法、原文生成、策略/提取控制流和参数/引号检查；没有运行模型、SSH、GPU、训练或恢复。\n\n真实双组预检、工厂/loss 挂钩、同起点完整 E0、串行 A100 admission/launcher 与正式结果审计仍待执行，不能认证精度、冷启动续训或三项贡献。Requested Astra/max，actual UNATTESTED。\n\n报告：[SOURCE_REVIEW_R2.md](C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_review/SOURCE_REVIEW_R2.md) · [JSON](C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_review/SOURCE_REVIEW_R2.json)。完整请求、输入哈希、失败字节、CPU 回执和 FINAL_RESPONSE 已存 run02 trace。",
+  "completed_at_utc": "2026-10-12T09:58:10.577380+00:00",
+  "input_manifest_counts": {
+    "primary": 54,
+    "addendum": 13
+  },
+  "all_bound_inputs_unchanged_at_finalization": true,
+  "R1_bound_inputs_unchanged": 47,
+  "R1_failure_reports_exactly_preserved": true,
+  "cpu_results": {
+    "primary": {
+      "status": "PASS_R2_SOURCE_SYNTAX_AND_EXTRACTED_LOOP_CONTROL_ONLY",
+      "executable": "E:\\anaconda\\python.exe",
+      "python": "3.7.6 (default, Jan  8 2020, 20:23:39) [MSC v.1916 64 bit (AMD64)]",
+      "torch_version": "1.13.1+cpu",
+      "scope": "SOURCE_ONLY",
+      "input_count": 54,
+      "all_inputs_unchanged": true,
+      "r1_bound_inputs_unchanged": 47,
+      "r1_fail_reports_exact": true,
+      "r1_failure_source_bytes_unchanged": true,
+      "syntax": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\main_utils.py",
+          "sha256": "a610ee1c7c22ae7a05c99f70026b42c1760dbdca1fee7c41bcdb1f0086f902d4",
+          "bytes": 24881,
+          "crcrlf": 0,
+          "py37_parse": true
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py",
+          "sha256": "b960fd486e4b325f346f3925d98bcda84be59020310d123832a789a525ceefee",
+          "bytes": 42048,
+          "crcrlf": 0,
+          "py37_parse": true
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\pv_ground.py",
+          "sha256": "7a2db438811cb2fccf77a85f8f45a6a572cb0a1bbbd60d337e98afcbfa5e5b84",
+          "bytes": 28937,
+          "crcrlf": 0,
+          "py37_parse": true
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\native_model_initialization.py",
+          "sha256": "27169c76bda9cf1a0247fc613b16017d74f92c7662a5f5b5dcaa9d827f3288db",
+          "bytes": 4712,
+          "crcrlf": 0,
+          "py37_parse": true
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\selected_support_geometry_objective.py",
+          "sha256": "74a1d38018b3f8cf38d2b9f133b2df44f90cc2d17e13775b5812c0b1d0d12d30",
+          "bytes": 4410,
+          "crcrlf": 0,
+          "py37_parse": true
+        }
+      ],
+      "original_SRC_01_closed": true,
+      "objective_bytes_unchanged_from_R1": true,
+      "flag_hook_logical_text_unchanged_from_R1": true,
+      "exact_preparer_outputs": true,
+      "original_common_loop_changes_exact": true,
+      "init_only_geometry_flag_differs": true,
+      "supplied_policy_replay_exact": true,
+      "saved_checker_output_expressions_removed": [
+        45,
+        46
+      ],
+      "historical_hits050": [
+        4920,
+        4599,
+        4625,
+        4476
+      ],
+      "historical_final_decline_streak": 1,
+      "extracted_control_flow_fixtures": [
+        {
+          "name": "e0_two_drops",
+          "last_epoch": 2,
+          "stop_reason": "two_consecutive_strict_declines",
+          "best_epochs": [
+            0
+          ],
+          "latest_epochs": [
+            1,
+            2
+          ],
+          "actual_extracted_tail_lines": [
+            374,
+            407
+          ],
+          "operations_stubbed": [
+            "train",
+            "evaluate",
+            "checkpoint"
+          ],
+          "history_written_before_checkpoint_call": true,
+          "events": [
+            [
+              "eval",
+              0
+            ],
+            [
+              "best",
+              0,
+              [
+                0
+              ]
+            ],
+            [
+              "sampler_epoch",
+              1
+            ],
+            [
+              "loader_seed",
+              2028
+            ],
+            [
+              "train_stub",
+              1
+            ],
+            [
+              "eval",
+              1
+            ],
+            [
+              "latest",
+              1,
+              [
+                0,
+                1
+              ]
+            ],
+            [
+              "sampler_epoch",
+              2
+            ],
+            [
+              "loader_seed",
+              2029
+            ],
+            [
+              "train_stub",
+              2
+            ],
+            [
+              "eval",
+              2
+            ],
+            [
+              "latest",
+              2,
+              [
+                0,
+                1,
+                2
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "tie_resets",
+          "last_epoch": 4,
+          "stop_reason": "two_consecutive_strict_declines",
+          "best_epochs": [
+            0
+          ],
+          "latest_epochs": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "actual_extracted_tail_lines": [
+            374,
+            407
+          ],
+          "operations_stubbed": [
+            "train",
+            "evaluate",
+            "checkpoint"
+          ],
+          "history_written_before_checkpoint_call": true,
+          "events": [
+            [
+              "eval",
+              0
+            ],
+            [
+              "best",
+              0,
+              [
+                0
+              ]
+            ],
+            [
+              "sampler_epoch",
+              1
+            ],
+            [
+              "loader_seed",
+              2028
+            ],
+            [
+              "train_stub",
+              1
+            ],
+            [
+              "eval",
+              1
+            ],
+            [
+              "latest",
+              1,
+              [
+                0,
+                1
+              ]
+            ],
+            [
+              "sampler_epoch",
+              2
+            ],
+            [
+              "loader_seed",
+              2029
+            ],
+            [
+              "train_stub",
+              2
+            ],
+            [
+              "eval",
+              2
+            ],
+            [
+              "latest",
+              2,
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            [
+              "sampler_epoch",
+              3
+            ],
+            [
+              "loader_seed",
+              2030
+            ],
+            [
+              "train_stub",
+              3
+            ],
+            [
+              "eval",
+              3
+            ],
+            [
+              "latest",
+              3,
+              [
+                0,
+                1,
+                2,
+                3
+              ]
+            ],
+            [
+              "sampler_epoch",
+              4
+            ],
+            [
+              "loader_seed",
+              2031
+            ],
+            [
+              "train_stub",
+              4
+            ],
+            [
+              "eval",
+              4
+            ],
+            [
+              "latest",
+              4,
+              [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "increase_resets",
+          "last_epoch": 4,
+          "stop_reason": "two_consecutive_strict_declines",
+          "best_epochs": [
+            0,
+            2
+          ],
+          "latest_epochs": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "actual_extracted_tail_lines": [
+            374,
+            407
+          ],
+          "operations_stubbed": [
+            "train",
+            "evaluate",
+            "checkpoint"
+          ],
+          "history_written_before_checkpoint_call": true,
+          "events": [
+            [
+              "eval",
+              0
+            ],
+            [
+              "best",
+              0,
+              [
+                0
+              ]
+            ],
+            [
+              "sampler_epoch",
+              1
+            ],
+            [
+              "loader_seed",
+              2028
+            ],
+            [
+              "train_stub",
+              1
+            ],
+            [
+              "eval",
+              1
+            ],
+            [
+              "latest",
+              1,
+              [
+                0,
+                1
+              ]
+            ],
+            [
+              "sampler_epoch",
+              2
+            ],
+            [
+              "loader_seed",
+              2029
+            ],
+            [
+              "train_stub",
+              2
+            ],
+            [
+              "eval",
+              2
+            ],
+            [
+              "best",
+              2,
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            [
+              "latest",
+              2,
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            [
+              "sampler_epoch",
+              3
+            ],
+            [
+              "loader_seed",
+              2030
+            ],
+            [
+              "train_stub",
+              3
+            ],
+            [
+              "eval",
+              3
+            ],
+            [
+              "latest",
+              3,
+              [
+                0,
+                1,
+                2,
+                3
+              ]
+            ],
+            [
+              "sampler_epoch",
+              4
+            ],
+            [
+              "loader_seed",
+              2031
+            ],
+            [
+              "train_stub",
+              4
+            ],
+            [
+              "eval",
+              4
+            ],
+            [
+              "latest",
+              4,
+              [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "max8_and_tie_keeps_earliest",
+          "last_epoch": 8,
+          "stop_reason": "max_epochs",
+          "best_epochs": [
+            0
+          ],
+          "latest_epochs": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "actual_extracted_tail_lines": [
+            374,
+            407
+          ],
+          "operations_stubbed": [
+            "train",
+            "evaluate",
+            "checkpoint"
+          ],
+          "history_written_before_checkpoint_call": true,
+          "events": [
+            [
+              "eval",
+              0
+            ],
+            [
+              "best",
+              0,
+              [
+                0
+              ]
+            ],
+            [
+              "sampler_epoch",
+              1
+            ],
+            [
+              "loader_seed",
+              2028
+            ],
+            [
+              "train_stub",
+              1
+            ],
+            [
+              "eval",
+              1
+            ],
+            [
+              "latest",
+              1,
+              [
+                0,
+                1
+              ]
+            ],
+            [
+              "sampler_epoch",
+              2
+            ],
+            [
+              "loader_seed",
+              2029
+            ],
+            [
+              "train_stub",
+              2
+            ],
+            [
+              "eval",
+              2
+            ],
+            [
+              "latest",
+              2,
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            [
+              "sampler_epoch",
+              3
+            ],
+            [
+              "loader_seed",
+              2030
+            ],
+            [
+              "train_stub",
+              3
+            ],
+            [
+              "eval",
+              3
+            ],
+            [
+              "latest",
+              3,
+              [
+                0,
+                1,
+                2,
+                3
+              ]
+            ],
+            [
+              "sampler_epoch",
+              4
+            ],
+            [
+              "loader_seed",
+              2031
+            ],
+            [
+              "train_stub",
+              4
+            ],
+            [
+              "eval",
+              4
+            ],
+            [
+              "latest",
+              4,
+              [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            ],
+            [
+              "sampler_epoch",
+              5
+            ],
+            [
+              "loader_seed",
+              2032
+            ],
+            [
+              "train_stub",
+              5
+            ],
+            [
+              "eval",
+              5
+            ],
+            [
+              "latest",
+              5,
+              [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            ],
+            [
+              "sampler_epoch",
+              6
+            ],
+            [
+              "loader_seed",
+              2033
+            ],
+            [
+              "train_stub",
+              6
+            ],
+            [
+              "eval",
+              6
+            ],
+            [
+              "latest",
+              6,
+              [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            ],
+            [
+              "sampler_epoch",
+              7
+            ],
+            [
+              "loader_seed",
+              2034
+            ],
+            [
+              "train_stub",
+              7
+            ],
+            [
+              "eval",
+              7
+            ],
+            [
+              "latest",
+              7,
+              [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ]
+            ],
+            [
+              "sampler_epoch",
+              8
+            ],
+            [
+              "loader_seed",
+              2035
+            ],
+            [
+              "train_stub",
+              8
+            ],
+            [
+              "eval",
+              8
+            ],
+            [
+              "latest",
+              8,
+              [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "both_goals_before_strict_then_loose",
+          "last_epoch": 8,
+          "stop_reason": "max_epochs",
+          "best_epochs": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "latest_epochs": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "actual_extracted_tail_lines": [
+            374,
+            407
+          ],
+          "operations_stubbed": [
+            "train",
+            "evaluate",
+            "checkpoint"
+          ],
+          "history_written_before_checkpoint_call": true,
+          "events": [
+            [
+              "eval",
+              0
+            ],
+            [
+              "best",
+              0,
+              [
+                0
+              ]
+            ],
+            [
+              "sampler_epoch",
+              1
+            ],
+            [
+              "loader_seed",
+              2028
+            ],
+            [
+              "train_stub",
+              1
+            ],
+            [
+              "eval",
+              1
+            ],
+            [
+              "best",
+              1,
+              [
+                0,
+                1
+              ]
+            ],
+            [
+              "latest",
+              1,
+              [
+                0,
+                1
+              ]
+            ],
+            [
+              "sampler_epoch",
+              2
+            ],
+            [
+              "loader_seed",
+              2029
+            ],
+            [
+              "train_stub",
+              2
+            ],
+            [
+              "eval",
+              2
+            ],
+            [
+              "best",
+              2,
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            [
+              "latest",
+              2,
+              [
+                0,
+                1,
+                2
+              ]
+            ],
+            [
+              "sampler_epoch",
+              3
+            ],
+            [
+              "loader_seed",
+              2030
+            ],
+            [
+              "train_stub",
+              3
+            ],
+            [
+              "eval",
+              3
+            ],
+            [
+              "best",
+              3,
+              [
+                0,
+                1,
+                2,
+                3
+              ]
+            ],
+            [
+              "latest",
+              3,
+              [
+                0,
+                1,
+                2,
+                3
+              ]
+            ],
+            [
+              "sampler_epoch",
+              4
+            ],
+            [
+              "loader_seed",
+              2031
+            ],
+            [
+              "train_stub",
+              4
+            ],
+            [
+              "eval",
+              4
+            ],
+            [
+              "latest",
+              4,
+              [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            ],
+            [
+              "sampler_epoch",
+              5
+            ],
+            [
+              "loader_seed",
+              2032
+            ],
+            [
+              "train_stub",
+              5
+            ],
+            [
+              "eval",
+              5
+            ],
+            [
+              "latest",
+              5,
+              [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            ],
+            [
+              "sampler_epoch",
+              6
+            ],
+            [
+              "loader_seed",
+              2033
+            ],
+            [
+              "train_stub",
+              6
+            ],
+            [
+              "eval",
+              6
+            ],
+            [
+              "latest",
+              6,
+              [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            ],
+            [
+              "sampler_epoch",
+              7
+            ],
+            [
+              "loader_seed",
+              2034
+            ],
+            [
+              "train_stub",
+              7
+            ],
+            [
+              "eval",
+              7
+            ],
+            [
+              "latest",
+              7,
+              [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ]
+            ],
+            [
+              "sampler_epoch",
+              8
+            ],
+            [
+              "loader_seed",
+              2035
+            ],
+            [
+              "train_stub",
+              8
+            ],
+            [
+              "eval",
+              8
+            ],
+            [
+              "latest",
+              8,
+              [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ]
+            ]
+          ]
+        }
+      ],
+      "full_factory_executed": false,
+      "full_native_get_loss_executed": false,
+      "actual_native_training_loop_executed": false,
+      "optimizer_state_saved_or_restored": false,
+      "checkpoint_operations_were_stubs": true,
+      "neural_forwards": 0,
+      "optimizer_updates": 0,
+      "GPU_calls": 0,
+      "remote_queries": 0,
+      "production_source_changes": 0,
+      "formal_accuracy": null,
+      "cold_resume_supported_by_prepared_fresh_loop": false
+    },
+    "addendum": {
+      "status": "PASS_ADDED_SOURCE_AND_ARGUMENT_CONSTRUCTION_ONLY",
+      "scope": "SOURCE_ONLY",
+      "python": "3.7.6 (default, Jan  8 2020, 20:23:39) [MSC v.1916 64 bit (AMD64)]",
+      "executable": "E:\\anaconda\\python.exe",
+      "syntax": [
+        {
+          "name": "normal_run_controller.py",
+          "py37_parse": true,
+          "crcrlf": 0,
+          "sha256": "8e079d959fa5c7fd3ace611e41958477404b65c27958a4a43c89fb615ec1a0f9"
+        },
+        {
+          "name": "native_selected_geometry_preflight.py",
+          "py37_parse": true,
+          "crcrlf": 0,
+          "sha256": "4b1867a70bd3fbf475a3174601f2bc6a18d5c786a0ade2b908c22fb543a49831"
+        },
+        {
+          "name": "prepare_execution_sources.py",
+          "py37_parse": true,
+          "crcrlf": 0,
+          "sha256": "134975130e46e7b2e34b71648d79d70686e00cef0b8e1c421b58388c93bcfe17"
+        },
+        {
+          "name": "stage_source_authorized.py",
+          "py37_parse": true,
+          "crcrlf": 0,
+          "sha256": "684b255ccfbc9985d5035c06f97f4e40fea249cae2f72fe6d2da1d667c09d9bd"
+        }
+      ],
+      "exact_preflight_generation": true,
+      "manifest_files_match": true,
+      "common_protocol_arguments_match": true,
+      "actual_parse_option_extracted": true,
+      "parsed_arguments": [
+        {
+          "native_init_spec": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/native_control_initialization.json",
+          "lr_modules": 1e-05,
+          "num_target": 256,
+          "sampling": "kps",
+          "num_encoder_layers": 3,
+          "num_decoder_layers": 6,
+          "self_position_embedding": "loc_learned",
+          "self_attend": true,
+          "model": "PVGround",
+          "query_points_obj_topk": 4,
+          "use_contrastive_align": true,
+          "use_soft_token_loss": true,
+          "detect_intermediate": false,
+          "joint_det": false,
+          "batch_size": 8,
+          "dataset": [
+            "scanrefer"
+          ],
+          "test_dataset": "scanrefer",
+          "data_root": "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+          "use_height": false,
+          "use_color": true,
+          "use_multiview": false,
+          "wo_obj_name": "None",
+          "butd": true,
+          "butd_gt": false,
+          "butd_cls": false,
+          "augment_det": false,
+          "num_workers": 4,
+          "start_epoch": 1,
+          "max_epoch": 8,
+          "optimizer": "adamW",
+          "weight_decay": 0.0005,
+          "lr": 1e-06,
+          "lr_backbone": 1e-06,
+          "text_encoder_lr": 1e-05,
+          "lr_scheduler": "step",
+          "lr_decay_epochs": [
+            280,
+            340
+          ],
+          "lr_decay_rate": 0.1,
+          "clip_norm": 0.1,
+          "bn_momentum": 0.1,
+          "syncbn": false,
+          "warmup_epoch": -1,
+          "warmup_multiplier": 100,
+          "frozen": false,
+          "small_lr": false,
+          "checkpoint_path": null,
+          "log_dir": "review-not-created",
+          "exp": "native_control",
+          "print_freq": 128,
+          "save_freq": 10,
+          "val_freq": 1,
+          "local_rank": 0,
+          "ap_iou_thresholds": [
+            0.25,
+            0.5
+          ],
+          "rng_seed": 2027,
+          "debug": false,
+          "eval": false,
+          "eval_train": false,
+          "pp_checkpoint": null,
+          "reduce_lr": false
+        },
+        {
+          "native_init_spec": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/selected_geometry_initialization.json",
+          "lr_modules": 1e-05,
+          "num_target": 256,
+          "sampling": "kps",
+          "num_encoder_layers": 3,
+          "num_decoder_layers": 6,
+          "self_position_embedding": "loc_learned",
+          "self_attend": true,
+          "model": "PVGround",
+          "query_points_obj_topk": 4,
+          "use_contrastive_align": true,
+          "use_soft_token_loss": true,
+          "detect_intermediate": false,
+          "joint_det": false,
+          "batch_size": 8,
+          "dataset": [
+            "scanrefer"
+          ],
+          "test_dataset": "scanrefer",
+          "data_root": "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+          "use_height": false,
+          "use_color": true,
+          "use_multiview": false,
+          "wo_obj_name": "None",
+          "butd": true,
+          "butd_gt": false,
+          "butd_cls": false,
+          "augment_det": false,
+          "num_workers": 4,
+          "start_epoch": 1,
+          "max_epoch": 8,
+          "optimizer": "adamW",
+          "weight_decay": 0.0005,
+          "lr": 1e-06,
+          "lr_backbone": 1e-06,
+          "text_encoder_lr": 1e-05,
+          "lr_scheduler": "step",
+          "lr_decay_epochs": [
+            280,
+            340
+          ],
+          "lr_decay_rate": 0.1,
+          "clip_norm": 0.1,
+          "bn_momentum": 0.1,
+          "syncbn": false,
+          "warmup_epoch": -1,
+          "warmup_multiplier": 100,
+          "frozen": false,
+          "small_lr": false,
+          "checkpoint_path": null,
+          "log_dir": "review-not-created",
+          "exp": "selected_geometry",
+          "print_freq": 128,
+          "save_freq": 10,
+          "val_freq": 1,
+          "local_rank": 0,
+          "ap_iou_thresholds": [
+            0.25,
+            0.5
+          ],
+          "rng_seed": 2027,
+          "debug": false,
+          "eval": false,
+          "eval_train": false,
+          "pp_checkpoint": null,
+          "reduce_lr": false
+        }
+      ],
+      "added_input_count": 13,
+      "all_added_inputs_unchanged": true,
+      "stage_before_fix_preserved": true,
+      "shlex_join_available": false,
+      "actual_stage_argv_quoted_roundtrip": true,
+      "embedded_remote_py37_parse": true,
+      "remote_imports": [
+        "ast",
+        "base64",
+        "datetime",
+        "hashlib",
+        "json",
+        "sys",
+        "pathlib"
+      ],
+      "recorded_base_file_count": 116,
+      "prospective_staged_file_count": 117,
+      "local_unoverlaid_base_matches": [
+        "train_dist_mod.py",
+        "native_root_bbs.py",
+        "selected_query_mask_objective.py",
+        "pvground_semantic_assignment.py"
+      ],
+      "actual_transport_calls": 0,
+      "actual_controller_runs": 0,
+      "actual_preflight_runs": 0,
+      "GPU_calls": 0,
+      "neural_calls": 0,
+      "actual_optimizer_updates": 0,
+      "actual_factory_executed": false,
+      "actual_loss_hook_executed": false,
+      "actual_checkpoint_saved_or_restored": false,
+      "actual_queued_admission": false,
+      "active_MCLN_progress_queries": 0,
+      "cold_resume_supported": false,
+      "formal_accuracy": null,
+      "deployment_ready": false
+    }
+  }
+}

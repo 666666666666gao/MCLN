@@ -1,0 +1,153 @@
+{
+  "date": "2026-10-12",
+  "scope": "SOURCE_ONLY",
+  "verdict": "FAIL",
+  "source_preparation_pass": false,
+  "logical_objective_review": "PASS_WITHIN_DECLARED_INTERFACE_BUT_ARTIFACTS_UNIMPORTABLE",
+  "cpu_kernel_verdict": "PASS",
+  "deployment_ready": false,
+  "scoped_blockers": [
+    {
+      "id": "SRC-01",
+      "scope": "SOURCE_ONLY",
+      "severity": "BLOCKING",
+      "verdict": "FAIL",
+      "title": "Windows text-mode overlay generation corrupts continuation lines",
+      "generator_path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/prepare_source_overlay.py",
+      "generator_line": 24,
+      "artifact_failures": [
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_overlay/models/pv_ground.py",
+          "parser_line": 65,
+          "error": "IndentationError: unexpected indent",
+          "crcrlf_count": 653
+        },
+        {
+          "path": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_overlay/models/losses.py",
+          "parser_line": 254,
+          "error": "SyntaxError: invalid syntax",
+          "crcrlf_count": 988
+        }
+      ],
+      "cause": "Raw CRLF text is written through Windows write_text, producing CRCRLF. The pre-write AST parse does not test the written bytes.",
+      "minimal_fix": "Replace output.write_text(text, encoding='utf-8') with output.write_bytes(text.encode('utf-8')); regenerate a separate isolated overlay and its existing manifest, preserving this failed version.",
+      "repair_status": "NOT_APPLIED. All three exact in-memory write_bytes candidates parse under Python 3.7.6; repaired on-disk artifacts and their review remain pending.",
+      "evidence": [
+        "CPU_TOOL_RECEIPT.json",
+        "CPU_TOOL_RECEIPT_02.json",
+        "CPU_VERIFICATION.json",
+        "INPUT_HASHES.json"
+      ]
+    }
+  ],
+  "deployment_pending_conditions": [
+    {
+      "id": "DEP-01",
+      "scope": "DEPLOYMENT_PENDING",
+      "description": "Repair SRC-01, regenerate actual isolated artifacts, and close the written-artifact syntax/review gate."
+    },
+    {
+      "id": "DEP-02",
+      "scope": "DEPLOYMENT_PENDING",
+      "description": "Complete isolated normal loop, eight-epoch ceiling, E0-inclusive two consecutive strict Acc@0.5 declines with reset on tie/increase, strict-first then loose best/latest selection, and single-A100 queue/lock. Current native main_utils has a different historical best order and no decline stop; this is explicitly unfinished integration."
+    },
+    {
+      "id": "DEP-03",
+      "scope": "DEPLOYMENT_PENDING",
+      "description": "Bind full native runtime and explicit ScanRefer-only/joint_det=False, Q256/six decoder layers/B8/seed2027, intended learning rates, actual 36665 loader rows/4583 updates per full epoch and unchanged semantic ordering. Four overlay files are not a full deployment."
+    },
+    {
+      "id": "DEP-04",
+      "scope": "DEPLOYMENT_PENDING",
+      "description": "After existing MCLN completion and actual lock/device release, run paired real two-step native GPU preflight: factory/state/trainability, new flag/full loss hook, targets/indices, gradients, optimizer and save/restore. No early MCLN polling or current progress attestation occurred."
+    },
+    {
+      "id": "DEP-05",
+      "scope": "DEPLOYMENT_PENDING",
+      "description": "Verify both fresh initializations and complete same-origin E0 on 9508 rows before formal training. Engineering updated states must not become formal initial states; verify each arm's update history and compare against direct control and retained 5677/4920."
+    }
+  ],
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "checks": {
+    "uses_native_loss_boxes": true,
+    "uses_real_dataset_derived_targets": true,
+    "current_last_layer_matching": true,
+    "original_indices_preserved": true,
+    "original_denominators_preserved": true,
+    "one_selected_query_per_expression": true,
+    "matched_root_protected": true,
+    "matched_other_protected": true,
+    "point_mask_integer_strict_half": true,
+    "box_iou_used_for_eligibility": false,
+    "actual_batch_denominator": true,
+    "old_selected_mask_disabled_both_arms": true,
+    "init_spec_only_geometry_flag_differs": true,
+    "new_inference_parameters": 0,
+    "native_bbs_selection_unchanged": true,
+    "candidate_count": 256,
+    "flag_chain_static_connected": true,
+    "eval_static_skips_extra": true,
+    "full_factory_executed": false,
+    "full_native_get_loss_executed": false,
+    "actual_state_load_verified": false
+  },
+  "cpu": {
+    "receipt_files": [
+      ".aris/traces/experiment-bridge/2026-10-12_run01/CPU_TOOL_RECEIPT.json",
+      ".aris/traces/experiment-bridge/2026-10-12_run01/CPU_TOOL_RECEIPT_02.json"
+    ],
+    "python": "3.7.6",
+    "executable": "E:\\anaconda\\python.exe",
+    "torch": "1.13.1+cpu",
+    "flag": "-B",
+    "input_files": 47,
+    "inputs_unchanged": true,
+    "python_parse_pass": 16,
+    "python_parse_fail": 2,
+    "saved_replay_exact": true,
+    "extra_rows_per_step": [
+      4,
+      1
+    ],
+    "observations": 16,
+    "unique_training_rows": 8,
+    "repeated_same_augmented_batch": true,
+    "geometry_endpoint": "saved Mask endpoint, not unsaved final B output",
+    "cached_masks": "selected-query slices",
+    "synthetic_fixture": {
+      "batch": 6,
+      "queries": 256,
+      "extra_rows": 1,
+      "gradient_locations": [
+        [
+          0,
+          17
+        ]
+      ],
+      "matched_root_and_other_protected": true,
+      "strict_half_rejected": true,
+      "batch_denominator_verified": true
+    }
+  },
+  "limits": [
+    "Source generation failure is a preparation blocker, not a model accuracy failure.",
+    "Static flag connectivity is not full factory/forward/criterion execution.",
+    "GT mask overlap does not prove full language or physical-instance identity.",
+    "G can leave geometry-eligible low-box-IoU queries with original no-object token labels; other contrastive duties remain.",
+    "Historical negative experiments were not rerun or overturned.",
+    "No new formal accuracy, third effective contribution, goal attainment, MCLN progress or backend attestation."
+  ],
+  "model_forwards": 0,
+  "optimizer_updates": 0,
+  "GPU_calls": 0,
+  "remote_queries": 0,
+  "production_source_changes": 0,
+  "formal_accuracy": null,
+  "full_goal_status": "ACTIVE_UNMET_CONTEXT_ONLY_NOT_REAUTHENTICATED"
+}
+

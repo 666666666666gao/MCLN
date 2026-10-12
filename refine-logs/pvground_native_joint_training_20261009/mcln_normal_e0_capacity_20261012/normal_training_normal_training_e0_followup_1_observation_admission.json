@@ -1,0 +1,106 @@
+{
+  "source": "/root/autodl-tmp/mcln_portable_best_transfer_20261012/MCLN",
+  "spec": "/root/autodl-tmp/mcln_portable_best_transfer_20261012/TRANSFER_SPEC.json",
+  "engineering_check": {
+    "status": "ACTUAL_NATIVE_MCLN_TWO_UPDATES_AND_SAME_PROCESS_FULL_RESTORE_PASS",
+    "actual_optimizer_updates": 2,
+    "actual_training_rows": 16,
+    "actual_training_dataset_rows": 48655,
+    "actual_training_flags": {
+      "joint_det": true,
+      "detect_intermediate": true,
+      "augment_det": true,
+      "butd": true
+    },
+    "updates": [
+      {
+        "step": 1,
+        "rows": 8,
+        "loss": 13.5062255859375,
+        "support_gradient": {
+          "total_l1": 5.573497720062733,
+          "output_l1": 0.5426797270774841,
+          "internal_l1": 5.030817992985249,
+          "gradient_tensors": 10
+        },
+        "span_gradient": {
+          "total_l1": 28.793560979887843,
+          "output_l1": 4.381602048873901,
+          "internal_l1": 24.41195893101394,
+          "gradient_tensors": 14
+        },
+        "original_core_gradient_l1": 37947.292219407274,
+        "raw_span_gate_min": 0.020457569509744644,
+        "raw_span_gate_max": 0.09936787933111191,
+        "span_gate_clamped_low_fraction": 0.0,
+        "span_gate_clamped_high_fraction": 0.0,
+        "invalid_mask_references": 1351
+      },
+      {
+        "step": 2,
+        "rows": 8,
+        "loss": 12.062352180480957,
+        "support_gradient": {
+          "total_l1": 2.8867145758122206,
+          "output_l1": 0.17187178134918213,
+          "internal_l1": 2.7148427944630384,
+          "gradient_tensors": 10
+        },
+        "span_gradient": {
+          "total_l1": 1.0852039975579828,
+          "output_l1": 0.22411301732063293,
+          "internal_l1": 0.8610909802373499,
+          "gradient_tensors": 14
+        },
+        "original_core_gradient_l1": 18642.98616142315,
+        "raw_span_gate_min": 0.021525708958506584,
+        "raw_span_gate_max": 0.09256301820278168,
+        "span_gate_clamped_low_fraction": 0.0,
+        "span_gate_clamped_high_fraction": 0.0,
+        "invalid_mask_references": 1209
+      }
+    ],
+    "changed_module_elements": {
+      "candidate_support_corrector.": 27265,
+      "candidate_span_mixer.": 29793
+    },
+    "original_core_trainable": true,
+    "roberta_parameters_frozen": true,
+    "full_model_states": 1159,
+    "optimizer_state_count": 731,
+    "same_process_saved_model_optimizer_scheduler_rng_exact": true,
+    "cold_restart_verified": false,
+    "formal_training_completed": false,
+    "formal_accuracy": null,
+    "engineering_checkpoint": "/root/autodl-tmp/mcln_portable_best_transfer_20261012/native_training_check/check/engineering_full_state.pth",
+    "engineering_checkpoint_bytes": 793579034,
+    "peak_cuda_allocated_bytes": 17068970496,
+    "completed_cst": "2026-10-12T13:56:10.147456+08:00",
+    "full_goal_complete": false
+  },
+  "engineering_state_carried": false,
+  "max_epochs": 8,
+  "patience_consecutive_strict_declines": 2,
+  "disk_free_bytes": 3185389568,
+  "storage_budget": {
+    "model_tensor_bytes": 598498856,
+    "frozen_roberta_tensor_bytes": 498586640,
+    "all_potential_trainable_tensor_bytes_upper": 99912216,
+    "complete_Adam_moment_bytes_upper": 199824432,
+    "latest_bytes_upper": 865432152,
+    "best_bytes_upper": 665607720,
+    "metadata_serialization_config_history_rng_reserve_per_weight": 67108864,
+    "atomic_save_peak_bytes_upper": 2396472024,
+    "log_reserve_bytes": 268435456,
+    "required_free_bytes": 2664907480,
+    "measured_serialized_full_bytes": 793542298,
+    "measured_serialized_model_only_bytes": 598932370,
+    "optimizer_missing_state_count": 24,
+    "includes_future_missing_Adam_states": true,
+    "rationale": "Full model plus two moments for every non-RoBERTa tensor, including buffers as an upper bound; frozen RoBERTa, fixed FP32 shapes, amsgrad=False. Saves retain latest/best and one atomic replacement. No new weights or NN used."
+  },
+  "core_lr": 1e-06,
+  "AB_lr": 1e-05,
+  "batch_size": 8,
+  "seed": 2027
+}

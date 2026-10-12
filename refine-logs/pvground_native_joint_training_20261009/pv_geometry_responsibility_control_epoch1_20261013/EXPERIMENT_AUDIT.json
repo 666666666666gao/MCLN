@@ -1,0 +1,301 @@
+{
+  "audit_skill": "experiment-audit",
+  "scope": "RETAINED_SELECTED_QUERY_FIXED_ENDPOINT_GT_COORDINATE_PROJECTION_DIAGNOSTIC",
+  "date": "2026-10-13",
+  "generated_at": "2026-10-12T23:53:13.384171+00:00",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "diagnostic_verified_with_numeric_provenance_and_attribution_limits",
+  "summary": "All scoped coordinate results verified independently. No blocking finding; preserve fixed-endpoint GT-only limitations and explicit numeric/provenance warnings.",
+  "scoped_diagnostic_supported": true,
+  "source_or_result_changes_required": false,
+  "scoped_blockers": [],
+  "blocking_findings": [],
+  "warnings": [
+    {
+      "id": "W1",
+      "code": "historical_float32_mask_box_iou_above_one",
+      "severity": "nonblocking",
+      "details": "112 saved Mask-box IoUs exceed 1, maximum 1.0000050067901611; all 0.25/0.5 decisions match float64 geometric recomputation. Values preserved."
+    },
+    {
+      "id": "W2",
+      "code": "compiled_source_preimage_unverified",
+      "severity": "scope_limit",
+      "details": "117/118 R4 source byte preimages verified; pointnet2/_ext.cpython-37m-x86_64-linux-gnu.so is unavailable in inspected local artifacts. No claim of complete remote/live source attestation."
+    },
+    {
+      "id": "W3",
+      "code": "saved_mask_and_point_provenance_not_recomputed",
+      "severity": "scope_limit",
+      "details": "9508 point digest strings are present but original point preimages were not rehashed; saved fused-mask IoU is not recomputed from masks. GT labels match saved arrays and source provenance."
+    },
+    {
+      "id": "W4",
+      "code": "reviewer_runtime_identity_unattested",
+      "severity": "attribution_limit",
+      "details": "Requested gpt-6-astra/max per skill. Native agent inventory provides canonical agent name/status only, not actual model/effort metadata."
+    },
+    {
+      "id": "W5",
+      "code": "historical_endpoints_not_current_training_state",
+      "severity": "claim_boundary",
+      "details": "Frozen-parent 2026-10-09 endpoints and selected Query are held fixed. Current joint-training source differs in detach/gradient flow; no model was executed here."
+    },
+    {
+      "id": "W6",
+      "code": "original_analyzer_invocation_not_attested",
+      "severity": "provenance_limit",
+      "details": "No original analyzer command/exit transcript was supplied in the diagnostic directory. Current code and exact outputs are independently reproduced; original execution/session actions are not authenticated."
+    }
+  ],
+  "agent_id": "/root/pv_fixed_axis_coordinate_audit_20261013",
+  "verdict_id": "/root/pv_fixed_axis_coordinate_audit_20261013:2026-10-13-R1",
+  "executor_model": "UNATTESTED",
+  "executor_family": "openai",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning": "max",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "actual_reviewer_model": "UNATTESTED",
+  "actual_reviewer_reasoning": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "fresh_context": true,
+  "review_route": "native delegated Codex agent",
+  "model_attribution_evidence": "collaboration.list_agents returned agent_name/agent_status only; no runtime model or reasoning metadata is available.",
+  "checks": {
+    "gt_provenance": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": "Historical dataset center_label/size_gts root labels, bit-exact between 9508 rows and all-256 NPZs. No model-derived GT. Full original dataset/mask re-audit is not claimed.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py:296",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\paired_span_loop.py:314"
+      ]
+    },
+    "score_normalization": {
+      "status": "WARN",
+      "details": "Unnormalized absolute coordinate error; no self-normalization. 112 historical Mask-box IoUs exceed 1 slightly; thresholds unchanged.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_fixed_endpoint_axis_coupling_20261013.py:60",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\review\\deterministic_verification.json"
+      ]
+    },
+    "result_existence": {
+      "status": "PASS",
+      "details": "All rows, CSV fields, 36 statistics and three RESULT-declared hashes verified.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\review\\deterministic_verification.json"
+      ]
+    },
+    "dead_code": {
+      "status": "PASS",
+      "details": "faces and summary are called and represented in outputs; audited analyzer was not executed by reviewer.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_fixed_endpoint_axis_coupling_20261013.py:33",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_fixed_endpoint_axis_coupling_20261013.py:70"
+      ]
+    },
+    "scope": {
+      "status": "PASS",
+      "details": "9508 retained validation expressions, 141 scenes, 2068 scene-target pairs, one historical seed-2027 run. Explicit fixed-Query/fixed-endpoint GT diagnostic.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\RESULT.json:2",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\RESULT.json:66"
+      ]
+    },
+    "eval_type": "real_gt_historical_coordinate_diagnostic",
+    "independent_minimax": {
+      "status": "PASS",
+      "details": "64-step error-feasibility interval bisection on all 28524 axes, independent of breakpoint enumeration; maximum CSV discrepancy 1.7763568394002505e-15 m."
+    },
+    "independent_face_ordering": {
+      "status": "PASS",
+      "details": "Median-of-three nearest face projections; monotonicity yields width >= min(native, Mask, GT sizes)>0. All axes checked; minimum width 9.999999974752427e-7 m."
+    },
+    "selected_query_and_endpoint_identity": {
+      "status": "PASS",
+      "details": "All 1189 NPZ batches reproduce root GT and five selected box variants; all 9508 Query selections are unique maximum saved score."
+    },
+    "source_runtime_binding": {
+      "status": "WARN",
+      "details": "Historical 1246-file intake, 11 frozen runner sources, eight paired-preflight files and six admission helpers verified. Admission embeds exact R4. Joint/frozen forward ASTs agree after removing docstring/detach/resulting identities. One compiled preimage and fresh runtime attestation are unavailable."
+    },
+    "actual_gate_vs_raw_gate": {
+      "status": "PASS",
+      "details": "Clamp(raw,0,1), not sigmoid. Six clamped zero axes in two rows; raw gate absent in all 9508 archived records, so negative raw and C-specific gradient incidence cannot be inferred."
+    },
+    "saved_mask_vs_current_C": {
+      "status": "PASS",
+      "details": "The 499-row subgroup uses only historical fused-mask IoU; current eligibility also requires unmatched role and own-mask support. Not equivalent."
+    },
+    "existing_face_freedoms": {
+      "status": "PASS",
+      "details": "Prior FaceResidualSpanMixer has six independent face corrections; historical three-epoch closeout remains below E0. No novelty or causality inferred."
+    },
+    "read_only": {
+      "status": "PASS",
+      "details": "No GPU/SSH/network/model forward/training optimizer. Eight requested inputs retain original hashes. Only review-tree artifacts written."
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "The fixed selected endpoint shared-gate coordinate projection has the reported descriptive errors and gaps.",
+      "impact": "supported_with_stated_scope"
+    },
+    {
+      "id": "C2",
+      "claim": "Independent six-face coordinate projection is never worse and remains ordered for these positive-size boxes.",
+      "impact": "supported_by_derivation_and_full_recompute"
+    },
+    {
+      "id": "C3",
+      "claim": "Coordinate gap counts predict REC gains, a trained improvement or new method accuracy.",
+      "impact": "unsupported_and_explicitly_excluded"
+    },
+    {
+      "id": "C4",
+      "claim": "The diagnostic proves an IoU optimum or bounds the whole trainable model.",
+      "impact": "unsupported_and_explicitly_excluded"
+    },
+    {
+      "id": "C5",
+      "claim": "Zero saved gates prove negative raw gates or chosen-C clamp-gradient incidence.",
+      "impact": "unsupported_and_explicitly_excluded"
+    },
+    {
+      "id": "C6",
+      "claim": "Saved mask_iou >0.5 is current C eligibility.",
+      "impact": "unsupported_and_explicitly_excluded"
+    },
+    {
+      "id": "C7",
+      "claim": "Independent face freedom is new or its historical negative run proves a general impossibility/causal explanation.",
+      "impact": "unsupported_and_explicitly_excluded"
+    },
+    {
+      "id": "C8",
+      "claim": "The historical source-conditioned face residual normal run did not improve its starting strict hit count.",
+      "impact": "supported_by_saved_closeout_only_not_a_new_full_audit"
+    }
+  ],
+  "reported_groups": {
+    "all": {
+      "expressions": 9508,
+      "shared_minimum_max_face_error_median_m": 0.11258530616760254,
+      "independent_minimum_max_face_error_median_m": 0.11105172336101532,
+      "coupling_gap_median_m": 0.0,
+      "coupling_gap_above_1cm": 740,
+      "coupling_gap_above_2cm": 339,
+      "shared_error_above_2cm_but_independent_at_most_2cm": 279,
+      "selected_axes_with_gate_zero": 6,
+      "selected_axes_with_gate_one": 0
+    },
+    "selected_strict_errors": {
+      "expressions": 4588,
+      "shared_minimum_max_face_error_median_m": 1.483232706785202,
+      "independent_minimum_max_face_error_median_m": 1.483232706785202,
+      "coupling_gap_median_m": 0.0,
+      "coupling_gap_above_1cm": 186,
+      "coupling_gap_above_2cm": 94,
+      "shared_error_above_2cm_but_independent_at_most_2cm": 15,
+      "selected_axes_with_gate_zero": 6,
+      "selected_axes_with_gate_one": 0
+    },
+    "saved_mask_iou_above_half_selected_box_error": {
+      "expressions": 499,
+      "shared_minimum_max_face_error_median_m": 0.19045820832252502,
+      "independent_minimum_max_face_error_median_m": 0.19045820832252502,
+      "coupling_gap_median_m": 0.0,
+      "coupling_gap_above_1cm": 36,
+      "coupling_gap_above_2cm": 29,
+      "shared_error_above_2cm_but_independent_at_most_2cm": 12,
+      "selected_axes_with_gate_zero": 0,
+      "selected_axes_with_gate_one": 0
+    },
+    "mask_endpoint_correct_final_wrong": {
+      "expressions": 64,
+      "shared_minimum_max_face_error_median_m": 0.20021352171897888,
+      "independent_minimum_max_face_error_median_m": 0.20021352171897888,
+      "coupling_gap_median_m": 0.0,
+      "coupling_gap_above_1cm": 8,
+      "coupling_gap_above_2cm": 6,
+      "shared_error_above_2cm_but_independent_at_most_2cm": 4,
+      "selected_axes_with_gate_zero": 0,
+      "selected_axes_with_gate_one": 0
+    }
+  },
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\analyze_fixed_endpoint_axis_coupling_20261013.py": {
+      "sha256": "c5323fc2313d2fab25468363c0ea957eb9beb2997e82da1d7630307679a5c981",
+      "bytes": 7635
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\RESULT.json": {
+      "sha256": "b0912e9a0bf54d80e899ed46d96d0658a28f28a5c456b063ef7d6c9289a03658",
+      "bytes": 3874
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\per_expression.csv": {
+      "sha256": "017c64362a4726114626360dee4ae0e5258218cccc82f0e71e6818ce5a186e4d",
+      "bytes": 1500293
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\formal\\rows.jsonl": {
+      "sha256": "7b29b1646e52e8d3d253b3167b6895df9d789e7325022b0d9440814ec143c7b9",
+      "bytes": 17678554
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py": {
+      "sha256": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+      "bytes": 7492
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\SOURCE_STAGE_R4_RECEIPT.json": {
+      "sha256": "b6d0b2fb7046743b83ee44dd345814870f011eb66301539489ea8390c9fcca13",
+      "bytes": 39466
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\face_residual_span_mixer.py": {
+      "sha256": "f62b0d2fa026cdbd720028b29f7188a03c2f43c591d57bd2e2856a387dbf9a19",
+      "bytes": 4619
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py": {
+      "sha256": "4b1867a70bd3fbf475a3174601f2bc6a18d5c786a0ade2b908c22fb543a49831",
+      "bytes": 15396
+    }
+  },
+  "deterministic_verification_status": "PASS_DETERMINISTIC_SCOPED_CHECKS",
+  "deterministic_verification_independence": "deterministic",
+  "deterministic_verification_acceptance": "accepted_within_checked_artifacts",
+  "maximum_independent_numeric_difference_m": 1.7763568394002505e-15,
+  "historical_artifact_hashes_checked": 1246,
+  "R4_source_preimages_verified": 117,
+  "R4_source_preimages_total": 118,
+  "rows": 9508,
+  "axes": 28524,
+  "reported_group_statistics_checked": 36,
+  "missingness": {
+    "CSV_empty_cells": 0,
+    "required_row_fields_missing": 0,
+    "raw_axis_gate_missing_rows": 9508,
+    "point_hash_strings_present": 9508,
+    "point_hash_preimages_rehashed": 0
+  },
+  "original_analyzer_invocation_attested": false,
+  "fresh_live_training_runtime_attested": false,
+  "current_training_changed": false,
+  "method_accuracy": null,
+  "whole_goal_complete": false,
+  "audit_GPU_calls": 0,
+  "audit_SSH_calls": 0,
+  "audit_network_calls": 0,
+  "audit_model_forwards": 0,
+  "audit_training_optimizer_calls": 0,
+  "audited_inputs_unchanged_after_audit": true,
+  "artifacts": {
+    "markdown": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\review\\EXPERIMENT_AUDIT.md",
+    "deterministic": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\review\\deterministic_verification.json",
+    "historical_binding": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\review\\historical_binding_verification.json",
+    "admission_binding": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\review\\admission_binding_verification.json"
+  },
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\fixed_endpoint_axis_coupling_20261013\\review\\.aris\\traces\\experiment-audit\\2026-10-13_run01"
+}

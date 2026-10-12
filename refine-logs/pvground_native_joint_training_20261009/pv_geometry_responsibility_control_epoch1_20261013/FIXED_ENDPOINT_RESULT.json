@@ -1,0 +1,75 @@
+{
+  "scope": "RETAINED_SELECTED_QUERY_FIXED_ENDPOINT_GT_COORDINATE_PROJECTION_DIAGNOSTIC",
+  "input_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_extremal_span_evidence_20261009\\runner_v1\\complete_fit\\formal\\rows.jsonl",
+  "input_sha256": "7b29b1646e52e8d3d253b3167b6895df9d789e7325022b0d9440814ec143c7b9",
+  "rows": 9508,
+  "source_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py",
+  "source_sha256": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+  "actual_formula": "center=(1-g)*Mask+g*native; size=(1-g)*Mask+g*native; g=clamp(raw,0,1)",
+  "GT_used_only_in_offline_diagnostic": true,
+  "new_model_forwards": 0,
+  "remote_progress_queries": 0,
+  "current_training_changed": false,
+  "method_accuracy": null,
+  "coordinate_projection_is_not_iou_optimization": true,
+  "whole_trainable_network_capacity_not_bounded": true,
+  "source_mask_iou_provenance_not_reaudited": true,
+  "gate_zero_not_proof_of_negative_raw_gate": true,
+  "max_same_gate_reconstruction_error_m": 6.46173880625156e-07,
+  "identical_lower_and_upper_endpoint_axes": 129,
+  "groups": {
+    "all": {
+      "expressions": 9508,
+      "shared_minimum_max_face_error_median_m": 0.11258530616760254,
+      "independent_minimum_max_face_error_median_m": 0.11105172336101532,
+      "coupling_gap_median_m": 0.0,
+      "coupling_gap_above_1cm": 740,
+      "coupling_gap_above_2cm": 339,
+      "shared_error_above_2cm_but_independent_at_most_2cm": 279,
+      "selected_axes_with_gate_zero": 6,
+      "selected_axes_with_gate_one": 0
+    },
+    "selected_strict_errors": {
+      "expressions": 4588,
+      "shared_minimum_max_face_error_median_m": 1.483232706785202,
+      "independent_minimum_max_face_error_median_m": 1.483232706785202,
+      "coupling_gap_median_m": 0.0,
+      "coupling_gap_above_1cm": 186,
+      "coupling_gap_above_2cm": 94,
+      "shared_error_above_2cm_but_independent_at_most_2cm": 15,
+      "selected_axes_with_gate_zero": 6,
+      "selected_axes_with_gate_one": 0
+    },
+    "saved_mask_iou_above_half_selected_box_error": {
+      "expressions": 499,
+      "shared_minimum_max_face_error_median_m": 0.19045820832252502,
+      "independent_minimum_max_face_error_median_m": 0.19045820832252502,
+      "coupling_gap_median_m": 0.0,
+      "coupling_gap_above_1cm": 36,
+      "coupling_gap_above_2cm": 29,
+      "shared_error_above_2cm_but_independent_at_most_2cm": 12,
+      "selected_axes_with_gate_zero": 0,
+      "selected_axes_with_gate_one": 0
+    },
+    "mask_endpoint_correct_final_wrong": {
+      "expressions": 64,
+      "shared_minimum_max_face_error_median_m": 0.20021352171897888,
+      "independent_minimum_max_face_error_median_m": 0.20021352171897888,
+      "coupling_gap_median_m": 0.0,
+      "coupling_gap_above_1cm": 8,
+      "coupling_gap_above_2cm": 6,
+      "shared_error_above_2cm_but_independent_at_most_2cm": 4,
+      "selected_axes_with_gate_zero": 0,
+      "selected_axes_with_gate_one": 0
+    }
+  },
+  "limitations": [
+    "Fixed saved endpoints and selected Query only; core and support training can move endpoints.",
+    "Coordinate minimax loss is not IoU; counts are not attainable REC gains or deployment scores.",
+    "Mask IoU is the saved historical row field; it is not revalidated own-and-fused C eligibility.",
+    "Independent face coordinate freedom is diagnostic, not a trained model or a new positive result.",
+    "A previous independently parameterized face residual model had negative normal-training results.",
+    "Zero clamped gates alone cannot distinguish raw<0 from raw==0; no chosen-C clamp-gradient incidence is claimed."
+  ],
+  "per_expression_sha256": "017c64362a4726114626360dee4ae0e5258218cccc82f0e71e6818ce5a186e4d"
+}

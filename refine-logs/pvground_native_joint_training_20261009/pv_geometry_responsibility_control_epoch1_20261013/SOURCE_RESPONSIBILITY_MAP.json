@@ -1,0 +1,102 @@
+{
+  "scope": "CURRENT_STAGED_SOURCE_RESPONSIBILITY_MAP_ONLY",
+  "recorded_cst": "2026-10-13T07:42:32.954169+08:00",
+  "sources": {
+    "pvground_semantic_assignment.py": {
+      "local_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_semantic_assignment.py",
+      "sha256": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+      "remote_path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/pvground_semantic_assignment.py"
+    },
+    "selected_support_geometry_objective.py": {
+      "local_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\selected_support_geometry_objective.py",
+      "sha256": "74a1d38018b3f8cf38d2b9f133b2df44f90cc2d17e13775b5812c0b1d0d12d30",
+      "remote_path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/selected_support_geometry_objective.py"
+    },
+    "models/losses.py": {
+      "local_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py",
+      "sha256": "b960fd486e4b325f346f3925d98bcda84be59020310d123832a789a525ceefee",
+      "remote_path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/models/losses.py"
+    },
+    "models/pv_ground.py": {
+      "local_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\pv_ground.py",
+      "sha256": "7a2db438811cb2fccf77a85f8f45a6a572cb0a1bbbd60d337e98afcbfa5e5b84",
+      "remote_path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/models/pv_ground.py"
+    },
+    "extremal_span_mixer.py": {
+      "local_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py",
+      "sha256": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+      "remote_path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/extremal_span_mixer.py"
+    },
+    "main_utils.py": {
+      "local_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py",
+      "sha256": "5d85013e96abb85881bafaaee695809db6e7f7a9ded3440972948ddbcda1ac9c",
+      "remote_path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/main_utils.py"
+    }
+  },
+  "source_binding": "all six local source hashes equal the actual R4 stage manifest",
+  "source_has_existing_gate_clamp": true,
+  "actual_coefficient_range": [
+    0,
+    1
+  ],
+  "raw_negative_not_a_negative_deployed_coefficient": true,
+  "rows": [
+    {
+      "role": "matched_root",
+      "last_native_geometry_target": "matched root",
+      "last_CE_target": "root",
+      "last_contrast_target": "root",
+      "G_replacement": false,
+      "C_extra_geometry": false
+    },
+    {
+      "role": "matched_other",
+      "last_native_geometry_target": "its actual matched GT",
+      "last_CE_target": "its actual matched GT",
+      "last_contrast_target": "its actual matched GT",
+      "G_replacement": false,
+      "C_extra_geometry": false
+    },
+    {
+      "role": "unmatched selected; own+fused support qualified; final BoxIoU>0.5",
+      "last_native_geometry_target": null,
+      "last_CE_target": "root through G, with retained eos weight",
+      "last_contrast_target": "not mentioned through original matching",
+      "G_replacement": true,
+      "C_extra_geometry": true
+    },
+    {
+      "role": "unmatched selected; own+fused support qualified; final BoxIoU<=0.5",
+      "last_native_geometry_target": null,
+      "last_CE_target": "native no-object",
+      "last_contrast_target": "not mentioned through original matching",
+      "G_replacement": false,
+      "C_extra_geometry": true
+    },
+    {
+      "role": "unmatched selected; support not qualified",
+      "last_native_geometry_target": null,
+      "last_CE_target": "root if G BoxIoU>0.5; otherwise native no-object",
+      "last_contrast_target": "not mentioned through original matching",
+      "C_extra_geometry": false
+    }
+  ],
+  "source_findings": [
+    "C excludes every originally matched Query, so no second incompatible GT box is directly assigned to matched other instances.",
+    "A overwrites the actual Query mask tensor before the native criterion, so A receives native matched-mask supervision as well as any differentiable geometry path.",
+    "C changes geometry duties only; it does not remove the existing CE/contrast responsibility differences.",
+    "The original loss uses ScanRefer semantic coefficient0.5, other language datasets1; G and C still assert ScanRefer.",
+    "C is gated by model.training; GT qualification is not a new inference input or candidate-pruning rule."
+  ],
+  "limitations": [
+    "This is source branch analysis, not measured gradient conflict or a failure cause.",
+    "Real preflight receipts contain no per-selected-C BoxIoU/G-semantic intersection, so its actual overlap frequency is unknown.",
+    "The real preflight did not exercise a selected matched-other example; source protection is not a real multi-GT witness.",
+    "Do not change the running controlled study or repeat already negative broad CE/contrast expansion solely from this table.",
+    "Nr3D/Sr3D require native text/label/coefficient adaptation; changing dataset name alone is not equivalent."
+  ],
+  "remote_progress_queries": 0,
+  "new_model_forwards": 0,
+  "current_training_changed": false,
+  "full_goal_complete": false
+}

@@ -1,0 +1,569 @@
+{
+  "observed_cst": "2026-10-13T00:16:02.264706+08:00",
+  "stage": "preflight",
+  "root": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/preflight",
+  "controller_pid": 296485,
+  "controller_alive": false,
+  "child_alive": false,
+  "remote_status": {
+    "status": "complete",
+    "stage": "paired_native_engineering",
+    "started_cst": "2026-10-12T23:42:36.927324+08:00",
+    "formal_accuracy": null,
+    "normal_training_started": false,
+    "completed_arms": [
+      "native_control",
+      "selected_geometry"
+    ],
+    "current_arm": "selected_geometry",
+    "child_pid": 297059,
+    "child_argv": [
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/native_selected_geometry_preflight.py",
+      "--protocol",
+      "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/selected_geometry_protocol.json",
+      "--mode",
+      "selected_geometry",
+      "--output",
+      "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/preflight/selected_geometry/witness"
+    ],
+    "exit_code": 0,
+    "completed_cst": "2026-10-13T00:03:09.078501+08:00",
+    "elapsed_seconds": 1232.1509432196617,
+    "actual_total_native_updates": 4,
+    "same_process_recovery_verified": true,
+    "same_augmented_inputs_verified": true,
+    "formal_training_admitted": false
+  },
+  "files": [
+    {
+      "name": "status.json",
+      "bytes": 1096,
+      "sha256": "f9dd7c000439c092faf404d47b916590baf76400cfbf1f644923e900eeee7e7e"
+    },
+    {
+      "name": "admission.json",
+      "bytes": 44868,
+      "sha256": "89e58489925fcaf9ad928db6038197cd59b4bf2f2dcc59d3f5246d26f09f08f4"
+    },
+    {
+      "name": "native_control/preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "name": "native_control/witness/NATIVE_M0_TRAINING_DIAGNOSTIC.json",
+      "bytes": 2321,
+      "sha256": "25530c346edc52475bbd39024fa532e1e54753107815e249f2a0889f1c2f9506"
+    },
+    {
+      "name": "native_control/witness/NATIVE_M0_RECEIPT.json",
+      "bytes": 4252,
+      "sha256": "be03fc301297c6b27308917c0a69c62fd9fa79df5daeec71270ca3c54a5ac9c0"
+    },
+    {
+      "name": "selected_geometry/preflight.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "name": "selected_geometry/witness/NATIVE_M0_TRAINING_DIAGNOSTIC.json",
+      "bytes": 9217,
+      "sha256": "ec8618f8ff9246b9c7f000f079b09920a6071dc817fe0026d255f2a214c7bbe3"
+    },
+    {
+      "name": "selected_geometry/witness/NATIVE_M0_RECEIPT.json",
+      "bytes": 11146,
+      "sha256": "06298a14efe982165101aac594cd173d9359f77d2db14b1bc7bde4697885e6f9"
+    }
+  ],
+  "tails": [
+    {
+      "name": "controller.log",
+      "total_bytes": 1006
+    },
+    {
+      "name": "native_control/preflight.log",
+      "total_bytes": 4967
+    },
+    {
+      "name": "selected_geometry/preflight.log",
+      "total_bytes": 5055
+    }
+  ],
+  "receipts": {
+    "native_control": {
+      "status": "ACTUAL_SELECTED_GEOMETRY_NORMAL_TRAINER_TWO_STEP_AND_SAME_PROCESS_RECOVERY_COMPLETE",
+      "source_mode": "native_control",
+      "time_cst": "2026-10-12T23:52:54.041213+08:00",
+      "selected_geometry_supervision": false,
+      "selected_mask_supervision_disabled": true,
+      "real_train_dataset_rows": 36665,
+      "real_formal_dataset_rows": 9508,
+      "normal_epoch_updates": 4583,
+      "actual_updates": 2,
+      "actual_input_rows": 16,
+      "real_training_batches": 2,
+      "native_train_one_epoch_called": true,
+      "input_batch_sha256": [
+        "8e775089188d7c475658a15b344cace39b6b2c3c13b8326b3b91f97382ce0d30",
+        "293d97ae2ad630e3a8293a188a84459fcfcc448a4a8b484c258735752a4eabf7"
+      ],
+      "original_trainable_core_jointly_updated": true,
+      "original_roberta_frozen": true,
+      "full_state_tensors": 1295,
+      "gradient_norms": [
+        {
+          "span_output": 0.6669713258743286,
+          "span_internal": 0.15803886950016022,
+          "support_corrector": 0.07340977340936661,
+          "original_core_and_G_reader": 28.290536880493164,
+          "backbone": 1.4587525129318237
+        },
+        {
+          "span_output": 0.1465555727481842,
+          "span_internal": 0.07697833329439163,
+          "support_corrector": 0.41143807768821716,
+          "original_core_and_G_reader": 93.72586059570312,
+          "backbone": 5.357212066650391
+        }
+      ],
+      "updates": {
+        "original_core_and_G_reader": {
+          "changed_parameters": 693,
+          "changed_elements": 22783050,
+          "maximum_change": 2.0265579223632812e-06
+        },
+        "backbone": {
+          "changed_parameters": 102,
+          "changed_elements": 3197174,
+          "maximum_change": 2.0265579223632812e-06
+        },
+        "support_corrector": {
+          "changed_parameters": 10,
+          "changed_elements": 27263,
+          "maximum_change": 1.9982457160949707e-05
+        },
+        "span_internal": {
+          "changed_parameters": 12,
+          "changed_elements": 29759,
+          "maximum_change": 1.996941864490509e-05
+        },
+        "span_output": {
+          "changed_parameters": 2,
+          "changed_elements": 33,
+          "maximum_change": 1.6623176634311676e-05
+        }
+      },
+      "losses": [
+        {
+          "step": 1,
+          "total_loss": 13.83889102935791,
+          "raw_gate_min": -0.16573649644851685,
+          "raw_gate_max": 0.30013713240623474,
+          "raw_gate_negative_count": 299,
+          "raw_gate_zero_count": 0,
+          "raw_gate_above_one_count": 0,
+          "raw_gate_elements": 6144,
+          "g_reassigned_queries": 193,
+          "selected_mask_extra_disabled": true
+        },
+        {
+          "step": 2,
+          "total_loss": 14.264206886291504,
+          "raw_gate_min": -0.09232837706804276,
+          "raw_gate_max": 0.3564302921295166,
+          "raw_gate_negative_count": 280,
+          "raw_gate_zero_count": 0,
+          "raw_gate_above_one_count": 0,
+          "raw_gate_elements": 6144,
+          "g_reassigned_queries": 293,
+          "selected_mask_extra_disabled": true
+        }
+      ],
+      "gradient_acceptance": "Core, backbone, support positive each step; Span output and internal positive across two steps",
+      "pretrained_span_initial_mix_formula_verified": true,
+      "full_recovery_exact": true,
+      "span_initialization": "retained_pretrained_checkpoint",
+      "span_initialization_identity": "f9898c5dc7a5e97bf152421efc9072c23ef255618c64477a4bfacf996f2b3b19",
+      "checkpoint_sha256": "6bade79f415d64a51e081fe6883834163267c358b2fa868ddbad24241d731f74",
+      "checkpoint_bytes": 841676000,
+      "saved_retained_metrics": null,
+      "restored_optimizer_states": 820,
+      "step_seconds": 25.247846581041813,
+      "peak_memory_bytes": {
+        "allocated": 22181480960,
+        "reserved": 25218252800
+      },
+      "formal_accuracy": null,
+      "actual_imports": {
+        "train_dist_mod": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/train_dist_mod.py",
+        "main_utils": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/main_utils.py",
+        "native_model_initialization": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/native_model_initialization.py",
+        "models.pv_ground": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/models/pv_ground.py",
+        "models.losses": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/models/losses.py"
+      },
+      "preflight_weights_used_for_formal_training": false,
+      "actual_normal_epoch_training_started": false
+    },
+    "selected_geometry": {
+      "status": "ACTUAL_SELECTED_GEOMETRY_NORMAL_TRAINER_TWO_STEP_AND_SAME_PROCESS_RECOVERY_COMPLETE",
+      "source_mode": "selected_geometry",
+      "time_cst": "2026-10-13T00:02:59.836909+08:00",
+      "selected_geometry_supervision": true,
+      "selected_mask_supervision_disabled": true,
+      "real_train_dataset_rows": 36665,
+      "real_formal_dataset_rows": 9508,
+      "normal_epoch_updates": 4583,
+      "actual_updates": 2,
+      "actual_input_rows": 16,
+      "real_training_batches": 2,
+      "native_train_one_epoch_called": true,
+      "input_batch_sha256": [
+        "8e775089188d7c475658a15b344cace39b6b2c3c13b8326b3b91f97382ce0d30",
+        "293d97ae2ad630e3a8293a188a84459fcfcc448a4a8b484c258735752a4eabf7"
+      ],
+      "original_trainable_core_jointly_updated": true,
+      "original_roberta_frozen": true,
+      "full_state_tensors": 1295,
+      "gradient_norms": [
+        {
+          "span_output": 0.5487776398658752,
+          "span_internal": 0.15058490633964539,
+          "support_corrector": 0.07340926676988602,
+          "original_core_and_G_reader": 28.825176239013672,
+          "backbone": 1.4828081130981445
+        },
+        {
+          "span_output": 0.15168042480945587,
+          "span_internal": 0.13019141554832458,
+          "support_corrector": 0.41218557953834534,
+          "original_core_and_G_reader": 94.42194366455078,
+          "backbone": 5.38778829574585
+        }
+      ],
+      "updates": {
+        "original_core_and_G_reader": {
+          "changed_parameters": 693,
+          "changed_elements": 22796323,
+          "maximum_change": 2.0265579223632812e-06
+        },
+        "backbone": {
+          "changed_parameters": 102,
+          "changed_elements": 3196977,
+          "maximum_change": 2.0265579223632812e-06
+        },
+        "support_corrector": {
+          "changed_parameters": 10,
+          "changed_elements": 27265,
+          "maximum_change": 1.9980594515800476e-05
+        },
+        "span_internal": {
+          "changed_parameters": 12,
+          "changed_elements": 29760,
+          "maximum_change": 1.9984319806098938e-05
+        },
+        "span_output": {
+          "changed_parameters": 2,
+          "changed_elements": 33,
+          "maximum_change": 1.806207001209259e-05
+        }
+      },
+      "losses": [
+        {
+          "step": 1,
+          "total_loss": 14.218085289001465,
+          "raw_gate_min": -0.16573657095432281,
+          "raw_gate_max": 0.3001370429992676,
+          "raw_gate_negative_count": 299,
+          "raw_gate_zero_count": 0,
+          "raw_gate_above_one_count": 0,
+          "raw_gate_elements": 6144,
+          "g_reassigned_queries": 193,
+          "selected_mask_extra_disabled": true,
+          "extra_geometry": {
+            "extra_rows": 7,
+            "rows": [
+              {
+                "query": 226,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 102,
+                "own_union": 102,
+                "fused_intersection": 102,
+                "fused_union": 102,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 108,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 150,
+                "own_union": 175,
+                "fused_intersection": 150,
+                "fused_union": 175,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 166,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 2110,
+                "own_union": 2342,
+                "fused_intersection": 2110,
+                "fused_union": 2342,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 157,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 955,
+                "own_union": 986,
+                "fused_intersection": 955,
+                "fused_union": 986,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 136,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 1826,
+                "own_union": 2143,
+                "fused_intersection": 1826,
+                "fused_union": 2143,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 15,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 194,
+                "own_union": 255,
+                "fused_intersection": 194,
+                "fused_union": 255,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 115,
+                "extra_geometry": false,
+                "role": "matched_root",
+                "target_gt_slot": 0,
+                "reason": "original_matching_preserved"
+              },
+              {
+                "query": 133,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 3135,
+                "own_union": 3630,
+                "fused_intersection": 3135,
+                "fused_union": 3630,
+                "reason": "own_and_fused_support"
+              }
+            ],
+            "budget": "at most one selected Query per expression; denominator is actual batch size",
+            "selected_roles": {
+              "matched_root": 1,
+              "matched_other": 0,
+              "unmatched": 7
+            },
+            "original_matching_preserved": true,
+            "existing_loss_denominators_unchanged": true,
+            "selection_and_qualification_gradient_stopped": true,
+            "eligibility_uses_box_iou": false,
+            "new_semantic_target": false,
+            "native_geometry_coefficients": [
+              10,
+              2
+            ],
+            "native_output_average": 7,
+            "loss": 0.37919801473617554
+          },
+          "extra_direct_gradient_nonzero_queries": 7,
+          "extra_direct_gradient_l1": 7.955854892730713
+        },
+        {
+          "step": 2,
+          "total_loss": 14.540265083312988,
+          "raw_gate_min": -0.09233754873275757,
+          "raw_gate_max": 0.356431245803833,
+          "raw_gate_negative_count": 281,
+          "raw_gate_zero_count": 0,
+          "raw_gate_above_one_count": 0,
+          "raw_gate_elements": 6144,
+          "g_reassigned_queries": 293,
+          "selected_mask_extra_disabled": true,
+          "extra_geometry": {
+            "extra_rows": 6,
+            "rows": [
+              {
+                "query": 253,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 114,
+                "own_union": 114,
+                "fused_intersection": 114,
+                "fused_union": 114,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 188,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 2772,
+                "own_union": 2958,
+                "fused_intersection": 2772,
+                "fused_union": 2958,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 118,
+                "extra_geometry": false,
+                "role": "unmatched",
+                "target_gt_slot": null,
+                "own_intersection": 0,
+                "own_union": 1539,
+                "fused_intersection": 0,
+                "fused_union": 1539,
+                "reason": "support_not_qualified"
+              },
+              {
+                "query": 84,
+                "extra_geometry": false,
+                "role": "unmatched",
+                "target_gt_slot": null,
+                "own_intersection": 143,
+                "own_union": 295,
+                "fused_intersection": 143,
+                "fused_union": 295,
+                "reason": "support_not_qualified"
+              },
+              {
+                "query": 245,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 331,
+                "own_union": 335,
+                "fused_intersection": 331,
+                "fused_union": 335,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 64,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 762,
+                "own_union": 762,
+                "fused_intersection": 762,
+                "fused_union": 762,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 1,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 948,
+                "own_union": 1236,
+                "fused_intersection": 948,
+                "fused_union": 1236,
+                "reason": "own_and_fused_support"
+              },
+              {
+                "query": 177,
+                "extra_geometry": true,
+                "role": "unmatched",
+                "target_gt_slot": 0,
+                "own_intersection": 1066,
+                "own_union": 1154,
+                "fused_intersection": 1066,
+                "fused_union": 1154,
+                "reason": "own_and_fused_support"
+              }
+            ],
+            "budget": "at most one selected Query per expression; denominator is actual batch size",
+            "selected_roles": {
+              "matched_root": 0,
+              "matched_other": 0,
+              "unmatched": 8
+            },
+            "original_matching_preserved": true,
+            "existing_loss_denominators_unchanged": true,
+            "selection_and_qualification_gradient_stopped": true,
+            "eligibility_uses_box_iou": false,
+            "new_semantic_target": false,
+            "native_geometry_coefficients": [
+              10,
+              2
+            ],
+            "native_output_average": 7,
+            "loss": 0.2760017514228821
+          },
+          "extra_direct_gradient_nonzero_queries": 6,
+          "extra_direct_gradient_l1": 6.566103935241699
+        }
+      ],
+      "gradient_acceptance": "Core, backbone, support positive each step; Span output and internal positive across two steps",
+      "pretrained_span_initial_mix_formula_verified": true,
+      "full_recovery_exact": true,
+      "span_initialization": "retained_pretrained_checkpoint",
+      "span_initialization_identity": "f9898c5dc7a5e97bf152421efc9072c23ef255618c64477a4bfacf996f2b3b19",
+      "checkpoint_sha256": "2a3dc220b503ba6b9ba02aaaa61fd558ef8ce819a43790e678c8fb3788eb6fdf",
+      "checkpoint_bytes": 841676000,
+      "saved_retained_metrics": null,
+      "restored_optimizer_states": 820,
+      "step_seconds": 25.41319301724434,
+      "peak_memory_bytes": {
+        "allocated": 22181480960,
+        "reserved": 25220349952
+      },
+      "formal_accuracy": null,
+      "actual_imports": {
+        "train_dist_mod": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/train_dist_mod.py",
+        "main_utils": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/main_utils.py",
+        "native_model_initialization": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/native_model_initialization.py",
+        "models.pv_ground": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/models/pv_ground.py",
+        "models.losses": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/PV-Ground/models/losses.py"
+      },
+      "preflight_weights_used_for_formal_training": false,
+      "actual_normal_epoch_training_started": false
+    }
+  },
+  "weights": [
+    {
+      "arm": "native_control",
+      "path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/preflight/native_control/witness/scanrefer/engineering_two_batch_preflight/1791819767/best.pth",
+      "bytes": 841676000,
+      "sha256": "6bade79f415d64a51e081fe6883834163267c358b2fa868ddbad24241d731f74",
+      "unscored_engineering_only": true
+    },
+    {
+      "arm": "selected_geometry",
+      "path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/preflight/selected_geometry/witness/scanrefer/engineering_two_batch_preflight/1791820393/best.pth",
+      "bytes": 841676000,
+      "sha256": "2a3dc220b503ba6b9ba02aaaa61fd558ef8ce819a43790e678c8fb3788eb6fdf",
+      "unscored_engineering_only": true
+    }
+  ],
+  "new_neural_forwards": 0,
+  "new_GPU_queries": 0,
+  "new_optimizer_updates": 0,
+  "first_due_cst": "2026-10-13T00:05:19+08:00",
+  "actual_weights_loaded": false,
+  "best_promoted": false,
+  "full_goal_complete": false
+}

@@ -1,0 +1,808 @@
+{
+  "audit_skill": "experiment-audit",
+  "execution_scope": "ACTUAL_SELECTED_GEOMETRY_NATIVE_PREFLIGHT_PAIR",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "ACTUAL_ENGINEERING_PAIR_PASSED_BOUNDED_SCOPE_SAME_FAMILY_PROVISIONAL",
+  "summary": "The completed actual native pair passes the bounded engineering checks; there are no blocking findings. Formal accuracy and cold ordinary resume remain unverified.",
+  "blocking_findings": [],
+  "engineering_preflight_pass": true,
+  "semantic_review_status": "completed",
+  "deterministic_verification_status": "PASS",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "executor_model": "UNATTESTED",
+  "executor_family": "openai",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_family": "openai",
+  "reviewer_reasoning": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_context": {
+    "fresh_delegated_context": true,
+    "handoff_included_summary_assertions": true,
+    "primary_evidence_read_independently": true,
+    "assertions_accepted_only_after_source_and_saved_byte_checks": true,
+    "cross_family_acceptance_claimed": false
+  },
+  "agent_id": "/root/pv_actual_selected_geometry_preflight_audit_20261013",
+  "verdict_id": "pv_actual_selected_geometry_preflight_20261013_run01",
+  "generated_at": "2026-10-13T00:40:19.636131+08:00",
+  "date": "2026-10-13",
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_INTAKE.json": "2babf6208183c9c455d54eebbd0e3e52adc756fcc41615c1bacfbe37ea7a20d1",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_STDOUT.json": "35246fb123815f92d4e96a38e2b4082ce24ae664a5ecfc9677fea6b4e8f74536",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_EXIT.json": "e89df0eae5ec7db81135aed16463968955c578bcc4f2ec43172eff351f080c17",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_OWNER.json": "a8bc925d43047df2452372ed6c51a65372818558dd007077e57d3ac7a8e55d14",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\status.json": "f9dd7c000439c092faf404d47b916590baf76400cfbf1f644923e900eeee7e7e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\admission.json": "89e58489925fcaf9ad928db6038197cd59b4bf2f2dcc59d3f5246d26f09f08f4",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\native_control\\preflight.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\native_control\\witness\\NATIVE_M0_TRAINING_DIAGNOSTIC.json": "25530c346edc52475bbd39024fa532e1e54753107815e249f2a0889f1c2f9506",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\native_control\\witness\\NATIVE_M0_RECEIPT.json": "be03fc301297c6b27308917c0a69c62fd9fa79df5daeec71270ca3c54a5ac9c0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\selected_geometry\\preflight.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\selected_geometry\\witness\\NATIVE_M0_TRAINING_DIAGNOSTIC.json": "ec8618f8ff9246b9c7f000f079b09920a6071dc817fe0026d255f2a214c7bbe3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\selected_geometry\\witness\\NATIVE_M0_RECEIPT.json": "06298a14efe982165101aac594cd173d9359f77d2db14b1bc7bde4697885e6f9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\controller.log.tail.txt": "ccec69da13f342b80eaf45473edb21fdc65746dfb17468a421ba04684c4c1b8a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\native_control\\preflight.log.tail.txt": "dfd33ab9db95f29da627aef1c0017bfee40befa46baad999b2d571e61ba0b1b9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_files\\selected_geometry\\preflight.log.tail.txt": "7fe2ed5ec63e1d0b3c49ea7075ca4f8389e59c34c117b96779e7dff94943236d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\SOURCE_STAGE_R4_RECEIPT.json": "b6d0b2fb7046743b83ee44dd345814870f011eb66301539489ea8390c9fcca13",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_review\\SOURCE_REVIEW_DIAGNOSTICS.json": "1f6007854ad932e60a32bd02737c9f2c17dfbeff726e0ba358738297954d51df",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\PREFLIGHT_PAIR_LAUNCH.json": "83ce71c9a2ddd68892527a62d15cef13a70fa83ec1c2fbf4882d957aa7ca2591",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\PREFLIGHT_PAIR_TRANSPORT_EXIT.json": "e89df0eae5ec7db81135aed16463968955c578bcc4f2ec43172eff351f080c17",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\train_dist_mod.py": "91ec636c1235c7eb2bca758ddc00762d8ffa74a3ccec810af022bb89ef5e3bfa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\selected_geometry_eval_diagnostics.py": "44ca7699b1dd641c8a349f39b4be639962282ec0ae1857cc3fce5cb24ade258a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py": "5d85013e96abb85881bafaaee695809db6e7f7a9ded3440972948ddbcda1ac9c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\native_model_initialization.py": "27169c76bda9cf1a0247fc613b16017d74f92c7662a5f5b5dcaa9d827f3288db",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\pv_ground.py": "7a2db438811cb2fccf77a85f8f45a6a572cb0a1bbbd60d337e98afcbfa5e5b84",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py": "b960fd486e4b325f346f3925d98bcda84be59020310d123832a789a525ceefee",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_support_geometry_objective.py": "74a1d38018b3f8cf38d2b9f133b2df44f90cc2d17e13775b5812c0b1d0d12d30",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\pvground_semantic_assignment.py": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\selected_support_geometry_objective.py": "74a1d38018b3f8cf38d2b9f133b2df44f90cc2d17e13775b5812c0b1d0d12d30",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\gpu_preflight_pair_controller.py": "3131d422fab14027d656d1fbb395030c2281118630924c642be087b369974c95",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py": "4b1867a70bd3fbf475a3174601f2bc6a18d5c786a0ade2b908c22fb543a49831",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_control_protocol.json": "3781872c4972b015d074379f63d9c7c7f6d492be5a64255c2fcc6e06df3c732b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_geometry_protocol.json": "ce487329dcb828e922bd6333d92b47f30d79fe539f45e7ec6007eb1642401403",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_control_initialization.json": "a69f3e8ee68da350834e0a1cf5dbbfe5bd9ff0eae2a3205ef840f9b7306478d2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_geometry_initialization.json": "cbb56a015f3e58eacc710a51417130536fba978393d06973b01b96baa4ede018",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\launch_gpu_preflight_pair_authorized_v4.py": "3a8dd5edfa9cc8bddb01b0d9160dbd96f0ce2cec37edf32af8696e2cee39af71",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\launch_normal_arm_authorized_v4.py": "6eb258b8b0dce7ea0fb9d168e2dd8d91433ce6de87f0d3c33a0bce6cce930dd4",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\normal_run_controller_v3.py": "583cae6321f3e7b40a34a78f310a9d3c08749d5f4ee260b577142f5d8c877246",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\observe_study_authorized.py": "2a4e89f0805ff88afe88e7fbb96efd9da521b0eb40056efbac0ee434bb816356",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_after_space_retirement_INTAKE.json": "ba46d0d97daefda0fbedf8a03a31a5eae3adb9f412798aa2ee06b5ff77f2f379",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\FIRST_PREFLIGHT_START_FAILURE.json": "319fdc8d690fbfbbb7e27dec0cae36b272640a12c65ab46a242862dd60e292b1",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\FAILED_PREFLIGHT_ADMISSION_ARCHIVE.json": "02de973400a7eadcf483376ed198ae71490b6611eb16693d44ffae0d2a312a8c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\EXPERIMENT_PLAN.md": "7b6b6bb76aa552da4f85e722bdfdb13e323a96fb549297701f44e2b226be8dfc"
+  },
+  "accepted_intake_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_preflight_paired_terminal_1_INTAKE.json",
+  "accepted_intake_sha256": "2babf6208183c9c455d54eebbd0e3e52adc756fcc41615c1bacfbe37ea7a20d1",
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\actual_pair_review\\.aris\\traces\\experiment-audit\\2026-10-13_run01",
+  "deterministic_verification_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\actual_pair_review\\DETERMINISTIC_VERIFICATION.json",
+  "actual_reviewer_SSH_calls": 0,
+  "actual_reviewer_GPU_queries": 0,
+  "actual_reviewer_neural_forwards": 0,
+  "actual_reviewer_optimizer_updates": 0,
+  "actual_reviewer_progress_queries": 0,
+  "actual_reviewer_installs": 0,
+  "private_MEMORY_read": false,
+  "source_edits_by_reviewer": false,
+  "writes_confined_to": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\actual_pair_review",
+  "actual_pair_complete": true,
+  "actual_pair_exit_code": 0,
+  "actual_observer_exit_code": 0,
+  "actual_controller_and_child_absent": true,
+  "actual_total_native_updates": 4,
+  "same_augmented_loader_batches_verified": true,
+  "same_process_recovery_verified": true,
+  "cold_resume_supported": false,
+  "cold_resume_verified": false,
+  "normal_training_launched_by_reviewer": false,
+  "complete9508_evaluation_verified": false,
+  "formal_accuracy": null,
+  "preflight_weights_used_for_formal_training": false,
+  "new_result_promoted": false,
+  "full_goal_complete": false,
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "details": "The actual factory constructs Joint3DDataset train/val. ScanRefer JSON object_id selects annotated scan objects; their point membership and boxes supply root targets. Native losses build targets from center_label, size_gts, gt_masks, and box_label_mask. Extra geometry reads these dataset targets; predictions only decide a detached training qualification. No model output becomes ground truth.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "start_line": 585,
+          "end_line": 644
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py",
+          "start_line": 1086,
+          "end_line": 1119
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\train_dist_mod.py",
+          "start_line": 56,
+          "end_line": 98
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py",
+          "start_line": 856,
+          "end_line": 886
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_support_geometry_objective.py",
+          "start_line": 19,
+          "end_line": 56
+        }
+      ],
+      "limit": "Dataset file contents were not downloaded or independently reread. This is source provenance plus the actual successful factory/receipt, not a new dataset certification or accuracy evaluation."
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "Extra geometry invokes the existing loss_boxes with denominator B=8 and coefficients (10*L1+2*GIoU)/7. Original matching loss denominators remain the number of matched targets. Mask eligibility uses integer 2*intersection>union; there is no normalization by a prediction maximum or model-owned score statistic. The native bbs ranking is unchanged.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_support_geometry_objective.py",
+          "start_line": 13,
+          "end_line": 14
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_support_geometry_objective.py",
+          "start_line": 45,
+          "end_line": 64
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py",
+          "start_line": 518,
+          "end_line": 544
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py",
+          "start_line": 831,
+          "end_line": 844
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py",
+          "start_line": 945,
+          "end_line": 980
+        }
+      ]
+    },
+    "C_result_existence_and_byte_binding": {
+      "status": "PASS",
+      "details": "Original observer stdout decodes exactly to the final intake and all 8 captured files plus 3 tails. Both diagnostics equal the corresponding receipt fields; both child exit files are 0. Final status is complete/0 with controller and child absent. Raw final intake SHA256 is bound under its Python-resolved absolute path; the C: alias resolves to D: on this machine.",
+      "deterministic_verification": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\actual_pair_review\\DETERMINISTIC_VERIFICATION.json",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\observe_study_authorized.py",
+          "start_line": 43,
+          "end_line": 99
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\observe_study_authorized.py",
+          "start_line": 114,
+          "end_line": 135
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\gpu_preflight_pair_controller.py",
+          "start_line": 60,
+          "end_line": 87
+        }
+      ]
+    },
+    "D_actual_call_path_and_dead_code": {
+      "status": "PASS",
+      "details": "The child imports the R4 TrainTester, builds actual loaders/criterion/model/AdamW, captures two real augmented loader batches and calls inherited native train_one_epoch. That path calls model, the original _compute_loss/native criterion, backward, clip and optimizer.step. Geometry is added only inside native_joint_training for the selected arm. Actual extra records and direct gradients prove this branch was exercised. Full evaluate_one_epoch and diagnostic finish are source-wired but were not executed in this preflight; no formal evaluation result is attributed to them.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 61,
+          "end_line": 104
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 156,
+          "end_line": 184
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 187,
+          "end_line": 203
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py",
+          "start_line": 449,
+          "end_line": 502
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py",
+          "start_line": 959,
+          "end_line": 980
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\train_dist_mod.py",
+          "start_line": 217,
+          "end_line": 262
+        }
+      ]
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "One seed (2027), two serial arms, two updates and 16 input-row presentations per arm: 4 updates and 32 row presentations total over the same two paired B8 batch dictionaries. Distinct scene and unique-expression counts are not exported. Train dataset length 36665 and val length 9508 are instantiated-factory counts, not completed epoch/evaluation counts. No E0/9508 result, full normal epoch, gain, robustness, third-contribution, Nr3D, or Sr3D claim is supported.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 63,
+          "end_line": 69
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 275,
+          "end_line": 293
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\EXPERIMENT_PLAN.md",
+          "start_line": 1,
+          "end_line": 44
+        }
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "subtype": "actual_native_training_engineering_preflight",
+      "formal_accuracy": null,
+      "details": "Real dataset GT used for native training and training diagnostics. This is not a benchmark accuracy evaluation, synthetic pilot, oracle deployment score, or formal model promotion."
+    },
+    "paired_initialization_and_input_parity": {
+      "status": "PASS",
+      "details": "Both protocols have identical common arguments and differ only in arm/init-spec path/geometry flag. Initialization specs differ only in use_selected_geometry_supervision. Both fresh runs have checkpoint_path=None, verify the same four initialization checkpoint SHA256 values and construct 1295-state models. Both actual input fingerprint arrays are identical. Fresh optimizer creation is distinct from restoration of an old Adam history.",
+      "input_batch_sha256": [
+        "8e775089188d7c475658a15b344cace39b6b2c3c13b8326b3b91f97382ce0d30",
+        "293d97ae2ad630e3a8293a188a84459fcfcc448a4a8b484c258735752a4eabf7"
+      ],
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 40,
+          "end_line": 104
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\train_dist_mod.py",
+          "start_line": 101,
+          "end_line": 130
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\native_model_initialization.py",
+          "start_line": 13,
+          "end_line": 77
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py",
+          "start_line": 301,
+          "end_line": 315
+        }
+      ],
+      "limit": "No cross-arm initial-state tensor digest is exported. Identical initialization is supported by the shared seed/constructor, matching checked checkpoint identities, exact state count and runtime successful assertions; full recovery equality is separately checked against each arm's own saved state. Input fingerprints cover the augmented DataLoader dictionaries, not a recorded byte comparison of all later voxel tensors."
+    },
+    "task_gradients_and_actual_updates": {
+      "status": "PASS",
+      "details": "All five instrumented trainable parameter groups have finite positive native-task gradient norms at both steps and positive changed-element counts after two AdamW steps. RoBERTa remains frozen. These are full-task gradients, not a claim that the geometry-only term directly differentiates through every A/B component.",
+      "actual_updates_per_arm": 2,
+      "total_updates": 4,
+      "actual_numerical_evidence": {
+        "native_control": {
+          "gradient_norms": [
+            {
+              "span_output": 0.6669713258743286,
+              "span_internal": 0.15803886950016022,
+              "support_corrector": 0.07340977340936661,
+              "original_core_and_G_reader": 28.290536880493164,
+              "backbone": 1.4587525129318237
+            },
+            {
+              "span_output": 0.1465555727481842,
+              "span_internal": 0.07697833329439163,
+              "support_corrector": 0.41143807768821716,
+              "original_core_and_G_reader": 93.72586059570312,
+              "backbone": 5.357212066650391
+            }
+          ],
+          "updates": {
+            "original_core_and_G_reader": {
+              "changed_parameters": 693,
+              "changed_elements": 22783050,
+              "maximum_change": 2.0265579223632812e-06
+            },
+            "backbone": {
+              "changed_parameters": 102,
+              "changed_elements": 3197174,
+              "maximum_change": 2.0265579223632812e-06
+            },
+            "support_corrector": {
+              "changed_parameters": 10,
+              "changed_elements": 27263,
+              "maximum_change": 1.9982457160949707e-05
+            },
+            "span_internal": {
+              "changed_parameters": 12,
+              "changed_elements": 29759,
+              "maximum_change": 1.996941864490509e-05
+            },
+            "span_output": {
+              "changed_parameters": 2,
+              "changed_elements": 33,
+              "maximum_change": 1.6623176634311676e-05
+            }
+          },
+          "total_losses": [
+            13.83889102935791,
+            14.264206886291504
+          ],
+          "g_reassigned_queries": [
+            193,
+            293
+          ],
+          "full_state_tensors": 1295,
+          "restored_optimizer_states": 820,
+          "actual_updates": 2,
+          "actual_input_rows": 16,
+          "actual_training_batches": 2,
+          "checkpoint": {
+            "arm": "native_control",
+            "path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/preflight/native_control/witness/scanrefer/engineering_two_batch_preflight/1791819767/best.pth",
+            "bytes": 841676000,
+            "sha256": "6bade79f415d64a51e081fe6883834163267c358b2fa868ddbad24241d731f74",
+            "unscored_engineering_only": true
+          },
+          "step_seconds": 25.247846581041813,
+          "peak_memory_bytes": {
+            "allocated": 22181480960,
+            "reserved": 25218252800
+          }
+        },
+        "selected_geometry": {
+          "gradient_norms": [
+            {
+              "span_output": 0.5487776398658752,
+              "span_internal": 0.15058490633964539,
+              "support_corrector": 0.07340926676988602,
+              "original_core_and_G_reader": 28.825176239013672,
+              "backbone": 1.4828081130981445
+            },
+            {
+              "span_output": 0.15168042480945587,
+              "span_internal": 0.13019141554832458,
+              "support_corrector": 0.41218557953834534,
+              "original_core_and_G_reader": 94.42194366455078,
+              "backbone": 5.38778829574585
+            }
+          ],
+          "updates": {
+            "original_core_and_G_reader": {
+              "changed_parameters": 693,
+              "changed_elements": 22796323,
+              "maximum_change": 2.0265579223632812e-06
+            },
+            "backbone": {
+              "changed_parameters": 102,
+              "changed_elements": 3196977,
+              "maximum_change": 2.0265579223632812e-06
+            },
+            "support_corrector": {
+              "changed_parameters": 10,
+              "changed_elements": 27265,
+              "maximum_change": 1.9980594515800476e-05
+            },
+            "span_internal": {
+              "changed_parameters": 12,
+              "changed_elements": 29760,
+              "maximum_change": 1.9984319806098938e-05
+            },
+            "span_output": {
+              "changed_parameters": 2,
+              "changed_elements": 33,
+              "maximum_change": 1.806207001209259e-05
+            }
+          },
+          "total_losses": [
+            14.218085289001465,
+            14.540265083312988
+          ],
+          "g_reassigned_queries": [
+            193,
+            293
+          ],
+          "full_state_tensors": 1295,
+          "restored_optimizer_states": 820,
+          "actual_updates": 2,
+          "actual_input_rows": 16,
+          "actual_training_batches": 2,
+          "checkpoint": {
+            "arm": "selected_geometry",
+            "path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/preflight/selected_geometry/witness/scanrefer/engineering_two_batch_preflight/1791820393/best.pth",
+            "bytes": 841676000,
+            "sha256": "2a3dc220b503ba6b9ba02aaaa61fd558ef8ce819a43790e678c8fb3788eb6fdf",
+            "unscored_engineering_only": true
+          },
+          "step_seconds": 25.41319301724434,
+          "peak_memory_bytes": {
+            "allocated": 22181480960,
+            "reserved": 25220349952
+          }
+        }
+      },
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 107,
+          "end_line": 124
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 142,
+          "end_line": 152
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 199,
+          "end_line": 229
+        }
+      ]
+    },
+    "selected_only_geometry_responsibility": {
+      "status": "PASS",
+      "details": "Detached native bbs arg-sort selects at most one query. A currently matched root or other query is excluded. Only unmatched own+fused root-mask support satisfying strict IoU>.5 gets the existing last_center/last_pred_size L1/GIoU target. Box IoU is absent from eligibility. Extra indices are separate from original last-layer Hungarian indices; existing target/denominator objects are not rewritten. GT/qualification does not enter model forward or deployment score.",
+      "steps": [
+        {
+          "step": 1,
+          "extra_rows": 7,
+          "selected_roles": {
+            "matched_root": 1,
+            "matched_other": 0,
+            "unmatched": 7
+          },
+          "extra_loss": 0.37919801473617554,
+          "direct_gradient_nonzero_queries": 7,
+          "direct_gradient_l1": 7.955854892730713,
+          "protected_output_gradient_zero": "runtime assert at native_selected_geometry_preflight.py:180 reached before successful receipt"
+        },
+        {
+          "step": 2,
+          "extra_rows": 6,
+          "selected_roles": {
+            "matched_root": 0,
+            "matched_other": 0,
+            "unmatched": 8
+          },
+          "extra_loss": 0.2760017514228821,
+          "direct_gradient_nonzero_queries": 6,
+          "direct_gradient_l1": 6.566103935241699,
+          "protected_output_gradient_zero": "runtime assert at native_selected_geometry_preflight.py:180 reached before successful receipt"
+        }
+      ],
+      "actual_row_checks": [
+        {
+          "step": 1,
+          "batch_row": 0,
+          "query": 226,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 102,
+          "own_union": 102,
+          "fused_intersection": 102,
+          "fused_union": 102,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 1,
+          "batch_row": 1,
+          "query": 108,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 150,
+          "own_union": 175,
+          "fused_intersection": 150,
+          "fused_union": 175,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 1,
+          "batch_row": 2,
+          "query": 166,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 2110,
+          "own_union": 2342,
+          "fused_intersection": 2110,
+          "fused_union": 2342,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 1,
+          "batch_row": 3,
+          "query": 157,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 955,
+          "own_union": 986,
+          "fused_intersection": 955,
+          "fused_union": 986,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 1,
+          "batch_row": 4,
+          "query": 136,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 1826,
+          "own_union": 2143,
+          "fused_intersection": 1826,
+          "fused_union": 2143,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 1,
+          "batch_row": 5,
+          "query": 15,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 194,
+          "own_union": 255,
+          "fused_intersection": 194,
+          "fused_union": 255,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 1,
+          "batch_row": 6,
+          "query": 115,
+          "extra_geometry": false,
+          "role": "matched_root",
+          "target_gt_slot": 0,
+          "reason": "original_matching_preserved"
+        },
+        {
+          "step": 1,
+          "batch_row": 7,
+          "query": 133,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 3135,
+          "own_union": 3630,
+          "fused_intersection": 3135,
+          "fused_union": 3630,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 2,
+          "batch_row": 0,
+          "query": 253,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 114,
+          "own_union": 114,
+          "fused_intersection": 114,
+          "fused_union": 114,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 2,
+          "batch_row": 1,
+          "query": 188,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 2772,
+          "own_union": 2958,
+          "fused_intersection": 2772,
+          "fused_union": 2958,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 2,
+          "batch_row": 2,
+          "query": 118,
+          "extra_geometry": false,
+          "role": "unmatched",
+          "target_gt_slot": null,
+          "own_intersection": 0,
+          "own_union": 1539,
+          "fused_intersection": 0,
+          "fused_union": 1539,
+          "reason": "support_not_qualified"
+        },
+        {
+          "step": 2,
+          "batch_row": 3,
+          "query": 84,
+          "extra_geometry": false,
+          "role": "unmatched",
+          "target_gt_slot": null,
+          "own_intersection": 143,
+          "own_union": 295,
+          "fused_intersection": 143,
+          "fused_union": 295,
+          "reason": "support_not_qualified"
+        },
+        {
+          "step": 2,
+          "batch_row": 4,
+          "query": 245,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 331,
+          "own_union": 335,
+          "fused_intersection": 331,
+          "fused_union": 335,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 2,
+          "batch_row": 5,
+          "query": 64,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 762,
+          "own_union": 762,
+          "fused_intersection": 762,
+          "fused_union": 762,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 2,
+          "batch_row": 6,
+          "query": 1,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 948,
+          "own_union": 1236,
+          "fused_intersection": 948,
+          "fused_union": 1236,
+          "reason": "own_and_fused_support"
+        },
+        {
+          "step": 2,
+          "batch_row": 7,
+          "query": 177,
+          "extra_geometry": true,
+          "role": "unmatched",
+          "target_gt_slot": 0,
+          "own_intersection": 1066,
+          "own_union": 1154,
+          "fused_intersection": 1066,
+          "fused_union": 1154,
+          "reason": "own_and_fused_support"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_support_geometry_objective.py",
+          "start_line": 9,
+          "end_line": 74
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py",
+          "start_line": 917,
+          "end_line": 980
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 171,
+          "end_line": 183
+        }
+      ],
+      "limit": "The successful runtime asserts verify exactly zero direct extra-loss gradient at every unqualified output location. This protects direct output supervision, not shared-network parameter updates or every future output value. The sample exercised 1 selected matched-root and 2 unqualified unmatched rows; selected matched-other rows and an entirely empty eligible batch were not observed and are source-covered only."
+    },
+    "same_process_recovery": {
+      "status": "PASS",
+      "details": "Each arm saves all 1295 model state entries and 820 Adam states, with optimizer step 2. It deletes the live model/optimizer/scheduler, constructs a replacement in the same process, restores the checkpoint, and compares every model tensor, optimizer state field, parameter group, scheduler, Python/NumPy/CPU/CUDA RNG against the saved payload. Both checkpoints are 841676000 bytes; the final observer rereads their bytes and matches receipt SHA256 metadata.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_selected_geometry_preflight.py",
+          "start_line": 232,
+          "end_line": 274
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py",
+          "start_line": 133,
+          "end_line": 163
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\observe_study_authorized.py",
+          "start_line": 72,
+          "end_line": 78
+        }
+      ],
+      "limit": "The reviewer did not load/download weights. No cold-process normal resume, restored DataLoader worker/sampler position, restored early-stop control flow, or next optimizer update after restore is tested. Ordinary main explicitly requires a fresh run at lines 374-375."
+    },
+    "serial_admission_history": {
+      "status": "PASS",
+      "details": "Saved admission records MCLN complete/0, two strict declines, completed 2026-10-12T23:11:36.120282+08:00 before this pair. Original controller291554 failed disk admission at controller line27 before status creation/native child/updates. The failure and archive persist. Controller296485 reran the identical source-stage object and helper hashes; it completed both arms at 2026-10-13T00:03:09.078501+08:00. Final observed controller296485 and child297059 are absent. The observer was due00:05:19 and collected00:16:02; no early observation is represented.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\gpu_preflight_pair_controller.py",
+          "start_line": 17,
+          "end_line": 43
+        }
+      ],
+      "history_files": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\FIRST_PREFLIGHT_START_FAILURE.json",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\FAILED_PREFLIGHT_ADMISSION_ARCHIVE.json"
+      ]
+    },
+    "formal_launcher_scope": {
+      "status": "PASS",
+      "details": "The actual v4 formal launcher requires final pair complete/0, both processes absent, 4 actual updates, same augmented inputs, exact audit execution scope, PASS/WARN with no blockers, and exact final-intake raw SHA256. Remote receipt checks require 2 updates and 1295 states per arm; normal controller rechecks source hashes under the GPU lock, uses fresh initialization with no checkpoint_path, and runs native control before strategy. These are reviewed future gates; this review launches nothing.",
+      "evidence": [
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\launch_normal_arm_authorized_v4.py",
+          "start_line": 20,
+          "end_line": 37
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\launch_normal_arm_authorized_v4.py",
+          "start_line": 48,
+          "end_line": 77
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\normal_run_controller_v3.py",
+          "start_line": 14,
+          "end_line": 43
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\normal_run_controller_v3.py",
+          "start_line": 58,
+          "end_line": 62
+        },
+        {
+          "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py",
+          "start_line": 374,
+          "end_line": 399
+        }
+      ]
+    }
+  },
+  "warnings": [
+    "Engineering pilot only: one seed, two B8 batches per arm; no formal accuracy, complete E0/epoch, gain, or generalization claim.",
+    "Recovery is exact against each saved checkpoint within the same process; cold ordinary resume and a next restored update are unverified.",
+    "Initial-state identity follows checked shared source/spec/checkpoints and seed; no independent cross-arm initial-state tensor digest is exported.",
+    "Direct extra-output gradient isolation is verified; matched-other selection and fully empty eligibility were not exercised in these two batches.",
+    "Actual reviewer model/reasoning identity is UNATTESTED; requested gpt-6-astra/max is not runtime attestation. Same-family/provisional.",
+    "Observer zero-forward/zero-GPU/zero-update fields describe the observer; the audited preflight itself performed four real optimizer updates."
+  ],
+  "claim_impact": [
+    {
+      "claim": "The actual paired native engineering preflight completed with four updates, correct per-query geometry responsibility, and same-process recovery.",
+      "impact": "supported_with_stated_scope"
+    },
+    {
+      "claim": "The strategy improves formal 9508-row ScanRefer accuracy, exceeds the retained best/control, or establishes the research goal.",
+      "impact": "unsupported_by_this_preflight"
+    },
+    {
+      "claim": "Cold ordinary training can resume seamlessly.",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "Formal training may reuse fitted preflight weights.",
+      "impact": "not_authorized_or_supported"
+    }
+  ]
+}

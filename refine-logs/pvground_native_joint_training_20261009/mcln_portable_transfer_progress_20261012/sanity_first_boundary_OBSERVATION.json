@@ -1,0 +1,166 @@
+{
+  "observed_cst": "2026-10-12T08:53:02.237333+08:00",
+  "stage": "sanity",
+  "controller_alive": false,
+  "child_alive": false,
+  "remote_status": {
+    "status": "complete",
+    "stage": "sanity",
+    "started_cst": "2026-10-12T08:49:43.444025+08:00",
+    "source": "/root/autodl-tmp/mcln_portable_best_transfer_20261012/MCLN",
+    "optimizer_updates": 0,
+    "weights_written": 0,
+    "child_pid": 265819,
+    "child_argv": [
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/MCLN/evaluate_mcln_portable_pair.py",
+      "--source",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/MCLN",
+      "--spec",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/TRANSFER_SPEC.json",
+      "--output",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/sanity/replay",
+      "--max-batches",
+      "1"
+    ],
+    "exit_code": 0,
+    "completed_cst": "2026-10-12T08:51:50.301663+08:00",
+    "elapsed_seconds": 126.85772743076086,
+    "result": {
+      "status": "MCLN_PORTABLE_PAIRED_REPLAY_COMPLETE",
+      "scope": "REAL8ROW_NATIVE_MCLN_TRANSFER_SANITY",
+      "metrics": {
+        "native": {
+          "rows": 8,
+          "primary_score": "last/bbs",
+          "hits025": 6,
+          "acc025_percent": 75.0,
+          "full256_hits025": 8,
+          "hits050": 5,
+          "acc050_percent": 62.5,
+          "full256_hits050": 7,
+          "selected_query_own_mask_miou": 0.4851323813199997,
+          "selected_query_fused_mask_miou": 0.48576392978429794
+        },
+        "mask_reference": {
+          "rows": 8,
+          "primary_score": "last/bbs",
+          "hits025": 5,
+          "acc025_percent": 62.5,
+          "full256_hits025": 8,
+          "hits050": 3,
+          "acc050_percent": 37.5,
+          "full256_hits050": 6,
+          "selected_query_own_mask_miou": 0.4851323813199997,
+          "selected_query_fused_mask_miou": 0.48576392978429794
+        },
+        "full_transfer": {
+          "rows": 8,
+          "primary_score": "last/bbs",
+          "hits025": 5,
+          "acc025_percent": 62.5,
+          "full256_hits025": 8,
+          "hits050": 3,
+          "acc050_percent": 37.5,
+          "full256_hits050": 6,
+          "selected_query_own_mask_miou": 0.4851323813199997,
+          "selected_query_fused_mask_miou": 0.48576392978429794
+        }
+      },
+      "transitions": {
+        "mask_reference": {
+          "025": {
+            "repaired": 0,
+            "broken": 1,
+            "net": -1
+          },
+          "050": {
+            "repaired": 0,
+            "broken": 2,
+            "net": -2
+          }
+        },
+        "full_transfer": {
+          "025": {
+            "repaired": 0,
+            "broken": 1,
+            "net": -1
+          },
+          "050": {
+            "repaired": 0,
+            "broken": 2,
+            "net": -2
+          }
+        }
+      },
+      "paired_input_read_once": true,
+      "branch_rng_restored": true,
+      "original_semantic_scores_equal": true,
+      "all_1159_states_unchanged": true,
+      "full_state_tensors": 1159,
+      "optimizer_updates": 0,
+      "weights_written": 0,
+      "spec": {
+        "support_checkpoint": "/root/autodl-tmp/pvground_selected_mask_training_20261009/selected_query/terminal.pth",
+        "support_checkpoint_sha256": "d06adb8ed227d98d46afa8e3970dcb9fbe31ab2613c675883b80162f830f4cb6",
+        "span_checkpoint": "/root/autodl-tmp/pvground_extremal_span_pair_20261009/extremal_support/terminal.pth",
+        "span_checkpoint_sha256": "f9898c5dc7a5e97bf152421efc9072c23ef255618c64477a4bfacf996f2b3b19",
+        "dataset": "scanrefer",
+        "seed": 2027,
+        "data_root": "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+        "mcln_checkpoint": "/root/autodl-tmp/DATA_ROOT/output/preserved_best/mcln_pair_sweep/mcln_pair_default_rankblend010_2ep_best_acc025_epoch71_0.57993.pth",
+        "mcln_checkpoint_sha256": "3e44f4bdad3bd66ad82102032e1cb0241de57d147c0aa1d3eff9736926ef2208",
+        "MCLN_checkpoint_expected_bytes": 794125833,
+        "PV_six_source_G_core_transferred": false,
+        "zero_Face_branch_added": false
+      },
+      "actual_PV_six_source_read_transferred": false,
+      "actual_zero_Face_branch_added": false,
+      "elapsed_seconds": 6.846092164516449,
+      "completed_cst": "2026-10-12T08:51:47.309959+08:00",
+      "best_promoted": false,
+      "normal_training_completed": false,
+      "full_goal_complete": false
+    }
+  },
+  "files": [
+    {
+      "name": "status.json",
+      "bytes": 4129,
+      "sha256": "b4e9412c1dad8351a03e1446dc0887ab9fc2b1f3fb769a074b9317a5f293a539"
+    },
+    {
+      "name": "admission.json",
+      "bytes": 367,
+      "sha256": "4a76c5a66af5b00622f3588b1e7078d7b246ed7d4437910b1a5965ab5835e5a7"
+    },
+    {
+      "name": "child.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "name": "replay/RESULT.json",
+      "bytes": 3054,
+      "sha256": "7fed3e63ddf856599a6fcde99c4e44e775e063f23f18371b75b1cff7d40222c7"
+    }
+  ],
+  "tails": [
+    {
+      "name": "stage.log",
+      "total_bytes": 3441
+    },
+    {
+      "name": "controller.log",
+      "total_bytes": 3379
+    }
+  ],
+  "new_neural_forwards": 0,
+  "new_GPU_queries": 0,
+  "new_optimizer_updates": 0,
+  "first_due_cst": "2026-10-12T08:52:43.409170+08:00",
+  "best_promoted": false,
+  "full_goal_complete": false
+}

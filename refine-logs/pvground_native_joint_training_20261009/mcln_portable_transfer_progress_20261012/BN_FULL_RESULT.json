@@ -1,0 +1,96 @@
+{
+  "status": "NATIVE_PAIRED_BUFFER_REPLAY_COMPLETE",
+  "scope": "FULL_9508_DIAGNOSTIC_REPLAY",
+  "completed_cst": "2026-10-12T08:36:54.384538+08:00",
+  "saved_epoch": 3,
+  "checkpoint": {
+    "path": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/normal/source_conditioned/logs/scanrefer/extremal_support/1791691955/latest.pth",
+    "bytes": 841964750,
+    "sha256": "b7efbf0c25c23c6b537fa7a4627f7c06be2fdb2dd4e2f347e43c7bf3f302efe6"
+  },
+  "model_source": "/root/autodl-tmp/pvground_face_native_gpu_v2_20261011/PV-Ground",
+  "architecture": {
+    "model": "PVGround",
+    "support_parameters": 27841,
+    "span_parameters": 53218,
+    "span_source_mode": "extremal_support",
+    "full_state_tensors": 1301,
+    "inactive_geometry_and_R_parameters_retained": false,
+    "original_core_trainability_preserved": true,
+    "text_encoder_frozen_by_native_policy": true,
+    "mask_reference_is_discrete": true,
+    "separate_deployed_ranking": false,
+    "use_g_supervision": true,
+    "use_selected_mask_supervision": false,
+    "dataset": "scanrefer",
+    "seed": 2027,
+    "retained_axis_prior_parameters": 29793,
+    "face_residual_parameters": 23425,
+    "face_residual_mode": "source_conditioned",
+    "prior_state_layout": "candidate_span_mixer.axis_prior",
+    "direct_source_control_scope": "Additional face residual evidence only; retained axis prior common",
+    "face_output_zero_initialized": true,
+    "face_size_parameterization": "absolute size preserving the retained positive prior at zero correction"
+  },
+  "metrics": {
+    "trained_buffers": {
+      "rows": 9508,
+      "primary_score": "last/bbs",
+      "hits025": 5549,
+      "acc025_percent": 58.36137989061843,
+      "full256_hits025": 8846,
+      "hits050": 4482,
+      "acc050_percent": 47.13925115692049,
+      "full256_hits050": 8332,
+      "native_mask_miou_pos": 0.46682711324167964,
+      "native_mask_miou_sem": 0.47035450360534903,
+      "native_semantic_alignment_mask_hits025": 5835,
+      "native_semantic_alignment_mask_hits050": 5089
+    },
+    "initial_buffers": {
+      "rows": 9508,
+      "primary_score": "last/bbs",
+      "hits025": 5529,
+      "acc025_percent": 58.15103071098023,
+      "full256_hits025": 8902,
+      "hits050": 4490,
+      "acc050_percent": 47.22339082877577,
+      "full256_hits050": 8369,
+      "native_mask_miou_pos": 0.46175624113850355,
+      "native_mask_miou_sem": 0.46604913926143476,
+      "native_semantic_alignment_mask_hits025": 5800,
+      "native_semantic_alignment_mask_hits050": 5086
+    }
+  },
+  "transitions": {
+    "025": {
+      "repaired": 371,
+      "broken": 391,
+      "net": -20
+    },
+    "050": {
+      "repaired": 579,
+      "broken": 571,
+      "net": 8
+    }
+  },
+  "selected_query_changes": 8045,
+  "buffer_count": 252,
+  "changed_buffer_count": 252,
+  "full_trained_state_restored_exactly": true,
+  "all_non_bn_states_unchanged": true,
+  "paired_input_read_once": true,
+  "same_instance_and_trained_parameters": true,
+  "branch_rng_restored": true,
+  "optimizer_updates": 0,
+  "written_weights": 0,
+  "elapsed_seconds": 4240.599227026105,
+  "peak_cuda_allocated_bytes": 4315504128,
+  "official_metrics_replaced": false,
+  "best_promoted": false,
+  "normal_training_fix_validated": false,
+  "limitations": [
+    "Independent validation replay may use different sampled points from the historical E3 evaluation.",
+    "Any change establishes a fixed-checkpoint forward effect, not a successful normal-training recipe."
+  ]
+}

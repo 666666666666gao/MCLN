@@ -1,0 +1,390 @@
+{
+  "audit_skill": "experiment-audit",
+  "status": "ACTUAL_RESULT_INTEGRITY_REVIEW_COMPLETE",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "bounded_fixed_checkpoint_diagnostic_and_saved_evidence_limits",
+  "summary": "Actual diagnostic checks pass; 9508 saved rows recompute exactly. No blocking finding. Claims remain limited to one paired fixed-checkpoint BN-buffer intervention.",
+  "execution_scope": "LOCAL_READ_ONLY_ACTUAL_SAVED_DIAGNOSTIC_AUDIT_WITH_CPU_REAGGREGATION",
+  "project": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011",
+  "generated_at": "2026-10-12T01:01:51.729082+00:00",
+  "date": "2026-10-12",
+  "agent_id": "/root/pvg_full_bn_pair_integrity_20261012",
+  "verdict_id": "/root/pvg_full_bn_pair_integrity_20261012/2026-10-12_run01",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "reviewer_model_actual": "UNATTESTED",
+  "reviewer_reasoning_actual": "UNATTESTED",
+  "model_requested": "gpt-6-astra",
+  "reasoning": "max",
+  "model_actual": "UNATTESTED",
+  "identity_attestation": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "deterministic_checks": {
+    "status": "PASS",
+    "acceptance_status": "accepted",
+    "artifact": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json"
+  },
+  "checks": {
+    "A": {
+      "name": "Ground Truth Provenance",
+      "status": "PASS",
+      "details": "GT 来自 ScanRefer_filtered_val 的 scene_id/object_id 及 ScanNet 实例点集合。数据集从 val_v3scans.pkl 读取扫描，按 target_id 取实例包围盒/点 Mask，返回 center_label、size_gts、gt_masks；不是从模型输出构造参考。模型前向完成后才把 batch GT 合并进 end_points。已绑定部署版 dataset SHA 3afebfc6…，没有误用不同 SHA 的旧 model_source 数据集副本。这里验证了源码链及保存运行凭据，未重新打开远端原始数据字节。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:208",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:594",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:636",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:1101",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:1105",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:1387",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\visual_data_handlers.py:138",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\visual_data_handlers.py:152",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\visual_data_handlers.py:225",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py:522",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py:529",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:124"
+      ]
+    },
+    "B": {
+      "name": "Score Normalization and Native Score Correspondence",
+      "status": "PASS",
+      "details": "last/bbs 为原生语义 logits softmax 后按 root positive_map、modify/pron/rel 加项及 other 减项排序；butd_cls=False，全部 256 候选仍在前向。原生与逐行 IoU 使用相同 center/size 转换及 intersection/union，命中条件均严格 >0.25 和 >0.5。最终百分比为命中/9508×100，无模型自身 max/min/mean 分母。Full256 是 GT 上的候选几何上界，不是部署排名或准确率。Mask mIoU 是 0–1 比例；semantic/bbf Mask 命中与 bbs 框命中区分明确。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py:4",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:281",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:286",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:299",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:543",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py:35",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py:70",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:59",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:195",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:200",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:773",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\RUN_INSTRUCTIONS.md:17"
+      ]
+    },
+    "C": {
+      "name": "Result Existence and Independent Reaggregation",
+      "status": "PASS",
+      "details": "实际存在 9,139,234 字节 JSONL，SHA256=17db77aacde563afcc96251e2bcff041fa2a720583c48b8d1904145289d66992。独立标准库程序读取全部 9508 行，index=0…9507；两分支命中、百分比、Full256、修复/破坏、槽位交叉值、Mask-good/box-bad 数全部匹配 RESULT 和分析。76,064 个主要 IoU 字段有限且在 [0,1]，selected IoU 不超过候选上界。转存、observation、status、RESULT、退出码及日志终态一致。没有不存在的结果或数字错配。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\FULL_ROWS_TRANSFER.json:3",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_OBSERVATION.json:7",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_OBSERVATION.json:145",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\replay.exit:1",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\replay.log.tail.txt:49",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_paired_rows.jsonl:1",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_paired_rows.jsonl:9508",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:7",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:12",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:46",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:81"
+      ]
+    },
+    "D": {
+      "name": "Dead Code and Executed Metric Path",
+      "status": "PASS",
+      "details": "controller 实际命令调用 replay --max-batches 0；replay 在每份真实 batch 上调用原生 _main_eval_branch、GroundingEvaluator.evaluate 和 row_evidence。四条原生框/Mask 评估路径均被 evaluate 调用；结果写出前动态断言 evaluator 的 GT 数和 bbs 命中与逐行结果完全一致。日志有逐批进度和相同终态 JSON，退出码 0。未发现把未调用函数当成已执行结果的情形。ScanNet detection、可视化及其他模型分支未作为本次结果来源。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\buffer_diagnostic_controller.py:50",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\diagnostic_status.json:10",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:159",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:166",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:196",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:227",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:203",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:650",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:755",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\replay.log.tail.txt:48"
+      ]
+    },
+    "E": {
+      "name": "Scope and Claim Ceiling",
+      "status": "WARN",
+      "details": "实际范围为 ScanRefer val 9508 条记录、141 场景、2068 个场景目标，seed2027，一个 source_conditioned E3 检查点，两套 BN buffers 的配对前向；并非两种正常训练方法的因果消融。保存的 scene/target/utterance 三元组仅 9506 个唯一值，不能把 9508 行写成 9508 条唯一文本；采样 ordinal 连续，代码未额外重复数据。B 相比 A 为 -20/+8 命中（-0.210349/+0.084140 个百分点），不支持“正常训练配方修复成功”、新最好权重或泛化收益。跨分支同 Query 只是槽位，不能等同同一物理实例或独立评分因果效应。现有分析已经明确这些限制，没有发现需阻断的越界宣传。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:7",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:9",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:11",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:58",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:83",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\EXPERIMENT_PLAN.md:25",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\RUN_INSTRUCTIONS.md:17",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\FULL_BUFFER_REPLAY_ANALYSIS.json:64",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\FULL_BUFFER_REPLAY_ANALYSIS.md:8",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\EPOCH3_ANALYSIS.json:39"
+      ]
+    },
+    "F": {
+      "name": "Evaluation Type",
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "details": "本次框/Mask 评估分类为 real_gt：实际 ScanRefer/ScanNet 数据集标注，与模型预测比较。Full256_max_iou 是同一 GT 上的 oracle candidate coverage，仅用于诊断；交叉槽位值是同 GT 下的几何诊断。二者都不是新增部署评分，也不是 synthetic_proxy 或 self_supervised_proxy。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:1101",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:1105",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:124",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:135",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:144",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:176"
+      ]
+    }
+  },
+  "evaluation_type": "real_gt",
+  "execution_integrity": [
+    {
+      "name": "Same trained parameters; only BN buffers replaced",
+      "status": "PASS",
+      "details": "先通过相同原生工厂恢复官方/G/A/B E0 并捕获 BN；随后 strict 加载 E3 全部 1301 状态到同一模型。helper 仅枚举真实 _BatchNorm 的 running_mean/running_var/num_batches_tracked，未写 affine/Linear/LayerNorm 参数；实际记录 252/252 缓冲项不同。eval/no_grad 下串行运行，最后重装 E3 缓冲并逐项比较完整 state_dict 与 E3。无 optimizer 创建/step 或新权重保存。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:78",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:88",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\batchnorm_buffer_intervention.py:6",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\batchnorm_buffer_intervention.py:18",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:151",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:185",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\replay\\RESULT.json:78"
+      ]
+    },
+    {
+      "name": "Paired cached input and RNG",
+      "status": "PASS",
+      "details": "每个 batch 在分支循环外读取一次，各分支独立 deepcopy；_main_eval_branch（包含 voxel 处理）前恢复 Python/NumPy/Torch CPU/全部 CUDA RNG，下一批沿 A 的 RNG 流。world_size1、顺序 sampler、drop_last=False；动态断言 9508/1189。配置只启用 voxel 转换，未启用 shuffle/sample 处理。此结论来自实际调用链和完成凭据；未保存逐 batch 输入 tensor/RNG 哈希，不声称重新证明全部 GPU 内核逐位确定性。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py:257",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:76",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:106",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:150",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:158",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:169",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py:143",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\wandb_config.yaml:21"
+      ]
+    },
+    {
+      "name": "Cold recovery receipt and serial completion",
+      "status": "PASS",
+      "details": "冷恢复实际 receipt 匹配正常训练终态两个权重身份。best 为 E0、1301 状态、0 Adam 状态；latest 为 E3、1301 状态、826 Adam 状态、每状态 step13749，恢复 start_epoch4。原生 load_checkpoint 恢复模型、optimizer、scheduler、四类 RNG，helper 逐项校验。receipt 和 cold_recovery.exit=0 已存在；sanity 完成早于 full 准入，首 8 行命中独立复算与 sanity 摘要一致。远端 checkpoint 本体未在本轮重新加载。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\recover_face_normal_terminal.py:51",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\recover_face_normal_terminal.py:68",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\recover_face_normal_terminal.py:71",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\recover_face_normal_terminal.py:80",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\cold_recovery\\RECOVERY_RECEIPT.json:12",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\cold_recovery\\RECOVERY_RECEIPT.json:33",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\cold_recovery.exit:1",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\launch_buffer_diagnostic_authorized.py:55",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:71"
+      ]
+    },
+    {
+      "name": "Saved source and transfer binding",
+      "status": "PASS",
+      "details": "31 项既有 SOURCE_REVIEW 输入实算 SHA 全部匹配；118 项 protocol/source-stage manifest 身份表相等；本轮 13 项实际部署依赖（含 GT loader、evaluator、losses、model、factory、voxel config）本地字节均匹配部署 manifest。SOURCE_REVIEW 文件自身 SHA 匹配 full admission，E3 checkpoint 身份横跨正常终态、sanity、full、transfer/analysis 一致。源码 review 保留 SOURCE_ONLY 历史归属；本报告才是实际结果审核。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:83",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:209",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:210",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\admission.json:15",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\source_review\\SOURCE_REVIEW.json:6",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\launch_buffer_diagnostic_authorized.py:21",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:27"
+      ]
+    }
+  ],
+  "blocking_findings": [],
+  "non_blocking_findings": [
+    {
+      "id": "W01",
+      "classification": "NON-BLOCKING",
+      "title": "Saved-evidence recomputation ceiling",
+      "details": "CPU 核验重新统计了实际保存的 IoU 和计数，但 JSONL 未保留 GT 坐标、完整候选几何、score logits、点 Mask 或 semantic/bbf 所选 Mask，故不能从原始几何/Mask 重算每个 IoU；也不能独立逐行重算 native semantic Mask 指标。原生断言、源码绑定及日志补足运行链，但不等同本轮重新访问远端 GT/权重。",
+      "action": "发表结论时保留“从保存的实际逐行 IoU 重算命中”这一准确表述；此诊断关闭不需要新增神经运行或数据转存。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:142",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:172",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py:202",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json:304"
+      ]
+    },
+    {
+      "id": "W02",
+      "classification": "NON-BLOCKING",
+      "title": "Fixed-checkpoint diagnostic only",
+      "details": "单 seed、单 E3 的配对 BN 前向只能支持该次统计替换的前向作用；-20/+8 不构成正常训练改进证据。不能以 B 的混合参数/统计状态替代正式 checkpoint、重新定义历史 E3 或宣称三个有效模块/Nr3D/Sr3D 目标完成。",
+      "action": "沿用当前分析的范围限定；若以后评估训练方法收益，必须使用另行授权并直接执行的正常训练对照。",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\FULL_BUFFER_REPLAY_ANALYSIS.json:64",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\FULL_BUFFER_REPLAY_ANALYSIS.md:8",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\EXPERIMENT_PLAN.md:25"
+      ]
+    }
+  ],
+  "scope": {
+    "dataset": "ScanRefer validation",
+    "rows": 9508,
+    "scenes": 141,
+    "scene_targets": 2068,
+    "unique_scene_target_utterances": 9506,
+    "seed": 2027,
+    "trained_checkpoints": 1,
+    "buffer_conditions": 2,
+    "normal_training_method_ablation": false,
+    "original_training_recipe_reaudited": false
+  },
+  "recomputed_metrics": {
+    "trained_buffers": {
+      "branch": "trained_buffers",
+      "rows": 9508,
+      "hits025": 5549,
+      "acc025_percent": 58.36137989061843,
+      "full256_hits025": 8846,
+      "qualified_candidate_not_selected025": 3297,
+      "hits050": 4482,
+      "acc050_percent": 47.13925115692049,
+      "full256_hits050": 8332,
+      "qualified_candidate_not_selected050": 3850,
+      "selected_own_mask_good_box_bad": 871,
+      "selected_fused_mask_good_box_bad": 873,
+      "mean_selected_fused_mask_iou_saved_float32": 0.4668271135977504,
+      "native_mask_pos_mean_absolute_delta": 3.5607078396893144e-10
+    },
+    "initial_buffers": {
+      "branch": "initial_buffers",
+      "rows": 9508,
+      "hits025": 5529,
+      "acc025_percent": 58.15103071098023,
+      "full256_hits025": 8902,
+      "qualified_candidate_not_selected025": 3373,
+      "hits050": 4490,
+      "acc050_percent": 47.22339082877577,
+      "full256_hits050": 8369,
+      "qualified_candidate_not_selected050": 3879,
+      "selected_own_mask_good_box_bad": 862,
+      "selected_fused_mask_good_box_bad": 875,
+      "mean_selected_fused_mask_iou_saved_float32": 0.46175624160294526,
+      "native_mask_pos_mean_absolute_delta": 4.644417073151885e-10
+    }
+  },
+  "transitions": {
+    "025": {
+      "repaired": 371,
+      "broken": 391,
+      "net": -20
+    },
+    "050": {
+      "repaired": 579,
+      "broken": 571,
+      "net": 8
+    }
+  },
+  "selected_query_changes": 8045,
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "完整 9508 条的 BN 配对诊断已完成，保存命中 A5549/4482、B5529/4490。",
+      "impact": "supported"
+    },
+    {
+      "id": "C2",
+      "claim": "同一已训练参数、相同 cached 输入/RNG 下，仅替换 BN buffers，结束后完整模型状态恢复。",
+      "impact": "supported_by_bound_source_and_runtime_assertions"
+    },
+    {
+      "id": "C3",
+      "claim": "BN 统计替换已修复正常训练下降，或 B 应晋升为新最好模型。",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C4",
+      "claim": "这是一项正常训练方法消融，或对 Nr3D/Sr3D/多种 seed 有收益。",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C5",
+      "claim": "历史正常训练 E3 为5551/4476，不能被本次独立重放 A5549/4482替换。",
+      "impact": "supported_as_recorded_historical_scope_not_reaudited_training_recipe"
+    }
+  ],
+  "best_promoted": false,
+  "normal_training_fix_validated": false,
+  "full_goal_complete": false,
+  "audit_actions": {
+    "SSH": 0,
+    "GPU": 0,
+    "NN": 0,
+    "model_loads": 0,
+    "experiment_source_or_result_edits": 0,
+    "output_writes_only": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review"
+  },
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\EXPERIMENT_PLAN.md": "ce2a7643268207d90c968b89ad2a0a256788ed886fb3a868283caa277015a94b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\RUN_INSTRUCTIONS.md": "a34a1d0044c95536bc0ddf5eb09adb4d2389d8fc47f9852ced77be18f756aa08",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\paired_native_buffer_replay.py": "2947d3bef7e94752eb85984b85e6e16559c6298a0bfeede5d288545e151147cd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\batchnorm_buffer_intervention.py": "ee5da1d8c5887b3964c466b456788183f595b4bb6ab5c01bc6764acceacadece",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\buffer_diagnostic_controller.py": "e1e1818dbbe23b5a58c0fd8a831ae4a89f3991c91e00ce80c7c7ef17ba339d61",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\recover_face_normal_terminal.py": "1229f5ddcf856582e32ca651eac24900b740af14766cfd7456161b95466aab98",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\launch_buffer_diagnostic_authorized.py": "6b851ba348ad74db6b5910ad41e34f7f5134621f002a265d78acecaddd721ebe",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\collect_full_paired_rows_authorized.py": "5e91caeaecd59ea61c59a70f40a0b189e8dd65276db38c22b626533ab705f61b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\analyze_full_paired_rows.py": "565e80a0b07151342902b90019c3fa00407e3cf180ef4ac8ddef8adb19007af1",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\FULL_ROWS_TRANSFER.json": "cb2cdc2d0b5988906d691276b00652fafc2dc764bb6d48ec3e7a534928e0ac6c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_OBSERVATION.json": "7209620b2fa327256a8f202612cf4e59f54fe942736c890e2ff57061b9b0cd9c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\diagnostic_status.json": "4f097f9ed6a7e3fdd633dda3de48ca8d9596081ed1142f14db4a2b1758030d54",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\replay\\RESULT.json": "d2efcf0385053acd181020fb29589c60afc4a27596cb3741a620004f8aee292d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_paired_rows.jsonl": "17db77aacde563afcc96251e2bcff041fa2a720583c48b8d1904145289d66992",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\FULL_BUFFER_REPLAY_ANALYSIS.json": "26d87e718a04ed7832870c0b5c8fd38c44b24bb47932eb51e78b9d94f6bd0341",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\FULL_BUFFER_REPLAY_ANALYSIS.md": "ffbf0b06e77fb455074d649a34eefd046c0380d3be2fd870dbb7e9cc3164d148",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\source_review\\SOURCE_REVIEW.json": "e17d69ddfc6a1f38e0107e29e8c3f5965c9feb1f81f70900b2225872ae69ff2e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\source_review\\SOURCE_REVIEW.md": "590623a19e43ca551831040a7718492016c6f06579a719651805ab261687f88b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\EPOCH3_ANALYSIS.json": "30b7ae30c38436d35c04f999f396dddf1f358a78b5e3332eebd45ca6802acde0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\EPOCH3_ANALYSIS.md": "d13d987fe8bde32478a20c829342d98270ce6df8b04125ee39dfe07fac5de94f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\NORMAL_source_conditioned_EPOCH3_COMPLETION.json": "25ea31d2fbe22eed36e83bebfe0a462c787df2ed2bb3ded4b508dfbb4e457774",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\replay.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\admission.json": "5af54349349f0c42ce56c245062b628152ffb12f0f3ffdcf33757f2b2ee7f75a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\replay.log.tail.txt": "221a250197bcdfd6e76f1c116e128989d05eaf4da411c4d0651ec528b7e8f3c4",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\full_completion_final_observation\\controller.log.tail.txt": "e60cdfc6239aecee878ecbbb7229bf122b69fbd644aa4a4e757b4d3664bda547",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\cold_recovery\\RECOVERY_RECEIPT.json": "10893eb5ad9c3f47134461842574229e0b55a43c22da26c73669ba3be0686a64",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_OBSERVATION.json": "72c0972e45660cbf6ed363746a3ce20059f724b174ecea11f0cc602e22fc1e47",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\replay\\RESULT.json": "50a2b676548ea8e82f48e57c32aab0b955717ada9008d61f512616c0d07ea761",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\admission.json": "04dc465d4c20984192e008780caf65859841bf8cf67e1e5f6e54477ead252463",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\diagnostic_status.json": "ea6306b9dd1f44ec8df14f541420f1cce5845c2a5a983e4a7bcd0ed3cfc1d87a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\cold_recovery.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\replay.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\cpu_buffer_only_invariant.py": "7d2a56e13eeb12d6f4b9504b2b3ca3d5d8f7648058e656149b55717c9f89cf62",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\CPU_BUFFER_ONLY_INVARIANT.json": "0bf36d64cc7131269b0e2b9cd220bf319ae810c61c6bdf4cc07e3a1328632e00",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\source_conditioned_PROTOCOL.json": "649e9abde9afc666eee032a58f50e69c441ff12c526920bf8ad6954f3ae620b5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\normal_joint_controller.py": "14d6b5ecbac82718881238037fca7faee3a70c25fe5a2e65702c5e0753ee9f13",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source_conditioned_init.json": "5771d3f69360809338987c826255c9090be1f3a99a5c865b0431b1455d50c8a9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\SOURCE_STAGE_RECEIPT.json": "37a2fff7a1322b8c6327b7dccf5a2b532a8949965ed835c49251ceed41697ec3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\main_utils.py": "5b66b8ff538ebde1d776f81503aa14e4072f3bbc6fcc2ff3cc70553602b76274",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\train_dist_mod.py": "bf2cbb75f4a6036e374718b6746b3654978d17167cd540bfb27d146d2acecb6f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\native_face_model_initialization.py": "ea504de1ca747fc051e55e19748f520e56f87c58745815bb1b92438411b7b2c2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\source\\face_residual_span_mixer.py": "f62b0d2fa026cdbd720028b29f7188a03c2f43c591d57bd2e2856a387dbf9a19",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_model_initialization.py": "683e4ca354e7d20053b2a73cc7db517074bf6a3af7a03cb25f3811d4e965bbdc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_root_bbs.py": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\models\\losses.py": "920051cc7d1009493829eebbb6185da834a4efd037e9d73ad43ce918a81031de",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\losses.py": "00b8627364358f35de936d7efa74ff10cb53de4664c01fc6f7de7a93413f70d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\models\\pv_ground.py": "ebb1fc9d574b4c4a831b82c1cf7b80dd5038265b5c128f150bf411051b4913ef",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\prepare_data.py": "3a3de8bd54f675c5abac638be404cd47902951ae505caded34094f733838bd94",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\joint_det_dataset.py": "ee4ebfacedb0d45873b0ff5db0f056a8055e544bca516cf22d9b440681916618",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\normal_controls_20261010\\c_off_terminal_recovery_20261011\\recover_normal_terminal.py": "3e9e9ffa8a8e77df2d99150f02da081c4b1b6f05c8e592781e0ba8094f7338ab",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\launch_normal_authorized.py": "f4f7b2d1f62ca0d5774e0892299ca9df7d17b03470878ac7f2b71fe0e986a74c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_factory_cpu_20261010\\source_review\\private\\snapshots\\039_env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\SCP_TRANSPORT_WITNESS.json": "046d4b8f70aaa0c6f21e3fa652adad80bb1d017aa7fb2f4d41da2fc53c2f5933",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\normal_training\\NORMAL_source_conditioned_OBSERVER_OWNER.json": "17f1e0f1f4f58c5d3f6a30c8edeb10fabc97e6cace78767b3937f617a0627b4e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\STATIC_PREPARATION.json": "0e4ce0c9a7a91e9db03751711858e7f59b3b19ae2230bb92b929e915154a96d9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\visual_data_handlers.py": "6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\wandb_config.yaml": "8556a89d2f8e5db0c09e43fd160c9ab8e4ca7b144e0bf686ed644ce6d73072d1",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\CPU_RECOMPUTE.json": "88a1d57ed8e12c7a6d1f22c2cf36584a2b7ca3b8f4e28c570902c176a3fcb6af",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\verify_saved_evidence.py": "b316bd495ed8816f23492ada31228cf67e930035b8d7b1f5ef33a79cd6aba534",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\sanity_first_boundary_observation\\cold_recovery.log.tail.txt": "6350c1d7c7ab35d43c0445ebfb05b9a30cbd82662bf4932d946a916db9802349"
+  },
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\face_native_gpu_v2_20261011\\batchnorm_buffer_diagnostic_20261011\\actual_integrity_review\\.aris\\traces\\experiment-audit\\2026-10-12_run01",
+  "path_note": "C:/Users/gb/.codex is a junction; absolute hash keys resolve to D:/Program Files/UserCache/gb/codex."
+}

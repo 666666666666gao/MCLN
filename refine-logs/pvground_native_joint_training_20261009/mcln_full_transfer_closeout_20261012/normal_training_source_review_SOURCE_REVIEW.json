@@ -1,0 +1,246 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "non_blocking_findings": [],
+  "summary": "基于实际CPU容量测量的最小准入修订通过。755个优化器参数中仅731已有state，预算以全部非RoBERTa张量的双moment上界覆盖缺失24个状态；保留64MiB/权重元数据及256MiB日志余量，required_free_bytes=2664907480。训练、停止、保存顺序和失败前无副作用准入未改。",
+  "reviewed_at": "2026-10-12T14:28:41.760938+08:00",
+  "scope": "SOURCE_ONLY_MEASURED_CAPACITY_ADMISSION_REVISION",
+  "identity": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "requested_route_source": "experiment-bridge local Codex policy; host backend identity is not independently exposed",
+    "actual_model": "UNATTESTED",
+    "actual_reasoning_effort": "UNATTESTED",
+    "actual_backend_identity": "UNATTESTED",
+    "identity_status": "UNATTESTED",
+    "reviewer_family": "openai",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "reviewer_task": "/root/mcln_normal_training_source_review_20261012",
+    "fresh_source_review": false,
+    "review_context": "Same reviewer continuation after actual capacity admission failure and executor CPU-only measurement. This is not a second fresh independent reviewer."
+  },
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "actual_backend_identity": "UNATTESTED",
+  "review_round": 2,
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\PLAN.md": "85ea7f24a95d9c65ee355d5c9eb3da46e229824f642b27f6da763cd10fe931ed",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\train_native_mcln_portable.py": "128dd8f8ad504bf55ba508893595db1ebd8308a9145b7863217f2f9f8e3af8d5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\normal_controller.py": "17a7da22ccc156b9b05c094e26dedf52a5d7d767d61b68bd4c92d3150ebcd759",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\launch_normal_authorized.py": "391a067c06e128ecb4a7114ac55a688d8a7530daccaecaa33ec0e50eb5c9ca0d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\native_decline_policy.py": "937dedc001b96622af1987a02bdd8d877d482a95e66c2befbed27d13ad7aa3cd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\TRANSFER_SPEC.json": "d88fba95db899ed190baacf9bbb94485aa41b5dcd96a4333ed1357e178da1038",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\SOURCE_MANIFEST.json": "7ce7c15ccab7d895b07942a47956ef767af366c927844168ec2f7d1c6c7207ac",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\REMOTE_ASSETS.json": "a38cf26f5f6d30ad0716e9f0ccc9d1aeef15eb079acb102349f142785836bfb0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\check_native_mcln_portable_training.py": "f959cf7a0b1a82675d40fce5fec431544984934827e597c5529ff8d4f34f79dc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\check_controller.py": "b91d806fbc42a675f15ba23037007fbe53ef5eba2116af9682c684dfd6346f6f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\launch_check_authorized.py": "a48fcfc11b2ca27579da2ba7dfebf2361ac173d327ba7dcd53df259189231be6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\SOURCE_REVIEW.json": "fd773ff39216e9e9d5879c92ca70f0d33569a48597a4e60cbd27be2427e53604",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\mcln_transfer_initialization.py": "c043982ec825cbb2a26ae7066699b2d146611f257d7d5ab906dee30bca8d1f59",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\mcln_portable_geometry.py": "d47e4727e902b55e18d6b491f48f434d5d6e0785cb196bc1298ac674291fb536",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\whole_mask_range.py": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\mcln.py": "d6839baede79308d30dad47599237f3fbf74fc6a1a9f7de502ab057f59376482",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\losses.py": "4159f9f2374c6a416cb9f406d869fac873a78326961e21633a82d44196beccc3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\main_utils.py": "17372d01df6225e79817635718c3ceacb43ca52cfb70a2de65fb2000d0f6495e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\train_dist_mod.py": "c76bbf9a2ad3ffe6ebe7b9b5cb0c3ee7d8e1aef3fb4644fe94d65b316dda1883",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\src\\grounding_evaluator.py": "b77376d16f0210ae18f067655552a806040614d7a21385477ffdb48590775af8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\utils\\lr_scheduler.py": "0d73ea2e0625d1b7ab2c0f6100b1d8587e60dd79960bf5867775ff7e13fcb0c3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\utils\\__init__.py": "c8492a3a72276c121d314ff5bac28fe8ee290b110c99855663204337a577b62a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\backbone_module.py": "8cd6df560bee60b871db94eb5cb5c956063b6bbb5895db63443be0cb2df58c97",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\modules.py": "96861185adf921ad53f9e649887528f17d9d9a94288f969b88f6ee95cf71df14",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\__init__.py": "8c060b4be6518eb8fa80b75c99819a06f0cf01a1ce4097ac7a3803a8d4f1d708",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\pointnet2\\pointnet2_utils.py": "84f5233ee50ffcc3484078e7d77e4a3147530e84a6b2259789d9c75e7ca3f3c2",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\SCP_TRANSPORT_WITNESS.json": "046d4b8f70aaa0c6f21e3fa652adad80bb1d017aa7fb2f4d41da2fc53c2f5933",
+    "C:\\Users\\gb\\.codex\\tmp\\pvg_training_interface_source_20260908\\env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\calculate_storage_budget.py": "167fc5bbcadcd772a1844aff713799b090af86bb04662132104211e52b8b8772",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\STORAGE_BUDGET.json": "c3176f4cf6deb5d858170ea1a9d946ab7b345fca2664002bfc08a33e49dec53f"
+  },
+  "resolved_findings": [
+    {
+      "id": "F1",
+      "status": "RESOLVED",
+      "title": "原生 loader 的固定 seed=0 覆盖正式 seed2027 契约",
+      "evidence": "source/main_utils.py:5088-5089 initializes the shared generator with 0; :5132 creates DistributedSampler without an explicit seed. The original wrapper did not override either.",
+      "fix": "Final train_native_mcln_portable.py:111-113 sets both loader generators and the training sampler to 2027 before the first iterator; :141 records the intended generator seed and actual sampler seed.",
+      "archive": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\reviewed_revisions\\train_native_mcln_portable_before_loader_seed.py",
+      "verification": "Full diff reviewed; final file included in actual Python3.7 AST/compile and the existing launcher hash gate."
+    },
+    {
+      "id": "F2",
+      "status": "RESOLVED",
+      "title": "失败的环境/空间准入会先留下正式目录，空间失败还会先删除工程权重",
+      "evidence": "The initial remote launcher created root before its environment check and unlinked the engineering checkpoint before checking free space; a subsequent ordinary rerun would then fail assert not root.exists(). This was a source-path finding, not a claimed observed remote failure.",
+      "fix": "Final launcher:36-43 checks root absence, environment identity, exact engineering path/size and measured projected-space budget first. mkdir/write/unlink occur only at:44-48. No retry or fallback was added.",
+      "archive": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\reviewed_revisions\\launch_normal_before_admission_order_fix.py",
+      "verification": "Full diff and final statement order reviewed; embedded remote code passed actual Python3.7 AST/compile. No remote launcher execution occurred in this review."
+    }
+  ],
+  "audit_checks": [
+    {
+      "topic": "严格初始化与工程隔离",
+      "status": "PASS",
+      "evidence": "train:46-50,61,115-119; initializer:11-47. E71 payload is checked, exactly nine obsolete SourceChoice tensors are removed, the remaining 1135 keys match the native factory exactly and load strict. A and B load their exact bound states, B verifies its A parent, total model states=1159. AdamW is new; no engineering optimizer/model is read by formal training."
+    },
+    {
+      "topic": "原生数据与实际对象接口",
+      "status": "PASS",
+      "evidence": "train:51-84,109-114; native TrainTester.get_datasets:2609-2613,2892-2970; dataset:101-119,240-258,585-597,1324-1372. split=train augmentation and joint ScanNet detection are native. Saved actual check receipt establishes 48655 rows and joint_det/detect_intermediate/augment_det/butd=True. butd_gt/butd_cls=False keeps detected boxes rather than GT proposals. Validation is split=val and never passed to optimizer."
+    },
+    {
+      "topic": "完整原生训练而非两步/三轮替代",
+      "status": "PASS",
+      "evidence": "train:70-76,172-193 invokes train_one_epoch for all 6081 native batch-8 batches when dataset length remains 48655, with max_train_batches=0 and accumulation=1. main_utils:7518-7851 runs forward, native loss, backward, finite checks, clipping, AdamW and scheduler. The original train loader drops the final 7 rows, as native drop_last=True specifies; this is a full native loader epoch, not a claim that all 48655 rows are processed each epoch. max=8; no fixed 3-epoch exit."
+    },
+    {
+      "topic": "训练图与原生损失",
+      "status": "PASS",
+      "evidence": "mcln:3167-3170 invokes portable geometry inside forward. portable_geometry:19-34 replaces actual final query mask and boxes. losses:3194-3238 consumes those final predictions in native Hungarian boxes/labels/masks/alignment loss. A has differentiable corrected mask logits; B has differentiable box mixing. native_mask_geometry:13-21 deliberately detaches hard membership. No new score head, G label target, six-source G core, V99 restore, or new candidate ranking is introduced."
+    },
+    {
+      "topic": "优化器、冻结与DDP",
+      "status": "PASS",
+      "evidence": "train:118-135; main_utils:5777-5803; mcln:1364-1366. Native trainable core and exactly 57634 A/B parameters enter AdamW once; A/B are moved to LR1e-5, core/backbone LR1e-6, WD5e-4, clip0.1. Equality to the full requires_grad parameter set is asserted. RoBERTa parameter freeze is asserted. Single-rank NCCL/DDP uses find_unused_parameters=True and broadcast_buffers=False. Native model.train is used, preserving baseline dropout/BN semantics."
+    },
+    {
+      "topic": "真实E0与每轮9508评价",
+      "status": "PASS",
+      "evidence": "train:89-105,167-190; TrainTester.evaluate_one_epoch:3490-3638; main_utils._main_eval_branch:7854-7914. Full native evaluator executes, synchronizes counts, and the wrapper reads actual dets/gts at (last_, .25/.5, 1, bbs). gts must equal 9508 for both thresholds. evaluator:1739-1754 compares predicted boxes with dataset center_label/size_gts from :1992-2007 using native strict IoU>threshold. Counters are computed, not copied from prior 5473/4777."
+    },
+    {
+      "topic": "停止与同检查点选优",
+      "status": "PASS",
+      "evidence": "train:147-164,167-198 and native_decline_policy:6-17. E0 enters history. Acc@.5 must decrease in each of two adjacent transitions; ties and increases reset the streak, regardless of Acc@.25. Seven pure-policy CPU cases passed. Best is the lexicographic (hits050,hits025) of a single evaluated model, with earliest exact tie retained. latest is atomically written before best selection; the just-trained state is also saved before evaluation."
+    },
+    {
+      "topic": "保存状态与恢复边界",
+      "status": "PASS_WITH_EXPLICIT_LIMIT",
+      "evidence": "train:149-159,178-183 stores full model, optimizer, scheduler, epoch/update count, args/spec and Python/NumPy/CPU-Torch/all-CUDA plus train/test loader-generator RNG. Completed latest additionally stores history. Before-evaluation latest marks validation_pending; preceding completed metrics remain in native_metrics.jsonl. Best is a model/metrics artifact. The entrypoint has no cold-resume path, and no formal restore was executed; saved-state availability is not cold-resume verification."
+    },
+    {
+      "topic": "真实工程前置门禁",
+      "status": "PASS",
+      "evidence": "launcher:25-30 requires complete/exit0 and the exact two-update same-process-restore PASS status. check source:118-147 makes this status conditional on finite gradients, actual changed A/B parameters and nonzero core gradients. Saved status/result receipts match: 16 rows, 2 updates, 48655-row native dataset, positive internal/output A/B gradients and changed counts27265/29793. Same-process restore=true; cold_restart_verified=false. This review did not produce those GPU results."
+    },
+    {
+      "topic": "容量、权重退休与失败行为",
+      "status": "PASS",
+      "evidence": "Final launcher:18-19 reads the reviewed STORAGE_BUDGET into the existing payload; :42-43 checks current disk.free plus only the exact completed engineering file against 2664907480 bytes before mkdir/unlink; :52-54 preserves the budget in admission. Actual CPU receipt has model598498856B, frozen RoBERTa498586640B, other model tensors99912216B; all755 optimizer parameters are bounded rather than only731 initialized states. AdamW amsgrad=False requires at most2 moments per potential trainable tensor. L=865432152B and B=665607720B include64MiB metadata each; max(2L+B,L+2B)=2396472024B, plus256MiB logs yields2664907480B. No retry/fallback/other-weight deletion was added."
+    },
+    {
+      "topic": "原源码完整性与运行边界",
+      "status": "PASS",
+      "evidence": "All 736 original source-manifest entries match their recorded bytes/SHA. Reviewer changed no author source. New wrapper/controller/policy live only in normal_training; child uses -B and the declared env with source/pointnet2 prepended. Existing SHA review gate is reused without a new scheme. Actual local Python3.7.6 parsed/compiled 25 files plus embedded remote body; explicit local3.11.14 has shlex.join. Remote Python3.7/Torch1.10.2 is the existing declared environment, not re-probed here. Capacity R2 additionally parsed/compiled the revised launcher, local budget calculator, CPU measurement source and both embedded remote bodies with actual local Python3.7.6. Only launcher changed among32 previous audited inputs; budget and calculator add two static bindings. No source file was edited or imported by this reviewer."
+    }
+  ],
+  "limits": [
+    "本结论是最终静态源码准入 PASS，same-family/provisional；不是 GPU 正式训练、完整epoch、正式E0、性能提升或冷恢复通过。",
+    "本轮未调用SSH、nvidia-smi、Torch/native factory、模型forward/backward或训练入口。只读取已落盘的工程运行收据。",
+    "正式脚本没有冷启动/续训入口；进程失败后的目录和日志应先诊断，不能直接重跑并宣称恢复。工程同进程恢复不验证四worker/DDP完整续训。",
+    "完成的latest包含history；validation_pending latest没有history字段，既往指标须从同目录native_metrics.jsonl读取。若以后实现续训，应按这些实际保存字段验证，不应在本轮增加未经要求的恢复框架。",
+    "原生训练loader drop_last=True：48655行对应6081个batch、48648行/epoch；验证9508行不drop。",
+    "A/B接入后的一次续训不能分离模块贡献与续训收益；PLAN已要求有保留价值后再做同起点同预算原生控制。PV 60/52、三项有效模块及Nr/Sr完整目标仍未达成。",
+    "容量为固定FP32模型/AdamW组、冻结RoBERTa及当前保存顺序下的保守规划上界，包含每份权重64MiB元数据和总256MiB日志预算；它不是已执行正式保存峰值，也不保证之后其他进程不占磁盘。launcher必须再次读取当前空间。",
+    "两步工程文件793579034B并非未来完整Adam状态上界：实际仍缺24个state。本修订已覆盖缺失状态；旧报告的四份工程文件预算数字仅是历史预算参照，不再作为最终门槛。"
+  ],
+  "source_manifest_entries_unchanged": 736,
+  "static_checks_trace": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\source_review\\STATIC_CHECKS_CAPACITY_R2.json",
+  "input_trace": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\source_review\\inputs_capacity_r2",
+  "request_trace": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\source_review\\003-capacity-revision.request.json",
+  "report_trace": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\source_review\\003-capacity-revision.response.md",
+  "actual_execution": {
+    "ssh_calls": 0,
+    "gpu_queries": 0,
+    "neural_forwards": 0,
+    "backwards": 0,
+    "optimizer_updates": 0,
+    "native_factory_imports": 0,
+    "source_modifications": 0,
+    "author_entrypoints_executed": false,
+    "credential_contents_read": false
+  },
+  "historical_engineering_receipt": {
+    "actual_updates": 2,
+    "dataset_rows": 48655,
+    "actual_flags": {
+      "joint_det": true,
+      "detect_intermediate": true,
+      "augment_det": true,
+      "butd": true
+    },
+    "checkpoint_bytes": 793579034,
+    "cold_restart_verified": false
+  },
+  "revision": {
+    "previous_review_sha256": "515817642faec0db699460b61e385d3c5557541372a670a3daf9d73bc803be56",
+    "previous_timestamped_report": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\source_review\\SOURCE_REVIEW_20261012_140904.json",
+    "changed_previous_audited_inputs": [
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\launch_normal_authorized.py"
+    ],
+    "new_static_inputs": [
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\STORAGE_BUDGET.json",
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\calculate_storage_budget.py"
+    ],
+    "prior_conclusions_reused_after_unchanged_audited_input_verification": true,
+    "all_736_manifest_bindings_previously_verified": true,
+    "all_736_manifest_bindings_rechecked_in_this_limited_revision": false,
+    "original_review_identity": {
+      "requested_model": "gpt-6-astra",
+      "requested_reasoning_effort": "max",
+      "requested_route_source": "experiment-bridge local Codex policy; host backend identity is not independently exposed",
+      "actual_model": "UNATTESTED",
+      "actual_reasoning_effort": "UNATTESTED",
+      "actual_backend_identity": "UNATTESTED",
+      "identity_status": "UNATTESTED",
+      "reviewer_family": "openai",
+      "review_independence": "same-family",
+      "acceptance_status": "provisional",
+      "reviewer_task": "/root/mcln_normal_training_source_review_20261012",
+      "fresh_source_review": true,
+      "review_context": "Fresh delegated source review. The same reviewer checked two executor fixes within this review; those follow-ups are not presented as a second fresh agent."
+    },
+    "author_changes_by_reviewer": 0
+  },
+  "capacity_review": {
+    "measurement_receipt": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\SAVED_STATE_CAPACITY.json",
+    "measurement_source": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\measure_saved_state_capacity_authorized.py",
+    "actual_optimizer_param_count": 755,
+    "initialized_optimizer_state_count": 731,
+    "missing_state_count": 24,
+    "all_missing_future_moments_bounded": true,
+    "additional_possible_moment_bytes_upper": 5645120,
+    "budget": {
+      "model_tensor_bytes": 598498856,
+      "frozen_roberta_tensor_bytes": 498586640,
+      "all_potential_trainable_tensor_bytes_upper": 99912216,
+      "complete_Adam_moment_bytes_upper": 199824432,
+      "latest_bytes_upper": 865432152,
+      "best_bytes_upper": 665607720,
+      "metadata_serialization_config_history_rng_reserve_per_weight": 67108864,
+      "atomic_save_peak_bytes_upper": 2396472024,
+      "log_reserve_bytes": 268435456,
+      "required_free_bytes": 2664907480,
+      "measured_serialized_full_bytes": 793542298,
+      "measured_serialized_model_only_bytes": 598932370,
+      "optimizer_missing_state_count": 24,
+      "includes_future_missing_Adam_states": true,
+      "rationale": "Full model plus two moments for every non-RoBERTa tensor, including buffers as an upper bound; frozen RoBERTa, fixed FP32 shapes, amsgrad=False. Saves retain latest/best and one atomic replacement. No new weights or NN used."
+    },
+    "measured_full_serialization_overhead_bytes": 900866,
+    "measured_model_only_overhead_bytes": 433514,
+    "historical_projected_free_bytes": 3185417754,
+    "historical_headroom_bytes": 520510274,
+    "remote_current_free_space_requeried_by_reviewer": false,
+    "runtime_space_gate_still_required": true,
+    "first_rejection_preserved": [
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\FIRST_CAPACITY_REJECTION_LAUNCH_STDERR.txt",
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\normal_training\\FIRST_CAPACITY_REJECTION_LAUNCH_STDOUT.txt"
+    ],
+    "duplicate_retirement_receipt": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\ARCHIVED_NATIVE_DUPLICATE_RETIREMENT.json",
+    "duplicate_retirement_executed_by_reviewer": false
+  }
+}

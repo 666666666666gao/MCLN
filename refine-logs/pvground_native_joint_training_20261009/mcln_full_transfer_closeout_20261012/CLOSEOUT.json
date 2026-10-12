@@ -1,0 +1,99 @@
+{
+  "status": "ACTUAL_FULL_MCLN9508_AUDITED_NATIVE_TRAINING_CHECK_PASS",
+  "recorded_cst": "2026-10-12T14:32:06.916271+08:00",
+  "retained_best_hits": [
+    5677,
+    4920
+  ],
+  "goal_hits": [
+    5705,
+    4945
+  ],
+  "MCLN_full_evaluation_complete": true,
+  "MCLN_full_metrics": [
+    {
+      "branch": "native",
+      "rows": 9508,
+      "raw_predicted_nonpositive_size_rows": 0,
+      "hits025": 5515,
+      "acc025_percent": 58.00378628523349,
+      "full256_hits025": 8989,
+      "qualified_candidate_not_selected025": 3474,
+      "hits050": 4409,
+      "acc050_percent": 46.37147665124106,
+      "full256_hits050": 7886,
+      "qualified_candidate_not_selected050": 3477,
+      "own_mask_good_box_bad": 917,
+      "fused_mask_good_box_bad": 926,
+      "selected_own_mask_miou": 0.45901175414478573,
+      "selected_fused_mask_miou": 0.45899641308168004
+    },
+    {
+      "branch": "mask_reference",
+      "rows": 9508,
+      "raw_predicted_nonpositive_size_rows": 0,
+      "hits025": 5459,
+      "acc025_percent": 57.41480858224653,
+      "full256_hits025": 8936,
+      "qualified_candidate_not_selected025": 3477,
+      "hits050": 4767,
+      "acc050_percent": 50.13672696676483,
+      "full256_hits050": 8159,
+      "qualified_candidate_not_selected050": 3392,
+      "own_mask_good_box_bad": 493,
+      "fused_mask_good_box_bad": 494,
+      "selected_own_mask_miou": 0.45901175414478573,
+      "selected_fused_mask_miou": 0.45899641308168004
+    },
+    {
+      "branch": "full_transfer",
+      "rows": 9508,
+      "raw_predicted_nonpositive_size_rows": 0,
+      "hits025": 5473,
+      "acc025_percent": 57.56205300799327,
+      "full256_hits025": 8952,
+      "qualified_candidate_not_selected025": 3479,
+      "hits050": 4777,
+      "acc050_percent": 50.241901556583926,
+      "full256_hits050": 8165,
+      "qualified_candidate_not_selected050": 3388,
+      "own_mask_good_box_bad": 498,
+      "fused_mask_good_box_bad": 497,
+      "selected_own_mask_miou": 0.45946503099244906,
+      "selected_fused_mask_miou": 0.4592812709660633
+    }
+  ],
+  "MCLN_formal_training_launched": true,
+  "MCLN_normal_launch": {
+    "controller_pid": 271902,
+    "root": "/root/autodl-tmp/mcln_portable_best_transfer_20261012/normal_training",
+    "command": [
+      "flock",
+      "--no-fork",
+      "-n",
+      "/root/autodl-tmp/mcln_v99_backbone_gpu0.lock",
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/normal_training/normal_controller.py"
+    ],
+    "launched_cst": "2026-10-12T14:30:12.553044+08:00",
+    "scope": "FULL_NATIVE_MCLN_TRAINING_MAX8_DECLINE2"
+  },
+  "MCLN_native_two_step_training_check_pass": true,
+  "MCLN_native_training_flags": {
+    "joint_det": true,
+    "detect_intermediate": true,
+    "augment_det": true,
+    "butd": true
+  },
+  "MCLN_training_accuracy": null,
+  "source_review_scope": "SOURCE_ONLY_same_family_provisional",
+  "actual_result_audit_scope": "REAL_saved_GT_CPU_same_family_provisional",
+  "raw_pre_clamp_size_count_available": false,
+  "next_observation_cst": "2026-10-12T15:03:12.553044+08:00",
+  "observer_pid": 6400,
+  "publication_neural_calls": 0,
+  "publication_training_status_queries": 0,
+  "full_goal_complete": false
+}

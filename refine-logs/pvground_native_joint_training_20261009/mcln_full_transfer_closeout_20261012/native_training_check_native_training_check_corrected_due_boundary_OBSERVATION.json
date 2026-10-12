@@ -1,0 +1,138 @@
+{
+  "observed_cst": "2026-10-12T13:59:50.908641+08:00",
+  "stage": "native_training_check",
+  "controller_alive": false,
+  "child_alive": false,
+  "remote_status": {
+    "status": "complete",
+    "started_cst": "2026-10-12T13:46:27.138090+08:00",
+    "child_argv": [
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/native_training_check/check_native_mcln_portable_training.py",
+      "--source",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/MCLN",
+      "--spec",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/TRANSFER_SPEC.json",
+      "--output",
+      "/root/autodl-tmp/mcln_portable_best_transfer_20261012/native_training_check/check"
+    ],
+    "source": "/root/autodl-tmp/mcln_portable_best_transfer_20261012/MCLN",
+    "scope": "TWO_NATIVE_TRAINING_UPDATES_ONLY",
+    "child_pid": 271102,
+    "exit_code": 0,
+    "completed_cst": "2026-10-12T13:56:17.934245+08:00",
+    "elapsed_seconds": 590.7962765470147,
+    "result": {
+      "status": "ACTUAL_NATIVE_MCLN_TWO_UPDATES_AND_SAME_PROCESS_FULL_RESTORE_PASS",
+      "actual_optimizer_updates": 2,
+      "actual_training_rows": 16,
+      "actual_training_dataset_rows": 48655,
+      "actual_training_flags": {
+        "joint_det": true,
+        "detect_intermediate": true,
+        "augment_det": true,
+        "butd": true
+      },
+      "updates": [
+        {
+          "step": 1,
+          "rows": 8,
+          "loss": 13.5062255859375,
+          "support_gradient": {
+            "total_l1": 5.573497720062733,
+            "output_l1": 0.5426797270774841,
+            "internal_l1": 5.030817992985249,
+            "gradient_tensors": 10
+          },
+          "span_gradient": {
+            "total_l1": 28.793560979887843,
+            "output_l1": 4.381602048873901,
+            "internal_l1": 24.41195893101394,
+            "gradient_tensors": 14
+          },
+          "original_core_gradient_l1": 37947.292219407274,
+          "raw_span_gate_min": 0.020457569509744644,
+          "raw_span_gate_max": 0.09936787933111191,
+          "span_gate_clamped_low_fraction": 0.0,
+          "span_gate_clamped_high_fraction": 0.0,
+          "invalid_mask_references": 1351
+        },
+        {
+          "step": 2,
+          "rows": 8,
+          "loss": 12.062352180480957,
+          "support_gradient": {
+            "total_l1": 2.8867145758122206,
+            "output_l1": 0.17187178134918213,
+            "internal_l1": 2.7148427944630384,
+            "gradient_tensors": 10
+          },
+          "span_gradient": {
+            "total_l1": 1.0852039975579828,
+            "output_l1": 0.22411301732063293,
+            "internal_l1": 0.8610909802373499,
+            "gradient_tensors": 14
+          },
+          "original_core_gradient_l1": 18642.98616142315,
+          "raw_span_gate_min": 0.021525708958506584,
+          "raw_span_gate_max": 0.09256301820278168,
+          "span_gate_clamped_low_fraction": 0.0,
+          "span_gate_clamped_high_fraction": 0.0,
+          "invalid_mask_references": 1209
+        }
+      ],
+      "changed_module_elements": {
+        "candidate_support_corrector.": 27265,
+        "candidate_span_mixer.": 29793
+      },
+      "original_core_trainable": true,
+      "roberta_parameters_frozen": true,
+      "full_model_states": 1159,
+      "optimizer_state_count": 731,
+      "same_process_saved_model_optimizer_scheduler_rng_exact": true,
+      "cold_restart_verified": false,
+      "formal_training_completed": false,
+      "formal_accuracy": null,
+      "engineering_checkpoint": "/root/autodl-tmp/mcln_portable_best_transfer_20261012/native_training_check/check/engineering_full_state.pth",
+      "engineering_checkpoint_bytes": 793579034,
+      "peak_cuda_allocated_bytes": 17068970496,
+      "completed_cst": "2026-10-12T13:56:10.147456+08:00",
+      "full_goal_complete": false
+    }
+  },
+  "files": [
+    {
+      "name": "status.json",
+      "bytes": 3568,
+      "sha256": "9c0aa0d4ba582f8aafd5a904d2463c51cdf37ec9938055fa0416ddb7ed3cb1c4"
+    },
+    {
+      "name": "admission.json",
+      "bytes": 270,
+      "sha256": "19c63cd2e2269c4b725b164f88eef13426330a9c9df5bd53ce0bfb70d4e199ec"
+    },
+    {
+      "name": "check/RESULT.json",
+      "bytes": 2547,
+      "sha256": "4eb11c083ee4f1435d6687a3ea5c87be4e62a3f9eabe0acb6f5054a72433a501"
+    }
+  ],
+  "tails": [
+    {
+      "name": "check.log",
+      "total_bytes": 4278
+    },
+    {
+      "name": "controller.log",
+      "total_bytes": 0
+    }
+  ],
+  "new_neural_forwards": 0,
+  "new_GPU_queries": 0,
+  "new_optimizer_updates": 0,
+  "first_due_cst": "2026-10-12T13:59:31+08:00",
+  "best_promoted": false,
+  "full_goal_complete": false
+}

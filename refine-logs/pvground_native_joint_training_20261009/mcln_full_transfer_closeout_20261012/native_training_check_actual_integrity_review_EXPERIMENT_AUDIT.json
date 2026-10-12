@@ -1,0 +1,315 @@
+{
+  "audit_skill": "experiment-audit",
+  "date": "2026-10-12",
+  "generated_at": "2026-10-12T14:13:29.843543+08:00",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "narrow_engineering_claim_supported_with_explicit_scope_limits",
+  "summary": "No blocking experiment-integrity defect found for the completed two-update native training integration and same-process saved-state restore. Retain the unused-validation-construction note and runtime-only tensor evidence limits.",
+  "engineering_claim_supported": true,
+  "blocking_findings": [],
+  "blocking_count": 0,
+  "non_blocking_findings": [
+    {
+      "id": "W1",
+      "status": "OPEN_SCOPE_NOTE",
+      "title": "Native factory constructs validation data that is not evaluated",
+      "details": "Saved log explicitly shows Loading val files; get_datasets constructs split=val. This check iterates only the train Subset. A claim of zero validation-file access would be false.",
+      "action": "Retain the precise statement: no validation inference or accuracy; validation data construction occurs. No source change is required for the narrow completed engineering claim.",
+      "evidence": [
+        "../../source/train_dist_mod.py:2938",
+        "../check_native_mcln_portable_training.py:93",
+        "../native_training_check_corrected_due_boundary_observation/check.log.tail.txt:8"
+      ]
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "title": "Controller environment omission resolved before launch",
+      "details": "Archived R1 controller omitted env=; current R2 loads the existing runtime environment and passes env=variables to the only child Popen. Independently generated diff equals archived R2 diff. Current R2 equals its immutable 13:45:32 report and predates 13:46:27 launch. All 25 in-scope gate hashes match.",
+      "evidence": [
+        "../source_review/reviewed_v1/check_controller.py:17",
+        "../check_controller.py:11",
+        "../check_controller.py:23",
+        "INDEPENDENT_CONTROLLER_R2.diff"
+      ]
+    },
+    {
+      "id": "R2",
+      "title": "Observer missing-stage payload failure repaired and preserved",
+      "details": "The due_recovery call returned exit 1 with KeyError: stage and empty stdout. The observer accessed b[stage] before loading status. The only source change is serializing dict(launch,stage=args.stage). The corrected call exited 0 and archived the actual completed child status without any new NN, GPU query or optimizer update.",
+      "evidence": [
+        "../native_training_check_due_recovery_STDERR.txt:1",
+        "../native_training_check_due_recovery_EXIT.json:1",
+        "../observe_check_authorized.py:37",
+        "../observe_check_authorized.py:66",
+        "INDEPENDENT_OBSERVER_STAGE.diff",
+        "../native_training_check_corrected_due_boundary_EXIT.json:1"
+      ]
+    }
+  ],
+  "limits": [
+    {
+      "id": "L1",
+      "details": "No batch, gradient, before/after parameter, optimizer or RNG tensors were transferred. This auditor independently checks saved byte integrity, arithmetic, source control flow and reported measurements; it cannot independently recompute losses/gradients, recount changed tensor elements, or repeat the tensor restore comparison."
+    },
+    {
+      "id": "L2",
+      "details": "Only one model bias and CUDA RNG are deliberately perturbed before same-process restore. All model/AdamW/scheduler/Python/NumPy/CPU/CUDA RNG states are compared to the loaded saved payload, but optimizer/scheduler are not deliberately perturbed and no further training step or fresh process is run."
+    },
+    {
+      "id": "L3",
+      "details": "1159 is a model state_dict entry count, 731 is optimizer-state entry count, and 793579034 bytes is a remote runtime stat. The engineering checkpoint itself and a checkpoint hash were not transferred; none was locally compared."
+    },
+    {
+      "id": "L4",
+      "details": "Two losses from two different batches do not establish convergence, generalization, adaptation accuracy, best-model status or a formal full-run stop condition. 48655 is dataset length, not the number of trained rows; exact scene coverage is unrecorded."
+    },
+    {
+      "id": "L5",
+      "details": "The source gate and current local artifacts agree for 25 of 27 audited static inputs; two external credential/transport-environment inputs were intentionally not opened. No fresh remote source or checkpoint hash check was performed by this auditor."
+    },
+    {
+      "id": "L6",
+      "details": "This is a same-family provisional continuation. The request included executor conclusions; all reported outcomes here were independently checked against primary artifacts. Actual reviewer model/backend/effort identity is UNATTESTED."
+    }
+  ],
+  "identity": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_model": "UNATTESTED",
+    "actual_reasoning_effort": "UNATTESTED",
+    "actual_backend_identity": "UNATTESTED",
+    "identity_status": "UNATTESTED",
+    "reviewer_family": "openai",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "agent_id": "/root/mcln_full_transfer_integrity_20261012",
+    "opaque_agent_id": "UNATTESTED",
+    "fresh_context_for_this_request": false,
+    "context": "Same designated integrity auditor continued into a new, narrow engineering audit after the separate full transfer audit. Full9508 was not reaudited.",
+    "executor_claims_received": true,
+    "treatment_of_executor_claims": "The request included expected measurements and requested zero blockers. These were unverified claims; the verdict was derived from primary artifacts and CPU checks, not adopted from the request."
+  },
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "reviewer_family": "openai",
+  "executor_model": "UNATTESTED",
+  "executor_family": "openai",
+  "agent_id": "/root/mcln_full_transfer_integrity_20261012",
+  "verdict_id": "native-training-actual-20261012-audit",
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "classification": "real_gt_supervised_training",
+      "details": "Native training annotations supply boxes, masks and text labels. Spatial GT is merged after forward for the native loss; existing text maps/spans are already part of the native forward input. Added A/B/geometry modules receive prediction/feature/point geometry, not spatial GT. The local audit checked source/dataflow, not unarchived batch tensors.",
+      "evidence": [
+        "../check_native_mcln_portable_training.py:93",
+        "../check_native_mcln_portable_training.py:110",
+        "../../source/train_dist_mod.py:3454",
+        "../../source/src/joint_det_dataset.py:585",
+        "../../source/src/joint_det_dataset.py:1086",
+        "../../source/src/joint_det_dataset.py:1387",
+        "../../source/models/losses.py:2229",
+        "../../source/models/losses.py:2297",
+        "../../source/mcln_portable_geometry.py:9"
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "The script logs raw native scalar losses and absolute-gradient L1 sums. No benchmark accuracy is computed or divided by model-output statistics. Clamping fractions are counts over B*256*3 axes; invalid-mask counts are over B*256 queries. Module feature/attention normalizations are internal model computation, not reported accuracy normalization.",
+      "evidence": [
+        "../check_native_mcln_portable_training.py:101",
+        "../check_native_mcln_portable_training.py:118",
+        "../check_native_mcln_portable_training.py:128",
+        "../../source/extremal_span_mixer.py:98",
+        "INDEPENDENT_RECORDED_STEP_CHECKS.csv:2"
+      ]
+    },
+    "C_result_execution_existence": {
+      "status": "PASS",
+      "details": "Raw observer payload decodes exactly to local status/admission/RESULT, all three lengths and SHA256 values match. The entire 4278-byte check log and empty controller log are archived. Two step records and final result match status/RESULT exactly. Child exit=0 at 2026-10-12T13:56:17.934245+08:00; both processes were absent at observation 13:59:50.908641. Engineering checkpoint existence/size is a recorded remote runtime stat; its tensors are not locally available.",
+      "evidence": [
+        "../native_training_check_corrected_due_boundary_STDOUT.json:1",
+        "../native_training_check_corrected_due_boundary_observation/status.json:20",
+        "../native_training_check_corrected_due_boundary_observation/check.log.tail.txt:11",
+        "../native_training_check_corrected_due_boundary_observation/check/RESULT.json:2",
+        "../check_controller.py:27",
+        "INDEPENDENT_CPU_EVIDENCE.json"
+      ]
+    },
+    "D_dead_code": {
+      "status": "PASS",
+      "details": "The check executes the native model, native Hungarian loss, backward, clipping, AdamW and scheduler in its two-batch loop; native final forward calls the installed A/B adapter. Runtime records show both internal and output gradients of both A/B modules, nonzero trainable-core gradients and nonzero A/B parameter changes. Save/load/restore assertions precede RESULT creation and the successful child exit. No evaluation function or accuracy is claimed.",
+      "evidence": [
+        "../check_native_mcln_portable_training.py:74",
+        "../check_native_mcln_portable_training.py:110",
+        "../check_native_mcln_portable_training.py:141",
+        "../check_native_mcln_portable_training.py:164",
+        "../../source/models/mcln.py:3167",
+        "../../source/main_utils.py:5187",
+        "../../source/main_utils.py:6653",
+        "../../source/models/losses.py:3194"
+      ]
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "One engineering run, seed 2027, indices 0..15 of a recorded 48655-row native training dataset, two batch-8 updates. joint_det/detect_intermediate/augment_det/butd are recorded true. Native get_datasets also constructs validation data, as both source and log confirm; only train is iterated. Scene/sample identities were not saved. Same-process exact restore is not a cold restart or resumed-training test. Formal accuracy is null; no best was promoted. Recorded nonzero core gradients are not an independently measured before/after delta for every original-core parameter.",
+      "evidence": [
+        "../PLAN.md:3",
+        "../check_native_mcln_portable_training.py:31",
+        "../check_native_mcln_portable_training.py:93",
+        "../check_native_mcln_portable_training.py:149",
+        "../check_native_mcln_portable_training.py:182",
+        "../../source/train_dist_mod.py:2892",
+        "../../source/train_dist_mod.py:2938",
+        "../native_training_check_corrected_due_boundary_observation/check.log.tail.txt:8"
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "subtype": "two_step_native_supervised_training_integration_and_same_process_serialization_check",
+      "details": "Real-dataset supervised engineering check. It is not an accuracy evaluation, synthetic/proxy benchmark, formal MCLN adaptation, or repeat of the full9508 transfer comparison. PV-trained A/B initialize this check; E71 supplies the native core. The PV six-source G is not imported. These two updated engineering weights are not formal initialization or selection candidates.",
+      "evidence": [
+        "../check_native_mcln_portable_training.py:40",
+        "../check_native_mcln_portable_training.py:77",
+        "../check_native_mcln_portable_training.py:188",
+        "../../source/mcln_transfer_initialization.py:19",
+        "../../source/mcln_transfer_initialization.py:31",
+        "../../TRANSFER_SPEC.json:12",
+        "../native_training_check_corrected_due_boundary_observation/admission.json:4"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "Two native supervised training updates on 16 rows completed with finite losses.",
+      "impact": "supported_by_source_and_archived_runtime"
+    },
+    {
+      "id": "C2",
+      "claim": "Both A/B output and internal gradients and original trainable-core gradients are nonzero; A/B changed 27265/27841 and 29793/29793 elements.",
+      "impact": "supported_as_recorded_runtime_measurements_not_local_tensor_recount"
+    },
+    {
+      "id": "C3",
+      "claim": "Full model, AdamW, scheduler and global RNG were saved, read back and restored exactly in the same process.",
+      "impact": "supported_by_runtime_assertions_and_successful_exit_not_local_tensor_comparison"
+    },
+    {
+      "id": "C4",
+      "claim": "Cold restart, continued post-restore training, formal adaptation accuracy or new best.",
+      "impact": "unsupported_and_explicitly_not_claimed"
+    },
+    {
+      "id": "C5",
+      "claim": "Engineering state is suitable as formal initialization or a selection candidate.",
+      "impact": "excluded_by_plan_and_admission"
+    },
+    {
+      "id": "C6",
+      "claim": "Every original core parameter was changed and independently compared.",
+      "impact": "unsupported_not_measured; only aggregated nonzero trainable-core gradients and optimizer participation are evidenced"
+    }
+  ],
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_STDOUT.json": "3f46c3b790960edf321c0592c99824872814a055e698b7ad97a58a3ad61d5600",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_OBSERVATION.json": "f34810ad69572db314cd40a585f75da3d408b91643bf39d25b0d9e613a8492af",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_observation\\status.json": "9c0aa0d4ba582f8aafd5a904d2463c51cdf37ec9938055fa0416ddb7ed3cb1c4",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_observation\\check\\RESULT.json": "4eb11c083ee4f1435d6687a3ea5c87be4e62a3f9eabe0acb6f5054a72433a501",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_observation\\admission.json": "19c63cd2e2269c4b725b164f88eef13426330a9c9df5bd53ce0bfb70d4e199ec",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\LAUNCH.json": "55b6dd38dd115dbff4d51e255ece0bd04a613ad3950541d5294cc544d127b804",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\LAUNCH_STDOUT.txt": "3e32e9392d0230e9d4907dc7ced7a2752c86a1478f11aae090eb703125d27063",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\LAUNCH_STDERR.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_EXIT.json": "302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_STDERR.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_observation\\check.log.tail.txt": "5c4c9a03090b6b85fd4b08d41eeae7143ce187a55492b14c4750f12cb204a3aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_observation\\controller.log.tail.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\SOURCE_REVIEW.json": "fd773ff39216e9e9d5879c92ca70f0d33569a48597a4e60cbd27be2427e53604",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\reviewed_v1\\SOURCE_REVIEW.json": "00962908c52a30e572545e07ca079aba30856b5067b140288ed1fceef34229ee",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\SOURCE_REVIEW_20261012_134532.json": "fd773ff39216e9e9d5879c92ca70f0d33569a48597a4e60cbd27be2427e53604",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\SOURCE_REVIEW_20261012_115332.json": "00962908c52a30e572545e07ca079aba30856b5067b140288ed1fceef34229ee",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\PLAN.md": "037833b7f9a9119f0692fcf4a1c135357af444a5c2ddc74121f69121d3221d43",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\check_native_mcln_portable_training.py": "f959cf7a0b1a82675d40fce5fec431544984934827e597c5529ff8d4f34f79dc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\check_controller.py": "b91d806fbc42a675f15ba23037007fbe53ef5eba2116af9682c684dfd6346f6f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\launch_check_authorized.py": "a48fcfc11b2ca27579da2ba7dfebf2361ac173d327ba7dcd53df259189231be6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\TRANSFER_SPEC.json": "d88fba95db899ed190baacf9bbb94485aa41b5dcd96a4333ed1357e178da1038",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\SOURCE_MANIFEST.json": "7ce7c15ccab7d895b07942a47956ef767af366c927844168ec2f7d1c6c7207ac",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\REMOTE_ASSETS.json": "a38cf26f5f6d30ad0716e9f0ccc9d1aeef15eb079acb102349f142785836bfb0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\transfer_controller.py": "373928695e1d76a79d554e2bdd7cd073bdfcb7ba52923f580779b85bdfd45414",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\mcln_transfer_initialization.py": "c043982ec825cbb2a26ae7066699b2d146611f257d7d5ab906dee30bca8d1f59",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\mcln_portable_geometry.py": "d47e4727e902b55e18d6b491f48f434d5d6e0785cb196bc1298ac674291fb536",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\whole_mask_range.py": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\mcln.py": "d6839baede79308d30dad47599237f3fbf74fc6a1a9f7de502ab057f59376482",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\losses.py": "4159f9f2374c6a416cb9f406d869fac873a78326961e21633a82d44196beccc3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\main_utils.py": "17372d01df6225e79817635718c3ceacb43ca52cfb70a2de65fb2000d0f6495e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\train_dist_mod.py": "c76bbf9a2ad3ffe6ebe7b9b5cb0c3ee7d8e1aef3fb4644fe94d65b316dda1883",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\utils\\lr_scheduler.py": "0d73ea2e0625d1b7ab2c0f6100b1d8587e60dd79960bf5867775ff7e13fcb0c3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\utils\\__init__.py": "c8492a3a72276c121d314ff5bac28fe8ee290b110c99855663204337a577b62a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\backbone_module.py": "8cd6df560bee60b871db94eb5cb5c956063b6bbb5895db63443be0cb2df58c97",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\modules.py": "96861185adf921ad53f9e649887528f17d9d9a94288f969b88f6ee95cf71df14",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\__init__.py": "8c060b4be6518eb8fa80b75c99819a06f0cf01a1ce4097ac7a3803a8d4f1d708",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\pointnet2\\pointnet2_utils.py": "84f5233ee50ffcc3484078e7d77e4a3147530e84a6b2259789d9c75e7ca3f3c2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\reviewed_v1\\check_controller.py": "97cb15c04f7275ba17b20f91122496dc9c006dea190507a3318b3d171fab71ea",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\inputs_r2\\check_controller.py": "b91d806fbc42a675f15ba23037007fbe53ef5eba2116af9682c684dfd6346f6f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\R2_CONTROLLER.diff": "233d1d0639ef0ae3ba94b925826f3180cb3cf61919a0fdd90940bdf504dad3c9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\observe_check_authorized.py": "2ec8c09358cc265f241783ddc30ceadf1e40b57c06b33205210be87292098843",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\observe_check_authorized_before_stage_fix.py": "fd1dfcb08d3894fc442ad79d4a9f754277c78c1a46cd1c199856478127cb523c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_due_recovery_EXIT.json": "054a76e7744b2c305a4c5b5baccbd7459725cc0b83cba02929a2f737d4fdd757",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_due_recovery_STDOUT.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_due_recovery_STDERR.txt": "59012d50c9a3099dc9bc8a8a68980055907aa47aa9364ffbcb8c2bcc851d736c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_first_boundary_OWNER.json": "712d52a42073683d3f290bc6b314c06932266ccf921bfe308baba08d58b8a2a2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_due_recovery_OWNER.json": "9201a7ad22616a69ef5217c1306a395bc31fb7b0bdca216648d075527c96e28a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\native_training_check_corrected_due_boundary_OWNER.json": "0be00e45315d825ca0018bde0c156c534dd6118337e7deba5c10cf560ffa5d07",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\prepare_observer.py": "cf1f2a52a85b82f3e1d2aa7624445b2af7911a1204b815359f50d3dc29f74017",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\SOURCE_REVIEW.md": "577a650f4947907a2f57768ddcedc3a2ef3f556f4f05b3f68c4ccae24451b34e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\reviewed_v1\\SOURCE_REVIEW.md": "4a18f0711e73a306171500769016c2735f995f205a853d6d0f4316b84b7b5831",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\STATIC_CHECKS_R2.json": "8107ed87ac887838920cc3f427e00e7bd4cebe0506e139c42652f1f1c63fa22a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\INPUT_MANIFEST.json": "35f8ada7d8959661609cdf75b6129e475d900078d3822590d111d2f2999b4eb9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\002-native-training-source.input.json": "259158da2115d49182a78c55ee3d8f9e25ee351b9e499fa35a7cbbdaac3b09fd",
+    "C:\\Users\\gb\\.codex\\skills\\experiment-audit\\SKILL.md": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\reviewer-independence.md": "1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\experiment-integrity.md": "22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\integration-contract.md": "5d393c31b36e98ae99c17ab9cf5879853c0cb595bbd9f4973ffe7bcd6549f4e7"
+  },
+  "input_manifest": "INPUT_MANIFEST.json",
+  "independent_cpu_evidence": "INDEPENDENT_CPU_EVIDENCE.json",
+  "independent_cpu_checks_passed": 70,
+  "independent_cpu_checks_failed": [],
+  "deterministic_verification": {
+    "review_independence": "deterministic",
+    "acceptance_status": "accepted",
+    "scope": "Saved bytes, SHA256 continuity, AST parsing, reported-value consistency and arithmetic only."
+  },
+  "trace_path": ".aris/traces/experiment-audit/2026-10-12_native_training_actual_run01",
+  "full9508_reaudited": false,
+  "audit_execution": {
+    "ssh_calls": 0,
+    "gpu_queries": 0,
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "modified_experiment_files": 0,
+    "local_checkpoint_tensor_comparisons": 0
+  },
+  "cleanup": {
+    "performed_by_auditor": false,
+    "engineering_checkpoint_location": "remote_only",
+    "formal_initialization_allowed": false,
+    "selection_allowed": false,
+    "note": "Audit inputs and receipts are archived. Existing user-authorized cleanup is a separate action after confirmed closure; this audit did not perform or attest cleanup."
+  }
+}

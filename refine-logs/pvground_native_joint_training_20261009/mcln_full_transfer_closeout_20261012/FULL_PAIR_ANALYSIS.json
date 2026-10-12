@@ -1,0 +1,156 @@
+{
+  "status": "REAL_SAVED_MCLN_PAIRED_ROWS_AND_GT_BOXES_CPU_RECOMPUTED",
+  "scope": "FULL9508_NATIVE_MCLN_TRANSFER",
+  "rows": 9508,
+  "scene_count": 141,
+  "table": [
+    {
+      "branch": "native",
+      "rows": 9508,
+      "raw_predicted_nonpositive_size_rows": 0,
+      "hits025": 5515,
+      "acc025_percent": 58.00378628523349,
+      "full256_hits025": 8989,
+      "qualified_candidate_not_selected025": 3474,
+      "hits050": 4409,
+      "acc050_percent": 46.37147665124106,
+      "full256_hits050": 7886,
+      "qualified_candidate_not_selected050": 3477,
+      "own_mask_good_box_bad": 917,
+      "fused_mask_good_box_bad": 926,
+      "selected_own_mask_miou": 0.45901175414478573,
+      "selected_fused_mask_miou": 0.45899641308168004
+    },
+    {
+      "branch": "mask_reference",
+      "rows": 9508,
+      "raw_predicted_nonpositive_size_rows": 0,
+      "hits025": 5459,
+      "acc025_percent": 57.41480858224653,
+      "full256_hits025": 8936,
+      "qualified_candidate_not_selected025": 3477,
+      "hits050": 4767,
+      "acc050_percent": 50.13672696676483,
+      "full256_hits050": 8159,
+      "qualified_candidate_not_selected050": 3392,
+      "own_mask_good_box_bad": 493,
+      "fused_mask_good_box_bad": 494,
+      "selected_own_mask_miou": 0.45901175414478573,
+      "selected_fused_mask_miou": 0.45899641308168004
+    },
+    {
+      "branch": "full_transfer",
+      "rows": 9508,
+      "raw_predicted_nonpositive_size_rows": 0,
+      "hits025": 5473,
+      "acc025_percent": 57.56205300799327,
+      "full256_hits025": 8952,
+      "qualified_candidate_not_selected025": 3479,
+      "hits050": 4777,
+      "acc050_percent": 50.241901556583926,
+      "full256_hits050": 8165,
+      "qualified_candidate_not_selected050": 3388,
+      "own_mask_good_box_bad": 498,
+      "fused_mask_good_box_bad": 497,
+      "selected_own_mask_miou": 0.45946503099244906,
+      "selected_fused_mask_miou": 0.4592812709660633
+    }
+  ],
+  "comparisons": {
+    "native_to_mask_reference": {
+      "025": {
+        "repaired": 138,
+        "broken": 194,
+        "net": -56
+      },
+      "050": {
+        "repaired": 694,
+        "broken": 336,
+        "net": 358
+      }
+    },
+    "native_to_full_transfer": {
+      "025": {
+        "repaired": 138,
+        "broken": 180,
+        "net": -42
+      },
+      "050": {
+        "repaired": 695,
+        "broken": 327,
+        "net": 368
+      }
+    },
+    "mask_reference_to_full_transfer": {
+      "025": {
+        "repaired": 18,
+        "broken": 4,
+        "net": 14
+      },
+      "050": {
+        "repaired": 23,
+        "broken": 13,
+        "net": 10
+      }
+    }
+  },
+  "volume_groups": [
+    {
+      "volume_quartile": 1,
+      "rows": 2377,
+      "native_strict_hits": 847,
+      "mask_reference_strict_hits": 1046,
+      "full_transfer_strict_hits": 1048,
+      "reference_net_vs_native": 199,
+      "transfer_net_vs_reference": 2
+    },
+    {
+      "volume_quartile": 2,
+      "rows": 2375,
+      "native_strict_hits": 1038,
+      "mask_reference_strict_hits": 1165,
+      "full_transfer_strict_hits": 1171,
+      "reference_net_vs_native": 127,
+      "transfer_net_vs_reference": 6
+    },
+    {
+      "volume_quartile": 3,
+      "rows": 2379,
+      "native_strict_hits": 1084,
+      "mask_reference_strict_hits": 1108,
+      "full_transfer_strict_hits": 1108,
+      "reference_net_vs_native": 24,
+      "transfer_net_vs_reference": 0
+    },
+    {
+      "volume_quartile": 4,
+      "rows": 2377,
+      "native_strict_hits": 1440,
+      "mask_reference_strict_hits": 1448,
+      "full_transfer_strict_hits": 1450,
+      "reference_net_vs_native": 8,
+      "transfer_net_vs_reference": 2
+    }
+  ],
+  "selected_query_changes": 0,
+  "all_three_branches_same_selected_query": true,
+  "max_selected_box_iou_CPU_GPU_difference": {
+    "native": 0.0,
+    "mask_reference": 0.0,
+    "full_transfer": 0.0
+  },
+  "selected_box_metrics_recomputed_from_saved_GT_boxes": true,
+  "full256_coverage_from_saved_max_iou_only": true,
+  "mask_metrics_from_saved_iou_only": true,
+  "actual_MCLN_training_completed": false,
+  "three_effective_modules_claim_supported": false,
+  "best_promoted": false,
+  "full_goal_complete": false,
+  "paired_rows_sha256": "9562bb3a4bea8fef04fc2bd7adb9aa3110224c1193bf2b4f6bc81436582ea417",
+  "limitations": [
+    "Cross-backbone direct use of PV-trained A/B states; not MCLN-trained module effectiveness.",
+    "PV-specific six-source G read was not transferred.",
+    "Full256 is a GT geometric diagnostic, not deployed accuracy.",
+    "Independent sampled validation replay does not overwrite historical MCLN accuracy."
+  ]
+}

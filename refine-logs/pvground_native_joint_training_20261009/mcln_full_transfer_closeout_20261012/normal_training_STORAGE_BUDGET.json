@@ -1,0 +1,17 @@
+{
+  "model_tensor_bytes": 598498856,
+  "frozen_roberta_tensor_bytes": 498586640,
+  "all_potential_trainable_tensor_bytes_upper": 99912216,
+  "complete_Adam_moment_bytes_upper": 199824432,
+  "latest_bytes_upper": 865432152,
+  "best_bytes_upper": 665607720,
+  "metadata_serialization_config_history_rng_reserve_per_weight": 67108864,
+  "atomic_save_peak_bytes_upper": 2396472024,
+  "log_reserve_bytes": 268435456,
+  "required_free_bytes": 2664907480,
+  "measured_serialized_full_bytes": 793542298,
+  "measured_serialized_model_only_bytes": 598932370,
+  "optimizer_missing_state_count": 24,
+  "includes_future_missing_Adam_states": true,
+  "rationale": "Full model plus two moments for every non-RoBERTa tensor, including buffers as an upper bound; frozen RoBERTa, fixed FP32 shapes, amsgrad=False. Saves retain latest/best and one atomic replacement. No new weights or NN used."
+}

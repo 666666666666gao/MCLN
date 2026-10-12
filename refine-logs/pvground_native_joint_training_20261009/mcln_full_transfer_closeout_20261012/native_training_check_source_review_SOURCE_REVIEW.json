@@ -1,0 +1,187 @@
+{
+  "verdict": "WARN",
+  "blocking_findings": [],
+  "non_blocking_findings": [
+    {
+      "id": "W2",
+      "severity": "non-blocking",
+      "title": "Native dataset factory also constructs an unused validation dataset",
+      "location": "C:\\Users\\gb\\.codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\check_native_mcln_portable_training.py:93",
+      "details": "TrainTester.get_datasets(args) creates split=train at train_dist_mod.py:2892 and also split=val at :2938. Only the returned train object is wrapped by Subset(range(16)); there is no validation iterator, loss, inference, or accuracy computation in the check. Thus no validation sample is used for optimization, but a claim of zero validation-file access would be false. This also adds native validation-construction I/O and memory.",
+      "minimal_action": "Keep the scope statement precise. A direct call to the same native training dataset constructor is the minimal change if zero validation-file access is intended."
+    }
+  ],
+  "summary": "The minimal controller environment correction is sound and W1 is resolved. No blocking source defect remains. The only retained note is that the native factory constructs an unused validation dataset; the two batches still iterate only train.",
+  "reviewed_at": "2026-10-12T13:45:32.270720+08:00",
+  "scope": "SOURCE_ONLY_MINIMAL_CONTROLLER_ENVIRONMENT_REVISION_PREDEPLOYMENT",
+  "identity": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_model": "UNATTESTED",
+    "actual_reasoning_effort": "UNATTESTED",
+    "actual_backend_identity": "UNATTESTED",
+    "identity_status": "UNATTESTED",
+    "reviewer_family": "openai",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "reviewer_task": "/root/mcln_native_training_check_source_20261012",
+    "fresh_source_review": false,
+    "review_context": "Same reviewer continuation after the minimal local controller patch; initial source review remains archived."
+  },
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "actual_backend_identity": "UNATTESTED",
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\PLAN.md": "037833b7f9a9119f0692fcf4a1c135357af444a5c2ddc74121f69121d3221d43",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\check_native_mcln_portable_training.py": "f959cf7a0b1a82675d40fce5fec431544984934827e597c5529ff8d4f34f79dc",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\check_controller.py": "b91d806fbc42a675f15ba23037007fbe53ef5eba2116af9682c684dfd6346f6f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\launch_check_authorized.py": "a48fcfc11b2ca27579da2ba7dfebf2361ac173d327ba7dcd53df259189231be6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\TRANSFER_SPEC.json": "d88fba95db899ed190baacf9bbb94485aa41b5dcd96a4333ed1357e178da1038",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\SOURCE_MANIFEST.json": "7ce7c15ccab7d895b07942a47956ef767af366c927844168ec2f7d1c6c7207ac",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\REMOTE_ASSETS.json": "a38cf26f5f6d30ad0716e9f0ccc9d1aeef15eb079acb102349f142785836bfb0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\transfer_controller.py": "373928695e1d76a79d554e2bdd7cd073bdfcb7ba52923f580779b85bdfd45414",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\mcln_transfer_initialization.py": "c043982ec825cbb2a26ae7066699b2d146611f257d7d5ab906dee30bca8d1f59",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\mcln_portable_geometry.py": "d47e4727e902b55e18d6b491f48f434d5d6e0785cb196bc1298ac674291fb536",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\mask_support_corrector.py": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\extremal_span_mixer.py": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\native_mask_geometry.py": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\whole_mask_range.py": "22c4adb0cb8dfb929825dcbfcb5f9696cea879da212cebeea1a1a5acb6347a4c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\mcln.py": "d6839baede79308d30dad47599237f3fbf74fc6a1a9f7de502ab057f59376482",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\losses.py": "4159f9f2374c6a416cb9f406d869fac873a78326961e21633a82d44196beccc3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\main_utils.py": "17372d01df6225e79817635718c3ceacb43ca52cfb70a2de65fb2000d0f6495e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\train_dist_mod.py": "c76bbf9a2ad3ffe6ebe7b9b5cb0c3ee7d8e1aef3fb4644fe94d65b316dda1883",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\src\\joint_det_dataset.py": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\utils\\lr_scheduler.py": "0d73ea2e0625d1b7ab2c0f6100b1d8587e60dd79960bf5867775ff7e13fcb0c3",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\utils\\__init__.py": "c8492a3a72276c121d314ff5bac28fe8ee290b110c99855663204337a577b62a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\backbone_module.py": "8cd6df560bee60b871db94eb5cb5c956063b6bbb5895db63443be0cb2df58c97",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\modules.py": "96861185adf921ad53f9e649887528f17d9d9a94288f969b88f6ee95cf71df14",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\models\\__init__.py": "8c060b4be6518eb8fa80b75c99819a06f0cf01a1ce4097ac7a3803a8d4f1d708",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\source\\pointnet2\\pointnet2_utils.py": "84f5233ee50ffcc3484078e7d77e4a3147530e84a6b2259789d9c75e7ca3f3c2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\SCP_TRANSPORT_WITNESS.json": "046d4b8f70aaa0c6f21e3fa652adad80bb1d017aa7fb2f4d41da2fc53c2f5933",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvg_training_interface_source_20260908\\env_spec.json": "73116c8d67e6cad3b35065f6c4da8328e7167f7db346b2834fb3c71e07e62f15"
+  },
+  "audit_checks": [
+    {
+      "topic": "Scope and bound initialization",
+      "status": "PASS",
+      "evidence": "PLAN and check:31-79; strict initializer:11-47. E71 core is checksum-checked, exactly nine SourceChoice tensors are removed, remaining 1135 keys must equal the factory, and the exact A/B checkpoints are loaded with the parent support binding. No PV six-source G core or Face branch is installed."
+    },
+    {
+      "topic": "Training inputs and target provenance",
+      "status": "PASS_WITH_NOTE",
+      "evidence": "check:43-73,93-118; train_dist_mod:2609-2613,2892-2924; joint_det_dataset:101-119,240-258,585-597,1324-1358. eval/debug/eval_train are false; training augmentation remains native. Exactly two batch-8 batches come from the first 16 native training rows. Native labels/masks are appended after forward. W2 distinguishes validation construction from validation use."
+    },
+    {
+      "topic": "Original configuration scope",
+      "status": "LIMITATION",
+      "evidence": "The effective configuration is parse_option defaults updated from the checksum-checked E71 core config, followed by the explicit engineering overrides. There is no complete local E71 config dump, so original joint_det/detect_intermediate/augment_det and other inherited values are not invented. They remain unmodified and the three actual flags are recorded in RESULT. Runtime construction and strict state equality remain gates."
+    },
+    {
+      "topic": "Native loss and A/B graph",
+      "status": "PASS",
+      "evidence": "mcln.py:3167-3170 calls the portable tail inside forward. The tail replaces sp_last_pred_masks and last_center/last_pred_size; losses.py:3194-3238 feeds these final-layer outputs into the original matcher and boxes/labels/masks/alignment losses. A has differentiable corrected Query Mask logits; B has differentiable bounded mixing. Discrete reference membership is intentionally detached. This is a graph/path conclusion, not a guarantee of nonzero gradients."
+    },
+    {
+      "topic": "Optimizer groups and freeze",
+      "status": "PASS",
+      "evidence": "check:51-64 disables obsolete SourceChoice/MoE train-only modes and frozen/small_lr. main_utils:5777-5803 builds the normal AdamW groups from trainable native parameters. check:82-91 moves exactly 57634 A/B parameters into a 1e-5 group, retains native core/backbone LR1e-6 and WD5e-4, rejects duplicate parameters and any difference from the trainable set. mcln:1364-1366 freezes RoBERTa; check:80 asserts it. The native embedding trainability is preserved rather than inferred from a module-level attribute."
+    },
+    {
+      "topic": "Device, criterion, and scheduler compatibility",
+      "status": "PASS",
+      "evidence": "model.cuda precedes optimizer creation; _to_gpu moves all tensor labels and inputs. SetCriterion/HungarianMatcher own no parameter or CPU buffer requiring .cuda. All 108 _compute_loss keyword names are present in compute_hungarian_loss. Native get_scheduler receives the final groups; MultiStepLR is stepped after AdamW. clip_grad_norm_ at 0.1 follows finite-gradient checks."
+    },
+    {
+      "topic": "Two real update and gradient gates",
+      "status": "PASS",
+      "evidence": "check:95-147 has a fixed two-batch loader; each iteration runs model, native loss, backward, clip, optimizer.step, scheduler.step. Success requires exactly two updates, changed elements in each A/B module, nonzero output and internal task gradients for each A/B module on at least one update, and nonzero native-core gradients on both updates. Saturation fractions and invalid reference counts are recorded."
+    },
+    {
+      "topic": "Saved state and honest restore scope",
+      "status": "PASS",
+      "evidence": "check:149-191 saves the complete model state, AdamW state, scheduler state and Python/NumPy/CPU-Torch/all-CUDA RNG to a file, reads it with map_location=cpu, perturbs a model bias and CUDA RNG, loads each state through its native API and asserts recursive value equality. Torch1.10.2 optimizer.load_state_dict moves state tensors to the live parameter device. This is same-process state-value recovery; there is no cold restart or resumed-update witness, and the output says so."
+    },
+    {
+      "topic": "Prior full closeout and serial admission",
+      "status": "PASS",
+      "evidence": "launch:23-26 requires remote full status=complete, exit_code=0, no old child PID, and no compute-app PID. launch:28-30 verifies existing 736-entry source_manifest bytes/hashes. launch:31-44 requires a new output directory and uses the existing nonblocking flock for the controller lifetime. The completed local full receipt records exit0 at 10:14:55 CST and 9508 rows, with no update; no new remote observation was performed."
+    },
+    {
+      "topic": "Single launch and isolation",
+      "status": "PASS",
+      "evidence": "launch:11 forbids another local LAUNCH, remote output root must not exist, exactly one SSH subprocess.run and one controller Popen occur, and the controller launches one child and waits. No retry, formal epoch, validation scoring, best promotion, or copying of engineering weights into formal initialization is present. The new files sit outside the completed MCLN source; the child uses -B."
+    },
+    {
+      "topic": "Host/runtime compatibility and declared environment",
+      "status": "PASS",
+      "evidence": "R2 actual local Python3.7.6 ast.parse+compile passes for the three check/launcher scripts and embedded remote body. The only modified static input is check_controller.py. Its sole Popen now applies env_spec[env] with source and source/pointnet2 prepended, CUDA_VISIBLE_DEVICES=0 and WORLD_SIZE/RANK/LOCAL_RANK=1/0/0. The parent-specified local Python3.11.14 launcher and pinned Torch1.10.2 API checks from R1 remain applicable."
+    },
+    {
+      "topic": "Audited source integrity",
+      "status": "PASS",
+      "evidence": "R2 recomputed all 736 existing source-manifest bindings; all remain exact. All 27 audited static inputs retain their R1 digests except check_controller.py, whose reviewed revision now replaces its old digest. No output, archive, observation or mutable progress path was added to audited_input_hashes."
+    }
+  ],
+  "api_sources": [
+    {
+      "title": "PyTorch 1.10.2 Optimizer source",
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v1.10.2/torch/optim/optimizer.py",
+      "purpose": "add_param_group, zero_grad, state_dict and device casting in load_state_dict"
+    },
+    {
+      "title": "PyTorch 1.10.2 scheduler source",
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v1.10.2/torch/optim/lr_scheduler.py",
+      "purpose": "MultiStepLR initialization, optimizer-before-scheduler and state APIs"
+    },
+    {
+      "title": "PyTorch 1.10.2 CUDA RNG source",
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v1.10.2/torch/cuda/random.py",
+      "purpose": "get_rng_state_all and set_rng_state_all"
+    },
+    {
+      "title": "PyTorch 1.10.2 clip_grad source",
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v1.10.2/torch/nn/utils/clip_grad.py",
+      "purpose": "clip_grad_norm_ availability and signature"
+    }
+  ],
+  "actual_execution": {
+    "ssh_calls": 0,
+    "gpu_queries": 0,
+    "neural_forwards": 0,
+    "backwards": 0,
+    "optimizer_updates": 0,
+    "native_factory_imports": 0,
+    "source_modifications": 0,
+    "credential_contents_read": false
+  },
+  "limits": [
+    "This review establishes source correctness and syntax only, not positive A/B gradients or successful execution.",
+    "No new accuracy, full epoch, formal training, cold restart, continuation from restored state, runtime import, GPU-memory fit, or performance claim is made.",
+    "The runtime child still must satisfy its actual gradient, finite-value, changed-parameter and full-state equality assertions.",
+    "No complete local E71 config dump was available. No unobserved flag values were assumed."
+  ],
+  "input_trace": "C:\\Users\\gb\\.codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\002-native-training-source.input.json",
+  "request_trace": "C:\\Users\\gb\\.codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\002-native-training-source.request.json",
+  "report_trace": "C:\\Users\\gb\\.codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\002-native-training-source.response.md",
+  "resolved_findings": [
+    {
+      "id": "W1",
+      "status": "RESOLVED",
+      "prior_title": "The check child does not receive the declared runtime environment",
+      "evidence": "check_controller.py:11-15 loads the existing env_spec, copies os.environ, applies environment[env], prepends the admitted source and source/pointnet2, and fixes CUDA_VISIBLE_DEVICES=0, WORLD_SIZE=1, RANK=0, LOCAL_RANK=0. The sole Popen at line23 receives env=variables. This matches the completed transfer_controller environment setup for its GPU stage."
+    }
+  ],
+  "review_round": 2,
+  "revision": {
+    "previous_review": "C:\\Users\\gb\\.codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\reviewed_v1\\SOURCE_REVIEW.json",
+    "previous_review_sha256": "00962908c52a30e572545e07ca079aba30856b5067b140288ed1fceef34229ee",
+    "previous_controller_sha256": "97cb15c04f7275ba17b20f91122496dc9c006dea190507a3318b3d171fab71ea",
+    "current_controller_sha256": "b91d806fbc42a675f15ba23037007fbe53ef5eba2116af9682c684dfd6346f6f",
+    "changed_source_inputs": [
+      "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\check_controller.py"
+    ],
+    "prior_conclusions_reused_only_after_unchanged_input_verification": true,
+    "source_changes_by_reviewer": 0
+  },
+  "static_checks_trace": "C:\\Users\\gb\\.codex\\tmp\\mcln_portable_best_transfer_20261012\\native_training_check\\source_review\\STATIC_CHECKS_R2.json"
+}

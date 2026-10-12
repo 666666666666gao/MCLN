@@ -1,0 +1,155 @@
+{
+  "status": "CPU_SAVED_PV_PREDICTION_AND_REPEATED_BATCH_DIAGNOSTIC",
+  "formal_rows": 9508,
+  "source_rows_sha256": "7b29b1646e52e8d3d253b3167b6895df9d789e7325022b0d9440814ec143c7b9",
+  "original_responsibility_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\pv_retained_axis_capacity_20261012\\SAVED_TRAINING_WINNER_RESPONSIBILITY.json",
+  "original_responsibility_sha256": "0925b6f65a2a9fbea5d7053c1e0dbf46f4e56a9fc53a86ce126d9efc84c0ad64",
+  "training_observations": 16,
+  "unique_training_rows": 8,
+  "same_augmented_batch_reused_for_two_updates": true,
+  "input_and_GT_equal_fields": [
+    "raw_points",
+    "superpoints",
+    "actual_gt_boxes",
+    "actual_gt_masks"
+  ],
+  "repeated_training_rows": [
+    {
+      "row_id": 27845,
+      "scan_id": "scene0515_00",
+      "input_and_GT_equal": true
+    },
+    {
+      "row_id": 23527,
+      "scan_id": "scene0447_00",
+      "input_and_GT_equal": true
+    },
+    {
+      "row_id": 27285,
+      "scan_id": "scene0505_00",
+      "input_and_GT_equal": true
+    },
+    {
+      "row_id": 9781,
+      "scan_id": "scene0180_00",
+      "input_and_GT_equal": true
+    },
+    {
+      "row_id": 3314,
+      "scan_id": "scene0058_00",
+      "input_and_GT_equal": true
+    },
+    {
+      "row_id": 8523,
+      "scan_id": "scene0158_00",
+      "input_and_GT_equal": true
+    },
+    {
+      "row_id": 15720,
+      "scan_id": "scene0296_00",
+      "input_and_GT_equal": true
+    },
+    {
+      "row_id": 32718,
+      "scan_id": "scene0604_00",
+      "input_and_GT_equal": true
+    }
+  ],
+  "original_observation_summary": {
+    "rows": 16,
+    "batches": 2,
+    "selected_query_unmatched": 7,
+    "own_and_fused_qualified": 14,
+    "selected_query_unmatched_own_and_fused_qualified": 5
+  },
+  "correction": "The original 16 row records are two observations of the same eight augmented inputs, not two independent training batches.",
+  "axis_names": [
+    "x",
+    "y",
+    "z"
+  ],
+  "quantile_positions": [
+    0,
+    0.01,
+    0.1,
+    0.5,
+    0.9,
+    0.99,
+    1
+  ],
+  "actual_axis_gate_quantiles": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.11037145428359509,
+      0.11121073953807355,
+      0.11798921450972558
+    ],
+    [
+      0.19061956256628038,
+      0.19278713017702104,
+      0.20128739178180693
+    ],
+    [
+      0.25516989827156067,
+      0.25806280970573425,
+      0.2667796015739441
+    ],
+    [
+      0.310113349556923,
+      0.31309146583080294,
+      0.3218587934970857
+    ],
+    [
+      0.3532944887876511,
+      0.3561090731620789,
+      0.3642654463648796
+    ],
+    [
+      0.42590487003326416,
+      0.42516276240348816,
+      0.42665284872055054
+    ]
+  ],
+  "actual_axis_gate_std": [
+    0.049336118541893535,
+    0.04975299905524611,
+    0.04981308373300333
+  ],
+  "gate_axes_at_zero": 6,
+  "gate_axes_at_one": 0,
+  "threshold_groups": [
+    {
+      "threshold": 0.25,
+      "native_qualified_reference_unqualified": 182,
+      "native_qualified_reference_unqualified_final_unqualified": 96,
+      "reference_qualified_native_unqualified": 173,
+      "reference_qualified_native_unqualified_final_unqualified": 16,
+      "final_repairs_reference": 87,
+      "final_breaks_reference": 16
+    },
+    {
+      "threshold": 0.5,
+      "native_qualified_reference_unqualified": 348,
+      "native_qualified_reference_unqualified_final_unqualified": 261,
+      "reference_qualified_native_unqualified": 734,
+      "reference_qualified_native_unqualified_final_unqualified": 64,
+      "final_repairs_reference": 103,
+      "final_breaks_reference": 64
+    }
+  ],
+  "new_neural_forwards": 0,
+  "new_optimizer_updates": 0,
+  "remote_queries": 0,
+  "active_training_changes": 0,
+  "limitations": [
+    "Actual predicted gate range is not the representational range, an optimization cause, or a learnability guarantee.",
+    "Endpoint qualification uses validation GT for diagnosis only; it supplies no inference rule or training data.",
+    "Five qualified unmatched selected-query observations are not five independent training expressions; no full-dataset prevalence claim.",
+    "The saved preflight uses frozen-parent matching, not the later native MCLN training assignments.",
+    "This source cache predates the later native E0; aggregate count equality alone does not establish rowwise equivalence."
+  ]
+}

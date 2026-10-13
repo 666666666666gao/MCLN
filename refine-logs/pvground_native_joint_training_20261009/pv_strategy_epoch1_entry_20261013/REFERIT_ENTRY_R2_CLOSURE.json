@@ -1,0 +1,82 @@
+{
+  "recorded_cst": "2026-10-13T20:20:22.165843+08:00",
+  "R2_review": {
+    "marker_sha256": "43ce220b23aee39da3fff61f856d195abffac0748369cda51d455bfe4eab9a08",
+    "overall_verdict": "WARN",
+    "repair_verdict": "PASS",
+    "source_verdict": "PASS_SCOPE_LIMITED",
+    "blocking_findings_within_source_scope": [],
+    "verified_input_hash_bindings": 205,
+    "verified_artifact_hashes": 41,
+    "verified_report_hashes": 2,
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "actual_runtime_model": "UNATTESTED",
+    "actual_runtime_effort": "UNATTESTED",
+    "same_reviewer_continued_context_not_second_independent_review": true,
+    "R1_failure_evidence_preserved": true,
+    "source_only_not_performance_evidence": true,
+    "native_entry_not_admitted": true,
+    "outstanding_runtime_gates": [
+      {
+        "id": "RUNTIME-BINDING",
+        "status": "NOT_EXECUTED_NOT_BOUND",
+        "details": "Overlay imports, compatible patched decoder/head/backbone, whole_mask_range, dataset/evaluator/processors, assets, config and compiled operations require exact complete warm-runtime binding."
+      },
+      {
+        "id": "CURRENT-FACTORY",
+        "status": "NOT_EXECUTED",
+        "details": "Current native factory plus corresponding author initialization and complete parameter-group identity have not run."
+      },
+      {
+        "id": "FULL-DATASET",
+        "status": "NOT_EXECUTED",
+        "details": "Full current train/validation loaders, annotation/preprocessing identity, actual mixed training budgets and expected 7899/17726 validation rows remain unverified at runtime."
+      },
+      {
+        "id": "AUTHOR-BASELINE",
+        "status": "NOT_EXECUTED",
+        "details": "Complete unmodified corresponding-author Nr/Sr validation is pending; fresh complete-method E0 is a different prediction path."
+      },
+      {
+        "id": "METRIC-EQUIVALENCE",
+        "status": "NOT_PROVEN",
+        "details": "Native top1 last/bbs REC025/050 is not established equivalent to paper object-selection Accuracy."
+      },
+      {
+        "id": "GPU-ADMISSION",
+        "status": "NOT_EXECUTED_NOT_AUTHORIZED",
+        "details": "No GPU, NN forward, backward or optimizer update performed."
+      },
+      {
+        "id": "COLD-RESTORE",
+        "status": "NOT_IMPLEMENTED_AS_A_SUPPORTED_TRAINING_ENTRY_NOT_VERIFIED",
+        "details": "Fresh-only training still asserts no checkpoint/start_epoch=1. Resume would also encounter exclusive budget creation, and load_checkpoint does not restore metric history. The independent evaluation diagnostic defect ENTRY-01 is repaired in R2; supported cold training restore and equivalence remain unimplemented/unverified."
+      },
+      {
+        "id": "FINAL-METHOD",
+        "status": "PENDING",
+        "details": "Final method selection and broader target completion are not established by source preparation."
+      }
+    ]
+  },
+  "sealed_inputs_and_outputs_unchanged": true,
+  "active_training_source_changed": false,
+  "new_remote_progress_queries": 0,
+  "neural_forwards": 0,
+  "optimizer_updates": 0,
+  "current_C_trained_formal_result": null,
+  "native_wait_session_id": 53124,
+  "original_observer_pid": 12488,
+  "next_observation_cst": "2026-10-13T20:35:00+08:00",
+  "retained_best_hits": [
+    5677,
+    4920
+  ],
+  "target_hits": [
+    5705,
+    4945
+  ],
+  "three_independently_effective_mechanisms_proven": false,
+  "full_goal_complete": false
+}

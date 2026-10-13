@@ -1,0 +1,49 @@
+--- R1/train_dist_mod.py
++++ R2/train_dist_mod.py
+@@ -218,7 +218,8 @@
+ 
+         expected_rows = len(test_loader.dataset)
+         assert expected_rows == args.expected_val_rows
+-        diagnostics = SelectedGeometryEvalDiagnostics(args.log_dir, epoch, args.test_dataset, expected_rows)
++        diagnostics = SelectedGeometryEvalDiagnostics(args.log_dir, epoch, args.test_dataset, expected_rows,
++                                                    compare_to_initial=not args.eval)
+         # NOTE Main eval branch
+         test_loader = tqdm(test_loader, ascii=True)
+         for batch_idx, batch_data in enumerate(test_loader):
+--- R1/selected_geometry_eval_diagnostics.py
++++ R2/selected_geometry_eval_diagnostics.py
+@@ -19,13 +19,14 @@
+ 
+ 
+ class SelectedGeometryEvalDiagnostics:
+-    def __init__(self, log_directory, epoch, benchmark, expected_rows):
++    def __init__(self, log_directory, epoch, benchmark, expected_rows, compare_to_initial):
+         self.directory = Path(log_directory)
+         self.epoch = epoch
+         self.rows = []
+         assert benchmark in ('nr3d', 'sr3d')
+         self.benchmark = benchmark
+         self.expected_rows = expected_rows
++        self.compare_to_initial = compare_to_initial
+ 
+     @torch.no_grad()
+     def append(self, points):
+@@ -85,7 +86,8 @@
+         assert metrics['rows'] == len(self.rows) == self.expected_rows and metrics['primary_score'] == 'last/bbs'
+         summary = dict(epoch=self.epoch, rows=len(self.rows), primary_score='last/bbs',
+             candidates_per_expression=256, GT_used_only_in_diagnostics=True,
+-            new_neural_forwards=0, answers_changed=False, losses_changed=False)
++            new_neural_forwards=0, answers_changed=False, losses_changed=False,
++            compare_to_initial=self.compare_to_initial)
+         for suffix, threshold in (('025', .25), ('050', .5)):
+             hits = sum(row['final_iou'] > threshold for row in self.rows)
+             assert hits == metrics['hits' + suffix]
+@@ -100,7 +102,7 @@
+         summary['selected_own_and_fused_support_qualified'] = sum(
+             2 * row['own_mask_intersection'] > row['own_mask_union']
+             and 2 * row['fused_mask_intersection'] > row['fused_mask_union'] for row in self.rows)
+-        if self.epoch:
++        if self.epoch and self.compare_to_initial:
+             initial = [json.loads(line) for line in (self.directory / 'native_rows_epoch000.jsonl').read_text().splitlines()]
+             assert len(initial) == len(self.rows)
+             for previous, current in zip(initial, self.rows):

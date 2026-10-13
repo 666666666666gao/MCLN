@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "scope": "SOURCE_BINDING_AND_ALGEBRA_ONLY",
+  "source_bindings": [
+    {
+      "name": "models/pv_ground.py",
+      "sha256": "7a2db438811cb2fccf77a85f8f45a6a572cb0a1bbbd60d337e98afcbfa5e5b84",
+      "pass_": true
+    },
+    {
+      "name": "models/losses.py",
+      "sha256": "b960fd486e4b325f346f3925d98bcda84be59020310d123832a789a525ceefee",
+      "pass_": true
+    },
+    {
+      "name": "main_utils.py",
+      "sha256": "5d85013e96abb85881bafaaee695809db6e7f7a9ded3440972948ddbcda1ac9c",
+      "pass_": true
+    },
+    {
+      "name": "models/modules.py",
+      "sha256": "1f262505e4c9d6fd186609c6da1497bf5cf6f62f982fa7746c7d4f5400d8f2df",
+      "pass_": true
+    }
+  ],
+  "static_checks": {
+    "text_mask_broadcast": true,
+    "current_prediction_head_has_no_pred_masks": true,
+    "current_model_has_no_proposal_pred_masks": true,
+    "last_text_mask_passed": true,
+    "own_mask_passed_separately": true,
+    "matcher_reads_text_mask_key": true,
+    "matcher_does_not_read_own_mask_key": true,
+    "matcher_mask_coefficient": true,
+    "matcher_binary_foreground": true,
+    "matcher_point_hamming": true,
+    "matcher_constructor_class1_bbox0_giou2": true,
+    "own_mask_supervision_exists": true
+  },
+  "matcher_forward_string_constants": [
+    "\n        Perform the matching.\n\n        Args:\n            outputs: This is a dict that contains at least these entries:\n                \"pred_logits\" (tensor): [batch_size, num_queries, num_classes]\n                \"pred_boxes\" (tensor): [batch_size, num_queries, 6], cxcyczwhd\n            targets: list (len(targets) = batch_size) of dict:\n                \"labels\" (tensor): [num_target_boxes]\n                    (where num_target_boxes is the no. of ground-truth objects)\n                \"boxes\" (tensor): [num_target_boxes, 6], cxcyczwhd\n                \"positive_map\" (tensor): [num_target_boxes, 256]\n\n        Returns:\n            A list of size batch_size, containing tuples of (index_i, index_j):\n                - index_i is the indices of the selected predictions\n                - index_j is the indices of the corresponding selected targets\n            For each batch element, it holds:\n            len(index_i) = len(index_j) = min(num_queries, num_target_boxes)\n        ",
+    "boxes",
+    "labels",
+    "masks",
+    "positive_map",
+    "pred_boxes",
+    "pred_logits",
+    "pred_masks",
+    "superpoints"
+  ],
+  "algebra": "At a fixed scene b and GT column j, the text mask m_b is repeated for all q. The mask cost 0.0002 * sum_p |1[m_b[p] > 0] - GT_j[p]| has no q dependence. Class/GIoU terms may still vary with q.",
+  "source_semantic_verdict": "The note correctly limits the constant-row observation to the last-layer matcher mask term and does not erase existing Query-mask training losses.",
+  "accepted_claim": "Bound current source sends broadcast Text masks to the matcher; the separate own Query mask is supervised in the loss but is not read directly by the matcher mask-cost branch.",
+  "unsupported_extensions": [
+    "Measured runtime cost matrices",
+    "Own-mask matching improves accuracy",
+    "This is the unique decline cause",
+    "Own masks have no gradient or mask loss",
+    "Novelty over all authors/models"
+  ],
+  "runtime_cost_matrix_measured": false,
+  "candidate_matching_recomputed": false,
+  "neural_forwards": 0,
+  "optimizer_updates": 0,
+  "remote_queries": 0
+}

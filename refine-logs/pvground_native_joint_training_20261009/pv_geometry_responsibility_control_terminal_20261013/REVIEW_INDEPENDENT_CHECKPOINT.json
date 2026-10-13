@@ -1,0 +1,213 @@
+{
+  "tensor_count": 1295,
+  "all_tensor_content_checks_passed": true,
+  "non_model_top_level_keys": [
+    "config",
+    "optimizer",
+    "scheduler",
+    "epoch",
+    "architecture",
+    "retained_metrics",
+    "rng"
+  ],
+  "non_model_comparison": {
+    "config": {
+      "exact_typed_content_match": true,
+      "original_content_sha256": "273d9aa6b061c7298fe016fadc0b92a884b7440fe1a68942b4fdd0a1b06ff1e3",
+      "reconstructed_content_sha256": "273d9aa6b061c7298fe016fadc0b92a884b7440fe1a68942b4fdd0a1b06ff1e3"
+    },
+    "optimizer": {
+      "exact_typed_content_match": true,
+      "original_content_sha256": "54fa216098077519b624ae9e147f865c50c0f5d86f08d5a01a0e7acc182ad630",
+      "reconstructed_content_sha256": "54fa216098077519b624ae9e147f865c50c0f5d86f08d5a01a0e7acc182ad630"
+    },
+    "scheduler": {
+      "exact_typed_content_match": true,
+      "original_content_sha256": "0cb3a56c033944a609895cc420d6130f04cc1e109ce760070323d31e8a0af486",
+      "reconstructed_content_sha256": "0cb3a56c033944a609895cc420d6130f04cc1e109ce760070323d31e8a0af486"
+    },
+    "epoch": {
+      "exact_typed_content_match": true,
+      "original_content_sha256": "c6044c4308a6da74ede83cc24471d42863ae5f806f5aeb14eb5c8f7840c34c42",
+      "reconstructed_content_sha256": "c6044c4308a6da74ede83cc24471d42863ae5f806f5aeb14eb5c8f7840c34c42"
+    },
+    "architecture": {
+      "exact_typed_content_match": true,
+      "original_content_sha256": "6ea7f3077322727e03b1518f869ed61c5faf746ea96227407b8300d71af0492c",
+      "reconstructed_content_sha256": "6ea7f3077322727e03b1518f869ed61c5faf746ea96227407b8300d71af0492c"
+    },
+    "retained_metrics": {
+      "exact_typed_content_match": true,
+      "original_content_sha256": "63d1eb0b737c52c182f9b8bd2d6caf31f124dfac61a341b3e6febd47aa0474e6",
+      "reconstructed_content_sha256": "63d1eb0b737c52c182f9b8bd2d6caf31f124dfac61a341b3e6febd47aa0474e6"
+    },
+    "rng": {
+      "exact_typed_content_match": true,
+      "original_content_sha256": "1ad5087ec321a3da62bcbfc7355eb56b086f2458d5d6d0361a6f25b3e4182aaf",
+      "reconstructed_content_sha256": "1ad5087ec321a3da62bcbfc7355eb56b086f2458d5d6d0361a6f25b3e4182aaf"
+    }
+  },
+  "model_metadata_exact": true,
+  "epoch": 0,
+  "optimizer_state_entries": 0,
+  "optimizer_param_groups": 4,
+  "retained_metrics": {
+    "rows": 9508,
+    "hits025": 5677,
+    "hits050": 4920,
+    "primary_score": "last/bbs",
+    "same_complete_model": true
+  },
+  "architecture": {
+    "model": "PVGround",
+    "support_parameters": 27841,
+    "span_parameters": 29793,
+    "span_source_mode": "extremal_support",
+    "full_state_tensors": 1295,
+    "inactive_geometry_and_R_parameters_retained": false,
+    "original_core_trainability_preserved": true,
+    "text_encoder_frozen_by_native_policy": true,
+    "mask_reference_is_discrete": true,
+    "separate_deployed_ranking": false,
+    "use_g_supervision": true,
+    "use_selected_mask_supervision": false,
+    "use_selected_geometry_supervision": false,
+    "dataset": "scanrefer",
+    "seed": 2027
+  },
+  "config": {
+    "native_init_spec": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/native_control_initialization.json",
+    "lr_modules": 1e-05,
+    "num_target": 256,
+    "sampling": "kps",
+    "num_encoder_layers": 3,
+    "num_decoder_layers": 6,
+    "self_position_embedding": "loc_learned",
+    "self_attend": true,
+    "model": "PVGround",
+    "query_points_obj_topk": 4,
+    "use_contrastive_align": true,
+    "use_soft_token_loss": true,
+    "detect_intermediate": false,
+    "joint_det": false,
+    "batch_size": 8,
+    "dataset": [
+      "scanrefer"
+    ],
+    "test_dataset": "scanrefer",
+    "data_root": "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+    "use_height": false,
+    "use_color": true,
+    "use_multiview": false,
+    "wo_obj_name": "None",
+    "butd": true,
+    "butd_gt": false,
+    "butd_cls": false,
+    "augment_det": false,
+    "num_workers": 4,
+    "start_epoch": 1,
+    "max_epoch": 8,
+    "optimizer": "adamW",
+    "weight_decay": 0.0005,
+    "lr": 1e-06,
+    "lr_backbone": 1e-06,
+    "text_encoder_lr": 1e-05,
+    "lr_scheduler": "step",
+    "lr_decay_epochs": [
+      280,
+      340
+    ],
+    "lr_decay_rate": 0.1,
+    "clip_norm": 0.1,
+    "bn_momentum": 0.1,
+    "syncbn": false,
+    "warmup_epoch": -1,
+    "warmup_multiplier": 100,
+    "frozen": false,
+    "small_lr": false,
+    "checkpoint_path": null,
+    "log_dir": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/normal/native_control/logs/scanrefer/native_control/1791823853",
+    "exp": "native_control",
+    "print_freq": 128,
+    "save_freq": 10,
+    "val_freq": 1,
+    "local_rank": 0,
+    "ap_iou_thresholds": [
+      0.25,
+      0.5
+    ],
+    "rng_seed": 2027,
+    "debug": false,
+    "eval": false,
+    "eval_train": false,
+    "pp_checkpoint": null,
+    "reduce_lr": false,
+    "_retained_native_metrics": {
+      "rows": 9508,
+      "hits025": 5677,
+      "hits050": 4920,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    "_epoch_metric_history": [
+      {
+        "epoch": 0,
+        "rows": 9508,
+        "hits025": 5677,
+        "hits050": 4920,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      }
+    ]
+  },
+  "scheduler": {
+    "milestones": {
+      "1287823": 1,
+      "1562803": 1
+    },
+    "gamma": 0.1,
+    "base_lrs": [
+      1e-06,
+      1e-06,
+      1e-05,
+      1e-05
+    ],
+    "last_epoch": 0,
+    "_step_count": 1,
+    "verbose": false,
+    "_get_lr_called_within_step": false,
+    "_last_lr": [
+      1e-06,
+      1e-06,
+      1e-05,
+      1e-05
+    ]
+  },
+  "rng_keys": [
+    "python",
+    "numpy",
+    "torch",
+    "cuda"
+  ],
+  "original_metadata_payload_bytes": 91175,
+  "prior_file": {
+    "path": "C:\\Users\\gb\\.codex\\archives\\pvg_native_normal_20261010\\best.pth",
+    "bytes": 615023752,
+    "sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4"
+  },
+  "reconstructed_file": {
+    "path": "C:\\Users\\gb\\.codex\\archives\\pvg_geometry_control_20261013_reconstructed\\best.pth",
+    "bytes": 614925967,
+    "sha256": "d686f1bbb1eb2a5092777a953ef63d63752f73182eb464b9837a4f7007ad264b"
+  },
+  "historical_original_remote_file": {
+    "path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/normal/native_control/logs/scanrefer/native_control/1791823853/best.pth",
+    "bytes": 615023880,
+    "sha256": "fd47120083ef457c1ad978ea11f52b75852284e887cb5c2bfa3f710a7b075f39"
+  },
+  "original_remote_byte_copy": false,
+  "cold_normal_recovery_verified": false,
+  "neural_forwards": 0,
+  "optimizer_updates": 0,
+  "remote_queries": 0
+}

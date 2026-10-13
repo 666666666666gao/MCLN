@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "additional_staged_source_checks": [
+    {
+      "source": "native_mask_geometry.py",
+      "local": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py",
+      "sha256": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+      "staged_sha256": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+      "pass_": true
+    },
+    {
+      "source": "native_model_initialization.py",
+      "local": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\native_model_initialization.py",
+      "sha256": "27169c76bda9cf1a0247fc613b16017d74f92c7662a5f5b5dcaa9d827f3288db",
+      "staged_sha256": "27169c76bda9cf1a0247fc613b16017d74f92c7662a5f5b5dcaa9d827f3288db",
+      "pass_": true
+    },
+    {
+      "source": "src/visual_data_handlers.py",
+      "local": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\visual_data_handlers.py",
+      "sha256": "6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177",
+      "staged_sha256": "6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177",
+      "pass_": true
+    }
+  ],
+  "initialization_architecture_flags_match": true,
+  "duplicate_normalized_identity_groups": [
+    {
+      "scan_id": "scene0307_00",
+      "target_id": 32,
+      "utterance_sha256": "13be6ce458fde631fde50c7246d89f8f2ece2fdb26a66799a4da4df4ce85a4d2",
+      "row_indices": [
+        2991,
+        3009
+      ],
+      "same_saved_GT": true,
+      "same_saved_point_cloud_hash": true
+    },
+    {
+      "scan_id": "scene0558_00",
+      "target_id": 28,
+      "utterance_sha256": "65197fe312ebe4093f2d091b75b49a230c553b48d3b322f9c64458a355e2a789",
+      "row_indices": [
+        5798,
+        5801
+      ],
+      "same_saved_GT": true,
+      "same_saved_point_cloud_hash": true
+    }
+  ],
+  "duplicate_interpretation": "9508 records have unique row_index values; 9506 distinct scan/target/utterance-hash tuples. Annotation IDs and raw dataset records were not supplied for an independent uniqueness adjudication.",
+  "saved_terminal_log_evidence": [
+    "\u001b[32m[10/13 13:03:20 logs]: \u001b[0mlast_ position alignment Acc0.25: Top-1: 0.59066, Top-5: 0.62863, Top-10: 0.63925",
+    "\u001b[32m[10/13 13:03:20 logs]: \u001b[0mlast_ position alignment Acc0.50: Top-1: 0.48338, Top-5: 0.54470, Top-10: 0.56163",
+    "Saved complete native checkpoint /root/autodl-tmp/pvground_deployment_geometry_training_20261012/normal/native_control/logs/scanrefer/native_control/1791823853/latest.pth",
+    "\u001b[32m[10/13 13:03:27 logs]: \u001b[0mStop after two complete Acc@0.5 epoch-to-epoch declines"
+  ],
+  "ct2_failure_stderr": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\nTypeError: compress() got an unexpected keyword argument 'mtime'\n",
+  "ct2_failure_matches_mtime_API_signature": true,
+  "completed_updates_claim_evidence": "9166 = two completed epochs * 4583 expected batches/epoch; native source takes one optimizer step per batch. Retired latest optimizer payload was not locally inspected; this is not an independent optimizer-step-state recount.",
+  "source_binding_scope": "14 distinct inspected staged model/data/evaluation files plus controller helper; the whole 118-file stage manifest is retained as historical admission evidence, not independently rehashed in full.",
+  "neural_forwards": 0,
+  "optimizer_updates": 0,
+  "remote_queries": 0
+}

@@ -1,0 +1,701 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "qualified_saved_artifact_scope_and_unverified_cold_recovery",
+  "summary": "Saved selected-box recount and checkpoint-content preservation are verified. No blocking integrity defect was found within the stated scope. Scalar-only diagnostics, single-run causal limits, dormant DIoU code, and unverified cold recovery require qualifications.",
+  "generated_at": "2026-10-13T14:57:37.680122+08:00",
+  "date": "2026-10-13",
+  "agent_id": "/root/pv_control_terminal_archive_audit_20261013",
+  "agent_id_type": "canonical_task_name",
+  "verdict_id": "/root/pv_control_terminal_archive_audit_20261013",
+  "review_route": "fresh_native_Codex_reviewer",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "executor_model": "UNATTESTED",
+  "reviewer_family": "openai",
+  "executor_family": "openai",
+  "model_attribution_note": "Requested model/effort come from the experiment-audit/local Codex policy contract. This reviewer has no runtime metadata attesting actual model or effort; no cross-family acceptance is claimed.",
+  "audit_root": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit",
+  "resolved_audit_storage": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit",
+  "primary_artifact_root": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012",
+  "blocking_findings": [],
+  "blocking_findings_count": 0,
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "details": "ScanRefer annotation object IDs identify ScanNet objects. Dataset boxes and masks come from dataset object points, and validation disables training augmentation. The diagnostic root_gt_box reads center_label/size_gts slot0. Neither selected predictions nor mask-derived endpoints are used as GT. Native bbs ranking uses the existing parsed text maps; root box/mask GT is used for scoring/diagnostics. This is verification of the repository native protocol, not external certification against an independently run official benchmark implementation.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:585",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:1086",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py:1387",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\visual_data_handlers.py:225",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\selected_geometry_eval_diagnostics.py:35",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_root_bbs.py:4"
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "The formal denominator is 9508 dataset records. Accuracy is hits/9508, and box IoU is intersection/(prediction volume + GT volume - intersection). Strict >0.25 and >0.5 decisions were independently reproduced; no threshold disagreement or above-one logged selected IoU was found. Semantic softmax supplies candidate scores, not a prediction-derived denominator for formal accuracy. Mask support uses 2*intersection>union, a strict0.5 rule.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py:70",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:296",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\train_dist_mod.py:255",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\selected_geometry_eval_diagnostics.py:96",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\INDEPENDENT_RECOUNT.json:1"
+      ]
+    },
+    "C_result_existence_and_identity": {
+      "status": "PASS",
+      "details": "All required primary files exist. ct3 intake files match their size/SHA records; original compressed payloads decompress byte-for-byte to the local rows; ct3 and e2v2 terminal statuses agree. Independent scalar IoU reproduces every submitted CSV value and all claimed hit/repair/break totals. Checkpoint/witness/archive/retirement joins pass. Earlier pending fields remain historical facts; this audit adds later evidence without changing the original receipts.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\DETERMINISTIC_CHECKS.json:1",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\AUDITED_INPUT_HASHES.json:1",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\INDEPENDENT_CHECKPOINT.json:1",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\SUPPLEMENTAL_EVIDENCE.json:1"
+      ]
+    },
+    "D_call_chain_and_dead_code": {
+      "status": "WARN",
+      "details": "The claimed path is connected: controller invokes train_dist_mod; BaseTrainTester evaluates E0 and each completed epoch; evaluate_one_epoch invokes _main_eval_branch, native GroundingEvaluator.evaluate and diagnostics.append/finish. GroundingEvaluator dispatches bbs to evaluate_bbox_by_pos_align; native_root_bbs reproduces its root text-score definition for diagnostics. Saved rows and metric agreement bind the diagnostic path. The unclaimed DIoU helper is dormant; no result is attributed to it.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\normal_run_controller_v3.py:58",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py:378",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py:549",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\train_dist_mod.py:209",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\train_dist_mod.py:233",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py:194",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py:103",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py:546"
+      ]
+    },
+    "E_scope_and_claims": {
+      "status": "WARN",
+      "details": "One control configuration, one seed2027, 141 validation scenes, 2068 scene-target pairs and 9508 records/evaluation; E0 plus E1/E2. Retained best remains E0. Two strict Acc@0.5 declines support the recorded stop. Saved strategy evidence is an admitted-child snapshot with no completed metric. Full256 coverage/mask support cannot be independently reconstructed from this compact record. No robustness, new-best, strategy improvement, causal attribution, or goal-completion claim is justified.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_control_protocol.json:58",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py:167",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_sw_INTAKE.json:15",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\INDEPENDENT_RECOUNT.json:1"
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": "Formal bbs accuracy and saved endpoint IoU comparisons use dataset GT. Candidate-coverage values are GT-referenced oracle diagnostics, not deployed accuracy; prediction-derived native/mask boxes remain predictions. The supplemental matcher note is source/algebraic analysis, not an additional runtime evaluation.",
+      "evidence": [
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\selected_geometry_eval_diagnostics.py:29",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\selected_geometry_eval_diagnostics.py:69",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\recount_control_rows_20261013.py:92",
+        "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\MATCHER_SOURCE_NOTE_AUDIT.json:1"
+      ]
+    }
+  },
+  "warnings": [
+    {
+      "id": "W1",
+      "title": "Saved-box verification has explicit raw-data and candidate limits",
+      "details": "The audit recomputed selected final/native/mask-endpoint IoU from saved coordinates. Raw ScanRefer/ScanNet objects, point clouds, masks, 256 candidate boxes/logits, and original matching assignments were not reloaded. Coverage, qualified counts/ranks, and mask support use recorded scalars. Input fingerprint equality is checked from saved hashes, not by recomputing hashes of raw arrays.",
+      "blocking": false
+    },
+    {
+      "id": "W2",
+      "title": "Content preservation is distinct from original byte copy and cold recovery",
+      "details": "The retained artifact reconstructs the original E0 state using identical protected model tensors and the original non-model payload. It has a different ZIP hash and length from the retired original. No model construction, strict architecture reload, forward replay, or normal training continuation was executed. The audited normal main explicitly rejects checkpoint resume. The losing E2 latest was intentionally not archived.",
+      "blocking": false
+    },
+    {
+      "id": "W3",
+      "title": "One control run does not establish a causal mechanism or strategy benefit",
+      "details": "Scope is one ScanRefer validation setting, seed 2027, E0 and two completed training epochs. Endpoint comparisons are observational comparisons at the selected slot, not retrained module ablations. Coverage gaps, support-qualified errors, and a source responsibility table do not prove the source of decline, extra-loss eligibility, or effectiveness of the selected-geometry strategy. Strategy intake supplied here has no completed metrics.",
+      "blocking": false
+    },
+    {
+      "id": "W4",
+      "title": "Record identity is stronger than the reduced text key",
+      "details": "Each epoch has 9508 consecutive unique row indices but 9506 unique (scan_id,target_id,utterance_sha256) tuples. Two repeated normalized identity groups are recorded. Annotation IDs/raw dataset membership were not independently checked. Pairing by row index plus the saved identities and GT is exact across epochs; 8915/8995 query-slot changes do not mean instance-identity changes.",
+      "blocking": false
+    },
+    {
+      "id": "W5",
+      "title": "A dormant metric helper does not substantiate an additional result",
+      "details": "calculate_diou_3d is defined in losses.py but its loss_boxes invocation is commented out. The primary last/bbs IoU path is active and its outputs are present. No DIoU training/evaluation effect is supported by these artifacts.",
+      "blocking": false
+    },
+    {
+      "id": "W6",
+      "title": "Update count is corroborated by terminal history and source arithmetic",
+      "details": "9166 equals two completed epochs times 4583 batches with one optimizer.step per batch. This audit did not inspect the retired latest optimizer-state counters, so it is not an independent state-based update recount.",
+      "blocking": false
+    }
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "E0/E1/E2 selected-box hits are 5677/4920,5655/4620,5616/4596 on9508 records.",
+      "impact": "supported",
+      "qualifier": "Independent saved-coordinate recount; no new network evaluation."
+    },
+    {
+      "id": "C2",
+      "claim": "E1 and E2 are two strict consecutive Acc@0.5 declines; retained best remainsE0.",
+      "impact": "supported",
+      "qualifier": "Historical terminal records and native stopping source; current remote state is not inferred."
+    },
+    {
+      "id": "C3",
+      "claim": "E1/E2 versusE0 repairs/breaks at0.5 are406/706 and388/712.",
+      "impact": "supported",
+      "qualifier": "Paired saved records; all9508 recorded point-cloud/mask fingerprint pairs agree."
+    },
+    {
+      "id": "C4",
+      "claim": "E0/E1/E2 full256 coverage at0.5 is8234/8309/8428.",
+      "impact": "needs_qualifier",
+      "qualifier": "Recount of saved best256_iou and count/rank scalars only; all256 boxes/logits are unavailable."
+    },
+    {
+      "id": "C5",
+      "claim": "The control E0 full model and original non-model checkpoint content are preserved.",
+      "impact": "supported",
+      "qualifier": "1295 names/order/dtype/shape/tensor-byte hashes, model metadata, and all seven non-model fields independently match recorded original-content witness."
+    },
+    {
+      "id": "C6",
+      "claim": "The original remote best file was byte-copied or normal cold recovery is verified.",
+      "impact": "unsupported",
+      "qualifier": "Original615023880-byte ZIP and reconstructed614925967-byte ZIP have different hashes; no model replay/continuation occurred, and normal main rejects resume."
+    },
+    {
+      "id": "C7",
+      "claim": "Two specified closed-control weights totaling1456700904 bytes were retired.",
+      "impact": "supported",
+      "qualifier": "Captured retirement receipt/stdout/exit0 and scoped deletion source; original rows later captured intact. No current remote absence/free-space assertion. Losing latest was not archived."
+    },
+    {
+      "id": "C8",
+      "claim": "Source responsibility differences or endpoint/coverage counts establish the cause of decline or strategy benefit.",
+      "impact": "unsupported",
+      "qualifier": "No intervention or gradient-conflict measurement; original matching/extra-loss eligibility not in saved row records."
+    },
+    {
+      "id": "C9",
+      "claim": "Current bound last-layer matcher reads broadcast Text masks; its mask term is constant across Query rows for a fixed scene/GT.",
+      "impact": "supported",
+      "qualifier": "Source/algebra only; other class/GIoU costs remain variable and Query-mask segmentation losses remain active."
+    },
+    {
+      "id": "C10",
+      "claim": "Changing matcher mask source improves performance or is novel.",
+      "impact": "unsupported",
+      "qualifier": "No such runtime, performance, or novelty evidence is provided or produced."
+    }
+  ],
+  "deterministic_verdict": "PASS",
+  "deterministic_check_count": 242,
+  "supplemental_source_checks": "PASS: three additional staged source hashes and initialization flags; four matcher-note bindings and twelve static source checks",
+  "scope": {
+    "evaluation_type": "real_gt",
+    "dataset": "ScanRefer validation via native PV evaluator",
+    "seed": 2027,
+    "completed_control_epochs": [
+      0,
+      1,
+      2
+    ],
+    "training_epochs": 2,
+    "records_per_evaluation": 9508,
+    "total_saved_records": 28524,
+    "scenes": 141,
+    "scene_targets": 2068,
+    "reduced_text_identity_keys": 9506,
+    "no_strategy_performance_evaluation": true,
+    "source_stage_file_count": 118,
+    "independently_hash_bound_inspected_staged_sources": 15,
+    "controller_helper_also_bound": true,
+    "raw_dataset_reloaded": false,
+    "full256_boxes_available": false,
+    "model_forwards": 0,
+    "GPU_queries": 0,
+    "SSH_calls": 0,
+    "optimizer_updates": 0,
+    "experiment_restarts": 0,
+    "remote_current_state_inferred": false,
+    "deletions": 0,
+    "writes": "audit output directory only"
+  },
+  "epoch_results": [
+    {
+      "epoch": 0,
+      "rows": 9508,
+      "unique_scenes": 141,
+      "unique_scene_targets": 2068,
+      "unique_scene_target_utterance_keys": 9506,
+      "exact_same_input_fingerprint_rows_as_E0": 9508,
+      "selected_slot_changes_vs_E0_not_instance_identity": 0,
+      "selected_own_and_fused_support_qualified": 5114,
+      "max_cpu64_vs_logged_iou_difference": {
+        "final": 3.594431768338957e-06,
+        "native": 2.554831142642655e-06,
+        "mask_endpoint": 6.202855157955156e-06
+      },
+      "logged_iou_above_one": {
+        "final": 0,
+        "native": 0,
+        "mask_endpoint": 0
+      },
+      "csv_mismatched_rows": [],
+      "025": {
+        "hits": 5677,
+        "accuracy_percent": 59.7076146403029,
+        "cpu64_vs_logged_threshold_disagreements": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        },
+        "final_vs_native": {
+          "repairs": 158,
+          "breaks": 96,
+          "net_hits": 62
+        },
+        "final_vs_mask_endpoint": {
+          "repairs": 87,
+          "breaks": 16,
+          "net_hits": 71
+        },
+        "versus_E0": {
+          "repairs": 0,
+          "breaks": 0,
+          "net_hits": 0
+        },
+        "support_qualified_selected_box_wrong": 75,
+        "logged_full256_coverage": 8970,
+        "logged_errors_with_qualified_candidate": 3293,
+        "native_hits": 5615,
+        "mask_endpoint_hits": 5606,
+        "minimum_final_distance_to_threshold": 0.0002459238992119084,
+        "cpu64_values_exactly_threshold": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        }
+      },
+      "050": {
+        "hits": 4920,
+        "accuracy_percent": 51.74589819099705,
+        "cpu64_vs_logged_threshold_disagreements": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        },
+        "final_vs_native": {
+          "repairs": 686,
+          "breaks": 261,
+          "net_hits": 425
+        },
+        "final_vs_mask_endpoint": {
+          "repairs": 103,
+          "breaks": 64,
+          "net_hits": 39
+        },
+        "versus_E0": {
+          "repairs": 0,
+          "breaks": 0,
+          "net_hits": 0
+        },
+        "support_qualified_selected_box_wrong": 494,
+        "logged_full256_coverage": 8234,
+        "logged_errors_with_qualified_candidate": 3314,
+        "native_hits": 4495,
+        "mask_endpoint_hits": 4881,
+        "minimum_final_distance_to_threshold": 7.323681888193878e-05,
+        "cpu64_values_exactly_threshold": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        }
+      }
+    },
+    {
+      "epoch": 1,
+      "rows": 9508,
+      "unique_scenes": 141,
+      "unique_scene_targets": 2068,
+      "unique_scene_target_utterance_keys": 9506,
+      "exact_same_input_fingerprint_rows_as_E0": 9508,
+      "selected_slot_changes_vs_E0_not_instance_identity": 8915,
+      "selected_own_and_fused_support_qualified": 5118,
+      "max_cpu64_vs_logged_iou_difference": {
+        "final": 2.2454182557474223e-06,
+        "native": 4.269122821698446e-06,
+        "mask_endpoint": 6.334805490837425e-06
+      },
+      "logged_iou_above_one": {
+        "final": 0,
+        "native": 0,
+        "mask_endpoint": 0
+      },
+      "csv_mismatched_rows": [],
+      "025": {
+        "hits": 5655,
+        "accuracy_percent": 59.47623054270088,
+        "cpu64_vs_logged_threshold_disagreements": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        },
+        "final_vs_native": {
+          "repairs": 189,
+          "breaks": 27,
+          "net_hits": 162
+        },
+        "final_vs_mask_endpoint": {
+          "repairs": 181,
+          "breaks": 133,
+          "net_hits": 48
+        },
+        "versus_E0": {
+          "repairs": 320,
+          "breaks": 342,
+          "net_hits": -22
+        },
+        "support_qualified_selected_box_wrong": 141,
+        "logged_full256_coverage": 9036,
+        "logged_errors_with_qualified_candidate": 3381,
+        "native_hits": 5493,
+        "mask_endpoint_hits": 5607,
+        "minimum_final_distance_to_threshold": 0.00022215194082164658,
+        "cpu64_values_exactly_threshold": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        }
+      },
+      "050": {
+        "hits": 4620,
+        "accuracy_percent": 48.590660496424064,
+        "cpu64_vs_logged_threshold_disagreements": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        },
+        "final_vs_native": {
+          "repairs": 444,
+          "breaks": 59,
+          "net_hits": 385
+        },
+        "final_vs_mask_endpoint": {
+          "repairs": 285,
+          "breaks": 494,
+          "net_hits": -209
+        },
+        "versus_E0": {
+          "repairs": 406,
+          "breaks": 706,
+          "net_hits": -300
+        },
+        "support_qualified_selected_box_wrong": 801,
+        "logged_full256_coverage": 8309,
+        "logged_errors_with_qualified_candidate": 3689,
+        "native_hits": 4235,
+        "mask_endpoint_hits": 4829,
+        "minimum_final_distance_to_threshold": 6.366046018069227e-05,
+        "cpu64_values_exactly_threshold": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        }
+      }
+    },
+    {
+      "epoch": 2,
+      "rows": 9508,
+      "unique_scenes": 141,
+      "unique_scene_targets": 2068,
+      "unique_scene_target_utterance_keys": 9506,
+      "exact_same_input_fingerprint_rows_as_E0": 9508,
+      "selected_slot_changes_vs_E0_not_instance_identity": 8995,
+      "selected_own_and_fused_support_qualified": 5090,
+      "max_cpu64_vs_logged_iou_difference": {
+        "final": 2.7095002866905915e-06,
+        "native": 2.7603316842261805e-06,
+        "mask_endpoint": 6.334805490837425e-06
+      },
+      "logged_iou_above_one": {
+        "final": 0,
+        "native": 0,
+        "mask_endpoint": 0
+      },
+      "csv_mismatched_rows": [],
+      "025": {
+        "hits": 5616,
+        "accuracy_percent": 59.0660496424064,
+        "cpu64_vs_logged_threshold_disagreements": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        },
+        "final_vs_native": {
+          "repairs": 315,
+          "breaks": 28,
+          "net_hits": 287
+        },
+        "final_vs_mask_endpoint": {
+          "repairs": 163,
+          "breaks": 134,
+          "net_hits": 29
+        },
+        "versus_E0": {
+          "repairs": 313,
+          "breaks": 374,
+          "net_hits": -61
+        },
+        "support_qualified_selected_box_wrong": 148,
+        "logged_full256_coverage": 9015,
+        "logged_errors_with_qualified_candidate": 3399,
+        "native_hits": 5329,
+        "mask_endpoint_hits": 5587,
+        "minimum_final_distance_to_threshold": 0.00011711192972632678,
+        "cpu64_values_exactly_threshold": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        }
+      },
+      "050": {
+        "hits": 4596,
+        "accuracy_percent": 48.33824148085822,
+        "cpu64_vs_logged_threshold_disagreements": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        },
+        "final_vs_native": {
+          "repairs": 596,
+          "breaks": 72,
+          "net_hits": 524
+        },
+        "final_vs_mask_endpoint": {
+          "repairs": 271,
+          "breaks": 492,
+          "net_hits": -221
+        },
+        "versus_E0": {
+          "repairs": 388,
+          "breaks": 712,
+          "net_hits": -324
+        },
+        "support_qualified_selected_box_wrong": 804,
+        "logged_full256_coverage": 8428,
+        "logged_errors_with_qualified_candidate": 3832,
+        "native_hits": 4072,
+        "mask_endpoint_hits": 4817,
+        "minimum_final_distance_to_threshold": 4.1643082674291954e-05,
+        "cpu64_values_exactly_threshold": {
+          "final": 0,
+          "native": 0,
+          "mask_endpoint": 0
+        }
+      }
+    }
+  ],
+  "checkpoint_evidence": {
+    "tensor_count": 1295,
+    "original_metadata_payload_bytes": 91175,
+    "verified_non_model_fields": [
+      "config",
+      "optimizer",
+      "scheduler",
+      "epoch",
+      "architecture",
+      "retained_metrics",
+      "rng"
+    ],
+    "original_model_metadata_preserved": true,
+    "prior_file": {
+      "path": "C:\\Users\\gb\\.codex\\archives\\pvg_native_normal_20261010\\best.pth",
+      "bytes": 615023752,
+      "sha256": "ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4"
+    },
+    "reconstructed_file": {
+      "path": "C:\\Users\\gb\\.codex\\archives\\pvg_geometry_control_20261013_reconstructed\\best.pth",
+      "bytes": 614925967,
+      "sha256": "d686f1bbb1eb2a5092777a953ef63d63752f73182eb464b9837a4f7007ad264b"
+    },
+    "original_remote_file_historical": {
+      "path": "/root/autodl-tmp/pvground_deployment_geometry_training_20261012/normal/native_control/logs/scanrefer/native_control/1791823853/best.pth",
+      "bytes": 615023880,
+      "sha256": "fd47120083ef457c1ad978ea11f52b75852284e887cb5c2bfa3f710a7b075f39"
+    },
+    "original_remote_byte_copy": false,
+    "cold_normal_recovery_verified": false,
+    "losing_latest_archived": false
+  },
+  "retirement_evidence": {
+    "removed_bytes_recorded": 1456700904,
+    "scope": "best.pth content duplicate and completed losing latest.pth only",
+    "historical_receipt_only": true,
+    "preserved_rows_later_captured_and_hashed": true,
+    "unique_local_best_and_original_metadata_present": true,
+    "observed_free_bytes_before": 1199345664,
+    "observed_free_bytes_after": 2656051200,
+    "no_current_free_space_claim": true
+  },
+  "matcher_source_note": {
+    "verdict": "PASS",
+    "scope": "source_binding_and_algebra_only",
+    "runtime_costs_measured": false,
+    "performance_effect_known": false,
+    "semantic_acceptance": "same-family/provisional",
+    "deterministic_bindings": "PASS"
+  },
+  "transport_evidence": {
+    "ct2_exit": 1,
+    "ct2_error": "gzip.compress unexpected keyword argument 'mtime'",
+    "ct3_exit": 0,
+    "compressed_payloads_verified": true,
+    "partial_scp_full_archive_completed": false,
+    "local_partial_absent_at_audit": true,
+    "earlier_attempt_descriptions_not_replayed": true,
+    "no_neural_restart_evidence": true
+  },
+  "actions": [
+    "Keep the saved-only, single-control, and historical-runtime qualifiers when reporting these results.",
+    "Do not promote scalar candidate coverage to independently reconstructed all256 performance.",
+    "Keep content reconstruction, byte copy, and cold execution recovery as separate statuses.",
+    "Treat the matcher-mask fact as source/algebraic evidence; validate any performance proposal in a separately authorized controlled study."
+  ],
+  "audited_input_hashes": {
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\recount_control_rows_20261013.py": "sha256:56747e18fbb57c4f96f1bca1ae93bf8b91094d5b997953a60fdf47a2c26ab2e9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_cpu_recount\\RESULT.json": "sha256:690a39e7321a742b05cfbd88021951bb4bbcd80436a94f7a8ae6ba3e188cc70e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_INTAKE.json": "sha256:1114daa404136a562bc0b3df593b650d3275aba4979db6fa9afd08e8da6418a8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_INTAKE.json": "sha256:b7345f29e7e899c2b7512f2f942cd59cf3c21aa688bf4a622082b2ed1d36aa8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\NORMAL_CONTROL_COMPLETE_RECEIPT.json": "sha256:023b45204bebe0a7f432d06c9e29f94c0e5b26d44eef77ad94a085dd06c93aa5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\normal_run_controller_v3.py": "sha256:583cae6321f3e7b40a34a78f310a9d3c08749d5f4ee260b577142f5d8c877246",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_control_protocol.json": "sha256:3781872c4972b015d074379f63d9c7c7f6d492be5a64255c2fcc6e06df3c732b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\train_dist_mod.py": "sha256:91ec636c1235c7eb2bca758ddc00762d8ffa74a3ccec810af022bb89ef5e3bfa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\selected_geometry_eval_diagnostics.py": "sha256:44ca7699b1dd641c8a349f39b4be639962282ec0ae1857cc3fce5cb24ade258a",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v3\\main_utils.py": "sha256:5d85013e96abb85881bafaaee695809db6e7f7a9ded3440972948ddbcda1ac9c",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\losses.py": "sha256:b960fd486e4b325f346f3925d98bcda84be59020310d123832a789a525ceefee",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\models\\pv_ground.py": "sha256:7a2db438811cb2fccf77a85f8f45a6a572cb0a1bbbd60d337e98afcbfa5e5b84",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\SOURCE_STAGE_R4_RECEIPT.json": "sha256:b6d0b2fb7046743b83ee44dd345814870f011eb66301539489ea8390c9fcca13",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\SOURCE_RESPONSIBILITY_MAP_20261013.json": "sha256:813dd7581ce0836140aadbb42b5232edf7a0725e0c4d8f938fc68127ef5e9d1d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\archive_control_model_duplicate_20261013.py": "sha256:5f3b45a60da4388257f12e9d0c1ddb39606d698e66f8dc8013812fd5d5c934c5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_checkpoint_cpu_worker_20261013.py": "sha256:f94c5f0b4cc2944c67b36649d4accbfb9ad839fb0f4b0c324c07ebeb553bf7e6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_MODEL_DUPLICATE_ARCHIVE_RECEIPT.json": "sha256:1518922ef8d19eb9e7143fec67d561e5f747ac158603d1e753a7065880795bb8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_MODEL_DUPLICATE_STDOUT.json": "sha256:a1b62c7345bd691bbedc8ffce48f2b2edca124128509c48f2640ff97211a1f9d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_PROTECTED_MODEL_MANIFEST.json": "sha256:7a5203d378118c52146233f812634976cf87572d9889fb105aa3b5f25a27b4de",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_MODEL_CPU_MANIFEST_EXIT.json": "sha256:302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_MODEL_CPU_RECONSTRUCT_EXIT.json": "sha256:302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\COMPLETED_CONTROL_CAPACITY.json": "sha256:3a1113020520bb189bff87763cea602673b22fef6965e279430956d42ed0fd47",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\retire_completed_control_weights_20261013.py": "sha256:b814fe0b65d00168f2088f5ea1f04351d7e4089b2979b1352415ebbfe92b2c41",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_WEIGHT_RETIREMENT_RECEIPT.json": "sha256:4ef7f7f01cd9d4572246355456c15497773bd1bb941f847a65db5e96ee05b9aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_WEIGHT_RETIREMENT_EXIT.json": "sha256:302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_INCOMPLETE_LOCAL_SCP_CLEANUP.json": "sha256:24f54b8869775fb7609de3a17688a870a942c3382605cc3b6d63002d7f15933b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\LOCAL_ARCHIVAL_TRANSPORT_FAILURES_20261013.json": "sha256:7d60f2215c77d93bc88a00893bd847dde92d12a849e348325555a5b7d453f8d5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\collect_compressed_control_rows_20261013.py": "sha256:4e894051c78e2b0073b0b817a2561c386856217e660c11581f18d243b84f6428",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\collect_compressed_control_rows_v2_20261013.py": "sha256:9cc89a040d6f04a42ac05e3f45c4a97dc9dbce57a3af9eea6ab5393ea5feb7d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct2_EXIT.json": "sha256:054a76e7744b2c305a4c5b5baccbd7459725cc0b83cba02929a2f737d4fdd757",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_EXIT.json": "sha256:302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\SELECTED_GEOMETRY_NORMAL_START_RECEIPT.json": "sha256:22ea5751360813fdc435d3bd3077af84717d38f8fa3dd12d98bff31ffd52d518",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_sw_INTAKE.json": "sha256:601766077e3ec06e4fcca1e70b6cdf8b5936c597c8e94acf23a3d8943e441ecd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct2_STDERR_PRIVATE.txt": "sha256:f5aa6ca195222ea25cc524aeb6b83ed56aa46d4167a8ef11ed525a4433c43fed",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_MODEL_DUPLICATE_EXIT.json": "sha256:302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\CONTROL_WEIGHT_RETIREMENT_STDOUT.json": "sha256:f86ae8499dcf78f76761e9e6447ab154aa5b4a5ab81a4b4edc8db088bee0b3c0",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\native_root_bbs.py": "sha256:b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\joint_det_dataset.py": "sha256:3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\model_source\\src\\grounding_evaluator.py": "sha256:39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\normal_status.json": "sha256:7daa1cd7f13e0ceca4d4a07499ee684b2f6fd745b339bcce6e5c92ede6bed4d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\admission.json": "sha256:3e12e7e69944c6061306db724f5b9d3c03f69d871f2bbd768c8492e60ef6dba7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\logs\\scanrefer\\native_control\\1791823853\\native_diagnostic_epoch000.json": "sha256:609c6666bac513bb1bdaafb81073a9a8b7a1e93f537a9e2e04b588e9df279529",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\logs\\scanrefer\\native_control\\1791823853\\native_diagnostic_epoch001.json": "sha256:808cbc2dd42f5a8c93646cf9844bc448e811c6960244a2fca4d9e65460aac04f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\logs\\scanrefer\\native_control\\1791823853\\native_diagnostic_epoch002.json": "sha256:3b23e8984de0c99d4d5c2cba851b0d82bf2659a965c50cf34cb7849214eeafa9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\logs\\scanrefer\\native_control\\1791823853\\native_metrics.jsonl": "sha256:551f927ea73f94793ea6cf694de185ea35cde513f1e31f3e8b1b5e96c587a888",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\logs\\scanrefer\\native_control\\1791823853\\native_stop.json": "sha256:4c388649a5ab80079f93049639f38d90e4c0a71bb1f7d5e8888daaef624f83cd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\protocol.json": "sha256:3781872c4972b015d074379f63d9c7c7f6d492be5a64255c2fcc6e06df3c732b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\train.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\logs\\scanrefer\\native_control\\1791823853\\native_rows_epoch000.jsonl": "sha256:f9ef73111029924e9ef5f855c8e85ff9d527d41630fdd5bf7823ad26fcbdc12e",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\logs\\scanrefer\\native_control\\1791823853\\native_rows_epoch001.jsonl": "sha256:3649460238f5fca682ead8f57600176181896cdd37bb60dba5600e4a8e8a63eb",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_files\\logs\\scanrefer\\native_control\\1791823853\\native_rows_epoch002.jsonl": "sha256:a1143840a62ceebdae3db01a6c74cf2cfe0ea2e31f8cb95ba506e982437376bb",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\normal_status.json": "sha256:7daa1cd7f13e0ceca4d4a07499ee684b2f6fd745b339bcce6e5c92ede6bed4d6",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\admission.json": "sha256:3e12e7e69944c6061306db724f5b9d3c03f69d871f2bbd768c8492e60ef6dba7",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\logs\\scanrefer\\native_control\\1791823853\\native_diagnostic_epoch000.json": "sha256:609c6666bac513bb1bdaafb81073a9a8b7a1e93f537a9e2e04b588e9df279529",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\logs\\scanrefer\\native_control\\1791823853\\native_diagnostic_epoch001.json": "sha256:808cbc2dd42f5a8c93646cf9844bc448e811c6960244a2fca4d9e65460aac04f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\logs\\scanrefer\\native_control\\1791823853\\native_diagnostic_epoch002.json": "sha256:3b23e8984de0c99d4d5c2cba851b0d82bf2659a965c50cf34cb7849214eeafa9",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\logs\\scanrefer\\native_control\\1791823853\\native_metrics.jsonl": "sha256:551f927ea73f94793ea6cf694de185ea35cde513f1e31f3e8b1b5e96c587a888",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\logs\\scanrefer\\native_control\\1791823853\\native_stop.json": "sha256:4c388649a5ab80079f93049639f38d90e4c0a71bb1f7d5e8888daaef624f83cd",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\protocol.json": "sha256:3781872c4972b015d074379f63d9c7c7f6d492be5a64255c2fcc6e06df3c732b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\train.exit": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_ct3_STDOUT.json": "sha256:8d79bcd5c569416eaddf80771631aa3899801e776c9e1ea3eee710f0762aa04f",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_cpu_recount\\epoch000_selected_rows.csv": "sha256:7f18f28c58803d4a71cc97a37ebd9498f29c50824d526d1b41a0916a3f237eca",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_cpu_recount\\epoch001_selected_rows.csv": "sha256:14b279b64b80f26811286d6124a7d4b55220d6a28a36e46c0ac1413dfc458742",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_cpu_recount\\epoch002_selected_rows.csv": "sha256:94eac7457a60d5e85e6ad434afe5a5d720681cafa06b7dc1d914bb725bc26434",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\source\\pvground_semantic_assignment.py": "sha256:bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\selected_support_geometry_objective.py": "sha256:74a1d38018b3f8cf38d2b9f133b2df44f90cc2d17e13775b5812c0b1d0d12d30",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\extremal_span_mixer.py": "sha256:5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087",
+    "C:\\Users\\gb\\.codex\\archives\\pvg_geometry_control_20261013_reconstructed\\ARCHIVE_RECEIPT.json": "sha256:1518922ef8d19eb9e7143fec67d561e5f747ac158603d1e753a7065880795bb8",
+    "C:\\Users\\gb\\.codex\\archives\\pvg_native_normal_20261010\\best.pth": "sha256:ed8455ddc67e4d17018e9cf499197140e15e35db3f5daee55e0eec6846faf0c4",
+    "C:\\Users\\gb\\.codex\\archives\\pvg_geometry_control_20261013_reconstructed\\best.pth": "sha256:d686f1bbb1eb2a5092777a953ef63d63752f73182eb464b9837a4f7007ad264b",
+    "C:\\Users\\gb\\.codex\\archives\\pvg_geometry_control_20261013_reconstructed\\original_non_model_state.pth": "sha256:6da6afab2b571ae5b108b474a3adec544e06738290a15cd0efc5ab4fcd9245c5",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\source\\native_mask_geometry.py": "sha256:8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\native_model_initialization.py": "sha256:27169c76bda9cf1a0247fc613b16017d74f92c7662a5f5b5dcaa9d827f3288db",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\runtime_binding\\dataset_source\\src\\visual_data_handlers.py": "sha256:6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\native_control_initialization.json": "sha256:a69f3e8ee68da350834e0a1cf5dbbfe5bd9ff0eae2a3205ef840f9b7306478d2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_native_control_e2v2_files\\train.log.tail.txt": "sha256:0dc40db9ce67978e778faa6ec5cf7ad3d3cdf537c2cd530231c4f38fe9282fd2",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\MATCHER_MASK_BRANCH_SOURCE_NOTE_20261013.json": "sha256:14cf96624e25eebda4c15969f7ad82c1db055f8bb661adc44931c5146870106b",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\MATCHER_MASK_BRANCH_SOURCE_NOTE_20261013.md": "sha256:4235dfeac677ad77f93bde16f09b4a26608690386d583ebf4c75fcd1b79ce8db",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\write_matcher_mask_branch_note_20261013.py": "sha256:c57a210480304d2eb1978a8dacc2f939b3c8467bc9aae22c37c27a145c2cf860",
+    "C:\\Users\\gb\\.codex\\tmp\\pvground_mask_support_correction_20261008_v2\\complete_fit\\PV-Ground\\models\\modules.py": "sha256:1f262505e4c9d6fd186609c6da1497bf5cf6f62f982fa7746c7d4f5400d8f2df"
+  },
+  "evidence_artifacts": {
+    "DETERMINISTIC_CHECKS.json": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\DETERMINISTIC_CHECKS.json",
+      "sha256": "03a913505e1d4347af6c4f70cf7d8a4314bd53519733b1232a57431e249f8461"
+    },
+    "INDEPENDENT_RECOUNT.json": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\INDEPENDENT_RECOUNT.json",
+      "sha256": "8fcf08b288c8df817d9a15ef86cefa814ba548ea2099f3df8d225e67b2b8ba13"
+    },
+    "INDEPENDENT_CHECKPOINT.json": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\INDEPENDENT_CHECKPOINT.json",
+      "sha256": "14b842dc370ed0861695945601a4a7ac5846a88b1bd017361054b6630b275b3f"
+    },
+    "INDEPENDENT_TENSOR_MANIFEST.json": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\INDEPENDENT_TENSOR_MANIFEST.json",
+      "sha256": "0c188031d9695057a397fda844ac0f60d7273f24e83f061735ca03e395cd9ab4"
+    },
+    "SUPPLEMENTAL_EVIDENCE.json": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\SUPPLEMENTAL_EVIDENCE.json",
+      "sha256": "e7cf885233b26fda7fa97915dcea9ecd3c904085070e2f24dec9f8fa6953aeaa"
+    },
+    "MATCHER_SOURCE_NOTE_AUDIT.json": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\MATCHER_SOURCE_NOTE_AUDIT.json",
+      "sha256": "9536c3e82df6da79b6e98b52093b682d4179645cdeedf21edfcbf9f2a53fd2f1"
+    },
+    "AUDITED_INPUT_HASHES.json": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\AUDITED_INPUT_HASHES.json",
+      "sha256": "5a2a812af305179f291cfc6258838bc2db46de0bbfc25f8863adc3aaeb1ca7dd"
+    },
+    "independent_epoch000_rows.csv": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\independent_epoch000_rows.csv",
+      "sha256": "af5dcf22553624076bec99e128abcc06ffb5d0511c8b70d49a86b7d5aed323f8"
+    },
+    "independent_epoch001_rows.csv": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\independent_epoch001_rows.csv",
+      "sha256": "296e1e67584e42b206642988ed2d9d305b6ff8942fc679d07ec793f132a5df5c"
+    },
+    "independent_epoch002_rows.csv": {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\independent_epoch002_rows.csv",
+      "sha256": "d2a55a8b02e1f3938e6d68373a8cb6bd171d088833ca029079bc9189d3a0afd3"
+    }
+  },
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\control_terminal_audit\\.aris\\traces\\experiment-audit\\2026-10-13_run01"
+}

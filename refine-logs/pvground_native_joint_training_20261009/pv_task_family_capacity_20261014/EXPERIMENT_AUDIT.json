@@ -1,0 +1,884 @@
+{
+  "audit_skill": "experiment-audit",
+  "date": "2026-10-14",
+  "generated_at": "2026-10-14T06:06:17.438535+08:00",
+  "agent_id": "/root/selected_box_family_audit_20261014",
+  "verdict_id": "/root/selected_box_family_audit_20261014",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "overall_verdict": "WARN",
+  "integrity_status": "WARN",
+  "scoped_arithmetic": "PASS",
+  "scoped_family_math": "PASS",
+  "scoped_source_paths": "PASS_SOURCE_ONLY",
+  "blocking_findings": [],
+  "blocking_findings_scope": "Final saved-data family counts and source claims only",
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "WARN",
+      "details": "Dataset GT path is source-supported; only saved GT coordinates were read. Original annotations/cache/points/masks were not reloaded or byte-attested.",
+      "evidence": [
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/103_joint_det_dataset.py",
+          "line": 205
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/103_joint_det_dataset.py",
+          "line": 596
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/103_joint_det_dataset.py",
+          "line": 1086
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/103_joint_det_dataset.py",
+          "line": 1387
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/105_visual_data_handlers.py",
+          "line": 129
+        },
+        {
+          "file": "source_overlay_v4/selected_geometry_eval_diagnostics.py",
+          "line": 35
+        },
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 114
+        }
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "IoU is intersection/geometric union; raw accuracy is strict hits/9508. No own-output maximum/mean normalizer. GT maximization is explicitly an oracle diagnostic.",
+      "evidence": [
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 12
+        },
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 135
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/102_grounding_evaluator.py",
+          "line": 296
+        },
+        {
+          "file": "recount_selected_rows_20261014.py",
+          "line": 99
+        }
+      ]
+    },
+    "C_existence_and_numbers": {
+      "status": "PASS",
+      "details": "All28524 rows, family CSV numeric/witness/support fields, family count fields, original recount epoch-summary fields and intake/source hashes reproduce. Incorrect strict wording was corrected before sealing.",
+      "evidence": [
+        {
+          "file": "task_path_and_family_capacity_20261014/REPORT.md",
+          "line": 20
+        },
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 151
+        },
+        {
+          "file": "selected_geometry_cpu_recount_20261014/RESULT.json",
+          "line": 39
+        },
+        {
+          "file": "OBS_selected_geometry_rows_20261014_files/logs/scanrefer/selected_geometry/1791872741/native_metrics.jsonl",
+          "line": 1
+        },
+        {
+          "file": "task_path_and_family_capacity_20261014/REPORT.md",
+          "line": 30
+        }
+      ]
+    },
+    "D_called_vs_dead": {
+      "status": "WARN",
+      "details": "Primary family/evaluator paths are called and reproduce artifacts; native objective/model calls are wired. DIoU helper is inactive and not a reported result. Historical chunk IDs are author metadata, not freshly attested execution.",
+      "evidence": [
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 125
+        },
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 175
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/107_train_dist_mod.py",
+          "line": 234
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/055_losses.py",
+          "line": 917
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/055_losses.py",
+          "line": 546
+        }
+      ]
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "One closed-C configuration, seed2027, one ScanRefer validation set, E0/E1/E2 snapshots:9508 rows each,141 scenes,2068 scan-target pairs,9506 distinct scan-target-utterance hashes. Three snapshots are not three runs. Query-slot changes are not instance identities.",
+      "evidence": [
+        {
+          "file": "OBS_selected_geometry_rows_20261014_INTAKE.json",
+          "line": 3
+        },
+        {
+          "file": "OBS_selected_geometry_rows_20261014_files/logs/scanrefer/selected_geometry/1791872741/native_rows_epoch000.jsonl",
+          "line": 1
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/013_initialization_reference.json",
+          "line": 2
+        },
+        {
+          "file": "task_path_and_family_capacity_20261014/REPORT.md",
+          "line": 16
+        },
+        {
+          "file": "task_path_and_family_capacity_20261014/REPORT.md",
+          "line": 25
+        }
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "WARN",
+      "details": "Source-supported real_gt saved-coordinate recount plus GT-conditioned oracle capacity diagnostic; not independently reloaded real_gt, not model-generated GT. GT chooses coefficients, so these are not deployable predictions. Synthetic/random fixtures are numerical checks only.",
+      "evidence": [
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 59
+        },
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 164
+        },
+        {
+          "file": "recount_selected_rows_20261014.py",
+          "line": 112
+        },
+        {
+          "file": "task_path_and_family_capacity_20261014/REPORT.md",
+          "line": 32
+        }
+      ]
+    },
+    "G_mathematical_completeness": {
+      "status": "PASS",
+      "details": "Four crossings plus endpoints are complete for positive endpoint/GT sizes. Compactness and coordinatewise affine-fractional monotonicity prove the event Cartesian maximum; flat/tangent/constant cases included.",
+      "evidence": [
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 23
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/124_extremal_span_mixer.py",
+          "line": 98
+        }
+      ]
+    },
+    "H_precision_and_thresholds": {
+      "status": "WARN",
+      "details": "Threshold counts stable; smallest maximum-to-threshold margin4.091914164128241e-5. Saved rounded outputs can exceed ideal real-family maxima by9.685783429056241e-9; final text correctly uses one-sided+1e-5 tolerance. Nine rational checks confirm decisions. Failed floor assertion is independently reproduced.",
+      "evidence": [
+        {
+          "file": "task_path_and_family_capacity_20261014/REPORT.md",
+          "line": 30
+        },
+        {
+          "file": "selected_family_capacity_20261014_attempt1_size_assertion/FAILED_SOURCE.py",
+          "line": 117
+        },
+        {
+          "file": "selected_family_capacity_20261014.py",
+          "line": 117
+        },
+        {
+          "file": "OBS_selected_geometry_rows_20261014_files/logs/scanrefer/selected_geometry/1791872741/native_rows_epoch002.jsonl",
+          "line": 7685
+        }
+      ]
+    },
+    "I_source_targets_and_graph": {
+      "status": "PASS",
+      "details": "Source-only: nine key sources match current/closed-C stages. A native supervision, B graph, G eos0.1/outer0.5/7, C actual-batch normalization and raw-logit threshold distinction verified; no actual gradient claim.",
+      "evidence": [
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/058_pv_ground.py",
+          "line": 568
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/055_losses.py",
+          "line": 945
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/130_pvground_semantic_assignment.py",
+          "line": 34
+        },
+        {
+          "file": "span_lr_actual_pair_review_20261014/snapshots/135_selected_support_geometry_objective.py",
+          "line": 59
+        }
+      ]
+    }
+  },
+  "claims": [
+    {
+      "claim": "Saved actual/family hit totals and support-good error reachability",
+      "impact": "supported_with_saved_GT_oracle_scope"
+    },
+    {
+      "claim": "Event enumeration is complete for fixed positive-size endpoints/free per-row coefficients",
+      "impact": "supported_mathematically"
+    },
+    {
+      "claim": "Original strict dominance over all rounded saved final outputs",
+      "impact": "rejected_and_corrected"
+    },
+    {
+      "claim": "Selected-query bound certifies full model or all256 capacity",
+      "impact": "unsupported_and_disclaimed"
+    },
+    {
+      "claim": "E0+459 oracle margin is deployable or learnable gain",
+      "impact": "unsupported_and_disclaimed"
+    },
+    {
+      "claim": "Target differences prove gradient conflict, bug or decline cause",
+      "impact": "unsupported_and_disclaimed"
+    },
+    {
+      "claim": "Every unmatched query lacks gradients or receives direct mask GT",
+      "impact": "not_supported_by_source"
+    },
+    {
+      "claim": "Support-qualified saved validation rows are verified unmatched C training rows",
+      "impact": "unsupported_matching_not_saved"
+    },
+    {
+      "claim": "Query-slot changes establish instance changes",
+      "impact": "unsupported"
+    },
+    {
+      "claim": "Raw dataset, full256 arrays, terminal cold recovery or live runtime verified",
+      "impact": "not_verified"
+    },
+    {
+      "claim": "Current low-LR results, broader target, safety, causal gain or innovation accepted",
+      "impact": "outside_scope"
+    }
+  ],
+  "independently_computed_data": {
+    "epochs": [
+      {
+        "epoch": 0,
+        "rows": 9508,
+        "unique_scenes": 141,
+        "unique_scan_targets": 2068,
+        "unique_scan_target_utterance_keys": 9506,
+        "support_qualified": 5114,
+        "minimum_GT_volume": 0.00012022304446468157,
+        "minimum_native_size": 9.999999974752427e-07,
+        "minimum_mask_size": 9.999999974752427e-07,
+        "event_stats": {
+          "constant_edges": 258,
+          "unique_event_count_min": 2,
+          "unique_event_count_max": 6,
+          "minimum_candidate_volume": 9.999999924257282e-19,
+          "minimum_candidate_union": 0.0001202444152975284
+        },
+        "csv_max_abs_differences": {
+          "saved_final_IoU": 0.0,
+          "native_IoU": 0.0,
+          "mask_endpoint_IoU": 0.0,
+          "GT_only_family_max_IoU": 2.631228568361621e-14,
+          "alpha_witness_value": 2.631228568361621e-14
+        },
+        "selected_query_slot_changes_vs_E0": 0,
+        "reconstruction_residual_max": 4.599961525263152e-07,
+        "maximum_saved_final_minus_bound": 3.559435139346848e-14,
+        "positive_saved_final_minus_bound_rows": 1,
+        "saved_final_minus_bound_above_1e_12_rows": 0,
+        "max_cpu64_vs_logged": {
+          "final": 3.7223284838905357e-06,
+          "native": 2.3388445516969725e-06,
+          "mask_endpoint": 6.202855157955156e-06
+        },
+        "bound_excess_witness": {
+          "row_index": 3524,
+          "primary_jsonl_line": 3525,
+          "selected_IoU": 6.702616367806614e-06,
+          "family_max": 6.702616332212263e-06
+        },
+        "025": {
+          "actual_selected_hits": 5677,
+          "GT_only_independent_axis_family_upper_bound_hits": 5839,
+          "saved_errors_with_passing_same_selected_endpoint": 112,
+          "saved_errors_reachable_in_family": 162,
+          "saved_errors_not_reachable_in_family": 3669,
+          "selected_own_and_fused_support_good_box_bad": 75,
+          "support_good_box_bad_reachable": 27,
+          "support_good_box_bad_not_reachable": 48,
+          "family_max_within_1e_5_of_threshold": 0,
+          "float64_bound_threshold_losses_vs_saved_final": 0,
+          "minimum_bound_threshold_distance": 0.0006793245958948702,
+          "bound_nearest_threshold_row": 1584,
+          "accuracy_percent": 59.7076146403029,
+          "bound_accuracy_percent": 61.411442995372326,
+          "logged_threshold_disagreements": {
+            "final": 0,
+            "native": 0,
+            "mask_endpoint": 0
+          },
+          "E0_repairs": 0,
+          "E0_breaks": 0,
+          "logged_full256_coverage": 8970
+        },
+        "050": {
+          "actual_selected_hits": 4920,
+          "GT_only_independent_axis_family_upper_bound_hits": 5379,
+          "saved_errors_with_passing_same_selected_endpoint": 325,
+          "saved_errors_reachable_in_family": 459,
+          "saved_errors_not_reachable_in_family": 4129,
+          "selected_own_and_fused_support_good_box_bad": 494,
+          "support_good_box_bad_reachable": 271,
+          "support_good_box_bad_not_reachable": 223,
+          "family_max_within_1e_5_of_threshold": 0,
+          "float64_bound_threshold_losses_vs_saved_final": 0,
+          "minimum_bound_threshold_distance": 4.091914164128241e-05,
+          "bound_nearest_threshold_row": 3173,
+          "accuracy_percent": 51.74589819099705,
+          "bound_accuracy_percent": 56.573411863693735,
+          "logged_threshold_disagreements": {
+            "final": 0,
+            "native": 0,
+            "mask_endpoint": 0
+          },
+          "E0_repairs": 0,
+          "E0_breaks": 0,
+          "logged_full256_coverage": 8234
+        }
+      },
+      {
+        "epoch": 1,
+        "rows": 9508,
+        "unique_scenes": 141,
+        "unique_scan_targets": 2068,
+        "unique_scan_target_utterance_keys": 9506,
+        "support_qualified": 5094,
+        "minimum_GT_volume": 0.00012022304446468157,
+        "minimum_native_size": 9.999999974752427e-07,
+        "minimum_mask_size": 9.999999974752427e-07,
+        "event_stats": {
+          "constant_edges": 300,
+          "unique_event_count_min": 2,
+          "unique_event_count_max": 6,
+          "minimum_candidate_volume": 9.999999924257282e-19,
+          "minimum_candidate_union": 0.00012022976414479788
+        },
+        "csv_max_abs_differences": {
+          "saved_final_IoU": 0.0,
+          "native_IoU": 0.0,
+          "mask_endpoint_IoU": 0.0,
+          "GT_only_family_max_IoU": 1.099120794378905e-14,
+          "alpha_witness_value": 1.099120794378905e-14
+        },
+        "selected_query_slot_changes_vs_E0": 8966,
+        "reconstruction_residual_max": 3.960335835693032e-07,
+        "maximum_saved_final_minus_bound": 2.574777689132526e-13,
+        "positive_saved_final_minus_bound_rows": 1,
+        "saved_final_minus_bound_above_1e_12_rows": 0,
+        "max_cpu64_vs_logged": {
+          "final": 3.621282364862921e-06,
+          "native": 3.484932219022241e-06,
+          "mask_endpoint": 6.334805490837425e-06
+        },
+        "bound_excess_witness": {
+          "row_index": 1173,
+          "primary_jsonl_line": 1174,
+          "selected_IoU": 2.50674417545514e-06,
+          "family_max": 2.506743917977371e-06
+        },
+        "025": {
+          "actual_selected_hits": 5679,
+          "GT_only_independent_axis_family_upper_bound_hits": 5859,
+          "saved_errors_with_passing_same_selected_endpoint": 120,
+          "saved_errors_reachable_in_family": 180,
+          "saved_errors_not_reachable_in_family": 3649,
+          "selected_own_and_fused_support_good_box_bad": 108,
+          "support_good_box_bad_reachable": 53,
+          "support_good_box_bad_not_reachable": 55,
+          "family_max_within_1e_5_of_threshold": 0,
+          "float64_bound_threshold_losses_vs_saved_final": 0,
+          "minimum_bound_threshold_distance": 0.0003184566936670352,
+          "bound_nearest_threshold_row": 3509,
+          "accuracy_percent": 59.728649558266724,
+          "bound_accuracy_percent": 61.62179217501051,
+          "logged_threshold_disagreements": {
+            "final": 0,
+            "native": 0,
+            "mask_endpoint": 0
+          },
+          "E0_repairs": 305,
+          "E0_breaks": 303,
+          "logged_full256_coverage": 8999
+        },
+        "050": {
+          "actual_selected_hits": 4752,
+          "GT_only_independent_axis_family_upper_bound_hits": 5335,
+          "saved_errors_with_passing_same_selected_endpoint": 412,
+          "saved_errors_reachable_in_family": 583,
+          "saved_errors_not_reachable_in_family": 4173,
+          "selected_own_and_fused_support_good_box_bad": 632,
+          "support_good_box_bad_reachable": 378,
+          "support_good_box_bad_not_reachable": 254,
+          "family_max_within_1e_5_of_threshold": 0,
+          "float64_bound_threshold_losses_vs_saved_final": 0,
+          "minimum_bound_threshold_distance": 0.00019906761465537937,
+          "bound_nearest_threshold_row": 5230,
+          "accuracy_percent": 49.97896508203618,
+          "bound_accuracy_percent": 56.11064366848969,
+          "logged_threshold_disagreements": {
+            "final": 0,
+            "native": 0,
+            "mask_endpoint": 0
+          },
+          "E0_repairs": 343,
+          "E0_breaks": 511,
+          "logged_full256_coverage": 8285
+        }
+      },
+      {
+        "epoch": 2,
+        "rows": 9508,
+        "unique_scenes": 141,
+        "unique_scan_targets": 2068,
+        "unique_scan_target_utterance_keys": 9506,
+        "support_qualified": 4984,
+        "minimum_GT_volume": 0.00012022304446468157,
+        "minimum_native_size": 9.999999974752427e-07,
+        "minimum_mask_size": 9.999999974752427e-07,
+        "event_stats": {
+          "constant_edges": 732,
+          "unique_event_count_min": 2,
+          "unique_event_count_max": 6,
+          "minimum_candidate_volume": 9.999999924257282e-19,
+          "minimum_candidate_union": 0.00012022304458699292
+        },
+        "csv_max_abs_differences": {
+          "saved_final_IoU": 0.0,
+          "native_IoU": 0.0,
+          "mask_endpoint_IoU": 0.0,
+          "GT_only_family_max_IoU": 1.8984813721090177e-14,
+          "alpha_witness_value": 1.8984813721090177e-14
+        },
+        "selected_query_slot_changes_vs_E0": 9044,
+        "reconstruction_residual_max": 3.563928191419822e-07,
+        "maximum_saved_final_minus_bound": 9.685783397550551e-09,
+        "positive_saved_final_minus_bound_rows": 3,
+        "saved_final_minus_bound_above_1e_12_rows": 2,
+        "max_cpu64_vs_logged": {
+          "final": 6.202855157955156e-06,
+          "native": 2.970372868560389e-06,
+          "mask_endpoint": 6.202855157955156e-06
+        },
+        "bound_excess_witness": {
+          "row_index": 7684,
+          "primary_jsonl_line": 7685,
+          "selected_IoU": 0.45504065938941557,
+          "family_max": 0.45504064970363217
+        },
+        "025": {
+          "actual_selected_hits": 5588,
+          "GT_only_independent_axis_family_upper_bound_hits": 5793,
+          "saved_errors_with_passing_same_selected_endpoint": 119,
+          "saved_errors_reachable_in_family": 205,
+          "saved_errors_not_reachable_in_family": 3715,
+          "selected_own_and_fused_support_good_box_bad": 118,
+          "support_good_box_bad_reachable": 57,
+          "support_good_box_bad_not_reachable": 61,
+          "family_max_within_1e_5_of_threshold": 0,
+          "float64_bound_threshold_losses_vs_saved_final": 0,
+          "minimum_bound_threshold_distance": 0.0003576832385400186,
+          "bound_nearest_threshold_row": 3063,
+          "accuracy_percent": 58.771560790912915,
+          "bound_accuracy_percent": 60.92763988220445,
+          "logged_threshold_disagreements": {
+            "final": 0,
+            "native": 0,
+            "mask_endpoint": 0
+          },
+          "E0_repairs": 325,
+          "E0_breaks": 414,
+          "logged_full256_coverage": 8840
+        },
+        "050": {
+          "actual_selected_hits": 4623,
+          "GT_only_independent_axis_family_upper_bound_hits": 5208,
+          "saved_errors_with_passing_same_selected_endpoint": 409,
+          "saved_errors_reachable_in_family": 585,
+          "saved_errors_not_reachable_in_family": 4300,
+          "selected_own_and_fused_support_good_box_bad": 649,
+          "support_good_box_bad_reachable": 382,
+          "support_good_box_bad_not_reachable": 267,
+          "family_max_within_1e_5_of_threshold": 0,
+          "float64_bound_threshold_losses_vs_saved_final": 0,
+          "minimum_bound_threshold_distance": 0.0005032301597528432,
+          "bound_nearest_threshold_row": 4175,
+          "accuracy_percent": 48.62221287336979,
+          "bound_accuracy_percent": 54.774926377787125,
+          "logged_threshold_disagreements": {
+            "final": 0,
+            "native": 0,
+            "mask_endpoint": 0
+          },
+          "E0_repairs": 343,
+          "E0_breaks": 640,
+          "logged_full256_coverage": 8279
+        }
+      }
+    ],
+    "analytic_numeric_fixtures": [
+      {
+        "name": "equal_edges",
+        "expected": 1.0,
+        "value": 1.0
+      },
+      {
+        "name": "constant_disjoint",
+        "expected": 0.0,
+        "value": 0.0
+      },
+      {
+        "name": "constant_tangent",
+        "expected": 0.0,
+        "value": 0.0
+      },
+      {
+        "name": "interior_translation",
+        "expected": 1.0,
+        "value": 1.0
+      },
+      {
+        "name": "independent_axis_choice",
+        "expected": 1.0,
+        "value": 1.0
+      },
+      {
+        "name": "stationary_lower_edge",
+        "expected": 1.0,
+        "value": 1.0
+      },
+      {
+        "name": "stationary_upper_edge",
+        "expected": 1.0,
+        "value": 1.0
+      },
+      {
+        "name": "tiny_positive_constant",
+        "expected": 1.0,
+        "value": 1.0
+      },
+      {
+        "name": "threshold_exact_half",
+        "expected": 0.5,
+        "value": 0.5
+      },
+      {
+        "name": "threshold_exact_quarter",
+        "expected": 0.25,
+        "value": 0.25
+      }
+    ],
+    "original_numeric_fixture_summary": {
+      "closed_form_cases": 6,
+      "random_cases": 24,
+      "independent_dense_grid_triples_per_random_case": 2197,
+      "minimum_exact_minus_dense": 0.0
+    },
+    "independent_dense_fixture": {
+      "seed": 419,
+      "cases": 40,
+      "triples_per_case": 4913
+    },
+    "evaluation_classification": "saved_real_gt_coordinate_recount_and_GT_conditioned_oracle_bound",
+    "CUDA_VISIBLE_DEVICES": "-1",
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "model_factory_calls": 0,
+    "project_imports": 0,
+    "checkpoint_loads": 0,
+    "remote_queries": 0,
+    "original_dataset_GT_reloaded": false,
+    "point_masks_recomputed": false,
+    "elapsed_seconds": 6.7436624
+  },
+  "resolved_findings": [
+    "strict saved-output dominance wording",
+    "ambiguous tolerance-equality wording"
+  ],
+  "audited_input_hashes": [
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\task_path_and_family_capacity_20261014\\SOURCE_AND_EXECUTION_BINDINGS.json",
+      "bytes": 4575,
+      "sha256": "c8f9661aba8911b6a0776ffb884c82a3829383a03bcd8445180bda230a776c83"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\task_path_and_family_capacity_20261014\\REPORT.md",
+      "bytes": 4599,
+      "sha256": "44cf3d547b9d8f08d1ccb77e170a530eeeda7fa649ee247feb8496aaa9f86b45"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_family_capacity_20261014.py",
+      "bytes": 9556,
+      "sha256": "e60092a80ec577f90f581edbdd2ec2feb5cb25030d7be81190314bf5925390eb"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_family_capacity_20261014\\RESULT.json",
+      "bytes": 6149,
+      "sha256": "375220649d0475ed3581bea41b3cfd0c9fed0c79360b3c1ac4c8b997b3b42972"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_family_capacity_20261014_attempt1_size_assertion\\FAILED_SOURCE.py",
+      "bytes": 9568,
+      "sha256": "1cf276c70eb042fd87c1060f451c511beec6e585221627a5dbc912f75219a69b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_family_capacity_20261014_attempt1_size_assertion\\FAILURE.json",
+      "bytes": 263,
+      "sha256": "cb219330f2054d7cced95457b5e130bc9378b3538177326ea105fd6833ab0b1b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\recount_selected_rows_20261014.py",
+      "bytes": 7740,
+      "sha256": "f32a1855f887bfdb9888c0dfa4726dd1360f7d134bbdd900d7e010aee4515274"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_geometry_cpu_recount_20261014\\RESULT.json",
+      "bytes": 11772,
+      "sha256": "ff335ad5b9da4c85f1d59a12be5775a2ecfc472fd4b14564d3c7da0dbd22c9d9"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_INTAKE.json",
+      "bytes": 8334,
+      "sha256": "c7d93c55c48c255105a70f7d4ed45b6582f28227814cb65f1f558497ed152255"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_runtime_staging_20261013_v2\\SOURCE_STAGE_RECEIPT.json",
+      "bytes": 45295,
+      "sha256": "a3b8d98a81a9775bf8aef2675721dd657a95453c0fcf3e8eea4c914f64d2686f"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_geometry_terminal_audit_20261014\\REVIEW_COMPLETE.json",
+      "bytes": 117485,
+      "sha256": "741895ce7bf4262c363b99707218c206a3d9672fc11cb9b8a37fc49b29b36107"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_geometry_terminal_audit_20261014\\EXPERIMENT_AUDIT.md",
+      "bytes": 18310,
+      "sha256": "769e952a4a5247c21a4b1404c2e54e760bc2d05a1c746988ff2ec530d3aeac4b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\SOURCE_STAGE_R4_RECEIPT.json",
+      "bytes": 39466,
+      "sha256": "b6d0b2fb7046743b83ee44dd345814870f011eb66301539489ea8390c9fcca13"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\selected_geometry_eval_diagnostics.py",
+      "bytes": 8478,
+      "sha256": "44ca7699b1dd641c8a349f39b4be639962282ec0ae1857cc3fce5cb24ade258a"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\protocol.json",
+      "bytes": 2099,
+      "sha256": "ce487329dcb828e922bd6333d92b47f30d79fe539f45e7ec6007eb1642401403"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\058_pv_ground.py",
+      "bytes": 28937,
+      "sha256": "7a2db438811cb2fccf77a85f8f45a6a572cb0a1bbbd60d337e98afcbfa5e5b84"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\055_losses.py",
+      "bytes": 42048,
+      "sha256": "b960fd486e4b325f346f3925d98bcda84be59020310d123832a789a525ceefee"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\125_mask_support_corrector.py",
+      "bytes": 3736,
+      "sha256": "5b1c2d7bffa2332c86102e8003272ab8caed0e361034ad97a875198ebad51351"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\124_extremal_span_mixer.py",
+      "bytes": 7492,
+      "sha256": "5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\126_native_mask_geometry.py",
+      "bytes": 2466,
+      "sha256": "8386111df445bdbf0a867b7c7f6e478783f349e4221f4526c391715c83b3e4c8"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\127_native_model_initialization.py",
+      "bytes": 4712,
+      "sha256": "27169c76bda9cf1a0247fc613b16017d74f92c7662a5f5b5dcaa9d827f3288db"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\128_native_root_bbs.py",
+      "bytes": 481,
+      "sha256": "b0357bd54e8753672ee31d3056e50c1d53a854d7f0c71cd01a7bc8cecf422c8b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\130_pvground_semantic_assignment.py",
+      "bytes": 5158,
+      "sha256": "bec33ac6f24b3b83ab4bdfdeaf19cd7d400a372539a023a9929dadccd3ecad6d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\135_selected_support_geometry_objective.py",
+      "bytes": 4410,
+      "sha256": "74a1d38018b3f8cf38d2b9f133b2df44f90cc2d17e13775b5812c0b1d0d12d30"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\103_joint_det_dataset.py",
+      "bytes": 75981,
+      "sha256": "3afebfc69232f9547e6810563ba6dd4f34a0f770f929df2f4203b21493de0e3d"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\105_visual_data_handlers.py",
+      "bytes": 10126,
+      "sha256": "6d1d4f0c792e8b86f238d88c02f1933f945313a3831d0bf9eabb9bf4580bb177"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\102_grounding_evaluator.py",
+      "bytes": 41473,
+      "sha256": "39c8de921aff9fea6e2a9a39f68e5634bdd765b1bfd065f0ee3c6c9dac931677"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\107_train_dist_mod.py",
+      "bytes": 18770,
+      "sha256": "91ec636c1235c7eb2bca758ddc00762d8ffa74a3ccec810af022bb89ef5e3bfa"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\050_main_utils.py",
+      "bytes": 26702,
+      "sha256": "4254657bb68420db325fb42746d9f94a8e03fb677d5af9de6e8399e0f33d4733"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\136_selected_geometry_eval_diagnostics.py",
+      "bytes": 10184,
+      "sha256": "44582393bcfa6d8f38bf3be1ccfae8b48f0099e85b36ba1d3255329ca11b33d3"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\013_initialization_reference.json",
+      "bytes": 1887,
+      "sha256": "cbb56a015f3e58eacc710a51417130536fba978393d06973b01b96baa4ede018"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\logs\\scanrefer\\selected_geometry\\1791872741\\native_metrics.jsonl",
+      "bytes": 357,
+      "sha256": "3672f5dd185f0b1cacf5a0621033fe9e8aeea47f11b2ef54cb2be0f163c923ae"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\logs\\scanrefer\\selected_geometry\\1791872741\\native_rows_epoch000.jsonl",
+      "bytes": 11776806,
+      "sha256": "da90162de73e1b6c6848c57a0e63e6a658d5b6e82bf28dc20a4e4d23a4c3c49e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\logs\\scanrefer\\selected_geometry\\1791872741\\native_diagnostic_epoch000.json",
+      "bytes": 1030,
+      "sha256": "bdd3b4c77fe2c7b265fe46f9278173c21a62ddbefbf5b297448d3bd71e66bc44"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_family_capacity_20261014\\epoch000.csv",
+      "bytes": 900262,
+      "sha256": "d86d6640d80f4136f968a3099bd7491cad8063a0d6756f24925022b0f39fa51b"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\logs\\scanrefer\\selected_geometry\\1791872741\\native_rows_epoch001.jsonl",
+      "bytes": 11778779,
+      "sha256": "ed69f3a2b8ba6ca958d21cc1798de286877f156e906d848400c6a91538e1392e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\logs\\scanrefer\\selected_geometry\\1791872741\\native_diagnostic_epoch001.json",
+      "bytes": 1612,
+      "sha256": "34e9021407156ff97ca26151585827244a7dca57f3e23db0dfb58aaeca89b085"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_family_capacity_20261014\\epoch001.csv",
+      "bytes": 907912,
+      "sha256": "cedd659d28230a82c2fdb6ad2645639121d94184d84343368d233aa6584044af"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\logs\\scanrefer\\selected_geometry\\1791872741\\native_rows_epoch002.jsonl",
+      "bytes": 11770202,
+      "sha256": "bab662acce0903997a6e6de75473de37e84a05e7ec2e71881f927fd087de71c5"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\logs\\scanrefer\\selected_geometry\\1791872741\\native_diagnostic_epoch002.json",
+      "bytes": 1613,
+      "sha256": "ffc4308eaf20f9e883817deacff51a9be3b498084bbb334de43dc824359d91c2"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_family_capacity_20261014\\epoch002.csv",
+      "bytes": 907366,
+      "sha256": "8764eae987480d76f4ac7661c19a59917350302860188ca3a5ef05378084772e"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\normal_status.json",
+      "bytes": 3767,
+      "sha256": "4d628b6985f2cf279a9ab1d6b2d319e03de4e0a562b5327f5b3e269aa933a296"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\admission.json",
+      "bytes": 45667,
+      "sha256": "f550c448efb85468b5f1e7fa3bbc7165b853d53d79e1a9cdcbed23e59aa9efed"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\logs\\scanrefer\\selected_geometry\\1791872741\\native_stop.json",
+      "bytes": 809,
+      "sha256": "14fdbaf3335a9dab699d273937062da996100302e380374024ac907eff546e62"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\logs\\scanrefer\\selected_geometry\\1791872741\\selected_geometry_responsibility.jsonl",
+      "bytes": 332,
+      "sha256": "44bbe87336fac57e8f4bd6f4a98bdcb9708986928f7929b59676cbe8361b9fca"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\OBS_selected_geometry_rows_20261014_files\\train.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\record_task_trace_and_capacity_20261014.py",
+      "bytes": 7842,
+      "sha256": "097d8976ea2d231a3fe83c5ec505cf1a89687cd1669882629f23742eaa680695"
+    }
+  ],
+  "raw_dataset_reloaded": false,
+  "full256_array_recount": false,
+  "actual_gradient_measurement": false,
+  "causal_attribution_accepted": false,
+  "deployable_gain_accepted": false,
+  "full_model_capacity_accepted": false,
+  "checkpoint_cold_recovery_accepted": false,
+  "broader_goal_accepted": false,
+  "requested_model_route_attested": false,
+  "deterministic_checks": 142,
+  "exact_rational_rows": 9,
+  "all_initial_inputs_unchanged": false,
+  "all_scientific_inputs_unchanged": true,
+  "final_report_text_generation_verified": true,
+  "trace_path": "C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\selected_box_family_audit_20261014\\.aris\\traces\\experiment-audit\\2026-10-14_selected_box_family"
+}

@@ -1,0 +1,473 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-13",
+  "scope": "CURRENT_ACTUAL_NATIVE_A_B_C_NOVELTY_AND_BASELINE_OVERLAP_ONLY",
+  "recommendation": "PROCEED WITH CAUTION",
+  "novelty_score": 5.5,
+  "score_anchor": "5/10 表示近邻清楚但仍有可辩护且值得验证的差异；不把缺乏已证效果写成已被论文完整覆盖。",
+  "clears_early_novelty_gate": true,
+  "direct_complete_duplicate_found": false,
+  "abandon_qualifying_paper": null,
+  "publication_ready": false,
+  "three_independently_effective_mechanisms_proven": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "reviewer_task_path": "/root/native_abc_novelty_review_20261013",
+  "claims": [
+    {
+      "id": "A",
+      "title": "融合前候选—支持成员 Query-Mask 残差",
+      "novelty_score": 4.5,
+      "verdict": "PROCEED WITH CAUTION",
+      "source": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/mask_support_corrector.py",
+      "parameters": 27841,
+      "implemented_delta": "把 Query 与成员特征各从 288 投影到 32 维，结合 Text/own/fused 概率、两 Mask 分歧、原 alpha、实际成员计数，在 native member mapping 上预测候选特有的 own-Mask logit 残差，再交给原融合与分割损失。",
+      "closest_work": [
+        "MCLN",
+        "3DRefTR",
+        "RefineMask"
+      ],
+      "specific_thinness": "复用 Query/支持特征与两 Mask 自适应融合已在近邻中存在；剩余机制是常规 MLP 残差加条件特征，当前没有证明分歧或成员计数本身的必要性。几何标志为 False，9 个几何通道恒零，不能以几何感知作为增量。",
+      "empirical_status": "本次材料没有足以隔离 A 独立最终定位收益的同条件正式对照；B 的端点表不能替代 A 去除对照。",
+      "evidence_needed": [
+        "在 seed 2027、同原生协议/初始化/预算的可比证据中隔离 A 的最终定位与候选 own-Mask 改善。",
+        "若要把具体状态条件设计写作贡献，需说明收益来自候选与 Mask 分歧信息，而不只来自增加 MLP 容量；当前未有此结论。"
+      ],
+      "positioning": "在现有双 Mask 融合之前加入候选条件的成员 logit 校正。",
+      "disallowed_claims": [
+        "首次联合 REC/RES",
+        "新多尺度聚合或注意力",
+        "已实现 geometry-aware A",
+        "硬阈值极值计算端到端可微",
+        "A 已被本报告证明独立有效"
+      ]
+    },
+    {
+      "id": "B",
+      "title": "真实极值来源编码的有界逐轴两框混合",
+      "novelty_score": 5.5,
+      "verdict": "PROCEED WITH CAUTION",
+      "source": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/source/extremal_span_mixer.py",
+      "parameters": 29793,
+      "implemented_delta": "仅从达到预测 fused-Mask 六个 min/max 面的全部并列 superpoints 聚合内容、概率、点数和相对几何，成对生成三个轴系数；每轴同一 clamp[0,1] 系数混合原回归框与校正 Mask extent 的中心/尺寸。",
+      "closest_work": [
+        "Mask DINO",
+        "Not Every Side Is Equal",
+        "D-FINE",
+        "Detector-Augmented SAMURAI"
+      ],
+      "specific_thinness": "面证据和 Mask/box 协作有明确先例；可验证的新差异在离散真实来源选择及逐轴坐标混合。最针对性的同容量 whole-support 对照为 5676/4921，extremal 为 5677/4920，无法支持极值来源独立增益。三个轴系数只在两端点间插值，也不是自由六面分布回归。",
+      "empirical_status": "父级提供的冻结父模型正式端点 CPU 复算中，学习混合优于固定 50/50（extremal 严格 +63）；extremal 对 whole-support 严格 -1，不能归因极值来源。该表不是正常联合训练贡献拆分。",
+      "evidence_needed": [
+        "把“学习混合”与“极值来源选择”拆成不同证据命题，报告现有 whole-support 对照的完整计数。",
+        "若主张极值来源是必要贡献，需要同容量同协议的实际优势和与极值噪声/边界错误相连的样例证据；若没有，应将其降为实现选择。"
+      ],
+      "positioning": "用定义预测 Mask 边界的真实成员证据，决定回归框与 Mask extent 的逐轴混合。",
+      "disallowed_claims": [
+        "极值来源已独立提升严格指标",
+        "六面概率分布",
+        "不确定性/quality 排名头",
+        "新的 teacher 或候选裁剪",
+        "六独立面系数尚未尝试"
+      ]
+    },
+    {
+      "id": "C",
+      "title": "部署所选且双 Mask 合格的未匹配候选几何补充监督",
+      "novelty_score": 6,
+      "verdict": "PROCEED",
+      "source": "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/deployment_geometry_training_20261012/source_overlay_v2/selected_support_geometry_objective.py",
+      "inference_parameters": 0,
+      "implemented_delta": "每表达只考虑当前原 native-bbs 第一 Query；索引停止梯度。若它不属于任何原 Hungarian 匹配，且 own 与 fused Mask 的训练 GTIoU 均严格大于 0.5，则对其最终框增加原生 L1/GIoU 几何损失；原匹配全部排除，C 不改变语义目标或推理分数。",
+      "closest_work": [
+        "MS-DETR",
+        "Co-DETR",
+        "PaQ-DETR",
+        "MDS-DETR",
+        "3DRP-Net",
+        "HYDRA / Queries Knew More Than We Thought"
+      ],
+      "specific_thinness": "“额外正监督/部署候选与训练责任不一致”不能作为宽泛原创；可辩护差异是部署 top-1、双支持资格、保护所有原匹配及仅补最终几何的组合。若收益仅等于一般额外 box loss，这些限制就只是窄启发式，需要收窄论文主张。",
+      "empirical_status": "当前正常 C 训练尚未提供正式评测，效果未知；旧 broad 候选版本冻结头 +3 strict 不等于当前 C 的有效性。C-only 的源码责任差异不证明 CE/contrast 梯度冲突或训练失败原因。",
+      "evidence_needed": [
+        "先读取已在进行的 C/关闭 C 正常同条件对照的正式同 9508 终点，并区分相对该 control 的收益与相对保留父模型的新收益；本审查不查询或修改训练。",
+        "以保存的训练资格/角色记录解释 C 覆盖了哪些原未匹配候选；若声称解决几何监督错位，需显示这些候选的定位改善，而不只整体微小差值。",
+        "若要强调 top-1/双 Mask 资格的必要性，才需要同额外监督预算的针对性证据；不据本报告扩展正在运行的试验。"
+      ],
+      "positioning": "为原部署规则选中、具备双 Mask 支持但未获原匹配的候选补上有限几何责任。",
+      "disallowed_claims": [
+        "首次一对多监督",
+        "重新匹配 Hungarian",
+        "C 重写 CE/NCE 标签",
+        "C 使用最终 BoxIoU 资格",
+        "C 已经有正常训练增益",
+        "C 已消除梯度冲突"
+      ]
+    }
+  ],
+  "closest_work": [
+    {
+      "id": "PV-Ground",
+      "year": 2026,
+      "venue": "CVPR 2026",
+      "url": "https://github.com/AaNnWwTt/PV-Ground",
+      "method_url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Shang_PV-Ground_Text-Guided_Point-Voxel_Interaction_for_3D_Visual_Grounding_CVPR_2026_paper.pdf",
+      "overlap": "PVI/VSA 多尺度点—体素特征及 TGS；§3.4 明确采用 MCLN 解码器、多任务预测头，并指向其损失设计。",
+      "delta": "A/B/C 均位于现有特征与候选体系之上；不能把原多尺度或 TGS 再算创新。",
+      "read_scope": "已核验本地作者/CVF 主论文 PDF 的题名、六位作者和 Open Access 水印；阅读摘要、§3.1–3.4、图 2–3 的方法正文。渲染查看第 1、4、6 页，未将旧第三方摘要当正文，也不宣称逐页通读所有实验和附录。",
+      "local_pdf": "C:/Users/gb/.codex/tmp/pvground_novelty_20261009/PV-Ground.pdf",
+      "local_pdf_sha256": "ad96d075ca310f5cc48d875074cf5dc6af594938904811be3d734df0416287d2"
+    },
+    {
+      "id": "MCLN",
+      "year": 2024,
+      "venue": "arXiv v1（本轮使用版本）",
+      "url": "https://arxiv.org/html/2407.05363v1",
+      "overlap": "RSA、REC/RES 分支、ASA 与自适应 Text/Query Mask 融合。",
+      "delta": "A 只增加融合前候选—成员残差；B 再作用于最终框坐标；这些增量才是审查对象。",
+      "read_scope": "摘要、相关工作、§3.1–3.4，尤其式 8–17。"
+    },
+    {
+      "id": "3DRefTR",
+      "year": 2023,
+      "venue": "arXiv v2（本轮使用版本）",
+      "url": "https://arxiv.org/pdf/2308.11887",
+      "overlap": "复用 REC Query 和 superpoint 特征产生候选 Mask，并联合 REC/RES。",
+      "delta": "复用 Query/支持特征不是 A 的新增点；A 的状态条件残差及 B/C 接口不同。",
+      "read_scope": "摘要及 PDF §3.2–3.5。"
+    },
+    {
+      "id": "Mask DINO",
+      "year": 2022,
+      "venue": "arXiv v3（CVPR 2023 方法）",
+      "url": "https://arxiv.org/html/2206.02777v3",
+      "overlap": "Mask 生成更好的 box 初始化；class/box/mask 联合匹配。",
+      "delta": "B 在输出端做来源条件的逐轴两框混合；C 保留原匹配。把 matcher 改成 own-mask 本身无首创性。",
+      "read_scope": "摘要、§3.3–3.5 与 hybrid matching 方法段。"
+    },
+    {
+      "id": "RefineMask",
+      "year": 2021,
+      "venue": "arXiv v1（CVPR 2021 方法）",
+      "url": "https://arxiv.org/html/2104.08569v1",
+      "overlap": "用实例/语义特征和已有 Mask 多阶段细化边界。",
+      "delta": "A 在原 superpoint 粒度，用 Text/own Mask 状态修正候选 logit；当前没有多分辨率或边界专属细化。",
+      "read_scope": "摘要、§3.1–3.3。"
+    },
+    {
+      "id": "Not Every Side Is Equal",
+      "year": 2023,
+      "venue": "ICCV 2023",
+      "url": "https://arxiv.org/html/2312.10390",
+      "overlap": "六面几何证据、SoI pooling、面位置分布与质量估计。",
+      "delta": "B 选真正达到预测极值的成员（保留全部并列者），再按轴混合两框；无六面分布、质量头或 teacher。",
+      "read_scope": "摘要、相关工作、§3.1–3.3，尤其式 1–5。"
+    },
+    {
+      "id": "D-FINE",
+      "year": 2024,
+      "venue": "arXiv v1（本轮使用版本）",
+      "url": "https://arxiv.org/html/2410.13842v1",
+      "overlap": "边界分布残差细化和定位自蒸馏。",
+      "delta": "当前 B 仅三个有界混合系数；当前 A 的 logit residual 不是边界坐标分布。",
+      "read_scope": "摘要、§4.1–4.2 方法描述与式 2–4。"
+    },
+    {
+      "id": "MS-DETR",
+      "year": 2024,
+      "venue": "arXiv v1（CVPR 2024 方法）",
+      "url": "https://arxiv.org/html/2401.03989v1",
+      "overlap": "同一解码器 Query 的额外一对多监督，按分类与 box IoU 选正样本。",
+      "delta": "C 仅给 native-bbs 第一且原未匹配、双 Mask 合格的一项最终几何损失，排除原匹配项。",
+      "read_scope": "§3.1–3.3，式 3–4 与 matching score/top-K 定义。"
+    },
+    {
+      "id": "Co-DETR",
+      "year": 2022,
+      "venue": "arXiv v6（ICCV 2023 方法）",
+      "url": "https://arxiv.org/html/2211.12860v6",
+      "overlap": "辅助一对多头和定制正 Query 增强训练监督。",
+      "delta": "C 不引入辅助预测头或新 Query；只改变现有部署候选的几何责任。",
+      "read_scope": "§3.2–3.3，尤其定制正 Query 生成与辅助监督。"
+    },
+    {
+      "id": "3DRP-Net",
+      "year": 2023,
+      "venue": "EMNLP 2023",
+      "url": "https://aclanthology.org/2023.emnlp-main.656.pdf",
+      "overlap": "方向关系注意力；以 BoxIoU 排名构造 referring-score 软标签。",
+      "delta": "C 不改分数标签，也不用最终 BoxIoU 准入；不是该软标签策略的复述。",
+      "read_scope": "PDF 摘要、相关工作、§3.2–3.4，§4 的 Nr3D/Sr3D 协议说明。"
+    },
+    {
+      "id": "From Alignment to Fusion in 3D Vision-Language",
+      "year": 2026,
+      "venue": "arXiv 2609.28222",
+      "url": "https://arxiv.org/html/2609.28222",
+      "overlap": "对齐后融合、多表示协作；最新相近任务工作。",
+      "delta": "它对图像/点/体素特征做正交映射和全局可学习权重；不是候选 Mask 残差或极值框混合。",
+      "read_scope": "摘要、§IV-B–IV-C；式 16–19 及权重非输入依赖的明确说明。"
+    },
+    {
+      "id": "PaQ-DETR",
+      "year": 2026,
+      "venue": "arXiv 2603.06917",
+      "url": "https://arxiv.org/html/2603.06917",
+      "overlap": "质量条件的一对多正样本数量与选择；终层保留一对一。",
+      "delta": "它按 box IoU/分类置信度在中间层扩展监督；C 在最终部署 Query 上用双 Mask 资格，几何单项补充。",
+      "read_scope": "摘要、相关工作、§3.3–3.4，式 6–7。"
+    },
+    {
+      "id": "MDS-DETR",
+      "year": 2026,
+      "venue": "arXiv 2605.23507",
+      "url": "https://arxiv.org/html/2605.23507",
+      "overlap": "单解码器一对多/一对一监督及按置信度排序。",
+      "delta": "它以置信因果 Mask 自注意力抑制重复；C 没有此结构或新增排序模块。",
+      "read_scope": "摘要、相关工作、§III-C、§IV-A–IV-B 及训练目标。"
+    },
+    {
+      "id": "HYDRA / Queries Knew More Than We Thought",
+      "year": 2026,
+      "venue": "arXiv 2609.20283",
+      "url": "https://arxiv.org/html/2609.20283",
+      "overlap": "指出候选池与部署选择间的缺口，使用 Mask 状态/几何等候选特征。",
+      "delta": "它学习冻结候选 selector 并校准替换动作；A 改 Mask，B 改坐标，C 保留原 bbs 只补训练几何。",
+      "read_scope": "§2、§4.1–4.3；索引日期与编号月份不完全一致，仅按已公开当前版本纳入，不推断优先权。"
+    },
+    {
+      "id": "Detector-Augmented SAMURAI",
+      "year": 2026,
+      "venue": "WACV 2026 Workshop",
+      "url": "https://openaccess.thecvf.com/content/WACV2026W/RWS/papers/Lenhard_Detector-Augmented_SAMURAI_for_Long-Duration_Drone_Tracking_WACVW_2026_paper.pdf",
+      "overlap": "融合检测框和 Mask 派生框以校正输出。",
+      "delta": "该方法采用追踪/检测条件整合；没有证据表明它含 B 的真实极值成员编码及逐轴学习混合。",
+      "read_scope": "作者论文被索引的 §3.2 方法段；直接 PDF 打开失败，仅作宽泛框融合已有先例。"
+    }
+  ],
+  "baseline_boundary": {
+    "scientific_baseline": "PV-Ground",
+    "modified_start": "PV-Ground + 历史 G task-observation reader 及其既有监督；不是 original PV baseline",
+    "inherited_not_new": [
+      "PVI/VSA 六来源多尺度特征",
+      "TGS",
+      "MCLN RSA/ASA",
+      "REC/RES 协作",
+      "Text/own Query Mask 自适应融合"
+    ],
+    "normal_training": "原可训练 core/G/backbone/A/B 联合训练，RoBERTa 按原策略冻结",
+    "geometry_reference": "硬阈值预测成员的 min/max，停止梯度；无效/退化支持沿用既有 native prior，非新机制"
+  },
+  "empirical_evidence": {
+    "provenance": "父级提供冻结父模型保存正式端点的独立 CPU 复算；本审查校核算术但未重读预测文件或运行模型",
+    "rows": 9508,
+    "seed": 2027,
+    "ensembles": false,
+    "endpoints": [
+      [
+        "native_regression_endpoint_of_modified_parent",
+        5615,
+        4495
+      ],
+      [
+        "corrected_fused_mask_endpoint",
+        5606,
+        4881
+      ],
+      [
+        "fixed_50_50",
+        5675,
+        4857
+      ],
+      [
+        "whole_support_same_capacity",
+        5676,
+        4921
+      ],
+      [
+        "extremal_support",
+        5677,
+        4920
+      ]
+    ],
+    "retained_hits": [
+      5677,
+      4920
+    ],
+    "retained_percent": [
+      59.7076146403029,
+      51.74589819099705
+    ],
+    "target_hits": [
+      5705,
+      4945
+    ],
+    "gap_hits": [
+      28,
+      25
+    ],
+    "goal_met": false,
+    "extremal_minus_whole_hits": [
+      1,
+      -1
+    ],
+    "extremal_minus_fixed_hits": [
+      2,
+      63
+    ],
+    "six_independent_face_trial_strict": [
+      4920,
+      4599,
+      4625,
+      4476
+    ],
+    "normal_control_strict": [
+      4920,
+      4620,
+      4596
+    ],
+    "current_C_normal_formal_result": null,
+    "old_broad_C_frozen_head_strict_gain": 3,
+    "no_causal_failure_claim": true
+  },
+  "source_interface": {
+    "current_R4_matcher": "pred_masks 为跨 256 Query 广播的 Text Mask；同 scene/GT 列的 mask cost 对候选行相同。class/GIoU 仍因 Query 而变。",
+    "own_mask_training": "sp_pred_masks 单独进入原 mask losses；A 写回该张量，因此不能说 Query Mask 未训练。",
+    "mask_cost": 0.0002,
+    "matcher_costs": {
+      "class": 1,
+      "bbox": 0,
+      "giou": 2
+    },
+    "C_all_matched_protected": true,
+    "C_has_final_box_iou_eligibility": false,
+    "C_geometry_loss": "(10 * [中心 L1 + 0.5 尺寸 L1] + 2 * GIoU loss) / 7，按实际 batch size 归一化",
+    "existing_G": "原未匹配且最终 BoxIoU > .5 时替换 last CE 的 no-object 项，保留 eos 权重；原 contrast 仍 not-mentioned。C 本身不消除该差异。",
+    "current_runtime_gradient_conflict_measured": false,
+    "current_runtime_cost_matrix_measured": false,
+    "hypothetical_opportunity": "仅可将匹配/语义/对比/几何责任的条件一致性作为待诊断问题；尚无新增统一分配机制或因果证据，不计作第四贡献。"
+  },
+  "historical_matcher_check": {
+    "currently_enabled": false,
+    "historically_attempted": true,
+    "date": "2026-10-11",
+    "archived_modes": [
+      "text",
+      "query"
+    ],
+    "same_augmented_batches_per_mode": 2,
+    "rows_per_mode": 16,
+    "updates_per_mode": 2,
+    "independent_input_rows": 16,
+    "changed_gt_pairs_per_step": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "all_observed_rows_single_GT": true,
+    "cost_values_changed": true,
+    "full_formal_training_started": false,
+    "formal_accuracy": null,
+    "scope_limit": "有限真实输入/更新检查；不证明全数据无收益，不是未试机会，也不证明当前 C 的效果。",
+    "evidence": [
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/terminal_matcher_closeout_publication_20261011.json",
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/terminal_matcher_closeout_20261011/MATCHER_PAIR_ANALYSIS.json",
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/terminal_matcher_closeout_20261011/MATCHER_TEXT_RECEIPT.json",
+      "C:/Users/gb/.codex/tmp/pvground_native_joint_training_20261009/native_joint_v2/terminal_matcher_closeout_20261011/MATCHER_QUERY_RECEIPT.json"
+    ]
+  },
+  "native_protocols": {
+    "ScanRefer_goal_complete": false,
+    "Nr3D_Sr3D_independent_training_complete": false,
+    "scope_note": "ScanRefer/Nr3D/Sr3D 是既有基准组合，本身不构成新颖性。初始化、G/C 当前显式 ScanRefer 断言及各数据集原生标签/系数差异表明不能仅改 dataset 名称就宣称同完整架构已在 Nr3D/Sr3D 验证。",
+    "multi_seed_requested": false
+  },
+  "search": {
+    "primary_sources_only_for_substantive_prior_art": true,
+    "parent_searches": "父级声明各 claim >=3 改写检索，2024–2026、最近 6 个月、Scholar/Semantic Scholar 索引；四个原始文件已保存并作为上下文查阅。",
+    "reviewer_added": "独立技术关键词补查，arXiv/OpenReview/CVF、PMLR ICML 2025/2026 与 NeurIPS 2025 网页索引；最近 183 天定向检索。",
+    "coverage_limit": "无专用 Scholar/Semantic Scholar 数据库工具；网页索引不是全库穷举，未检出不等于绝对不存在。",
+    "recent_window": [
+      "2026-04-13",
+      "2026-10-13"
+    ],
+    "raw_file": "REVIEWER_PRIMARY_SEARCH_RAW.json",
+    "additional_recent_neighbors": [
+      "PaQ-DETR",
+      "MDS-DETR",
+      "HYDRA",
+      "From Alignment to Fusion in 3D Vision-Language"
+    ],
+    "triaged_not_claimed_overlap": [
+      "AmbiRefer3D 关注语言指代歧义任务；未因同任务关键词判重复。",
+      "2D/医学/追踪中的一般残差或融合，仅在方法层相关时纳入，不借主题相近否决。"
+    ],
+    "PV_primary_PDF_method_verified": true,
+    "PV_PDF_read_scope": "已核验本地作者/CVF 主论文 PDF 的题名、六位作者和 Open Access 水印；阅读摘要、§3.1–3.4、图 2–3 的方法正文。渲染查看第 1、4、6 页，未将旧第三方摘要当正文，也不宣称逐页通读所有实验和附录。",
+    "PV_original_PDF": {
+      "path": "C:/Users/gb/.codex/tmp/pvground_novelty_20261009/PV-Ground.pdf",
+      "sha256": "ad96d075ca310f5cc48d875074cf5dc6af594938904811be3d734df0416287d2",
+      "title": "PV-Ground: Text-Guided Point-Voxel Interaction for 3D Visual Grounding",
+      "authors": [
+        "Junpeng Shang",
+        "Feifei Shao",
+        "Jun Xiao",
+        "Lin Li",
+        "Hongwei Wang",
+        "Dongfang Ma"
+      ],
+      "printed_pages_read": [
+        38657,
+        38660,
+        38661,
+        38662
+      ]
+    },
+    "raw_files": [
+      "RECENT_SEARCH_RAW.txt",
+      "PRIMARY_PAPERS_RAW.txt",
+      "TARGETED_PRIMARY_RAW.txt",
+      "DATABASE_RECENT_RAW.txt",
+      "REVIEWER_PRIMARY_SEARCH_RAW.json",
+      "REVIEWER_PRIMARY_SEARCH_ADDITIONAL_RAW.json"
+    ]
+  },
+  "suggested_positioning": "在 PV-Ground 及明确披露的历史 G 起点上，研究融合前候选 Mask 校正、真实极值来源驱动的逐轴框混合，以及部署所选未匹配候选的有限几何监督，保持原候选池与 bbs 规则，并检验各自实际作用。",
+  "non_actions": {
+    "SSH": 0,
+    "GPU_calls": 0,
+    "neural_forwards": 0,
+    "training_status_queries": 0,
+    "source_edits": 0,
+    "checkpoint_mutations": 0,
+    "new_training_runs": 0
+  },
+  "limitations": [
+    "机制新颖性通过早期门槛，不等于三项已独立有效，不是性能承诺。",
+    "当前 C 的运行状态和全部正式计数按任务提供的时间截面；没有实时状态核验。",
+    "本次是同模型家族的全新上下文审查，实际 model/effort 无 attestation。",
+    "报告不授权额外试验，不要求多 seed，不将历史负结果改写为新提案。"
+  ],
+  "historical_reference_preservation": {
+    "source": "父级补充消息援引主交接文档 §20.376.92；本审查未独立调取其全部结果收据。",
+    "lambda": [
+      0,
+      1
+    ],
+    "formal_hits_both": [
+      5593,
+      4832
+    ],
+    "starting_hits": [
+      5598,
+      4848
+    ],
+    "scope": "不同于当前 A/B/C；仅用于排除将普通参考保持/退化惩罚重新称作未试方向。"
+  },
+  "source_manifest": "REVIEW_SOURCE_MANIFEST.json"
+}

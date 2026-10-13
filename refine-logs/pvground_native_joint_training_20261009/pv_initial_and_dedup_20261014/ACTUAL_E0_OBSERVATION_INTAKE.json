@@ -1,0 +1,131 @@
+{
+  "observed_cst": "2026-10-14T03:20:49.600024+08:00",
+  "stage": "lower_span_lr",
+  "root": "/root/autodl-tmp/pvground_span_lr_20261013/normal/lower_span_lr",
+  "controller_pid": 432868,
+  "controller_alive": true,
+  "child_alive": true,
+  "remote_status": {
+    "status": "running",
+    "phase": "native_normal_training",
+    "arm": "lower_span_lr",
+    "started_cst": "2026-10-14T02:35:36.414595+08:00",
+    "max_epochs": 8,
+    "patience": 2,
+    "actual_metrics": null,
+    "preflight_states_used": false,
+    "child_pid": 432871,
+    "child_argv": [
+      "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+      "-B",
+      "-u",
+      "/root/autodl-tmp/pvground_span_lr_20261013/PV-Ground/train_dist_mod.py",
+      "--model",
+      "PVGround",
+      "--dataset",
+      "scanrefer",
+      "--test_dataset",
+      "scanrefer",
+      "--data_root",
+      "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+      "--use_color",
+      "--use_soft_token_loss",
+      "--use_contrastive_align",
+      "--self_attend",
+      "--butd",
+      "--rng_seed",
+      "2027",
+      "--batch_size",
+      "8",
+      "--num_workers",
+      "4",
+      "--num_target",
+      "256",
+      "--num_decoder_layers",
+      "6",
+      "--num_encoder_layers",
+      "3",
+      "--self_position_embedding",
+      "loc_learned",
+      "--lr",
+      "1e-6",
+      "--lr_backbone",
+      "1e-6",
+      "--lr_modules",
+      "1e-5",
+      "--weight_decay",
+      "0.0005",
+      "--clip_norm",
+      "0.1",
+      "--max_epoch",
+      "8",
+      "--start_epoch",
+      "1",
+      "--val_freq",
+      "1",
+      "--lr-scheduler",
+      "step",
+      "--lr_decay_epochs",
+      "280",
+      "340",
+      "--warmup-epoch",
+      "-1",
+      "--lr_span",
+      "1e-6",
+      "--native_init_spec",
+      "/root/autodl-tmp/pvground_span_lr_20261013/initialization_reference.json",
+      "--log_dir",
+      "/root/autodl-tmp/pvground_span_lr_20261013/normal/lower_span_lr/logs",
+      "--exp",
+      "lower_span_lr",
+      "--print_freq",
+      "128"
+    ]
+  },
+  "files": [
+    {
+      "name": "normal_status.json",
+      "bytes": 1631,
+      "sha256": "f1263593551329c967de70c5f09cc1ede29380e8cb6eba9f50dfe678af2486da"
+    },
+    {
+      "name": "admission.json",
+      "bytes": 58343,
+      "sha256": "05704a5d5c5bcc60a4c3b9b291146c22549be6ed04211b2a6b65ebe4fad7a9e0"
+    },
+    {
+      "name": "logs/scanrefer/lower_span_lr/1791916546/native_diagnostic_epoch000.json",
+      "bytes": 1418,
+      "sha256": "54c18a7028bb4740a15eada9dc62355852c9ac8a1ccbc3b10285bb6a075f46e5"
+    },
+    {
+      "name": "logs/scanrefer/lower_span_lr/1791916546/native_metrics.jsonl",
+      "bytes": 119,
+      "sha256": "6ac44cde3118796ed70b1d8a9c0e564eab3bcf5785383b508051e6cbc6cc0914"
+    },
+    {
+      "name": "protocol.json",
+      "bytes": 3002,
+      "sha256": "37efed4a6a2939d534cb01b9dd6a88736d05a771e3064a0e3b82dd7616872444"
+    }
+  ],
+  "tails": [
+    {
+      "name": "controller.log",
+      "total_bytes": 0
+    },
+    {
+      "name": "train.log",
+      "total_bytes": 74532
+    }
+  ],
+  "receipts": {},
+  "weights": [],
+  "new_neural_forwards": 0,
+  "new_GPU_queries": 0,
+  "new_optimizer_updates": 0,
+  "first_due_cst": "2026-10-14T03:20:37.603958+08:00",
+  "actual_weights_loaded": false,
+  "best_promoted": false,
+  "full_goal_complete": false
+}

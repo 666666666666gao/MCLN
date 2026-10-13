@@ -1,0 +1,184 @@
+{
+  "status": "LOWER_B_LR_NORMAL_E0_VERIFIED_FIRST_TRAINING_EPOCH_RUNNING",
+  "recorded_cst": "2026-10-14T03:23:21.156630+08:00",
+  "normal_started_cst": "2026-10-14T02:35:36.414595+08:00",
+  "actual_process_witness_cst": "2026-10-14T03:20:49.600024+08:00",
+  "controller_pid": 432868,
+  "child_pid": 432871,
+  "GPU_memory_used_MiB": 7523,
+  "GPU_memory_scope": "whole_device_not_per_process",
+  "NVML_compute_records": [
+    "17427, 7506"
+  ],
+  "child_nvidia_device_fds": [
+    "/dev/nvidia-uvm",
+    "/dev/nvidia4",
+    "/dev/nvidiactl"
+  ],
+  "child_NVIDIA_device_opened": true,
+  "CUDA_logical_device": "0",
+  "observed_actual_NVIDIA_device_node": "/dev/nvidia4",
+  "NVML_host_PID_not_directly_compared_to_container_PID": true,
+  "CUDA_forward_not_independently_replayed": true,
+  "model_source": "/root/autodl-tmp/pvground_span_lr_20261013/PV-Ground",
+  "learning_rates": {
+    "core": 1e-06,
+    "backbone": 1e-06,
+    "A": 1e-05,
+    "B": 1e-06
+  },
+  "seed": 2027,
+  "batch_size": 8,
+  "accumulation": 1,
+  "effective_batch_size": 8,
+  "max_epochs": 8,
+  "stop_patience": 2,
+  "stop_rule": "Two successive epochwise Acc050 decreases; E0 included; equality/increase resets",
+  "full_train_dataset_rows": 36665,
+  "normal_updates_per_complete_epoch": 4583,
+  "formal_rows": 9508,
+  "primary_score": "last/bbs",
+  "candidate_count": 256,
+  "fresh_common_initialization": true,
+  "fresh_optimizer": true,
+  "preflight_states_used": false,
+  "original_core_G_backbone_A_B_trainable": true,
+  "roberta_frozen": true,
+  "latest_complete_historical_best_hits": [
+    5677,
+    4920
+  ],
+  "target_hits": [
+    5705,
+    4945
+  ],
+  "current_arm_E0_complete_metrics": {
+    "epoch": 0,
+    "rows": 9508,
+    "hits025": 5677,
+    "hits050": 4920,
+    "primary_score": "last/bbs",
+    "same_complete_model": true
+  },
+  "current_arm_trained_formal_metrics": null,
+  "actual_pair_updates": 4,
+  "actual_pair_scope": "Two real batches per arm; engineering only; same-process recovery",
+  "current_arm_independent_gain_established": false,
+  "hyperparameter_tuning_is_not_innovation": true,
+  "observer_pid": 26676,
+  "observer_native_session_id": 11018,
+  "next_observation_cst": "2026-10-14T08:15:00+08:00",
+  "first_observation_estimate": "Native initialization plus complete E0 historically takes around45min; observe at40min",
+  "subsequent_poll_seconds": 240,
+  "no_progress_queries_before_due": true,
+  "consumed_original_startup_native_session_id": 54854,
+  "consumed_original_startup_exit_code": 1,
+  "consumed_startup_retry_native_session_id": 87102,
+  "consumed_startup_retry_exit_code": 1,
+  "consumed_process_device_observation_native_session_id": 18250,
+  "consumed_process_device_observation_exit_code": 0,
+  "preflight_DNS255_failure_preserved": true,
+  "neural_training_restart": false,
+  "own_removed_weight_bytes": 3140053224,
+  "unique_best_and_required_dependencies_preserved": true,
+  "source_review_scope": "SOURCE_ONLY PASS; same-family provisional; actual model/effort UNATTESTED",
+  "actual_pair_review_scope": "Scoped engineering PASS; overall WARN; actual model/effort UNATTESTED",
+  "launch_sha256": "bdb6afa5ca9056cb0f09e9484497f893626cb9ca20f35049ff03eb5ab499384a",
+  "process_witness_sha256": "8b76cabe1adc0936baa38996989f4a55f0a203f3cf67c4afe0fe53db6b6a91ce",
+  "observer_owner_sha256": "6f969e198b115a1458f5045a4bbe43c3b2735591f70f9e52ebcc863b7cdedcc1",
+  "full_goal_complete": false,
+  "current_arm_E0_accuracy_percent": [
+    59.7076146403029,
+    51.74589819099705
+  ],
+  "complete_formal_hits_match_historical_E0": true,
+  "initial_output_bitwise_identity_established": false,
+  "current_training_epoch": 1,
+  "observed_training_batches": 35,
+  "observed_training_elapsed_seconds": 151,
+  "batch_counter_is_not_cold_optimizer_state_audit": true,
+  "complete_e0_diagnostic": {
+    "epoch": 0,
+    "rows": 9508,
+    "primary_score": "last/bbs",
+    "candidates_per_expression": 256,
+    "GT_used_only_in_diagnostics": true,
+    "new_neural_forwards": 0,
+    "answers_changed": false,
+    "losses_changed": false,
+    "025": {
+      "hits": 5677,
+      "full256_covered": 8970,
+      "errors_with_qualified_candidate": 3293,
+      "no_qualified_candidate": 538,
+      "final_vs_native_repairs": 158,
+      "final_vs_native_breaks": 96,
+      "final_vs_mask_endpoint_repairs": 87,
+      "final_vs_mask_endpoint_breaks": 16
+    },
+    "050": {
+      "hits": 4920,
+      "full256_covered": 8234,
+      "errors_with_qualified_candidate": 3314,
+      "no_qualified_candidate": 1274,
+      "final_vs_native_repairs": 686,
+      "final_vs_native_breaks": 261,
+      "final_vs_mask_endpoint_repairs": 103,
+      "final_vs_mask_endpoint_breaks": 64
+    },
+    "selected_own_and_fused_support_qualified": 5114,
+    "span_raw_gate_observation": {
+      "scope": "Actual existing forward tensors; no reranking or task-gradient estimate.",
+      "all_query_axes": 7302144,
+      "raw_below_zero_by_axis": [
+        198203,
+        211220,
+        167258
+      ],
+      "raw_above_one_by_axis": [
+        0,
+        0,
+        0
+      ],
+      "selected_raw_outside_range_axes": 6,
+      "selected_identical_endpoint_axes": 129
+    },
+    "row_file": "native_rows_epoch000.jsonl",
+    "row_file_bytes": 14953751,
+    "row_file_sha256": "004145a677f56a3d12be84b781e608dcee40e71b88c366d532c3f17d52174a1a"
+  },
+  "selected_raw_outside_range_fraction": 0.00021034917963819942,
+  "raw_gate_counts_do_not_prove_clamp_caused_training_failure": true,
+  "current_observation_intake_sha256": "4aaf64bf1ed15ae86f39ac953389e5e60535ce8b5a9e587eb11365d8ed363056",
+  "current_observation_files": {
+    "normal_status.json": {
+      "bytes": 1631,
+      "sha256": "f1263593551329c967de70c5f09cc1ede29380e8cb6eba9f50dfe678af2486da"
+    },
+    "admission.json": {
+      "bytes": 58343,
+      "sha256": "05704a5d5c5bcc60a4c3b9b291146c22549be6ed04211b2a6b65ebe4fad7a9e0"
+    },
+    "logs/scanrefer/lower_span_lr/1791916546/native_diagnostic_epoch000.json": {
+      "bytes": 1418,
+      "sha256": "54c18a7028bb4740a15eada9dc62355852c9ac8a1ccbc3b10285bb6a075f46e5"
+    },
+    "logs/scanrefer/lower_span_lr/1791916546/native_metrics.jsonl": {
+      "bytes": 119,
+      "sha256": "6ac44cde3118796ed70b1d8a9c0e564eab3bcf5785383b508051e6cbc6cc0914"
+    },
+    "protocol.json": {
+      "bytes": 3002,
+      "sha256": "37efed4a6a2939d534cb01b9dd6a88736d05a771e3064a0e3b82dd7616872444"
+    }
+  },
+  "current_observation_tail_sha256": "42d678038b84ca7baa395424a2d5b6b041b959a2a46a04fdbded830deab403fc",
+  "consumed_E0_observer_native_session": 12052,
+  "consumed_E0_observer_exit_code": 0,
+  "consumed_E0_observer_functions_cell": "451",
+  "next_observation_estimate": "E1fit+9508formal expected08:00-08:30; one read08:15",
+  "next_observation_basis": "Closed same-normal warm E2 ~3.53sec/update plus~34min formal; new first35 batches include warmup",
+  "startup_receipt_sha256": "1951a481b7b742e46f03cdfd6bd53e2c7f5f4e40045a7105e9d7cc8ebf93c50f",
+  "best_promoted": false,
+  "current_arm_neural_restarts": 0
+}

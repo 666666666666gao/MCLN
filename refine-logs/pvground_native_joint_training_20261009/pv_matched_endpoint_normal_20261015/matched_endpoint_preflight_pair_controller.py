@@ -1,0 +1,96 @@
+"""Under the existing GPU lock, run two fresh native engineering arms serially."""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import time
+
+root = Path(__file__).resolve().parent
+base = root.parent
+admission = json.loads((root / 'admission.json').read_bytes())
+assert admission['status'] == 'MATCHED_ENDPOINT_PREFLIGHT_ADMITTED'
+environment = json.loads(Path('/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/env_spec.json').read_bytes())
+assert hashlib.sha256(json.dumps(environment, sort_keys=True, separators=(',', ':')).encode()).hexdigest() == admission['env_spec_sha256']
+terminal = json.loads(Path('/root/autodl-tmp/pvground_span_lr_20261013/normal/lower_span_lr/normal_status.json').read_bytes())
+assert terminal == admission['prior_strategy_terminal_status']
+assert terminal['status'] == 'complete' and terminal['exit_code'] == 0
+assert not Path('/proc/' + str(admission['prior_strategy_controller_pid'])).exists()
+assert not Path('/proc/' + str(terminal['child_pid'])).exists()
+assert not subprocess.check_output(['nvidia-smi', '--query-compute-apps=pid', '--format=csv,noheader']).decode().strip()
+gpu = subprocess.check_output(['nvidia-smi', '--query-gpu=index,name,memory.used,memory.total', '--format=csv,noheader,nounits']).decode().strip().splitlines()
+assert len(gpu) == 1
+index, name, used, total = [part.strip() for part in gpu[0].split(',')]
+assert index == '0' and 'A100' in name and int(used) < 500 and 40000 <= int(total) <= 45000
+assert shutil.disk_usage(base).free > admission['reserve_bytes']
+for relative, digest in admission['helper_sha256'].items():
+    assert hashlib.sha256((base / relative).read_bytes()).hexdigest() == digest
+stage = json.loads((base / 'source_stage_manifest.json').read_bytes())
+assert stage == admission['source_stage']
+for row in stage['source_files'].values():
+    assert hashlib.sha256(Path(row['path']).read_bytes()).hexdigest() == row['sha256']
+variables = dict(os.environ)
+variables.update(environment['env'])
+variables.update(CUDA_VISIBLE_DEVICES='0', WORLD_SIZE='1', RANK='0', LOCAL_RANK='0',
+                 MASTER_ADDR='127.0.0.1', MASTER_PORT='29680')
+status = dict(status='running', stage='paired_native_engineering',
+    started_cst=datetime.datetime.now().astimezone().isoformat(),
+    formal_accuracy=None, normal_training_started=False, completed_arms=[])
+assert not (root / 'status.json').exists()
+(root / 'status.json').write_text(json.dumps(status, indent=2) + '\n')
+receipts = {}
+started = time.monotonic()
+for arm in ('final_duplicate', 'coarse_endpoint'):
+    arm_root = root / arm
+    assert not arm_root.exists()
+    arm_root.mkdir()
+    protocol_path = base / (arm + '_protocol.json')
+    protocol = json.loads(protocol_path.read_bytes())
+    assert protocol['arm'] == arm and not protocol['GPU_admitted']
+    variables['PYTHONPATH'] = protocol['model_source'] + ':' + environment['env']['PYTHONPATH']
+    command = [admission['runtime'], '-B', '-u', str(base / 'native_matched_endpoint_preflight.py'),
+               '--protocol', str(protocol_path), '--mode', arm, '--output', str(arm_root / 'witness')]
+    with (arm_root / 'preflight.log').open('wb') as stream:
+        child = subprocess.Popen(command, cwd=protocol['model_source'], env=variables,
+                                 stdout=stream, stderr=subprocess.STDOUT)
+        status.update(current_arm=arm, child_pid=child.pid, child_argv=command)
+        (root / 'status.json').write_text(json.dumps(status, indent=2) + '\n')
+        exit_code = child.wait()
+    (arm_root / 'preflight.exit').write_text(str(exit_code) + '\n')
+    if exit_code:
+        status.update(status='failed', exit_code=exit_code,
+                      child_closed_cst=datetime.datetime.now().astimezone().isoformat())
+        (root / 'status.json').write_text(json.dumps(status, indent=2) + '\n')
+    assert exit_code == 0
+    receipt = json.loads((arm_root / 'witness/NATIVE_M0_RECEIPT.json').read_bytes())
+    assert receipt['source_mode'] == arm and receipt['actual_updates'] == 2
+    assert receipt['matched_endpoint'] == protocol['matched_endpoint']
+    assert len(receipt['endpoint_witness']) == 2
+    assert sum(row['direct_gradient_l1'] for row in receipt['endpoint_witness']) > 0
+    assert receipt['actual_input_rows'] == 16 and receipt['real_training_batches'] == 2
+    assert receipt['real_train_dataset_rows'] == 36665 and receipt['real_formal_dataset_rows'] == 9508
+    assert receipt['normal_epoch_updates'] == 4583 and receipt['full_state_tensors'] == 1295
+    assert receipt['full_recovery_exact'] and receipt['saved_retained_metrics'] is None
+    assert receipt['selected_mask_supervision_disabled']
+    assert receipt['selected_geometry_supervision'] == protocol['selected_geometry_supervision']
+    assert receipt['formal_accuracy'] is None and not receipt['preflight_weights_used_for_formal_training']
+    if protocol['selected_geometry_supervision']:
+        assert sum(row['extra_geometry']['extra_rows'] for row in receipt['losses']) > 0
+        assert sum(row['extra_direct_gradient_l1'] for row in receipt['losses']) > 0
+    receipts[arm] = receipt
+    status['completed_arms'].append(arm)
+    (root / 'status.json').write_text(json.dumps(status, indent=2) + '\n')
+assert receipts['final_duplicate']['input_batch_sha256'] == receipts['coarse_endpoint']['input_batch_sha256']
+assert receipts['final_duplicate']['initial_model_state_sha256'] == receipts['coarse_endpoint']['initial_model_state_sha256']
+assert receipts['final_duplicate']['optimizer_group_elements'] == receipts['coarse_endpoint']['optimizer_group_elements']
+assert receipts['final_duplicate']['optimizer_group_lrs'] == receipts['coarse_endpoint']['optimizer_group_lrs']
+assert receipts['final_duplicate']['optimizer_group_lrs'][4] == 1e-6
+status.update(status='complete', exit_code=0,
+    completed_cst=datetime.datetime.now().astimezone().isoformat(), elapsed_seconds=time.monotonic() - started,
+    actual_total_native_updates=4, same_process_recovery_verified=True,
+    same_augmented_inputs_verified=True, same_initial_model_state_verified=True,
+    formal_training_admitted=False)
+(root / 'status.json').write_text(json.dumps(status, indent=2) + '\n')
+print(json.dumps(status), flush=True)

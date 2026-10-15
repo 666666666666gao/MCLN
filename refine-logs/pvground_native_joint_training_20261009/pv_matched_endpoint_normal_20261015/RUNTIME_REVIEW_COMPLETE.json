@@ -1,0 +1,271 @@
+{
+  "status": "PASS_SOURCE_ONLY",
+  "review_complete": true,
+  "written_cst": "2026-10-14T10:41:03.600103+08:00",
+  "reviewer_task": "/root/matched_endpoint_code_review_20261014",
+  "same_secondary_reviewer_continuation": true,
+  "new_independent_reviewer": false,
+  "requested_route": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max"
+  },
+  "actual_route": {
+    "model": "UNATTESTED",
+    "reasoning_effort": "UNATTESTED"
+  },
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "unresolved_blocker_count": 0,
+  "resolved_blocker_count": 1,
+  "resolved_blockers": [
+    {
+      "id": "R1_DIAGNOSTIC_KEYS",
+      "original_status": "FAIL_SOURCE_ONLY",
+      "kind": "source-discovered startup blocker; not actual GPU training failure",
+      "evidence": [
+        "prepare_runtime_r1_key_failure.py:91-92",
+        "runtime_preparation_r1_key_failure/native_matched_endpoint_preflight.py:206-207",
+        "source/models/losses.py:965-966"
+      ],
+      "problem": "R1 read matched_endpoint_kind/pairs; the actual overlay writes matched_endpoint_aux_kind/pairs",
+      "consequence": "KeyError in first observed_loss call before normal backward/optimizer update",
+      "minimal_fix": "Two diagnostic-key substitutions in generator and generated harness",
+      "fixed_evidence": [
+        "prepare_runtime.py:91-92",
+        "runtime_preparation/native_matched_endpoint_preflight.py:206-207",
+        "review_runtime/R1_KEY_FIX.patch"
+      ],
+      "R1_preserved": [
+        "prepare_runtime_r1_key_failure.py",
+        "runtime_preparation_r1_key_failure/"
+      ],
+      "verification": "Both endpoint R1 diagnostic fixtures reproduce the expected KeyError; both corresponding R2 fixtures pass"
+    }
+  ],
+  "inputs_actually_read": [
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_launch_source_20261014_v1\\native_span_lr_preflight.py",
+      "bytes": 16400
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation\\native_matched_endpoint_preflight.py",
+      "bytes": 19498
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation_r1_key_failure\\native_matched_endpoint_preflight.py",
+      "bytes": 19490
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\prepare_runtime.py",
+      "bytes": 9278
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\prepare_runtime_r1_key_failure.py",
+      "bytes": 9270
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_launch_source_20261014_v1\\lower_span_lr_protocol.json",
+      "bytes": 3002
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation\\final_duplicate_protocol.json",
+      "bytes": 2785
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation\\coarse_endpoint_protocol.json",
+      "bytes": 2786
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation\\final_duplicate_matched_endpoint_config.json",
+      "bytes": 22
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation_r1_key_failure\\final_duplicate_protocol.json",
+      "bytes": 2785
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation_r1_key_failure\\final_duplicate_matched_endpoint_config.json",
+      "bytes": 22
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation\\coarse_endpoint_matched_endpoint_config.json",
+      "bytes": 23
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation_r1_key_failure\\coarse_endpoint_protocol.json",
+      "bytes": 2786
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation_r1_key_failure\\coarse_endpoint_matched_endpoint_config.json",
+      "bytes": 23
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation\\initialization_reference.json",
+      "bytes": 1887
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_runtime_staging_20261013_v2\\initialization_reference.json",
+      "bytes": 1887
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation_r1_key_failure\\initialization_reference.json",
+      "bytes": 1887
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation_r1_key_failure\\RUNTIME_PREPARATION.json",
+      "bytes": 1807
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation\\RUNTIME_PREPARATION.json",
+      "bytes": 1807
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_lr_actual_pair_review_20261014\\snapshots\\055_losses.py",
+      "bytes": 42048
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\source\\matched_endpoint_geometry_objective.py",
+      "bytes": 1148
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\source\\matched_endpoint_config.json",
+      "bytes": 23
+    },
+    {
+      "path": "\\\\?\\D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\source\\models\\losses.py",
+      "bytes": 42607
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\SOURCE_PREPARATION.json",
+      "bytes": 1240
+    }
+  ],
+  "prior_review_files_read_only": [
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\EXACT_SOURCE_DIFF.patch",
+      "bytes": 1116
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\EXPERIMENT_CODE_REVIEW.json",
+      "bytes": 7011
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\EXPERIMENT_CODE_REVIEW.md",
+      "bytes": 7264
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\INDEPENDENT_CHECK_ATTEMPT1_SOURCE.py",
+      "bytes": 13281
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\INDEPENDENT_CHECK_NOTES.md",
+      "bytes": 6158
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\INDEPENDENT_CHECK_RESULTS.json",
+      "bytes": 1369
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\independent_source_checks.py",
+      "bytes": 13288
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\MANIFEST.md",
+      "bytes": 1590
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\REVIEW_ATTEMPT_HISTORY.json",
+      "bytes": 2476
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\gb\\.codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\review\\REVIEW_COMPLETE.json",
+      "bytes": 8268
+    }
+  ],
+  "outputs": [
+    "RUNTIME_CODE_REVIEW.md",
+    "RUNTIME_CODE_REVIEW.json",
+    "RUNTIME_CHECK_NOTES.md",
+    "check_runtime_source.py",
+    "RUNTIME_CHECK_RESULTS.json",
+    "RUNTIME_CHANGE.patch",
+    "R1_KEY_FIX.patch",
+    "MANIFEST.md",
+    "RUNTIME_REVIEW_COMPLETE.json"
+  ],
+  "outputs_final_files_inspected": [
+    {
+      "path": "RUNTIME_CODE_REVIEW.md",
+      "bytes": 5595,
+      "final_file_read": true
+    },
+    {
+      "path": "RUNTIME_CODE_REVIEW.json",
+      "bytes": 5221,
+      "final_file_read": true
+    },
+    {
+      "path": "RUNTIME_CHECK_NOTES.md",
+      "bytes": 3167,
+      "final_file_read": true
+    },
+    {
+      "path": "check_runtime_source.py",
+      "bytes": 11723,
+      "final_file_read": true
+    },
+    {
+      "path": "RUNTIME_CHECK_RESULTS.json",
+      "bytes": 9869,
+      "final_file_read": true
+    },
+    {
+      "path": "RUNTIME_CHANGE.patch",
+      "bytes": 7767,
+      "final_file_read": true
+    },
+    {
+      "path": "R1_KEY_FIX.patch",
+      "bytes": 899,
+      "final_file_read": true
+    },
+    {
+      "path": "MANIFEST.md",
+      "bytes": 1164,
+      "final_file_read": true
+    }
+  ],
+  "final_files_inspected_before_marker": true,
+  "marker_written_last": true,
+  "local_validation_native_chunk": "08fc5f",
+  "local_validation_exit_code": 0,
+  "original_review_completion_cst": "2026-10-14T10:28:56.631741+08:00",
+  "sealed_prior_review_unchanged": true,
+  "production_overlay_and_helper_unchanged": true,
+  "source_edits_by_reviewer": 0,
+  "remaining_admission_requirements": [
+    "Authorized owner establishes actual current-run terminal and single-GPU availability under the existing sole observer schedule",
+    "Stage each reviewed source in its separate model_source and install its config as sibling matched_endpoint_config.json before a fresh process imports the helper",
+    "Run actual two-step factory preflights for both arms; compare loaded initial model and real input identities",
+    "Verify real original matching, endpoint/parameter gradients, model/Adam/scheduler/RNG recovery, memory and throughput",
+    "Keep preflight states out of fresh normal runs; retain the planned same recipe and disclose actual training budgets"
+  ],
+  "protected_observer": {
+    "native_session": 60359,
+    "due_cst": "2026-10-14T14:40:00+08:00",
+    "touched_by_reviewer": false
+  },
+  "runtime_harness_executed": false,
+  "real_SetCriterion_executed": false,
+  "real_matcher_executed": false,
+  "PV_or_NN_constructions_or_forwards": 0,
+  "real_dataset_or_checkpoint_payload_reads": 0,
+  "GPU_calls": 0,
+  "optimizer_steps": 0,
+  "server_progress_or_wait_handle_reads": 0,
+  "temperature_or_memory_queries": 0,
+  "current_E2_modified": false,
+  "deployed": false,
+  "GPU_admitted": false,
+  "accuracy_results": null
+}

@@ -1,0 +1,126 @@
+{
+  "status": "PASS_SOURCE_ONLY",
+  "execution_scope": "BOUNDED_GLOBAL_LR_SOURCE_ONLY_REVIEW_R2",
+  "reviewed_cst": "2026-10-17T00:32:00.661183+08:00",
+  "reviewer_task": "/root/bounded_global_lr_source_review_20261017",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model_attestation": "UNATTESTED",
+  "actual_reasoning_effort_attestation": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "unresolved_blocker_count": 0,
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "B1",
+      "discovered_in": "R1",
+      "resolved_in": "R2",
+      "summary": "Old5705/4945 checkpoint priority could discard a new5724/4945-goal model in favor of an old-goal-only higher-strict result.",
+      "resolution": "New immutable source clone changes exactly one native_metric_order comparison5705 to5724; historical sources and all neural/loss code bytes remain unchanged.",
+      "locations": [
+        "source_overlay/main_utils.py:169",
+        "stage_bounded_lr_source.py:37",
+        "SELECTION_TARGET_DIFF.patch"
+      ],
+      "counterexample": {
+        "old_goal_only_hits": [
+          5705,
+          5000
+        ],
+        "new_goal_hits": [
+          5724,
+          4945
+        ]
+      },
+      "R1_evidence": "SOURCE_REVIEW_R1_CHECKS.json",
+      "R1_source_snapshot_available": false,
+      "R1_snapshot_note": "Parent began R2 before source snapshot completed. R1_inputs is empty; historical STATIC_PREPARATION.json and CONTROLLER_DIFF.patch are not a complete R1 source snapshot."
+    }
+  ],
+  "verified_source_sha256": {
+    "launch_bounded_lr.py": "4d7c8086dbb97bd73aa6b99e459b935a5c72349deb477b1b32310c0f0edaa5d9",
+    "normal_bounded_lr_controller.py": "fb445aa282b9ff24dabc5171d9f19e5ae27d188b5966b55b1ee56d60d8ab8a1c",
+    "observe_bounded_lr.py": "e2d147b8fb2c8a5a501a04461cc85950922c5f51e6ba765efeaf89492a904d09",
+    "stage_bounded_lr_source.py": "000c3c0deb2340f21443cdc471a3d80d687d8e32bc83018af365bb3d2d59a3db",
+    "source_overlay/main_utils.py": "8e46bf94fd97f61220d93a341248ecc5cea710abb5be6891e2531cd20f58a2a1",
+    "lr_scale_0p1_protocol.json": "92a12c9b2570685caf8865a861e4ba6d6aa1aa4fb129208803bd88202dcf489c",
+    "lr_scale_0p3_protocol.json": "1e666aed33bd22ead76b800401d92f12ababc0befc25b54914d5500ea5b2d49a"
+  },
+  "other_reviewed_candidate_sha256": {
+    "EXPERIMENT_PLAN.md": "214a81dab64ea178f6432f3d45b7c4f9198a5e4e37086132e27069dc04f6a3b8",
+    "EXPERIMENT_TRACKER.md": "15177b953e3098bb7fdba4c5a63bb831f262d27f55a5b6561314114e80906859",
+    "STATIC_PREPARATION_R2.json": "b98d8e488cbd0682643fe808947410fe225424d419db67ac8665f4c8e8baab82",
+    "CONTROLLER_DIFF_R2.patch": "1d2d543af812533930edebd44c5e7b223ead844dcc1620290eb15c52d21f6f86",
+    "SELECTION_TARGET_DIFF.patch": "e481c3b0742565ee040d1c56e64715226099f03b6e58dbdbdf84931f11fc802b"
+  },
+  "reference_files": [
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\launch_preparation\\normal_matched_endpoint_controller.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\launch_normal_after_preflight.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation\\coarse_endpoint_protocol.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\runtime_preparation\\initialization_reference.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\isolated_source_stage_20261014\\SOURCE_STAGE_RECEIPT.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\normal_pair_review_20261017\\AUDIT_INPUT_PATHS.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\normal_pair_review_20261017\\AUDIT_INPUT_PATHS_R2.json",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\span_learning_rate_20261013\\source_overlay\\main_utils.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v4\\train_dist_mod.py",
+    "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\source_overlay_v2\\native_model_initialization.py"
+  ],
+  "verified_behavior": {
+    "LR_change": "Exactly --lr,--lr_backbone,--lr_modules,--lr_span multiplied by0.1 or0.3; non-LR arguments unchanged.",
+    "recipe": "Full36665 training rows,B8/drop_last36664,4583 loop iterations per epoch,accum1,seed2027,WD0.0005,clip0.1,max8 epochs; unchanged trainable core/G/backbone/A/B and native frozen text encoder.",
+    "initialization": "Same parent native_init_spec and official/G/A/B role inputs; no --checkpoint_path or --frozen argument; fresh optimizer. Initializer checks each role payload against its declared SHA and preserves native trainability.",
+    "source_stage": "Clone exactly120 reviewed coarse files after byte checks. All119 other files remain identical; main_utils.py differs by the one goal-priority threshold only. Parent source remains untouched.",
+    "local_audit_gate": "Requires COMPLETE_MATCHED_ENDPOINT_NORMAL_PAIR, PASS/WARN without blocking_findings, and exact bindings of both actual terminal intakes. Resolved D: paths match corrected R2 input-index keys.",
+    "remote_admission": "Actual remote statuses equal captured complete/exit0 statuses; both original normal controllers/children absent. Controller additionally rechecks lower-span and preflight completion, exact environment/source bytes, single idle A100 GPU0, and free bytes greater than2605151860 under the existing flock.",
+    "no_duplicate_or_restart": "Per-run local launch receipt and remote directory gates; one controller spawn and one native child spawn; no retry/fallback/automatic restart. Scale0.3 is not automatically queued.",
+    "metrics": "Full9508 GT-evaluated last/bbs metrics from one complete model. New native best priority is joint5724/4945 attainment, then hits050, then hits025. E0 included; strict adjacent Acc050 decreases stop after two; equality or rise resets.",
+    "observer": "One scheduled SSH invocation after due time; sleep chunks at most300s, suggested follow-up240s, no NN/GPU calls in remote observer; verified current Windows extended-path transport witness resolution.",
+    "syntax": "Five Python files and three embedded remote scripts parse using Python3.7 grammar. This is a local grammar check, not a remote Python3.7 execution claim."
+  },
+  "validation": {
+    "command": "C:/Users/gb/AppData/Roaming/uv/python/cpython-3.13-windows-x86_64-none/python.exe -B source_review/verify_sources.py",
+    "result": "PASS_STDLIB_SOURCE_FIXTURES",
+    "check_groups": 9,
+    "source_function_cases": {
+      "selection": 5,
+      "strict_declines": 6
+    },
+    "in_memory_gate_rejections": {
+      "normal_pair_audit": 5,
+      "source_staging": 3,
+      "remote_admission": 21
+    },
+    "exact_controller_diff_matches": true,
+    "exact_selection_diff_matches": true,
+    "fixture_results": "SOURCE_FIXTURE_RESULTS.json",
+    "R2_snapshot": "R2_inputs",
+    "fixtures_are_synthetic_not_actual_GPU_evidence": true
+  },
+  "required_before_GPU_launch": [
+    "Independent actual normal-pair EXPERIMENT_AUDIT.json must complete with the required scope and no blocking_findings; absent at this review and not assumed passed.",
+    "Run reviewed source staging, then satisfy actual remote terminal/source/environment/flock/single-GPU/capacity gates.",
+    "Launch only scale0.1 first. Scale0.3 remains prepared-only and is eligible only after the first result fails the target; no automatic launch is provided."
+  ],
+  "required_for_result_interpretation": [
+    "Verify the first actual complete E0 matches retained5677/4920 before interpreting trained changes.",
+    "Audit full new result rows and complete checkpoint, report actual budgets/common epochs and all attempts; disclose new target selection priority versus the historical5705/4945 reference.",
+    "Source-only checks establish no training gain, new module, formal accuracy, cold recovery, or completed research goal."
+  ],
+  "normal_pair_audit": {
+    "path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\pvground_native_joint_training_20261009\\native_joint_v2\\deployment_geometry_training_20261012\\coarse_endpoint_training_20261014\\normal_pair_review_20261017\\EXPERIMENT_AUDIT.json",
+    "state": "REQUIRED_PENDING",
+    "exists_at_review": false,
+    "actual_result_verdict": "NOT_ASSUMED"
+  },
+  "source_stage_executed_by_reviewer": false,
+  "SSH_calls": 0,
+  "new_GPU_calls": 0,
+  "new_neural_forwards": 0,
+  "new_optimizer_updates": 0,
+  "new_training_launches": 0,
+  "imported_torch": false,
+  "formal_accuracy": null,
+  "full_goal_complete": false
+}

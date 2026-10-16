@@ -1,0 +1,159 @@
+{
+  "status": "complete",
+  "phase": "native_normal_training",
+  "arm": "final_duplicate",
+  "matched_endpoint": "final",
+  "started_cst": "2026-10-15T23:23:44.739692+08:00",
+  "max_epochs": 8,
+  "patience": 2,
+  "actual_metrics": [
+    {
+      "epoch": 0,
+      "rows": 9508,
+      "hits025": 5677,
+      "hits050": 4920,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 1,
+      "rows": 9508,
+      "hits025": 5651,
+      "hits050": 4735,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    {
+      "epoch": 2,
+      "rows": 9508,
+      "hits025": 5631,
+      "hits050": 4697,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    }
+  ],
+  "preflight_states_used": false,
+  "child_pid": 741477,
+  "child_argv": [
+    "/root/autodl-tmp/mcln_pvground_runtime_20260908_v1/venv/bin/python",
+    "-B",
+    "-u",
+    "/root/autodl-tmp/pvground_matched_endpoint_20261014/final_duplicate/PV-Ground/train_dist_mod.py",
+    "--model",
+    "PVGround",
+    "--dataset",
+    "scanrefer",
+    "--test_dataset",
+    "scanrefer",
+    "--data_root",
+    "/root/autodl-tmp/DATA_ROOT_mcln_meshsp/",
+    "--use_color",
+    "--use_soft_token_loss",
+    "--use_contrastive_align",
+    "--self_attend",
+    "--butd",
+    "--rng_seed",
+    "2027",
+    "--batch_size",
+    "8",
+    "--num_workers",
+    "4",
+    "--num_target",
+    "256",
+    "--num_decoder_layers",
+    "6",
+    "--num_encoder_layers",
+    "3",
+    "--self_position_embedding",
+    "loc_learned",
+    "--lr",
+    "1e-6",
+    "--lr_backbone",
+    "1e-6",
+    "--lr_modules",
+    "1e-5",
+    "--weight_decay",
+    "0.0005",
+    "--clip_norm",
+    "0.1",
+    "--max_epoch",
+    "8",
+    "--start_epoch",
+    "1",
+    "--val_freq",
+    "1",
+    "--lr-scheduler",
+    "step",
+    "--lr_decay_epochs",
+    "280",
+    "340",
+    "--warmup-epoch",
+    "-1",
+    "--lr_span",
+    "1e-6",
+    "--native_init_spec",
+    "/root/autodl-tmp/pvground_matched_endpoint_20261014/initialization_reference.json",
+    "--log_dir",
+    "/root/autodl-tmp/pvground_matched_endpoint_20261014/normal/final_duplicate/logs",
+    "--exp",
+    "final_duplicate",
+    "--print_freq",
+    "128"
+  ],
+  "completed_cst": "2026-10-16T12:07:04.103527+08:00",
+  "elapsed_seconds": 45799.363744184375,
+  "exit_code": 0,
+  "stop": {
+    "reason": "two_consecutive_strict_declines",
+    "history": [
+      {
+        "epoch": 0,
+        "rows": 9508,
+        "hits025": 5677,
+        "hits050": 4920,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      },
+      {
+        "epoch": 1,
+        "rows": 9508,
+        "hits025": 5651,
+        "hits050": 4735,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      },
+      {
+        "epoch": 2,
+        "rows": 9508,
+        "hits025": 5631,
+        "hits050": 4697,
+        "primary_score": "last/bbs",
+        "same_complete_model": true
+      }
+    ],
+    "retained_metrics": {
+      "rows": 9508,
+      "hits025": 5677,
+      "hits050": 4920,
+      "primary_score": "last/bbs",
+      "same_complete_model": true
+    },
+    "max_epochs": 8,
+    "equality_or_increase_resets": true,
+    "full_goal_complete": false
+  },
+  "weights": [
+    {
+      "path": "/root/autodl-tmp/pvground_matched_endpoint_20261014/normal/final_duplicate/logs/scanrefer/final_duplicate/1792077835/best.pth",
+      "bytes": 615023944
+    },
+    {
+      "path": "/root/autodl-tmp/pvground_matched_endpoint_20261014/normal/final_duplicate/logs/scanrefer/final_duplicate/1792077835/latest.pth",
+      "bytes": 841677152
+    }
+  ],
+  "formal_result_audit_pending": true,
+  "actual_full_checkpoint_cold_recovery_pending": true,
+  "new_result_promoted": false,
+  "full_goal_complete": false
+}

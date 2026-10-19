@@ -1,0 +1,24 @@
+diff --git a/main_utils.py b/main_utils.py
+index 5cd1345..9280049 100644
+--- a/main_utils.py
++++ b/main_utils.py
+@@ -96,6 +96,8 @@ def parse_option():
+                         help='gradient clipping max norm')
+     parser.add_argument('--bn_momentum', type=float, default=0.1)
+     parser.add_argument('--syncbn', action='store_true')
++    parser.add_argument('--freeze_bn', action='store_true',
++                        help='keep BatchNorm running statistics fixed during training')
+     parser.add_argument('--warmup-epoch', type=int, default=-1)
+     parser.add_argument('--warmup-multiplier', type=int, default=100)
+     parser.add_argument('--frozen', action='store_true')
+@@ -467,6 +469,10 @@ class BaseTrainTester:
+             geometry_responsibility = dict(epoch=epoch, batches=0, rows=0, extra_rows=0,
+                 extra_loss_sum=0.0, matched_root=0, matched_other=0, unmatched=0)
+         model.train()  # set model to training mode
++        if args.freeze_bn:
++            for module in model.modules():
++                if isinstance(module, torch.nn.modules.batchnorm._BatchNorm):
++                    module.eval()
+ 
+         # Loop over batches
+         train_loader = tqdm(train_loader, ascii=True)

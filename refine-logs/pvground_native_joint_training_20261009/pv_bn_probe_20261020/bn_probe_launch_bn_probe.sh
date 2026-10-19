@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage: bash scripts/launch_bn_probe.sh <run_name> <extra args...>
-#   lr0:       bash scripts/launch_bn_probe.sh bn_probe_lr0 --lr 0 --lr_backbone 0 --lr_modules 0 --lr_span 0 --max_epoch 1
+#   lr0:       bash scripts/launch_bn_probe.sh bn_probe_lr0 --lr 0 --lr_backbone 0 --lr_modules 0 --lr_span 0   (stop by hand after E1; main() asserts max_epoch == 8)
 #   freeze_bn: bash scripts/launch_bn_probe.sh bn_probe_freeze_0p1 --lr 1e-7 --lr_backbone 1e-7 --lr_modules 1e-6 --lr_span 1e-7 --freeze_bn
 # Same recipe as lr_scale_0p1_retry2; later arguments override earlier ones.
 set -e

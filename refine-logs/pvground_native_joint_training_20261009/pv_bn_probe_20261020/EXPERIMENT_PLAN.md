@@ -20,7 +20,7 @@ E0 rank analysis (`native_rows_epoch000.jsonl`): of 4588 @0.5 errors, 3514 selec
 
 ## Arms (serial, single A100)
 
-1. `bn_probe_lr0`: identical recipe, all LRs 0, one epoch. Parameters cannot move (AdamW decay is lr-scaled). If E1 still loses ~150 @0.5 hits, the drop is BN-statistics drift.
+1. `bn_probe_lr0`: identical recipe, all LRs 0; stopped by hand after the E1 evaluation (the trainer asserts max_epoch == 8). Parameters cannot move (AdamW decay is lr-scaled). If E1 still loses ~150 @0.5 hits, the drop is BN-statistics drift.
 2. `bn_probe_freeze_0p1`: 0.1x recipe with `--freeze_bn`. Tests whether training can then improve on E0 instead of starting ~150 hits below it.
 
 Launch: `bash scripts/launch_bn_probe.sh <run_name> <overrides>`; see the script header. Target unchanged: 5724/4945 on the same complete model.
@@ -28,3 +28,5 @@ Launch: `bash scripts/launch_bn_probe.sh <run_name> <overrides>`; see the script
 ## Status
 
 0.1x run (`lr_scale_0p1_retry2`) E0-E3 metrics: `lr_scale_0p1_retry2_native_metrics_E0_E3.jsonl`. No probe results yet.
+
+2026-10-20 01:04: 0.1x run stopped by user decision during E4 (~25%), its E3 `latest.pth` deleted, E0 `best.pth` and logs kept (`USER_STOP.json`). The first lr0 launch with `--max_epoch 1` hit `assert max_epoch == 8`; relaunched 01:13 (PID 49788) with the default 8 epochs.

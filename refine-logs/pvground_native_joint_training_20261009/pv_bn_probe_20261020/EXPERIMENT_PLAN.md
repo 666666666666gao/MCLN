@@ -39,4 +39,14 @@ Launch: `bash scripts/launch_bn_probe.sh <run_name> <overrides>`; see the script
 | E1 | 5632 | 4749 (-45/-171) |
 | E2 | 5638 | 4766 (-39/-154) |
 
-Checkpoint check (E2 `latest.pth` vs E0 `best.pth`, same run): all 1043 non-BN tensors bit-identical; all 84 BatchNorm layers have changed `running_mean`/`running_var`/`num_batches_tracked`. With weights frozen, BN statistic re-estimation alone reproduces the ~150-170 @0.5 loss seen at every LR scale. The earlier fine-tuning "declines" were therefore not under-training. Stopped 2026-10-20 ~10:20 after E2 (`STOP_RESULT` pending). Next: arm 2 `bn_probe_freeze_0p1` (`--freeze_bn`).
+Checkpoint check (E2 `latest.pth` vs E0 `best.pth`, same run): all 1043 non-BN tensors bit-identical; all 84 BatchNorm layers have changed `running_mean`/`running_var`/`num_batches_tracked`. With weights frozen, BN statistic re-estimation alone reproduces the ~150-170 @0.5 loss seen at every LR scale. The earlier fine-tuning "declines" were therefore not under-training. Stopped 2026-10-20 ~10:20 after E2 (`STOP_RESULT.json` written, both lr0 checkpoints deleted). Next: arm 2 `bn_probe_freeze_0p1` (`--freeze_bn`).
+
+## Arm 2 (freeze_bn, 0.1x) — interim, launched 2026-10-20 10:25 (PID 57399)
+
+| | @0.25 | @0.5 | old 0.1x (BN drifting) |
+|---|---:|---:|---:|
+| E0 | 5677 | 4920 | 5677/4920 |
+| E1 | 5678 | 4884 | 5653/4759 |
+| E2 | 5674 | 4888 | 5649/4760 |
+
+Freezing BN removes most of the loss (+25/+125 over the drifting run at E1), but @0.5 is still 32-36 below E0, so the weight updates themselves cost a little strict localization. E3 in progress.

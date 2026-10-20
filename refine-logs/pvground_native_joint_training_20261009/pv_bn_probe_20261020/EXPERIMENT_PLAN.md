@@ -30,3 +30,13 @@ Launch: `bash scripts/launch_bn_probe.sh <run_name> <overrides>`; see the script
 0.1x run (`lr_scale_0p1_retry2`) E0-E3 metrics: `lr_scale_0p1_retry2_native_metrics_E0_E3.jsonl`. No probe results yet.
 
 2026-10-20 01:04: 0.1x run stopped by user decision during E4 (~25%), its E3 `latest.pth` deleted, E0 `best.pth` and logs kept (`USER_STOP.json`). The first lr0 launch with `--max_epoch 1` hit `assert max_epoch == 8`; relaunched 01:13 (PID 49788) with the default 8 epochs.
+
+## Result: arm 1 (lr0) — BN running statistics cause the drop
+
+| lr0, all LRs 0 | @0.25 | @0.5 |
+|---|---:|---:|
+| E0 | 5677 | 4920 (exact reproduction) |
+| E1 | 5632 | 4749 (-45/-171) |
+| E2 | 5638 | 4766 (-39/-154) |
+
+Checkpoint check (E2 `latest.pth` vs E0 `best.pth`, same run): all 1043 non-BN tensors bit-identical; all 84 BatchNorm layers have changed `running_mean`/`running_var`/`num_batches_tracked`. With weights frozen, BN statistic re-estimation alone reproduces the ~150-170 @0.5 loss seen at every LR scale. The earlier fine-tuning "declines" were therefore not under-training. Stopped 2026-10-20 ~10:20 after E2 (`STOP_RESULT` pending). Next: arm 2 `bn_probe_freeze_0p1` (`--freeze_bn`).

@@ -1,0 +1,84 @@
+{
+  "addon_source": "/root/autodl-tmp/mcln_reference_memory_train_20260905_v1",
+  "census": {
+    "fit": {
+      "identity_sha256": "428529560b2448b703b93d0ddf8f0189d67926f08af37d950c81fa62e8c5cb0e",
+      "rows": 26747,
+      "scenes": 413
+    },
+    "holdout": {
+      "identity_sha256": "9779029dda18400db707833707835d6146c0f7978bff9ec5f3abebfa79562256",
+      "rows": 6172,
+      "scenes": 98
+    }
+  },
+  "contract": {
+    "arms": {
+      "object_global": {
+        "memory": "object",
+        "readout": "global"
+      },
+      "object_pair": {
+        "memory": "object",
+        "readout": "pair"
+      },
+      "query_global": {
+        "memory": "query",
+        "readout": "global"
+      },
+      "query_pair": {
+        "memory": "query",
+        "readout": "pair"
+      }
+    },
+    "augmentation": false,
+    "backbone_frozen": true,
+    "batch_size": 4,
+    "checkpoint_selection": "last step only; no intermediate holdout",
+    "decision_score": "single uncalibrated scalar logit",
+    "empty_supervision_batch": "skip all four optimizer updates",
+    "epochs": 1,
+    "eval_seed": 1000,
+    "folds": 5,
+    "formal_validation": false,
+    "gradient_clip_norm": 1.0,
+    "holdout_fold": 0,
+    "init_seed": 9,
+    "loader_seed": 0,
+    "loss": "IoU-weighted listwise CE over valid candidates with root IoU > .25",
+    "lr": 0.0001,
+    "memory_comparison": "existing legal Queries versus existing butd_cls object inputs",
+    "num_workers": 4,
+    "optimizer": "AdamW",
+    "parameter_matching": "exact within each readout across memories; global/pair counts differ",
+    "previous_P2_variant_status": "failed and sealed; no inherited performance pass",
+    "primary_candidate": "object_pair",
+    "scheduler": null,
+    "schema": "mcln-nr3d-reference-memory-train-v1",
+    "split_salt": "MCLN-NR3D-PAIR-READOUT-V1-20260905",
+    "top_k": 32,
+    "uncovered_rows": "excluded from ranking loss; retained as evaluation misses",
+    "weight_decay": 0.0001,
+    "whole_system_unseen_scenes": false
+  },
+  "files": {
+    "docs/NR3D_REFERENCE_MEMORY_R1_PLAN_2026-09-05.md": "7e483dc83f119f06285251380487c3360bf4b59d358c6fd37bba85b33c879f5a",
+    "models/candidate_edge_adapter.py": "5947d97b2c3130626ab027c50b182d6afb0afa779424bf3096bedfc26f192f83",
+    "models/candidate_edge_direct_scorer.py": "0912850f2914c2bca416ccf0c06ef9c6976460878982ae410737b715eadd2186",
+    "models/candidate_reference_scorer.py": "c23a71f10bf7d426f4880ac6af8443d0a2d202cb1abf59852fda0918ad62e219",
+    "scripts/nr3d_pair_readout_contract.py": "7791f590c3819b65344e3a5a8fa635b6510fc074d1ba5298cb2a4b5066c663fb",
+    "scripts/nr3d_reference_memory_contract.py": "a1c0603be59e52b98a02f8e16569b8dbcc757e3b0d1dc1e5c4d8adae88401bc9",
+    "scripts/run_nr3d_reference_memory.py": "bbd389d95e64db8d10e289df92042cec931a8cff09e243312fe24bf8d9535672",
+    "scripts/run_nr3d_reference_memory.sh": "42851e703bf63f15f4188d8eb418cc297539ccfff3dcdce1d11ae6db007927ad",
+    "tests/test_candidate_reference_scorer.py": "70c94c9e36d59398ef096f22443ba7522441898e38f08ca26f04b1252cc145e4",
+    "tests/test_nr3d_reference_memory_contract.py": "c9b7f15c94b7006a26e7afcc699a1f0f840881fb4539e9be1e51588ce34feb62"
+  },
+  "model_source": "/root/autodl-tmp/mcln_g0_view_pair_20260905/inputs_v3/fixed_source",
+  "preregistration_commit": "0d51bb7fb51110ba90a128bc46ca56447695ab05",
+  "prerequisites": {
+    "/root/autodl-tmp/mcln_object_reference_input_audit_20260905_v1/receipt.json": "59a8c6faa1dc8e8cfe5a217b9025f30e2758af5da3bde8eb07cdba40ddfd4fc4",
+    "/root/autodl-tmp/mcln_official_candidate_audit_20260905_v1/results/receipt.json": "dbd5add98282a632e6648251046c73e3892c170910909917f2476b882e3393cf"
+  },
+  "schema": "mcln-reference-memory-input-v1",
+  "source_manifest_sha256": "dcf333b0e1868a7eeaafaf7f0a7abdb664a34dda65966defc1ad244ce762b15d"
+}

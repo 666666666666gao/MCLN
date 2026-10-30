@@ -143,3 +143,9 @@ Latest completed native `last/bbf` semantic-alignment results remain ScanRefer e
 All three runs remained active; no new full native validation rows or checked log errors. Progress: ScanRefer epoch 11 at 3167/4865 batches, NR3D epoch 3 at 3320/4490, and SR3D epoch 2 at 3485/7783. The live configurations still use `lr=1e-5`, `lr_modules=1e-5`, `lr_backbone=2e-5`, and decay epochs `[10,30]`; no settings or processes were changed.
 
 Latest full `last/bbf`, `same_complete_model=true` results remain ScanRefer epoch 10 5617/4776 of 9508 (59.077%/50.231%), NR3D epoch 2 4780/3909 of 7899 (60.514%/49.487%), and SR3D epoch 1 11944/10166 of 17726 (67.381%/57.351%). Based on observed batch rates, NR3D full validation is expected around 17:25-17:30 and ScanRefer around 17:35; SR3D is later. The next check should be near the validation window.
+
+## Follow-up status: 17:25 America/New_York
+
+NR3D epoch 3 completed full native validation: hits@0.25/0.50=4787/3902 of 7899, Acc=60.603%/49.399%, `primary_score=last/bbf`, `same_complete_model=true`. Its 59.8% Acc@0.25 target is exceeded by 0.803 percentage points (63 hits). CPU audit confirmed `latest.pth` epoch 3 matches this native row and includes model, optimizer, scheduler, and RNG. Epoch 1 remains best trained by the Acc@0.50-first rule (3918 hits@0.50); epoch 4 has started at 36/4490 batches.
+
+ScanRefer epoch 11 validation was at 223/951 batches; SR3D epoch 2 training was at 5393/7783. All three screens and GPUs remain active and checked logs are clean. Their verified learning rates and decay schedule remain `lr=1e-5`, `lr_modules=1e-5`, `lr_backbone=2e-5`, `[10,30]`; no settings or processes were changed. Latest complete results are ScanRefer epoch 10 5617/4776 of 9508 (59.077%/50.231%), NR3D epoch 3 4787/3902 of 7899 (60.603%/49.399%), and SR3D epoch 1 11944/10166 of 17726 (67.381%/57.351%).

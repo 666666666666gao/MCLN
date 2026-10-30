@@ -31,10 +31,11 @@ Validation size: 9,508.
 | 7 | 5623 | 4716 | 59.140% | 49.600% |
 | 8 | 5613 | 4720 | 59.034% | 49.642% |
 | 9 | 5608 | 4739 | 58.982% | 49.842% |
+| 10 | 5617 | 4776 | 59.077% | 50.231% |
 
-Best trained evaluation by Acc@0.50 is epoch 9. Relative to the recorded baseline (59.518% / 46.992%), epoch 9 is -0.536 / +2.850 percentage points. The remaining gaps to target are 1.018 points at Acc@0.25 and 2.158 points at Acc@0.50. The stricter-threshold metric has improved across recent rounds, while Acc@0.25 remains below baseline and target. This is consistent with a localization/box-precision bottleneck, but does not establish its cause.
+Best trained evaluation by Acc@0.50 is epoch 10. Relative to the recorded baseline (59.518% / 46.992%), epoch 10 is -0.441 / +3.239 percentage points. Target minima are 5705/9508 at Acc@0.25 and 4945/9508 at Acc@0.50, leaving gaps of 88 and 169 hits. Acc@0.25 remains below baseline and target; a localization/box-precision bottleneck is plausible but unconfirmed.
 
-At the 15:15 status sample, epoch 10 was training at 1,048/4,865 batches. Complete full-set evaluations were available through epoch 9.
+Epoch 10's full checkpoint was verified against its native metric row and retained as `best_trained_epoch10.pth`; epoch 11 is training.
 
 ## NR3D
 
@@ -43,11 +44,11 @@ Validation size: 7,899.
 | Epoch | Hits@0.25 | Hits@0.50 | Acc@0.25 | Acc@0.50 |
 | ---: | ---: | ---: | ---: | ---: |
 | 0 (init) | 4739 | 4132 | 59.995% | 52.310% |
-| 1 | 4786 | 3918 | 60.615% | 49.601% |
+| 1 | 4786 | 3918 | 60.590% | 49.601% |
+| 2 | 4780 | 3909 | 60.514% | 49.487% |
 
-Epoch 1 is the first trained evaluation. Compared with initialization, Acc@0.25 increased by 0.621 points and exceeds the 59.8% target by 0.815 points; Acc@0.50 decreased by 2.709 points. The target for this run is Acc@0.25, and the stricter-threshold change is diagnostic rather than a stated acceptance criterion. One trained epoch is insufficient to conclude whether this trade-off persists.
+Epoch 2 is +0.519/-2.823 points versus initialization at Acc@0.25/Acc@0.50 and remains 0.714 points above the 59.8% Acc@0.25 target. It is below epoch 1 by 0.076/0.114 points at the two thresholds. Epoch 1 remains the best trained checkpoint by the Acc@0.50-first rule; its checkpoint is preserved as `best_trained_epoch1.pth`. The minimum target count is 4,724 hits; epoch 2 exceeds it by 56.
 
-At the 15:15 status sample, epoch 2 was training at 527/4,490 batches. The epoch-1 checkpoint was verified against its full native metric row and preserved as `best_trained_epoch1.pth` before `latest.pth` could be overwritten.
 
 ## SR3D
 
@@ -56,8 +57,9 @@ Validation size: 17,726.
 | Epoch | Hits@0.25 | Hits@0.50 | Acc@0.25 | Acc@0.50 |
 | ---: | ---: | ---: | ---: | ---: |
 | 0 (init) | 11620 | 10023 | 65.553% | 56.544% |
+| 1 | 11944 | 10166 | 67.381% | 57.351% |
 
-The initialization is 3.847 points below the 69.4% Acc@0.25 target and is not a fine-tuning result. At the 15:15 status sample, epoch 1 was training at 4,855/7,783 batches; no trained evaluation was yet complete.
+Epoch 1 is +1.829/+0.807 points versus initialization at Acc@0.25/Acc@0.50, and 2.019 points below the 69.4% Acc@0.25 target. The minimum target count is 12,302; epoch 1 is short by 358 hits. Its verified full checkpoint is preserved as `best_trained_epoch1.pth`; epoch 2 is training.
 
 ## Verified Operational Issue
 
@@ -122,8 +124,10 @@ SR3D epoch 1 completed its full native validation: hits@0.25/0.50=11944/10166 of
 
 ScanRefer epoch 10 completed full validation: hits@0.25/0.50=5617/4776 of 9508, Acc=59.077%/50.231%, `last/bbf`, same complete model. Relative to baseline 59.518%/46.992%, the changes are -0.441/+3.239 points; gaps to targets 60.0%/52.0% are 0.923/1.769 points. Epoch 10 is the best trained evaluation by Acc@0.50. Its complete checkpoint was matched to the native row and retained as `best_trained_epoch10.pth`.
 
-NR3D epoch 2 completed full validation: hits@0.25/0.50=4780/3909 of 7899, Acc=60.513%/49.513%, `last/bbf`, same complete model. Versus untrained epoch 0 (59.995%/52.310%), the changes are +0.518/-2.797 points. Acc@0.25 is 0.713 points above its 59.8% target. Epoch 1 remains the best trained checkpoint under the Acc@0.50-first selection rule.
+NR3D epoch 2 completed full validation: hits@0.25/0.50=4780/3909 of 7899, Acc=60.514%/49.487%, `last/bbf`, same complete model. Versus untrained epoch 0 (59.995%/52.310%), the changes are +0.519/-2.823 points. Acc@0.25 is 0.714 points above its 59.8% target. Epoch 1 remains the best trained checkpoint under the Acc@0.50-first selection rule.
 
 At approximately 16:20, the next rounds were active: ScanRefer epoch 11 at 210/4865 batches, NR3D epoch 3 at 279/4490, and SR3D epoch 2 at 488/7783. All screens and GPUs were active and checked log tails were clean. The verified commands still use `lr=1e-5`, `lr_modules=1e-5`, `lr_backbone=2e-5`, and LR decay epochs `[10,30]`; no process or setting was changed.
 
 At 16:30 America/New_York, no new validation rows had appeared. ScanRefer epoch 11 reached 965/4865 batches, NR3D epoch 3 reached 1056/4490, and SR3D epoch 2 reached 1258/7783. All three screens and GPUs remained active, checked logs contained no errors, and requested learning-rate/decay settings were unchanged.
+
+Arithmetic correction at 16:32 America/New_York: raw NR3D hit counts and checkpoint selection are unchanged. Exact hits/7899 conversions are epoch 1 60.5899%/49.6012% and epoch 2 60.5140%/49.4873%; previous conversions for epoch-1 Acc@0.25 and epoch-2 Acc@0.50 were incorrect and are superseded.

@@ -50,8 +50,9 @@ Validation size: 7,899.
 | 2 | 4780 | 3909 | 60.514% | 49.487% |
 | 3 | 4787 | 3902 | 60.603% | 49.399% |
 | 4 | 4774 | 3918 | 60.438% | 49.601% |
+| 5 | 4787 | 3902 | 60.603% | 49.399% |
 
-Epoch 4 is +0.443/-2.709 points versus initialization at Acc@0.25/Acc@0.50 and remains 0.638 points above the 59.8% Acc@0.25 target (50 hits above the 4,724-hit minimum). Epochs 1 and 4 tie at 3,918 hits@0.50; epoch 1 remains selected by the Acc@0.25 tie-break (4,786 vs 4,774 hits) and is preserved as `best_trained_epoch1.pth`. The recurring lower Acc@0.50 than initialization alongside higher Acc@0.25 indicates a threshold trade-off, not evidence by itself that any one module should be changed. Epoch 5 is training.
+Epoch 5 is +0.608/-2.912 points versus initialization at Acc@0.25/Acc@0.50 and remains 0.803 points above the 59.8% Acc@0.25 target (63 hits above the 4,724-hit minimum). Epochs 3 and 5 have identical hit counts. Epochs 1 and 4 tie at 3,918 hits@0.50; epoch 1 remains the best trained checkpoint by the Acc@0.50-first rule, with its higher Acc@0.25 as tie-break, and is preserved as `best_trained_epoch1.pth`. The recurring lower Acc@0.50 than initialization alongside higher Acc@0.25 indicates a threshold trade-off, not evidence by itself that any one module should be changed. Epoch 6 is training.
 
 
 ## SR3D
@@ -190,3 +191,9 @@ At approximately 19:07, all three jobs remained active without checked log error
 - **SR3D:** Two trained evaluations show gains over initialization, but Acc@0.25 is still 2.075 pp below target. Acc@0.50 improved at epoch 2 while Acc@0.25 was essentially flat. The next full rounds and component-level localization evidence are needed before choosing an internal-depth or gate-parameter sweep.
 
 The three module boundaries and overall architecture remain unchanged. Public repositories already identified for mechanism study are ConcreteNet (Unique/Multiple relational behavior; non-commercial license), 3D-SPS (coarse-to-fine language-guided selection; MIT), and 3DRefTR (superpoint mask prediction); their reported headline metrics are not interchangeable with this native protocol. No method change is claimed or deployed from aggregate evidence alone. Current rates remain one tenth of original with decay `[10,30]`; no training process or live setting was modified in this update.
+
+## NR3D Epoch 5 and Live Status: 19:43 America/New_York
+
+NR3D epoch 5 completed full native validation: 4787/7899 hits@0.25 (60.603%) and 3902/7899 hits@0.50 (49.399%), `primary_score=last/bbf`, `same_complete_model=true`. The 59.8% Acc@0.25 target is exceeded by 0.803 pp (63 hits). Its `latest.pth` epoch 5 was matched to the native row; model, optimizer, scheduler, and RNG payloads are present. The result exactly repeats epoch 3, so it does not alter the best-round selection: epoch 1 remains best trained by Acc@0.50-first (3918 hits@0.50 versus 3902 at epochs 3 and 5). Epoch 6 is training.
+
+At approximately 19:43, ScanRefer epoch 13 was at 4269/4865 batches, NR3D epoch 6 at 186/4490, and SR3D epoch 3 at 5519/7783. All three screens and GPUs remained active with checked logs clean. ScanRefer still has no validation row beyond epoch 12 and its automatic early-stop decline streak remains 0. The one-tenth initial LRs and `[10,30]` decay schedule remain unchanged; no training process or setting was modified.

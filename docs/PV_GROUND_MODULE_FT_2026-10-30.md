@@ -32,10 +32,12 @@ Validation size: 9,508.
 | 8 | 5613 | 4720 | 59.034% | 49.642% |
 | 9 | 5608 | 4739 | 58.982% | 49.842% |
 | 10 | 5617 | 4776 | 59.077% | 50.231% |
+| 11 | 5644 | 4779 | 59.361% | 50.263% |
+| 12 | 5632 | 4781 | 59.234% | 50.284% |
 
-Best trained evaluation by Acc@0.50 is epoch 10. Relative to the recorded baseline (59.518% / 46.992%), epoch 10 is -0.441 / +3.239 percentage points. Target minima are 5705/9508 at Acc@0.25 and 4945/9508 at Acc@0.50, leaving gaps of 88 and 169 hits. Acc@0.25 remains below baseline and target; a localization/box-precision bottleneck is plausible but unconfirmed.
+Best trained evaluation by Acc@0.50 is epoch 12. Relative to the recorded baseline (59.518% / 46.992%), epoch 12 is -0.284 / +3.292 percentage points. Target minima are 5705/9508 at Acc@0.25 and 4945/9508 at Acc@0.50, leaving gaps of 73 and 164 hits. Acc@0.25 remains below baseline and target. The recent pattern (epoch 11 to 12: Acc@0.25 -0.126 pp, Acc@0.50 +0.021 pp) is consistent with a stricter-IoU localization/extent-precision bottleneck, but aggregate metrics do not identify which module causes it.
 
-Epoch 10's full checkpoint was verified against its native metric row and retained as `best_trained_epoch10.pth`; epoch 11 is training.
+Epoch 12's full checkpoint was verified against its native metric row and retained as `best_trained_epoch12.pth`. The automatic early-stop audit reports decline streak 0; epoch 13 is training.
 
 ## NR3D
 
@@ -46,8 +48,10 @@ Validation size: 7,899.
 | 0 (init) | 4739 | 4132 | 59.995% | 52.310% |
 | 1 | 4786 | 3918 | 60.590% | 49.601% |
 | 2 | 4780 | 3909 | 60.514% | 49.487% |
+| 3 | 4787 | 3902 | 60.603% | 49.399% |
+| 4 | 4774 | 3918 | 60.438% | 49.601% |
 
-Epoch 2 is +0.519/-2.823 points versus initialization at Acc@0.25/Acc@0.50 and remains 0.714 points above the 59.8% Acc@0.25 target. It is below epoch 1 by 0.076/0.114 points at the two thresholds. Epoch 1 remains the best trained checkpoint by the Acc@0.50-first rule; its checkpoint is preserved as `best_trained_epoch1.pth`. The minimum target count is 4,724 hits; epoch 2 exceeds it by 56.
+Epoch 4 is +0.443/-2.709 points versus initialization at Acc@0.25/Acc@0.50 and remains 0.638 points above the 59.8% Acc@0.25 target (50 hits above the 4,724-hit minimum). Epochs 1 and 4 tie at 3,918 hits@0.50; epoch 1 remains selected by the Acc@0.25 tie-break (4,786 vs 4,774 hits) and is preserved as `best_trained_epoch1.pth`. The recurring lower Acc@0.50 than initialization alongside higher Acc@0.25 indicates a threshold trade-off, not evidence by itself that any one module should be changed. Epoch 5 is training.
 
 
 ## SR3D
@@ -58,8 +62,9 @@ Validation size: 17,726.
 | ---: | ---: | ---: | ---: | ---: |
 | 0 (init) | 11620 | 10023 | 65.553% | 56.544% |
 | 1 | 11944 | 10166 | 67.381% | 57.351% |
+| 2 | 11934 | 10206 | 67.325% | 57.576% |
 
-Epoch 1 is +1.829/+0.807 points versus initialization at Acc@0.25/Acc@0.50, and 2.019 points below the 69.4% Acc@0.25 target. The minimum target count is 12,302; epoch 1 is short by 358 hits. Its verified full checkpoint is preserved as `best_trained_epoch1.pth`; epoch 2 is training.
+Epoch 2 is +1.772/+1.032 points versus initialization at Acc@0.25/Acc@0.50 and remains 2.075 points below the 69.4% Acc@0.25 target. The minimum target count is 12,302; epoch 2 is short by 368 hits. Its verified full checkpoint is preserved as `best_trained_epoch2.pth` and is the best trained round by Acc@0.50-first selection. The epoch-1 to epoch-2 change (+0.226 pp at Acc@0.50, -0.056 pp at Acc@0.25) is too small and aggregate-only to attribute to a specific module. Epoch 3 is training.
 
 ## Verified Operational Issue
 
@@ -165,3 +170,23 @@ At 18:35 America/New_York, ScanRefer epoch 12 was at 4690/4865 batches and SR3D 
 ScanRefer epoch 12 completed full native validation at hits@0.25/0.50=5632/4781 of 9508, Acc=59.2343%/50.2840%, `primary_score=last/bbf`, `same_complete_model=true`. Versus epoch 11, Acc@0.25 decreased 0.1262 pp and Acc@0.50 increased 0.0210 pp. It is now the best trained evaluation by Acc@0.50-first selection. Compared with baseline 59.518%/46.992%, changes are -0.2837/+3.2920 pp. The 60.0%/52.0% targets require 5705/4945 hits, leaving 73/164 hits (0.7657/1.7160 pp). CPU audit matched `latest.pth` epoch 12 to this exact native row and confirmed model/optimizer/scheduler/RNG; preserved as `best_trained_epoch12.pth` via hard link.
 
 At 18:48 America/New_York, ScanRefer epoch 13 was at 17/4865 batches, NR3D epoch 5 at 167/4490, and SR3D epoch 3 at 1408/7783. All screens/GPUs were active, checked logs clean, and first-update audits confirm frozen core and completed optimizer steps. Requested initial rates (`lr=1e-5`, `lr_modules=1e-5`, `lr_backbone=2e-5`) and decay `[10,30]` remain unchanged. ScanRefer has passed the epoch-10 decay. Its verified automatic early-stop decline streak is 0, not due.
+
+## Validated Results and Status: 18:35-19:07 America/New_York
+
+The following subsequent full validations extend the tables above. Each was accepted from the native full validation row with `primary_score=last/bbf` and `same_complete_model=true`; checkpoint epoch was matched to that row and the complete model/optimizer/scheduler/RNG payload was checked before preserving the selected trained checkpoint:
+
+- NR3D epoch 3: 4787/7899 hits@0.25 (60.603%) and 3902/7899 hits@0.50 (49.399%). The Acc@0.25 target is exceeded by 0.803 pp (63 hits); epoch 1 remains selected best by Acc@0.50-first.
+- ScanRefer epoch 11: 5644/9508 (59.361%) and 4779/9508 (50.263%). Versus epoch 10, +0.284/+0.032 pp; target gaps were 0.639/1.737 pp.
+- SR3D epoch 2: 11934/17726 (67.325%) and 10206/17726 (57.576%). Versus epoch 1, -0.056/+0.226 pp; 368 hits short of the 69.4% Acc@0.25 target. Epoch 2 is the current best trained checkpoint by the selection rule.
+- NR3D epoch 4: 4774/7899 (60.438%) and 3918/7899 (49.601%). The Acc@0.25 target is exceeded by 0.638 pp (50 hits). Epochs 1 and 4 tie on Acc@0.50; epoch 1 remains selected by its higher Acc@0.25.
+- ScanRefer epoch 12: 5632/9508 (59.234%) and 4781/9508 (50.284%). Versus epoch 11, -0.126/+0.021 pp. This is the best trained ScanRefer round by Acc@0.50. Against baseline 59.518%/46.992%, changes are -0.284/+3.292 pp; target gaps are 73/164 hits (0.766/1.716 pp). Its checkpoint is preserved as `best_trained_epoch12.pth`.
+
+At approximately 19:07, all three jobs remained active without checked log errors. ScanRefer epoch 13 was at 1474/4865 batches, NR3D epoch 5 at 2588/4490, and SR3D epoch 3 at 3452/7783. Current first-update records confirm frozen core and completed optimizer steps. Live NR3D/SR3D commands still use `lr=1e-5`, `lr_modules=1e-5`, `lr_backbone=2e-5`, and decay `[10,30]`; ScanRefer's logged post-epoch-10 rates are `1e-6`, `1e-6`, and `2e-6`. ScanRefer's automatic early-stop decline streak is 0, not due.
+
+## Current Diagnosis and Next Evidence
+
+- **ScanRefer:** Acc@0.50 has risen over the initial checkpoint, but the current trained best is still short of both goals, especially the 1.716 pp Acc@0.50 gap. Epoch 11-to-12 moved the two thresholds in opposite directions. A localization/extent-precision bottleneck is a working hypothesis only. Before changing module-internal parameters, inspect Unique/Multiple results, candidate selection correctness, mask/native-box IoU, and extremal-span gate distributions. A simple threshold trade-off is not enough evidence to identify the responsible module.
+- **NR3D:** Acc@0.25 is above goal in multiple trained rounds, while Acc@0.50 remains below its initialization value and fluctuates across rounds. This suggests checking candidate ranking separately from final-box precision. Preserve the existing best-round rule; do not treat the epoch-4 Acc@0.50 tie as a new best.
+- **SR3D:** Two trained evaluations show gains over initialization, but Acc@0.25 is still 2.075 pp below target. Acc@0.50 improved at epoch 2 while Acc@0.25 was essentially flat. The next full rounds and component-level localization evidence are needed before choosing an internal-depth or gate-parameter sweep.
+
+The three module boundaries and overall architecture remain unchanged. Public repositories already identified for mechanism study are ConcreteNet (Unique/Multiple relational behavior; non-commercial license), 3D-SPS (coarse-to-fine language-guided selection; MIT), and 3DRefTR (superpoint mask prediction); their reported headline metrics are not interchangeable with this native protocol. No method change is claimed or deployed from aggregate evidence alone. Current rates remain one tenth of original with decay `[10,30]`; no training process or live setting was modified in this update.

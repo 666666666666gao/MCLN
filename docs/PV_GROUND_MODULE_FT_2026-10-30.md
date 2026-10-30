@@ -149,3 +149,11 @@ Latest full `last/bbf`, `same_complete_model=true` results remain ScanRefer epoc
 NR3D epoch 3 completed full native validation: hits@0.25/0.50=4787/3902 of 7899, Acc=60.603%/49.399%, `primary_score=last/bbf`, `same_complete_model=true`. Its 59.8% Acc@0.25 target is exceeded by 0.803 percentage points (63 hits). CPU audit confirmed `latest.pth` epoch 3 matches this native row and includes model, optimizer, scheduler, and RNG. Epoch 1 remains best trained by the Acc@0.50-first rule (3918 hits@0.50); epoch 4 has started at 36/4490 batches.
 
 ScanRefer epoch 11 validation was at 223/951 batches; SR3D epoch 2 training was at 5393/7783. All three screens and GPUs remain active and checked logs are clean. Their verified learning rates and decay schedule remain `lr=1e-5`, `lr_modules=1e-5`, `lr_backbone=2e-5`, `[10,30]`; no settings or processes were changed. Latest complete results are ScanRefer epoch 10 5617/4776 of 9508 (59.077%/50.231%), NR3D epoch 3 4787/3902 of 7899 (60.603%/49.399%), and SR3D epoch 1 11944/10166 of 17726 (67.381%/57.351%).
+
+## Follow-up status: 17:34 America/New_York
+
+ScanRefer epoch 11 completed full native validation: hits@0.25/0.50=5644/4779 of 9508, Acc=59.361%/50.263%, `primary_score=last/bbf`, `same_complete_model=true`. Both thresholds increased versus epoch 10 by +0.284/+0.032 percentage points. It remains 0.639/1.737 points below the 60.0%/52.0% targets (61/166 hits short). Versus baseline 59.518%/46.992%, the change is -0.157/+3.271 points. CPU audit matched `latest.pth` epoch 11 with the full row and confirmed model/optimizer/scheduler/RNG; preserved as `best_trained_epoch11.pth` via hard link. It is now the best trained round by Acc@0.50.
+
+NR3D epoch 3 completed full native validation at 4787/3902 of 7899 (60.603%/49.399%); this exceeds its 59.8% Acc@0.25 target by 0.803 points (63 hits). Its checkpoint epoch and full state were verified; epoch 1 remains best trained by Acc@0.50-first selection. NR3D epoch 4 was at 688/4490 batches.
+
+SR3D epoch 2 was at 6034/7783; latest full trained result remains epoch 1, 11944/10166 of 17726 (67.381%/57.351%), 2.019 points below its 69.4% Acc@0.25 target. All three runs remain active with `lr=1e-5`, `lr_modules=1e-5`, `lr_backbone=2e-5`, and decay epochs `[10,30]`. No settings or processes were changed.

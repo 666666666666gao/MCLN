@@ -421,3 +421,37 @@ SR3D author baseline is at 1720/1773 validation batches; its screen remains
 active. No full metric yet and SR3D fine-tuning remains stopped. The new
 baseline scripts and earlier documentation correction were pushed in commits
 `3ad73fa` and `683f301` on `codex/pvground-scanrefer-nr3d-sr3d-20261030`.
+
+## Baselines Complete and Fresh Runs: 2026-10-31
+
+Both author-checkpoint evaluations completed on the full validation splits.
+These measurements are from the unmodified author model's `last_ semantic
+alignment` Top-1 logs, separate from module-initialized epoch0:
+
+| Dataset | Author checkpoint epoch | Acc@0.25 | Acc@0.50 | PV-Ground paper Acc@0.25 | Difference (pp) |
+| --- | --- | --- | --- | --- | --- |
+| NR3D | 25 | 61.8813% (4888/7899) | 49.9430% (3945/7899) | 62.1% | -0.219 |
+| SR3D | 31 | 68.555% (12152/17726) | 58.118% (10302/17726) | 68.9% | -0.345 |
+
+Hit counts are reconstructed from the logged rounded rates and full split
+sizes. MCLN's separate paper scores (59.8% / 68.4%) are not the comparator
+for these PV-Ground checkpoints; the user's SR3D 69.4% goal is also distinct.
+
+The user requested stopping NR3D/SR3D until baseline reproduction was close
+to the paper, then fine-tuning from the reproduced baseline. The running
+module jobs were interrupted and process/screen exit and idle GPUs verified.
+Because both measured baselines were within 1 pp of their matching paper
+results, fresh fine-tunes were launched from the corresponding author
+checkpoint specs at approximately 2026-10-31 00:00 America/New_York:
+NR3D run `1793419199` and SR3D run `1793419200`.
+
+Both configs retain lr/module lr `1e-5`, backbone lr `2e-5`, batch10,
+seed111, decay `[10,30]`, joint detection, `butd_cls`, and `self_attend`.
+The newly added modules are freshly initialized. The new runs' own
+first-update witnesses are pending; older runs' audits and metrics cannot
+validate these runs. Passing author-model reproduction does not establish
+function-preserving module insertion: the existing mask-geometry
+replacement remains a separate initialization difference.
+
+ScanRefer continues unchanged. Monitoring retains NR3D/SR3D Acc@0.25-first
+selection, exact full-split metric checks, and 180-300 second polling.

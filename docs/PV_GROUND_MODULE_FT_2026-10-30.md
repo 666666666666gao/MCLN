@@ -1,5 +1,39 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## ScanRefer Epoch23 New Trained Best: 2026-10-31 08:30 America/New_York
+
+Current run1793345477 epoch23 completed9508 semantic-alignment rows:
+hits025/050=5642/4810, Acc=59.339504%/50.588978%, last/bbf,
+same_complete_model=true. CPU latest.pth epoch23 matches its own native
+row and contains complete model/optimizer/scheduler state. Its historical
+retained_metrics and best.pth still refer to untrained epoch0
+(5606/4843), not the trained result.
+
+Epoch23 is the new trained Acc050-first selected checkpoint, improving
+epoch18 by1/10hits (+0.010517/+0.105175pp). Preserved complete
+best_trained_epoch23.pth as a hard link to latest,622927846bytes.
+Target60/52 gaps are0.660496/1.411022pp (63/135hits). Versus the
+provided baseline59.518/46.992, differences are-0.178496/+3.596978pp.
+Do not combine epoch15's highest trained Acc025 with epoch23's Acc050.
+
+Three-round means rose to59.237835/50.357594%; decline streak reset0.
+No automatic stop occurred. At08:28 screen33702/GPU remain live,
+epoch24=212/4865; first_update24 confirms frozen_core and optimizer step.
+No configuration/process change or GPU diagnostic launch.
+
+Export observed12:29:17UTC downloaded and remote/local SHA matched:
+65d5147abc289042838de874b75b14696dbb8d2c06ba9b54c87555e57f08f8a9.
+Combined history now48 complete evaluations across7 runs; NR/SR
+source observation times remain explicit, selected trained epochs5/2.
+Scan replay launcher updated18->23, uploaded/tmp, bash-n/hash matched:
+c6c495a9b9fdb11d2821a4093a87184595319d3e44a7f1ba8a712f08d844e419.
+Run only after actual GPU release, rechecking selection first.
+
+At08:24 NR27029 epoch7=1899/4490 and SR26107 epoch3=7621/7783
+were live, configurations unchanged, freeze/step checks pass. No new full
+NR/SR row. Expected full SR3~08:48, NR7~09:10-09:25,
+Scan24~09:40. Use completion windows instead of immediate repeat polls.
+
 ## Selected-Query Gate Measurement: 2026-10-31 08:20 America/New_York
 
 Independent replay now separates gate statistics of official-selected root

@@ -315,3 +315,20 @@ These supersede earlier uploaded tool/test hashes in this document.
 All10 CPU tests also pass from the isolated SR replay directory on the
 Scan host. This checks its evaluator/tool integration, not full GPU/data
 equivalence.
+
+## Selected Scan Checkpoint Advanced: 2026-10-31 08:30 New York
+
+ScanRefer epoch23 full9508-row formal result5642/4810
+(59.339504%/50.588978%) became trained Acc050-first best. CPU latest
+metadata matched its own epoch row; complete checkpoint retained as
+best_trained_epoch23.pth. tools/run_scanrefer_geometry_replay.sh now
+uses that retained checkpoint and experiment name. Uploaded/tmp,
+bash-n passed; SHA256:
+c6c495a9b9fdb11d2821a4093a87184595319d3e44a7f1ba8a712f08d844e419.
+Earlier epoch18 launch examples are historical.
+
+Epoch23 means rose; automatic-stop decline streak reset0 and epoch24
+started. GPU is occupied. Neither Scan replay nor staged SR init replay
+has launched. Recheck trained selection and real GPU release before
+using this launcher. Source preparation and synthetic tests are not
+evidence of full-split replay success.

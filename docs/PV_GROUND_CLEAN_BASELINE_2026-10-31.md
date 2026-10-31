@@ -162,7 +162,7 @@ diagnostics. Prior optimization goal remains paused.
 | --- | --- | ---: | --- |
 | ScanRefer | 1793464620 | 34.795635 | 1.640724% / 0.147244% |
 | NR3D | 1793464625 | 32.883430 | 8.570705% / 2.278769% |
-| SR3D | 1793464628 | 36.046616 | Pending full initial validation |
+| SR3D | 1793464628 | 36.046616 | 12.439355% / 4.620332% |
 
 All five checked paths have nonzero gradient norms and a parameter
 actually changed by AdamW. Probe states were reset before epoch0.
@@ -186,3 +186,16 @@ CPU metadata: *-checkpoint-metadata.json in the same directory.
 The three source checkpoint SHA values are recorded in each load audit.
 Every model retained1022 tensors and initialized112 tensors; exclusions
 are212 for ScanRefer and213 for NR3D/SR3D.
+
+## SR3D Initial Validation Complete: 2026-10-31 13:13 EDT
+
+SR3D epoch0 completed at13:04:42EDT:2205/819 hits among17726,
+Acc02512.4393546203% and Acc0504.6203317161%, last/bbf,
+same_complete_model=true. It is the untrained changed architecture.
+CPU best/latest metadata was checked against this exact native row;
+both epoch0 with1134 modeltensors and emptyoptimizerstate.
+All three screens and GPUs are active; all are trainingepoch1.
+At13:13 NR reached2324/4490 and SR567/7783. No trained complete
+epoch exists yet. Based on current rates, NR1 full~13:45-13:50,
+Scan1~13:55-14:00 and SR1~15:10-15:25; use actual progress to
+refine these estimates. Do not immediately repoll or reload metadata.

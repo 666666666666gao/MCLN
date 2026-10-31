@@ -25313,6 +25313,14 @@ Scan34.795635/NR32.883430/SR36.046616; allfivepaths changed.
 Fresh startup/native/checkpoint evidence is saved under
 docs/results/pvground_clean_baseline_20261031. Oldgoalremains paused.
 
+2026-10-31 13:14EDT: SR initial epoch0 complete at13:04:42,
+2205/819 of17726 =12.4393546203/4.6203317161%, last/bbf and
+same_complete_model=true. CPU best/latest0 ownrow/state verified.
+All three now train epoch1; no full trained epoch yet.
+NR2324/4490 andSR567/7783 at13:13; Scan1 progressing.
+Next full estimates NR13:45-13:50, Scan13:55-14:00,
+SR15:10-15:25. No live changes or oldgoalresume.
+
 At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
 epoch25; remote/local SHA256:
 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.

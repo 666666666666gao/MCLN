@@ -1,11 +1,15 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
-ScanRefer epoch15 completed at 5645/4778 hits, or 59.3711%/50.2524%,
-with complete `last/bbf` evaluation and a CPU-matched latest checkpoint.
-Epoch15 is the Acc@0.25 high by one hit over epoch11; epoch12 remains best
-at Acc@0.50. Epoch16 is training.
+Current verified state: 2026-10-31 00:48 America/New_York.
+ScanRefer run1793345477 has full metrics through epoch16 and is finishing
+epoch17 training (4838/4865). Its trained Acc050-best remains epoch12,
+59.2343%/50.2840%, preserved as best_trained_epoch12.pth.
+NR3D run1793419199 and SR3D run1793419200 have full initialization
+metrics and passing own-run first-update audits; their first trained
+evaluations are pending. Both reproduced author baselines are complete.
+The historical stopped NR/SR runs are labeled separately below.
 
-Date: 2026-10-30 (America/New_York)
+Experiment start: 2026-10-30 (America/New_York).
 
 ## Targets and Protocol
 
@@ -42,14 +46,34 @@ Validation size: 9,508.
 | 13 | 5626 | 4773 | 59.171% | 50.200% |
 | 14 | 5601 | 4769 | 58.908% | 50.158% |
 | 15 | 5645 | 4778 | 59.371% | 50.252% |
+| 16 | 5612 | 4756 | 59.024% | 50.042% |
 
 Best trained evaluation by Acc@0.50 remains epoch 12. Epoch 15 is now the Acc@0.25 high by one hit over epoch 11. Relative to the recorded baseline (59.518% / 46.992%), epoch 12 is -0.284 / +3.292 percentage points; epoch 15 is -0.147 / +3.260 points. Target minima are 5705/9508 at Acc@0.25 and 4945/9508 at Acc@0.50; epoch 15 remains short by 60 and 167 hits. Acc@0.25 remains below baseline and target.
 
-Epoch 12's full checkpoint was verified against its native metric row and retained as `best_trained_epoch12.pth`. Epoch 15's `latest.pth` was CPU-matched to its epoch row and includes model/optimizer/scheduler/RNG. Its three-round means are 59.150189%/50.203338%; the early-stop decline streak is 0. Epoch 16 began at 177/4865 batches.
+Epoch12's full checkpoint was verified against its native metric row and
+retained as best_trained_epoch12.pth. Latest epoch16 was CPU-matched
+to its own complete metric row and includes model/optimizer/scheduler.
+The epoch16 early-stop decline streak is1. Epoch17 will satisfy the next
+strict dual decline if hits025<5601 and hits050<4769; stopping remains
+controlled by the training program. Epoch0 is excluded from that rule.
 
 ## NR3D
 
 Validation size: 7,899.
+
+Current run1793419199, from the reproduced author checkpoint:
+
+| Epoch | Hits@0.25 | Hits@0.50 | Acc@0.25 | Acc@0.50 |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 (init) | 4739 | 4132 | 59.995% | 52.310% |
+
+Epoch1 is training. No trained result or trained best exists yet for this
+run. Own-run epoch1/batch1 confirms frozen_core=true and
+optimizer_step_complete=true. Select trained checkpoints by Acc025 first,
+Acc050 second, using tools/audit_preserve_nr_sr_best.sh after each new
+complete validation. Built-in best.pth remains Acc050-first.
+
+Historical stopped run1793382384 (not the current run):
 
 | Epoch | Hits@0.25 | Hits@0.50 | Acc@0.25 | Acc@0.50 |
 | ---: | ---: | ---: | ---: | ---: |
@@ -61,19 +85,31 @@ Validation size: 7,899.
 | 5 | 4787 | 3902 | 60.603% | 49.399% |
 | 6 | 4784 | 3910 | 60.565% | 49.500% |
 | 7 | 4772 | 3900 | 60.394% | 49.373% |
+| 8 | 4768 | 3925 | 60.362% | 49.690% |
 
-Epoch 6 completed at 4784/3910 hits, or 60.5646%/49.4999%, with
-`last/bbf` and `same_complete_model=true`. CPU audit matched `latest.pth`
-epoch6 to this row and confirmed model/optimizer/scheduler/RNG. Under the
-requested Acc@0.25-first rule, epoch3 and epoch5 remain tied for best at
-4787 hits (60.603%), 63 hits above target. Epoch7 is 4772/3900
-(60.394%/49.373%); epoch8 is training at 2800/4490 batches. The tied
-epoch3/5 checkpoint was not hard-linked before overwrite.
+This historical run stopped during epoch9; its last complete result is
+epoch8. Historical Acc025-first best is epoch3/5 tied at4787 hits
+(60.603%), 63 hits above target, but those checkpoints were not
+hard-linked before overwrite. These metrics do not establish a trained
+result for the current run1793419199. Interrupted run1793417914 also
+has no completed trained validation and is excluded.
 
 
 ## SR3D
 
 Validation size: 17,726.
+
+Current run1793419200, from the reproduced author checkpoint:
+
+| Epoch | Hits@0.25 | Hits@0.50 | Acc@0.25 | Acc@0.50 |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 (init) | 11620 | 10023 | 65.553% | 56.544% |
+
+Epoch1 is training. Own-run epoch1/batch1 confirms frozen_core=true and
+optimizer_step_complete=true. There is no trained result yet. Use the
+same Acc025-first checkpoint-retention procedure as NR3D.
+
+Historical stopped run1793380711 (not the current run):
 
 | Epoch | Hits@0.25 | Hits@0.50 | Acc@0.25 | Acc@0.50 |
 | ---: | ---: | ---: | ---: | ---: |
@@ -82,36 +118,39 @@ Validation size: 17,726.
 | 2 | 11934 | 10206 | 67.325% | 57.576% |
 | 3 | 11947 | 10167 | 67.398% | 57.356% |
 
-Epoch 3 completed at 11947/10167 hits, or 67.3982%/57.3564%, with
-`last/bbf` and `same_complete_model=true`. Epoch3 is the best trained
-round by Acc@0.25-first; the target remains short by 355 hits. Epoch4 is
-training at 5761/7783 batches.
+This historical run stopped during epoch4; its last complete result and
+Acc025-first best is epoch3, 11947/10167 hits
+(67.3982%/57.3564%), short of the Acc025 target by355 hits.
+Interrupted run1793418888 has no completed trained validation and is
+excluded. Do not reuse historical first-update audits for the current run.
 
 ## Baseline Reproduction Request
 
-The user requested direct evaluation of the author checkpoints without the
-three added modules, using the same validation split, `--butd_cls`,
-`--self_attend`, and native semantic `last/bbf` protocol. The original
-`/tmp/PV-Ground/train_dist_mod.py` and `PV-Ground_NR3D.pth` /
-`PV-Ground_SR3D.pth` payloads are present. All three RTX4090 GPUs are
-currently occupied by active training, so the baseline evaluation is
-prepared but not launched and no training process was interrupted.
+The requested plain author-checkpoint evaluations completed after the
+user-directed NR/SR training interruption. Successful eval-only runs use
+the original /tmp/PV-Ground/train_dist_mod.py, model class PVGround,
+full validation, batch10, butd_cls, self_attend and last/bbf Top1.
 
-The prepared commands use the author model class `MCLN`, decoder layers6,
-`loc_learned`, `kps`, `use_color`, `joint_det`, `detect_intermediate`,
-`butd_cls`, `self_attend`, batch10, and the author checkpoint configuration.
-They run `--eval` on the full validation split and record the original
-semantic `last/bbf` result. No optimizer update occurs, and the
-one-tenth fine-tuning LR schedule is not used for this baseline.
-The reproducible command files are `tools/run_author_baseline_nr3d.sh` and
-`tools/run_author_baseline_sr3d.sh`.
+| Dataset | Baseline run | Checkpoint epoch | Hits025 / Hits050 | Acc025 / Acc050 | Seed |
+| --- | --- | ---: | --- | --- | ---: |
+| NR3D | 1793417143 | 25 | 4888 / 3945 of7899 | 61.8813% / 49.9430% | 0 |
+| SR3D | 1793417141 | 31 | 12152 / 10302 of17726 | 68.5547% / 58.1180% | 111 |
+
+Counts are reconstructed from the rounded official rates and full split
+sizes. NR baseline seed0 differs from module seed111; SR matches.
+This is a provenance difference, not a measured cause of the module-init
+gap. See the geometry replay note for control requirements. Current fresh
+module runs were started after both baselines met reproduction tolerance.
+The reproducible commands are tools/run_author_baseline_nr3d.sh and
+tools/run_author_baseline_sr3d.sh; earlier model=MCLN attempts failed
+before evaluation and produced no valid baseline result.
 
 Paper reference: Table 2 of the [CVPR 2026 PV-Ground paper](https://openaccess.thecvf.com/content/CVPR2026/papers/Shang_PV-Ground_Text-Guided_Point-Voxel_Interaction_for_3D_Visual_Grounding_CVPR_2026_paper.pdf)
 reports two-stage MCLN at 59.8% NR3D / 68.4% SR3D and PV-Ground at
 62.1% / 68.9%, all at Acc@0.25. The user's NR3D target matches reported
 MCLN; the SR3D target 69.4% is 1.0 pp above MCLN and 0.5 pp above the
-paper's PV-Ground result. The author-checkpoint evaluations remain
-necessary to verify reproduction under this repository's exact run.
+paper's PV-Ground result. Measured author-checkpoint Acc025 differs
+from the matching PV-Ground row by -0.219pp NR3D and -0.345pp SR3D.
 
 ## Verified Operational Issue
 

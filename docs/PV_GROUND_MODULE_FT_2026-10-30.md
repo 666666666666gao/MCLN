@@ -167,6 +167,36 @@ For ScanRefer epochs 8 and 9 and NR3D epoch 1, the full checkpoint epoch was mat
 
 ## Three Module Roles and Testable Hypotheses
 
+### Epoch17 Subgroup and Ranking Diagnostics
+
+Re-ran the existing log parser over ScanRefer epochs0-17. All semantic
+Top1 log values match complete native counts within their five-decimal
+rounding; each epoch has all12 box subgroup fields. This read-only check
+does not run model inference or mix mask-IoU statistics into box metrics.
+
+| Epoch | Unique Acc025 | Multiple Acc025 | Unique Acc050 | Multiple Acc050 | Top10 Acc050 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 17 | 88.2311% | 54.1847% | 78.2946% | 45.5186% | 66.965% |
+
+Solving the subgroup weighted-average equations against the complete
+overall counts reconstructs1419 Unique and8089 Multiple rows; these
+counts are inferred from logged rates, not directly exported evaluator
+counters. Both thresholds reconcile exactly: e17 Unique hits1252/1111,
+Multiple4383/3682. At Acc050, versus e12's1122 Unique and3659 Multiple
+hits, e17 changes -11/+23, net+12. These are net counts, not paired
+per-example repairs/damages. They show an aggregate subgroup tradeoff
+within the new trained best, not a causal module contribution.
+
+Multiple accounts for85.076% of rows and93.468% of Acc050 errors; raw
+error concentration partly reflects group size. The Top10-to-Top1
+Acc050 gap is16.5548pp, which motivates candidate-selection diagnostics
+but does not guarantee a recoverable gain or isolate ranking from
+geometry. Same-forward geometry replay is still the next needed test
+before module-internal changes; no fourth module or new ranking head
+has been introduced.
+
+Parsed evidence: docs/results/ScanRefer-log-diagnostics-through-epoch17.json.
+
 CPU state comparison of initialization epoch0 and retained epoch17 found
 all1234 frozen state tensors unchanged in shape, dtype and SHA256,
 including running statistics. All61 trainable parameter tensors changed:

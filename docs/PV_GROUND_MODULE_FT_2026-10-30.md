@@ -1,5 +1,26 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## NR3D Epoch4 and Live Status: 2026-10-31 05:27 America/New_York
+
+NR3D run1793419199 completed epoch4 on all7899 rows:
+hits@0.25/@0.50=4781/3918,
+60.526649%/49.601215%, primary_score=last/bbf,
+same_complete_model=true. CPU audit matches latest.pth epoch4 to its
+own native metric row. Under the user's Acc@0.25-first rule, the
+selected trained checkpoint remains epoch1=4783/3918
+(60.551969%/49.601215%); epoch4 is down2 hits@0.25 and ties at0.50.
+The selected checkpoint alias exists. Epoch5 is at43/4490.
+
+ScanRefer run1793345477 epoch21 is at3354/4865; latest full epoch20 is
+5606/4776 of9508=58.960875%/50.231384%, while selected epoch18 remains
+5641/4800=59.328986%/50.483803%. Its dual-three-round-mean decline
+streak remains1 pending epoch21 validation. SR3D run1793419200 epoch4
+is at7157/7783; latest full and selected epoch1 remains11944/10164 of
+17726=67.381248%/57.339501%. The cross-dataset table now contains42
+complete evaluations across7 runs. Do not infer epoch from tqdm batch
+percentage alone; reconcile it with run-specific metrics/checkpoints.
+No live settings or processes changed.
+
 ## ScanRefer Epoch20: 2026-10-31 04:46 America/New_York
 
 ScanRefer run1793345477 completed epoch20 on the full9508-row native

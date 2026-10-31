@@ -1,5 +1,27 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Cross-Host Diagnostic Preparation: 2026-10-31 08:13 America/New_York
+
+Verified Scan host already has NR/SR annotation CSVs, scan caches and author
+checkpoints. Its old SR source copy differs from current SR in2 of33 checked
+Python files. Prepared a separate diagnostic code directory using an exported
+source delta; all33 hashes now match SR deployment, author SR weight SHA is
+verified, and17726-row reference epochs0-2 pass. Nine CPU replay tests pass.
+Added an eval-only fresh SR epoch0 replay launcher, uploaded/tmp and syntax/hash
+verified. No GPU evaluation or live training/source/config change occurred.
+
+This allows SR initialization diagnosis on the Scan GPU after actual release,
+without waiting for SR's long run to finish. First priority remains selected
+Scan checkpoint replay. Cross-host data/forward equivalence is unproven until
+full own-reference metric reproduction. Full manifests, source archive,
+preparation scripts and limits are in the geometry replay document.
+
+Scan next expected full validation~08:26. Given epoch22 decline streak1,
+epoch23 triggers the programmed second dual-moving-mean decrease only if
+hits025<5606 and hits050<4776 (epoch20 counts). These are strict comparisons
+and exclude epoch0. Actual log/handles determine stopping; no manual stop.
+NR7/SR3 continue, last full rows6/2, selected5/2. No new metric this preparation.
+
 ## NR3D Epoch6: 2026-10-31 08:02 America/New_York
 
 Current run1793419199 completed all7899 rows at epoch6: hits025/050

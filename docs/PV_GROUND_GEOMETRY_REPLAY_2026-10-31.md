@@ -246,3 +246,45 @@ An initial SCP connection closed; retry succeeded without any training
 restart. No baseline result exists for this script yet. Matching the seed
 does not by itself prove identical data or forwards across entrypoints;
 keep the same-forward replay and baseline-identity questions separate.
+
+## SR3D Replay Staged on Scan Host: 2026-10-31 08:13 New York
+
+Read-only inventory found ReferIt3D/nr3d.csv and sr3d.csv, validation and
+training scan caches, superpoints, detected boxes and all three author
+checkpoints already on the ScanRefer server. This offers a diagnostic
+window if ScanRefer finishes before SR3D. No GPU was acquired or stopped.
+
+The Scan host's existing SR source copy differs from current SR deployment
+in native_model_initialization.py and train_dist_mod.py. The other31
+checked Python files match exactly. Exported both source manifests plus
+the two current source files, init_sr3d.json and native_metrics.jsonl.
+Archive is docs/results/sr3d_replay_source_delta.tgz, SHA256:
+3a27dd986f55e02ced18d4e1f0c233071174f6d016385e1ff450c20970af2aad.
+Scan-host source manifest SHA256:
+b40e2dfcd87720ca5d7b6bce425ed50a787d56ccf66ff7268191699ec1d2f717.
+SR-host source manifest SHA256:
+2365cf925d587784c1ac63baf7550c1fa92bcefbf45b2352b753a495ee947439.
+Remote/local copies match. These manifests cover root/models/src Python
+files, not all transitive dependencies or data bytes.
+
+tools/stage_sr3d_replay_on_scan_host.sh created a separate directory
+/root/autodl-tmp/pvground_sr3d_replay_20261031/code. It reuses matching
+existing sources through symlinks and installs the exported delta there.
+All33 checked Python files then match current SR deployment; author SR
+checkpoint SHA matches init spec; full17726-row reference epochs0-2 pass
+last/bbf/same_complete_model checks. Nine synthetic CPU replay tests pass
+from this directory. No live training source or configuration was changed.
+
+tools/run_sr3d_init_replay_on_scan_host.sh prepares fresh-module epoch0
+evaluation with the observed SR flags and seed111; it requires an idle GPU.
+No trained checkpoint is passed. It must reproduce reference epoch0
+11620/10023 before any result is saved/interpreted. This is an initialization
+geometry/selection diagnostic, not a trained result or plain author model.
+Cross-host data/forward equivalence remains unproven until full evaluation.
+Launcher uploaded/tmp, bash-n passed and SHA matched:
+7fbd09b82261917ce710ab89fc87266cee27555c285218404aebf9f004e9c211.
+
+After actual ScanRefer termination and GPU release, run its selected trained
+checkpoint replay first, then this SR initialization replay if the GPU is
+still free. Never launch merely because instantaneous utilization is low.
+Re-audit Scan selection if a new trained best appears before termination.

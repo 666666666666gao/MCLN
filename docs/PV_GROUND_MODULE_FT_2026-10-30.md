@@ -1303,3 +1303,11 @@ native_metrics.jsonl SHA256, rechecked at11:03 New York:
 6be475e419d10ce51e6cc46c01c57baad61fb4ef0b4647aa0ad5bfe1227eaa68.
 The prior exported ScanRefer JSON is still the epoch24 snapshot;
 the added epoch25 row is explicitly sourced from the live native file.
+
+At11:10 New York the saved ScanRefer JSON was refreshed through epoch25.
+Remote/local snapshot SHA256 both equal
+62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.
+The table generator rebuilt all53 full evaluations from the three
+saved JSON snapshots; all53 percentage pairs passed independent
+integer-hit recalculation. This supersedes the preceding epoch24
+snapshot caveat. No new accuracy or checkpoint selection change.

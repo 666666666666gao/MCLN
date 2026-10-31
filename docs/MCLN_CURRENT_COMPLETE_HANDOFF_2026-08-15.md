@@ -25237,3 +25237,9 @@ SR3D remained in epoch4 training with latest complete row epoch3 at
 67.454586%/57.463613%, selected under Acc@0.25-first. All three screens
 and GPUs were live, and the requested training configuration was unchanged.
 No process was stopped or restarted.
+
+At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
+epoch25; remote/local SHA256:
+62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.
+All53 complete evaluations were regenerated from the three saved JSON
+snapshots and independently count-checked. No metric/selection change.

@@ -78,8 +78,7 @@ PV_GROUND_MODULE_FT_2026-10-30.md.
 
 | File | Observed UTC | SHA256 |
 | --- | --- | --- |
-| ScanRefer-full-epoch-history-2026-10-31.json | 2026-10-31T13:42:04.770843+00:00 | e97d346aaf22748e7eb5c0699300ec4272919367f8509ab58c7367c1730fa22f |
-| ScanRefer native_metrics.jsonl after epoch25 | 2026-10-31T15:03:42+00:00 | 6be475e419d10ce51e6cc46c01c57baad61fb4ef0b4647aa0ad5bfe1227eaa68 |
+| ScanRefer-full-epoch-history-2026-10-31.json | 2026-10-31T15:10:30.587971+00:00 | 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659 |
 | NR3D-full-epoch-history-2026-10-31.json | 2026-10-31T14:27:31.169602+00:00 | ed4df779d58d0f6f8c3ab373dd123946f1b15d66563ae1bdad55122e2ef6824f |
 | SR3D-full-epoch-history-2026-10-31.json | 2026-10-31T12:55:51.446269+00:00 | fb32464a33d7fa863a04c829ff8411eacb333bf9a35e431e586fd630a297cbc4 |
 

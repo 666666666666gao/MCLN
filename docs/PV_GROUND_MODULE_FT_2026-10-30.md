@@ -1,5 +1,23 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## SR3D Epoch4 Complete: 2026-10-31 11:49 New York
+
+Full17726 last/bbf same_complete_model=true:11952/10187 hits =
+67.426379%/57.469254%. CPU latest and generic best both match4
+and own row, complete model/optimizer/scheduler/RNG/architecture
+present. User selection remains Acc025-first epoch3=11957/10186
+(67.454586%/57.463613%); best_trained_acc025_epoch3.pth exists.
+Do not use generic best.pth epoch4 for the user-selected result.
+Versus3:-5/+1 hits. Only4 trained epochs, so no two-consecutive
+three-round-mean-decline stop yet. Epoch5=140/7783, screen26107/GPU
+live; frozen_core/optimizer_step_complete true. Scan26=4183/4865
+at11:49, screen33702/GPUlive, next full~12:10. NR latest9/selected5,
+last live10 check11:35. No training changes or GPU diagnostics.
+SR snapshot15:49:01UTC remote/local SHA:
+fbfc9bfb3874d4391ad6ac782c3c67ef790cec8817c988600aa7224e6663e438.
+Regenerated55 full evaluations/7runs; all55 pairs count-checked.
+Selected23/5/3 unchanged; goals remain incomplete.
+
 ## NR3D Epoch8 Complete: 2026-10-31 10:27 New York
 
 Full7899 last/bbf semantic rows4772/3908=60.412710%/49.474617%,

@@ -74,6 +74,7 @@ PV_GROUND_MODULE_FT_2026-10-30.md.
 | sr3d | 1793419200 | current | 1 | 17726 | 11944 | 10164 | 67.381248% | 57.339501% |
 | sr3d | 1793419200 | current | 2 | 17726 | 11944 | 10187 | 67.381248% | 57.469254% |
 | sr3d | 1793419200 | current | 3 | 17726 | 11957 | 10186 | 67.454586% | 57.463613% |
+| sr3d | 1793419200 | current | 4 | 17726 | 11952 | 10187 | 67.426379% | 57.469254% |
 
 ## Source Snapshots
 
@@ -81,6 +82,6 @@ PV_GROUND_MODULE_FT_2026-10-30.md.
 | --- | --- | --- |
 | ScanRefer-full-epoch-history-2026-10-31.json | 2026-10-31T15:10:30.587971+00:00 | 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659 |
 | NR3D-full-epoch-history-2026-10-31.json | 2026-10-31T15:36:20.121277+00:00 | 594e660763c5b6df58f51dcd631ff5b1cc0fdfe601043d7ee47071eef8ad7b92 |
-| SR3D-full-epoch-history-2026-10-31.json | 2026-10-31T12:55:51.446269+00:00 | fb32464a33d7fa863a04c829ff8411eacb333bf9a35e431e586fd630a297cbc4 |
+| SR3D-full-epoch-history-2026-10-31.json | 2026-10-31T15:49:01.493341+00:00 | fbfc9bfb3874d4391ad6ac782c3c67ef790cec8817c988600aa7224e6663e438 |
 
 sr3d/1793418888: no complete evaluation.

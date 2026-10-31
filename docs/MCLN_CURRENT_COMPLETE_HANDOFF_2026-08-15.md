@@ -25256,6 +25256,23 @@ NR raw snapshot15:36:20UTC remote/local SHA:
 Tables54 complete evaluations/7runs, all54 percentage pairs checked.
 Goals remain active.
 
+## SR3D Epoch4: 2026-10-31 11:49 New York
+
+Full17726 last/bbf same_complete_model=true:11952/10187 hits =
+67.426379%/57.469254%. CPU latest and generic best both epoch4,
+matched own row, complete model/optimizer/scheduler/RNG/architecture.
+User Acc025-first selected3 remains11957/10186 =
+67.454586%/57.463613%; explicit best_trained_acc025_epoch3.pth
+confirmed present. Generic best.pth4 is not selected3. Versus3:-5/+1
+hits. Four trained epochs cannot trigger two consecutive declines yet.
+SRscreen26107/GPUlive5=140/7783, first_update5freeze/step true.
+Scan33702/GPUlive26=4183/4865 at11:49, next full~12:10.
+NR lastverifiedfull9/selected5/live10 at11:35. No live settings/
+process changes or GPU diagnostics. SRsnapshot15:49:01UTC remote/
+local SHAfbfc9bfb3874d4391ad6ac782c3c67ef790cec8817c988600aa7224e6663e438.
+All55 full metric pairs independently count-checked, selected23/5/3.
+Next useful Scan26 check~12:07, NR10full~12:45. Goals active.
+
 At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
 epoch25; remote/local SHA256:
 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.

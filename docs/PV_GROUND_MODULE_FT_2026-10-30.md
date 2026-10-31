@@ -1,5 +1,58 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Verified Live Audit and Arithmetic Correction: 2026-10-31 06:51 America/New_York
+
+All three current screens and GPU processes are live, with no new complete
+validation since the 45-row snapshot. ScanRefer epoch22 was4015/4865
+at06:50, NR3D epoch6 was880/4490, and SR3D epoch3 was2490/7783 at06:51.
+Current first-update records pass frozen-core and optimizer-step checks;
+no training configuration or process was changed.
+
+Rechecked NR3D/SR3D selection using `(hits025, hits050)` over trained
+epochs only. CPU checkpoint audits matched their own full native rows:
+NR3D selected epoch5=4791/3894 of7899, and SR3D selected
+epoch2=11944/10187 of17726. Both selected checkpoint hard links exist
+and currently share the corresponding latest checkpoint inode.
+NR3D's built-in best.pth remains epoch0 under the trainer's original
+Acc050-first rule; use best_trained_acc025_epoch5.pth for selection.
+
+Correct NR3D epoch5 percentages are60.653247%/49.297379%, and the
+59.8% target margin is+0.853247pp. Earlier prose used an incorrect
+percentage conversion; the raw counts and generated epoch table were
+correct. The author baseline console still reports61.881%/49.943%;
+meeting the user target does not establish improvement over that model.
+ScanRefer selected epoch18 remains59.328986%/50.483803%, short
+0.671014/1.516197pp; SR3D remains67.381248%/57.469254%, short
+2.018752pp at0.25. ScanRefer early-stop decline streak remains0.
+Estimated next full validations from observed throughput: ScanRefer
+around07:12, NR3D around07:50-08:00, SR3D around08:45-09:00.
+Poll near these windows; use180-300 seconds between close follow-ups.
+
+## NR3D Epoch5 and Cross-Dataset Status: 2026-10-31 06:44 America/New_York
+
+NR3D run1793419199 completed full7899-row epoch5 at4791/3894
+hits@0.25/@0.50=60.653247%/49.297379%, `last/bbf`,
+`same_complete_model=true`. Acc@0.25 is a new trained best, up8 hits
+from epoch1; epoch5 is selected under the Acc@0.25-first rule and its
+full checkpoint alias is verified against its own metric row.
+The59.8% target is exceeded by0.853247 percentage points. Epoch6 began,
+with first-update frozen-core and optimizer-step checks passing.
+
+ScanRefer run1793345477 remains at epoch22 training. Its latest full
+epoch21 is5643/4791 of9508=59.350021%/50.389146%; selected epoch18
+remains5641/4800=59.328986%/50.483803%, Acc@0.50-first, and early-stop
+decline streak0. Its selected checkpoint is0.671014/1.516197 points
+short of the60.0%/52.0% goals.
+
+SR3D run1793419200 remains at epoch3 training. Its latest full and
+selected epoch2 is11944/10187 of17726=67.381248%/57.469254%.
+Epoch2 ties epoch1 at Acc@0.25 and wins its tie-break by23 hits@0.50.
+It remains2.018752 points short of the69.4% Acc@0.25 target.
+
+The combined complete-evaluation table now has45 rows across7 run
+directories. The fresh raw host snapshots and regenerated table are
+stored under `docs/results/`. No training process or setting changed.
+
 ## Cross-Dataset Status: 2026-10-31 06:11 America/New_York
 
 The latest remote metric snapshots were exported from the three active

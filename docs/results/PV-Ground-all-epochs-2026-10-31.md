@@ -13,7 +13,7 @@ PV_GROUND_MODULE_FT_2026-10-30.md.
 | Dataset | Run | Epoch | Acc025 | Acc050 |
 | --- | --- | ---: | ---: | ---: |
 | scanrefer | 1793345477 | 18 | 59.328986% | 50.483803% |
-| nr3d | 1793419199 | 1 | 60.551969% | 49.601215% |
+| nr3d | 1793419199 | 5 | 60.653247% | 49.297379% |
 | sr3d | 1793419200 | 2 | 67.381248% | 57.469254% |
 
 ## All Complete Epochs
@@ -57,6 +57,7 @@ PV_GROUND_MODULE_FT_2026-10-30.md.
 | nr3d | 1793419199 | current | 2 | 7899 | 4783 | 3916 | 60.551969% | 49.575896% |
 | nr3d | 1793419199 | current | 3 | 7899 | 4781 | 3915 | 60.526649% | 49.563236% |
 | nr3d | 1793419199 | current | 4 | 7899 | 4781 | 3918 | 60.526649% | 49.601215% |
+| nr3d | 1793419199 | current | 5 | 7899 | 4791 | 3894 | 60.653247% | 49.297379% |
 | sr3d | 1793380711 | historical | 0 (init) | 17726 | 11620 | 10023 | 65.553424% | 56.544060% |
 | sr3d | 1793380711 | historical | 1 | 17726 | 11944 | 10166 | 67.381248% | 57.350784% |
 | sr3d | 1793380711 | historical | 2 | 17726 | 11934 | 10206 | 67.324834% | 57.576441% |
@@ -69,8 +70,8 @@ PV_GROUND_MODULE_FT_2026-10-30.md.
 
 | File | Observed UTC | SHA256 |
 | --- | --- | --- |
-| ScanRefer-full-epoch-history-2026-10-31.json | 2026-10-31T10:11:18.892210+00:00 | c607709c73e04b5d9927f0bbd17e3e63afef74ed190e7ad8670cd63c09279146 |
-| NR3D-full-epoch-history-2026-10-31.json | 2026-10-31T10:11:22.140292+00:00 | 861f0a08f41a5d703c72472306ac05f9fd0fe904e65b4f3d676eaa9f423f1ab2 |
-| SR3D-full-epoch-history-2026-10-31.json | 2026-10-31T10:11:20.563364+00:00 | 00f8e9babfb907988cc5f328d88960ea20818d398e803d1d7784d0bb0e7bd529 |
+| ScanRefer-full-epoch-history-2026-10-31.json | 2026-10-31T10:44:06.024085+00:00 | 9192684afb70cb5a056fae7e53f24ad3554086e925867b0a45a8fa3ca7d9f969 |
+| NR3D-full-epoch-history-2026-10-31.json | 2026-10-31T10:44:14.412209+00:00 | bcf064d9bbf3efab6a5101d8ff846a8314b8cfc0df6cfe2b2c90bffc898d7fd2 |
+| SR3D-full-epoch-history-2026-10-31.json | 2026-10-31T10:44:07.859795+00:00 | ccf1c4b9beb8df8aa534dd7b42071c1fd67dbed2809472e41a3302e8ca17bd55 |
 
 sr3d/1793418888: no complete evaluation.

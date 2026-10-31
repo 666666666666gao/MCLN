@@ -477,3 +477,32 @@ disabled. No full GPU replay or live model change has been performed.
 The idle-GPU execution procedure, mechanism evidence, baseline table,
 limits, and cross-domain sources are in
 `docs/PV_GROUND_GEOMETRY_REPLAY_2026-10-31.md`.
+
+## Current-run Audit and Acc025 Retention: 2026-10-31 00:40 New York
+
+SR3D run1793419200 completed its own epoch0: 11620/17726 and
+10023/17726 =65.553%/56.544%, last/bbf, same_complete_model=true.
+Its own epoch1/batch1 witness confirms frozen_core=true and
+optimizer_step_complete=true. This replaces the earlier pending status;
+the initialization changes versus author baseline remain
+-3.0012/-1.5740 pp. NR3D's current-run initialization remains
+4739/4132 of7899 =59.995%/52.310%, also with its own valid first-update.
+
+At00:40, all three screens/GPUs were live: ScanRefer epoch17
+4214/4865, NR3D epoch1 1944/4490, SR3D epoch1 75/7783.
+No new trained validation has completed. ScanRefer's retained trained
+Acc050-best remains epoch12, 5632/4781 of9508.
+
+User reiterated NR3D/SR3D selection by Acc025 first, then Acc050.
+Source inspection found the live trainer still saves built-in best.pth
+by Acc050 first. Added tools/audit_preserve_nr_sr_best.sh, executed
+successfully on both hosts against the current run IDs. It validates
+full split sizes/provenance, CPU-loads checkpoint metadata and matches
+its own epoch to native_metrics.jsonl, excludes initialization from
+trained selection, and hard-links latest.pth when it is the trained
+Acc025-first best. The writer's temporary-file/os.replace contract
+preserves that inode on future saves. Both runs currently have only
+best.pth epoch0 and no latest.pth, so no trained alias was created.
+Execute after new trained validations before the next save; monitoring
+must report a missing selected alias rather than claim historical
+weights are retained. No live training code/config/process was modified.

@@ -455,3 +455,25 @@ replacement remains a separate initialization difference.
 
 ScanRefer continues unchanged. Monitoring retains NR3D/SR3D Acc@0.25-first
 selection, exact full-split metric checks, and 180-300 second polling.
+
+## New-run First Update and Geometry Diagnostic: 2026-10-31
+
+NR3D run1793419199 completed its own initialization on all7899 rows:
+4739/4132 hits =59.9949%/52.3104%, last/bbf, same_complete_model=true.
+Its epoch1/batch1 audit confirms frozen_core=true and
+optimizer_step_complete=true; training was159/4490 at00:16 New York.
+The initial changes versus the reproduced author model are
+-1.8863/+2.3674pp. New SR3D run1793419200 initialization was548/1773
+batches at00:20; do not substitute the stopped run's metric or audit.
+
+Added `tools/pvground_geometry_replay.py`, reusing the deployed semantic
+evaluator on the same forward outputs for final/native/mask geometry.
+Official geometry-dependent filtering and unfiltered fixed-query
+diagnostics are reported separately, including gate endpoint/saturation
+mass. A selected trained checkpoint must reproduce its own epoch's
+recorded full metric pair; retained_metrics is not its own score.
+Four CPU contract checks passed on the deployed evaluator with GPU
+disabled. No full GPU replay or live model change has been performed.
+The idle-GPU execution procedure, mechanism evidence, baseline table,
+limits, and cross-domain sources are in
+`docs/PV_GROUND_GEOMETRY_REPLAY_2026-10-31.md`.

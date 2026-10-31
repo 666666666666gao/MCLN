@@ -735,3 +735,22 @@ Refreshed the verified all-dataset history to39 complete evaluations
 across7 runs. The ScanRefer raw snapshot was exported from the active
 run and SHA256-checked locally; the combined table selects NR3D/SR3D by
 Acc@0.25 then Acc@0.50, and ScanRefer by Acc@0.50 then Acc@0.25.
+
+## NR3D Epoch3 and Live Status: 2026-10-31 04:05 New York
+
+NR3D run1793419199 epoch3 completed all7899 semantic-alignment rows:
+4781/3915 hits at0.25/0.50 =60.526649%/49.563236%,
+primary_score=last/bbf and same_complete_model=true. CPU audit matched
+latest.pth epoch3 to that epoch's own row; its retained_metrics remains
+the historical initialization metric and is not epoch3's result.
+Acc@0.25-first selection remains epoch1=4783/3918
+(60.551969%/49.601215%); epoch3 is lower by2/3 hits. The preserved
+best_trained_acc025_epoch1.pth exists. NR3D epoch4 had begun at49/4490.
+
+ScanRefer epoch20 was2862/4865; its latest full row remains epoch19
+5620/4767 and selected trained epoch18=5641/4800. The two consecutive
+dual-three-round-mean declines needed for automatic early stopping have
+not occurred. SR3D epoch2 was2585/7783; its latest complete and
+Acc@0.25-first selected result remains epoch1=11944/10164. No training
+process/configuration was changed. Refreshed the all-dataset history to
+40 full evaluations across7 runs and updated NR3D's raw source snapshot.

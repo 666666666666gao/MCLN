@@ -12,7 +12,7 @@ mkdir -p /root/autodl-tmp/pvground_author_baseline_20261030/nr3d
   --num_decoder_layers 6 --self_position_embedding loc_learned \
   --self_attend --model MCLN --query_points_obj_topk 4 \
   --use_contrastive_align --use_soft_token_loss --detect_intermediate \
-  --joint_det --batch_size 3 --dataset nr3d --test_dataset nr3d \
+  --joint_det --batch_size 10 --dataset nr3d --test_dataset nr3d \
   --data_root /root/autodl-tmp/PV-Ground/data/ --use_color \
   --butd_cls --num_workers 4 --checkpoint_path \
   /root/autodl-tmp/PV-Ground/checkpoints/PV-Ground_NR3D.pth \

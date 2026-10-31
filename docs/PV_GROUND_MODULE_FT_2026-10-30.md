@@ -1,5 +1,10 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+ScanRefer epoch15 completed at 5645/4778 hits, or 59.3711%/50.2524%,
+with complete `last/bbf` evaluation and a CPU-matched latest checkpoint.
+Epoch15 is the Acc@0.25 high by one hit over epoch11; epoch12 remains best
+at Acc@0.50. Epoch16 is training.
+
 Date: 2026-10-30 (America/New_York)
 
 ## Targets and Protocol
@@ -35,10 +40,12 @@ Validation size: 9,508.
 | 11 | 5644 | 4779 | 59.361% | 50.263% |
 | 12 | 5632 | 4781 | 59.234% | 50.284% |
 | 13 | 5626 | 4773 | 59.171% | 50.200% |
+| 14 | 5601 | 4769 | 58.908% | 50.158% |
+| 15 | 5645 | 4778 | 59.371% | 50.252% |
 
-Best trained evaluation by Acc@0.50 is epoch 12. Relative to the recorded baseline (59.518% / 46.992%), epoch 12 is -0.284 / +3.292 percentage points. Target minima are 5705/9508 at Acc@0.25 and 4945/9508 at Acc@0.50, leaving gaps of 73 and 164 hits. Acc@0.25 remains below baseline and target. The recent pattern (epoch 11 to 12: Acc@0.25 -0.126 pp, Acc@0.50 +0.021 pp) is consistent with a stricter-IoU localization/extent-precision bottleneck, but aggregate metrics do not identify which module causes it.
+Best trained evaluation by Acc@0.50 remains epoch 12. Epoch 15 is now the Acc@0.25 high by one hit over epoch 11. Relative to the recorded baseline (59.518% / 46.992%), epoch 12 is -0.284 / +3.292 percentage points; epoch 15 is -0.147 / +3.260 points. Target minima are 5705/9508 at Acc@0.25 and 4945/9508 at Acc@0.50; epoch 15 remains short by 60 and 167 hits. Acc@0.25 remains below baseline and target.
 
-Epoch 12's full checkpoint was verified against its native metric row and retained as `best_trained_epoch12.pth`. Epoch 13 completed at 5626/4773 hits (59.171%/50.200%), down 0.063/0.084 percentage points versus epoch 12. CPU audit matched `latest.pth` epoch 13 to its complete native row and confirmed model/optimizer/scheduler. The best trained selection remains epoch 12; no new alias is required. Epoch 13's three-round means are 59.255364%/50.248913%, so both did not decline and decline streak remains 0. Epoch 14 is training.
+Epoch 12's full checkpoint was verified against its native metric row and retained as `best_trained_epoch12.pth`. Epoch 15's `latest.pth` was CPU-matched to its epoch row and includes model/optimizer/scheduler/RNG. Its three-round means are 59.150189%/50.203338%; the early-stop decline streak is 0. Epoch 16 began at 177/4865 batches.
 
 ## NR3D
 
@@ -53,12 +60,15 @@ Validation size: 7,899.
 | 4 | 4774 | 3918 | 60.438% | 49.601% |
 | 5 | 4787 | 3902 | 60.603% | 49.399% |
 | 6 | 4784 | 3910 | 60.565% | 49.500% |
+| 7 | 4772 | 3900 | 60.394% | 49.373% |
 
 Epoch 6 completed at 4784/3910 hits, or 60.5646%/49.4999%, with
 `last/bbf` and `same_complete_model=true`. CPU audit matched `latest.pth`
-epoch6 to this row and confirmed model/optimizer/scheduler/RNG. Epoch1
-By the new Acc@0.25-first rule, epoch3 and epoch5 tie for best trained at
-4787 hits; the Acc@0.25 target remains exceeded. Epoch7 is training.
+epoch6 to this row and confirmed model/optimizer/scheduler/RNG. Under the
+requested Acc@0.25-first rule, epoch3 and epoch5 remain tied for best at
+4787 hits (60.603%), 63 hits above target. Epoch7 is 4772/3900
+(60.394%/49.373%); epoch8 is training at 2800/4490 batches. The tied
+epoch3/5 checkpoint was not hard-linked before overwrite.
 
 
 ## SR3D
@@ -73,10 +83,9 @@ Validation size: 17,726.
 | 3 | 11947 | 10167 | 67.398% | 57.356% |
 
 Epoch 3 completed at 11947/10167 hits, or 67.3982%/57.3564%, with
-`last/bbf` and `same_complete_model=true`. It improves epoch2 by 0.0734
-points at Acc@0.25 but loses 0.2200 points at Acc@0.50, so epoch2 remains
-best trained round by Acc@0.25-first. The Acc@0.25 target remains short by
-355 hits. Epoch4 is training.
+`last/bbf` and `same_complete_model=true`. Epoch3 is the best trained
+round by Acc@0.25-first; the target remains short by 355 hits. Epoch4 is
+training at 5761/7783 batches.
 
 ## Baseline Reproduction Request
 
@@ -90,12 +99,19 @@ prepared but not launched and no training process was interrupted.
 
 The prepared commands use the author model class `MCLN`, decoder layers6,
 `loc_learned`, `kps`, `use_color`, `joint_det`, `detect_intermediate`,
-`butd_cls`, `self_attend`, batch3, and the author checkpoint configuration.
+`butd_cls`, `self_attend`, batch10, and the author checkpoint configuration.
 They run `--eval` on the full validation split and record the original
 semantic `last/bbf` result. No optimizer update occurs, and the
 one-tenth fine-tuning LR schedule is not used for this baseline.
 The reproducible command files are `tools/run_author_baseline_nr3d.sh` and
 `tools/run_author_baseline_sr3d.sh`.
+
+Paper reference: Table 2 of the [CVPR 2026 PV-Ground paper](https://openaccess.thecvf.com/content/CVPR2026/papers/Shang_PV-Ground_Text-Guided_Point-Voxel_Interaction_for_3D_Visual_Grounding_CVPR_2026_paper.pdf)
+reports two-stage MCLN at 59.8% NR3D / 68.4% SR3D and PV-Ground at
+62.1% / 68.9%, all at Acc@0.25. The user's NR3D target matches reported
+MCLN; the SR3D target 69.4% is 1.0 pp above MCLN and 0.5 pp above the
+paper's PV-Ground result. The author-checkpoint evaluations remain
+necessary to verify reproduction under this repository's exact run.
 
 ## Verified Operational Issue
 
@@ -287,3 +303,24 @@ The three module boundaries and overall architecture remain unchanged. Public re
 NR3D epoch 5 completed full native validation: 4787/7899 hits@0.25 (60.603%) and 3902/7899 hits@0.50 (49.399%), `primary_score=last/bbf`, `same_complete_model=true`. The 59.8% Acc@0.25 target is exceeded by 0.803 pp (63 hits). Its `latest.pth` epoch 5 was matched to the native row; model, optimizer, scheduler, and RNG payloads are present. The result exactly repeats epoch 3, so it does not alter the best-round selection: epoch 1 remains best trained by Acc@0.50-first (3918 hits@0.50 versus 3902 at epochs 3 and 5). Epoch 6 is training.
 
 At approximately 19:43, ScanRefer epoch 13 was at 4269/4865 batches, NR3D epoch 6 at 186/4490, and SR3D epoch 3 at 5519/7783. All three screens and GPUs remained active with checked logs clean. ScanRefer still has no validation row beyond epoch 12 and its automatic early-stop decline streak remains 0. The one-tenth initial LRs and `[10,30]` decay schedule remain unchanged; no training process or setting was modified.
+
+## ScanRefer Epoch 15 and Live Status: 22:32 America/New_York
+
+ScanRefer epoch15 completed full native validation with 5645/9508 hits@0.25
+(59.3711%) and 4778/9508 hits@0.50 (50.2524%); the row is
+`primary_score=last/bbf` and `same_complete_model=true`. CPU audit matched
+`latest.pth` epoch15 to the exact native row and confirmed model, optimizer,
+scheduler, and RNG payloads. Epoch15 is the new Acc@0.25 high by one hit
+over epoch11; epoch12 remains best by Acc@0.50. Relative to baseline
+59.518%/46.992%, epoch15 is -0.147/+3.260 percentage points. It remains
+60/167 hits short of the 60.0%/52.0% targets. The three-round means are
+59.150189%/50.203338%; automatic early-stop decline streak is 0. Epoch16
+training began and reached 177/4865 batches at the latest check.
+
+NR3D epoch8 was training at 2800/4490, with no new full validation beyond
+epoch7 (4772/3900 of 7899 = 60.3940%/49.3733%). Its Acc@0.25-first best
+remains epoch3/5 tied at 4787 hits (60.603%). SR3D epoch4 was at 5761/7783,
+with epoch3 still the latest full row and Acc@0.25-best: 11947/10167 of
+17726 = 67.3982%/57.3564%. NMB GPUs remain occupied; prepared plain
+author-checkpoint evaluations have not been launched. No training code,
+settings, processes, or checkpoints were modified in this monitoring check.

@@ -10,7 +10,7 @@ mkdir -p /root/autodl-tmp/pvground_author_baseline_20261030/sr3d
   --nproc_per_node 1 --master_port 29618 train_dist_mod.py \
   --num_target 256 --sampling kps --num_encoder_layers 3 \
   --num_decoder_layers 6 --self_position_embedding loc_learned \
-  --self_attend --model MCLN --query_points_obj_topk 4 \
+  --self_attend --model PVGround --query_points_obj_topk 4 \
   --use_contrastive_align --use_soft_token_loss --detect_intermediate \
   --joint_det --batch_size 10 --dataset sr3d --test_dataset sr3d \
   --data_root /root/autodl-tmp/PV-Ground/data/ --use_color \

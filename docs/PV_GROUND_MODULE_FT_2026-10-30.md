@@ -1,9 +1,9 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
-Current verified state: 2026-10-31 01:33 America/New_York.
-ScanRefer run1793345477 has full metrics through epoch17 and is training
-epoch18. Its trained Acc050-best is epoch17,
-59.2659%/50.4102%, preserved as best_trained_epoch17.pth.
+Current verified state: 2026-10-31 02:14 America/New_York.
+ScanRefer run1793345477 has full metrics through epoch18 and is training
+epoch19. Its trained Acc050-best is epoch18,
+59.3290%/50.4838%, preserved as best_trained_epoch18.pth.
 NR3D run1793419199 trained epoch1 reaches60.5520% Acc025,
 above the59.8% target, with its complete checkpoint retained by the
 Acc025-first rule. Its Acc050 is49.6012%. SR3D run1793419200 still
@@ -14,15 +14,24 @@ The historical stopped NR/SR runs are labeled separately below.
 The complete run-separated table is
 [all epochs](results/PV-Ground-all-epochs-2026-10-31.md), with a
 [CSV export](results/PV-Ground-all-epochs-2026-10-31.csv).
-The05:53:55-57 UTC snapshot includes35 complete evaluations across
+The refreshed snapshot includes36 complete evaluations across
 7 run directories (one has no complete evaluation), with raw per-host
-JSON snapshots and hashes alongside the table. It includes ScanRefer0-17,
+JSON snapshots and hashes alongside the table. It includes ScanRefer0-18,
 historical NR3D0-8, interrupted NR3D init0, current NR3D0-1,
 historical SR3D0-3 and current SR3D init0. It excludes interrupted
 partial epochs and the invalid old ScanRefer bbs run.
 `tools/export_full_epoch_history.sh` exports native records on each
 corresponding host; `tools/pvground_epoch_table.py` rebuilds the table
 from downloaded snapshots without parsing rounded prose.
+
+ScanRefer epoch18 completed with5641/4800 hits of9508
+(59.328986%/50.483803%), native last/bbf and same_complete_model=true.
+The exact-epoch latest checkpoint was audited and retained as
+best_trained_epoch18.pth. Acc050-best is e18; Acc025-best remains e15
+(5645 hits), so report both thresholds from one checkpoint. Targets
+remain64/145 hits short (0.671014/1.516197 pp). Relative to baseline
+59.518%/46.992%, approximately-0.189/+3.492 pp. No dual moving-mean
+decline at e18; e19 is running.
 
 Geometry replay diagnostic now records per-sample repairs/damage for
 native/mask versus final under each protocol and IoU threshold, using

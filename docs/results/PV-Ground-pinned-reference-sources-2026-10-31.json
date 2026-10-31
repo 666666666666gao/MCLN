@@ -1,0 +1,53 @@
+{
+  "observed_at": "2026-10-31T08:37:00-04:00",
+  "verification": "git ls-remote main followed by HTTP200 raw files at the observed commit",
+  "hash_scope": "SHA256 of fetched text encoded as UTF-8",
+  "references": [
+    {
+      "repository": "https://github.com/microsoft/LoRA",
+      "commit": "c4593f060e6a368d7bb5af5273b8e42810cdef90",
+      "files": [
+        {
+          "path": "loralib/layers.py",
+          "sha256": "ea9fa6bd0930dfbf5af08440f6c71aeab3408cf07d3cca7620c86c45ea730797"
+        }
+      ],
+      "observed_mechanism": "Linear initializes lora_B to zero and adds the low-rank contribution to the original linear result.",
+      "relevance": "Check the function of the composed insertion, not zero initialization in isolation.",
+      "limit": "Does not validate mask-derived boxes or our reader/support/mixer architecture."
+    },
+    {
+      "repository": "https://github.com/lllyasviel/ControlNet",
+      "commit": "ed85cd1e25a5ed592f7d8178495b4483de0331bf",
+      "files": [
+        {
+          "path": "cldm/cldm.py",
+          "sha256": "aa0f9f69222c88a590ff4cf4c0a917e5a105fb8e7e85b902b53a421861273baf"
+        },
+        {
+          "path": "ldm/modules/diffusionmodules/util.py",
+          "sha256": "0909fcf40fa29ca5ee237eca37d2188e485dfa5c9fbe3cabc888d9ce71d1c008"
+        }
+      ],
+      "observed_mechanism": "make_zero_conv uses zero_module; zero_module zeros every parameter; control features are added to the denoiser path.",
+      "relevance": "An initially zero additive control contribution motivates an explicit original-function insertion test.",
+      "limit": "A zero coefficient in our interpolation selects the mask endpoint and does not preserve the native box endpoint."
+    },
+    {
+      "repository": "https://github.com/open-mmlab/mmdetection",
+      "commit": "cfd5d3a985b0249de009b67d04f37263e11cdf3d",
+      "files": [
+        {
+          "path": "projects/AlignDETR/align_detr/align_detr_head.py",
+          "sha256": "0a392a8b4fccc535493ad0f23dfbf968fbaa13eec41b230b0cac2435c753704e"
+        }
+      ],
+      "observed_mechanism": "Positive classification targets combine predicted class confidence and aligned IoU, then detach the target and apply within-object query rank weights.",
+      "relevance": "Measure selection and localization alignment before modifying auxiliary supervision.",
+      "limit": "Our token aggregate is not its sigmoid class probability; its BCE target cannot be transferred directly."
+    }
+  ],
+  "experiment_changes": "none",
+  "new_accuracy_result": false,
+  "novelty_established": false
+}

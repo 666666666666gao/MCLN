@@ -332,3 +332,32 @@ started. GPU is occupied. Neither Scan replay nor staged SR init replay
 has launched. Recheck trained selection and real GPU release before
 using this launcher. Source preparation and synthetic tests are not
 evidence of full-split replay success.
+
+## Pinned Open-Source Evidence: 2026-10-31 08:37 New York
+
+Re-read the existing reference implementations at immutable commits,
+obtained with git ls-remote after the unauthenticated GitHub REST API
+hit its rate limit. Raw files at the commits returned HTTP200.
+Structured paths, hashes, mechanisms and limits are retained in
+docs/results/PV-Ground-pinned-reference-sources-2026-10-31.json.
+
+| Reference | Verified commit | Applicable principle |
+| --- | --- | --- |
+| Microsoft LoRA | c4593f060e6a368d7bb5af5273b8e42810cdef90 | Linear's initially zero low-rank contribution is added to its original output |
+| ControlNet | ed85cd1e25a5ed592f7d8178495b4483de0331bf | Zero-parameter control projections feed additive control paths |
+| MMDetection Align-DETR | cfd5d3a985b0249de009b67d04f37263e11cdf3d | Detached class/IoU targets and within-object rank weighting align supervision |
+
+The first two motivate preserving the composed pretrained function,
+not blindly choosing a zero scalar. Our interpolation at zero selects
+the mask endpoint, so changing its output bias to1 is a within-module
+initialization candidate only after paired replay supports native geometry.
+This would change the existing mixer's parameter initialization, not add
+a fourth module. Full author-function identity would still require a
+matched model/input comparison, and trained improvement a new experiment.
+
+Align-DETR motivates investigating classifier-bbs versus semantic-bbf
+supervision/query agreement. It does not justify applying its sigmoid BCE
+to our token aggregate or changing the formal metric. No imported code,
+new loss/head/module, live parameter change or measured improvement follows
+from these references. Zero initialization and aligned supervision are
+established ideas; the sources do not establish novelty of our three modules.

@@ -1,5 +1,31 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Query Selection Diagnostic: 2026-10-31 07:44 America/New_York
+
+Extended the independent same-forward replay to observe the actual deployed
+semantic evaluator's sorted root query IDs. Diagnostic instances receive
+an AST-inserted observation immediately after the existing `top` assignment;
+sorting, filters, predictions and training sources are unchanged. Reports
+compare each protocol/geometry against the deployed extra-mask bbs helper,
+unfiltered semantic selection, and the same protocol's final geometry.
+The counts distinguish scorer disagreement from geometry-induced reranking.
+They cover evaluation forwards, not training matcher roles or causal costs.
+
+Nine CPU contract tests pass against both the actual NR3D and ScanRefer
+evaluators: tied rankings, unchanged same-geometry metrics and inputs,
+within/across-batch order, missing traces, paired repairs/damage, full-row
+requirements and own-checkpoint metric matching. Uploaded the replay only
+to /tmp on all three hosts; SHA256 matches locally and remotely:
+80fe6fcd6aab3f1ff08dbd84793f386b6a5a639eee05aeef2e5f8f73993db6aa.
+No full GPU replay or dataset-level agreement measurement has run.
+
+At07:43 all three screens/GPU workloads remain live: Scan33702 epoch23
+2434/4865, NR27029 epoch6 validation140/790, SR26107 epoch3
+5351/7783. No new full rows beyond Scan22/NR5/SR2; selected trained
+epochs remain18/5/2. NR/SR freeze and optimizer-step checks pass,
+with configurations unchanged. NR6 full result expected around07:52;
+Scan23 around08:26, SR3 around08:45-09:00. No immediate repeat poll.
+
 ## Score-Path Totals: 2026-10-31 07:30 America/New_York
 
 Verified both logged score paths across all current NR0-5 and SR0-2

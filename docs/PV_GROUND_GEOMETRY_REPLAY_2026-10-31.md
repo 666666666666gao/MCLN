@@ -361,3 +361,21 @@ to our token aggregate or changing the formal metric. No imported code,
 new loss/head/module, live parameter change or measured improvement follows
 from these references. Zero initialization and aligned supervision are
 established ideas; the sources do not establish novelty of our three modules.
+
+## SR Selected Checkpoint Advanced: 2026-10-31 08:57 New York
+
+Current SR epoch3 full17726-row result11957/10186
+(67.454586%/57.463613%) is the Acc025-first trained selection.
+CPU metadata matched own epoch3 row and complete state; retained as
+best_trained_acc025_epoch3.pth. Generic best.pth remains epoch2 under
+the running program's unchanged Acc050-first criterion. Use the explicit
+Acc025 alias when eventually running the trained SR diagnostic:
+
+```bash
+bash /tmp/run_nr_sr_geometry_replay.sh sr3d best_trained_acc025_epoch3.pth /root/autodl-tmp/sr3d_epoch3_geometry_replay.json
+```
+
+GPU remains occupied by SR epoch4. No diagnostic launched. The staged
+cross-host fresh-module initialization diagnostic still references epoch0;
+it does not need a trained checkpoint or a changed epoch0 reference.
+Re-audit selected epoch before any eventual trained replay.

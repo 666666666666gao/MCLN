@@ -1,5 +1,38 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## SR3D Epoch3 New Acc025 Best: 2026-10-31 08:57 America/New_York
+
+Current run1793419200 epoch3 completed17726 last/bbf semantic rows:
+hits025/050=11957/10186, Acc=67.454586%/57.463613%,
+same_complete_model=true. CPU latest.pth epoch3 matches its own row
+and has complete model/optimizer/scheduler/RNG/architecture state.
+Compared with epoch2: +13/-1hits. Under the user's Acc025-first rule,
+epoch3 replaces epoch2 as selected trained best.
+
+Preserved best_trained_acc025_epoch3.pth as a complete checkpoint hard
+link. The training program's best.pth remains epoch2 under its existing
+Acc050-first implementation; latest.retained_metrics also describes
+epoch2. Neither is epoch3's own result. Use the retained Acc025 alias
+for selected-model evaluation, not the generic best.pth filename.
+No live source/process/parameter change was made.
+
+Target69.4 gap1.945414pp,345hits. Versus reproduced author baseline
+12152/10302, epoch3 is lower195/116hits (-1.100079/-0.654406pp);
+this is not an author-baseline improvement. Module-equipped init0 and
+trained results remain separate.
+
+At08:55 SR screen26107/GPU live, epoch4=20/7783; first_update4
+confirms frozen_core=true and optimizer_step_complete=true. Configs
+remain lr1e-5/modules1e-5/backbone2e-5,batch10,seed111,decay10/30.
+NR screen27029/GPU live08:56, epoch7=3938/4490 (~88%),
+full rows still through6, selected5. NR7 next full~09:15-09:25;
+Scan24~09:40, SR4~11:40-11:55. Re-estimate from actual throughput.
+
+SR export observed12:55:51UTC downloaded/hash-verified:
+fb32464a33d7fa863a04c829ff8411eacb333bf9a35e431e586fd630a297cbc4.
+Combined table49 complete evaluations/7 runs, trained selections23/5/3.
+Other snapshots retain their own observation times. No GPU replay run.
+
 ## ScanRefer Epoch23 New Trained Best: 2026-10-31 08:30 America/New_York
 
 Current run1793345477 epoch23 completed9508 semantic-alignment rows:

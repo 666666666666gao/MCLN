@@ -1,5 +1,14 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## User-Requested Stop: 2026-10-31 11:58 New York
+
+All three module fine-tuning jobs are stopped and verified exited.
+Previous optimization goal is paused; do not restart these jobs or
+queued geometry diagnostics. Last complete validations: Scan25, NR9,
+SR4. Partial Scan26/NR10/SR5 excluded. Existing artifacts preserved.
+The user requests clean-baseline training; component-removal scope
+is awaiting clarification. See PV_GROUND_CLEAN_BASELINE_2026-10-31.md.
+
 ## SR3D Epoch4 Complete: 2026-10-31 11:49 New York
 
 Full17726 last/bbf same_complete_model=true:11952/10187 hits =

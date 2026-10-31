@@ -25273,6 +25273,21 @@ local SHAfbfc9bfb3874d4391ad6ac782c3c67ef790cec8817c988600aa7224e6663e438.
 All55 full metric pairs independently count-checked, selected23/5/3.
 Next useful Scan26 check~12:07, NR10full~12:45. Goals active.
 
+## User Redirect: 2026-10-31 11:58 New York
+
+The previous optimization goal is paused. Per explicit user request,
+all three module fine-tunes were interrupted with SIGINT. Rechecks
+confirmed their screens and training processes exited, with ScanRefer/
+NR3D/SR3D GPU memory0/0/1MiB. Logs and saved weights preserved.
+Last complete validations Scan25/NR9/SR4; interrupted26/10/5 excluded.
+Do not resume old jobs or queued geometry diagnostics.
+
+User requests cleaner baselines from three pretrained models after
+removing three innovations. Component boundary clarification requested:
+original PV-Ground contributions versus our added reader/support/span.
+No baseline architecture change or new training launch yet.
+See repository docs/PV_GROUND_CLEAN_BASELINE_2026-10-31.md.
+
 At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
 epoch25; remote/local SHA256:
 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.

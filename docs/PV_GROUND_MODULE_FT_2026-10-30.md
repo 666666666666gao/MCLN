@@ -167,6 +167,31 @@ For ScanRefer epochs 8 and 9 and NR3D epoch 1, the full checkpoint epoch was mat
 
 ## Three Module Roles and Testable Hypotheses
 
+CPU state comparison of initialization epoch0 and retained epoch17 found
+all1234 frozen state tensors unchanged in shape, dtype and SHA256,
+including running statistics. All61 trainable parameter tensors changed:
+
+| Module | Changed / total tensors | Changed / total scalar elements | Delta L2 |
+| --- | ---: | ---: | ---: |
+| Task-observation query reader | 37 / 37 | 771309 / 923616 | 5.540323 |
+| Mask-support corrector | 10 / 10 | 27265 / 27841 | 4.286732 |
+| Extremal span mixer | 14 / 14 | 29793 / 29793 | 4.249388 |
+
+This supports actual frozen-core preservation through epoch17, beyond
+the first-update marker. Parameter deltas include optimizer effects;
+their magnitude does not measure module importance, gradient flow,
+gate saturation or causal accuracy gains. The span output bias changed
+from0 to0.0003249672, but its feature-dependent output must still be
+measured on validation data before making saturation claims.
+
+Reproducible CPU audit: tools/pvground_checkpoint_update_audit.py.
+Raw result: docs/results/ScanRefer-epoch17-checkpoint-cpu-audit.json,
+SHA2562fb9cd525bc5175945867d3b674e64dafe55bda2546ee1145626074105943b48.
+One CPU negative-control test passes: detects changed frozen running
+statistics, reports an unchanged module, and selects epoch17's own metric
+instead of retained epoch0 best. Training remains live and unchanged;
+the next empirical decision still needs same-forward GPU geometry replay.
+
 The deployed model contains three modules whose intended roles are:
 
 1. **Task-observation query reader:** separate semantic and geometry query transforms read shared observed memories, then use the decoder's shared attention parameters.

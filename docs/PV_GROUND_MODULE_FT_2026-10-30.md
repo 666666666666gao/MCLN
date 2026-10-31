@@ -367,10 +367,37 @@ correct per-dataset validation split, and official `butd_cls`,
 `self_attend`, and `joint_det` switches. At launch both jobs were loading
 validation data; baseline metrics are pending.
 
-Compare the reproduced baselines to the paper's two-stage MCLN Acc@0.25:
-NR3D 59.8%, SR3D 68.4%. Treat within approximately 1.0 pp as comparable;
-otherwise audit checkpoint/config/split/protocol before restarting either
-fine-tune. Once comparable, resume the corresponding existing module
-fine-tune from its original author checkpoint with the requested schedule.
-Keep measured baseline, paper figure, module-init epoch0, and fine-tuned
-scores separate. NR3D/SR3D selection remains Acc@0.25 first, then Acc@0.50.
+Compare these checkpoints to the paper's PV-Ground results, not the MCLN
+row: NR3D 62.1%, SR3D 68.9% Acc@0.25. MCLN is a different model (59.8% and
+68.4%). Treat within approximately 1.0 pp as comparable; otherwise audit
+checkpoint/config/split/protocol before restarting the corresponding
+fine-tune. Keep measured baseline, paper figure, module-init epoch0, and
+fine-tuned scores separate. NR3D/SR3D selection remains Acc@0.25 first,
+then Acc@0.50.
+
+## Author Baseline Evaluation Update: 23:42 America/New_York
+
+The first prepared baseline launch used `--model MCLN` and failed before
+evaluation with `NameError`; the actual author checkout's
+`models/__init__.py` exports `PVGround`, and `train_dist_mod.py` imports
+only that class. Corrected both eval-only commands to `--model PVGround`.
+Both subsequent runs report that their corresponding PV-Ground checkpoint
+loaded successfully.
+
+NR3D author-checkpoint evaluation completed all 790 validation batches
+using `PV-Ground_NR3D.pth` (stored checkpoint epoch 25). Official log
+`last_ semantic alignment` Top-1 is 61.8813% Acc@0.25 and 49.9430%
+Acc@0.50, equivalent to 4888/7899 and 3945/7899. Against PV-Ground's own
+paper NR3D Acc@0.25=62.1%, delta is -0.219 pp. This is within the
+approximately 1 pp reproduction tolerance. The old module fine-tune had
+been stopped by user request; restarted the configured NR3D three-module
+fine-tune from its author-checkpoint initialization at run
+`1793417914`. Saved config confirms lr=1e-5, backbone lr=2e-5, batch10,
+seed111, decay `[10,30]`, eval=false. First update audit is pending.
+
+SR3D author-checkpoint eval remains active at 962/1773 validation batches
+on the latest observation. It loaded `PV-Ground_SR3D.pth`. No complete
+baseline score is available. Compare to PV-Ground paper Acc@0.25=68.9%;
+keep MCLN's 68.4% and the user's 69.4% target identified separately.
+Do not resume SR3D fine-tuning until the baseline is complete and within
+about 1 pp of the matching PV-Ground paper score.

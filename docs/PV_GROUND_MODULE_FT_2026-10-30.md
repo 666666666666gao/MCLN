@@ -52,8 +52,13 @@ Validation size: 7,899.
 | 3 | 4787 | 3902 | 60.603% | 49.399% |
 | 4 | 4774 | 3918 | 60.438% | 49.601% |
 | 5 | 4787 | 3902 | 60.603% | 49.399% |
+| 6 | 4784 | 3910 | 60.565% | 49.500% |
 
-Epoch 5 is +0.608/-2.912 points versus initialization at Acc@0.25/Acc@0.50 and remains 0.803 points above the 59.8% Acc@0.25 target (63 hits above the 4,724-hit minimum). Epochs 3 and 5 have identical hit counts. Epochs 1 and 4 tie at 3,918 hits@0.50; epoch 1 remains the best trained checkpoint by the Acc@0.50-first rule, with its higher Acc@0.25 as tie-break, and is preserved as `best_trained_epoch1.pth`. The recurring lower Acc@0.50 than initialization alongside higher Acc@0.25 indicates a threshold trade-off, not evidence by itself that any one module should be changed. Epoch 6 is training.
+Epoch 6 completed at 4784/3910 hits, or 60.5646%/49.4999%, with
+`last/bbf` and `same_complete_model=true`. CPU audit matched `latest.pth`
+epoch6 to this row and confirmed model/optimizer/scheduler/RNG. Epoch1
+By the new Acc@0.25-first rule, epoch3 and epoch5 tie for best trained at
+4787 hits; the Acc@0.25 target remains exceeded. Epoch7 is training.
 
 
 ## SR3D
@@ -65,8 +70,32 @@ Validation size: 17,726.
 | 0 (init) | 11620 | 10023 | 65.553% | 56.544% |
 | 1 | 11944 | 10166 | 67.381% | 57.351% |
 | 2 | 11934 | 10206 | 67.325% | 57.576% |
+| 3 | 11947 | 10167 | 67.398% | 57.356% |
 
-Epoch 2 is +1.772/+1.032 points versus initialization at Acc@0.25/Acc@0.50 and remains 2.075 points below the 69.4% Acc@0.25 target. The minimum target count is 12,302; epoch 2 is short by 368 hits. Its verified full checkpoint is preserved as `best_trained_epoch2.pth` and is the best trained round by Acc@0.50-first selection. The epoch-1 to epoch-2 change (+0.226 pp at Acc@0.50, -0.056 pp at Acc@0.25) is too small and aggregate-only to attribute to a specific module. Epoch 3 is training.
+Epoch 3 completed at 11947/10167 hits, or 67.3982%/57.3564%, with
+`last/bbf` and `same_complete_model=true`. It improves epoch2 by 0.0734
+points at Acc@0.25 but loses 0.2200 points at Acc@0.50, so epoch2 remains
+best trained round by Acc@0.25-first. The Acc@0.25 target remains short by
+355 hits. Epoch4 is training.
+
+## Baseline Reproduction Request
+
+The user requested direct evaluation of the author checkpoints without the
+three added modules, using the same validation split, `--butd_cls`,
+`--self_attend`, and native semantic `last/bbf` protocol. The original
+`/tmp/PV-Ground/train_dist_mod.py` and `PV-Ground_NR3D.pth` /
+`PV-Ground_SR3D.pth` payloads are present. All three RTX4090 GPUs are
+currently occupied by active training, so the baseline evaluation is
+prepared but not launched and no training process was interrupted.
+
+The prepared commands use the author model class `MCLN`, decoder layers6,
+`loc_learned`, `kps`, `use_color`, `joint_det`, `detect_intermediate`,
+`butd_cls`, `self_attend`, batch3, and the author checkpoint configuration.
+They run `--eval` on the full validation split and record the original
+semantic `last/bbf` result. No optimizer update occurs, and the
+one-tenth fine-tuning LR schedule is not used for this baseline.
+The reproducible command files are `tools/run_author_baseline_nr3d.sh` and
+`tools/run_author_baseline_sr3d.sh`.
 
 ## Verified Operational Issue
 

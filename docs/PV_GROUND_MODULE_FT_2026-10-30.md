@@ -1,12 +1,14 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
-Current verified state: 2026-10-31 01:00 America/New_York.
+Current verified state: 2026-10-31 01:33 America/New_York.
 ScanRefer run1793345477 has full metrics through epoch17 and is training
 epoch18. Its trained Acc050-best is epoch17,
 59.2659%/50.4102%, preserved as best_trained_epoch17.pth.
-NR3D run1793419199 and SR3D run1793419200 have full initialization
-metrics and passing own-run first-update audits; their first trained
-evaluations are pending. Both reproduced author baselines are complete.
+NR3D run1793419199 trained epoch1 reaches60.5520% Acc025,
+above the59.8% target, with its complete checkpoint retained by the
+Acc025-first rule. Its Acc050 is49.6012%. SR3D run1793419200 still
+has only initialization metrics. Both own-run first-update audits pass
+and both reproduced author baselines are complete.
 The historical stopped NR/SR runs are labeled separately below.
 
 Experiment start: 2026-10-30 (America/New_York).
@@ -73,12 +75,27 @@ Current run1793419199, from the reproduced author checkpoint:
 | Epoch | Hits@0.25 | Hits@0.50 | Acc@0.25 | Acc@0.50 |
 | ---: | ---: | ---: | ---: | ---: |
 | 0 (init) | 4739 | 4132 | 59.995% | 52.310% |
+| 1 | 4783 | 3918 | 60.552% | 49.601% |
 
-Epoch1 is training. No trained result or trained best exists yet for this
-run. Own-run epoch1/batch1 confirms frozen_core=true and
-optimizer_step_complete=true. Select trained checkpoints by Acc025 first,
-Acc050 second, using tools/audit_preserve_nr_sr_best.sh after each new
-complete validation. Built-in best.pth remains Acc050-first.
+Epoch1 completed on all7899 rows with last/bbf and same_complete_model=true.
+Its exact Acc025/050 is60.551969%/49.601215%. Acc025 exceeds the
+59.8% target by0.751969pp; its4783 hits are59 above the minimum4724.
+This is a trained result, separate from untrained epoch0.
+
+CPU audit matched latest.pth epoch1 to its own row and verified complete
+model/optimizer/scheduler/RNG/architecture. Preserved it as
+best_trained_acc025_epoch1.pth (link_count2), and verified that selected
+file exists. Built-in best.pth remains epoch0 under Acc050-first.
+Continue selecting trained checkpoints by Acc025 first, Acc050 second,
+using tools/audit_preserve_nr_sr_best.sh after new complete validations.
+
+Meeting the requested target does not imply beating the reproduced
+PV-Ground author model: epoch1 is105/27 hits lower than author baseline,
+or -1.329282/-0.341815pp. Versus module initialization it is
++44/-214 hits (+0.557033/-2.709204pp), an aggregate threshold tradeoff.
+Do not claim a causal module benefit from this single comparison.
+Epoch2 is live at164/4490; its own first-update confirms frozen_core=true
+and optimizer_step_complete=true. No training setting was changed.
 
 Historical stopped run1793382384 (not the current run):
 

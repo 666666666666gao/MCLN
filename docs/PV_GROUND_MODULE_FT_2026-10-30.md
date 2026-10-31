@@ -1,5 +1,32 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## NR3D Epoch7 Complete: 2026-10-31 09:15 America/New_York
+
+Current run1793419199 epoch7 completed7899 last/bbf semantic rows:
+hits025/050=4767/3889, Acc=60.349411%/49.234080%,
+same_complete_model=true. CPU latest.pth epoch7 matches its own row
+and contains model/optimizer/scheduler/RNG/architecture state.
+Its retained_metrics describes init0, not epoch7.
+
+Compared with epoch6, hits decline16/4. Acc025-first selected trained
+checkpoint remains preserved best_trained_acc025_epoch5.pth:
+4791/3894=60.653247%/49.297379%. This exceeds the59.8 target but
+remains below the reproduced author baseline4888/3945; target
+attainment does not establish improvement over the author model.
+
+Screen27029/GPU confirmed live, epoch8=76/4490 at09:15.
+First_update8 confirms frozen_core=true and optimizer_step_complete=true;
+lr1e-5/backbone2e-5,batch10,seed111,decay10/30 remain unchanged.
+No GPU replay or live source/process/parameter change.
+
+NR export observed13:15:47UTC downloaded and hash-verified:
+13ed18854465467f63960347637eb9c9b5bddbdf3c21c8c90a2b168af22102b6.
+Combined table50 complete evaluations/7 runs; all50 percentage pairs
+independently recomputed from integer counts. Selected epochs23/5/3.
+Other datasets retain their explicit earlier observation times.
+Next useful full validation: Scan24~09:40; NR8~10:30-10:40;
+SR4~11:40-11:50. Overall goal remains incomplete.
+
 ## SR3D Epoch3 New Acc025 Best: 2026-10-31 08:57 America/New_York
 
 Current run1793419200 epoch3 completed17726 last/bbf semantic rows:

@@ -118,9 +118,9 @@ directory. The tool rejects training mode and an existing result path.
 
 The tool was uploaded only to /tmp for CPU tests on NR3D and ScanRefer.
 tools/run_scanrefer_geometry_replay.sh provides the exact verified
-ScanRefer epoch17 command, including butd (not butd_cls), augment_det,
+ScanRefer epoch18 command, including butd (not butd_cls), augment_det,
 batch10, seed111, four workers, checked native-init path, retained full
-epoch17 checkpoint, and the original run's reference metrics. Give it a
+epoch18 checkpoint, and the original run's reference metrics. Give it a
 new absolute result filename. It rejects an occupied GPU using nvidia-smi
 compute-process evidence and must only be launched after the training
 process terminates. New diagnostic logs use logs_geometry_replay.
@@ -167,3 +167,41 @@ with HTTP200 responses:
 The transferable idea is preserving the pretrained function at insertion;
 these references do not validate our geometry choice or establish novelty.
 The three module boundaries and current training parameters remain intact.
+
+## Prepared NR3D/SR3D Execution: 2026-10-31 07:04 New York
+
+Added tools/run_nr_sr_geometry_replay.sh using the observed current-run
+arguments: butd_cls, self_attend, batch10, seed111, four workers, the
+dataset's native init spec, and its own native_metrics.jsonl reference.
+It takes a dataset, checkpoint filename within that current run, and
+a new output filename. It checks for an unoccupied GPU before launch.
+Run on each corresponding host only after its training releases the GPU:
+
+```bash
+bash /tmp/run_nr_sr_geometry_replay.sh nr3d best_trained_acc025_epoch5.pth /root/autodl-tmp/nr3d_epoch5_geometry_replay.json
+bash /tmp/run_nr_sr_geometry_replay.sh sr3d best_trained_acc025_epoch2.pth /root/autodl-tmp/sr3d_epoch2_geometry_replay.json
+```
+
+Upload the launcher and tools/pvground_geometry_replay.py to the named
+/tmp paths first. Re-audit the selected trained checkpoint before using
+these example epoch filenames; a later complete evaluation may replace
+them. ScanRefer launcher now points to retained epoch18. These scripts
+have not launched any GPU evaluation or changed live training.
+
+The NR/SR launcher was uploaded only to /tmp on both corresponding
+hosts. Both bash -n checks passed and remote/local SHA256 matched:
+cacfbef0cbdd723a141fdb77d29ebc7cd4ce854b12222d6ca2299725d0c7219e.
+This checks shell syntax and transfer, not end-to-end GPU execution.
+
+Decision evidence required: final official counts must reproduce the
+checkpoint's own full row before any interpretation. Compare native
+versus final paired repairs/damage for both official-filter and
+unfiltered protocols; report the two thresholds separately. A native
+counterfactual advantage would support testing native-endpoint mixer
+initialization within the existing module, but does not prove plain
+author identity or a trained improvement. If native does not recover
+the deficit, investigate score/ranking and upstream feature differences
+before changing geometry. Gate summaries cover all query axes and cannot
+alone identify saturation on the selected predictions. No module
+replacement or parameter change is justified by the current aggregate
+metrics alone.

@@ -1,5 +1,16 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Diagnostic Execution Preparation: 2026-10-31 07:04 America/New_York
+
+Added tools/run_nr_sr_geometry_replay.sh for current NR3D/SR3D runs
+with observed dataset flags and caller-selected retained checkpoint.
+Uploaded only to /tmp on each host; both bash -n and remote/local
+SHA256 checks passed. Updated ScanRefer replay launcher from retained
+epoch17 to selected epoch18. No GPU evaluation or training modification.
+The geometry replay document now specifies paired repair/damage and
+official-filter versus fixed-query decision evidence before testing
+native-endpoint mixer initialization; no change has been applied.
+
 ## Verified Live Audit and Arithmetic Correction: 2026-10-31 06:51 America/New_York
 
 All three current screens and GPU processes are live, with no new complete

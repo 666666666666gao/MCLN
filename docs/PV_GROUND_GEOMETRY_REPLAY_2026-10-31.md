@@ -105,9 +105,9 @@ directory. The tool rejects training mode and an existing result path.
 
 The tool was uploaded only to /tmp for CPU tests on NR3D and ScanRefer.
 tools/run_scanrefer_geometry_replay.sh provides the exact verified
-ScanRefer epoch12 command, including butd (not butd_cls), augment_det,
+ScanRefer epoch17 command, including butd (not butd_cls), augment_det,
 batch10, seed111, four workers, checked native-init path, retained full
-epoch12 checkpoint, and the original run's reference metrics. Give it a
+epoch17 checkpoint, and the original run's reference metrics. Give it a
 new absolute result filename. It rejects an occupied GPU using nvidia-smi
 compute-process evidence and must only be launched after the training
 process terminates. New diagnostic logs use logs_geometry_replay.

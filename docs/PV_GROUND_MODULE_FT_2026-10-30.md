@@ -1,9 +1,9 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
-Current verified state: 2026-10-31 00:48 America/New_York.
-ScanRefer run1793345477 has full metrics through epoch16 and is finishing
-epoch17 training (4838/4865). Its trained Acc050-best remains epoch12,
-59.2343%/50.2840%, preserved as best_trained_epoch12.pth.
+Current verified state: 2026-10-31 01:00 America/New_York.
+ScanRefer run1793345477 has full metrics through epoch17 and is training
+epoch18. Its trained Acc050-best is epoch17,
+59.2659%/50.4102%, preserved as best_trained_epoch17.pth.
 NR3D run1793419199 and SR3D run1793419200 have full initialization
 metrics and passing own-run first-update audits; their first trained
 evaluations are pending. Both reproduced author baselines are complete.
@@ -47,15 +47,22 @@ Validation size: 9,508.
 | 14 | 5601 | 4769 | 58.908% | 50.158% |
 | 15 | 5645 | 4778 | 59.371% | 50.252% |
 | 16 | 5612 | 4756 | 59.024% | 50.042% |
+| 17 | 5635 | 4793 | 59.266% | 50.410% |
 
-Best trained evaluation by Acc@0.50 remains epoch 12. Epoch 15 is now the Acc@0.25 high by one hit over epoch 11. Relative to the recorded baseline (59.518% / 46.992%), epoch 12 is -0.284 / +3.292 percentage points; epoch 15 is -0.147 / +3.260 points. Target minima are 5705/9508 at Acc@0.25 and 4945/9508 at Acc@0.50; epoch 15 remains short by 60 and 167 hits. Acc@0.25 remains below baseline and target.
+Best trained evaluation by Acc050 is epoch17, improving on epoch12 by
+3/12 hits (+0.0316/+0.1262pp). Epoch15 remains the Acc025 high at5645
+hits. Relative to baseline59.518%/46.992%, epoch17 is
+-0.2521/+3.4182pp. Target minima are5705/4945 of9508;
+epoch17 is short by70/152 hits (0.7341/1.5898pp). Do not combine the
+epoch15 Acc025 and epoch17 Acc050 scores as one checkpoint.
 
-Epoch12's full checkpoint was verified against its native metric row and
-retained as best_trained_epoch12.pth. Latest epoch16 was CPU-matched
-to its own complete metric row and includes model/optimizer/scheduler.
-The epoch16 early-stop decline streak is1. Epoch17 will satisfy the next
-strict dual decline if hits025<5601 and hits050<4769; stopping remains
-controlled by the training program. Epoch0 is excluded from that rule.
+Epoch17 latest checkpoint was CPU-matched to its complete metric row
+and model/optimizer/scheduler/RNG. Retained it as
+best_trained_epoch17.pth, 622927846 bytes, link_count2.
+Built-in best.pth remains untrained epoch0. Epoch17 three-round means
+59.2203%/50.2279% rose; decline streak resets to0 and no early stop
+occurred. Epoch18 started; its first-update confirms frozen_core=true
+and optimizer_step_complete=true. Epoch0 is excluded from early stopping.
 
 ## NR3D
 

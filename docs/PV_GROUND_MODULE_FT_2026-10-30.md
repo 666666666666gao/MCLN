@@ -1,5 +1,36 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Cross-Dataset Status: 2026-10-31 06:11 America/New_York
+
+The latest remote metric snapshots were exported from the three active
+hosts and rebuilt into a 44-row complete-evaluation table. Included rows
+all satisfy full dataset row counts, `primary_score=last/bbf`, and
+`same_complete_model=true`.
+
+- ScanRefer run1793345477 completed epoch21 at5643/4791 of9508 rows
+  (59.350021%/50.389146%). The selected Acc@0.50-first trained checkpoint
+  remains epoch18=5641/4800 (59.328986%/50.483803%). Epoch22 is active
+  at952/4865; the dual-three-round-mean early-stop streak reset to0.
+  The selected checkpoint is0.671014/1.516197 percentage points below
+  the60.0%/52.0% goals.
+- NR3D run1793419199 completed epoch4 at4781/3918 of7899
+  (60.526649%/49.601215%). Select trained epoch1=4783/3918
+  (60.551969%/49.601215%) by Acc@0.25 first; its retained complete
+  checkpoint alias exists. Epoch5 is active and its first optimizer
+  update confirms the core is frozen. The59.8% Acc@0.25 goal is exceeded
+  by0.751969 points.
+- SR3D run1793419200 completed epoch2 at11944/10187 of17726
+  (67.381248%/57.469254%). Epoch1 and2 tie at11944 Acc@0.25 hits;
+  epoch2 wins the Acc@0.50 tie-break by23 hits. Both latest/best
+  checkpoint payloads match epoch2's own metric row, and the selected
+  full checkpoint is retained as `best_trained_acc025_epoch2.pth`.
+  Epoch3 is active with its frozen-core/optimizer-step first-update checks
+  passing. The69.4% goal remains2.018752 points away.
+
+No live configuration or process was changed. The table and raw
+per-host snapshots are linked below and contain the exact per-epoch
+counts and percentages; do not combine thresholds from different epochs.
+
 ## NR3D Epoch4 and Live Status: 2026-10-31 05:27 America/New_York
 
 NR3D run1793419199 completed epoch4 on all7899 rows:

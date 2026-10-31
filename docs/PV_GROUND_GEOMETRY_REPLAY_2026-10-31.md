@@ -288,3 +288,30 @@ After actual ScanRefer termination and GPU release, run its selected trained
 checkpoint replay first, then this SR initialization replay if the GPU is
 still free. Never launch merely because instantaneous utilization is low.
 Re-audit Scan selection if a new trained best appears before termination.
+
+## Selected-Query Gates: 2026-10-31 08:20 New York
+
+The replay now also gathers raw/clamped axis gates for the exact root
+query selected by the official final-geometry evaluator on each sample.
+It reports rows, axes, mean, exact endpoint mass and raw out-of-range mass
+under selected_gates, separately from the existing all-query-axis gates.
+This prevents inferring selected-prediction saturation from averages over
+all256 candidates. Gate shapes must match center tensors and the final
+selected trace must contain exactly one query per sample.
+
+Ten synthetic CPU tests pass on the actual NR/Scan evaluators, including
+a case where all-query mean0.625 differs from selected-query mean0.25.
+Input/metric preservation, tie handling, within/across-batch ordering,
+paired repairs/damage, full-row and own-checkpoint metric checks still
+pass. This verifies measurement plumbing, not dataset gate saturation
+or causal accuracy cost. No GPU replay has run.
+
+Updated replay uploaded/tmp to all3 hosts; hashes match:
+0b9d3ed3074ca66fd71e7a5acdb62269e06f9603779f9194e7c47c67d7fb0892.
+Updated test SHA256:
+0dc5d9228f68772a8c57430ceac608cbdff3a3469a2d799b57b1b8a931dae365.
+These supersede earlier uploaded tool/test hashes in this document.
+
+All10 CPU tests also pass from the isolated SR replay directory on the
+Scan host. This checks its evaluator/tool integration, not full GPU/data
+equivalence.

@@ -95,6 +95,8 @@ class GeometryReplay:
                 evaluator.dets = Top1HitTrace(evaluator.dets)
                 trace_root_queries(evaluator)
         self.bbs_queries = []
+        self.selected_gates = []
+        self.selected_raw_gates = []
         self.gate_count = 0
         self.gate_sum = 0.0
         self.gate_zero = 0
@@ -127,6 +129,13 @@ class GeometryReplay:
         raw = end_points["span_raw_axis_gate"].detach()
         assert torch.isfinite(gate).all() and torch.isfinite(raw).all()
         assert torch.equal(gate, raw.clamp(0, 1))
+        assert gate.shape == raw.shape == end_points["last_center"].shape
+        batch_size = gate.shape[0]
+        queries = self.evaluators["official_filter", "final"]._replay_root_queries[-batch_size:]
+        indices = torch.as_tensor(queries, device=gate.device)
+        batch_indices = torch.arange(batch_size, device=gate.device)
+        self.selected_gates.append(gate[batch_indices, indices].cpu())
+        self.selected_raw_gates.append(raw[batch_indices, indices].cpu())
         self.gate_count += gate.numel()
         self.gate_sum += gate.double().sum().item()
         self.gate_zero += (gate == 0).sum().item()
@@ -195,6 +204,9 @@ class GeometryReplay:
                         **transitions, net_hits=net,
                     ))
         assert self.gate_count > 0
+        selected_gate = torch.cat(self.selected_gates)
+        selected_raw = torch.cat(self.selected_raw_gates)
+        assert selected_gate.shape == selected_raw.shape == (expected_rows, 3)
         return dict(
             diagnostic="same_forward_geometry_replay",
             same_prediction_scores=True,
@@ -216,6 +228,15 @@ class GeometryReplay:
                 one_fraction=self.gate_one / self.gate_count,
                 raw_below_zero_fraction=self.raw_below_zero / self.gate_count,
                 raw_above_one_fraction=self.raw_above_one / self.gate_count,
+            ),
+            selected_gates=dict(
+                population="official_final_root_query_axes",
+                rows=expected_rows, count=selected_gate.numel(),
+                mean=selected_gate.double().mean().item(),
+                zero_fraction=(selected_gate == 0).double().mean().item(),
+                one_fraction=(selected_gate == 1).double().mean().item(),
+                raw_below_zero_fraction=(selected_raw < 0).double().mean().item(),
+                raw_above_one_fraction=(selected_raw > 1).double().mean().item(),
             ),
         )
 

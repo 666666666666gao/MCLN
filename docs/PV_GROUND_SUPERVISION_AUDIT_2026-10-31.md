@@ -135,3 +135,18 @@ Raw exports retain all Top1/5/10 log fractions and epoch identities:
 Both remote/local download hashes matched. Exporter:
 tools/export_current_score_paths.sh. No GPU evaluation, live training
 change or new completed epoch was produced by this log audit.
+
+## Available First-Update Evidence: 2026-10-31 08:17 New York
+
+Inspected the existing NR epoch7/batch1 and SR epoch3/batch1
+first_update.json records. Both record loss, changed/trainable parameter
+names and frozen-core/optimizer-step completion. They do not contain
+query matcher roles, selected-query IDs or auxiliary-supervised row counts.
+Consequently these records cannot establish extra-supervision coverage or
+agreement with the semantic evaluator. Parameter updates alone do not
+identify which objective caused an update.
+
+The independent replay now measures exact official-selected root gates,
+separately from all-query gates; see the geometry replay document.
+Evaluation query/gate diagnostics still do not replace a real training
+role/coverage measurement. Current training instrumentation was not changed.

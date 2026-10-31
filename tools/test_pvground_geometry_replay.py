@@ -108,6 +108,21 @@ class GeometryReplayTests(unittest.TestCase):
             if geometry == "final":
                 self.assertEqual(dict(observed.dets), dict(evaluator.dets))
 
+    def test_selected_gate_population_uses_actual_formal_query(self):
+        points = dict(self.points)
+        points["span_raw_axis_gate"] = torch.tensor([[[-1., .25, .5], [2., 2., 2.]]])
+        points["span_axis_gate"] = points["span_raw_axis_gate"].clamp(0, 1)
+        replay = GeometryReplay(self.evaluator)
+        replay.observe(points)
+        report = replay.report(expected_rows=1)
+        self.assertEqual(report["selected_gates"]["count"], 3)
+        self.assertEqual(report["selected_gates"]["mean"], .25)
+        self.assertEqual(report["gates"]["mean"], .625)
+        self.assertAlmostEqual(report["selected_gates"]["raw_below_zero_fraction"], 1 / 3)
+        self.assertEqual(report["selected_gates"]["raw_above_one_fraction"], 0)
+        self.assertEqual(report["selected_gates"]["population"],
+                         "official_final_root_query_axes")
+
     def test_equal_net_hits_preserve_both_repairs_and_damage_across_batches(self):
         replay = GeometryReplay(self.evaluator)
         replay.observe(self.points)

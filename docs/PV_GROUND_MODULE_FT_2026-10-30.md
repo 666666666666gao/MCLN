@@ -1,5 +1,20 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Selected-Query Gate Measurement: 2026-10-31 08:20 America/New_York
+
+Independent replay now separates gate statistics of official-selected root
+queries from all256 candidates. It uses the actual deployed ranking trace
+and gathers raw/clamped gate axes in sample order. Ten synthetic CPU tests
+pass on actual NR/Scan evaluators; full-split saturation remains unmeasured.
+Updated tool uploaded/tmp to all3 hosts, hash-matched. No model/training
+source/config change or competing GPU evaluation.
+
+Existing NR7/SR3 first-update records contain parameter updates and
+freeze/step witnesses, but no matcher roles or auxiliary row coverage.
+Do not infer supervision alignment from these records.
+Scan33702/GPU confirmed live08:16, epoch23 validation56/951;
+full row still pending~08:26. Trained selected18/5/2 unchanged.
+
 ## Cross-Host Diagnostic Preparation: 2026-10-31 08:13 America/New_York
 
 Verified Scan host already has NR/SR annotation CSVs, scan caches and author

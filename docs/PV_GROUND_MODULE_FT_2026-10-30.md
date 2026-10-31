@@ -1,5 +1,50 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## ScanRefer Epoch24 Complete: 2026-10-31 09:41 New York
+
+Full9508 last/bbf semantic rows5615/4751=59.055532%/49.968448%,
+same_complete_model=true. CPU latest24 own-row and model/optimizer/
+scheduler presence verified; retained_metrics remains init0.
+Compared with23: -27/-59hits. Selected trained checkpoint remains
+retained23=59.339504%/50.588978%, target gaps0.660496/1.411022pp.
+Both three-round means decline to59.139672%/50.217361%;
+streak1, no automatic stop. Epoch25=77/4865, screen33702/GPU live,
+first_update25 frozen_core/optimizer_step_complete true.
+If25 hits fall strictly below epoch22's5612/4763, both means decline
+again; actual stop/log and GPU release must be verified before replay.
+
+At09:41 NR27029/GPU live epoch8=2007/4490, latest7/selected5;
+SR26107/GPU live epoch4=2533/7783, latest/selected3. Configs unchanged,
+first_update8/4 freeze/step true. No competing GPU evaluation or live edit.
+Next full NR8~10:25-10:35, Scan25~10:55, SR4~11:40-11:50.
+Scan export13:42:04UTC remote/local SHA:
+e97d346aaf22748e7eb5c0699300ec4272919367f8509ab58c7367c1730fa22f.
+Table51 full evaluations/7runs, all51 percentage pairs count-checked.
+Selections23/5/3 unchanged; goal remains incomplete.
+
+## NR/SR Automatic Stop Source Audit: 2026-10-31 09:22 New York
+
+Read-only inspection of each live run's code/main_utils.py confirms the
+same automatic-stop implementation: lines181-194 compare both metrics'
+three-round means across two consecutive comparisons; lines391-408
+start history empty after init0, append trained metrics, then test it.
+Lines409-413 log the stop reason and break. The configured epoch caps
+are NR100 and SR140; the cap is not the predicted termination time.
+
+Recomputed NR trained history through7: only epoch7 is a simultaneous
+decline, so streak1. NR8 can trigger the second decline; strictly lower
+hits025/050 than epoch5 (4791/3894) would lower both sliding means again.
+Equality and actual termination must be checked against program output.
+SR has only three trained rows, so the function's minimum five trained
+rows is not yet reached; it cannot stop on this rule at epoch4.
+
+This changes diagnostic scheduling, not training: after an actual
+terminal NR process and idle GPU, the prepared original-author seed111
+evaluation can remove the seed0-versus111 baseline confound, followed
+by the selected trained checkpoint's paired geometry replay.
+No stop, restart or competing GPU evaluation was issued.
+Reproducible read-only helper: tools/inspect_current_early_stop.sh.
+
 ## NR3D Epoch7 Complete: 2026-10-31 09:15 America/New_York
 
 Current run1793419199 epoch7 completed7899 last/bbf semantic rows:

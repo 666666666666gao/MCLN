@@ -324,3 +324,53 @@ with epoch3 still the latest full row and Acc@0.25-best: 11947/10167 of
 17726 = 67.3982%/57.3564%. NMB GPUs remain occupied; prepared plain
 author-checkpoint evaluations have not been launched. No training code,
 settings, processes, or checkpoints were modified in this monitoring check.
+
+## NR3D Epoch 8 and Current Progress: 23:06 America/New_York
+
+NR3D epoch 8 completed full native validation: 4768/7899 hits@0.25
+(60.3621%) and 3925/7899 hits@0.50 (49.6898%). The row has
+`primary_score=last/bbf` and `same_complete_model=true`. CPU audit matched
+`latest.pth` epoch 8 to this exact row and confirmed model, optimizer,
+scheduler, and RNG state. This is not an Acc@0.25 best; epochs 3 and 5
+remain tied at 4787/7899 (60.603%). The prior epoch-3/5 checkpoint
+preservation gap remains; do not claim those checkpoint files exist.
+
+At the same check, ScanRefer epoch 16 was at 2736/4865 training batches,
+NR3D epoch 9 at 30/4490, and SR3D epoch 4 at 7562/7783. All three screens
+and GPU processes remained active; no errors or early-stop event were
+observed. The author-checkpoint baselines remain pending because neither
+NR3D nor SR3D has released its GPU. SR3D briefly read 0% utilization on
+one poll, but its process and 14,108 MiB allocation remained active;
+utilization alone is not a GPU release signal. No run was interrupted.
+
+## User-Directed Baseline Reproduction Pause
+
+At 23:10 America/New_York, the user instructed stopping NR3D and SR3D
+module fine-tuning until the plain paper-repository checkpoint baseline is
+reproduced close to the paper, then restarting fine-tuning from that
+baseline. Sent Ctrl-C to both named screen sessions. Both exited with
+torch.distributed `SignalException` (signal 2); verification found no
+training screen/process and GPU memory at 0 MiB (NR3D) and 1 MiB (SR3D).
+ScanRefer remains active and was not interrupted.
+
+The last complete module-fine-tuning validations remain NR3D epoch 8:
+4768/7899 (60.3621%/49.6898%), and SR3D epoch 3: 11947/17726
+(67.3982%/57.3564%). In-flight NR3D epoch 9 (30/4490) and SR3D epoch 4
+(7562/7783) were incomplete at stop and are not metric rows. Previous
+complete trained scores and checkpoints remain on the hosts.
+
+Started pure author-checkpoint `--eval` jobs, batch size 10. NR3D screen
+`pvg_nr3d_author_baseline`, run ID `1793416414`, checkpoint
+`PV-Ground_NR3D.pth`; SR3D screen `pvg_sr3d_author_baseline`, same run ID,
+checkpoint `PV-Ground_SR3D.pth`. Initial saved configs confirm `eval=true`,
+correct per-dataset validation split, and official `butd_cls`,
+`self_attend`, and `joint_det` switches. At launch both jobs were loading
+validation data; baseline metrics are pending.
+
+Compare the reproduced baselines to the paper's two-stage MCLN Acc@0.25:
+NR3D 59.8%, SR3D 68.4%. Treat within approximately 1.0 pp as comparable;
+otherwise audit checkpoint/config/split/protocol before restarting either
+fine-tune. Once comparable, resume the corresponding existing module
+fine-tune from its original author checkpoint with the requested schedule.
+Keep measured baseline, paper figure, module-init epoch0, and fine-tuned
+scores separate. NR3D/SR3D selection remains Acc@0.25 first, then Acc@0.50.

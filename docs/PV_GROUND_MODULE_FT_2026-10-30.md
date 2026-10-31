@@ -187,6 +187,60 @@ At approximately 19:07, all three jobs remained active without checked log error
 
 ## Current Diagnosis and Next Evidence
 
+### Initialization Is Not Function Preserving
+
+Live NR3D/SR3D source inspection at approximately20:34 America/New_York
+found zero output layers in the reader and support corrector, including
+zero task-query residuals. Strict core checkpoint loading is present.
+The verified nonidentity is downstream geometry:
+`native_model_initialization.py` sets `use_predicted_mask_reference=True`;
+`native_mask_geometry.py` replaces `last_center`/`last_pred_size` with
+thresholded fused-mask support extents. `ExtremalSpanMixer` initializes its
+output weight and bias to zero, so its clamped gate starts at0 and
+`final=(1-gate)*mask+gate*native` selects mask geometry. Original author
+forward in `/tmp/PV-Ground/models/pv_ground.py` returns without this added
+geometry replacement. The detected-box filter depends on geometry, so the
+switch can change both candidate filtering and IoU even with unchanged
+semantic scores.
+
+This proves a nonidentity insertion, not its measured share of the accuracy
+gap. NR3D/SR3D epoch0 are modified-model evaluations (59.995/52.310% and
+65.553/56.544%), not same-environment plain-model controls. No matching
+plain-model full validation was established in this inspection. The
+59.8/69.4% targets must not be relabeled as measured plain-model baselines.
+An epoch0 difference cannot be caused by optimizer learning rate.
+
+`tools/pvground_span_initialization_cpu.py` checks the actual deployed
+mixer on synthetic CPU inputs. Zero weight and biases0/0.5/1 produce
+exact mask/midpoint/native geometry. Under torch2.1.2, the output bias
+gradient of the synthetic sum objective is nonzero (-2304) at all three,
+including the clamp endpoints. This is not a real-loss or end-to-end
+accuracy test. Source SHA256:
+`5ab81a56ffcd635eb61ff245f6771c40d20027b7708656b09e8d92bf3f5ac087`.
+Run from the deployed code directory with
+`PYTHONPATH=. python /path/to/pvground_span_initialization_cpu.py`.
+
+The official [LoRA Linear implementation](https://github.com/microsoft/LoRA/blob/main/loralib/layers.py)
+zeros lora_B, and [ControlNet](https://github.com/lllyasviel/ControlNet/blob/main/cldm/cldm.py)
+uses zero convolutions. Both source files were read directly with HTTP200.
+The applicable principle is an initially zero incremental path preserving
+the pretrained function, not adopting either architecture or claiming
+their results transfer. No external code was copied.
+
+Next compare original model, module-equipped native-box path, and current
+mask-box path on identical inputs/configuration. Check reader/mask
+equivalence and separate fixed-candidate geometry from full reranking.
+Prepare a native-endpoint initialization only after this comparison;
+gate1 selects native boxes under the current equation. No running weights,
+configuration, process, or module architecture changed.
+
+At20:37, all screens/GPUs were active: ScanRefer e14=2684/4865; NR3D
+e6=4270/4490; SR3D e3 validation=835/1773. No new full validation row.
+
+Cross-domain reference checked on 2026-10-30: the [MMDetection GFL implementation](https://github.com/open-mmlab/mmdetection/blob/main/mmdet/models/losses/gfocal_loss.py) supervises positive classification outputs with localization-quality (IoU) targets and modulates by prediction/target discrepancy. Its [GFL description](https://github.com/open-mmlab/mmdetection/blob/main/configs/gfl/README.md) explains the joint quality/class representation. Both raw GitHub source requests returned HTTP 200 and their contents were inspected. This motivates checking score/box-quality consistency in the existing query reader, not adding a fourth quality head or changing the deployed ranker. A training-only experiment would require proving the existing semantic-score gradient reaches the reader and defining an appropriate objective: our aggregated token score is not a class probability and cannot simply be inserted into binary cross entropy. First measure matched candidate IDs and quality inversions; do not deploy a new objective from Top-10 aggregate gaps alone. No external code was copied.
+
+The log parser has three passing standard-library tests: source separation (position/mask values ignored, incomplete epoch omitted), rejection of native-hit mismatch, and rejection of incomplete dataset rows. Command: `python -m unittest discover -s tools -p test_pvground_log_diagnostics.py -v`. Actual-log validation remains separate evidence for all three datasets.
+
 The standalone standard-library tool `tools/pvground_log_diagnostics.py` extracts each completed epoch's semantic box Top-1/5/10 and subgroup rates from its original log and checks Top-1 against `native_metrics.jsonl` within the log's five-decimal rounding. It was run successfully on all three active logs (ScanRefer epochs 0-13, NR3D 0-5, SR3D 0-2). Acc@0.50 Top-1/Top-10 is 50.200%/66.649% for ScanRefer epoch 13, 49.399%/68.338% for NR3D epoch 5, and 57.576%/74.743% for SR3D epoch 2. The gaps show that some failed top-1 cases have a qualifying box within the first ten ranked candidates. They motivate ranking diagnostics but are neither deployable accuracies nor guaranteed recoverable gains. NR3D/SR3D log Unique=0 is not interpretable as failure on a populated Unique subgroup without subgroup denominators.
 
 Source-audited epoch-13 subgroup evidence (2026-10-30 approximately 20:12 America/New_York): the existing semantic box evaluator reports Unique Acc@0.25/0.50=88.372093%/78.576462% and Multiple=54.048708%/45.221906%. Integer reconstruction from both rates, total rows, and global hit pairs yields Unique 1419 rows (1254/1115 hits) and Multiple 8089 rows (4372/3658 hits), exactly summing to 5626/4773. These subgroup counts are inferred from log ratios rather than exported counters. Most failures are in Multiple, but ranking versus localization remains unresolved. The log's mask overall25/50 values (61.379891%/53.712663%) are mask IoU and must not substitute for box targets.

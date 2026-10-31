@@ -25282,11 +25282,36 @@ NR3D/SR3D GPU memory0/0/1MiB. Logs and saved weights preserved.
 Last complete validations Scan25/NR9/SR4; interrupted26/10/5 excluded.
 Do not resume old jobs or queued geometry diagnostics.
 
-User requests cleaner baselines from three pretrained models after
-removing three innovations. Component boundary clarification requested:
-original PV-Ground contributions versus our added reader/support/span.
-No baseline architecture change or new training launch yet.
+User confirmed removal of original PV-Ground paper innovations.
+Paper Section4.3/Table4: no-PVI replaces sparse voxel+VSA with PointNet++;
+no-TGS replaces Gumbel sampling with supervised Top-K. MCLN decoder,
+box/mask heads stay; our reader/support/span are absent. Three author
+checkpoints transfer only matching retained tensors; PointNet++ and
+Top-K are freshly initialized. This is partial transfer, not an intact
+author baseline reproduction or a from-scratch comparison.
+Corrected current jobs started12:37EDT. All three passed actual batch10
+finite loss, backward and optimizer checks in five paths. At12:51,
+Scan/NR were trainingepoch1; SR initial validation was still running.
+Current root on all3:
+/root/autodl-tmp/pvground_clean_baseline_20261031.
+LR1e-5/backbone2e-5, decay10/30, warmup0, batch10, seed111, fresh
+optimizer/scheduler, retained network trainable except frozen RoBERTa.
+New monitor pv-ground-clean-baseline every15min; old pv-ground record
+no longer existed. Do not create duplicates or restart old training.
 See repository docs/PV_GROUND_CLEAN_BASELINE_2026-10-31.md.
+
+Verified12:55EDT: current run IDs Scan1793464620, NR1793464625,
+SR1793464628. All1022 retained tensors loaded and112 new tensors
+initialized per dataset. New untrained epoch0 Scan156/14 of9508 =
+1.640724/.147244%; NR677/180 of7899 =8.570705/2.278769%.
+Both last/bbf same_complete_model=true; CPUbest/latest ownrow and
+architecture match,1134 modeltensors,emptyoptimizerstate at0.
+SR initial validation601/1773 at12:54; no full result yet.
+These scores reflect new PointNet++/TopK initialization, not original
+PV-Ground reproduction or trained improvements. Real update losses
+Scan34.795635/NR32.883430/SR36.046616; allfivepaths changed.
+Fresh startup/native/checkpoint evidence is saved under
+docs/results/pvground_clean_baseline_20261031. Oldgoalremains paused.
 
 At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
 epoch25; remote/local SHA256:

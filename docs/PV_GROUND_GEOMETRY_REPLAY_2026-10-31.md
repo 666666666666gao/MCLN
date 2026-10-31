@@ -66,6 +66,15 @@ reuses the deployed GroundingEvaluator.evaluate_bbox_by_sem_align for:
 | Native regression | Counterfactual, filter recalculated | Same unfiltered query ordering |
 | Predicted-mask extent | Counterfactual, filter recalculated | Same unfiltered query ordering |
 
+Read-only deployed configuration audit found ScanRefer uses butd=true,
+butd_cls=false, augment_det=true; NR3D/SR3D use butd_cls=true.
+GroundingEvaluator's filter_non_gt_boxes follows butd_cls, so ScanRefer's
+formal filter is disabled. The two protocol columns then coincide.
+The tool now preserves the original evaluator's setting without requiring
+butd_cls for all datasets. This fixes a diagnostic-only assertion that
+would have rejected ScanRefer after evaluation; it does not change the
+training configuration or any formal metric.
+
 The unfiltered protocol is diagnostic only and is not a replacement paper
 metric. The native-box replay uses the modified model's scores and features;
 it is not an independent proof of identity with the plain author model.
@@ -94,19 +103,29 @@ for the author-initialized module model, omit --checkpoint_path and keep
 its checked native-init spec, matching reference epoch0. Use a new eval log
 directory. The tool rejects training mode and an existing result path.
 
-The tool was uploaded only to /tmp for CPU tests. No full GPU replay has
+The tool was uploaded only to /tmp for CPU tests on NR3D and ScanRefer.
+tools/run_scanrefer_geometry_replay.sh provides the exact verified
+ScanRefer epoch12 command, including butd (not butd_cls), augment_det,
+batch10, seed111, four workers, checked native-init path, retained full
+epoch12 checkpoint, and the original run's reference metrics. Give it a
+new absolute result filename. It rejects an occupied GPU using nvidia-smi
+compute-process evidence and must only be launched after the training
+process terminates. New diagnostic logs use logs_geometry_replay.
+No full GPU replay has
 been run, and the eval-only entrypoint has not yet been validated end to
 end. Wait for the appropriate training process to terminate or a verified
 idle GPU. Do not stop training or modify a live model to run this tool.
 
-Four CPU tests passed against the actual deployed evaluator with
+Five CPU tests passed against both actual deployed evaluators with
 CUDA_VISIBLE_DEVICES empty: (1) a controlled example distinguishing
 geometry-dependent filtering from fixed-query box quality, while
 preserving every input tensor; (2) rejection of incomplete row counts or
 disagreement with the original evaluator; (3) matching the checkpoint's
 own epoch instead of its retained best, and rejecting a mismatched pair.
 The fourth check rejects a training-mode invocation before creating its
-output. These tests are synthetic protocol checks, not dataset performance.
+output. The fifth verifies that a disabled official filter matches the
+unfiltered protocol across all three geometries. These tests are
+synthetic protocol checks, not dataset performance.
 
 ## Next Decision
 

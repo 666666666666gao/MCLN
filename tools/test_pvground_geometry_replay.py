@@ -76,6 +76,21 @@ class GeometryReplayTests(unittest.TestCase):
         with self.assertRaises(AssertionError):
             replay.report(expected_rows=1)
 
+    def test_official_filter_disabled_matches_unfiltered_protocol(self):
+        evaluator = GroundingEvaluator(
+            only_root=True, thresholds=[.25, .5], topks=[1, 5, 10],
+            prefixes=["last_"], filter_non_gt_boxes=False, model="PVGround")
+        evaluator.evaluate_bbox_by_sem_align(self.points, "last_")
+        replay = GeometryReplay(evaluator)
+        replay.observe(self.points)
+        report = replay.report(expected_rows=1)
+        self.assertFalse(report["official_filter_enabled"])
+        hits = {(row["protocol"], row["geometry"]): (row["hits025"], row["hits050"])
+                for row in report["rows"]}
+        for geometry in ("final", "native", "mask"):
+            self.assertEqual(hits["official_filter", geometry],
+                             hits["unfiltered_fixed_queries", geometry])
+
     def test_checkpoint_epoch_wins_over_retained_best_and_mismatch_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

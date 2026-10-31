@@ -147,7 +147,7 @@ def main():
     namespace = runpy.run_path(str(source), run_name="__main__")
     GroundingEvaluator.evaluate = original_evaluate
     args = namespace["opt"]
-    assert args.eval and not args.eval_train and args.butd_cls
+    assert args.eval and not args.eval_train
     expected_rows = {"scanrefer": 9508, "nr3d": 7899, "sr3d": 17726}[args.test_dataset]
     result = replay.report(expected_rows)
     result["dataset"] = args.test_dataset

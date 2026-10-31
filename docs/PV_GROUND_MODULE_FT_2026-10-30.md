@@ -1,5 +1,30 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## ScanRefer Epoch22: 2026-10-31 07:15 America/New_York
+
+Full9508-row epoch22 validation completed: hits025/050=5612/4763,
+Acc=59.023980%/50.094657%, primary_score=last/bbf,
+same_complete_model=true. CPU latest.pth epoch22 audit matched this
+exact own-epoch row and verified model/optimizer/scheduler state.
+Both thresholds decreased versus epoch21 (-31/-28 hits). Selected
+trained Acc050-first checkpoint remains epoch18=5641/4800,
+59.328986%/50.483803%; no new retained-best alias was needed.
+Selected checkpoint target gaps remain0.671014/1.516197pp.
+
+Epoch22 dual-three-round means are59.111625%/50.238396%; decline
+streak1, early_stop_due=false. Epoch23 started at238/4865 at07:14;
+first_update confirms frozen_core=true and optimizer_step_complete=true.
+Screen33702 and GPU are live, checked logs show no error. Configurations
+and processes unchanged. Next full ScanRefer validation is expected
+around08:26, depending on throughput; NR/SR next windows remain later
+than their most recent completed rows, so no immediate repeat poll.
+
+Exported ScanRefer history at11:15:12UTC and verified download SHA256
+cb3d7c2a0302d4cb028391f57e17b3fec8d19ca0afa3b2679b967062c8bb30e7.
+Combined table regenerated to46 full evaluations across7 runs using
+the previous NR/SR snapshots, whose observation times remain explicit.
+NR3D/SR3D selected trained epochs remain5/2, Acc025-first.
+
 ## SR3D Frozen-State Evidence: 2026-10-31 07:09 America/New_York
 
 CPU-only audit compared selected current SR3D epoch2 with the hash-checked

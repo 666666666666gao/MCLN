@@ -11,6 +11,19 @@ has only initialization metrics. Both own-run first-update audits pass
 and both reproduced author baselines are complete.
 The historical stopped NR/SR runs are labeled separately below.
 
+The complete run-separated table is
+[all epochs](results/PV-Ground-all-epochs-2026-10-31.md), with a
+[CSV export](results/PV-Ground-all-epochs-2026-10-31.csv).
+The05:53:55-57 UTC snapshot includes35 complete evaluations across
+7 run directories (one has no complete evaluation), with raw per-host
+JSON snapshots and hashes alongside the table. It includes ScanRefer0-17,
+historical NR3D0-8, interrupted NR3D init0, current NR3D0-1,
+historical SR3D0-3 and current SR3D init0. It excludes interrupted
+partial epochs and the invalid old ScanRefer bbs run.
+`tools/export_full_epoch_history.sh` exports native records on each
+corresponding host; `tools/pvground_epoch_table.py` rebuilds the table
+from downloaded snapshots without parsing rounded prose.
+
 Geometry replay diagnostic now records per-sample repairs/damage for
 native/mask versus final under each protocol and IoU threshold, using
 the deployed evaluator's own per-root counter updates. All7 CPU

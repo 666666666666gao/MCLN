@@ -12,14 +12,27 @@ function-preserving insertion of our three modules.
 | NR3D author baseline | 7899 | 4888 | 3945 | 61.8813% | 49.9430% |
 | NR3D new run1793419199 epoch0 | 7899 | 4739 | 4132 | 59.9949% | 52.3104% |
 | SR3D author baseline | 17726 | 12152 | 10302 | 68.5547% | 58.1180% |
-| SR3D old run1793380711 epoch0 | 17726 | 11620 | 10023 | 65.5534% | 56.5441% |
+| SR3D new run1793419200 epoch0 | 17726 | 11620 | 10023 | 65.5534% | 56.5441% |
 
 Author-baseline hit counts are uniquely reconstructed from the rounded
 official semantic Top-1 logs and full split sizes. Module-equipped counts
 come from native_metrics.jsonl. NR3D initialization changes are
--1.8863/+2.3674 pp; SR3D historical initialization changes are
--3.0012/-1.5740 pp. The new SR3D run1793419200 epoch0 was still pending at
-00:20 America/New_York. Do not present its old run's values as a new result.
+-1.8863/+2.3674 pp; SR3D initialization changes are
+-3.0012/-1.5740 pp. The new SR3D run1793419200 epoch0 and its own
+epoch1/batch1 frozen_core/optimizer_step_complete witnesses were directly
+verified at00:40 America/New_York; these are current-run measurements.
+
+Read-only checks of actual author-baseline configs also found NR3D used
+rng_seed=0, whereas its module run uses111. SR3D baseline and module run
+both use111. The author dataset source sets augment only for split=train;
+point/color augmentation and box jitter are train-gated. This inspection
+did not establish random validation sampling or a measurable seed effect.
+Keep the NR3D seed difference in provenance; do not assign any portion of
+the accuracy gap to it without a matched evaluation. A plain author model
+with the module run's seed is still a pending control after GPU release.
+Even matching the seed alone does not prove paired inputs across different
+entrypoints. The same-forward geometry replay avoids this confound for
+its internal geometry comparison, but does not test plain-model identity.
 
 NR3D run1793419199 first_update.json confirms epoch1/batch1,
 frozen_core=true and optimizer_step_complete=true. It is training from

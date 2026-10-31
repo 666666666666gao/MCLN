@@ -709,3 +709,29 @@ best.pth epoch0 and no latest.pth, so no trained alias was created.
 Execute after new trained validations before the next save; monitoring
 must report a missing selected alias rather than claim historical
 weights are retained. No live training code/config/process was modified.
+
+## Live Metrics and Epoch19: 2026-10-31 03:31 America/New_York
+
+ScanRefer run1793345477 completed epoch19 on the full9508-row last/bbf
+semantic-alignment evaluation: hits@0.25/@0.50=5620/4767,
+59.108119%/50.136727%, same_complete_model=true. CPU inspection matched
+latest.pth epoch19 to its own native row and verified model, optimizer,
+and scheduler payloads. It does not replace the Acc@0.50-first trained
+selection, epoch18=5641/4800 (59.328986%/50.483803%). Epoch19 remains
+85 hits short of the60.0% Acc@0.25 goal and178 hits short of52.0% at
+Acc@0.50. Epoch20 is training at261/4865; frozen-core and optimizer-step
+first-update checks pass, and the dual-metric early-stop rule is not due.
+
+NR3D current run1793419199 epoch2 is4783/3916 of7899
+(60.551969%/49.563236%), full last/bbf and same complete model. Under
+the user's Acc@0.25-first rule, epoch1 remains selected: epoch2 ties its
+4783 Acc@0.25 hits and has two fewer Acc@0.50 hits. Epoch3 is at
+2852/4490. SR3D run1793419200 epoch1 remains the latest full result,
+11944/10164 of17726 (67.381248%/57.339501%); it is still the
+Acc@0.25-first selected epoch. Epoch2 is at680/7783. Both screens and
+GPUs are active; no process, configuration, or model was modified.
+
+Refreshed the verified all-dataset history to39 complete evaluations
+across7 runs. The ScanRefer raw snapshot was exported from the active
+run and SHA256-checked locally; the combined table selects NR3D/SR3D by
+Acc@0.25 then Acc@0.50, and ScanRefer by Acc@0.50 then Acc@0.25.

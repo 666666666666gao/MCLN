@@ -1,5 +1,28 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## NR3D Epoch8 Complete: 2026-10-31 10:27 New York
+
+Full7899 last/bbf semantic rows4772/3908=60.412710%/49.474617%,
+same_complete_model=true. CPU latest8 matches its own row and complete
+model/optimizer/scheduler/RNG/architecture keys; retained_metrics is0.
+Compared with7, +5/+19hits. Acc025-first best remains retained5:
+4791/3894=60.653247%/49.297379%; do not combine5's Acc025 with8's050.
+
+The rolling window6-8 replaces5-7: hits025 sum14322<14341 but
+hits050 sum11690>11676. Both means did not decline, so streak resets0
+and no early stop occurred. Screen27029/GPU live, epoch9=135/4490;
+first_update9 freeze/step true. Same-seed author and geometry evaluations
+remain queued for actual GPU release; no competing evaluation launched.
+
+At10:27 Scan33702/GPU live epoch25=3574/4865, fullthrough24,
+selected23; SR26107/GPU live epoch4=5022/7783, fullthrough3,
+selected3. Configs unchanged, SR first_update4 freeze/step true.
+Next full windows Scan25~10:55, NR9~11:35-11:45, SR4~11:45.
+NR raw export14:27:31UTC remote/local SHA:
+ed4df779d58d0f6f8c3ab373dd123946f1b15d66563ae1bdad55122e2ef6824f.
+Table52 complete evaluations/7runs, all52 percentage pairs independently
+count-checked; selections23/5/3 unchanged. Goal remains incomplete.
+
 ## Selected Checkpoint Frozen-State Audit: 2026-10-31 09:49 New York
 
 CPU-only audits now cover the actual selected NR5 and SR3 checkpoints.

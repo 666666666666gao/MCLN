@@ -1,24 +1,25 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
-Current verified state: 2026-10-31 02:14 America/New_York.
-ScanRefer run1793345477 has full metrics through epoch18 and is training
+Current verified state: 2026-10-31 03:22 America/New_York.
+ScanRefer run1793345477 has full metrics through epoch18 and is validating
 epoch19. Its trained Acc050-best is epoch18,
 59.3290%/50.4838%, preserved as best_trained_epoch18.pth.
 NR3D run1793419199 trained epoch1 reaches60.5520% Acc025,
 above the59.8% target, with its complete checkpoint retained by the
-Acc025-first rule. Its Acc050 is49.6012%. SR3D run1793419200 still
-has only initialization metrics. Both own-run first-update audits pass
+Acc025-first rule. Its Acc050 is49.6012%. SR3D run1793419200 epoch1
+reaches67.3812%/57.3395%; its Acc025-first checkpoint is retained.
+All current-run first-update audits pass
 and both reproduced author baselines are complete.
 The historical stopped NR/SR runs are labeled separately below.
 
 The complete run-separated table is
 [all epochs](results/PV-Ground-all-epochs-2026-10-31.md), with a
 [CSV export](results/PV-Ground-all-epochs-2026-10-31.csv).
-The refreshed snapshot includes36 complete evaluations across
+The refreshed snapshot includes38 complete evaluations across
 7 run directories (one has no complete evaluation), with raw per-host
 JSON snapshots and hashes alongside the table. It includes ScanRefer0-18,
 historical NR3D0-8, interrupted NR3D init0, current NR3D0-1,
-historical SR3D0-3 and current SR3D init0. It excludes interrupted
+historical SR3D0-3 and current SR3D0-1. It excludes interrupted
 partial epochs and the invalid old ScanRefer bbs run.
 `tools/export_full_epoch_history.sh` exports native records on each
 corresponding host; `tools/pvground_epoch_table.py` rebuilds the table
@@ -74,6 +75,19 @@ these are estimates, not completed evaluations.
 Experiment start: 2026-10-30 (America/New_York).
 
 ## Targets and Protocol
+
+Current SR3D run1793419200 epoch1 completed17726 rows:
+11944/10164 hits025/050=67.381248%/57.339501%, last/bbf,
+same_complete_model=true. Versus its own untrained epoch0
+(11620/10023;65.553424%/56.544060%), epoch1 gains324/141 hits,
+or+1.827824/+0.795442 pp. It remains358 hits (2.018752 pp) short of
+the69.4% Acc025 target and1.173752 pp below the reproduced author
+baseline68.555%. latest.pth epoch1 matches its own row; preserved as
+best_trained_acc025_epoch1.pth by the Acc025-first selection. Epoch2
+began and its own first-update check passed. SR3D source snapshot
+SHA256:`cff3f2c5554d047faa7b510d80945ec3e04e460372770934332649a452470272`.
+The combined epoch table now has38 complete rows; selections are
+ScanRefer18, NR3D1 and SR3D1.
 
 Current NR3D run1793419199 epoch2 completed7899 rows at4783/3916
 hits025/050 =60.551969%/49.563236%, last/bbf,

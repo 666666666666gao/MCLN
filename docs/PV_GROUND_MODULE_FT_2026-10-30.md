@@ -1,5 +1,36 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## NR3D Epoch6: 2026-10-31 08:02 America/New_York
+
+Current run1793419199 completed all7899 rows at epoch6: hits025/050
+4783/3893 =60.551969%/49.284720%, primary_score=last/bbf,
+same_complete_model=true. CPU latest.pth audit matched epoch6's own
+row and required complete model/optimizer/scheduler/RNG/architecture.
+retained_metrics still describes initialization0, not epoch6.
+Versus epoch5, this is -8/-1hits. Acc025-first selected trained
+checkpoint remains preserved epoch5=4791/3894
+(60.653247%/49.297379%). No new best alias was needed.
+
+Downloaded the NR history snapshot observed12:00:04UTC; remote/local
+SHA256 matched f63a57473079dee930493001a90987f71fc996b4deb5b6b0641eb8f57ab83fb6.
+Combined history now47 full evaluations across7 runs. Scan/SR snapshots
+retain their previous observation times and full rows through22/2.
+
+At08:01 NR screen27029/GPU remain live, epoch7=515/4490;
+first_update7 confirms frozen_core=true and optimizer_step_complete=true.
+At07:59 Scan33702 epoch23=3595/4865 and SR26107 epoch3=6207/7783
+remain live. No live configuration or training source was changed.
+Next full windows: Scan~08:26, SR~08:45-09:00, NR7~09:05-09:15.
+
+Prepared tools/run_nr3d_author_baseline_seed111.sh, an eval-only original
+repository entrypoint using the same author checkpoint and seed111.
+It requires an idle GPU and verifies the known checkpoint SHA before
+execution. Uploaded only/tmp on NR host, bash -n passed; launcher SHA
+91e313b435e129cd1a4dedafca34a9ac4ce183ed5a637819e13e0ee1f8b22164
+matched locally/remotely. No evaluation launched. This pending control
+addresses the existing baseline seed0/module seed111 provenance
+difference; seed matching alone will not establish paired-input identity.
+
 ## Query Selection Diagnostic: 2026-10-31 07:44 America/New_York
 
 Extended the independent same-forward replay to observe the actual deployed

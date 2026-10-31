@@ -231,3 +231,18 @@ No full-split GPU replay has run; dataset agreement rates remain unknown.
 Replay SHA25680fe6fcd6aab3f1ff08dbd84793f386b6a5a639eee05aeef2e5f8f73993db6aa;
 test SHA256960d683b735c048ec7388c9d05f569bb3a09abd690d947800c2497d868ade677.
 Replay upload hashes matched on all three hosts under /tmp only.
+
+## Matched-Seed NR3D Control Prepared: 2026-10-31 08:02 New York
+
+tools/run_nr3d_author_baseline_seed111.sh retains the original baseline
+entrypoint/flags/checkpoint, changes the evaluation seed0 to111, and uses
+a separate log directory. It requires no active GPU process and checks
+the known author checkpoint SHA256 before launch. It does not modify the
+model, optimizer, current training or formal evaluator.
+
+Uploaded only/tmp on NR host; bash -n passed, local/remote launcher hash
+91e313b435e129cd1a4dedafca34a9ac4ce183ed5a637819e13e0ee1f8b22164.
+An initial SCP connection closed; retry succeeded without any training
+restart. No baseline result exists for this script yet. Matching the seed
+does not by itself prove identical data or forwards across entrypoints;
+keep the same-forward replay and baseline-identity questions separate.

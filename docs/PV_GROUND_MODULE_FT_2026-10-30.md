@@ -34,10 +34,11 @@ Validation size: 9,508.
 | 10 | 5617 | 4776 | 59.077% | 50.231% |
 | 11 | 5644 | 4779 | 59.361% | 50.263% |
 | 12 | 5632 | 4781 | 59.234% | 50.284% |
+| 13 | 5626 | 4773 | 59.171% | 50.200% |
 
 Best trained evaluation by Acc@0.50 is epoch 12. Relative to the recorded baseline (59.518% / 46.992%), epoch 12 is -0.284 / +3.292 percentage points. Target minima are 5705/9508 at Acc@0.25 and 4945/9508 at Acc@0.50, leaving gaps of 73 and 164 hits. Acc@0.25 remains below baseline and target. The recent pattern (epoch 11 to 12: Acc@0.25 -0.126 pp, Acc@0.50 +0.021 pp) is consistent with a stricter-IoU localization/extent-precision bottleneck, but aggregate metrics do not identify which module causes it.
 
-Epoch 12's full checkpoint was verified against its native metric row and retained as `best_trained_epoch12.pth`. The automatic early-stop audit reports decline streak 0; epoch 13 is training.
+Epoch 12's full checkpoint was verified against its native metric row and retained as `best_trained_epoch12.pth`. Epoch 13 completed at 5626/4773 hits (59.171%/50.200%), down 0.063/0.084 percentage points versus epoch 12. CPU audit matched `latest.pth` epoch 13 to its complete native row and confirmed model/optimizer/scheduler. The best trained selection remains epoch 12; no new alias is required. Epoch 13's three-round means are 59.255364%/50.248913%, so both did not decline and decline streak remains 0. Epoch 14 is training.
 
 ## NR3D
 
@@ -85,7 +86,7 @@ These are implementation roles, not novelty claims. The current metric pattern m
 
 - **ScanRefer:** separate Unique/Multiple performance and inspect whether semantic candidate selection is correct while final box IoU misses 0.50. Compare predicted-mask and native-box IoU and inspect per-axis span-mixer gate distributions before changing the corrector or mixer.
 - **NR3D:** track whether the first-epoch Acc@0.25 gain and Acc@0.50 drop persist; distinguish candidate selection errors from box-extent calibration errors before dataset-specific internal-parameter tuning.
-- **SR3D:** obtain trained-round metrics before attributing its initialization gap to any module.
+- **SR3D:** two trained rounds improve over initialization but leave a 2.075-point Acc@0.25 gap at epoch 2. Inspect relational subgroup accuracy and candidate selection before attributing the gap to a module.
 - Across all datasets, use controlled ablations or internal-parameter sweeps while keeping the overall network and three-module boundaries fixed. Prefer a dataset-specific internal setting only when the corresponding dataset diagnostics support it; do not infer cross-dataset benefit from one dataset.
 
 Potential ideas to study, without copying implementations or comparing incompatible headline metrics:

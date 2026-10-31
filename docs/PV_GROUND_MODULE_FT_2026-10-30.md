@@ -1,5 +1,25 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## SR3D Frozen-State Evidence: 2026-10-31 07:09 America/New_York
+
+CPU-only audit compared selected current SR3D epoch2 with the hash-checked
+author checkpoint. All1234 frozen tensors match in shape, dtype and exact
+values, including frozen buffers; no changed frozen tensor was found.
+The61 trainable tensors were excluded. The author's additional
+text_encoder.embeddings.position_ids is the known persistent-buffer
+difference; the initialized model checks its value before making it
+nonpersistent. This comparison does not test forward identity or measure
+module deltas from initialization. Current best.pth is epoch2, so it must
+not be passed as epoch0 to the older initialization-delta tool.
+
+The selected checkpoint's own full metric is11944/10187 of17726,
+last/bbf, same_complete_model=true. Frozen weight drift is not supported
+as an explanation for this checkpoint's baseline deficit. Same-forward
+geometry replay remains pending. The audit used no GPU and changed no
+training process. Raw evidence: docs/results/SR3D-epoch2-author-frozen-cpu-audit.json,
+SHA25658090d16d916ef303d48fb9719c6dde076c303eb49fc7216e6de45413577df6f.
+Reproduction: tools/audit_sr3d_author_frozen_cpu.sh.
+
 ## Diagnostic Execution Preparation: 2026-10-31 07:04 America/New_York
 
 Added tools/run_nr_sr_geometry_replay.sh for current NR3D/SR3D runs

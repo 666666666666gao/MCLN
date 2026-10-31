@@ -28,6 +28,7 @@ class GeometryReplayTests(unittest.TestCase):
             span_mask_center=torch.tensor([[[10., 0., 0.], [0., 0., 0.]]]),
             span_mask_size=torch.full((1, 2, 3), 2.),
             last_proj_queries=torch.eye(2).unsqueeze(0),
+            last_sem_cls_scores=torch.zeros(1, 2, 256),
             proj_tokens=torch.eye(2).unsqueeze(0),
             positive_map=positive,
             center_label=torch.zeros(1, 1, 3),
@@ -44,6 +45,7 @@ class GeometryReplayTests(unittest.TestCase):
         for name in ("modify_positive_map", "pron_positive_map", "other_entity_map",
                      "auxi_entity_positive_map", "rel_positive_map"):
             self.points[name] = torch.zeros_like(positive)
+        self.points["last_sem_cls_scores"][0, 1, 0] = 5
         self.evaluator = GroundingEvaluator(
             only_root=True, thresholds=[.25, .5], topks=[1, 5, 10],
             prefixes=["last_"], filter_non_gt_boxes=True, model="PVGround")
@@ -71,15 +73,53 @@ class GeometryReplayTests(unittest.TestCase):
         for name, value in self.points.items():
             self.assertTrue(torch.equal(value, before[name]), name)
 
+    def test_actual_query_trace_distinguishes_bbs_semantic_and_geometry(self):
+        replay = GeometryReplay(self.evaluator)
+        replay.observe(self.points)
+        report = replay.report(expected_rows=1)
+        self.assertEqual(replay.bbs_queries, [1])
+        self.assertEqual(
+            replay.evaluators["unfiltered_fixed_queries", "final"]._replay_root_queries,
+            [0])
+        self.assertEqual(
+            replay.evaluators["official_filter", "mask"]._replay_root_queries, [1])
+        agreement = next(row for row in report["query_selection_agreement"]
+                         if row["protocol"] == "unfiltered_fixed_queries"
+                         and row["geometry"] == "final"
+                         and row["reference"] == "extra_mask_bbs")
+        self.assertEqual((agreement["agreements"], agreement["disagreements"]), (0, 1))
+        replay.evaluators["official_filter", "mask"]._replay_root_queries.pop()
+        with self.assertRaises(AssertionError):
+            replay.report(expected_rows=1)
+
+    def test_tied_sort_result_is_observed_without_changing_metrics(self):
+        points = dict(self.points)
+        points["last_proj_queries"] = torch.zeros_like(points["last_proj_queries"])
+        evaluator = GroundingEvaluator(
+            only_root=True, thresholds=[.25, .5], topks=[1, 5, 10],
+            prefixes=["last_"], filter_non_gt_boxes=False, model="PVGround")
+        evaluator.evaluate_bbox_by_sem_align(points, "last_")
+        replay = GeometryReplay(evaluator)
+        replay.observe(points)
+        replay.report(expected_rows=1)
+        expected = torch.ones(1, 2).argsort(1, True)[0, 0].item()
+        for (protocol, geometry), observed in replay.evaluators.items():
+            self.assertEqual(observed._replay_root_queries, [expected])
+            if geometry == "final":
+                self.assertEqual(dict(observed.dets), dict(evaluator.dets))
+
     def test_equal_net_hits_preserve_both_repairs_and_damage_across_batches(self):
         replay = GeometryReplay(self.evaluator)
         replay.observe(self.points)
         second = dict(self.points)
         second["last_center"] = self.points["native_coarse_center"]
         second["native_coarse_center"] = self.points["last_center"]
+        second["last_sem_cls_scores"] = torch.zeros_like(self.points["last_sem_cls_scores"])
+        second["last_sem_cls_scores"][0, 0, 0] = 5
         self.evaluator.evaluate_bbox_by_sem_align(second, "last_")
         replay.observe(second)
         report = replay.report(expected_rows=2)
+        self.assertEqual(replay.bbs_queries, [1, 0])
         for threshold in (.25, .5):
             native = next(row for row in report["paired_transitions"]
                           if row["protocol"] == "official_filter"
@@ -96,6 +136,7 @@ class GeometryReplayTests(unittest.TestCase):
                  for name, value in self.points.items()}
         batch["last_center"][1] = self.points["native_coarse_center"][0]
         batch["native_coarse_center"][1] = self.points["last_center"][0]
+        batch["last_sem_cls_scores"][1] = batch["last_sem_cls_scores"][1].flip(0)
         evaluator = GroundingEvaluator(
             only_root=True, thresholds=[.25, .5], topks=[1, 5, 10],
             prefixes=["last_"], filter_non_gt_boxes=True, model="PVGround")
@@ -103,6 +144,7 @@ class GeometryReplayTests(unittest.TestCase):
         replay = GeometryReplay(evaluator)
         replay.observe(batch)
         report = replay.report(expected_rows=2)
+        self.assertEqual(replay.bbs_queries, [1, 0])
         native = next(row for row in report["paired_transitions"]
                       if row["protocol"] == "official_filter"
                       and row["geometry"] == "native" and row["threshold"] == .5)

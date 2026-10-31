@@ -205,3 +205,29 @@ before changing geometry. Gate summaries cover all query axes and cannot
 alone identify saturation on the selected predictions. No module
 replacement or parameter change is justified by the current aggregate
 metrics alone.
+
+## Actual Query Selection Trace: 2026-10-31 07:44 New York
+
+The standalone replay now instruments only its diagnostic evaluator
+instances. A structured AST edit appends the root query ID immediately
+after the deployed `top` assignment; the deployed argsort and geometry
+filter execute unchanged. An unexpected number of assignments is rejected.
+The original formal evaluator remains untouched by this instrumentation.
+
+For each of the six protocol/geometry combinations, the report includes
+agreements/disagreements with the actual native_root_bbs helper used by
+extra-mask supervision, unfiltered semantic selection, and same-protocol
+final-geometry selection. Traces must contain exactly one entry per
+evaluated root in the same forward batch order. This measures inference
+selector agreement, not whether that query received a training loss.
+No causal accuracy attribution follows from disagreement alone.
+
+Nine synthetic CPU tests passed on the actual deployed NR3D and ScanRefer
+evaluators. Tests include ties, same-geometry metric/input preservation,
+sample ordering across and within batches, and incomplete trace rejection.
+The existing paired geometry and own-epoch formal-count checks still pass.
+No full-split GPU replay has run; dataset agreement rates remain unknown.
+
+Replay SHA25680fe6fcd6aab3f1ff08dbd84793f386b6a5a639eee05aeef2e5f8f73993db6aa;
+test SHA256960d683b735c048ec7388c9d05f569bb3a09abd690d947800c2497d868ade677.
+Replay upload hashes matched on all three hosts under /tmp only.

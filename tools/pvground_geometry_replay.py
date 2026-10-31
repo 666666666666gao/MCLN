@@ -6,14 +6,44 @@ Wait for an idle GPU. This tool does not attach to a live training process.
 """
 
 import argparse
+import ast
 import hashlib
+import inspect
 import json
 import os
 from pathlib import Path
 import runpy
 import sys
+import textwrap
+from types import MethodType
 
 import torch
+
+
+def trace_root_queries(evaluator):
+    """Observe the deployed sort result without replacing its ranking logic."""
+    method = evaluator.evaluate_bbox_by_sem_align.__func__
+    tree = ast.parse(textwrap.dedent(inspect.getsource(method)))
+    assignments = [node for node in ast.walk(tree) if isinstance(node, ast.Assign)
+                   and any(isinstance(target, ast.Name) and target.id == "top"
+                           for target in node.targets)]
+    assert len(assignments) == 1, "Expected one deployed query-ranking assignment"
+    target = assignments[0]
+
+    class AddTrace(ast.NodeTransformer):
+        def visit_Assign(self, node):
+            if node is target:
+                record = ast.parse(
+                    "self._replay_root_queries.append(int(top[0, 0].item()))"
+                ).body[0]
+                return [node, ast.copy_location(record, node)]
+            return node
+
+    tree = ast.fix_missing_locations(AddTrace().visit(tree))
+    namespace = {}
+    exec(compile(tree, inspect.getsourcefile(method), "exec"), method.__globals__, namespace)
+    evaluator._replay_root_queries = []
+    evaluator.evaluate_bbox_by_sem_align = MethodType(namespace[method.__name__], evaluator)
 
 
 class Top1HitTrace(dict):
@@ -63,6 +93,8 @@ class GeometryReplay:
                 )
                 evaluator = self.evaluators[protocol, geometry]
                 evaluator.dets = Top1HitTrace(evaluator.dets)
+                trace_root_queries(evaluator)
+        self.bbs_queries = []
         self.gate_count = 0
         self.gate_sum = 0.0
         self.gate_zero = 0
@@ -71,6 +103,12 @@ class GeometryReplay:
         self.raw_above_one = 0
 
     def observe(self, end_points):
+        from native_root_bbs import native_root_bbs
+
+        selected = native_root_bbs(
+            end_points["last_sem_cls_scores"].detach(), end_points
+        ).argsort(dim=-1, descending=True)[:, 0]
+        self.bbs_queries.extend(selected.detach().cpu().tolist())
         sources = {
             "final": ("last_center", "last_pred_size"),
             "native": ("native_coarse_center", "native_coarse_size"),
@@ -84,6 +122,7 @@ class GeometryReplay:
             assert counterfactual["last_proj_queries"] is end_points["last_proj_queries"]
             assert counterfactual["proj_tokens"] is end_points["proj_tokens"]
             evaluator.evaluate_bbox_by_sem_align(counterfactual, "last_")
+            assert len(evaluator._replay_root_queries) == len(self.bbs_queries)
         gate = end_points["span_axis_gate"].detach()
         raw = end_points["span_raw_axis_gate"].detach()
         assert torch.isfinite(gate).all() and torch.isfinite(raw).all()
@@ -96,7 +135,9 @@ class GeometryReplay:
         self.raw_above_one += (raw > 1).sum().item()
 
     def report(self, expected_rows):
+        assert len(self.bbs_queries) == expected_rows
         rows = []
+        selection = []
         for (protocol, geometry), evaluator in self.evaluators.items():
             keys = [("last_", threshold, 1, "bbf") for threshold in (0.25, 0.5)]
             assert [evaluator.gts[key] for key in keys] == [expected_rows] * 2
@@ -115,6 +156,24 @@ class GeometryReplay:
                 primary_score="last/bbf",
                 counterfactual_geometry=geometry != "final",
             ))
+            queries = evaluator._replay_root_queries
+            assert len(queries) == expected_rows
+            references = {
+                "extra_mask_bbs": self.bbs_queries,
+                "unfiltered_same_geometry":
+                    self.evaluators["unfiltered_fixed_queries", geometry]._replay_root_queries,
+                "same_protocol_final":
+                    self.evaluators[protocol, "final"]._replay_root_queries,
+            }
+            for reference, reference_queries in references.items():
+                assert len(reference_queries) == expected_rows
+                agreements = sum(a == b for a, b in zip(queries, reference_queries))
+                selection.append(dict(
+                    protocol=protocol, geometry=geometry, reference=reference,
+                    rows=expected_rows, agreements=agreements,
+                    disagreements=expected_rows - agreements,
+                    agreement_percent=100 * agreements / expected_rows,
+                ))
         paired = []
         for protocol in ("official_filter", "unfiltered_fixed_queries"):
             for geometry in ("native", "mask"):
@@ -144,6 +203,11 @@ class GeometryReplay:
             official_filter_enabled=self.original.filter_non_gt_boxes,
             rows=rows,
             paired_transitions=paired,
+            query_selection_agreement=selection,
+            query_selection_scope=(
+                "eval_forward_root_queries; does not measure training matcher roles "
+                "or establish causal accuracy cost"
+            ),
             pairing="same_forward_batch_order_and_deployed_per_root_counter_updates",
             gates=dict(
                 population="all_query_axes",
@@ -203,7 +267,7 @@ def main():
     result["matches_recorded_metrics"] = True
     files = ("train_dist_mod.py", "src/grounding_evaluator.py",
              "models/pv_ground.py", "native_model_initialization.py",
-             "extremal_span_mixer.py")
+             "extremal_span_mixer.py", "native_root_bbs.py")
     result["source_sha256"] = {
         name: hashlib.sha256(Path(name).read_bytes()).hexdigest() for name in files
     }

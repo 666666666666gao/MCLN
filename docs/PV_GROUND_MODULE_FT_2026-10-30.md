@@ -1,5 +1,32 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Live Status: 2026-10-31 04:17 America/New_York
+
+All three current training processes and GPU allocations are live; this
+read-only check changed no configurations or processes.
+
+- ScanRefer run1793345477: epoch20 at3712/4865. Latest full epoch19 is
+  5620/4767 of9508=59.108119%/50.136727%; selected trained epoch18 is
+  5641/4800=59.328986%/50.483803% under Acc@0.50-first. Early-stop
+  decline streak remains0.
+- NR3D run1793419199: epoch9 at861/4490. Latest full epoch3 is
+  4781/3915 of7899=60.526649%/49.563236%; selected epoch1 is
+  4783/3918=60.551969%/49.601215% under Acc@0.25-first. The selected
+  epoch1 checkpoint is retained.
+- SR3D run1793419200: epoch4 at3245/7783. Its latest full and selected
+  epoch1 is11944/10164 of17726=67.381248%/57.339501%, selected by
+  Acc@0.25-first with Acc@0.50 as tie-break. The selected checkpoint
+  is retained. Do not confuse historical run1793380711 epoch3
+  (11947 hits@0.25) with current run1793419200.
+
+No new full metrics appeared in this poll. Audited rows satisfy the
+dataset-specific row count, last/bbf primary score, and
+same_complete_model=true. CPU checkpoint checks matched latest.pth
+epochs to their own native metric rows; retained_metrics is historical
+best metadata and is not used as the checkpoint's own score. Approximate
+next validation windows: ScanRefer in~15 minutes, NR3D in~48 minutes,
+SR3D in~85 minutes plus validation time.
+
 Current verified state: 2026-10-31 03:22 America/New_York.
 ScanRefer run1793345477 has full metrics through epoch18 and is validating
 epoch19. Its trained Acc050-best is epoch18,

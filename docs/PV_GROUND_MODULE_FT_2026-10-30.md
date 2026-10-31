@@ -75,6 +75,17 @@ Experiment start: 2026-10-30 (America/New_York).
 
 ## Targets and Protocol
 
+Current NR3D run1793419199 epoch2 completed7899 rows at4783/3916
+hits025/050 =60.551969%/49.563236%, last/bbf,
+same_complete_model=true. It ties epoch1 on Acc025 and has two fewer
+hits050, so Acc025-first selection remains epoch1
+best_trained_acc025_epoch1.pth (4783/3918). latest.pth is epoch2 and
+matches its own native row; the selected hard link remains present.
+Epoch3 began and its first-update check passed. Current NR3D snapshot
+SHA256: `85634a4eb22d74c683c8836eae2549339921be81e47a5c3a28044a51d6e7696c`.
+The combined table now contains37 complete rows; current trained
+selections are ScanRefer18, NR3D1, SR3D pending.
+
 | Dataset | Target |
 | --- | ---: |
 | ScanRefer Acc@0.25 | 60.0% |

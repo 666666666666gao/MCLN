@@ -88,6 +88,19 @@ module initialization), never its retained_metrics historical-best field. Final 
 hits must exactly match the recorded row before a replay result is saved.
 Partial splits and disagreements fail the check.
 
+The diagnostic also records paired top-1 transitions for native and mask
+geometry relative to final, separately for each protocol and threshold.
+It observes each per-root increment of the deployed evaluator's counters;
+it does not reimplement ranking, filtering or IoU. Same-forward sample
+order supplies pairing within and across batches. Each trace must have
+exactly the full split's row count and sum to its evaluator's hit count.
+The four counts are both_correct, repaired, damaged and both_wrong.
+Their sum must equal the split size, and repaired minus damaged must
+equal the corresponding net hit difference. Equal total accuracy can
+therefore still expose replacement of correct predictions by other hits.
+This is geometry-counterfactual pairing within the modified model,
+not pairing with a separate author-baseline run.
+
 Run from the deployed code directory with one torchrun worker, using the
 dataset's verified arguments and adding:
 
@@ -116,7 +129,7 @@ been run, and the eval-only entrypoint has not yet been validated end to
 end. Wait for the appropriate training process to terminate or a verified
 idle GPU. Do not stop training or modify a live model to run this tool.
 
-Five CPU tests passed against both actual deployed evaluators with
+Seven CPU tests passed against both actual deployed evaluators with
 CUDA_VISIBLE_DEVICES empty: (1) a controlled example distinguishing
 geometry-dependent filtering from fixed-query box quality, while
 preserving every input tensor; (2) rejection of incomplete row counts or
@@ -124,8 +137,15 @@ disagreement with the original evaluator; (3) matching the checkpoint's
 own epoch instead of its retained best, and rejecting a mismatched pair.
 The fourth check rejects a training-mode invocation before creating its
 output. The fifth verifies that a disabled official filter matches the
-unfiltered protocol across all three geometries. These tests are
-synthetic protocol checks, not dataset performance.
+unfiltered protocol across all three geometries. The sixth constructs
+equal aggregate native/final hits across batches but verifies one repair
+and one damage at both thresholds. The seventh tests the same pairing
+within a two-sample batch and rejects a missing trace row. These tests
+are synthetic protocol checks, not dataset performance.
+
+Updated tool uploaded only to /tmp on both hosts, SHA256:
+`ef48f9c11a25413bb6bbe4e04d2e4d9b66b28f9efe77b76a0a0ad4dd6862f3ea`.
+Training sources and parameters are unchanged; no GPU replay was run.
 
 ## Next Decision
 

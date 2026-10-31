@@ -16,6 +16,21 @@ import sys
 import torch
 
 
+class Top1HitTrace(dict):
+    """Record the deployed evaluator's per-root top-1 counter increments."""
+
+    def __init__(self, counts):
+        super().__init__(counts)
+        self.samples = {0.25: [], 0.5: []}
+
+    def __setitem__(self, key, value):
+        if key in (("last_", 0.25, 1, "bbf"), ("last_", 0.5, 1, "bbf")):
+            increment = value - self[key]
+            assert increment in (0, 1), "Paired replay requires one root per row"
+            self.samples[key[1]].append(int(increment))
+        super().__setitem__(key, value)
+
+
 def check_recorded_metrics(path, checkpoint_path, expected_rows, formal):
     epoch = 0
     if checkpoint_path:
@@ -46,6 +61,8 @@ class GeometryReplay:
                         if protocol == "official_filter" else False),
                     logger=original.logger, model=original.model,
                 )
+                evaluator = self.evaluators[protocol, geometry]
+                evaluator.dets = Top1HitTrace(evaluator.dets)
         self.gate_count = 0
         self.gate_sum = 0.0
         self.gate_zero = 0
@@ -84,6 +101,9 @@ class GeometryReplay:
             keys = [("last_", threshold, 1, "bbf") for threshold in (0.25, 0.5)]
             assert [evaluator.gts[key] for key in keys] == [expected_rows] * 2
             hits = [int(evaluator.dets[key]) for key in keys]
+            for key, total in zip(keys, hits):
+                samples = evaluator.dets.samples[key[1]]
+                assert len(samples) == expected_rows and sum(samples) == total
             if protocol == "official_filter" and geometry == "final":
                 assert hits == [int(self.original.dets[key]) for key in keys]
                 assert [self.original.gts[key] for key in keys] == [expected_rows] * 2
@@ -95,6 +115,26 @@ class GeometryReplay:
                 primary_score="last/bbf",
                 counterfactual_geometry=geometry != "final",
             ))
+        paired = []
+        for protocol in ("official_filter", "unfiltered_fixed_queries"):
+            for geometry in ("native", "mask"):
+                for threshold in (0.25, 0.5):
+                    final = self.evaluators[protocol, "final"].dets.samples[threshold]
+                    alternative = self.evaluators[protocol, geometry].dets.samples[threshold]
+                    transitions = dict(both_correct=0, repaired=0,
+                                       damaged=0, both_wrong=0)
+                    labels = {(1, 1): "both_correct", (0, 1): "repaired",
+                              (1, 0): "damaged", (0, 0): "both_wrong"}
+                    for before, after in zip(final, alternative):
+                        transitions[labels[before, after]] += 1
+                    assert sum(transitions.values()) == expected_rows
+                    net = transitions["repaired"] - transitions["damaged"]
+                    assert net == sum(alternative) - sum(final)
+                    paired.append(dict(
+                        protocol=protocol, geometry=geometry, threshold=threshold,
+                        reference_geometry="final", rows=expected_rows,
+                        **transitions, net_hits=net,
+                    ))
         assert self.gate_count > 0
         return dict(
             diagnostic="same_forward_geometry_replay",
@@ -103,6 +143,8 @@ class GeometryReplay:
             unfiltered_results_are_diagnostic_only=True,
             official_filter_enabled=self.original.filter_non_gt_boxes,
             rows=rows,
+            paired_transitions=paired,
+            pairing="same_forward_batch_order_and_deployed_per_root_counter_updates",
             gates=dict(
                 population="all_query_axes",
                 count=self.gate_count, mean=self.gate_sum / self.gate_count,

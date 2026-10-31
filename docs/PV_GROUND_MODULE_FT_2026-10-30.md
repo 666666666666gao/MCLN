@@ -11,6 +11,14 @@ has only initialization metrics. Both own-run first-update audits pass
 and both reproduced author baselines are complete.
 The historical stopped NR/SR runs are labeled separately below.
 
+Geometry replay diagnostic now records per-sample repairs/damage for
+native/mask versus final under each protocol and IoU threshold, using
+the deployed evaluator's own per-root counter updates. All7 CPU
+contract tests passed on both actual NR3D and ScanRefer evaluators.
+This closes the aggregate-only diagnostic gap; full GPU replay and
+measured dataset transition counts remain pending natural GPU release.
+Details: `docs/PV_GROUND_GEOMETRY_REPLAY_2026-10-31.md`.
+
 ## NR3D Frozen-state Comparison: 2026-10-31 01:44 New York
 
 Compared current run1793419199 initialization best.pth (epoch0) with

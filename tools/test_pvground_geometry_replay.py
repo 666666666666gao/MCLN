@@ -62,10 +62,55 @@ class GeometryReplayTests(unittest.TestCase):
         self.assertEqual(hits["unfiltered_fixed_queries", "native"], (1, 1))
         self.assertEqual(hits["unfiltered_fixed_queries", "mask"], (0, 0))
         self.assertEqual(report["gates"]["mean"], .5)
+        native = next(row for row in report["paired_transitions"]
+                      if row["protocol"] == "official_filter"
+                      and row["geometry"] == "native" and row["threshold"] == .25)
+        self.assertEqual((native["repaired"], native["damaged"]), (1, 0))
         self.assertAlmostEqual(report["gates"]["raw_below_zero_fraction"], 1 / 3)
         self.assertAlmostEqual(report["gates"]["raw_above_one_fraction"], 1 / 3)
         for name, value in self.points.items():
             self.assertTrue(torch.equal(value, before[name]), name)
+
+    def test_equal_net_hits_preserve_both_repairs_and_damage_across_batches(self):
+        replay = GeometryReplay(self.evaluator)
+        replay.observe(self.points)
+        second = dict(self.points)
+        second["last_center"] = self.points["native_coarse_center"]
+        second["native_coarse_center"] = self.points["last_center"]
+        self.evaluator.evaluate_bbox_by_sem_align(second, "last_")
+        replay.observe(second)
+        report = replay.report(expected_rows=2)
+        for threshold in (.25, .5):
+            native = next(row for row in report["paired_transitions"]
+                          if row["protocol"] == "official_filter"
+                          and row["geometry"] == "native"
+                          and row["threshold"] == threshold)
+            self.assertEqual(native["repaired"], 1)
+            self.assertEqual(native["damaged"], 1)
+            self.assertEqual(native["net_hits"], 0)
+            self.assertEqual(native["both_correct"], 0)
+            self.assertEqual(native["both_wrong"], 0)
+
+    def test_paired_rows_within_batch_use_the_same_sample_order(self):
+        batch = {name: torch.cat([value, value], dim=0)
+                 for name, value in self.points.items()}
+        batch["last_center"][1] = self.points["native_coarse_center"][0]
+        batch["native_coarse_center"][1] = self.points["last_center"][0]
+        evaluator = GroundingEvaluator(
+            only_root=True, thresholds=[.25, .5], topks=[1, 5, 10],
+            prefixes=["last_"], filter_non_gt_boxes=True, model="PVGround")
+        evaluator.evaluate_bbox_by_sem_align(batch, "last_")
+        replay = GeometryReplay(evaluator)
+        replay.observe(batch)
+        report = replay.report(expected_rows=2)
+        native = next(row for row in report["paired_transitions"]
+                      if row["protocol"] == "official_filter"
+                      and row["geometry"] == "native" and row["threshold"] == .5)
+        self.assertEqual((native["repaired"], native["damaged"]), (1, 1))
+        self.assertEqual(native["net_hits"], 0)
+        replay.evaluators["official_filter", "native"].dets.samples[.5].pop()
+        with self.assertRaises(AssertionError):
+            replay.report(expected_rows=2)
 
     def test_incomplete_split_and_formal_metric_disagreement_are_rejected(self):
         replay = GeometryReplay(self.evaluator)

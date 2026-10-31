@@ -11,6 +11,36 @@ has only initialization metrics. Both own-run first-update audits pass
 and both reproduced author baselines are complete.
 The historical stopped NR/SR runs are labeled separately below.
 
+## NR3D Frozen-state Comparison: 2026-10-31 01:44 New York
+
+Compared current run1793419199 initialization best.pth (epoch0) with
+retained best_trained_acc025_epoch1.pth using the existing CPU-only
+checkpoint audit. All1234 frozen state tensors, including running
+statistics, match in shape, dtype and SHA256. All61 trainable tensors
+changed; the three module boundaries are unchanged.
+
+| Module | Changed tensors | Changed scalars | Parameter delta L2 |
+| --- | ---: | ---: | ---: |
+| Source query reader | 37/37 | 764864/923616 | 1.820899 |
+| Candidate support corrector | 10/10 | 27265/27841 | 0.638684 |
+| Candidate span mixer | 14/14 | 29793/29793 | 2.848393 |
+
+Support output bias changed from0 to-0.003331059; span output bias
+from0 to0.010792919. These updates include optimizer effects and do
+not establish gradient flow, gate saturation or causal accuracy gains.
+They rule out frozen-state drift or wholly unchanged modules for this
+checkpoint pair. The own epoch1 metric is4783/3918 of7899
+(60.551969%/49.601215%), not retained_metrics from epoch0.
+
+Raw evidence: `docs/results/NR3D-epoch1-checkpoint-cpu-audit.json`;
+local and remote SHA256:
+`649954b6fcad9058fb227902fc8347a56ce7599db4630aeeeb99ac8b652ba9f5`.
+No GPU evaluation or training change was made. At01:41 all three
+screens/GPUs were live: ScanRefer e18=3233/4865, NR3D e2=689/4490,
+SR3D e1=3525/7783. No new complete validation row. Next expected full
+results are approximately02:13,02:43 and03:20 New York respectively;
+these are estimates, not completed evaluations.
+
 Experiment start: 2026-10-30 (America/New_York).
 
 ## Targets and Protocol

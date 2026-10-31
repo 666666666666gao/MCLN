@@ -1,5 +1,22 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## ScanRefer Epoch20: 2026-10-31 04:46 America/New_York
+
+ScanRefer run1793345477 completed epoch20 on the full9508-row native
+validation: hits@0.25/@0.50=5606/4776,
+58.960875%/50.231384%, primary_score=last/bbf,
+same_complete_model=true. CPU checkpoint audit matches latest.pth
+epoch20 to its own native metric row and confirms model, optimizer,
+and scheduler state. The selected trained checkpoint remains epoch18
+at5641/4800=59.328986%/50.483803%, Acc@0.50-first.
+
+The consecutive dual-three-round-mean decline streak is now1, below the
+automatic stop threshold2. Epoch21 training has started at239/4865;
+its first update confirms frozen_core=true and
+optimizer_step_complete=true. The full cross-dataset table is refreshed
+to41 complete evaluations across7 runs. No new NR3D/SR3D full result
+was observed during this check.
+
 ## Live Status: 2026-10-31 04:17 America/New_York
 
 All three current training processes and GPU allocations are live; this

@@ -25238,6 +25238,24 @@ SR3D remained in epoch4 training with latest complete row epoch3 at
 and GPUs were live, and the requested training configuration was unchanged.
 No process was stopped or restarted.
 
+## PV-Ground NR3D Epoch9: 2026-10-31 11:36 New York
+
+Current run1793419199 full7899 last/bbf same_complete_model=true:
+4787/3897 hits=60.602608%/49.335359%. CPU latest.pth epoch9
+matches own native row, optimizer present. Generic best.pth remains0;
+use selected trained5=60.653247%/49.297379% under Acc025-first.
+NR9 versus8:+15/-11 hits; versus selected5:-4/+3 hits.
+Rolling7-9 sums14326/11694 exceed6-8=14322/11690, streak0.
+NRscreen27029/GPUlive, epoch10 firstupdate frozen_core/step true.
+
+SRscreen26107/GPUlive, epoch4 validation1140/1773 at11:35,
+ETA11:45-11:48, latest/selected3 unchanged. ScanRefer last verified
+full25/selected23. No settings/process changes or GPU diagnostics.
+NR raw snapshot15:36:20UTC remote/local SHA:
+594e660763c5b6df58f51dcd631ff5b1cc0fdfe601043d7ee47071eef8ad7b92.
+Tables54 complete evaluations/7runs, all54 percentage pairs checked.
+Goals remain active.
+
 At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
 epoch25; remote/local SHA256:
 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.

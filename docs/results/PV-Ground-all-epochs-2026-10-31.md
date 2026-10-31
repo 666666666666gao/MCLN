@@ -65,6 +65,7 @@ PV_GROUND_MODULE_FT_2026-10-30.md.
 | nr3d | 1793419199 | current | 6 | 7899 | 4783 | 3893 | 60.551969% | 49.284720% |
 | nr3d | 1793419199 | current | 7 | 7899 | 4767 | 3889 | 60.349411% | 49.234080% |
 | nr3d | 1793419199 | current | 8 | 7899 | 4772 | 3908 | 60.412710% | 49.474617% |
+| nr3d | 1793419199 | current | 9 | 7899 | 4787 | 3897 | 60.602608% | 49.335359% |
 | sr3d | 1793380711 | historical | 0 (init) | 17726 | 11620 | 10023 | 65.553424% | 56.544060% |
 | sr3d | 1793380711 | historical | 1 | 17726 | 11944 | 10166 | 67.381248% | 57.350784% |
 | sr3d | 1793380711 | historical | 2 | 17726 | 11934 | 10206 | 67.324834% | 57.576441% |
@@ -79,7 +80,7 @@ PV_GROUND_MODULE_FT_2026-10-30.md.
 | File | Observed UTC | SHA256 |
 | --- | --- | --- |
 | ScanRefer-full-epoch-history-2026-10-31.json | 2026-10-31T15:10:30.587971+00:00 | 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659 |
-| NR3D-full-epoch-history-2026-10-31.json | 2026-10-31T14:27:31.169602+00:00 | ed4df779d58d0f6f8c3ab373dd123946f1b15d66563ae1bdad55122e2ef6824f |
+| NR3D-full-epoch-history-2026-10-31.json | 2026-10-31T15:36:20.121277+00:00 | 594e660763c5b6df58f51dcd631ff5b1cc0fdfe601043d7ee47071eef8ad7b92 |
 | SR3D-full-epoch-history-2026-10-31.json | 2026-10-31T12:55:51.446269+00:00 | fb32464a33d7fa863a04c829ff8411eacb333bf9a35e431e586fd630a297cbc4 |
 
 sr3d/1793418888: no complete evaluation.

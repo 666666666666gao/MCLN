@@ -1311,3 +1311,21 @@ The table generator rebuilt all53 full evaluations from the three
 saved JSON snapshots; all53 percentage pairs passed independent
 integer-hit recalculation. This supersedes the preceding epoch24
 snapshot caveat. No new accuracy or checkpoint selection change.
+
+## NR3D Epoch9, 2026-10-31 11:36 New York
+
+Current run1793419199 full7899 native last/bbf same_complete_model=true:
+4787/3897 hits=60.602608%/49.335359%. CPU latest.pth epoch9
+matches its own row and has optimizer state; generic best remains0.
+Acc025-first selected5 remains60.653247%/49.297379%, with9
+lower by4 hits025 and higher by3 hits050. Rolling7-9 sums14326/11694
+exceed6-8=14322/11690, so dual-decline streak0. Epoch10 started,
+first_update confirms frozen_core/optimizer_step_complete true.
+No training configuration/process changes.
+
+SR4 validation1140/1773 at11:35, live screen26107/GPU14108MiB;
+ETA11:45-11:48. NRscreen27029/GPU13095MiB live. ScanRefer last
+verified full25, selected23. Raw NR JSON observed15:36:20UTC,
+remote/local SHA594e660763c5b6df58f51dcd631ff5b1cc0fdfe601043d7ee47071eef8ad7b92.
+Regenerated54 complete evaluations/7runs; all54 percentage pairs
+independently count-checked. Goals incomplete; no GPU diagnostic run.

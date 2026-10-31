@@ -25218,3 +25218,22 @@ fresh独立同模型家族审查11项确定性检查、70个输入，整体WARN�
 控制归档最初因C盘已满产生273481728字节失败片段，仅该片段被清理；随后改用E盘成功核验。远端本轮两个负latest和两份已核验的重复E0共实删2913402192字节，唯一原始逐行结果、官方PV/G/A/B依赖和历史必要权重/数据保留。当前新训练的2605151860字节保存容量门槛未降低；未删除活动检查点。
 
 新模型仍使用全部256候选、唯一原生last/bbs、同Query的框与Mask，不恢复V99双源、离散版本选择或数据集专属推理门控。ScanRefer达标后，按对应作者协议完整验证Nr3D/Sr3D，再独立训练相同最终方法；允许内部配置适配并披露参数/成本，不把旧MCLN结果或作者日志填作当前PV结果。
+
+
+## PV-Ground ScanRefer Epoch25: 2026-10-31 10:57 New York
+
+ScanRefer epoch25 completed full native validation with 9508 rows:
+5621/9508 Acc@0.25 and 4768/9508 Acc@0.50 =
+59.118637%/50.147244%. The row is `last/bbf` and
+`same_complete_model=true`. CPU checkpoint metadata matched
+`latest.pth` to epoch25 and to this row; `retained_metrics` is historical
+and was not used as epoch25's result. Under ScanRefer's Acc@0.50-first
+selection, epoch23 remains selected at 59.339504%/50.588978%.
+
+At the same check, NR3D epoch9 was still training at 2388/4490 batches;
+its latest complete row remained epoch8 at 60.412710%/49.474617%, with
+epoch5 selected under Acc@0.25-first at 60.653247%/49.297379%.
+SR3D remained in epoch4 training with latest complete row epoch3 at
+67.454586%/57.463613%, selected under Acc@0.25-first. All three screens
+and GPUs were live, and the requested training configuration was unchanged.
+No process was stopped or restarted.

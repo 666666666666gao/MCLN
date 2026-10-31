@@ -1278,3 +1278,28 @@ not occurred. SR3D epoch2 was2585/7783; its latest complete and
 Acc@0.25-first selected result remains epoch1=11944/10164. No training
 process/configuration was changed. Refreshed the all-dataset history to
 40 full evaluations across7 runs and updated NR3D's raw source snapshot.
+
+## ScanRefer Epoch25, 2026-10-31 10:57 New York
+
+ScanRefer run1793345477 completed epoch25 on all9508 native semantic
+rows:5621/4768 hits=59.118637%/50.147244%, last/bbf,
+same_complete_model=true. CPU latest.pth metadata matches epoch25 and
+its own row, with model/optimizer/scheduler present. Retained metrics
+describe historical initialization and are not epoch25 results.
+Selected trained ScanRefer remains epoch23=59.339504%/50.588978%
+under Acc050-first selection. Its independent Acc025 maximum is
+epoch15=59.371056%; those two thresholds must not be combined.
+
+NR3D remains latest full8=60.412710%/49.474617%, selected5=
+60.653247%/49.297379%. SR3D remains latest/selected3=
+67.454586%/57.463613%. NR/SR use Acc025 first then Acc050.
+All three screens and GPUs were live at10:57; NR9 training2388/4490.
+No live settings/processes changed. Next full NR9/SR4 windows around
+11:35-11:45. Keep paired geometry evaluation queued until actual
+training termination and GPU idle. Goals remain incomplete.
+
+History now contains53 full evaluations. ScanRefer epoch25's source
+native_metrics.jsonl SHA256, rechecked at11:03 New York:
+6be475e419d10ce51e6cc46c01c57baad61fb4ef0b4647aa0ad5bfe1227eaa68.
+The prior exported ScanRefer JSON is still the epoch24 snapshot;
+the added epoch25 row is explicitly sourced from the live native file.

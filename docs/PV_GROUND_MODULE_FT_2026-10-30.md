@@ -401,3 +401,23 @@ baseline score is available. Compare to PV-Ground paper Acc@0.25=68.9%;
 keep MCLN's 68.4% and the user's 69.4% target identified separately.
 Do not resume SR3D fine-tuning until the baseline is complete and within
 about 1 pp of the matching PV-Ground paper score.
+
+## ScanRefer Epoch 16 and Follow-up: 23:47 America/New_York
+
+ScanRefer epoch16 completed full validation: 5612/9508 hits@0.25 (59.024%)
+and 4756/9508 hits@0.50 (50.042%), `primary_score=last/bbf`,
+`same_complete_model=true`. CPU audit matched `latest.pth` epoch16 and
+confirmed model/optimizer/scheduler. It is not a new best at either
+threshold: epoch15 remains the Acc@0.25 high (5645 hits), epoch12 the
+Acc@0.50 high (4781 hits).
+
+NR3D restarted fine-tune run `1793417914` is active; latest poll showed
+initial validation at 280/790. This is a fresh run from the author checkpoint
+through the existing native-init spec, not continuation from stopped epoch9.
+The run's own first-update audit must be checked before asserting its
+frozen-core/optimizer-step witness.
+
+SR3D author baseline is at 1720/1773 validation batches; its screen remains
+active. No full metric yet and SR3D fine-tuning remains stopped. The new
+baseline scripts and earlier documentation correction were pushed in commits
+`3ad73fa` and `683f301` on `codex/pvground-scanrefer-nr3d-sr3d-20261030`.

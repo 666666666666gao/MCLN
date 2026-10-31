@@ -1,5 +1,21 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Auxiliary Supervision Audit: 2026-10-31 07:24 America/New_York
+
+Read-only SR3D source audit confirms both auxiliary losses are added to
+total training loss. Selected-query mask supervision chooses classifier
+bbs, whereas formal metrics use projected-token bbf plus the NR/SR
+geometry filter. G extra-label correction qualifies detached final boxes
+at IoU>0.5, while NR/SR checkpoint priority is Acc025. These are source
+differences, not measured error causes. Direct discrete-mask-extent
+gradients are blocked, but mask losses and other mixer paths remain;
+no claim that modules are untrained is supported.
+
+Recorded source snapshot/hashes, exact limits, next agreement/coverage
+measurements and official MMDetection Align-DETR reference in
+docs/PV_GROUND_SUPERVISION_AUDIT_2026-10-31.md. No loss, threshold,
+module or running process was changed. No new accuracy row this audit.
+
 ## ScanRefer Epoch22: 2026-10-31 07:15 America/New_York
 
 Full9508-row epoch22 validation completed: hits025/050=5612/4763,

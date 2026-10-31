@@ -1,5 +1,40 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Selected Checkpoint Frozen-State Audit: 2026-10-31 09:49 New York
+
+CPU-only audits now cover the actual selected NR5 and SR3 checkpoints.
+NR5 matches its own full7899-row metric4791/3894. All1234 frozen
+state tensors exactly match module-equipped init0; all61 trainable
+tensors changed: reader37/37, support10/10, span14/14. Group delta-L2
+is3.063972/2.471787/3.470787 respectively. Span output bias changed
+0 ->0.009575783; this is a parameter value, not a gate distribution.
+Optimizer effects can change tensors, so this does not establish
+gradient coverage, functional importance or causal accuracy gains.
+
+SR3 matches its own full17726-row metric11957/10186. All1234 frozen
+tensors exactly match the SHA-verified author checkpoint;61 added
+trainable tensors are excluded. Author-only text position_ids buffer
+is recorded separately. This excludes frozen-weight drift at selected3,
+but does not test forward identity or added-module update magnitudes.
+
+The first SR init-to-trained attempt correctly failed its init-epoch0
+assertion: generic best.pth is2. No result was saved from that attempt.
+The successful SR audit uses the author checkpoint explicitly; NR
+uses its verified init0. Separate scripts preserve these different
+comparison scopes; no fallback or live source edit was added.
+
+Downloaded raw audit SHA256:
+- NR5:5be56dac6f6745cd9d0115f539ded9fb4b38e06285c10d0bf654d85fcdab1b6c
+- SR3:a58bc8c60f3cb2d64795689ba8dd1f14ee9cc997d41f6109a57aa2568543c75b
+
+Both local bytes match remote hashes; raw JSON and reproducible scripts
+are retained under docs/results and tools. At09:48 authoritative Python
+processes NR27036/SR26114 still own GPU memory13076/14088MiB.
+No GPU diagnostic launched, training unchanged, no new full epoch.
+Next action remains complete NR8 validation~10:25-10:35 and, only after
+actual termination/idle GPU, the same-seed author baseline and paired
+geometry replay. Overall goal remains incomplete.
+
 ## ScanRefer Epoch24 Complete: 2026-10-31 09:41 New York
 
 Full9508 last/bbf semantic rows5615/4751=59.055532%/49.968448%,

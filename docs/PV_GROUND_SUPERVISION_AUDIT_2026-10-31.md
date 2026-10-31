@@ -97,3 +97,41 @@ Download SHA256 matched the remote export:
 Exporter: tools/export_sr3d_supervision_source.sh. The snapshot covers
 the current SR3D deployment; generalizing to another host requires
 matching its relevant source hashes first.
+
+## Measured Separate Score-Path Totals: 2026-10-31 07:30 New York
+
+Exported current-run position-alignment and semantic-alignment log totals
+for NR3D epochs0-5 and SR3D epochs0-2. Top1 integer hits were uniquely
+reconstructed from five-decimal log fractions and the full split size;
+semantic hits were checked against every own-epoch native metric row.
+These are separate diagnostic totals, not paired query identities and
+not replacements for the formal semantic last/bbf metric.
+
+| Current selected model | Position hits025/050 | Formal semantic hits025/050 | Semantic minus position pp025/050 |
+| --- | ---: | ---: | ---: |
+| NR3D epoch5 | 4779/3880 of7899 | 4791/3894 of7899 | +0.151918/+0.177238 |
+| SR3D epoch2 | 11920/10150 of17726 | 11944/10187 of17726 | +0.135394/+0.208733 |
+
+Across trained epochs, NR3D differences range from-13 to+12 hits at025
+and-1 to+44 at050; SR3D ranges-6 to+24 and-11 to+37. Thus neither
+path uniformly dominates across epochs. Similar total scores also cannot
+prove that the two paths select the same query or fail on the same sample.
+The selected models' score-path differences alone do not quantify the
+SR3D target deficit of358hits025. Do not change reporting protocol,
+combine thresholds from different paths, or infer recoverable improvements
+from this table. The per-sample query/role audit remains necessary.
+
+The position evaluator may include its official geometry filter, while
+the training helper does not. These logged totals therefore are not a
+measurement of that unfiltered helper's training selection.
+
+Raw exports retain all Top1/5/10 log fractions and epoch identities:
+
+- docs/results/NR3D-current-score-paths-2026-10-31.json,
+  SHA256547319b123ecdded54a4d950d243d861b00640ec7414e056888ae8b71bcc1241.
+- docs/results/SR3D-current-score-paths-2026-10-31.json,
+  SHA25601e00dea8258f0124de9e4654a9a33ab5020feb031adaa7ae1baf5898c498060.
+
+Both remote/local download hashes matched. Exporter:
+tools/export_current_score_paths.sh. No GPU evaluation, live training
+change or new completed epoch was produced by this log audit.

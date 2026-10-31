@@ -1,5 +1,17 @@
 # PV-Ground Module Fine-Tuning: ScanRefer, NR3D, and SR3D
 
+## Score-Path Totals: 2026-10-31 07:30 America/New_York
+
+Verified both logged score paths across all current NR0-5 and SR0-2
+full epochs. At selected NR5, semantic versus position is4791/3894
+versus4779/3880; at selected SR2 it is11944/10187 versus11920/10150.
+These differences are diagnostic totals, not paired selection agreement.
+Neither path dominates every trained epoch. Official semantic metrics
+and Acc025-first checkpoint selection remain unchanged. No new full
+epoch or GPU evaluation; current logs/source were read only.
+Raw exported totals, SHA checks and interpretation limits are appended
+to docs/PV_GROUND_SUPERVISION_AUDIT_2026-10-31.md.
+
 ## Auxiliary Supervision Audit: 2026-10-31 07:24 America/New_York
 
 Read-only SR3D source audit confirms both auxiliary losses are added to

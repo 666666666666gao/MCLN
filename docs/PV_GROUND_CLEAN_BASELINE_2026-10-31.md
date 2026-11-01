@@ -537,3 +537,26 @@ epoch19 was training11/4490, and SR3D epoch8 was4288/7783. All jobs
 remained active. The combined CSV contains44 full rows: ScanRefer17,
 NR3D19, SR3D8. Native metrics and epoch18 CPU checkpoint metadata are
 saved in `docs/results/pvground_clean_baseline_20261031/`.
+
+## ScanRefer Epoch 17 and NR3D Epoch 19: 2026-11-01 10:04 UTC
+
+| Dataset | Epoch | Count | Hits025 / Hits050 | Acc025 / Acc050 |
+| --- | ---: | ---: | ---: | ---: |
+| ScanRefer | 17 | 9508 | 4902 / 3357 | 51.5565839% / 35.3071098% |
+| NR3D | 19 | 7899 | 4495 / 3341 | 56.9059375% / 42.2964932% |
+
+Both rows are complete `last/bbf` evaluations with
+`same_complete_model=true`. CPU audits match ScanRefer `latest.pth` to
+its epoch17 row while `best.pth` remains epoch16 (Acc050-first). NR3D
+`latest.pth` matches epoch19 while `best.pth` remains epoch18
+(Acc025-first). Every audited checkpoint contains1134 model tensors and
+707 optimizer-state entries.
+
+NR3D rolling means for epochs17-19 are56.9228%/42.3092%, above the
+epochs16-18 means of56.8300%/42.2079%; the automatic early-stop condition
+is not met. At10:01 UTC, ScanRefer epoch18 was training1318/4865, NR3D
+epoch20 was training61/4490, and SR3D epoch8 validation was301/1773.
+All jobs remained active. The combined CSV contains46 complete rows.
+Exact native metric rows and CPU audits are stored in
+`docs/results/pvground_clean_baseline_20261031/`; no training or process
+settings were changed.

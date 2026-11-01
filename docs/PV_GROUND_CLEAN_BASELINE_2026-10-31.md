@@ -597,3 +597,19 @@ was training2408/7783. All screens and GPUs remained active. The combined
 CSV contains48 complete rows. No training configuration or process was
 changed. CPU checkpoint metadata and native metrics through epoch18 are
 saved beside this report.
+
+## NR3D Epoch 20: 2026-11-01 11:12 UTC
+
+NR3D epoch20 completed all7899 `last/bbf` rows with hits025/050
+4503/3375 and Acc025/Acc050=57.0072161%/42.7269275%.
+`same_complete_model=true`. CPU audit matches `latest.pth` to its own
+epoch20 native row; Acc025-first `best.pth` remains epoch18 at
+57.0325358%/42.4230915%.
+
+The epochs18-20 rolling means are56.9819%/42.4822%, above epochs17-19
+at56.9228%/42.3092%; the early-stop streak is clear. At11:12 UTC,
+ScanRefer epoch19 was training2318/4865, NR3D epoch21 was training
+1624/4490, and SR3D epoch9 was training3813/7783. All screens and GPUs
+remained active. The combined CSV contains49 complete rows. No training
+configuration or process was changed. Native metrics and exact-epoch CPU
+checkpoint metadata are saved beside this report.

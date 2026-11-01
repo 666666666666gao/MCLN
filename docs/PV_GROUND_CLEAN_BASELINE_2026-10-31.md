@@ -648,3 +648,20 @@ so no dual-decline stop streak is active. At12:01 UTC, NR3D epoch22 was
 training1048/4490 and SR3D epoch9 was training6970/7783. Both remain
 active; ScanRefer has stopped normally at epoch19. The combined CSV
 contains51 complete rows. No run configuration or process was changed.
+
+## SR3D Epoch 9: 2026-11-01 12:30 UTC
+
+SR3D epoch9 completed all17726 `last/bbf` rows with hits025/050
+11657/9317 and Acc025/Acc050=65.7621573%/52.5612095%.
+`same_complete_model=true`. The CPU audit completed at12:29:48 UTC and
+matches both `best.pth` and `latest.pth` to their own epoch9 native row;
+each has1134 model tensors and707 optimizer states. Acc025-first
+selection advances the SR3D best checkpoint to epoch9.
+
+At12:30 UTC, NR3D epoch22 was training3681/4490 and SR3D epoch10
+180/7783. NR3D has no new complete row, so its dual-decline status is
+unchanged from epoch21. Both remaining runs are active; ScanRefer
+stopped normally at epoch19. The combined all-epoch CSV contains52
+complete rows. Native metrics and CPU checkpoint metadata for SR3D
+epoch9 are saved in `docs/results/pvground_clean_baseline_20261031/`.
+No training settings or processes were changed.

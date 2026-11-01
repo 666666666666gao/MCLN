@@ -461,3 +461,15 @@ two consecutive comparisons. At07:16 UTC, NR3D epoch17 was training99/4490.
 ScanRefer epoch15 and SR3D epoch7 remained active; their latest complete
 rows are e14 and e6 respectively. The combined CSV now has39 rows:
 ScanRefer15, NR3D17, SR3D7.
+
+## ScanRefer Epoch 15 Complete: 2026-11-01 07:50 UTC
+
+ScanRefer epoch15 completed all9508 expressions with hits025/050=4918/3359
+and Acc025/Acc050=51.7248633%/35.3281447%. It is a full `last/bbf` row
+with `same_complete_model=true`. CPU audit verifies best.pth and latest.pth
+both match epoch15's own row; Acc050-first selected checkpoint advances
+to15. Its epochs13-15 rolling means rise over epochs12-14.
+
+At07:49 UTC, ScanRefer was training epoch16 at232/4865; NR3D epoch17
+at3098/4490; and SR3D epoch7 validation at200/1773. All jobs remain
+active. The all-epoch CSV now contains40 rows: ScanRefer16, NR3D17, SR3D7.

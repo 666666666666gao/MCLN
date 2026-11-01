@@ -247,3 +247,18 @@ was1701/1773. This supports the new-backbone initialization explanation
 but does not establish final convergence to intact-PV-Ground results.
 All21 complete rows are in
 docs/results/pvground_clean_baseline_20261031/all-epochs.csv.
+
+## NR3D Epoch 9 Complete: 2026-11-01 01:04 UTC
+
+NR3D epoch9 is a full7899-row last/bbf same-complete evaluation:
+4446/3280 hits, Acc02556.2856058%, Acc05041.5242436%.
+CPU audit confirms both latest.pth and best.pth are epoch9 and match
+this native row, with the expected full checkpoint state.
+Latest-three trained means (epochs7-9) are55.809%/41.516%;
+epochs6-8 were55.595%/41.444%, so both increased and the early-stop
+decline streak remains zero.
+
+At the export snapshot, ScanRefer was training epoch8 (~33%),
+NR3D was validating epoch9 at701/790, and SR3D was training epoch4
+(~88%). No intervention or parameter change was made.
+The complete-epoch CSV now contains22 rows.

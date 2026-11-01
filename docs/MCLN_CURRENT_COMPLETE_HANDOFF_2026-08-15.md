@@ -25330,6 +25330,12 @@ shows96 new PointNet++ backbone tensors and16 new Top-K tensors, explaining
 the cold-start drop; epoch1 rises to61.3957/46.8126%. Data table:
 PV-Ground-clean-baseline-all-epochs.csv. Jobs remain active.
 
+2026-10-31 21:05EDT: NR3D epoch9 complete7899-row result4446/3280 =
+56.2856/41.5242%. CPU latest/best both match native epoch9.
+Epoch7-9 rolling means rise in both metrics; no early stop due.
+At observation Scan8 train1593/4865, NR9 val701/790, SR4 train6841/7783.
+All three jobs continue; complete CSV has22 rows.
+
 At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
 epoch25; remote/local SHA256:
 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.

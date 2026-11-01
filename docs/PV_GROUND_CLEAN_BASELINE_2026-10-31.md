@@ -262,3 +262,17 @@ At the export snapshot, ScanRefer was training epoch8 (~33%),
 NR3D was validating epoch9 at701/790, and SR3D was training epoch4
 (~88%). No intervention or parameter change was made.
 The complete-epoch CSV now contains22 rows.
+
+## SR3D Epoch 4 Complete: 2026-11-01 01:34 UTC
+
+SR3D epoch4 completed with17726 rows: hits025/050=11634/9230,
+Acc02565.6324044%, Acc05052.0704051%, last/bbf,
+same_complete_model=true. CPU latest.pth and best.pth both match
+epoch4 and its exact metric row. Both thresholds improved over epoch3,
+so the SR3D trained rolling means increased; early-stop decline streak
+is zero.
+
+The all-datasets CSV now contains23 complete rows. ScanRefer epoch8
+was training at4334/4865 (~89%) during the prior check. SR3D had
+started epoch5 training at105/7783. NR3D remains active; its latest
+completed validation is epoch9.

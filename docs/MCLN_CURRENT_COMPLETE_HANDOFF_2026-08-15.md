@@ -25336,6 +25336,11 @@ Epoch7-9 rolling means rise in both metrics; no early stop due.
 At observation Scan8 train1593/4865, NR9 val701/790, SR4 train6841/7783.
 All three jobs continue; complete CSV has22 rows.
 
+2026-10-31 21:35EDT: SR3D epoch4 full17726 validation completed,
+11634/9230 hits =65.6324/52.0704%. CPU best/latest both match epoch4.
+Both rolling metrics improve; no early stop due. Scan e8 at4334/4865,
+NR latest complete e9, SR e5 at105/7783. Complete CSV now23 rows.
+
 At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
 epoch25; remote/local SHA256:
 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.

@@ -386,6 +386,21 @@ The combined CSV now contains34 complete rows: ScanRefer13, NR3D15,
 and SR3D6. Updated NR3D native metrics and epoch14 CPU checkpoint
 metadata are saved in `docs/results/pvground_clean_baseline_20261031/`.
 
+## ScanRefer Epoch 14 Complete: 2026-11-01 06:51 UTC
+
+ScanRefer epoch14 completed all9508 expressions: hits025/050=4896/3340,
+Acc025/Acc050=51.4934792%/35.1283130%. The full row is `last/bbf` with
+`same_complete_model=true`. CPU audit confirms best.pth and latest.pth
+both match this epoch's own row; the Acc050-first best advances to14.
+The epochs12-14 three-round means rise over epochs11-13 on both metrics,
+so no early-stop decline streak is active.
+
+At06:50 UTC, ScanRefer epoch15 was training305/4865, NR3D epoch16
+2713/4490, and SR3D epoch7 4061/7783. All runs remain active. The combined
+all-epoch CSV contains38 complete rows: ScanRefer15, NR3D16, SR3D7.
+The ScanRefer native snapshot and epoch14 CPU checkpoint metadata are
+saved with the experiment results.
+
 ## ScanRefer Epoch 13 and SR3D Epoch 6: 2026-11-01 05:56 UTC
 
 | Dataset | Epoch | Count | Hits025 / Hits050 | Acc025 / Acc050 |

@@ -486,3 +486,22 @@ decline is counted.
 At08:01 UTC, ScanRefer epoch16 was training1273/4865 and NR3D epoch17
 4145/4490. Both jobs and GPUs remained active. The combined table
 contains41 rows: ScanRefer16, NR3D17, SR3D8.
+
+## NR3D Epoch 17 Complete: 2026-11-01 08:10 UTC
+
+NR3D epoch17 completed all7899 `last/bbf` rows with hits025/050
+4489/3334 and Acc025/Acc050=56.8299785%/42.2078744%.
+`same_complete_model=true`. CPU audit matches `latest.pth` to its
+own epoch17 native row (1134 model tensors,707 optimizer states);
+`best.pth` remains epoch15 under Acc025-first selection.
+
+The epochs15-17 three-round means are56.8215%/42.1615%, compared with
+56.8342%/42.1615% for epochs14-16. Acc025 declined slightly while
+Acc050 was unchanged, so this is not a dual-threshold decline and the
+automatic early-stop streak resets to zero. At08:23 UTC, NR3D epoch18
+was training1205/4490; ScanRefer epoch16 was3321/4865 and SR3D epoch8
+was1496/7783. All three jobs remained active.
+
+The combined all-epoch CSV contains42 full rows: ScanRefer16, NR3D18,
+and SR3D8. The epoch17 native metrics snapshot and CPU checkpoint audit
+are saved in `docs/results/pvground_clean_baseline_20261031/`.

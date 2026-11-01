@@ -25341,6 +25341,13 @@ All three jobs continue; complete CSV has22 rows.
 Both rolling metrics improve; no early stop due. Scan e8 at4334/4865,
 NR latest complete e9, SR e5 at105/7783. Complete CSV now23 rows.
 
+2026-10-31 21:50EDT: ScanRefer e8=4729/3255 (49.7371/34.2343%),
+e9=4776/3267 (50.2314/34.3605%) of9508; NR3D e10=4493/3322
+(56.8806/42.0560%) of7899. CPU best/latest match Scan9 andNR10.
+Both datasets' rolling means rose; no early-stop streak. SR remains e4
+65.6324/52.0704%, e5 training. At export Scan eval10=901/951,
+NR eval10=701/790. Full CSV now26 rows; jobs remain active.
+
 At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
 epoch25; remote/local SHA256:
 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.

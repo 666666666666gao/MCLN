@@ -276,3 +276,23 @@ The all-datasets CSV now contains23 complete rows. ScanRefer epoch8
 was training at4334/4865 (~89%) during the prior check. SR3D had
 started epoch5 training at105/7783. NR3D remains active; its latest
 completed validation is epoch9.
+
+## ScanRefer Epochs 8-9 and NR3D Epoch 10: 2026-11-01 01:50 UTC
+
+| Dataset | Epoch | Count | Hits025 / Hits050 | Acc025 / Acc050 |
+| --- | ---: | ---: | ---: | ---: |
+| ScanRefer | 8 | 9508 | 4729 / 3255 | 49.7371% / 34.2343% |
+| ScanRefer | 9 | 9508 | 4776 / 3267 | 50.2314% / 34.3605% |
+| NR3D | 10 | 7899 | 4493 / 3322 | 56.8806% / 42.0560% |
+
+All three rows are complete last/bbf evaluations with
+same_complete_model=true. CPU best/latest metadata for ScanRefer matches
+epoch9 and its exact native row; NR3D best/latest matches epoch10.
+
+ScanRefer's latest three-round means (epochs7-9) increase on both
+thresholds. NR3D's epochs8-10 means are56.311%/41.853%, above
+epochs7-9 at55.809%/41.516%. Both early-stop decline streaks remain zero.
+
+At the 2026-11-01 01:49 UTC export, ScanRefer validation was901/951
+and NR3D validation was701/790. SR3D epoch5 is training; its latest
+completed validation remains epoch4. The combined CSV now has26 rows.

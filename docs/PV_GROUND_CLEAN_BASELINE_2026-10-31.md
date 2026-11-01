@@ -473,3 +473,16 @@ to15. Its epochs13-15 rolling means rise over epochs12-14.
 At07:49 UTC, ScanRefer was training epoch16 at232/4865; NR3D epoch17
 at3098/4490; and SR3D epoch7 validation at200/1773. All jobs remain
 active. The all-epoch CSV now contains40 rows: ScanRefer16, NR3D17, SR3D7.
+
+## SR3D Epoch 7 Complete: 2026-11-01 08:02 UTC
+
+SR3D epoch7 completed all17726 expressions with hits025/050=11609/9352
+and Acc025/Acc050=65.4913686%/52.7586596%. This is a complete `last/bbf`
+row with `same_complete_model=true`. CPU audit matches latest.pth to its
+own epoch7 row; Acc025-first best remains epoch4 (65.6324%/52.0704%).
+The epochs5-7 rolling means are mixed versus epochs4-6, so no early-stop
+decline is counted.
+
+At08:01 UTC, ScanRefer epoch16 was training1273/4865 and NR3D epoch17
+4145/4490. Both jobs and GPUs remained active. The combined table
+contains41 rows: ScanRefer16, NR3D17, SR3D8.

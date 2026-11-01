@@ -296,3 +296,27 @@ epochs7-9 at55.809%/41.516%. Both early-stop decline streaks remain zero.
 At the 2026-11-01 01:49 UTC export, ScanRefer validation was901/951
 and NR3D validation was701/790. SR3D epoch5 is training; its latest
 completed validation remains epoch4. The combined CSV now has26 rows.
+
+## ScanRefer Epoch 10 and NR3D Epoch 11: 2026-10-31 22:48 EDT
+
+| Dataset | Epoch | Count | Hits025 / Hits050 | Acc025 / Acc050 |
+| --- | ---: | ---: | ---: | ---: |
+| ScanRefer | 10 | 9508 | 4872 / 3306 | 51.2411% / 34.7707% |
+| NR3D | 11 | 7899 | 4472 / 3310 | 56.6148% / 41.9040% |
+
+Both are complete `last/bbf` rows with `same_complete_model=true`.
+CPU audit confirms ScanRefer best/latest both select epoch10 and match
+that native row. NR3D best remains epoch10 (Acc025-first); latest is
+epoch11. Both checkpoints were CPU-audited against their own native rows,
+with1134 model tensors and707 optimizer-state entries.
+
+NR3D's epochs9-11 three-round mean is56.5937%/41.8281%, versus
+56.3109%/41.8534% for epochs8-10. Only Acc050's rolling mean declined,
+so the simultaneous-two-threshold early-stop streak remains zero.
+ScanRefer epochs8-10 means are50.4032%/34.4552%, up from epochs7-9
+at49.7406%/34.0485%. No early stop is due.
+
+At the latest live snapshots, ScanRefer had started epoch11, NR3D epoch12,
+and SR3D remained in epoch5. All screens and GPUs were active. The complete
+metric table now contains28 rows; raw native metrics and the new ScanRefer
+epoch10 / NR3D epoch11 CPU checkpoint audits are saved alongside it.

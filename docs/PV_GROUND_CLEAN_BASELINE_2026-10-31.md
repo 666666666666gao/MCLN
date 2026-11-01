@@ -199,3 +199,51 @@ At13:13 NR reached2324/4490 and SR567/7783. No trained complete
 epoch exists yet. Based on current rates, NR1 full~13:45-13:50,
 Scan1~13:55-14:00 and SR1~15:10-15:25; use actual progress to
 refine these estimates. Do not immediately repoll or reload metadata.
+
+## Monitoring Snapshot: 2026-10-31 13:28 EDT
+
+All metric rows below are complete last/bbf evaluations with
+same_complete_model=true. The CSV contains all21 complete rows.
+Checkpoint audits match Scan best/latest epoch7, NR epoch8 and SR epoch3
+to each checkpoint's own native row.
+
+| Dataset | Epoch | Hits025 / Hits050 | Acc025 / Acc050 |
+| --- | ---: | ---: | ---: |
+| ScanRefer | 0 | 156 / 14 | 1.6407% / 0.1472% |
+| ScanRefer | 1 | 3855 / 2352 | 40.5448% / 24.7371% |
+| ScanRefer | 2 | 4194 / 2653 | 44.1102% / 27.9028% |
+| ScanRefer | 3 | 4412 / 2882 | 46.4030% / 30.3113% |
+| ScanRefer | 4 | 4533 / 3020 | 47.6756% / 31.7627% |
+| ScanRefer | 5 | 4630 / 3111 | 48.6958% / 32.7198% |
+| ScanRefer | 6 | 4690 / 3163 | 49.3269% / 33.2667% |
+| ScanRefer | 7 | 4683 / 3190 | 49.2533% / 33.5507% |
+| NR3D | 0 | 677 / 180 | 8.5707% / 2.2788% |
+| NR3D | 1 | 3872 / 2495 | 49.0189% / 31.5863% |
+| NR3D | 2 | 4110 / 2879 | 52.0319% / 36.4477% |
+| NR3D | 3 | 4220 / 3068 | 53.4245% / 38.8404% |
+| NR3D | 4 | 4256 / 3150 | 53.8802% / 39.8785% |
+| NR3D | 5 | 4312 / 3220 | 54.5892% / 40.7647% |
+| NR3D | 6 | 4395 / 3263 | 55.6400% / 41.3090% |
+| NR3D | 7 | 4374 / 3242 | 55.3741% / 41.0432% |
+| NR3D | 8 | 4405 / 3316 | 55.7666% / 41.9800% |
+| SR3D | 0 | 2205 / 819 | 12.4394% / 4.6203% |
+| SR3D | 1 | 10883 / 8298 | 61.3957% / 46.8126% |
+| SR3D | 2 | 11285 / 8845 | 63.6635% / 49.8985% |
+| SR3D | 3 | 11423 / 9018 | 64.4421% / 50.8744% |
+
+## SR3D Initialization Audit
+
+The low epoch0 result is complete and protocol-consistent:17726 rows,
+last/bbf, same_complete_model=true. CPU best/latest match the epoch0
+native row. The source checkpoint transfer audit found96 newly
+initialized PointNet++ backbone tensors and16 Top-K tensors because
+the supplied PV-Ground checkpoint has no compatible pretrained
+counterparts. The other1022 matching tensors were loaded.
+
+The change recovers after optimization: epoch1=61.3957%/46.8126%,
+epoch2=63.6635%/49.8985%, epoch3=64.4421%/50.8744%.
+At the 2026-11-01 00:27 UTC snapshot, epoch3 validation progress
+was1701/1773. This supports the new-backbone initialization explanation
+but does not establish final convergence to intact-PV-Ground results.
+All21 complete rows are in
+docs/results/pvground_clean_baseline_20261031/all-epochs.csv.

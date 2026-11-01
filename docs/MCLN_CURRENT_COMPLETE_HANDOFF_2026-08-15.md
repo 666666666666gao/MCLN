@@ -25321,6 +25321,15 @@ NR2324/4490 andSR567/7783 at13:13; Scan1 progressing.
 Next full estimates NR13:45-13:50, Scan13:55-14:00,
 SR15:10-15:25. No live changes or oldgoalresume.
 
+2026-10-31 13:28EDT snapshot: complete rows Scan0-7, NR0-8, SR0-3.
+Current best/latest checkpoints CPU-audited to own rows: Scan7
+49.2533/33.5507%, NR8 55.7666/41.9800%, SR3 64.4421/50.8744%.
+All are Acc025/Acc050 and not final run results. SR0 concern checked:
+full17726 last/bbf same-complete row; CPU checkpoint matches. Its audit
+shows96 new PointNet++ backbone tensors and16 new Top-K tensors, explaining
+the cold-start drop; epoch1 rises to61.3957/46.8126%. Data table:
+PV-Ground-clean-baseline-all-epochs.csv. Jobs remain active.
+
 At 11:10 New York, the ScanRefer raw JSON snapshot was refreshed through
 epoch25; remote/local SHA256:
 62ccbab97cdb40b3e92bf2c68aa3a3682058410546adc362c7b0cb6ee2522659.

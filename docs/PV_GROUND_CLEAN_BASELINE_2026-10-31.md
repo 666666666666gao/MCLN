@@ -505,3 +505,19 @@ was1496/7783. All three jobs remained active.
 The combined all-epoch CSV contains42 full rows: ScanRefer16, NR3D18,
 and SR3D8. The epoch17 native metrics snapshot and CPU checkpoint audit
 are saved in `docs/results/pvground_clean_baseline_20261031/`.
+
+## ScanRefer Epoch 16 Complete: 2026-11-01 08:47 UTC
+
+ScanRefer epoch16 completed all9508 `last/bbf` rows with hits025/050
+4894/3361 and Acc025/Acc050=51.4724443%/35.3491796%.
+`same_complete_model=true`. CPU audit matches both `best.pth` and
+`latest.pth` to their own epoch16 row (1134 model tensors,707 optimizer
+states); the Acc050-first selected checkpoint advances to epoch16.
+The epochs14-16 three-round means rise over epochs13-15, so no
+dual-decline is counted.
+
+At08:53 UTC, ScanRefer epoch17 was training604/4865, NR3D epoch18
+3925/4490, and SR3D epoch8 3491/7783. All three jobs remained active.
+The combined CSV contains43 full rows: ScanRefer17, NR3D18, SR3D8.
+The epoch16 native metrics snapshot and CPU checkpoint audit are saved
+in `docs/results/pvground_clean_baseline_20261031/`.

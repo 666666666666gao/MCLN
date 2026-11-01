@@ -613,3 +613,23 @@ ScanRefer epoch19 was training2318/4865, NR3D epoch21 was training
 remained active. The combined CSV contains49 complete rows. No training
 configuration or process was changed. Native metrics and exact-epoch CPU
 checkpoint metadata are saved beside this report.
+
+## ScanRefer Epoch 19 and Automatic Stop: 2026-11-01 11:48 UTC
+
+ScanRefer epoch19 completed all9508 `last/bbf` rows with hits025/050
+4881/3360 and Acc025/Acc050=51.3357173%/35.3386622%.
+`same_complete_model=true`. CPU audit matches `latest.pth` to its own
+epoch19 native row; Acc050-first `best.pth` remains epoch16 at
+51.4724443%/35.3491796%.
+
+The epochs17-19 rolling means are51.4654%/35.2615%, below the
+epochs16-18 means of51.5110%/35.2650% on both thresholds. This is the
+second consecutive dual decline. The runner wrote
+`completed.json` with `reason=automatic_early_stop` at epoch19; the
+ScanRefer screen exited and GPU memory returned to0 MiB.
+
+At11:42 UTC, NR3D epoch21 validation was401/790 and SR3D epoch9 training
+was5828/7783. Both runs remained active. The combined table contains50
+complete rows. No manual intervention or run configuration change was
+made. ScanRefer's native metrics, completion marker and CPU checkpoint
+metadata are saved in `docs/results/pvground_clean_baseline_20261031/`.

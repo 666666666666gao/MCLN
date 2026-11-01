@@ -411,3 +411,21 @@ All screens and GPUs were active. The combined all-epoch CSV contains36
 complete rows: ScanRefer14, NR3D15, SR3D7. Native snapshots and CPU
 checkpoint audits for ScanRefer epoch13 and SR3D epoch6 are saved in
 `docs/results/pvground_clean_baseline_20261031/`.
+
+## NR3D Epoch 15 Complete: 2026-11-01 06:24 UTC
+
+NR3D epoch15 completed all7899 expressions with hits025/050 4503/3340
+and Acc025/Acc050 57.0072161%/42.2838334%. It is a complete `last/bbf`
+row with `same_complete_model=true`. CPU audit matches both best.pth and
+latest.pth to epoch15's own native metric row (1134 model tensors and707
+optimizer states); the Acc025-first selected checkpoint advances to15.
+
+The trained rolling means for epochs13-15 rise on both thresholds over
+epochs12-14, so the automatic early-stop decline streak remains zero.
+At06:23 UTC, NR3D had started epoch16 at285/4490; ScanRefer epoch14 was
+training3318/4865, and SR3D epoch7 was training2256/7783. All three
+screens and GPUs remained active; no settings or processes were changed.
+
+The combined all-epoch CSV now contains37 full rows: ScanRefer14, NR3D16,
+and SR3D7. NR3D native metrics and epoch15 CPU checkpoint metadata are
+saved in `docs/results/pvground_clean_baseline_20261031/`.

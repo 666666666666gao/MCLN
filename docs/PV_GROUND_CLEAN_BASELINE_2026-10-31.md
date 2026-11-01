@@ -560,3 +560,20 @@ All jobs remained active. The combined CSV contains46 complete rows.
 Exact native metric rows and CPU audits are stored in
 `docs/results/pvground_clean_baseline_20261031/`; no training or process
 settings were changed.
+
+## SR3D Epoch 8: 2026-11-01 10:19 UTC
+
+SR3D epoch8 completed all17726 `last/bbf` rows with hits025/050
+11615/9414 and Acc025/Acc050=65.5252172%/53.1084283%.
+`same_complete_model=true`. CPU audit matches `latest.pth` to its own
+epoch8 row; `best.pth` remains epoch4 at65.6324044%/52.0704051% under
+Acc025-first selection. Both checkpoints contain1134 model tensors and
+707 optimizer-state entries.
+
+The epochs6-8 rolling means are65.4669%/52.7869%, above epochs5-7 at
+65.2695%/52.2415%, so no early-stop decline is counted. At10:19 UTC,
+ScanRefer epoch18 was training2929/4865, NR3D epoch20 was1637/4490, and
+SR3D epoch9 was training290/7783. All three runs remained active. The
+combined CSV contains47 complete rows. The native metric row and CPU
+checkpoint audit are saved under
+`docs/results/pvground_clean_baseline_20261031/`. No run settings changed.

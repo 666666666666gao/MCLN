@@ -385,3 +385,29 @@ configuration or process changes.
 The combined CSV now contains34 complete rows: ScanRefer13, NR3D15,
 and SR3D6. Updated NR3D native metrics and epoch14 CPU checkpoint
 metadata are saved in `docs/results/pvground_clean_baseline_20261031/`.
+
+## ScanRefer Epoch 13 and SR3D Epoch 6: 2026-11-01 05:56 UTC
+
+| Dataset | Epoch | Count | Hits025 / Hits050 | Acc025 / Acc050 |
+| --- | ---: | ---: | ---: | ---: |
+| ScanRefer | 13 | 9508 | 4889 / 3333 | 51.4199% / 35.0547% |
+| SR3D | 6 | 17726 | 11590 / 9305 | 65.3842% / 52.4935% |
+
+Both are complete `last/bbf` rows with `same_complete_model=true`.
+CPU checkpoint metadata matches ScanRefer best/latest to their own epoch13
+row. ScanRefer's Acc050-first selected checkpoint advances to epoch13.
+SR3D latest matches epoch6; its Acc025-first selected checkpoint remains
+epoch4 at65.6324%/52.0704%.
+
+NR3D's latest complete row remains epoch14:4492/3334 of7899,
+56.8680%/42.2079%; CPU metadata matches latest epoch14 and best epoch10.
+The automatic early-stop condition is not met: ScanRefer's e11-13
+three-epoch means rise over e10-12; SR3D's e4-6 means rise over e3-5.
+NR3D e12-14 means also rise over e11-13; epoch15 is still training.
+
+At the05:56 UTC live snapshot, ScanRefer epoch14 was training833/4865,
+NR3D epoch15 was training2807/4490, and SR3D epoch7 was training406/7783.
+All screens and GPUs were active. The combined all-epoch CSV contains36
+complete rows: ScanRefer14, NR3D15, SR3D7. Native snapshots and CPU
+checkpoint audits for ScanRefer epoch13 and SR3D epoch6 are saved in
+`docs/results/pvground_clean_baseline_20261031/`.

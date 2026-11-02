@@ -9,6 +9,51 @@ from pathlib import Path
 from mcln_metric_keeper import completed_rows
 
 
+def stage_b_decision(stage, rows):
+    state_path = stage / "state.json"
+    exit_path = stage / "pipeline_exit_code"
+    phase = json.loads(state_path.read_text())["phase"] if state_path.exists() else None
+    exit_code = int(exit_path.read_text()) if exit_path.exists() else None
+    epochs = [row["epoch"] for row in rows]
+    decision = {
+        "status": "pending",
+        "complete_epochs": epochs,
+        "pipeline_phase": phase,
+        "pipeline_exit_code": exit_code,
+    }
+    if exit_code is not None and exit_code != 0:
+        return dict(decision, status="pipeline_failed")
+    if phase != "stage_a_complete" or exit_code != 0:
+        return decision
+    assert epochs == [1, 2, 3], "Stage A requires three complete audited epochs"
+    eligible = [
+        row for row in rows
+        if row["hits050"] >= 4328 and row["hits025"] >= 5425
+    ]
+    if not eligible:
+        return dict(decision, status="gate_failed")
+    selected = max(
+        eligible, key=lambda row: (row["hits050"], row["hits025"], -row["epoch"])
+    )
+    source = Path(selected["checkpoint"])
+    preserved = stage / "stage_b_initialization_epoch_{}.pth".format(selected["epoch"])
+    if not preserved.exists():
+        os.link(source, preserved)
+    assert os.path.samefile(source, preserved)
+    digest = hashlib.sha256()
+    with preserved.open("rb") as checkpoint:
+        for block in iter(lambda: checkpoint.read(1024 * 1024), b""):
+            digest.update(block)
+    return dict(
+        decision,
+        status="ready",
+        selected=selected,
+        initialization_checkpoint=str(preserved),
+        initialization_sha256=digest.hexdigest(),
+        stage_b_started=False,
+    )
+
+
 def collect(stage):
     import torch
 
@@ -64,6 +109,7 @@ def collect(stage):
         "e0_gate_passed": True,
         "e0_hits": gate["official"]["hits"],
         "rows": receipts,
+        "stage_b_decision": stage_b_decision(stage, receipts),
         "cuda_initialized": torch.cuda.is_initialized(),
         "collector_sha256": hashlib.sha256(
             Path(__file__).read_bytes()

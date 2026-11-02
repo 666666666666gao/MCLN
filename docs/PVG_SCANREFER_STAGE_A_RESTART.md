@@ -201,6 +201,24 @@ final success and retention survival;wrong checkpoint epoch rejection.
 Receipt:`docs/results/mcln_pvground_20261101/scanrefer-stage-a-collector-remote-tests.json`.
 These fixtures validate collection logic,not a completed Stage A epoch.
 
+The collector now also emits `stage_b_decision`. It remains pending until
+the pipeline records `stage_a_complete`, exits successfully, and all three
+own-checkpoint-audited epochs1/2/3 exist. A pipeline failure or missing epoch
+cannot authorize Stage B. If no single epoch passes both5425/4328 hit gates,
+the decision is `gate_failed`. Otherwise it selects among eligible epochs
+by050then025,with the earlier epoch breaking exact ties,hardlinks the selected
+initialization weight and records its SHA256. This is a transition receipt,
+not a Stage B launch or a claim of final target success. The runner still
+ends after Stage A; Stage B launch/early-stop implementation remains pending.
+The validation protocol boundary above still applies.
+All7 expanded collector tests passed on the remote Scan server,CUDA
+uninitialized. They cover incomplete budget,pipeline failure,non-combinable
+checkpoint hits,050priority/025tie-break/exact ties,selected hardlink/hash,
+and the original collector integrity checks. Receipt:
+`docs/results/mcln_pvground_20261101/scanrefer-stage-a-transition-remote-tests.json`.
+The deployed collector returned empty rows and a pending decision on the
+actual Stage A run. No Stage B checkpoint has been selected or launched.
+
 NR24 completed18:10:00UTC,7899 examples,semantic hits3666/2805,
 Acc025/05046.410938%/35.510824%; own epoch24/1134 tensors and optimizer/
 scheduler CPU verified, checkpoint hardlinked. New NR Acc025-first best24.

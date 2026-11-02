@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -62,3 +63,56 @@ def test_wrong_checkpoint_epoch_is_rejected(tmp_path):
     prepare(tmp_path, checkpoint_epoch=2)
     with pytest.raises(AssertionError):
         collector.collect(tmp_path)
+
+
+def terminal_pipeline(stage, exit_code=0):
+    (stage / "state.json").write_text(json.dumps({"phase": "stage_a_complete"}))
+    (stage / "pipeline_exit_code").write_text(str(exit_code))
+
+
+def decision_rows(stage, hits):
+    rows = []
+    for epoch, (hits025, hits050) in enumerate(hits, start=1):
+        checkpoint = stage / "fixture_epoch_{}.pth".format(epoch)
+        checkpoint.write_bytes("checkpoint{}".format(epoch).encode())
+        rows.append({
+            "epoch": epoch, "hits025": hits025, "hits050": hits050,
+            "checkpoint": str(checkpoint),
+        })
+    return rows
+
+
+def test_transition_waits_for_successful_three_epoch_completion(tmp_path):
+    rows = decision_rows(tmp_path, [(5705, 4945)])
+    assert collector.stage_b_decision(tmp_path, rows)["status"] == "pending"
+    terminal_pipeline(tmp_path)
+    with pytest.raises(AssertionError, match="three complete audited epochs"):
+        collector.stage_b_decision(tmp_path, rows)
+    terminal_pipeline(tmp_path, exit_code=1)
+    assert collector.stage_b_decision(tmp_path, rows)["status"] == "pipeline_failed"
+
+
+def test_transition_never_combines_hits_from_different_checkpoints(tmp_path):
+    rows = decision_rows(tmp_path, [(5424, 5000), (6000, 4327), (5424, 4327)])
+    terminal_pipeline(tmp_path)
+    result = collector.stage_b_decision(tmp_path, rows)
+    assert result["status"] == "gate_failed" and "selected" not in result
+    assert not list(tmp_path.glob("stage_b_initialization*"))
+
+
+@pytest.mark.parametrize("hits, selected_index", [
+    ([(5424, 5000), (5425, 4328), (5435, 4328)], 2),
+    ([(5424, 5000), (5425, 4329), (5435, 4328)], 1),
+    ([(5424, 5000), (5435, 4328), (5435, 4328)], 1),
+])
+def test_transition_selects_eligible_pair_preserves_and_hashes_it(
+        tmp_path, hits, selected_index):
+    rows = decision_rows(tmp_path, hits)
+    terminal_pipeline(tmp_path)
+    result = collector.stage_b_decision(tmp_path, rows)
+    assert result["status"] == "ready" and not result["stage_b_started"]
+    assert result["selected"] == rows[selected_index]
+    saved = Path(result["initialization_checkpoint"])
+    assert saved.samefile(rows[selected_index]["checkpoint"])
+    assert result["initialization_sha256"] == hashlib.sha256(saved.read_bytes()).hexdigest()
+    assert collector.stage_b_decision(tmp_path, rows) == result

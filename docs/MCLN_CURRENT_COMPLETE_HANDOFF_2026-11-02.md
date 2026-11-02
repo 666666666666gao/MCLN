@@ -1,5 +1,23 @@
 # Current MCLN + PV-Ground Handoff
 
+Update17:40--17:44UTC: all three current trainers and metric keepers
+verified live17:40UTC,GPU23671/22833/22924MiB;configs unchanged.
+Scan e11=957/6081,NR e24=2115/3742,SR e9=5889/6486.
+No new complete validation:41 rows,best8/23/8 unchanged.
+SR about14min train plus validation;NR about23min plus validation;
+next useful complete checks remain18:00--18:10UTC and about18:10.
+No extra GPU evaluation,no local tests,no active source/config changes.
+
+New target-hit decomposition from existing Scan1--10 subgroup receipts:
+selectede8 unique1234/1058 of1419,multiple4188/3447 of8089.
+Targets require5705/4945 total hits,current deficits283/440.
+Even perfect unique leaves at least98/79 extra multiple hits necessary.
+With unique unchanged,multiple needs4471/3887 hits=55.272592/48.052911%.
+Full subgroup table and caveats:docs/PVG_SCANREFER_TRAINING_OBSERVATIONS.md.
+Do not mix epoch2's higher multiple050 with8's unique050. This establishes
+a necessary subgroup improvement,not a module failure or gain.
+Prioritize matched oracle/ranking/mask/Span evidence when GPU available.
+
 Update17:31UTC: Scan e10 full9508 semantic Top1 completed17:26:28UTC,
 5366/4461 hits=56.436685%/46.918385%. Remote CPU own epoch10/1168
 tensors/optimizer/scheduler verified; hardlink preserved. Best remains8.

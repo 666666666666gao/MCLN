@@ -45,6 +45,52 @@ Mask3D comparisons and conditional decisions are documented in
 handoff. Existing contextual queries and contrastive losses must be
 accounted for; do not infer a missing capability from another repository.
 
+## Target Hits And Subgroup Constraints
+
+The selected epoch8 has1234/1058 unique hits on1419 examples and
+4188/3447 multiple hits on8089. These sum to5422/4505 on9508.
+The user targets require at least5705/4945 hits on the same checkpoint:
+ceil(9508*0.60) and ceil(9508*0.52). The deficits are283/440 hits.
+
+| Threshold | Required total hits | Current deficit | Remaining unique errors | Extra multiple hits needed even with perfect unique | Required multiple hits if unique stays at epoch8 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 025 | 5705 | 283 | 185 | 98 | 4471/8089 =55.272592% |
+| 050 | 4945 | 440 | 361 | 79 | 3887/8089 =48.052911% |
+
+Thus improving unique alone cannot meet either target from this checkpoint.
+If unique performance stays unchanged,multiple needs+3.498578/+5.439486pp.
+The perfect-unique calculation is an arithmetic upper bound,not an
+achievable intervention or a forecast. Gains at one threshold need not
+imply gains at the other; final acceptance still uses both overall metrics
+from one complete checkpoint.
+
+Existing full-epoch subgroup evidence,without model execution:
+
+| Epoch | Unique hits025/050 of1419 | Multiple hits025/050 of8089 |
+| --- | ---: | ---: |
+| 1 | 1224/1041 | 4200/3397 |
+| 2 | 1222/1047 | 4193/3449 |
+| 3 | 1230/1058 | 4171/3395 |
+| 4 | 1230/1056 | 4136/3353 |
+| 5 | 1213/1031 | 4128/3370 |
+| 6 | 1235/1059 | 4157/3386 |
+| 7 | 1219/1040 | 4139/3410 |
+| 8 | 1234/1058 | 4188/3447 |
+| 9 | 1233/1050 | 4157/3423 |
+| 10 | 1231/1052 | 4135/3409 |
+
+Source:`docs/results/mcln_pvground_20261101/mcln-current-scanrefer-evidence.jsonl`.
+Integer hits are reconstructed from logged subgroup rates and their fixed
+denominators; each pair sums to the complete overall hits already audited.
+Epoch2 has two more multiple050 hits than8,but fewer unique050 hits:
+this does not change the overall050-first selection of8. Do not construct
+a result from the best subgroup of different epochs.
+
+The necessary multiple improvement prioritizes the existing chosen/oracle
+and paired bypass diagnostics. It does not distinguish proposal coverage,
+semantic ranking,Support masks or Span corrections. No module change or
+benefit is established by this decomposition.
+
 ## Log Precision Fix
 
 The original epoch logger prints rates with five decimal places. A1e-6

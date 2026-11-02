@@ -1,5 +1,16 @@
 # Current MCLN + PV-Ground Handoff
 
+Monitoring correction,2026-11-02 22:29UTC:local
+work/check_current_mcln_keeper_status.sh previously enumerated stopped
+oldScan1793579788 alongside NR/SR. Removed the oldScan entry and restricted
+screen/PID selection to current NR/SR before reuse. Repo
+docs/PVG_FORWARD_AUDIT.md now retires its stopped oldScan epoch8 command.
+Future bypass diagnostics require the current restart's selected own
+checkpoint/epoch/SHA,completed three-epoch/matched-validation gates,free
+remote GPU and import resolution against the restart source. Historical
+old-source import preflight does not verify restart imports. No old-run
+inspection,local tests,model execution or training changes were made.
+
 NR28 completed2026-11-02 22:12:54UTC,full7899 last-semantic Top1:
 3732/2833hits=47.246487%/35.865299%,versus27 -43/-75hits.
 OwnCPUcheckpoint28/1134tensors/optimizer/scheduler verified,CUDAoff,

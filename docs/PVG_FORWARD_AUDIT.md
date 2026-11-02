@@ -45,40 +45,27 @@ Current trainer/evaluator/IoU dependencies import; CUDA remained uninitialized.
 No model construction,checkpoint load or forward occurred. Raw preflight:
 `docs/results/mcln_pvground_20261101/scanrefer-offline-audit-import-preflight.json`.
 
-The retained ScanRefer epoch8 checkpoint has SHA256
-`3572193fef0f32d1d6ca22b41cbbb02932a30de0a51b18deb3b0c40ee37bcf38`.
-Use its fixed preserved path for every condition. The keeper's best alias
-may change while training continues.
+Current scope,2026-11-02:the previous epoch8 command targeted a stopped
+ScanRefer run and has been retired. Its historical checkpoint SHA256 was
+`3572193fef0f32d1d6ca22b41cbbb02932a30de0a51b18deb3b0c40ee37bcf38`;
+it is not the checkpoint for the current restart's diagnostics.
 
-From the deployed source directory, an evaluation command is:
-
-```bash
-root=/root/autodl-tmp/mcln_pvground_ft_20261101
-staging="$root/offline_audits/observations_v2"
-export PYTHONPATH="$staging:$root/source/pointnet2:$root/source"
-cd "$root/source"
-/root/autodl-tmp/PV-Ground/env/bin/python -m torch.distributed.launch \
-  --nproc_per_node 1 --master_port 29511 \
-  "$staging/tools/eval_pvground_audit.py" \
-  --audit-jsonl "$root/scan-e8-none-forward.jsonl" --audit-bypass none \
-  --local_rank 0 \
-  --eval --checkpoint_path "$root/runs/scanrefer/preserved_checkpoints/ckpt_epoch_8.pth" \
-  --expected_eval_sample_count 9508 --rng_seed 0 \
-  --num_decoder_layers 6 --use_color --weight_decay 0.0005 \
-  --data_root /root/autodl-tmp/PV-Ground/data/ \
-  --batch_size 8 --lr_backbone 2e-5 --lr 1e-5 \
-  --dataset scanrefer --test_dataset scanrefer \
-  --detect_intermediate --joint_det \
-  --use_soft_token_loss --use_contrastive_align \
-  --butd --self_attend --augment_det --use_pvground_innovations \
-  --candidate_local_visual_lr 1e-5 \
-  --log_dir "$root/offline_audits/scan-e8-none" \
-  --model MCLN --exp scan_e8_none
-```
+The active restart is under
+`/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102`.
+Finish all three Stage A epochs and the matched official/selected complete
+validation first. If diagnostics are then needed, take the fixed checkpoint,
+its own epoch and SHA256 from `stage_a_complete_epochs.json` and
+`protocol_audit/matched_validation.json`. The Stage A transition selects
+050then025 among eligible checkpoints; a failed gate requires an explicit
+audited checkpoint selection. Record that selection before evaluation.
+Use the restart's `source` directory for trainer/evaluator/pointnet2 imports.
+Recheck remote import resolution against that source before the first
+diagnostic GPU run:the historical preflight above covered the old source,
+not this restart. No current-restart bypass evaluation has run.
 
 The current deployed staging directory contains`eval_pvground_audit.py`,
 `pvground_forward_audit.py`,and`pvground_semantic_audit.py`under`tools/`.
-The command intentionally loads the full trained state, without
+The evaluator must load the full trained state, without
 `model_only_initialization`, `checkpoint_start_epoch`, or initialization-only
 `pp_checkpoint`. Remote imports passed; actual CUDA forward remains untested.
 Do not run concurrent with the occupied training GPU.
@@ -88,10 +75,10 @@ The explicit`--local_rank 0`is required by the current parser:
 parse_known_args. The launcher's hyphenated`--local-rank=0`is ignored by
 that parser,leaving device1 selected if the explicit argument is omitted.
 This was the same concrete single-GPU failure fixed in the training runner.
-The original documented offline invocation omitted it; the invocation above
-is corrected. This fixes the command,not the active trainer or parser API.
+The retired offline invocation originally omitted it. Retain this explicit
+argument when preparing the current-restart invocation.
 
-Repeat sequentially with `reader`, `support`, and `span`, changing the audit
+Run `none`, then sequentially `reader`, `support`, and `span`, changing the audit
 output, log directory, and experiment name for each condition. Keep all
 other arguments, source, checkpoint bytes, preprocessing, seed, and batch
 unchanged. Record the checkpoint epoch from its CPU audit, the full command,

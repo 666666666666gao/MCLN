@@ -1,0 +1,49 @@
+{
+  "scope": "read-only deployed source audit; no model or dataset execution",
+  "files": {
+    "main_utils.py": {
+      "sha256": "a87d2524fd128b3586d81233636a8ffb47002f65ac69ac582de639b646058fa3",
+      "cudnn_settings": []
+    },
+    "train_dist_mod.py": {
+      "sha256": "7d94c8eccd8ceaa481abf7fd972f6660613809c2897676571a960b651a33c22a",
+      "cudnn_settings": [
+        {
+          "line": 3795,
+          "text": "torch.backends.cudnn.enabled = True"
+        },
+        {
+          "line": 3796,
+          "text": "torch.backends.cudnn.benchmark = True"
+        },
+        {
+          "line": 3797,
+          "text": "torch.backends.cudnn.deterministic = True"
+        }
+      ]
+    },
+    "src/joint_det_dataset.py": {
+      "sha256": "f6031ee7ffb3f92a9da4611741532a4d9e0bbd1d4cfe3b28b9d9a047e41a9346",
+      "methods": {
+        "_get_pc": "def _get_pc(self, anno, scan):\n        \"\"\"Return a point cloud representation of current scene.\"\"\"\n        scan_id = anno['scan_id']\n        rel_name = \"none\"\n        if anno['dataset'].startswith('sr3d'):\n            rel_name = self._find_rel(anno['utterance'])\n\n        # a. Color\n        color = None\n        if self.use_color:\n            color = scan.color - self.mean_rgb\n\n        # b .Height\n        height = None\n        if self.use_height:\n            floor_height = np.percentile(scan.pc[:, 2], 0.99)\n            height = np.expand_dims(scan.pc[:, 2] - floor_height, 1)\n\n        # c. Multi-view 2d features\n        multiview_data = None\n        if self.use_multiview:\n            multiview_data = self._load_multiview(scan_id)\n\n        # d. Augmentations\n        augmentations = {}\n        if self.split == 'train' and self.augment:\n            rotate_natural = (\n                anno['dataset'] in ('nr3d', 'scanrefer')\n                and self._augment_nr3d(anno['utterance'])\n            )\n            rotate_sr3d = (\n                anno['dataset'].startswith('sr3d')\n                and rel_name not in VIEW_DEP_RELS\n            )\n            rotate_else = anno['dataset'] == 'scannet'\n            rotate = rotate_sr3d or rotate_natural or rotate_else\n            pc, color, augmentations = self._augment(scan.pc, color, rotate)\n            scan.pc = pc\n\n        # e. Concatenate representations\n        point_cloud = scan.pc\n        if color is not None:\n            point_cloud = np.concatenate((point_cloud, color), 1)\n        if height is not None:\n            point_cloud = np.concatenate([point_cloud, height], 1)\n        if multiview_data is not None:\n            point_cloud = np.concatenate([point_cloud, multiview_data], 1)\n\n        return point_cloud, augmentations, scan.color",
+        "_get_detected_objects": "def _get_detected_objects(self, split, scan_id, augmentations):\n        # Initialize\n        all_detected_bboxes = np.zeros((MAX_NUM_OBJ, 6))\n        all_detected_bbox_label_mask = np.array([False] * MAX_NUM_OBJ)\n        detected_class_ids = np.zeros((MAX_NUM_OBJ,))\n        detected_logits = np.zeros((MAX_NUM_OBJ, NUM_CLASSES))\n\n        # note single stage method\n        if not self.butd and not self.butd_cls:\n            return (\n                all_detected_bboxes, all_detected_bbox_label_mask,\n                detected_class_ids, detected_logits\n            )\n\n        # Load: class, box, pc, logits\n        detected_dict = np.load(\n            f'{self.data_path}/group_free_pred_bboxes/group_free_pred_bboxes_{split}/{scan_id}.npy',\n            allow_pickle=True\n        ).item()\n\n        all_bboxes_ = np.array(detected_dict['box'])\n        classes = detected_dict['class']\n        cid = np.array([DC.nyu40id2class[\n            self.label_map[c]] for c in detected_dict['class']\n        ])\n        all_bboxes_ = np.concatenate((\n            (all_bboxes_[:, :3] + all_bboxes_[:, 3:]) * 0.5,\n            all_bboxes_[:, 3:] - all_bboxes_[:, :3]\n        ), 1)\n\n        assert len(classes) < MAX_NUM_OBJ\n        assert len(classes) == all_bboxes_.shape[0]\n\n        num_objs = len(classes)\n        all_detected_bboxes[:num_objs] = all_bboxes_\n        all_detected_bbox_label_mask[:num_objs] = np.array([True] * num_objs)\n        detected_class_ids[:num_objs] = cid\n        detected_logits[:num_objs] = detected_dict['logits']    # logits\n        # Match current augmentations\n        if self.augment and self.split == 'train':\n            all_det_pts = box2points(all_detected_bboxes).reshape(-1, 3)\n            if augmentations.get('yz_flip', False):\n                all_det_pts[:, 0] = -all_det_pts[:, 0]\n            if augmentations.get('xz_flip', False):\n                all_det_pts[:, 1] = -all_det_pts[:, 1]\n            all_det_pts = rot_z(all_det_pts, augmentations['theta_z'])\n            all_det_pts = rot_x(all_det_pts, augmentations['theta_x'])\n            all_det_pts = rot_y(all_det_pts, augmentations['theta_y'])\n            all_det_pts += augmentations['shift']\n            all_det_pts *= augmentations['scale']\n            all_detected_bboxes = points2box(all_det_pts.reshape(-1, 8, 3))\n        \n        if self.augment_det and self.split == 'train':\n            min_ = all_detected_bboxes.min(0)\n            max_ = all_detected_bboxes.max(0)\n            rand_box = (\n                (max_ - min_)[None]\n                * np.random.random(all_detected_bboxes.shape)\n                + min_\n            )\n            corrupt = np.random.random(len(all_detected_bboxes)) > 0.7\n            all_detected_bboxes[corrupt] = rand_box[corrupt]\n            detected_class_ids[corrupt] = np.random.randint(\n                0, len(DC.nyu40ids), (len(detected_class_ids))\n            )[corrupt]\n        return (\n            all_detected_bboxes, all_detected_bbox_label_mask,\n            detected_class_ids, detected_logits\n        )"
+      },
+      "point_restore": [
+        "scan.pc = np.copy(scan.orig_pc)"
+      ]
+    },
+    "tools/eval_scanrefer_restart_e0.py": {
+      "sha256": "3dc5e207cc62ba039cc1141e412c0c4dbde1109a5a704c5419f085420a5559ba",
+      "cudnn_settings": [
+        {
+          "line": 54,
+          "text": "torch.backends.cudnn.benchmark = False"
+        },
+        {
+          "line": 55,
+          "text": "torch.backends.cudnn.deterministic = True"
+        }
+      ]
+    }
+  }
+}

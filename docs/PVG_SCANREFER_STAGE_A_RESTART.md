@@ -97,6 +97,34 @@ Proposed I1/I2 architecture and gate changes remain unimplemented.
 
 ## Evidence
 
+### Validation Protocol Boundary
+
+Read-only deployed-source audit at19:26UTC found:
+`train_dist_mod.py:3796` sets cuDNN benchmark=True and deterministic=True;
+the standalone matched E0 entry sets benchmark=False and deterministic=True.
+Thus official-versus-identity E0 equality is proved within its own entry,
+but the training validation entry does not have identical backend settings.
+The effect on hits has not been measured. Do not call this a demonstrated
+accuracy error or assume it explains any future gain/regression.
+In particular,the one-hit Stage B transition margin is not evidence of
+module benefit by itself. Preserve the declared gate and raw complete rows;
+when attributing a small difference,re-evaluate the official initialization
+and selected trained checkpoint under one explicitly matched entry/settings,
+after the current Stage A GPU job permits it. Do not silently replace E0
+numbers or alter the running recipe. Any measured protocol change and
+resulting decision must be recorded separately.
+
+The shared train/test loader generator advances during training,which by
+itself does not establish random validation inputs. In the inspected deployed
+dataset,__getitem__ restores scan.pc from scan.orig_pc;_get_pc augmentation
+and detected-box corruption are restricted to the train split. No point
+resampling was found in that path. This is source evidence,not a full
+post-training input-hash comparison. Existing E0 input/order hashes cover
+the two E0 conditions only.
+Raw audit:
+`docs/results/mcln_pvground_20261101/scanrefer-validation-protocol-source-audit.json`.
+No dataset/model/test was executed for this audit;live trainers unchanged.
+
 ### Final Acceptance And Next Decisions
 
 Passing the Stage A transition gate is not the final target. On the fixed

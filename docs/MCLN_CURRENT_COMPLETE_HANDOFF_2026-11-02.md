@@ -1,5 +1,27 @@
 # Current MCLN + PV-Ground Handoff
 
+Update2026-11-02 approximately17:12UTC: NR e23 full7899 semantic Top1
+validation completed17:09:23UTC,3623/2643 hits=45.866565%/33.459932%.
+CPU checkpoint own epoch23,1134 tensors,optimizer/scheduler verified and
+hardlinked. New Acc025-first best e23; do not reuse e22's higher050.
+Selected Scan8/NR23/SR8; full table40 rows:9/23/8. Targets still unmet.
+At17:07UTC all three current trainers and240s keepers verified live,
+GPU23671/22833/22924MiB; configs unchanged,NR/SR still no innovations.
+Scan e10 about9min training remaining plus full validation; SR e9 about47min
+training remaining plus validation. No spare GPU diagnostic launched.
+
+New saved-state audit: Scan e9 optimizer54729 steps=6081*9;
+NR e22=20592=936*22; SR e8=25944=3243*8. Scheduler steps agree.
+Measured decay milestones correspond to11/31,151,31/41 completed epochs,
+respectively. Pinned official scheduler also subtracts warmup_epoch;
+default-1 produces this offset. It is inherited,not a demonstrated new
+training bug. NR live config explicitly confirms warmup_epoch=-1/start1.
+No active scheduler changed. Raw remote receipts and exact interpretation
+are in docs/PVG_OPTIMIZER_RECIPE_AUDIT.md. Empty third NR/SR optimizer
+group has zero parameters; its1e-5 LR does not affect any task parameter.
+Real trained-model forward distributions and matched9508 bypass results
+remain unmeasured; no mechanism change or gain justified by this audit.
+
 Update approximately16:56UTC: fixed a concrete offline invocation error.
 Current main_utils parser accepts only --local_rank(default1),and ignores
 the launcher's --local-rank=0 via parse_known_args. The documented eval

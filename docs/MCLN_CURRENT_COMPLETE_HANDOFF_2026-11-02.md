@@ -1,5 +1,30 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-02 23:54UTC update:
+Scan restart A2 completed23:51:44UTC,full9508 last-semantic Top1:
+5460/4563hits=57.425326%/47.991165%,versusA1 +14/+20hits.
+OwnCPUcheckpoint2/1168tensors/optimizer/scheduler verified,CUDAoff,
+hardlinked601225876bytes/4links,SHA256
+e22d6b7a4968fbafb6e4fcf97342ce88497c300e3fb8183b2da35c003b8f39e9.
+Semanticbest2 verified;target deficits245/382hits,not achieved.
+Gate pending completeepochs[1,2];A3 trainer189152/keeper188533/
+preserver188537 live23:53UTC. EstimateA3full02:20-02:40UTC Nov3,
+then matchedofficial/selected evaluation before conditionalStageB.
+OriginalE0 delta+25/+236 crosses documentedbackend boundary,not
+module attribution. NewScanCSV4rows:officialE0/identityE0/A1/A2.
+
+SR11 completed23:46:21UTC,full17726 semanticTop1:
+11424/8837hits=64.447704%/49.853323%,versus10 -200/-282hits.
+OwnCPUcheckpoint11/1134tensors/optimizer/scheduler verified,CUDAoff,
+hardlinked793092691bytes/3links,SHA256
+a9e29f0782b6e61f6ce09a3d13760a9760ee0edf8335a08fcef3c93289ff5721.
+Best remains10=11624/9119,65.575990%/51.444206%,target025deficit678.
+Actual92354/129032live23:48UTC,original140epochconfig unchanged.
+HistoricalCSV50rows(oldScan10/NR29/SR11),newScan separate.
+SRfree13394792448bytes76%used,atmost16weights ignoringgrowth.
+NRlastfree5320933376bytes91%used23:15UTC;cleanupstillunapproved.
+No localtests,old-runinspection,architecture changes orBlaunch.
+
 NR29 completed2026-11-02 23:13:35UTC,full7899 last-semantic Top1:
 3768/2961hits=47.702241%/37.485758%. OwnCPUcheckpoint29/1134tensors/
 optimizer/scheduler verified,CUDAoff;hardlink retained. SHA256

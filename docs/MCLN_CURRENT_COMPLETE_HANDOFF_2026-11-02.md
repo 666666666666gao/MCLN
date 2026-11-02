@@ -1,5 +1,15 @@
 # Current MCLN + PV-Ground Handoff
 
+20:34UTC real storage risk:NRfree7700983808bytes(86%used),SR14984093696.
+Each preserved full checkpoint793092691bytes;only9/18additional same-size
+weights fit ignoring transient/log growth. Keeping every epoch cannot
+support NR240/SR140 on50GiB disks. Read-only exact inventory and proposal:
+docs/MCLN_STORAGE_RETENTION_PROPOSAL.md. Keep best+latesttwo and allmetrics
+would currently exclude NR17oldweights/SR7oldweights,free13.48/5.55GB
+on separate disks. No weights deleted or bulk archived;no recurringcleanup
+deployed. Destructive cleanup awaits explicit human approval per supplied
+AGENTS.md. Continue live training unchanged and monitor free space.
+
 20:26UTC prepared Stage B now enforces successful full matched validation
 of its selected epoch/SHA before importing the GPU trainer. Prior entry
 could bypass that documented prerequisite. Eleven remote CPU tests passed;

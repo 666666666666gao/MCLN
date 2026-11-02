@@ -161,6 +161,23 @@ Bash syntax passed remotely. Receipt:
 These fixtures do not establish matched9508 metrics;the real pair has not
 run and no protocol hit effect has been measured.
 
+At20:26UTC the prepared Stage B entry was updated to enforce this ordering.
+Previously it checked only the Stage A decision and initialization SHA,
+so direct launch could skip the declared matched-validation prerequisite.
+Before importing the GPU trainer,it now requires successful matched
+pipeline exit,9508 examples,the selected epoch and initialization SHA,
+1168 loaded tensors,and the expected cuDNN settings. Its startup receipt
+records the matched result. Eleven remote CPU tests passed,including the
+existing optimizer/stop fixtures and rejection of failed or mismatched
+evaluation receipts. No matched GPU evaluation or Stage B run occurred.
+The deployed entry SHA is dcb44691123301a9806ae700e51d038896647d6ca33cbda95b65c1a9fc3ce2a6.
+Original `stage_b_prepared.json` remains historical;the later deployment
+is recorded in `stage_b_matched_gate_prepared.json`.
+Raw evidence:
+`docs/results/mcln_pvground_20261101/scanrefer-stage-b-matched-gate-remote-tests.json`
+and `scanrefer-stage-b-matched-gate-prepared.json`.
+The live Stage A main_utils SHA remains a87d2524fd128b3586d81233636a8ffb47002f65ac69ac582de639b646058fa3.
+
 ### Final Acceptance And Next Decisions
 
 Passing the Stage A transition gate is not the final target. On the fixed

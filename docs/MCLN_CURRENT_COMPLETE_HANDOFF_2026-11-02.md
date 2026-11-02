@@ -1,5 +1,13 @@
 # Current MCLN + PV-Ground Handoff
 
+20:26UTC prepared Stage B now enforces successful full matched validation
+of its selected epoch/SHA before importing the GPU trainer. Prior entry
+could bypass that documented prerequisite. Eleven remote CPU tests passed;
+entry SHA dcb44691123301a9806ae700e51d038896647d6ca33cbda95b65c1a9fc3ce2a6.
+See later stage_b_matched_gate_prepared.json,which supersedes the entry
+hash in historical stage_b_prepared.json. Live Stage A unchanged.
+No matched GPU evaluation or Stage B training has occurred. No local tests.
+
 NR26 completed2026-11-02 20:11:19UTC:7899 last-semantic Top1 examples,
 hits3685/2813=46.651475%/35.612103%. Own epoch26/1134tensors/optimizer/
 scheduler remotely CPU verified and checkpoint hardlinked. Down42/132hits

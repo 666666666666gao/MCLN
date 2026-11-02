@@ -1,4 +1,5 @@
 import ast
+import json
 from pathlib import Path
 import sys
 from types import SimpleNamespace
@@ -8,7 +9,8 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "tools"))
 from train_scanrefer_stage_b import (
-    MODULE_PREFIXES, ValidationHistory, build_optimizer, semantic_row, training_arguments,
+    MODULE_PREFIXES, ValidationHistory, build_optimizer, require_matched_validation,
+    semantic_row, training_arguments,
 )
 
 
@@ -29,6 +31,37 @@ class Fixture(torch.nn.Module):
             + self.decoder[5].local_visual(value)
             + self.pvground_support_corrector(value) + self.pvground_span_mixer(value)
         )
+
+
+@pytest.mark.parametrize("fault", [None, "failed", "epoch", "sha", "samples", "backend"])
+def test_stage_b_requires_successful_matched_selected_checkpoint(tmp_path, fault):
+    audit = tmp_path / "protocol_audit"
+    audit.mkdir()
+    decision = {"selected": {"epoch": 2}, "initialization_sha256": "selected-sha"}
+    receipt = {
+        "selected_epoch": 2,
+        "selected": {
+            "samples": 9508, "checkpoint_sha256": "selected-sha",
+            "initialization": {"loaded_tensors": 1168, "checkpoint_epoch": 2},
+            "backend": {"cudnn_enabled": True, "cudnn_benchmark": True,
+                        "cudnn_deterministic": True},
+        },
+    }
+    if fault == "epoch":
+        receipt["selected_epoch"] = 1
+    elif fault == "sha":
+        receipt["selected"]["checkpoint_sha256"] = "other-sha"
+    elif fault == "samples":
+        receipt["selected"]["samples"] = 9507
+    elif fault == "backend":
+        receipt["selected"]["backend"]["cudnn_benchmark"] = False
+    (audit / "pipeline_exit_code").write_text("1" if fault == "failed" else "0")
+    (audit / "matched_validation.json").write_text(json.dumps(receipt))
+    if fault is None:
+        assert require_matched_validation(tmp_path, decision) == receipt
+    else:
+        with pytest.raises(AssertionError):
+            require_matched_validation(tmp_path, decision)
 
 
 def test_joint_optimizer_unfreezes_native_and_updates_all_three_modules():

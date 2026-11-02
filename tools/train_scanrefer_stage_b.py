@@ -86,6 +86,22 @@ def training_arguments(stage, decision):
     ]
 
 
+def require_matched_validation(stage, decision):
+    audit = stage / "protocol_audit"
+    assert int((audit / "pipeline_exit_code").read_text()) == 0
+    receipt = json.loads((audit / "matched_validation.json").read_text())
+    assert receipt["selected_epoch"] == decision["selected"]["epoch"]
+    selected = receipt["selected"]
+    assert selected["samples"] == 9508
+    assert selected["checkpoint_sha256"] == decision["initialization_sha256"]
+    assert selected["initialization"]["loaded_tensors"] == 1168
+    assert selected["initialization"]["checkpoint_epoch"] == receipt["selected_epoch"]
+    assert selected["backend"] == {
+        "cudnn_enabled": True, "cudnn_benchmark": True, "cudnn_deterministic": True,
+    }
+    return receipt
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage", required=True, type=Path)
@@ -97,6 +113,7 @@ def main():
         "stage_b_decision"
     ]
     assert decision["status"] == "ready"
+    matched = require_matched_validation(stage, decision)
     checkpoint = Path(decision["initialization_checkpoint"])
     digest = hashlib.sha256()
     with checkpoint.open("rb") as source:
@@ -168,6 +185,7 @@ def main():
     torch.backends.cudnn.deterministic = True
     main_utils._atomic_json_save({
         "phase": "stage_b", "parent_decision": decision,
+        "matched_validation": matched,
         "optimizer_restored": False, "scheduler_restored": False,
         "comparison_baseline": "previous_complete_stage_b_epoch",
     }, str(stage / "stage_b_start.json"))

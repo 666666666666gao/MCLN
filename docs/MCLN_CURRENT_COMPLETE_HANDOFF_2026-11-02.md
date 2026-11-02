@@ -1,5 +1,15 @@
 # Current MCLN + PV-Ground Handoff
 
+21:34UTC file-only identity supplement:
+NR27 SHA2564bc94f69e4b39ce97304fef924173c2f61152a86ee53740fb656a196c8749e0b,
+SR10 SHA25693dccfce1086f0c146524df308d88f75d487cff70ee5d57e300fb4338b14ee41.
+Both793092691bytes. Own epochs/1134tensors and optimizer/scheduler are
+established by the separate existing full-result CPU audits,not this hash.
+Configs stillnull taskcheckpoints/noinnovations;no recipe/budget change.
+Raw docs/results/mcln_pvground_20261101/nr3d-semantic-best-identity-epoch27.json
+and sr3d-semantic-best-identity-epoch10.json include config hashes and
+selection manifests. No localtests/modelruns orcleanup.
+
 21:26UTC A1 semantic log-only subgroup audit:unique1232/1070over1419,
 multiple4214/3473over8089,sum5446/4543. Multiplemisses3875/4616,
 uniquemisses187/349. OriginalE0 subgroup differences are unmatched

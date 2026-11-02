@@ -46,10 +46,12 @@ def test_only_modules_update_and_native_bn_stays_fixed():
     assert model.training and not model.native.training
     assert not model.native[1].training
     assert len(optimizer.param_groups) == 3
-    model(torch.randn(8, 3)).square().mean().backward()
-    optimizer.step()
-    for name, value in model.state_dict().items():
-        if name.startswith("native."):
-            assert torch.equal(value, before[name])
-        else:
-            assert not torch.equal(value, before[name])
+    for _ in range(2):
+        optimizer.zero_grad()
+        model(torch.randn(8, 3)).square().mean().backward()
+        optimizer.step()
+        for name, value in model.state_dict().items():
+            if name.startswith("native."):
+                assert torch.equal(value, before[name])
+            else:
+                assert not torch.equal(value, before[name])

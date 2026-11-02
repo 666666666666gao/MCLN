@@ -21,7 +21,11 @@ common=(
     --model_only_initialization --checkpoint_start_epoch 1
     --expected_eval_sample_count 9508 --print_freq 100
 )
-for condition in official identity; do
+conditions=(official identity)
+if [ "${1:-}" = identity ]; then
+    conditions=(identity)
+fi
+for condition in "${conditions[@]}"; do
     module_flags=()
     if [ "$condition" = identity ]; then
         module_flags=(--use_pvground_innovations)

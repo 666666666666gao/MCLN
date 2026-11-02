@@ -1,5 +1,20 @@
 # Current MCLN + PV-Ground Handoff
 
+VERIFIED18:48UTC: Scan StageA run1793644724 has two actual optimizer
+updates at epoch1 batch6/12,finite losses6.477235794067383/7.649016857147217.
+All Reader/Support/Span gradients and deltas finite/nonzero;frozen native
+parameters and buffers exactly unchanged twice. Full9508 E0 passed,
+official+identity5435/4327hits=57.162390%/45.509045%,same input/orderSHA.
+Startup immutable evidence:
+docs/results/mcln_pvground_20261101/scanrefer-stage-a-startup-receipt.json.
+Progress129/6081,GPU10125MiB;first full trained validation ETA21:10UTC.
+No complete StageA epoch yet. Source/config recipe and conditionalStageB
+in docs/PVG_SCANREFER_STAGE_A_RESTART.md. Native/BNfrozen,batch8/accum6,
+moduleLR1e-4,max3epochs. Per-epoch update witnesses may later be overwritten.
+NR25/SR10 continue original trainers/source/config/RNG unchanged,verified
+18:41:47UTC. NRbest24/SRbest8;historical43rows;new E0 table separate.
+No local Windows/WSL tests/model execution. This supersedes pending notes.
+
 Latest user request overrides historical status below: restart ScanRefer
 using the supplied plan, while NR/SR continue original full scratch runs.
 Details and remote launch/evidence:docs/PVG_SCANREFER_STAGE_A_RESTART.md.

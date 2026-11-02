@@ -45,6 +45,7 @@ def main():
         settings.start_epoch = 0
 
     main_utils.load_checkpoint = initialize_for_evaluation
+    trainer.TrainTester.get_optimizer = staticmethod(lambda settings, model: None)
     torch.cuda.set_device(args.local_rank)
     torch.distributed.init_process_group(
         backend="nccl", init_method="env://",

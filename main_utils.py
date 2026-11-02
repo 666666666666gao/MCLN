@@ -7584,6 +7584,7 @@ class BaseTrainTester:
             "pvground_span_mixer.",
         )
         innovation_probe = None
+        innovation_probe_steps = 2 if getattr(args, "pvground_train_only", False) else 1
         frozen_parameters = None
         frozen_buffers = None
         if getattr(args, "pvground_train_only", False):
@@ -7774,7 +7775,7 @@ class BaseTrainTester:
 
             if should_step:
                 if (getattr(args, "use_pvground_innovations", False)
-                        and optimizer_step_count == 0):
+                        and optimizer_step_count < innovation_probe_steps):
                     innovation_probe = {}
                     named_parameters = [
                         (
@@ -7871,6 +7872,7 @@ class BaseTrainTester:
                         "loss": float(loss.detach().float().item()),
                         "finite_loss": bool(torch.isfinite(loss.detach()).item()),
                         "optimizer_step_complete": True,
+                        "optimizer_step": optimizer_step_count,
                         "modules": module_receipts,
                     }
                     if frozen_parameters is not None:
@@ -7886,12 +7888,17 @@ class BaseTrainTester:
                         if not (witness["frozen_parameters_unchanged"]
                                 and witness["frozen_buffers_unchanged"]):
                             raise ValueError("PV-Ground Stage A changed frozen model state")
-                        frozen_parameters = None
-                        frozen_buffers = None
+                        if optimizer_step_count == innovation_probe_steps:
+                            frozen_parameters = None
+                            frozen_buffers = None
                     if dist.get_rank() == 0:
+                        receipt_name = (
+                            "pvground_first_update.json" if optimizer_step_count == 1
+                            else "pvground_second_update.json"
+                        )
                         _atomic_json_save(
                             witness,
-                            os.path.join(args.log_dir, "pvground_first_update.json"),
+                            os.path.join(args.log_dir, receipt_name),
                         )
                         self.logger.info(
                             "PV-Ground first-update witness {}".format(witness)

@@ -1,5 +1,18 @@
 # Current MCLN + PV-Ground Handoff
 
+NR25 complete19:10:21UTC,full7899 semantic Top1 hits3727/2945=
+47.183188%/37.283200%,new observed025-firstbest25. Owncheckpoint25,
+1134tensors/optimizer/scheduler remoteCPUverified and hardlinked.
+44 historicalrows:oldScan10/NR25/SR9. NR target4724hits025,deficit997.
+At19:13:36UTC original main96960/keeper135075 alive,NR26=216/3742,
+config unchanged;semantic_best alias still24 on that read,pending240sec
+keeper cycle. Do not claim25alias before confirming it.
+ScanStageA still pending first full epoch;SRlatest9/best8 unchanged.
+New tools/collect_scanrefer_stage_a_epochs.py deployed separately,
+real initial emptyrows and2remoteCPUfixtures passed,CUDAuninitialized;
+receipt docs/results/mcln_pvground_20261101/scanrefer-stage-a-collector-remote-tests.json.
+Collector90251d6 and final acceptance policy6181634 pushed;no localtests.
+
 19:00UTC live-process verification: Scan main189152/keeper188533/
 preservation188537 alive;keeper waiting_for_complete_validation.
 Scan18:58=604/6081,logged cumulative batch600loss6.9913 finite.

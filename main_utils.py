@@ -6533,7 +6533,7 @@ class BaseTrainTester:
             # log
             self.logger.info(
                 'epoch {}, total time {:.2f}, '
-                'lr_base {:.5f}, lr_pointnet {:.5f}'.format(
+                'lr_base {:.8g}, lr_pointnet {:.8g}'.format(
                     epoch, (time.time() - tic),
                     optimizer.param_groups[0]['lr'],
                     optimizer.param_groups[1]['lr']

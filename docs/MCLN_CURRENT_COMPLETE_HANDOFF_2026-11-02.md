@@ -1,5 +1,24 @@
 # Current MCLN + PV-Ground Handoff
 
+Update17:25UTC: Scan trainer154585/keeper178546 verified live17:24:45UTC,
+e10 validation992/1189,about2min remaining; no completed e10 claimed yet.
+Remote log-only extraction preserves cumulative training means at the
+same6000/6081 batch point for epochs1--10. Loss7.3920->7.2505,
+box1.2628->1.2302,semantic35.6224->35.1608,SP Dice0.1733->0.1669.
+Not exact full-epoch means,not proof of generalization/module benefit.
+Raw JSON and interpretation: docs/PVG_SCANREFER_TRAINING_OBSERVATIONS.md.
+Static trace confirms corrected masks and mixed boxes reach final criterion;
+no disconnected-supervision bug established. Real forward diagnostics remain
+missing. Native evaluator None also cannot simply be fixed by calling
+export_retrain_metrics: that existing exporter requires source-choice
+counters and uses position metrics,not the required last/bbf semantic pair.
+The independent keeper remains the current mitigation.
+
+Found actual log precision problem: epoch LR formatting .5f makes1e-6
+look like0.00000. Repository format changed to .8g; log-only collector
+accepts scientific notation. Display only,no live source/schedule change.
+No local tests or additional GPU evaluation.
+
 Update2026-11-02 approximately17:12UTC: NR e23 full7899 semantic Top1
 validation completed17:09:23UTC,3623/2643 hits=45.866565%/33.459932%.
 CPU checkpoint own epoch23,1134 tensors,optimizer/scheduler verified and

@@ -4,6 +4,14 @@ Status: 15 focused CPU tests passed; the GPU evaluation entry point is unexecute
 This tool does not attach to, change, stop, or resume an existing trainer.
 Run it only when a GPU is available for isolated evaluation.
 
+Scan server import preflight passed at approximately16:10UTC on2026-11-02.
+Archive SHA25634a234ad96bbaea6b74a48550d0aeb868154d019118943961c921472f7cbca67
+was checked before extraction into`$root/offline_audits/c8437a3`.
+All three helpers are deployed there without changing active training source.
+Current trainer/evaluator/IoU dependencies import; CUDA remained uninitialized.
+No model construction,checkpoint load or forward occurred. Raw preflight:
+`docs/results/mcln_pvground_20261101/scanrefer-offline-audit-import-preflight.json`.
+
 The retained ScanRefer epoch8 checkpoint has SHA256
 `3572193fef0f32d1d6ca22b41cbbb02932a30de0a51b18deb3b0c40ee37bcf38`.
 Use its fixed preserved path for every condition. The keeper's best alias
@@ -13,11 +21,12 @@ From the deployed source directory, an evaluation command is:
 
 ```bash
 root=/root/autodl-tmp/mcln_pvground_ft_20261101
-export PYTHONPATH="$root/source/pointnet2:$root/source"
+staging="$root/offline_audits/c8437a3"
+export PYTHONPATH="$staging:$root/source/pointnet2:$root/source"
 cd "$root/source"
 /root/autodl-tmp/PV-Ground/env/bin/python -m torch.distributed.launch \
   --nproc_per_node 1 --master_port 29511 \
-  tools/eval_pvground_audit.py \
+  "$staging/tools/eval_pvground_audit.py" \
   --audit-jsonl "$root/scan-e8-none-forward.jsonl" --audit-bypass none \
   --eval --checkpoint_path "$root/runs/scanrefer/preserved_checkpoints/ckpt_epoch_8.pth" \
   --expected_eval_sample_count 9508 --rng_seed 0 \
@@ -33,12 +42,11 @@ cd "$root/source"
   --model MCLN --exp scan_e8_none
 ```
 
-The helpers (`eval_pvground_audit.py`, `pvground_forward_audit.py`, and
-`pvground_semantic_audit.py`) must first be copied into the deployed source's
-tools directory.
+The deployed staging directory contains`eval_pvground_audit.py`,
+`pvground_forward_audit.py`,and`pvground_semantic_audit.py`under`tools/`.
 The command intentionally loads the full trained state, without
 `model_only_initialization`, `checkpoint_start_epoch`, or initialization-only
-`pp_checkpoint`. It has not been validated against remote CUDA dependencies.
+`pp_checkpoint`. Remote imports passed; actual CUDA forward remains untested.
 Do not run concurrent with the occupied training GPU.
 
 Repeat sequentially with `reader`, `support`, and `span`, changing the audit

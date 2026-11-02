@@ -1,5 +1,19 @@
 # Current MCLN + PV-Ground Handoff
 
+Update16:12UTC: NR e22 full7899 semantic validation completed16:08:11UTC
+(server11/03 00:08:11). Hits3543/2754=44.853779%/34.865173%.
+CPU own epoch22,1134 tensors,optimizer/scheduler verified and hardlinked.
+Acc025 falls14 hits versus e21 while050 rises112 hits; best stayse21.
+Do not combine e21Acc025 with e22Acc050. Full table39 rows:
+Scan1-9,NR1-22,SR1-8. BestScan8/NR21/SR8,targets still unmet.
+
+Update16:10UTC: semantic diagnostics pushedc8437a3;15 CPU tests passed.
+Helpers staged on Scan server under`offline_audits/c8437a3/tools`,archiveSHA
+34a234ad96bbaea6b74a48550d0aeb868154d019118943961c921472f7cbca67.
+Remote imports of current trainer,evaluator and IoU functions passed,
+CUDA remained uninitialized. Active training source untouched. This is
+import preflight only,not model/checkpoint/GPU-forward validation.
+
 Update15:47UTC: ScanRefer e9 completed15:45:32UTC, full9508
 last semantic Top1 hits5390/4473=56.689104%/47.044594%.
 CPU own epoch9/1168 tensors/optimizer+scheduler verified, fixed hardlink
@@ -60,8 +74,8 @@ and scheduler state. Hard links were preserved under
 `runs/DATASET/preserved_checkpoints/ckpt_epoch_N.pth`.
 NR e21 improves Acc025 over e20 but its Acc050 is lower: report the e21
 pair together. Do not replace its 33.447272% with e20's 33.523231%.
-All 38 completed epoch rows recovered so far are in the accompanying CSV:
-ScanRefer 1-9, NR3D 1-21, SR3D 1-8.
+All 39 completed epoch rows recovered so far are in the accompanying CSV:
+ScanRefer 1-9, NR3D 1-22, SR3D 1-8.
 Rows without weights are explicitly marked `missing_retention_deleted`.
 
 Log timestamps are server UTC+08:00. Subtract eight hours for UTC.
@@ -166,7 +180,8 @@ official initialization, which has no matched epoch0 evaluation here.
    method and IoU functions in isolation; three seeds match selected boxes,
    IoUs and counters. Altered counter and strict-threshold checks pass.
    Total15 focused tests pass. Full command/limitations:
-   `docs/PVG_FORWARD_AUDIT.md`. GPU entry point has not run; no real-sample
+   `docs/PVG_FORWARD_AUDIT.md`. Remote import preflight passed from isolated
+   staging without CUDA initialization; GPU entry point has not run. No real-sample
    bypass result,gate distribution,GT error result or method gain is claimed.
 
 The three intended module responsibilities remain Reader (local visual
@@ -186,6 +201,23 @@ of our hard mask extent reference with native box geometry. It does not
 justify copying a 2D module unchanged into 3D or claiming a measured gain.
 The next experiment must retain Reader/Support/Span and test one diagnosed
 mechanism at a time, with source attribution and full validation evidence.
+
+Additional primary-source inspection,2026-11-02 approximately16:05UTC:
+Mask3D,https://github.com/JonasSchult/Mask3D,
+commit11bd5ff94477ff7194e9a7c52e9fae54d73ac3b5,
+`trainer/trainer.py`,function`get_mask_and_scores`,retrieved via GitHub API.
+It forms a binary foreground from positive mask logits,averages sigmoid
+mask probabilities over that foreground,and combines that quality estimate
+with per-query class confidence for ranking. This is instance segmentation,
+not language grounding; class confidence is not our decomposed semantic score.
+No implementation copied or deployed. It motivates measuring agreement
+between semantic candidate ranks,member support and actual box IoUs AFTER
+the fixed-checkpoint export. It does not justify adding a scoring module,
+claiming a causal weakness,or a gain. If oracle coverage is high but semantic
+selection fails,inspect chosen-vs-good candidate support confidence before
+considering an internal Support calibration; if oracle coverage is low,
+reranking alone cannot recover the missing boxes. These are experiment
+decision rules,not observed outcomes.
 
 ## Tuning Policy And Validation
 

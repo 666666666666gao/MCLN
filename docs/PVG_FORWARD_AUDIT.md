@@ -1,8 +1,11 @@
 # Fixed-Checkpoint Forward Audit
 
-Status: 15 focused CPU tests passed; the GPU evaluation entry point is unexecuted.
+Status: 15 focused CPU tests passed historically; the GPU evaluation entry point is unexecuted.
+Per the user's latest instruction, all further tests and diagnostics must
+run on remote servers. Do not run them on Windows or local WSL, and do not
+continue the proposed local single-example probe or prepare its dependencies.
 This tool does not attach to, change, stop, or resume an existing trainer.
-Run it only when a GPU is available for isolated evaluation.
+Run it only when a remote GPU is available for isolated evaluation.
 
 Scan server import preflight passed at approximately16:10UTC on2026-11-02.
 Archive SHA25634a234ad96bbaea6b74a48550d0aeb868154d019118943961c921472f7cbca67

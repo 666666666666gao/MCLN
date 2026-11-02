@@ -1,5 +1,33 @@
 # Current MCLN + PV-Ground Handoff
 
+Update16:31UTC: all three current trainers and independent metric keepers
+verified live through the secure wrapper; configurations unchanged.
+Scan e10 training3075/6081, GPU23671MiB; NR e23 training1551/3742,
+GPU22833MiB; SR e9 training2870/6486, GPU22924MiB.
+No new complete validation: latest complete Scan9/NR22/SR8,
+selected best Scan8/NR21/SR8. Estimated next full validations:
+NR approximately17:10UTC, Scan17:20-17:30UTC, SR approximately18:00UTC.
+These are estimates from observed training rates plus previous validation
+durations, not completion promises. No concurrent GPU diagnostic launched.
+
+User execution boundary: no tests on the local machine, including Windows
+or local WSL CPU/GPU diagnostics, model forward, evaluation or training.
+Do not continue local-probe environment preparation or download model/data
+for local testing. The prior isolated conda clone completed; this does not
+mean a model test ran. Its proposed model probe is cancelled. Future needed
+tests and diagnostics run remotely only. Historical CPU test counts below
+describe past work and do not authorize rerunning them locally.
+
+The desktop brief MCLN-PV-Ground-training-handoff.md has been merged into
+the user's sole desktop handoff:
+`C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`.
+Keep the source as history, do not update it again. The canonical file's
+Consolidated Current Handoff section distinguishes historical attempts and
+snapshots from the current run. This repository file remains technical
+documentation published to GitHub, not a second desktop handoff.
+The ACTIVE two-hour monitor now preserves both constraints and the current
+39-row/latest-best state, with its existing notification policy unchanged.
+
 Update16:12UTC: NR e22 full7899 semantic validation completed16:08:11UTC
 (server11/03 00:08:11). Hits3543/2754=44.853779%/34.865173%.
 CPU own epoch22,1134 tensors,optimizer/scheduler verified and hardlinked.

@@ -1,5 +1,15 @@
 # Current MCLN + PV-Ground Handoff
 
+19:00UTC live-process verification: Scan main189152/keeper188533/
+preservation188537 alive;keeper waiting_for_complete_validation.
+Scan18:58=604/6081,logged cumulative batch600loss6.9913 finite.
+NR original main96960/keeper135075 live,epoch25=3308/3742;
+SR original main92354/keeper129032 live,epoch10=1991/6486.
+NR/SR configs unchanged;no new complete metrics or best selection.
+Next full validation estimates:NR25~19:10-19:15UTC,Scan1~21:10UTC,
+SR10~21:00UTC. Monitor near ETA with180-300sec intervals.
+All targets remain unachieved;no method change justified by partial logs.
+
 VERIFIED18:48UTC: Scan StageA run1793644724 has two actual optimizer
 updates at epoch1 batch6/12,finite losses6.477235794067383/7.649016857147217.
 All Reader/Support/Span gradients and deltas finite/nonzero;frozen native

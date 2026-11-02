@@ -1,5 +1,29 @@
 # Current MCLN + PV-Ground Handoff
 
+Update approximately16:43UTC: identified an instrumentation gap, not a
+proven model failure: prior offline hooks observed Span but omitted Reader
+activation size and Support's actual member-mask corrections.
+Added Reader query/residual L2, Support per-query mean/max absolute delta
+and fused-foreground flips on observed member slots only. Ragged scene
+statistics remain separate. Selected-query evidence joins these to existing
+semantic rank, IoU and Span gates. Values are explicitly before_bypass;
+separate flags identify whether the corresponding result is applied.
+No model architecture, weights, training config or running source changed.
+
+Nine focused fixture tests passed on the remote Scan server,CUDA
+uninitialized,Torch2.1.2+cu118,pytest9.2.0. Covered all four bypass settings,
+unobserved-slot exclusion/ragged scenes,selected-query association and
+tracked evaluator/IoU agreement. This is not a real model/dataset forward.
+Training env lacked pytest; test-only dependencies installed into the
+isolated observations_v2/test_dependencies directory. No local tests run.
+New helpers staged in offline_audits/observations_v2; active trainer/evaluator
+imports and new helper paths verified remotely. ArchiveSHA
+bf7aba8910d14a57c76634fbf805aa9dbd4e00a29ae752e55e8a3d9cd0c4c568.
+Raw remote test/import receipts saved under docs/results/mcln_pvground_20261101.
+See docs/PVG_FORWARD_AUDIT.md for the updated remote command and limits.
+Real gate/activation/correction distributions and full matched bypass
+metrics remain missing; do not choose a mechanism change from fixtures.
+
 Update16:31UTC: all three current trainers and independent metric keepers
 verified live through the secure wrapper; configurations unchanged.
 Scan e10 training3075/6081, GPU23671MiB; NR e23 training1551/3742,

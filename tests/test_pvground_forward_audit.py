@@ -19,7 +19,9 @@ class Reader(nn.Module):
 
 class Support(nn.Module):
     def forward(self, query, supports, points, centers, sizes, predictions):
-        return [predictions["sp_last_pred_masks"][0] + 3], ["geometry"]
+        return [
+            value + 3 for value in predictions["sp_last_pred_masks"]
+        ], [{"native_ids": [0, 2]} for _ in predictions["sp_last_pred_masks"]]
 
 
 class Span(nn.Module):
@@ -47,23 +49,33 @@ def test_hooks_bypass_only_requested_output_and_preserve_parameter_keys(bypass):
     stream = io.StringIO()
     audit = PVGroundForwardAudit(model, stream, bypass)
     predictions = {
-        "sp_last_pred_masks": [torch.zeros(2, 4)],
+        "sp_last_pred_masks": [torch.full((2, 4), -1.0)],
+        "last_pred_masks": [torch.zeros(1, 2, 4)],
+        "adaptive_weights": torch.full((1, 1), 0.5),
         "native_coarse_center": torch.zeros(1, 2, 3),
         "native_coarse_size": torch.ones(1, 2, 3),
     }
-    reader = model.decoder[-1].local_visual(torch.ones(1))
+    reader = model.decoder[-1].local_visual(torch.ones(1, 2, 3))
     support, geometry = model.pvground_support_corrector(
         None, None, None, None, None, predictions
     )
     center, size, _ = model.pvground_span_mixer(
         None, None, predictions, geometry
     )
-    assert reader.item() == (0 if bypass == "reader" else 3)
-    assert torch.equal(support[0], torch.full((2, 4), 0 if bypass == "support" else 3))
+    assert torch.equal(reader, torch.full((1, 2, 3), 0 if bypass == "reader" else 3))
+    assert torch.equal(support[0], torch.full((2, 4), -1 if bypass == "support" else 2))
     assert torch.equal(center, torch.full((1, 2, 3), 0 if bypass == "span" else 1))
     assert torch.equal(size, torch.full((1, 2, 3), 1 if bypass == "span" else 3))
     row = json.loads(stream.getvalue())
     assert row["candidate_count"] == 2
+    assert row["reader_residual_l2_before_bypass_mean"] == pytest.approx(3 * 3**0.5)
+    assert row["reader_query_l2_mean"] == pytest.approx(3**0.5)
+    assert row["reader_bypassed"] == (bypass == "reader")
+    assert row["support_bypassed"] == (bypass == "support")
+    assert row["support_observed_members"] == 2
+    assert row["support_delta_abs_mean_before_bypass"] == 3
+    assert row["support_foreground_flips_before_bypass"] == 4
+    assert audit.last_gates[0]["support_delta_abs_max_before_bypass"].tolist() == [3, 3]
     assert row["reference_valid_count"] == 1
     assert row["raw_gate_below_zero_by_axis"] == [1, 0, 0]
     assert row["raw_gate_above_one_by_axis"] == [0, 0, 1]
@@ -79,3 +91,25 @@ def test_hooks_bypass_only_requested_output_and_preserve_parameter_keys(bypass):
         model.pvground_span_mixer(None, None, predictions, geometry)[0],
         torch.ones(1, 2, 3),
     )
+
+
+def test_support_statistics_ignore_unobserved_slots_and_keep_ragged_scenes():
+    audit = object.__new__(PVGroundForwardAudit)
+    audit.bypass = "none"
+    before = [torch.zeros(2, 5), torch.zeros(2, 7)]
+    after = [value.clone() for value in before]
+    after[0][:, 1] = 900
+    after[0][:, 4] = 2
+    after[1][:, 6] = -3
+    predictions = {
+        "sp_last_pred_masks": before,
+        "last_pred_masks": [torch.zeros(1, 2, 5), torch.zeros(1, 2, 7)],
+        "adaptive_weights": torch.zeros(2, 1),
+    }
+    geometry = [{"native_ids": [0, 4]}, {"native_ids": [6]}]
+    assert audit._support(None, (None,) * 5 + (predictions,), (after, geometry)) is None
+    assert audit.support_stats[0]["support_delta_abs_mean_before_bypass"].tolist() == [1, 1]
+    assert audit.support_stats[1]["support_delta_abs_mean_before_bypass"].tolist() == [3, 3]
+    assert audit.support_stats[0]["support_foreground_flips_before_bypass"].tolist() == [1, 1]
+    assert audit.support_stats[1]["support_foreground_flips_before_bypass"].tolist() == [0, 0]
+    assert [row["support_observed_members"] for row in audit.support_stats] == [2, 1]

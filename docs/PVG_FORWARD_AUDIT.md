@@ -7,6 +7,36 @@ continue the proposed local single-example probe or prepare its dependencies.
 This tool does not attach to, change, stop, or resume an existing trainer.
 Run it only when a remote GPU is available for isolated evaluation.
 
+Observation update,2026-11-02 approximately16:43UTC:
+the earlier tool measured Span but not Reader/Support activation effects.
+The new hooks always observe Reader residual and input-query L2 norms,
+Support mean/max absolute correction on observed native superpoint IDs,
+and fused-mask foreground flips using the model's sigmoid>0.5 rule.
+Ragged scenes stay separate; unobserved slot gaps are excluded.
+The selected semantic query receives the same per-query measurements.
+All correction/residual measurements explicitly say before_bypass;
+reader_bypassed/support_bypassed identify whether that result was applied.
+These statistics describe computation, not its usefulness or causal gain.
+
+The updated helpers and nine focused CPU fixture tests passed on the Scan
+server with Torch2.1.2+cu118/pytest9.2.0; CUDA remained uninitialized.
+Tests cover each bypass, unchanged outputs/parameter keys without bypass,
+per-scene ragged/native-slot statistics, selected-query association and
+agreement with the tracked semantic evaluator/IoU functions on three seeds.
+The trained model, full dataset and GPU forward were not executed.
+Pytest was absent from the training environment; dependencies were installed
+only under`offline_audits/observations_v2/test_dependencies`, without
+installing into or modifying that environment.
+Raw remote receipts:
+`docs/results/mcln_pvground_20261101/scanrefer-offline-observations-v2-remote-tests.json`
+and`scanrefer-offline-observations-v2-import-preflight.json`.
+The latter confirms new helpers resolve from observations_v2 while trainer
+and evaluator resolve from the active source directory.
+Remote verification entry:`tools/verify_pvground_offline_observations.sh`.
+Archive SHA256:
+`bf7aba8910d14a57c76634fbf805aa9dbd4e00a29ae752e55e8a3d9cd0c4c568`.
+No local tests were run and no running trainer/source was modified.
+
 Scan server import preflight passed at approximately16:10UTC on2026-11-02.
 Archive SHA25634a234ad96bbaea6b74a48550d0aeb868154d019118943961c921472f7cbca67
 was checked before extraction into`$root/offline_audits/c8437a3`.
@@ -24,7 +54,7 @@ From the deployed source directory, an evaluation command is:
 
 ```bash
 root=/root/autodl-tmp/mcln_pvground_ft_20261101
-staging="$root/offline_audits/c8437a3"
+staging="$root/offline_audits/observations_v2"
 export PYTHONPATH="$staging:$root/source/pointnet2:$root/source"
 cd "$root/source"
 /root/autodl-tmp/PV-Ground/env/bin/python -m torch.distributed.launch \
@@ -45,7 +75,7 @@ cd "$root/source"
   --model MCLN --exp scan_e8_none
 ```
 
-The deployed staging directory contains`eval_pvground_audit.py`,
+The current deployed staging directory contains`eval_pvground_audit.py`,
 `pvground_forward_audit.py`,and`pvground_semantic_audit.py`under`tools/`.
 The command intentionally loads the full trained state, without
 `model_only_initialization`, `checkpoint_start_epoch`, or initialization-only

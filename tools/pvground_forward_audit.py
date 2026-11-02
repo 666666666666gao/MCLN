@@ -15,29 +15,61 @@ class PVGroundForwardAudit:
         self.bypass = bypass
         self.samples = 0
         self.last_gates = []
-        self.handles = []
-        if bypass == "reader":
-            self.handles.append(
-                model.decoder[-1].local_visual.register_forward_hook(
-                    self._reader
-                )
-            )
-        if bypass == "support":
-            self.handles.append(
-                model.pvground_support_corrector.register_forward_hook(
-                    self._support
-                )
-            )
+        self.reader_stats = []
+        self.support_stats = []
+        self.handles = [
+            model.decoder[-1].local_visual.register_forward_hook(self._reader),
+            model.pvground_support_corrector.register_forward_hook(self._support),
+        ]
         self.handles.append(
             model.pvground_span_mixer.register_forward_hook(self._span)
         )
 
+    @torch.no_grad()
     def _reader(self, module, inputs, output):
-        return torch.zeros_like(output)
+        query_norm = inputs[0].detach().norm(dim=-1).cpu()
+        residual_norm = output.detach().norm(dim=-1).cpu()
+        self.reader_stats = [
+            {
+                "reader_query_l2": query,
+                "reader_residual_l2_before_bypass": residual,
+            }
+            for query, residual in zip(query_norm, residual_norm)
+        ]
+        if self.bypass == "reader":
+            return torch.zeros_like(output)
 
+    @torch.no_grad()
     def _support(self, module, inputs, output):
-        # Keep observed point geometry; bypass only learned mask correction.
-        return inputs[5]["sp_last_pred_masks"], output[1]
+        predictions = inputs[5]
+        self.support_stats = []
+        for index, geometry in enumerate(output[1]):
+            before = predictions["sp_last_pred_masks"][index].detach()
+            after = output[0][index].detach()
+            slots = torch.as_tensor(
+                geometry["native_ids"], device=before.device, dtype=torch.long
+            )
+            delta = after[:, slots] - before[:, slots]
+            text = predictions["last_pred_masks"][index][0].detach()[:, slots]
+            alpha = predictions["adaptive_weights"][index].detach()
+            # Use observed member slots and the same fused-logit foreground rule.
+            old_foreground = (
+                alpha * text + (1 - alpha) * before[:, slots]
+            ).sigmoid() > 0.5
+            new_foreground = (
+                alpha * text + (1 - alpha) * after[:, slots]
+            ).sigmoid() > 0.5
+            self.support_stats.append({
+                "support_delta_abs_mean_before_bypass": delta.abs().mean(-1).cpu(),
+                "support_delta_abs_max_before_bypass": delta.abs().amax(-1).cpu(),
+                "support_foreground_flips_before_bypass": (
+                    old_foreground != new_foreground
+                ).sum(-1).cpu(),
+                "support_observed_members": len(slots),
+            })
+        if self.bypass == "support":
+            # Keep observed geometry while downstream reference/Span recompute.
+            return predictions["sp_last_pred_masks"], output[1]
 
     @torch.no_grad()
     def _span(self, module, inputs, output):
@@ -54,11 +86,36 @@ class PVGroundForwardAudit:
             valid = current["reference_valid"].detach()
             self.last_gates.append({
                 "raw": raw.cpu(), "clamped": gate.cpu(),
+                **self.reader_stats[batch_index],
+                **self.support_stats[batch_index],
             })
             row = {
                 "kind": "forward_sample",
                 "sample_index": self.samples,
                 "bypass": self.bypass,
+                "reader_bypassed": self.bypass == "reader",
+                "support_bypassed": self.bypass == "support",
+                "reader_residual_l2_before_bypass_mean": float(
+                    self.reader_stats[batch_index][
+                        "reader_residual_l2_before_bypass"
+                    ].mean()
+                ),
+                "reader_query_l2_mean": float(
+                    self.reader_stats[batch_index]["reader_query_l2"].mean()
+                ),
+                "support_observed_members": self.support_stats[batch_index][
+                    "support_observed_members"
+                ],
+                "support_delta_abs_mean_before_bypass": float(
+                    self.support_stats[batch_index][
+                        "support_delta_abs_mean_before_bypass"
+                    ].mean()
+                ),
+                "support_foreground_flips_before_bypass": int(
+                    self.support_stats[batch_index][
+                        "support_foreground_flips_before_bypass"
+                    ].sum()
+                ),
                 "candidate_count": raw.shape[0],
                 "reference_valid_count": int(valid.sum()),
                 "raw_gate_finite": bool(torch.isfinite(raw).all()),

@@ -97,7 +97,15 @@ def test_rows_match_tracked_evaluator_selection_iou_and_counts(seed):
     )
     raw_gate = torch.randn(batch, queries, 3)
     gate_evidence = [
-        {"raw": values, "clamped": values.clamp(0, 1)}
+        {
+            "raw": values, "clamped": values.clamp(0, 1),
+            "reader_query_l2": torch.arange(queries, dtype=torch.float),
+            "reader_residual_l2_before_bypass": torch.arange(queries, dtype=torch.float) + 1,
+            "support_delta_abs_mean_before_bypass": torch.ones(queries),
+            "support_delta_abs_max_before_bypass": torch.ones(queries) * 2,
+            "support_foreground_flips_before_bypass": torch.arange(queries),
+            "support_observed_members": 7,
+        }
         for values in raw_gate
     ]
     audit.update(end_points, gate_evidence)
@@ -115,6 +123,11 @@ def test_rows_match_tracked_evaluator_selection_iou_and_counts(seed):
         )
         assert row["oracle_iou"] >= row["selected_iou"]
         assert row["selected_raw_gate"] == raw_gate[index, row["selected_query"]].tolist()
+        assert row["selected_reader_query_l2"] == row["selected_query"]
+        assert row["selected_reader_residual_l2_before_bypass"] == row["selected_query"] + 1
+        assert row["selected_support_delta_abs_max_before_bypass"] == 2
+        assert row["selected_support_foreground_flips_before_bypass"] == row["selected_query"]
+        assert row["support_observed_members"] == 7
         assert len(row["point_sha256"]) == 64
     evaluator.dets[("last_", 0.25, 1, "bbf")] += 1
     with pytest.raises(ValueError, match="disagrees"):

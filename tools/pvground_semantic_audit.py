@@ -82,6 +82,16 @@ class PVGroundSemanticAudit:
                 "first_good_rank025": self._first_good(ious, ordered[index], 0.25),
                 "first_good_rank050": self._first_good(ious, ordered[index], 0.5),
             }
+            for name in (
+                "reader_query_l2", "reader_residual_l2_before_bypass",
+                "support_delta_abs_mean_before_bypass",
+                "support_delta_abs_max_before_bypass",
+                "support_foreground_flips_before_bypass",
+            ):
+                row["selected_" + name] = gate_evidence[index][name][selected].item()
+            row["support_observed_members"] = gate_evidence[index][
+                "support_observed_members"
+            ]
             for name, center, size in (
                 ("native", "native_coarse_center", "native_coarse_size"),
                 ("reference", "mask_reference_center", "mask_reference_size"),

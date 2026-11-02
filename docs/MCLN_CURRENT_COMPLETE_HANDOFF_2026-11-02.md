@@ -98,9 +98,10 @@ official initialization, which has no matched epoch0 evaluation here.
    one-hour NR epoch duration, so several checkpoints disappeared before
    inspection. New collector CPU-audits every surviving numbered checkpoint
    and preserves hard links. It cannot recover deleted weights.
-   Next implementation: preserve a validated metric-best checkpoint at the
-   epoch save/evaluation boundary. Keep the two-hour notification schedule;
-   a two-hour observer alone cannot guarantee preservation.
+   Mitigation deployed: CPU metric keepers poll every240sec and preserve
+   the audited selected best through atomic hardlink replacement. SR e8
+   advancement was observed. Native evaluator remains unfixed; inspect
+   keeper process/log health during two-hour monitoring.
 2. Old status checks truncate logs to a short tail. This hid complete
    ScanRefer epochs3-8 and some NR rows. The new collector scans the entire
    current log and reconstructs integer hits using semantic subgroup counts.
@@ -121,6 +122,38 @@ official initialization, which has no matched epoch0 evaluation here.
    per-axis errors; test whether a learned correction actually changes
    relevant boxes. Only change its confidence/extent mechanism when those
    measurements identify a failure.
+
+   CPU weight audit at15:38UTC of the retained Scan e8 checkpoint,
+   SHA2563572193fef0f32d1d6ca22b41cbbb02932a30de0a51b18deb3b0c40ee37bcf38:
+   all34 innovation tensors finite; all six zero-initialized output
+   weight/bias tensors have every element nonzero. Reader output weight
+   norm0.531269,bias0.026472; Support0.208826/0.005804;
+   Span0.183130/0.010051. Optimizer state steps all48648.
+   This excludes unchanged zero outputs, but does not establish forward
+   activation magnitude, clamp occupancy, gradient health at e8, causal
+   contribution or a method gain. Raw evidence:
+   `docs/results/mcln_pvground_20261101/scanrefer-e8-module-weight-audit.json`.
+   Use sample-based hooks in an isolated evaluation process for raw/clamped
+   gates and reference validity; do not launch an additional GPU evaluation
+   on the occupied4090 or modify the active trainer to obtain those values.
+
+   Offline instrumentation implemented:
+   `tools/eval_pvground_audit.py` accepts normal single-GPU MCLN eval flags
+   plus `--audit-jsonl PATH --audit-bypass none|reader|support|span`.
+   Run through torch.distributed.launch with a separate port, `--eval`,
+   `--use_pvground_innovations`, complete trained checkpoint_path and matched
+   preprocessing; omit model_only_initialization and initialization-only
+   pp_checkpoint. Pin a preserved epoch path, never a moving best alias.
+   `tools/pvground_forward_audit.py` hooks only the offline model and writes
+   per-sample candidate gate boundary counts, means, valid reference counts,
+   and absolute axis shifts. Support bypass keeps measured geometry but
+   returns original member logits; Span bypass restores exact native boxes;
+   Reader bypass zeros its residual. No checkpoint keys or weights change.
+   Metadata includes checkpoint SHA and invocation; compare full semantic
+   counts separately. Statistics cover all candidates, not selected queries;
+   shifts are not errors against ground truth. Per-example ranking/GT errors
+   still require evaluator output. Hook unit tests plus prior tests:11 pass.
+   GPU entry point has not run; no measured bypass result or gain is claimed.
 
 The three intended module responsibilities remain Reader (local visual
 evidence), Support (candidate mask membership correction), and Span (axis

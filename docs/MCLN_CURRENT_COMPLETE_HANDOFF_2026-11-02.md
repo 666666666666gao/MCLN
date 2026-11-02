@@ -1,5 +1,15 @@
 # Current MCLN + PV-Ground Handoff
 
+19:16UTC keeper refresh confirmed:NRsemantic_best.json/pth nowepoch25,
+3727/2945hits,1134tensors,optimizer/scheduler,793092691bytes/4links.
+Previous pendingalias24 note is superseded. Raw manifest:
+docs/results/mcln_pvground_20261101/nr3d-semantic-best-epoch25.json.
+Original NRmain96960/keeper135075 live,NR26=415/3742,config unchanged.
+ScanStageA1=1347/6081,GPU11369MiB;SRmain92354/keeper129032 live,
+SR10=2758/6486,GPU22924MiB,nullcheckpoints. No new completeepoch,
+44rows unchanged. Next full validation estimatesNR26~20:10-20:15UTC,
+SR10~21:00-21:10,Scan1~21:15-21:25. PollnearETA,no localtests.
+
 NR25 complete19:10:21UTC,full7899 semantic Top1 hits3727/2945=
 47.183188%/37.283200%,new observed025-firstbest25. Owncheckpoint25,
 1134tensors/optimizer/scheduler remoteCPUverified and hardlinked.

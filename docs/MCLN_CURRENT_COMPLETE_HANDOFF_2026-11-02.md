@@ -1,5 +1,13 @@
 # Current MCLN + PV-Ground Handoff
 
+Update15:31UTC: SR e8 full17726 validation completed15:24:27UTC,
+11124/8586 semantic Top1 hits=62.755275%/48.437324%. CPU own epoch8,
+1134 tensors,optimizer/scheduler confirmed and hardlinks preserved.
+All three current trainers and metric keepers verified live at15:29UTC;
+NR/SR task checkpoints null, configurations unchanged. Scan e9 training,
+NR e22 training, SR e9 training. Keeper successfully advanced SR best.
+Publication commitbc70601 pushed; full table now37 rows. Targets unmet.
+
 Update15:23UTC: independent metric keepers are deployed and verified live
 on all3 hosts. Screen names are pvg_DATASET_metric_keeper; interval240s.
 They CPU-verify a newly selected best and atomically replace
@@ -36,7 +44,7 @@ The goal remains active and none of these targets has been demonstrated.
 | --- | --- | --- | --- | --- |
 | ScanRefer | 8 | 5422 / 4505 | 57.025663 / 47.381153 | 2.974337 / 4.618847 |
 | NR3D | 21 | 3557 / 2642 | 45.031017 / 33.447272 | 14.768983 at 025 |
-| SR3D | 7 | 11085 / 8355 | 62.535259 / 47.134153 | 6.864741 at 025 |
+| SR3D | 8 | 11124 / 8586 | 62.755275 / 48.437324 | 6.644725 at 025 |
 
 Each listed checkpoint was loaded on CPU and its own epoch checked.
 ScanRefer has 1168 model tensors; NR/SR have 1134. All contain optimizer
@@ -44,8 +52,8 @@ and scheduler state. Hard links were preserved under
 `runs/DATASET/preserved_checkpoints/ckpt_epoch_N.pth`.
 NR e21 improves Acc025 over e20 but its Acc050 is lower: report the e21
 pair together. Do not replace its 33.447272% with e20's 33.523231%.
-All 36 completed epoch rows recovered so far are in the accompanying CSV:
-ScanRefer 1-8, NR3D 1-21, SR3D 1-7.
+All 37 completed epoch rows recovered so far are in the accompanying CSV:
+ScanRefer 1-8, NR3D 1-21, SR3D 1-8.
 Rows without weights are explicitly marked `missing_retention_deleted`.
 
 Log timestamps are server UTC+08:00. Subtract eight hours for UTC.

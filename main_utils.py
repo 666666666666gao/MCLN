@@ -5909,6 +5909,9 @@ class BaseTrainTester:
             dist.barrier()
 
 
+    def should_stop_after_epoch(self, epoch, metrics, args):
+        return False
+
     # BRIEF main training/testing
     def main(self, args):
         """Run main training/testing pipeline."""
@@ -6253,6 +6256,7 @@ class BaseTrainTester:
         # NOTE Training and Validation #
         # ##############################
         last_eval_epoch = None
+        stopped_early = False
         metric_retention = getattr(
             args, "checkpoint_metric_retention", False
         )
@@ -6623,6 +6627,10 @@ class BaseTrainTester:
                             )
                         )
 
+                if self.should_stop_after_epoch(epoch, metrics, args):
+                    stopped_early = True
+                    break
+
         # Training is over
         saved_path = os.path.join(args.log_dir, 'ckpt_epoch_last.pth')
         if not metric_retention:
@@ -6637,7 +6645,7 @@ class BaseTrainTester:
             self.logger.info(
                 "Latest checkpoint hard link is {}".format(saved_path)
             )
-        if last_eval_epoch != args.max_epoch:
+        if not stopped_early and last_eval_epoch != args.max_epoch:
             metrics = self.evaluate_one_epoch(
                 args.max_epoch, test_loader,
                 model, criterion, set_criterion, args

@@ -1,0 +1,35 @@
+{
+  "source": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/source/models/mcln_training_groups.py",
+  "sha256": "68c85958a4b0aab2b6f9ab5ee78c86febb7bc0cff17612e1880ce5da0a39d227",
+  "local_visual_prefix": "decoder.5.local_visual.",
+  "routing_lines": [
+    {
+      "line": 122,
+      "text": "        group_name = parameter_group_name(name)"
+    },
+    {
+      "line": 123,
+      "text": "        if (candidate_local_visual_lr is not None"
+    },
+    {
+      "line": 124,
+      "text": "                and bare_name.startswith(LOCAL_VISUAL_PREFIX)):"
+    },
+    {
+      "line": 125,
+      "text": "            group_name = \"candidate_local_visual\""
+    },
+    {
+      "line": 126,
+      "text": "        if group_name == \"frozen_text\":"
+    },
+    {
+      "line": 127,
+      "text": "            raise ValueError(\"text_encoder parameter is unexpectedly trainable\")"
+    }
+  ],
+  "support_span_special_rate_match": false,
+  "scope": "read-only deployed source; no model or dataset execution",
+  "stage_a_optimizer_affected": false,
+  "stage_b_started": false
+}

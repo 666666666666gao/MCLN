@@ -208,8 +208,8 @@ cannot authorize Stage B. If no single epoch passes both5425/4328 hit gates,
 the decision is `gate_failed`. Otherwise it selects among eligible epochs
 by050then025,with the earlier epoch breaking exact ties,hardlinks the selected
 initialization weight and records its SHA256. This is a transition receipt,
-not a Stage B launch or a claim of final target success. The runner still
-ends after Stage A; Stage B launch/early-stop implementation remains pending.
+not a Stage B launch or a claim of final target success. The Stage A runner
+still ends after Stage A; the separate Stage B entry is prepared below.
 The validation protocol boundary above still applies.
 All7 expanded collector tests passed on the remote Scan server,CUDA
 uninitialized. They cover incomplete budget,pipeline failure,non-combinable
@@ -218,6 +218,59 @@ and the original collector integrity checks. Receipt:
 `docs/results/mcln_pvground_20261101/scanrefer-stage-a-transition-remote-tests.json`.
 The deployed collector returned empty rows and a pending decision on the
 actual Stage A run. No Stage B checkpoint has been selected or launched.
+
+### Prepared Stage B Entry
+
+At19:48UTC a separate `stage_b_source` copy was prepared remotely; the live
+Stage A main_utils.py hash remains
+a87d2524fd128b3586d81233636a8ffb47002f65ac69ac582de639b646058fa3.
+NR/SR source and training are unchanged.
+`tools/run_scanrefer_stage_b.sh` refreshes the three-epoch audited collector
+gate,requires `ready`,and rejects a previous Stage B launch. It starts
+`tools/train_scanrefer_stage_b.py` only after that gate. No Stage B launched.
+Secure launcher/check helpers:
+`work/start_scanrefer_stage_b.sh` / `work/check_scanrefer_stage_b.sh`.
+
+Read-only optimizer-source inspection found an actual Stage B recipe
+mismatch:the existing `models/mcln_training_groups.py` special-rate group
+matches only `decoder.5.local_visual.`; Support and Span default to decoder
+LR. This does not affect the current Stage A optimizer,which explicitly
+trains all three at1e-4. The separate Stage B entry explicitly unfreezes
+native parameters except `text_encoder.`,assigns native2e-6/backbone4e-6,
+and all three module prefixes2e-5. It loads only the selected Stage A full
+model,uses fresh optimizer/scheduler,and does not reload the official
+backbone over trained Stage A weights. Batch8/accum6,max10,seed0,constant LR
+(decay100 outside budget),training cuDNN settings preserved.
+Deployed-source read-only confirmation:
+`source/models/mcln_training_groups.py:122-127`,SHA256
+68c85958a4b0aab2b6f9ab5ee78c86febb7bc0cff17612e1880ce5da0a39d227.
+Raw evidence:
+`docs/results/mcln_pvground_20261101/scanrefer-stage-b-optimizer-source-audit.json`.
+This is a proven configuration-routing issue for the proposed Stage B,
+not a measured explanation of earlier accuracy results.
+
+A default-false `should_stop_after_epoch` hook in the prepared source ends
+the native loop after two strict consecutive full Stage B Acc050 decreases.
+The first Stage B validation establishes its comparison baseline;equal or
+improved hits reset the streak. An early stop skips the final budget-epoch
+evaluation,preventing a misleading epoch10 label for an earlier checkpoint.
+Each completed checkpoint is CPU-audited and hardlinked before another
+epoch;semantic history and050then025 best are maintained separately from
+the native position/mask retention schema. This does not claim the native
+ordinary evaluator/retention issue is globally fixed.
+
+Five remote CPU tests passed,CUDA uninitialized:actual native/three-module
+parameter updates with frozen text,exact three-group LRs,semantic bbf rather
+than bbs,partial-validation rejection,streak reset,model-only arguments
+without backbone reload,and execution of the native validation-loop branch
+confirming stop before epoch4 without an extra evaluation.
+Bash syntax checked remotely. Raw tests/preparation receipts:
+`docs/results/mcln_pvground_20261101/scanrefer-stage-b-preparation-remote-tests.json`
+and `scanrefer-stage-b-prepared.json`. These tests are not a real Stage B
+GPU update or validation. On actual launch verify the new run's own finite
+loss,three-module gradient/parameter-update receipt,config and initialization.
+The matched-entry protocol check remains required before attributing tiny
+accuracy differences to the modules.
 
 NR24 completed18:10:00UTC,7899 examples,semantic hits3666/2805,
 Acc025/05046.410938%/35.510824%; own epoch24/1134 tensors and optimizer/

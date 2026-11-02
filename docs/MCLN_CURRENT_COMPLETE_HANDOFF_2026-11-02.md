@@ -1,6 +1,18 @@
 # Current MCLN + PV-Ground Handoff
 
-Update17:25UTC: Scan trainer154585/keeper178546 verified live17:24:45UTC,
+Update17:31UTC: Scan e10 full9508 semantic Top1 completed17:26:28UTC,
+5366/4461 hits=56.436685%/46.918385%. Remote CPU own epoch10/1168
+tensors/optimizer/scheduler verified; hardlink preserved. Best remains8.
+Full41 rows Scan10/NR23/SR8; selected8/23/8,all targets unmet.
+Log precision fix and raw training observations pushed57e552b.
+No active trainer/source/config change,no local tests.
+SR trainer92354/keeper129032 verified live17:30:13UTC,e9=5421/6486,
+GPU22924MiB/41%,task checkpoints null. About24min train plus validation
+remain; next useful full check18:00--18:10UTC. NR24 full check about18:10.
+Two-hour ACTIVE monitor updated with41-row evidence,new diagnostic staging,
+explicit offline local_rank0,remote-only testing and current limitations.
+
+Historical17:25UTC: Scan trainer154585/keeper178546 verified live17:24:45UTC,
 e10 validation992/1189,about2min remaining; no completed e10 claimed yet.
 Remote log-only extraction preserves cumulative training means at the
 same6000/6081 batch point for epochs1--10. Loss7.3920->7.2505,

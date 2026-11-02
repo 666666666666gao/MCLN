@@ -15,9 +15,11 @@ Only existing logs were read; no model forward or local tests were run.
 | 9 | 7.2600 | 1.2358 | 2.8480 | 34.9410 | 0.1680 |
 | 10 | 7.2505 | 1.2302 | 2.8484 | 35.1608 | 0.1669 |
 
-Total running loss falls about1.91% from epoch1 to10. In the first nine
+Total running loss falls about1.91% from epoch1 to10. In the first ten
 complete validations,Acc050 varies46.287337%--47.381153%; epoch8 is the
-current050-first best. Lower training loss has not established a material
+current050-first best. Epoch10 completed17:26:28UTC on9508 samples,
+5366/4461 hits=56.436685%/46.918385%,CPU own epoch10 verified and
+hardlink preserved. Lower training loss has not established a material
 validation gain. These limited observations neither diagnose overfitting
 nor demonstrate a missing loss,dead module,or bad learning rate.
 Component magnitudes are unweighted reported terms with different

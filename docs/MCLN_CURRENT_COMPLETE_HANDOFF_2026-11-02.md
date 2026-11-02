@@ -1,5 +1,21 @@
 # Current MCLN + PV-Ground Handoff
 
+Update15:23UTC: independent metric keepers are deployed and verified live
+on all3 hosts. Screen names are pvg_DATASET_metric_keeper; interval240s.
+They CPU-verify a newly selected best and atomically replace
+`RUN_DIR/semantic_best.pth` (hard link) and `semantic_best.json`.
+Existing retained bests: Scan e8, NR e21, SR e7. Actual Python processes,
+first successful loop logs and link counts were checked, not just screens.
+Training code/processes and two-hour user notification cadence are unchanged.
+The trainer still returns None for ordinary evaluation; this is an external
+mitigation, not an in-process evaluator repair. Keepers must remain live.
+They exit on a missing best weight or inconsistent metrics; inspect their
+logs at each monitor run. They cannot recover historical deleted weights
+or guarantee survival through host/process failure.
+Tests now7 passing:3 module tests plus4 keeper tests covering trainer
+unlink, best replacement, unchanged best, Scan semantic/mask separation,
+partial validation and missing-best rejection.
+
 Updated: 2026-11-02, approximately 15:07 UTC / 10:07 America/New_York.
 This section supersedes historical September and clean-baseline instructions.
 Do not restart stopped clean-baseline or previous failed fine-tunes.

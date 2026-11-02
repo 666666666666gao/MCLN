@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import torch
 
 from tools.pvground_forward_audit import PVGroundForwardAudit
+from tools.pvground_semantic_audit import PVGroundSemanticAudit
 
 
 def main():
@@ -32,6 +33,8 @@ def main():
     )
     if not args.eval or not args.use_pvground_innovations:
         raise ValueError("audit requires --eval --use_pvground_innovations")
+    if args.test_dataset != "scanrefer" or args.butd_cls:
+        raise ValueError("semantic audit requires current ScanRefer without detector filtering")
     if args.model_only_initialization:
         raise ValueError("audit must load the complete trained checkpoint")
     if int(os.environ["WORLD_SIZE"]) != 1:
@@ -50,7 +53,10 @@ def main():
     torch.backends.cudnn.benchmark = True
     torch.backends.cudnn.deterministic = True
     original_get_model = trainer.TrainTester.get_model
+    original_build_evaluator = trainer.TrainTester._build_grounding_evaluator
     audits = []
+    semantic_audits = []
+    evaluators = []
     with Path(audit_args.audit_jsonl).open("w") as stream:
         stream.write(json.dumps({
             "kind": "metadata", "checkpoint": str(checkpoint),
@@ -66,13 +72,41 @@ def main():
             ))
             return model
 
+        def build_evaluator(instance, options, prefixes):
+            from models.losses import _iou3d_par, box_cxcyczwhd_to_xyzxyz
+
+            evaluator = original_build_evaluator(instance, options, prefixes)
+            audit = PVGroundSemanticAudit(
+                stream, _iou3d_par, box_cxcyczwhd_to_xyzxyz
+            )
+            original_semantic = evaluator.evaluate_bbox_by_sem_align
+
+            def evaluate_semantic(end_points, prefix):
+                result = original_semantic(end_points, prefix)
+                if prefix == "last_":
+                    audit.update(end_points, audits[0].last_gates)
+                return result
+
+            evaluator.evaluate_bbox_by_sem_align = evaluate_semantic
+            semantic_audits.append(audit)
+            evaluators.append(evaluator)
+            return evaluator
+
         trainer.TrainTester.get_model = staticmethod(get_model)
+        trainer.TrainTester._build_grounding_evaluator = build_evaluator
         trainer.TrainTester(args).main(args)
-        if len(audits) != 1:
-            raise ValueError("expected exactly one audited model")
+        if len(audits) != 1 or len(semantic_audits) != 1:
+            raise ValueError("expected one audited model and evaluator")
+        semantic = semantic_audits[0]
+        semantic.verify(evaluators[0])
+        if semantic.samples != 9508 or audits[0].samples != 9508:
+            raise ValueError("ScanRefer audit requires all 9508 validation examples")
         stream.write(json.dumps({
             "kind": "forward_complete", "samples": audits[0].samples,
-            "limitation": "Pair with full semantic evaluator counts and metrics.",
+            "semantic_samples": semantic.samples,
+            "semantic_hits025": semantic.hits[0.25],
+            "semantic_hits050": semantic.hits[0.5],
+            "verified_against_evaluator": True,
         }) + "\n")
         audits[0].close()
     torch.distributed.destroy_process_group()

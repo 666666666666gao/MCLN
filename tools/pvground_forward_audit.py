@@ -14,6 +14,7 @@ class PVGroundForwardAudit:
         self.stream = stream
         self.bypass = bypass
         self.samples = 0
+        self.last_gates = []
         self.handles = []
         if bypass == "reader":
             self.handles.append(
@@ -46,11 +47,16 @@ class PVGroundForwardAudit:
         native_size = predictions["native_coarse_size"]
         applied_center = native_center if self.bypass == "span" else centers
         applied_size = native_size if self.bypass == "span" else sizes
+        self.last_gates = []
         for batch_index, current in enumerate(evidence):
             raw = current["raw_axis_gate"].detach()
             gate = current["axis_gate"].detach()
             valid = current["reference_valid"].detach()
+            self.last_gates.append({
+                "raw": raw.cpu(), "clamped": gate.cpu(),
+            })
             row = {
+                "kind": "forward_sample",
                 "sample_index": self.samples,
                 "bypass": self.bypass,
                 "candidate_count": raw.shape[0],

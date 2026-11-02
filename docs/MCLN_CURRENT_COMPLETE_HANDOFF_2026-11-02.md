@@ -157,11 +157,17 @@ official initialization, which has no matched epoch0 evaluation here.
    and absolute axis shifts. Support bypass keeps measured geometry but
    returns original member logits; Span bypass restores exact native boxes;
    Reader bypass zeros its residual. No checkpoint keys or weights change.
-   Metadata includes checkpoint SHA and invocation; compare full semantic
-   counts separately. Statistics cover all candidates, not selected queries;
-   shifts are not errors against ground truth. Per-example ranking/GT errors
-   still require evaluator output. Hook unit tests plus prior tests:11 pass.
-   GPU entry point has not run; no measured bypass result or gain is claimed.
+   Metadata includes checkpoint SHA and invocation. Extended helper
+   `tools/pvground_semantic_audit.py` exports selected-query gates, identity/
+   pointSHA, semantic chosen/oracle IoU, first-good rank,top10, and selected
+   native/reference/final signed center/size errors against root GT.
+   Completion requires exactly9508 records and audit hits/counts matching
+   evaluator last/bbf025/050. CPU tests run the tracked semantic evaluator
+   method and IoU functions in isolation; three seeds match selected boxes,
+   IoUs and counters. Altered counter and strict-threshold checks pass.
+   Total15 focused tests pass. Full command/limitations:
+   `docs/PVG_FORWARD_AUDIT.md`. GPU entry point has not run; no real-sample
+   bypass result,gate distribution,GT error result or method gain is claimed.
 
 The three intended module responsibilities remain Reader (local visual
 evidence), Support (candidate mask membership correction), and Span (axis

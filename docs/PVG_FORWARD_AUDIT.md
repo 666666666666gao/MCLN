@@ -1,6 +1,6 @@
 # Fixed-Checkpoint Forward Audit
 
-Status: CPU hook tests passed; the GPU evaluation entry point is unexecuted.
+Status: 15 focused CPU tests passed; the GPU evaluation entry point is unexecuted.
 This tool does not attach to, change, stop, or resume an existing trainer.
 Run it only when a GPU is available for isolated evaluation.
 
@@ -33,7 +33,9 @@ cd "$root/source"
   --model MCLN --exp scan_e8_none
 ```
 
-The helpers must first be copied into the deployed source's tools directory.
+The helpers (`eval_pvground_audit.py`, `pvground_forward_audit.py`, and
+`pvground_semantic_audit.py`) must first be copied into the deployed source's
+tools directory.
 The command intentionally loads the full trained state, without
 `model_only_initialization`, `checkpoint_start_epoch`, or initialization-only
 `pp_checkpoint`. It has not been validated against remote CUDA dependencies.
@@ -60,13 +62,29 @@ claiming improvement over MCLN.
 Each JSONL begins with checkpoint SHA256 and invocation metadata. Sample
 records contain candidate counts, reference-valid counts, raw gate bounds
 and clipping counts, gate means, and mean absolute axis displacements.
-The footer confirms only that the forward loop returned, not metric
-completeness. Match 9508 sample records AND the evaluator's complete
-9508-example last semantic alignment Top1 counts. Position/mask metrics
-must not be substituted.
+Additional `semantic_sample` records contain scan/target/utterance identity,
+input point SHA256, unique/multiple group, selected query and raw/clamped
+gate, selected and all-candidate oracle IoU, first good candidate rank at
+strict025/050 thresholds, top10 candidates/IoUs, and native/reference/final
+selected boxes with signed per-axis center/size errors against the target.
 
-All-candidate gate statistics can differ from the selected query distribution.
-Displacement is not localization error. Ground-truth box errors, selected
-query ranks, example IDs, and per-example predictions are not exported here
-and remain required before diagnosing a ranking/localization failure.
+The completion footer is emitted only after both forward and semantic
+records cover exactly9508 examples and per-example025/050 hit counts agree
+with the evaluator's own last/bbf Top1 counters. Position/mask metrics must
+not be substituted. Failed/incomplete evaluations have no completion footer.
+The standalone evaluator's normal full log remains an independent artifact.
+
+The semantic helper follows the current root-only ScanRefer branch without
+detector filtering. Tests execute the tracked evaluator's own semantic
+method and box IoU functions (isolated from CUDA-only imports), compare
+selected boxes/IoUs/counters on three seeds, reject a deliberately altered
+counter, and check strict-threshold rank behavior. This establishes CPU
+agreement on those fixtures, not remote GPU validation.
+
+All-candidate gate statistics can differ from the selected query distribution;
+selected gates are recorded separately. All-candidate oracle coverage uses
+the current predicted boxes, not ground-truth candidate boxes. Displacement
+is distinct from the recorded GT errors. A module bypass can change rankings
+and boxes together; paired identities and full metrics are needed to interpret
+differences. These diagnostics do not themselves prove a causal failure.
 No real gate-occupancy or bypass-accuracy result is available yet.

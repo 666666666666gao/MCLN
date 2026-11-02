@@ -1,5 +1,13 @@
 # Current MCLN + PV-Ground Handoff
 
+Update15:47UTC: ScanRefer e9 completed15:45:32UTC, full9508
+last semantic Top1 hits5390/4473=56.689104%/47.044594%.
+CPU own epoch9/1168 tensors/optimizer+scheduler verified, fixed hardlink
+preserved. Both thresholds fell32 hits versus e8; selected best stays e8.
+Full table now38 rows: Scan1-9,NR1-21,SR1-8. Targets remain unmet.
+Offline audit hooks/eval entry,CPU evidence and11 passing tests pushed
+commit31373aa. No real-sample bypass result or method change yet.
+
 Update15:31UTC: SR e8 full17726 validation completed15:24:27UTC,
 11124/8586 semantic Top1 hits=62.755275%/48.437324%. CPU own epoch8,
 1134 tensors,optimizer/scheduler confirmed and hardlinks preserved.
@@ -52,8 +60,8 @@ and scheduler state. Hard links were preserved under
 `runs/DATASET/preserved_checkpoints/ckpt_epoch_N.pth`.
 NR e21 improves Acc025 over e20 but its Acc050 is lower: report the e21
 pair together. Do not replace its 33.447272% with e20's 33.523231%.
-All 37 completed epoch rows recovered so far are in the accompanying CSV:
-ScanRefer 1-8, NR3D 1-21, SR3D 1-8.
+All 38 completed epoch rows recovered so far are in the accompanying CSV:
+ScanRefer 1-9, NR3D 1-21, SR3D 1-8.
 Rows without weights are explicitly marked `missing_retention_deleted`.
 
 Log timestamps are server UTC+08:00. Subtract eight hours for UTC.

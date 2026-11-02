@@ -1,5 +1,20 @@
 # Current MCLN + PV-Ground Handoff
 
+NR29 completed2026-11-02 23:13:35UTC,full7899 last-semantic Top1:
+3768/2961hits=47.702241%/37.485758%. OwnCPUcheckpoint29/1134tensors/
+optimizer/scheduler verified,CUDAoff;hardlink retained. SHA256
+2ef30f51358a2817acce17e3c56297f765e5f95913b046b730eb962ae743947d,
+793092691bytes/3links. Versus28 +36/+128hits;versus27 -7/+53.
+Acc025-first best remains27=3775/2908,47.790860%/36.814787%.
+Do not combine29's050 with27's025. OriginalNR240epoch training continues,
+actual96960/135075 live23:15UTC. Historicaltable49rows(oldScan10/NR29/SR10).
+ScanA2=5016/6081 and SR11=5953/6486 at23:15UTC,stilltraining;
+nextfullSR about23:40-23:50UTC,ScanA2 about23:50-00:05UTC.
+NRfree5320933376bytes(91%used),at most6additional same-sizeweights
+ignoringlogs/transientgrowth. Cleanupapproval stillpending,no deletion.
+Raw nr3d-epoch29.json and nr3d-epoch29-file-identity.json.
+No localtests,old-run inspection,architecture/config changes orBlaunch.
+
 Monitoring correction,2026-11-02 22:29UTC:local
 work/check_current_mcln_keeper_status.sh previously enumerated stopped
 oldScan1793579788 alongside NR/SR. Removed the oldScan entry and restricted

@@ -1,5 +1,24 @@
 # Current MCLN + PV-Ground Handoff
 
+NR28 completed2026-11-02 22:12:54UTC,full7899 last-semantic Top1:
+3732/2833hits=47.246487%/35.865299%,versus27 -43/-75hits.
+OwnCPUcheckpoint28/1134tensors/optimizer/scheduler verified,CUDAoff,
+hardlink runs/nr3d/preserved_checkpoints/ckpt_epoch_28.pth retained.
+SHA2563dcb6345d716073b1947036a6a9189a353ad0761e772c588fc6743b5ae16a101,
+793092691bytes/3links at22:16:33UTC. Raw nr3d-epoch28.json and
+nr3d-epoch28-file-identity.json in docs/results/mcln_pvground_20261101/.
+Best remains27:3775/2908,47.790860%/36.814787%,target025deficit949.
+At22:17:06UTC actual96960/135075 live,NR29=277/3742,configunchanged:
+nulltaskinitialization/noinnovations/batch12accum4/240epochs/decay150.
+Bestalias27 verified793092691bytes/2links;historical4linksnapshot changed
+after native retention,but weight survives. NextNRfull~23:10-23:20UTC.
+Historicaltable48rows(oldScan10/NR28/SR10);newScan separate.
+At22:07UTC ScanA2=2090/6081,SR11=2983/6486,actual GPUtrainingcontinues.
+NextScanA2~23:50-00:05UTC,SR11~23:45-23:55UTC;noBlaunch.
+NRdiskfree6114398208bytes(89%used),at most7additional same-sizeweights
+ignoringlogs/transientgrowth. Cleanupunapproved/unexecuted;do not reuse
+old keep-lists. No localtests or currenttrainingchanges.
+
 21:34UTC file-only identity supplement:
 NR27 SHA2564bc94f69e4b39ce97304fef924173c2f61152a86ee53740fb656a196c8749e0b,
 SR10 SHA25693dccfce1086f0c146524df308d88f75d487cff70ee5d57e300fb4338b14ee41.

@@ -158,6 +158,21 @@ The expanded two-update fixture and updated source syntax also pass4tests
 remotely,CUDA uninitialized;receipt remote_stage_a_two_updates_tests.json.
 Current main_utils.py SHA a87d2524fd128b3586d81233636a8ffb47002f65ac69ac582de639b646058fa3.
 
+Stage A evidence collection is separate from the old Scan namespace:
+`tools/collect_scanrefer_stage_a_epochs.py` reads complete semantic log
+subgroups through the existing keeper parser,preserves numeric checkpoint
+hardlinks,and verifies each weight's own epoch,1168 model tensors and
+optimizer/scheduler. It reports transition eligibility and final targets
+as separate fields; an unfinished epoch is not a row.
+Secure workspace wrapper helper:`work/collect_scanrefer_stage_a_epochs.sh`.
+Remote output:`scanrefer_restart_20261102/stage_a_complete_epochs.json`.
+Initial execution against the real run returned an empty row list,CUDA
+uninitialized,because no trained epoch was complete.
+Two remote CPU fixtures passed:complete same-epoch transition without
+final success and retention survival;wrong checkpoint epoch rejection.
+Receipt:`docs/results/mcln_pvground_20261101/scanrefer-stage-a-collector-remote-tests.json`.
+These fixtures validate collection logic,not a completed Stage A epoch.
+
 NR24 completed18:10:00UTC,7899 examples,semantic hits3666/2805,
 Acc025/05046.410938%/35.510824%; own epoch24/1134 tensors and optimizer/
 scheduler CPU verified, checkpoint hardlinked. New NR Acc025-first best24.

@@ -61,6 +61,7 @@ cd "$root/source"
   --nproc_per_node 1 --master_port 29511 \
   "$staging/tools/eval_pvground_audit.py" \
   --audit-jsonl "$root/scan-e8-none-forward.jsonl" --audit-bypass none \
+  --local_rank 0 \
   --eval --checkpoint_path "$root/runs/scanrefer/preserved_checkpoints/ckpt_epoch_8.pth" \
   --expected_eval_sample_count 9508 --rng_seed 0 \
   --num_decoder_layers 6 --use_color --weight_decay 0.0005 \
@@ -81,6 +82,14 @@ The command intentionally loads the full trained state, without
 `model_only_initialization`, `checkpoint_start_epoch`, or initialization-only
 `pp_checkpoint`. Remote imports passed; actual CUDA forward remains untested.
 Do not run concurrent with the occupied training GPU.
+
+The explicit`--local_rank 0`is required by the current parser:
+`main_utils.py`defines only the underscore spelling,default1,and uses
+parse_known_args. The launcher's hyphenated`--local-rank=0`is ignored by
+that parser,leaving device1 selected if the explicit argument is omitted.
+This was the same concrete single-GPU failure fixed in the training runner.
+The original documented offline invocation omitted it; the invocation above
+is corrected. This fixes the command,not the active trainer or parser API.
 
 Repeat sequentially with `reader`, `support`, and `span`, changing the audit
 output, log directory, and experiment name for each condition. Keep all

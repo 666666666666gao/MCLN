@@ -1,5 +1,32 @@
 # Current MCLN + PV-Ground Handoff
 
+Update approximately16:56UTC: fixed a concrete offline invocation error.
+Current main_utils parser accepts only --local_rank(default1),and ignores
+the launcher's --local-rank=0 via parse_known_args. The documented eval
+command omitted the explicit underscore option,so it would select device1
+on these single-GPU hosts. Added `--local_rank 0` (see exact
+command in docs/PVG_FORWARD_AUDIT.md),matching the existing training fix.
+Remote parser-only audit confirmed old=1/corrected=0,CUDA uninitialized;
+no model/device selection or training source change. Reproducer:
+tools/audit_pvground_eval_rank.sh. Raw receipt is stored with current results.
+
+Update16:51UTC: NR current trainer96960 and keeper135075 verified live;
+e23 training2873/3742,GPU22833MiB,task checkpoints still null.
+Latest complete e22/selectede21 unchanged. Approximately13min training
+remaining plus prior validation duration; next useful full check near17:10UTC.
+
+Inspected two additional primary GitHub implementations for the observed
+ScanRefer unique/multiple gap,without executing reference code:
+ViL3DRef82a95d9e41ecd9920d678823eda1b366947da204,conditional spatial
+attention; ConcreteNet7ab4628f19f0442fefaff45550a32e2f30b82189,
+radius-masked candidate fusion and scene-restricted contrastive denominator.
+Detailed source paths,mechanisms,differences and conditional experiment
+rules are in docs/PVG_MULTIPLE_INSTANCE_REFERENCE_NOTES.md.
+Our decoder queries already contain context and MCLN has contrastive
+supervision; neither reference proves an absent capability or a model cause.
+No reference module/loss has been copied or deployed. First obtain real
+chosen/oracle/Support/Span/bypass evidence before mechanism changes.
+
 Update approximately16:43UTC: identified an instrumentation gap, not a
 proven model failure: prior offline hooks observed Span but omitted Reader
 activation size and Support's actual member-mask corrections.

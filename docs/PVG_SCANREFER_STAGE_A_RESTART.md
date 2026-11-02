@@ -125,6 +125,42 @@ Raw audit:
 `docs/results/mcln_pvground_20261101/scanrefer-validation-protocol-source-audit.json`.
 No dataset/model/test was executed for this audit;live trainers unchanged.
 
+#### Prepared Matched Validation
+
+A separate `protocol_audit/` entry is prepared remotely for the actual
+post-Stage-A official-initialization vs selected-checkpoint comparison.
+The current training source,original E0 receipts and declared Stage A gate
+remain unchanged. The extended E0 tool accepts expected epoch and1134/1168
+model tensors:official initialization retains identity modules;trained
+weights must contain the complete1168-tensor model. It validates epoch,
+keys,shape and dtype before loading;no optimizer is constructed/restored.
+Both conditions explicitly use benchmark=True/deterministic=True,batch8,
+seed0,the same source/model architecture and full9508 examples.
+Pair completion requires identical point/order hashes,seed,backend flags,
+sample count and innovations flag. The selected checkpoint SHA is checked
+against the plan. Receipt `protocol_audit/matched_validation.json` reports
+selected-minus-matched-official hits and matched-official-minus-original-E0
+hits separately. The latter is an observed protocol/repeat difference,
+not by itself causal attribution to cuDNN. Raw E0 is never overwritten.
+
+Only run when all three Stage A epochs and pipeline completion are audited
+and the GPU is free. For a ready transition,secure helper
+`work/start_scanrefer_matched_validation.sh` selects the same gate-approved
+checkpoint and starts screen `pvg_scanrefer_matched_validation`;inspect
+`protocol_audit/pipeline.log` / `pipeline_exit_code` / the two raw receipts.
+The underlying `tools/run_scanrefer_matched_validation.sh` takes an audited
+checkpoint path and own epoch,so a failed Stage A gate can still be diagnosed
+on an explicitly chosen completed checkpoint without changing that gate.
+Stage B must not already have started while this diagnostic runs.
+
+Six remote CPU loading tests passed,CUDA uninitialized:exact official
+native/identity-module behavior,complete trained-state restoration,and
+rejection before mutation of wrong epoch,missing module,wrong shape/dtype.
+Bash syntax passed remotely. Receipt:
+`docs/results/mcln_pvground_20261101/scanrefer-matched-preparation-remote-tests.json`.
+These fixtures do not establish matched9508 metrics;the real pair has not
+run and no protocol hit effect has been measured.
+
 ### Final Acceptance And Next Decisions
 
 Passing the Stage A transition gate is not the final target. On the fixed

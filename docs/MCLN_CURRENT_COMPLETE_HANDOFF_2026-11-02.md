@@ -1,5 +1,28 @@
 # Current MCLN + PV-Ground Handoff
 
+NR26 completed2026-11-02 20:11:19UTC:7899 last-semantic Top1 examples,
+hits3685/2813=46.651475%/35.612103%. Own epoch26/1134tensors/optimizer/
+scheduler remotely CPU verified and checkpoint hardlinked. Down42/132hits
+versus25;selected025-firstbest remains25,3727/2945=47.183188/37.283200%.
+Target025deficit997hits for that best checkpoint. Continue original240
+epochs unchanged;no early stop or method failure inferred from one epoch.
+Historical current-run table45rows:oldScan10/NR26/SR9;newScan separate.
+Raw docs/results/mcln_pvground_20261101/nr3d-epoch26.json.
+At20:13:24UTC original trainer96960/keeper135075 live,NR27=129/3742,
+GPU22833MiB,next full ETA~21:10-21:15UTC. Current-root-only progress helper:
+work/check_nr3d_current_mcln_progress.sh. Do not use stale
+work/inspect_nr3d_current_epoch.sh,which points to a stopped20261030 run.
+
+New ScanStageA still awaits complete metrics. StageB source/entry is
+prepared separately (5remoteCPUtests) with correct all3module2e-5 rates
+and semantic two-decrease stop. Matched official/selected initialization
+entry is prepared in protocol_audit (6remoteCPUloadingtests);when StageA
+is complete and GPU free,run the matched check before attributing tiny
+gains and before launching StageB. No matchedGPUevaluation or StageB
+training occurred. OriginalE0/currentgate/live source unchanged.
+Details,raw test/preparation evidence and secure helper commands:
+docs/PVG_SCANREFER_STAGE_A_RESTART.md. No local tests.
+
 19:16UTC keeper refresh confirmed:NRsemantic_best.json/pth nowepoch25,
 3727/2945hits,1134tensors,optimizer/scheduler,793092691bytes/4links.
 Previous pendingalias24 note is superseded. Raw manifest:

@@ -10,9 +10,45 @@ import sys
 import torch
 
 
+def initialize_evaluation_model(settings, model, expected_epoch, expected_tensors):
+    saved = torch.load(settings.checkpoint_path, map_location="cpu")
+    assert saved["epoch"] == expected_epoch
+    loaded = {name.removeprefix("module."): value
+              for name, value in saved["model"].items()
+              if not name.endswith("embeddings.position_ids")}
+    unwrapped = model.module
+    current = unwrapped.state_dict()
+    module_prefixes = ("decoder.5.local_visual.",
+                       "pvground_support_corrector.", "pvground_span_mixer.")
+    missing = set(current) - set(loaded)
+    assert not (set(loaded) - set(current))
+    assert len(loaded) == expected_tensors
+    assert sum(not name.startswith(module_prefixes) for name in loaded) == 1134
+    if expected_tensors == 1168:
+        assert not missing
+    else:
+        assert all(name.startswith(module_prefixes) for name in missing)
+    for name, value in loaded.items():
+        assert current[name].shape == value.shape and current[name].dtype == value.dtype
+    current.update(loaded)
+    unwrapped.load_state_dict(current, strict=True)
+    settings.start_epoch = 0
+    return {
+        "native_tensors": 1134,
+        "loaded_tensors": len(loaded),
+        "new_tensors": len(missing),
+        "checkpoint_epoch": expected_epoch,
+        "optimizer_restored": False,
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--e0-receipt", required=True)
+    parser.add_argument("--checkpoint-epoch", type=int, default=54)
+    parser.add_argument("--checkpoint-model-tensors", type=int, default=1134,
+                        choices=(1134, 1168))
+    parser.add_argument("--cudnn-benchmark", action="store_true")
     options, rest = parser.parse_known_args()
     sys.argv = [sys.argv[0]] + rest
     import train_dist_mod as trainer
@@ -23,26 +59,9 @@ def main():
     initialization = {}
 
     def initialize_for_evaluation(settings, model, optimizer, scheduler, **kwargs):
-        saved = torch.load(settings.checkpoint_path, map_location="cpu")
-        assert saved["epoch"] == 54
-        native = {name.removeprefix("module."): value
-                  for name, value in saved["model"].items()
-                  if not name.endswith("embeddings.position_ids")}
-        unwrapped = model.module
-        current = unwrapped.state_dict()
-        new_prefixes = ("decoder.5.local_visual.",
-                        "pvground_support_corrector.", "pvground_span_mixer.")
-        missing = set(current) - set(native)
-        assert not (set(native) - set(current))
-        assert all(name.startswith(new_prefixes) for name in missing)
-        assert len(native) == 1134
-        for name, value in native.items():
-            assert current[name].shape == value.shape and current[name].dtype == value.dtype
-        current.update(native)
-        unwrapped.load_state_dict(current, strict=True)
-        initialization.update(native_tensors=len(native), new_tensors=len(missing),
-                              checkpoint_epoch=54, optimizer_restored=False)
-        settings.start_epoch = 0
+        initialization.update(initialize_evaluation_model(
+            settings, model, options.checkpoint_epoch, options.checkpoint_model_tensors,
+        ))
 
     main_utils.load_checkpoint = initialize_for_evaluation
     trainer.TrainTester.get_optimizer = staticmethod(lambda settings, model: None)
@@ -51,7 +70,8 @@ def main():
         backend="nccl", init_method="env://",
         timeout=datetime.timedelta(seconds=5400),
     )
-    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.enabled = True
+    torch.backends.cudnn.benchmark = options.cudnn_benchmark
     torch.backends.cudnn.deterministic = True
     original = trainer.TrainTester._build_grounding_evaluator
     evaluators = []
@@ -99,6 +119,11 @@ def main():
         "checkpoint_sha256": hashlib.sha256(Path(args.checkpoint_path).read_bytes()).hexdigest(),
         "argv": rest,
         "initialization": initialization,
+        "backend": {
+            "cudnn_enabled": torch.backends.cudnn.enabled,
+            "cudnn_benchmark": torch.backends.cudnn.benchmark,
+            "cudnn_deterministic": torch.backends.cudnn.deterministic,
+        },
     }
     Path(options.e0_receipt).write_text(json.dumps(receipt, indent=2) + "\n")
     print("E0_COMPLETE", json.dumps(receipt))

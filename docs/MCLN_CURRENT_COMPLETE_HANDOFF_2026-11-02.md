@@ -1,5 +1,18 @@
 # Current MCLN + PV-Ground Handoff
 
+SR10 completed2026-11-02 20:58:39UTC:full17726 last-semantic Top1,
+hits11624/9119=65.575990%/51.444206%,new selected025-firstbest10.
+Owncheckpoint10/1134tensors/optimizer/scheduler remotelyCPUverified and
+hardlinked. Versus9:+522/+487hits;versuspreviousbest8:+500/+533.
+Target025deficit678hits;not achieved. Keep original140epochs unchanged.
+Historicaltable46rows:oldScan10/NR26/SR10;newScan separate.
+Raw docs/results/mcln_pvground_20261101/sr3d-epoch10.json.
+At21:01:31UTC actualSR92354/keeper129032 live,SR11=117/6486,
+GPU22924MiB. Bestalias still8 on that read,pending keeper refresh;
+numeric10 independently preserved. ScanA1=5769/6081,NR27=3394/3742.
+Nextfull estimates NR27~21:10-21:15UTC,ScanA1~21:15-21:25UTC,
+SR11~23:45-23:55UTC. No localtests,trainingchanges or approvedcleanup.
+
 20:34UTC real storage risk:NRfree7700983808bytes(86%used),SR14984093696.
 Each preserved full checkpoint793092691bytes;only9/18additional same-size
 weights fit ignoring transient/log growth. Keeping every epoch cannot

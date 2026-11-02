@@ -1,5 +1,25 @@
 # Current MCLN + PV-Ground Handoff
 
+Scan restart A1 completed21:19:22UTC2026-11-02, full9508 last-semantic
+Top1 hits5446/4543=57.278082%/47.780816%. Owncheckpoint1/1168tensors/
+optimizer/scheduler CPUverified and hardlinked; semantic_best selects1.
+Checkpoint601225876bytes/4links,SHA256
+9fc7999242e766ec44ea569042eb750ca35662947713c8177bef51badf28e519.
+Original E0 delta+11/+216 hits crosses the documented protocol boundary;
+not established module attribution. Matchedvalidation remains required.
+A1 meets declared5425/4328metricgate, but decision remains pending until
+all3Aepochs and successfulpipelineexit. Finaltargetdeficits259/402hits.
+At21:20:34UTC A2=42/6081,actual two A2updates finite6.6050129/8.2219801,
+all3modules nonzero gradients/deltas, frozen parameters/buffers unchanged.
+Immutablestartupreceipt retains A1proof;per-epochupdatefiles nowA2.
+NewScanCSV E0official/E0identity/A1 separate from historicaloldScan.
+A2ETA23:50-00:05UTC,A3~02:25-02:45UTCNov3,subject to throughput.
+NoBlaunch or configurationchange. NRbestalias27 verified21:16:37UTC,
+793092691bytes/4links,NR28=271/3742;nextfull~22:10-22:20UTC.
+NR27resultpush09ed9bf. No localtests or storagecleanup.
+Raw docs/results/mcln_pvground_20261101/scanrefer-stage-a-epoch1-identity.json
+and scanrefer-stage-a-complete-epochs-through1.json.
+
 NR27 completed 2026-11-02 21:12:16 UTC, full7899 last-semantic Top1:
 3775/2908 hits = 47.790860%/36.814787%. Own CPU checkpoint epoch27,
 1134 tensors, optimizer/scheduler verified, CUDA uninitialized; hardlink

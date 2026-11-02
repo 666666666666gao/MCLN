@@ -1,5 +1,17 @@
 # Current MCLN + PV-Ground Handoff
 
+NR27 completed 2026-11-02 21:12:16 UTC, full7899 last-semantic Top1:
+3775/2908 hits = 47.790860%/36.814787%. Own CPU checkpoint epoch27,
+1134 tensors, optimizer/scheduler verified, CUDA uninitialized; hardlink
+runs/nr3d/preserved_checkpoints/ckpt_epoch_27.pth. New observed025-first
+best27; versus26 +90/+95 hits, versus25 +48/-37. Target025 deficit949.
+Never combine27's025 with25's050. Historical table47rows: oldScan10,
+NR27,SR10. Original240epoch recipe unchanged; trainer96960/keeper135075
+live at21:12:17 and next epoch starting. Best alias refresh not yet read.
+ScanStageA collector21:12 returns no complete rows, pending decision;
+no StageB launch. No localtests or cleanup. Raw
+docs/results/mcln_pvground_20261101/nr3d-epoch27.json.
+
 21:05 UTC verification: SR semantic_best.json now selects epoch 10 with
 11624/9119 hits over 17726 examples; the 793092691-byte best weight has
 4 hardlinks. This supersedes the pending alias note below. Original

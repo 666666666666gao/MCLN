@@ -1,5 +1,14 @@
 # Current MCLN + PV-Ground Handoff
 
+21:05 UTC verification: SR semantic_best.json now selects epoch 10 with
+11624/9119 hits over 17726 examples; the 793092691-byte best weight has
+4 hardlinks. This supersedes the pending alias note below. Original
+SR11 is at 301/6486, NR27 at 3680/3742, and Scan restart A1 at 5954/6081.
+Scan has no complete new Stage A validation yet. Its first two actual
+updates have finite loss, nonzero three-module updates and unchanged
+frozen parameters/buffers. SR10 results and raw evidence were pushed
+in commit 8427315. No local tests or training changes; cleanup unapproved.
+
 SR10 completed2026-11-02 20:58:39UTC:full17726 last-semantic Top1,
 hits11624/9119=65.575990%/51.444206%,new selected025-firstbest10.
 Owncheckpoint10/1134tensors/optimizer/scheduler remotelyCPUverified and

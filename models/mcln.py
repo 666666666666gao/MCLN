@@ -60,6 +60,7 @@ from .cs_mcln_modules import (
     ContextSupportReader,
     MaskSupportBoxRefiner,
 )
+from .pvground_innovations import mask_extent_reference
 from .sacr_parent_relative import (
     SACRParentRelativeGate,
     apply_parent_relative_sacr_refinement,
@@ -3160,6 +3161,48 @@ class MCLN(nn.Module):
             for name, value in egqs_out.items():
                 if name != 'residuals':
                     end_points['egqs_mask_refiner_' + name] = value
+
+        support_corrector = getattr(self, "pvground_support_corrector", None)
+        span_mixer = getattr(self, "pvground_span_mixer", None)
+        if (support_corrector is None) != (span_mixer is None):
+            raise ValueError("PV-Ground support and span modules must be enabled together")
+        if support_corrector is not None:
+            corrected_masks, geometries = support_corrector(
+                query_last,
+                super_features,
+                inputs["point_clouds"],
+                end_points["last_center"],
+                end_points["last_pred_size"],
+                end_points,
+            )
+            end_points["sp_last_pred_masks"] = corrected_masks
+
+            text_masks = [mask[0] for mask in end_points["last_pred_masks"]]
+            own_masks = corrected_masks
+            mask_centers, mask_sizes, mask_valid = mask_extent_reference(
+                end_points["last_center"],
+                end_points["last_pred_size"],
+                text_masks,
+                own_masks,
+                torch.stack(end_points["adaptive_weights"]),
+                geometries,
+            )
+            end_points["native_coarse_center"] = end_points["last_center"]
+            end_points["native_coarse_size"] = end_points["last_pred_size"]
+            end_points["mask_reference_valid"] = mask_valid
+            end_points["mask_reference_center"] = mask_centers
+            end_points["mask_reference_size"] = mask_sizes
+
+            end_points["last_center"], end_points["last_pred_size"], span_evidence = (
+                span_mixer(query_last, super_features, end_points, geometries)
+            )
+            end_points["pvground_span_gate_mean"] = torch.stack([
+                item["axis_gate"].detach().mean()
+                for item in span_evidence
+            ]).mean()
+            end_points["pvground_mask_reference_valid_ratio"] = (
+                mask_valid.float().mean().detach()
+            )
 
         return end_points
 

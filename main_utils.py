@@ -825,6 +825,7 @@ def parse_option():
     parser.add_argument('--self_attend', action='store_true')
     parser.add_argument('--model', type=str, default='BeaUTyDETR')
     parser.add_argument('--use_candidate_local_visual', action='store_true', default=False)
+    parser.add_argument('--use_pvground_innovations', action='store_true', default=False)
     parser.add_argument('--candidate_local_visual_lr', type=float, default=1e-4)
     parser.add_argument('--candidate_local_visual_variant', choices=['local', 'center', 'extent'],
                         default='local')
@@ -4029,12 +4030,21 @@ def load_checkpoint(args, model, optimizer, scheduler,
     current_state = model.state_dict()
     checkpoint_state = checkpoint['model']
     if (getattr(args, 'use_candidate_local_visual', False)
+            or getattr(args, 'use_pvground_innovations', False)
             or local_visual_state_keys(checkpoint_state)):
         validate_local_visual_checkpoint(
             current_state, checkpoint_state, model_only_initialization,
             current_variant=getattr(args, 'candidate_local_visual_variant', 'local'),
             saved_variant=_checkpoint_config_value(
                 checkpoint.get('config', {}), 'candidate_local_visual_variant', 'local'),
+            additional_new_prefixes=(
+                (
+                    "pvground_support_corrector.",
+                    "pvground_span_mixer.",
+                )
+                if getattr(args, "use_pvground_innovations", False)
+                else ()
+            ),
         )
     score_state_prefixes = (
         "structured_slot_builder.",
@@ -5758,7 +5768,8 @@ class BaseTrainTester:
             ]
         elif (args.use_source_choice_selector
                 or getattr(args, 'use_source_moe', False)
-                or getattr(args, 'use_candidate_local_visual', False)):
+                or getattr(args, 'use_candidate_local_visual', False)
+                or getattr(args, 'use_pvground_innovations', False)):
             param_dicts = build_mcln_optimizer_param_groups(
                 model,
                 decoder_lr=args.lr,
@@ -5772,7 +5783,9 @@ class BaseTrainTester:
                 require_selector=(args.use_source_choice_selector
                                   or getattr(args, 'use_source_moe', False)),
                 candidate_local_visual_lr=(args.candidate_local_visual_lr
-                    if getattr(args, 'use_candidate_local_visual', False) else None),
+                    if (getattr(args, 'use_candidate_local_visual', False)
+                        or getattr(args, 'use_pvground_innovations', False))
+                    else None),
             )
         else:
             param_dicts = [
@@ -7535,6 +7548,12 @@ class BaseTrainTester:
         accumulation_steps = getattr(
             args, "gradient_accumulation_steps", 1
         )
+        innovation_probe_prefixes = (
+            "decoder.5.local_visual.",
+            "pvground_support_corrector.",
+            "pvground_span_mixer.",
+        )
+        innovation_probe = None
         max_train_batches = getattr(args, "max_train_batches", 0)
         accumulation_plan = _gradient_accumulation_plan(
             len(train_loader),
@@ -7712,6 +7731,53 @@ class BaseTrainTester:
             )
 
             if should_step:
+                if (getattr(args, "use_pvground_innovations", False)
+                        and optimizer_step_count == 0):
+                    innovation_probe = {}
+                    named_parameters = [
+                        (
+                            name[7:] if name.startswith("module.") else name,
+                            parameter,
+                        )
+                        for name, parameter in model.named_parameters()
+                    ]
+                    for prefix in innovation_probe_prefixes:
+                        parameters = [
+                            (name, parameter)
+                            for name, parameter in named_parameters
+                            if name.startswith(prefix)
+                        ]
+                        if not parameters:
+                            raise ValueError(
+                                "PV-Ground first-update module is missing: "
+                                + prefix
+                            )
+                        gradients = [
+                            parameter.grad.detach().float()
+                            for _, parameter in parameters
+                            if parameter.grad is not None
+                        ]
+                        if not gradients:
+                            raise ValueError(
+                                "PV-Ground first-update gradients are missing: "
+                                + prefix
+                            )
+                        gradient_norm = torch.sqrt(torch.stack([
+                            gradient.square().sum() for gradient in gradients
+                        ]).sum())
+                        if not bool(torch.isfinite(gradient_norm).item()):
+                            raise ValueError(
+                                "PV-Ground first-update gradient is non-finite: "
+                                + prefix
+                            )
+                        innovation_probe[prefix] = {
+                            "parameters": [
+                                (name, parameter, parameter.detach().clone())
+                                for name, parameter in parameters
+                            ],
+                            "gradient_norm": float(gradient_norm.item()),
+                        }
+
                 if args.clip_norm > 0:
                     grad_total_norm = torch.nn.utils.clip_grad_norm_(
                         model.parameters(), args.clip_norm
@@ -7723,6 +7789,57 @@ class BaseTrainTester:
                 optimizer.step()
                 scheduler.step()
                 optimizer_step_count += 1
+                if innovation_probe is not None:
+                    module_receipts = {}
+                    for prefix, state in innovation_probe.items():
+                        squared_deltas = []
+                        updated_tensors = 0
+                        for _name, parameter, before in state["parameters"]:
+                            after = parameter.detach()
+                            squared_deltas.append(
+                                (after.float() - before.float()).square().sum()
+                            )
+                            updated_tensors += int(
+                                not torch.equal(after, before)
+                            )
+                        delta_norm = torch.sqrt(
+                            torch.stack(squared_deltas).sum()
+                        )
+                        if (
+                                state["gradient_norm"] <= 0.0
+                                or not bool(torch.isfinite(delta_norm).item())
+                                or float(delta_norm.item()) <= 0.0
+                                or updated_tensors <= 0):
+                            raise ValueError(
+                                "PV-Ground first-update module did not receive "
+                                "a finite nonzero gradient and parameter update: "
+                                + prefix
+                            )
+                        module_receipts[prefix] = {
+                            "gradient_norm": state["gradient_norm"],
+                            "parameter_delta_l2": float(delta_norm.item()),
+                            "updated_tensors": updated_tensors,
+                            "parameter_tensors": len(state["parameters"]),
+                        }
+                    witness = {
+                        "schema": "pvground-first-update-v1",
+                        "epoch": int(epoch),
+                        "batch": int(batch_idx + 1),
+                        "batch_size": int(point_clouds.shape[0]),
+                        "loss": float(loss.detach().float().item()),
+                        "finite_loss": bool(torch.isfinite(loss.detach()).item()),
+                        "optimizer_step_complete": True,
+                        "modules": module_receipts,
+                    }
+                    if dist.get_rank() == 0:
+                        _atomic_json_save(
+                            witness,
+                            os.path.join(args.log_dir, "pvground_first_update.json"),
+                        )
+                        self.logger.info(
+                            "PV-Ground first-update witness {}".format(witness)
+                        )
+                    innovation_probe = None
 
             # Accumulate statistics and print out
             stat_dict = self._accumulate_stats(stat_dict, end_points)

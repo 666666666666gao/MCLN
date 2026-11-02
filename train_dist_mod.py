@@ -36,6 +36,10 @@ from main_utils import (
 from data.model_util_scannet import ScannetDatasetConfig
 from models import MCLN
 from models.candidate_local_visual import CandidateLocalVisual
+from models.pvground_innovations import (
+    CandidateMaskSupportCorrector,
+    ExtremalSpanMixer,
+)
 from models.candidate_range_visual import CandidateRangeVisual
 from src.joint_det_dataset import Joint3DDataset
 from src.grounding_evaluator import GroundingEvaluator
@@ -3439,14 +3443,23 @@ class TrainTester(BaseTrainTester):
         # params =  sum(p.numel() for p in model.parameters() if p.requires_grad) / 1e6
         # print(f'Total parameters: {params:.2f}M')
         local_variant = getattr(args, 'candidate_local_visual_variant', 'local')
-        if local_variant != 'local' and not getattr(args, 'use_candidate_local_visual', False):
+        use_candidate_local_visual = (
+            getattr(args, 'use_candidate_local_visual', False)
+            or getattr(args, 'use_pvground_innovations', False)
+        )
+        if local_variant != 'local' and not use_candidate_local_visual:
             raise ValueError('range visual reading requires --use_candidate_local_visual')
-        if getattr(args, 'use_candidate_local_visual', False):
+        if getattr(args, 'use_pvground_innovations', False) and local_variant != 'local':
+            raise ValueError('PV-Ground innovations require the local reader')
+        if use_candidate_local_visual:
             if args.num_decoder_layers != 6:
                 raise ValueError('candidate-local visual reading requires the fixed six-layer model')
             model.decoder[-1].local_visual = (
                 CandidateLocalVisual() if local_variant == 'local'
                 else CandidateRangeVisual(local_variant))
+        if getattr(args, 'use_pvground_innovations', False):
+            model.pvground_support_corrector = CandidateMaskSupportCorrector()
+            model.pvground_span_mixer = ExtremalSpanMixer()
         return model
 
     # BRIEF input data.

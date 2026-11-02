@@ -1,5 +1,26 @@
 # Current MCLN + PV-Ground Handoff
 
+Latest user request overrides historical status below: restart ScanRefer
+using the supplied plan, while NR/SR continue original full scratch runs.
+Details and remote launch/evidence:docs/PVG_SCANREFER_STAGE_A_RESTART.md.
+OldScan1793579788 stopped18:06:56UTC November2;best8/latest10/log preserved.
+New isolated scanrefer_restart_20261102 pipeline second attempt18:13:26UTC:
+matched full9508 official-versus-identity E0 then conditional module-only
+StageA,batch8/accum6/moduleLR1e-4,3epochs,native+BNfrozen.
+Do not claim real StageA training until own first-update receipt passes.
+First E0 attempt failed before eval on training-only loader restriction;
+independent E0 initializer now checks1134 native tensors/checkpointepoch54.
+Production training loader restriction unchanged. No localtests.
+
+NR24 complete18:10:00UTC7899hits3666/2805=46.410938%/35.510824%;
+own checkpoint24/1134 tensors/optimizer/scheduler audited and preserved.
+New NR025-firstbest24. SR9 complete18:12:48UTC17726hits11102/8632=
+62.631163%/48.696830%;own9/1134 audited,preserved;bestSRremains8.
+Combined historical current-run table43rows:oldScan10/NR24/SR9.
+Keep newScanE0/StageA rows separate. All targets remain unverified/unmet.
+NR/SR trainer/config/source/RNG unchanged;never loadScanweightsinto them.
+Two-hour automation now points at restart pipeline;notification preference preserved.
+
 Update17:40--17:44UTC: all three current trainers and metric keepers
 verified live17:40UTC,GPU23671/22833/22924MiB;configs unchanged.
 Scan e11=957/6081,NR e24=2115/3742,SR e9=5889/6486.

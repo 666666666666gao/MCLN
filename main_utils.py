@@ -50,6 +50,12 @@ from utils import record_tensorboard
 from tqdm import tqdm
 
 
+def seed_mcln_random_generators(seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+
 TRAIN_LOSS_RECEIPT_SCHEMA = "mcln-train-loss-epoch-v1"
 CHECKPOINT_RETENTION_SCHEMA = "mcln-checkpoint-retention-v1"
 SOURCE_CHOICE_DIAGNOSTICS_SCHEMA = "mcln-source-choice-diagnostics-v1"
@@ -826,6 +832,7 @@ def parse_option():
     parser.add_argument('--model', type=str, default='BeaUTyDETR')
     parser.add_argument('--use_candidate_local_visual', action='store_true', default=False)
     parser.add_argument('--use_pvground_innovations', action='store_true', default=False)
+    parser.add_argument('--pvground_train_only', action='store_true')
     parser.add_argument('--candidate_local_visual_lr', type=float, default=1e-4)
     parser.add_argument('--candidate_local_visual_variant', choices=['local', 'center', 'extent'],
                         default='local')
@@ -5096,7 +5103,7 @@ class BaseTrainTester:
         
         # Samplers and loaders
         g = torch.Generator()
-        g.manual_seed(0)
+        g.manual_seed(args.rng_seed)
 
         if args.num_workers < 0:
             raise ValueError("num_workers must be non-negative")
@@ -5139,7 +5146,9 @@ class BaseTrainTester:
                     )
                 )
             else:
-                train_sampler = DistributedSampler(train_dataset)
+                train_sampler = DistributedSampler(
+                    train_dataset, seed=args.rng_seed
+                )
             train_loader = DataLoader(
                 train_dataset,
                 batch_size=args.batch_size,
@@ -5211,6 +5220,18 @@ class BaseTrainTester:
     @staticmethod
     def get_optimizer(args, model):
         """Initialize optimizer."""
+        if getattr(args, "pvground_train_only", False):
+            prefixes = ("decoder.5.local_visual.",
+                        "pvground_support_corrector.", "pvground_span_mixer.")
+            for name, parameter in model.named_parameters():
+                parameter.requires_grad = name.removeprefix("module.").startswith(prefixes)
+            return torch.optim.AdamW(
+                [{"params": [parameter for parameter in model.parameters()
+                             if parameter.requires_grad]},
+                 {"params": [], "lr": args.lr_backbone},
+                 {"params": [], "lr": args.text_encoder_lr}],
+                lr=args.candidate_local_visual_lr, weight_decay=args.weight_decay,
+            )
         selector_only = getattr(args, "source_choice_selector_train_only", False)
         moe_only = getattr(args, "source_moe_train_only", False)
         gate_only = getattr(args, "source_moe_gate_train_only", False)
@@ -5891,6 +5912,7 @@ class BaseTrainTester:
     # BRIEF main training/testing
     def main(self, args):
         """Run main training/testing pipeline."""
+        seed_mcln_random_generators(args.rng_seed)
         max_train_batches = getattr(args, "max_train_batches", 0)
         if (
                 not isinstance(max_train_batches, int)
@@ -7299,6 +7321,14 @@ class BaseTrainTester:
 
     @staticmethod
     def _set_source_moe_train_mode(model, args):
+        if getattr(args, "pvground_train_only", False):
+            model.eval()
+            unwrapped = model.module if hasattr(model, "module") else model
+            unwrapped.training = True
+            unwrapped.decoder[5].local_visual.train()
+            unwrapped.pvground_support_corrector.train()
+            unwrapped.pvground_span_mixer.train()
+            return
         source_moe_only = getattr(args, "source_moe_train_only", False)
         gate_only = getattr(args, "source_moe_gate_train_only", False)
         query_only = getattr(args, "query_mask_fusion_train_only", False)
@@ -7554,6 +7584,18 @@ class BaseTrainTester:
             "pvground_span_mixer.",
         )
         innovation_probe = None
+        frozen_parameters = None
+        frozen_buffers = None
+        if getattr(args, "pvground_train_only", False):
+            frozen_parameters = {
+                name: parameter.detach().cpu().clone()
+                for name, parameter in model.named_parameters()
+                if not parameter.requires_grad
+            }
+            frozen_buffers = {
+                name: buffer.detach().cpu().clone()
+                for name, buffer in model.named_buffers()
+            }
         max_train_batches = getattr(args, "max_train_batches", 0)
         accumulation_plan = _gradient_accumulation_plan(
             len(train_loader),
@@ -7831,6 +7873,21 @@ class BaseTrainTester:
                         "optimizer_step_complete": True,
                         "modules": module_receipts,
                     }
+                    if frozen_parameters is not None:
+                        witness["frozen_parameters_unchanged"] = all(
+                            torch.equal(parameter.detach().cpu(), frozen_parameters[name])
+                            for name, parameter in model.named_parameters()
+                            if name in frozen_parameters
+                        )
+                        witness["frozen_buffers_unchanged"] = all(
+                            torch.equal(buffer.detach().cpu(), frozen_buffers[name])
+                            for name, buffer in model.named_buffers()
+                        )
+                        if not (witness["frozen_parameters_unchanged"]
+                                and witness["frozen_buffers_unchanged"]):
+                            raise ValueError("PV-Ground Stage A changed frozen model state")
+                        frozen_parameters = None
+                        frozen_buffers = None
                     if dist.get_rank() == 0:
                         _atomic_json_save(
                             witness,

@@ -97,6 +97,37 @@ Proposed I1/I2 architecture and gate changes remain unimplemented.
 
 ## Evidence
 
+### Final Acceptance And Next Decisions
+
+Passing the Stage A transition gate is not the final target. On the fixed
+validation splits, final success requires integer semantic Top1 hits:
+
+| Dataset | Full samples | Required025 hits | Required050 hits |
+| --- | ---: | ---: | ---: |
+| ScanRefer | 9508 | 5705 | 4945 |
+| NR3D | 7899 | 4724 | No separate target |
+| SR3D | 17726 | 12302 | No separate target |
+
+ScanRefer must meet both counts on one checkpoint; do not join independent
+025-best and050-best rows. Its E0 has5435/4327 hits,so deficits270/618
+refer to initialization,not a completed Stage A model. NR24 has3666
+025hits(deficit1058); SR selected8 has11124(deficit1178).
+These do not establish a module failure: current NR/SR have no innovations.
+Complete their original240/140epoch runs before treating the reproduction
+result as final or using their best checkpoints for a subsequent method run.
+
+Keep the three main module roles and overall architecture consistent.
+After a complete matched diagnosis,an approximately1percentage-point
+dataset-specific gap can motivate internal module parameters or depth
+changes while preserving these roles; do not deploy such a change on a
+dataset that already meets its targets without revalidation.
+For a gap around0.3percentage points,prioritize learning rate,batch and
+seed experiments with the existing method rather than replacing modules.
+Current results are not in that final tuning regime. New method changes
+require measured failure attribution and relevant open-source references,
+not partial training loss or a synthetic fixture. Stage A/B complete
+results and the authorized original NR/SR runs remain the next evidence.
+
 E0 gate PASSED18:38:40UTC November2: official and identity conditions
 both9508,5435/4327 hits,identical point and sample-identity hashes.
 Identity initialization loaded1134 native tensors and added34 module

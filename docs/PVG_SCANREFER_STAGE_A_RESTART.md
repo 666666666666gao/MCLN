@@ -6,6 +6,47 @@ SR3D original full reproduction runs unchanged. The documents' suggestions
 to replace their scratch initialization are outside that scope.
 All tests and model execution run remotely. No local Windows/WSL tests.
 
+## First Complete Stage A Result
+
+Epoch1 completed2026-11-02 21:19:22UTC on all9508 examples. Its own
+checkpoint epoch1/1168 model tensors/optimizer/scheduler was audited on
+the remote CPU and hardlinked. The semantic-best alias selects epoch1.
+SHA256:`9fc7999242e766ec44ea569042eb750ca35662947713c8177bef51badf28e519`.
+Raw receipt:`docs/results/mcln_pvground_20261101/scanrefer-stage-a-epoch1-identity.json`.
+
+| Condition | Unique025 /1419 | Multiple025 /8089 | Unique050 /1419 | Multiple050 /8089 | Overall025/050 /9508 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Original official E0 | 1233 (86.8922%) | 4202 (51.9471%) | 1032 (72.7273%) | 3295 (40.7343%) | 5435/4327 |
+| Stage A epoch1 | 1232 (86.8217%) | 4214 (52.0954%) | 1070 (75.4052%) | 3473 (42.9348%) | 5446/4543 |
+| Observed hit difference | -1 | +12 | +38 | +178 | +11/+216 |
+
+These first semantic-branch subgroup lines sum exactly to the official
+overall counts. Multiple objects remain the larger absolute error source:
+3875 misses at025 and4616 at050,versus187/349 unique misses. This
+describes error allocation,not which module caused those errors or which
+examples changed. Aggregate differences are not paired fix/break counts.
+Raw log lines and exact subgroup reconstruction are retained in
+`docs/results/mcln_pvground_20261101/scanrefer-stage-a-epoch1-group-evidence.json`.
+
+Overall epoch1 is57.278082%/47.780816%,still259/402 hits below final
+60/52 targets. It satisfies the declared5425/4328 Stage B metric gate,
+but no transition is authorized until all three audited Stage A epochs
+and successful pipeline exit. The original E0 and training-validation
+backend boundary documented below still prevents causal attribution.
+Perform the already prepared matched official/selected evaluation before
+Stage B;do not change modules based on this unmatched aggregate comparison.
+Only after the staged decision and GPU availability should paired
+Reader/Support/Span diagnostics identify ranking versus geometry failures.
+Existing conditional reference options are in
+`docs/PVG_MULTIPLE_INSTANCE_REFERENCE_NOTES.md`; none establishes the cause
+of these measured misses.
+
+At21:20:34UTC Stage A epoch2 was actually training at42/6081. Its first
+two updates again had finite losses6.6050129/8.2219801,nonzero gradients
+and deltas in all three modules,and unchanged frozen parameters/buffers.
+The per-epoch update receipts now refer to epoch2;the immutable startup
+receipt retains epoch1's original proof. Keep the three-epoch recipe.
+
 ## Recipe
 
 Use step2 of `05_逐步执行提示词.md`, rather than combining conflicting

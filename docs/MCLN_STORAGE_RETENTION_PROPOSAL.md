@@ -1,5 +1,14 @@
 # Current Checkpoint Storage Proposal
 
+Update2026-11-02 21:25-21:26UTC:current-run metadata and actual trainer/
+keeper processes checked again. NRfree6907711488bytes(88%used),SRfree
+14190972928bytes(74%used). At793092691bytes per new distinct weight,
+only8NR/17SR additional weights fit before other growth and temporary
+writes. This is not an exact failure ETA. NRbest/latest27,SRbest/latest10;
+the older keep-lists below are historical,not actionable deletion lists.
+No cleanup consent has arrived and no files were removed. Recompute
+current best/latest and resolved target paths after explicit approval.
+
 Read-only remote inventory at2026-11-02 20:34UTC. No files were deleted,
 moved,or downloaded as model weights. No local model tests were run.
 Actual current trainers and metric keepers were verified live.

@@ -1,5 +1,17 @@
 # Current MCLN + PV-Ground Handoff
 
+21:26UTC A1 semantic log-only subgroup audit:unique1232/1070over1419,
+multiple4214/3473over8089,sum5446/4543. Multiplemisses3875/4616,
+uniquemisses187/349. OriginalE0 subgroup differences are unmatched
+aggregate differences,not paired fixes or established module attribution.
+Details/rawloglines:docs/PVG_SCANREFER_STAGE_A_RESTART.md and
+docs/results/mcln_pvground_20261101/scanrefer-stage-a-epoch1-group-evidence.json.
+ActualScan189152/188533/188537,NR96960/135075,SR92354/129032verifiedlive.
+NRfree6907711488bytes(88%used),SR14190972928(74%used);at most8/17
+new same-sizeweights fit ignoringlogs/transientgrowth. Historicalcleanup
+proposal requires freshselection and explicitapproval;no cleanup done.
+No localtests/modelruns/configchanges.
+
 Scan restart A1 completed21:19:22UTC2026-11-02, full9508 last-semantic
 Top1 hits5446/4543=57.278082%/47.780816%. Owncheckpoint1/1168tensors/
 optimizer/scheduler CPUverified and hardlinked; semantic_best selects1.

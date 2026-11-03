@@ -1,5 +1,14 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 01:31:59UTC:current-restart diagnosticimportpreflight passed.
+Actual deployedentry imported withoutmain;trainer/evaluator/IoU/converter
+resolved insidecurrentrestartsource,audithelpers insideobservations_v2.
+CUDAoff,no modelconstruction/checkpointload/forward/evaluation/localtests.
+Raw scanrefer-restart-audit-import-preflight.json;docs/PVG_FORWARD_AUDIT.md
+updated. A3/matchedvalidation/freeGPU stillrequired beforediagnosticforward.
+At01:30UTC NR32=1014/3742,ScanA3=4284/6081,SR12=4581/6486,
+currentNR/SRtrainer/keeperprocesseslive/configsunchanged. No newfullresult.
+
 2026-11-03 01:27UTC data evidence:currentScanloader uses
 data/superpoints/{train,val};noautomaticswitchtomeshdirectory.
 All312valfiles fingerprinted and remoteCPUdata-onlyaudited:

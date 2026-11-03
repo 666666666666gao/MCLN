@@ -1,6 +1,18 @@
 # Fixed-Checkpoint Forward Audit
 
 Status: 15 focused CPU tests passed historically; the GPU evaluation entry point is unexecuted.
+Current-restart import check passed2026-11-03 01:31:59UTC.
+The deployed audit entry was loaded without invoking main, then trainer,
+evaluator,IoU and box-converter imports were resolved and asserted inside
+`scanrefer_restart_20261102/source`. Both observation helpers resolved
+inside`offline_audits/observations_v2`. CUDA remained uninitialized.
+No model construction,checkpoint load,forward,evaluation or local test ran.
+Receipt:
+`docs/results/mcln_pvground_20261101/scanrefer-restart-audit-import-preflight.json`.
+Reproduction helper:`tools/preflight_scanrefer_restart_audit.sh`.
+This closes the restart import-resolution prerequisite only; complete
+Stage A/matched validation and a free remote GPU remain required before
+any diagnostic forward. No current-restart bypass accuracy is available.
 Per the user's latest instruction, all further tests and diagnostics must
 run on remote servers. Do not run them on Windows or local WSL, and do not
 continue the proposed local single-example probe or prepare its dependencies.
@@ -59,9 +71,9 @@ its own epoch and SHA256 from `stage_a_complete_epochs.json` and
 050then025 among eligible checkpoints; a failed gate requires an explicit
 audited checkpoint selection. Record that selection before evaluation.
 Use the restart's `source` directory for trainer/evaluator/pointnet2 imports.
-Recheck remote import resolution against that source before the first
-diagnostic GPU run:the historical preflight above covered the old source,
-not this restart. No current-restart bypass evaluation has run.
+The2026-11-03 preflight at the top of this document verifies import resolution
+against that restart source. The older historical preflights cover the old
+source only. No current-restart bypass evaluation has run.
 
 The current deployed staging directory contains`eval_pvground_audit.py`,
 `pvground_forward_audit.py`,and`pvground_semantic_audit.py`under`tools/`.

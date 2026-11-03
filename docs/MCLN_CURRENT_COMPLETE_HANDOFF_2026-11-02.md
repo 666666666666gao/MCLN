@@ -1,5 +1,18 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 03:29UTC: remoteCPU audit covers all1,201 training superpoint
+files,exact ScanNet train metadata match,50,000 integer labels each,
+zero single-cluster/negative-label scenes,min90/median843/max4363.
+No overlap with141 ScanRefer validation annotation scenes; previous312val
+audit was directory-wide. Logged48655examples=36665ScanRefer+1199*10
+joint detection;1199 inferred from recipe/loggedlength,not reconstructed
+object filtering. This explains a count difference,not a training defect.
+Trainer207977/retention209444 live before/after;CUDAoff,no localtests.
+Historicalmesh/geometry/metriccauses unproven. See PVG_CURRENT_DATA_AUDIT.md
+and scanrefer-current-all-train-superpoint-statistics.json.
+NRretention03:21:36 receipt auditsbest32/latest33ownCPUepochs/optimizer/
+scheduler/SHA,removednone. No newcompletevalidation sinceNR33.
+
 2026-11-03 03:20UTC: NR33 completed03:17:37UTC full7899,
 3856/3027hits=48.816306%/38.321306%, down6/8versus32.
 Own CPU epoch33/1134tensors/optimizer/scheduler verified,CUDAoff.

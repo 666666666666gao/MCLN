@@ -1,6 +1,24 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 13:50 UTC
+## Current Override: 2026-11-03 14:05 UTC
+
+After the scheduled300-second wait,the current-run collector captured
+complete SR16:11534/9328 over17726=65.068261%/52.623265%,
+same-checkpoint last semantic alignment Top1/bbf.
+Versus best15:-209/-106hits. Best15 remains11743/9434,latest16.
+Best target deficit559hits;latest16 deficit768. No final target reached.
+Remote CPU audits checked actual15/16 own epochs,1134model tensors,
+nonempty optimizer,scheduler and SHA256;CUDAoff,trainer92354live.
+SR16:793092691bytes,SHA
+d0278332a96079086f65024f22b74350da31b1ff871bf2d18fa6ddaa6746824a.
+Retention receipt identifieslatest16;current retained SR set15/16.
+Main CSV now69rows,including allNR1-43/SR1-16;restart CSV10rows.
+Raw receipt:docs/results/mcln_pvground_20261101/sr3d-current-full-history-20261103T1404.json.
+NR best/latest43 and Scan bestB2/latestB3 remain as below;B4continues
+with strict Acc050-decrease streak1. No training/configuration change,
+duplicate cleanup,local tests or model operations were performed.
+
+## Previous Override: 2026-11-03 13:50 UTC
 
 The current-run full-log collector recovered every completed NR1-43,
 SR1-15 and Scan Stage B1-3 row. Historical CSV:68 rows; restart CSV:10.

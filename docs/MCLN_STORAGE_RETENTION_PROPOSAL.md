@@ -1,5 +1,50 @@
 # Current Checkpoint Storage Proposal
 
+## Authorized Policy Applied: 2026-11-03
+
+The user explicitly authorized retaining only the highest-metric checkpoint
+and the latest checkpoint for resume. This supersedes every pending-approval
+statement and latest-two proposal below.
+
+At 02:49 UTC, remote CPU audits verified the kept checkpoints' own epochs,
+model tensor counts, nonempty optimizer state, scheduler state and SHA256.
+Then 24 older NR weights and 10 older SR weights were deleted only from the
+current runs' `preserved_checkpoints` directories. No stopped run was inspected.
+
+| Dataset | Best | Latest | Free Before | Free After |
+| --- | ---: | ---: | ---: | ---: |
+| NR3D | 32 | 32 | 2,940,702,720 | 21,975,019,520 |
+| SR3D | 10 | 12 | 12,601,610,240 | 20,532,576,256 |
+
+All logs, configurations, validation rows and identity receipts remain.
+The 54-row historical CSV marks deleted weights
+`removed_authorized_best_latest_20261103`; historical CPU audits remain valid
+but do not imply the corresponding weights still exist.
+
+Independent `pvg_nr3d_best_latest_retention` and
+`pvg_sr3d_best_latest_retention` screens check every 240 seconds.
+`tools/retain_mcln_best_latest.py` waits for complete validation, checkpoint
+save and the correct semantic-best manifest before deleting older preserved
+weights. It does not modify the trainers, model configuration or metric keeper.
+Raw initial deletion receipts include every removed path and kept SHA.
+Remote CPU fixture checks passed, including ScanRefer Acc050-first ordering;
+no local tests ran.
+
+ScanRefer Stage B's own first update passed: finite loss7.021632194519043,
+all three modules have finite nonzero gradients and parameter updates.
+At03:02:11UTC, A1/A2 were deleted after startup completed; A3 remains the
+warmup best/latest and B initialization input. Free space increased from
+12,677,091,328 to13,879,545,856bytes. At03:03:25UTC the actual Scan
+retention Python PID209444 was live, waiting for the first complete B
+validation. Its policy is Acc050-first best plus latest, with Acc025 as
+tie-breaker. Official pretrained input weights remain intact.
+
+The live NR/SR watchers loaded the initial implementation, which deletes
+older preserved weights; their native trainer already retains latest only.
+The Scan watcher loaded the updated implementation covering both numbered
+run-directory weights and preserved links. Uploading a new source file
+does not change already-running Python processes.
+
 Update2026-11-03 02:20:04UTC:NRfree2940784640bytes,95%used.
 At most3additional793092691-byteweights fit ignoringothergrowth.
 Actualtrainer96960/keeper135075live;best/latest32. No cleanupconsent

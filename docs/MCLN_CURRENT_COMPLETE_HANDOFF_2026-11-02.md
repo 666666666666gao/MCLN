@@ -1,5 +1,31 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 03:06 UTC: Scan B run1793674354/PID207977 remains live.
+Own first update passed: epoch1/batch6/size8/step1, finite loss
+7.021632194519043, all34 Reader/Support/Span tensors updated with
+finite nonzero gradients. At03:01UTC training reached66/6081 batches.
+No complete B validation yet; estimated first full result around05:50UTC.
+A1/A2 cleanup completed03:02UTC, freeing1,202,454,528bytes; A3 remains
+warmup best/latest and B input. Scan retention PID209444 live03:03UTC,
+waiting for complete B validation. NR/SR best/latest retention also live;
+initial deletions freed19,034,316,800/7,930,966,016bytes respectively.
+All epoch rows/logs/configs retained; no local tests or NR/SR recipe changes.
+Detailed desktop handoff is maintained only in
+C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md.
+
+2026-11-03 02:55 UTC: user authorized best+latest-only weight retention.
+NR deleted24 older preserved weights, kept best/latest32; free21.97GB.
+SR deleted10, kept best10/latest12; free20.53GB. Both trainers live;
+240s retention watchers deployed. All metrics/logs/audits kept; deleted CSV
+paths marked unavailable. See storage policy and exact deletion receipts.
+
+Scan matched full9508 passed: official5435/4327, selectedA3=5461/4566,
+57.435844/48.022718%; selected-minus-official+26/+239, official-minus-E0
+0/0. Point/order/seed/backend/SHA checks passed. A3 original validation
+5461/4565 remains separate; reevaluation differs by one050hit.
+StageB run1793674354/trainer207977 was loadingdata02:53UTC;
+own first real update still needs verification. No local tests.
+
 02:35UTC SR12 completed02:29:59UTC full17726=11521/9123hits,
 64.994923/51.466772%,+97/+286versus11. Bestremains10=11624/9119;
 do not pair10's025with12's050. OwnCPUepoch12/1134/optimizer/scheduler

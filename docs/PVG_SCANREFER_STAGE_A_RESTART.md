@@ -1,5 +1,37 @@
 # ScanRefer Stage A Restart
 
+## Matched Validation Completed
+
+At 2026-11-03 02:53 UTC the controller had completed both 9,508-row
+evaluations and started Stage B run `1793674354` loading data.
+Official identity: 5,435/4,327 hits. Selected A3: 5,461/4,566 hits,
+57.435844%/48.022718%. Selected minus official: +26/+239 hits.
+Matched official minus original E0: 0/0 hits. Both receipts agree on point
+and identity hashes, seed, backend and innovations; selected checkpoint SHA
+matches the audited A3. Original gate and E0 records were not changed.
+
+A3 training-time validation was 5,461/4,565, one fewer Acc050 hit than this
+reevaluation despite the same selected weight. Preserve both evaluations
+as separate rows; do not claim bitwise repeatability or replace the old row.
+The matched comparison establishes the aggregate effect of this trained
+three-module system, not separate Reader/Support/Span causal contributions.
+Final target remains unmet, short by 244/379 hits in this matched evaluation.
+
+Stage B start/config receipts show A3 model-only initialization and fresh
+optimizer/scheduler, batch8/accum6, native2e-6/backbone4e-6/modules2e-5.
+By03:01UTC, actual trainer PID207977 had advanced to66/6081 batches,
+GPU21951MiB. B's own first-update receipt verifies epoch1/batch6/size8/
+optimizer-step1, finite loss7.021632194519043. Reader, Support and Span
+gradient norms are0.113742/0.346667/0.134784; parameter delta L2 values
+are0.006194/0.003311/0.003350, updating10/10,10/10,14/14tensors.
+This verifies real B training; it is not a complete B validation result.
+First full B validation is estimated around05:50UTC, subject to throughput.
+At03:02UTC A1/A2 were deleted under the user's authorization; A3 remains.
+The B retention watcher PID209444 is live, waiting for complete validation.
+Raw `scanrefer-stage-b-first-update.json` and
+`scanrefer-stage-a-weight-cleanup.json` retain the evidence.
+Raw `scanrefer-matched-validation.json`; restart CSV now seven rows.
+
 2026-11-03 02:29UTC:StageA completed02:23:49UTC/exit0.
 Allthreefull9508epochs audited by controller's remoteCPUcollector:
 A1=5446/4543,A2=5460/4563,A3=5461/4565.

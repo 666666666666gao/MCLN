@@ -2,6 +2,18 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update18:01UTC:NR47 full7899=4114/3248,best/latest47. OwnCPU47/
+1134/nonempty optimizer/scheduler/SHA audited,CUDAoff:
+a89e77471e8a5461838f60648651be891baaa658cb79a0f5d446fd54b8f673c3.
+Retainer17:55:38UTC kept47 and removed only preserved46,after its own
+CPU audit;free21177679872->21754355712bytes. Receipt:
+nr3d-current-full-history-20261103T1759.json. Initial collection found
+preserved47 missing while keeper/source47 existed;180s wait resolved
+the window without code/trainer changes or a new watcher/cleanup.
+Kept sets at this snapshot:NR47,SR15/17,completedScanB2/B4;
+pilot has no complete checkpoint yet. Tables74/11rows,46path marked
+removed_authorized_best_latest_20261103;historical audit remains.
+
 Update17:14UTC:NR best/latest46 CPU-audited,1134/nonempty optimizer/
 scheduler/SHA;SR best15/latest17 similarly audited. Retained sets now
 NR46,SR15/17,ScanB2/B4. NR46 SHA

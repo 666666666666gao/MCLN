@@ -1,6 +1,27 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 17:44 UTC
+## Current Override: 2026-11-03 18:01 UTC
+
+NR47 full7899=4114/3248hits,52.082542/41.119129%,best/latest47,
+025-first. Versus46:+29/-46hits;no threshold mixing. OwnCPU47/1134/
+nonempty optimizer/scheduler/SHA verified,CUDAoff,793092691bytes:
+a89e77471e8a5461838f60648651be891baaa658cb79a0f5d446fd54b8f673c3.
+Retainer17:55:38UTC kept47only and removed only older preserved46.
+Receipt:nr3d-current-full-history-20261103T1759.json,observed17:59:18UTC.
+Initial collector hit missing preserved47 in the synchronization window;
+after checking actual keeper47/source and waiting180s,the unchanged
+collector passed. No fallback,trainer change or duplicate watcher.
+Original trainer96960/scratch240budget live,NR target gap610hits.
+SRbest15/latest17 and ScanB2/B4 unchanged;no target reached.
+Training tables74historical/11restart rows;all middle epochs retained
+as metric rows,deleted46path marked authorized removal.
+Paired diagnostics/controlupdate code and evidence published46c7814.
+Span comparison control real updates verified as below,full results
+pendingETA19:10-19:25UTC;SRfull~19:05-19:20,NRnextfull~18:55-19:05.
+Recompute ETA from actual speed;do not poll early or restart controllers.
+No local model operations/tests.
+
+## Previous Override: 2026-11-03 17:44 UTC
 
 Formal Span comparison controlrun1793726936 actually trains,not just a
 screen launch. At17:38:48UTC:220/6081,GPUworker236606,

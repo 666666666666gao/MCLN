@@ -1,5 +1,39 @@
 # Fixed-Checkpoint Forward Audit
 
+## Paired Decision Subgroups: 2026-11-03 17:40 UTC
+
+Postprocessing revalidated all four complete9508-record evaluations and
+exact ordered identity/pointSHA/GT pairing. No model construction or new
+inference. Receipt:scanrefer-b2-decision-subgroups-20261103.json;implementation:
+tools/analyze_pvground_decision_subgroups.py. Counts below use strict050.
+
+| Baseline Subgroup | Samples | Selected Hits | Top10 Coverage | Candidate Oracle |
+| --- | ---: | ---: | ---: | ---: |
+| Unique | 1419 | 1102 | 1205 | 1318 |
+| Multiple | 8089 | 3554 | 4816 | 6942 |
+
+The3604-hit oracle-to-selected gap contains216unique and3388multiple
+examples. This motivates later contextual instance selection,not a claim
+that any verifier can recover this oracle gap.
+
+Reader bypass changes35unique and314multiple selected queries. Its050
+gained/lost counts are5/1 and27/19 respectively. With query identity
+unchanged,the corresponding counts are9/6 and42/40. Thus changed-query
+net gain is12 and same-query net gain is5;Reader also changes geometry
+without changing selected identity. This is not a trained Reader ablation.
+
+For the baseline selected query,Span repairs508native failures and breaks
+114native successes. Among262reference-pass/final-fail/native-fail
+examples,only9have any raw gate outside[0,1]. Clamp saturation alone
+cannot explain this subset. Another26examples fail both native and
+reference endpoints but pass with the interior fused box. A binary
+reference/native switch is therefore not equivalent to the current mixer.
+Reference-pass/final-fail totals264;reference-fail/final-pass totals210.
+These GT-conditioned diagnostics are neither attainable gains nor valid
+targets for every query. The running supervision pilot uses real Hungarian
+matches and a detached geometric proxy,not selected-query rootGT leakage.
+Do not alter the running pilot based on these postprocessing counts.
+
 ## All Four Complete: 2026-11-03 17:21 UTC
 
 The pipeline exited0;all four conditions have9508 forward records,9508

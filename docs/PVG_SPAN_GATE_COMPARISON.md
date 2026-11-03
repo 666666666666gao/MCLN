@@ -2,6 +2,18 @@
 
 ## Status And Question
 
+17:38:48UTC:formal controlrun1793726936 has real training updates,
+220/6081microbatches;GPU worker236606 uses21647MiB total GPU memory.
+Own first-update receipt:epoch1,batch6,size8,step1,finite loss
+7.0552873611450195;Reader10/10,Support10/10,Span14/14actuallyupdated,
+all three gradient/delta norms finite/nonzero. Config verifies weight0,
+max1,max_train_batches0,model-onlyB2,nullPP,fresh optimizer/scheduler.
+Receipt:scanrefer-span-gate-progress-20261103T1738.json.
+At~1.2microbatches/s,full control validation ETA19:10-19:25UTC;
+recalculate from actual progress near19:05. Treatment has not started.
+Control/preflight first losses differ;do not claim identical stochastic
+training microbatches or bitwise determinism. No full pilot accuracy yet.
+
 17:32UTC:real GPU preflight passed17:28:44UTC. Atbatch1:auxloss
 0.05352035164833069,48validmatchedaxes,rawgradientL1
 0.24082067608833313,and3outsideclampentriesreceiveauxiliarygradient.

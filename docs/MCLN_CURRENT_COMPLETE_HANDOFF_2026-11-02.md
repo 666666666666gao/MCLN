@@ -1,5 +1,28 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-03 17:44 UTC
+
+Formal Span comparison controlrun1793726936 actually trains,not just a
+screen launch. At17:38:48UTC:220/6081,GPUworker236606,
+own epoch1/batch6/size8/step1 finite loss7.0552873611450195;
+Reader10/10,Support10/10,Span14/14updated with finite nonzero norms.
+Controller236004 retains ownership;do not launch a second copy.
+Controlweight0 then freshB2 treatmentweight0.1,one full epoch/full9508
+each. No formal pilot validation yet. Control ETA19:10-19:25UTC,
+next useful Scan query near19:05;update with actual speed.
+
+New completed-B2 paired postprocessing:no new inference. Of3604strict050
+oracle-selection misses,3388are multiple-instance,216unique.
+262native-fail/reference-pass/final-fail cases include only9with any
+clipped axis;clamp alone does not explain this subset.26cases fail both
+endpoints but pass interior fusion. Reader bypass net+17includes+12
+changed-query and+5same-query,so it also affects geometry.
+These are GT-conditioned diagnostics,not attainable gains/trained ablations.
+New receipt scanrefer-b2-decision-subgroups-20261103.json and source in
+tools/analyze_pvground_decision_subgroups.py;details PVG_FORWARD_AUDIT.md.
+No running source/config change,local model operation or target attainment.
+NR/SR remain original scratch240/140;latest auditedNR46/SR17 as below.
+
 ## Current Override: 2026-11-03 17:32 UTC
 
 Complete diagnostics/NR46/SR17/73,11tables/Span code published234d38a.

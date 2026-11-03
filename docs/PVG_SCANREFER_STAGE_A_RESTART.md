@@ -1,5 +1,16 @@
 # ScanRefer Stage A Restart
 
+## Active Independent Pilot: 2026-11-03 17:38 UTC
+
+CompletedB remains immutable,not restarted. New controlrun1793726936
+under controller236004 has own finite first-update loss7.0552873611450195,
+all34module tensors updated;actualGPUworker236606,220/6081.
+FreshB2 model-only,weight0,max1;next condition independently reloadsB2
+with weight0.1. Full9508results pending,control ETA19:10-19:25UTC.
+See PVG_SPAN_GATE_COMPARISON.md for receipts and registered protocol.
+Fixed-B2 all-four diagnostics completed and new paired subgroup analysis
+is in PVG_FORWARD_AUDIT.md. NR/SR original scratch budgets unchanged.
+
 ## Next Minimal Comparison: 2026-11-03 17:16 UTC
 
 StageB remains finished;B2 is an immutable common initialization.

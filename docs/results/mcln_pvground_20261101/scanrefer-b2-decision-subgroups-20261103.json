@@ -1,0 +1,745 @@
+{
+  "scope": "Postprocessing the completed fixed-B2 interventions. GT-based diagnostics, not trained ablations, attainable accuracy or causal mechanism proof.",
+  "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+  "jsonl_sha256": {
+    "none": "b09637f1ed5a34d1c3ee7c9e1597df0b33873e3258a07c9190ac5095e02cd5d3",
+    "reader": "e806193fbf1c22e7d5b28f794f905ecea2d09af41e8cd13154f6ec0622281937",
+    "support": "cb510116c1ee81ef628863ddc0192fa8d28205e026e4461abdf565b87e8772f5",
+    "span": "e97d69d138aecdbadab89e64135273b3232cec5e1db1447ec8921694805fa687"
+  },
+  "thresholds": {
+    "025": {
+      "conditions": {
+        "none": {
+          "unique": {
+            "samples": 1419,
+            "selected_hits": 1243,
+            "oracle_hits": 1391,
+            "top10_covered": 1289
+          },
+          "multiple": {
+            "samples": 8089,
+            "selected_hits": 4240,
+            "oracle_hits": 7691,
+            "top10_covered": 5412
+          }
+        },
+        "reader": {
+          "unique": {
+            "samples": 1419,
+            "selected_hits": 1248,
+            "oracle_hits": 1396,
+            "top10_covered": 1295
+          },
+          "multiple": {
+            "samples": 8089,
+            "selected_hits": 4256,
+            "oracle_hits": 7702,
+            "top10_covered": 5362
+          }
+        },
+        "support": {
+          "unique": {
+            "samples": 1419,
+            "selected_hits": 1242,
+            "oracle_hits": 1389,
+            "top10_covered": 1286
+          },
+          "multiple": {
+            "samples": 8089,
+            "selected_hits": 4233,
+            "oracle_hits": 7659,
+            "top10_covered": 5402
+          }
+        },
+        "span": {
+          "unique": {
+            "samples": 1419,
+            "selected_hits": 1220,
+            "oracle_hits": 1385,
+            "top10_covered": 1282
+          },
+          "multiple": {
+            "samples": 8089,
+            "selected_hits": 4187,
+            "oracle_hits": 7668,
+            "top10_covered": 5409
+          }
+        }
+      },
+      "paired_bypass_transitions": {
+        "reader": {
+          "unique_query_same": {
+            "samples": 1384,
+            "bypass_gained": 4,
+            "bypass_lost": 1
+          },
+          "unique_query_changed": {
+            "samples": 35,
+            "bypass_gained": 3,
+            "bypass_lost": 1
+          },
+          "multiple_query_same": {
+            "samples": 7775,
+            "bypass_gained": 12,
+            "bypass_lost": 10
+          },
+          "multiple_query_changed": {
+            "samples": 314,
+            "bypass_gained": 28,
+            "bypass_lost": 14
+          }
+        },
+        "support": {
+          "unique_query_same": {
+            "samples": 1419,
+            "bypass_gained": 2,
+            "bypass_lost": 3
+          },
+          "unique_query_changed": {
+            "samples": 0,
+            "bypass_gained": 0,
+            "bypass_lost": 0
+          },
+          "multiple_query_same": {
+            "samples": 8089,
+            "bypass_gained": 9,
+            "bypass_lost": 16
+          },
+          "multiple_query_changed": {
+            "samples": 0,
+            "bypass_gained": 0,
+            "bypass_lost": 0
+          }
+        },
+        "span": {
+          "unique_query_same": {
+            "samples": 1419,
+            "bypass_gained": 1,
+            "bypass_lost": 24
+          },
+          "unique_query_changed": {
+            "samples": 0,
+            "bypass_gained": 0,
+            "bypass_lost": 0
+          },
+          "multiple_query_same": {
+            "samples": 8089,
+            "bypass_gained": 23,
+            "bypass_lost": 76
+          },
+          "multiple_query_changed": {
+            "samples": 0,
+            "bypass_gained": 0,
+            "bypass_lost": 0
+          }
+        }
+      },
+      "baseline_selected_query_geometry": {
+        "native0_reference0_final0": {
+          "samples": 3914,
+          "multiple_samples": 3755,
+          "reference_valid": 3885,
+          "samples_with_clipped_axis": 391,
+          "first_example_identities": [
+            {
+              "sample_index": 0,
+              "scan_id": "scene0011_00",
+              "target_id": 5
+            },
+            {
+              "sample_index": 1,
+              "scan_id": "scene0011_00",
+              "target_id": 13
+            },
+            {
+              "sample_index": 2,
+              "scan_id": "scene0011_00",
+              "target_id": 9
+            },
+            {
+              "sample_index": 5,
+              "scan_id": "scene0011_00",
+              "target_id": 17
+            },
+            {
+              "sample_index": 9,
+              "scan_id": "scene0011_00",
+              "target_id": 13
+            }
+          ]
+        },
+        "native0_reference0_final1": {
+          "samples": 1,
+          "multiple_samples": 1,
+          "reference_valid": 1,
+          "samples_with_clipped_axis": 0,
+          "first_example_identities": [
+            {
+              "sample_index": 5456,
+              "scan_id": "scene0527_00",
+              "target_id": 18
+            }
+          ]
+        },
+        "native0_reference1_final0": {
+          "samples": 87,
+          "multiple_samples": 71,
+          "reference_valid": 87,
+          "samples_with_clipped_axis": 11,
+          "first_example_identities": [
+            {
+              "sample_index": 300,
+              "scan_id": "scene0030_00",
+              "target_id": 51
+            },
+            {
+              "sample_index": 338,
+              "scan_id": "scene0030_00",
+              "target_id": 51
+            },
+            {
+              "sample_index": 344,
+              "scan_id": "scene0030_00",
+              "target_id": 51
+            },
+            {
+              "sample_index": 722,
+              "scan_id": "scene0084_00",
+              "target_id": 23
+            },
+            {
+              "sample_index": 726,
+              "scan_id": "scene0084_00",
+              "target_id": 23
+            }
+          ]
+        },
+        "native0_reference1_final1": {
+          "samples": 99,
+          "multiple_samples": 75,
+          "reference_valid": 99,
+          "samples_with_clipped_axis": 6,
+          "first_example_identities": [
+            {
+              "sample_index": 349,
+              "scan_id": "scene0030_00",
+              "target_id": 51
+            },
+            {
+              "sample_index": 407,
+              "scan_id": "scene0046_00",
+              "target_id": 47
+            },
+            {
+              "sample_index": 422,
+              "scan_id": "scene0046_00",
+              "target_id": 47
+            },
+            {
+              "sample_index": 444,
+              "scan_id": "scene0050_00",
+              "target_id": 30
+            },
+            {
+              "sample_index": 467,
+              "scan_id": "scene0050_00",
+              "target_id": 9
+            }
+          ]
+        },
+        "native1_reference0_final0": {
+          "samples": 23,
+          "multiple_samples": 23,
+          "reference_valid": 23,
+          "samples_with_clipped_axis": 6,
+          "first_example_identities": [
+            {
+              "sample_index": 199,
+              "scan_id": "scene0025_00",
+              "target_id": 16
+            },
+            {
+              "sample_index": 233,
+              "scan_id": "scene0025_00",
+              "target_id": 16
+            },
+            {
+              "sample_index": 488,
+              "scan_id": "scene0050_00",
+              "target_id": 25
+            },
+            {
+              "sample_index": 679,
+              "scan_id": "scene0081_00",
+              "target_id": 7
+            },
+            {
+              "sample_index": 683,
+              "scan_id": "scene0081_00",
+              "target_id": 7
+            }
+          ]
+        },
+        "native1_reference0_final1": {
+          "samples": 122,
+          "multiple_samples": 88,
+          "reference_valid": 122,
+          "samples_with_clipped_axis": 28,
+          "first_example_identities": [
+            {
+              "sample_index": 191,
+              "scan_id": "scene0025_00",
+              "target_id": 41
+            },
+            {
+              "sample_index": 200,
+              "scan_id": "scene0025_00",
+              "target_id": 41
+            },
+            {
+              "sample_index": 374,
+              "scan_id": "scene0046_00",
+              "target_id": 37
+            },
+            {
+              "sample_index": 413,
+              "scan_id": "scene0046_00",
+              "target_id": 37
+            },
+            {
+              "sample_index": 457,
+              "scan_id": "scene0050_00",
+              "target_id": 25
+            }
+          ]
+        },
+        "native1_reference1_final0": {
+          "samples": 1,
+          "multiple_samples": 0,
+          "reference_valid": 1,
+          "samples_with_clipped_axis": 1,
+          "first_example_identities": [
+            {
+              "sample_index": 1123,
+              "scan_id": "scene0131_00",
+              "target_id": 14
+            }
+          ]
+        },
+        "native1_reference1_final1": {
+          "samples": 5261,
+          "multiple_samples": 4076,
+          "reference_valid": 5258,
+          "samples_with_clipped_axis": 414,
+          "first_example_identities": [
+            {
+              "sample_index": 3,
+              "scan_id": "scene0011_00",
+              "target_id": 1
+            },
+            {
+              "sample_index": 4,
+              "scan_id": "scene0011_00",
+              "target_id": 18
+            },
+            {
+              "sample_index": 6,
+              "scan_id": "scene0011_00",
+              "target_id": 17
+            },
+            {
+              "sample_index": 7,
+              "scan_id": "scene0011_00",
+              "target_id": 18
+            },
+            {
+              "sample_index": 8,
+              "scan_id": "scene0011_00",
+              "target_id": 25
+            }
+          ]
+        }
+      }
+    },
+    "050": {
+      "conditions": {
+        "none": {
+          "unique": {
+            "samples": 1419,
+            "selected_hits": 1102,
+            "oracle_hits": 1318,
+            "top10_covered": 1205
+          },
+          "multiple": {
+            "samples": 8089,
+            "selected_hits": 3554,
+            "oracle_hits": 6942,
+            "top10_covered": 4816
+          }
+        },
+        "reader": {
+          "unique": {
+            "samples": 1419,
+            "selected_hits": 1109,
+            "oracle_hits": 1322,
+            "top10_covered": 1198
+          },
+          "multiple": {
+            "samples": 8089,
+            "selected_hits": 3564,
+            "oracle_hits": 6961,
+            "top10_covered": 4757
+          }
+        },
+        "support": {
+          "unique": {
+            "samples": 1419,
+            "selected_hits": 1094,
+            "oracle_hits": 1310,
+            "top10_covered": 1192
+          },
+          "multiple": {
+            "samples": 8089,
+            "selected_hits": 3522,
+            "oracle_hits": 6852,
+            "top10_covered": 4764
+          }
+        },
+        "span": {
+          "unique": {
+            "samples": 1419,
+            "selected_hits": 1022,
+            "oracle_hits": 1254,
+            "top10_covered": 1135
+          },
+          "multiple": {
+            "samples": 8089,
+            "selected_hits": 3240,
+            "oracle_hits": 6630,
+            "top10_covered": 4698
+          }
+        }
+      },
+      "paired_bypass_transitions": {
+        "reader": {
+          "unique_query_same": {
+            "samples": 1384,
+            "bypass_gained": 9,
+            "bypass_lost": 6
+          },
+          "unique_query_changed": {
+            "samples": 35,
+            "bypass_gained": 5,
+            "bypass_lost": 1
+          },
+          "multiple_query_same": {
+            "samples": 7775,
+            "bypass_gained": 42,
+            "bypass_lost": 40
+          },
+          "multiple_query_changed": {
+            "samples": 314,
+            "bypass_gained": 27,
+            "bypass_lost": 19
+          }
+        },
+        "support": {
+          "unique_query_same": {
+            "samples": 1419,
+            "bypass_gained": 14,
+            "bypass_lost": 22
+          },
+          "unique_query_changed": {
+            "samples": 0,
+            "bypass_gained": 0,
+            "bypass_lost": 0
+          },
+          "multiple_query_same": {
+            "samples": 8089,
+            "bypass_gained": 25,
+            "bypass_lost": 57
+          },
+          "multiple_query_changed": {
+            "samples": 0,
+            "bypass_gained": 0,
+            "bypass_lost": 0
+          }
+        },
+        "span": {
+          "unique_query_same": {
+            "samples": 1419,
+            "bypass_gained": 28,
+            "bypass_lost": 108
+          },
+          "unique_query_changed": {
+            "samples": 0,
+            "bypass_gained": 0,
+            "bypass_lost": 0
+          },
+          "multiple_query_same": {
+            "samples": 8089,
+            "bypass_gained": 86,
+            "bypass_lost": 400
+          },
+          "multiple_query_changed": {
+            "samples": 0,
+            "bypass_gained": 0,
+            "bypass_lost": 0
+          }
+        }
+      },
+      "baseline_selected_query_geometry": {
+        "native0_reference0_final0": {
+          "samples": 4476,
+          "multiple_samples": 4249,
+          "reference_valid": 4445,
+          "samples_with_clipped_axis": 459,
+          "first_example_identities": [
+            {
+              "sample_index": 0,
+              "scan_id": "scene0011_00",
+              "target_id": 5
+            },
+            {
+              "sample_index": 1,
+              "scan_id": "scene0011_00",
+              "target_id": 13
+            },
+            {
+              "sample_index": 2,
+              "scan_id": "scene0011_00",
+              "target_id": 9
+            },
+            {
+              "sample_index": 3,
+              "scan_id": "scene0011_00",
+              "target_id": 1
+            },
+            {
+              "sample_index": 5,
+              "scan_id": "scene0011_00",
+              "target_id": 17
+            }
+          ]
+        },
+        "native0_reference0_final1": {
+          "samples": 26,
+          "multiple_samples": 18,
+          "reference_valid": 26,
+          "samples_with_clipped_axis": 4,
+          "first_example_identities": [
+            {
+              "sample_index": 4,
+              "scan_id": "scene0011_00",
+              "target_id": 18
+            },
+            {
+              "sample_index": 7,
+              "scan_id": "scene0011_00",
+              "target_id": 18
+            },
+            {
+              "sample_index": 25,
+              "scan_id": "scene0011_00",
+              "target_id": 25
+            },
+            {
+              "sample_index": 48,
+              "scan_id": "scene0011_00",
+              "target_id": 18
+            },
+            {
+              "sample_index": 419,
+              "scan_id": "scene0046_00",
+              "target_id": 44
+            }
+          ]
+        },
+        "native0_reference1_final0": {
+          "samples": 262,
+          "multiple_samples": 200,
+          "reference_valid": 262,
+          "samples_with_clipped_axis": 9,
+          "first_example_identities": [
+            {
+              "sample_index": 77,
+              "scan_id": "scene0015_00",
+              "target_id": 27
+            },
+            {
+              "sample_index": 81,
+              "scan_id": "scene0015_00",
+              "target_id": 27
+            },
+            {
+              "sample_index": 124,
+              "scan_id": "scene0015_00",
+              "target_id": 27
+            },
+            {
+              "sample_index": 185,
+              "scan_id": "scene0025_00",
+              "target_id": 1
+            },
+            {
+              "sample_index": 190,
+              "scan_id": "scene0025_00",
+              "target_id": 1
+            }
+          ]
+        },
+        "native0_reference1_final1": {
+          "samples": 482,
+          "multiple_samples": 382,
+          "reference_valid": 482,
+          "samples_with_clipped_axis": 40,
+          "first_example_identities": [
+            {
+              "sample_index": 11,
+              "scan_id": "scene0011_00",
+              "target_id": 15
+            },
+            {
+              "sample_index": 13,
+              "scan_id": "scene0011_00",
+              "target_id": 15
+            },
+            {
+              "sample_index": 27,
+              "scan_id": "scene0011_00",
+              "target_id": 27
+            },
+            {
+              "sample_index": 67,
+              "scan_id": "scene0011_00",
+              "target_id": 18
+            },
+            {
+              "sample_index": 154,
+              "scan_id": "scene0019_00",
+              "target_id": 11
+            }
+          ]
+        },
+        "native1_reference0_final0": {
+          "samples": 112,
+          "multiple_samples": 84,
+          "reference_valid": 112,
+          "samples_with_clipped_axis": 12,
+          "first_example_identities": [
+            {
+              "sample_index": 128,
+              "scan_id": "scene0019_00",
+              "target_id": 23
+            },
+            {
+              "sample_index": 129,
+              "scan_id": "scene0019_00",
+              "target_id": 23
+            },
+            {
+              "sample_index": 150,
+              "scan_id": "scene0019_00",
+              "target_id": 0
+            },
+            {
+              "sample_index": 153,
+              "scan_id": "scene0019_00",
+              "target_id": 23
+            },
+            {
+              "sample_index": 230,
+              "scan_id": "scene0025_00",
+              "target_id": 10
+            }
+          ]
+        },
+        "native1_reference0_final1": {
+          "samples": 184,
+          "multiple_samples": 135,
+          "reference_valid": 184,
+          "samples_with_clipped_axis": 37,
+          "first_example_identities": [
+            {
+              "sample_index": 38,
+              "scan_id": "scene0011_00",
+              "target_id": 18
+            },
+            {
+              "sample_index": 44,
+              "scan_id": "scene0011_00",
+              "target_id": 25
+            },
+            {
+              "sample_index": 301,
+              "scan_id": "scene0030_00",
+              "target_id": 13
+            },
+            {
+              "sample_index": 365,
+              "scan_id": "scene0046_00",
+              "target_id": 31
+            },
+            {
+              "sample_index": 402,
+              "scan_id": "scene0046_00",
+              "target_id": 37
+            }
+          ]
+        },
+        "native1_reference1_final0": {
+          "samples": 2,
+          "multiple_samples": 2,
+          "reference_valid": 2,
+          "samples_with_clipped_axis": 1,
+          "first_example_identities": [
+            {
+              "sample_index": 9301,
+              "scan_id": "scene0700_00",
+              "target_id": 17
+            },
+            {
+              "sample_index": 9346,
+              "scan_id": "scene0700_00",
+              "target_id": 17
+            }
+          ]
+        },
+        "native1_reference1_final1": {
+          "samples": 3964,
+          "multiple_samples": 3019,
+          "reference_valid": 3963,
+          "samples_with_clipped_axis": 295,
+          "first_example_identities": [
+            {
+              "sample_index": 6,
+              "scan_id": "scene0011_00",
+              "target_id": 17
+            },
+            {
+              "sample_index": 8,
+              "scan_id": "scene0011_00",
+              "target_id": 25
+            },
+            {
+              "sample_index": 10,
+              "scan_id": "scene0011_00",
+              "target_id": 25
+            },
+            {
+              "sample_index": 12,
+              "scan_id": "scene0011_00",
+              "target_id": 27
+            },
+            {
+              "sample_index": 17,
+              "scan_id": "scene0011_00",
+              "target_id": 19
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,46 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-03 22:02 UTC
+
+This supersedes the 20:01 snapshot. ScanRefer has no active trainer; do not
+restart a new Scan run until the completed Span pilot is interpreted or the
+user chooses a repeat. The claim that two-stage fine-tuning stayed below E0
+is incorrect: matched B2 improved over official E0 by48/329 hits at025/050.
+It remains below the final target.
+
+Completed B2 fixed-checkpoint diagnostics and the registered Span
+supervision pilot are documented in PVG_FORWARD_AUDIT.md and
+PVG_SPAN_GATE_COMPARISON.md. On full9508, fixed B2 was5483/4656; weight0
+control was5477/4620; weight0.1 treatment was5484/4654. Treatment versus
+control is+7/+34, but versus strong B2 is+1/-2. This single-seed/epoch
+result is exploratory, not robust causal evidence. No Reader rewrite or
+new Scan training has started.
+
+At22:01UTC the exact original NR/SR trainer, keeper and retention PIDs were
+live and their scratch recipes unchanged. NR is training after full epoch51,
+log progress456/3742; SR is training after full epoch19, progress339/6486.
+Both retain null checkpoint and pp_checkpoint, innovations off, and their
+original240/140epoch budgets.
+
+Latest complete same-checkpoint last-semantic-alignment Top1 results:
+NR best epoch49=4123/3325 over7899; latest epoch51=4100/3295.
+SR best epoch15=11743/9434 over17726; latest epoch19=11426/9256.
+Targets remain NR4724 and SR12302 Acc025 hits. Neither is met.
+Best/latest files were CPU-audited for own epochs,1134 model tensors,
+nonempty optimizer/scheduler and SHA. NR49 SHA
+0987ce9208dca84686a45a7d80bad4f93f126f34be9c8303899a1b6bf68ed66b;
+NR51 SHA b1ff22ea55d9cc26dd21b81e7f5221350ccae1ee31de346834d3ce0892aa8841.
+SR15 SHA 386647b8ecac817614090cb23f11b5d7a4d36b7449f67c07f43f84baf23e3969;
+SR19 SHA 7a179f1a0c49c30b72a28ef2ef1ae1e951ac0c2e7cf94bad6581621c1940338c.
+
+Full-history receipts are in docs/results/mcln_pvground_20261101:
+nr3d-current-full-history-20261103T2202.json and
+sr3d-current-full-history-20261103T2202.json. The combined CSV includes
+NR48-51 and SR19. NR48/50 and SR18 weights were removed by the authorized
+best/latest watcher; metrics and retention audits remain. The scoped
+collector now uses the actual dataset-level preserved_checkpoints directory
+and keeper aliases. No local model tests/imports/forward/evaluation/training.
+
 ## Current Override: 2026-11-03 20:01 UTC
 
 Verifiedwait20:01:23UTC:actualspanGPU240217live,3140/6081,

@@ -1,5 +1,27 @@
 # ScanRefer Stage A Restart
 
+## Current Override: 2026-11-03 22:02 UTC
+
+Stage B run1793674354 is complete and must not be restarted. The subsequent
+fixed-B2 four-condition diagnostics and registered Span supervision pilot
+are also complete; no Scan trainer is currently active. Do not launch a new
+Scan run until the pilot is interpreted or the user explicitly chooses a
+repeat.
+
+Fixed-B2 full9508 conditions: none5483/4656, Reader bypass5504/4673,
+Support bypass5475/4616, Span bypass5407/4262. These are inference
+interventions, not independently trained module ablations. The separate
+Span pilot control weight0=5477/4620 and treatment weight0.1=5484/4654;
+versus control it gains7/34 hits, but versus strong B2 it is+1/-2.
+The single-seed/epoch treatment is exploratory, not robust causal evidence.
+See PVG_FORWARD_AUDIT.md and PVG_SPAN_GATE_COMPARISON.md for receipts.
+
+The original NR/SR scratch runs continue independently and unchanged.
+Their latest complete metrics, live status and best/latest SHA audits are
+in the 2026-11-03 22:02 Current Override of the handoff and the current
+full-history receipts. Do not run historical Scan collectors or inspect
+stopped runs.
+
 ## Active Independent Pilot: 2026-11-03 17:38 UTC
 
 CompletedB remains immutable,not restarted. New controlrun1793726936

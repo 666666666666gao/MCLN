@@ -1,5 +1,28 @@
 # Current Checkpoint Storage Proposal
 
+## Current Override: 2026-11-03 22:02 UTC
+
+Fresh current-run audits show NR best49/latest51 and SR best15/latest19.
+Both were CPU-verified from the trainer's semantic-best/latest aliases and
+their dataset-level preserved links: own epoch,1134 model tensors,
+nonempty optimizer/scheduler, SHA256. NR49:
+0987ce9208dca84686a45a7d80bad4f93f126f34be9c8303899a1b6bf68ed66b;
+NR51: b1ff22ea55d9cc26dd21b81e7f5221350ccae1ee31de346834d3ce0892aa8841.
+SR15: 386647b8ecac817614090cb23f11b5d7a4d36b7449f67c07f43f84baf23e3969;
+SR19: 7a179f1a0c49c30b72a28ef2ef1ae1e951ac0c2e7cf94bad6581621c1940338c.
+The watchers removed NR48/50 and SR18 under the authorized policy;
+the latest full-history receipt records those removals and retains all
+metrics/audits. No manual cleanup or duplicate watcher was started.
+
+Current complete results: NR49=4123/3325 and NR51=4100/3295 over7899;
+SR15=11743/9434 and SR19=11426/9256 over17726. These are same-checkpoint
+last semantic alignment Top1 hits. NR/SR goals remain unmet. See
+nr3d-current-full-history-20261103T2202.json,
+sr3d-current-full-history-20261103T2202.json and the combined all-epochs CSV.
+The scoped collector uses the actual retention directory at
+runs/DATASET/preserved_checkpoints and audits semantic_best.pth plus
+ckpt_epoch_last.pth. Historical run directories remain out of scope.
+
 ## Authorized Policy Applied: 2026-11-03
 
 Update19:24UTC:SR full18=11563/9150 over17726;best remains15=

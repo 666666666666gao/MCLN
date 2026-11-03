@@ -1,5 +1,20 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 00:16UTC:NR30 completed00:14:12UTC,full7899 semanticTop1:
+3813/3055hits=48.271933%/38.675782%,new025-firstbest30.
+Versus29 +45/+94;versuspreviousbest27 +38/+147hits.
+OwnCPUcheckpoint30/1134tensors/optimizer/scheduler verified,CUDAoff,
+hardlinked;bestalias30verified00:16:11UTC,793092691bytes,SHA256
+c994e74ebc48ec43e037f700df07e19d2cc7b0fda8364d000ce72107e3f74f61.
+ConfigSHA unchangedf837245468d816600a3910223e05c802a689ace776c76038f24e7a3926283072,
+nulltaskinit/noinnovations/batch12accum4/max240/decay150.
+Target025deficit911hits,not achieved. Trainer96960/keeper135075live
+00:15UTC,NR31=59/3742. HistoricalCSV51rows(oldScan10/NR30/SR11).
+ScanA3ownfirsttwo updates finite5.8771486282/6.6740288734,all3modules
+nonzero gradients/deltas,frozenparameters/buffersunchanged;A3=231/6081
+23:57UTC. Finish3epochs/matchedvalidation beforeconditionalB.
+No localtests,oldruninspection,trainingchanges orcleanup.
+
 2026-11-02 23:54UTC update:
 Scan restart A2 completed23:51:44UTC,full9508 last-semantic Top1:
 5460/4563hits=57.425326%/47.991165%,versusA1 +14/+20hits.

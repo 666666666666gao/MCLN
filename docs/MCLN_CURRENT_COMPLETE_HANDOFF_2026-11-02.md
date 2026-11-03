@@ -1,5 +1,44 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Results: 2026-11-03 05:24 UTC
+
+Two new complete validations were audited on remote CPU; each checkpoint
+has its own expected epoch,1134 model tensors,optimizer and scheduler.
+No CUDA was initialized in the audit processes.
+
+| Dataset | Latest Epoch | Full Samples | Hits025 / Hits050 | Acc025 / Acc050 | Best Epoch |
+| --- | ---: | ---: | --- | --- | ---: |
+| NR3D | 35 | 7899 | 3886 / 3050 | 49.196101% / 38.612483% | 34 |
+| SR3D | 13 | 17726 | 11253 / 8812 | 63.483019% / 49.712287% | 10 |
+
+All metrics are same-checkpoint last semantic alignment Top1/bbf.
+NR35 completed05:21:01UTC,down5/96 hits versus34; best34 remains
+3891/3146 (49.259400%/39.827826%),833hits below the025target.
+SR13 completed05:19:41UTC,down268/311 versus12 and371/307 versusbest10.
+Best10 remains11624/9119 (65.575990%/51.444206%),678hits below025target.
+Do not combine SR10's025withSR12'shigher050.
+
+NR35 SHA:d708c5d37ba45121b678aa57b5488b876a77ac034c6c6ccdb7d40f4228ea15aa.
+SR13 SHA:50b45aec894a908d63a90e8542fded5e6499eea58d79d87821e2bf98e8aa73ac.
+Each793092691bytes. SRbest10 was rehashed05:22:16UTC; its original
+null task/pp initialization,batch12accum2/max140/decay30,40 remain unchanged.
+At05:21:51UTC SRretention auditedbest10/latest13 and removedonly12;
+freebytes19739373568->20532469760. Historical metric rows remain.
+The full-epoch table now has58rows; Scan restart's7rows remain separate.
+NRretention05:21:52UTC independently auditedbest34/latest35 with
+nonemptyoptimizer/scheduler/SHA; removednone,free21181136896bytes.
+NR/SR continue their original240/140budgets without configuration changes.
+Single-epoch decreases do not identify a causal defect or authorize
+changing their requested reproduction runs.
+
+Scan B1 was live05:11:05UTC at4705/6081,47finite logged trainlosses,
+latest7.3849,noerrorlines/configchange; still no complete B validation.
+Its first full result remains estimated around05:50-06:05UTC.
+At05:25:47UTC actualB207977/retention209444 remained live,B1=5224/6081,
+GPU21989MiB,currentmodel-onlyA3/freshoptimizer/scheduler recipe unchanged.
+TrainingETA~05:50UTC; completevalidation remains pending.
+No target is verified reached,no local tests ran.
+
 2026-11-03 04:49UTC: complete Stage A checkpoint preservation audited
 on remote CPU. Selected epoch3 versus official54:1134 native serialized
 tensors exactly unchanged,including204 BatchNorm buffers;34 new tensors

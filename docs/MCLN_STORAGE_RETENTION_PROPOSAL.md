@@ -2,6 +2,15 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update05:24UTC: current complete results are NR35 and SR13.
+NR keepbest34/latest35; SRkeepbest10/latest13. SRretention05:21:51UTC
+independently audited10/13includingnonemptyoptimizer/scheduler/SHA and
+removedonlythe old12preservedweight. Free19739373568->20532469760bytes.
+NR35 isCPU-audited/hashed and its automatic retention receipt is collected
+separately. All metric/log/config/audit records are preserved.
+NRreceipt05:21:52UTC auditsbest34/latest35,nonemptyoptimizer/scheduler/SHA,
+removednone,free21181136896bytes.
+
 Update04:23UTC: NR34 full validation completed at3891/3146 hits
 (49.259400%/39.827826%). At04:26:45UTC best manifest34 was verified;
 best and latest are34. Epoch34 is CPU-audited and hashed

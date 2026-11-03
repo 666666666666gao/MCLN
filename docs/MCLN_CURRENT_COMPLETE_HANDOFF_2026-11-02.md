@@ -1,6 +1,23 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 18:12 UTC
+## Current Override: 2026-11-03 18:24 UTC
+
+NR/SR observation connections failed twice each,including an180s-spaced
+retry,before remote output:"Connection closed by UNKNOWN port 65535".
+This is an observability interruption,NOT proof of training termination.
+Last confirmed live:NR96960at17:59:18UTC;SR92354at18:02:55UTC.
+Reobserve the same registered jobs;no restart/config/retention/SSH changes.
+The configured local ProxyCommand alone is not a proven root cause.
+No credential or proxy-command value was recorded.
+Receipt:mcln-monitor-transport-interruption-20261103T1823.json.
+Scancontrol236606verified live18:18:34UTC,3048/6081,
+GPU21679MiB,zero recent error records. Full9508pending,ETA19:10-19:25.
+Receipt:scanrefer-span-gate-progress-20261103T1818.json.
+No new full metrics,74/11tables unchanged. NR47/SR15best/latest17
+remain last-audited facts,not fresh NR/SR liveness assertions.
+Keep original budgets and pilot controller ownership. Goal remains active.
+
+## Previous Override: 2026-11-03 18:12 UTC
 
 New read-only running-source audit:worker236606cwd verified,five
 LF-normalized source identities equal e73dc4a;raw SHA256 retained.

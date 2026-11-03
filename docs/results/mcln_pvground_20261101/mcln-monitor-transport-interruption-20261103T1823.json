@@ -1,0 +1,59 @@
+{
+  "recorded_utc": "2026-11-03T18:22:59.3179478Z",
+  "scope": "Transport observations only. A closed SSH observation connection is not evidence that a remote trainer stopped.",
+  "failure_window": "Approximately 2026-11-03 18:18-18:22 UTC",
+  "remote_entrypoint": "work/remote_pvground.ps1",
+  "retry_wait_seconds": 180,
+  "cases": [
+    {
+      "dataset": "nr3d",
+      "server": "connect.nmb1.seetacloud.com",
+      "port": 32749,
+      "run": "1793553113",
+      "trainer_pid": 96960,
+      "last_confirmed_live_utc": "2026-11-03T17:59:18.107077Z",
+      "last_audited_epoch": 47,
+      "current_trainer_state": "unobserved_during_transport_interruption",
+      "attempts": [
+        {"local_exec_session": 71647, "exit_code": 1, "output": "Connection closed by UNKNOWN port 65535"},
+        {"local_exec_session": 46800, "exit_code": 1, "output": "Connection closed by UNKNOWN port 65535"}
+      ]
+    },
+    {
+      "dataset": "sr3d",
+      "server": "connect.nmb2.seetacloud.com",
+      "port": 45914,
+      "run": "1793552465",
+      "trainer_pid": 92354,
+      "last_confirmed_live_utc": "2026-11-03T18:02:55Z",
+      "last_audited_epoch": 17,
+      "current_trainer_state": "unobserved_during_transport_interruption",
+      "attempts": [
+        {"local_exec_session": 68840, "exit_code": 1, "output": "Connection closed by UNKNOWN port 65535"},
+        {"local_exec_session": 9296, "exit_code": 1, "output": "Connection closed by UNKNOWN port 65535"}
+      ]
+    }
+  ],
+  "scanrefer": {
+    "observed_utc": "2026-11-03T18:18:34.449699Z",
+    "condition": "control",
+    "run": "1793726936",
+    "compute_pid": 236606,
+    "completed_training_microbatches": 3048,
+    "total_training_microbatches": 6081,
+    "gpu_memory_mib": 21679,
+    "recent_error_records": [],
+    "full_validation_result_available": false
+  },
+  "local_ssh_config": {
+    "proxycommand_configured": true,
+    "proxycommand_value_recorded": false,
+    "root_cause_proven": false,
+    "configuration_changed": false
+  },
+  "trainer_restarted": false,
+  "remote_training_or_retention_configuration_changed": false,
+  "formal_training_tables_changed": false,
+  "local_model_operations_or_tests": false,
+  "next_action": "Retry observing the same registered NR/SR jobs through the existing wrapper; do not infer termination or restart from transport failures. Check Scan near its full-validation ETA."
+}

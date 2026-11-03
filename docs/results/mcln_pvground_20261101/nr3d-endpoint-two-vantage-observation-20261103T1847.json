@@ -1,0 +1,32 @@
+{
+  "dataset": "nr3d",
+  "endpoint": "connect.nmb1.seetacloud.com:32749",
+  "run": "1793553113",
+  "last_confirmed_trainer_live_utc": "2026-11-03T17:59:18Z",
+  "last_confirmed_trainer_pid": 96960,
+  "observations": [
+    {
+      "started_utc": "2026-11-03T18:45:53.622219+00:00",
+      "vantage": "ScanRefer server via work/remote_pvground.ps1",
+      "method": "socket.create_connection, timeout 20 seconds; SSH banner only, no authentication",
+      "helper": "tools/check_current_nr_ssh_banner.sh",
+      "session_id": 70259,
+      "exit_code": 1,
+      "result": "TimeoutError: timed out",
+      "failed_at": "TCP connection establishment, before SSH banner"
+    },
+    {
+      "started_utc": "2026-11-03T18:46:30Z",
+      "vantage": "Original local wrapper path",
+      "method": "work/check_current_mcln_keeper_status.sh via work/remote_pvground.ps1",
+      "session_id": 56201,
+      "scheduled_wait_seconds_after_previous_query_start": 240,
+      "exit_code": 1,
+      "result": "Connection closed by UNKNOWN port 65535",
+      "failed_at": "Before remote status output"
+    }
+  ],
+  "interpretation": "Observation failure also occurs from a second network vantage. This does not establish a root cause, universal endpoint outage, or training termination.",
+  "actions": "No SSH override, credential change, fallback route, training restart, retention change or local model operation.",
+  "scope": "Current NR endpoint only; no stopped or historical training run was accessed."
+}

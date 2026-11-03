@@ -1,6 +1,28 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 18:43 UTC
+## Current Override: 2026-11-03 18:52 UTC
+
+Verifiedwait18:50:38UTC:Scan236606live/control5322of6081,
+21679MiB/no recenterrors/~11mintrainingleft. SR92354/129032live
+18:50:41UTC,6248of6486/~5mintrainingleft,originalconfigunchanged.
+FullETA remainsScan19:10-19:25/SR19:05-19:20UTC,updatefromactual.
+Scanreceipt:scanrefer-span-gate-progress-20261103T1850.json.
+No new complete validation or pilot accuracy result;74/11tables unchanged.
+
+New NR transport evidence:from Scan server through the unchanged wrapper,
+18:45:53UTC TCP connection to current NR endpoint timed out(timeout20s),
+before SSH banner/no authentication. Original wrapper requery18:46:30UTC
+after240s sincepreviousquery stillclosedbeforestatus. This secondvantage
+observation does NOT establish rootcause,universaloutage or trainerexit.
+No direct-routefallback/SSHoverride/credentialchange/trainingrestart.
+Helper:tools/check_current_nr_ssh_banner.sh,execute remotely ONLY.
+Receipt:nr3d-endpoint-two-vantage-observation-20261103T1847.json.
+NR current liveness remains unknown,lastverified17:59:18UTC/full47.
+Scan/SR progress independently;preserveNR240/SR140 and existingpilot
+control->span controller. Finishbothpilotconditions before nextReader
+implementation. No target attainment verified;goal active.
+
+## Previous Override: 2026-11-03 18:43 UTC
 
 Verifiedwait:actualScanGPUworker236606live18:39:08UTC,
 control4509/6081,21679MiB,no recenterrors;~22mintrainingremaining.

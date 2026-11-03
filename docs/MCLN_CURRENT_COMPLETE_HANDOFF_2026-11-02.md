@@ -1,6 +1,23 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 19:33 UTC
+## Current Override: 2026-11-03 19:38 UTC
+
+Scoped scratch health helper:tools/check_current_scratch_progress.sh
+only enumerates registered NR1793553113/SR1793552465,never a Scan
+or historical fine-tune run. Source/log/config/process reads only,
+no model import/checkpoint load/forward/evaluation/training. Use via
+work/remote_pvground.ps1 instead of old inspect_sr3d_current_epoch.sh,
+which points to a stopped historical module fine-tune.
+RemoteSR execution19:36:44UTC verified92354/129032/148725live and
+the exact current screen. Training1070/6486,GPU22924MiB;65recent
+logged losses finite,latest9.8206,no recent error records.
+Original nullcheckpoint/pp,innovationsOFF,batch12accum2/LR1e-4/
+backbone1e-3/max140/decay30,40 verified. Next fullSR validation
+ETA21:45-22:05UTC from~1.3s/microbatch plus validation,not guaranteed.
+Receipt:sr3d-current-scratch-progress-20261103T1936.json.
+No new full result;bestSR15/latest18 and tables75/11/pilot1 unchanged.
+Scan last actual19:34:01UTC:240217live,1137/6081,no recenterrors;
+fullETA20:55-21:10 remains. NR lastlive17:59:18,not newly verified.
 
 New source/data-only evidence19:31:22UTC:actual live240217/source cwd,
 use_sacr_source=false,augment_det=true. RawScan TRAIN36665records have

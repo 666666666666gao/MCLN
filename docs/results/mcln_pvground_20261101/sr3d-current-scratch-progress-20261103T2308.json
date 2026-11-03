@@ -1,0 +1,47 @@
+{
+  "observed_utc": "2026-11-03T23:08:53+00:00",
+  "dataset": "sr3d",
+  "run": "1793552465",
+  "trainer_pid": 92354,
+  "trainer_live": true,
+  "screen": "92328.pvg_sr3d_mcln_scratch (Detached)",
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4090",
+    "memory_used_mib": 22924,
+    "memory_total_mib": 24564,
+    "utilization_percent": 9
+  },
+  "train_log": {
+    "bytes": 8821668,
+    "modified_utc": "2026-11-03T23:08:52.992+00:00",
+    "latest_periodic_line_utc": "2026-11-03T23:07:24+00:00"
+  },
+  "config": {
+    "checkpoint_path": null,
+    "pp_checkpoint": null,
+    "use_pvground_innovations": false,
+    "batch_size": 12,
+    "gradient_accumulation_steps": 2,
+    "lr": 0.0001,
+    "lr_backbone": 0.001,
+    "max_epoch": 140,
+    "lr_decay_epochs": [30, 40]
+  },
+  "latest_complete_validation": {
+    "epoch": 19,
+    "sample_count": 17726,
+    "metric": "last_semantic_alignment_top1",
+    "hits025": 11426,
+    "hits050": 9256
+  },
+  "best_complete_validation": {
+    "epoch": 15,
+    "sample_count": 17726,
+    "metric": "last_semantic_alignment_top1",
+    "hits025": 11743,
+    "hits050": 9434
+  },
+  "new_complete_validation": false,
+  "interpretation": "The prior check showed a stale progress-tail line. The trainer remains live and the log byte count and periodic timestamp advanced; this is not evidence of a stall. The helper output did not expose a current microbatch count.",
+  "scope": "Read-only current SR3D process, screen, GPU, config and log observation through the approved remote wrapper; no model import, checkpoint load, forward, evaluation, training or restart."
+}

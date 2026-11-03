@@ -1,5 +1,15 @@
 # Current Checkpoint Storage Proposal
 
+## Current Override: 2026-11-03 23:09 UTC
+
+NR3D best49/latest52 remain verified by the22:56CPU receipt; no newer
+full validation or retention event. SR3D's23:08 live check confirms the
+trainer and log are advancing, but reports no new complete validation or
+retention event. Existing best/latest watchers remain authoritative; do
+not manually remove or relink checkpoints.
+Progress receipt:
+`docs/results/mcln_pvground_20261101/sr3d-current-scratch-progress-20261103T2308.json`.
+
 ## Current Override: 2026-11-03 22:56 UTC
 
 NR3D run1793553113 remains live after full epoch52 validation. Current

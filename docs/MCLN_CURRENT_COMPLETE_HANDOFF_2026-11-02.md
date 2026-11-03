@@ -1,5 +1,28 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-03 23:09 UTC
+
+NR3D remains at best49=4123/3325 and latest full epoch52=4048/3238 over
+7899; its CPU-audited full-history receipt and epoch52 SHA are recorded
+below in the22:58 override and in the corresponding receipt. The trainer
+was live at335/3742 at22:58UTC, on its unchanged scratch configuration.
+
+SR3D is live, not stalled. At23:08:53UTC trainer92354 was present and the
+GPU reported22924/24564MiB. The train log grew from8760660 bytes at22:58
+to8821668 bytes at23:08, and its latest periodic timestamp advanced from
+22:56:35 to23:07:24UTC. The old visible2515/6486 tqdm tail was stale;
+the helper exposes no current microbatch count, so do not diagnose a stall.
+Latest full validation remains19=11426/9256, best15=11743/9434 over17726.
+Live status receipt:
+`docs/results/mcln_pvground_20261101/sr3d-current-scratch-progress-20261103T2308.json`.
+No new full validation. Both runs retain original scratch settings and
+null initialization paths.
+
+No ScanRefer trainer is active. The completed Span pilot remains
+exploratory (+7/+34 versus control, +1/-2 versus strong B2); no repeat
+has been authorized or started. No local model tests/imports/forward/
+evaluation/training.
+
 ## Current Override: 2026-11-03 22:58 UTC
 
 NR3D run1793553113 completed full7899 validation epoch52=4048/3238
@@ -14,9 +37,9 @@ no error lines, original scratch recipe and null initialization unchanged.
 SR3D trainer92354,keeper129032 and retention148725 were live at22:58UTC.
 Latest complete result remains epoch19=11426/9256, best epoch15=11743/
 9434 over17726; target12302 Acc@0.25 remains559 hits beyond best.
-The helper log tail showed2515/6486 at22:58, apparently unchanged from
-22:46 despite GPU use; recheck after180-300seconds before diagnosing.
-No new complete SR validation. CPU-audited full-history receipts:
+The helper's visible2515/6486 tail was stale; the23:08 check confirmed
+advancing log timestamp and bytes. No new complete SR validation.
+CPU-audited full-history receipts:
 `docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261103T2255.json`
 and `sr3d-current-full-history-20261103T2255.json`.
 

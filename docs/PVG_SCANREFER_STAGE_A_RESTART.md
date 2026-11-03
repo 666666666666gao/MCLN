@@ -1,5 +1,18 @@
 # ScanRefer Stage A Restart
 
+2026-11-03 02:29UTC:StageA completed02:23:49UTC/exit0.
+Allthreefull9508epochs audited by controller's remoteCPUcollector:
+A1=5446/4543,A2=5460/4563,A3=5461/4565.
+A3=57.435844%/48.012200%,+1/+2hitsversusA2;selected050then025.
+Owncheckpoint3/1168tensors/optimizer/scheduler verified,CUDAoff.
+SelectedinitializationSHA
+f4e98cce830eb474a94402df00dbd160c379b963e7d285c759b86c4a60b0a898.
+Original5425/4328gatepassed;finaltargetdeficits244/380hits.
+ActualmatchedevaluationPID205803live02:29:40UTCundercontroller204119.
+Matchedpairnotcomplete;Bnotstarted. No modulecausalityclaim from
+originalE0delta,which crosses the documentedbackendboundary.
+Raw scanrefer-stage-a-complete-epochs-through3.json;restartCSV5rows.
+
 Latest user scope: restart ScanRefer fine-tuning after reading the six
 documents in `C:/Users/gb/Desktop/document/MCLN plan/`; continue NR3D and
 SR3D original full reproduction runs unchanged. The documents' suggestions

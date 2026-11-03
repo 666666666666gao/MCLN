@@ -1,5 +1,21 @@
 # Current MCLN + PV-Ground Handoff
 
+02:35UTC SR12 completed02:29:59UTC full17726=11521/9123hits,
+64.994923/51.466772%,+97/+286versus11. Bestremains10=11624/9119;
+do not pair10's025with12's050. OwnCPUepoch12/1134/optimizer/scheduler
+verifiedaftercheckpointsave,CUDAoff. Preserved793092691bytes/3links,
+SHA d9b4e0f496ca72b0d330e9f44e36f89d50b2f8545cafc75732f6f2c39c32d234.
+Actual92354/129032live02:34UTC,free12601630720bytes77%used.
+Raw mcln-sr3d-epoch12.json;historicalCSV54rows.
+NR/SRoriginal240/140epochrecipesunchanged;no localtests.
+
+02:29UTC ScanA complete02:23:49UTC/exit0;controller remoteCPUaudited
+allthreefull9508checkpoints. A3selected5461/4565=57.435844/48.012200%,
+owncheckpoint3/1168tensors/optimizer/scheduler verified,CUDAoff.
+SHA f4e98cce830eb474a94402df00dbd160c379b963e7d285c759b86c4a60b0a898.
+Targetdeficits244/380. ActualmatchedevaluationPID205803liveunder204119;
+pairpending/Bnotstarted. RestartCSV5rows;seeStageArestartdoc/rawreceipt.
+
 2026-11-03 02:19UTC: NR32 completed02:15:21UTC,full7899 last-semantic
 Top1=3862/3035hits,48.892265%/38.422585%. New025-firstbest32,
 versus31 +46/+24hits;025targetdeficit862. OwnCPUcheckpointepoch32,

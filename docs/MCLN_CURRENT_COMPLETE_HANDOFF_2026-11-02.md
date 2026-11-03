@@ -1,5 +1,19 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 02:19UTC: NR32 completed02:15:21UTC,full7899 last-semantic
+Top1=3862/3035hits,48.892265%/38.422585%. New025-firstbest32,
+versus31 +46/+24hits;025targetdeficit862. OwnCPUcheckpointepoch32,
+1134tensors/optimizer/scheduler verified,CUDAoff;hardlink
+runs/nr3d/preserved_checkpoints/ckpt_epoch_32.pth,793092691bytes.
+SHA d160096bd6f795feb1cf3d5512d5039bc8d492ab28e7b56298b29de83e212af3.
+Bestmanifest32verified02:19:29UTC;originalconfigSHA unchanged
+f837245468d816600a3910223e05c802a689ace776c76038f24e7a3926283072.
+Raw mcln-nr3d-epoch32.json/nr3d-semantic-best-identity-epoch32.json;
+all-epochCSV53rows. No localtests orNR/SRrecipechanges.
+At02:18UTC ScanA3 validation628/1189,SR12 validation531/1478,
+actualtrainerslive. No completeA3/SR12metricsyet. ExistingScantransition
+controller owns matchedvalidation/conditionalB;no duplicate launch.
+
 2026-11-03 01:42UTC:ScanRefer guardedtransitiondeployed,
 screen pvg_scanrefer_restart_transition,actualbashPID204119 verifiedlive
 01:39:51UTC besideAtrainer189152. It checks every240seconds,then requires

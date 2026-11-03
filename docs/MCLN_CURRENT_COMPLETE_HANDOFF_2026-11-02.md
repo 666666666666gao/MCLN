@@ -1,5 +1,31 @@
 # Current MCLN + PV-Ground Handoff
 
+## ScanRefer Update: 2026-11-03 06:06 UTC
+
+Scan B1 full9508 completed06:01:50UTC,lastsemanticTop1/bbf
+5474/4653hits=57.572570%/48.937737%.
+Compared with matched A3=5461/4566:+13/+87hits.
+Compared with matched official=5435/4327:+39/+326hits.
+Same-checkpoint targets5705/4945 remain231/292hits away.
+No individual-module causal or target-completion claim.
+
+OwnCPUepoch1/1168tensors/nonemptyoptimizer/scheduler/threeLRgroups
+verified06:04:19UTC,independent complete log/evaluator counts agree.
+795607307bytes,SHA cda46832c35f95fb70710da23768ea28eb27f8130bb6ae787de2665f0cf92f48.
+Best/latestB1;retention06:02:53 independentlyauditedSHA/resumestates,
+removednone. A3 remainsinitializationinput. RestartCSV8rows,
+historicalNR/SR/oldScanCSV58rows unchanged.
+
+B2actual207977live06:04:56UTC104/6081,finitefirstupdate7.124665260314941,
+all34module tensors updated. Keep original B recipe,max10 and two
+consecutive050-decreases rule;B1 setsbaseline/streak0. No localtests.
+NR36actual96960live06:04:49UTC2772/3742,GPU22833MiB;
+SR14actual92354live06:05:28UTC1931/6486,GPU22924MiB,
+recentloggedtrainlossesfinite/noerrors/originalnullinit/configunchanged.
+NextfullETA NR36~06:25-06:35UTC,SR14~08:10-08:25UTC,
+ScanB2~09:00-09:15UTC;estimatesonly.
+See StageArestartdoc/rawB1receipt for exactmarkersandcollectionscope.
+
 ## Current Results: 2026-11-03 05:24 UTC
 
 Two new complete validations were audited on remote CPU; each checkpoint

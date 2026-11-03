@@ -2,6 +2,13 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update06:06UTC: ScanB1 full9508 audited5474/4653hits. Best/latestboth1.
+Retention06:02:53UTC audited own1/1168/nonemptyoptimizer/scheduler/SHA,
+removednone,free13081960448bytes. Weight795607307bytes,
+SHA cda46832c35f95fb70710da23768ea28eb27f8130bb6ae787de2665f0cf92f48.
+Receipt lives in the B run directory,not the restart root; the watcher
+log lives at the restart root. A3 and official initialization inputs remain.
+
 Update05:24UTC: current complete results are NR35 and SR13.
 NR keepbest34/latest35; SRkeepbest10/latest13. SRretention05:21:51UTC
 independently audited10/13includingnonemptyoptimizer/scheduler/SHA and

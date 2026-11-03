@@ -1,5 +1,44 @@
 # ScanRefer Stage A Restart
 
+## First Complete Stage B Validation
+
+Stage B epoch1 completed all9508 examples at2026-11-03 06:01:50UTC.
+Same-checkpoint last semantic alignment Top1/bbf:5474/4653hits,
+Acc025=57.572570%,Acc050=48.937737%. Relative to matched selected A3
+5461/4566,this is+13/+87hits (+0.136727/+0.915019 percentage points).
+Relative to matched official5435/4327,it is+39/+326hits.
+The original Stage A training validation4565hits050 remains a separate
+measurement; it is not substituted for the matched4566 comparison.
+This aggregate comparison does not isolate each module's contribution.
+
+Targets5705/4945 remain231/292hits away; neither final target is met.
+The first B validation establishes the early-stop baseline:
+decrease_streak=0,stop_requested=false. Subsequent B epochs continue
+the existing two-strict-consecutive050-decrease policy and10epoch budget.
+No recipe/architecture/module change was made.
+
+At06:04:19UTC a remote CPU collector crosschecked the training evaluator's
+9508counters against complete semantic log rows and the actual checkpoint.
+Own epoch1/1168model tensors/nonemptyoptimizer/scheduler were verified.
+Saved optimizer groups are native2e-6/backbone4e-6/allthree modules2e-5;
+batch8accum6 and model-onlyA3 initialization were checked.
+Checkpoint795607307bytes,SHA256:
+`cda46832c35f95fb70710da23768ea28eb27f8130bb6ae787de2665f0cf92f48`.
+The semantic-best manifest selectsB1; its best/latest retention audit
+at06:02:53UTC independently verified the same SHA and resume states.
+No weight was removed. A3 remains the initialization input.
+
+Raw receipt:`docs/results/mcln_pvground_20261101/scanrefer-stage-b-epoch1-audited.json`.
+Collector:`tools/collect_scanrefer_stage_b_epoch1.sh`.
+Restart table now8rows,including separate official/identity/matched/A/B phases.
+CPU collection used no model import/construction/forward/evaluation,
+CUDA remained uninitialized,and no local tests ran.
+ActualBtrainer207977/retention209444 were live06:04:56UTC,epoch2=104/6081.
+B2 own first update atbatch6 had finite loss7.124665260314941;
+all34module tensors had nonzero finite gradients and actual updates.
+The per-epoch first-update filename is overwritten; do not relabel that
+epoch2 receipt as the earlier epoch1 first update.
+
 ## Complete Stage A Native Preservation
 
 At2026-11-03 04:48:27UTC a remote CPU audit compared the selected

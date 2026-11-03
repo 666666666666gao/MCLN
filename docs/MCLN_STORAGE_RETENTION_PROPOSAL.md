@@ -2,6 +2,15 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update07:42UTC: NR37full7899=3994/3152hits,50.563362/39.903785%.
+025-firstbest/latest37. OwnCPU37/1134/optimizer/scheduler verified;
+bestmanifest37/SHA independentlyconfirmed07:34:15UTC.
+Retention07:34:08UTC auditednonemptyoptimizer/scheduler/SHA,removedonly36,
+kept37. Free21180428288->21973524480bytes;4hardlinks07:40:07UTC.
+SHA8cd1a07bb9ea191a3a243864bdc71a0a6c28f2665f970d777f25e61d0494bb3b.
+Raw receipt:nr3d-best-latest-retention-epoch37.json.
+Logs/configs/60historicalrows/allrawauditsretained;CSV36pathmarkeddeleted.
+
 Update06:35UTC: NR36full7899=3953/3101hits,50.044309/39.258134%.
 025-firstbest/latest36. Keepermanifest36/SHAverified06:34:17UTC.
 Retention06:34:00UTC independentlyaudited36/1134/nonemptyoptimizer/

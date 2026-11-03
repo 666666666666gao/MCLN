@@ -1,5 +1,32 @@
 # Current MCLN + PV-Ground Handoff
 
+## NR3D Update: 2026-11-03 07:42 UTC
+
+NR37 completed07:30:27UTC,full7899,last semantic alignment Top1/bbf:
+3994/3152hits=50.563362%/39.903785%. Both metrics belong to the
+same checkpoint. Versus36:+41/+51hits. New025-firstbest37;
+the target4724hits remains730hits away. No target is achieved.
+
+Own remoteCPUcheckpoint epoch37/1134tensors/optimizer/scheduler verified,
+CUDAoff. Weight793092691bytes,SHA256:
+8cd1a07bb9ea191a3a243864bdc71a0a6c28f2665f970d777f25e61d0494bb3b.
+Bestmanifest37 independentlyverified07:34:15UTC with the sameSHA.
+Retention07:34:08UTC independentlyaudited37/nonemptyoptimizer/scheduler/
+SHA,removedonlyolder36,andkept37best/latest. Freebytes increased
+21180428288->21973524480. Historicalmetrics/logs/configs/audits remain;
+the CSV marks36'spathdeleted. Historicaltable60rows,Scanrestart8rows.
+Raw receipts:mcln-nr3d-epoch37.json,nr3d-checkpoint-identity-epoch37.json,
+nr3d-best-latest-retention-epoch37.json in the current results directory.
+
+ActualNR96960live07:41:26UTC,epoch38=721/3742,GPU22833MiB/97%,
+finite latestloggedtrainloss10.4481at500,noerrors/configchanges.
+Originalnulltask/ppinitialization,batch12accum4,max240/decay150 unchanged.
+SR92354live07:33:23UTC,epoch14=5535/6486,finite10.1909at5500.
+ScanB207977live07:33:20UTC,epoch2=3338/6081,finite7.4426at3300.
+Theirconfigurationsremainunchanged;no newfullSR/Bvalidation.
+NextfullETA:SR14~08:10-08:25UTC,ScanB2~09:00-09:15UTC,
+NR38~08:30-08:40UTC. Estimatesonly. No localtests or modelchanges.
+
 ## NR3D Update: 2026-11-03 06:30 UTC
 
 NR36 full7899 completed06:27:31UTC: last semantic alignment Top1/bbf

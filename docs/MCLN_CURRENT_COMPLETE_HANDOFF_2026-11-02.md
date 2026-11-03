@@ -1,5 +1,15 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 03:40UTC: ScanBactual207977advanced1315->1477/6081
+between03:35:22and03:39:49UTC with240s scheduled recheck.
+All14logged cumulative traininglossrecordsfinite,latest7.4088at1400,
+norecenterrorlines,GPU21989MiB. NR/SRactual96960/92354live03:37UTC,
+59/54finite loggedtrainingrecords,originalconfigs/budgets unchanged.
+NewcompacthealthhelperpairsTrainheader+lossand excludesEval;fixed
+an observedmonitor-labelmixup,not a trainingdefect. See StageArestartdoc
+andthree training-loss-health rawreceipts. No newcompletevalidation,
+architecture/configchange,modelimport/forward/localtest.
+
 2026-11-03 03:29UTC: remoteCPU audit covers all1,201 training superpoint
 files,exact ScanNet train metadata match,50,000 integer labels each,
 zero single-cluster/negative-label scenes,min90/median843/max4363.

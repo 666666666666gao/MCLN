@@ -1,5 +1,35 @@
 # ScanRefer Stage A Restart
 
+## Sustained Training Log Check
+
+At2026-11-03 03:39:49UTC Btrainer207977 was live,1477/6081batches,
+GPU21989MiB. The same PID had reached1315 at03:35:22UTC; the recheck
+was scheduled240seconds later. Fourteen cumulative training total-loss
+records are finite; the last three,atbatches1200/1300/1400,are
+7.4475/7.4360/7.4088. No traceback/OOM/RuntimeError appeared in the
+inspected log tail. Initialization/configuration remain A3model-only,
+freshoptimizer/scheduler,batch8accum6/native2e-6/backbone4e-6/modules2e-5.
+This is continuing-process/log evidence,not a complete Bvalidation or
+proof that every individual batch/optimizer update was instrumented.
+
+`tools/check_current_training_loss.sh` reads at most the last2MiB of each
+exact current-run log,checks the actual known PID/config/GPU,and pairs
+each total loss with a `Train:` header. The initial draft accidentally
+associated `Eval:` losses with the last training position; the verified
+version clears that association at `Eval:` and consumes one training-loss
+line per `Train:` header. On real NRlogs,this removes a validation loss
+24.4308 incorrectly attributed toepoch33/batch3500; its actual training
+average is11.0797. This was a monitoring-label error,not a trainer defect.
+NR/SR corrected remote snapshots at03:37:12UTC contain59/54finite
+training records respectively; actual trainers96960/92354 remain live,
+with unchanged null task/pp initialization and original240/140budgets.
+No model code,training configuration,local test,model import or forward
+was executed by this check.
+
+Raw receipts are `scanrefer-stage-b-training-loss-health-20261103T0339.json`,
+`nr3d-training-loss-health-20261103T0337.json` and
+`sr3d-training-loss-health-20261103T0337.json` under the current results folder.
+
 ## Matched Validation Completed
 
 At 2026-11-03 02:53 UTC the controller had completed both 9,508-row

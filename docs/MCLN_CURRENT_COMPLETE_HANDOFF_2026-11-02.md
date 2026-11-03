@@ -1,5 +1,18 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 01:42UTC:ScanRefer guardedtransitiondeployed,
+screen pvg_scanrefer_restart_transition,actualbashPID204119 verifiedlive
+01:39:51UTC besideAtrainer189152. It checks every240seconds,then requires
+Aexit0/allthreeownauditedepochs/originalgate,performs existing matched
+fullvalidation,and only on success/emptyGPU runs existingBrecipe.
+Failures exit,preservinglogs,no retries or gatechanges.
+Do NOT manually start matchedvalidation/Bwhilethiscontrollerislive.
+All phases use the transition screen;inspectactualBprocess/ownupdate
+receipt rather than expecting an independentBscreen. No Btrainingverifiedyet.
+See docs/PVG_SCANREFER_STAGE_A_RESTART.md andstartupreceipt
+scanrefer-guarded-transition-started.json. Existingtwohourmonitorprompt
+updated;rrule/notificationpolicy/targetchatunchanged. NR/SRunchanged.
+
 2026-11-03 01:31:59UTC:current-restart diagnosticimportpreflight passed.
 Actual deployedentry imported withoutmain;trainer/evaluator/IoU/converter
 resolved insidecurrentrestartsource,audithelpers insideobservations_v2.

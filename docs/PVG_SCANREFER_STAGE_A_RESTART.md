@@ -6,6 +6,36 @@ SR3D original full reproduction runs unchanged. The documents' suggestions
 to replace their scratch initialization are outside that scope.
 All tests and model execution run remotely. No local Windows/WSL tests.
 
+## Guarded Transition
+
+At2026-11-03 01:39:12UTC,screen`pvg_scanrefer_restart_transition`
+started the sequential controller;actualbashPID204119 and current
+StageA trainer189152 were verified live at01:39:51UTC.
+This is waiting-process evidence,not evidence of StageB training.
+At01:44:26UTC the same controller/trainer were live and the log showed
+the next check at01:43:12UTC. Remote and local controller SHA256 matched:
+`9a8a89fb619623a0afe2fb278f1df80dbe8a3444d9874cfd7605a43834e19293`.
+
+The controller checks A every240seconds. After pipelineexit0,it audits all
+three complete A checkpoints,requires the existing5425/4328 eligibility
+gate,selects050then025,and runs the existing full matched official/selected
+validation. Only after successful matched validation and an empty GPU does
+it execute the existing StageB runner. The runner independently checks the
+matched checkpoint epoch/SHA/backend and preserves the declared B recipe.
+Any failure exits without automatic retry or bypass;logs remain on disk.
+
+Use`tools/check_scanrefer_guarded_transition.sh` and the stage's
+`transition.log`,`transition_started.json`,`transition_exit_code`.
+Matched results stay under`protocol_audit`;B logs and exit status stay in
+`stage_b_pipeline.log`/`stage_b_pipeline_exit_code`. Both phases remain
+under the transition screen. Actual B process,first-update evidence,
+own checkpoints and complete semantic history still require inspection.
+Do not manually launch matched validation or B while the controller is live.
+The existing two-hour monitor now follows this rule,with its schedule and
+notification policy preserved.
+Startup receipt:`docs/results/mcln_pvground_20261101/scanrefer-guarded-transition-started.json`.
+No model code,training configuration,NR/SR process or local test changed.
+
 ## Second Complete Stage A Result
 
 Epoch2 completed2026-11-02 23:51:44UTC,full9508 semanticTop1:

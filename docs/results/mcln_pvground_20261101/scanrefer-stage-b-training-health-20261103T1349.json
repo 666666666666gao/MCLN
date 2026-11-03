@@ -1,0 +1,61 @@
+{
+  "observed_utc": "2026-11-03T13:49:10.137156+00:00",
+  "dataset": "scanrefer_stage_b",
+  "run": "1793674354",
+  "pid": 207977,
+  "process_live": true,
+  "command": "/root/autodl-tmp/PV-Ground/env/bin/python -u tools/train_scanrefer_stage_b.py --local-rank=0 --stage /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102 ",
+  "gpu": "23471 MiB, 6 %",
+  "config": {
+    "checkpoint_path": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b_initialization_epoch_3.pth",
+    "pp_checkpoint": null,
+    "model_only_initialization": true,
+    "use_pvground_innovations": true,
+    "batch_size": 8,
+    "gradient_accumulation_steps": 6,
+    "lr": 2e-06,
+    "lr_backbone": 4e-06,
+    "candidate_local_visual_lr": 2e-05,
+    "max_epoch": 10
+  },
+  "log_tail_offset": 0,
+  "logged_total_loss_count": 216,
+  "finite_logged_total_losses_in_tail": true,
+  "latest_logged_total_losses": [
+    {
+      "position": {
+        "epoch": 4,
+        "batch": 3400,
+        "total_batches": 6081
+      },
+      "value": 8.7781,
+      "finite": true
+    },
+    {
+      "position": {
+        "epoch": 4,
+        "batch": 3500,
+        "total_batches": 6081
+      },
+      "value": 8.7338,
+      "finite": true
+    },
+    {
+      "position": {
+        "epoch": 4,
+        "batch": 3600,
+        "total_batches": 6081
+      },
+      "value": 8.6958,
+      "finite": true
+    }
+  ],
+  "latest_training_position": {
+    "epoch": 4,
+    "batch": 3600,
+    "total_batches": 6081
+  },
+  "latest_progress": "61%|######    | 3696/6081 [1:44:46<1:03:59,  1.61s/it]",
+  "error_lines_in_tail": [],
+  "scope": "Current runs only; recent cumulative logged training total-loss averages paired with their Train headers, excluding Eval losses. Not every batch or optimizer update. No model import, forward, evaluation or training."
+}

@@ -1,5 +1,39 @@
 # ScanRefer Stage A Restart
 
+## Stage B Epoch 3: 2026-11-03 13:50 UTC
+
+B3 completed all9508 examples:5473/4654 hits,
+Acc025=57.562053%,Acc050=48.948254%,same-checkpoint last semantic
+alignment Top1/bbf. AgainstB2 it decreased10/2 hits.
+The existing strict consecutive Acc050-decrease streak is1;
+stop_requested=false. B4 continues the same recipe; if B4 is strictly
+below4654 Acc050 hits,the existing two-decline policy requests a stop.
+Ties or increases reset the streak. B1 remains the comparison baseline.
+
+Selected best remainsB2=5483/4656,57.667228%/48.969289%;
+targets5705/4945 still require222/289 hits. No target is met.
+Remote CPU collection13:45:44UTC crosschecked all B1-3 full-log counters
+against stage_b_semantic_history.json and audited actual B2/B3 weights:
+own epochs,1168 tensors,nonempty optimizer,scheduler and SHA256.
+B3:795607307bytes,SHA
+f23c416f9019abc4765015dd2a0137c03c9c6c98dbc0f55593f2d28e9d3e0430.
+Retention12:07:13UTC kept best2/latest3 without deleting another weight.
+B1 was removed by the previous B2 retention;the restart CSV now marks
+its deleted path. All10 restart rows and historical audit evidence remain.
+
+At13:49:10UTC B trainer207977 was live at3696/6081 for epoch4;
+latest logged total loss8.6958 finite,no error lines. Full B4 validation
+ETA approximately15:05-15:15UTC,not a completed result.
+No recipe or module change was made;no local tests or model operations ran.
+The archived B4 first-update receipt identifies epoch4/batch6/step1,
+finite loss8.481688499450684,Reader9/10,Support10/10,Span14/14 tensors
+actually updated,with finite nonzero gradient and parameter-delta norms
+for all three modules. Do not claim all34 updated;this observation alone
+does not diagnose the unchanged Reader tensor as a defect.
+Raw receipt:docs/results/mcln_pvground_20261101/scanrefer-stage-b-full-history-20261103T1345.json.
+Collector:tools/collect_current_full_history.sh.
+This aggregate epoch comparison does not isolate individual module gains.
+
 ## Stage B Epoch 2
 
 StageB epoch2 completed full9508 at2026-11-03 08:59:14UTC:

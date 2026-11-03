@@ -1,5 +1,67 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-03 13:50 UTC
+
+The current-run full-log collector recovered every completed NR1-43,
+SR1-15 and Scan Stage B1-3 row. Historical CSV:68 rows; restart CSV:10.
+All metrics below are same-checkpoint last semantic alignment Top1/bbf.
+
+| Dataset | Best / Latest | Examples | Acc025 Hits / Percent | Acc050 Hits / Percent |
+| --- | --- | ---: | ---: | ---: |
+| NR3D | 43 / 43 | 7899 | 4025 / 50.955817% | 3183 / 40.296240% |
+| SR3D | 15 / 15 | 17726 | 11743 / 66.247320% | 9434 / 53.221257% |
+| Scan B best | 2 | 9508 | 5483 / 57.667228% | 4656 / 48.969289% |
+| Scan B latest | 3 | 9508 | 5473 / 57.562053% | 4654 / 48.948254% |
+
+NR43 exceeds previous best41 by18/47 hits and the last published37 by31/31.
+SR15 exceeds previous best10 by119/315 and latest14 by182/432.
+Target deficits using selected bests are NR699,SR559,Scan222/289 hits.
+None of the three targets has been reached. Historical SR14 deficit741
+belongs to latest14; the best10 deficit at that time was678.
+
+Remote CPU audits at13:45-13:47UTC checked current best/latest checkpoint
+own epochs,1134 NR/SR or1168 Scan tensors,nonempty optimizer,scheduler
+and SHA256;CUDA stayed uninitialized. New NR38-42 rows have retained
+historical CPU audit evidence even though their weights were removed.
+Current SHA256:
+
+- NR43:bd1e4c9ba5ac96faf65d3df7fb748f710950ef031d5a89ac8b3d94277475b7b6
+- SR15:386647b8ecac817614090cb23f11b5d7a4d36b7449f67c07f43f84baf23e3969
+- B2:46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8
+- B3:f23c416f9019abc4765015dd2a0137c03c9c6c98dbc0f55593f2d28e9d3e0430
+
+The existing watchers retain NR43,SR15 and B2/B3. NR retention13:47UTC
+removed41/42; SR retention11:14UTC removed10/14; Scan retention12:07UTC
+kept2/3. B1 is deleted and its CSV path now says
+removed_authorized_best_latest_20261103. Initialization inputs,all logs,
+configs,metrics and audit history remain. No additional cleanup was run.
+
+B3's Acc050 fell2 hits againstB2:strict-decrease streak1,
+stop_requested=false. B4 is running; only a second strict decline against
+B3 would trigger the existing early stop. At13:49UTC trainer207977 was
+at3696/6081,latest logged loss8.6958 finite,no error lines. B4 full
+validation ETA approximately15:05-15:15UTC,not a measured result.
+SR16 was validating739/1478 at13:49UTC,ETA~13:59-14:03UTC.
+NR96960 was live; latest explicit logged epoch43 train loss10.4272
+was finite at3500/3742. Do not infer the next epoch from a reset tqdm bar.
+
+Original NR/SR scratch configurations and240/140 budgets remain unchanged:
+null task/PP checkpoint paths,innovations disabled. Scan B recipe remains
+A3 model-only initialization,fresh optimizer/scheduler,frozen text,
+native2e-6/backbone4e-6/modules2e-5,batch8/accum6,max10.
+No local test/model import/forward/evaluation/training was run.
+
+Raw full-history receipts are under docs/results/mcln_pvground_20261101:
+nr3d-current-full-history-20261103T1349.json,
+sr3d-current-full-history-20261103T1345.json,
+scanrefer-stage-b-full-history-20261103T1345.json.
+They include all completed counters,current configs,selection manifests,
+best/latest CPU identities and full retention history.
+Collector:tools/collect_current_full_history.sh.
+The first NR collection met a not-yet-preserved latest43 checkpoint;
+the subsequent inventory and successful audit verified save/keeper/retainer
+synchronization. No training change or fallback was introduced.
+
 ## ScanRefer Stage B Update: 2026-11-03 09:44 UTC
 
 B2 completed full9508 at08:59:14UTC,last semantic alignment Top1/bbf:
@@ -24,7 +86,8 @@ Run recipe/config unchanged.
 SR14 completed08:16:33UTC,full17726,last semantic alignment Top1/bbf:
 11561/9002hits=65.220580%/50.784159%,same checkpoint. Acc025 is
 63hits below best10=11624/9119 (65.575990%/51.444206%); best10 remains.
-Target12302 is741hits away. Epoch14 is the latest resumable checkpoint.
+Latest14 is741hits from12302; best10 was678hits away at this observation.
+Epoch14 was the latest resumable checkpoint.
 
 Own remoteCPU14/1134model tensors/nonemptyoptimizer/scheduler verified,
 CUDAoff. Weight793092691bytes,SHA256:

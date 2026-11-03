@@ -2,13 +2,33 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update13:50UTC: current audited kept sets are NR43(best/latest),
+SR15(best/latest),Scan B2(best)/B3(latest).
+NR retention13:47:02UTC verified43 and removed only older41/42;
+free20385718272->21971910656bytes.
+SR retention11:14:32UTC verified15 and removed only superseded10/14;
+free19739611136->21325803520bytes.
+Scan retention12:07:13UTC verified2/3 and removednone;
+free12283387904bytes. All kept weights have own-epoch/model/optimizer/
+scheduler/SHA evidence. Full histories include every retention receipt.
+No duplicate watcher or one-time cleanup was started.
+
+Current raw receipts:
+nr3d-current-full-history-20261103T1349.json,
+sr3d-current-full-history-20261103T1345.json,
+scanrefer-stage-b-full-history-20261103T1345.json.
+Historical CSV68rows and restart CSV10rows include all completed epochs.
+Superseded37,SR10/14 and B1 paths are now marked deleted;new NR38-42
+CPU audit fields reflect retained historical audits,not current file presence.
+Official/A3 initialization inputs and all logs/configs/metrics/audits remain.
+
 Update09:40UTC: SR14full17726=11561/9002hits,65.220580/50.784159%.
 025-firstbest10/latest14;14is63hitsbelowbest10. OwnCPU14/1134/
 nonemptyoptimizer/scheduler verified,CUDAoff;793092691bytes,
 SHA1c8759ef21a5ee0de5cb04fc817b81df98aad3d9d814b379300be997ba8424be.
 Retention08:18:13UTC auditedbest10/latest14/SHA/resumestates,removedonly13.
-Free19739271168->20532367360bytes. Both weights retained;4links09:38UTC.
-Receipt:sr3d-best-latest-retention-epoch14.json. Fullhistory61rows,
+Free19739271168->20532367360bytes. Both weights were retained then.
+Receipt:sr3d-best-latest-retention-epoch-14.json. Fullhistory61rows,
 CSV13 path marked removed;logs/configs/audits remain.
 
 Update07:42UTC: NR37full7899=3994/3152hits,50.563362/39.903785%.

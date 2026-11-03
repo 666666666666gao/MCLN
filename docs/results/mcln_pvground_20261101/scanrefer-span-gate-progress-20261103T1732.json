@@ -1,0 +1,143 @@
+{
+  "observed_utc": "2026-11-03T17:32:26.498014+00:00",
+  "started.json": {
+    "pid": 236004,
+    "started_utc": "2026-11-03T17:21:50+00:00"
+  },
+  "current_condition": "2026-11-03T17:28:52+00:00 condition=control",
+  "preflight_start.json": {
+    "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+    "condition": "preflight",
+    "gate_loss_weight": 0.1,
+    "max_epoch": 1,
+    "optimizer_restored": false,
+    "scheduler_restored": false,
+    "seed": 0,
+    "started_utc": "2026-11-03T17:21:55.020901+00:00",
+    "train_budget": "6 batches diagnostic"
+  },
+  "preflight_complete.json": {
+    "completed_utc": "2026-11-03T17:28:44.974499+00:00",
+    "condition": "preflight",
+    "full_validation_expected": false,
+    "run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/preflight/scanrefer/scanrefer_span_gate_preflight_20261103/1793726515"
+  },
+  "real_batch_gate_gradient.json": {
+    "auxiliary_loss": 0.05352035164833069,
+    "formal_validation_accessed": false,
+    "loss": 8.344083786010742,
+    "observed_utc": "2026-11-03T17:28:36.954624+00:00",
+    "outside_clamp_with_auxiliary_gradient": 3,
+    "raw_gate_gradient_l1": 0.24082067608833313,
+    "raw_gate_shape": [
+      8,
+      256,
+      3
+    ],
+    "valid_matched_axes": 48.0,
+    "weight": 0.1
+  },
+  "control_start.json": {
+    "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+    "condition": "control",
+    "gate_loss_weight": 0.0,
+    "max_epoch": 1,
+    "optimizer_restored": false,
+    "scheduler_restored": false,
+    "seed": 0,
+    "started_utc": "2026-11-03T17:28:56.909252+00:00",
+    "train_budget": "full48655 augmented entries"
+  },
+  "preflight_tail": [
+    "=> loaded successfully '/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth' (epoch 2)",
+    "",
+    "  0%|          | 0/6081 [00:00<?, ?it/s]",
+    "  0%|          | 1/6081 [00:06<11:36:37,  6.87s/it]",
+    "  0%|          | 2/6081 [00:07<5:38:51,  3.34s/it] ",
+    "  0%|          | 3/6081 [00:08<3:43:28,  2.21s/it]",
+    "  0%|          | 4/6081 [00:09<2:49:00,  1.67s/it]",
+    "  0%|          | 5/6081 [00:10<2:19:13,  1.37s/it][11/04 01:28:42 preflight]: PV-Ground first-update witness {'schema': 'pvground-first-update-v1', 'epoch': 1, 'batch': 6, 'batch_size': 8, 'loss': 7.0388007164001465, 'finite_loss': True, 'optimizer_step_complete': True, 'optimizer_step': 1, 'modules': {'decoder.5.local_visual.': {'gradient_norm': 0.05355256423354149, 'parameter_delta_l2': 0.006055313628166914, 'updated_tensors': 10, 'parameter_tensors': 10}, 'pvground_support_corrector.': {'gradient_norm': 0.23612673580646515, 'parameter_delta_l2': 0.003304728539660573, 'updated_tensors': 10, 'parameter_tensors': 10}, 'pvground_span_mixer.': {'gradient_norm': 0.19752010703086853, 'parameter_delta_l2': 0.003368392353877425, 'updated_tensors': 14, 'parameter_tensors': 14}}}",
+    "",
+    "  0%|          | 6/6081 [00:11<2:04:05,  1.23s/it]",
+    "  0%|          | 6/6081 [00:12<3:26:01,  2.03s/it]",
+    "[11/04 01:28:43 preflight]: Bounded train audit completed; receipt saved in /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/preflight/scanrefer/scanrefer_span_gate_preflight_20261103/1793726515/train_audit_receipt_epoch_1.json"
+  ],
+  "preflight_recent_errors": [],
+  "preflight_run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/preflight/scanrefer/scanrefer_span_gate_preflight_20261103/1793726515",
+  "preflight_first_update": {
+    "batch": 6,
+    "batch_size": 8,
+    "epoch": 1,
+    "finite_loss": true,
+    "loss": 7.0388007164001465,
+    "modules": {
+      "decoder.5.local_visual.": {
+        "gradient_norm": 0.05355256423354149,
+        "parameter_delta_l2": 0.006055313628166914,
+        "parameter_tensors": 10,
+        "updated_tensors": 10
+      },
+      "pvground_span_mixer.": {
+        "gradient_norm": 0.19752010703086853,
+        "parameter_delta_l2": 0.003368392353877425,
+        "parameter_tensors": 14,
+        "updated_tensors": 14
+      },
+      "pvground_support_corrector.": {
+        "gradient_norm": 0.23612673580646515,
+        "parameter_delta_l2": 0.003304728539660573,
+        "parameter_tensors": 10,
+        "updated_tensors": 10
+      }
+    },
+    "optimizer_step": 1,
+    "optimizer_step_complete": true,
+    "schema": "pvground-first-update-v1"
+  },
+  "preflight_config": {
+    "checkpoint_path": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth",
+    "pp_checkpoint": null,
+    "model_only_initialization": true,
+    "pvground_span_gate_loss_weight": 0.1,
+    "max_epoch": 1,
+    "max_train_batches": 6,
+    "batch_size": 8,
+    "gradient_accumulation_steps": 6,
+    "lr": 2e-06,
+    "lr_backbone": 4e-06,
+    "candidate_local_visual_lr": 2e-05,
+    "rng_seed": 0
+  },
+  "control_tail": [
+    "and will be removed in future. Use torchrun.",
+    "Note that --use-env is set by default in torchrun.",
+    "If your script expects `--local-rank` argument to be set, please",
+    "change it to read from `os.environ['LOCAL_RANK']` instead. See ",
+    "https://pytorch.org/docs/stable/distributed.html#launch-utility for ",
+    "further instructions",
+    "",
+    "  warnings.warn(",
+    "[11/04 01:28:56 control]: Full config saved to /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/control/scanrefer/scanrefer_span_gate_control_20261103/1793726936/config.json",
+    "Loading datasets: ['scannet', 'scanrefer']",
+    "Loading train files, take a breath!",
+    "Begin text decoupling......"
+  ],
+  "control_recent_errors": [],
+  "control_run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/control/scanrefer/scanrefer_span_gate_control_20261103/1793726936",
+  "control_config": {
+    "checkpoint_path": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth",
+    "pp_checkpoint": null,
+    "model_only_initialization": true,
+    "pvground_span_gate_loss_weight": 0.0,
+    "max_epoch": 1,
+    "max_train_batches": 0,
+    "batch_size": 8,
+    "gradient_accumulation_steps": 6,
+    "lr": 2e-06,
+    "lr_backbone": 4e-06,
+    "candidate_local_visual_lr": 2e-05,
+    "rng_seed": 0
+  },
+  "gpu": "3 MiB, 0 %",
+  "compute_processes": ""
+}

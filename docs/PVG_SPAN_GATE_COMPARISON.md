@@ -2,6 +2,16 @@
 
 ## Status And Question
 
+17:32UTC:real GPU preflight passed17:28:44UTC. Atbatch1:auxloss
+0.05352035164833069,48validmatchedaxes,rawgradientL1
+0.24082067608833313,and3outsideclampentriesreceiveauxiliarygradient.
+Atbatch6/size8/optimizerstep1:finite total7.0388007164001465,
+Reader10/10,Support10/10,Span14/14tensorsupdated with all module
+gradient/deltanormsfinite/nonzero. The preflight state is discarded.
+Controller transitioned17:28:52UTC to controlrun1793726936.
+Actual17:29:33UTC loadingtrain/noerrors,no controlupdate yet.
+Formal pilot validation results are pending. Code/evidence published234d38a.
+
 17:26UTC:all-four B2 diagnostics finished17:21:26UTC,pipelineexit0,
 paired identities/pointSHA/GT passed. Pilot controller started17:21:50UTC
 in pvg_scanrefer_span_gate_comparison,runner236004. At17:25:10UTC the

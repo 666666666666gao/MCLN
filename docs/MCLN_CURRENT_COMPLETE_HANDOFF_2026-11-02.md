@@ -1,6 +1,25 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 17:26 UTC
+## Current Override: 2026-11-03 17:32 UTC
+
+Complete diagnostics/NR46/SR17/73,11tables/Span code published234d38a.
+REAL GPU preflight passed17:28:44UTC. Firstbatch auxiliaryloss
+0.05352035164833069,total8.344083786010742,48validmatchedaxes,
+rawgradientL1=0.24082067608833313,3outsideclampentrieshavegradient.
+Atbatch6/size8/step1,total7.0388007164001465finite,Reader10/10,
+Support10/10,Span14/14tensorsactuallyupdated;allmodulegradient/delta
+normsfinite/nonzero. Not a validation result or accuracy-gain proof.
+Preflight updates discarded;no validationmetrics computed.
+Controller236004 transitioned17:28:52UTC to freshB2 controlweight0,
+run1793726936;actual17:29:33UTC dataloading/noerrors/GPU3MiB.
+No control update yet. Samecontroller next runs freshB2weight0.1;
+both full one-epoch pilots/full9508eval. No duplicate start.
+Preflight evidence includes own config/firstupdate/bounded trainreceipt/
+full log/rawgradient receipt. Updated collector reads current exact-run
+config/first-update even before completion.
+Original NR/SR recipes/budgets unchanged;no targets/no localtests.
+
+## Previous Override: 2026-11-03 17:26 UTC
 
 All-four fixed-B2 diagnostics completed17:21:26UTC,pipelineexit0:
 none5483/4656,Reader5504/4673,Support5475/4616,Span5407/4262.

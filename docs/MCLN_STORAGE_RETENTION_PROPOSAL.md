@@ -2,6 +2,18 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update04:23UTC: NR34 full validation completed at3891/3146 hits
+(49.259400%/39.827826%). At04:26:45UTC best manifest34 was verified;
+best and latest are34. Epoch34 is CPU-audited and hashed
+b6964cd073ae582b88eabc57de28173dbe99b64a42b688583684d7ff5099ce20.
+The watcher waited for checkpoint-save/metric-best manifest synchronization;
+it must not delete until that gate passes.
+
+At04:25:43UTC the watcher audited34/1134/nonemptyoptimizer/scheduler/SHA,
+then removed the exact older32/33 preserved files. Only34 remains,
+with4hardlinks at04:27:27UTC. Free bytes20388360192->21974556672.
+Raw receipt:nr3d-best-latest-retention-epoch34.json.
+
 Update03:20UTC: NR33 completed and its own CPU checkpoint was audited.
 Current NR retention set is best32 plus latest33. File33 SHA256
 964c70a97f3b8895e05c200c25bbd4b7a8f041eae9ad19bcaced2bd4af63f967,

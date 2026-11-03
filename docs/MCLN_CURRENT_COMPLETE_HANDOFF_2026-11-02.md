@@ -1,5 +1,30 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-03 04:23 UTC
+
+NR3D epoch34 completed validation on all7899 examples: last semantic
+alignment Top1 Acc@0.25=3891/7899 (49.259400%), Acc@0.50=3146/7899
+(39.827826%). Relative to prior best epoch32, this is +29/+111 hits.
+At04:26:45UTC the semantic-best manifest independently confirmed34.
+The target Acc@0.25 4724/7899 remains833 hits away.
+Remote CPU audit confirmed checkpoint own epoch34,1134 model tensors,
+optimizer and scheduler present; CUDA was not initialized. SHA256
+b6964cd073ae582b88eabc57de28173dbe99b64a42b688583684d7ff5099ce20,
+793092691 bytes. Best and latest resumable are both34. Retention checks
+the completed checkpoint and best manifest before cleanup; all logs,
+configurations and metric rows are retained.
+At04:25:43UTC retention independently audited34,removed32/33 and kept
+only34;free bytes increased20388360192->21974556672.
+
+NR original scratch configuration remains unchanged: batch12/accum4,
+LR1e-4/backbone1e-3,max240,checkpoint_path and pp_checkpoint null.
+SR3D and ScanRefer Stage B were live at their latest checks; no new
+complete validation there. Do not claim any target met. No local tests.
+
+Raw receipts: outputs/mcln-nr3d-epoch34.json and
+outputs/nr3d-checkpoint-identity-epoch34.json. Full-epoch CSV now has
+56 historical/current-run rows.
+
 2026-11-03 03:40UTC: ScanBactual207977advanced1315->1477/6081
 between03:35:22and03:39:49UTC with240s scheduled recheck.
 All14logged cumulative traininglossrecordsfinite,latest7.4088at1400,

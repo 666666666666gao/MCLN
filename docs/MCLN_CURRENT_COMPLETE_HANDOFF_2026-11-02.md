@@ -1,5 +1,57 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-03 22:58 UTC
+
+NR3D run1793553113 completed full7899 validation epoch52=4048/3238
+hits at Acc@0.25/0.5 (51.246993%/40.992531%). Best remains epoch49=
+4123/3325; latest52 is 676 hits from the4724 target, while best is601
+hits short. Remote CPU audit at22:56:37UTC verified best49/latest52 own
+epochs,1134 tensors,nonempty optimizer/scheduler and SHA. Epoch52 SHA:
+a94838e87ddace0e0be872e6c8ac7216a9ad92dc3692b5a76ed5db59e6954ff9.
+At22:58UTC trainer96960 remained live at335/3742; finite recent losses,
+no error lines, original scratch recipe and null initialization unchanged.
+
+SR3D trainer92354,keeper129032 and retention148725 were live at22:58UTC.
+Latest complete result remains epoch19=11426/9256, best epoch15=11743/
+9434 over17726; target12302 Acc@0.25 remains559 hits beyond best.
+The helper log tail showed2515/6486 at22:58, apparently unchanged from
+22:46 despite GPU use; recheck after180-300seconds before diagnosing.
+No new complete SR validation. CPU-audited full-history receipts:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261103T2255.json`
+and `sr3d-current-full-history-20261103T2255.json`.
+
+ScanRefer has no active trainer and remains paused pending interpretation
+or a user decision to repeat the completed single-seed Span pilot. Its
+weight0.1 result remains+7/+34 versus the weaker control but+1/-2 versus
+strong B2; it is exploratory, not robust causal evidence. Do not start a
+new Scan run. No local model tests/imports/forward/evaluation/training.
+
+## Current Override: 2026-11-03 22:20 UTC
+
+Live check22:19:01UTC: NR trainer96960, keeper135075, retention156800
+all live; NR is at1812/3742, GPU22837MiB/14%, recent logged losses finite,
+no error lines. Estimated training remainder is about29minutes before
+validation; expected full result roughly22:50-23:05UTC.
+SR trainer92354, keeper129032, retention148725 all live; SR is at1256/6486,
+GPU22924MiB/63%, recent logged losses finite, no error lines. Estimated
+training remainder is about1hour50minutes before validation; expected full
+result roughly00:10-00:25UTC November4.
+
+NR/SR configs and null initialization paths are unchanged. Latest complete
+same-checkpoint last semantic alignment Top1 remains NR best49=4123/3325,
+latest51=4100/3295 over7899; SR best15=11743/9434, latest19=11426/9256
+over17726. No target is met. Best/latest CPU audits and full history remain
+in the22:02 receipts; no new complete validation or retention event yet.
+Progress snapshots are in outputs/*-current-scratch-progress-20261103T2219.json.
+Check shortly before estimated validation completion, not on a short
+fixed-interval loop.
+
+ScanRefer has no active trainer. The fixed-B2 diagnostics and one-epoch
+Span supervision pilot are complete; treatment was+7/+34 against its
+matched control but+1/-2 against strong B2, so it remains exploratory.
+Do not start another Scan run until this is interpreted or a repeat is
+chosen. No local model tests/imports/forward/evaluation/training.
+
 ## Current Override: 2026-11-03 22:02 UTC
 
 This supersedes the 20:01 snapshot. ScanRefer has no active trainer; do not

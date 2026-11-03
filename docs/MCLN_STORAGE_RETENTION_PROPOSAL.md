@@ -1,5 +1,22 @@
 # Current Checkpoint Storage Proposal
 
+## Current Override: 2026-11-03 22:56 UTC
+
+NR3D run1793553113 remains live after full epoch52 validation. Current
+best49=4123/3325 and latest52=4048/3238 over7899. CPU audit verified
+semantic_best.pth and ckpt_epoch_last.pth own epochs,1134 model tensors,
+nonempty optimizer/scheduler and SHA; epoch52 SHA
+a94838e87ddace0e0be872e6c8ac7216a9ad92dc3692b5a76ed5db59e6954ff9.
+The 22:56 full-history receipt records current retention state. Do not
+delete either retained checkpoint; existing watcher owns retention.
+
+SR3D remains at audited best15=11743/9434 and latest19=11426/9256 over
+17726; the22:56 full-history audit confirms both files and their own-epoch
+state. No new validation or retention event was observed. Continue using
+the existing watcher only. Receipts:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261103T2255.json`
+and `sr3d-current-full-history-20261103T2255.json`.
+
 ## Current Override: 2026-11-03 22:02 UTC
 
 Fresh current-run audits show NR best49/latest51 and SR best15/latest19.

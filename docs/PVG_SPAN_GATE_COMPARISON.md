@@ -2,6 +2,18 @@
 
 ## Status And Question
 
+18:02:51UTC:control worker236606 remains active,1928/6081,
+GPU21679MiB/94%,no recent errors. At1.17microbatches/s,about59min
+training remains before full validation;retain19:10-19:25UTC full ETA.
+Receipt:scanrefer-span-gate-progress-20261103T1802.json.
+SR92354 also verified live18:02:55UTC,4025/6486 with~53min training
+left;original null initialization and140budget unchanged.
+No new full validation or pilot accuracy result.
+While waiting,a read-only source/BBF audit verified current source against
+Git and found existing baseline spatial attention plus a scalar-before-
+token-softmax cancellation constraint. See PVG_READER_BBF_INTERFACE_AUDIT.md.
+No running source or registered pilot recipe was modified.
+
 17:38:48UTC:formal controlrun1793726936 has real training updates,
 220/6081microbatches;GPU worker236606 uses21647MiB total GPU memory.
 Own first-update receipt:epoch1,batch6,size8,step1,finite loss

@@ -1,6 +1,26 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 18:01 UTC
+## Current Override: 2026-11-03 18:12 UTC
+
+New read-only running-source audit:worker236606cwd verified,five
+LF-normalized source identities equal e73dc4a;raw SHA256 retained.
+See PVG_READER_BBF_INTERFACE_AUDIT.md and its source receipt.
+No local model operations/tests,Reader implementation or pilot change.
+Baseline already has language-conditioned candidate spatial attention;
+Reader changes a shared query feeding BBF and geometry. Uniform candidate
+scalar bias before BBF token softmax cancels and cannot rerank candidates.
+Existing unmatched semantic targets are"not mentioned",so a new all-query
+positive objective needs explicit assignment/gradient analysis.
+These are source/interface constraints,not proof of a new method's benefit.
+Pinned officialMCLN/ViL3DRef source verified as text,not executed.
+Finish matched Span comparison before the next Reader implementation.
+Actual18:02Scancontrol236606live1928/6081/noerrors,SR92354live
+4025/6486/originalrecipe. FullETAsScan19:10-19:25,SR19:05-19:20;
+NRnextfull~18:55-19:05. No new full results,74/11tables unchanged.
+NR47best/latest4114/3248,SRbest15/latest17,ScanB2anchor remain.
+No target reached. Check near ETA and preserve all original budgets.
+
+## Previous Override: 2026-11-03 18:01 UTC
 
 NR47 full7899=4114/3248hits,52.082542/41.119129%,best/latest47,
 025-first. Versus46:+29/-46hits;no threshold mixing. OwnCPU47/1134/

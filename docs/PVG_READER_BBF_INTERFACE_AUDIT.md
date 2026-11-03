@@ -126,6 +126,12 @@ Only source text was downloaded/read locally;no reference code executed.
 
 ## Next Decision
 
+Additional pinned anchor-supervision source check:
+PVG_READER_ANCHOR_SUPERVISION_REFERENCE.md. It distinguishes explicit
+anchor labels/predicted-anchor conditioning from generic spatial attention,
+and documents segmented-candidate and distractor-label semantics that
+prevent a blind direct port. It is not a validated Reader implementation.
+
 Finish the current matched full-epoch Span control/treatment first.
 Then choose the smallest Reader experiment supported by the measured
 remaining failures. It must specify what competitor-local or role-specific

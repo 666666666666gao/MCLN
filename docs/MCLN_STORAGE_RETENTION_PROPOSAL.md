@@ -2,6 +2,23 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update19:24UTC:SR full18=11563/9150 over17726;best remains15=
+11743/9434. Remote CPU own15/18/1134tensors/nonempty optimizer/scheduler/
+SHA verified,CUDAoff. Latest18 SHA
+9505e32be485ef25c9fabca4f37cd5bbcc442bca78a49d6c5ae6367b4e8e23ca.
+Retainer19:15:37UTC kept15/18 and removed only preserved17;
+free19739729920->20532826112bytes. Receipt:
+sr3d-current-full-history-20261103T1920.json. The first collector met a
+save/keeper synchronization window;an unchanged retry after180s passed.
+No fallback,manual link,new watcher or trainer patch was added.
+NR last audited kept47;endpoint failures do not establish current file
+presence or trainer status. CompletedScanB2/B4 and official/A3 remain.
+The separate pilot control own1 is audited,795607435bytes/4links,SHA
+4f18e127321107f9f709c876226437bbc871ec3e5cd101cbf992ceede172f8d8.
+Treatment is training;no complete treatment checkpoint is claimed.
+HistoricalCSV75rows,restart11,pilot1. Removed17 is marked
+removed_authorized_best_latest_20261103;historical audits remain.
+
 Update18:01UTC:NR47 full7899=4114/3248,best/latest47. OwnCPU47/
 1134/nonempty optimizer/scheduler/SHA audited,CUDAoff:
 a89e77471e8a5461838f60648651be891baaa658cb79a0f5d446fd54b8f673c3.

@@ -1,6 +1,53 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 18:52 UTC
+## Current Override: 2026-11-03 19:24 UTC
+
+Scan pilot control completed19:12:00UTC,full9508=5477/4620,
+57.604123/48.590660%,below immutable B2=5483/4656 by6/36hits.
+Independent audit19:14:28UTC passed:five source hashes,full semantic
+log/evaluator counts,ownCPUepoch1/1168tensors/nonempty optimizer/scheduler/
+three constant LR groups/SHA,CUDAoff. SHA
+4f18e127321107f9f709c876226437bbc871ec3e5cd101cbf992ceede172f8d8.
+This is a separate pilot epoch1,not StageB epoch5. StrongB2 remains.
+Controller236004 transitioned19:12:04UTC to spanrun1793733129.
+At19:21:55UTC worker240217live,250/6081,GPU21941MiB/83%,no recent
+errors. OWN first update epoch1/batch6/size8/step1 loss7.0388007164001465
+finite;Reader10/10,Support10/10,Span14/14 actual updates,all gradient/
+delta norms finite/nonzero. This is not a complete validation.
+Treatment full ETA20:55-21:10UTC from actual1.24microbatches/s.
+Do not duplicate the controller or implement Reader before this comparison.
+Audit/progress receipts:scanrefer-span-gate-independent-audit-20261103T1914.json,
+scanrefer-span-gate-progress-20261103T1921.json.
+
+SR18 full17726=11563/9150,65.231863/51.619091%,+27/+113vs17.
+Best remains15=11743/9434;latest18 trails it180/284hits.
+OwnCPU15/18/1134/nonempty optimizer/scheduler/SHA verified,CUDAoff.
+Latest18 SHA9505e32be485ef25c9fabca4f37cd5bbcc442bca78a49d6c5ae6367b4e8e23ca.
+Actual original92354live19:15:35UTC,next training95/6486.
+Retainer19:15:37UTC kept15/18,removed only preserved17;free
+19739729920->20532826112bytes. Receipt observed19:20:21UTC;
+PowerShell local display14:20:21 is NOT UTC. Initial collector save/keeper
+window resolved by unchanged retry after180s;no fallback or trainer edit.
+All original SR140/NR240 budgets and null initializations remain.
+
+NR latest wrapper query still exited1 before status:
+"Connection closed by UNKNOWN port 65535". Last verified liveness
+17:59:18UTC;last audited full47=4114/3248,SHA
+a89e77471e8a5461838f60648651be891baaa658cb79a0f5d446fd54b8f673c3.
+No fresh liveness,termination or root-cause claim;no restart/SSH override.
+
+HistoricalCSV75rows(allSR1-18),Scanrestart11,separatepilotCSV1 audited
+control row. No pending treatment metric is fabricated. Best target gaps
+remainScan222/289,NR610,SR559hits;no target attainment verified.
+Read-only pinned CoT3DRef source findings are in
+PVG_READER_ANCHOR_SUPERVISION_REFERENCE.md:explicit anchor supervision
+and segmented-object context differ from MCLN predicted queries;
+distractor label1 means same-class NON-target,not IoU quality.
+No reference code executed or Reader implementation launched.
+No local ML tests/imports/diagnostics/forward/evaluation/training.
+Preserve unrelated dirty files and the sole desktop handoff policy.
+
+## Previous Override: 2026-11-03 18:52 UTC
 
 Verifiedwait18:50:38UTC:Scan236606live/control5322of6081,
 21679MiB/no recenterrors/~11mintrainingleft. SR92354/129032live

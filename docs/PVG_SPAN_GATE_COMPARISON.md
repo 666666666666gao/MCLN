@@ -2,6 +2,36 @@
 
 ## Status And Question
 
+Control completed19:12:00UTC and independently audited19:14:28UTC:
+
+| Checkpoint / Condition | Full Samples | Hits025 / Percent | Hits050 / Percent |
+| --- | ---: | ---: | ---: |
+| Immutable strong B2 anchor | 9508 | 5483 / 57.667228% | 4656 / 48.969289% |
+| Pilot control,weight0,own epoch1 | 9508 | 5477 / 57.604123% | 4620 / 48.590660% |
+
+Control is6/36hits belowB2;do not replace the strong anchor or claim that
+continued native-loss training improved it. This is a separate pilot
+epoch1,not another epoch in the completed StageB run.
+Five prepared source hashes matched;complete semantic log counts agree
+with the controller evaluator receipt. OwnCPUepoch1/1168tensors/nonempty
+optimizer/scheduler/threeconstantLRgroups passed,CUDAoff.
+Checkpoint795607435bytes/4links,SHA256
+4f18e127321107f9f709c876226437bbc871ec3e5cd101cbf992ceede172f8d8.
+Rawreceipt:scanrefer-span-gate-independent-audit-20261103T1914.json.
+Separate pilotCSV:scanrefer-span-gate-comparison.csv,one audited row.
+No treatment accuracy is available;do not infer a supervision gain.
+Controller transitioned19:12:04UTC to spanrun1793733129,whose own
+start/config19:12:09 verifies independentB2/weight0.1/freshstate.
+At19:21:55UTC actual GPUworker240217 was training250/6081,
+GPU21941MiB/83%,no recent error records. Its OWN epoch1/batch6/size8/
+optimizerstep1 receipt has finite loss7.0388007164001465.
+Reader10/10,Support10/10,Span14/14 tensors actually updated;all three
+gradient and parameter-delta norms are finite/nonzero. This verifies
+training execution,not validation accuracy or a treatment benefit.
+At about1.24microbatches/s,full validation is estimated20:55-21:10UTC;
+refine near completion rather than repeatedly polling.
+Receipt:scanrefer-span-gate-progress-20261103T1921.json.
+
 18:39:08UTC:actual GPUworker236606 remains active,control4509/6081,
 21679MiB,no recent error records. Roughly22minutes training remains.
 SR92354/129032 verified live18:39:12UTC,5711/6486,~16minutes training

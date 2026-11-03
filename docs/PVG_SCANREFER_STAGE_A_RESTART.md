@@ -1,5 +1,34 @@
 # ScanRefer Stage A Restart
 
+## Stage B Epoch 2
+
+StageB epoch2 completed full9508 at2026-11-03 08:59:14UTC:
+last semantic alignment Top1/bbf=5483/4656hits,
+Acc025=57.667228%,Acc050=48.969288%,same checkpoint.
+VersusB1 this is+9/+3hits; the two-strict-consecutive-Acc050-decrease
+streak remains0 and training continues. Target5705/4945 remains
+222/289hits away; final_target_met=false.
+
+At09:41:58UTC the remote CPU collector matched history counters against
+the complete training log and actual checkpoint. Own epoch2/1168model
+tensors/nonemptyoptimizer/scheduler and the three optimizer LR groups
+were verified;CUDAoff. Weight795607307bytes,SHA256:
+46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8.
+Best manifest selects2. Retention09:03:02UTC audited2/SHA/resume states,
+removed only olderB1,and retained2asbest/latest.
+Free bytes12284051456->13079662592.
+Raw receipt:`docs/results/mcln_pvground_20261101/scanrefer-stage-b-epoch2-audited.json`.
+Retention receipt:`docs/results/mcln_pvground_20261101/scanrefer-best-latest-retention-stage-b-epoch2.json`.
+Remote collector:`tools/collect_scanrefer_stage_b_epoch2.sh`.
+Restart table now9rows;B1/B2 raw results remain distinct.
+
+At09:43:45UTC actual B trainer207977 was live on epoch3 at1555/6081;
+its overwritten first-update receipt identifies epoch3,finite loss
+6.407628059387207,with nonzero gradients and updates across all three modules.
+Current config remains A3 model-only initialization/fresh optimizer and
+scheduler/frozen text encoder,batch8/accum6 and original three LR groups.
+This is training health,not a complete epoch3 validation.
+
 ## First Complete Stage B Validation
 
 Stage B epoch1 completed all9508 examples at2026-11-03 06:01:50UTC.

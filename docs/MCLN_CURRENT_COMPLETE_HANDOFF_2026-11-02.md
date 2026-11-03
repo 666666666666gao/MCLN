@@ -1,5 +1,48 @@
 # Current MCLN + PV-Ground Handoff
 
+## ScanRefer Stage B Update: 2026-11-03 09:44 UTC
+
+B2 completed full9508 at08:59:14UTC,last semantic alignment Top1/bbf:
+5483/4656hits=57.667228%/48.969288%,same checkpoint.
+VersusB1:+9/+3hits. Acc050 increased,so the consecutive strict-decrease
+streak is0 and training continues. Target5705/4945 remains222/289hits
+away; target false.
+
+Remote CPU audit09:41:58UTC matched full-epoch history and complete log,
+and verified own epoch2/1168tensors/nonemptyoptimizer/scheduler/three
+parameter groups;CUDAoff. Weight795607307bytes,SHA:
+46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8.
+Best manifest selects2. Retention09:03:02UTC audited2/SHA/resume states,
+removed onlyB1,kept2best/latest. Free12284051456->13079662592bytes.
+RestartCSV9rows;raw audit and retention receipt preserved.
+ActualB207977 live09:43UTC epoch3=1555/6081;first-update finite loss
+6.407628059387207,three modules updated. No complete B3 validation yet.
+Run recipe/config unchanged.
+
+## SR3D Update: 2026-11-03 09:40 UTC
+
+SR14 completed08:16:33UTC,full17726,last semantic alignment Top1/bbf:
+11561/9002hits=65.220580%/50.784159%,same checkpoint. Acc025 is
+63hits below best10=11624/9119 (65.575990%/51.444206%); best10 remains.
+Target12302 is741hits away. Epoch14 is the latest resumable checkpoint.
+
+Own remoteCPU14/1134model tensors/nonemptyoptimizer/scheduler verified,
+CUDAoff. Weight793092691bytes,SHA256:
+1c8759ef21a5ee0de5cb04fc817b81df98aad3d9d814b379300be997ba8424be.
+Retention08:18:13UTC audited best10/latest14,including optimizer/scheduler
+and both SHAs,then removed only old13. Free bytes
+19739271168->20532367360. Full-historytable61rows;CSV marks13 deleted.
+Raw receipts:sr3d-latest-complete-epoch-14.json,
+sr3d-checkpoint-identity-epoch-14.json,
+sr3d-best-latest-retention-epoch-14.json.
+
+Actual SR92354 live09:38UTC,epoch15=3393/6486,GPU22924MiB,
+latest logged training loss10.1074at3000,no errors/config changes.
+NR96960 live09:38UTC,epoch39=117/3742,loss10.6725at3500;
+Scan B207977 live09:37UTC,epoch3=1363/6081,loss7.4498at1300.
+Original NR/SR scratch configurations/budgets unchanged;Scan B recipe
+unchanged. No new full NR/Scan validation. No local tests/model changes.
+
 ## NR3D Update: 2026-11-03 07:42 UTC
 
 NR37 completed07:30:27UTC,full7899,last semantic alignment Top1/bbf:

@@ -2,6 +2,15 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update09:40UTC: SR14full17726=11561/9002hits,65.220580/50.784159%.
+025-firstbest10/latest14;14is63hitsbelowbest10. OwnCPU14/1134/
+nonemptyoptimizer/scheduler verified,CUDAoff;793092691bytes,
+SHA1c8759ef21a5ee0de5cb04fc817b81df98aad3d9d814b379300be997ba8424be.
+Retention08:18:13UTC auditedbest10/latest14/SHA/resumestates,removedonly13.
+Free19739271168->20532367360bytes. Both weights retained;4links09:38UTC.
+Receipt:sr3d-best-latest-retention-epoch14.json. Fullhistory61rows,
+CSV13 path marked removed;logs/configs/audits remain.
+
 Update07:42UTC: NR37full7899=3994/3152hits,50.563362/39.903785%.
 025-firstbest/latest37. OwnCPU37/1134/optimizer/scheduler verified;
 bestmanifest37/SHA independentlyconfirmed07:34:15UTC.

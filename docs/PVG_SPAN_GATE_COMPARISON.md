@@ -2,6 +2,27 @@
 
 ## Status And Question
 
+18:39:08UTC:actual GPUworker236606 remains active,control4509/6081,
+21679MiB,no recent error records. Roughly22minutes training remains.
+SR92354/129032 verified live18:39:12UTC,5711/6486,~16minutes training
+left;original null initialization and140budget unchanged.
+NR requery18:42:30UTC after an180s scheduled wait still failed before
+remote status;no new NR liveness/termination evidence or restart.
+FullcontrolETA19:10-19:25UTC,SR19:05-19:20UTC;not guaranteed.
+Receipt:scanrefer-span-gate-progress-20261103T1839.json.
+
+Independent auditor prepared:tools/audit_scanrefer_span_gate_comparison.sh.
+Run ONLY through work/remote_pvground.ps1 on the Scan server. It checks
+the five prepared source hashes,completed-condition config/log metrics,
+own CPU epoch1/1168model tensors/nonempty optimizer/scheduler/threeLRgroups/
+checkpointSHA,and deltas againstB2 and the matchedcontrol. Pending
+conditions are explicitly not_completed,not assigned accuracy.
+At18:42:01UTC the remote pending branch passed/sourcehashes matched/
+CUDAoff;both conditions remain not_completed. The completed-checkpoint
+branches are NOT yet exercised and no checkpoint is claimed audited.
+Receipt:scanrefer-span-gate-independent-audit-20261103T1842.json.
+No running source/recipe changed,no local model operations.
+
 18:02:51UTC:control worker236606 remains active,1928/6081,
 GPU21679MiB/94%,no recent errors. At1.17microbatches/s,about59min
 training remains before full validation;retain19:10-19:25UTC full ETA.

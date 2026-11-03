@@ -1,6 +1,25 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 18:32 UTC
+## Current Override: 2026-11-03 18:43 UTC
+
+Verifiedwait:actualScanGPUworker236606live18:39:08UTC,
+control4509/6081,21679MiB,no recenterrors;~22mintrainingremaining.
+SR92354/129032live18:39:12UTC,5711/6486,~16mintrainingremaining,
+originalnullinit/max140 unchanged. FullETA Scan19:10-19:25,
+SR19:05-19:20UTC;checknearcompletion,notcontinuousrapidpolling.
+NR18:42:30UTC requery after180s scheduledwait stillclosedbeforestatus.
+LastNRverified17:59:18UTC/full47;no inferredtermination or restart.
+New independentpilot auditor tools/audit_scanrefer_span_gate_comparison.sh
+is executed ONLY remotely through work/remote_pvground.ps1. Its18:42UTC
+pendingbranch verifiedfivepreparedsourcehashes/CUDAoff;bothconditions
+not_completed. Completed-log/ownCPUcheckpoint/SHAcomparison branches
+await real results;do not claim they passed. Existingcontrollerowns
+control->span;no running source/recipe modified.
+Receipts:scanrefer-span-gate-progress-20261103T1839.json and
+scanrefer-span-gate-independent-audit-20261103T1842.json.
+No newfullmetric;74/11tables unchanged,allgoaltargetsstillunmet.
+
+## Previous Override: 2026-11-03 18:32 UTC
 
 SR query recovered18:26:47UTC:original92354/129032live,
 trainerelapsed2-01:25:50,GPU22924MiB/70%,5135/6486train.

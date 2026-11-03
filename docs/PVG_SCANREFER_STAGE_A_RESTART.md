@@ -1,5 +1,52 @@
 # ScanRefer Stage A Restart
 
+## Stage B Finished: 2026-11-03 15:44 UTC
+
+Stage B run1793674354 completed four full9508 validations and stopped
+under its existing two-consecutive-Acc050-decreases policy.
+The terminal receipt says reason=two_consecutive_acc050_decreases;
+both stage_b_pipeline_exit_code and transition_exit_code are0.
+Trainer207977 is absent,the controller screen has exited,and the Scan
+GPU is free(0MiB/0% at15:40-15:44UTC). This is a verified normal early
+stop,not a failure or merely a missing screen. Do not restart or keep
+polling this finished run. NR/SR scratch training continues independently.
+
+| Stage B Epoch | Examples | Acc025 Hits / Percent | Acc050 Hits / Percent |
+| --- | ---: | ---: | ---: |
+| 1 | 9508 | 5474 / 57.572570% | 4653 / 48.937737% |
+| 2 selected | 9508 | 5483 / 57.667228% | 4656 / 48.969289% |
+| 3 | 9508 | 5473 / 57.562053% | 4654 / 48.948254% |
+| 4 latest | 9508 | 5485 / 57.688263% | 4623 / 48.622213% |
+
+All pairs are same-checkpoint last semantic alignment Top1/bbf.
+Acc050 sequence4656->4654->4623 gives strict-decrease streak2;
+stop_requested=true,final_target_met=false.
+B4 versusB3:+12/-31hits. Acc050-first selection keepsB2 despite
+B4's two additional025hits;do not combine B4's025 withB2's050.
+Best remains222/289hits short of5705/4945. No target or paper result
+is claimed,and these results do not isolate any single module's effect.
+
+Remote CPU final audit15:44:21UTC crosschecked all four full-log rows
+against the evaluator history and checked actual B2/B4 own epochs,
+1168model tensors,nonempty optimizer,scheduler and SHA256;CUDAoff.
+B2 SHA46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8.
+B4 SHAe493862b4dbf1d1f97860276fe2a1871decb4367dcc2892279daa8cccfa9c431,
+795607307bytes. Both are resumable saved checkpoints.
+Retention15:07:20UTC independently audited2/4 and removed only olderB3;
+free11485032448->12280643584bytes. B1/B3 CSV paths are marked deleted;
+all11 restart rows,logs/configs/full audit history and official/A3
+initialization inputs remain. No extra cleanup or training was started.
+The existing retention watcher remains idle;it is not an active trainer.
+
+Raw final receipt:
+docs/results/mcln_pvground_20261101/scanrefer-stage-b-final-full-history-20261103T1544.json.
+It includes both terminal exit codes and the completion reason.
+One SSH collection attempt closed before a result;the later successful
+CPU collection and downloaded final receipt resolved that interruption.
+No local tests/model imports/forward/evaluation/training were run.
+Prepared fixed-checkpoint bypass diagnostics remain unexecuted;the freed
+GPU and completed run alone do not establish a cause for the decline.
+
 ## Stage B Epoch 3: 2026-11-03 13:50 UTC
 
 B3 completed all9508 examples:5473/4654 hits,

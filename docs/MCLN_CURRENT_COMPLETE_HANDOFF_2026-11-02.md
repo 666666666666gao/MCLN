@@ -1,6 +1,55 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 14:05 UTC
+## Current Override: 2026-11-03 15:49 UTC
+
+Scan Stage B run1793674354 finished normally after four full9508 epochs.
+Terminal reason=two_consecutive_acc050_decreases;pipeline and transition
+exit codes both0. Trainer207977 and the transition screen exited,GPU free.
+The final CPU receipt verifies the selected B2 and latest B4 checkpoints.
+Do not restart or poll this finished Scan run. NR/SR remain active.
+
+| Dataset / Checkpoint | Examples | Acc025 Hits / Percent | Acc050 Hits / Percent |
+| --- | ---: | ---: | ---: |
+| NR best44 | 7899 | 4059 / 51.386251% | 3142 / 39.777187% |
+| NR latest45 | 7899 | 3979 / 50.373465% | 3156 / 39.954425% |
+| SR best15 | 17726 | 11743 / 66.247320% | 9434 / 53.221257% |
+| SR latest16 | 17726 | 11534 / 65.068261% | 9328 / 52.623265% |
+| Scan best B2 | 9508 | 5483 / 57.667228% | 4656 / 48.969289% |
+| Scan latest B4 | 9508 | 5485 / 57.688263% | 4623 / 48.622213% |
+
+All pairs are same-checkpoint last semantic alignment Top1/bbf.
+B4 versusB3:+12/-31hits;Acc0504656->4654->4623 gives streak2.
+Acc050-first selection retainsB2;do not mixB4's025 withB2's050.
+Target deficits using selected bests:Scan222/289,NR665,SR559 hits.
+No target is met and no individual-module causal claim is supported.
+NR44 versus43:+34/-41hits;latest45 versus44:-80/+14hits.
+
+Remote CPU own-epoch/tensor/nonemptyoptimizer/scheduler/SHA audits passed,
+CUDAoff. New NR44/45 SHAs:
+fcf49cb3cb64b0054eef3e0e39ed429d352a95a6c11e64e57b76ac78bed41985,
+9315aa603eed7bce40ad6670f1d2d6b874971627b113c6252e2775123f1293ae.
+B4 SHAe493862b4dbf1d1f97860276fe2a1871decb4367dcc2892279daa8cccfa9c431.
+NR/SR weights793092691bytes/1134tensors;B weights795607307bytes/1168.
+Current retained setsNR44/45,SR15/16,B2/B4. NR retention14:47UTC
+removed43;15:47UTC kept44/45. Scan retention15:07:20UTC audited2/4
+and removedonly3;free11485032448->12280643584bytes.
+Logs/configs/allmetrics/audits and official/A3 initialization remain.
+
+Main CSV71rows,complete NR1-45/SR1-16;restart CSV11rows,B1-4 complete.
+Raw receipts under docs/results/mcln_pvground_20261101:
+nr3d-current-full-history-20261103T1547.json,
+sr3d-current-full-history-20261103T1540.json,
+scanrefer-stage-b-final-full-history-20261103T1544.json.
+At15:43UTC SR17 was4878/6486,finite9.9208,noerrorlines;
+full ETA~16:35-16:45UTC. NR trainer96960 live,latest explicit epoch45
+logged loss10.3036 finite. Original NR/SR null-init configurations,
+innovationsoff and240/140 budgets remain unchanged.
+No new run,cleanup,local test,model import,forward or evaluation ran.
+One Scan SSH attempt closed;successful subsequent terminal CPU collection
+resolved it. The scheduled180-second NR follow-up completed.
+Prepared fixed-checkpoint bypass diagnostics remain unexecuted.
+
+## Previous Override: 2026-11-03 14:05 UTC
 
 After the scheduled300-second wait,the current-run collector captured
 complete SR16:11534/9328 over17726=65.068261%/52.623265%,

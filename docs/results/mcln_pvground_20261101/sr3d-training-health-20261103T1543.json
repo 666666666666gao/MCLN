@@ -1,0 +1,61 @@
+{
+  "observed_utc": "2026-11-03T15:43:30.306943+00:00",
+  "dataset": "sr3d",
+  "run": "1793552465",
+  "pid": 92354,
+  "process_live": true,
+  "command": "/root/autodl-tmp/PV-Ground/env/bin/python -u train_dist_mod.py --local-rank=0 --num_decoder_layers 6 --use_color --weight_decay 0.0005 --data_root /root/autodl-tmp/PV-Ground/data/ --val_freq 1 --batch_size 12 --save_freq 1 --lr_backbone 1e-3 --lr 1e-4 --dataset sr3d --test_dataset sr3d --detect_intermediate --joint_det --use_soft_token_loss --use_contrastive_align --log_dir /root/autodl-tmp/mcln_pvground_ft_20261101/runs/sr3d --print_freq 500 --lr_decay_epochs 30 40 --gradient_accumulation_steps 2 --local_rank 0 --checkpoint_metric_retention --checkpoint_retention_metrics rec_acc025 rec_acc050 --max_epoch 140 --model MCLN --exp mcln_pvground_sr3d_20261101 --butd_cls --self_attend ",
+  "gpu": "22924 MiB, 9 %",
+  "config": {
+    "checkpoint_path": null,
+    "pp_checkpoint": null,
+    "model_only_initialization": false,
+    "use_pvground_innovations": false,
+    "batch_size": 12,
+    "gradient_accumulation_steps": 2,
+    "lr": 0.0001,
+    "lr_backbone": 0.001,
+    "candidate_local_visual_lr": 0.0001,
+    "max_epoch": 140
+  },
+  "log_tail_offset": 5441299,
+  "logged_total_loss_count": 57,
+  "finite_logged_total_losses_in_tail": true,
+  "latest_logged_total_losses": [
+    {
+      "position": {
+        "epoch": 17,
+        "batch": 3500,
+        "total_batches": 6486
+      },
+      "value": 9.9298,
+      "finite": true
+    },
+    {
+      "position": {
+        "epoch": 17,
+        "batch": 4000,
+        "total_batches": 6486
+      },
+      "value": 9.9276,
+      "finite": true
+    },
+    {
+      "position": {
+        "epoch": 17,
+        "batch": 4500,
+        "total_batches": 6486
+      },
+      "value": 9.9208,
+      "finite": true
+    }
+  ],
+  "latest_training_position": {
+    "epoch": 17,
+    "batch": 4500,
+    "total_batches": 6486
+  },
+  "latest_progress": "75%|#######5  | 4878/6486 [1:45:30<34:00,  1.27s/it]",
+  "error_lines_in_tail": [],
+  "scope": "Current runs only; recent cumulative logged training total-loss averages paired with their Train headers, excluding Eval losses. Not every batch or optimizer update. No model import, forward, evaluation or training."
+}

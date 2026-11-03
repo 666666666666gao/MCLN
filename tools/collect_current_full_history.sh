@@ -89,6 +89,12 @@ for dataset, run, directory, log, pid in cases:
         "cuda_initialized": torch.cuda.is_initialized(),
         "scope": "Exact current runs only. All completed last semantic Top1 log rows; current best/latest own CPU checkpoints audited and hashed. Deleted epochs have log and historical retention evidence only. No model construction, forward, evaluation or training.",
     }
+    if dataset == "scanrefer":
+        receipt["terminal_evidence"] = {
+            "complete": json.loads((stage / "stage_b_complete.json").read_text()),
+            "pipeline_exit_code": int((stage / "stage_b_pipeline_exit_code").read_text()),
+            "transition_exit_code": int((stage / "transition_exit_code").read_text()),
+        }
     assert not receipt["cuda_initialized"]
     destination = directory / "current_full_history_20261103.json"
     destination.write_text(json.dumps(receipt, indent=2) + "\n")

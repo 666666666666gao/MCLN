@@ -1,5 +1,15 @@
 # Fixed-Checkpoint Forward Audit
 
+2026-11-03 15:44UTC:Scan Stage B finished four epochs with normal
+two-consecutive-Acc050-decreases early stop,both pipeline/controller
+exit codes0. Scan GPU was free at15:40-15:44UTC. Best isB2,latestB4;
+their own CPU identities and full9508 semantic counters are archived in
+scanrefer-stage-b-final-full-history-20261103T1544.json.
+The prepared GPU forward/bypass entry remains unexecuted. No B2 bypass
+accuracy or individual-module causal evidence is available;do not treat
+two validation declines as a diagnosis of Reader,Support or Span.
+No diagnostic or new run was launched by the completion monitor.
+
 Status: 15 focused CPU tests passed historically; the GPU evaluation entry point is unexecuted.
 Current-restart import check passed2026-11-03 01:31:59UTC.
 The deployed audit entry was loaded without invoking main, then trainer,

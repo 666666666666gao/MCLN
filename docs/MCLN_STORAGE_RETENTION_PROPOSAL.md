@@ -2,6 +2,21 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update15:49UTC:Scan StageB has completed by normal early stop,exit0.
+Current kept sets:NR44(best)/45(latest),SR15(best)/16(latest),
+ScanB2(best)/B4(latest). All kept own epochs/model/optimizer/scheduler/
+SHA are remotelyCPU-audited;CUDAoff. ScanGPUfree,trainerexited.
+NR retention14:47:11UTC removed43;15:47:21UTC kept44/45,removednone.
+Scan retention15:07:20UTC audited2/4 and removed onlyolder3;
+free11485032448->12280643584bytes. B1/B3 paths are marked deleted.
+MainCSV71rows,Scanrestart11rows. All logs/configs/metrics/audits and
+official/A3 inputs remain. No duplicate watcher or cleanup was launched.
+The Scan retention watcher is idle,not a trainer;leave the completed run
+archived rather than restarting or polling it in future monitoring.
+FinalScan receipt:scanrefer-stage-b-final-full-history-20261103T1544.json.
+NR receipt:nr3d-current-full-history-20261103T1547.json.
+SR receipt:sr3d-current-full-history-20261103T1540.json.
+
 Update14:05UTC:SR16 is complete11534/9328 over17726 and belowbest15.
 Current SR keep set15(best)/16(latest),both independentlyCPU-audited/
 1134tensors/nonemptyoptimizer/scheduler/SHA;retention latest_epoch16.

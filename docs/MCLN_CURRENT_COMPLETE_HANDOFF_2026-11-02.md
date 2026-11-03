@@ -1,5 +1,13 @@
 # Current MCLN + PV-Ground Handoff
 
+Storage2026-11-03 00:25:30UTC:NRfree4527525888bytes92%used,atmost5new
+793092691-byte weights ignoringlogs/transientwrites. Actual96960/135075
+live. Best/latest30 sharesinode15040694278 withlast/semanticbest/
+preservedaliases,4links. Current23distinct preservedepochs remain.
+Raw nr3d-storage-20261103T002530Z.json. Pendingpolicy proposalcurrently
+keep29/30,allmetrics/logs/audits retained;recomputeafterapproval.
+No cleanupauthorization/deletion. NR240budgetstillunchanged.
+
 00:21UTC ScanA2 existing-log subgroup audit:unique025/050=1240/1075
 over1419 (87.385483%/75.757576%);multiple=4220/3488over8089
 (52.169613%/43.120287%). Sums exactly5460/4563. ComparedA1:unique

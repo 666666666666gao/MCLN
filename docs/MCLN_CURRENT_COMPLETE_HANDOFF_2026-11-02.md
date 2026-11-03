@@ -1,5 +1,18 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 01:27UTC data evidence:currentScanloader uses
+data/superpoints/{train,val};noautomaticswitchtomeshdirectory.
+All312valfiles fingerprinted and remoteCPUdata-onlyaudited:
+50,000labels/file,superpoints min157/median1001/max3894,
+zero single-superpoint/negative-labelscenes. CUDAoff,no modelwork or
+localtests. ManifestSHA
+f989fc5c7aeb25707ad75ae26e6db0dae400163e0ea9b34fc0f50113fdb5acc2.
+ValannotationSHA matches canonicalhandoffhistoricalidentity.
+Historicalmesh equivalence/train-splitquality remainunverified;
+not evidence of a metric-gapcause. See docs/PVG_CURRENT_DATA_AUDIT.md
+and raw scanrefer-current-data-fingerprint.json/
+scanrefer-current-superpoint-statistics.json. CurrentScanPIDs live01:25UTC.
+
 2026-11-03 01:20UTC update: latest scope preserves original NR240/SR140
 scratch runs unchanged; ScanRefer restart proceeds through three Stage A
 epochs and matched validation before conditional Stage B. No local model work.

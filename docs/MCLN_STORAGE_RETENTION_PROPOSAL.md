@@ -2,6 +2,12 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update03:20UTC: NR33 completed and its own CPU checkpoint was audited.
+Current NR retention set is best32 plus latest33. File33 SHA256
+964c70a97f3b8895e05c200c25bbd4b7a8f041eae9ad19bcaced2bd4af63f967,
+793092691bytes/3links; free21181689856bytes at03:19:49UTC.
+The initial deletion table below records the earlier32-only state.
+
 The user explicitly authorized retaining only the highest-metric checkpoint
 and the latest checkpoint for resume. This supersedes every pending-approval
 statement and latest-two proposal below.

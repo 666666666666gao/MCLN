@@ -1,5 +1,16 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 03:20UTC: NR33 completed03:17:37UTC full7899,
+3856/3027hits=48.816306%/38.321306%, down6/8versus32.
+Own CPU epoch33/1134tensors/optimizer/scheduler verified,CUDAoff.
+Best remains32=3862/3035,latest33; best025target deficit862hits.
+At03:19:49UTC latest weight793092691bytes/3links,SHA256
+964c70a97f3b8895e05c200c25bbd4b7a8f041eae9ad19bcaced2bd4af63f967.
+Actual trainer96960/keeper135075/retention156800 live,free21181689856bytes.
+Raw mcln-nr3d-epoch33.json/nr3d-checkpoint-identity-epoch33.json;
+historicalCSV55rows. Original recipes/budgets unchanged,no localtests.
+Compact Scan monitor correction published1d7426a; Bfullvalidation pending.
+
 2026-11-03 03:06 UTC: Scan B run1793674354/PID207977 remains live.
 Own first update passed: epoch1/batch6/size8/step1, finite loss
 7.021632194519043, all34 Reader/Support/Span tensors updated with

@@ -1,6 +1,23 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 18:24 UTC
+## Current Override: 2026-11-03 18:32 UTC
+
+SR query recovered18:26:47UTC:original92354/129032live,
+trainerelapsed2-01:25:50,GPU22924MiB/70%,5135/6486train.
+Null task/PP initialization,innovationsoff,batch12accum2/native1e-4/
+backbone1e-3/max140/decay30,40 verified unchanged. Best15=11743/9434,
+not a new full evaluation or CPU checkpoint audit. FullETA19:05-19:20UTC.
+NR endpoint still closes before status on this turn's query and240s
+retry. Last confirmedNR96960live17:59:18UTC;do not infer termination.
+No SSH/proxy/trainer/retention change or restart. Recovery without a
+configuration change does not prove the transport fault's root cause.
+Receipt:mcln-monitor-connectivity-update-20261103T1832.json.
+Scan last confirmed18:18:34UTC,236606live/control3048of6081,
+fullETA19:10-19:25UTC;no premature repeat Scan query.
+No new full metrics,74/11tables unchanged. All original budgets preserved,
+goal active;only NR current observability remains degraded.
+
+## Previous Override: 2026-11-03 18:24 UTC
 
 NR/SR observation connections failed twice each,including an180s-spaced
 retry,before remote output:"Connection closed by UNKNOWN port 65535".

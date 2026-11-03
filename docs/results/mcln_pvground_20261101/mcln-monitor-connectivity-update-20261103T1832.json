@@ -1,0 +1,60 @@
+{
+  "recorded_utc": "2026-11-03T18:32:06.7208754Z",
+  "previous_receipt": "mcln-monitor-transport-interruption-20261103T1823.json",
+  "scope": "Recovery of SR observability and continued NR transport failures. No new model validation or checkpoint CPU audit.",
+  "remote_entrypoint": "work/remote_pvground.ps1",
+  "sr3d": {
+    "observed_utc": "2026-11-03T18:26:47Z",
+    "local_exec_session": 16173,
+    "query_exit_code": 0,
+    "trainer_pid": 92354,
+    "trainer_live": true,
+    "trainer_elapsed": "2-01:25:50",
+    "keeper_pid": 129032,
+    "keeper_live": true,
+    "gpu_memory_mib": 22924,
+    "gpu_utilization_percent": 70,
+    "training_progress": {"completed_microbatches": 5135, "total_microbatches": 6486},
+    "config": {
+      "checkpoint_path": null,
+      "pp_checkpoint": null,
+      "model_only_initialization": false,
+      "use_pvground_innovations": false,
+      "batch_size": 12,
+      "gradient_accumulation_steps": 2,
+      "lr": 0.0001,
+      "lr_backbone": 0.001,
+      "max_epoch": 140,
+      "lr_decay_epochs": [30, 40]
+    },
+    "semantic_best_manifest": {"epoch": 15, "sample_count": 17726, "hits025": 11743, "hits050": 9434},
+    "best_file": {"bytes": 793092691, "links": 2},
+    "estimated_full_validation_window_utc": "2026-11-03 19:05-19:20",
+    "recovery_action": "Existing wrapper and registered trainer observed successfully; no configuration change or job restart."
+  },
+  "nr3d": {
+    "run": "1793553113",
+    "trainer_pid": 96960,
+    "current_state": "unobserved_during_transport_interruption",
+    "last_confirmed_live_utc": "2026-11-03T17:59:18.107077Z",
+    "queries_this_turn": [
+      {"local_exec_session": 39008, "exit_code": 1, "output": "Connection closed by UNKNOWN port 65535"},
+      {"local_exec_session": 78756, "wait_before_query_seconds": 240, "exit_code": 1, "output": "Connection closed by UNKNOWN port 65535"}
+    ],
+    "training_failure_established": false,
+    "trainer_restarted": false
+  },
+  "scanrefer": {
+    "last_confirmed_live_utc": "2026-11-03T18:18:34.449699Z",
+    "compute_pid": 236606,
+    "condition": "control",
+    "source_receipt": "scanrefer-span-gate-progress-20261103T1818.json",
+    "new_status_query_this_turn": false,
+    "estimated_full_validation_window_utc": "2026-11-03 19:10-19:25"
+  },
+  "ssh_or_training_configuration_changed": false,
+  "local_model_operations_or_tests": false,
+  "formal_metric_tables_changed": false,
+  "new_complete_validation_results": false,
+  "next_action": "Keep observing the same NR endpoint at the required spacing. SR/Scan queries should approach their actual validation ETAs. Preserve original training budgets and controller ownership."
+}

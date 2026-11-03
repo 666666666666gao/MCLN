@@ -1,5 +1,14 @@
 # Current MCLN + PV-Ground Handoff
 
+00:21UTC ScanA2 existing-log subgroup audit:unique025/050=1240/1075
+over1419 (87.385483%/75.757576%);multiple=4220/3488over8089
+(52.169613%/43.120287%). Sums exactly5460/4563. ComparedA1:unique
++8/+5,multiple+6/+15hits. Multiple remainingmisses3869/4601 vsunique
+179/344. Aggregate allocation,not paired fixes or module causality.
+Raw scanrefer-stage-a-epoch2-group-evidence.json;restartdoc updated.
+At00:19UTC actualScan189152/188533/188537 live,13GiBfree;
+SR92354/129032live,SR12=1437/6486,configunchanged. No new fullepoch.
+
 2026-11-03 00:16UTC:NR30 completed00:14:12UTC,full7899 semanticTop1:
 3813/3055hits=48.271933%/38.675782%,new025-firstbest30.
 Versus29 +45/+94;versuspreviousbest27 +38/+147hits.

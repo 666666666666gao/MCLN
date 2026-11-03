@@ -6,6 +6,32 @@ SR3D original full reproduction runs unchanged. The documents' suggestions
 to replace their scratch initialization are outside that scope.
 All tests and model execution run remotely. No local Windows/WSL tests.
 
+## Second Complete Stage A Result
+
+Epoch2 completed2026-11-02 23:51:44UTC,full9508 semanticTop1:
+5460/4563 hits =57.425326%/47.991165%. Own checkpoint epoch2/1168
+tensors/optimizer/scheduler audited; preserved SHA256
+`e22d6b7a4968fbafb6e4fcf97342ce88497c300e3fb8183b2da35c003b8f39e9`.
+This supersedes epoch1 as the current semantic best. Three-epoch
+transition remains pending; no Stage B launch or final target success.
+
+| Condition | Unique025 /1419 | Multiple025 /8089 | Unique050 /1419 | Multiple050 /8089 | Overall025/050 /9508 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Stage A epoch1 | 1232 | 4214 | 1070 | 3473 | 5446/4543 |
+| Stage A epoch2 | 1240 | 4220 | 1075 | 3488 | 5460/4563 |
+| Observed hit difference | +8 | +6 | +5 | +15 | +14/+20 |
+
+Epoch2 unique025/050=87.385483%/75.757576%;multiple=52.169613%/43.120287%.
+Multiple misses3869/4601 dominate absolute residual errors,versus
+unique179/344. These are aggregate counts,not paired fixed/broken examples
+or evidence that any particular module caused the improvement.
+The subgroup sums exactly match the complete9508 overall metrics.
+This read-only audit parsed existing logs remotely without importing
+Torch or evaluating a model. Raw receipt:
+`docs/results/mcln_pvground_20261101/scanrefer-stage-a-epoch2-group-evidence.json`.
+The original official E0 comparison still crosses the documented backend
+boundary; wait for matched official/selected evaluation after all3epochs.
+
 ## First Complete Stage A Result
 
 Epoch1 completed2026-11-02 21:19:22UTC on all9508 examples. Its own

@@ -3200,6 +3200,9 @@ class MCLN(nn.Module):
                 item["axis_gate"].detach().mean()
                 for item in span_evidence
             ]).mean()
+            end_points["pvground_span_raw_axis_gate"] = torch.stack([
+                item["raw_axis_gate"] for item in span_evidence
+            ])
             end_points["pvground_mask_reference_valid_ratio"] = (
                 mask_valid.float().mean().detach()
             )

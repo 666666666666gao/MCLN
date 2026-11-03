@@ -2,6 +2,16 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update17:14UTC:NR best/latest46 CPU-audited,1134/nonempty optimizer/
+scheduler/SHA;SR best15/latest17 similarly audited. Retained sets now
+NR46,SR15/17,ScanB2/B4. NR46 SHA
+05370b318703e972d1ba18afdf81495f51b99daad8f8db417f77a2764a14dbf8.
+SR17 SHA71f9c5fa2d828a54a91f2055d3405762e87e32b7ac8955a1093a4060aa39da00.
+SR retention16:39:15UTC removed16,free19738275840->20531372032bytes.
+Current receipts:nr3d-current-full-history-20261103T1704.json and
+sr3d-current-full-history-20261103T1642.json. Tables73/11rows.
+No new watcher/cleanup;all original NR/SR recipes/budgets unchanged.
+
 Update15:49UTC:Scan StageB has completed by normal early stop,exit0.
 Current kept sets:NR44(best)/45(latest),SR15(best)/16(latest),
 ScanB2(best)/B4(latest). All kept own epochs/model/optimizer/scheduler/

@@ -1872,9 +1872,11 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                            relation_counterfactual_aux_conservative_anchor_set=False,
                            density_aware_target_box_loss_weight=0.0,
                            density_scene_audit_return_match_indices=False,
-                           native_mask_geometry_supervision=False):
+                           native_mask_geometry_supervision=False,
+                           pvground_span_gate_loss_weight=0.0):
     """Compute Hungarian matching loss containing CE, bbox and giou."""
     for scale_name, scale in (
+            ("pvground_span_gate_loss_weight", pvground_span_gate_loss_weight),
             ("mask_loss_scale", mask_loss_scale),
             ("source_moe_balance_loss_weight", source_moe_balance_loss_weight),
             ("source_moe_rank_loss_weight", source_moe_rank_loss_weight),
@@ -3244,6 +3246,23 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
             last_match_indices
         )
 
+    span_gate_loss = None
+    if pvground_span_gate_loss_weight > 0:
+        from .pvground_span_supervision import span_gate_supervision
+        span_stats = span_gate_supervision(
+            end_points["pvground_span_raw_axis_gate"],
+            end_points["native_coarse_center"],
+            end_points["native_coarse_size"],
+            end_points["mask_reference_center"],
+            end_points["mask_reference_size"],
+            end_points["mask_reference_valid"],
+            target, last_match_indices,
+        )
+        span_gate_loss = span_stats["loss"]
+        end_points["pvground_span_gate_loss"] = span_gate_loss
+        end_points["pvground_span_gate_valid_axes"] = span_stats["valid_axes"]
+        end_points["pvground_span_gate_target_mean"] = span_stats["target_mean"]
+
     density_aware_target_box_loss = None
     if density_aware_target_box_loss_weight > 0:
         if last_match_indices is None:
@@ -4107,6 +4126,8 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
             + density_aware_target_box_loss_weight
             * density_aware_target_box_loss
         )
+    if pvground_span_gate_loss_weight > 0:
+        loss = loss + pvground_span_gate_loss_weight * span_gate_loss
     if native_mask_geometry_supervision:
         from scripts.native_mask_geometry_supervision import native_mask_geometry_loss
         referring = build_source_moe_grounding_sample_mask(

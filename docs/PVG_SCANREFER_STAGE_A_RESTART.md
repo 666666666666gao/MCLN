@@ -1,5 +1,30 @@
 # ScanRefer Stage A Restart
 
+## Next Minimal Comparison: 2026-11-03 17:16 UTC
+
+StageB remains finished;B2 is an immutable common initialization.
+Fixed-B2 four-condition diagnostics are finishing separately.
+A minimal raw-Span gate auxiliary loss is prepared in a new source snapshot,
+with six remote CPU tests passed. No local tests or new GPU training yet.
+Protocol:one full48655-entry epoch per condition,full9508 validation,
+common B2/fresh optimizer/scheduler/seed0/Brecipe,weights0 versus0.1.
+First run a separate6-microbatch treatment preflight and discard its state.
+See PVG_SPAN_GATE_COMPARISON.md;no Reader redesign/soft extent added.
+NR/SR original scratch240/140 budgets and null initialization remain.
+
+## Separate B2 Diagnostic: 2026-11-03 16:33 UTC
+
+Stage B remains completed and must not be restarted. Its selected B2 is
+now an immutable input to a separate eval-only diagnostic in
+offline_audits/b2_fixed_audit_20261103_lrpositive.
+Runner232612/evaluator232624 in pvg_scanrefer_b2_fixed_audit started16:30:52UTC;
+360 real forward and semantic records verified16:32:47UTC. No full
+diagnostic result yet. Initial zero-LR invocation failed before forward
+and is archived separately; corrected command uses B's positive optimizer
+group arguments with eval-only control flow. No source/trainer change.
+See PVG_FORWARD_AUDIT.md for provenance and interpretation constraints.
+NR/SR original scratch configurations and240/140 budgets remain unchanged.
+
 ## Stage B Finished: 2026-11-03 15:44 UTC
 
 Stage B run1793674354 completed four full9508 validations and stopped

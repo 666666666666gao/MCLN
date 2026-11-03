@@ -1,0 +1,94 @@
+{
+  "observed_utc": "2026-11-03T16:27:10.033993+00:00",
+  "audit_directory": "/root/autodl-tmp/mcln_pvground_ft_20261101/offline_audits/b2_fixed_audit_20261103",
+  "started": {
+    "pid": 232085,
+    "started_utc": "2026-11-03T16:23:07+00:00"
+  },
+  "current_condition": "2026-11-03T16:23:07+00:00 condition=none",
+  "gpu": "0 MiB, 0 %",
+  "compute_processes": "",
+  "conditions": {
+    "none": {
+      "metadata": {
+        "kind": "metadata",
+        "checkpoint": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth",
+        "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+        "bypass": "none",
+        "argv": [
+          "--local-rank=0",
+          "--local_rank",
+          "0",
+          "--num_decoder_layers",
+          "6",
+          "--use_color",
+          "--weight_decay",
+          "0.0005",
+          "--data_root",
+          "/root/autodl-tmp/PV-Ground/data/",
+          "--batch_size",
+          "8",
+          "--num_workers",
+          "4",
+          "--lr",
+          "0",
+          "--lr_backbone",
+          "0",
+          "--text_encoder_lr",
+          "0",
+          "--candidate_local_visual_lr",
+          "2e-5",
+          "--dataset",
+          "scanrefer",
+          "--test_dataset",
+          "scanrefer",
+          "--detect_intermediate",
+          "--joint_det",
+          "--use_soft_token_loss",
+          "--use_contrastive_align",
+          "--butd",
+          "--self_attend",
+          "--augment_det",
+          "--model",
+          "MCLN",
+          "--rng_seed",
+          "0",
+          "--use_pvground_innovations",
+          "--eval",
+          "--expected_eval_sample_count",
+          "9508",
+          "--checkpoint_path",
+          "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth",
+          "--print_freq",
+          "100",
+          "--log_dir",
+          "/root/autodl-tmp/mcln_pvground_ft_20261101/offline_audits/b2_fixed_audit_20261103/logs/none",
+          "--exp",
+          "b2_fixed_audit_none"
+        ]
+      },
+      "record_counts": {
+        "metadata": 1
+      },
+      "recent_errors": [
+        "Traceback (most recent call last):",
+        "ValueError: decoder_lr must be finite and positive",
+        "Traceback (most recent call last):",
+        "torch.distributed.elastic.multiprocessing.errors.ChildFailedError: "
+      ],
+      "log_tail": [
+        "------------------------------------------------------------",
+        "Root Cause (first observed failure):",
+        "[0]:",
+        "  time      : 2026-11-04_00:24:33",
+        "  host      : localhost",
+        "  rank      : 0 (local_rank: 0)",
+        "  exitcode  : 1 (pid: 232097)",
+        "  error_file: <N/A>",
+        "  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html",
+        "============================================================"
+      ]
+    }
+  },
+  "pipeline_exit_code": "1"
+}

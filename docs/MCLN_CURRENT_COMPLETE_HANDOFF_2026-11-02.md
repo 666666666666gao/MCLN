@@ -1,6 +1,126 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 15:49 UTC
+## Current Override: 2026-11-03 17:26 UTC
+
+All-four fixed-B2 diagnostics completed17:21:26UTC,pipelineexit0:
+none5483/4656,Reader5504/4673,Support5475/4616,Span5407/4262.
+Each full9508,footerverified,orderedidentity/pointSHA/GT exactlypaired.
+At050 gained/lost83/66,39/79,114/508;querychanges349/0/0.
+These are conditional inference interventions,not trained ablations.
+Span has394netbeneficialhits but114breaks;minimal supervision is a test,
+not an assumed gain. See PVG_FORWARD_AUDIT.md and archived full logs/summary.
+
+New separate Span pilot controller started17:21:50UTC,runner236004,
+screen pvg_scanrefer_span_gate_comparison.
+Remote scanrefer_span_gate_comparison_20261103,actual17:25UTC preflight
+loading train/text decoupling,noerrors,GPU3MiB,no compute process yet.
+No actual parameter-update proof at this snapshot.
+SixremoteCPUtests/compilationpassed;5criticalremote/localfileSHAsmatch.
+Order:6microbatch treatmentpreflight,controlweight0,Spanweight0.1.
+Both formal conditions freshB2model-only/opt/scheduler/seed0/Brecipe,
+onefull48655-entryepoch(native6081B8drop_last=48648consumed),full9508eval.
+Preflight computes no validationmetrics and its updates are discarded.
+No newparameters/attention/soft extent/verifier;rawgateSmoothL1 only,
+matchedGT detachedperaxisprojectionproxy,notIoU-optimal. Defaultoff.
+Source copied from actual stage_b_source;oldB/diagnostics not overwritten.
+See PVG_SPAN_GATE_COMPARISON.md. NR/SR remainoriginal240/140scratch.
+Best/latestNR46=4085/3294,SRbest15=11743/9434/latest17=11536/9037.
+Tables73/11rows,keptNR46/SR15,17/B2,B4;no newpilotweights yet.
+No localtests/modeloperations/targetattainmentclaim.
+
+## Previous Override: 2026-11-03 17:14 UTC
+
+New user direction from the pasted recommendation is accepted as a research
+sequence, not as verified claims: finish fixed-B2 diagnostics, then implement
+minimal matched-object raw Span gate supervision before any contextual Reader
+verifier. Preserve MCLN/Reader/Support/Span, hard Mask extent and clamp; no new
+attention or soft extent. NR/SR original scratch training remains unchanged.
+
+NR46 is complete and CPU-audited:4085/3294 over7899 =
+51.715407/41.701481%,best/latest46. SHA256
+05370b318703e972d1ba18afdf81495f51b99daad8f8db417f77a2764a14dbf8.
+Own epoch46/1134 tensors/nonempty optimizer/scheduler verified;trainer96960
+live,CUDAoff for audit. Latest full SR17=11536/9037 over17726 =
+65.079544/50.981609%;best15=11743/9434,latest17.
+SR17 SHA71f9c5fa2d828a54a91f2055d3405762e87e32b7ac8955a1093a4060aa39da00.
+SR retention16:39:15UTC keeps15/17 and removed only16.
+Full training tables now73 historical rows and11 Scan restart rows.
+Best target deficits:Scan222/289,NR639,SR559hits;none reached.
+
+Fixed-B2 none finished full9508=5483/4656, exactly matching archived B2
+counts in this repeat. Reader bypass finished full9508=5504/4673.
+The summary verifies exact ordered sample identities, point SHA and GT.
+Reader bypass changes349 selected queries;025 gained47/lost26/net+21;
+050 gained83/lost66/net+17. These are inference interventions on B2,
+not separately trained ablations or proof that deleting Reader is beneficial.
+At17:08:16UTC Support had9200/9508 records,noerrors;Span is next,
+all-four ETA~17:22UTC. No partial Support/Span metric is accepted.
+
+Baseline050 candidate oracle8260,top10coverage6021,selected4656:
+3604 samples contain a successful candidate but semanticTop1 misses.
+Selected native/reference/final050=4262/4710/4656,not trained variants.
+Seven selected native boxes have a nonpositive size axis and exactly these
+seven have Support correction mean>1000;all seven fail both thresholds.
+The deployed size.clamp_min(1e-6) normalization is consistent with amplification,
+not sole-cause proof;seven cases cannot explain289 missing050hits.
+Current Span clipping by x/y/z lower158/137/128,upper340/313/272 is per-axis.
+
+Prototype now edited locally, NOT remotely tested/deployed/launched yet:
+models/pvground_span_supervision.py plus surgical mcln/losses/main_utils
+changes. Per-axis equal-center/size squared-projection proxy, target and
+endpoints detached, final Hungarian-matched real GT only, valid references
+and nondegenerate directions;SmoothL1 on raw gates,default loss weight0.
+It is not an IoU-optimal target. Forward clamp/initialization stays unchanged.
+All tests must run remotely;no local tests/model imports/evaluation.
+Deploy a separate source snapshot;never overwrite the running diagnostic.
+Remote stage_b_source has the completed B training hook and is the intended
+parent;its main_utils SHA differs from source and local checkout.
+
+## Previous Override: 2026-11-03 16:33 UTC
+
+The active goal continues. A new isolated fixed-B2 inference diagnostic
+is now actually forwarding on the free Scan server; the completed Stage B
+trainer was NOT restarted. NR/SR original scratch trainers are unchanged.
+New audit directory:
+/root/autodl-tmp/mcln_pvground_ft_20261101/offline_audits/b2_fixed_audit_20261103_lrpositive
+Screen pvg_scanrefer_b2_fixed_audit, runner232612, evaluator232624.
+Started16:30:52UTC; actual16:32:47UTC GPU5407MiB and360 forward plus360
+semantic records, no recent errors. Current condition=none. This is NOT
+a complete metric. Estimated baseline completion~16:44UTC; four sequential
+conditions none/reader/support/span roughly finish~17:25UTC if speed holds.
+Use actual logs/progress, and180-300second intervals or near expected finish.
+
+Input is immutable selectedB2, own CPU epoch2/1168 model tensors/nonempty
+optimizer/scheduler and SHA46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8
+rechecked16:29:50UTC. Batch8/seed0, same source and evaluator, eval-only.
+Use positive native2e-6/backbone4e-6/module2e-5 arguments because the
+existing optimizer-group builder runs before the eval-only return and
+rejects zero decoder LR. No optimizer updates or training are requested.
+No model_only_initialization/checkpoint_start_epoch/PP initialization.
+The first diagnostic attempt at offline_audits/b2_fixed_audit_20261103
+failed before forward with decoder_lr must be finite and positive, exit1.
+Its metadata-only JSONL, full log, runner and progress receipt are retained;
+do not resume or poll that failed attempt. Corrected invocation uses the
+separate lrpositive directory. No model/trainer source was modified.
+
+These are interventions on a trained network, not separately trained
+ablations or proof of single-module gain. Require9508 forward and semantic
+records plus evaluator-verified completion footer for each condition.
+Before comparing, check same ordered identities, input point SHA256 and GT
+boxes. Record native/reference/final IoUs, candidate oracle/rank, selected
+gates, Reader scale and Support correction/foreground changes. Research
+concrete GitHub methods only after measured problems are established.
+The preparation receipt records exact deployed file hashes: remote
+main_utils.py differs from current local repository, so the recording
+commit fcc1e7e does NOT identify every deployed source file.
+
+Latest16:31UTC live checks: SR17 validation1151/1478, finite latest training
+loss9.9059/noerrors, ETA~16:36UTC; NR46 training3254/3742, latest loss10.2675
+finite/noerrors, full ETA~16:46-16:50UTC. Latest complete audited metrics,
+retained sets and71/11row tables remain those in the previous override.
+No local tests/model imports/diagnostics/forward/evaluation/training.
+
+## Previous Override: 2026-11-03 15:49 UTC
 
 Scan Stage B run1793674354 finished normally after four full9508 epochs.
 Terminal reason=two_consecutive_acc050_decreases;pipeline and transition

@@ -833,6 +833,7 @@ def parse_option():
     parser.add_argument('--use_candidate_local_visual', action='store_true', default=False)
     parser.add_argument('--use_pvground_innovations', action='store_true', default=False)
     parser.add_argument('--pvground_train_only', action='store_true')
+    parser.add_argument('--pvground_span_gate_loss_weight', type=float, default=0.0)
     parser.add_argument('--candidate_local_visual_lr', type=float, default=1e-4)
     parser.add_argument('--candidate_local_visual_variant', choices=['local', 'center', 'extent'],
                         default='local')
@@ -6713,6 +6714,7 @@ class BaseTrainTester:
             ),
             mask_loss_scale=args.mask_loss_scale,
             native_mask_geometry_supervision=getattr(args, 'native_mask_geometry_supervision', False),
+            pvground_span_gate_loss_weight=args.pvground_span_gate_loss_weight,
             consistency_loss_scale=args.consistency_loss_scale,
             source_moe_balance_loss_weight=(
                 getattr(args, 'source_moe_balance_loss_weight', 0.01)

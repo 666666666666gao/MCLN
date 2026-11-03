@@ -1,0 +1,324 @@
+{
+  "observed_utc": "2026-11-03T19:31:22.520594+00:00",
+  "scope": "Read-only active-source and raw TRAIN annotation fields. No model/dataset import, tensor load, forward, evaluation, training or source mutation. No validation annotation read.",
+  "worker_pid": 240217,
+  "worker_cwd": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/source",
+  "config": {
+    "data_root": "/root/autodl-tmp/PV-Ground/data/",
+    "use_sacr_source": false,
+    "augment_det": true,
+    "dataset": [
+      "scanrefer"
+    ],
+    "test_dataset": "scanrefer"
+  },
+  "dataset_source_sha256": "f6031ee7ffb3f92a9da4611741532a4d9e0bbd1d4cfe3b28b9d9a047e41a9346",
+  "scanrefer_loader": {
+    "name": "load_scanrefer_annos",
+    "first_line": 585,
+    "last_line": 732,
+    "source": "    def load_scanrefer_annos(self):\n        \"\"\"Load annotations of ScanRefer.\"\"\"\n        scanrefer_dir = os.path.join(self.data_path, 'ScanRefer')\n        if not os.path.isdir(scanrefer_dir):\n            scanrefer_dir = os.path.join(self.data_path, 'scanrefer')\n        _path = os.path.join(scanrefer_dir, 'ScanRefer_filtered')\n        split = self.split\n        if split in ('val', 'test'):\n            split = 'val'\n        with open(_path + '_%s.txt' % split) as f:  # ScanRefer_filtered_train.txt\n            scan_ids = [line.rstrip().strip('\\n') for line in f.readlines()]\n        with open(_path + '_%s.json' % split) as f:\n            reader = json.load(f)\n        if self.wo_obj_name != \"None\":\n            with open(self.wo_obj_name) as f:\n                reader = json.load(f)\n        if self.scanrefer_debug_scene_partition is not None:\n            if split != 'train':\n                raise ValueError(\n                    \"ScanRefer debug scene partition requires the train split\"\n                )\n            partition = self.scanrefer_debug_scene_partition\n            reader = [\n                anno for anno in reader\n                if (\n                    int(hashlib.sha256(\n                        str(anno['scene_id']).encode('utf-8')\n                    ).hexdigest()[:8], 16) % 5 == 0\n                ) == (partition == 'holdout')\n            ]\n            records_by_scene = defaultdict(list)\n            for annotation in reader:\n                records_by_scene[str(annotation['scene_id'])].append(annotation)\n            interleaved_reader = []\n            depth = 0\n            ordered_scene_ids = sorted(records_by_scene)\n            while True:\n                appended = False\n                for scene_id in ordered_scene_ids:\n                    scene_records = records_by_scene[scene_id]\n                    if depth < len(scene_records):\n                        interleaved_reader.append(scene_records[depth])\n                        appended = True\n                if not appended:\n                    break\n                depth += 1\n            reader = interleaved_reader\n        \n        # STEP 1. load utterance\n        annos = [\n            {\n                'scan_id': anno['scene_id'],\n                'target_id': int(anno['object_id']),\n                # 'ann_id': int(anno['ann_id']),\n                'distractor_ids': [],\n                'utterance': ' '.join(anno['token']),\n                'target': ' '.join(str(anno['object_name']).split('_')),\n                'anchors': [],      \n                'anchor_ids': [],   \n                'dataset': 'scanrefer',\n                'ann_id': anno.get('ann_id', ''),\n            }\n            for anno in reader\n            if anno['scene_id'] in scan_ids\n        ]\n        if self.use_sacr_source:\n            with open(self._structured_scanrefer_path(split)) as handle:\n                structured_reader = json.load(handle)\n            structured_lookup = build_scanrefer_structured_lookup(\n                structured_reader\n            )\n            for anno in annos:\n                key = scanrefer_annotation_key({\n                    'scene_id': anno['scan_id'],\n                    'object_id': anno['target_id'],\n                    'ann_id': anno.get('ann_id', ''),\n                })\n                structured_record = structured_lookup.get(key, {})\n                self._attach_structured_annotation(anno, structured_record)\n                anno['structured_annotation_hit'] = bool(structured_record)\n        if self.skip_missing_superpoints:\n            annos = [\n                anno for anno in annos\n                if anno['scan_id'] in self.scans\n            ]\n\n        if self.overfit:\n            annos = annos[:128]\n\n        ###########################\n        # STEP 2. text decoupling #\n        ###########################\n        self._scene_graph_parse(annos)\n        if self.use_sacr_source:\n            self._realign_structured_annotations(annos)\n\n        # # NOTE BUTD-DETR unreasonable approach, add GT object name\n        # num = 0\n        # for anno in annos:\n        #     if anno['target'] not in anno['utterance']:\n        #         num+=1\n        #         anno['utterance'] = (\n        #             ' '.join(anno['utterance'].split(' . ')[0].split()[:-1])\n        #             + ' ' + anno['target'] + ' . '\n        #             + ' . '.join(anno['utterance'].split(' . ')[1:])\n        #         )\n        \n        # STEP 3. Add distractor info\n        scene2obj = defaultdict(list)\n        sceneobj2used = defaultdict(list)\n        for anno in annos:\n            nyu_labels = [\n                self.label_mapclass[\n                    self.scans[anno['scan_id']].get_object_instance_label(ind)\n                ]\n                for ind in\n                range(len(self.scans[anno['scan_id']].three_d_objects))\n            ]\n            labels = [DC18.type2class.get(lbl, 17) for lbl in nyu_labels]\n            anno['distractor_ids'] = [\n                ind\n                for ind in\n                range(len(self.scans[anno['scan_id']].three_d_objects))\n                if labels[ind] == labels[anno['target_id']]\n                and ind != anno['target_id']\n            ][:32]\n            if anno['target_id'] not in sceneobj2used[anno['scan_id']]:\n                sceneobj2used[anno['scan_id']].append(anno['target_id'])\n                scene2obj[anno['scan_id']].append(labels[anno['target_id']])\n        \n        # STEP 4. Add unique-multi\n        for anno in annos:\n            if anno['scan_id'] not in list(self.scans.keys()):\n                continue\n\n            nyu_labels = [\n                self.label_mapclass[\n                    self.scans[anno['scan_id']].get_object_instance_label(ind)\n                ]\n                for ind in\n                range(len(self.scans[anno['scan_id']].three_d_objects))\n            ]\n            labels = [DC18.type2class.get(lbl, 17) for lbl in nyu_labels]\n            anno['unique'] = (\n                np.array(scene2obj[anno['scan_id']])\n                == labels[anno['target_id']]\n            ).sum() == 1\n        return annos"
+  },
+  "auxiliary_source_blocks": [
+    {
+      "name": "Scene_graph_parse",
+      "first_line": 1784,
+      "last_line": 1906,
+      "source": "def Scene_graph_parse(\n        annos, legacy_cache=None, legacy_cache_strict=False,\n        legacy_cache_datasets=None, target_selection='first_object'):\n    print('Begin text decoupling......')\n    cache_hits = 0\n    online_fallbacks = 0\n    strict_datasets = (\n        None if legacy_cache_datasets is None\n        else frozenset(legacy_cache_datasets)\n    )\n    for anno in annos:\n        if legacy_cache is not None:\n            if apply_legacy_scene_graph_cache(anno, legacy_cache):\n                cache_hits += 1\n                continue\n            if (legacy_cache_strict and (\n                    strict_datasets is None\n                    or anno.get(\"dataset\") in strict_datasets)):\n                key = legacy_scene_graph_cache_key(\n                    anno.get(\"dataset\"), anno.get(\"utterance\")\n                )\n                raise KeyError(\n                    \"legacy scene-graph cache miss for dataset={} key={}\"\n                    .format(anno.get(\"dataset\"), key)\n                )\n        online_fallbacks += 1\n        caption = ' '.join(anno['utterance'].replace(',', ' , ').split())\n\n        # some error or typo in ScanRefer.\n        caption = ' '.join(caption.replace(\"'m\", \"am\").split())\n        caption = ' '.join(caption.replace(\"'s\", \"is\").split())\n        caption = ' '.join(caption.replace(\"2-tiered\", \"2 - tiered\").split())\n        caption = ' '.join(caption.replace(\"4-drawers\", \"4 - drawers\").split())\n        caption = ' '.join(caption.replace(\"5-drawer\", \"5 - drawer\").split())\n        caption = ' '.join(caption.replace(\"8-hole\", \"8 - hole\").split())\n        caption = ' '.join(caption.replace(\"7-shaped\", \"7 - shaped\").split())\n        caption = ' '.join(caption.replace(\"2-door\", \"2 - door\").split())\n        caption = ' '.join(caption.replace(\"3-compartment\", \"3 - compartment\").split())\n        caption = ' '.join(caption.replace(\"computer/\", \"computer /\").split())\n        caption = ' '.join(caption.replace(\"3-tier\", \"3 - tier\").split())\n        caption = ' '.join(caption.replace(\"3-seater\", \"3 - seater\").split())\n        caption = ' '.join(caption.replace(\"4-seat\", \"4 - seat\").split())\n        caption = ' '.join(caption.replace(\"theses\", \"these\").split())\n        \n        # some error or typo in NR3D.\n        if anno['dataset'] == 'nr3d':\n            caption = ' '.join(caption.replace('.', ' .').split())\n            caption = ' '.join(caption.replace(';', ' ; ').split())\n            caption = ' '.join(caption.replace('-', ' ').split())\n            caption = ' '.join(caption.replace('\"', ' ').split())\n            caption = ' '.join(caption.replace('?', ' ').split())\n            caption = ' '.join(caption.replace(\"*\", \" \").split())\n            caption = ' '.join(caption.replace(':', ' ').split())\n            caption = ' '.join(caption.replace('$', ' ').split())\n            caption = ' '.join(caption.replace(\"#\", \" \").split())\n            caption = ' '.join(caption.replace(\"/\", \" / \").split())\n            caption = ' '.join(caption.replace(\"you're\", \"you are\").split())\n            caption = ' '.join(caption.replace(\"isn't\", \"is not\").split())\n            caption = ' '.join(caption.replace(\"thats\", \"that is\").split())\n            caption = ' '.join(caption.replace(\"doesn't\", \"does not\").split())\n            caption = ' '.join(caption.replace(\"doesnt\", \"does not\").split())\n            caption = ' '.join(caption.replace(\"itis\", \"it is\").split())\n            caption = ' '.join(caption.replace(\"left-hand\", \"left - hand\").split())\n            caption = ' '.join(caption.replace(\"[\", \" [ \").split())\n            caption = ' '.join(caption.replace(\"]\", \" ] \").split())\n            caption = ' '.join(caption.replace(\"(\", \" ( \").split())\n            caption = ' '.join(caption.replace(\")\", \" ) \").split())\n            caption = ' '.join(caption.replace(\"wheel-chair\", \"wheel - chair\").split())\n            caption = ' '.join(caption.replace(\";s\", \"is\").split())\n            caption = ' '.join(caption.replace(\"tha=e\", \"the\").split())\n            caption = ' '.join(caption.replace(\"it\u2019s\", \"it is\").split())\n            caption = ' '.join(caption.replace(\"\u2019s\", \" is\").split())\n            caption = ' '.join(caption.replace(\"isnt\", \"is not\").split())\n            caption = ' '.join(caption.replace(\"Don't\", \"Do not\").split())\n            caption = ' '.join(caption.replace(\"arent\", \"are not\").split())\n            caption = ' '.join(caption.replace(\"cant\", \"can not\").split())\n            caption = ' '.join(caption.replace(\"you\u2019re\", \"you are\").split())\n            caption = ' '.join(caption.replace('!', ' !').split())\n            caption = ' '.join(caption.replace('id the', ' , the').split())\n            caption = ' '.join(caption.replace('youre', 'you are').split())\n\n            caption = ' '.join(caption.replace(\"'\", ' ').split())\n\n            if caption[0] == \"'\":\n                caption = caption[1:]\n            if caption[-1] == \"'\":\n                caption = caption[:-1]\n        \n        anno['utterance'] = caption\n\n        # text parsing\n        graph_node, graph_edge = sng_parser.parse(\n            caption, target_selection=target_selection\n        )\n\n        # NOTE If no node is parsed, add \"this is an object .\" at the beginning of the sentence\n        if (len(graph_node) < 1) or \\\n            (len(graph_node) > 0 and graph_node[0][\"node_id\"] != 0):\n            caption = \"This is an object . \" + caption\n            anno['utterance'] = caption\n\n            # parse again\n            graph_node, graph_edge = sng_parser.parse(\n                caption, target_selection=target_selection\n            )\n\n        # node and edge\n        anno[\"graph_node\"] = graph_node\n        anno[\"graph_edge\"] = graph_edge\n\n        # auxi object\n        auxi_entity = None\n        for node in graph_node:\n            if (node[\"node_id\"] != 0) and (node[\"node_type\"] == \"Object\"):\n                auxi_entity = node\n                break\n        anno[\"auxi_entity\"] = auxi_entity\n    \n    print('End text decoupling!')\n    return {\n        \"cache_hits\": cache_hits,\n        \"online_fallbacks\": online_fallbacks,\n    }"
+    },
+    {
+      "name": "_get_auxi_boxes",
+      "first_line": 1161,
+      "last_line": 1186,
+      "source": "    def _get_auxi_boxes(self, anno, class_ids, all_bboxes, all_bbox_label_mask, gt_bboxes):\n        auxi_box = None\n\n        if anno[\"dataset\"] == \"scannet\":\n            return auxi_box\n\n        if anno[\"auxi_entity\"] is not None:\n            auxi_label_lemma = anno[\"auxi_entity\"][\"lemma_head\"]\n            if auxi_label_lemma in self.label_map:\n                if self.label_map[auxi_label_lemma] not in list((DC.nyu40id2class).keys()):\n                    return auxi_box\n                \n                cls_id = DC.nyu40id2class[self.label_map[auxi_label_lemma]]\n                dis_min = 100\n                target_box = gt_bboxes[0]\n                for idx, mask in enumerate(all_bbox_label_mask):\n                    if anno['target_id'] == idx or mask == False:\n                        continue\n                    if class_ids[idx] == cls_id:\n                        dis = target_box[:3] - all_bboxes[idx][:3]\n                        dis = np.sum(dis**2)\n                        \n                        if dis < dis_min:\n                            dis_min = dis\n                            auxi_box = all_bboxes[idx]\n        return auxi_box"
+    }
+  ],
+  "related_source_lines": [
+    {
+      "line": 92,
+      "source": "                 use_sacr_source=False,"
+    },
+    {
+      "line": 122,
+      "source": "        self.use_sacr_source = bool(use_sacr_source)"
+    },
+    {
+      "line": 140,
+      "source": "        if self.legacy_scene_graph_cache_path and self.use_sacr_source:"
+    },
+    {
+      "line": 305,
+      "source": "        if not self.use_sacr_source or dset.endswith('_spacy'):"
+    },
+    {
+      "line": 404,
+      "source": "        if self.use_sacr_source:"
+    },
+    {
+      "line": 423,
+      "source": "                    'anchor_ids': eval(line[headers['anchor_ids']]),"
+    },
+    {
+      "line": 464,
+      "source": "                    'anchor_ids': self._literal_list(row['anchor_ids']),"
+    },
+    {
+      "line": 481,
+      "source": "        if self.use_sacr_source:"
+    },
+    {
+      "line": 498,
+      "source": "                    'anchor_ids': [],"
+    },
+    {
+      "line": 556,
+      "source": "                    'anchor_ids': [],"
+    },
+    {
+      "line": 643,
+      "source": "                'anchor_ids': [],   "
+    },
+    {
+      "line": 650,
+      "source": "        if self.use_sacr_source:"
+    },
+    {
+      "line": 678,
+      "source": "        if self.use_sacr_source:"
+    },
+    {
+      "line": 764,
+      "source": "                    'anchor_ids': [],"
+    },
+    {
+      "line": 969,
+      "source": "        auxi_entity_positive_map = np.zeros((MAX_NUM_OBJ, 256))"
+    },
+    {
+      "line": 975,
+      "source": "            other_entity_positive_map, auxi_entity_positive_map, rel_positive_map"
+    },
+    {
+      "line": 981,
+      "source": "    def _get_token_positive_map_by_parse(self, anno, auxi_box):"
+    },
+    {
+      "line": 1063,
+      "source": "        auxi_entity_positive_map = np.zeros((MAX_NUM_OBJ, 256))"
+    },
+    {
+      "line": 1064,
+      "source": "        if auxi_box is not None:"
+    },
+    {
+      "line": 1065,
+      "source": "            auxi_entity = anno[\"auxi_entity\"]['target_char_span']"
+    },
+    {
+      "line": 1068,
+      "source": "            auxi_entity_char_span = np.zeros((MAX_NUM_OBJ, 2))"
+    },
+    {
+      "line": 1069,
+      "source": "            for a, auxi in enumerate(auxi_entity):"
+    },
+    {
+      "line": 1070,
+      "source": "                auxi_entity_char_span[a] = auxi"
+    },
+    {
+      "line": 1073,
+      "source": "            gt_map_a = get_positive_map(tokenized, auxi_entity_char_span[:num_a])"
+    },
+    {
+      "line": 1075,
+      "source": "            auxi_entity_positive_map[:1] = gt_map_a"
+    },
+    {
+      "line": 1082,
+      "source": "            other_entity_positive_map, auxi_entity_positive_map, rel_positive_map"
+    },
+    {
+      "line": 1095,
+      "source": "                # tids += anno.get('anchor_ids', [])    # BUTD-DETR"
+    },
+    {
+      "line": 1097,
+      "source": "                if anno['auxi_entity'] is not None and len(anno['anchor_ids']):"
+    },
+    {
+      "line": 1098,
+      "source": "                    tids.append(anno['anchor_ids'][0])"
+    },
+    {
+      "line": 1161,
+      "source": "    def _get_auxi_boxes(self, anno, class_ids, all_bboxes, all_bbox_label_mask, gt_bboxes):"
+    },
+    {
+      "line": 1162,
+      "source": "        auxi_box = None"
+    },
+    {
+      "line": 1165,
+      "source": "            return auxi_box"
+    },
+    {
+      "line": 1167,
+      "source": "        if anno[\"auxi_entity\"] is not None:"
+    },
+    {
+      "line": 1168,
+      "source": "            auxi_label_lemma = anno[\"auxi_entity\"][\"lemma_head\"]"
+    },
+    {
+      "line": 1171,
+      "source": "                    return auxi_box"
+    },
+    {
+      "line": 1185,
+      "source": "                            auxi_box = all_bboxes[idx]"
+    },
+    {
+      "line": 1186,
+      "source": "        return auxi_box"
+    },
+    {
+      "line": 1337,
+      "source": "        auxi_box = self._get_auxi_boxes(anno, class_ids, all_bboxes, all_bbox_label_mask, gt_bboxes)"
+    },
+    {
+      "line": 1344,
+      "source": "                other_entity_map, auxi_entity_positive_map, rel_positive_map = self._get_token_positive_map(anno)"
+    },
+    {
+      "line": 1348,
+      "source": "                other_entity_map, auxi_entity_positive_map, rel_positive_map = self._get_token_positive_map_by_parse(anno, auxi_box)"
+    },
+    {
+      "line": 1349,
+      "source": "        if auxi_box is None:"
+    },
+    {
+      "line": 1350,
+      "source": "            auxi_box = np.zeros((1, 6))"
+    },
+    {
+      "line": 1352,
+      "source": "            auxi_box = np.expand_dims(auxi_box, axis=0)"
+    },
+    {
+      "line": 1411,
+      "source": "            \"auxi_entity_positive_map\": auxi_entity_positive_map.astype(np.float32),"
+    },
+    {
+      "line": 1412,
+      "source": "            \"auxi_box\":auxi_box.astype(np.float32),"
+    },
+    {
+      "line": 1434,
+      "source": "            \"anchor_ids\": np.array("
+    },
+    {
+      "line": 1435,
+      "source": "                anno['anchor_ids']"
+    },
+    {
+      "line": 1436,
+      "source": "                + [-1] * (32 - len(anno['anchor_ids']))"
+    },
+    {
+      "line": 1453,
+      "source": "        if self.use_sacr_source:"
+    },
+    {
+      "line": 1454,
+      "source": "            structured_anchor_ids = list("
+    },
+    {
+      "line": 1455,
+      "source": "                anno.get('structured_anchor_ids', [])"
+    },
+    {
+      "line": 1457,
+      "source": "            structured_anchor_ids += [-1] * ("
+    },
+    {
+      "line": 1458,
+      "source": "                32 - len(structured_anchor_ids)"
+    },
+    {
+      "line": 1465,
+      "source": "                'structured_anchor_ids': np.asarray("
+    },
+    {
+      "line": 1466,
+      "source": "                    structured_anchor_ids, dtype=np.int64"
+    },
+    {
+      "line": 1521,
+      "source": "    #     anchor_ids = np.array("
+    },
+    {
+      "line": 1522,
+      "source": "    #         anno['anchor_ids']"
+    },
+    {
+      "line": 1523,
+      "source": "    #         + [-1] * (10 - len(anno['anchor_ids']))"
+    },
+    {
+      "line": 1531,
+      "source": "    #         i.item() for i in anchor_ids if i != -1"
+    },
+    {
+      "line": 1574,
+      "source": "    #                         + anchor_ids.tolist()"
+    },
+    {
+      "line": 1895,
+      "source": "        auxi_entity = None"
+    },
+    {
+      "line": 1898,
+      "source": "                auxi_entity = node"
+    },
+    {
+      "line": 1900,
+      "source": "        anno[\"auxi_entity\"] = auxi_entity"
+    }
+  ],
+  "train_annotation_path": "/root/autodl-tmp/PV-Ground/data/ScanRefer/ScanRefer_filtered_train.json",
+  "train_annotation_sha256": "93b0bd2a884de8077ba659aa1ee341dd7f571b32c46986e0ce388d6aad349521",
+  "train_records": 36665,
+  "field_counts": {
+    "ann_id": 36665,
+    "description": 36665,
+    "object_id": 36665,
+    "object_name": 36665,
+    "scene_id": 36665,
+    "token": 36665
+  },
+  "explicit_anchor_field_counts": {
+    "anchors": {
+      "present": 0,
+      "nonempty": 0
+    },
+    "anchor_ids": {
+      "present": 0,
+      "nonempty": 0
+    },
+    "anchors_types": {
+      "present": 0,
+      "nonempty": 0
+    },
+    "anchor_boxes": {
+      "present": 0,
+      "nonempty": 0
+    },
+    "path": {
+      "present": 0,
+      "nonempty": 0
+    }
+  },
+  "interpretation_limit": "Absent explicit raw fields do not prove that parsed text, other caches or auxiliary heuristics contain no entity information. They do not establish object-ID alignment, annotation correctness or trained method benefit."
+}

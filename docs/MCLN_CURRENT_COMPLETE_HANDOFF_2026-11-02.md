@@ -1,6 +1,27 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 19:24 UTC
+## Current Override: 2026-11-03 19:33 UTC
+
+New source/data-only evidence19:31:22UTC:actual live240217/source cwd,
+use_sacr_source=false,augment_det=true. RawScan TRAIN36665records have
+no explicit anchors/anchor_ids/anchors_types/anchor_boxes/path fields;
+actual loader initializes anchors/anchor_ids empty. Existing auxiliary
+box source picks the parsed class's nearest valid non-target box to GT
+target center,not a verified relation-labelled anchor. This does not
+prove lack of all contextual supervision or inference leakage. No
+runtime heuristic coverage/quality measured. Do not blindly port CoT
+anchor-index loss;specify supervision and query mapping first.
+Read PVG_READER_ANCHOR_SUPERVISION_REFERENCE.md and raw
+scanrefer-train-anchor-annotation-audit-20261103T1931.json.
+No dataset/model imports,forward/eval/training or source mutation.
+
+Verified wait19:29:00UTC:actual spanGPU240217live,773/6081,
+21977MiB/84%,no recent errors;config unchanged. FullETA20:55-21:10UTC
+remains. No new full validation;tables75/11/pilot1 unchanged.
+NR requery21393 again failed before status;lastlive17:59:18 remains,
+not proof of training exit. No restart or SSH override.
+Previous goal turn was progress(control/SR18 audits/source notes/push);
+this turn adds actual train-label evidence plus a verified live wait.
 
 Scan pilot control completed19:12:00UTC,full9508=5477/4620,
 57.604123/48.590660%,below immutable B2=5483/4656 by6/36hits.

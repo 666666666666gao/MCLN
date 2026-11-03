@@ -1,0 +1,266 @@
+{
+  "observed_utc": "2026-11-03T19:29:00.913210+00:00",
+  "started.json": {
+    "pid": 236004,
+    "started_utc": "2026-11-03T17:21:50+00:00"
+  },
+  "current_condition": "2026-11-03T19:12:04+00:00 condition=span",
+  "preflight_start.json": {
+    "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+    "condition": "preflight",
+    "gate_loss_weight": 0.1,
+    "max_epoch": 1,
+    "optimizer_restored": false,
+    "scheduler_restored": false,
+    "seed": 0,
+    "started_utc": "2026-11-03T17:21:55.020901+00:00",
+    "train_budget": "6 batches diagnostic"
+  },
+  "preflight_complete.json": {
+    "completed_utc": "2026-11-03T17:28:44.974499+00:00",
+    "condition": "preflight",
+    "full_validation_expected": false,
+    "run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/preflight/scanrefer/scanrefer_span_gate_preflight_20261103/1793726515"
+  },
+  "real_batch_gate_gradient.json": {
+    "auxiliary_loss": 0.05352035164833069,
+    "formal_validation_accessed": false,
+    "loss": 8.344083786010742,
+    "observed_utc": "2026-11-03T17:28:36.954624+00:00",
+    "outside_clamp_with_auxiliary_gradient": 3,
+    "raw_gate_gradient_l1": 0.24082067608833313,
+    "raw_gate_shape": [
+      8,
+      256,
+      3
+    ],
+    "valid_matched_axes": 48.0,
+    "weight": 0.1
+  },
+  "control_start.json": {
+    "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+    "condition": "control",
+    "gate_loss_weight": 0.0,
+    "max_epoch": 1,
+    "optimizer_restored": false,
+    "scheduler_restored": false,
+    "seed": 0,
+    "started_utc": "2026-11-03T17:28:56.909252+00:00",
+    "train_budget": "full48655 augmented entries"
+  },
+  "control_complete.json": {
+    "completed_utc": "2026-11-03T19:12:00.269537+00:00",
+    "condition": "control",
+    "full_validation_expected": true,
+    "run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/control/scanrefer/scanrefer_span_gate_control_20261103/1793726936"
+  },
+  "control_result.json": {
+    "checkpoint": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/control/scanrefer/scanrefer_span_gate_control_20261103/1793726936/preserved_checkpoints/ckpt_epoch_1.pth",
+    "checkpoint_sha256": "4f18e127321107f9f709c876226437bbc871ec3e5cd101cbf992ceede172f8d8",
+    "comparison_budget": "one full epoch; exploratory single-seed pilot",
+    "condition": "control",
+    "epoch": 1,
+    "gate_loss_weight": 0.0,
+    "has_scheduler": true,
+    "hits025": 5477,
+    "hits050": 4620,
+    "metric_branch": "last_semantic_alignment_top1",
+    "model_tensors": 1168,
+    "nonempty_optimizer": true,
+    "own_cpu_epoch": 1,
+    "sample_count": 9508
+  },
+  "span_start.json": {
+    "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+    "condition": "span",
+    "gate_loss_weight": 0.1,
+    "max_epoch": 1,
+    "optimizer_restored": false,
+    "scheduler_restored": false,
+    "seed": 0,
+    "started_utc": "2026-11-03T19:12:09.715385+00:00",
+    "train_budget": "full48655 augmented entries"
+  },
+  "preflight_tail": [
+    "=> loaded successfully '/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth' (epoch 2)",
+    "",
+    "  0%|          | 0/6081 [00:00<?, ?it/s]",
+    "  0%|          | 1/6081 [00:06<11:36:37,  6.87s/it]",
+    "  0%|          | 2/6081 [00:07<5:38:51,  3.34s/it] ",
+    "  0%|          | 3/6081 [00:08<3:43:28,  2.21s/it]",
+    "  0%|          | 4/6081 [00:09<2:49:00,  1.67s/it]",
+    "  0%|          | 5/6081 [00:10<2:19:13,  1.37s/it][11/04 01:28:42 preflight]: PV-Ground first-update witness {'schema': 'pvground-first-update-v1', 'epoch': 1, 'batch': 6, 'batch_size': 8, 'loss': 7.0388007164001465, 'finite_loss': True, 'optimizer_step_complete': True, 'optimizer_step': 1, 'modules': {'decoder.5.local_visual.': {'gradient_norm': 0.05355256423354149, 'parameter_delta_l2': 0.006055313628166914, 'updated_tensors': 10, 'parameter_tensors': 10}, 'pvground_support_corrector.': {'gradient_norm': 0.23612673580646515, 'parameter_delta_l2': 0.003304728539660573, 'updated_tensors': 10, 'parameter_tensors': 10}, 'pvground_span_mixer.': {'gradient_norm': 0.19752010703086853, 'parameter_delta_l2': 0.003368392353877425, 'updated_tensors': 14, 'parameter_tensors': 14}}}",
+    "",
+    "  0%|          | 6/6081 [00:11<2:04:05,  1.23s/it]",
+    "  0%|          | 6/6081 [00:12<3:26:01,  2.03s/it]",
+    "[11/04 01:28:43 preflight]: Bounded train audit completed; receipt saved in /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/preflight/scanrefer/scanrefer_span_gate_preflight_20261103/1793726515/train_audit_receipt_epoch_1.json"
+  ],
+  "preflight_recent_errors": [],
+  "preflight_run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/preflight/scanrefer/scanrefer_span_gate_preflight_20261103/1793726515",
+  "preflight_first_update": {
+    "batch": 6,
+    "batch_size": 8,
+    "epoch": 1,
+    "finite_loss": true,
+    "loss": 7.0388007164001465,
+    "modules": {
+      "decoder.5.local_visual.": {
+        "gradient_norm": 0.05355256423354149,
+        "parameter_delta_l2": 0.006055313628166914,
+        "parameter_tensors": 10,
+        "updated_tensors": 10
+      },
+      "pvground_span_mixer.": {
+        "gradient_norm": 0.19752010703086853,
+        "parameter_delta_l2": 0.003368392353877425,
+        "parameter_tensors": 14,
+        "updated_tensors": 14
+      },
+      "pvground_support_corrector.": {
+        "gradient_norm": 0.23612673580646515,
+        "parameter_delta_l2": 0.003304728539660573,
+        "parameter_tensors": 10,
+        "updated_tensors": 10
+      }
+    },
+    "optimizer_step": 1,
+    "optimizer_step_complete": true,
+    "schema": "pvground-first-update-v1"
+  },
+  "preflight_config": {
+    "checkpoint_path": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth",
+    "pp_checkpoint": null,
+    "model_only_initialization": true,
+    "pvground_span_gate_loss_weight": 0.1,
+    "max_epoch": 1,
+    "max_train_batches": 6,
+    "batch_size": 8,
+    "gradient_accumulation_steps": 6,
+    "lr": 2e-06,
+    "lr_backbone": 4e-06,
+    "candidate_local_visual_lr": 2e-05,
+    "rng_seed": 0
+  },
+  "control_tail": [
+    "[11/04 03:11:57 control]: mask@identity",
+    "[11/04 03:11:57 control]: vd25 0.561314791403287",
+    "[11/04 03:11:57 control]: vd50 0.4934079826620914",
+    "[11/04 03:11:57 control]: vid25 0.6305716444220599",
+    "[11/04 03:11:57 control]: vid50 0.5467136741374968",
+    "[11/04 03:11:57 control]: easy25 0.8053557154276578",
+    "[11/04 03:11:57 control]: easy50 0.6942446043165468",
+    "[11/04 03:11:57 control]: hard25 0.5134170710819298",
+    "[11/04 03:11:57 control]: hard50 0.4518983728232943",
+    "[11/04 03:11:57 control]: [source_moe] joint_query_quality_candidate_mask_query_ratio 0.0000 \t",
+    "[11/04 03:11:57 control]: Checkpoint retention best: ",
+    "[11/04 03:11:58 control]: Latest checkpoint hard link is /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/control/scanrefer/scanrefer_span_gate_control_20261103/1793726936/ckpt_epoch_last.pth"
+  ],
+  "control_recent_errors": [],
+  "control_run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/control/scanrefer/scanrefer_span_gate_control_20261103/1793726936",
+  "control_first_update": {
+    "batch": 6,
+    "batch_size": 8,
+    "epoch": 1,
+    "finite_loss": true,
+    "loss": 7.0552873611450195,
+    "modules": {
+      "decoder.5.local_visual.": {
+        "gradient_norm": 0.05650612339377403,
+        "parameter_delta_l2": 0.006154922302812338,
+        "parameter_tensors": 10,
+        "updated_tensors": 10
+      },
+      "pvground_span_mixer.": {
+        "gradient_norm": 0.07478313148021698,
+        "parameter_delta_l2": 0.003345852717757225,
+        "parameter_tensors": 14,
+        "updated_tensors": 14
+      },
+      "pvground_support_corrector.": {
+        "gradient_norm": 0.20002438127994537,
+        "parameter_delta_l2": 0.003304225392639637,
+        "parameter_tensors": 10,
+        "updated_tensors": 10
+      }
+    },
+    "optimizer_step": 1,
+    "optimizer_step_complete": true,
+    "schema": "pvground-first-update-v1"
+  },
+  "control_config": {
+    "checkpoint_path": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth",
+    "pp_checkpoint": null,
+    "model_only_initialization": true,
+    "pvground_span_gate_loss_weight": 0.0,
+    "max_epoch": 1,
+    "max_train_batches": 0,
+    "batch_size": 8,
+    "gradient_accumulation_steps": 6,
+    "lr": 2e-06,
+    "lr_backbone": 4e-06,
+    "candidate_local_visual_lr": 2e-05,
+    "rng_seed": 0
+  },
+  "span_tail": [
+    " 13%|#2        | 762/6081 [10:26<1:13:15,  1.21it/s]",
+    " 13%|#2        | 763/6081 [10:27<1:13:06,  1.21it/s]",
+    " 13%|#2        | 764/6081 [10:28<1:12:31,  1.22it/s]",
+    " 13%|#2        | 765/6081 [10:28<1:11:44,  1.23it/s]",
+    " 13%|#2        | 766/6081 [10:29<1:11:51,  1.23it/s]",
+    " 13%|#2        | 767/6081 [10:30<1:12:44,  1.22it/s]",
+    " 13%|#2        | 768/6081 [10:31<1:13:08,  1.21it/s]",
+    " 13%|#2        | 769/6081 [10:32<1:12:25,  1.22it/s]",
+    " 13%|#2        | 770/6081 [10:32<1:11:43,  1.23it/s]",
+    " 13%|#2        | 771/6081 [10:33<1:11:35,  1.24it/s]",
+    " 13%|#2        | 772/6081 [10:34<1:11:13,  1.24it/s]",
+    " 13%|#2        | 773/6081 [10:35<1:11:18,  1.24it/s]"
+  ],
+  "span_recent_errors": [],
+  "span_run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/span/scanrefer/scanrefer_span_gate_span_20261103/1793733129",
+  "span_first_update": {
+    "batch": 6,
+    "batch_size": 8,
+    "epoch": 1,
+    "finite_loss": true,
+    "loss": 7.0388007164001465,
+    "modules": {
+      "decoder.5.local_visual.": {
+        "gradient_norm": 0.05355256423354149,
+        "parameter_delta_l2": 0.006055313628166914,
+        "parameter_tensors": 10,
+        "updated_tensors": 10
+      },
+      "pvground_span_mixer.": {
+        "gradient_norm": 0.19752010703086853,
+        "parameter_delta_l2": 0.003368392353877425,
+        "parameter_tensors": 14,
+        "updated_tensors": 14
+      },
+      "pvground_support_corrector.": {
+        "gradient_norm": 0.23612673580646515,
+        "parameter_delta_l2": 0.003304728539660573,
+        "parameter_tensors": 10,
+        "updated_tensors": 10
+      }
+    },
+    "optimizer_step": 1,
+    "optimizer_step_complete": true,
+    "schema": "pvground-first-update-v1"
+  },
+  "span_config": {
+    "checkpoint_path": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth",
+    "pp_checkpoint": null,
+    "model_only_initialization": true,
+    "pvground_span_gate_loss_weight": 0.1,
+    "max_epoch": 1,
+    "max_train_batches": 0,
+    "batch_size": 8,
+    "gradient_accumulation_steps": 6,
+    "lr": 2e-06,
+    "lr_backbone": 4e-06,
+    "candidate_local_visual_lr": 2e-05,
+    "rng_seed": 0
+  },
+  "gpu": "21977 MiB, 84 %",
+  "compute_processes": "240217, 21958 MiB"
+}

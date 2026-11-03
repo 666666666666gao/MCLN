@@ -74,6 +74,44 @@ https://github.com/CoT3DRef/CoT3DRef/blob/ad05bddca844c81d6c7933915f5f83bd547327
 
 ## Constraints For A Later Reader Experiment
 
+### Actual Current ScanRefer Training Inputs
+
+Remote source/data-only audit19:31:22UTC verified live worker240217's
+source cwd and current config:use_sacr_source=false,augment_det=true.
+The raw TRAIN JSON contains36665 records,each with only ann_id,
+description,object_id,object_name,scene_id,token. Fields anchors,
+anchor_ids,anchors_types,anchor_boxes,path have0present/0nonempty records.
+Raw train SHA256:
+93b0bd2a884de8077ba659aa1ee341dd7f571b32c46986e0ce388d6aad349521.
+This is the language annotation count;it does not replace the augmented
+48655-entry training budget. No validation annotations were read.
+
+The actual source load_scanrefer_annos lines585-732 initializes both
+anchors and anchor_ids to empty lists. Its structured-source branch is
+disabled by this run's config. Source SHA256:
+f6031ee7ffb3f92a9da4611741532a4d9e0bbd1d4cfe3b28b9d9a047e41a9346.
+
+This does NOT mean the baseline lacks contextual/auxiliary supervision.
+The source's Scene_graph_parse can select the first non-root Object
+entity. Its _get_auxi_boxes lines1161-1186 then chooses the valid
+non-target scene box of that parsed class with minimum squared distance
+to the GT target center,subject to its existing dis_min=100 cutoff.
+This is a source-defined target-nearest heuristic,not an explicit
+human-labelled relation/anchor object identity. The current audit did
+not measure runtime coverage,parser/cache correctness,which relation
+the selected object satisfies,or downstream model input usage.
+It neither accuses the baseline of inference leakage nor establishes
+that it provides CoT3DRef-equivalent anchor supervision.
+
+Consequently do not silently reuse these heuristic boxes as ground-truth
+semantic anchors or directly port object-index anchor cross entropy.
+A later Reader experiment must explicitly choose and disclose its
+training supervision,quantify any heuristic label coverage/quality,and
+map object identities to predicted queries while preserving inference
+without GT anchors. No Reader code or running recipe was changed.
+Helper:tools/audit_scanrefer_train_anchor_annotations.sh;raw receipt:
+results/mcln_pvground_20261101/scanrefer-train-anchor-annotation-audit-20261103T1931.json.
+
 An anchor-conditioned Reader hypothesis would need verified train-split
 anchor supervision availability and coverage,a mapping to real predicted
 query/Hungarian identities,and an inference path using only predictions.

@@ -112,6 +112,46 @@ without GT anchors. No Reader code or running recipe was changed.
 Helper:tools/audit_scanrefer_train_anchor_annotations.sh;raw receipt:
 results/mcln_pvground_20261101/scanrefer-train-anchor-annotation-audit-20261103T1931.json.
 
+### Which Auxiliary Path Is Actually Consumed
+
+Follow-up source-only audit19:59:10UTC verified the active worker's
+actual losses.py and main_utils.py,not merely a historical local helper.
+The criterion forward at losses.py1702-1740 constructs auxi_target,
+but its matcher call is commented and auxi_indices is explicitlyNone.
+AST inspection finds0body uses of the auxi_indices argument and0direct
+auxi_box/auxi_entity_positive_map field references in each native
+loss_pos_align,loss_boxes,loss_masks,loss_sem_align function.
+Thus this native path does NOT implement auxiliary-object matching or
+an explicit object-index anchor loss merely because those fields exist.
+Do not turn the existence of heuristic auxiliary boxes into a diagnosis
+that an active anchor-matching loss is causing the current failures.
+
+This does not mean that other-entity/relation language has no training
+effect:the existing semantic loss still consumes other_entity_map and
+rel_positive_map. Nor is it a statement about every optional/historical
+loss in the repository. Current config explicitly disables
+use_parent_relative_text_verifier,use_joint_query_quality_reranker,
+use_sacr_source,use_sacr_score_refiner,use_source_moe and
+use_source_choice_selector;relation_counterfactual_aux_loss_weight=0.
+Some disabled optional heads retain nonzero default loss weights;
+the weights alone do not establish an active branch.
+
+The actual _get_inputs at main_utils.py6690-6694 returns point_clouds
+and text only. Both inspected train/evaluation paths call model(inputs)
+before appending batch labels into end_points for losses/evaluation.
+No auxi_box is passed through that input function. This specifically
+rules out interpreting its training-label dictionary as a direct
+GT-anchor model input through this entry point;it is not a blanket
+audit of every possible source of data leakage.
+
+Actual source SHA256:losses.py
+aca2a501fed32a551569eb35079e147466bb21f66868143b59d8db5ad1a05fac;
+main_utils.py
+ec60c8b32e5d2d29b12f0387e39fd3813f1f6a457f10c72500fab0d075981b72.
+Helper:tools/audit_scanrefer_auxiliary_supervision_source.sh;receipt:
+results/mcln_pvground_20261101/scanrefer-auxiliary-supervision-source-audit-20261103T1959.json.
+No model/dataset imports,forward,evaluation,tests or source changes.
+
 An anchor-conditioned Reader hypothesis would need verified train-split
 anchor supervision availability and coverage,a mapping to real predicted
 query/Hungarian identities,and an inference path using only predictions.

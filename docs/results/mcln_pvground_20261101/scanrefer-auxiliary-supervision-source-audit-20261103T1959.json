@@ -1,0 +1,161 @@
+{
+  "observed_utc": "2026-11-03T19:59:10.959718+00:00",
+  "worker_pid": 240217,
+  "worker_cwd": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_gate_comparison_20261103/source",
+  "scope": "Read-only current source AST/text and config; no model/dataset import, tensor load, forward, evaluation, test, training or source mutation.",
+  "files": {
+    "models/losses.py": {
+      "sha256": "aca2a501fed32a551569eb35079e147466bb21f66868143b59d8db5ad1a05fac",
+      "blocks": [
+        {
+          "name": "forward",
+          "first_line": 1702,
+          "last_line": 1740,
+          "source": "    def forward(self, outputs, targets):\n        \"\"\"\n        Perform the loss computation.\n\n        Parameters:\n             outputs: dict of tensors\n             targets: list of dicts, such that len(targets) == batch_size.\n        \"\"\"\n        # STEP Retrieve the matching between outputs and targets\n        indices = self.matcher(outputs, targets)\n\n        # auxi object\n        auxi_target = [\n            {\n                \"labels\": targets[b][\"labels\"],\n                \"boxes\": targets[b][\"auxi_box\"],\n                \"positive_map\": targets[b][\"auxi_entity_positive_map\"]\n            }\n            for b in range(outputs[\"pred_boxes\"].shape[0])\n        ]\n        # auxi_indices = self.matcher(outputs, auxi_target)\n        auxi_indices = None  # avoid bugs\n\n        num_boxes = sum(len(inds[1]) for inds in indices)\n        num_boxes = torch.as_tensor(\n            [num_boxes], dtype=torch.float,\n            device=next(iter(outputs.values())).device\n        )\n        if is_dist_avail_and_initialized():\n            torch.distributed.all_reduce(num_boxes)\n\n        # Compute all the requested losses\n        losses = {}\n        for loss in self.losses:\n            losses.update(self.get_loss(\n                loss, outputs, targets, indices, num_boxes, auxi_indices\n            ))\n\n        return losses, indices"
+        }
+      ],
+      "native_loss_auxiliary_usage": [
+        {
+          "name": "loss_pos_align",
+          "first_line": 1298,
+          "last_line": 1355,
+          "auxi_indices_body_name_uses": 0,
+          "auxiliary_field_body_references": []
+        },
+        {
+          "name": "loss_boxes",
+          "first_line": 1358,
+          "last_line": 1385,
+          "auxi_indices_body_name_uses": 0,
+          "auxiliary_field_body_references": []
+        },
+        {
+          "name": "loss_masks",
+          "first_line": 1388,
+          "last_line": 1492,
+          "auxi_indices_body_name_uses": 0,
+          "auxiliary_field_body_references": []
+        },
+        {
+          "name": "loss_sem_align",
+          "first_line": 1540,
+          "last_line": 1672,
+          "auxi_indices_body_name_uses": 0,
+          "auxiliary_field_body_references": []
+        }
+      ],
+      "batch_label_attachment_context": []
+    },
+    "main_utils.py": {
+      "sha256": "ec60c8b32e5d2d29b12f0387e39fd3813f1f6a457f10c72500fab0d075981b72",
+      "blocks": [
+        {
+          "name": "_get_inputs",
+          "first_line": 6690,
+          "last_line": 6694,
+          "source": "    def _get_inputs(batch_data):\n        return {\n            'point_clouds': batch_data['point_clouds'].float(),\n            'text': batch_data['utterances']\n        }"
+        }
+      ],
+      "native_loss_auxiliary_usage": [],
+      "batch_label_attachment_context": [
+        {
+          "first_line": 7704,
+          "source": "                # note Forward pass\n                end_points = model(inputs)\n\n                # note Compute loss and gradients, update parameters.\n                for key in batch_data:\n                    assert (key not in end_points)\n                    end_points[key] = batch_data[key]\n                loss, end_points = self._compute_loss(\n                    end_points, criterion, set_criterion, args\n                )"
+        },
+        {
+          "first_line": 8078,
+          "source": "        # macs, _ = profile(model, inputs=(inputs, ))\n        # print(f\"Total FLOPs: {macs} (or {macs / 1e9} GFLOPs)\")\n\n        # STEP Compute loss\n        for key in batch_data:\n            assert (key not in end_points)\n            end_points[key] = batch_data[key]\n        _, end_points = self._compute_loss(\n            end_points, criterion, set_criterion, args\n        )"
+        }
+      ]
+    }
+  },
+  "config": {
+    "pvground_train_only": false,
+    "source_choice_selector_train_only": false,
+    "source_moe_train_only": false,
+    "source_moe_gate_train_only": false,
+    "source_moe_anchor_loss_weight": 0.0,
+    "source_moe_anchor_margin": 0.05,
+    "decoder_query_adapter_train_only": false,
+    "query_mask_fusion_train_only": false,
+    "egqs_mask_refiner_train_only": false,
+    "joint_query_quality_train_only": false,
+    "joint_query_quality_aux_loss_weight": 1.0,
+    "joint_query_quality_anchor_loss_weight": 0.5,
+    "joint_query_quality_anchor_margin": 0.05,
+    "joint_query_quality_bidirectional_anchor": false,
+    "joint_query_quality_anchor_margin_050": 0.1,
+    "use_sacr_source": false,
+    "use_sacr_score_refiner": false,
+    "sacr_score_refiner_train_only": false,
+    "parent_relative_text_verifier_train_only": false,
+    "parent_relative_text_verifier_counterfactual_training": false,
+    "parent_relative_text_verifier_min_anchor_mass": 0.5,
+    "sacr_score_use_parent_relative_abstention": false,
+    "sacr_score_use_relation_counterfactual": false,
+    "sacr_score_parent_gate_hidden_dim": 32,
+    "sacr_score_refiner_lr": 0.0003,
+    "sacr_score_refiner_loss_weight": 1.0,
+    "sacr_score_temperature": 0.1,
+    "sacr_score_mask_weight": 0.25,
+    "sacr_score_max_delta": 0.25,
+    "sacr_score_min_box_advantage": 0.03,
+    "sacr_score_promotion_margin": 0.01,
+    "sacr_counterfactual_parent_top_k": 16,
+    "sacr_counterfactual_target_tolerance": 0.05,
+    "sacr_counterfactual_attribute_tolerance": 0.05,
+    "sacr_counterfactual_geometry_threshold": 0.08,
+    "sacr_counterfactual_iou_gap": 0.1,
+    "sacr_counterfactual_correct_iou_threshold": 0.25,
+    "sacr_counterfactual_pair_margin": 0.25,
+    "sacr_counterfactual_max_negatives": 4,
+    "sacr_counterfactual_relation_scale": 4.0,
+    "sacr_counterfactual_deployment_threshold": 0.05,
+    "relation_counterfactual_aux_loss_weight": 0.0,
+    "relation_counterfactual_aux_parent_top_k": 32,
+    "relation_counterfactual_aux_target_tolerance": 0.1,
+    "relation_counterfactual_aux_attribute_tolerance": 0.1,
+    "relation_counterfactual_aux_geometry_threshold": 0.08,
+    "relation_counterfactual_aux_correct_iou_threshold": 0.25,
+    "relation_counterfactual_aux_pair_margin": 0.05,
+    "relation_counterfactual_aux_max_negatives": 8,
+    "relation_counterfactual_aux_target_confidence_floor": 0.05,
+    "relation_counterfactual_aux_attribute_confidence_floor": 0.02,
+    "relation_counterfactual_aux_acc025_pair_weight": 2.0,
+    "relation_counterfactual_aux_conservative_anchor_set": false,
+    "tier_hard_query_aux_loss_weight": 0.0,
+    "sacr_score_mask_tolerance": 0.02,
+    "sacr_score_raw_margin": 0.1,
+    "sacr_score_dense_weight": 0.25,
+    "sacr_score_preserve_weight": 1.0,
+    "sacr_score_gate_weight": 0.05,
+    "sacr_score_saturation_weight": 0.05,
+    "sacr_hidden_dim": 288,
+    "sacr_max_pairs": 3,
+    "sacr_top_m_targets": 32,
+    "sacr_top_k_anchors": 16,
+    "sacr_geo_dim": 16,
+    "sacr_min_parse_confidence": 0.0,
+    "sacr_score_contract_audit": false,
+    "sacr_residual_scale_init": 0.1
+  },
+  "feature_switches": {
+    "use_candidate_local_visual": false,
+    "use_pvground_innovations": true,
+    "use_contrastive_align": true,
+    "use_soft_token_loss": true,
+    "use_source_choice_selector": false,
+    "use_source_moe": false,
+    "use_decoder_query_adapter": false,
+    "use_query_mask_fusion_calibrator": false,
+    "use_egqs_mask_refiner": false,
+    "use_joint_query_quality_reranker": false,
+    "use_sacr_source": false,
+    "use_sacr_score_refiner": false,
+    "use_parent_relative_text_verifier": false,
+    "use_height": false,
+    "use_color": true,
+    "use_multiview": false,
+    "use_cs_mcln": false
+  }
+}

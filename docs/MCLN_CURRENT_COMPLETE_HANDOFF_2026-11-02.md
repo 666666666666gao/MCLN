@@ -1,6 +1,29 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-03 19:38 UTC
+## Current Override: 2026-11-03 20:01 UTC
+
+Verifiedwait20:01:23UTC:actualspanGPU240217live,3140/6081,
+21977MiB71%,no recenterrors,no spancomplete/result. FullETA20:55-21:10
+retained;no newmetrics/tables75/11/pilot1. Existingcontroller unchanged.
+NR not queried this turn;lastobservabilityfailure19:55UTC is historical,
+lastverifiedlive17:59:18 remains. No restart/SSH override.
+
+New live-source audit19:59:10UTC refines the anchor-label finding:
+native criterion constructsauxi_target but comments its matcher and
+setsauxi_indices=None. Four native losses have0body uses of that argument
+and0directauxi_box/auxi_entity_positive_map fields. Do NOT infer an
+active explicit anchor-matching objective from dataset field existence.
+Other-entity/relation token supervision remains;this is not proof of
+absent contextual learning or an audit of all historical optional losses.
+Current optional verifier/reranker/SACR/sourceMOE/selector switchesOFF;
+nonzero default loss weights do not prove a branch active.
+Actual_get_inputs returnspoint_clouds/text;train/eval append batch
+labels toend_points aftermodel(inputs). No auxi_box input via that entry.
+No inference-leakage allegation or new Reader implementation.
+Actual source hashes/line ranges/config/AST blocks in receipt
+scanrefer-auxiliary-supervision-source-audit-20261103T1959.json and
+PVG_READER_ANCHOR_SUPERVISION_REFERENCE.md.
+All read-only/stdlibrary/remote;no model/dataset imports or source mutation.
 
 Scoped scratch health helper:tools/check_current_scratch_progress.sh
 only enumerates registered NR1793553113/SR1793552465,never a Scan

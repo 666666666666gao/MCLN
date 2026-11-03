@@ -2,6 +2,14 @@
 
 ## Authorized Policy Applied: 2026-11-03
 
+Update06:35UTC: NR36full7899=3953/3101hits,50.044309/39.258134%.
+025-firstbest/latest36. Keepermanifest36/SHAverified06:34:17UTC.
+Retention06:34:00UTC independentlyaudited36/1134/nonemptyoptimizer/
+scheduler/SHA,thenremovedonly34/35. Free20387758080->21973950464bytes.
+SHA13d3373c28f10271872982a105cbb7099be6f7b3a9c0acb1c143ab67a31220ba.
+At06:34:55UTC only36remainsinpreservedwith4hardlinks.
+Alllogs/configs/59historicalrows/auditreceiptsremain.
+
 Update06:06UTC: ScanB1 full9508 audited5474/4653hits. Best/latestboth1.
 Retention06:02:53UTC audited own1/1168/nonemptyoptimizer/scheduler/SHA,
 removednone,free13081960448bytes. Weight795607307bytes,

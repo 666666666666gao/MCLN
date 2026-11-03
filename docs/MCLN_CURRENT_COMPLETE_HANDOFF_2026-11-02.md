@@ -1,5 +1,31 @@
 # Current MCLN + PV-Ground Handoff
 
+## NR3D Update: 2026-11-03 06:30 UTC
+
+NR36 full7899 completed06:27:31UTC: last semantic alignment Top1/bbf
+3953/3101hits=50.044309%/39.258134%.
+Versus previousbest34: +62/-45hits; versus35:+67/+51.
+The025-first criterion selects36,although050 is lower than34.
+Do not combine36's025with34's050. Target4724 remains771hits away.
+At06:30:09UTC keepermanifest still showed34; wait for its scheduled
+refresh before treating best-alias synchronization/cleanup as complete.
+Follow-up06:34:17UTC independently confirmed manifest36 and the sameSHA.
+Retention06:34:00UTC audited own36/nonemptyoptimizer/scheduler/SHA,
+removedonly34/35,kept36best/latest. Free20387758080->21973950464bytes.
+Raw retention receipt accompanies the result; deleted CSV paths marked.
+OwnCPUepoch36/1134model tensors/optimizer/scheduler verified,CUDAoff.
+SHA13d3373c28f10271872982a105cbb7099be6f7b3a9c0acb1c143ab67a31220ba,
+793092691bytes/3links at06:29:36UTC. Trainer96960/keeper135075/
+retention156800 live. Null task/pp initialization and original
+batch12accum4/LR1e-4/backbone1e-3/max240/decay150 unchanged.
+Historical table59rows; Scan restart8rows separate. No localtests.
+
+ActualScanB207977live06:30:04UTC,epoch2=1018/6081,70finite logged
+traininglossrecords,latest7.5115at1000,noerrors/configchanges.
+SR92354live06:15:03UTC,epoch14=2335/6486,finite10.2005at2000,
+originalnullinit/budgetunchanged. Targetsremainunachieved.
+RawNR36receipt and fileidentity accompany the full-epoch table.
+
 ## ScanRefer Update: 2026-11-03 06:06 UTC
 
 Scan B1 full9508 completed06:01:50UTC,lastsemanticTop1/bbf

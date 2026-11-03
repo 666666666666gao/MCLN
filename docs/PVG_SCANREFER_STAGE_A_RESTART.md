@@ -32,6 +32,16 @@ Raw `scanrefer-stage-b-first-update.json` and
 `scanrefer-stage-a-weight-cleanup.json` retain the evidence.
 Raw `scanrefer-matched-validation.json`; restart CSV now seven rows.
 
+The Stage B monitor now queries the actual transition and retention screens,
+the trainer/worker PIDs, and the retention Python process. The previous
+`pvg_scanrefer_stage_b` screen query did not match this controller-owned
+launch. Its start summary reports the selected epoch/SHA and fresh optimizer/
+scheduler directly, instead of repeating the historical nested Stage A
+decision containing `stage_b_started=false`. That nested value is a startup
+snapshot, not live process state. The revised helper was executed remotely
+at03:11:29UTC: trainer207977 and retention209444 live,463/6081 batches,
+no complete B validation. No model code or training settings changed.
+
 2026-11-03 02:29UTC:StageA completed02:23:49UTC/exit0.
 Allthreefull9508epochs audited by controller's remoteCPUcollector:
 A1=5446/4543,A2=5460/4563,A3=5461/4565.

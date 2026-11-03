@@ -1,5 +1,15 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 04:49UTC: complete Stage A checkpoint preservation audited
+on remote CPU. Selected epoch3 versus official54:1134 native serialized
+tensors exactly unchanged,including204 BatchNorm buffers;34 new tensors
+all belong to the three module prefixes. Both knownSHAs verified.
+This extends the first-update freeze checks to the actual final A3 state,
+not a Stage B freeze/individual-module causal claim. Raw receipt and
+reproduction helper are included. CUDAoff,no model import/forward/localtests.
+Current B207977live04:49:01UTC,3927/6081,finite logged trainloss7.3798
+at3900,no errorlines/configchange. Full Bvalidation still pending.
+
 ## Current Override: 2026-11-03 04:23 UTC
 
 NR3D epoch34 completed validation on all7899 examples: last semantic

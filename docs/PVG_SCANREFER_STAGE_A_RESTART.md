@@ -1,5 +1,25 @@
 # ScanRefer Stage A Restart
 
+## Complete Stage A Native Preservation
+
+At2026-11-03 04:48:27UTC a remote CPU audit compared the selected
+complete Stage A epoch3 checkpoint against official epoch54. Both
+checkpoint SHA256 values were checked before loading. The1134 native
+serialized tensors match exactly in shape,dtype and value; this includes
+all204 native BatchNorm running means,variances and batch counters.
+There are34 additional tensors,all within the three module prefixes.
+No native tensor changed after the full three-epoch Stage A budget.
+
+Official SHA:a9930065996fce1d0dd5ee9fe00a120bdb3a2c88d158b7a3666717d842ac113d.
+Selected SHA:f4e98cce830eb474a94402df00dbd160c379b963e7d285c759b86c4a60b0a898.
+Raw receipt:`docs/results/mcln_pvground_20261101/scanrefer-stage-a-native-preservation.json`.
+Reproduction helper:`tools/audit_scanrefer_stage_a_native_preservation.sh`.
+This strengthens the first-update/fixture freeze checks with actual final
+checkpoint evidence. It does not verify Stage B freezing (B deliberately
+unfreezes native parameters),attribute gains to an individual module,or
+prove geometric data quality. No model was imported,constructed or run;
+CUDA remained uninitialized and no local tests ran.
+
 ## Sustained Training Log Check
 
 At2026-11-03 03:39:49UTC Btrainer207977 was live,1477/6081batches,

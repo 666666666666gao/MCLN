@@ -1,5 +1,31 @@
 # Current MCLN + PV-Ground Handoff
 
+2026-11-03 01:20UTC update: latest scope preserves original NR240/SR140
+scratch runs unchanged; ScanRefer restart proceeds through three Stage A
+epochs and matched validation before conditional Stage B. No local model work.
+
+NR31 full7899 completed01:15:45UTC:3816/3011hits,
+48.309913%/38.118749%. Versus30 +3/-44;newAcc025-firstbest31,
+target025deficit908. OwnCPUcheckpoint epoch31/1134tensors/optimizer/
+scheduler audited. Preserved793092691bytes,fourlinks01:19UTC.
+SHA256 e9d220e4b7a0917e59702d3c5021ab66da288e494a9ca0e1d5d873edf3be41cb.
+Bestmanifest31verified;originalconfigSHAunchanged:
+f837245468d816600a3910223e05c802a689ace776c76038f24e7a3926283072.
+Actual96960/135075live;all-epochs.csv now52rows.
+Raw mcln-nr3d-epoch31.json and nr3d-semantic-best-identity-epoch31.json.
+
+ScanA3=3814/6081at01:19UTC,finite recorded real updates/all3modules
+updated/frozenstateunchanged. Best completeA2=5460/4563over9508.
+SR12=4070/6486,actual92354/129032live,originalconfigunchanged;
+latestSR11=11424/8837,bestSR10=11624/9119over17726.
+ScanA3fullETA02:20-02:40UTC,SR12fullETA02:30-02:45UTC.
+No StageBlaunch before A3selection and matched-protocol validation.
+
+NRfree3734265856bytes,94%used at01:19:19UTC:atmost4additional
+793092691-byteweights ignoringgrowth,not exactfailureETA.
+Cleanupapprovalpending,no deletion. Olderkeep29/30proposalstale;
+recompute currentbest/latest and resolvedpaths after approval.
+
 Storage2026-11-03 00:25:30UTC:NRfree4527525888bytes92%used,atmost5new
 793092691-byte weights ignoringlogs/transientwrites. Actual96960/135075
 live. Best/latest30 sharesinode15040694278 withlast/semanticbest/

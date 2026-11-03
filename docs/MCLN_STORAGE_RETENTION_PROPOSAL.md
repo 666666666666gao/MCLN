@@ -1,5 +1,13 @@
 # Current Checkpoint Storage Proposal
 
+Update2026-11-03 01:19:19UTC:NRfree3734265856bytes,94%used.
+At most4additional793092691-byteweights fit ignoringlogs/transientwrites.
+Currentbest/latest31 preservedweight hasfourlinks,SHA256
+e9d220e4b7a0917e59702d3c5021ab66da288e494a9ca0e1d5d873edf3be41cb.
+Trainer96960/keeper135075live. No cleanupapproval/deletion.
+Historicalkeep29/30listsbelowarestale;recompute best/latest/paths after
+approval. Currentbest-plus-latest-two wouldkeep30/31,subjecttofreshinventory.
+
 Update2026-11-03 00:25:30UTC:NR free4527525888bytes,92%used,
 at most5additional793092691-byte weights ignoringlogs/temporarywrites.
 Current trainer96960/keeper135075 are live. Best/latest30 sharesinode

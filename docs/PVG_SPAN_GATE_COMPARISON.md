@@ -1,5 +1,36 @@
 # Span Gate Supervision Comparison
 
+## Completed Comparison: 2026-11-03 20:52 UTC
+
+Both registered conditions completed one full augmented training epoch
+and full9508 ScanRefer validation. Independent audit20:52:52UTC passed:
+training/evaluator/log counts agree;both own CPU checkpoints have epoch1,
+1168 model tensors,nonempty optimizer and scheduler,expected LR groups,
+and matching SHA256. CUDA was not initialized by the auditor.
+
+| Checkpoint / Condition | Full Samples | Hits025 / Percent | Hits050 / Percent |
+| --- | ---: | ---: | ---: |
+| Immutable strong B2 anchor | 9508 | 5483 / 57.667228% | 4656 / 48.969289% |
+| Pilot control,weight0,own epoch1 | 9508 | 5477 / 57.604123% | 4620 / 48.590660% |
+| Span gate supervision,weight0.1 | 9508 | 5484 / 57.677744% | 4654 / 48.948254% |
+
+Treatment versus matched control is+7/+34hits at025/050. Versus B2 it
+is+1/-2hits;therefore it does not improve both metrics over the strong
+anchor and does not meet5705/4945 targets. This single-seed,one-epoch
+pilot is a measured small effect,not evidence of a robust or causal
+method gain. Do not promote it as a verified core innovation yet.
+
+Span checkpoint SHA256:
+cd1dafd383278bd05b449431d65bcb33acb46170427819ad10c37b82b355328e.
+Its CPU checkpoint is795607435bytes with4links;the run used B2
+initialization SHA46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8,
+model-only load,fresh optimizer/scheduler,frozen text encoder,seed0,
+batch8/accum6 and native2e-6/backbone4e-6/module2e-5.
+Independent raw receipt:
+scanrefer-span-gate-independent-audit-20261103T2052.json.
+Both conditions and their checkpoints remain available;no retention
+deletion was performed by this audit.
+
 ## Status And Question
 
 Control completed19:12:00UTC and independently audited19:14:28UTC:
@@ -18,8 +49,8 @@ optimizer/scheduler/threeconstantLRgroups passed,CUDAoff.
 Checkpoint795607435bytes/4links,SHA256
 4f18e127321107f9f709c876226437bbc871ec3e5cd101cbf992ceede172f8d8.
 Rawreceipt:scanrefer-span-gate-independent-audit-20261103T1914.json.
-Separate pilotCSV:scanrefer-span-gate-comparison.csv,one audited row.
-No treatment accuracy is available;do not infer a supervision gain.
+Separate pilotCSV:scanrefer-span-gate-comparison.csv,now with both
+audited rows. The completed treatment result is summarized above.
 Controller transitioned19:12:04UTC to spanrun1793733129,whose own
 start/config19:12:09 verifies independentB2/weight0.1/freshstate.
 At19:21:55UTC actual GPUworker240217 was training250/6081,

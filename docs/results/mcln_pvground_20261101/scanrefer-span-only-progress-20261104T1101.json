@@ -1,0 +1,285 @@
+{
+  "observed_utc": "2026-11-04T11:01:03.866093+00:00",
+  "scope": "Only registered Span-only trial; no model import or training restart.",
+  "conditions": {
+    "preflight": {
+      "pvground_first_update.json": {
+        "batch": 6,
+        "batch_size": 8,
+        "epoch": 1,
+        "finite_loss": true,
+        "frozen_buffers_unchanged": true,
+        "frozen_parameters_unchanged": true,
+        "loss": 6.550971508026123,
+        "modules": {
+          "pvground_span_mixer.": {
+            "gradient_norm": 0.2611684799194336,
+            "parameter_delta_l2": 0.003445588517934084,
+            "parameter_tensors": 14,
+            "updated_tensors": 14
+          }
+        },
+        "optimizer_step": 1,
+        "optimizer_step_complete": true,
+        "schema": "pvground-first-update-v1"
+      },
+      "pvground_second_update.json": {
+        "batch": 12,
+        "batch_size": 8,
+        "epoch": 1,
+        "finite_loss": true,
+        "frozen_buffers_unchanged": true,
+        "frozen_parameters_unchanged": true,
+        "loss": 7.685822010040283,
+        "modules": {
+          "pvground_span_mixer.": {
+            "gradient_norm": 0.21298252046108246,
+            "parameter_delta_l2": 0.002957552205771208,
+            "parameter_tensors": 14,
+            "updated_tensors": 14
+          }
+        },
+        "optimizer_step": 2,
+        "optimizer_step_complete": true,
+        "schema": "pvground-first-update-v1"
+      },
+      "log_tail": [
+        "  0%|          | 10/6081 [00:09<1:00:00,  1.69it/s]",
+        "  0%|          | 11/6081 [00:10<57:33,  1.76it/s]  [11/04 17:48:53 preflight]: PV-Ground first-update witness {'schema': 'pvground-first-update-v1', 'epoch': 1, 'batch': 12, 'batch_size': 8, 'loss': 7.685822010040283, 'finite_loss': True, 'optimizer_step_complete': True, 'optimizer_step': 2, 'modules': {'pvground_span_mixer.': {'gradient_norm': 0.21298252046108246, 'parameter_delta_l2': 0.002957552205771208, 'updated_tensors': 14, 'parameter_tensors': 14}}, 'frozen_parameters_unchanged': True, 'frozen_buffers_unchanged': True}",
+        "",
+        "  0%|          | 12/6081 [00:11<1:05:41,  1.54it/s]",
+        "  0%|          | 12/6081 [00:12<1:47:30,  1.06s/it]",
+        "[11/04 17:48:55 preflight]: Bounded train audit completed; receipt saved in /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_only_20261104/preflight/scanrefer/scanrefer_span_gate_preflight_20261103/1793785347/train_audit_receipt_epoch_1.json"
+      ],
+      "recent_logged_loss_count": 0,
+      "recent_logged_losses_finite": null,
+      "latest_logged_losses": [],
+      "logged_losses_by_stage": {
+        "train": {
+          "count": 0,
+          "latest": [],
+          "finite": null
+        },
+        "eval": {
+          "count": 0,
+          "latest": [],
+          "finite": null
+        }
+      },
+      "recent_errors": []
+    },
+    "control": {
+      "pvground_first_update.json": {
+        "batch": 6,
+        "batch_size": 8,
+        "epoch": 1,
+        "finite_loss": true,
+        "frozen_buffers_unchanged": true,
+        "frozen_parameters_unchanged": true,
+        "loss": 6.5439133644104,
+        "modules": {
+          "pvground_span_mixer.": {
+            "gradient_norm": 0.13783536851406097,
+            "parameter_delta_l2": 0.0034479759633541107,
+            "parameter_tensors": 14,
+            "updated_tensors": 14
+          }
+        },
+        "optimizer_step": 1,
+        "optimizer_step_complete": true,
+        "schema": "pvground-first-update-v1"
+      },
+      "pvground_second_update.json": {
+        "batch": 12,
+        "batch_size": 8,
+        "epoch": 1,
+        "finite_loss": true,
+        "frozen_buffers_unchanged": true,
+        "frozen_parameters_unchanged": true,
+        "loss": 7.6695380210876465,
+        "modules": {
+          "pvground_span_mixer.": {
+            "gradient_norm": 0.09377335011959076,
+            "parameter_delta_l2": 0.0028678353410214186,
+            "parameter_tensors": 14,
+            "updated_tensors": 14
+          }
+        },
+        "optimizer_step": 2,
+        "optimizer_step_complete": true,
+        "schema": "pvground-first-update-v1"
+      },
+      "log_tail": [
+        "[11/04 18:58:18 control]: easy50 0.6918465227817746",
+        "[11/04 18:58:18 control]: hard25 0.5152726234656009",
+        "[11/04 18:58:18 control]: hard50 0.45375392520696545",
+        "[11/04 18:58:18 control]: [source_moe] joint_query_quality_candidate_mask_query_ratio 0.0000 \t",
+        "[11/04 18:58:18 control]: Checkpoint retention best: ",
+        "[11/04 18:58:20 control]: Latest checkpoint hard link is /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_only_20261104/control/scanrefer/scanrefer_span_gate_control_20261103/1793785749/ckpt_epoch_last.pth"
+      ],
+      "recent_logged_loss_count": 71,
+      "recent_logged_losses_finite": true,
+      "latest_logged_losses": [
+        459.1912,
+        419.6783,
+        383.0044
+      ],
+      "logged_losses_by_stage": {
+        "train": {
+          "count": 60,
+          "latest": [
+            6.8842,
+            6.882,
+            6.8798
+          ],
+          "finite": true
+        },
+        "eval": {
+          "count": 11,
+          "latest": [
+            459.1912,
+            419.6783,
+            383.0044
+          ],
+          "finite": true
+        }
+      },
+      "recent_errors": []
+    },
+    "span": {
+      "log_tail": [
+        "",
+        "  warnings.warn(",
+        "[11/04 18:58:35 span]: Full config saved to /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_only_20261104/span/scanrefer/scanrefer_span_gate_span_20261103/1793789915/config.json",
+        "Loading datasets: ['scannet', 'scanrefer']",
+        "Loading train files, take a breath!",
+        "Begin text decoupling......"
+      ],
+      "recent_logged_loss_count": 0,
+      "recent_logged_losses_finite": null,
+      "latest_logged_losses": [],
+      "logged_losses_by_stage": {
+        "train": {
+          "count": 0,
+          "latest": [],
+          "finite": null
+        },
+        "eval": {
+          "count": 0,
+          "latest": [],
+          "finite": null
+        }
+      },
+      "recent_errors": []
+    }
+  },
+  "preparation.json": {
+    "prepared_utc": "2026-11-04T09:41:15.790500+00:00",
+    "checkpoint": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth",
+    "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+    "own_cpu_epoch": 2,
+    "model_tensors": 1168,
+    "source_files_sha256": {
+      "main_utils.py": "cc88b8cd5753a4c5a11633cdafe3dec0336dd18eaa5e64182fe0d5565cc2457d",
+      "models/candidate_local_visual.py": "cc21f4ff26e8a9603aefe7c2e841a88c756f8a6ff382178329e7b3067d30b5cf",
+      "models/pvground_span_supervision.py": "330e0bb03fe8fd5c9f0b485410af522d92909ecf51a29d7db4b9e80d48b95abd",
+      "tools/train_scanrefer_span_gate_comparison.py": "0a480d29e68999e0a03456da818c6003e222e09538ddd5c69d5fbee66c3d0eba"
+    },
+    "conditions": {
+      "control": 0.0,
+      "span": 0.1
+    },
+    "span_only": true,
+    "seed": 0,
+    "batch_size": 8,
+    "accumulation": 6,
+    "module_lr": 2e-05,
+    "full_epochs_each": 1,
+    "full_validation_each": 9508,
+    "preflight_batches": 12,
+    "cuda_initialized": false,
+    "scope": "Fixed B2 upstream parameters and BN; train existing Span only. Same matched-object projection proxy; no network/module replacement."
+  },
+  "started.json": {
+    "pid": 265532,
+    "started_utc": "2026-11-04T09:42:21+00:00"
+  },
+  "preflight_complete.json": {
+    "completed_utc": "2026-11-04T09:48:56.430180+00:00",
+    "condition": "preflight",
+    "full_validation_expected": false,
+    "run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_only_20261104/preflight/scanrefer/scanrefer_span_gate_preflight_20261103/1793785347"
+  },
+  "real_batch_gate_gradient.json": {
+    "auxiliary_loss": 0.08994600921869278,
+    "formal_validation_accessed": false,
+    "loss": 7.2963547706604,
+    "observed_utc": "2026-11-04T09:48:47.383989+00:00",
+    "outside_clamp_with_auxiliary_gradient": 4,
+    "raw_gate_gradient_l1": 0.3363777995109558,
+    "raw_gate_shape": [
+      8,
+      256,
+      3
+    ],
+    "valid_matched_axes": 48.0,
+    "weight": 0.1
+  },
+  "control_start.json": {
+    "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+    "condition": "control",
+    "gate_loss_weight": 0.0,
+    "max_epoch": 1,
+    "optimizer_restored": false,
+    "scheduler_restored": false,
+    "seed": 0,
+    "span_only": true,
+    "started_utc": "2026-11-04T09:49:09.312857+00:00",
+    "train_budget": "full48655 augmented entries"
+  },
+  "span_start.json": {
+    "checkpoint_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+    "condition": "span",
+    "gate_loss_weight": 0.1,
+    "max_epoch": 1,
+    "optimizer_restored": false,
+    "scheduler_restored": false,
+    "seed": 0,
+    "span_only": true,
+    "started_utc": "2026-11-04T10:58:35.106606+00:00",
+    "train_budget": "full48655 augmented entries"
+  },
+  "control_result.json": {
+    "checkpoint": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_only_20261104/control/scanrefer/scanrefer_span_gate_control_20261103/1793785749/preserved_checkpoints/ckpt_epoch_1.pth",
+    "checkpoint_sha256": "f7082ff3b1fd16572eed9b9dc13433321e2b2ce79951e8683519ac4bb3ce755d",
+    "comparison_budget": "one full epoch; exploratory single-seed pilot",
+    "condition": "control",
+    "epoch": 1,
+    "gate_loss_weight": 0.0,
+    "has_scheduler": true,
+    "hits025": 5470,
+    "hits050": 4568,
+    "metric_branch": "last_semantic_alignment_top1",
+    "model_tensors": 1168,
+    "nonempty_optimizer": true,
+    "own_cpu_epoch": 1,
+    "sample_count": 9508,
+    "span_only": true
+  },
+  "control_frozen_state.json": {
+    "frozen_model_tensors": 1154,
+    "frozen_tensors_equal_initialization": true,
+    "span_changed": true,
+    "span_tensors": 14
+  },
+  "control_complete.json": {
+    "completed_utc": "2026-11-04T10:58:21.652405+00:00",
+    "condition": "control",
+    "full_validation_expected": true,
+    "run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_only_20261104/control/scanrefer/scanrefer_span_gate_control_20261103/1793785749"
+  },
+  "current_condition": "2026-11-04T10:58:30+00:00 condition=span",
+  "controller_process": "   PID   PPID     ELAPSED STAT COMMAND\n265532 265529    01:18:42 Ss+  bash /tmp/mcln_run_span_only_20261104.sh\n",
+  "children": "   PID   PPID     ELAPSED STAT COMMAND\n268814 265532       02:34 Sl+  /root/autodl-tmp/PV-Ground/env/bin/python -m torch.distributed.launch --nproc_per_node 1 --master_port 29543 tools/train_scanrefer_span_gate_comparison.py --trial /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_only_20261104 --condition span --span-only\n268815 265532       02:34 S+   tee /root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_only_20261104/span.log\n",
+  "gpu_processes": ""
+}

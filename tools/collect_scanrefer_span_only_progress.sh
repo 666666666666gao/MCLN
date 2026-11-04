@@ -15,7 +15,8 @@ result = {"observed_utc": datetime.datetime.now(datetime.timezone.utc).isoformat
 for name in ("preparation.json", "started.json", "preflight_complete.json",
              "real_batch_gate_gradient.json", "control_start.json", "span_start.json",
              "control_result.json", "span_result.json", "control_frozen_state.json",
-             "span_frozen_state.json", "complete.json"):
+             "span_frozen_state.json", "control_complete.json", "span_complete.json",
+             "complete.json"):
     path = trial / name
     if path.is_file():
         result[name] = json.loads(path.read_text())
@@ -58,6 +59,23 @@ for condition in ("preflight", "control", "span"):
             all(math.isfinite(value) for value in losses) if losses else None
         )
         records["latest_logged_losses"] = losses[-3:]
+        stage_losses = {"train": [], "eval": []}
+        stage = None
+        for line in lines:
+            if "Train: [" in line:
+                stage = "train"
+            elif "Eval: [" in line:
+                stage = "eval"
+            match = re.search(
+                r"(?<!\w)loss\s+([-+]?(?:\d+(?:\.\d*)?(?:e[-+]?\d+)?|nan|inf))(?=\s|$)",
+                line, re.IGNORECASE)
+            if stage is not None and match:
+                stage_losses[stage].append(float(match.group(1)))
+        records["logged_losses_by_stage"] = {
+            name: {"count": len(values), "latest": values[-3:],
+                   "finite": all(math.isfinite(value) for value in values) if values else None}
+            for name, values in stage_losses.items()
+        }
         records["recent_errors"] = [line for line in lines
                                    if "Traceback (most recent call last)" in line or "RuntimeError:" in line]
     if records:

@@ -1,6 +1,23 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 10:51 UTC
+## Current Override: 2026-11-04 11:02 UTC
+
+Scan Span-only control completed10:58:21UTC,full9508=5470/4568,
+57.530501%/48.043753%,-13/-88hits versus B2. CPU own1/1168 tensors/
+optimizer/scheduler/SHA passed;1154non-Span tensors exactly equal B2.
+SHAf7082ff3b1fd16572eed9b9dc13433321e2b2ce79951e8683519ac4bb3ce755d.
+Existing controller265532 started independent treatment0.1 at10:58:35UTC;
+actual11:01launcher268814live,loading data,no GPU/update witness yet.
+No duplicate launch. Compare against matched5470/4568 and B25483/4656.
+Control-only gain would not establish beating B2. No recipe changes.
+Collector now separates explicit Train/Eval headers:521.9311 was Eval100,
+not a training spike. Exact log context archived,not a divergence diagnosis.
+See PVG_SPAN_ONLY_COMPARISON.md and progress-20261104T1101 receipt.
+NR best/latest64=4190/3394;SR24 actual10:57validating902/1478,
+live trainer/keeper/retention,finite losses/no errors,ETA11:05UTC.
+All targets unmet. No local model/test execution.
+
+## Previous Override: 2026-11-04 10:51 UTC
 
 NR64 full7899=4190/3394 (53.044689%/42.967464%),new best/latest64,
 up29/63hits versus prior best59.025 target4724 remains534hits away.

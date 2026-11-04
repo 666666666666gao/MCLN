@@ -1,6 +1,15 @@
 # ScanRefer Stage A Restart
 
-## Current Override: 2026-11-04 10:00 UTC
+## Current Override: 2026-11-04 11:02 UTC
+
+Span-only control full9508=5470/4568,completed10:58:21UTC. CPU own
+checkpoint/optimizer/scheduler/SHA and1154 frozen tensors equal B2 passed.
+Treatment0.1 automatically started10:58:35UTC under existing controller,
+actual launcher268814live/loading11:01,no real update witness yet.
+See PVG_SPAN_ONLY_COMPARISON.md. B2 best5483/4656 remains unchanged.
+No duplicate launch,original NR/SR budgets unchanged.
+
+## Previous Override: 2026-11-04 10:00 UTC
 
 Historical Stage A/B and Reader trials below are complete. A new registered
 Span-only matched comparison is live in screen pvg_scanrefer_span_only;

@@ -1,5 +1,38 @@
 # Fixed Upstream Span Training Comparison
 
+## Full Control Result: 2026-11-04 11:01 UTC
+
+Control completed10:58:21UTC,full9508=5470/4568
+(57.530501%/48.043753%). Versus immutable B25483/4656,this is-13/-88hits.
+CPU own epoch1/1168 tensors/nonempty optimizer/scheduler/SHA passed:
+f7082ff3b1fd16572eed9b9dc13433321e2b2ce79951e8683519ac4bb3ce755d.
+All1154non-Span tensors exactly equal B2;Span changed. This verifies the
+registered frozen-state intervention,not success of the method. Retain B2
+as global best/input and this condition's sole own best/latest checkpoint.
+
+Existing controller265532 automatically started treatment weight0.1 at
+10:58:35UTC,independently from B2,fresh optimizer/scheduler. At11:01:03
+actual launcher268814 live,loading data,no GPU or optimizer-step witness
+yet. Do not duplicate launch or describe loading as verified training.
+Treatment full result must be compared with this5470/4568 control and B2;
+beating the control alone does not establish improvement over B2.
+Raw receipt:scanrefer-span-only-progress-20261104T1101.json.
+
+## Loss Observation Correction: 2026-11-04 10:58 UTC
+
+The original progress collector mixed Train and Eval loss lines into one
+recent-value list. Remote exact log context confirms521.9311 belongs to
+Eval100/1189,not a training spike. The scoped collector now additionally
+groups values by explicit Train/Eval log headers. At10:57:35UTC it found
+60train values,all finite,last6.8842/6.8820/6.8798,and11eval values,all
+finite,last459.1912/419.6783/383.0044. Large Eval losses are real records;
+their numerical scale alone does not diagnose training divergence or
+establish their cause. No training-source,recipe or loss change follows.
+Remote reader only:no model import,new forward or test.
+Raw context:scanrefer-span-control-loss-context-20261104.json.
+Control actual controller265532/GPU266278 live,validation1102/1189;
+final full result and frozen-state audit still pending at that timestamp.
+
 ## Capacity Update: 2026-11-04 10:27 UTC
 
 The new continuous-gate offline audit in PVG_SPAN_FIXED_QUERY_CAPACITY.md

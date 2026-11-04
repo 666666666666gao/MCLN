@@ -1,6 +1,23 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 10:27 UTC
+## Current Override: 2026-11-04 10:51 UTC
+
+NR64 full7899=4190/3394 (53.044689%/42.967464%),new best/latest64,
+up29/63hits versus prior best59.025 target4724 remains534hits away.
+CPU own64/1134 tensors/nonempty optimizer/scheduler/SHA passed,CUDAoff:
+1b29f09b8eda0db5baab229fb35e31fd345adda225f6f101aa5d9efed79304f4.
+Existing watcher kept64 and removed preserved59/63 at10:50:39UTC.
+All full metrics/audits retained;raw nr3d-current-full-history-20261104T1050.json.
+Trainer96960 live,next epoch begun,original scratch recipe/budget unchanged.
+Scan10:49:25UTC controller265532/GPU266278 live,control validation124/1189;
+no full result/final frozen audit yet.61recent parsed losses finite,
+including isolated521.9311;no failure inferred from this alone. Existing
+pipeline owns treatment transition,ETA full control10:58-11:02UTC.
+SR10:49:27UTC trainer/keeper/retention live,validation227/1478,finite
+recent losses,no errors,full24 ETA about11:05UTC. No new Scan/SR scores.
+No local ML execution or recipe changes;all targets remain unmet.
+
+## Previous Override: 2026-11-04 10:27 UTC
 
 10:37UTC cohort supplement:B2025 selected gate-family failures3875
 split411no valid final candidate/2350valid outsideTop10/1114valid inTop10.

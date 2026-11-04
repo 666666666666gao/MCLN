@@ -1,5 +1,14 @@
 # Current Checkpoint Storage Proposal
 
+## Update: 2026-11-04 10:51 UTC
+
+NR64 is new best/latest4190/3394 over7899. CPU own64/1134 tensors/
+nonempty optimizer/scheduler/SHA verified;existing watcher applied
+10:50:39UTC and kept only64,removed preserved59/63,1586185382bytes.
+Full history,all metrics and audits remain. Receipt
+nr3d-current-full-history-20261104T1050.json contains exact paths.
+No manual cleanup or additional watcher;Scan immutable B2 input retained.
+
 ## Update: 2026-11-04 09:52 UTC
 
 NR63 full7899=4150/3291 (52.538296%/41.663502%),best59 remains4161/3331.

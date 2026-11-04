@@ -2,14 +2,34 @@
 
 ## Current Override: 2026-11-04 00:00 UTC
 
+At00:37UTC SR3D epoch20 completed full17726 semantic Top1 validation:
+11445/9060 hits (Acc@0.25/0.5=64.566174%/51.111362%). Best remains
+epoch15=11743/9434; latest20 is below best by298/374hits and is857
+Acc@0.25 hits short of target12302. Independent collector verified the
+own-epoch20 CPU checkpoint,1134 model tensors,nonempty optimizer/scheduler,
+SHA256 b1be7c65b6dd726b0ae94b052a9f19f8b5378d3e8ad9b6fb4bcd822bfa329b82,
+preserved path and retention latest20. Best15 SHA remains
+386647b8ecac817614090cb23f11b5d7a4d36b7449f67c07f43f84baf23e3969.
+The existing watcher applied at00:32UTC,kept15/20 and removed only the
+older preserved epoch19 (793096192 allocated bytes freed);the full audit
+is retained in the receipt. Epoch19's metric remains,but its weight is
+marked removed in the all-epochs table.
+At00:36UTC the original SR trainer/keeper/retention processes were live
+at379/6486 on the unchanged scratch recipe; current progress had finite
+recent losses and no logged errors. No manual checkpoint deletion.
+
 NR3D latest53=4107/3258 and best49=4123/3325 over7899. Full CPU audit
 and preservation sync are confirmed in the23:58 receipt; epoch53 SHA
 e8d6d69f9af514f3f5d51973c64642d3f7a992eb362723527d4eda60a5dba991.
 Existing watcher retained best49/latest53; no manual retention action.
-SR3D remains best15/latest19, with no new full validation or retention
-event as of23:59. Its watcher remains the only cleanup authority.
+At00:36UTC NR trainer96960/keeper135075/retention156800 were live at
+2906/3742 on the unchanged scratch recipe; recent losses were finite and
+no errors were logged. Its next full validation is expected around
+01:00-01:15UTC, subject to validation time and actual speed. Its watcher
+remains the only cleanup authority.
 Receipt:
-`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261103T2358.json`.
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261103T2358.json`
+and`docs/results/mcln_pvground_20261101/sr3d-current-full-history-20261104T0036.json`.
 
 ## Current Override: 2026-11-03 23:09 UTC
 

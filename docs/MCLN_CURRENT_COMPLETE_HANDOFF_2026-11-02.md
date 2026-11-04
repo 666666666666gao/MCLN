@@ -1814,6 +1814,16 @@ User's canonical desktop document:
 `C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`.
 Keep its historical sections; the current dated section takes precedence.
 Publish code and this document to https://github.com/666666666666gao/MCLN .
+## Current Override: 2026-11-04 04:10 UTC
+
+Live checks04:10UTC: Reader competitor run1793763075=2415/6081 augmented
+batches;finite first update remains verified,worker254229 active,~50min
+roughly remain before full validation. NR run1793553113 epoch58=841/3742;
+SR run1793552465 epoch22=2873/6486. All trainers/keepers/retainers live,
+recent losses finite,no errors,original scratch configs unchanged.
+No new full validation since NR57 and SR21. Reader experiment code/docs
+and NR57 receipt are pushed through commits55424c0,9ea748a,fd274c2.
+
 ## Current Override: 2026-11-04 04:03 UTC
 
 NR3D run1793553113 epoch57 full7899 validation=4090/3305 hits,

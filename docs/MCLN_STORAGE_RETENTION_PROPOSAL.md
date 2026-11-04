@@ -1,5 +1,15 @@
 # Current Checkpoint Storage Proposal
 
+## Update: 2026-11-04 12:13 UTC
+
+Scan Span-only control and treatment both completed full validation and
+their preserved epoch1 checkpoints passed independent CPU audits. The
+pipeline completed normally; no further cleanup was performed. Keep both
+pilot checkpoints as distinct experimental evidence and preserve immutable
+B2 as global best/input. NR best64/latest65 and SR best15/latest24 were
+also audited by the existing scoped collectors. Existing retention
+watchers remain the only authority; no watcher was restarted.
+
 ## Update: 2026-11-04 10:51 UTC
 
 NR64 is new best/latest4190/3394 over7899. CPU own64/1134 tensors/

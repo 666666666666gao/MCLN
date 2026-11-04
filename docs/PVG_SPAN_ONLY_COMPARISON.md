@@ -1,5 +1,43 @@
 # Fixed Upstream Span Training Comparison
 
+## Completed Matched Pilot: 2026-11-04 12:13 UTC
+
+The registered pipeline exited0 after one full augmented training epoch
+and full9508 validation in both conditions. On the exact matched protocol,
+control weight0 scored5470/4568 and Span auxiliary weight0.1 scored
+5483/4608 hits (Acc@0.25/0.50=57.667228%/48.465924%). Treatment is
+therefore+13/+40 hits versus control, but versus immutable B2 5483/4656
+it is0/-48. This exploratory single-seed, single-epoch result does not
+improve the global best under the Scan Acc@0.50-first selection policy,
+does not meet either target, and is not evidence of robust causal benefit
+or a core innovation claim.
+
+Both own CPU checkpoints independently passed epoch1,1168-model-tensor,
+nonempty optimizer/scheduler and SHA audits. Control SHA is
+`f7082ff3b1fd16572eed9b9dc13433321e2b2ce79951e8683519ac4bb3ce755d`;
+treatment SHA is
+`6acbcf58351b9ddae8499a6e65392e52c73647e537b0f50a02f5aff4aed54be9`.
+The final frozen-state receipts verify all1154 non-Span tensors equal the
+B2 initialization and the14 Span tensors changed in each condition.
+Treatment's own first two updates were finite and changed14/14 Span
+tensors with finite nonzero gradients/deltas; frozen parameters/buffers
+were unchanged. Training losses remained finite. Large finite Eval losses
+are recorded separately and were not treated as training divergence.
+
+Interpretation: isolating existing Span from upstream updates improved
+both thresholds over its matched weight0 control, especially Acc@0.50,
+but the treatment only matched B2 at Acc@0.25 and remained48 hits below
+B2 at Acc@0.50. The registered experiment supports continuing diagnosis
+of gate supervision/Span learnability, not promoting weight0.1 as a
+general improvement. Preserve B2 as Scan best and this treatment only as
+its own exploratory checkpoint. Raw results and independent CPU audit
+are archived in `docs/results/mcln_pvground_20261101/`.
+
+At12:13UTC NR latest65=4095/3254, best64=4190/3394; SR latest24=
+11421/9200, best15=11743/9434. Both current trainers remained live and
+their best/latest CPU checkpoint audits passed. Original scratch recipes
+and full budgets remain unchanged.
+
 ## Follow-Up: 2026-11-04 11:34 UTC
 
 Treatment3419/6081,controller265532/launcher268814/GPU268817 live.

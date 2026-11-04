@@ -1,5 +1,35 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 12:13 UTC
+
+Canonical user handoff synchronized at12:13UTC:
+`C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`.
+
+Span-only ScanRefer matched pilot completed both full9508 validations and
+exited0. Control weight0=5470/4568; treatment weight0.1=5483/4608
+(57.667228%/48.465924%),+13/+40 hits versus matched control. Versus
+immutable B2=5483/4656 treatment is0/-48; B2 remains global best under
+Acc@0.50-first selection. This single-seed/single-epoch result is
+exploratory, not a target achievement or robust causal/core-innovation
+claim. CPU audits verified both own epoch1,1168 tensors,nonempty
+optimizer/scheduler and SHA; all1154 frozen non-Span tensors equal B2 and
+14 Span tensors changed. Treatment SHA
+6acbcf58351b9ddae8499a6e65392e52c73647e537b0f50a02f5aff4aed54be9;
+control SHA f7082ff3b1fd16572eed9b9dc13433321e2b2ce79951e8683519ac4bb3ce755d.
+No cleanup or promotion; preserve B2 and both pilot checkpoints.
+
+Latest full current-run metrics at12:13UTC:
+NR3D best64=4190/3394,latest65=4095/3254 over7899; latest SHA
+b85364f8c13f160f3333d708cafc1c6e0cc17fd03954f70d8b6df0f821dc084b.
+SR3D best15=11743/9434,latest24=11421/9200 over17726; latest SHA
+391fbb769d7a0cd352faa0876dd89837fece27046e9e6a16f9213beb17a8da6b.
+Both original scratch trainers live; configs and full budgets unchanged.
+Targets still unmet:Scan best222/289 hits short of5705/4945;NR best534
+hits short of4724 Acc@0.25;SR best559 hits short of12302 Acc@0.25.
+Use same-checkpoint last semantic Top1 only;never combine thresholds from
+different epochs. Full-history receipts and updated tables are archived
+in docs/results/mcln_pvground_20261101/.
+
 ## Current Override: 2026-11-04 11:35 UTC
 
 Remote receipts11:34:40-47UTC:Scan treatment3419/6081,controller265532/

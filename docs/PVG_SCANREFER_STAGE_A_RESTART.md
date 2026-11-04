@@ -1,5 +1,24 @@
 # ScanRefer Stage A Restart
 
+## Current Override: 2026-11-04 12:13 UTC
+
+The registered Span-only pipeline completed both full9508 conditions and
+exited0. Matched control weight0=5470/4568; treatment weight0.1=5483/4608
+(57.667228%/48.465924%), a +13/+40-hit change versus control. Against
+immutable B2=5483/4656, treatment is0/-48 hits; B2 remains global best
+under Scan Acc@0.50-first selection. CPU own-epoch1/1168 tensor/
+nonempty optimizer/scheduler/SHA audits passed for both conditions.
+All1154 frozen non-Span tensors equal B2;14 Span tensors changed.
+Treatment is single-seed/single-epoch exploratory evidence only, neither
+a target achievement nor robust causal/core-innovation claim. SHA and raw
+receipts are in `PVG_SPAN_ONLY_COMPARISON.md` and results archive.
+
+NR current best64=4190/3394, latest65=4095/3254 over7899;
+SR best15=11743/9434, latest24=11421/9200 over17726. Exact current-run
+CPU checkpoint audits passed; trainers remained live. Original NR/SR
+scratch configs and complete budgets remain unchanged. All three targets
+remain unmet.
+
 ## Current Override: 2026-11-04 11:35 UTC
 
 Treatment3419/6081 at11:34:40UTC,controller/launcher/GPU live,34 parsed

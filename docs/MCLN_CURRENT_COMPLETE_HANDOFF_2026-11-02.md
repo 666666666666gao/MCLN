@@ -1,5 +1,37 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 02:00 UTC
+
+At01:57UTC NR3D run1793553113 completed full7899 validation for epoch55:
+4108/3255 hits, Acc@0.25/0.5=52.006583%/41.207748%. Best remains
+epoch49=4123/3325; latest55 is -15/-70 hits versus best. The target4724
+Acc@0.25 hits is616 above latest and601 above best; the target is unmet.
+CPU collector verified best49/latest55 own epochs,1134 model tensors,
+nonempty optimizer/scheduler, preserved paths and SHA. Latest55 SHA:
+721e834de0e1cd7605e66e06fd5a68fe44cc54926b0b91299fc595df2159873d.
+Best49 SHA remains
+0987ce9208dca84686a45a7d80bad4f93f126f34be9c8303899a1b6bf68ed66b.
+Retention applied at01:57:07UTC, kept49/55 and removed only preserved54;
+epoch54's metric row remains with its weight marked removed. Full-history
+receipt is `docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T0156.json`.
+At01:59UTC trainer96960 was live in epoch56 at277/3742 on the unchanged
+batch12/accum4/LR1e-4/backbone1e-3/max240/decay150 null-init recipe;
+innovations remain disabled.
+
+At01:58UTC SR3D run1793552465 remained live with its log advancing and
+the original batch12/accum2/LR1e-4/backbone1e-3/max140/decay30,40
+null-init recipe unchanged. No new complete validation was present.
+Latest remains epoch20=11445/9060; best15=11743/9434 over17726.
+Both datasets remain below their Acc@0.25 targets; no recipe or retention
+policy changed. SR full-history receipt:
+`docs/results/mcln_pvground_20261101/sr3d-current-full-history-20261104T0156.json`.
+
+ScanRefer remains idle. Its B2 full-set bypass and one-epoch Span
+supervision pilot are already complete; the pilot's +7/+34 hits over its
+matched control is only +1/-2 versus strong B2, so it is exploratory, not
+a robust gain. Do not restart Scan without explicit authorization.
+No local Windows/WSL model tests, imports, forward, evaluation or training.
+
 ## Current Override: 2026-11-04 01:29 UTC
 
 At01:28UTC NR3D run1793553113 trainer96960/keeper135075/retention156800

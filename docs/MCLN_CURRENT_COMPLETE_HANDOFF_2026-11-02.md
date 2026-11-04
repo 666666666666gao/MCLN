@@ -1,5 +1,29 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 01:12 UTC
+
+At01:11UTC NR3D run1793553113 remained live with trainer96960,
+keeper135075 and retention156800. It advanced to epoch55,1139/3742
+batches; its unchanged scratch/null-init recipe had69 recent finite
+logged loss averages (latest9.9954),no error lines and GPU22837MiB/77%.
+Latest complete remains epoch54=4004/3233;best49=4123/3325 over7899.
+The current result is720 Acc@0.25 hits below target4724;best is601 short.
+Epoch55 full validation estimate is01:55-02:05UTC.
+
+At01:11UTC SR3D run1793552465 remained live with trainer92354,
+keeper129032 and retention148725. It advanced to epoch21,1914/6486
+batches;the unchanged scratch/null-init recipe had64 recent finite losses
+(latest9.6869),no error lines and GPU22924MiB/52%. Latest complete
+epoch20=11445/9060;best15=11743/9434 over17726. Latest is857 Acc@0.25
+hits below target12302;best is559 short. Epoch21 full validation estimate
+is03:00-03:15UTC. Retention watchers remain the only checkpoint cleanup
+authority.
+
+ScanRefer remains idle;the completed B2 bypass and matched one-epoch Span
+supervision pilot are exploratory,not a robust gain. Do not restart Scan
+training without explicit user authorization. No new complete validation,
+config/source change or local ML operation occurred in this status check.
+
 ## Current Override: 2026-11-04 00:00 UTC
 
 NR3D run1793553113 completed epoch53 full7899 validation:

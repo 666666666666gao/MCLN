@@ -1814,6 +1814,22 @@ User's canonical desktop document:
 `C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`.
 Keep its historical sections; the current dated section takes precedence.
 Publish code and this document to https://github.com/666666666666gao/MCLN .
+## Current Override: 2026-11-04 04:03 UTC
+
+NR3D run1793553113 epoch57 full7899 validation=4090/3305 hits,
+51.778706%/41.840739%. Best49=4123/3325; latest57 is -33/-20 and634
+Acc025 hits below target. CPU audit passed best49/latest57 own epochs,
+1134 tensors,nonempty optimizer/scheduler,SHA and preserved paths.
+Epoch57 SHA da6ab7a97bb4cd63d23479e50701251852526cf27695c2bb9d48a378ba3555ff.
+The first collector overlapped checkpoint promotion and asserted;retry
+after epoch58 began passed,with no training/config changes. Receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T0401.json`.
+
+Reader competitor run1793763075 remains active;at03:57 it was1487/6081
+with verified finite first update. NR58=334/3742 at04:03;SR22=2289/6486
+at03:57. Original scratch recipes unchanged. Full Reader validation and
+checkpoint audit pending.
+
 ## Current Override: 2026-11-04 03:43 UTC
 
 Current-only remote check03:42:35UTC: Scan Reader run1793763075 remains

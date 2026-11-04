@@ -1,5 +1,15 @@
 # Current Checkpoint Storage Proposal
 
+## Current Override: 2026-11-04 04:03 UTC
+
+NR3D watcher/collector verified best49 and latest57 after epoch57 full
+validation; both own-epoch CPU checkpoints have1134 tensors and nonempty
+optimizer/scheduler. Epoch57 SHA
+da6ab7a97bb4cd63d23479e50701251852526cf27695c2bb9d48a378ba3555ff.
+The initial collector coincided with checkpoint promotion and asserted;
+retry after transition passed. No manual deletion or watcher restart.
+See `nr3d-current-full-history-20261104T0401.json`.
+
 ## Current Override: 2026-11-04 03:10 UTC
 
 SR3D watcher applied at03:08:49UTC, retaining best15/latest21 and removing

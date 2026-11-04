@@ -1,5 +1,26 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 01:29 UTC
+
+At01:28UTC NR3D run1793553113 trainer96960/keeper135075/retention156800
+remained live;epoch55=2350/3742. Original batch12/accum4/null-init
+recipe unchanged;69 recent losses finite,latest three9.9954/9.9468/9.9411,
+no errors. Latest full54=4004/3233,best49=4123/3325;next full validation
+estimated01:55-02:00UTC.
+
+SR3D run1793552465 trainer92354/keeper129032/retention148725 remained
+live;epoch21=2716/6486. Original batch12/accum2/null-init recipe
+unchanged;64 recent losses finite,latest three9.6869/9.6754/9.6662,
+no errors. Latest full20=11445/9060,best15=11743/9434;next validation
+estimated03:00-03:15UTC.
+
+The source-reference update is published with commits ebfccfe and73cac54.
+DETR/3DETR inform only explicit assignment eligibility/unmatched-query
+handling;no loss or matcher was copied. The MCLN auxiliary matcher is
+disconnected in the audited path,and verified human anchor IDs were not
+present in the inspected ScanRefer training records. This is a design
+constraint,not a demonstrated root cause. No training code/config changed.
+
 ## Current Override: 2026-11-04 01:22 UTC
 
 At01:21UTC NR3D run1793553113 was live with trainer/keeper/retention

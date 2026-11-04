@@ -160,6 +160,46 @@ Do not import segmented GT candidate context or GT anchor identities into
 our inference. Any new annotations,language-model labels or cross-dataset
 training data would require explicit protocol disclosure.
 
+## Assignment-Aligned Auxiliary Loss: External Pattern
+
+Two open-source detection implementations provide a narrow,transferable
+training invariant:
+
+- DETR computes a Hungarian assignment for final outputs and recomputes
+  matching for each auxiliary decoder output before applying its losses.
+  Its label target initializes unmatched queries as no-object.
+  Source: `facebookresearch/detr`, `models/detr.py`, `SetCriterion.forward`
+  and `loss_labels`:
+  https://github.com/facebookresearch/detr/blob/main/models/detr.py
+- 3DETR exposes both matched assignments and a per-proposal matched mask.
+  Its center/size/GIoU regression losses zero unmatched proposals; auxiliary
+  outputs pass through the same single-output criterion and matcher.
+  Source: `facebookresearch/3detr`, `criterion.py`, `Matcher.forward`,
+  `loss_center`, `loss_size`, and `SetCriterion.forward`:
+  https://github.com/facebookresearch/3detr/blob/main/criterion.py
+
+This was checked against the public source on2026-11-04; URLs use each
+repository's `main` branch and are not immutable commit pins.
+
+The applicable principle is explicit assignment and eligibility dataflow:
+every added object-level loss must state which predicted queries are matched,
+which unmatched queries receive a negative/no-object target,and where its
+gradients flow. DETR's class/box costs and 3DETR's objectness/center/GIoU
+matcher are not a direct MCLN recipe. MCLN's target is phrase-conditioned,
+its BBF scoring path has distinct semantics,and its existing unmatched-query
+supervision must remain consistent.
+
+This source pattern is consistent with the completed Span pilot's use of
+real Hungarian-matched objects and a detached per-axis geometric proxy.
+It does not establish an accuracy improvement: the one-epoch treatment
+gained7/34 hits over its matched control but was+1/-2 versus strong B2.
+For Reader, assignment plumbing alone is insufficient because verified
+anchor-object identities are absent from the audited ScanRefer train JSON,
+and the current auxiliary matcher is disconnected. Before implementing an
+anchor-conditioned objective, first measure train-only heuristic-label
+coverage/quality and verify a predicted-query mapping. No training-source
+change or new run is authorized by this reference review.
+
 Specify positive/negative semantics and gradient destinations before
 adding a distractor or verification objective. Native unmatched-query
 "not mentioned" supervision must remain coherent. Any score intervention

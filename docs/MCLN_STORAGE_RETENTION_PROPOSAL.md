@@ -1,5 +1,14 @@
 # Current Checkpoint Storage Proposal
 
+## Current Override: 2026-11-04 03:10 UTC
+
+SR3D watcher applied at03:08:49UTC, retaining best15/latest21 and removing
+only preserved20. The CPU collector verified both own epochs,1134 tensors,
+nonempty optimizer/scheduler and SHA; epoch21 SHA is
+1114d6f8d0e9a087fd2231692c54b194c0470736da170558cae9cb9407cc22c1.
+Historical metrics and receipts remain; no manual deletion or extra watcher.
+See `sr3d-current-full-history-20261104T0309.json`.
+
 ## Current Override: 2026-11-04 03:00 UTC
 
 NR3D watcher applied at02:57:18UTC: best49 and latest56 were CPU audited

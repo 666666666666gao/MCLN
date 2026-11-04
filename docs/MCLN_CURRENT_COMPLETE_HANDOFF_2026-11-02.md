@@ -1,5 +1,17 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 03:10 UTC
+
+SR3D run1793552465 epoch21 completed full17726 semantic Top1 validation:
+11579/9206 hits (65.322126%/51.935011%). Best remains15=11743/9434;
+latest21 is -164/-228 hits versus best. CPU audit verified own epochs,
+1134 model tensors,nonempty optimizer/scheduler and SHA for best15/latest21.
+Epoch21 SHA 1114d6f8d0e9a087fd2231692c54b194c0470736da170558cae9cb9407cc22c1.
+The existing watcher kept15/21 and removed preserved20 at03:08:49UTC.
+Trainer92354 is live in epoch22, unchanged scratch recipe; NR trainer96960
+is live in epoch57. Scan remains idle. Receipt:
+`docs/results/mcln_pvground_20261101/sr3d-current-full-history-20261104T0309.json`.
+
 ## Current Override: 2026-11-04 03:00 UTC
 
 NR3D run1793553113 epoch56 completed full7899 last semantic Top1 validation:

@@ -1,5 +1,16 @@
 # Current Checkpoint Storage Proposal
 
+## Current Override: 2026-11-04 00:00 UTC
+
+NR3D latest53=4107/3258 and best49=4123/3325 over7899. Full CPU audit
+and preservation sync are confirmed in the23:58 receipt; epoch53 SHA
+e8d6d69f9af514f3f5d51973c64642d3f7a992eb362723527d4eda60a5dba991.
+Existing watcher retained best49/latest53; no manual retention action.
+SR3D remains best15/latest19, with no new full validation or retention
+event as of23:59. Its watcher remains the only cleanup authority.
+Receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261103T2358.json`.
+
 ## Current Override: 2026-11-03 23:09 UTC
 
 NR3D best49/latest52 remain verified by the22:56CPU receipt; no newer

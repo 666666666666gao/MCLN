@@ -2,7 +2,8 @@
 
 ## Current Override: 2026-11-04 00:00 UTC
 
-At00:37UTC SR3D epoch20 completed full17726 semantic Top1 validation:
+At00:35UTC the collector confirmed SR3D epoch20 completed full17726
+semantic Top1 validation:
 11445/9060 hits (Acc@0.25/0.5=64.566174%/51.111362%). Best remains
 epoch15=11743/9434; latest20 is below best by298/374hits and is857
 Acc@0.25 hits short of target12302. Independent collector verified the

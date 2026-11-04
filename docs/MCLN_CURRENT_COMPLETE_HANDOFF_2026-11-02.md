@@ -1,6 +1,38 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 05:59 UTC
+## Current Override: 2026-11-04 06:30 UTC
+
+### Latest complete metrics
+
+No new complete validation is reflected in the active epoch progress. This
+health check did not read checkpoint or retention manifests.
+The latest complete metrics remain ScanRefer Reader epoch1=5471/4608 of
+9508, NR3D epoch59=4161/3331 of7899, and SR3D epoch22=11352/9308 of17726.
+Best checkpoints remain ScanRefer B2=5483/4656, NR3D epoch59=4161/3331,
+and SR3D epoch15=11743/9434. These are same-checkpoint last semantic
+alignment Top1 hits; do not combine thresholds across checkpoints.
+
+At06:29:52UTC the registered NR3D run1793553113 trainer96960, keeper135075,
+and retention watcher156800 were live. Epoch60 was at2467/3742, with about
+17 minutes of training remaining at the observed rate. Its original null-init
+scratch recipe was unchanged; 69 recent logged losses were finite, latest
+9.816/9.8351/9.7509, with no error lines.
+
+At06:30:15UTC the registered SR3D run1793552465 trainer92354, keeper129032,
+and retention watcher148725 were live. Epoch23 was at2009/6486; the
+progress display estimated about99 minutes of training remaining. Its
+original null-init scratch recipe was unchanged; 65 recent logged losses
+were finite, latest9.6054/9.5972/9.5917, with no error lines.
+
+Both runs retain their configured full budgets. No checkpoint change is
+claimed; existing retention watchers remain the only cleanup authority.
+No Scan trainer is active. All three target metrics remain unmet. Check NR
+near its next full-validation window and SR near epoch23 completion; do not
+poll in a short loop or infer a result from this training-progress snapshot.
+Read-only checks used the approved remote wrapper; no local model/test
+operation was run.
+
+## Current Override: 2026-11-04 06:12 UTC
 
 ### Latest complete metrics
 
@@ -40,6 +72,15 @@ and950 Acc@0.25 hits short of target12302. The existing watcher is the
 only retention authority. At05:56UTC trainer92354 was live at478/6486 in
 epoch23, with original null-init recipe unchanged, finite recent losses
 and no recent errors.
+
+At06:12UTC current-only checks confirmed NR epoch60=1205/3742 and SR
+epoch23=1196/6486. Both trainers, keepers and retention watchers were
+live; original null-init scratch configs unchanged, recent logged losses
+finite and no error lines. NR had one finite24.32 value followed by values
+near9.8; this isolated point is not enough to diagnose instability or
+change the recipe. No new full validation, checkpoint promotion or
+retention event is claimed from this progress snapshot. Recheck near the
+actual validation windows; do not manually manage checkpoints.
 
 The three targets remain unmet. Do not mix thresholds across checkpoints.
 NR/SR continue their original full scratch budgets; no Scan trainer is

@@ -47,7 +47,20 @@ for threshold, suffix in ((0.25, "025"), (0.5, "050")):
                 and not any(iou > threshold for iou in row["top10_ious"]) for row in failed),
             "failed_checkpoint_valid_candidate_in_top10": sum(
                 any(iou > threshold for iou in row["top10_ious"]) for row in failed),
+            "failed_selected_native_box_valid": sum(
+                row["native_iou"] > threshold for row in failed),
+            "failed_selected_reference_box_valid": sum(
+                row["reference_iou"] > threshold for row in failed),
+            "failed_selected_native_or_reference_valid": sum(
+                row["native_iou"] > threshold or row["reference_iou"] > threshold
+                for row in failed),
         }
+        categories = (
+            "failed_checkpoint_no_valid_candidate",
+            "failed_checkpoint_valid_candidate_outside_top10",
+            "failed_checkpoint_valid_candidate_in_top10",
+        )
+        assert sum(transitions[label][key] for key in categories) == len(pairs)
     transitions["net_hits"] = transitions["gained"]["samples"] - transitions["lost"]["samples"]
     assert transitions["net_hits"] == treatment[f"hits{suffix}"] - baseline[f"hits{suffix}"]
     results["transitions"][suffix] = transitions

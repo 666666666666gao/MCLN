@@ -1,6 +1,33 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 09:08 UTC
+## Current Override: 2026-11-04 09:24 UTC
+
+Reader sample audit completed09:20:26UTC,exit0,full9508 forward/semantic
+records,evaluator agreement and exact ordered identity/points/GT pairing
+to B2 passed. Reeval5471/4609,training validation5471/4608 kept separate.
+Same own epoch1/1169-tensor checkpoint SHA67cef44cd6ec253806eced03b1ca79f115d13d4e681c9da69730ca767b0fda35.
+No new trained epoch or determinism claim. Diagnostic controller/GPU
+exited;do not relaunch.
+
+050 gains105/losses152 net-47;lost cases3 no valid candidate,21 valid
+outsideTop10,128 valid insideTop10. Of152 losses,52 selected reference
+boxes valid,11 native valid,union62. Overall oracle8252vsB28260,Top10
+5917vs6021. Prioritize valid-candidate selection alongside fusion
+reliability;not isolated module causality or additive recoverable gains.
+025 gained100/lost112 net-12. Best B2 unchanged5483/4656;matched trained
+control5477/4620 separate. No new training or module-source change.
+See PVG_READER_COMPETITOR_EXPERIMENT.md and
+PVG_READER_QUALITY_ALIGNMENT_REFERENCE.md for detailed results,pinned
+TOOD/VarifocalNet review and MCLN matcher/BBF constraints. Duplicate
+neighbor rate is not measured. Raw summary/log and separate evaluation
+event CSV archived;training all-epoch tables unchanged.
+
+NR63/SR24 trainers/keepers/retainers last actually live09:08UTC;original
+null-init configs and240/140budgets unchanged. Latest complete/best below
+unchanged. Two-hour automation updated,quiet preference preserved.
+No local model/test operation;all remote work through approved wrapper.
+
+## Previous Override: 2026-11-04 09:08 UTC
 
 Read-only Reader trial full9508 audit launched09:08:04UTC,screen
 pvg_scanrefer_reader_result_audit,controller263822;observed live loading

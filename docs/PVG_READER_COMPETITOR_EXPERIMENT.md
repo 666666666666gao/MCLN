@@ -62,6 +62,44 @@ module result.
 
 ## Registered Paired Diagnosis: 2026-11-04 09:08 UTC
 
+### Completed Diagnosis: 2026-11-04 09:24 UTC
+
+Full evaluation completed09:20:26UTC,exit0. The completion footer verifies
+9508 forward and semantic records and agreement with the real evaluator:
+5471/4609 (57.541018%/48.474968%). The checkpoint SHA is unchanged.
+Training-time validation remains5471/4608;preserve this one-hit difference
+as a separate evaluation event,not an extra training epoch or evidence of
+bitwise determinism.
+
+The reducer verified exact sample order,identity,point hash,and GT against
+immutable B2 on all9508 examples. Acc025 gained100/lost112,net-12.
+Acc050 gained105/lost152,net-47. Of152 strict050 losses,24 are unique and
+128 multiple-instance examples;the disjoint failure categories are3 with
+no valid predicted candidate,21 with a valid candidate outside Top10,and
+128 with a valid candidate inside Top10 but not selected. The corresponding
+025 lost categories are1/13/98. These categories describe the failed
+checkpoint's final boxes,not object identities or isolated causes.
+
+Across all examples,strict050 oracle coverage is8252 versus B28260,
+and Top10 coverage is5917 versus6021. At each model's own selected query,
+native/reference hits are4193/4713 versus B24262/4710. Among152 losses,
+52 retain a valid selected reference box and11 a valid selected native
+box;62 retain at least one. Thus ranking and fusion localization both
+remain relevant;these overlapping diagnostics must not be added together
+or interpreted as independently recoverable gains.
+
+This trained-checkpoint comparison supports prioritizing valid-candidate
+selection alongside reliable geometry fusion over adding candidate
+coverage alone. It does not prove nearest-four duplicates caused the
+regression or isolate the competitor residual from continued training.
+The matched trained control remains5477/4620,a separate comparator.
+Do not promote this Reader variant or replace B2. Follow-up source review:
+PVG_READER_QUALITY_ALIGNMENT_REFERENCE.md (pinned TOOD/VarifocalNet).
+
+Raw evidence:scanrefer-reader-result-paired-summary-20261104.json and
+scanrefer-reader-result-full-validation-20261104.log. No new training,
+module-source change,local model execution,or checkpoint deletion.
+
 The completed trial's aggregate regression does not identify whether lost
 examples lack a valid predicted box or have a valid box ranked below Top1.
 The existing B2 sample audit cannot answer that question for the newly

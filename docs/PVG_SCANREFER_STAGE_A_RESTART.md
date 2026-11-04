@@ -4,8 +4,9 @@
 
 Treatment actual11:09:23UTC step1/2 passed:finite loss6.557239/7.686158,
 Span14/14 changed,finite gradients/deltas,frozen state unchanged.
-Training520/6081,~1.89batch/s,recent train losses finite;full train ETA
-~49min then9508 validation. See current progress receipt;no duplicate run.
+At11:14:29UTC it reached1100/6081,train-only11 losses finite,last
+7.0651/7.0369/7.0132,controller/launcher/GPU live. Roughly44min train
+then9508 validation. See progress receipts;no duplicate run.
 
 Span-only control full9508=5470/4568,completed10:58:21UTC. CPU own
 checkpoint/optimizer/scheduler/SHA and1154 frozen tensors equal B2 passed.

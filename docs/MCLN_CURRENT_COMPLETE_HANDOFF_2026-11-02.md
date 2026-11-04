@@ -2,6 +2,11 @@
 
 ## Current Override: 2026-11-04 11:06 UTC
 
+11:14:29UTC treatment reached1100/6081;controller265532/launcher268814/
+GPU268817 live,5.5GiB GPU memory.11parsed train-only losses all finite,
+last7.0651/7.0369/7.0132. Rough remaining train44min then full9508
+validation. No result yet.
+
 11:09:23UTC treatment real update gate passed:step1/2 finite losses
 6.557239/7.686158,Span14/14 updated with finite nonzero gradient/delta,
 frozen parameters/buffers unchanged. At520/6081,~1.89batch/s,5 recent

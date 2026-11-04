@@ -11,6 +11,11 @@ then complete9508validation. No score exists yet;control and B2 comparisons
 remain pending until its own checkpoint and full-validation receipt.
 Raw receipt:scanrefer-span-only-progress-20261104T1109.json.
 
+Follow-up11:14:29UTC reached1100/6081 with controller265532/launcher268814/
+GPU268817 live. Train-only11 parsed losses all finite,last7.0651/7.0369/
+7.0132;estimated~44min training remains then9508 validation. No score yet.
+Raw receipt:scanrefer-span-only-progress-20261104T1114.json.
+
 ## Full Control Result: 2026-11-04 11:01 UTC
 
 Control completed10:58:21UTC,full9508=5470/4568

@@ -1,5 +1,18 @@
 # Fixed Upstream Span Training Comparison
 
+## NR3D Follow-Up: 2026-11-04 12:51 UTC
+
+While the fixed-upstream Scan Span pilot remains completed and unchanged,
+the original NR3D scratch run advanced to epoch66:full7899=4255/3435
+(53.867578%/43.486517%),new Acc@0.25 best,up65/41 hits versus64 and469
+hits short of the4724 target. Own CPU epoch66/1134 tensors/nonempty
+optimizer/scheduler/SHA passed;SHA
+ca645bf8f191a0609b603b77e829b61e492b6459805125ae012c164b783fcb5b.
+Existing retention kept66 and removed preserved64/65;full historical rows
+remain. Epoch67 training started. A recent finite24.1624 loss among
+finite values with no error lines is not sufficient to diagnose a fault.
+No NR recipe or architecture change follows.
+
 ## Completed Matched Pilot: 2026-11-04 12:13 UTC
 
 The registered pipeline exited0 after one full augmented training epoch

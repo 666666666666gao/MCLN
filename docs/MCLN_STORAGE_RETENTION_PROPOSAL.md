@@ -1,5 +1,16 @@
 # Current Checkpoint Storage Proposal
 
+## Update: 2026-11-04 12:51 UTC
+
+NR epoch66 full7899=4255/3435 became current best/latest. CPU own-epoch66,
+1134 tensors,nonempty optimizer/scheduler and SHA
+ca645bf8f191a0609b603b77e829b61e492b6459805125ae012c164b783fcb5b
+passed. Existing watcher applied12:47:01UTC,kept66 and removed only
+preserved64/65 under the authorized best/latest policy. Historical metrics
+and CPU audit remain in the full-history receipt; removed paths must not
+be presented as existing checkpoints. Trainer96960 had begun epoch67.
+No manual cleanup or watcher restart.
+
 ## Update: 2026-11-04 12:13 UTC
 
 Scan Span-only control and treatment both completed full validation and

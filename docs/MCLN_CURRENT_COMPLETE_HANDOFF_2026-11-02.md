@@ -1,5 +1,27 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 12:51 UTC
+
+NR3D current run1793553113 completed epoch66 full7899 validation:
+4255/3435 hits (Acc@0.25/0.50=53.867578%/43.486517%),new best/latest.
+Versus epoch64 this is+65/+41 hits; target4724 Acc@0.25 remains469 hits
+away. Current epoch66 checkpoint SHA
+ca645bf8f191a0609b603b77e829b61e492b6459805125ae012c164b783fcb5b.
+CPU audit verified own epoch66,1134 model tensors,nonempty optimizer/
+scheduler, and retention manifest selection. Existing watcher at12:47UTC
+kept66 and removed only old preserved64/65; all full-epoch metrics remain.
+Trainer96960 is live in epoch67 (78/3742 at12:47:24); original scratch
+recipe and240-epoch budget unchanged. One finite loss24.1624 appeared in
+the recent window; surrounding losses finite and no error lines. This
+single finite value is not evidence of instability or a root cause.
+
+Scan remains best B2=5483/4656; completed Span-only weight0.1 treatment
+is5483/4608 (+13/+40 versus matched control5470/4568, but0/-48 versus
+B2), exploratory single-seed/epoch only. SR latest full remains24=
+11421/9200,best15=11743/9434; original run/config unchanged. No dataset
+target has been met. Exact new NR receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T1250.json`.
+
 ## Current Override: 2026-11-04 12:13 UTC
 
 Canonical user handoff synchronized at12:13UTC:

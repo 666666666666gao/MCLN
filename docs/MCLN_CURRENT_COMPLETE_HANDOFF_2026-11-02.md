@@ -1,6 +1,20 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 10:19 UTC
+## Current Override: 2026-11-04 10:27 UTC
+
+New evidence changes the next-method scope:continuous-gate oracle on
+archived B2 selected queries reaches5633/5158 over9508. Even GT-selected
+gates leave Acc025 72hits below5705target;gate-only tuning of this fixed query/
+native/reference family cannot reach60%. This is not an achieved score,
+global MCLN bound,or proof that one gate setting attains both thresholds.
+Reader archive oracle5629/5150. Breakpoint proof plus remote numerical
+witnesses64random cases x1331grid points passed;no oracle is within1e-9
+of either threshold. See docs/PVG_SPAN_FIXED_QUERY_CAPACITY.md and raw
+scanrefer-span-continuous-oracle-summary-20261104.json. No model imports
+or new forward. Finish registered Span matched trial for learnability,
+then improve selection or upstream geometry from actual remaining errors;
+do not assume gate supervision alone can deliver joint60/52. No recipe
+or original NR/SR budget changed.
 
 Latest actual Scan check10:19:32UTC:controller265532/GPU266278 live,
 control2769/6081. Scoped collector now reports recent periodic losses

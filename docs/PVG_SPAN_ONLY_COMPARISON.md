@@ -1,5 +1,15 @@
 # Fixed Upstream Span Training Comparison
 
+## Capacity Update: 2026-11-04 10:27 UTC
+
+The new continuous-gate offline audit in PVG_SPAN_FIXED_QUERY_CAPACITY.md
+finds B2 fixed selected-query optimum5633/5158 over9508. Its0255633 is
+72hits below the5705target,even with per-sample GT gates. This is a
+fixed archived box-family limitation,not a model result or global MCLN
+ceiling. Continue the matched experiment to measure learnability;the
+joint60/52goal also requires selected-candidate or upstream box improvement.
+No current recipe changed;all GT diagnostics remain separate from scores.
+
 ## Evidence And Hypothesis
 
 2026-11-04:the Reader re-evaluation's152 lost strict050 examples include

@@ -1,0 +1,53 @@
+{
+  "observed_utc": "2026-11-04T10:27:49.746445+00:00",
+  "scope": "GT-only continuous gate oracle for archived fixed selected queries. No model import, inference, training, or claimed attainable accuracy.",
+  "algorithm": "Evaluate Cartesian products of endpoint/GT-face crossing gates. Within each cell, IoU is linear-fractional in each coordinate with positive denominator; moving each coordinate to an endpoint cannot decrease the optimum.",
+  "numerical_witness": {
+    "random_cases": 64,
+    "grid_points_each": 1331,
+    "largest_grid_excess": 2.0816681711721685e-17,
+    "constant_box_and_interior_exact_match_passed": true
+  },
+  "conditions": {
+    "b2": {
+      "samples": 9508,
+      "jsonl_sha256": "b09637f1ed5a34d1c3ee7c9e1597df0b33873e3258a07c9190ac5095e02cd5d3",
+      "thresholds": {
+        "025": {
+          "actual_hits": 5483,
+          "continuous_gate_oracle_hits": 5633,
+          "oracle_gains": 150,
+          "numerically_near_threshold_1e_minus9": 0,
+          "minimum_threshold_distance": 0.0005119092653640966
+        },
+        "050": {
+          "actual_hits": 4656,
+          "continuous_gate_oracle_hits": 5158,
+          "oracle_gains": 502,
+          "numerically_near_threshold_1e_minus9": 0,
+          "minimum_threshold_distance": 2.4958635911065397e-05
+        }
+      }
+    },
+    "reader": {
+      "samples": 9508,
+      "jsonl_sha256": "79e95a457b046d16db191757bcb996d6758b7722365cc9fa96d223ef284a54aa",
+      "thresholds": {
+        "025": {
+          "actual_hits": 5471,
+          "continuous_gate_oracle_hits": 5629,
+          "oracle_gains": 158,
+          "numerically_near_threshold_1e_minus9": 0,
+          "minimum_threshold_distance": 0.0011673662311404431
+        },
+        "050": {
+          "actual_hits": 4609,
+          "continuous_gate_oracle_hits": 5150,
+          "oracle_gains": 541,
+          "numerically_near_threshold_1e_minus9": 0,
+          "minimum_threshold_distance": 0.00017748229218972345
+        }
+      }
+    }
+  }
+}

@@ -39,6 +39,27 @@ one full augmented training epoch (48655 entries), and full9508 validation.
 The protocol-matched control and immutable B2 remain separate comparisons.
 This is a one-epoch exploratory test, not a final method claim.
 
+## Completed Result: 2026-11-04 05:10 UTC
+
+Run `1793763075` completed its one augmented training epoch and full
+ScanRefer validation. Same-checkpoint `last_semantic_alignment_top1` over
+9508 examples is 5471/4608 hits at IoU0.25/0.50
+(57.541018%/48.464451%). The run checkpoint's own CPU audit passed:
+epoch1, 1169 model tensors, nonempty optimizer and scheduler, CUDA not
+initialized, SHA256
+`67cef44cd6ec253806eced03b1ca79f115d13d4e681c9da69730ca767b0fda35`.
+The first optimizer update was finite (loss7.0552873611450195) and
+updated Reader11/11, Support10/10 and Span14/14 tensors.
+
+Against the protocol-matched control (5477/4620), this is -6/-12 hits.
+Against immutable B2 (5483/4656), it is -12/-48 hits. The trial therefore
+does not support an accuracy benefit from this candidate-relative Reader
+residual in the tested one-seed, one-epoch setup. It does not establish
+why individual examples changed or prove that the residual scale caused
+the regression; the observed learned `competitor_scale` is not causal
+evidence. Do not promote this checkpoint as a new best or claim a robust
+module result.
+
 ## Live Progress: 2026-11-04 04:46 UTC
 
 The registered run remains active at5118/6081 augmented training batches

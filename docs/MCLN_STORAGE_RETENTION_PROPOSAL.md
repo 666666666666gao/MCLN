@@ -1,5 +1,31 @@
 # Current Checkpoint Storage Proposal
 
+## Current Override: 2026-11-04 05:59 UTC
+
+NR3D run1793553113 epoch59 completed full7899 validation at4161/3331.
+CPU own-epoch audit verified1134 tensors,nonempty optimizer/scheduler and
+SHA256 `4d000014f205f23a03ce2d7102dc7e7813359a4a65c17e0e401bffc06ed2885f`;
+the keeper manifest selects59. The existing watcher remains sole owner
+of retention. At05:59UTC trainer96960 was live in epoch60 at279/3742.
+
+SR3D run1793552465 epoch22 completed full17726 validation at11352/9308.
+CPU audit verified own epoch22,1134 tensors,nonempty optimizer/scheduler
+and SHA256 `47d010804e89282fcb9779f2c91738d15e5fbe5be4e729e3c59af746d23996b9`.
+Best remains15/latest22. At05:56UTC trainer92354 was live in epoch23 at
+478/6486. No manual checkpoint deletion or watcher restart occurred.
+Receipts are the05:56 NR and05:51 SR current full-history JSON files.
+
+## Prior Override: 2026-11-04 05:27 UTC
+
+Scan Reader run1793763075 finished full9508 validation. Its own epoch1 CPU
+checkpoint audit passed with1169 model tensors, nonempty optimizer/scheduler
+and SHA256
+67cef44cd6ec253806eced03b1ca79f115d13d4e681c9da69730ca767b0fda35.
+The checkpoint is the sole result of a completed exploratory run; do not
+delete or promote it based only on its lower score. No Scan trainer is live.
+NR/SR retention remains controlled by their existing per-dataset watchers.
+Reader receipt is archived alongside the experiment note.
+
 ## Current Override: 2026-11-04 04:03 UTC
 
 NR3D watcher/collector verified best49 and latest57 after epoch57 full

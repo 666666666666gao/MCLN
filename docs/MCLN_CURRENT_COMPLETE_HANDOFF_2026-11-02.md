@@ -1,5 +1,57 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 05:59 UTC
+
+### Latest complete metrics
+
+All values are same-checkpoint `last_semantic_alignment_top1`; ScanRefer
+uses Acc@0.25/0.50, NR3D and SR3D also report those thresholds. Counts are
+hits over the complete validation split.
+
+| Dataset / run | Latest complete | Best by primary metric | Target |
+| --- | --- | --- | --- |
+| ScanRefer Reader `1793763075` | 5471/4608 of9508 (57.541018%/48.464451%), epoch1 | Stage B2: 5483/4656 (57.667228%/48.969289%), selected by Acc@0.50 | 5705/4945 hits |
+| NR3D `1793553113` | epoch59: 4161/3331 of7899 (52.677554%/42.169895%) | epoch59: 4161/3331, selected by Acc@0.25 | 4724 Acc@0.25 hits |
+| SR3D `1793552465` | epoch22: 11352/9308 of17726 (64.041521%/52.510437%) | epoch15: 11743/9434 (66.247320%/53.221257%), selected by Acc@0.25 | 12302 Acc@0.25 hits |
+
+Reader epoch1 full validation and own-checkpoint CPU audit completed at
+05:10UTC: 1169 tensors, own epoch1, nonempty optimizer/scheduler, SHA256
+`67cef44cd6ec253806eced03b1ca79f115d13d4e681c9da69730ca767b0fda35`.
+It is -6/-12 hits versus matched control5477/4620 and -12/-48 versus B2.
+The result does not support a benefit from this one-seed/one-epoch
+candidate-relative Reader residual and does not prove why. `competitor_scale`
+is not established as a cause. Run details and limitations are in
+`PVG_READER_COMPETITOR_EXPERIMENT.md`.
+
+NR epoch59 completed full7899 validation at05:49UTC with4161/3331 hits.
+CPU audit verified own epoch59,1134 tensors,nonempty optimizer/scheduler,
+SHA256 `4d000014f205f23a03ce2d7102dc7e7813359a4a65c17e0e401bffc06ed2885f`.
+The keeper manifest selected59; the existing retention watcher remains the
+sole cleanup authority. Best is563 Acc@0.25 hits short of target4724.
+At05:59UTC trainer96960 was live at279/3742 in epoch60; original null-init
+scratch config unchanged, recent losses finite and no recent errors.
+
+SR epoch22 completed full17726 validation at05:50UTC with11352/9308 hits
+(64.041521%/52.510437%). CPU audit verified own epoch22,1134 tensors,
+nonempty optimizer/scheduler,SHA256
+`47d010804e89282fcb9779f2c91738d15e5fbe5be4e729e3c59af746d23996b9`.
+Best remains epoch15=11743/9434; epoch22 is -391/-126 hits versus best
+and950 Acc@0.25 hits short of target12302. The existing watcher is the
+only retention authority. At05:56UTC trainer92354 was live at478/6486 in
+epoch23, with original null-init recipe unchanged, finite recent losses
+and no recent errors.
+
+The three targets remain unmet. Do not mix thresholds across checkpoints.
+NR/SR continue their original full scratch budgets; no Scan trainer is
+active and no additional Scan launch is authorized by this exploratory
+negative result. Full Reader result and one-row table are archived at
+`docs/results/mcln_pvground_20261101/scanrefer-reader-competitor-result-20261104.json`
+and `scanrefer-reader-competitor-20261104.csv`. NR59/SR22 receipts are
+`nr3d-current-full-history-20261104T0556.json` and
+`sr3d-current-full-history-20261104T0551.json`. The all-epoch table
+contains all three new complete rows. No local model tests or execution
+were performed.
+
 ## Current Override: 2026-11-04 05:02 UTC
 
 NR3D run1793553113 completed epoch58 full7899 same-checkpoint last

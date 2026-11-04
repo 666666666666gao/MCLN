@@ -1,5 +1,23 @@
 # ScanRefer Stage A Restart
 
+## Current Override: 2026-11-04 05:27 UTC
+
+Stage A, Stage B, fixed-B2 diagnostics, and the registered Span pilot are
+complete. The new isolated Reader competitor run `1793763075` also finished
+one full augmented epoch and all9508 validation examples. Its same-checkpoint
+last semantic alignment Top1 is5471/4608 hits (57.541018%/48.464451%).
+Remote CPU audit passed own epoch1,1169 model tensors, nonempty optimizer
+and scheduler, CUDA not initialized, SHA256
+`67cef44cd6ec253806eced03b1ca79f115d13d4e681c9da69730ca767b0fda35`.
+
+Reader is -6/-12 hits versus the matched control5477/4620 and -12/-48
+versus immutable B25483/4656. This single-seed, single-epoch trial does not
+support an accuracy benefit from the candidate-relative residual. It does
+not identify per-example causes or establish the learned scale as the cause.
+Do not promote it as best. Detailed experiment note, CSV and raw result
+receipt are archived separately. No Scan trainer is active; do not start
+another run based only on this result.
+
 ## Current Override: 2026-11-03 22:02 UTC
 
 Stage B run1793674354 is complete and must not be restarted. The subsequent

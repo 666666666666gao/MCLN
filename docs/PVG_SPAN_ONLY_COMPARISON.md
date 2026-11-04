@@ -1,5 +1,13 @@
 # Fixed Upstream Span Training Comparison
 
+## Follow-Up: 2026-11-04 11:34 UTC
+
+Treatment3419/6081,controller265532/launcher268814/GPU268817 live.
+Train-only34 parsed losses finite,last6.9048/6.9039/6.9074.
+NR65=3211/3742,70 recent finite losses,validation ETA about7min.
+SR25=1362/6486,64 finite losses. NR/SR scratch configurations unchanged.
+No new full metrics. See three progress receipts observed11:34:40-47UTC.
+
 ## Follow-Up: 2026-11-04 11:25 UTC
 
 Treatment2369/6081,controller265532/launcher268814/GPU268817 live.

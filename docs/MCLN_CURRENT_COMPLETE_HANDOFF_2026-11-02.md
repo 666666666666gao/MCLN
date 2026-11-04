@@ -1,6 +1,15 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 11:26 UTC
+## Current Override: 2026-11-04 11:35 UTC
+
+Remote receipts11:34:40-47UTC:Scan treatment3419/6081,controller265532/
+launcher268814/GPU268817 live;34 train losses finite,last6.9048/6.9039/
+6.9074. NR65=3211/3742,trainer/keeper/retention live,70 losses finite,
+last9.6084/9.6252/9.6497,rough validation ETA~7min. SR25=1362/6486,
+trainer/keeper/retention live,64 losses finite,last9.4725. Original
+NR/SR null-init configs and full budgets unchanged. No new full scores.
+Best remain Scan B25483/4656,NR64 4190/3394,SR15 11743/9434.
+Receipts archived;last published branch3964552.
 
 Remote receipts11:25:27-32UTC:Scan treatment2369/6081,controller265532/
 launcher268814/GPU268817 live;23 train losses finite,last6.9396/6.9367/

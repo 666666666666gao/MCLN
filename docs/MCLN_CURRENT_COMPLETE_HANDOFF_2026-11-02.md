@@ -1,36 +1,47 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 06:30 UTC
+## Current Override: 2026-11-04 06:57 UTC
 
 ### Latest complete metrics
 
-No new complete validation is reflected in the active epoch progress. This
-health check did not read checkpoint or retention manifests.
-The latest complete metrics remain ScanRefer Reader epoch1=5471/4608 of
-9508, NR3D epoch59=4161/3331 of7899, and SR3D epoch22=11352/9308 of17726.
-Best checkpoints remain ScanRefer B2=5483/4656, NR3D epoch59=4161/3331,
-and SR3D epoch15=11743/9434. These are same-checkpoint last semantic
-alignment Top1 hits; do not combine thresholds across checkpoints.
+All metrics are same-checkpoint last semantic alignment Top1; percentages
+are hits over the complete validation split.
 
-At06:29:52UTC the registered NR3D run1793553113 trainer96960, keeper135075,
-and retention watcher156800 were live. Epoch60 was at2467/3742, with about
-17 minutes of training remaining at the observed rate. Its original null-init
-scratch recipe was unchanged; 69 recent logged losses were finite, latest
-9.816/9.8351/9.7509, with no error lines.
+| Dataset / run | Latest complete | Best by primary metric | Target / remaining from best |
+| --- | --- | --- | --- |
+| ScanRefer | Reader epoch1: 5471/4608 of9508 (57.541018%/48.464451%) | Stage B epoch2: 5483/4656 (57.667228%/48.969289%), Acc@0.50 primary | 5705/4945; short by222/289 hits |
+| NR3D `1793553113` | epoch60: 4114/3239 of7899 (52.082542%/41.005191%) | epoch59: 4161/3331 (52.677554%/42.169895%), Acc@0.25 primary | 4724 Acc@0.25; short by563 hits |
+| SR3D `1793552465` | epoch22: 11352/9308 of17726 (64.041521%/52.510437%) | epoch15: 11743/9434 (66.247320%/53.221257%), Acc@0.25 primary | 12302 Acc@0.25; short by559 hits |
 
-At06:30:15UTC the registered SR3D run1793552465 trainer92354, keeper129032,
-and retention watcher148725 were live. Epoch23 was at2009/6486; the
-progress display estimated about99 minutes of training remaining. Its
-original null-init scratch recipe was unchanged; 65 recent logged losses
-were finite, latest9.6054/9.5972/9.5917, with no error lines.
+NR epoch60 full7899 validation and CPU audit were confirmed at06:55:55UTC.
+The current-run CPU collector verified own epoch60,1134 model tensors,
+nonempty optimizer and scheduler,and preserved checkpoint existence. SHA256:
+`4b90213759b7e2f3224005923444b58568fe7d278884be1199b6382c5414e477`.
+Best epoch59 remains keeper-selected and was independently audited with
+SHA256 `4d000014f205f23a03ce2d7102dc7e7813359a4a65c17e0e401bffc06ed2885f`.
+Epoch60 is -47/-92 hits versus epoch59. Receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T0655.json`.
 
-Both runs retain their configured full budgets. No checkpoint change is
-claimed; existing retention watchers remain the only cleanup authority.
-No Scan trainer is active. All three target metrics remain unmet. Check NR
-near its next full-validation window and SR near epoch23 completion; do not
-poll in a short loop or infer a result from this training-progress snapshot.
-Read-only checks used the approved remote wrapper; no local model/test
-operation was run.
+At06:57UTC the NR trainer96960,keeper135075,and retention watcher156800
+were live in epoch61 at287/3742 on the unchanged null-init scratch recipe.
+All68 recent logged loss values were finite and no error lines appeared.
+Occasional finite values near24.3 were observed at06:12 and06:57 amid values
+near9.8; there is no nonfinite/error evidence, so this does not justify a
+recipe change. Do not diagnose instability from these isolated observations.
+
+At06:56UTC SR trainer92354,keeper129032,and retention watcher148725 were
+live in epoch23 at3198/6486 on its unchanged null-init scratch recipe.
+All64 recent logged losses were finite, latest9.5917/9.588/9.5952, with no
+error lines. The progress display estimated about72 minutes remained in the
+training portion; validation is additional.
+
+Scan process state was not queried in this pass, and no Scan run was started.
+The one-epoch Reader result remains below its matched control; it does not
+justify launching another Scan run without a diagnosis and registered
+experiment. All three targets remain unmet. The
+existing NR/SR retention watchers remain the only cleanup authority; no
+manual checkpoint deletion occurred. All remote checks used the approved
+wrapper, and no local model/test operation was run.
 
 ## Current Override: 2026-11-04 06:12 UTC
 

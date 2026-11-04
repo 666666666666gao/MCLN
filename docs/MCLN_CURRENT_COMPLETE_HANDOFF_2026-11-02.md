@@ -1,6 +1,14 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 10:00 UTC
+## Current Override: 2026-11-04 10:19 UTC
+
+Latest actual Scan check10:19:32UTC:controller265532/GPU266278 live,
+control2769/6081. Scoped collector now reports recent periodic losses
+using existing NR/SR parsing:27values finite,last6.9144/6.9086/6.9102,
+no error lines. This fixes observation of losses beyond the two initial
+update witnesses;training source/recipe unchanged. Full validation and
+final1154-tensor freeze audit pending,rough ETA10:55-11:05UTC.
+Evidence:scanrefer-span-only-progress-20261104T1019.json.
 
 10:11UTC offline evidence supplement:archived selected-gate audit found
 B2 projection-proxy050 gains451,but only35 have any raw gate outside

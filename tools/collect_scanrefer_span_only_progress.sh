@@ -3,7 +3,9 @@ set -euo pipefail
 /root/autodl-tmp/PV-Ground/env/bin/python - <<'PY'
 import datetime
 import json
+import math
 from pathlib import Path
+import re
 import subprocess
 
 trial = Path("/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_span_only_20261104")
@@ -41,9 +43,21 @@ for condition in ("preflight", "control", "span"):
     log = trial / (condition + ".log")
     if log.is_file():
         with log.open("rb") as stream:
-            stream.seek(max(0, log.stat().st_size - 8000))
+            stream.seek(max(0, log.stat().st_size - 2 * 1024 * 1024))
             lines = stream.read().decode(errors="replace").replace("\r", "\n").splitlines()
+        losses = [
+            float(match.group(1))
+            for line in lines
+            for match in re.finditer(
+                r"(?<!\w)loss\s+([-+]?(?:\d+(?:\.\d*)?(?:e[-+]?\d+)?|nan|inf))(?=\s|$)",
+                line, re.IGNORECASE)
+        ]
         records["log_tail"] = [line for line in lines if len(line) < 1000][-6:]
+        records["recent_logged_loss_count"] = len(losses)
+        records["recent_logged_losses_finite"] = (
+            all(math.isfinite(value) for value in losses) if losses else None
+        )
+        records["latest_logged_losses"] = losses[-3:]
         records["recent_errors"] = [line for line in lines
                                    if "Traceback (most recent call last)" in line or "RuntimeError:" in line]
     if records:

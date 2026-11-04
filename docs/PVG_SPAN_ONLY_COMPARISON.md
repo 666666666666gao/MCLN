@@ -162,3 +162,16 @@ hyperparameter changes. Its existing raw-gate auxiliary objective can
 also supervise interior gates. GT projection gains remain diagnostic,
 not achievable gains,method results,or causal proof. The125-point grid
 is a sampled oracle,not a certified continuous upper bound.
+
+## Progress Monitoring: 2026-11-04 10:19 UTC
+
+The short8KB log tail was entirely tqdm progress,so it could not show
+recent periodic losses. The scoped collector now reuses the existing
+NR/SR2MB tail and loss parser,reporting count,finite status and last three
+logged values separately from first-update receipts. An absent loss list
+remains unobserved,null rather than finite. No training source changed.
+
+Remote-only collection10:19:32UTC verified controller265532/GPU266278
+live,control2769/6081,27parsed losses all finite,last6.9144/6.9086/6.9102,
+no error lines. Full validation and final checkpoint freeze audit remain
+pending. Receipt:scanrefer-span-only-progress-20261104T1019.json.

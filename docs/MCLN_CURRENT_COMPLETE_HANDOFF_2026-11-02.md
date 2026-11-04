@@ -1,4 +1,59 @@
+## Current Override: 2026-11-04 19:11 UTC
+
+Current-only remote collectors audited all NR epochs1-72 and SR epochs1-27.
+NR latest72 full7899=4158/3362; best66=4255/3435 remains unchanged.
+SR latest27 full17726=11671/9338; best15=11743/9434 remains unchanged.
+These are same-checkpoint last semantic alignment Top1/BBF hit pairs025/050.
+Latest own CPU epochs72/27,1134 tensors,nonempty optimizer/scheduler and
+SHA audits passed with CUDA uninitialized. NR72 SHA
+18ad4176f19a2d924f5e55927226379251ae85f9159b2c919f4b6a36752e1489;
+SR27 SHA c06138b624e12b2dd0bb18df0887616885694fa3a0d79bea7ed2fbb5c7779a90.
+Existing watchers retain NR66/72 and SR15/27. Removed historical weights
+are marked in the complete epoch table; all metric/audit history remains.
+No manual cleanup or watcher/trainer restart.
+
+At19:11UTC NR trainer96960/keeper135075/retention156800 and SR
+trainer92354/keeper129032/retention148725 were all live. Original scratch
+configs/budgets, null initialization and innovations-off settings were
+unchanged. Recent logged losses were finite with no recent error lines.
+Progress was NR705/3742 and SR1675/6486; these counters are not scores.
+Next validation is approximately20:00UTC NR and21:15UTC SR at current
+rates; update ETA from real speed. Best-target deficits remain NR469
+and SR559 Acc025 hits. Scan best B2=5483/4656,gaps222/289. All unmet.
+
+Scan BBF quality experiment preparation completed remotely17:09:45UTC
+in scanrefer_bbf_quality_20261104. CPU-only preflight verified exact B2
+1168-tensor load,zero adapter identity,fresh optimizer and synthetic loss
+eligibility/finite gradients. This is preparation,not GPU training or full
+validation. Latest heartbeat forbids automatic new Scan launches; keep
+the prepared experiment unlaunched. Do not restart completed Scan trials.
+Raw full-history receipts:*current-full-history-20261104T1911.json;
+preparation:scanrefer-bbf-quality-preparation-20261104T1709.json,under
+docs/results/mcln_pvground_20261101/. Local work was files/Git/results
+only;all remote calls used work/remote_pvground.ps1.
+
 # Current MCLN + PV-Ground Handoff
+
+## Progress Override: 2026-11-04 14:58 UTC
+
+NR3D run1793553113 completed epoch68 full7899 validation:4141/3420 hits
+(Acc@0.25/0.50=52.424358%/43.296620%). It remains below best epoch66
+4255/3435 by114/15 hits;best Acc@0.25 is469 hits short of target4724.
+CPU own-epoch68/1134 tensors/nonempty optimizer/scheduler/SHA audit
+passed;SHA d508d840391823d997d74aa4a3ffe9222e3cee52f43eb8102d32d37f7487d70c.
+Best66 SHA remains ca645bf8f191a0609b603b77e829b61e492b6459805125ae012c164b783fcb5b.
+Existing watcher applied14:47:25UTC and retained66/68,removed only
+preserved67. Full receipt is
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T1455.json`;
+epoch68 audit is
+`docs/results/mcln_pvground_20261101/nr3d-epoch68-current-audit-20261104T1455.json`.
+
+At14:58UTC NR trainer/keeper/retention were live in epoch69=774/3742;
+SR run1793552465 trainer92354/keeper129032/retention148725 were live in
+epoch26=3106/6486. Both retain original scratch configuration/budget,
+null initialization and innovations disabled; recent losses are finite
+and no recent error lines were found. Latest complete SR25=11686/9455,
+best15=11743/9434; Scan best B2=5483/4656. All targets remain unmet.
 
 ## Progress Override: 2026-11-04 14:19 UTC
 

@@ -1,4 +1,18 @@
+## Update: 2026-11-04 19:11 UTC
+
+Current-only own CPU checkpoint audits confirmed NR best66/latest72 and SR best15/latest27,1134 tensors and nonempty optimizer/scheduler. Existing watchers synchronized to72/27; all deletion receipts and full epoch metrics archived. No manual deletion or watcher restart. See current-full-history-20261104T1911 receipts for exact paths and SHA. Scan BBF preparation is unlaunched; preserve B2.
+
 # Current Checkpoint Storage Proposal
+
+## Update: 2026-11-04 14:58 UTC
+
+NR epoch68 full7899=4141/3420 was audited on CPU:own epoch68,1134 model
+tensors,nonempty optimizer/scheduler and SHA
+d508d840391823d997d74aa4a3ffe9222e3cee52f43eb8102d32d37f7487d70c.
+Existing watcher applied14:47:25UTC,retained best66/latest68 and removed
+only preserved67. Historical metrics and checkpoint audit records remain.
+No manual deletion/relink or watcher restart. At14:58 trainer96960 was
+live at epoch69 774/3742;SR epoch26 and its watcher also live.
 
 ## Update: 2026-11-04 14:19 UTC
 

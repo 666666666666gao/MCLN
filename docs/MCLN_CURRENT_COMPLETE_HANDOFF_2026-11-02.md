@@ -1,6 +1,6 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 08:40 UTC
+## Current Override: 2026-11-04 08:55 UTC
 
 ### Latest complete metrics
 
@@ -10,17 +10,17 @@ are hits over the complete validation split.
 | Dataset / run | Latest complete | Best by primary metric | Target / remaining from best |
 | --- | --- | --- | --- |
 | ScanRefer | Reader epoch1: 5471/4608 of9508 (57.541018%/48.464451%) | Stage B epoch2: 5483/4656 (57.667228%/48.969289%), Acc@0.50 primary | 5705/4945; short by222/289 hits |
-| NR3D `1793553113` | epoch61: 4121/3270 of7899 (52.171161%/41.397645%) | epoch59: 4161/3331 (52.677554%/42.169895%), Acc@0.25 primary | 4724 Acc@0.25; short by563 hits |
+| NR3D `1793553113` | epoch62: 4141/3425 of7899 (52.424358%/43.359919%) | epoch59: 4161/3331 (52.677554%/42.169895%), Acc@0.25 primary | 4724 Acc@0.25; short by563 hits |
 | SR3D `1793552465` | epoch23: 11388/9006 of17726 (64.244612%/50.806725%) | epoch15: 11743/9434 (66.247320%/53.221257%), Acc@0.25 primary | 12302 Acc@0.25; short by559 hits |
 
-NR epoch61 full7899 validation and CPU audit were confirmed by08:11UTC.
-The current-run CPU collector verified own epoch61,1134 model tensors,
+NR epoch62 full7899 validation and CPU audit were confirmed by08:53UTC.
+The current-run CPU collector verified own epoch62,1134 model tensors,
 nonempty optimizer and scheduler,and preserved checkpoint existence. SHA256:
-`b67db7bc4d74bd80f20c30abd2a0a73cdca86a51e067ad3c6a1a8b51cdaab461`.
+`9b3f429b4696b6d1378d3452bbaa9e274b1aa4bed96914188c36135898648d98`.
 Best epoch59 remains keeper-selected and was independently audited with
 SHA256 `4d000014f205f23a03ce2d7102dc7e7813359a4a65c17e0e401bffc06ed2885f`.
-Epoch61 is -40/-61 hits versus epoch59. Receipt:
-`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T0826.json`.
+Epoch62 is -20/+94 hits versus epoch59 on Acc@0.25/Acc@0.50. Receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T0854.json`.
 
 SR epoch23 full17726 validation and CPU audit were confirmed by08:26UTC.
 The collector verified own epoch23,1134 model tensors,nonempty optimizer
@@ -31,16 +31,17 @@ remains `386647b8ecac817614090cb23f11b5d7a4d36b7449f67c07f43f84baf23e3969`.
 Receipt:
 `docs/results/mcln_pvground_20261101/sr3d-current-full-history-20261104T0826.json`.
 
-At08:39UTC NR trainer96960,keeper135075,and retention watcher156800 were
-live in epoch62 at3440/3742 on the unchanged null-init scratch recipe.
-All69 recent losses were finite, latest9.6505/9.6829/9.6938, with no errors.
-At08:40UTC SR trainer92354,keeper129032,and retention watcher148725 were
-live in epoch24 at639/6486 on the unchanged null-init recipe. All64 recent
-losses were finite, latest16.1673/16.5046/9.3763, with no error lines.
-These isolated finite higher losses do not establish instability. The
-progress display currently estimates about4 minutes to NR train completion
-and about2h08m for SR training; these are rough live estimates, validation
-is additional. Both recipes remain unchanged.
+At08:55UTC NR trainer96960,keeper135075,and retention watcher156800 were
+live in epoch63 at461/3742 on the unchanged null-init scratch recipe.
+All68 recent losses were finite, latest9.6938/9.6963/24.1625, with no errors.
+At08:54UTC SR trainer92354,keeper129032,and retention watcher148725 were
+live in epoch24 at1283/6486 on the unchanged null-init recipe. All64 recent
+losses were finite, latest16.5046/9.3763/9.4747, with no error lines.
+These isolated finite higher losses do not establish instability. NR's
+latest higher finite loss is insufficient by itself to justify a recipe
+change. The progress displays estimated about45 minutes to NR training
+completion and about1h54m for SR training; these are rough live estimates,
+validation is additional. Both recipes remain unchanged.
 
 Scan process state was not queried in this pass, and no Scan run was started.
 The one-epoch Reader result remains below its matched control; it does not

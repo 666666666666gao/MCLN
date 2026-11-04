@@ -1,0 +1,86 @@
+{
+  "observations": [
+    {
+      "observed_utc": "2026-11-04T08:55:54.464527+00:00",
+      "dataset": "nr3d",
+      "run": "1793553113",
+      "processes": {
+        "trainer": 96960,
+        "keeper": 135075,
+        "retention_watcher": 156800,
+        "all_live": true
+      },
+      "screen": "pvg_nr3d_mcln_scratch",
+      "progress": "epoch63 461/3742",
+      "latest_logged_losses": [9.6938, 9.6963, 24.1625],
+      "recent_loss_values_finite": true,
+      "recent_error_lines": [],
+      "config_unchanged": {
+        "checkpoint_path": null,
+        "pp_checkpoint": null,
+        "use_pvground_innovations": false,
+        "batch_size": 12,
+        "gradient_accumulation_steps": 4,
+        "lr": 0.0001,
+        "lr_backbone": 0.001,
+        "max_epoch": 240,
+        "lr_decay_epochs": [150]
+      }
+    },
+    {
+      "observed_utc": "2026-11-04T08:54:16.434306+00:00",
+      "dataset": "sr3d",
+      "run": "1793552465",
+      "processes": {
+        "trainer": 92354,
+        "keeper": 129032,
+        "retention_watcher": 148725,
+        "all_live": true
+      },
+      "screen": "pvg_sr3d_mcln_scratch",
+      "progress": "epoch24 1283/6486",
+      "latest_logged_losses": [16.5046, 9.3763, 9.4747],
+      "recent_loss_values_finite": true,
+      "recent_error_lines": [],
+      "config_unchanged": {
+        "checkpoint_path": null,
+        "pp_checkpoint": null,
+        "use_pvground_innovations": false,
+        "batch_size": 12,
+        "gradient_accumulation_steps": 2,
+        "lr": 0.0001,
+        "lr_backbone": 0.001,
+        "max_epoch": 140,
+        "lr_decay_epochs": [30, 40]
+      }
+    }
+  ],
+  "completed_validation": {
+    "dataset": "nr3d",
+    "run": "1793553113",
+    "epoch": 62,
+    "examples": 7899,
+    "hits025": 4141,
+    "acc025_percent": 52.424358,
+    "hits050": 3425,
+    "acc050_percent": 43.359919,
+    "cpu_audit": {
+      "own_epoch": 62,
+      "model_tensors": 1134,
+      "nonempty_optimizer": true,
+      "has_scheduler": true,
+      "preserved_checkpoint_exists": true,
+      "sha256": "9b3f429b4696b6d1378d3452bbaa9e274b1aa4bed96914188c36135898648d98"
+    },
+    "best_epoch": 59,
+    "best_hits025": 4161,
+    "best_hits050": 3331,
+    "best_sha256": "4d000014f205f23a03ce2d7102dc7e7813359a4a65c17e0e401bffc06ed2885f"
+  },
+  "scanrefer": {
+    "process_state_checked": false,
+    "latest_complete": "Reader epoch1 5471/4608 over9508",
+    "best": "Stage B epoch2 5483/4656 over9508"
+  },
+  "scope": "Read-only checks and CPU checkpoint audit for registered current NR3D/SR3D runs only, through work/remote_pvground.ps1. No local model/test operation, manual retention change, or training/config modification."
+}

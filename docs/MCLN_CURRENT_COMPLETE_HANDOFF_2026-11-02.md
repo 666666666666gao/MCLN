@@ -1,5 +1,63 @@
 # Current MCLN + PV-Ground Handoff
 
+## Progress Override: 2026-11-04 14:03 UTC
+
+NR3D run1793553113 completed epoch67 full7899 validation:4089/3312
+hits (Acc@0.25/0.50=51.766046%/41.929358%),below epoch66 best4255/3435
+by166/123 hits. The best remains469 Acc@0.25 hits below target4724.
+Remote CPU audit verified epoch67 checkpoint identity,1134 model tensors,
+nonempty optimizer/scheduler,SHA
+f780fefd797f1c6afab780091c0605feb04bbe92effd334aee519e5964bdffd6;
+best66 SHA remains
+ca645bf8f191a0609b603b77e829b61e492b6459805125ae012c164b783fcb5b.
+Existing retention selected best66/latest67. Detailed audit:
+`docs/results/mcln_pvground_20261101/nr3d-epoch67-current-audit-20261104T1400.json`.
+
+SR3D run1793552465 completed epoch25 full17726 validation:11686/9455
+hits (Acc@0.25/0.50=65.925759%/53.339727%). Best remains epoch15=
+11743/9434;epoch25 is -57/+21 hits versus best and616 Acc@0.25 hits
+below target12302. CPU own-epoch25/1134 tensors/nonempty optimizer/
+scheduler/SHA audit passed;SHA
+dfc15899a0abd0a72d4034f48d76046af9630385ceda2c7be17c0b4ada1b54bb.
+The watcher retained15/25 and removed only old preserved24. Detailed
+audit:`docs/results/mcln_pvground_20261101/sr3d-epoch25-current-audit-20261104T1353.json`.
+
+At14:03UTC both original scratch trainers,keepers and retention watchers
+were live. NR epoch68 was1191/3742;SR epoch26 was790/6486. Original
+recipes/budgets, null initialization and innovations-off settings remain
+unchanged;recent losses were finite and no recent error lines were found.
+Scan best B2=5483/4656 remains222/289 hits short of5705/4945. All targets
+remain unmet. Full-history receipts and `all-epochs.csv` contain verified
+current results.
+
+## Progress Override: 2026-11-04 13:53 UTC
+
+SR3D run1793552465 completed epoch25 full17726 last semantic alignment
+Top1 validation:11686/9455 hits (Acc@0.25/0.50=65.925759%/53.339727%).
+This is not a new best:epoch15 remains11743/9434;epoch25 is -57/+21
+hits versus best and remains616 Acc@0.25 hits short of target12302.
+The current-run retention audit at13:46:40UTC verified epoch25's own CPU
+epoch,1134 model tensors,nonempty optimizer/scheduler,SHA
+dfc15899a0abd0a72d4034f48d76046af9630385ceda2c7be17c0b4ada1b54bb,
+and retained it as latest alongside best15. The watcher removed only the
+older preserved24 checkpoint;its metric remains recorded. Full audit:
+`docs/results/mcln_pvground_20261101/sr3d-epoch25-current-audit-20261104T1353.json`.
+
+At13:53UTC SR trainer92354/keeper129032/retention148725 remained live;
+epoch26 had started at305/6486. Its original scratch config and budget
+remain unchanged. No error lines were reported and recent logged losses
+were finite. NR last verified13:29:52UTC at epoch67 3064/3742,with all
+three processes live,original config unchanged,finite recent losses and
+no error lines. Current NR progress needs a fresh check before reporting
+any later state. Best NR66=4255/3435 remains below target4724 by469 hits;
+best SR15=11743/9434 remains616 hits below target12302;Scan best B2=
+5483/4656 remains222/289 hits short of5705/4945. No target is met.
+
+The full-history collector collided with the SR checkpoint transition
+after epoch25;the later scoped retention-state inspection resolved the
+epoch25 metric and checkpoint audit. No manual retention or training
+operation was performed.
+
 ## Progress Override: 2026-11-04 13:04 UTC
 
 Current-only checks through the approved wrapper confirmed NR3D run

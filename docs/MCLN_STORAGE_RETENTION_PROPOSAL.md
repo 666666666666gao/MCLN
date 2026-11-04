@@ -1,5 +1,22 @@
 # Current Checkpoint Storage Proposal
 
+## Update: 2026-11-04 14:03 UTC
+
+Current NR audit:epoch67 full7899=4089/3312;own CPU epoch,1134 tensors,
+nonempty optimizer/scheduler and SHA passed. Existing watcher retains
+best66/latest67;best66 SHA
+ca645bf8f191a0609b603b77e829b61e492b6459805125ae012c164b783fcb5b,
+latest67 SHA
+f780fefd797f1c6afab780091c0605feb04bbe92effd334aee519e5964bdffd6.
+Current SR audit:epoch25 full17726=11686/9455;own CPU epoch,1134 tensors,
+nonempty optimizer/scheduler and SHA passed. Existing watcher retains
+best15/latest25;best15 SHA
+386647b8ecac817614090cb23f11b5d7a4d36b7449f67c07f43f84baf23e3969,
+latest25 SHA
+dfc15899a0abd0a72d4034f48d76046af9630385ceda2c7be17c0b4ada1b54bb.
+SR watcher removed only preserved24. No manual cleanup or watcher restart.
+At14:03 UTC both trainers and watchers remained live in NR68/SR26.
+
 ## Update: 2026-11-04 12:51 UTC
 
 NR epoch66 full7899=4255/3435 became current best/latest. CPU own-epoch66,

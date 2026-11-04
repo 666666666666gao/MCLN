@@ -50,6 +50,13 @@ There is still no full9508 validation or own-checkpoint audit, so no
 accuracy change is established. NR3D and SR3D continue their original
 scratch runs unchanged.
 
+## Full Validation Progress: 2026-11-04 05:01 UTC
+
+The training log reached6068/6081 augmented batches at04:59UTC and then
+entered full validation. At05:01UTC validation had reached168/1189 batches;
+the registered GPU worker remained active. The full9508 result and
+own-checkpoint CPU audit are pending. No accuracy gain is established.
+
 Remote CPU check passed zero-scale identity and finite nonzero scale
 gradient. The six-batch GPU preflight completed. At03:38:47UTC the full
 trial had a finite first loss7.05528736114502 and completed optimizer step1.

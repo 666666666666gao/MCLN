@@ -1,5 +1,34 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 05:02 UTC
+
+NR3D run1793553113 completed epoch58 full7899 same-checkpoint last
+semantic alignment Top1 validation: 4103/3298 hits, Acc@0.25/0.5 =
+51.943284%/41.752121%. Best remains epoch49=4123/3325
+(52.196481%/42.093936%); epoch58 is -20/-27 hits versus best and is
+621 Acc@0.25 hits short of the 4724 target. The CPU audit verified own
+epoch58, 1134 model tensors, nonempty optimizer/scheduler, retained path,
+and SHA256
+705115d68949d5963e8f7c518b6ce6b43f90f9ce37bbe8ea90d7c0459c92a417.
+The existing retention watcher kept49/58 and removed only preserved57;
+the epoch57 metric remains recorded. At05:02UTC the trainer, keeper and
+watcher were live at374/3742 training progress. Recent logged loss values
+included one finite24.8732 among values near9.8; no recent errors or
+nonfinite losses were found. This isolated finite observation is not
+enough to diagnose instability; leave the recipe unchanged and monitor.
+Receipt: `docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T0458.json`.
+
+ScanRefer Reader run1793763075 reached6068/6081 training batches at04:59
+and entered full validation. At05:01UTC it was at168/1189 validation
+batches, with the GPU worker active. No full9508 result or own-checkpoint
+audit exists yet.
+
+SR3D run1793552465 was live at epoch22 batch5313/6486 (82%) at05:02UTC;
+recent losses were finite and no errors were found. Its original null-init
+scratch recipe remains unchanged. No new SR3D validation was complete.
+All current metrics and the NR58 row are in the all-epoch table; do not
+infer a ScanRefer gain from the in-progress validation.
+
 ## Current Override: 2026-11-04 04:47 UTC
 
 Current-only remote checks through `work/remote_pvground.ps1`:

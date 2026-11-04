@@ -1,5 +1,16 @@
 # Fixed Upstream Span Training Comparison
 
+## Treatment Update Gate: 2026-11-04 11:09 UTC
+
+Treatment weight0.1 passed its actual first two optimizer-step witnesses:
+finite loss6.557239/7.686158,existing Span14/14 tensors updated at both
+steps,finite nonzero gradients/deltas,and frozen parameters/buffers unchanged.
+At11:09:23UTC it reached520/6081 (~1.89batch/s),five recent train losses
+finite,last7.2928/7.2559/7.1997. Estimated remaining train time~49min,
+then complete9508validation. No score exists yet;control and B2 comparisons
+remain pending until its own checkpoint and full-validation receipt.
+Raw receipt:scanrefer-span-only-progress-20261104T1109.json.
+
 ## Full Control Result: 2026-11-04 11:01 UTC
 
 Control completed10:58:21UTC,full9508=5470/4568

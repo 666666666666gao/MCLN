@@ -1,6 +1,21 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 11:02 UTC
+## Current Override: 2026-11-04 11:06 UTC
+
+11:09:23UTC treatment real update gate passed:step1/2 finite losses
+6.557239/7.686158,Span14/14 updated with finite nonzero gradient/delta,
+frozen parameters/buffers unchanged. At520/6081,~1.89batch/s,5 recent
+train losses finite,last7.2928/7.2559/7.1997;~49min train plus full val.
+No score yet;require comparison to control and B2. Receipt
+scanrefer-span-only-progress-20261104T1109.json.
+
+11:04:45UTC follow-up:Scan controller265532/GPU268817 live on treatment;
+launcher268814 elapsed6m16s,own GPU memory1168MiB. Treatment log confirms
+independent model-only B2 load1168 tensors with fresh optimizer/scheduler;
+no first-update witness at that observation,so real optimization was not
+yet verified. Controller owns transition;do not duplicate launch.
+SR trainer92354/keeper129032/retention148725 live;epoch24 validation
+completed and epoch25 started11:04:48. No new full score at that timestamp.
 
 Scan Span-only control completed10:58:21UTC,full9508=5470/4568,
 57.530501%/48.043753%,-13/-88hits versus B2. CPU own1/1168 tensors/

@@ -1,4 +1,40 @@
-## Current Override: 2026-11-04 19:11 UTC
+## Current Override: 2026-11-04 21:12 UTC
+
+NR3D completed full7899 epochs73=4198/3311 and74=4228/3438 hits025/050.
+Acc025-first best remains66=4255/3435; do not combine best66's025 with
+epoch74's050. Own CPU epoch74/1134 tensors/nonempty optimizer/scheduler
+and SHA passed,CUDA uninitialized:
+b4fd3dd35177c7ee61dc1fe00ee95786b1dc5d86f160c9165ae9f3dda7d4319a.
+Existing watcher retained66/74 at21:04:46UTC and removed preserved73;
+all full metric rows and audits remain. No manual cleanup or restart.
+
+SR28 was in validation at21:10UTC,407/1478 batches; full17726 score is
+not available yet. The collector correctly rejected comparing the saved
+epoch28 last checkpoint to the last completed log row27. Current-only
+retention inspection confirms best15/latest-complete27 preserved, native
+checkpoint28 saved,trainer/keeper/watcher live. Keep latest confirmed
+full27=11671/9338 and best15=11743/9434; do not assign either to28.
+This is an observed checkpoint-before-validation synchronization window,
+not evidence of a trainer failure. Retried after240seconds: same guarded
+epoch mismatch while validation remained incomplete. At21:16:19UTC,
+validation advanced to833/1478 with live processes,finite recent losses
+and no error lines. Estimated completion21:25-21:27UTC; leave pending28
+unscored until its full validation/keeper/retention synchronization.
+Raw scoped retention state:sr3d-current-retention-state-20261104T2116.json.
+
+At21:10UTC all six NR/SR trainer/keeper/retention processes were live,
+original scratch configs/budgets and null initialization unchanged,
+innovations off,recent logged losses finite,no recent error lines.
+NR75 training569/3742 suggests next full result around22:05UTC.
+Scan21:12:42UTC:GPU idle0MiB,no compute process,only existing retention
+screen;B2 exists with unchanged SHA46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8.
+No new Scan run launched. Best-target gaps remain Scan222/289,NR469,
+SR559 hits; all targets unmet. Full NR history receipt:
+nr3d-current-full-history-20261104T2111.json; current progress receipts:
+nr3d/sr3d-current-scratch-progress-20261104T2110.json. Local work remains
+file/Git/result handling only;remote calls exclusively approved wrapper.
+
+## Previous Override: 2026-11-04 19:11 UTC
 
 Current-only remote collectors audited all NR epochs1-72 and SR epochs1-27.
 NR latest72 full7899=4158/3362; best66=4255/3435 remains unchanged.

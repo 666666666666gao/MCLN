@@ -1,3 +1,19 @@
+## Update: 2026-11-04 21:12 UTC
+
+NR own CPU checkpoint74/1134/nonempty optimizer+scheduler/SHA passed;
+existing watcher retained66/74 and removed only old preserved73 at
+21:04:46UTC. Full historical metrics/audits retained. SR28 checkpoint
+was saved before its validation completed; the collector's epoch guard
+rejected pairing it with completed27. Current-only inspection confirms
+preserved best15/latest-complete27 and live existing watcher. Do not
+manually relink,delete,restart or add a collector fallback. Wait for the
+full28 validation and existing keeper/watcher synchronization.
+After240seconds the same guard still rejected the incomplete validation;
+21:16 current-only inspection still confirmed best15/complete27 with
+native saved28. Validation progressed to833/1478,all processes live.
+No epoch28 score or retention promotion is claimed.
+Scan B2 unchanged,source preparation remains unlaunched.
+
 ## Update: 2026-11-04 19:11 UTC
 
 Current-only own CPU checkpoint audits confirmed NR best66/latest72 and SR best15/latest27,1134 tensors and nonempty optimizer/scheduler. Existing watchers synchronized to72/27; all deletion receipts and full epoch metrics archived. No manual deletion or watcher restart. See current-full-history-20261104T1911 receipts for exact paths and SHA. Scan BBF preparation is unlaunched; preserve B2.

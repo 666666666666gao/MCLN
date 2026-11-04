@@ -5,7 +5,9 @@
 At01:11UTC NR3D run1793553113 remained live with trainer96960,
 keeper135075 and retention156800. It advanced to epoch55,1139/3742
 batches; its unchanged scratch/null-init recipe had69 recent finite
-logged loss averages (latest9.9954),no error lines and GPU22837MiB/77%.
+logged loss averages. The last three were24.3912,9.946,9.9954; the isolated
+higher value is followed by values near9.95 and does not establish
+instability. No error lines;GPU22837MiB/77%.
 Latest complete remains epoch54=4004/3233;best49=4123/3325 over7899.
 The current result is720 Acc@0.25 hits below target4724;best is601 short.
 Epoch55 full validation estimate is01:55-02:05UTC.

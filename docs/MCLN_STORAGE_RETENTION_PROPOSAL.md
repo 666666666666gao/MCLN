@@ -4,7 +4,8 @@
 
 Current-run health at01:11UTC:NR3D run1793553113 trainer96960/keeper
 135075/retention156800 live,epoch55=1139/3742;69 recent losses finite,
-latest9.9954,no logged errors. SR3D run1793552465 trainer92354/keeper
+last three24.3912/9.946/9.9954 (isolated higher finite value,insufficient
+to diagnose instability),no logged errors. SR3D run1793552465 trainer92354/keeper
 129032/retention148725 live,epoch21=1914/6486;64 recent losses finite,
 latest9.6869,no logged errors. Both retain their original null-init
 scratch configuration and existing best/latest watcher. No new complete

@@ -39,6 +39,7 @@ class CandidateLocalVisual(nn.Module):
         self.key_projection = nn.Linear(hidden_dim, hidden_dim)
         self.value_projection = nn.Linear(hidden_dim, hidden_dim)
         self.output_projection = nn.Linear(hidden_dim, d_model)
+        self.competitor_scale = nn.Parameter(torch.zeros(()))
         nn.init.zeros_(self.output_projection.weight)
         nn.init.zeros_(self.output_projection.bias)
 
@@ -55,6 +56,13 @@ class CandidateLocalVisual(nn.Module):
         v = self.value_projection(memory).reshape(batch, queries, points, self.heads, self.head_dim)
         weights = ((q[:, :, None] * k).sum(dim=-1) / math.sqrt(self.head_dim)).softmax(dim=2)
         summary = (weights[..., None] * v).sum(dim=2).reshape(batch, queries, -1)
+        with torch.no_grad():
+            distance = torch.cdist(boxes[..., :3], boxes[..., :3])
+            distance.diagonal(dim1=1, dim2=2).fill_(float("inf"))
+            neighbors = distance.topk(4, dim=-1, largest=False).indices
+        batch_indices = torch.arange(batch, device=summary.device)[:, None, None]
+        competitors = summary[batch_indices, neighbors].mean(dim=2)
+        summary = summary + self.competitor_scale * (summary - competitors)
         return self.output_projection(summary)
 
     def forward(self, query, boxes, point_cloud, sa1_xyz, sa1_features):

@@ -1,7 +1,6 @@
 # Current MCLN + PV-Ground Handoff
 
 ## Current Override: 2026-11-04 03:10 UTC
-
 SR3D run1793552465 epoch21 completed full17726 semantic Top1 validation:
 11579/9206 hits (65.322126%/51.935011%). Best remains15=11743/9434;
 latest21 is -164/-228 hits versus best. CPU audit verified own epochs,
@@ -1815,3 +1814,36 @@ User's canonical desktop document:
 `C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`.
 Keep its historical sections; the current dated section takes precedence.
 Publish code and this document to https://github.com/666666666666gao/MCLN .
+## Current Override: 2026-11-04 03:39 UTC
+
+Authorized new ScanRefer Reader experiment is running in independent
+run1793763075,screen `pvg_scanrefer_reader_competitor`; it does not resume,
+overwrite or inspect old/failed runs. B2 epoch2 model-only initialization
+SHA46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8,
+fresh optimizer/scheduler,frozen text encoder,seed0,batch8/accum6,
+native2e-6/backbone4e-6/module2e-5,one full48655-entry epoch and
+full9508 validation.
+
+Reader adds a zero-initialized learned residual contrasting each candidate
+local summary with the mean summary of its four nearest predicted candidate
+centers. This uses predicted boxes and Reader features only,not GT anchors.
+Support/Span roles are unchanged. Remote CPU identity/scale-gradient test
+and six-batch GPU preflight passed. At03:38:47UTC the first full-run
+optimizer update had finite loss7.05528736114502 and actual finite nonzero
+updates Reader11/11,Support10/10,Span14/14 tensors. Full validation is
+pending; no accuracy benefit is claimed.
+
+Reader selection motivation: immutable B2 has 5483/4656 over9508,with
+6021 strict-IoU0.50 top-ten candidate coverage and 4656 semantic Top1 hits.
+This is not recoverable accuracy. Reader bypass changes349 queries and
+nets17 strict-IoU0.50 hits,so the new experiment tests candidate-relative
+local evidence rather than duplicating the existing language-conditioned
+spatial attention. Full method, evidence limits and result gates are in
+`docs/PVG_READER_COMPETITOR_EXPERIMENT.md`.
+
+At03:13UTC NR trainer96960 was live at1198/3742 in epoch57; SR trainer92354
+was live at229/6486 in epoch22. Both retain original scratch recipes.
+Receipt for the Scan trial will be added after complete validation/audit.
+
+## Current Override: 2026-11-04 03:10 UTC
+

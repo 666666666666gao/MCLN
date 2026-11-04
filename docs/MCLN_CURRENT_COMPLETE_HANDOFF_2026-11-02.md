@@ -1,5 +1,33 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 04:47 UTC
+
+Current-only remote checks through `work/remote_pvground.ps1`:
+ScanRefer Reader run1793763075 was live at5118/6081 training batches
+(84%) at04:46UTC; GPU worker254229 was active, using22072MiB. The first
+SSH attempt timed out during banner exchange; a retry connected and
+confirmed the run was progressing. No reader completion receipt or full
+9508 validation exists yet; do not report an accuracy gain.
+
+NR3D run1793553113 trainer96960/keeper135075/retention156800 were live at
+epoch58 batch3496/3742 (93%) at04:47UTC. The last three logged losses
+9.8165/9.8196/9.8267 were finite and no recent errors were found.
+Original scratch config remains null-init, innovations off, batch12,
+accumulation4, LR1e-4, backbone1e-3, max240, decay150.
+
+SR3D run1793552465 trainer92354/keeper129032/retention148725 were live at
+epoch22 batch4616/6486 (71%) at04:47UTC. The last three logged losses
+9.6489/9.6431/9.6444 were finite and no recent errors were found.
+Original scratch config remains null-init, innovations off, batch12,
+accumulation2, LR1e-4, backbone1e-3, max140, decay30,40.
+
+No complete validation changed. Latest complete remains ScanRefer Stage B4
+5485/4623 over9508 (57.688263%/48.622213%), with B2 still best at
+5483/4656 (57.667228%/48.969289%) by the primary Acc@0.50 criterion;
+NR3D latest57=4090/3305 and best49=4123/3325 over7899; SR3D latest21=
+11579/9206 and best15=11743/9434 over17726. Reader remains pending;
+do not combine its future metrics with these prior checkpoints.
+
 ## Current Override: 2026-11-04 03:10 UTC
 SR3D run1793552465 epoch21 completed full17726 semantic Top1 validation:
 11579/9206 hits (65.322126%/51.935011%). Best remains15=11743/9434;

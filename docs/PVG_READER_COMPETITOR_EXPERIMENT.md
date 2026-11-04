@@ -39,6 +39,17 @@ one full augmented training epoch (48655 entries), and full9508 validation.
 The protocol-matched control and immutable B2 remain separate comparisons.
 This is a one-epoch exploratory test, not a final method claim.
 
+## Live Progress: 2026-11-04 04:46 UTC
+
+The registered run remains active at5118/6081 augmented training batches
+(84%); GPU worker254229 was active. The latest first-update witness remains
+finite and verified: loss7.0552873611450195, with actual updates in Reader
+11/11, Support10/10, and Span14/14 parameter tensors. A status SSH attempt
+timed out during banner exchange; retry succeeded and confirmed progress.
+There is still no full9508 validation or own-checkpoint audit, so no
+accuracy change is established. NR3D and SR3D continue their original
+scratch runs unchanged.
+
 Remote CPU check passed zero-scale identity and finite nonzero scale
 gradient. The six-batch GPU preflight completed. At03:38:47UTC the full
 trial had a finite first loss7.05528736114502 and completed optimizer step1.

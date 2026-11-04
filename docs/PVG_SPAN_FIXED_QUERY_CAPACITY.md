@@ -16,8 +16,9 @@ The earlier125-point gate grid found B25631/5152 and Reader5628/5136.
 The new method enumerates all piecewise endpoint combinations,so its
 search covers the continuous gate family rather than that sampled grid.
 Each threshold uses the same selected queries and boxes in its archive.
-The two thresholds' oracle-optimal gates can differ;this table does not
-establish that one gate setting or learned model attains both counts.
+The same per-sample maximum IoU underlies both threshold counts.
+This does not establish that one shared learned network can produce the
+GT-dependent per-sample oracle choices.
 
 On the B2 archived fixed-query box family,the025 optimum5633 remains
 72hits below the5705-hit target. This is a capacity limitation of changing
@@ -88,6 +89,40 @@ later work also needs evidence-backed improvement to selected candidates
 or upstream native/reference boxes while preserving the three module
 roles. Do not respond to a gate-only gain by repeatedly tuning gates
 under an assumption that this fixed family can meet both goals.
+
+## Unfixable Selected-Query Cohorts: 2026-11-04 10:37 UTC
+
+Extended the same remote-only reducer using already recorded first-good
+candidate ranks. These disjoint cohorts cover every sample whose selected
+native/reference gate family cannot pass the threshold,even with GT
+gates. Candidate validity here uses the archived final boxes of all
+queries,not a continuous oracle applied to every candidate.
+
+| Archive / Threshold | No Valid Candidate | Valid Outside Top10 | Valid Inside Top10 | Total |
+| --- | ---: | ---: | ---: | ---: |
+| B2 /025 | 411 | 2350 | 1114 | 3875 |
+| B2 /050 | 1155 | 2127 | 1068 | 4350 |
+| Reader /025 | 422 | 2418 | 1039 | 3879 |
+| Reader /050 | 1155 | 2217 | 986 | 4358 |
+
+B2025 therefore has3464unfixable-selected-family samples with some
+other valid final candidate;3337of these are multiple-instance cases.
+At050 there are3195such samples,3064multiple. For B2 valid-inside-Top10
+cohorts,the unique/multiple counts are30/1084 at025 and43/1025 at050.
+This strengthens the priority of candidate selection over assuming only
+missing box coverage. It does not predict recoverable accuracy or
+attribute an error to Reader alone. Queries also influence geometry.
+
+All cohort totals are checked against9508minus the continuous-oracle
+count;all valid candidate ranks are checked against archived oracle IoU.
+Full counts and unique/multiple splits are retained in
+scanrefer-span-continuous-oracle-cohorts-20261104.json. The earlier
+summary receipt remains immutable.
+
+At10:36-10:37UTC current-only process checks confirmed Scan control
+4768/6081 with finite losses,NR3251/3742 andSR6038/6486 with finite
+losses and unchanged scratch configs. No new full validation. Finish
+current matched conditions before specifying another trained change.
 
 The paired Reader diagnosis already shows most strict050 regressions
 retain a valid candidate inTop10;that motivates selection investigation,

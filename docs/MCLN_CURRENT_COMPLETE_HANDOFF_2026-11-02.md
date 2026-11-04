@@ -2,6 +2,15 @@
 
 ## Current Override: 2026-11-04 10:27 UTC
 
+10:37UTC cohort supplement:B2025 selected gate-family failures3875
+split411no valid final candidate/2350valid outsideTop10/1114valid inTop10.
+Thus3464have another valid candidate,3337multiple-instance. B2050 split
+1155/2127/1068,total4350. These are disjoint observed categories,not
+recoverable gains or isolated Reader causes. See capacity note/raw
+scanrefer-span-continuous-oracle-cohorts-20261104.json.
+Actual10:36-10:37UTC Scan control4768/6081,NR3251/3742,SR6038/6486;
+trainers live,losses finite,scratch configs unchanged,no new full score.
+
 New evidence changes the next-method scope:continuous-gate oracle on
 archived B2 selected queries reaches5633/5158 over9508. Even GT-selected
 gates leave Acc025 72hits below5705target;gate-only tuning of this fixed query/

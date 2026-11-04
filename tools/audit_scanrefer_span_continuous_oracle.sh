@@ -101,7 +101,11 @@ for name, directory in (
     assert footer and footer["verified_against_evaluator"] and len(rows) == 9508
     counts = {suffix: {"actual_hits": 0, "continuous_gate_oracle_hits": 0,
                       "oracle_gains": 0, "numerically_near_threshold_1e_minus9": 0,
-                      "minimum_threshold_distance": 1.}
+                      "minimum_threshold_distance": 1.,
+                      "unfixable_selected_gate_family": {
+                          key: {"samples": 0, "unique": 0, "multiple": 0}
+                          for key in ("no_valid_candidate", "valid_outside_top10",
+                                      "valid_inside_top10")}}
               for suffix in ("025", "050")}
     for row in rows:
         native = row["native_box"][:3] + [max(value, 1e-6) for value in row["native_box"][3:]]
@@ -120,13 +124,28 @@ for name, directory in (
             current["numerically_near_threshold_1e_minus9"] += abs(optimum - threshold) <= 1e-9
             current["minimum_threshold_distance"] = min(
                 current["minimum_threshold_distance"], abs(optimum - threshold))
+            if not oracle:
+                assert not actual
+                rank = row["first_good_rank" + suffix]
+                assert (rank is not None) == (row["oracle_iou"] > threshold)
+                if rank is None:
+                    category = "no_valid_candidate"
+                else:
+                    assert rank > 1
+                    category = "valid_inside_top10" if rank <= 10 else "valid_outside_top10"
+                cohort = current["unfixable_selected_gate_family"][category]
+                cohort["samples"] += 1
+                cohort["unique" if row["is_unique"] else "multiple"] += 1
     for suffix, current in counts.items():
         assert current["actual_hits"] == footer["semantic_hits" + suffix]
+        cohorts = current["unfixable_selected_gate_family"].values()
+        assert sum(cohort["samples"] for cohort in cohorts) == (
+            len(rows) - current["continuous_gate_oracle_hits"])
     result["conditions"][name] = {
         "samples": len(rows), "jsonl_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
         "thresholds": counts,
     }
-output = root / "reader_result_20261104/span-continuous-oracle-summary.json"
+output = root / "reader_result_20261104/span-continuous-oracle-cohorts.json"
 output.write_text(json.dumps(result, indent=2) + "\n")
 print(json.dumps(result))
 PY

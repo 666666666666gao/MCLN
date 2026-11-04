@@ -1,5 +1,13 @@
 # Current Checkpoint Storage Proposal
 
+## Update: 2026-11-04 14:19 UTC
+
+Current-only NR/SR checks confirmed their existing trainers, metric
+keepers and best/latest retention watchers remain live. NR68=2288/3742;
+SR26=1475/6486. No new full validation, checkpoint promotion or retention
+event was observed. Existing best/latest policy remains the only cleanup
+authority; no manual deletion, relinking or watcher restart.
+
 ## Update: 2026-11-04 14:03 UTC
 
 Current NR audit:epoch67 full7899=4089/3312;own CPU epoch,1134 tensors,

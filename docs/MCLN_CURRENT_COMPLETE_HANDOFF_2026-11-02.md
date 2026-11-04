@@ -1,5 +1,20 @@
 # Current MCLN + PV-Ground Handoff
 
+## Progress Override: 2026-11-04 14:19 UTC
+
+Current-only approved-wrapper checks confirmed NR3D run1793553113
+trainer96960/keeper135075/retention156800 live at epoch68=2288/3742 and
+SR3D run1793552465 trainer92354/keeper129032/retention148725 live at
+epoch26=1475/6486. Both use their unchanged original scratch configs and
+budgets, null initialization and innovations disabled. Recent parsed
+losses are finite and no recent error lines were found. No complete
+validation or retention event was observed; do not infer accuracy from
+the progress counters. Latest complete remain NR67=4089/3312 (best66=
+4255/3435), SR25=11686/9455 (best15=11743/9434); Scan best B2=5483/4656.
+All targets remain unmet. Approximate remaining train time is20min NR68
+and2h SR26 at the observed rates, then full validation. Raw progress
+receipt:`docs/results/mcln_pvground_20261101/mcln-monitor-progress-20261104T1419Z.json`.
+
 ## Progress Override: 2026-11-04 14:03 UTC
 
 NR3D run1793553113 completed epoch67 full7899 validation:4089/3312

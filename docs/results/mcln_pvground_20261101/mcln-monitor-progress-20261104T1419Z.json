@@ -1,0 +1,63 @@
+{
+  "observed_utc": "2026-11-04T14:19:43Z",
+  "runs": {
+    "nr3d": {
+      "run": "1793553113",
+      "trainer_pid": 96960,
+      "keeper_pid": 135075,
+      "retention_pid": 156800,
+      "trainer_live": true,
+      "progress_epoch": 68,
+      "progress_batches": "2288/3742",
+      "recent_losses_finite": true,
+      "recent_errors": [],
+      "config": {
+        "batch_size": 12,
+        "gradient_accumulation_steps": 4,
+        "lr": 0.0001,
+        "lr_backbone": 0.001,
+        "max_epoch": 240,
+        "lr_decay_epochs": [150],
+        "checkpoint_path": null,
+        "pp_checkpoint": null,
+        "use_pvground_innovations": false
+      }
+    },
+    "sr3d": {
+      "run": "1793552465",
+      "trainer_pid": 92354,
+      "keeper_pid": 129032,
+      "retention_pid": 148725,
+      "trainer_live": true,
+      "progress_epoch": 26,
+      "progress_batches": "1475/6486",
+      "recent_losses_finite": true,
+      "recent_errors": [],
+      "config": {
+        "batch_size": 12,
+        "gradient_accumulation_steps": 2,
+        "lr": 0.0001,
+        "lr_backbone": 0.001,
+        "max_epoch": 140,
+        "lr_decay_epochs": [30, 40],
+        "checkpoint_path": null,
+        "pp_checkpoint": null,
+        "use_pvground_innovations": false
+      }
+    }
+  },
+  "best_full_metrics_unchanged": {
+    "scanrefer": {"epoch": "stage_b_2", "examples": 9508, "hits025": 5483, "hits050": 4656},
+    "nr3d": {"epoch": 66, "examples": 7899, "hits025": 4255, "hits050": 3435},
+    "sr3d": {"epoch": 15, "examples": 17726, "hits025": 11743, "hits050": 9434}
+  },
+  "latest_full_metrics_unchanged": {
+    "nr3d": {"epoch": 67, "examples": 7899, "hits025": 4089, "hits050": 3312},
+    "sr3d": {"epoch": 25, "examples": 17726, "hits025": 11686, "hits050": 9455}
+  },
+  "approximate_remaining_training": {
+    "nr3d_epoch68": "about 20 minutes",
+    "sr3d_epoch26": "about 2 hours"
+  },
+  "scope": "Read-only current NR3D/SR3D status via the approved remote wrapper. No local model operation, no training/config/checkpoint/retention changes."
+}

@@ -8,8 +8,8 @@ launcher268814/GPU268817 live;23 train losses finite,last6.9396/6.9367/
 losses finite,last9.6311/9.6084/9.6252. SR25=937/6486,trainer/keeper/
 retention live,64 recent losses finite,last9.4817. Configs unchanged;
 no complete new metrics. Best remain Scan B25483/4656,NR64 4190/3394,
-SR15 11743/9434. Commits6b79493/27cc8af/5805d52 unpublished after remote
-push errors;last verified remote tip=a8b58a0. No local model/tests.
+SR15 11743/9434. Push recovered11:26UTC;queued commit chain and current
+progress receipts published asf3d3caf. No local model/tests.
 
 11:14:29UTC treatment reached1100/6081;controller265532/launcher268814/
 GPU268817 live,5.5GiB GPU memory.11parsed train-only losses all finite,

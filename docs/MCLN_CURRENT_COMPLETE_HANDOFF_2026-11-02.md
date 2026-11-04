@@ -2,6 +2,15 @@
 
 ## Current Override: 2026-11-04 10:00 UTC
 
+10:11UTC offline evidence supplement:archived selected-gate audit found
+B2 projection-proxy050 gains451,but only35 have any raw gate outside
+[0,1];416have no outside gate. Reader39of486,remaining447interior.
+Saturation therefore does not describe most measured projection-gap
+samples;it is not a training-gradient or causal finding. No gate function,
+network,loss weight or active recipe changed. See Span comparison doc
+and scanrefer-span-proxy-saturation-summary-20261104.json. GT proxy/grid
+are diagnostic only;sampled grid is not a certified continuous bound.
+
 Scan Span-only trial is actively training its matched control. Controller
 265532 and launcher266273 were live;GPU worker266278 used5472MiB.
 Control started09:49:09UTC from independent B2 model-only initialization

@@ -127,3 +127,38 @@ Control reached531/6081 at~1.92batches/s;rough full validation ETA
 10:55-11:05UTC. No full metric or final frozen-state checkpoint audit yet.
 The same controller owns treatment transition;do not start a second copy.
 Raw progress receipt:scanrefer-span-only-progress-20261104T1000.json.
+
+## Clamp Diagnostic: 2026-11-04 10:11 UTC
+
+Remote stdlib-only postprocessing of the same archived9508-record B2 and
+Reader evaluations added selected-gate saturation counts. Input SHA and
+reconstructed final boxes agree with the earlier proxy audit;no model
+was imported,no forward or new validation was run. Original proxy receipt
+is retained;new receipt is scanrefer-span-proxy-saturation-summary-20261104.json.
+
+| Selected-Query Statistic | B2 | Reader |
+| --- | ---: | ---: |
+| Total gate axes | 28524 | 28524 |
+| Raw gate below0 / above1 | 423 / 925 | 393 / 1220 |
+| Samples with any raw gate outside[0,1] | 857 | 1002 |
+| Outside axes whose clamped gate differs from GT projection by>1e-6 | 609 | 724 |
+| GT-projection050 gains | 451 | 486 |
+| These gains with any raw gate outside[0,1] | 35 | 39 |
+| These gains with all three raw gates outside[0,1] | 4 | 2 |
+| These gains with an outside axis differing from GT projection | 33 | 32 |
+
+B2 has416of451 projection-gain samples with no selected gate outside
+the clamp;Reader has447of486. Thus selected-gate saturation does not
+describe most of this measured projection gap. It does not establish
+why the remaining interior gates were learned incorrectly. Counts refer
+to selected validation queries,not training Hungarian eligibility or
+total model gradients. Outside-clamp derivatives are zero through the
+clamp alone;shared network parameters may still receive gradients from
+other axes,examples and auxiliary objectives.
+
+Do not replace clamp with sigmoid based on this diagnostic alone.
+Continue the registered matched weight0/0.1 training without source or
+hyperparameter changes. Its existing raw-gate auxiliary objective can
+also supervise interior gates. GT projection gains remain diagnostic,
+not achievable gains,method results,or causal proof. The125-point grid
+is a sampled oracle,not a certified continuous upper bound.

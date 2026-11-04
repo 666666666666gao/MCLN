@@ -49,7 +49,15 @@ for name, directory in (
         "final_hits", "proxy_hits", "grid_oracle_hits",
         "proxy_gains", "proxy_losses",
         "reference_valid_but_proxy_fails", "grid_fixes_proxy_failure",
+        "proxy_gains_with_raw_gate_outside_clamp",
+        "proxy_gains_with_all_raw_gates_outside_clamp",
+        "proxy_gains_with_outside_axis_target_different",
     )} for suffix in ("025", "050")}
+    saturation = {
+        "axes": len(rows) * 3, "raw_below_zero": 0, "raw_above_one": 0,
+        "samples_with_any_outside_axis": 0,
+        "outside_axes_with_projection_target_different": 0,
+    }
     max_reconstruction_error = 0.
     for row in rows:
         native = row["native_box"][:3] + [max(value, 1e-6) for value in row["native_box"][3:]]
@@ -67,6 +75,16 @@ for name, directory in (
             gates.append(min(1., max(0., projection / max(dc * dc + ds * ds, 1e-8))))
         proxy_iou = iou(mix(native, reference, gates), target)
         grid_iou = max(iou(mix(native, reference, gate), target) for gate in grid)
+        raw = row["selected_raw_gate"]
+        outside = [value < 0 or value > 1 for value in raw]
+        different = [
+            out and abs(gate - observed) > 1e-6
+            for out, gate, observed in zip(outside, gates, row["selected_clamped_gate"])
+        ]
+        saturation["raw_below_zero"] += sum(value < 0 for value in raw)
+        saturation["raw_above_one"] += sum(value > 1 for value in raw)
+        saturation["samples_with_any_outside_axis"] += any(outside)
+        saturation["outside_axes_with_projection_target_different"] += sum(different)
         for threshold, suffix in ((.25, "025"), (.5, "050")):
             final = row["selected_iou"] > threshold
             proxy = proxy_iou > threshold
@@ -79,15 +97,25 @@ for name, directory in (
             current["proxy_losses"] += final and not proxy
             current["reference_valid_but_proxy_fails"] += row["reference_iou"] > threshold and not proxy
             current["grid_fixes_proxy_failure"] += oracle and not proxy
+            gained = proxy and not final
+            current["proxy_gains_with_raw_gate_outside_clamp"] += gained and any(outside)
+            current["proxy_gains_with_all_raw_gates_outside_clamp"] += gained and all(outside)
+            current["proxy_gains_with_outside_axis_target_different"] += gained and any(different)
     assert max_reconstruction_error < 1e-4, max_reconstruction_error
     for suffix in counts:
         assert counts[suffix]["final_hits"] == footer["semantic_hits" + suffix]
     result["conditions"][name] = {
         "samples": len(rows), "jsonl_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
         "max_final_box_reconstruction_error": max_reconstruction_error,
+        "selected_gate_saturation": saturation,
         "thresholds": counts,
     }
-output = root / "reader_result_20261104/span-proxy-summary.json"
+result["interpretation"] = (
+    "Outside-clamp counts describe zero derivatives through the clamp in isolation. "
+    "They do not measure total training gradients, Hungarian eligibility, causality, "
+    "or attainable gains. Projection uses GT; differences at most 1e-6 are ignored."
+)
+output = root / "reader_result_20261104/span-proxy-saturation-summary.json"
 output.write_text(json.dumps(result, indent=2) + "\n")
 print(json.dumps(result))
 PY

@@ -1814,6 +1814,18 @@ User's canonical desktop document:
 `C:/Users/gb/Desktop/document/MCLN_CURRENT_COMPLETE_HANDOFF_2026-08-15.md`.
 Keep its historical sections; the current dated section takes precedence.
 Publish code and this document to https://github.com/666666666666gao/MCLN .
+## Current Override: 2026-11-04 03:43 UTC
+
+Current-only remote check03:42:35UTC: Scan Reader run1793763075 remains
+live at371/6081 augmented training batches,finite first update verified
+at batch6;GPU worker254229 uses22052MiB. At the observed1.2batches/s,
+rough full-validation ETA is around05:00UTC,not a completion claim.
+Current source/recipe unchanged since launch. No validation metric yet.
+NR run1793553113 epoch57 advanced to3115/3742,trainer96960 live,latest
+losses finite;epoch57 full evaluation is approaching. SR run1793552465
+epoch22 is1588/6486,trainer92354 live,latest losses finite. Both retain
+their original null-init scratch configurations and budgets.
+
 ## Current Override: 2026-11-04 03:39 UTC
 
 Authorized new ScanRefer Reader experiment is running in independent

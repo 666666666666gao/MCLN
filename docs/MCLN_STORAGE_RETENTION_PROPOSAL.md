@@ -1,5 +1,19 @@
 # Current Checkpoint Storage Proposal
 
+## Current Override: 2026-11-04 02:00 UTC
+
+NR3D retention audited current best49 and latest55 at01:57:07UTC; both
+own-epoch CPU checkpoints have1134 model tensors and nonempty optimizer/
+scheduler state. SHA: best49
+0987ce9208dca84686a45a7d80bad4f93f126f34be9c8303899a1b6bf68ed66b;
+latest55 721e834de0e1cd7605e66e06fd5a68fe44cc54926b0b91299fc595df2159873d.
+The watcher kept49/55 and removed only preserved54. Its receipt is in
+`nr3d-current-full-history-20261104T0156.json`.
+
+SR3D remains best15/latest20, both audited in the01:58UTC full-history
+receipt. Existing best/latest watchers remain the only retention authority;
+no manual deletion, relinking or watcher restart was performed.
+
 ## Current Override: 2026-11-04 01:12 UTC
 
 Current-run health at01:11UTC:NR3D run1793553113 trainer96960/keeper

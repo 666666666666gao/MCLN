@@ -1,23 +1,15 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 11:22 UTC
+## Current Override: 2026-11-04 11:26 UTC
 
-Remote current-only checks11:18:51-58UTC:Scan treatment1599/6081,
-controller265532/launcher268814/GPU268817 live;15train-only losses finite,
-last6.9688. Real update and frozen-state gates passed;no full score.
-NR trainer96960/keeper135075/retention156800 live,epoch65 2073/3742,
-69 parsed losses finite,last9.6084. SR trainer92354/keeper129032/
-retention148725 live,epoch25 637/6486,64 parsed losses finite,last9.4817.
-NR/SR original scratch configs/budgets/null initialization unchanged.
-No new full scores. Best Scan B2=5483/4656,gaps222/289 to5705/4945;
-NR64=4190/3394,gap534 to4724;SR15=11743/9434,gap559 to12302,
-latest full SR23=11388/9006. All targets unmet.
-
-Local commits6b79493/27cc8af remain unpublished after three remote
-Internal Server Error rejections,latest11:23:28UTC;last verified remote
-branch=a8b58a0. Current progress receipts recorded but not pushed.
-Preserve unrelated dirty files.
-No local model/tests.
+Remote receipts11:25:27-32UTC:Scan treatment2369/6081,controller265532/
+launcher268814/GPU268817 live;23 train losses finite,last6.9396/6.9367/
+6.9335,no errors. NR65=2545/3742,trainer/keeper/retention live,69 recent
+losses finite,last9.6311/9.6084/9.6252. SR25=937/6486,trainer/keeper/
+retention live,64 recent losses finite,last9.4817. Configs unchanged;
+no complete new metrics. Best remain Scan B25483/4656,NR64 4190/3394,
+SR15 11743/9434. Commits6b79493/27cc8af/5805d52 unpublished after remote
+push errors;last verified remote tip=a8b58a0. No local model/tests.
 
 11:14:29UTC treatment reached1100/6081;controller265532/launcher268814/
 GPU268817 live,5.5GiB GPU memory.11parsed train-only losses all finite,

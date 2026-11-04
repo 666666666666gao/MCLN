@@ -1,5 +1,14 @@
 # Fixed Upstream Span Training Comparison
 
+## Follow-Up: 2026-11-04 11:25 UTC
+
+Treatment2369/6081,controller265532/launcher268814/GPU268817 live.
+Train-only23 parsed losses finite,last6.9396/6.9367/6.9335,no error lines.
+NR65=2545/3742 and SR25=937/6486;both current trainers/keepers/retainers
+live and recent loss lists finite,with original scratch configs unchanged.
+No full results. Current bests remain Scan B25483/4656,NR64 4190/3394,
+SR15 11743/9434. See dated progress receipts in results directory.
+
 ## Follow-Up: 2026-11-04 11:18 UTC
 
 Treatment1599/6081,controller265532/launcher268814/GPU268817 live.

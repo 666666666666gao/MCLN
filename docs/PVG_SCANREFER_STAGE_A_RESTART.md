@@ -1,6 +1,12 @@
 # ScanRefer Stage A Restart
 
-## Current Override: 2026-11-04 11:06 UTC
+## Current Override: 2026-11-04 11:22 UTC
+
+Treatment1599/6081 at11:18:51UTC,controller/launcher/GPU live,15 parsed
+train losses finite,last6.9688. Actual optimizer steps1/2 passed with
+Span14/14 updates and frozen state unchanged;full9508 score pending.
+No duplicate launch. Immutable B2 remains best5483/4656 (gaps222/289
+to targets5705/4945).
 
 Treatment actual11:09:23UTC step1/2 passed:finite loss6.557239/7.686158,
 Span14/14 changed,finite gradients/deltas,frozen state unchanged.

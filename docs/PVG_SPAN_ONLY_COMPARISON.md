@@ -1,5 +1,15 @@
 # Fixed Upstream Span Training Comparison
 
+## Follow-Up: 2026-11-04 11:18 UTC
+
+Treatment1599/6081,controller265532/launcher268814/GPU268817 live.
+15 recent train losses finite,last6.9688. Actual first two optimizer
+steps passed,Span14/14 changed and frozen parameters/buffers unchanged.
+No full validation. NR65 simultaneously2073/3742 and SR25 637/6486;
+current-only receipts show finite recent losses and original configs.
+Current bests unchanged:Scan B25483/4656,NR64 4190/3394,SR15 11743/9434.
+See dated progress receipts in results directory. All targets unmet.
+
 ## Treatment Update Gate: 2026-11-04 11:09 UTC
 
 Treatment weight0.1 passed its actual first two optimizer-step witnesses:

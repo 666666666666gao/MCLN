@@ -1,6 +1,22 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 11:06 UTC
+## Current Override: 2026-11-04 11:22 UTC
+
+Remote current-only checks11:18:51-58UTC:Scan treatment1599/6081,
+controller265532/launcher268814/GPU268817 live;15train-only losses finite,
+last6.9688. Real update and frozen-state gates passed;no full score.
+NR trainer96960/keeper135075/retention156800 live,epoch65 2073/3742,
+69 parsed losses finite,last9.6084. SR trainer92354/keeper129032/
+retention148725 live,epoch25 637/6486,64 parsed losses finite,last9.4817.
+NR/SR original scratch configs/budgets/null initialization unchanged.
+No new full scores. Best Scan B2=5483/4656,gaps222/289 to5705/4945;
+NR64=4190/3394,gap534 to4724;SR15=11743/9434,gap559 to12302,
+latest full SR23=11388/9006. All targets unmet.
+
+Local commit6b79493 remains unpublished after two remote Internal Server
+Error rejections;last verified remote branch=a8b58a0. Current progress
+receipts recorded but not yet pushed. Preserve unrelated dirty files.
+No local model/tests.
 
 11:14:29UTC treatment reached1100/6081;controller265532/launcher268814/
 GPU268817 live,5.5GiB GPU memory.11parsed train-only losses all finite,

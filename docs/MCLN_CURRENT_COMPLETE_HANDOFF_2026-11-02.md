@@ -1,6 +1,27 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 08:55 UTC
+## Current Override: 2026-11-04 09:08 UTC
+
+Read-only Reader trial full9508 audit launched09:08:04UTC,screen
+pvg_scanrefer_reader_result_audit,controller263822;observed live loading
+validation data at09:08:52UTC. Remote CPU own epoch1/1169 tensors/
+optimizer/scheduler/SHA verified. No new training or parameter updates.
+At09:12:05UTC GPU263830 live,2280/9508 forward and semantic records,
+no footer;remaining~8minutes,rough completion09:20UTC.
+Directory:offline_audits/reader_result_20261104. Do not duplicate launch.
+Use tools/check_scanrefer_reader_result_audit.sh via approved wrapper;
+after completion run tools/summarize_scanrefer_reader_result_audit.sh.
+Require9508 records,evaluator agreement,and exact identity/points/GT
+pairing with B2 before interpreting gains/losses and candidate coverage.
+This compares different trained checkpoints,not isolated Reader causality
+or the matched trained control. See PVG_READER_COMPETITOR_EXPERIMENT.md.
+
+09:08UTC NR63=1293/3742,SR24=1921/6486. Actual trainer/keeper/retention
+PIDs all live,original scratch configs unchanged,finite recent losses,
+no errors. Latest complete/best below unchanged. Next full results roughly
+NR09:50UTC/SR11:00UTC;use actual progress. No local model/test operation.
+
+## Previous Override: 2026-11-04 08:55 UTC
 
 ### Latest complete metrics
 

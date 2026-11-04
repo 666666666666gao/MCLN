@@ -60,7 +60,48 @@ the regression; the observed learned `competitor_scale` is not causal
 evidence. Do not promote this checkpoint as a new best or claim a robust
 module result.
 
-## Live Progress: 2026-11-04 04:46 UTC
+## Registered Paired Diagnosis: 2026-11-04 09:08 UTC
+
+The completed trial's aggregate regression does not identify whether lost
+examples lack a valid predicted box or have a valid box ranked below Top1.
+The existing B2 sample audit cannot answer that question for the newly
+trained checkpoint. No additional training recipe is selected from the
+negative aggregate result alone.
+
+A read-only full9508 evaluation was launched in screen
+`pvg_scanrefer_reader_result_audit`, controller263822, from the completed
+Reader checkpoint SHA67cef44cd6ec253806eced03b1ca79f115d13d4e681c9da69730ca767b0fda35.
+Remote CPU preparation independently verified own epoch1,1169 tensors,
+nonempty optimizer/scheduler and SHA; CUDA was not initialized there.
+The evaluator uses the trial's existing source,seed0,batch8 and existing
+forward/semantic audit hooks with bypass=none. It writes under
+`offline_audits/reader_result_20261104`; no parameter update is performed.
+At09:08:52UTC controller263822 was live and loading validation data;
+there were no semantic records or completion footer yet.
+At09:12:05UTC GPU worker263830 was live;the audit had2280 forward and
+2280 semantic records of9508,no completion footer,and roughly8minutes
+remaining. This verifies actual forward progress,not just screen launch.
+
+After completion, require9508 forward and semantic records, agreement
+with the real evaluator counters, and exact ordered identity/point/GT
+hash pairing with the existing B2 JSONL. Count gained/lost examples at
+both thresholds,unique/multiple groups,and disjoint failure categories:
+no valid candidate;valid candidate outside Top10;valid candidate inside
+Top10 but not selected. These are measured candidate coverage/ranking
+categories,not isolated module causes. Different trained checkpoints can
+change both features and geometry. This comparison is against immutable
+B2,not the matched one-epoch trained control; do not attribute all
+differences to the competitor residual.
+
+Helpers:tools/run_scanrefer_reader_result_audit.sh,
+tools/check_scanrefer_reader_result_audit.sh,and
+tools/summarize_scanrefer_reader_result_audit.sh. The reducer reuses the
+existing complete-JSONL verifier and refuses unpaired or incomplete data.
+Run it remotely after completion; no local ML operation or local test.
+Preparation receipt:results/mcln_pvground_20261101/
+scanrefer-reader-result-audit-preparation-20261104.json.
+
+### Historical Progress: 2026-11-04 04:46 UTC
 
 The registered run remains active at5118/6081 augmented training batches
 (84%); GPU worker254229 was active. The latest first-update witness remains

@@ -1,5 +1,31 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 01:22 UTC
+
+At01:21UTC NR3D run1793553113 was live with trainer/keeper/retention
+96960/135075/156800,epoch55=1852/3742. The original null-init recipe
+was unchanged;68 recent losses were finite,latest9.9468,no errors.
+Latest full remains54=4004/3233,best49=4123/3325;next full result is
+estimated01:55-02:00UTC.
+
+At01:21UTC SR3D run1793552465 was live with trainer/keeper/retention
+92354/129032/148725,epoch21=2385/6486. The original null-init recipe
+was unchanged;64 recent losses were finite,latest9.6754,no errors.
+Latest full remains20=11445/9060,best15=11743/9434;next full result is
+estimated03:00-03:15UTC. Retention watchers remain the sole cleanup
+authority.
+
+Source research: official DETR and3DETR implementations use explicit
+Hungarian assignment for object-level auxiliary losses and define the
+unmatched-query path. The transferable rule is assignment eligibility and
+gradient routing,not direct port of their matching costs. MCLN's audited
+auxiliary target currently has no connected matcher/loss,and verified
+human anchor IDs are absent from the inspected ScanRefer training records.
+This supports further train-only label-coverage/mapping verification before
+a Reader change;it does not establish a root cause or accuracy gain. Details
+and repository references:PVG_READER_ANCHOR_SUPERVISION_REFERENCE.md.
+No source change,training launch or target attainment is claimed.
+
 ## Current Override: 2026-11-04 01:12 UTC
 
 At01:11UTC NR3D run1793553113 remained live with trainer96960,

@@ -13,6 +13,7 @@ def main():
     parser.add_argument("--trial", required=True, type=Path)
     parser.add_argument("--condition", choices=("preflight", "control", "span"), required=True)
     parser.add_argument("--local-rank", type=int, default=0)
+    parser.add_argument("--span-only", action="store_true")
     options = parser.parse_args()
     assert options.local_rank == 0
     trial = options.trial
@@ -33,8 +34,10 @@ def main():
         arguments[arguments.index(key) + 1] = value
     weight = 0.0 if condition == "control" else 0.1
     arguments += ["--pvground_span_gate_loss_weight", str(weight)]
+    if options.span_only:
+        arguments += ["--pvground_span_train_only"]
     if condition == "preflight":
-        arguments += ["--max_train_batches", "6"]
+        arguments += ["--max_train_batches", "12" if options.span_only else "6"]
     sys.argv = [sys.argv[0]] + arguments
     args = trainer.prepare_source_moe_gate_checkpoint_config(trainer.parse_option())
     assert args.max_epoch == 1 and args.checkpoint_start_epoch == 1
@@ -42,7 +45,9 @@ def main():
     assert args.pp_checkpoint is None and args.expected_eval_sample_count == 9508
 
     class ComparisonTrainer(trainer.TrainTester):
-        get_optimizer = staticmethod(build_optimizer)
+        get_optimizer = staticmethod(
+            main_utils.BaseTrainTester.get_optimizer if options.span_only else build_optimizer
+        )
 
         def _build_grounding_evaluator(self, settings, prefixes):
             self.semantic_evaluator = super()._build_grounding_evaluator(settings, prefixes)
@@ -80,6 +85,23 @@ def main():
             assert saved["epoch"] == 1 and len(saved["model"]) == 1168
             assert saved["optimizer"]["state"] and saved["scheduler"]
             assert saved["config"].pvground_span_gate_loss_weight == weight
+            if options.span_only:
+                initial = torch.load(checkpoint, map_location="cpu", weights_only=False)
+                frozen = [key for key in initial["model"]
+                          if not key.removeprefix("module.").startswith("pvground_span_mixer.")]
+                assert all(torch.equal(initial["model"][key], saved["model"][key])
+                           for key in frozen)
+                span_names = [key for key in initial["model"]
+                              if key.removeprefix("module.").startswith("pvground_span_mixer.")]
+                assert len(span_names) == 14
+                assert any(not torch.equal(initial["model"][key], saved["model"][key])
+                           for key in span_names)
+                main_utils._atomic_json_save({
+                    "frozen_model_tensors": len(frozen),
+                    "frozen_tensors_equal_initialization": True,
+                    "span_tensors": len(span_names),
+                    "span_changed": True,
+                }, str(trial / f"{condition}_frozen_state.json"))
             digest = hashlib.sha256(saved_path.read_bytes()).hexdigest()
             preserved = run / "preserved_checkpoints"
             preserved.mkdir()
@@ -91,6 +113,7 @@ def main():
                 own_cpu_epoch=1, model_tensors=1168,
                 nonempty_optimizer=True, has_scheduler=True,
                 comparison_budget="one full epoch; exploratory single-seed pilot",
+                span_only=options.span_only,
             )
             main_utils._atomic_checkpoint_hardlink(str(target), str(run / "semantic_best.pth"))
             main_utils._atomic_json_save(row, str(run / "semantic_best.json"))
@@ -110,7 +133,9 @@ def main():
         "condition": condition, "checkpoint_sha256": preparation["checkpoint_sha256"],
         "optimizer_restored": False, "scheduler_restored": False,
         "gate_loss_weight": weight, "seed": 0, "max_epoch": 1,
-        "train_budget": "6 batches diagnostic" if condition == "preflight" else "full48655 augmented entries",
+        "span_only": options.span_only,
+        "train_budget": ("12 batches diagnostic" if options.span_only else "6 batches diagnostic")
+        if condition == "preflight" else "full48655 augmented entries",
     }, str(trial / f"{condition}_start.json"))
     ComparisonTrainer(args).main(args)
     main_utils._atomic_json_save({

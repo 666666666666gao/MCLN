@@ -833,6 +833,7 @@ def parse_option():
     parser.add_argument('--use_candidate_local_visual', action='store_true', default=False)
     parser.add_argument('--use_pvground_innovations', action='store_true', default=False)
     parser.add_argument('--pvground_train_only', action='store_true')
+    parser.add_argument('--pvground_span_train_only', action='store_true')
     parser.add_argument('--pvground_span_gate_loss_weight', type=float, default=0.0)
     parser.add_argument('--candidate_local_visual_lr', type=float, default=1e-4)
     parser.add_argument('--candidate_local_visual_variant', choices=['local', 'center', 'extent'],
@@ -5221,9 +5222,14 @@ class BaseTrainTester:
     @staticmethod
     def get_optimizer(args, model):
         """Initialize optimizer."""
-        if getattr(args, "pvground_train_only", False):
-            prefixes = ("decoder.5.local_visual.",
-                        "pvground_support_corrector.", "pvground_span_mixer.")
+        if (getattr(args, "pvground_train_only", False)
+                or getattr(args, "pvground_span_train_only", False)):
+            prefixes = (
+                ("pvground_span_mixer.",)
+                if getattr(args, "pvground_span_train_only", False)
+                else ("decoder.5.local_visual.",
+                      "pvground_support_corrector.", "pvground_span_mixer.")
+            )
             for name, parameter in model.named_parameters():
                 parameter.requires_grad = name.removeprefix("module.").startswith(prefixes)
             return torch.optim.AdamW(
@@ -7331,6 +7337,12 @@ class BaseTrainTester:
 
     @staticmethod
     def _set_source_moe_train_mode(model, args):
+        if getattr(args, "pvground_span_train_only", False):
+            model.eval()
+            unwrapped = model.module if hasattr(model, "module") else model
+            unwrapped.training = True
+            unwrapped.pvground_span_mixer.train()
+            return
         if getattr(args, "pvground_train_only", False):
             model.eval()
             unwrapped = model.module if hasattr(model, "module") else model
@@ -7593,11 +7605,17 @@ class BaseTrainTester:
             "pvground_support_corrector.",
             "pvground_span_mixer.",
         )
+        if getattr(args, "pvground_span_train_only", False):
+            innovation_probe_prefixes = ("pvground_span_mixer.",)
         innovation_probe = None
-        innovation_probe_steps = 2 if getattr(args, "pvground_train_only", False) else 1
+        frozen_training = (
+            getattr(args, "pvground_train_only", False)
+            or getattr(args, "pvground_span_train_only", False)
+        )
+        innovation_probe_steps = 2 if frozen_training else 1
         frozen_parameters = None
         frozen_buffers = None
-        if getattr(args, "pvground_train_only", False):
+        if frozen_training:
             frozen_parameters = {
                 name: parameter.detach().cpu().clone()
                 for name, parameter in model.named_parameters()

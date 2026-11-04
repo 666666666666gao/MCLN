@@ -1,6 +1,18 @@
 # ScanRefer Stage A Restart
 
-## Current Override: 2026-11-04 05:27 UTC
+## Current Override: 2026-11-04 10:00 UTC
+
+Historical Stage A/B and Reader trials below are complete. A new registered
+Span-only matched comparison is live in screen pvg_scanrefer_span_only;
+see PVG_SPAN_ONLY_COMPARISON.md. Controller265532 owns both conditions.
+Control started09:49:09UTC and reached531/6081 at10:00:03. Its two actual
+optimizer steps passed finite loss,14/14 Span updates and unchanged frozen
+parameters/buffers. Full validation is pending;do not duplicate launch.
+B2 remains best5483/4656. Treatment is independent B2 initialization with
+projection weight0.1 versus matched control0;only existing Span is trained.
+NR/SR continue original scratch budgets. No local ML execution.
+
+## Previous Override: 2026-11-04 05:27 UTC
 
 Stage A, Stage B, fixed-B2 diagnostics, and the registered Span pilot are
 complete. The new isolated Reader competitor run `1793763075` also finished

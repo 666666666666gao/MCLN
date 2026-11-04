@@ -1,6 +1,55 @@
 # Current MCLN + PV-Ground Handoff
 
-## Current Override: 2026-11-04 09:24 UTC
+## Current Override: 2026-11-04 10:00 UTC
+
+Scan Span-only trial is actively training its matched control. Controller
+265532 and launcher266273 were live;GPU worker266278 used5472MiB.
+Control started09:49:09UTC from independent B2 model-only initialization
+with fresh optimizer/scheduler,weight0,seed0. Its own first two steps
+(batch6/12) passed:finite losses6.5439133644104/7.6695380210876465,
+Span14/14 tensors updated at both steps,and frozen parameters/buffers
+unchanged. At10:00:03UTC control reached531/6081 (~1.92batches/s).
+Rough full-control validation ETA10:55-11:05UTC;update from actual speed.
+Existing screen pvg_scanrefer_span_only owns control->span transition;
+do not duplicate launch. Treatment weight0.1 starts independently from B2.
+No full result yet. At each save require full9508,CPU own epoch/model/
+optimizer/scheduler/SHA plus exact equality of1154 non-Span tensors to B2.
+Evidence:scanrefer-span-only-progress-20261104T1000.json and
+docs/PVG_SPAN_ONLY_COMPARISON.md. Preflight12batches/two steps also passed.
+
+NR63 completed full7899=4150/3291 (52.538296%/41.663502%).
+Best59 remains4161/3331 (52.677554%/42.169895%);latest is-11/-40hits.
+CPU own63/1134 tensors/nonempty optimizer/scheduler/SHA verified09:52UTC.
+SHA674e4982928ce6052bd9ab136be963513e35aebe0b0a1a5892093a30fe3d08a5.
+Existing retention kept59/63 and removed62;full epoch metrics remain.
+SR latest full23=11388/9006,best15=11743/9434;SR24 was live09:41UTC.
+NR/SR original scratch configurations and full budgets remain unchanged.
+All targets remain unmet. Local work was file/Git/result processing only.
+
+## Previous Override: 2026-11-04 09:46 UTC
+
+New Scan trialscanrefer_span_only_20261104,screenpvg_scanrefer_span_only,
+controller265532 owns preflight/control/span;started09:42:21UTC.
+At09:45:56 preflight loading training data,no optimizer/GPU witness yet.
+Remote preparation and actual-method optimizer/mode unit test passed;
+full-model12-batch/two-step frozen-state gates pending. Do not duplicate.
+Both full conditions independently from B2,original Reader,fresh optimizer/
+scheduler,only14 Span tensors trainable,others/BN frozen. Control gate
+projection weight0,treatment0.1,seed0/batch8/accum6/moduleLR2e-5,one full
+48655training epoch+9508validation each. Full save must verify all1154
+other model tensors unchanged. See PVG_SPAN_ONLY_COMPARISON.md.
+
+Archived-box stdlib diagnostic:B2 current0504656,GT projection5103,
+125-grid oracle5152;Reader4609/5090/5136. Reconstruction within5e-7.
+GT diagnostics,not achieved accuracy;motivate isolating learning before
+replacing the proxy. Source CRLF patch rejection halted before execution;
+explicit finish after verified diff succeeded. No fallback/restart.
+
+09:41UTC NR63=3579/3742,SR24=3470/6486;actual trainer/keeper/retention
+live,finite loss,no errors,original configs/budgets unchanged. No new
+complete metric. All remote work approved wrapper,no local model/tests.
+
+## Previous Override: 2026-11-04 09:24 UTC
 
 Reader sample audit completed09:20:26UTC,exit0,full9508 forward/semantic
 records,evaluator agreement and exact ordered identity/points/GT pairing

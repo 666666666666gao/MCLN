@@ -1,5 +1,23 @@
 # Current Checkpoint Storage Proposal
 
+## Update: 2026-11-04 09:52 UTC
+
+NR63 full7899=4150/3291 (52.538296%/41.663502%),best59 remains4161/3331.
+CPU own epochs59/63,1134 tensors,nonempty optimizer/scheduler,SHA and
+preserved paths passed;latest63 SHA
+674e4982928ce6052bd9ab136be963513e35aebe0b0a1a5892093a30fe3d08a5.
+The existing watcher kept59/63 and removed only preserved62 at09:50:30UTC.
+Full-history receipt records the removal and all complete rows;CSV path
+markers now follow actual recorded retention removals,not old CPU audits.
+No new cleanup process or manual deletion.
+
+New Scan Span-only trial has two independent one-epoch conditions and
+a bounded preflight. It reuses immutable B2 as input;do not delete B2.
+Preflight has no full checkpoint. Each completed condition's sole weight
+is its best/latest;full result must pass frozen-state and CPU audits.
+No new retention watcher was started. Earlier stopped runs and input
+weights were not cleaned or resumed.
+
 ## Current Override: 2026-11-04 05:59 UTC
 
 NR3D run1793553113 epoch59 completed full7899 validation at4161/3331.

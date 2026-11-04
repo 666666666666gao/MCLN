@@ -1,6 +1,29 @@
 # Current Checkpoint Storage Proposal
 
-## Current Override: 2026-11-04 00:00 UTC
+## Current Override: 2026-11-04 01:00 UTC
+
+NR3D epoch54 completed full7899 last semantic Top1 validation at
+4004/3233 hits (50.689961%/40.929232%). Best remains epoch49=4123/3325;
+epoch54 is -119/-92 hits versus best and720 Acc@0.25 hits below the
+4724-hit target. The CPU audit verified own epoch54,1134 model tensors,
+nonempty optimizer/scheduler and SHA256
+497ac38f13ddc83612953d019891a9c4d7100d6f1ec91acea2d5cfa166551b8e.
+The existing watcher applied at00:56:55UTC,kept49/54 and removed only
+preserved epoch53;its audit remains in the full-history receipt and the
+epoch53 metric remains marked with a removed-weight status.
+
+At00:59UTC NR trainer96960/keeper135075/retention156800 were live at
+358/3742 for epoch55,with unchanged original null-init scratch config,
+finite recent losses and no logged errors. Next full result is estimated
+around01:45-02:00UTC. SR remains best15=11743/9434,latest20=11445/9060;
+its00:53UTC progress was1123/6486 on the unchanged config,with finite
+recent losses and no errors; next full result is estimated around
+02:55-03:20UTC. Existing watchers remain the sole retention authority.
+Receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T0058.json`
+and`docs/results/mcln_pvground_20261101/sr3d-current-full-history-20261104T0036.json`.
+
+## Prior Override: 2026-11-04 00:00 UTC
 
 At00:35UTC the collector confirmed SR3D epoch20 completed full17726
 semantic Top1 validation:

@@ -1,5 +1,16 @@
 # Current Checkpoint Storage Proposal
 
+## Current Override: 2026-11-04 03:00 UTC
+
+NR3D watcher applied at02:57:18UTC: best49 and latest56 were CPU audited
+and retained; only preserved55 was removed. Epoch56 own epoch,1134 tensors,
+nonempty optimizer/scheduler and SHA
+b5b62f509cf9776ba4d3b87ea52fc448f7951edce194243dac6dcd740e19975f
+were independently verified. Historical metrics and receipts remain.
+See `nr3d-current-full-history-20261104T0259.json`.
+SR21 validation is still in progress; its last audited kept set is15/20.
+No manual deletion or additional watcher was used.
+
 ## Current Override: 2026-11-04 02:00 UTC
 
 NR3D retention audited current best49 and latest55 at01:57:07UTC; both

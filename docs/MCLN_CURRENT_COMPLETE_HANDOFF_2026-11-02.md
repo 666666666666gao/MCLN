@@ -1,5 +1,24 @@
 # Current MCLN + PV-Ground Handoff
 
+## Current Override: 2026-11-04 03:00 UTC
+
+NR3D run1793553113 epoch56 completed full7899 last semantic Top1 validation:
+4090/3316 hits (51.778706%/41.979997%). Best remains49=4123/3325;
+latest56 is -33/-9 hits versus best and634 Acc@0.25 hits below target4724.
+The02:58UTC collector verified best49/latest56 own CPU epochs,1134 tensors,
+nonempty optimizer/scheduler, SHA and preserved links. Epoch56 SHA:
+b5b62f509cf9776ba4d3b87ea52fc448f7951edce194243dac6dcd740e19975f.
+Retention applied02:57:18UTC, kept49/56 and removed only preserved55;
+all epoch metrics and historical audits remain. Receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261104T0259.json`.
+Trainer96960 was live at02:59UTC in epoch57, with original scratch
+configuration unchanged.
+
+At02:58UTC SR3D run1793552465 remained live in epoch21 full validation
+at677/1478 batches, not a complete result. Original scratch config and
+retention watcher unchanged. Last complete20=11445/9060, best15=
+11743/9434 over17726. No ScanRefer restart or local model execution.
+
 ## Current Override: 2026-11-04 02:00 UTC
 
 At01:57UTC NR3D run1793553113 completed full7899 validation for epoch55:

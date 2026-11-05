@@ -53,7 +53,7 @@ progress = [
     for line in lines
     if re.search(r"\d+/\d+|Epoch|epoch|loss|Loading|validation", line, re.I)
 ][-30:]
-errors = [
+error_lines = [
     line.strip()[:300]
     for line in lines
     if any(
@@ -65,7 +65,15 @@ errors = [
             "AssertionError:",
         )
     )
-][-8:]
+]
+traceback_starts = [
+    index for index, line in enumerate(lines)
+    if "Traceback (most recent call last):" in line
+]
+historical_error_context = [
+    [line.strip()[:500] for line in lines[index:index + 14]]
+    for index in traceback_starts[-2:]
+]
 witnesses = {}
 for name in ("pvground_first_update.json", "pvground_second_update.json"):
     matches = list(run.rglob(name))
@@ -99,10 +107,34 @@ result = {
         if (run / "started.json").exists()
         else None
     ),
+    "resume_receipt": (
+        json.loads((run / "resume_epoch1.json").read_text())
+        if (run / "resume_epoch1.json").exists()
+        else None
+    ),
     "first_update_witnesses": witnesses,
     "progress_tail": progress,
     "log_tail": [line.strip()[:500] for line in lines[-80:]],
-    "recent_errors": errors,
+    "historical_error_lines": error_lines[-8:],
+    "historical_error_context": historical_error_context,
+    "recent_errors": [
+        line.strip()[:300]
+        for line in lines[-250:]
+        if any(
+            token in line
+            for token in (
+                "Traceback (most recent call last):",
+                "RuntimeError:",
+                "CUDA out of memory",
+                "AssertionError:",
+            )
+        )
+    ][-8:],
+    "resume_exit_code": (
+        (trial / "exit_code_resume_epoch1").read_text().strip()
+        if (trial / "exit_code_resume_epoch1").exists()
+        else None
+    ),
     "exit_code": (
         (trial / "exit_code").read_text().strip()
         if (trial / "exit_code").exists()

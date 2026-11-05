@@ -1,13 +1,35 @@
 # ScanRefer Stage A Restart
 
-## QILA Progress: 2026-11-05 19:11 UTC
+## QILA Resume Progress: 2026-11-05 20:46 UTC
 
-The same registered trial remains live at epoch1 batch3797/6081. GPU
-22153 MiB and 83% utilization were observed with no recent error lines.
-The first optimizer witness remains valid: finite loss7.640077 and
-Reader/Support/Span updates10/10/14. The QILA rank loss was finite
-(`0.6555` at the latest logged interval). Full9508 validation is pending;
-do not promote a score or start another run.
+The same user-authorized trial continues after its first runner completed
+epoch1 validation and exited1 because it required a second-update witness
+that was absent; its traceback confirms the missing
+`pvground_second_update.json`. The epoch1 checkpoint passed CPU audit (own epoch,
+1168 tensors, nonempty optimizer/scheduler), SHA
+`27a367592e918b2defbd60d8dd0ce65f4a6e562a91d1b1944d2325f6986a7f87`.
+Epoch1 full9508 last-semantic Top1 rates0.56437/0.46519 uniquely recover
+5366/4423 hits; epoch2 validation is pending.
+
+Recovery uses the same run and screen, resumed from epoch1 with
+optimizer/scheduler restoration=true in the resume receipt. At20:46:06UTC it was alive at epoch2
+batch1900/6081 on GPU0. Its epoch2 batch6 witness records finite loss
+3.204985 and Reader/Support/Span updates10/10/14 with finite nonzero
+gradients/deltas. Recipe remains B2 initialized, batch8/accum6/seed0,
+LR2e-6/4e-6/2e-5, QILA weight0.3, eight epochs/no early stopping. Do not
+stop, duplicate, or alter the live recipe.
+
+The generic checker had conflated attempt1 tracebacks with current errors.
+It now reports historical error lines separately from errors in the latest
+250 log lines and includes the resume receipt/recovery exit code. Current
+check at20:40:30UTC showed no recent errors, active recovery workers/GPU,
+and the original `exit_code=1` only; recovery exit receipt is not yet
+written. This QILA trial is not claimed to be an exact document X1-vs-X0
+comparison. Its recipe updates Reader/Support/Span, so it also does not
+meet the plan's QILA-only-through-Reader isolation. Do not alter a live
+run; after its natural completion, verify all same-checkpoint full9508
+semantic rows and CPU audits, then proceed one-at-a-time only through
+the plan's explicit preflight and promotion gates.
 
 ## QILA Follow-Up Launch: 2026-11-05 18:15 UTC
 

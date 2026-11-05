@@ -1,14 +1,39 @@
-## Current Override: 2026-11-05 19:11 UTC
+## Current Override: 2026-11-05 20:46 UTC
 
-The registered ScanRefer QILA trial remains live and unchanged:
-`scanrefer_qila_20261105`, screen `pvg_scanrefer_qila_20261105`. It has
-advanced to epoch1 batch3797/6081 with GPU activity and no recent errors.
-The first optimizer witness remains valid (finite loss 7.640077; Reader,
-Support and Span updated 10/10/14 tensors). No full9508 validation exists
-yet, so no ScanRefer score is promoted. The same immutable B2 SHA,
-QILA recipe, 8-epoch budget and no-early-stop policy remain in force.
-Receipt:
-`docs/results/mcln_pvground_20261101/scanrefer-qila-progress-20261105T1911.json`.
+The same authorized ScanRefer QILA trial is actively training and must
+continue; do not stop, duplicate, or change its running recipe. Screen
+`pvg_scanrefer_qila_20261105`, controller/trainer PID323406, resumed run
+1793909615. At20:46:06UTC it was epoch2 batch1900/6081 on GPU0
+(22095MiB,23%), with no new full9508 epoch validation. The epoch2 first
+optimizer witness at batch6 records finite loss3.204985 and actual
+Reader/Support/Span updates10/10/14 tensors, all with finite nonzero
+gradients and parameter deltas.
+
+The first attempt completed epoch1 validation, then exited1 because the
+runner required a second-update witness that was absent. Preserve this
+failure log/receipt. Epoch1 full9508 last-semantic Top1 rates rounded in
+the log to0.56437/0.46519 uniquely recover hits5366/4423; its checkpoint
+passed own-epoch,1168-tensor,nonempty optimizer/scheduler CPU audit, SHA
+`27a367592e918b2defbd60d8dd0ce65f4a6e562a91d1b1944d2325f6986a7f87`.
+The same trial resumed from that epoch1 checkpoint. The resume receipt
+records optimizer/scheduler restored=true; `started.json` describes the
+initial model-only setup and is not a resume audit. The generic checker
+initially surfaced attempt1's original exit_code1 and tracebacks while
+the recovery process was live; the updated scoped checker now separates
+historical errors from recent errors and confirms recent_errors is empty.
+The captured historical traceback confirms the missing
+`pvground_second_update.json` caused attempt1's exit1.
+The original exit_code1 remains historical; recovery has no exit receipt
+while it is live.
+
+Recipe remains batch8/accum6/seed0, native/backbone/PV-Ground LR
+2e-6/4e-6/2e-5, QILA weight0.3, 8 epochs, no early stopping, immutable B2
+model initialization SHA
+`46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8`.
+Epoch2 full validation is pending; global best remains B2=5483/4656.
+Do not use training counters or overall/position/mask scores as semantic
+Top1. Refresh NR/SR latest values with current-only collectors before
+reporting them as current.
 
 NR3D epoch95 is now fully synchronized after the save/retention window:
 latest `4198/3384` over7899, own CPU epoch95/1134 tensors/nonempty

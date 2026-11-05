@@ -1,4 +1,19 @@
-## Update: 2026-11-05 06:20 UTC
+## Update: 2026-11-05 08:32 UTC
+
+Current own CPU audits passed for NR best66/latest84,SR best/latest32,
+and Scan BBF-quality best1/latest4. NR/SR have1134 model tensors;Scan
+has1169. All retained checkpoints have nonempty optimizer/scheduler and
+matching own epoch/SHA;CUDA uninitialized. Existing retention receipts
+match these completed epochs. Scan2/3 have been removed by its existing
+run policy;historical metrics/audits remain. NR/SR histories and retained
+status are in *current-full-history-20261105T0830.json;Scan in
+scanrefer-bbf-quality-full-history-20261105T0831.json. Updated full CSVs
+mark removed paths rather than imply historical checkpoints still exist.
+Do not repeat cleanup,start watchers,or manually relink/delete. Same Scan
+trainer294910 is live in epoch5 and must not be stopped;NR/SR original
+trainers/keepers/retainers remain live with unchanged recipes.
+
+## Previous Update: 2026-11-05 06:20 UTC
 
 At06:19UTC the current Scan BBF-quality trainer PID294910 was live in
 epoch3 at2849/6081 with GPU92% and finite update witnesses. No recent

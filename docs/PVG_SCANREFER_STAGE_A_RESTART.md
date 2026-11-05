@@ -1,5 +1,40 @@
 # ScanRefer Stage A Restart
 
+## Current BBF-Quality Update: 2026-11-05 08:32 UTC
+
+Same trainer294910 and screen remain live at08:29:56UTC,epoch5=2848/6081,
+GPU57%,finite epoch5 first/second update losses and actual adapter1/1
+updates,frozen parameters/buffers unchanged,no error lines. No stop,
+restart,duplicate launch or recipe change. Keep the ten-epoch budget
+with no early stopping as explicitly requested by the user.
+
+Full9508 last semantic alignment Top1/BBF:
+
+| Adapter Epoch | Hits025 | Hits050 | Acc025 (%) | Acc050 (%) |
+| --- | ---: | ---: | ---: | ---: |
+| 1 | 5383 | 4518 | 56.615482 | 47.517880 |
+| 2 | 5150 | 4203 | 54.164914 | 44.204880 |
+| 3 | 5136 | 4196 | 54.017669 | 44.131258 |
+| 4 | 5180 | 4254 | 54.480438 | 44.741271 |
+
+All history pairs agree with complete semantic log lines to printed
+precision. Epoch4 gained44/58 hits over3 but trails B2 by303/402;
+best in this trial remains1 and global best remains B2=5483/4656.
+The log's epoch4 overall50=0.5011569205 is not semantic Top1=0.44741;
+do not use overall/position/mask to claim a semantic improvement.
+This is an observed semantic regression,not a diagnosed root cause.
+
+At08:31UTC independent CPU audits verified retained best1/latest4:
+own epochs,1169 tensors,nonempty optimizer/scheduler,adapter-only config
+and SHA matching history,CUDA uninitialized. Epoch4 SHA
+00f0c6da0128b76b46344d8d4812a8de00181491e58010b03645362fea2b8593.
+Epochs2/3 have been removed by existing authorized run retention; keep
+their full metrics and runtime audit history. No manual cleanup.
+Receipt:docs/results/mcln_pvground_20261101/scanrefer-bbf-quality-full-history-20261105T0831.json.
+CSV:docs/results/mcln_pvground_20261101/scanrefer-bbf-quality-all-epochs.csv.
+Collector:tools/collect_current_scanrefer_bbf_quality_history.sh,
+executed remotely only through work/remote_pvground.ps1.
+
 ## Current BBF-Quality Fine-Tuning: 2026-11-05 06:20 UTC
 
 Current-only check at06:19UTC confirmed the same trainer PID294910 and

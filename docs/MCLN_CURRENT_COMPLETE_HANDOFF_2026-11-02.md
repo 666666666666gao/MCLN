@@ -1,4 +1,59 @@
-## Current Override: 2026-11-05 06:20 UTC
+## Current Override: 2026-11-05 08:32 UTC
+
+Only current registered runs were checked through `work/remote_pvground.ps1`.
+Scan trainer294910/screen pvg_scanrefer_bbf_quality_20261104 remain live:
+at08:29:56UTC epoch5=2848/6081, GPU57%, no error lines. Its epoch5
+first/second update witnesses have finite losses4.66376686/4.51474285,
+finite nonzero adapter gradients/deltas,1/1 tensor updated, and frozen
+parameters/buffers unchanged. Keep the authorized ten-epoch run running
+with no early stop; do not stop, restart, duplicate or change its recipe.
+
+Full9508 semantic Top1/BBF histories now contain adapter epochs1-4:
+5383/4518,5150/4203,5136/4196,5180/4254 hits025/050. All four pairs agree
+with the complete log's last_ semantic alignment Top1 lines. Epoch4 is
+54.480438%/44.741271%,+44/+58 hits versus3 but-303/-402 versus immutable
+B2. Trial best remains1; global best remains B2=5483/4656.
+Independent CPU audits at08:31UTC verified retained best1/latest4:
+own epochs,1169 tensors,nonempty optimizer/scheduler,adapter-only config,
+SHA matches,CUDA uninitialized. Epoch4 SHA
+00f0c6da0128b76b46344d8d4812a8de00181491e58010b03645362fea2b8593.
+Existing run retention kept1/4 and removed older2/3; their full metric
+and historical runtime audit rows remain. Historical audits do not imply
+weights still exist; no manual deletion was performed.
+
+Metric interpretation issue confirmed from this run's full log: epoch4
+overall25/overall50=0.5760412284/0.5011569205, whereas last_ semantic
+Top1=0.54480/0.44741. These are different summaries and must not be mixed.
+Use only exact full9508 semantic hits5180/4254. The observed adapter
+semantic regression does not by itself establish its cause, divergence,
+or failure; preserve the fixed ten-epoch experiment and diagnose from its
+completed evidence. The first/second update witnesses are overwritten
+each epoch and must be interpreted by their own epoch.
+
+Current full NR/SR histories and own CPU checkpoint audits at08:30UTC:
+NR1-84,latest84=4167/3385 over7899,best66=4255/3435 unchanged;
+SR1-32,latest/best32=11882/9997 over17726,67.031479%/56.397382%.
+SR32 beats previous best15=11743/9434 by139/563 hits. NR66/84 and
+SR32 passed own epochs,1134 tensors,nonempty optimizer/scheduler,SHA
+and preserved-file checks,CUDA uninitialized. NR84 SHA
+bad80c89789476d78b668f7d47a8f50ef285870e631887baefb80c3371f5726a;
+SR32 SHA981b0efdb10c86a53657205b6211f3750e13c1cb811d0cdf882bbd34f4d6daa6.
+Existing watchers synchronized to NR66/84 and SR32. At08:31:51UTC all
+six trainer/keeper/retention PIDs were live: NR85=3622/3742 and
+SR33=754/6486,finite recent losses,no errors. Original null-init scratch
+recipes/budgets and innovations-off settings remain unchanged.
+Do not modify these running jobs or infer a causal LR effect from SR32.
+
+Best-target gaps: Scan222/289 hits to5705/4945;NR469 hits to4724;
+SR420 hits to12302. None achieved. Full-history receipts:
+nr3d/sr3d-current-full-history-20261105T0830.json and
+scanrefer-bbf-quality-full-history-20261105T0831.json under
+docs/results/mcln_pvground_20261101/. Main CSV now129 rows including
+all NR1-84/SR1-32 plus existing Scan history; the separate BBF-quality CSV
+contains all4 adapter epochs and current retained/removed status.
+Local work is file/Git/result handling only; no local ML/test execution.
+
+## Previous Override: 2026-11-05 06:20 UTC
 
 Latest current-only check at06:19UTC: the same Scan trainer PID294910 and
 screen remain live, epoch3=2849/6081, GPU compute92%, with finite

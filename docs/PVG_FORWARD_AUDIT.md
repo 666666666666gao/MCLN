@@ -1,5 +1,19 @@
 # Fixed-Checkpoint Forward Audit
 
+## Current Run Metric Interpretation: 2026-11-05 08:32 UTC
+
+No new forward or evaluation was launched. Existing current BBF-quality
+run logs show epoch4 last_ semantic alignment Top1=0.54480/0.44741,
+consistent with full9508 hits5180/4254. Its separately logged
+overall25/overall50=0.5760412284/0.5011569205 are not these semantic
+Top1 metrics. Use the exact same-checkpoint semantic history for best
+selection;do not substitute overall/position/mask. All four completed
+adapter history pairs were checked against their full log summaries.
+Current-run receipt:scanrefer-bbf-quality-full-history-20261105T0831.json.
+Best1/latest4 passed independent own CPU checkpoint audits;history3
+has its original runtime audit metadata but its weight is already removed
+by existing retention. Keep active epoch5 running with no early stop.
+
 ## Paired Decision Subgroups: 2026-11-03 17:40 UTC
 
 Postprocessing revalidated all four complete9508-record evaluations and

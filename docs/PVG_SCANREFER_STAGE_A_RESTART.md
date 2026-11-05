@@ -1,5 +1,22 @@
 # ScanRefer Stage A Restart
 
+## Current BBF-Quality Update: 2026-11-05 10:35 UTC
+
+Same trainer294910 live in epoch7=2031/6081 at10:32:39UTC,GPU75%,
+finite first/second actual adapter updates,frozen parameters/buffers
+unchanged,no errors. Continue authorized10 epochs without early stop.
+New full9508 last semantic Top1:epoch5=5216/4284,6=5238/4307
+(55.090450%/45.298696%). All6 pairs match complete semantic log lines.
+Trialbest1/globalbest B2 unchanged;epoch6 remains245/349 hits belowB2.
+Independent CPU own1/6 audits passed1169 tensors,nonempty optimizer/
+scheduler,config/SHA,CUDAoff. Epoch6 SHA
+c417a7efdaf475f0981b8f8de7ff3609fcf5f54d02a16710af4d9c8eacd6a4c3.
+Existing retention kept1/6,removed2-5;historical metrics/audits remain.
+No manual cleanup or running recipe change. Receipt:
+docs/results/mcln_pvground_20261101/scanrefer-bbf-quality-full-history-20261105T1034.json.
+Separate all-epoch CSV now6 rows. No causal claim follows from these
+intermediate below-best results;do not use overall/position/mask.
+
 ## Current BBF-Quality Update: 2026-11-05 08:32 UTC
 
 Same trainer294910 and screen remain live at08:29:56UTC,epoch5=2848/6081,

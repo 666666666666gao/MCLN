@@ -1,4 +1,35 @@
-## Current Override: 2026-11-05 08:32 UTC
+## Current Override: 2026-11-05 10:35 UTC
+
+Same Scan BBF-quality run1793849982/trainer294910 remains live:
+10:32:39UTC epoch7=2031/6081,GPU75%,finite first/second optimizer
+witnesses,adapter1/1 updated,frozen parameters/buffers unchanged,no
+errors. Keep10 epochs/no early stop;no stop,restart,duplicate or recipe
+change. New full9508 semantic Top1 epoch5=5216/4284,epoch6=5238/4307
+(55.090450%/45.298696%). All6 pairs match complete semantic logs.
+Trialbest1=5383/4518;globalbest B2=5483/4656 unchanged.
+
+10:34UTC independent CPU audits passed retained1/6:own epochs,1169
+tensors,nonempty optimizer/scheduler,expected config/SHA,CUDAoff.
+Epoch6 SHAc417a7efdaf475f0981b8f8de7ff3609fcf5f54d02a16710af4d9c8eacd6a4c3.
+Existing run retention removed2-5;full history/audits remain. No manual
+deletion or watcher launch. Do not mix overall/position/mask metrics.
+
+NR full history1-86:new85=4240/3476,86=4210/3364 over7899;best remains
+66=4255/3435 using Acc025 first. SR1-32:best/latest32=11882/9997
+over17726 unchanged. OwnCPU audits NR66/86 andSR32 passed1134 tensors,
+nonempty optimizer/scheduler,SHA,preserved files,CUDAoff;retention
+aligned. NR86 SHA8d650ba72c87745352965fbf75e0505e8242916ba92544bb6caeb05e9b51fca5.
+NR was validating7/659 at10:34:49UTC;SR33 training5917/6486 at10:35:14UTC.
+All6 trainer/keeper/retainer PIDs live,original scratch configs/null
+initialization/budgets unchanged,finite losses,no errors.
+
+Best-target deficits unchanged:Scan222/289,NR469,SR420hits;none met.
+Receipts:nr3d/sr3d-current-full-history-20261105T1034.json and
+scanrefer-bbf-quality-full-history-20261105T1034.json in results. Main
+CSV131 rows,separate adapter CSV6 rows;outputs synchronized. Local
+files/Git/results only;all remote calls through work/remote_pvground.ps1.
+
+## Previous Override: 2026-11-05 08:32 UTC
 
 Only current registered runs were checked through `work/remote_pvground.ps1`.
 Scan trainer294910/screen pvg_scanrefer_bbf_quality_20261104 remain live:

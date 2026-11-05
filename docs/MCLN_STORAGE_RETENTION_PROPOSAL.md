@@ -1,4 +1,15 @@
-## Update: 2026-11-05 08:32 UTC
+## Update: 2026-11-05 10:35 UTC
+
+Current CPU audits verified retained NR66/86,SR32 and Scan adapter1/6.
+Own epochs,model tensors (1134 scratch/1169 adapter),nonempty optimizer/
+scheduler,SHA and current paths passed,CUDAoff. Existing retention
+aligned;Scan2-5 and NR85 no longer exist at collection,their complete
+metrics/historical audits remain. Full receipts stamped20261105T1034
+and CSVs record retained/removed status. Do not manually clean up or
+start watchers. Scan trainer294910 remains live in epoch7;all current
+NR/SR trainers/keepers/retainers live,original recipes unchanged.
+
+## Previous Update: 2026-11-05 08:32 UTC
 
 Current own CPU audits passed for NR best66/latest84,SR best/latest32,
 and Scan BBF-quality best1/latest4. NR/SR have1134 model tensors;Scan

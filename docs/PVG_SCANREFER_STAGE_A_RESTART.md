@@ -1,11 +1,11 @@
 # ScanRefer Stage A Restart
 
-## Current BBF-Quality Fine-Tuning: 2026-11-05 06:03 UTC
+## Current BBF-Quality Fine-Tuning: 2026-11-05 06:20 UTC
 
-Follow-up current-only check at06:15UTC confirmed the same trainer PID
-and screen live, epoch3 at2383/6081, GPU54%, no recent error lines.
-Training progress is not an accuracy result; epoch2 remains latest
-complete audited validation.
+Current-only check at06:19UTC confirmed the same trainer PID294910 and
+screen live, epoch3 at2849/6081, GPU92%, finite update witnesses and no
+recent error lines. Do not stop or relaunch. Training progress is not an
+accuracy result; epoch2 remains latest complete audited validation.
 
 The user explicitly requested that ScanRefer fine-tuning continue and not
 be stopped. Do not cancel the active run or start a duplicate. The

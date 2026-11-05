@@ -1,9 +1,13 @@
-## Current Override: 2026-11-05 06:03 UTC
+## Current Override: 2026-11-05 06:20 UTC
 
-Latest follow-up at06:15UTC: the same Scan trainer PID294910 and screen
-remain live, now epoch3=2383/6081, GPU compute54%, no recent error lines.
-Do not stop or relaunch it. This is training progress only; epoch2 remains
-the latest complete audited result.
+Latest current-only check at06:19UTC: the same Scan trainer PID294910 and
+screen remain live, epoch3=2849/6081, GPU compute92%, with finite
+optimizer-step witnesses and no recent error lines. NR trainer/keeper/
+retention remain live at epoch82=2944/3742; SR equivalents remain live at
+epoch31=2548/6486. Both retain their original recipes, recent losses are
+finite and no recent errors were observed. These are progress counters,
+not scores. Do not stop/relaunch Scan; epoch2 remains its latest complete
+audited result.
 
 The user explicitly instructed that ScanRefer fine-tuning must continue;
 do not stop/cancel this run or launch a duplicate. The isolated

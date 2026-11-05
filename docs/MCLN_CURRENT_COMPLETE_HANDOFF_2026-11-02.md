@@ -1,4 +1,4 @@
-## Current Override: 2026-11-05 20:55 UTC
+## Current Override: 2026-11-05 20:57 UTC
 
 The same authorized ScanRefer QILA trial is actively training and must
 continue; do not stop, duplicate, or change its running recipe. Screen
@@ -35,15 +35,25 @@ Do not use training counters or overall/position/mask scores as semantic
 Top1. Refresh NR/SR latest values with current-only collectors before
 reporting them as current.
 
-NR3D epoch95 is now fully synchronized after the save/retention window:
-latest `4198/3384` over7899, own CPU epoch95/1134 tensors/nonempty
-optimizer+scheduler/SHA audit passed, retention latest95, SHA
-`3fb4472c623f951556dc21cf7ca8549c40e57f9395ce6a5d93f14de5e44bff49`.
-Acc@0.25 best remains epoch66 `4255/3435`. The earlier collector assertion
-was a transient checkpoint transition, not a trainer failure. SR3D remains
-epoch36 best/latest `11893/10005`; no newer complete result.
-Receipt:
-`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261105T1851.json`.
+NR3D/SR3D original official scratch recipes remain unchanged. Current-only
+full-history and CPU-audit receipts cover NR1-97 and SR1-38. NR Acc@0.25
+best epoch66=`4255/3435` over7899 (53.8676%, target4724, gap469); latest
+epoch97=`4207/3369`; retention keeps66/97. SHA66
+`ca645bf8f191a0609b603b77e829b61e492b6459805125ae012c164b783fcb5b`,
+SHA97 `566b9cd4ad736de9a89ad65e0c6f11a225374a29d967889dff890fbfb91eefc3`.
+Both own-epoch/1134/model/nonempty optimizer/scheduler/SHA audits passed.
+
+SR Acc@0.25 epoch38 is a new best/latest=`11903/10012` over17726
+(67.1499%, target12302, gap399), improving epoch36=`11893/10005`.
+Epoch38 SHA
+`0bf953f700c9de7d452e29a69a2f15eafbcf5765a34c4b0333effc29b066b407`;
+own-epoch/1134/model/nonempty optimizer/scheduler/SHA audit passed.
+Retention keeps38 and removed36/37 only after complete result/audit.
+CPU collectors left CUDA uninitialized. Both trainers/keepers/retainers
+were live at20:57UTC, configs unchanged, recent losses finite and no recent
+errors. Raw receipts `nr3d-current-full-history-20261105T2057.json` and
+`sr3d-current-full-history-20261105T2057.json`; synchronized combined CSV
+has148 rows.
 
 ## Current Override: 2026-11-05 18:35 UTC
 

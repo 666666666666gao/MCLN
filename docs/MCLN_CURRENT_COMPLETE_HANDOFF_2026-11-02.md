@@ -1,5 +1,23 @@
 ## Current Override: 2026-11-05 20:57 UTC
 
+## V99 Implementation Correction: 2026-11-05 21:06 UTC
+
+The active `scanrefer_qila_20261105` process remains live and must continue
+without stop, duplicate launch, or runtime recipe change. Scoped inspection
+at21:06:31UTC showed epoch2 batch3368/6081, GPU22095MiB/85%, and no recent
+errors. Static inspection of the exact runner and imported training sources
+found it passes only `bbf_quality_rank_loss_weight=0.3`; the source defines
+the legacy `bbf_quality_rank_loss`, not the V99 QILA objective. The
+documented `use_qila` parameters, IoU-utility candidate distribution,
+same-class hard-negative term, IoU>0.5 unmatched-query no-object ignore,
+and 500-step warmup are absent. This is an exploratory legacy rank-loss
+run, not an implementation or validation of V99 QILA. Let its authorized
+eight-epoch run finish and audit it normally. Do not launch a competing
+ScanRefer job on the occupied GPU. After completion, implement and remotely
+gate the documented X0/X1 sequence before launching the next experiment;
+the user authorized automatic progression without another approval
+request. NR3D/SR3D remain on their official scratch recipes.
+
 The same authorized ScanRefer QILA trial is actively training and must
 continue; do not stop, duplicate, or change its running recipe. Screen
 `pvg_scanrefer_qila_20261105`, controller/trainer PID323406, resumed run

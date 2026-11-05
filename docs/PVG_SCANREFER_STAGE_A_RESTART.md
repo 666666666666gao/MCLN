@@ -1,5 +1,21 @@
 # ScanRefer Stage A Restart
 
+## V99 Implementation Correction: 2026-11-05 21:06 UTC
+
+The live `scanrefer_qila_20261105` process remains active and must not be
+stopped, duplicated, or changed at runtime. At21:06:31UTC it was at epoch2
+batch3368/6081 on GPU22095MiB/85%, with no recent errors. Static inspection
+of the exact runner and imported sources found only the legacy
+`bbf_quality_rank_loss_weight=0.3` path. The V99 QILA flags, IoU-utility
+candidate distribution, same-class hard-negative term, IoU>0.5
+unmatched-query no-object ignore, and 500-step warmup are not implemented
+there. Treat this eight-epoch run as exploratory legacy rank-loss training,
+not V99 QILA evidence. Let it finish its authorized budget and audit it;
+do not overlap another ScanRefer run on the occupied GPU. Then implement
+and remotely gate X0/X1 per the V99 plan before automatically launching the
+next experiment. The user has authorized automatic continuation without
+another approval request.
+
 ## QILA Resume Progress: 2026-11-05 20:55 UTC
 
 The same user-authorized trial continues after its first runner completed

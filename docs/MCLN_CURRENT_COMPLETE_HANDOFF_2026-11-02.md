@@ -1,4 +1,4 @@
-## Current Override: 2026-11-05 18:15 UTC
+## Current Override: 2026-11-05 18:26 UTC
 
 The next authorized ScanRefer experiment is running in isolated trial
 `scanrefer_qila_20261105`, screen `pvg_scanrefer_qila_20261105`. It starts
@@ -17,9 +17,17 @@ without that unsupported flag. At 18:14:57UTC the repaired attempt had
 live workers/GPU process. By 18:23:11UTC the first real optimizer witness
 passed: finite loss7.640077, optimizer step1, and Reader/Support/Span
 updated 10/10/10/14/14 parameter tensors respectively. The run was at
-epoch1 batch385/6081 with no error lines; full validation is pending. Do
-not start a duplicate or stop it.
+epoch1 batch561/6081 with no error lines; GPU memory was22131MiB with68%
+utilization. Full validation is pending. Do not start a duplicate or stop
+it.
 Raw record: `docs/results/mcln_pvground_20261101/scanrefer-qila-launch-20261105.json`.
+
+At 18:25:42-43UTC the registered NR3D/SR3D trainer, keeper and retention
+processes were all alive with their original null-initialization scratch
+recipes unchanged. NR was training around2667/3742 and SR around5936/6486;
+recent losses were finite and no errors were reported. These are progress
+counters, not validation metrics. No new complete NR/SR result was
+available in this observation.
 
 ## Monitoring Update: 2026-11-05 17:31 UTC
 

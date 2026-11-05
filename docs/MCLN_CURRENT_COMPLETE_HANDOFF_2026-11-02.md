@@ -1,4 +1,48 @@
-## Current Override: 2026-11-05 22:53 UTC
+## Current Override: 2026-11-05 23:10 UTC
+
+### Current training and audited metrics
+
+The existing `scanrefer_qila_20261105` run is still active in
+`pvg_scanrefer_qila_20261105`; do not stop, duplicate, or hot-change it.
+At23:10:48UTC its trainer was live at epoch3 batch3433/6081, GPU
+21067/24564MiB at24%, with no recent errors. The epoch3 first optimizer
+witness is finite (loss5.679346); Reader/Support/Span each have finite,
+nonzero gradients and deltas and updated10/10/14 tensors. Epoch3 full9508
+validation is pending. Epoch1/2 same-checkpoint semantic Top1 are
+5366/4423 and5398/4512.
+
+This QILA-named run actually uses legacy
+`bbf_quality_rank_loss_weight=0.3`; it is not the documented V99 QILA or
+X1 evidence. Its original eight-epoch budget remains active. Let it finish
+naturally and audit all full9508 semantic rows/checkpoints. Then run the
+documented matched X0; implement and gate the actual QILA objective before
+X1, and proceed only after the document's step-0, objective/unit, and
+real-update gates pass. The user authorized automatic progression without
+another approval. NR3D/SR3D official scratch configurations are unchanged.
+
+Current complete same-checkpoint results:
+
+| Dataset | Selected best | Full validation | Target | Gap |
+|---|---|---:|---:|---:|
+| ScanRefer | immutable B2 epoch2 `5483/4656` | 9508 | `5705/4945` | `222/289` hits |
+| NR3D | epoch99 `4260/3413` | 7899 | Acc@0.25 `4724` | `464` hits |
+| SR3D | epoch39 `11911/9937` | 17726 | Acc@0.25 `12302` | `391` hits |
+
+NR99 SHA `72780f669014eba1f5773d8cad5fffd69a363bedcb35bfa126a1fa6d87c1eb04`;
+SR39 SHA `75d3fcfc24323273401663379b016a834a6f1dd82bbee23203e5997430f84f3c`.
+Both retained checkpoints passed CPU own-epoch,1134-tensor,
+nonempty-optimizer/scheduler and SHA audit. The existing retention policy
+now keeps NR99 and SR39; previous NR97/98 and SR38 weight files are
+removed, while their metrics and audit history remain. Full receipts:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261105T2305.json`
+and `sr3d-current-full-history-20261105T2305.json`.
+
+At23:10UTC the official scratch trainers, keepers and retention watchers
+were live; current log tails showed NR3D2339/3742 and SR3D2661/6486,
+finite recent losses, no recent errors, and unchanged official configs.
+These are in-epoch counters, not validation metrics.
+
+## Previous Current Override: 2026-11-05 22:53 UTC
 
 ### ScanRefer live check: 2026-11-05 22:53 UTC
 

@@ -124,6 +124,21 @@ Current-only own CPU checkpoint audits confirmed NR best66/latest72 and SR best1
 
 # Current Checkpoint Storage Proposal
 
+## Current Audited Retention: 2026-11-05 23:05 UTC
+
+NR3D full7899 epoch99=4260/3413 is the current Acc@0.25 best/latest.
+CPU own-epoch99,1134 model tensors,nonempty optimizer/scheduler and SHA
+`72780f669014eba1f5773d8cad5fffd69a363bedcb35bfa126a1fa6d87c1eb04`
+passed. Existing retention keeps99 and removed old preserved66/98;
+epoch98 had its own CPU audit before authorized removal.
+
+SR3D full17726 epoch39=11911/9937 is the current Acc@0.25 best/latest.
+CPU own-epoch39,1134 model tensors,nonempty optimizer/scheduler and SHA
+`75d3fcfc24323273401663379b016a834a6f1dd82bbee23203e5997430f84f3c`
+passed. Existing retention keeps39 and removed preserved38 after its
+complete validation and audit. Full metrics and audit receipts remain;
+no manual cleanup or watcher restart was performed.
+
 ## Update: 2026-11-04 14:58 UTC
 
 NR epoch68 full7899=4141/3420 was audited on CPU:own epoch68,1134 model

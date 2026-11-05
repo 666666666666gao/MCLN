@@ -1,5 +1,25 @@
 ## Current Override: 2026-11-05 14:41 UTC
 
+## Monitoring Update: 2026-11-05 17:31 UTC
+
+The future-dated V99 ScanRefer document was read as a proposal only.
+It is not evidence of an implemented C1/C2/C3 method or a completed
+experiment. Scan BBF-quality remains closed after its authorized10/10
+epochs;no new Scan run,extension or code change was started here.
+
+At17:30:52UTC NR3D and SR3D official scratch trainer,keeper and retention
+processes were all alive. Training counters were NR2931/3742 and
+SR2373/6486;recent losses finite,no recent errors. Original configs
+remain unchanged with null checkpoint paths,innovations off and1134 model
+tensors. These are counters,not accuracy results. No new full validation
+was available. Last audited metrics remain NR best66=4255/3435,latest90
+=4180/3354 over7899;SR best32=11882/9997,latest34=11875/9897 over17726.
+Do not alter trainer from these counters.
+
+Objective remains active:keep evidence,complete audits and update code/
+handoff only after an evidence-backed ScanRefer V99 experiment;leave
+official NR/SR unchanged.
+
 Scan trial1793849982 completed all10 authorized epochs normally:
 run/complete.json completed_utc=2026-11-05T14:34:17.987751Z,
 complete_epochs=budget_epochs=10,reason=full_budget_completed,

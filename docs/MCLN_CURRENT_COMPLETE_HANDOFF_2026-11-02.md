@@ -1,4 +1,74 @@
-## Current Override: 2026-11-05 01:19 UTC
+## Current Override: 2026-11-05 06:03 UTC
+
+The user explicitly instructed that ScanRefer fine-tuning must continue;
+do not stop/cancel this run or launch a duplicate. The isolated
+BBF-quality adapter run remains active in screen
+`pvg_scanrefer_bbf_quality_20261104`, trainer PID294910. At06:03UTC it
+was training epoch3 at523/6081 with GPU compute active, finite recent
+losses and no recent traceback/OOM. The new run is a ten-epoch budget
+with no early stopping; epoch2 falling below epoch1 is not a stop
+condition. It starts from immutable B2 epoch2 with fresh optimizer and
+scheduler, seed0/batch8/accum6, and trains only the BBF quality adapter
+with ranking weight1.0. Preserve B2 and all receipts.
+
+Epoch2 completed full9508 last semantic alignment Top1 validation:
+5150/4203 hits025/050 =54.1649%/44.2049%. The own CPU checkpoint audit
+passed: checkpoint epoch2,1169 model tensors, nonempty optimizer and
+scheduler, expected adapter-only config, CUDA uninitialized. SHA
+`b6b4f2fd4d34fce820bad785094d8b92ae009858c1f82994d67539572859da10`.
+Against epoch1=5383/4518, epoch2 is-233/-315 hits; against immutable B2
+=5483/4656,it is-333/-453. Thus global ScanRefer best remains B2 under
+Acc050-first selection; adapter epoch1 remains the best within this new
+run. No target is met (target5705/4945); this is a diagnostic result,
+not grounds to stop the authorized ten-epoch run. Epoch2 CPU audit:
+`docs/results/mcln_pvground_20261101/scanrefer-bbf-quality-epoch2-cpu-audit-20261105T0103.json`.
+
+At01:06UTC NR3D run1793553113 and SR3D run1793552465 trainers, keepers,
+and retention watchers were live on their unchanged original scratch
+recipes. NR82 was at2075/3742 and SR31 at1902/6486; recent losses finite,
+no error lines. These counters are training progress, not accuracy.
+Latest confirmed bests remain NR66=4255/3435 over7899 and
+SR15=11743/9434 over17726; no target achieved. Current-only receipts
+were obtained through `work/remote_pvground.ps1`.
+
+## Previous Override: 2026-11-05 03:58 UTC
+
+ScanRefer BBF-quality adapter fine-tuning is now actively running in the
+isolated remote screen `pvg_scanrefer_bbf_quality_20261104`; do not stop
+or cancel it. The direct user request to continue training supersedes
+the earlier no-automatic-new-Scan-run heartbeat rule for this one
+registered experiment. No other Scan run is authorized.
+
+Attempt1 at03:26:23UTC exited1 before training: legacy
+`torch.distributed.launch` injected `--local-rank=0` into positional
+arguments, so the runner mistook it for its run directory and hit an
+assertion. GPU was unused and B2 remained intact. This failure is
+preserved as `launch_attempt_1.json`/`exit_code_attempt_1`; no training
+step or checkpoint was produced. Fixed launcher argument handling with
+`--use_env`; attempt2 started03:39:36UTC in the same isolated trial.
+
+At03:58:15UTC actual trainer PID294910 plus four data workers was live,
+GPU 5963MiB/97%. Epoch1 training reached1432/6081, finite recent losses,
+no error lines. Actual optimizer steps1 and2 are independently confirmed:
+step1 batch6 loss8.10970497, adapter grad norm1.87043905, parameter
+delta0.00271401; step2 batch12 loss8.73804569, grad norm2.05502987,
+delta0.00246970. Both witnesses report finite loss, adapter tensor1/1
+updated, frozen parameters/buffers unchanged. This confirms real
+optimization, not merely a live screen. B2 initialization SHA remains
+46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8.
+Protocol:10 epochs, batch8/accum6/seed0, fresh optimizer/scheduler,
+adapter-only LR2e-5, native2e-6/backbone4e-6, ranking weight1.0,
+frozen remaining model; no early stop. No full-epoch validation yet;
+1432/6081 is training progress, not an accuracy result.
+
+NR/SR continue unchanged from the01:19UTC verified state until the next
+poll; no Scan weights are used for either. Preserve B2, failed launch
+receipt, current training log, per-step witnesses, configs, and all
+future full metrics/audits. Remote-only through
+`work/remote_pvground.ps1`; no local model/test/diagnostic execution.
+Latest Scan receipt: `scanrefer-bbf-quality-progress-20261105T0355.json`.
+
+## Previous Override: 2026-11-05 01:19 UTC
 
 Actual remote observation time is2026-11-05 01:19UTC,also consistent
 with local2026-11-04 20:19-05:00. The triggering heartbeat timestamp

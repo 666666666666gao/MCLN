@@ -20,6 +20,26 @@ Objective remains active:keep evidence,complete audits and update code/
 handoff only after an evidence-backed ScanRefer V99 experiment;leave
 official NR/SR unchanged.
 
+## Evidence Record: 2026-11-05 17:38 UTC
+
+Current source inspection confirms a concrete ScanRefer selection/
+supervision gap. `models/losses.py::SetCriterion.loss_pos_align` uses
+fixed matched token weights and fixed `eos_coef=0.1` for unmatched
+queries; it has no IoU-aware distribution for multiple candidates of
+the same described entity. In `loss_boxes`, the current BBF-quality
+candidate path only creates quality candidates after both box and mask
+IoU exceed 0.25, so sub-threshold candidates cannot receive the ranking
+signal. This supports the diagnosis but does not prove a future gain.
+
+Candidate next experiments are ScanRefer-only QILA-style IoU-aware
+ranking, RCR-style spatial relation conditioning for Reader, and
+Span/Support soft extent supervision within current module boundaries.
+Stable-DINO, Rank-DETR, H-DETR, ViL3DRef and ConcreteNet are reference
+families from the proposal, not copied code or validated gains.
+Promotion requires matched full9508 semantic Top1 plus checkpoint/SHA
+and CPU audit evidence. No implementation or new Scan run was started;
+NR3D/SR3D official scratch training remains untouched.
+
 Scan trial1793849982 completed all10 authorized epochs normally:
 run/complete.json completed_utc=2026-11-05T14:34:17.987751Z,
 complete_epochs=budget_epochs=10,reason=full_budget_completed,

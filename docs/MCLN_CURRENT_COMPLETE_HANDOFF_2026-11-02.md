@@ -1,3 +1,25 @@
+## Current Override: 2026-11-05 18:52 UTC
+
+The registered ScanRefer QILA trial remains live and unchanged:
+`scanrefer_qila_20261105`, screen `pvg_scanrefer_qila_20261105`. It has
+advanced to epoch1 batch2467/6081 with GPU activity and no recent errors.
+The first optimizer witness remains valid (finite loss 7.640077; Reader,
+Support and Span updated 10/10/14 tensors). No full9508 validation exists
+yet, so no ScanRefer score is promoted. The same immutable B2 SHA,
+QILA recipe, 8-epoch budget and no-early-stop policy remain in force.
+Receipt:
+`docs/results/mcln_pvground_20261101/scanrefer-qila-progress-20261105T1851.json`.
+
+NR3D epoch95 is now fully synchronized after the save/retention window:
+latest `4198/3384` over7899, own CPU epoch95/1134 tensors/nonempty
+optimizer+scheduler/SHA audit passed, retention latest95, SHA
+`3fb4472c623f951556dc21cf7ca8549c40e57f9395ce6a5d93f14de5e44bff49`.
+Acc@0.25 best remains epoch66 `4255/3435`. The earlier collector assertion
+was a transient checkpoint transition, not a trainer failure. SR3D remains
+epoch36 best/latest `11893/10005`; no newer complete result.
+Receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261105T1851.json`.
+
 ## Current Override: 2026-11-05 18:35 UTC
 
 The user authorized automatic continuation according to the V99 ScanRefer

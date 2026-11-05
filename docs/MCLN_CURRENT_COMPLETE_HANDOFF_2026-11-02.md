@@ -1,14 +1,16 @@
-## Current Override: 2026-11-05 22:47 UTC
+## Current Override: 2026-11-05 22:53 UTC
 
-### ScanRefer live check: 2026-11-05 22:47 UTC
+### ScanRefer live check: 2026-11-05 22:53 UTC
 
 The existing `scanrefer_qila_20261105` run remains active in
 `pvg_scanrefer_qila_20261105`; do not stop, duplicate, or hot-change it.
-At22:47:25UTC epoch3 was at batch1761/6081 (~1.2it/s), GPU21055MiB/30%,
+At22:52:58UTC epoch3 was at batch2159/6081 (~1.2it/s), GPU21065MiB/66%,
 with no recent errors. Its epoch3 first optimizer witness is finite
 (loss5.679346) and Reader/Support/Span each show finite nonzero
 gradients/deltas and 10/10/14 updated tensors.
 
+The current resumed trainer is live; recorded exit code1 values belong to
+earlier failed recovery attempts, not this process.
 The run still uses legacy `bbf_quality_rank_loss_weight=0.3`, not the
 documented V99 QILA objective and not X1 evidence. Keep its full eight
 epochs with no early stopping. After natural completion, audit all

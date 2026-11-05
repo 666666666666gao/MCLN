@@ -1,4 +1,28 @@
-## Current Override: 2026-11-05 20:57 UTC
+## Current Override: 2026-11-05 21:21 UTC
+
+### Live monitoring: 2026-11-05 21:21 UTC
+
+The same ScanRefer QILA-named legacy rank-loss recovery remains live in
+screen `pvg_scanrefer_qila_20261105` under controller PID323406. At
+21:21:40UTC it had reached epoch2 batch4450/6081, GPU22099MiB/18%, with
+no recent errors. The epoch2 first-update witness remains finite and
+records actual Reader/Support/Span updates10/10/14. No full epoch2
+validation has completed yet. Do not stop, change, or duplicate this
+eight-epoch run. Its source still lacks the documented V99 QILA objective
+and is not X1 evidence.
+
+Current-only complete-history collection reconfirmed NR3D best epoch66
+4255/3435 and latest97 4207/3369 over7899; both retained checkpoints
+passed CPU own-epoch/1134-tensor/optimizer/scheduler/SHA audit. SR3D
+best/latest epoch38 remains11903/10012 over17726 with the same audit
+passing. Both registered scratch trainers remain live and their original
+recipes are unchanged. No new full validation appeared in either dataset.
+Do not alter the ScanRefer or NR3D/SR3D recipes based on in-epoch counters.
+
+After the current ScanRefer run completes naturally, automatically audit
+its eight full9508 semantic Top1 epochs, then follow the plan's exact X0
+control and X1 QILA treatment one at a time, including the stated step-0,
+objective and update gates. No additional user approval is required.
 
 ## V99 Implementation Correction: 2026-11-05 21:06 UTC
 

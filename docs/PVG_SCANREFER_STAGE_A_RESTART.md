@@ -1,5 +1,25 @@
 # ScanRefer Stage A Restart
 
+## Live Monitoring: 2026-11-05 21:21 UTC
+
+The same `pvg_scanrefer_qila_20261105` recovery remains active under
+controller PID323406. At21:21:40UTC epoch2 reached4450/6081, GPU
+22099MiB/18%, and no recent errors were reported. Its epoch2 first-update
+witness is finite and shows Reader/Support/Span tensor updates10/10/14.
+Full9508 epoch2 validation is still pending. Preserve the full eight-epoch
+budget; do not stop, hot-change, or duplicate the run. This runner still
+uses the legacy rank loss rather than the V99 QILA objective.
+
+NR3D current full history remains best66=4255/3435 and latest97=4207/3369
+over7899. SR3D remains best/latest38=11903/10012 over17726. CPU audits
+passed for each retained best/latest checkpoint. Both official scratch
+trainers are live and configurations are unchanged.
+
+When this ScanRefer run completes naturally, audit its full semantic
+history and proceed automatically through the plan's X0 control followed
+by X1 only if the stated gates pass. Do not ask the user to authorize the
+already requested continuation again.
+
 ## V99 Implementation Correction: 2026-11-05 21:06 UTC
 
 The live `scanrefer_qila_20261105` process remains active and must not be

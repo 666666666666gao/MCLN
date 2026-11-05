@@ -1,10 +1,10 @@
-## Current Override: 2026-11-05 20:46 UTC
+## Current Override: 2026-11-05 20:55 UTC
 
 The same authorized ScanRefer QILA trial is actively training and must
 continue; do not stop, duplicate, or change its running recipe. Screen
 `pvg_scanrefer_qila_20261105`, controller/trainer PID323406, resumed run
-1793909615. At20:46:06UTC it was epoch2 batch1900/6081 on GPU0
-(22095MiB,23%), with no new full9508 epoch validation. The epoch2 first
+1793909615. At20:55:01UTC it was epoch2 batch2547/6081 on GPU0
+(22095MiB,82%), with no new full9508 epoch validation. The epoch2 first
 optimizer witness at batch6 records finite loss3.204985 and actual
 Reader/Support/Span updates10/10/14 tensors, all with finite nonzero
 gradients and parameter deltas.

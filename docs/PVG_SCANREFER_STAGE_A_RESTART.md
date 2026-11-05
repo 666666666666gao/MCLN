@@ -1,6 +1,6 @@
 # ScanRefer Stage A Restart
 
-## QILA Resume Progress: 2026-11-05 20:46 UTC
+## QILA Resume Progress: 2026-11-05 20:55 UTC
 
 The same user-authorized trial continues after its first runner completed
 epoch1 validation and exited1 because it required a second-update witness
@@ -12,8 +12,8 @@ Epoch1 full9508 last-semantic Top1 rates0.56437/0.46519 uniquely recover
 5366/4423 hits; epoch2 validation is pending.
 
 Recovery uses the same run and screen, resumed from epoch1 with
-optimizer/scheduler restoration=true in the resume receipt. At20:46:06UTC it was alive at epoch2
-batch1900/6081 on GPU0. Its epoch2 batch6 witness records finite loss
+optimizer/scheduler restoration=true in the resume receipt. At20:55:01UTC it was alive at epoch2
+batch2547/6081 on GPU0 (82% utilization). Its epoch2 batch6 witness records finite loss
 3.204985 and Reader/Support/Span updates10/10/14 with finite nonzero
 gradients/deltas. Recipe remains B2 initialized, batch8/accum6/seed0,
 LR2e-6/4e-6/2e-5, QILA weight0.3, eight epochs/no early stopping. Do not

@@ -1,5 +1,42 @@
 # ScanRefer Stage A Restart
 
+## Current BBF-Quality Fine-Tuning: 2026-11-05 04:11 UTC
+
+The user explicitly requested that ScanRefer fine-tuning continue and not
+be stopped. The isolated trial `scanrefer_bbf_quality_20261104` is active
+in screen `pvg_scanrefer_bbf_quality_20261104`; do not stop it or launch a
+duplicate. This direct request supersedes the earlier heartbeat's
+prohibition on automatically opening a new Scan run for this registered
+trial only.
+
+Attempt1 exited1 before training because the legacy distributed launcher
+prepended `--local-rank=0` to positional arguments. The runner therefore
+failed its run-directory assertion before loading data or using the GPU.
+The failure is retained in `launch_attempt_1.json` and
+`exit_code_attempt_1`. Launcher now passes `--use_env`; attempt2 began at
+03:39:36UTC using the same isolated run directory. B2 SHA
+`46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8`
+is unchanged.
+
+At04:10:51UTC PID294910 and four loader workers were active, GPU
+5963MiB/39%, epoch1 2909/6081. The latest log had finite training losses
+and no traceback/OOM; first two actual optimizer-step receipts pass:
+batch6 loss8.10970497, adapter gradient1.87043905/delta
+0.00271401; batch12 loss8.73804569, gradient2.05502987/delta
+0.00246970. Both report finite loss,1/1 adapter tensor updated and frozen
+parameters/buffers unchanged. Full epoch validation is pending; training
+progress counters are not accuracy metrics.
+
+Run contract: ten epochs, B2 model-only initialization, fresh
+optimizer/scheduler, seed0, batch8/accum6; train only the zero-initialized
+adapter on native BBF semantic ranking (adapter LR2e-5, rank weight1.0),
+native LR2e-6/backbone4e-6, remaining model frozen. No early stop.
+Preserve B2 and the failed-launch receipt. Local machine did not execute
+model code/tests; all remote activity used `work/remote_pvground.ps1`.
+Current progress observation: `2026-11-05T04:10:51Z`, from the
+current-run-only checker. The earlier detailed progress receipt is
+`docs/results/mcln_pvground_20261101/scanrefer-bbf-quality-progress-20261105T0355.json`.
+
 ## Current Override: 2026-11-04 12:13 UTC
 
 The registered Span-only pipeline completed both full9508 conditions and

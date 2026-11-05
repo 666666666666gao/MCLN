@@ -1,6 +1,6 @@
 # ScanRefer Stage A Restart
 
-## Current BBF-Quality Fine-Tuning: 2026-11-05 05:01 UTC
+## Current BBF-Quality Fine-Tuning: 2026-11-05 05:10 UTC
 
 The user explicitly requested that ScanRefer fine-tuning continue and not
 be stopped. The isolated trial `scanrefer_bbf_quality_20261104` is active
@@ -18,8 +18,8 @@ The failure is retained in `launch_attempt_1.json` and
 `46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8`
 is unchanged.
 
-At04:59:12UTC PID294910 and four loader workers were active, GPU
-4933MiB/92%, epoch2 1184/6081. Epoch1 completed full training and
+At05:10:03UTC PID294910 and four loader workers were active, GPU
+4933MiB/100%, epoch2 2407/6081. Epoch1 completed full training and
 validation. The latest log had finite training losses and no traceback/OOM;
 first two actual optimizer-step receipts pass:
 batch6 loss8.10970497, adapter gradient1.87043905/delta
@@ -34,7 +34,7 @@ adapter on native BBF semantic ranking (adapter LR2e-5, rank weight1.0),
 native LR2e-6/backbone4e-6, remaining model frozen. No early stop.
 Preserve B2 and the failed-launch receipt. Local machine did not execute
 model code/tests; all remote activity used `work/remote_pvground.ps1`.
-Current progress observation: `2026-11-05T04:59:12Z`, from the
+Current progress observation: `2026-11-05T05:10:03Z`, from the
 current-run-only checker. Epoch1 was audited at05:00:56UTC using its own
 CPU checkpoint: own epoch1,1169 tensors, nonempty optimizer/scheduler,
 checkpoint SHA matched the metric row, CUDA uninitialized. The earlier

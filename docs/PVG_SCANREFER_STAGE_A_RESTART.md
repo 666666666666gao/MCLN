@@ -1,5 +1,19 @@
 # ScanRefer Stage A Restart
 
+## Current BBF-Quality Update: 2026-11-05 12:28 UTC
+
+Same trainer294910 live epoch9=326/6081 at12:27:24UTC,GPU59%,finite
+first/second adapter updates1/1,frozen parameters/buffers unchanged,
+no errors or completion. Preserve10 epochs/no early stop. Full9508
+semantic history1-8:new7=5248/4319,8=5270/4336. Trialbest1/globalbest
+B2 unchanged;8 is213/320hits belowB2. Own CPU retained1/8 audits
+passed1169 tensors,optimizer/scheduler/config/SHA,CUDAoff. Epoch8 SHA
+07f5c5347d9a1ce70cafee6f8238adae61640633fd03e90a90c33f3bd269af2b.
+Existing retention removed2-7,history retained,no manual cleanup.
+Receipt:scanrefer-bbf-quality-full-history-20261105T1227.json in results.
+Estimated full9 around13:29UTC/full10 around14:34UTC;verify actual
+complete evidence,do not stop based on an ETA or intermediate scores.
+
 ## Current BBF-Quality Update: 2026-11-05 10:35 UTC
 
 Same trainer294910 live in epoch7=2031/6081 at10:32:39UTC,GPU75%,

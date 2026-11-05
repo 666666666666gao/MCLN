@@ -1,4 +1,34 @@
-## Current Override: 2026-11-05 10:35 UTC
+## Current Override: 2026-11-05 12:28 UTC
+
+Same Scan trainer294910/run1793849982 remains live:12:27:24UTC epoch9
+326/6081,GPU59%,finite first/second actual adapter updates,1/1 tensor
+changed,frozen parameters/buffers unchanged,no errors,no completion.
+Keep authorized10 epochs/no early stop;no stop/restart/duplicate/recipe
+change. At current speed full epoch9 ETA13:29UTC,completion14:34UTC,
+estimates only. Full9508 semantic history1-8:new7=5248/4319,8=5270/4336;
+trialbest1=5383/4518,globalbest B2=5483/4656 unchanged. OwnCPU retained
+1/8 audits passed1169 tensors,optimizer/scheduler/config/SHA,CUDAoff.
+Epoch8 SHA07f5c5347d9a1ce70cafee6f8238adae61640633fd03e90a90c33f3bd269af2b.
+Retention kept1/8,removed2-7;full historical metrics/audits remain.
+
+NR history1-88,latest88=4203/3403 over7899,best66=4255/3435 unchanged.
+SR history1-33,latest33=11812/9918 over17726,best32=11882/9997 unchanged.
+OwnCPU NR66/88 andSR32/33 passed1134 tensors,nonempty optimizer/
+scheduler/SHA,CUDAoff;retention aligned. NR88 SHA
+58c6c0ef8ad853b14743332ec2eedb3133f0114494d992d86b06271d680297c2;
+SR33 SHAe01d4955508fb25bd2a04f5441b89beffee375285177d4275eaf4840810baf06.
+All6 current scratch trainer/keeper/retainer PIDs live12:28UTC:NR next
+training2659/3742,SR next training4056/6486,finite losses,no errors.
+Original null-init scratch recipes/budgets unchanged. None of the
+targets met;best deficits222/289,469,420hits unchanged.
+
+Full-history receipts stamped20261105T1227 and all-epoch CSVs updated:
+main134 rows,adapter8 rows;NR87=4194/3374 included.
+Only semantic Top1,not overall/position/mask. Local files/Git/results
+only;remote approved wrapper only. Wrapper downloads precede script
+execution:collect first,then separately download through noop helper.
+
+## Previous Override: 2026-11-05 10:35 UTC
 
 Same Scan BBF-quality run1793849982/trainer294910 remains live:
 10:32:39UTC epoch7=2031/6081,GPU75%,finite first/second optimizer

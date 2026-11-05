@@ -1,7 +1,7 @@
-## Update: 2026-11-05 18:59 UTC
+## Update: 2026-11-05 19:11 UTC
 
 The registered `scanrefer_qila_20261105` trial is still training at epoch1
-batch3002/6081. No complete epoch or retention deletion has occurred for
+batch3797/6081. No complete epoch or retention deletion has occurred for
 this trial. Keep its immutable B2 input, launch-failure receipt, logs,
 full metrics and CPU audits. Do not manually delete files or touch NR3D/
 SR3D.

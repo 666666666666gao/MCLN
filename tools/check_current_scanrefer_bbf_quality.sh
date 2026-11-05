@@ -11,6 +11,7 @@ import subprocess
 root = Path("/root/autodl-tmp/mcln_pvground_ft_20261101")
 trial = root / "scanrefer_bbf_quality_20261104"
 run = trial / "run"
+completion_path = run / "complete.json"
 log = trial / "train.log"
 checkpoint = root / "scanrefer_restart_20261102/stage_b/scanrefer/scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/ckpt_epoch_2.pth"
 screen = subprocess.run(["screen", "-ls"], capture_output=True, text=True)
@@ -82,8 +83,8 @@ result = {
     "recent_errors": errors,
     "exit_code": (trial / "exit_code").read_text().strip()
         if (trial / "exit_code").exists() else None,
-    "complete": json.loads((trial / "complete.json").read_text())
-        if (trial / "complete.json").exists() else None,
+    "complete": json.loads(completion_path.read_text())
+        if completion_path.exists() else None,
     "b2_checkpoint_exists": checkpoint.exists(),
     "b2_sha256": hashlib.sha256(checkpoint.read_bytes()).hexdigest()
         if checkpoint.exists() else None,

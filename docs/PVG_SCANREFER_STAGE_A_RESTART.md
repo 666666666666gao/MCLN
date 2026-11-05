@@ -1,5 +1,27 @@
 # ScanRefer Stage A Restart
 
+## BBF-Quality Completed: 2026-11-05 14:34 UTC
+
+Run1793849982 completed all10 epochs without early stop or manual
+cancellation. Direct run/complete.json records14:34:17.987751UTC,
+reason full_budget_completed,complete_epochs=10,final_target_met=false;
+exit_code0,screen/workers absent,no errors. No extension/replacement.
+
+| Adapter Epoch | Hits025 | Hits050 | Acc025 (%) | Acc050 (%) |
+| --- | ---: | ---: | ---: | ---: |
+| 9 | 5281 | 4353 | 55.542701 | 45.782499 |
+| 10 | 5276 | 4351 | 55.490114 | 45.761464 |
+
+All10 full9508 semantic Top1 pairs agree with complete logs. Trialbest1
+5383/4518 remains100/138hits below immutable globalbestB2=5483/4656.
+No target achievement or causal improvement claim. Independent ownCPU
+retained1/10 audits passed1169/optimizer/scheduler/config/SHA,CUDAoff.
+Latest10 SHA89bfa7cac0e26083c967600be4ebcfaad053c1ea25cfa38b8ed61b637ad175b9.
+Retention kept1/10,removed2-9;full CSV10 rows and audits retained.
+Receipts:scanrefer-bbf-quality-{full-history,complete,progress-final}-
+20261105T1437.json in results. Monitoring completion-path correction
+does not change training code. No new run launched.
+
 ## Current BBF-Quality Update: 2026-11-05 12:28 UTC
 
 Same trainer294910 live epoch9=326/6081 at12:27:24UTC,GPU59%,finite

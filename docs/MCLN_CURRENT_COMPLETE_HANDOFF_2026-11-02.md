@@ -1,4 +1,39 @@
-## Current Override: 2026-11-05 12:28 UTC
+## Current Override: 2026-11-05 14:41 UTC
+
+Scan trial1793849982 completed all10 authorized epochs normally:
+run/complete.json completed_utc=2026-11-05T14:34:17.987751Z,
+complete_epochs=budget_epochs=10,reason=full_budget_completed,
+final_target_met=false. Trial exit_code=0;screen/workers absent at
+14:37UTC,GPU0MiB,no errors. No manual stop/cancel/early stop/restart/
+duplicate or recipe change. No replacement or extension launched.
+
+Full9508 semantic history1-10 agrees with all complete log summaries.
+New9=5281/4353;10=5276/4351 (55.490114%/45.761464%). Trialbest1
+remains5383/4518 (56.615482%/47.517880%),below globalbestB2=5483/4656
+by100/138hits. Target5705/4945 unmet. OwnCPU retained1/10 passed
+1169 tensors,optimizer/scheduler/config/SHA,CUDAoff. Latest10 SHA
+89bfa7cac0e26083c967600be4ebcfaad053c1ea25cfa38b8ed61b637ad175b9.
+Retention kept1/10,removed2-9,all metric/audit history preserved. B2
+input identity unchanged. Do not interpret overall/position/mask as
+semantic Top1,or infer a causal regression explanation from this run.
+
+NR history1-90:new89=4125/3272,90=4180/3354 over7899;best66 unchanged.
+SR history1-34:new34=11875/9897 over17726;best32 unchanged.
+OwnCPU NR66/90 andSR32/34 passed1134/optimizer/scheduler/SHA,CUDAoff;
+retention aligned. All6 scratch processes live14:29-14:30UTC,training
+NR2697/3742,SR4962/6486,finite losses/no errors,original null-init
+scratch recipes/budgets unchanged. Target deficits222/289,469,420
+remain;none of three datasets met targets.
+
+Main CSV137 rows,adapter CSV10 rows. Receipts:NR/SR full-history
+20261105T1428,Scan full-history/completion/final-progress20261105T1437.
+Corrected scoped checker completion path to trial/run/complete.json;
+previous null was wrong monitoring location,not missing completion.
+No training source changes or local ML/tests. Existing heartbeat kept
+for NR/SR;prompt updated to read actual completion and avoid blind
+restarting/extension. Only approved wrapper for remote operations.
+
+## Previous Override: 2026-11-05 12:28 UTC
 
 Same Scan trainer294910/run1793849982 remains live:12:27:24UTC epoch9
 326/6081,GPU59%,finite first/second actual adapter updates,1/1 tensor

@@ -1,4 +1,23 @@
-## Current Override: 2026-11-05 22:28 UTC
+## Current Override: 2026-11-05 22:47 UTC
+
+### ScanRefer live check: 2026-11-05 22:47 UTC
+
+The existing `scanrefer_qila_20261105` run remains active in
+`pvg_scanrefer_qila_20261105`; do not stop, duplicate, or hot-change it.
+At22:47:25UTC epoch3 was at batch1761/6081 (~1.2it/s), GPU21055MiB/30%,
+with no recent errors. Its epoch3 first optimizer witness is finite
+(loss5.679346) and Reader/Support/Span each show finite nonzero
+gradients/deltas and 10/10/14 updated tensors.
+
+The run still uses legacy `bbf_quality_rank_loss_weight=0.3`, not the
+documented V99 QILA objective and not X1 evidence. Keep its full eight
+epochs with no early stopping. After natural completion, audit all
+full9508 same-checkpoint semantic rows and CPU checkpoint receipts, then
+run matched X0; proceed to true QILA X1 only if the document's preflight,
+objective/unit and update gates pass. User authorized this sequence
+without another approval request. NR3D/SR3D recipes remain unchanged.
+
+## Previous Current Override: 2026-11-05 22:28 UTC
 
 ### ScanRefer continuation: 2026-11-05 22:28 UTC
 

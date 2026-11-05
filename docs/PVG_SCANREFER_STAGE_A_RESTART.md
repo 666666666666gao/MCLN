@@ -1,6 +1,6 @@
 # ScanRefer Stage A Restart
 
-## Current BBF-Quality Fine-Tuning: 2026-11-05 04:11 UTC
+## Current BBF-Quality Fine-Tuning: 2026-11-05 04:34 UTC
 
 The user explicitly requested that ScanRefer fine-tuning continue and not
 be stopped. The isolated trial `scanrefer_bbf_quality_20261104` is active
@@ -18,8 +18,8 @@ The failure is retained in `launch_attempt_1.json` and
 `46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8`
 is unchanged.
 
-At04:10:51UTC PID294910 and four loader workers were active, GPU
-5963MiB/39%, epoch1 2909/6081. The latest log had finite training losses
+At04:34:08UTC PID294910 and four loader workers were active, GPU
+5963MiB/78%, epoch1 5635/6081. The latest log had finite training losses
 and no traceback/OOM; first two actual optimizer-step receipts pass:
 batch6 loss8.10970497, adapter gradient1.87043905/delta
 0.00271401; batch12 loss8.73804569, gradient2.05502987/delta
@@ -33,9 +33,23 @@ adapter on native BBF semantic ranking (adapter LR2e-5, rank weight1.0),
 native LR2e-6/backbone4e-6, remaining model frozen. No early stop.
 Preserve B2 and the failed-launch receipt. Local machine did not execute
 model code/tests; all remote activity used `work/remote_pvground.ps1`.
-Current progress observation: `2026-11-05T04:10:51Z`, from the
+Current progress observation: `2026-11-05T04:34:08Z`, from the
 current-run-only checker. The earlier detailed progress receipt is
 `docs/results/mcln_pvground_20261101/scanrefer-bbf-quality-progress-20261105T0355.json`.
+
+## Current Complete-Validation Bests: 2026-11-05 04:34 UTC
+
+All counts are last semantic alignment Top1/BBF on the full split, with
+both thresholds taken from the same selected checkpoint. ScanRefer B2
+epoch2 is5483/4656 over9508 (57.6672%/48.9693%); this remains the global
+best while the adapter trial has no complete evaluation. NR3D epoch66 is
+4255/3435 over7899 (53.8676%/43.4865%), latest epoch81 is4238/3397.
+SR3D epoch15 is11743/9434 over17726 (66.2473%/53.2213%), latest epoch30
+is11584/9434. Selection priority: Scan Acc050, NR/SR Acc025. Target
+shortfalls are Scan222/289 hits, NR469 Acc025 hits and SR559 Acc025
+hits; none is met. Current-only NR/SR collectors confirmed their best and
+latest CPU checkpoints have matching own epochs,1134 tensors,nonempty
+optimizer/scheduler and verified SHA; trainers remain live.
 
 ## Current Override: 2026-11-04 12:13 UTC
 

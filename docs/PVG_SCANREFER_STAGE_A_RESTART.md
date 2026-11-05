@@ -1,5 +1,14 @@
 # ScanRefer Stage A Restart
 
+## QILA Progress: 2026-11-05 18:59 UTC
+
+The same registered trial remains live at epoch1 batch3002/6081. GPU
+22153 MiB and 25% utilization were observed with no recent error lines.
+The first optimizer witness remains valid: finite loss7.640077 and
+Reader/Support/Span updates10/10/14. The QILA rank loss was finite
+(`0.6547` at the latest logged interval). Full9508 validation is pending;
+do not promote a score or start another run.
+
 ## QILA Follow-Up Launch: 2026-11-05 18:15 UTC
 
 The completed BBF-quality adapter run is not extended. A separate

@@ -1,6 +1,6 @@
 # ScanRefer Stage A Restart
 
-## Current BBF-Quality Fine-Tuning: 2026-11-05 04:34 UTC
+## Current BBF-Quality Fine-Tuning: 2026-11-05 05:01 UTC
 
 The user explicitly requested that ScanRefer fine-tuning continue and not
 be stopped. The isolated trial `scanrefer_bbf_quality_20261104` is active
@@ -18,9 +18,10 @@ The failure is retained in `launch_attempt_1.json` and
 `46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8`
 is unchanged.
 
-At04:34:08UTC PID294910 and four loader workers were active, GPU
-5963MiB/78%, epoch1 5635/6081. The latest log had finite training losses
-and no traceback/OOM; first two actual optimizer-step receipts pass:
+At04:59:12UTC PID294910 and four loader workers were active, GPU
+4933MiB/92%, epoch2 1184/6081. Epoch1 completed full training and
+validation. The latest log had finite training losses and no traceback/OOM;
+first two actual optimizer-step receipts pass:
 batch6 loss8.10970497, adapter gradient1.87043905/delta
 0.00271401; batch12 loss8.73804569, gradient2.05502987/delta
 0.00246970. Both report finite loss,1/1 adapter tensor updated and frozen
@@ -33,16 +34,27 @@ adapter on native BBF semantic ranking (adapter LR2e-5, rank weight1.0),
 native LR2e-6/backbone4e-6, remaining model frozen. No early stop.
 Preserve B2 and the failed-launch receipt. Local machine did not execute
 model code/tests; all remote activity used `work/remote_pvground.ps1`.
-Current progress observation: `2026-11-05T04:34:08Z`, from the
-current-run-only checker. The earlier detailed progress receipt is
+Current progress observation: `2026-11-05T04:59:12Z`, from the
+current-run-only checker. Epoch1 was audited at05:00:56UTC using its own
+CPU checkpoint: own epoch1,1169 tensors, nonempty optimizer/scheduler,
+checkpoint SHA matched the metric row, CUDA uninitialized. The earlier
+detailed progress receipt is
 `docs/results/mcln_pvground_20261101/scanrefer-bbf-quality-progress-20261105T0355.json`.
+
+Epoch1 full9508 last semantic alignment Top1/BBF is5383/4518 hits
+(Acc025/Acc050=56.6155%/47.5179%). Compared with immutable B2
+5483/4656,this is-100/-138 hits. This is the first of10 planned epochs;
+the run has no early-stop policy and remains active. B2 remains global
+best under Acc050-first selection. CPU audit receipt:
+`scanrefer_bbf_quality_20261104/run/scanrefer/scanrefer_bbf_quality_20261104/1793849982/epoch1_cpu_audit.json`.
 
 ## Current Complete-Validation Bests: 2026-11-05 04:34 UTC
 
 All counts are last semantic alignment Top1/BBF on the full split, with
 both thresholds taken from the same selected checkpoint. ScanRefer B2
 epoch2 is5483/4656 over9508 (57.6672%/48.9693%); this remains the global
-best while the adapter trial has no complete evaluation. NR3D epoch66 is
+best. Adapter epoch1=5383/4518 is a complete but lower first-round result.
+NR3D epoch66 is
 4255/3435 over7899 (53.8676%/43.4865%), latest epoch81 is4238/3397.
 SR3D epoch15 is11743/9434 over17726 (66.2473%/53.2213%), latest epoch30
 is11584/9434. Selection priority: Scan Acc050, NR/SR Acc025. Target

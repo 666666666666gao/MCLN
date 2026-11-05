@@ -1,15 +1,16 @@
-## Current Override: 2026-11-05 23:10 UTC
+## Current Override: 2026-11-05 23:37 UTC
 
 ### Current training and audited metrics
 
 The existing `scanrefer_qila_20261105` run is still active in
 `pvg_scanrefer_qila_20261105`; do not stop, duplicate, or hot-change it.
-At23:10:48UTC its trainer was live at epoch3 batch3433/6081, GPU
-21067/24564MiB at24%, with no recent errors. The epoch3 first optimizer
-witness is finite (loss5.679346); Reader/Support/Span each have finite,
-nonzero gradients and deltas and updated10/10/14 tensors. Epoch3 full9508
-validation is pending. Epoch1/2 same-checkpoint semantic Top1 are
-5366/4423 and5398/4512.
+At23:37:07UTC its trainer was live at epoch3 batch5317/6081, GPU
+21655/24564MiB at79%, with no recent errors. At the observed speed
+(~1.2batch/s), roughly11minutes of training steps remain before validation.
+The epoch3 first optimizer witness is finite (loss5.679346);
+Reader/Support/Span each have finite,nonzero gradients and deltas and
+updated10/10/14 tensors. Epoch3 full9508 validation is pending.
+Epoch1/2 same-checkpoint semantic Top1 are5366/4423 and5398/4512.
 
 This QILA-named run actually uses legacy
 `bbf_quality_rank_loss_weight=0.3`; it is not the documented V99 QILA or
@@ -37,12 +38,15 @@ removed, while their metrics and audit history remain. Full receipts:
 `docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261105T2305.json`
 and `sr3d-current-full-history-20261105T2305.json`.
 
-At23:10UTC the official scratch trainers, keepers and retention watchers
-were live; current log tails showed NR3D2339/3742 and SR3D2661/6486,
-finite recent losses, no recent errors, and unchanged official configs.
-These are in-epoch counters, not validation metrics.
+At23:37UTC NR3D trainer,keeper and retention watcher were live with the
+official config unchanged; its latest log counter was86/3742, finite
+recent losses and no recent errors. This is an in-epoch counter, not a
+validation metric. A23:32UTC full-history collector still found only
+complete NR epochs1-99 and SR epochs1-39; their best/latest remain
+NR99=4260/3413 and SR39=11911/9937 with own-CPU checkpoint audits passing.
+No newer full validation was available.
 
-## Previous Current Override: 2026-11-05 22:53 UTC
+## Previous Current Override: 2026-11-05 23:10 UTC
 
 ### ScanRefer live check: 2026-11-05 22:53 UTC
 

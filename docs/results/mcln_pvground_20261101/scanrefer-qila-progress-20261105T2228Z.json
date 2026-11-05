@@ -1,0 +1,67 @@
+{
+  "observed_utc": "2026-11-05T22:28:17.264943Z",
+  "scope": "Current ScanRefer QILA-named trial process, resume receipt, first-update witness and log progress only.",
+  "trial": "scanrefer_qila_20261105",
+  "screen": "pvg_scanrefer_qila_20261105",
+  "status": "active_training",
+  "resume_checkpoint": {
+    "epoch": 2,
+    "sha256": "fe2182575fc136004df5dee005058d19a627c817b1fbf48bc670db6c1804c5cf",
+    "model_tensors": 1168,
+    "optimizer_nonempty": true,
+    "scheduler_nonempty": true,
+    "optimizer_restored": true,
+    "scheduler_restored": true
+  },
+  "completed_full9508_semantic_hits": [
+    {
+      "epoch": 1,
+      "hits025": 5366,
+      "hits050": 4423,
+      "checkpoint_sha256": "27a367592e918b2defbd60d8dd0ce65f4a6e562a91d1b1944d2325f6986a7f87"
+    },
+    {
+      "epoch": 2,
+      "hits025": 5398,
+      "hits050": 4512,
+      "checkpoint_sha256": "fe2182575fc136004df5dee005058d19a627c817b1fbf48bc670db6c1804c5cf"
+    }
+  ],
+  "training_progress": {
+    "epoch": 3,
+    "batch": 392,
+    "batches_per_epoch": 6081,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "gpu_memory_mib": 20707,
+    "gpu_utilization_percent": 16,
+    "recent_errors": []
+  },
+  "first_update_witness": {
+    "batch": 6,
+    "loss": 5.679346084594727,
+    "finite_loss": true,
+    "optimizer_step_complete": true,
+    "modules": {
+      "Reader": {
+        "gradient_norm": 0.16738425195217133,
+        "parameter_delta_l2": 0.001169706229120493,
+        "updated_tensors": 10,
+        "parameter_tensors": 10
+      },
+      "Support": {
+        "gradient_norm": 0.13793669641017914,
+        "parameter_delta_l2": 0.0006451090448535979,
+        "updated_tensors": 10,
+        "parameter_tensors": 10
+      },
+      "Span": {
+        "gradient_norm": 0.059049092233181,
+        "parameter_delta_l2": 0.0005065363948233426,
+        "updated_tensors": 14,
+        "parameter_tensors": 14
+      }
+    }
+  },
+  "recipe_interpretation": "Legacy rank-loss trial, not the documented V99 QILA objective or X1 evidence.",
+  "next": "Complete the original eight-epoch budget naturally, audit full semantic history, then proceed to documented X0 and gated X1."
+}

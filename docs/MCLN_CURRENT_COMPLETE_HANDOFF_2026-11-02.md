@@ -1,3 +1,34 @@
+## Current Override: 2026-11-05 22:28 UTC
+
+### ScanRefer continuation: 2026-11-05 22:28 UTC
+
+The same isolated `scanrefer_qila_20261105` run is active in screen
+`pvg_scanrefer_qila_20261105`. The original run completed full9508
+semantic epochs1-2, then its callback exited because it incorrectly
+required `model_only_initialization=true` on the resumed epoch2 checkpoint.
+Epoch2 is correctly a full-resume checkpoint with that flag false. Its
+CPU audit passed own epoch2,1168 model tensors,nonempty optimizer and
+scheduler,LR groups2e-6/4e-6/2e-5,SHA
+`fe2182575fc136004df5dee005058d19a627c817b1fbf48bc670db6c1804c5cf`.
+The complete same-checkpoint semantic history is epoch1 `5366/4423`,
+epoch2 `5398/4512` over9508.
+
+Recovery now resumes from epoch2 with optimizer and scheduler restoration
+confirmed in `resume_epoch2.json`; no epoch was rerun. At22:28UTC the
+trainer was live at epoch3 batch392/6081, GPU20707MiB/16%, with no recent
+errors. Epoch3 first optimizer step was finite (loss5.679346), and
+Reader/Support/Span had finite nonzero gradients and parameter changes
+(10/10,10/10,14/14 tensors updated). Keep the same run through its full
+8-epoch budget,without early stopping or another parallel launch.
+
+This remains the legacy rank-loss trial (`bbf_quality_rank_loss_weight=0.3`),
+not the documented V99 QILA implementation or X1 evidence. After it
+finishes naturally, audit all completed full9508 semantic epochs and
+checkpoint history, then implement/run the documented X0 control and
+advance to X1 only if the plan's gates pass. The user explicitly authorized
+automatic progression without another approval request. NR3D/SR3D remain
+on their official scratch recipes.
+
 ## Current Override: 2026-11-05 21:21 UTC
 
 ### Live monitoring: 2026-11-05 21:21 UTC

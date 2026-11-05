@@ -1,9 +1,11 @@
 """Train the ScanRefer QILA-style IoU-aware ranking follow-up."""
 
 import datetime
+from decimal import Decimal
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 import sys
 
@@ -19,14 +21,18 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def audit_checkpoint(path, epoch):
+def audit_checkpoint(path, epoch, expected_model_only_initialization=None):
     import torch
 
     saved = torch.load(path, map_location="cpu", weights_only=False)
     assert saved["epoch"] == epoch
     assert len(saved["model"]) == 1168
     assert saved["optimizer"]["state"] and saved["scheduler"]
-    assert saved["config"].model_only_initialization
+    if expected_model_only_initialization is not None:
+        assert (
+            bool(saved["config"].model_only_initialization)
+            is expected_model_only_initialization
+        )
     groups = saved["optimizer"]["param_groups"]
     assert [(group["name"], group["lr"]) for group in groups] == [
         ("native", 2e-6), ("backbone", 4e-6), ("pvground", 2e-5),
@@ -94,11 +100,52 @@ def semantic_row(evaluator, epoch):
         epoch=epoch,
         sample_count=9508,
         metric_branch="last_semantic_alignment_top1",
+        hit_count_source="evaluator_integer_dets",
     )
 
 
-def training_arguments(run_dir, checkpoint):
-    return [
+def recover_semantic_rows(run_root, through_epoch):
+    text = (run_root.parent / "train.log").read_text(errors="replace")
+    matches = re.findall(
+        r"last_ semantic alignment Acc(0\.25|0\.50): Top-1: ([0-9.]+)",
+        text,
+    )
+    assert len(matches) >= through_epoch * 2
+    rows = []
+    for epoch in range(1, through_epoch + 1):
+        pair = matches[(epoch - 1) * 2:epoch * 2]
+        assert [threshold for threshold, _ in pair] == ["0.25", "0.50"]
+        checkpoint_matches = list(
+            run_root.rglob("ckpt_epoch_{}.pth".format(epoch))
+        )
+        assert len(checkpoint_matches) == 1
+        checkpoint = checkpoint_matches[0]
+        row = {
+            "epoch": epoch,
+            "sample_count": 9508,
+            "metric_branch": "last_semantic_alignment_top1",
+            "hit_count_source":
+                "uniquely_reconstructed_from_rounded_full9508_log",
+            "checkpoint": str(checkpoint),
+        }
+        for (threshold, rate), suffix in zip(pair, ("025", "050")):
+            displayed = Decimal(rate)
+            candidates = [
+                hits for hits in range(9509)
+                if abs(Decimal(hits) / Decimal(9508) - displayed)
+                < Decimal("0.000005")
+            ]
+            assert len(candidates) == 1
+            row["acc" + suffix] = str(displayed)
+            row["hits" + suffix] = candidates[0]
+        row.update(audit_checkpoint(checkpoint, epoch, epoch == 1))
+        row["checkpoint"] = str(checkpoint)
+        rows.append(row)
+    return rows
+
+
+def training_arguments(run_dir, checkpoint, resume):
+    arguments = [
         "--local_rank", "0", "--num_decoder_layers", "6", "--use_color",
         "--weight_decay", "0.0005",
         "--data_root", "/root/autodl-tmp/PV-Ground/data/",
@@ -109,8 +156,7 @@ def training_arguments(run_dir, checkpoint):
         "--detect_intermediate", "--joint_det", "--use_soft_token_loss",
         "--use_contrastive_align", "--butd", "--self_attend", "--augment_det",
         "--model", "MCLN", "--rng_seed", "0",
-        "--checkpoint_path", str(checkpoint), "--model_only_initialization",
-        "--checkpoint_start_epoch", "1", "--use_pvground_innovations",
+        "--checkpoint_path", str(checkpoint), "--use_pvground_innovations",
         "--expected_eval_sample_count", "9508",
         "--bbf_quality_rank_loss_weight", "0.3",
         "--max_epoch", "8", "--lr_decay_epochs", "100",
@@ -119,6 +165,11 @@ def training_arguments(run_dir, checkpoint):
         "--checkpoint_retention_metrics", "rec_acc025", "rec_acc050",
         "--log_dir", str(run_dir), "--exp", "scanrefer_qila_20261105",
     ]
+    if not resume:
+        arguments.extend(
+            ["--model_only_initialization", "--checkpoint_start_epoch", "1"]
+        )
+    return arguments
 
 
 def main():
@@ -128,23 +179,68 @@ def main():
 
     run_dir = Path(sys.argv[1])
     initialization = Path(sys.argv[2])
-    assert run_dir.is_dir() and not (run_dir / "started.json").exists()
-    assert sha256(initialization) == B2_SHA256
-    parent = audit_checkpoint(initialization, 2)
+    resume = len(sys.argv) == 4 and sys.argv[3] == "resume"
+    assert len(sys.argv) in (3, 4)
+    assert run_dir.is_dir()
+    history_path = run_dir / "qila_semantic_history.json"
+    if resume:
+        assert (run_dir / "started.json").is_file()
+        assert not (run_dir / "complete.json").exists()
+        resume_epoch = int(initialization.stem.removeprefix("ckpt_epoch_"))
+        parent = audit_checkpoint(initialization, resume_epoch, False)
+        recovered = recover_semantic_rows(run_dir, resume_epoch)
+        history = recovered
+        for epoch, row in enumerate(
+            json.loads(history_path.read_text())["rows"]
+            if history_path.exists() else [],
+            start=1,
+        ):
+            assert row["epoch"] == epoch
+            assert row["hits025"] == recovered[epoch - 1]["hits025"]
+            assert row["hits050"] == recovered[epoch - 1]["hits050"]
+        assert len(history) == resume_epoch
+        main_utils._atomic_json_save(
+            {
+                "rows": history,
+                "selection": "Acc050_then_Acc025_then_earlier_epoch",
+                "early_stopping": False,
+                "stop_requested": False,
+                "final_target_met": False,
+            },
+            str(history_path),
+        )
+        main_utils._atomic_checkpoint_hardlink(
+            history[0]["checkpoint"], str(run_dir / "semantic_best.pth")
+        )
+        main_utils._atomic_checkpoint_hardlink(
+            history[0]["checkpoint"], str(run_dir / "semantic_latest.pth")
+        )
+        main_utils._atomic_json_save(
+            history[0], str(run_dir / "semantic_best.json")
+        )
+    else:
+        assert not (run_dir / "started.json").exists()
+        assert sha256(initialization) == B2_SHA256
+        parent = audit_checkpoint(initialization, 2, True)
+        history = []
 
-    sys.argv = [sys.argv[0], *training_arguments(run_dir, initialization)]
+    sys.argv = [
+        sys.argv[0], *training_arguments(run_dir, initialization, resume)
+    ]
     args = trainer.prepare_source_moe_gate_checkpoint_config(
         trainer.parse_option()
     )
     assert args.max_epoch == 8
-    assert args.model_only_initialization
+    assert args.model_only_initialization is (not resume)
     assert not args.pvground_train_only
     assert args.bbf_quality_rank_loss_weight == 0.3
     assert args.checkpoint_path == str(initialization)
+    if resume:
+        assert args.checkpoint_start_epoch is None
+    else:
+        assert args.checkpoint_start_epoch == 1
     assert args.pp_checkpoint is None
     assert args.expected_eval_sample_count == 9508
-
-    history = []
 
     class QILATrainer(trainer.TrainTester):
         get_optimizer = staticmethod(build_optimizer)
@@ -162,9 +258,10 @@ def main():
                 ("pvground_first_update.json", "first"),
                 ("pvground_second_update.json", "second"),
             ):
-                witness = json.loads(
-                    (run / source_name).read_text(encoding="utf-8")
-                )
+                witness_path = run / source_name
+                if not witness_path.exists() and output_name == "second":
+                    continue
+                witness = json.loads(witness_path.read_text(encoding="utf-8"))
                 assert witness["epoch"] == epoch
                 assert witness["finite_loss"]
                 assert witness["optimizer_step_complete"]
@@ -177,7 +274,7 @@ def main():
 
             row = semantic_row(self.semantic_evaluator, epoch)
             source = run / "ckpt_epoch_{}.pth".format(epoch)
-            audit = audit_checkpoint(source, epoch)
+            audit = audit_checkpoint(source, epoch, False)
             preserved = run / "preserved_checkpoints"
             preserved.mkdir(exist_ok=True)
             target = preserved / source.name
@@ -195,6 +292,15 @@ def main():
             main_utils._atomic_json_save(
                 best, str(run / "semantic_best.json")
             )
+            main_utils._atomic_checkpoint_hardlink(
+                best["checkpoint"], str(run_dir / "semantic_best.pth")
+            )
+            main_utils._atomic_json_save(
+                best, str(run_dir / "semantic_best.json")
+            )
+            main_utils._atomic_checkpoint_hardlink(
+                row["checkpoint"], str(run_dir / "semantic_latest.pth")
+            )
             main_utils._atomic_json_save(
                 {
                     "rows": history,
@@ -206,7 +312,7 @@ def main():
                         for item in history
                     ),
                 },
-                str(run / "qila_semantic_history.json"),
+                str(history_path),
             )
             return False
 
@@ -219,29 +325,42 @@ def main():
     torch.backends.cudnn.enabled = True
     torch.backends.cudnn.benchmark = True
     torch.backends.cudnn.deterministic = True
-    main_utils._atomic_json_save(
-        {
-            "started_utc": datetime.datetime.now(
-                datetime.timezone.utc
-            ).isoformat(),
-            "initialization": parent,
-            "optimizer_restored": False,
-            "scheduler_restored": False,
-            "budget_epochs": 8,
-            "early_stopping": False,
-            "recipe": {
-                "seed": 0,
-                "batch_size": 8,
-                "gradient_accumulation_steps": 6,
-                "native_lr": 2e-6,
-                "backbone_lr": 4e-6,
-                "pvground_lr": 2e-5,
-                "qila_rank_loss_weight": 0.3,
-                "selection": "IoU-aware BBF candidate ranking",
+    if resume:
+        main_utils._atomic_json_save(
+            {
+                "resumed_utc": datetime.datetime.now(
+                    datetime.timezone.utc
+                ).isoformat(),
+                "checkpoint": parent,
+                "optimizer_restored": True,
+                "scheduler_restored": True,
             },
-        },
-        str(run_dir / "started.json"),
-    )
+            str(run_dir / "resume_epoch{}.json".format(resume_epoch)),
+        )
+    else:
+        main_utils._atomic_json_save(
+            {
+                "started_utc": datetime.datetime.now(
+                    datetime.timezone.utc
+                ).isoformat(),
+                "initialization": parent,
+                "optimizer_restored": False,
+                "scheduler_restored": False,
+                "budget_epochs": 8,
+                "early_stopping": False,
+                "recipe": {
+                    "seed": 0,
+                    "batch_size": 8,
+                    "gradient_accumulation_steps": 6,
+                    "native_lr": 2e-6,
+                    "backbone_lr": 4e-6,
+                    "pvground_lr": 2e-5,
+                    "qila_rank_loss_weight": 0.3,
+                    "selection": "IoU-aware BBF candidate ranking",
+                },
+            },
+            str(run_dir / "started.json"),
+        )
     QILATrainer(args).main(args)
     main_utils._atomic_json_save(
         {

@@ -1,5 +1,29 @@
 # ScanRefer Stage A Restart
 
+## Current Continuation: 2026-11-05 22:28 UTC
+
+The existing `scanrefer_qila_20261105` run is active in its original screen.
+Epochs1-2 completed full9508 semantic validation at `5366/4423` and
+`5398/4512`. The initial resumed callback exited after epoch2 because an
+audit assertion incorrectly expected the initialization-only flag to
+remain true; the epoch2 full-resume checkpoint correctly records false.
+CPU audit passed own epoch2,1168 tensors,nonempty optimizer/scheduler,
+LR groups2e-6/4e-6/2e-5,SHA
+`fe2182575fc136004df5dee005058d19a627c817b1fbf48bc670db6c1804c5cf`.
+The same run resumed from epoch2 with optimizer/scheduler restoration
+confirmed, and began epoch3 without replaying completed epochs.
+
+At22:28UTC it was active at epoch3 batch392/6081, GPU20707MiB/16%,
+no recent errors. The epoch3 first optimizer witness was finite
+(loss5.679346) with finite nonzero gradients/deltas and tensor updates
+Reader10/10,Support10/10,Span14/14. Continue the full eight-epoch budget,
+no early stopping and no duplicate trial.
+
+This is still a legacy rank-loss run,not the V99 QILA objective. When it
+finishes, audit all same-checkpoint full9508 semantic rows, then proceed
+automatically to the plan's X0 control and to X1 only after its gates pass.
+The user has authorized this progression without asking again.
+
 ## Live Monitoring: 2026-11-05 21:21 UTC
 
 The same `pvg_scanrefer_qila_20261105` recovery remains active under

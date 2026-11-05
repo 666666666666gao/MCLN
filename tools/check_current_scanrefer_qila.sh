@@ -107,11 +107,13 @@ result = {
         if (run / "started.json").exists()
         else None
     ),
-    "resume_receipt": (
-        json.loads((run / "resume_epoch1.json").read_text())
-        if (run / "resume_epoch1.json").exists()
-        else None
-    ),
+    "resume_receipts": [
+        {
+            "path": str(path.relative_to(run)),
+            "receipt": json.loads(path.read_text()),
+        }
+        for path in sorted(run.glob("resume_epoch*.json"))
+    ],
     "first_update_witnesses": witnesses,
     "progress_tail": progress,
     "log_tail": [line.strip()[:500] for line in lines[-80:]],
@@ -130,11 +132,10 @@ result = {
             )
         )
     ][-8:],
-    "resume_exit_code": (
-        (trial / "exit_code_resume_epoch1").read_text().strip()
-        if (trial / "exit_code_resume_epoch1").exists()
-        else None
-    ),
+    "resume_exit_codes": {
+        path.name: path.read_text().strip()
+        for path in sorted(trial.glob("exit_code_resume_epoch*"))
+    },
     "exit_code": (
         (trial / "exit_code").read_text().strip()
         if (trial / "exit_code").exists()

@@ -1,0 +1,61 @@
+{
+  "observed_utc": "2026-11-05T01:19:04.512785+00:00",
+  "dataset": "sr3d",
+  "run": "1793552465",
+  "processes": [
+    {
+      "pid": 92354,
+      "exists": true,
+      "command": "/root/autodl-tmp/PV-Ground/env/bin/python -u train_dist_mod.py --local-rank=0 --num_decoder_layers 6 --use_color --weight_decay 0.0005 --data_root /root/autodl-tmp/PV-Ground/data/ --val_freq 1 --batch_size 12 --save_freq 1 --lr_backbone 1e-3 --lr 1e-4 --dataset sr3d --test_dataset sr3d --detect_intermediate --joint_det --use_soft_token_loss --use_contrastive_align --log_dir /root/autodl-tmp/mcln_pvground_ft_20261101/runs/sr3d --print_freq 500 --lr_decay_epochs 30 40 --gradient_accumulation_steps 2 --local_rank 0 --checkpoint_metric_retention --checkpoint_retention_metrics rec_acc025 rec_acc050 --max_epoch 140 --model MCLN --exp mcln_pvground_sr3d_20261101 --butd_cls --self_attend "
+    },
+    {
+      "pid": 129032,
+      "exists": true,
+      "command": "/root/autodl-tmp/PV-Ground/env/bin/python -u /root/autodl-tmp/mcln_pvground_ft_20261101/mcln_metric_keeper.py --run-dir /root/autodl-tmp/mcln_pvground_ft_20261101/runs/sr3d/sr3d/mcln_pvground_sr3d_20261101/1793552465 --log /root/autodl-tmp/mcln_pvground_ft_20261101/runs/sr3d/train.log --dataset sr3d --interval 240 "
+    },
+    {
+      "pid": 148725,
+      "exists": true,
+      "command": "/root/autodl-tmp/PV-Ground/env/bin/python -u /root/autodl-tmp/mcln_pvground_ft_20261101/retain_mcln_best_latest.py --dataset sr3d --apply --watch "
+    }
+  ],
+  "screen": [
+    "\t92328.pvg_sr3d_mcln_scratch\t(11/02/26 01:00:54)\t(Detached)"
+  ],
+  "config": {
+    "checkpoint_path": null,
+    "pp_checkpoint": null,
+    "use_pvground_innovations": false,
+    "batch_size": 12,
+    "gradient_accumulation_steps": 2,
+    "lr": 0.0001,
+    "lr_backbone": 0.001,
+    "max_epoch": 140,
+    "lr_decay_epochs": [
+      30,
+      40
+    ]
+  },
+  "gpu": "22930 MiB, 23 %",
+  "tail": [
+    " 38%|###7      | 2462/6486 [59:01<1:34:51,  1.41s/it]",
+    " 38%|###7      | 2463/6486 [59:02<1:32:34,  1.38s/it]",
+    " 38%|###7      | 2464/6486 [59:04<1:35:12,  1.42s/it]",
+    " 38%|###8      | 2465/6486 [59:05<1:32:43,  1.38s/it]",
+    " 38%|###8      | 2466/6486 [59:07<1:34:01,  1.40s/it]",
+    " 38%|###8      | 2467/6486 [59:08<1:34:05,  1.40s/it]",
+    " 38%|###8      | 2468/6486 [59:09<1:35:08,  1.42s/it]",
+    " 38%|###8      | 2469/6486 [59:11<1:33:06,  1.39s/it]",
+    " 38%|###8      | 2470/6486 [59:12<1:35:10,  1.42s/it]",
+    " 38%|###8      | 2471/6486 [59:14<1:35:13,  1.42s/it]"
+  ],
+  "recent_logged_loss_count": 64,
+  "recent_logged_losses_finite": true,
+  "latest_logged_losses": [
+    9.3658,
+    9.3601,
+    9.3528
+  ],
+  "recent_errors": [],
+  "scope": "Only registered current NR/SR scratch runs; source/log/config/process reads. No model import, checkpoint load, forward, evaluation, training or run restart."
+}

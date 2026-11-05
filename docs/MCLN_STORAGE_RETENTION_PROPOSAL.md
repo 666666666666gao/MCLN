@@ -1,3 +1,15 @@
+## Update: 2026-11-05 01:19 UTC
+
+Current-only collectors verified own CPU best/latest NR66/78 and SR15/29,
+1134 tensors,nonempty optimizer/scheduler,SHA and existing preserved
+links. Both retention receipts synchronized to complete latest78/29.
+Full histories include all NR1-78/SR1-29 and historical deletion audits;
+the earlier pending SR28 window has resolved. No manual deletion,
+relinking,watcher restart,trainer restart or new Scan launch. Preserve
+immutable Scan B2. See current-full-history-20261105T0119 receipts for
+exact retained/removed paths and SHA;historical audit does not imply
+that a removed weight still exists.
+
 ## Update: 2026-11-04 21:12 UTC
 
 NR own CPU checkpoint74/1134/nonempty optimizer+scheduler/SHA passed;

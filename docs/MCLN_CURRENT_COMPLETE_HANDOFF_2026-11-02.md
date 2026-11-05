@@ -1,4 +1,40 @@
-## Current Override: 2026-11-04 21:12 UTC
+## Current Override: 2026-11-05 01:19 UTC
+
+Actual remote observation time is2026-11-05 01:19UTC,also consistent
+with local2026-11-04 20:19-05:00. The triggering heartbeat timestamp
+2026-11-04 23:13UTC is earlier; do not backdate these observations.
+
+Full current-run histories now contain NR1-78 and SR1-29. NR78 full7899
+last semantic alignment Top1=4122/3380 hits025/050; best66=4255/3435
+unchanged under025-first selection. SR29 full17726=11524/9269;
+best15=11743/9434 unchanged. Both latest own CPU checkpoints passed
+epoch78/29,1134 tensors,nonempty optimizer/scheduler and SHA audits,
+CUDA uninitialized. NR78 SHA
+dba99280cdf7e2ac9803b7550582d7ed77afdc92a0208524aac51dd70dfda564;
+SR29 SHA abaf53061f236661423ba2fe8a01199b5243e22af4b49ee356b566637390e71d.
+Existing retention watchers keep NR66/78 and SR15/29. The earlier SR28
+save-before-validation window is resolved:full28=11434/9296. Its metric
+and historical CPU audit remain;its weight was removed by authorized
+retention. No manual cleanup,
+trainer restart,watcher restart,configuration or initialization change.
+
+At01:19UTC all six original NR/SR trainer/keeper/retention processes
+were live. Null checkpoint/pp initialization,innovations-off settings,
+original240/140 budgets and optimizer recipes unchanged. Recent logged
+losses finite,no recent error lines. NR progress370/3742 and SR2471/6486
+are training counters,not validation scores. At observed rates next full
+validation is approximately02:20-02:40UTC NR,03:10-03:25UTC SR; update
+from actual speed. Best-target deficits remain NR469 and SR559 Acc025
+hits;Scan B2=5483/4656 remains222/289 short. No target achieved.
+Scan01:21:26UTC:GPU idle0MiB,no compute process,only existing retention
+screen;B2 SHA unchanged. Prepared experiment remains unlaunched;do not
+start a new run. Resource receipt:scanrefer-current-resources-20261105T0120.txt.
+Receipts:*current-full-history-20261105T0119.json and
+*current-scratch-progress-20261105T0119.json,under
+docs/results/mcln_pvground_20261101/. Local file/Git/results only;
+remote calls exclusively work/remote_pvground.ps1.
+
+## Previous Override: 2026-11-04 21:12 UTC
 
 NR3D completed full7899 epochs73=4198/3311 and74=4228/3438 hits025/050.
 Acc025-first best remains66=4255/3435; do not combine best66's025 with

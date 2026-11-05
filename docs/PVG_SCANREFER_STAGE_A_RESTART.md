@@ -1,6 +1,34 @@
 # ScanRefer Stage A Restart
 
-## Current BBF-Quality Fine-Tuning: 2026-11-05 05:10 UTC
+## Current BBF-Quality Fine-Tuning: 2026-11-05 06:03 UTC
+
+The user explicitly requested that ScanRefer fine-tuning continue and not
+be stopped. Do not cancel the active run or start a duplicate. The
+isolated `scanrefer_bbf_quality_20261104` trial remains live in screen
+`pvg_scanrefer_bbf_quality_20261104`, trainer PID294910. At06:03UTC it
+was training epoch3 at523/6081; GPU compute was active, recent logged
+losses finite, and no recent traceback/OOM was observed.
+
+Epoch2 completed full9508 last semantic alignment Top1 validation:
+5150/4203 hits025/050 =54.1649%/44.2049%. Compared with epoch1
+5383/4518,this is-233/-315 hits; compared with immutable B2
+5483/4656,this is-333/-453. The global best remains B2; within this
+adapter trial epoch1 remains best. Epoch2 own CPU checkpoint audit
+passed: own epoch2,1169 model tensors, nonempty optimizer/scheduler,
+expected adapter-only configuration, SHA
+`b6b4f2fd4d34fce820bad785094d8b92ae009858c1f82994d67539572859da10`,
+CUDA uninitialized. Raw audit:
+`docs/results/mcln_pvground_20261101/scanrefer-bbf-quality-epoch2-cpu-audit-20261105T0103.json`.
+
+This is a ten-epoch run with no early stopping. Do not treat a lower
+intermediate epoch as a stop condition; continue collecting complete
+epochs, same-checkpoint metrics and CPU checkpoint audits. The target
+5705/4945 hits is not met. Preserve immutable B2, training log, launch
+failure receipt, update witnesses, all complete metric rows and audits.
+Local machine performed no model import, test, diagnosis, forward,
+evaluation or training; remote work used `work/remote_pvground.ps1`.
+
+## Previous Update: 2026-11-05 05:10 UTC
 
 The user explicitly requested that ScanRefer fine-tuning continue and not
 be stopped. The isolated trial `scanrefer_bbf_quality_20261104` is active

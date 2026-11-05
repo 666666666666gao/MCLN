@@ -1,3 +1,25 @@
+## Update: 2026-11-05 06:03 UTC
+
+ScanRefer BBF-quality epoch2 full9508 validation is5150/4203 hits025/050.
+Its own CPU checkpoint audit passed epoch2/1169 tensors/nonempty
+optimizer+scheduler/SHA
+`b6b4f2fd4d34fce820bad785094d8b92ae009858c1f82994d67539572859da10`;
+CUDA remained uninitialized. The current trainer PID294910 was live in
+epoch3 at523/6081, so do not act on retention during training. The run has
+no early stopping and its current epoch1 remains trial best; immutable B2
+remains global best. Preserve the complete history and audit receipt. No
+manual cleanup, relinking, stop, cancellation or duplicate launch.
+
+## Previous Update: 2026-11-05 03:58 UTC
+
+The active ScanRefer BBF-quality run is at training epoch1 and has no
+completed validation checkpoint yet. B2 remains the immutable input and
+best. Keep the complete launch failure diagnosis, started receipt,
+per-step witnesses, logs, configs, full metrics and future CPU checkpoint
+audits. No cleanup watcher or manual deletion applies to its checkpoints;
+its run-specific best/latest policy only executes after a complete
+validation and CPU audit. Do not stop the run.
+
 ## Update: 2026-11-05 01:19 UTC
 
 Current-only collectors verified own CPU best/latest NR66/78 and SR15/29,

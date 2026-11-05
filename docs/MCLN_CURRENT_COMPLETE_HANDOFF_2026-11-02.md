@@ -14,8 +14,11 @@ The first launcher failed before training because the installed
 `torch.distributed.run` rejected `--use_env` (exit code2, GPU unused,
 no optimizer step). The failure was retained and the same run restarted
 without that unsupported flag. At 18:14:57UTC the repaired attempt had
-live workers/GPU process and was still loading data; first-update witness
-and full validation are pending. Do not start a duplicate or stop it.
+live workers/GPU process. By 18:23:11UTC the first real optimizer witness
+passed: finite loss7.640077, optimizer step1, and Reader/Support/Span
+updated 10/10/10/14/14 parameter tensors respectively. The run was at
+epoch1 batch385/6081 with no error lines; full validation is pending. Do
+not start a duplicate or stop it.
 Raw record: `docs/results/mcln_pvground_20261101/scanrefer-qila-launch-20261105.json`.
 
 ## Monitoring Update: 2026-11-05 17:31 UTC

@@ -14,8 +14,9 @@ Trial `scanrefer_qila_20261105` runs in screen
 `pvg_scanrefer_qila_20261105`. The first attempt failed before training
 with exit code2 because `torch.distributed.run` rejected `--use_env`; the
 failure was retained and the same run restarted without that flag. At
-18:14:57UTC workers and a GPU process were live, with first-update witness
-pending and no metric yet.
+18:23:11UTC the first real optimizer witness passed with finite loss
+7.640077, Reader/Support/Span updates of10/10/14 tensors, and no error
+lines. The run was at epoch1 batch385/6081; full validation is pending.
 
 ## BBF-Quality Completed: 2026-11-05 14:34 UTC
 

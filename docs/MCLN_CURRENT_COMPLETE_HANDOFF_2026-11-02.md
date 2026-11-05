@@ -1,5 +1,10 @@
 ## Current Override: 2026-11-05 06:03 UTC
 
+Latest follow-up at06:15UTC: the same Scan trainer PID294910 and screen
+remain live, now epoch3=2383/6081, GPU compute54%, no recent error lines.
+Do not stop or relaunch it. This is training progress only; epoch2 remains
+the latest complete audited result.
+
 The user explicitly instructed that ScanRefer fine-tuning must continue;
 do not stop/cancel this run or launch a duplicate. The isolated
 BBF-quality adapter run remains active in screen

@@ -2,6 +2,11 @@
 
 ## Current BBF-Quality Fine-Tuning: 2026-11-05 06:03 UTC
 
+Follow-up current-only check at06:15UTC confirmed the same trainer PID
+and screen live, epoch3 at2383/6081, GPU54%, no recent error lines.
+Training progress is not an accuracy result; epoch2 remains latest
+complete audited validation.
+
 The user explicitly requested that ScanRefer fine-tuning continue and not
 be stopped. Do not cancel the active run or start a duplicate. The
 isolated `scanrefer_bbf_quality_20261104` trial remains live in screen

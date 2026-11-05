@@ -1,4 +1,12 @@
-## Update: 2026-11-05 14:41 UTC
+## Update: 2026-11-05 18:15 UTC
+
+The isolated `scanrefer_qila_20261105` trial has launched from immutable
+B2. No retention deletion has occurred for this trial. Keep the B2 input,
+launch-failure receipt, source hashes, logs, full metrics and CPU audits.
+After a complete epoch is audited, retain only semantic best/latest via
+the trial's audited path; do not manually delete files or touch NR3D/SR3D.
+
+## Previous Update: 2026-11-05 14:41 UTC
 
 Completed Scan run retained semanticbest1/latest10,ownCPU audits passed
 1169 tensors,nonempty optimizer/scheduler,SHA,CUDAoff. Existing run

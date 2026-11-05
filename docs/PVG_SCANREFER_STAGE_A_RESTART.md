@@ -1,5 +1,22 @@
 # ScanRefer Stage A Restart
 
+## QILA Follow-Up Launch: 2026-11-05 18:15 UTC
+
+The completed BBF-quality adapter run is not extended. A separate
+ScanRefer-only QILA-style IoU-aware BBF ranking trial is running from
+immutable B2 epoch2 with model-only initialization and fresh
+optimizer/scheduler. It uses 8 epochs, no early stopping, batch8,
+accumulation6, seed0, learning rates `2e-6/4e-6/2e-5`, and ranking-loss
+weight `0.3`. The full metric remains same-checkpoint
+`last_semantic_alignment_top1/bbf` over 9508 samples.
+
+Trial `scanrefer_qila_20261105` runs in screen
+`pvg_scanrefer_qila_20261105`. The first attempt failed before training
+with exit code2 because `torch.distributed.run` rejected `--use_env`; the
+failure was retained and the same run restarted without that flag. At
+18:14:57UTC workers and a GPU process were live, with first-update witness
+pending and no metric yet.
+
 ## BBF-Quality Completed: 2026-11-05 14:34 UTC
 
 Run1793849982 completed all10 epochs without early stop or manual

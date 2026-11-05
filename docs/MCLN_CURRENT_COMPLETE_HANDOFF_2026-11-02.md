@@ -1,3 +1,37 @@
+## Current Override: 2026-11-05 18:35 UTC
+
+The user authorized automatic continuation according to the V99 ScanRefer
+plan. The already registered isolated QILA trial is therefore kept running;
+no duplicate was launched and no active run was stopped:
+`scanrefer_qila_20261105`, screen `pvg_scanrefer_qila_20261105`.
+The repaired launcher remains live at ScanRefer epoch1 batch1264/6081,
+with GPU 22153 MiB and 28% utilization, no recent error lines, and the
+first real optimizer witness already passed with finite loss 7.640077.
+Reader/Support/Span updated 10/10/14 tensors. The immutable B2
+model-only initialization remains SHA
+`46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8`;
+recipe remains batch8/accum6/seed0, native/backbone/PV-Ground LR
+`2e-6/4e-6/2e-5`, QILA ranking weight `0.3`, fresh optimizer/scheduler,
+8 full epochs and no early stopping. Latest QILA loss logging is finite;
+full9508 validation is pending. Receipt:
+`docs/results/mcln_pvground_20261101/scanrefer-qila-progress-20261105T1834.json`.
+
+Current official scratch results were refreshed from the exact registered
+runs. NR3D full7899 latest epoch94 is `4200/3445` hits
+(`53.171288%/43.613116%`), SHA
+`9bbc11c71415aafae04b00659770103539106f186e763a71673e76c92bfec42b`;
+Acc@0.25 best remains epoch66 `4255/3435`. SR3D full17726 epoch36 is a
+new best/latest at `11893/10005` hits
+(`67.093535%/56.442514%`), SHA
+`0de79e16390f7b9c5b48870bf51b33c6357a2f83fab347a0fcd7ec5077dd8c30`.
+Both passed own-epoch, 1134-tensor, nonempty optimizer/scheduler, SHA and
+retention audits; trainer, keeper and retention processes remain live and
+the original official scratch recipes are unchanged. NR target gap is
+469 hits at the best checkpoint; SR target gap is 409 hits.
+Receipts:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261105T1832.json`,
+`docs/results/mcln_pvground_20261101/sr3d-current-full-history-20261105T1832.json`.
+
 ## Current Override: 2026-11-05 18:26 UTC
 
 The next authorized ScanRefer experiment is running in isolated trial

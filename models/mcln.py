@@ -428,6 +428,7 @@ class MCLN(nn.Module):
                  decoder_query_adapter_heads=4,
                  decoder_query_adapter_dropout=0.1,
                  decoder_query_adapter_max_delta=0.25,
+                 use_bbf_quality_adapter=False,
                  use_sacr_source=False,
                  use_sacr_score_refiner=False,
                  sacr_score_use_parent_relative_abstention=False,
@@ -489,6 +490,11 @@ class MCLN(nn.Module):
             use_joint_query_quality_reranker
         )
         self.use_decoder_query_adapter = bool(use_decoder_query_adapter)
+        self.use_bbf_quality_adapter = bool(use_bbf_quality_adapter)
+        if self.use_bbf_quality_adapter and not contrastive_align_loss:
+            raise ValueError(
+                "BBF quality adapter requires contrastive alignment"
+            )
         if not isinstance(
                 joint_query_quality_preserve_parent_score, bool):
             raise ValueError(
@@ -1463,6 +1469,7 @@ class MCLN(nn.Module):
             )
             if self.use_decoder_query_adapter else None
         )
+        self.bbf_quality_adapter = None
 
         # Extra layers for contrastive losses
         if contrastive_align_loss:
@@ -1480,6 +1487,12 @@ class MCLN(nn.Module):
                 nn.ReLU(),
                 nn.Linear(d_model, 64)
             )
+            self.bbf_quality_adapter = (
+                nn.Linear(d_model, 64, bias=False)
+                if self.use_bbf_quality_adapter else None
+            )
+            if self.bbf_quality_adapter is not None:
+                nn.init.zeros_(self.bbf_quality_adapter.weight)
 
         if self.use_source_choice_selector:
             selector_feat_dim = 64 if contrastive_align_loss else d_model
@@ -2100,9 +2113,10 @@ class MCLN(nn.Module):
                 )
             # step project
             if self.contrastive_align_loss:
-                proj_query = F.normalize(
-                    self.contrastive_align_projection_image(query), p=2, dim=-1
-                )
+                projected_query = self.contrastive_align_projection_image(query)
+                if prefix == 'last_' and self.bbf_quality_adapter is not None:
+                    projected_query = projected_query + self.bbf_quality_adapter(query)
+                proj_query = F.normalize(projected_query, p=2, dim=-1)
                 end_points[f'{prefix}proj_queries'] = proj_query
                 if prefix == 'last_':
                     end_points['source_choice_candidate_feats'] = proj_query

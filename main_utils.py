@@ -843,6 +843,10 @@ def parse_option():
     parser.add_argument('--query_points_obj_topk', default=4, type=int)
     parser.add_argument('--use_contrastive_align', action='store_true')
     parser.add_argument('--use_soft_token_loss', action='store_true')
+    parser.add_argument('--use_bbf_quality_adapter', action='store_true')
+    parser.add_argument('--bbf_quality_rank_loss_weight', type=float, default=0.0)
+    parser.add_argument('--bbf_quality_adapter_train_only', action='store_true')
+    parser.add_argument('--bbf_quality_adapter_lr', type=float, default=2e-5)
     parser.add_argument('--detect_intermediate', action='store_true')
     parser.add_argument('--joint_det', action='store_true')
     parser.add_argument('--use_source_choice_selector', action='store_true',
@@ -3157,6 +3161,7 @@ def _validated_resume_lr_scale(args, checkpoint):
             "decoder_query_adapter_train_only",
             "sacr_score_refiner_train_only",
             "parent_relative_text_verifier_train_only",
+            "bbf_quality_adapter_train_only",
             "migrate_scheduler_for_gradient_accumulation",
         )
         if bool(getattr(args, name, False))
@@ -3362,6 +3367,8 @@ _E57_V99_SELECTOR_CONFIG = (
 )
 _E57_NON_V99_BOOLEAN_FLAGS = (
     "use_source_moe",
+    "use_bbf_quality_adapter",
+    "bbf_quality_adapter_train_only",
     "source_moe_train_only",
     "source_moe_gate_train_only",
     "source_moe_gate_new_heads_only",
@@ -3991,6 +3998,7 @@ def load_checkpoint(args, model, optimizer, scheduler,
                 or getattr(
                     args, "parent_relative_text_verifier_train_only", False
                 )
+                or getattr(args, "bbf_quality_adapter_train_only", False)
             )
             and not args.eval
             and not gate_optimizer_resume
@@ -4047,12 +4055,14 @@ def load_checkpoint(args, model, optimizer, scheduler,
             saved_variant=_checkpoint_config_value(
                 checkpoint.get('config', {}), 'candidate_local_visual_variant', 'local'),
             additional_new_prefixes=(
-                (
+                ((
                     "pvground_support_corrector.",
                     "pvground_span_mixer.",
-                )
-                if getattr(args, "use_pvground_innovations", False)
-                else ()
+                ) if getattr(args, "use_pvground_innovations", False)
+                 else ())
+                + (("bbf_quality_adapter.",)
+                   if getattr(args, "use_bbf_quality_adapter", False)
+                   else ())
             ),
         )
     score_state_prefixes = (
@@ -4477,6 +4487,26 @@ def load_checkpoint(args, model, optimizer, scheduler,
             "=> decoder query adapter checkpoint contract verified: {} new "
             "parameters".format(len(expected_missing))
         )
+    if getattr(args, "bbf_quality_adapter_train_only", False):
+        expected_missing = {
+            key for key in current_state
+            if canonical_state_name(key).startswith("bbf_quality_adapter.")
+            and key not in checkpoint_state
+        }
+        actual_missing = set(incompatible.missing_keys)
+        if (actual_missing != expected_missing
+                or incompatible.unexpected_keys):
+            raise ValueError(
+                "BBF quality adapter initialization has unexpected "
+                "checkpoint differences: missing={}, unexpected={}".format(
+                    sorted(actual_missing),
+                    sorted(incompatible.unexpected_keys),
+                )
+            )
+        print(
+            "=> BBF quality adapter checkpoint contract verified: {} new "
+            "parameters".format(len(expected_missing))
+        )
     load_optimizer_state = (
         gate_optimizer_resume
         or query_optimizer_resume
@@ -4493,6 +4523,7 @@ def load_checkpoint(args, model, optimizer, scheduler,
             and not getattr(args, "egqs_mask_refiner_train_only", False)
             and not getattr(args, "joint_query_quality_train_only", False)
             and not getattr(args, "decoder_query_adapter_train_only", False)
+            and not getattr(args, "bbf_quality_adapter_train_only", False)
             and not getattr(args, "sacr_score_refiner_train_only", False)
             and not getattr(
                 args, "parent_relative_text_verifier_train_only", False
@@ -5222,6 +5253,56 @@ class BaseTrainTester:
     @staticmethod
     def get_optimizer(args, model):
         """Initialize optimizer."""
+        if getattr(args, "bbf_quality_adapter_train_only", False):
+            if not getattr(args, "use_bbf_quality_adapter", False):
+                raise ValueError(
+                    "bbf_quality_adapter_train_only requires the adapter"
+                )
+            if (not math.isfinite(args.bbf_quality_adapter_lr)
+                    or args.bbf_quality_adapter_lr <= 0):
+                raise ValueError(
+                    "bbf_quality_adapter_lr must be finite and positive"
+                )
+            competing_modes = (
+                "pvground_train_only", "pvground_span_train_only",
+                "source_choice_selector_train_only", "source_moe_train_only",
+                "source_moe_gate_train_only", "query_mask_fusion_train_only",
+                "egqs_mask_refiner_train_only",
+                "joint_query_quality_train_only",
+                "decoder_query_adapter_train_only",
+                "sacr_score_refiner_train_only",
+                "parent_relative_text_verifier_train_only",
+            )
+            if any(getattr(args, name, False) for name in competing_modes):
+                raise ValueError(
+                    "BBF quality adapter training is mutually exclusive with "
+                    "other train-only modes"
+                )
+            rank_weight = getattr(args, "bbf_quality_rank_loss_weight", 0.0)
+            if not math.isfinite(rank_weight) or rank_weight <= 0:
+                raise ValueError(
+                    "BBF quality adapter training requires a positive "
+                    "ranking-loss weight"
+                )
+            for name, parameter in model.named_parameters():
+                parameter.requires_grad_(
+                    name.removeprefix("module.").startswith(
+                        "bbf_quality_adapter."
+                    )
+                )
+            parameters = [
+                parameter for parameter in model.parameters()
+                if parameter.requires_grad
+            ]
+            if not parameters:
+                raise ValueError("BBF quality adapter has no trainable parameters")
+            return torch.optim.AdamW(
+                [{"name": "bbf_quality_adapter", "params": parameters},
+                 {"params": [], "lr": args.lr_backbone},
+                 {"params": [], "lr": args.text_encoder_lr}],
+                lr=args.bbf_quality_adapter_lr,
+                weight_decay=args.weight_decay,
+            )
         if (getattr(args, "pvground_train_only", False)
                 or getattr(args, "pvground_span_train_only", False)):
             prefixes = (
@@ -6721,6 +6802,12 @@ class BaseTrainTester:
             mask_loss_scale=args.mask_loss_scale,
             native_mask_geometry_supervision=getattr(args, 'native_mask_geometry_supervision', False),
             pvground_span_gate_loss_weight=args.pvground_span_gate_loss_weight,
+            bbf_quality_rank_loss_weight=getattr(
+                args, 'bbf_quality_rank_loss_weight', 0.0
+            ),
+            bbf_quality_adapter_train_only=getattr(
+                args, 'bbf_quality_adapter_train_only', False
+            ),
             consistency_loss_scale=args.consistency_loss_scale,
             source_moe_balance_loss_weight=(
                 getattr(args, 'source_moe_balance_loss_weight', 0.01)
@@ -7337,6 +7424,19 @@ class BaseTrainTester:
 
     @staticmethod
     def _set_source_moe_train_mode(model, args):
+        if getattr(args, "bbf_quality_adapter_train_only", False):
+            model.eval()
+            unwrapped = model.module if hasattr(model, "module") else model
+            adapter = getattr(unwrapped, "bbf_quality_adapter", None)
+            if adapter is None:
+                raise ValueError(
+                    "BBF quality adapter train-only mode requires the adapter"
+                )
+            unwrapped.training = True
+            if model is not unwrapped:
+                model.training = True
+            adapter.train()
+            return
         if getattr(args, "pvground_span_train_only", False):
             model.eval()
             unwrapped = model.module if hasattr(model, "module") else model
@@ -7605,12 +7705,15 @@ class BaseTrainTester:
             "pvground_support_corrector.",
             "pvground_span_mixer.",
         )
+        if getattr(args, "bbf_quality_adapter_train_only", False):
+            innovation_probe_prefixes = ("bbf_quality_adapter.",)
         if getattr(args, "pvground_span_train_only", False):
             innovation_probe_prefixes = ("pvground_span_mixer.",)
         innovation_probe = None
         frozen_training = (
             getattr(args, "pvground_train_only", False)
             or getattr(args, "pvground_span_train_only", False)
+            or getattr(args, "bbf_quality_adapter_train_only", False)
         )
         innovation_probe_steps = 2 if frozen_training else 1
         frozen_parameters = None
@@ -7802,7 +7905,10 @@ class BaseTrainTester:
             )
 
             if should_step:
-                if (getattr(args, "use_pvground_innovations", False)
+                if ((getattr(args, "use_pvground_innovations", False)
+                     or getattr(
+                         args, "bbf_quality_adapter_train_only", False
+                     ))
                         and optimizer_step_count < innovation_probe_steps):
                     innovation_probe = {}
                     named_parameters = [
@@ -7893,7 +7999,13 @@ class BaseTrainTester:
                             "parameter_tensors": len(state["parameters"]),
                         }
                     witness = {
-                        "schema": "pvground-first-update-v1",
+                        "schema": (
+                            "mcln-bbf-quality-first-update-v1"
+                            if getattr(
+                                args, "bbf_quality_adapter_train_only", False
+                            )
+                            else "pvground-first-update-v1"
+                        ),
                         "epoch": int(epoch),
                         "batch": int(batch_idx + 1),
                         "batch_size": int(point_clouds.shape[0]),

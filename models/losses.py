@@ -1539,6 +1539,9 @@ class SetCriterion(nn.Module):
     ############################
     def loss_sem_align(self, outputs, targets, indices, num_boxes, auxi_indices):
         tokenized = outputs["tokenized"]
+        quality_weight = float(
+            outputs.get("bbf_quality_rank_loss_weight", 0.0)
+        )
 
         # step 1. Contrastive logits
         norm_text_emb = outputs["proj_tokens"]  # B, num_tokens=L, dim=64
@@ -1547,6 +1550,75 @@ class SetCriterion(nn.Module):
             torch.matmul(norm_img_emb, norm_text_emb.transpose(-1, -2))
             / self.temperature
         )  # [[B, num_queries, num_tokens]
+        quality_candidate_targets = None
+        quality_candidate_ious = None
+        if quality_weight > 0:
+            if outputs.get("language_dataset", [""])[0] != "scanrefer":
+                raise ValueError(
+                    "BBF quality ranking is registered for ScanRefer only"
+                )
+            if "pred_masks" not in outputs or "sp_pred_masks" not in outputs:
+                raise ValueError(
+                    "BBF quality ranking requires text and support masks"
+                )
+            quality_candidate_targets = torch.full(
+                logits.shape[:2], -1, dtype=torch.long,
+                device=logits.device,
+            )
+            quality_candidate_ious = logits.new_zeros(logits.shape[:2])
+            query_count = logits.shape[1]
+            all_query_indices = torch.arange(
+                query_count, dtype=torch.long, device=logits.device
+            )
+            for batch_index, (matched_queries, matched_targets) in enumerate(indices):
+                if outputs["sample_dataset"][batch_index] != "scanrefer":
+                    continue
+                if not bool((matched_targets == 0).any()):
+                    continue
+                matched_queries = matched_queries.to(logits.device)
+                matched_targets = matched_targets.to(logits.device)
+                target_box = targets[batch_index]["boxes"][0:1]
+                box_ious, _ = _iou3d_par(
+                    box_cxcyczwhd_to_xyzxyz(
+                        outputs["pred_boxes"][batch_index]
+                    ),
+                    box_cxcyczwhd_to_xyzxyz(target_box),
+                )
+                box_ious = box_ious[:, 0]
+
+                text_masks = as_query_mask_logits(
+                    outputs["pred_masks"][batch_index], "pred_masks"
+                )
+                support_masks = as_query_mask_logits(
+                    outputs["sp_pred_masks"][batch_index], "sp_pred_masks"
+                )
+                fusion_weights = gather_query_fusion_weight(
+                    outputs["adaptive_weights"][batch_index],
+                    all_query_indices,
+                    query_count,
+                    support_masks,
+                )
+                fused_mask_logits = fuse_query_mask_logits(
+                    text_masks, support_masks, fusion_weights
+                )
+                superpoints = outputs["superpoints"][batch_index].long()
+                fused_masks = fused_mask_logits > 0.0
+                point_masks = fused_masks.index_select(-1, superpoints)
+                target_mask = targets[batch_index]["masks"][0] > 0.5
+                intersection = (
+                    point_masks & target_mask.unsqueeze(0)
+                ).sum(-1).float()
+                union = (
+                    point_masks | target_mask.unsqueeze(0)
+                ).sum(-1).float().clamp(min=1.0)
+                mask_ious = intersection / union
+
+                eligible = (box_ious > 0.25) & (mask_ious > 0.25)
+                other_matched = matched_queries[matched_targets != 0]
+                if other_matched.numel():
+                    eligible[other_matched] = False
+                quality_candidate_targets[batch_index, eligible] = 0
+                quality_candidate_ious[batch_index] = box_ious
 
         # step 2. positive map
         # construct a map such that positive_map[k, i, j] = True
@@ -1585,6 +1657,34 @@ class SetCriterion(nn.Module):
         pron_positive_map[idx] = pmap_pron
         other_positive_map[idx] = pmap_other
         rel_positive_map[idx] = pmap_rel
+        if quality_candidate_targets is not None:
+            for batch_index in range(logits.shape[0]):
+                eligible = quality_candidate_targets[batch_index] >= 0
+                positive_map[batch_index, eligible] = (
+                    targets[batch_index]["positive_map"][0][
+                        :logits.shape[-1]
+                    ] > 0
+                )
+                modi_positive_map[batch_index, eligible] = (
+                    targets[batch_index]["modify_positive_map"][0][
+                        :logits.shape[-1]
+                    ]
+                )
+                pron_positive_map[batch_index, eligible] = (
+                    targets[batch_index]["pron_positive_map"][0][
+                        :logits.shape[-1]
+                    ]
+                )
+                other_positive_map[batch_index, eligible] = (
+                    targets[batch_index]["other_entity_map"][0][
+                        :logits.shape[-1]
+                    ]
+                )
+                rel_positive_map[batch_index, eligible] = (
+                    targets[batch_index]["rel_positive_map"][0][
+                        :logits.shape[-1]
+                    ]
+                )
 
         # step object mask
         # Mask for matches <> 'not mentioned'
@@ -1594,6 +1694,8 @@ class SetCriterion(nn.Module):
             dtype=torch.float32, device=logits.device
         )
         mask[idx] = 1.0
+        if quality_candidate_targets is not None:
+            mask[quality_candidate_targets >= 0] = 1.0
 
         # step text mask
         # Token mask for matches <> 'not mentioned'
@@ -1669,7 +1771,65 @@ class SetCriterion(nn.Module):
 
         # total loss
         tot_loss = (box_to_token_loss + token_to_box_loss) / 2
-        return {"loss_sem_align": tot_loss / num_boxes}
+        quality_rank_loss = norm_img_emb.sum() * 0.0
+        if quality_candidate_targets is not None:
+            bbf_logits = (
+                torch.matmul(
+                    norm_img_emb, norm_text_emb.transpose(-1, -2)
+                ) / 0.07
+            )
+            probabilities = bbf_logits.softmax(-1)
+            pair_losses = []
+            pair_weights = []
+            for batch_index in range(logits.shape[0]):
+                candidates = (
+                    quality_candidate_targets[batch_index] >= 0
+                ).nonzero(as_tuple=False).flatten()
+                if candidates.numel() < 2:
+                    continue
+                candidate_scores = (
+                    probabilities[batch_index, candidates]
+                    * positive_map[batch_index, candidates].float()
+                ).sum(-1)
+                candidate_scores += (
+                    probabilities[batch_index, candidates]
+                    * modi_positive_map[batch_index, candidates].float()
+                ).sum(-1)
+                candidate_scores += (
+                    probabilities[batch_index, candidates]
+                    * pron_positive_map[batch_index, candidates].float()
+                ).sum(-1)
+                candidate_scores += (
+                    probabilities[batch_index, candidates]
+                    * rel_positive_map[batch_index, candidates].float()
+                ).sum(-1)
+                candidate_scores -= (
+                    probabilities[batch_index, candidates]
+                    * other_positive_map[batch_index, candidates].float()
+                ).sum(-1)
+                candidate_ious = quality_candidate_ious[
+                    batch_index, candidates
+                ]
+                quality_delta = (
+                    candidate_ious[:, None] - candidate_ious[None, :]
+                )
+                ordered = quality_delta > 0.0
+                if bool(ordered.any()):
+                    score_delta = (
+                        candidate_scores[:, None]
+                        - candidate_scores[None, :]
+                    )
+                    pair_losses.append(F.softplus(-score_delta[ordered]))
+                    pair_weights.append(quality_delta[ordered])
+            if pair_losses:
+                weights = torch.cat(pair_weights).detach()
+                quality_rank_loss = (
+                    torch.cat(pair_losses) * weights
+                ).sum() / weights.sum()
+        return {
+            "loss_sem_align": tot_loss / num_boxes,
+            "bbf_quality_rank_loss": quality_rank_loss,
+        }
 
 
     def _get_src_permutation_idx(self, indices):
@@ -1873,10 +2033,14 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                            density_aware_target_box_loss_weight=0.0,
                            density_scene_audit_return_match_indices=False,
                            native_mask_geometry_supervision=False,
-                           pvground_span_gate_loss_weight=0.0):
+                           pvground_span_gate_loss_weight=0.0,
+                           bbf_quality_rank_loss_weight=0.0,
+                           bbf_quality_adapter_train_only=False):
     """Compute Hungarian matching loss containing CE, bbox and giou."""
     for scale_name, scale in (
             ("pvground_span_gate_loss_weight", pvground_span_gate_loss_weight),
+            ("bbf_quality_rank_loss_weight",
+             bbf_quality_rank_loss_weight),
             ("mask_loss_scale", mask_loss_scale),
             ("source_moe_balance_loss_weight", source_moe_balance_loss_weight),
             ("source_moe_rank_loss_weight", source_moe_rank_loss_weight),
@@ -3191,6 +3355,7 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         return loss, end_points
 
     loss_ce, loss_bbox, loss_giou, loss_sem_align, loss_mask, loss_dice, sp_loss_mask,sp_loss_dice,corresponding_loss_mask,adaptive_weight_loss_mask, adaptive_weight_loss_dice,corresponding_loss_dice= 0, 0, 0, 0, 0, 0 ,0 ,0,0,0,0,0
+    bbf_quality_rank_loss = 0
     last_match_indices = None
     #loss_ce, loss_bbox, loss_giou, loss_sem_align, loss_mask, loss_dice = 0, 0, 0, 0, 0, 0 
     for prefix in prefixes:
@@ -3217,6 +3382,15 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
                 output["sp_pred_masks"]=end_points["sp_last_pred_masks"]
                 output["adaptive_weights"]=end_points['adaptive_weights']
                 output['super_xyz_list']=end_points['super_xyz_list']
+                output["bbf_quality_rank_loss_weight"] = (
+                    bbf_quality_rank_loss_weight
+                    if prefix == "last_" else 0.0
+                )
+                output["bbf_quality_adapter_train_only"] = (
+                    bbf_quality_adapter_train_only
+                )
+                if bbf_quality_rank_loss_weight > 0:
+                    output["sample_dataset"] = end_points["sample_dataset"]
 
         # NOTE Compute all the requested losses, forward
         losses, match_indices = set_criterion(output, target)
@@ -3238,6 +3412,10 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         
         if 'proj_tokens' in end_points:
             loss_sem_align += losses['loss_sem_align']
+            if prefix == 'last_':
+                bbf_quality_rank_loss = losses.get(
+                    "bbf_quality_rank_loss", loss_sem_align * 0.0
+                )
 
     if density_scene_audit_return_match_indices:
         if last_match_indices is None:
@@ -4101,6 +4279,7 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
         )
         + mask_loss_scale * supervised_mask_loss
         + consistency_loss_scale * corresponding_consistency_loss
+        + bbf_quality_rank_loss_weight * bbf_quality_rank_loss
         + source_choice_selector_loss_weight * source_choice_loss
         + relation_counterfactual_aux_loss_weight
         * relation_counterfactual_aux_loss
@@ -4151,6 +4330,7 @@ def compute_hungarian_loss(end_points, num_decoder_layers, set_criterion,
     end_points['loss_giou'] = loss_giou
     end_points['query_points_generation_loss'] = query_points_generation_loss
     end_points['loss_sem_align'] = loss_sem_align
+    end_points['bbf_quality_rank_loss'] = bbf_quality_rank_loss
     end_points['loss'] = loss
     end_points['loss_mask'] = loss_mask
     end_points['loss_dice'] = loss_dice

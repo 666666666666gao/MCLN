@@ -1,0 +1,45 @@
+{
+  "observed_utc": "2026-11-05T18:14:57Z",
+  "trial": "scanrefer_qila_20261105",
+  "screen": "pvg_scanrefer_qila_20261105",
+  "run_dir": "/root/autodl-tmp/mcln_pvground_ft_20261101/scanrefer_qila_20261105/run",
+  "initialization_sha256": "46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8",
+  "initialization_epoch": 2,
+  "initialization_model_tensors": 1168,
+  "optimizer_restored": false,
+  "scheduler_restored": false,
+  "recipe": {
+    "epochs": 8,
+    "early_stopping": false,
+    "batch_size": 8,
+    "gradient_accumulation_steps": 6,
+    "seed": 0,
+    "native_lr": 2e-6,
+    "backbone_lr": 4e-6,
+    "pvground_lr": 2e-5,
+    "qila_rank_loss_weight": 0.3,
+    "metric": "last_semantic_alignment_top1_bbf_full9508"
+  },
+  "source_sha256": {
+    "main_utils.py": "ae2ec8559f0eedff15fc4d142eff13f9ef4e60b59c220114ade495513dd7c464",
+    "models/losses.py": "158cc567c4309bab4aa7db2f9b6383bbec29d03bb07d1b7f85067095cbc53b4c",
+    "models/mcln.py": "a5cce0367bde8b2a4799346b02f9725f274668b4702cb875fb6def465ed59456",
+    "train_dist_mod.py": "02411d0efd93644049e01fd7927e1aec9adfe792aa047c38008e8443c0745701"
+  },
+  "runner_sha256": "bb3e96ce0ee0f3f1dc69f8dff48bf889fe03208713529ae8fef80d159fa5e27f",
+  "launch_attempt_1": {
+    "status": "failed_before_training",
+    "exit_code": 2,
+    "cause": "torch.distributed.run rejected unsupported --use_env",
+    "gpu_used": false,
+    "optimizer_step": false
+  },
+  "launch_attempt_2": {
+    "status": "running",
+    "observed_screen": true,
+    "observed_workers": true,
+    "observed_gpu_memory_mib": 3,
+    "first_update_witness": "pending",
+    "training_error": false
+  }
+}

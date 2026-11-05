@@ -1,4 +1,22 @@
-## Current Override: 2026-11-05 14:41 UTC
+## Current Override: 2026-11-05 18:15 UTC
+
+The next authorized ScanRefer experiment is running in isolated trial
+`scanrefer_qila_20261105`, screen `pvg_scanrefer_qila_20261105`. It starts
+from immutable B2 epoch2 model-only initialization (SHA
+`46ecfb6a6831fca0704c55fe87fa96c9c92e749824f13173d67d5697da1b92f8`,
+1168 tensors), with fresh optimizer/scheduler, batch8/accum6/seed0,
+native/backbone/PV-Ground learning rates `2e-6/4e-6/2e-5`, and
+IoU-aware BBF ranking loss weight `0.3`. The budget is 8 full epochs with
+no early stopping. This is ScanRefer-only; NR3D/SR3D official scratch
+runs and configurations are untouched.
+
+The first launcher failed before training because the installed
+`torch.distributed.run` rejected `--use_env` (exit code2, GPU unused,
+no optimizer step). The failure was retained and the same run restarted
+without that unsupported flag. At 18:14:57UTC the repaired attempt had
+live workers/GPU process and was still loading data; first-update witness
+and full validation are pending. Do not start a duplicate or stop it.
+Raw record: `docs/results/mcln_pvground_20261101/scanrefer-qila-launch-20261105.json`.
 
 ## Monitoring Update: 2026-11-05 17:31 UTC
 

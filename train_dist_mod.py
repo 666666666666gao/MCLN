@@ -2996,6 +2996,9 @@ class TrainTester(BaseTrainTester):
             num_decoder_layers=args.num_decoder_layers,
             self_position_embedding=args.self_position_embedding,
             contrastive_align_loss=args.use_contrastive_align,
+            use_bbf_quality_adapter=getattr(
+                args, 'use_bbf_quality_adapter', False
+            ),
             butd=args.butd or args.butd_gt or args.butd_cls,
             pointnet_ckpt=args.pp_checkpoint,
             pointnet_ckpt_sha256=getattr(

@@ -205,6 +205,16 @@ Current-only own CPU checkpoint audits confirmed NR best66/latest72 and SR best1
 
 # Current Checkpoint Storage Proposal
 
+## X0 Capacity Recheck: 2026-11-06 16:01 UTC
+
+At16:01:16UTC, the active X0 preflight output directory contained only
+config, log and TensorBoard data. No checkpoint weights were available
+for safe cleanup. Free space was821,805,056 bytes against the
+3,978,037,815-byte reserve, leaving3,156,232,759 bytes to provide.
+Preserve B2/official initialization and predecessor audit artifacts.
+Do not treat deleting non-weight logs/config as a valid way to satisfy
+the reserve, and do not touch unrelated/stopped ScanRefer runs.
+
 ## Current Audited Retention: 2026-11-05 23:05 UTC
 
 NR3D full7899 epoch99=4260/3413 is the current Acc@0.25 best/latest.

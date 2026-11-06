@@ -1,5 +1,24 @@
 # ScanRefer V99 X0 Readiness
 
+## Current State: 2026-11-06 16:01 UTC
+
+The fresh current-only read at16:01:16UTC confirms the existing X0
+controller PID344492 and waiter PID344495 remain live, with GPU compute
+idle. No preflight-completion/update witness or A/B completion exists;
+the persisted queue state is stale at08:38:58UTC. The current preflight
+run directory has only config, log and TensorBoard files, so there are no
+unused X0 checkpoint weights to delete.
+
+Available space is821,805,056 bytes against the3,978,037,815-byte formal
+reserve, short3,156,232,759 bytes. Do not remove B2/official initialization
+inputs or predecessor audit artifacts. The user authorized cleanup of
+unused weights, but this check found none safe to reclaim.
+
+The live waiter started07:23:57UTC; its source was updated08:05:43UTC.
+Its in-memory gate is unknown. Do not stop, signal, duplicate, replace or
+hot-edit the existing controller. Wait for sufficient capacity and a
+fresh queue/preflight witness; until then, training has not started.
+
 ## Current State: 2026-11-06 15:26 UTC
 
 At15:22:58UTC the sole controller screen344492 and current slot waiter

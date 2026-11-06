@@ -1,6 +1,94 @@
 # ScanRefer Stage A Restart
 
-## Current Continuation: 2026-11-06 00:44 UTC
+## Current Continuation: 2026-11-06 02:35 UTC
+
+At02:34:55UTC the same registered ScanRefer run is live at epoch5
+batch4272/6081 in `pvg_scanrefer_qila_20261105`; recent errors are empty
+and no completion receipt exists. The latest complete full9508 semantic
+validation remains epoch4=5383/4469. Trial best is epoch2=5398/4512;
+immutable B2 remains global best=5483/4656.
+
+The current code/recipe mismatch remains confirmed: this is the legacy
+`bbf_quality_rank_loss_weight=0.3` path, with joint-query-quality loss
+terms logged as0, not the documented V99 QILA/X1 objective. Preserve
+the authorized budget unchanged, then audit all full9508 same-checkpoint
+rows and CPU checkpoints before the matched X0 and gated true X1. Do not
+stop, duplicate, or hot-change this run.
+
+At02:35UTC NR3D was live at299/3742 and SR3D at1637/6486; both current
+progress checks showed original configs unchanged, finite recent losses,
+and no recent errors. They are still training, and these counters are
+not validation metrics. Latest audited results remain NR best99=4260/3413,
+latest102=4249/3429 over7899, and SR best/latest41=11935/10046
+over17726.
+
+The NR3D full-history collector failed to refresh: the first attempt hit
+a checkpoint audit assertion and the retry found no completed rows for
+its parser. The scoped live-progress check still confirms trainer,
+keeper, and retention processes alive with no recent training errors.
+Keep epoch102 as the last audited score; do not infer a training failure
+or report an unverified newer metric.
+
+## Previous Current Continuation: 2026-11-06 02:15 UTC
+
+At02:15:28UTC the existing `scanrefer_qila_20261105` run remained live
+in `pvg_scanrefer_qila_20261105`, epoch5 batch2898/6081, with GPU use
+21846/24564MiB at77%, no recent errors, and no completion receipt.
+Reader/Support/Span all recorded finite nonzero gradients/deltas and
+updates10/10/14 on the epoch5 first update. The current worker resumes
+from epoch2 with optimizer/scheduler restoration receipts present.
+
+No new full9508 validation has completed: the latest trial row remains
+epoch4=5383/4469, trial best epoch2=5398/4512, and immutable B2 global
+best=5483/4656. The active recipe is legacy
+`bbf_quality_rank_loss_weight=0.3`, not the documented V99 QILA/X1
+objective. Keep the run unchanged through its authorized budget, then
+audit all full-sample rows and CPU checkpoints before matched X0 and
+gated true X1. Do not stop or duplicate the run.
+
+Current NR3D best/latest remain epoch99=4260/3413 and
+epoch102=4249/3429 over7899, with CPU audits passing. SR3D has a new
+epoch41 best/latest=11935/10046 over17726; own-epoch,1134-tensor,
+optimizer/scheduler and SHA audit passed. Its SHA is
+`0692122690a378453a05bc99bdbf6180b69166e3b26516e6513e2fb9e91c5528`.
+
+## Current Continuation: 2026-11-06 02:01 UTC
+
+The existing `scanrefer_qila_20261105` run remains live in
+`pvg_scanrefer_qila_20261105`, epoch5 batch1900/6081 at02:01:21UTC.
+At01:56UTC it was batch1531/6081. The active worker resumes from epoch2;
+its optimizer/scheduler restoration receipts are present. GPU use was
+21865/24564MiB at88%; the current recent-error window is empty and no
+completion receipt exists. Epoch5 first-update witness is finite
+(loss7.183955) with Reader/Support/Span finite nonzero gradients/deltas
+and10/10/14 tensors updated. Keep this run alive and unchanged.
+
+The confirmed issue is protocol fidelity, not a demonstrated training
+failure: the live recipe is legacy `bbf_quality_rank_loss_weight=0.3`,
+and joint-query-quality loss terms are logged as0. The documented V99
+QILA/X1 objective is therefore not active in this run. Do not label it
+X1 evidence or hot-change it. The current full9508 semantic history and
+CPU metadata remain epochs1-4:5366/4423,5398/4512,5395/4485,5383/4469.
+Trial best is epoch2=5398/4512; immutable B2 remains global best=
+5483/4656. The apparent resume discrepancy is resolved by the complete
+history: epochs3 and4 validated after the epoch2 resume. Historical
+resume-attempt tracebacks remain recorded; the current worker is active
+and its recent-error window is empty.
+
+After the authorized eight-epoch run naturally completes, audit all
+same-checkpoint full9508 semantic rows and CPU checkpoints, then follow
+the documented matched X0 sequence. Implement and launch true QILA X1
+only after its step-0, objective/unit, and real-update gates pass. The
+user authorized automatic progression without another approval. Do not
+overlap a ScanRefer run or interrupt the current one.
+
+NR3D latest verified full history is epoch102=4249/3429, best99=
+4260/3413 over7899. SR3D latest is epoch40=11831/10011, best39=
+11911/9937 over17726. Current-only collectors passed best/latest CPU
+own-epoch,1134-tensor,optimizer/scheduler and SHA audits. Their official
+scratch recipes remain unchanged.
+
+## Previous Current Continuation: 2026-11-06 00:44 UTC
 
 The same `scanrefer_qila_20261105` controller/trainer is live with no
 recent errors or completion receipt. At00:44:16UTC its progress was epoch3

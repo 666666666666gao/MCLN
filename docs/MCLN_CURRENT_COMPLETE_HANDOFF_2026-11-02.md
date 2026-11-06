@@ -1,4 +1,4 @@
-## Current Override: 2026-11-06 06:27 UTC
+## Current Override: 2026-11-06 06:39 UTC
 
 ### Verified current state
 
@@ -22,10 +22,10 @@ model, optimizer/scheduler and SHA audits. This is a confirmed recovery
 predicate issue, not evidence that the live epoch8 trainer failed. Keep the
 active run unchanged and resolve the recovery check before any later run.
 
-NR3D full-history collection verified epochs1-106. Best103=4271/3459 and
-latest106=4208/3443 over7899; both retained checkpoints passed own-CPU
-epoch,1134-tensor,optimizer/scheduler and SHA audits. Latest106 SHA:
-`68fa6589fd177af17174c3461c3f1e0f43a2554f8725b3d27a3e096383350ff1`.
+NR3D full-history collection verified epochs1-107. Best103=4271/3459 and
+latest107=4245/3421 over7899; both retained checkpoints passed own-CPU
+epoch,1134-tensor,optimizer/scheduler and SHA audits. Epoch107 SHA:
+`300f02e249a00856f8c6580cda5fa1f340ca4bc46b4d2b3130aa46dd1607ae56`.
 Its trainer, keeper, and retention watcher remain live on the unchanged
 official scratch recipe.
 
@@ -36,17 +36,23 @@ epoch,1134-tensor,optimizer/scheduler and SHA audits. Epoch43 SHA:
 Its trainer, keeper, and retention watcher remain live on the unchanged
 official scratch recipe.
 
+At06:36UTC ScanRefer epoch8 was active at965/6081 with a finite first-update
+witness, Reader/Support/Span updates10/10/14, and no recent errors. At
+06:38UTC NR3D epoch108 was at600/3742 and SR3D epoch44 at2959/6486;
+both progress checks showed finite losses and no recent errors. These
+counters are not validation scores.
+
 | Dataset | Best checkpoint | Best hits | Latest complete | Latest hits | Target |
 |---|---|---:|---|---:|---:|
 | ScanRefer (9508) | immutable B2 epoch2 | `5483/4656` | trial epoch7 | `5362/4418` | `5705/4945` |
-| NR3D (7899) | epoch103 | `4271/3459` | epoch106 | `4208/3443` | Acc@0.25 `4724` |
+| NR3D (7899) | epoch103 | `4271/3459` | epoch107 | `4245/3421` | Acc@0.25 `4724` |
 | SR3D (17726) | epoch41 | `11935/10046` | epoch43 | `11935/10041` | Acc@0.25 `12302` |
 
 All targets remain unmet. Best gaps are ScanRefer222/289, NR3D453
 Acc@0.25, and SR3D367 Acc@0.25 hits. Receipts are
 `scanrefer-qila-current-history-audit-20261106T0624.json`,
-`nr3d-current-full-history-audited-20261106T0600.json`, and
-`sr3d-current-full-history-audited-20261106T0600.json` under
+`nr3d-current-full-history-audited-20261106T0636.json`, and
+`sr3d-current-full-history-audited-20261106T0636.json` under
 `docs/results/mcln_pvground_20261101/`.
 
 ## Previous Current Override: 2026-11-06 05:48 UTC

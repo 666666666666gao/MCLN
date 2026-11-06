@@ -1,4 +1,37 @@
-## Current Override: 2026-11-06 15:26 UTC
+## Current Override: 2026-11-06 16:01 UTC
+
+The user authorized removal of genuinely unused ScanRefer weights and
+automatic continuation of the documented plan. A fresh read-only
+X0-specific check at16:01:16UTC found the sole controller screen
+`pvg_scanrefer_v99_x0_20261106` PID344492 and waiter PID344495 still live;
+GPU compute list is empty. No preflight completion, optimizer-update
+witness, or Stage A/B completion exists. The queue-state file is stale
+at08:38:58UTC and still says `requires_storage_capacity`.
+
+The active X0 preflight run directory contains only `config.json`,
+`log.txt`, and TensorBoard data; it has no checkpoint weights to reclaim.
+The immutable B2/official initialization inputs and predecessor audit
+artifacts remain required and were not deleted. No ScanRefer files were
+removed.
+
+At16:01:16UTC the Scan filesystem had821,805,056 bytes free, versus the
+formal3,978,037,815-byte reserve, a3,156,232,759-byte deficit. The paired
+official/Reader-free E0 identity gate remains passed at5435/4327 over
+9508, but it is not a training result. The previous bounded preflight
+failed before any optimizer update because the Span helper was missing;
+the helper is now present with its registered SHA, but no successful
+retry is evidenced.
+
+The waiter is still using a process started07:23:57UTC, before its
+on-disk source was updated08:05:43UTC. The exact in-memory gate is
+unknown. Do not stop, signal, duplicate, replace, or hot-edit the live
+controller, and do not claim training has started. No safe current-trial
+weight cleanup can satisfy the capacity gate. Free at least3,156,232,759
+additional bytes after cleanup/expansion; the documented recommendation
+is to add5GB. After capacity is available, require a fresh controller
+witness before asserting the queue advanced.
+
+## Previous Current Override: 2026-11-06 15:26 UTC
 
 At14:39:02UTC NR3D full7899 epoch115=4291/3451
 (54.323332%/43.689075%); Acc025-first best remains epoch109=4307/3490
@@ -3859,5 +3892,3 @@ spatial attention. Full method, evidence limits and result gates are in
 At03:13UTC NR trainer96960 was live at1198/3742 in epoch57; SR trainer92354
 was live at229/6486 in epoch22. Both retain original scratch recipes.
 Receipt for the Scan trial will be added after complete validation/audit.
-
-## Current Override: 2026-11-04 03:10 UTC

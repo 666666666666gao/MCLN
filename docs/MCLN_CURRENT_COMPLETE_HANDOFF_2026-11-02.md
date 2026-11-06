@@ -1,4 +1,45 @@
-## Current Override: 2026-11-06 10:41 UTC
+## Current Override: 2026-11-06 11:42 UTC
+
+Latest full-sample results use each checkpoint's `last_semantic_alignment_top1`.
+The NR3D/SR3D collectors independently audited best/latest checkpoints on CPU.
+
+- ScanRefer global best remains immutable B2 epoch2=5483/4656 over9508
+  (57.67%/48.97%); the latest completed training trial was the legacy
+  rank-loss epoch8=5380/4450, not V99 QILA/X1. The X0 official/Reader-free
+  E0 acceptance gate is5435/4327 for both conditions and is not a training
+  result. At11:32UTC the sole X0 controller was still live, GPU idle, with
+  no preflight completion/update witness or A/B completion. Free space was
+ 821,846,016 bytes against the3,978,037,815-byte reserve, short3,156,191,799.
+  The last persisted queue-state reason is timestamped08:38UTC, so do not
+  present it as a fresh queue transition. The missing Span helper was
+  SHA-registered after the failed no-update preflight; the existing
+  controller remains the sole continuation owner. Do not duplicate, stop,
+  alter, or delete protected inputs/checkpoints.
+- NR3D epoch112=4227/3446 over7899; Acc@0.25 best remains epoch109=
+  4307/3490 (54.53%/44.18%),417 hits below target4724. The11:41:41UTC
+  CUDA-off collector passed own-epoch,1134-tensor,nonempty optimizer/
+  scheduler and SHA checks for best109 and latest112; latest112 SHA
+  `b690b1bc308b8722c01df8e245e57e5c03d2922d8fd2612a347e30230ec58ff9`.
+  Retention is aligned at best109/latest112. At11:41UTC epoch113 was
+  training at517/3742; this is progress only. The first collector attempt
+  during checkpoint/retention turnover raised an assertion; after the
+  state settled, the re-collection and CPU audits passed. No trainer
+  change was made.
+- SR3D epoch46=11905/9956 over17726; Acc@0.25 best remains epoch44=
+  11946/9976 (67.39%/56.28%),356 hits below target12302. The11:32UTC
+  CUDA-off collector passed own-epoch,1134-tensor,nonempty optimizer/
+  scheduler and SHA checks for best44/latest46; latest46 SHA
+  `9a3cc3205a092c9e4e580badc4b28b7730950af20cb54f49341f9b3298a2079b`.
+  Retention keeps44/46; epoch45=11914/9991 remains in metric history but
+  its checkpoint was removed by the authorized best/latest policy.
+- Current best deficits are ScanRefer222/289 hits, NR3D417 Acc@0.25 hits,
+  and SR3D356 Acc@0.25 hits. No target is met. NR/SR scratch recipes remain
+  unchanged; no architecture change is justified by these results.
+
+Receipts: `docs/results/mcln_pvground_20261101/nr3d-current-full-history-audited-20261106T1142.json`
+and `docs/results/mcln_pvground_20261101/sr3d-current-full-history-audited-20261106T1132.json`.
+
+## Previous Current Override: 2026-11-06 10:41 UTC
 
 Latest current-run checks through `work/remote_pvground.ps1`:
 

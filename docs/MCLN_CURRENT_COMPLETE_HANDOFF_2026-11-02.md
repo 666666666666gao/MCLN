@@ -21,9 +21,13 @@ tracking: the scoped check reports three failed resume exit receipts
 attempts, the registered controller and trainer are currently live and
 have advanced to epoch6 with a real update witness. Treat this as a
 checkpoint-recovery audit failure, not proof of training divergence.
-Do not stop, duplicate, or hot-change the active run; preserve the
+The local candidate launcher currently applies the model-only config
+expectation only to epoch1, but its exact deployed-source identity has
+not been compared with the remote copy. Reconcile source hashes before
+any later launch; do not hot-upload code into this run. Preserve the
 receipts and verify later epoch metrics against full-sample semantic
-rows and own-epoch CPU checkpoint audits.
+rows and own-epoch CPU checkpoint audits. Do not stop or duplicate the
+active run.
 
 NR3D full-history receipt observed at02:35:39UTC covers epochs1-103.
 Epoch103 is a new best and latest:4271/3459 over7899. Its CPU

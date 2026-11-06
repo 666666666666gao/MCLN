@@ -13,10 +13,14 @@ The scoped process check records failed resume receipts for epoch1 and
 two epoch2 attempts. Historical recovery output shows an assertion in
 `recover_semantic_rows` requiring
 `saved["config"].model_only_initialization`. This is a real resume audit
-incompatibility; the active controller has since advanced and produced
-an epoch6 optimizer-update witness, so do not infer a current training
-failure from those historical exits. Keep the run unchanged and do not
-stop or duplicate it. The active config is still legacy
+failure. The local candidate launcher currently applies the
+model-only-config expectation only to epoch1, but the deployed remote
+source hash has not been compared, so source-version divergence remains
+a hypothesis, not a confirmed cause. Reconcile source hashes before a
+later launch; do not hot-upload code into this run. The active controller
+has advanced and produced an epoch6 optimizer-update witness, so do not
+infer a current training failure from those historical exits. Keep the
+run unchanged and do not stop or duplicate it. The active config is still legacy
 `bbf_quality_rank_loss_weight=0.3` with all joint-query-quality losses
 zero, not the planned V99 QILA/X1.
 

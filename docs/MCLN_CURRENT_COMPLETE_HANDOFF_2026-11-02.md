@@ -1,4 +1,24 @@
-## Current Override: 2026-11-05 23:37 UTC
+## Current Override: 2026-11-05 23:59 UTC
+
+The existing ScanRefer trial `scanrefer_qila_20261105` remains active in
+screen `pvg_scanrefer_qila_20261105`; do not stop, duplicate, or hot-change
+it. At23:59:59UTC the same trainer/controller was live in epoch4 batch
+101/6081 on the RTX4090, with no recent errors. Epoch3 full validation
+finished and epoch4 training began between scoped checks; its complete
+9508-example metric has not yet been collected, so do not report an
+epoch3 score from progress output. Epoch4 first-update witness is finite
+(loss4.710093) and records Reader/Support/Span updates10/10/14.
+
+This is still the legacy `bbf_quality_rank_loss_weight=0.3` experiment,
+not V99 QILA/X1. Keep its original eight-epoch budget and let it complete
+naturally. The existing two-hour monitor is authorized to automatically
+audit all full9508 same-checkpoint epochs and CPU checkpoints, then run
+the plan's matched X0 sequentially. Proceed to actual QILA X1 only after
+its implementation, step-0, objective/unit, and real-update gates pass.
+Do not run a competing experiment on the occupied GPU. NR3D/SR3D official
+scratch configurations remain unchanged.
+
+## Previous Current Override: 2026-11-05 23:37 UTC
 
 ### Current training and audited metrics
 
@@ -3071,4 +3091,3 @@ was live at229/6486 in epoch22. Both retain original scratch recipes.
 Receipt for the Scan trial will be added after complete validation/audit.
 
 ## Current Override: 2026-11-04 03:10 UTC
-

@@ -1,4 +1,47 @@
-## Current Override: 2026-11-06 02:35 UTC
+## Current Override: 2026-11-06 02:47 UTC
+
+### Verified current state
+
+At02:45:46UTC the registered ScanRefer run remained live in
+`pvg_scanrefer_qila_20261105`, epoch5 batch5045/6081, with no recent
+errors or completion receipt. The latest complete full9508 semantic
+validation remains epoch4=5383/4469; trial best is epoch2=5398/4512 and
+immutable B2 remains global best=5483/4656. The active recipe remains
+legacy `bbf_quality_rank_loss_weight=0.3` with joint-query-quality loss
+terms zero, not the documented V99 QILA/X1. Do not stop, duplicate, or
+hot-change this authorized run.
+
+NR3D full-history receipt observed at02:35:39UTC covers epochs1-103.
+Epoch103 is a new best and latest:4271/3459 over7899. Its CPU
+own-epoch103,1134-model-tensor,nonempty optimizer/scheduler and SHA
+audit passed. SHA:
+`5d07d0458491001264d4df14bd1939615c85485844cca3825e357b6aaf16b184`.
+The existing retention watcher has only epoch103 kept as best/latest;
+the receipt records authorized removal of preserved epochs99 and102.
+The02:47:42UTC scoped progress check confirms NR3D trainer/keeper/
+retention live, original config unchanged, finite recent losses, no
+recent errors, and counter1183/3742. Full receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261106T0246.json`.
+
+SR3D remains latest audited best/latest epoch41=11935/10046 over17726;
+its SHA audit remains
+`0692122690a378453a05bc99bdbf6180b69166e3b26516e6513e2fb9e91c5528`.
+At02:45:52UTC its trainer/keeper/retention were live with the original
+config unchanged, finite recent losses, no recent errors, and counter
+2359/6486. This is training progress, not a new validation.
+
+Latest verified full-sample `last_semantic_alignment_top1` metrics:
+
+| Dataset | Best checkpoint | Best hits | Latest completed | Latest hits | Target |
+|---|---|---:|---|---:|---:|
+| ScanRefer (9508) | immutable B2 epoch2 | `5483/4656` | current trial epoch4 | `5383/4469` | `5705/4945` |
+| NR3D (7899) | epoch103 | `4271/3459` | epoch103 | `4271/3459` | Acc@0.25 `4724` |
+| SR3D (17726) | epoch41 | `11935/10046` | epoch41 | `11935/10046` | Acc@0.25 `12302` |
+
+Best-checkpoint gaps remain ScanRefer222/289, NR3D453 Acc@0.25, and
+SR3D367 Acc@0.25 hits. No target has been met.
+
+## Previous Current Override: 2026-11-06 02:35 UTC
 
 ### Verified current state
 

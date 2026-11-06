@@ -1,6 +1,32 @@
 # ScanRefer Stage A Restart
 
-## Current Continuation: 2026-11-06 02:35 UTC
+## Current Continuation: 2026-11-06 02:47 UTC
+
+At02:45:46UTC the authorized `scanrefer_qila_20261105` run remained live
+at epoch5 batch5045/6081, with no recent errors or completion receipt.
+Latest full9508 semantic validation remains epoch4=5383/4469; trial best
+epoch2=5398/4512 and immutable B2 global best=5483/4656. The run still
+uses legacy `bbf_quality_rank_loss_weight=0.3` and logs zero
+joint-query-quality terms; this is not actual V99 QILA/X1. Keep the
+authorized budget unchanged.
+
+NR3D's current-only full-history collector has now passed: epochs1-103
+are present, with new best/latest epoch103=4271/3459 over7899.
+Own-epoch103,1134 tensors, nonempty optimizer/scheduler and SHA audit
+passed; SHA is
+`5d07d0458491001264d4df14bd1939615c85485844cca3825e357b6aaf16b184`.
+Retention records epoch103 as the sole best/latest weight and removal of
+epochs99 and102. The02:47:42UTC progress check confirms trainer,
+keeper and retention live with unchanged config, no recent errors and
+counter1183/3742. Receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261106T0246.json`.
+
+SR3D remains audited best/latest epoch41=11935/10046 over17726. At
+02:45:52UTC its original trainer, keeper and retention were live with
+unchanged config, finite recent losses, no recent errors and counter
+2359/6486; this counter is not a validation score.
+
+## Previous Current Continuation: 2026-11-06 02:35 UTC
 
 At02:34:55UTC the same registered ScanRefer run is live at epoch5
 batch4272/6081 in `pvg_scanrefer_qila_20261105`; recent errors are empty

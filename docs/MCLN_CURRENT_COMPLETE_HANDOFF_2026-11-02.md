@@ -1,4 +1,30 @@
-## Current Override: 2026-11-06 12:42 UTC
+## Current Override: 2026-11-06 13:33 UTC
+
+SR3D full17726 epoch47=11908/9970 (67.178156%/56.245064%), up3/14
+hits versus46. Acc025-first best remains44=11946/9976,356 hits short
+of target12302. Independent13:33UTC CPU audit passed best44/latest47
+own epochs,1134 tensors,nonempty optimizer/scheduler,SHA and CUDA-off.
+Epoch47 SHA:
+`9433e3ef834226f8163d315fa677ceafbcb2ec002235b5aa6c5857653fa1ac49`.
+Existing retention aligned44/47 at13:23UTC and removed old preserved46.
+Full logs, metrics and historical audits remain. Earlier collector
+assertions occurred while47 was saved but its full validation was still
+running; after validation and retention alignment the collector passed.
+At13:27UTC training had advanced to404/6486 with finite recent losses
+and no errors. No trainer, recipe or retention change was made.
+
+NR3D latest audited full7899 remains113=4306/3459, best109=4307/3490;
+ScanRefer global best remains B2=5483/4656 over9508. No target met.
+The last Scan X0 process read at12:42UTC found the existing controller
+alive, GPU idle, no update/completion witness and821,837,824 free bytes
+versus3,978,037,815 required. Capacity remains insufficient; preserve
+protected files and the sole controller. That observation is not a new
+13:33UTC process check.
+
+Receipt: `docs/results/mcln_pvground_20261101/sr3d-current-full-history-audited-20261106T1329.json`
+(actual embedded audit time13:33:48UTC; filename is the collection label).
+
+## Previous Current Override: 2026-11-06 12:42 UTC
 
 Latest full-sample results use each checkpoint's `last_semantic_alignment_top1`.
 The NR3D/SR3D collectors independently audited best/latest checkpoints on CPU.
@@ -23,9 +49,10 @@ The NR3D/SR3D collectors independently audited best/latest checkpoints on CPU.
   `7a644c4f69c6632473e96621fecf58efa39135bfe31f61ed66b53bd4d1d667da`.
   Retention is aligned at best109/latest113 and removed only the older
   latest112 checkpoint; its metric row remains. Epoch113 improved over112
-  by79/13 hits but did not replace best109. At12:00UTC it was training
-  epoch114 at1850/3742; this was progress only. Original scratch config
-  unchanged.
+  by79/13 hits but did not replace best109. At12:00UTC the progress
+  counter was1850/3742; its earlier epoch114 label was inferred incorrectly
+  and is withdrawn. This counter is not a validation score. Original
+  scratch config unchanged.
 - SR3D latest completed validation remains epoch46=11905/9956 over17726;
   Acc@0.25 best remains epoch44=11946/9976 (67.39%/56.28%),356 hits below
   target12302. At12:42:55UTC epoch47 was training at4831/6486 with finite
@@ -39,7 +66,7 @@ The NR3D/SR3D collectors independently audited best/latest checkpoints on CPU.
 Receipts: `docs/results/mcln_pvground_20261101/nr3d-current-full-history-audited-20261106T1239.json`
 and `docs/results/mcln_pvground_20261101/sr3d-current-full-history-audited-20261106T1132.json`.
 
-## Previous Current Override: 2026-11-06 11:42 UTC
+## Previous Current Override: 2026-11-06 10:41 UTC
 
 Latest current-run checks through `work/remote_pvground.ps1`:
 

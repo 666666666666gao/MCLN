@@ -18,6 +18,13 @@ checkpoint = (
     "scanrefer_stage_b_20261102/1793674354/preserved_checkpoints/"
     "ckpt_epoch_2.pth"
 )
+semantic_histories = [
+    {
+        "path": str(path.relative_to(run)),
+        "history": json.loads(path.read_text()),
+    }
+    for path in sorted(run.rglob("qila_semantic_history.json"))
+]
 
 screen = subprocess.run(["screen", "-ls"], capture_output=True, text=True)
 workers = subprocess.run(
@@ -89,8 +96,9 @@ result = {
     "observed_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     "scope": (
         "Current isolated ScanRefer QILA trial only; reads process/GPU/log/"
-        "witness/completion state and immutable B2 identity. No model load,"
-        "forward,evaluation,training,restart or deletion."
+        "witness/canonical semantic-history JSON/completion state and "
+        "immutable B2 identity. No model load,checkpoint load,forward,"
+        "evaluation,training,restart or deletion."
     ),
     "screen": [
         line.strip()
@@ -115,6 +123,7 @@ result = {
         for path in sorted(run.glob("resume_epoch*.json"))
     ],
     "first_update_witnesses": witnesses,
+    "semantic_histories": semantic_histories,
     "progress_tail": progress,
     "log_tail": [line.strip()[:500] for line in lines[-80:]],
     "historical_error_lines": error_lines[-8:],

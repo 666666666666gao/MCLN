@@ -1,15 +1,24 @@
-## Current Override: 2026-11-06 03:14 UTC
+## Current Override: 2026-11-06 03:34 UTC
 
 ### Verified current state
 
-At03:14:02UTC the registered ScanRefer run is active in
-`pvg_scanrefer_qila_20261105`, training epoch6 at210/6081. GPU process
-328001 is active; its epoch6 first-update witness records finite loss
-4.4072 and finite nonzero gradients/deltas with updates10/10 Reader,
-10/10 Support and14/14 Span tensors. No current-window errors are
-reported. The prior full validation remains epoch4=5383/4469 over9508;
-there is no verified epoch5 full-sample semantic result yet. Trial best
-is epoch2=5398/4512 and immutable B2 remains global best=5483/4656.
+At03:33:23UTC the registered ScanRefer run is active in
+`pvg_scanrefer_qila_20261105`, training epoch6 at1596/6081. GPU process
+328001 is active and the current recent-error window is empty. Canonical
+full9508 `last_semantic_alignment_top1` history still covers epochs1-5:
+5366/4423,5398/4512,5395/4485,5383/4469,5414/4478 (Acc@0.25/0.50).
+Epoch5 improves over epoch4 by31/9 hits, but the trial's Acc@0.50-first
+best remains epoch2=5398/4512. Immutable B2 remains the global best
+5483/4656. The03:33:58UTC CUDA-off best/latest CPU audit again passed
+for epoch2 and epoch5: own epoch,1168 tensors,nonempty optimizer/
+scheduler and matching SHA. No epoch6 full validation is present yet.
+
+An independent CUDA-off CPU audit of semantic best epoch2 and latest
+epoch5 passed own epoch,1168 model tensors,nonempty optimizer/scheduler,
+and SHA equality with the canonical history. Epoch5 SHA:
+`5a5fdf2dff37f8449b0dff33b6832e6b1450e344f33f0c65e6762928e26d37f7`.
+Epoch2 SHA:
+`fe2182575fc136004df5dee005058d19a627c817b1fbf48bc670db6c1804c5cf`.
 
 The live recipe remains legacy `bbf_quality_rank_loss_weight=0.3`;
 joint-query-quality loss terms are zero, so this is not the documented
@@ -29,35 +38,36 @@ receipts and verify later epoch metrics against full-sample semantic
 rows and own-epoch CPU checkpoint audits. Do not stop or duplicate the
 active run.
 
-NR3D full-history receipt observed at02:35:39UTC covers epochs1-103.
-Epoch103 is a new best and latest:4271/3459 over7899. Its CPU
-own-epoch103,1134-model-tensor,nonempty optimizer/scheduler and SHA
-audit passed. SHA:
+NR3D's03:33:37UTC full-history receipt covers epochs1-104. Epoch104 is
+latest=4268/3429 over7899; epoch103 remains best=4271/3459. CPU
+own-epoch,1134-model-tensor,nonempty optimizer/scheduler and SHA audits
+passed for both retained checkpoints. Epoch104 SHA:
+`e9e7d431e9d1b1a81550c3139edde85d0f959202c827981b35f77709939de0bc`;
+epoch103 SHA:
 `5d07d0458491001264d4df14bd1939615c85485844cca3825e357b6aaf16b184`.
-The existing retention watcher has only epoch103 kept as best/latest;
-the receipt records authorized removal of preserved epochs99 and102.
-The03:09:17UTC scoped progress check confirms NR3D trainer/keeper/
-retention live, original config unchanged, finite recent losses, no
-recent errors, and counter2720/3742. Full receipt:
-`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261106T0246.json`.
+The receipt confirms retention latest104 and best103; trainer is live.
+Full receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261106T0334.json`.
 
-SR3D remains latest audited best/latest epoch41=11935/10046 over17726;
-its SHA audit remains
-`0692122690a378453a05bc99bdbf6180b69166e3b26516e6513e2fb9e91c5528`.
-At03:09:15UTC its trainer/keeper/retention were live with the original
-config unchanged, finite recent losses, no recent errors, and counter
-3908/6486. This is training progress, not a new validation.
+SR3D's03:33:32UTC full-history receipt covers epochs1-41 and confirms
+best/latest epoch41=11935/10046 over17726. Its own-epoch41,1134-tensor,
+nonempty optimizer/scheduler and SHA audit passed; trainer is live.
+SHA:`0692122690a378453a05bc99bdbf6180b69166e3b26516e6513e2fb9e91c5528`.
+Full receipt:
+`docs/results/mcln_pvground_20261101/sr3d-current-full-history-20261106T0334.json`.
 
 Latest verified full-sample `last_semantic_alignment_top1` metrics:
 
 | Dataset | Best checkpoint | Best hits | Latest completed | Latest hits | Target |
 |---|---|---:|---|---:|---:|
-| ScanRefer (9508) | immutable B2 epoch2 | `5483/4656` | current trial epoch4 | `5383/4469` | `5705/4945` |
-| NR3D (7899) | epoch103 | `4271/3459` | epoch103 | `4271/3459` | Acc@0.25 `4724` |
+| ScanRefer (9508) | immutable B2 epoch2 | `5483/4656` | current trial epoch5 | `5414/4478` | `5705/4945` |
+| NR3D (7899) | epoch103 | `4271/3459` | epoch104 | `4268/3429` | Acc@0.25 `4724` |
 | SR3D (17726) | epoch41 | `11935/10046` | epoch41 | `11935/10046` | Acc@0.25 `12302` |
 
-Best-checkpoint gaps remain ScanRefer222/289, NR3D453 Acc@0.25, and
-SR3D367 Acc@0.25 hits. No target has been met.
+Global-best gaps remain ScanRefer222/289, NR3D453 Acc@0.25, and
+SR3D367 Acc@0.25 hits. Current ScanRefer trial latest is291/467 hits
+short of target. NR3D epoch104 is454 Acc@0.25 hits below target. No
+target has been met.
 
 Open-source review found relevant precedents, not proven MCLN gains:
 ConcreteNet's official 3D-grounding code explicitly targets repetitive

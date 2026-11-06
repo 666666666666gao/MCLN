@@ -1,13 +1,23 @@
 # ScanRefer Stage A Restart
 
-## Current Continuation: 2026-11-06 03:14 UTC
+## Current Continuation: 2026-11-06 03:34 UTC
 
 The authorized `scanrefer_qila_20261105` controller/trainer remains live
-at epoch6 batch210/6081 as of03:14:02UTC. Its epoch6 first-update witness
-has finite loss4.4072 and finite nonzero gradients/deltas, with
-Reader/Support/Span updates10/10/14. Current recent-error window is
-empty. Latest verified full9508 semantic validation is still epoch4=
-5383/4469; epoch5 has no confirmed full-sample score.
+at epoch6 batch1596/6081 as of03:33:23UTC; recent-error window is empty.
+Canonical full9508 `last_semantic_alignment_top1` rows through epoch5 are
+5366/4423,5398/4512,5395/4485,5383/4469,5414/4478 (Acc@0.25/0.50).
+Epoch5 is +31/+9 hits over epoch4, but the trial best remains epoch2=
+5398/4512 under Acc@0.50-first selection. Immutable B2 remains global
+best=5483/4656.
+
+CPU best/latest audit passed for epoch2 and epoch5: own checkpoint epoch,
+1168 tensors, nonempty optimizer/scheduler, and SHA match. Epoch5 SHA
+`5a5fdf2dff37f8449b0dff33b6832e6b1450e344f33f0c65e6762928e26d37f7`;
+epoch2 SHA
+`fe2182575fc136004df5dee005058d19a627c817b1fbf48bc670db6c1804c5cf`.
+Receipt: `docs/results/mcln_pvground_20261101/scanrefer-qila-current-history-audit-20261106T0326.json`.
+The03:33:58UTC independent best/latest CPU audit repeated successfully;
+epoch6 has not yet produced a new full9508 semantic row.
 
 The scoped process check records failed resume receipts for epoch1 and
 two epoch2 attempts. Historical recovery output shows an assertion in
@@ -24,11 +34,11 @@ run unchanged and do not stop or duplicate it. The active config is still legacy
 `bbf_quality_rank_loss_weight=0.3` with all joint-query-quality losses
 zero, not the planned V99 QILA/X1.
 
-NR3D and SR3D trainers, keepers, and retention watchers remain live on
-their original official scratch configs. At03:09UTC progress was
-NR3D2720/3742 and SR3D3908/6486; these counters are not validation
-scores. Latest audited full-sample metrics remain NR3D epoch103=
-4271/3459 and SR3D epoch41=11935/10046.
+NR3D and SR3D trainers remain live on their original official scratch
+configs. The03:33UTC full-history receipts confirm NR3D latest104=
+4268/3429 and best103=4271/3459 over7899, plus SR3D latest/best41=
+11935/10046 over17726. Both best/latest checkpoint CPU audits passed;
+the NR104 SHA is `e9e7d431e9d1b1a81550c3139edde85d0f959202c827981b35f77709939de0bc`.
 
 ## Current Continuation: 2026-11-06 02:47 UTC
 

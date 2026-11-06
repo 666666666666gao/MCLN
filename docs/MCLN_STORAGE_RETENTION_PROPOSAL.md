@@ -765,3 +765,34 @@ remote copies,with file size and SHA verification. Local C:has only about
 spaces only;no archive destination or bulk transfer has been selected.
 All-model archival for both remaining budgets would itself exceed E:'s
 currently available179GB. A bounded policy or additional storage is needed.
+## Update: 2026-11-06 14:42 UTC
+
+The user's request to remove unused ScanRefer weights was checked against
+the current X0 trial only. At14:32:39UTC the trial had no training
+checkpoint and its failed preflight directory contained config/log/
+TensorBoard only. Free capacity was821,817,344 bytes versus the
+3,978,037,815-byte formal reserve (short3,156,220,471). Thus there was
+no safe active-trial checkpoint deletion capable of meeting the gate.
+Official54 and immutable B2 remain inputs; the sequential queue also
+requires its predecessor completion audit. No weights or protected files
+were deleted. The module import failure from the first preflight was
+repaired by restoring and SHA-registering the exact Span helper; a
+successful retry remains unverified. Existing retention policy was not
+changed.
+
+## Update: 2026-11-06 15:26 UTC
+
+A follow-up read-only diagnostic found the live X0 waiter still asleep
+although the exact initial gate predicates computed `slot_ready` at the
+observation: predecessor full-budget receipt/history valid, GPU idle,
+and821,809,152 bytes free versus a314,572,800-byte initial threshold.
+Live runner/waiter source hashes match the preparation manifest, but the
+predecessor-audit/completion receipts are absent and queue logs remain
+stale at08:38UTC. This discrepancy is not yet diagnosed; do not signal or
+restart the controller. The separate formal-stage reserve remains short
+by3,156,228,663 bytes at15:22:58UTC. The live waiter started07:23:57UTC,
+while current runner/waiter files were modified08:05:43UTC. This confirms
+the active process loaded an earlier source version, although the exact
+in-memory gate is unavailable. Diagnostic receipt:
+`docs/results/mcln_pvground_20261101/scanrefer-x0-wait-gate-diagnosis-20261106T1522.json`.
+No weights were deleted.

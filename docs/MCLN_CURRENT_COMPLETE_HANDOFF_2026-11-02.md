@@ -1,4 +1,78 @@
-## Current Override: 2026-11-06 13:33 UTC
+## Current Override: 2026-11-06 15:26 UTC
+
+At14:39:02UTC NR3D full7899 epoch115=4291/3451
+(54.323332%/43.689075%); Acc025-first best remains epoch109=4307/3490
+(54.525889%/44.182808%),417 hits below target4724. The independent
+CUDA-off full-history collector audited best109/latest115 as own CPU
+epochs with1134 tensors, nonempty optimizer/scheduler and matching SHA.
+Epoch115 SHA:
+`b9463d5e3c2976aaffe115259d8a8822fee8b18112f408263fd84b8211dcbd30`.
+Retention aligned109/115 and removed only obsolete preserved114 after
+audit. Receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-audited-20261106T1524.json`
+(embedded audit time14:39:02UTC).
+At14:32:46UTC the unchanged NR trainer/keeper/retention processes were
+live with original null-initialized scratch config; current progress was
+246/659, recent losses finite, no logged errors.
+
+At15:15:47UTC SR3D full17726 epoch48=11939/10111
+(67.353041%/57.040505%); Acc025-first best remains44=11946/9976,356
+hits below target12302. The independent CUDA-off collector audited
+best44/latest48 as own CPU epochs with1134 tensors, nonempty optimizer/
+scheduler and SHA. Epoch48 SHA:
+`3025f34b028cde1414436a0fbbc3a3a8a2ce2967b9d555541c017dbe0831afaf`.
+Retention aligned44/48 and removed only obsolete preserved47 after audit.
+Receipt:
+`docs/results/mcln_pvground_20261101/sr3d-current-full-history-audited-20261106T1525.json`.
+The original scratch trainer/keeper/retention remain live; no recipe change.
+
+ScanRefer global best remains immutable B2 epoch2=5483/4656 over9508
+(57.667228%/48.969289%), short222/289 hits of the5705/4945 targets.
+The sole X0 controller screen344492 and slot waiter344495 remained live
+at15:22:58UTC; GPU had no compute processes and free space was821,809,152
+bytes against the recorded3,978,037,815-byte reserve, a3,156,228,663-byte
+deficit. The X0 E0 identity gate remains passed at5435/4327 for both
+official and Reader-free identity, with matching checkpoint/point/order/
+seed/backend. The bounded preflight has no completion/update witness;
+its first attempt failed before an optimizer step because the isolated
+archive omitted `models/pvground_span_supervision.py`. That exact helper
+is now present and SHA-registered as
+`330e0bb03fe8fd5c9f0b485410af522d92909ecf51a29d7db4b9e80d48b95abd`;
+the live queue has not confirmed a successful retry or Stage A/B start.
+The current preflight output directory contains only config/log/TensorBoard,
+not disposable weights. Do not delete official/B2 inputs or predecessor
+artifacts needed by the queue's completion audit, stop/duplicate the sole
+controller, or claim training has started. No safe current-X0 weight
+cleanup can satisfy the formal reserve. User requested cleanup; no file
+was deleted because current evidence shows no unused checkpoint in the
+active X0 trial.
+
+A separate current-X0 queue diagnostic at15:22:58UTC found the exact
+predecessor completion receipt (all8 epochs), contiguous full9508 history,
+idle GPU and821,809,152 bytes free against the initial slot threshold of
+314,572,800. Its point-in-time gate therefore computes `slot_ready`, and
+both live wait-script and runner SHA match their preparation manifest.
+However, PID344495 remains asleep in `wait_scanrefer_x0_slot.py`;
+`predecessor_completion.json` and the predecessor CPU-audit receipt are
+absent, and controller/queue logs have not advanced since08:38UTC. The
+specific cause of this discrepancy is unproven. Do not signal, stop,
+duplicate or replace the controller. Keep the real formal-stage capacity
+deficit distinct from the unexplained initial-wait delay and require a
+fresh process/witness before claiming preflight or training has resumed.
+
+At15:22:58UTC the waiter had run since07:23:57UTC, while the current wait
+and runner source files were modified at08:05:43UTC. Their present SHA
+matches the preparation manifest, but this process cannot have loaded
+source contents written after it started. This confirms live-source
+version drift; the exact original in-memory gate is unavailable, so do
+not infer more or hot-edit/replace the process.
+
+All three goals remain unmet: ScanRefer short222/289, NR3D short417
+Acc025 hits, SR3D short356. Metrics are full-sample same-checkpoint
+`last_semantic_alignment_top1` BBF; no position/mask or cross-epoch
+mixing. Full live receipts are recorded in the linked results directory.
+
+## Previous Current Override: 2026-11-06 15:20 UTC
 
 SR3D full17726 epoch47=11908/9970 (67.178156%/56.245064%), up3/14
 hits versus46. Acc025-first best remains44=11946/9976,356 hits short

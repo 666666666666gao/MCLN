@@ -1,0 +1,43 @@
+{
+  "observed_utc": "2026-11-06T15:22:58.337052+00:00",
+  "scope": "Read-only diagnostic of the sole current X0 queue and its explicit predecessor gate. No checkpoint load, deletion, signal, restart, or training.",
+  "controller_screen_pid": 344492,
+  "waiter_pid": 344495,
+  "waiter_started_utc": "2026-11-06T07:23:57Z",
+  "waiter_state": "sleeping",
+  "waiter_wchan": "do_select",
+  "predecessor_gate": {
+    "registered_pid_live": false,
+    "complete_reason": "full_budget_completed",
+    "complete_epochs": 8,
+    "budget_epochs": 8,
+    "history_epochs": [1, 2, 3, 4, 5, 6, 7, 8],
+    "all_rows_full_9508": true
+  },
+  "initial_wait_gate": {
+    "computed_reason": "slot_ready",
+    "gpu_compute_pids": "",
+    "free_bytes": 821809152,
+    "required_free_bytes": 314572800
+  },
+  "formal_stage_reserve": {
+    "required_free_bytes": 3978037815,
+    "deficit_bytes": 3156228663
+  },
+  "live_sources": {
+    "wait_script_sha256": "00aa3a67d45dcfbde526e1edb7d783c0a0fcb92130ceddda9d1736111e097f4b",
+    "wait_script_manifest_sha256": "00aa3a67d45dcfbde526e1edb7d783c0a0fcb92130ceddda9d1736111e097f4b",
+    "wait_script_mtime_utc": "2026-11-06T08:05:43Z",
+    "runner_script_sha256": "851f38f1607e435d5aa5a4588a4952518e7997598352165f59684b2d20124fed",
+    "runner_script_manifest_sha256": "851f38f1607e435d5aa5a4588a4952518e7997598352165f59684b2d20124fed",
+    "runner_script_mtime_utc": "2026-11-06T08:05:43Z"
+  },
+  "receipts": {
+    "preflight_complete": false,
+    "predecessor_completion_written": false,
+    "predecessor_cpu_audit_written": false,
+    "last_queue_state_utc": "2026-11-06T08:38:58.826576+00:00",
+    "last_queue_state_reason": "requires_storage_capacity"
+  },
+  "assessment": "The currently measured initial gate is ready while the waiter remains asleep. The live Python process started before the on-disk runner/waiter files were modified, so it loaded an earlier source version; the exact in-memory source/gate cannot be recovered from this read-only snapshot. The formal training reserve is independently still unmet. Preserve the controller and do not claim training has resumed."
+}

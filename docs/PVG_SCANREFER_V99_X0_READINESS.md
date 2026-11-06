@@ -1,6 +1,49 @@
 # ScanRefer V99 X0 Readiness
 
-## Current State: 2026-11-06 12:42 UTC
+## Current State: 2026-11-06 15:26 UTC
+
+At15:22:58UTC the sole controller screen344492 and current slot waiter
+344495 were live, GPU compute list empty, no preflight completion/update
+witness, and no Stage A/B completion. Free space821,809,152 bytes is
+below the3,978,037,815-byte reserve by3,156,228,663 bytes. The recorded
+queue_state remains timestamped08:38UTC and is stale; the fresh process/
+disk read, not that old state file, is authoritative.
+
+The paired official/Reader-free full9508 E0 gate passed at5435/4327 with
+matching identity fields. The first bounded preflight failed before any
+optimizer update because the isolated source omitted
+`models/pvground_span_supervision.py`; the exact helper has been restored
+and SHA-registered (`330e0bb03fe8fd5c9f0b485410af522d92909ecf51a29d7db4b9e80d48b95abd`).
+No successful retry or training update is yet evidenced. The failed
+preflight output contains config/log/TensorBoard only, no generated
+checkpoint to reclaim. Preserve its inputs and the sole controller; no
+manual deletion or parallel launch.
+
+The user authorized clearing unused ScanRefer weights. There are no
+disposable weights in the active X0 trial, and its formal reserve cannot
+be reached by deleting its failed-preflight artifacts. Do not delete
+inputs or predecessor artifacts before the queue's audit.
+
+At15:22:58UTC a narrow gate diagnostic found the predecessor full-budget
+receipt/history valid, the GPU idle, and free space above the initial
+314,572,800-byte slot threshold. The exact live wait-script and runner
+hashes match their preparation manifest, so the point-in-time initial
+gate computes `slot_ready`. Nevertheless, PID344495 is still asleep in
+the waiter, the predecessor-audit/completion receipts are absent, and
+the queue log remains timestamped08:38UTC. The cause is unresolved; do
+not signal, stop, duplicate or replace the controller. The formal A/B
+reserve is separately short by3,156,220,471 bytes, so full training
+cannot safely start even if the initial wait advances.
+
+At15:22:58UTC the live waiter had started07:23:57UTC; the current wait
+and runner files were modified08:05:43UTC. Present SHA values match the
+preparation manifest, but the already-running Python process cannot have
+loaded those later contents. This confirms live-source version drift;
+the exact old in-memory gate remains unknown. Do not hot-edit, signal,
+stop, duplicate or replace the controller.
+Receipt: `docs/results/mcln_pvground_20261101/scanrefer-x0-wait-gate-diagnosis-20261106T1522.json`.
+
+## Previous State: 2026-11-06 12:42 UTC
 
 The12:42UTC current-only read-back found the sole controller still live,
 GPU idle, and no preflight completion, optimizer-update witness, or A/B

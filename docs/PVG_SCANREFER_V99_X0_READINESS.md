@@ -1,21 +1,28 @@
 # ScanRefer V99 X0 Readiness
 
-## Current State: 2026-11-06 11:32 UTC
+## Current State: 2026-11-06 12:42 UTC
 
-The current-only read-back found the sole controller still live, GPU idle,
-and no preflight completion, optimizer-update witness, or A/B completion.
+The12:42UTC current-only read-back found the sole controller still live,
+GPU idle, and no preflight completion, optimizer-update witness, or A/B
+completion.
 The first bounded preflight had failed before an optimizer update because
 the isolated archive omitted `models.pvground_span_supervision.py`; the
 exact repository-owned helper has since been restored and SHA-registered.
 The live controller remains the only process authorized to retry it.
 
 Capacity remains below the recorded reserve: 3,978,037,815 bytes required
-versus 821,846,016 free (short3,156,191,799 bytes). The last persisted
+versus 821,837,824 free (short3,156,199,991 bytes). The last persisted
 queue-state receipt is timestamped08:38UTC and says
 `requires_storage_capacity`; its age means it is not evidence of a newer
 queue transition. Do not stop/duplicate the controller, modify its recipe,
 or manually delete protected files. The paired official/Reader-free E0
 acceptance result remains5435/4327, not a training score.
+
+## Previous State: 2026-11-06 11:32 UTC
+
+The sole controller remained live and GPU-idle without preflight/update or
+A/B completion. Capacity was 821,846,016 bytes free against the3,978,037,815
+reserve. The existing controller owns any retry; protected files remain.
 
 ## Previous State: 2026-11-06 10:41 UTC
 

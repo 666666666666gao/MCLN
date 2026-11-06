@@ -1,4 +1,4 @@
-## Current Override: 2026-11-06 11:42 UTC
+## Current Override: 2026-11-06 12:42 UTC
 
 Latest full-sample results use each checkpoint's `last_semantic_alignment_top1`.
 The NR3D/SR3D collectors independently audited best/latest checkpoints on CPU.
@@ -7,39 +7,39 @@ The NR3D/SR3D collectors independently audited best/latest checkpoints on CPU.
   (57.67%/48.97%); the latest completed training trial was the legacy
   rank-loss epoch8=5380/4450, not V99 QILA/X1. The X0 official/Reader-free
   E0 acceptance gate is5435/4327 for both conditions and is not a training
-  result. At11:32UTC the sole X0 controller was still live, GPU idle, with
-  no preflight completion/update witness or A/B completion. Free space was
- 821,846,016 bytes against the3,978,037,815-byte reserve, short3,156,191,799.
-  The last persisted queue-state reason is timestamped08:38UTC, so do not
-  present it as a fresh queue transition. The missing Span helper was
-  SHA-registered after the failed no-update preflight; the existing
-  controller remains the sole continuation owner. Do not duplicate, stop,
-  alter, or delete protected inputs/checkpoints.
-- NR3D epoch112=4227/3446 over7899; Acc@0.25 best remains epoch109=
-  4307/3490 (54.53%/44.18%),417 hits below target4724. The11:41:41UTC
-  CUDA-off collector passed own-epoch,1134-tensor,nonempty optimizer/
-  scheduler and SHA checks for best109 and latest112; latest112 SHA
-  `b690b1bc308b8722c01df8e245e57e5c03d2922d8fd2612a347e30230ec58ff9`.
-  Retention is aligned at best109/latest112. At11:41UTC epoch113 was
-  training at517/3742; this is progress only. The first collector attempt
-  during checkpoint/retention turnover raised an assertion; after the
-  state settled, the re-collection and CPU audits passed. No trainer
-  change was made.
-- SR3D epoch46=11905/9956 over17726; Acc@0.25 best remains epoch44=
-  11946/9976 (67.39%/56.28%),356 hits below target12302. The11:32UTC
-  CUDA-off collector passed own-epoch,1134-tensor,nonempty optimizer/
-  scheduler and SHA checks for best44/latest46; latest46 SHA
-  `9a3cc3205a092c9e4e580badc4b28b7730950af20cb54f49341f9b3298a2079b`.
-  Retention keeps44/46; epoch45=11914/9991 remains in metric history but
-  its checkpoint was removed by the authorized best/latest policy.
+  result. The12:42UTC narrow read found the sole X0 controller still live,
+  GPU idle, with no preflight completion/update witness or A/B completion.
+  Free space was821,837,824 bytes against the3,978,037,815-byte reserve,
+  short3,156,199,991. The latest persisted queue-state reason remains
+  timestamped08:38UTC; it is stale and must not be presented as a fresh
+  transition. The missing Span helper was SHA-registered after the failed
+  no-update preflight; the existing controller remains the sole
+  continuation owner. Do not duplicate, stop, alter, or delete protected
+  inputs/checkpoints.
+- NR3D epoch113=4306/3459 over7899 (54.51%/43.79%); Acc@0.25 best remains
+  epoch109=4307/3490 (54.53%/44.18%),417 hits below target4724. The
+  12:39:05UTC CUDA-off collector passed own-epoch,1134-tensor,nonempty
+  optimizer/scheduler and SHA checks for best109/latest113; epoch113 SHA
+  `7a644c4f69c6632473e96621fecf58efa39135bfe31f61ed66b53bd4d1d667da`.
+  Retention is aligned at best109/latest113 and removed only the older
+  latest112 checkpoint; its metric row remains. Epoch113 improved over112
+  by79/13 hits but did not replace best109. At12:00UTC it was training
+  epoch114 at1850/3742; this was progress only. Original scratch config
+  unchanged.
+- SR3D latest completed validation remains epoch46=11905/9956 over17726;
+  Acc@0.25 best remains epoch44=11946/9976 (67.39%/56.28%),356 hits below
+  target12302. At12:42:55UTC epoch47 was training at4831/6486 with finite
+  recent losses and no recent errors; this is not a validation score.
+  The latest CPU-audited best44/latest46 receipt remains
+  `sr3d-current-full-history-audited-20261106T1132.json`.
 - Current best deficits are ScanRefer222/289 hits, NR3D417 Acc@0.25 hits,
   and SR3D356 Acc@0.25 hits. No target is met. NR/SR scratch recipes remain
   unchanged; no architecture change is justified by these results.
 
-Receipts: `docs/results/mcln_pvground_20261101/nr3d-current-full-history-audited-20261106T1142.json`
+Receipts: `docs/results/mcln_pvground_20261101/nr3d-current-full-history-audited-20261106T1239.json`
 and `docs/results/mcln_pvground_20261101/sr3d-current-full-history-audited-20261106T1132.json`.
 
-## Previous Current Override: 2026-11-06 10:41 UTC
+## Previous Current Override: 2026-11-06 11:42 UTC
 
 Latest current-run checks through `work/remote_pvground.ps1`:
 

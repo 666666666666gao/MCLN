@@ -1,6 +1,37 @@
 # ScanRefer Stage A Restart
 
-## Current Continuation: 2026-11-06 05:48 UTC
+## Current Continuation: 2026-11-06 06:24 UTC
+
+The active `scanrefer_qila_20261105` trial completed epoch7 full9508
+semantic Top1 at5362/4418. Trial best remains epoch2=5398/4512; immutable
+B2 global best remains5483/4656. The06:24UTC CPU audit passed best2 and
+latest7 own epochs,1168 tensors,optimizer/scheduler,SHA and CUDA-off.
+Epoch7 SHA is
+`48849aeec03e29a826a491a28c171a4db6a8f9a16c631e9b6729992d0205909c`.
+At06:23UTC epoch8 was active and had a finite first optimizer update with
+Reader/Support/Span updates10/10/14; the run had no recent runtime errors.
+
+Earlier resume attempts failed on a recovery assertion requiring
+`saved["config"].model_only_initialization=true`. The current audited
+best/latest checkpoints have that flag false but pass own-epoch,model,
+optimizer/scheduler and SHA checks. This confirms a recovery predicate
+problem; it does not show a failure in the live epoch8 training process.
+Keep the active run unchanged and repair/reconcile this check before a
+future resume.
+
+The implementation mismatch remains material: the active recipe uses
+legacy rank-loss weight0.3 and zero joint-query-quality terms, so this
+run is not the planned V99 QILA/X1. Preserve the active budget unchanged;
+do not stop, duplicate, or hot-change it. After completion, follow the
+documented matched X0 and gate true QILA X1 using the objective,
+step-0/unit, and real-update checks.
+
+The canonical full9508 semantic history rows are:
+5366/4423,5398/4512,5395/4485,5383/4469,5414/4478,5387/4454,
+5362/4418 (Acc@0.25/Acc@0.50). The epoch7 CPU audit receipt is
+`docs/results/mcln_pvground_20261101/scanrefer-qila-current-history-audit-20261106T0624.json`.
+
+## Previous Current Continuation: 2026-11-06 05:48 UTC
 
 The authorized `scanrefer_qila_20261105` trainer/controller remains live
 in epoch7 at05:36UTC, with no recent errors. There is no complete epoch7

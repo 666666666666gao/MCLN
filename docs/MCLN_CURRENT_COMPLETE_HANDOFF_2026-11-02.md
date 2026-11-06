@@ -1,4 +1,55 @@
-## Current Override: 2026-11-06 05:48 UTC
+## Current Override: 2026-11-06 06:27 UTC
+
+### Verified current state
+
+Current-only checks through the approved wrapper confirm the ScanRefer
+`scanrefer_qila_20261105` run is still active. Epoch7 completed full9508
+`last_semantic_alignment_top1` validation at5362/4418; trial best remains
+epoch2=5398/4512 and immutable B2 remains global best=5483/4656.
+The06:24UTC CUDA-off CPU audit passed best2/latest7 own checkpoint epochs,
+1168 model tensors, nonempty optimizer/scheduler, and SHA. Epoch7 SHA:
+`48849aeec03e29a826a491a28c171a4db6a8f9a16c631e9b6729992d0205909c`.
+At06:23UTC epoch8 had started with a finite first-update witness and
+Reader/Support/Span updates10/10/14; no recent runtime errors were present.
+The live objective remains legacy rank-loss weight0.3 with all
+joint-query-quality losses zero, not the planned V99 QILA/X1. Do not stop,
+duplicate, or hot-change the active run.
+
+Earlier resume attempts exited nonzero because recovery asserted that
+`saved["config"].model_only_initialization` must be true. The current
+best/latest checkpoints have that flag false while passing own-epoch,
+model, optimizer/scheduler and SHA audits. This is a confirmed recovery
+predicate issue, not evidence that the live epoch8 trainer failed. Keep the
+active run unchanged and resolve the recovery check before any later run.
+
+NR3D full-history collection verified epochs1-106. Best103=4271/3459 and
+latest106=4208/3443 over7899; both retained checkpoints passed own-CPU
+epoch,1134-tensor,optimizer/scheduler and SHA audits. Latest106 SHA:
+`68fa6589fd177af17174c3461c3f1e0f43a2554f8725b3d27a3e096383350ff1`.
+Its trainer, keeper, and retention watcher remain live on the unchanged
+official scratch recipe.
+
+SR3D full-history collection verified epochs1-43. Best remains epoch41=
+11935/10046; latest epoch43=11935/10041 over17726. Both passed own-CPU
+epoch,1134-tensor,optimizer/scheduler and SHA audits. Epoch43 SHA:
+`f5159fb7e36ae6ad2f14729a2fa59f78eee03042f25809aa0c65010758afe986`.
+Its trainer, keeper, and retention watcher remain live on the unchanged
+official scratch recipe.
+
+| Dataset | Best checkpoint | Best hits | Latest complete | Latest hits | Target |
+|---|---|---:|---|---:|---:|
+| ScanRefer (9508) | immutable B2 epoch2 | `5483/4656` | trial epoch7 | `5362/4418` | `5705/4945` |
+| NR3D (7899) | epoch103 | `4271/3459` | epoch106 | `4208/3443` | Acc@0.25 `4724` |
+| SR3D (17726) | epoch41 | `11935/10046` | epoch43 | `11935/10041` | Acc@0.25 `12302` |
+
+All targets remain unmet. Best gaps are ScanRefer222/289, NR3D453
+Acc@0.25, and SR3D367 Acc@0.25 hits. Receipts are
+`scanrefer-qila-current-history-audit-20261106T0624.json`,
+`nr3d-current-full-history-audited-20261106T0600.json`, and
+`sr3d-current-full-history-audited-20261106T0600.json` under
+`docs/results/mcln_pvground_20261101/`.
+
+## Previous Current Override: 2026-11-06 05:48 UTC
 
 ### Verified current state
 

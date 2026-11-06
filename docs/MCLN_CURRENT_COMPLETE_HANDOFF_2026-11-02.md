@@ -1,4 +1,173 @@
-## Current Override: 2026-11-06 07:00 UTC
+## Current Override: 2026-11-06 09:36 UTC
+
+Latest current-run checks through `work/remote_pvground.ps1`:
+
+- NR3D full7899 epoch110=4164/3421; Acc@0.25 best remains epoch109=
+  4307/3490. CPU audits passed for best109 and latest110: own checkpoint
+  epochs,1134 model tensors,nonempty optimizer/scheduler and SHA. Epoch110
+  SHA is `05b374943fabe3bd9ab0efbdf829c8b83f64387cc68172939ed371cc605a28eb`.
+  Existing retention is aligned at best109/latest110.
+- SR3D has no newer full validation: best/latest epoch44=11946/9976 over
+  17726. Its existing epoch44 CPU audit remains valid; the 09:32UTC
+  progress check found epoch45 training active at 727/6486 with finite
+  recent losses and no recent errors. Training counters are not validation.
+- ScanRefer's single existing X0 queue controller remains alive, but no
+  preflight completion or update witness exists. The 09:36UTC read still
+  showed the storage gate at 3,978,037,815 required vs 821,866,496 free,
+  GPU idle. The prior packaging failure was repaired; the controller owns
+  any retry. Do not duplicate, stop, alter, or manually free protected
+  files.
+
+Latest best metrics remain ScanRefer immutable B2 epoch2=5483/4656 over
+9508 (57.67%/48.97%), NR3D epoch109=4307/3490 over7899
+(54.53%/44.18%), and SR3D epoch44=11946/9976 over17726
+(67.39%/56.28%). NR target Acc@0.25 4724 is 417 hits away; SR target
+12302 is 356 away. Scan targets5705/4945 remain222/289 hits away.
+The Scan X0 official/identity E0=5435/4327 is an acceptance baseline, not
+a training result. Audited histories:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-audited-20261106T0936.json`
+and
+`docs/results/mcln_pvground_20261101/sr3d-current-full-history-audited-20261106T0936.json`.
+
+## Previous Current Override: 2026-11-06 08:59 UTC
+
+The paired X0 E0 gate has now passed on all9508 samples. Official and
+Reader-free identity both scored5435/4327; point-order SHA
+`44cc887237c35c3266ed2384cea348372c6d85d1498b382750b3dbdcbbc77dc6`,
+identity SHA
+`71e1a4b16d2e9b6019d00dea37b30973390f85634790dffa78302477c54679e3`,
+official54 checkpoint SHA
+`a9930065996fce1d0dd5ee9fe00a120bdb3a2c88d158b7a3666717d842ac113d`,
+seed0 and backend matched. X0 identity added24 intended tensors.
+
+At08:41:59UTC the existing step-zero controller had advanced to the
+bounded 12-microbatch/two-optimizer-step `preflight` process. Its process
+was live but still loading datasets/text-decoupling; no first-update
+witness or completion receipt was yet confirmed. The formal Stage A/B
+controller remains live and storage-gated:3,978,037,815 bytes required,
+821,882,880 observed at08:56UTC. Do not duplicate, stop or alter the
+active queue; do not delete protected files.
+
+The bounded preflight attempt failed at08:50UTC before its first optimizer
+step: the isolated source omitted the repository-owned
+`models.pvground_span_supervision.py`, imported by the enabled Span gate
+loss. No train audit or update witness was written. At08:59:54UTC the
+exact module (SHA
+`330e0bb03fe8fd5c9f0b485410af522d92909ecf51a29d7db4b9e80d48b95abd`)
+was added to the current isolated source and preparation SHA manifest;
+the preparation script now lists this required file. The existing
+sequential controller remains the sole owner and will retry the bounded
+preflight when its slot gate allows. No retry was manually started.
+Failure/repair evidence:
+`docs/results/mcln_pvground_20261101/scanrefer-x0-preflight-module-failure-repair-20261106T0859.json`.
+
+Training-result metrics remain ScanRefer legacy epoch8=5380/4450,
+trial best2=5398/4512, immutable B2 global best5483/4656; NR3D
+epoch108=4303/3512; SR3D epoch44=11946/9976. NR/SR full-history and
+own-CPU best/latest checkpoint audits passed at08:22UTC.
+
+## Previous Current Override: 2026-11-06 08:42 UTC
+
+The paired X0 E0 gate passed on all9508 samples. Official and identity
+both scored5435/4327 and matched point-order, identity, checkpoint, seed
+and backend. At08:41:59UTC the bounded preflight was live in data loading;
+no first-update witness/completion was yet confirmed. Formal Stage A/B
+remained storage-gated at3,978,037,815 required vs821,903,360 free.
+
+At08:33:46UTC the isolated X0 step-zero controller and paired GPU
+evaluation were live. Official epoch54 E0 completed full9508 with
+5435/4327 hits, exactly matching the declared reference. The paired
+Reader-free identity run was at592/1189 batches; its result and identity
+gate are pending. No X0 optimizer update or Stage A/B training had begun.
+The sequential Stage A/B controller remains live. Its storage gate
+requires3,978,037,815 free bytes; the latest read saw822,063,104 bytes.
+Do not start duplicate evaluation/controller processes or manually remove
+protected files; the existing queue proceeds when its gates pass.
+
+At08:33:46UTC the isolated X0 step-zero controller and paired GPU
+evaluation were live. Official epoch54 E0 completed full9508 with
+5435/4327 hits, exactly matching the declared reference. The paired
+Reader-free identity run was at592/1189 batches; its result and identity
+gate are pending. No X0 optimizer update or Stage A/B training had begun.
+The sequential Stage A/B controller remains live. Its storage gate
+requires3,978,037,815 free bytes; the latest read saw822,063,104 bytes.
+Do not start duplicate evaluation/controller processes or manually remove
+protected files; the existing queue proceeds when its gates pass.
+
+The completed legacy ScanRefer predecessor has an audited full9508
+`last_semantic_alignment_top1` epoch8 score of5380/4450 (56.65%/46.81%).
+Its epoch2 trial best is5398/4512; immutable B2 remains the global
+best at5483/4656 (57.67%/48.97%). The08:02UTC CPU audit passed own
+epochs2/8,1168 model tensors, nonempty optimizer/scheduler and SHA.
+Epoch8 SHA is `6d6d6ca609867d835cc68573166740ac02b7d904a39aa1f71517a21ffcd72a74`.
+The prior epoch7-only status is superseded. The predecessor used legacy
+rank loss and is not the planned V99 QILA/X1.
+
+Current full-history NR3D audit at08:22UTC: epoch108 is best/latest,
+4303/3512 over7899 (54.48%/44.46%), SHA
+`dad040d2544cb104f3471679180808b3d88e09a2cfb9e03513b588e4f630e629`.
+Current SR3D audit: epoch44 is best/latest,11946/9976 over17726
+(67.39%/56.28%), SHA
+`2db3808ad3fcbf840236cad7d1d94bf666a369cc132ce34269aee6121ace6601`.
+Both current checkpoints passed own-epoch,1134-tensor,nonempty
+optimizer/scheduler and SHA checks. Both original scratch trainers remain
+live on their unchanged official recipes.
+
+Targets remain unmet. Best gaps are ScanRefer222/289 hits, NR3D421
+Acc@0.25 hits and SR3D356 Acc@0.25 hits. Use only same-checkpoint full
+sample semantic Top1 metrics; do not infer scores from training progress.
+
+## Previous Current Override: 2026-11-06 08:25 UTC
+
+At08:25:13UTC the isolated ScanRefer X0 step-zero controller and official
+E0 evaluator were live. The official full9508 evaluation was at about67%
+(799/1189 batches); no E0 result or X0 optimizer update was yet recorded.
+The sequential X0 controller remained live. Formal Stage A/B training had
+not started: the queue required3,978,037,815 free bytes, while the latest
+remote read saw822,284,288 bytes. The preflight was evaluation/acceptance,
+not training. Do not start a duplicate controller or manually remove
+protected files; the existing queue proceeds when its gates pass.
+
+## Previous Current Override: 2026-11-06 07:26 UTC
+
+At07:25UTC the authorized ScanRefer predecessor328001 remained live in
+epoch8=4439/6081, GPU65%, no recent errors. NR108 was finishing training
+at3740/3742 and SR44 was5972/6486; original trainer/keeper/retention
+processes were live, configs unchanged, losses finite, recent errors
+empty. No newer full-validation scores were inferred from these counters.
+Global best remains Scan B2=5483/4656, NR103=4271/3459,
+SR41=11935/10046; targets remain unmet.
+
+X0 is prepared in isolated `scanrefer_v99_x0_20261106/source`, independently
+copied from deployed Stage B source. Actual remote CPU MCLN construction
+and official54 model-only loading passed:1134 native tensors exact,
+1158 total,24 trainable Support/Span tensors, no Reader, fresh optimizers,
+BN eval in both stages. Actual parser and source compilation checks
+passed. No X0 GPU forward/update/full validation or training yet.
+
+One X0 sequential controller is active: screen
+`pvg_scanrefer_v99_x0_20261106`, PID344492. Its07:24UTC read-back proved
+screen process live and waiting for predecessor full8 completion.
+It polls300s, requires predecessor completion/PID gone, idle GPU and
+capacity, then audits predecessor best/latest and runs paired full9508
+E0, two real update steps, A3 and B8 with no early stop. X0 uses no legacy
+rank loss or true QILA; immutable B2 remains a comparator. Do not launch
+another controller. Safe narrow check:
+`tools/check_scanrefer_x0_preparation.sh`.
+
+Storage is a confirmed pending action: free space after preparation was
+1,617,629,184 bytes; current single joint checkpoint795,607,563 bytes.
+The new sequence requires3,978,037,815 free bytes for its retained
+warmup and joint best/latest/new-save peak. Add at least3GB available
+space (5GB expansion recommended); once conditions pass, the existing
+queue proceeds without further approval. Do not manually delete protected
+weights, repeat cleanup or create retention watchers. The current
+Scan training continues; capacity is a future-X0 launch constraint.
+
+Details and evidence: `docs/PVG_SCANREFER_V99_X0_READINESS.md`.
+All remote calls used the approved wrapper; no local ML execution.
+
+## Previous Current Override: 2026-11-06 07:00 UTC
 
 The06:51UTC current-process receipts confirm all three jobs live with no
 recent errors. ScanRefer epoch8=2011/6081, NR108=1457/3742,

@@ -832,6 +832,8 @@ def parse_option():
     parser.add_argument('--model', type=str, default='BeaUTyDETR')
     parser.add_argument('--use_candidate_local_visual', action='store_true', default=False)
     parser.add_argument('--use_pvground_innovations', action='store_true', default=False)
+    parser.add_argument('--disable_pvground_reader', action='store_true')
+    parser.add_argument('--freeze_batchnorm', action='store_true')
     parser.add_argument('--pvground_train_only', action='store_true')
     parser.add_argument('--pvground_span_train_only', action='store_true')
     parser.add_argument('--pvground_span_gate_loss_weight', type=float, default=0.0)
@@ -4051,6 +4053,7 @@ def load_checkpoint(args, model, optimizer, scheduler,
             or local_visual_state_keys(checkpoint_state)):
         validate_local_visual_checkpoint(
             current_state, checkpoint_state, model_only_initialization,
+            require_local_visual=not getattr(args, 'disable_pvground_reader', False),
             current_variant=getattr(args, 'candidate_local_visual_variant', 'local'),
             saved_variant=_checkpoint_config_value(
                 checkpoint.get('config', {}), 'candidate_local_visual_variant', 'local'),
@@ -7423,7 +7426,7 @@ class BaseTrainTester:
             ]))
 
     @staticmethod
-    def _set_source_moe_train_mode(model, args):
+    def _set_source_moe_module_train_mode(model, args):
         if getattr(args, "bbf_quality_adapter_train_only", False):
             model.eval()
             unwrapped = model.module if hasattr(model, "module") else model
@@ -7447,7 +7450,8 @@ class BaseTrainTester:
             model.eval()
             unwrapped = model.module if hasattr(model, "module") else model
             unwrapped.training = True
-            unwrapped.decoder[5].local_visual.train()
+            if not getattr(args, 'disable_pvground_reader', False):
+                unwrapped.decoder[5].local_visual.train()
             unwrapped.pvground_support_corrector.train()
             unwrapped.pvground_span_mixer.train()
             return
@@ -7679,6 +7683,14 @@ class BaseTrainTester:
             adaptive_source_mixer.train()
 
 
+    @staticmethod
+    def _set_source_moe_train_mode(model, args):
+        BaseTrainTester._set_source_moe_module_train_mode(model, args)
+        if getattr(args, 'freeze_batchnorm', False):
+            for module in model.modules():
+                if isinstance(module, torch.nn.modules.batchnorm._BatchNorm):
+                    module.eval()
+
     # BRIEF Training
     def train_one_epoch(self, epoch, train_loader, model,
                         criterion, set_criterion,
@@ -7705,6 +7717,8 @@ class BaseTrainTester:
             "pvground_support_corrector.",
             "pvground_span_mixer.",
         )
+        if getattr(args, 'disable_pvground_reader', False):
+            innovation_probe_prefixes = innovation_probe_prefixes[1:]
         if getattr(args, "bbf_quality_adapter_train_only", False):
             innovation_probe_prefixes = ("bbf_quality_adapter.",)
         if getattr(args, "pvground_span_train_only", False):

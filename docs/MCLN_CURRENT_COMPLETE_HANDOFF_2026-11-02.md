@@ -1,4 +1,27 @@
-## Current Override: 2026-11-06 06:39 UTC
+## Current Override: 2026-11-06 07:00 UTC
+
+The06:51UTC current-process receipts confirm all three jobs live with no
+recent errors. ScanRefer epoch8=2011/6081, NR108=1457/3742,
+SR44=3803/6486. Full metrics remain those below: global Scan B2=5483/4656,
+NRbest103=4271/3459 and SRbest41=11935/10046; no target is met.
+
+At06:54UTC deployed current-run source hashes matched the local baseline.
+Confirmed X0 gaps: innovations implicitly enables Reader, joint mode
+does not freeze BN, Span gate loss defaults to zero, and current legacy
+rank loss is not V99 QILA. Added default-off Reader removal and BN freeze
+controls locally; uploaded only to a separate controls directory and
+passed remote CPU checks on extracted actual methods and checkpoint-key
+validation. No live source replacement, trainer stop/restart or recipe
+change. No complete-model/forward/full9508 acceptance for X0 yet and no
+new accuracy claim. See `docs/PVG_SCANREFER_V99_X0_READINESS.md` for
+evidence, limitations and the sequential launch gates.
+
+The current runner source already checks recovery initialization metadata
+using `epoch == 1`; historical traceback predicates are not current source
+or evidence of a live failure. Retention-aware recovery remains untested
+by the source-only reconciliation.
+
+## Previous Current Override: 2026-11-06 06:39 UTC
 
 ### Verified current state
 

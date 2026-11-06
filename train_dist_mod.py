@@ -3450,6 +3450,12 @@ class TrainTester(BaseTrainTester):
             getattr(args, 'use_candidate_local_visual', False)
             or getattr(args, 'use_pvground_innovations', False)
         )
+        if getattr(args, 'disable_pvground_reader', False):
+            if not getattr(args, 'use_pvground_innovations', False):
+                raise ValueError('Reader removal requires PV-Ground Support and Span')
+            if getattr(args, 'use_candidate_local_visual', False):
+                raise ValueError('Reader removal conflicts with --use_candidate_local_visual')
+            use_candidate_local_visual = False
         if local_variant != 'local' and not use_candidate_local_visual:
             raise ValueError('range visual reading requires --use_candidate_local_visual')
         if getattr(args, 'use_pvground_innovations', False) and local_variant != 'local':

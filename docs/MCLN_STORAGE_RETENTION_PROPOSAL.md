@@ -1,4 +1,85 @@
-## Update: 2026-11-05 19:11 UTC
+## Update: 2026-11-06 09:36 UTC
+
+The X0 queue's measured capacity gate remains unsatisfied: required
+3,978,037,815 bytes free, observed821,866,496 bytes at09:36UTC
+(3,156,171,319 bytes short). Its existing controller is the sole owner of
+the sequential preflight retry; no completion/update witness is present.
+Do not reclaim protected checkpoint or initialization files manually.
+The exact omitted Span helper has been restored to the isolated source
+and registered by SHA; await the controller's evidence after capacity and
+slot gates permit it.
+
+## Previous Update: 2026-11-06 08:59 UTC
+
+The earlier ScanRefer predecessor has completed all8 epochs; its full
+history and best/latest CPU audits are recorded in the current handoff.
+The X0 paired official/Reader-free identity E0 gate passed full9508 at
+5435/4327, with checkpoint, point-order, identity, seed and backend
+matching. The controller advanced to its bounded two-step optimizer
+preflight. At08:41:59UTC it was live in data/text-decoupling setup; no
+first-update witness or completion receipt was confirmed. The formal
+Stage A/B controller remains storage-gated; do not start another process.
+
+The X0 controller requires3,978,037,815 free bytes. The most recent
+readback at08:56UTC observed821,882,880 bytes available. Preserve protected
+checkpoints and wait for capacity expansion; do not manually delete data.
+The existing queue owns sequential continuation after all gates pass.
+
+The bounded X0 preflight attempt failed before optimizer updates because
+the isolated archive omitted `models/pvground_span_supervision.py`, which
+the enabled Span gate loss imports. No training audit/update witness was
+written. At08:59:54UTC the existing repository module was added to the
+isolated source with its SHA registered in `preparation.json`; the
+preparation script now includes this required source file. The original
+queue remains the sole continuation owner; no duplicate retry was started.
+Failure/repair receipt:
+`results/mcln_pvground_20261101/scanrefer-x0-preflight-module-failure-repair-20261106T0859.json`.
+
+## Previous Update: 2026-11-06 08:42 UTC
+
+The paired E0 gate passed, and the bounded preflight was loading data.
+Formal Stage A/B remained storage-gated.
+
+## Previous Update: 2026-11-06 08:33 UTC
+
+Official E0 was5435/4327; paired Reader-free identity evaluation was
+still running and had not yet passed its comparison gate.
+
+## Previous Update: 2026-11-06 08:25 UTC
+
+The official E0 evaluation was at799/1189 batches, and the paired
+Reader-free identity evaluation had not completed. Capacity remained
+below the Stage A/B queue reserve.
+
+## Previous Update: 2026-11-06 07:26 UTC
+
+Current ScanRefer-only file stats show a real launch-capacity constraint.
+The50GiB filesystem had1,643,368,448 bytes free at07:05UTC; current
+semantic best/latest checkpoints are795,607,563 bytes each, with
+hardlinks correctly sharing their respective inodes. The independent
+X0 source snapshot is only25MB, leaving1,617,629,184 bytes free.
+
+The queued X0 sequence reserves3,978,037,815 free bytes: two retained
+warmup weights plus joint best/latest and a new atomic save, conservatively
+bounded by the measured current joint checkpoint footprint. It will
+wait for predecessor natural full8 completion, idle GPU and capacity
+before running GPU acceptance/training. Add at least3GB available space;
+5GB expansion is recommended. No manual cleanup or stopped-run inspection
+was done. Do not stop the current trainer or launch duplicate watchers.
+
+New X0 retention is owned by its epoch hook: after full9508 validation,
+CPU own-epoch/model/optimizer/scheduler/SHA and frozen-BN checks, audit
+semantic best/latest, synchronize manifests and remove only its own
+older exact numbered stage files. Keep both warmup best and latest/A3
+input. A final last-checkpoint alias hardlinks the audited numeric latest
+instead of serializing a duplicate checkpoint with a string epoch.
+Historical removed rows retain metrics/audits and an explicit authorized
+removal status. This new retention path has not yet run on a trained X0
+checkpoint and must not be described as empirically exercised.
+
+Evidence and queue ownership are in `PVG_SCANREFER_V99_X0_READINESS.md`.
+
+## Previous Update: 2026-11-05 19:11 UTC
 
 The registered `scanrefer_qila_20261105` trial is still training at epoch1
 batch3797/6081. No complete epoch or retention deletion has occurred for

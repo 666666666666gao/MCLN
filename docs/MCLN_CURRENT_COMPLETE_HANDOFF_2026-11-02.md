@@ -13,13 +13,6 @@ best remains epoch2=5398/4512. Immutable B2 remains the global best
 for epoch2 and epoch5: own epoch,1168 tensors,nonempty optimizer/
 scheduler and matching SHA. No epoch6 full validation is present yet.
 
-An independent CUDA-off CPU audit of semantic best epoch2 and latest
-epoch5 passed own epoch,1168 model tensors,nonempty optimizer/scheduler,
-and SHA equality with the canonical history. Epoch5 SHA:
-`5a5fdf2dff37f8449b0dff33b6832e6b1450e344f33f0c65e6762928e26d37f7`.
-Epoch2 SHA:
-`fe2182575fc136004df5dee005058d19a627c817b1fbf48bc670db6c1804c5cf`.
-
 The live recipe remains legacy `bbf_quality_rank_loss_weight=0.3`;
 joint-query-quality loss terms are zero, so this is not the documented
 V99 QILA/X1 objective. A confirmed recovery/metadata issue also needs

@@ -1,23 +1,56 @@
 # ScanRefer Stage A Restart
 
-## Current Continuation: 2026-11-06 03:34 UTC
+## Current Continuation: 2026-11-06 05:48 UTC
+
+The authorized `scanrefer_qila_20261105` trainer/controller remains live
+in epoch7 at05:36UTC, with no recent errors. There is no complete epoch7
+semantic validation yet. Latest full9508 `last_semantic_alignment_top1`
+remains epoch6=5387/4454; trial best epoch2=5398/4512 and immutable B2
+global best=5483/4656. CPU best2/latest6 audit passed own epoch,1168
+tensors,nonempty optimizer/scheduler and SHA; epoch6 SHA remains
+`38c6e728bb758993cb6f9ca4b679ed4209e7417b5a3ff872c696c0500b0848e8`.
+
+The active recipe is still legacy `bbf_quality_rank_loss_weight=0.3`
+with joint-query-quality losses zero, not the planned V99 QILA/X1. Keep
+the full eight-epoch budget running unchanged; do not stop, duplicate, or
+hot-change it. The historical recovery assertion remains an audit issue,
+not evidence of current training failure.
+
+NR3D full history now covers epochs1-106: latest106=4208/3443,
+best103=4271/3459 over7899. Epoch106 own-CPU epoch/1134-tensor/
+optimizer/scheduler/SHA passed; SHA
+`68fa6589fd177af17174c3461c3f1e0f43a2554f8725b3d27a3e096383350ff1`.
+The first collection saw a brief trainer-checkpoint/retention synchronization
+window. A05:42UTC re-collection confirmed contiguous epochs1-106 and passed
+own-CPU audits for best103/latest106, with both preserved files present.
+At05:32UTC the existing watcher aligned to best103/latest106, audited both
+kept weights and removed only obsolete epoch105; no manual cleanup was
+performed. NR training remains live.
+
+SR3D remains latest42=11916/9983, best41=11935/10046 over17726.
+The05:44UTC full-history collector returned an assertion, so this turn
+did not refresh the checkpoint audit. The prior successful epoch42 audit
+remains the latest verified checkpoint evidence. Its separate progress
+check found training active at epoch42 batch559/1478, finite recent losses,
+and no recent errors; this counter is not an evaluation score.
+
+All targets remain unmet. Keep using complete same-checkpoint semantic
+Top1 metrics only. After the active Scan budget and audit, follow the
+documented matched X0 and gate true QILA X1 on implementation, step-0,
+objective/unit, and real-update evidence.
 
 The authorized `scanrefer_qila_20261105` controller/trainer remains live
-at epoch6 batch1596/6081 as of03:33:23UTC; recent-error window is empty.
-Canonical full9508 `last_semantic_alignment_top1` rows through epoch5 are
-5366/4423,5398/4512,5395/4485,5383/4469,5414/4478 (Acc@0.25/0.50).
-Epoch5 is +31/+9 hits over epoch4, but the trial best remains epoch2=
-5398/4512 under Acc@0.50-first selection. Immutable B2 remains global
-best=5483/4656.
+at epoch7 batch1161/6081 as of05:03:13UTC; recent-error window is empty.
+Epoch7 has a finite first-update witness with a completed optimizer step.
+Canonical full9508 `last_semantic_alignment_top1` rows through epoch6 are
+5366/4423,5398/4512,5395/4485,5383/4469,5414/4478,5387/4454
+(Acc@0.25/0.50). Epoch6 is down27/24 hits versus epoch5. Trial best
+remains epoch2=5398/4512; immutable B2 remains global best=5483/4656.
 
-CPU best/latest audit passed for epoch2 and epoch5: own checkpoint epoch,
-1168 tensors, nonempty optimizer/scheduler, and SHA match. Epoch5 SHA
-`5a5fdf2dff37f8449b0dff33b6832e6b1450e344f33f0c65e6762928e26d37f7`;
-epoch2 SHA
-`fe2182575fc136004df5dee005058d19a627c817b1fbf48bc670db6c1804c5cf`.
-Receipt: `docs/results/mcln_pvground_20261101/scanrefer-qila-current-history-audit-20261106T0326.json`.
-The03:33:58UTC independent best/latest CPU audit repeated successfully;
-epoch6 has not yet produced a new full9508 semantic row.
+CPU best/latest audit passed for epoch2 and epoch6: own checkpoint epoch,
+1168 tensors, nonempty optimizer/scheduler, and SHA match. Epoch6 SHA
+`38c6e728bb758993cb6f9ca4b679ed4209e7417b5a3ff872c696c0500b0848e8`.
+Receipt: `docs/results/mcln_pvground_20261101/scanrefer-qila-current-history-audit-20261106T0448.json`.
 
 The scoped process check records failed resume receipts for epoch1 and
 two epoch2 attempts. Historical recovery output shows an assertion in
@@ -35,10 +68,13 @@ run unchanged and do not stop or duplicate it. The active config is still legacy
 zero, not the planned V99 QILA/X1.
 
 NR3D and SR3D trainers remain live on their original official scratch
-configs. The03:33UTC full-history receipts confirm NR3D latest104=
-4268/3429 and best103=4271/3459 over7899, plus SR3D latest/best41=
-11935/10046 over17726. Both best/latest checkpoint CPU audits passed;
-the NR104 SHA is `e9e7d431e9d1b1a81550c3139edde85d0f959202c827981b35f77709939de0bc`.
+configs. The04:58UTC full-history receipts confirm NR3D latest105=
+4256/3436 and best103=4271/3459 over7899, plus SR3D latest42=
+11916/9983 and best41=11935/10046 over17726. Both best/latest checkpoint
+CPU audits passed. NR105 SHA
+`77295550bad72e6d1038c78d942dab74e3dc4d30303f99df4b600a97ef636240`;
+SR42 SHA
+`5a51119489b3cd4d62ded58415e526a54e8cf1ca36be731d9c1d7cdead36418b`.
 
 ## Current Continuation: 2026-11-06 02:47 UTC
 

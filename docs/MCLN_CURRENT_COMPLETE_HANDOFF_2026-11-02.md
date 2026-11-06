@@ -1,4 +1,36 @@
-## Current Override: 2026-11-06 00:23 UTC
+## Current Override: 2026-11-06 00:45 UTC
+
+### Verified current state
+
+At00:44UTC the registered ScanRefer run remained live in
+`pvg_scanrefer_qila_20261105`, at epoch3 batch3253/6081 with no recent
+errors or completion receipt. Its live command still resumes from
+`1793909615/ckpt_epoch_2.pth`; optimizer and scheduler restoration are
+recorded. This remains inconsistent with the older23:59UTC snapshot that
+said epoch4 batch101. The reason and whether epoch3 validation occurred
+before this resume are unverified. Latest verified trial result remains
+epoch2=5398/4512; global best remains immutable B2 epoch2=5483/4656.
+This is still legacy `bbf_quality_rank_loss_weight=0.3`, not V99 QILA/X1.
+Keep the live run unchanged and let its authorized budget complete.
+
+NR3D full history now covers epochs1-101: best epoch99=4260/3413,
+latest epoch101=4257/3446 over7899. Latest101 checkpoint SHA
+`76dc5dd83905c5c831ffdf2fa0702e5b2104b9caadf26e39d7bdb6cf50bd918c`;
+the collector passed own-epoch101,1134 model tensors,nonempty optimizer/
+scheduler and SHA audit. SR3D full history remains through epoch40:
+best39=11911/9937,latest40=11831/10011 over17726, with both checkpoint
+audits passed. NR and SR current progress checks at00:45UTC confirmed
+the original trainer/keeper/retention processes live, unchanged official
+configs,finite recent losses and no recent errors. Counters were
+NR771/3742 and SR1683/6486; they are not validation metrics.
+NR full-history receipt:
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261106T0044.json`.
+
+Best-checkpoint shortfalls remain ScanRefer `222/289` hits, NR3D `464`
+Acc@0.25 hits, and SR3D `391` Acc@0.25 hits. No dataset has met its
+target.
+
+## Previous Current Override: 2026-11-06 00:23 UTC
 
 ### Verified current state
 

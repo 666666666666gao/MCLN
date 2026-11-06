@@ -1,6 +1,26 @@
 # ScanRefer Stage A Restart
 
-## Current Continuation: 2026-11-06 00:25 UTC
+## Current Continuation: 2026-11-06 00:44 UTC
+
+The same `scanrefer_qila_20261105` controller/trainer is live with no
+recent errors or completion receipt. At00:44:16UTC its progress was epoch3
+batch3253/6081. It is still resuming from
+`1793909615/ckpt_epoch_2.pth`; optimizer and scheduler restoration are
+confirmed by the resume receipt. This contradicts the older23:59UTC
+snapshot that recorded epoch4 batch101. The cause and whether epoch3 had
+a complete validation before resuming are not established. Do not infer
+an epoch3 score; latest verified trial row remains epoch2=5398/4512 over
+9508, while immutable B2 remains global best=5483/4656.
+
+The live recipe remains legacy `bbf_quality_rank_loss_weight=0.3`, not
+actual V99 QILA/X1. Preserve the active eight-epoch budget without stop,
+duplicate, or hot-change. After natural completion, reconcile all
+same-checkpoint semantic rows and CPU checkpoint receipts before
+continuing the authorized matched X0 and gated QILA X1 sequence.
+
+## Previous Current Continuation: 2026-11-06 00:25 UTC
+
+## Earlier Current Continuation: 2026-11-06 00:25 UTC
 
 The registered `scanrefer_qila_20261105` controller/trainer remains live
 in `pvg_scanrefer_qila_20261105`; the scoped check at00:25UTC reported no

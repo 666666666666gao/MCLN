@@ -1,6 +1,6 @@
 # ScanRefer V99 X0 Readiness
 
-## Current State: 2026-11-06 09:36 UTC
+## Current State: 2026-11-06 10:41 UTC
 
 The sole sequential controller remains live. Its latest read-back has no
 preflight completion, optimizer-update witness, or Stage A/B completion.
@@ -9,13 +9,13 @@ repository-owned Span supervision helper and registering its SHA; the
 controller, not a manual retry, owns continuation.
 
 Storage is still the active gate: 3,978,037,815 bytes required versus
-821,866,496 free at09:36UTC, a deficit of3,156,171,319 bytes. GPU was
+821,854,208 free at10:41UTC, a deficit of3,156,183,607 bytes. GPU was
 idle. Do not duplicate or stop the controller, modify its recipe, or
 delete protected inputs/checkpoints. Paired E0 remains5435/4327 for both
 official and Reader-free identity on9508; it is an acceptance check, not
 a training metric.
 
-## Previous State: 2026-11-06 08:59 UTC
+## Previous State: 2026-11-06 09:36 UTC
 
 The legacy predecessor completed all8 epochs. Its full9508 semantic
 epoch8 result is5380/4450; trial best epoch2=5398/4512. The immutable

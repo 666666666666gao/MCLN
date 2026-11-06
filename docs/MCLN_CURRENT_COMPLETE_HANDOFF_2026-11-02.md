@@ -1,22 +1,23 @@
-## Current Override: 2026-11-06 09:36 UTC
+## Current Override: 2026-11-06 10:41 UTC
 
 Latest current-run checks through `work/remote_pvground.ps1`:
 
-- NR3D full7899 epoch110=4164/3421; Acc@0.25 best remains epoch109=
-  4307/3490. CPU audits passed for best109 and latest110: own checkpoint
-  epochs,1134 model tensors,nonempty optimizer/scheduler and SHA. Epoch110
-  SHA is `05b374943fabe3bd9ab0efbdf829c8b83f64387cc68172939ed371cc605a28eb`.
-  Existing retention is aligned at best109/latest110.
+- NR3D full7899 epoch111=4244/3407. Acc@0.25 best remains epoch109=
+  4307/3490. CPU audits passed for best109 and latest111: own checkpoint
+  epochs,1134 model tensors,nonempty optimizer/scheduler and SHA. Epoch111
+  SHA is `68a8bf5da6196350b79a8c86cf731f979d041947089608540e8eaa7128eb23a3`.
+  Existing retention is aligned at best109/latest111. At10:39UTC epoch112
+  had started at493/3742; this is training progress, not validation.
 - SR3D has no newer full validation: best/latest epoch44=11946/9976 over
-  17726. Its existing epoch44 CPU audit remains valid; the 09:32UTC
-  progress check found epoch45 training active at 727/6486 with finite
+  17726. Its existing epoch44 CPU audit remains valid; the10:41UTC
+  progress check found epoch45 training active at4156/6486 with finite
   recent losses and no recent errors. Training counters are not validation.
 - ScanRefer's single existing X0 queue controller remains alive, but no
-  preflight completion or update witness exists. The 09:36UTC read still
-  showed the storage gate at 3,978,037,815 required vs 821,866,496 free,
-  GPU idle. The prior packaging failure was repaired; the controller owns
-  any retry. Do not duplicate, stop, alter, or manually free protected
-  files.
+  preflight completion or update witness exists. The 10:41UTC read
+  showed the storage gate at 3,978,037,815 required vs 821,854,208 free
+  at10:41UTC, GPU idle. The prior packaging failure was repaired; the
+  controller owns any retry. Do not duplicate, stop, alter, or manually
+  free protected files.
 
 Latest best metrics remain ScanRefer immutable B2 epoch2=5483/4656 over
 9508 (57.67%/48.97%), NR3D epoch109=4307/3490 over7899
@@ -25,11 +26,10 @@ Latest best metrics remain ScanRefer immutable B2 epoch2=5483/4656 over
 12302 is 356 away. Scan targets5705/4945 remain222/289 hits away.
 The Scan X0 official/identity E0=5435/4327 is an acceptance baseline, not
 a training result. Audited histories:
-`docs/results/mcln_pvground_20261101/nr3d-current-full-history-audited-20261106T0936.json`
-and
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-audited-20261106T1034.json`,
 `docs/results/mcln_pvground_20261101/sr3d-current-full-history-audited-20261106T0936.json`.
 
-## Previous Current Override: 2026-11-06 08:59 UTC
+## Previous Current Override: 2026-11-06 09:36 UTC
 
 The paired X0 E0 gate has now passed on all9508 samples. Official and
 Reader-free identity both scored5435/4327; point-order SHA

@@ -1,15 +1,15 @@
-## Update: 2026-11-06 09:36 UTC
+## Update: 2026-11-06 10:41 UTC
 
 The X0 queue's measured capacity gate remains unsatisfied: required
-3,978,037,815 bytes free, observed821,866,496 bytes at09:36UTC
-(3,156,171,319 bytes short). Its existing controller is the sole owner of
+3,978,037,815 bytes free, observed821,854,208 bytes at10:41UTC
+(3,156,183,607 bytes short). Its existing controller is the sole owner of
 the sequential preflight retry; no completion/update witness is present.
 Do not reclaim protected checkpoint or initialization files manually.
 The exact omitted Span helper has been restored to the isolated source
 and registered by SHA; await the controller's evidence after capacity and
 slot gates permit it.
 
-## Previous Update: 2026-11-06 08:59 UTC
+## Previous Update: 2026-11-06 09:36 UTC
 
 The earlier ScanRefer predecessor has completed all8 epochs; its full
 history and best/latest CPU audits are recorded in the current handoff.

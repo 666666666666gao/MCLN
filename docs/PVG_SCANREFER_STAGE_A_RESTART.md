@@ -1,6 +1,76 @@
 # ScanRefer Stage A Restart
 
-## Current Continuation: 2026-11-05 22:28 UTC
+## Current Continuation: 2026-11-06 00:25 UTC
+
+The registered `scanrefer_qila_20261105` controller/trainer remains live
+in `pvg_scanrefer_qila_20261105`; the scoped check at00:25UTC reported no
+recent errors and no completion receipt. At00:23UTC its latest progress
+was epoch3 batch1799/6081. The current worker command resumes from
+`1793909615/ckpt_epoch_2.pth`, and `resume_epoch2.json` records restored
+optimizer and scheduler. The prior23:59UTC handoff said epoch4 batch101;
+the live process now reports epoch3. The cause and whether a full epoch3
+validation preceded this resume are unverified. Do not infer a new
+metric from progress or the older snapshot; the last verified complete
+trial rows remain epoch1=5366/4423 and epoch2=5398/4512 over9508.
+
+The current recipe is still legacy `bbf_quality_rank_loss_weight=0.3`,
+not V99 QILA/X1. Keep the eight-epoch run active without stopping,
+duplicating, or hot-changing it. On natural completion, reconcile the
+full same-checkpoint semantic history and CPU checkpoint audits before
+continuing with the documented matched X0 and gated actual-QILA X1.
+Prior resume attempts with exit code1 remain historical receipts; the
+current worker is live and its recent-error window is empty.
+
+NR3D full history now covers epochs1-100: best epoch99=4260/3413,
+latest epoch100=4250/3383 over7899. SR3D covers epochs1-40: best
+epoch39=11911/9937, latest epoch40=11831/10011 over17726. The best and
+latest checkpoints for both runs passed CPU own-epoch/1134-tensor/
+optimizer/scheduler/SHA audits; full receipts are in
+`docs/results/mcln_pvground_20261101/` with timestamp
+`20261106T0023`. Both original scratch recipes remain unchanged.
+
+## Current Continuation: 2026-11-05 23:37 UTC
+
+The same `scanrefer_qila_20261105` run remains active. At23:37:07UTC it
+was at epoch3 batch5317/6081 on GPU21655MiB/79%, with no recent errors.
+At~1.2batch/s, about11minutes of training steps remain before validation.
+The epoch3 first-update witness is finite (loss5.679346), and
+Reader/Support/Span each have finite nonzero gradients/deltas and updated
+10/10/14 tensors. Full9508 epoch3 validation is pending; completed
+semantic Top1 rows remain epoch1=5366/4423 and epoch2=5398/4512.
+
+Important: the active code path is legacy `bbf_quality_rank_loss_weight`
+0.3, not the V99 QILA objective or X1. Preserve the full eight-epoch
+budget without stopping, duplicating, or hot-changing the run. After
+natural completion, audit its full same-checkpoint history and CPU
+checkpoint receipts, then execute the plan's matched X0 and proceed to a
+true QILA X1 only after its implementation, step-0, objective/unit, and
+real-update gates pass. Automatic progression is authorized.
+
+NR3D current best/latest epoch99=4260/3413 over7899; SR3D best/latest
+epoch39=11911/9937 over17726. Both own-CPU checkpoint audits passed.
+At23:37UTC the NR3D trainer/keeper/retainer remained live with unchanged
+official config and an in-epoch counter86/3742; no newer completed metric
+was available. Full-history collection at23:32UTC still covered NR1-99
+and SR1-39.
+
+## Previous Current Continuation: 2026-11-05 23:10 UTC
+
+The existing `scanrefer_qila_20261105` run remains active in its original
+screen. At22:52:58UTC it was at epoch3 batch2159/6081 (~1.2it/s), GPU
+21065MiB/66%, with no recent errors. Epoch3 first optimizer update is
+finite (loss5.679346); Reader/Support/Span have finite nonzero
+gradients/deltas and updated10/10/14 tensors.
+
+The current resumed trainer is live; recorded exit code1 values belong to
+earlier failed recovery attempts, not this process.
+This is the legacy rank-loss experiment, not the documented V99 QILA
+objective. Preserve its full eight-epoch budget and do not stop, duplicate,
+or hot-change it. On natural completion, audit full9508 semantic history
+and CPU checkpoint receipts, then run matched X0 and proceed to true QILA
+X1 only if its plan gates pass. The user authorized automatic progression.
+
+## Previous Current Continuation: 2026-11-05 22:28 UTC
 
 The existing `scanrefer_qila_20261105` run is active in its original screen.
 Epochs1-2 completed full9508 semantic validation at `5366/4423` and

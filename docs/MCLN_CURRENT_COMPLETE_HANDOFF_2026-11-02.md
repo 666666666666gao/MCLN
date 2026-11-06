@@ -1,4 +1,49 @@
-## Current Override: 2026-11-05 23:59 UTC
+## Current Override: 2026-11-06 00:23 UTC
+
+### Verified current state
+
+At00:25UTC the registered ScanRefer controller/trainer remained live in
+`pvg_scanrefer_qila_20261105`, with no recent errors and no completion
+receipt. The latest scoped progress at00:23UTC showed epoch3 batch
+1799/6081. Its live command resumes from the epoch2 checkpoint
+`1793909615/ckpt_epoch_2.pth`; the resume receipt confirms optimizer and
+scheduler restoration. This conflicts with the older23:59UTC snapshot
+that recorded epoch4 batch101. Treat the live process/checkpoint as
+authoritative; the reason for the epoch discrepancy and whether epoch3
+was fully validated before this resume are not established. Do not stop,
+duplicate, or hot-change the active run. Its code still uses legacy
+`bbf_quality_rank_loss_weight=0.3`, not documented V99 QILA/X1.
+
+Latest verified full-sample `last_semantic_alignment_top1` metrics:
+
+| Dataset | Best checkpoint | Best hits | Latest completed | Latest hits | Target |
+|---|---|---:|---|---:|---:|
+| ScanRefer (9508) | immutable B2 epoch2 | `5483/4656` | current QILA epoch2 | `5398/4512` | `5705/4945` |
+| NR3D (7899) | epoch99 | `4260/3413` | epoch100 | `4250/3383` | Acc@0.25 `4724` |
+| SR3D (17726) | epoch39 | `11911/9937` | epoch40 | `11831/10011` | Acc@0.25 `12302` |
+
+NR3D and SR3D best/latest checkpoints passed CPU own-epoch,1134-model-
+tensor,nonempty optimizer/scheduler and SHA audits. NR99 SHA
+`72780f669014eba1f5773d8cad5fffd69a363bedcb35bfa126a1fa6d87c1eb04`;
+NR100 SHA
+`0c8fa4d7214ac95ff32ed03f30683502c0b9fbb6750bf0783760d5955c802ef5`;
+SR39 SHA
+`75d3fcfc24323273401663379b016a834a6f1dd82bbee23203e5997430f84f3c`;
+SR40 SHA
+`0c533a59c393d960f1aec81ea83331e59def0c619a73dfa82bdfbc22522c988d`.
+Full receipts are
+`docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261106T0023.json`
+and
+`docs/results/mcln_pvground_20261101/sr3d-current-full-history-20261106T0023.json`.
+At00:23UTC both official scratch trainers were live with their original
+configs unchanged and finite recent losses; NR was at3354/3742 and SR
+at184/6486. These are training counters, not evaluation scores.
+
+Best-checkpoint shortfalls remain ScanRefer `222/289` hits, NR3D `464`
+Acc@0.25 hits, and SR3D `391` Acc@0.25 hits. No dataset has met its
+target.
+
+## Previous Current Override: 2026-11-05 23:59 UTC
 
 The existing ScanRefer trial `scanrefer_qila_20261105` remains active in
 screen `pvg_scanrefer_qila_20261105`; do not stop, duplicate, or hot-change

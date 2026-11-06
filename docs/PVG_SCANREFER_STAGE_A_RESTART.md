@@ -1,5 +1,31 @@
 # ScanRefer Stage A Restart
 
+## Current Continuation: 2026-11-06 03:14 UTC
+
+The authorized `scanrefer_qila_20261105` controller/trainer remains live
+at epoch6 batch210/6081 as of03:14:02UTC. Its epoch6 first-update witness
+has finite loss4.4072 and finite nonzero gradients/deltas, with
+Reader/Support/Span updates10/10/14. Current recent-error window is
+empty. Latest verified full9508 semantic validation is still epoch4=
+5383/4469; epoch5 has no confirmed full-sample score.
+
+The scoped process check records failed resume receipts for epoch1 and
+two epoch2 attempts. Historical recovery output shows an assertion in
+`recover_semantic_rows` requiring
+`saved["config"].model_only_initialization`. This is a real resume audit
+incompatibility; the active controller has since advanced and produced
+an epoch6 optimizer-update witness, so do not infer a current training
+failure from those historical exits. Keep the run unchanged and do not
+stop or duplicate it. The active config is still legacy
+`bbf_quality_rank_loss_weight=0.3` with all joint-query-quality losses
+zero, not the planned V99 QILA/X1.
+
+NR3D and SR3D trainers, keepers, and retention watchers remain live on
+their original official scratch configs. At03:09UTC progress was
+NR3D2720/3742 and SR3D3908/6486; these counters are not validation
+scores. Latest audited full-sample metrics remain NR3D epoch103=
+4271/3459 and SR3D epoch41=11935/10046.
+
 ## Current Continuation: 2026-11-06 02:47 UTC
 
 At02:45:46UTC the authorized `scanrefer_qila_20261105` run remained live

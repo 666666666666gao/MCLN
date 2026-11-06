@@ -1,15 +1,29 @@
-## Current Override: 2026-11-06 02:47 UTC
+## Current Override: 2026-11-06 03:14 UTC
 
 ### Verified current state
 
-At02:45:46UTC the registered ScanRefer run remained live in
-`pvg_scanrefer_qila_20261105`, epoch5 batch5045/6081, with no recent
-errors or completion receipt. The latest complete full9508 semantic
-validation remains epoch4=5383/4469; trial best is epoch2=5398/4512 and
-immutable B2 remains global best=5483/4656. The active recipe remains
-legacy `bbf_quality_rank_loss_weight=0.3` with joint-query-quality loss
-terms zero, not the documented V99 QILA/X1. Do not stop, duplicate, or
-hot-change this authorized run.
+At03:14:02UTC the registered ScanRefer run is active in
+`pvg_scanrefer_qila_20261105`, training epoch6 at210/6081. GPU process
+328001 is active; its epoch6 first-update witness records finite loss
+4.4072 and finite nonzero gradients/deltas with updates10/10 Reader,
+10/10 Support and14/14 Span tensors. No current-window errors are
+reported. The prior full validation remains epoch4=5383/4469 over9508;
+there is no verified epoch5 full-sample semantic result yet. Trial best
+is epoch2=5398/4512 and immutable B2 remains global best=5483/4656.
+
+The live recipe remains legacy `bbf_quality_rank_loss_weight=0.3`;
+joint-query-quality loss terms are zero, so this is not the documented
+V99 QILA/X1 objective. A confirmed recovery/metadata issue also needs
+tracking: the scoped check reports three failed resume exit receipts
+(epoch1 and epoch2 attempts); the historical traceback identifies an
+`AssertionError` in `recover_semantic_rows` while requiring
+`saved["config"].model_only_initialization`. Despite those failed
+attempts, the registered controller and trainer are currently live and
+have advanced to epoch6 with a real update witness. Treat this as a
+checkpoint-recovery audit failure, not proof of training divergence.
+Do not stop, duplicate, or hot-change the active run; preserve the
+receipts and verify later epoch metrics against full-sample semantic
+rows and own-epoch CPU checkpoint audits.
 
 NR3D full-history receipt observed at02:35:39UTC covers epochs1-103.
 Epoch103 is a new best and latest:4271/3459 over7899. Its CPU
@@ -18,17 +32,17 @@ audit passed. SHA:
 `5d07d0458491001264d4df14bd1939615c85485844cca3825e357b6aaf16b184`.
 The existing retention watcher has only epoch103 kept as best/latest;
 the receipt records authorized removal of preserved epochs99 and102.
-The02:47:42UTC scoped progress check confirms NR3D trainer/keeper/
+The03:09:17UTC scoped progress check confirms NR3D trainer/keeper/
 retention live, original config unchanged, finite recent losses, no
-recent errors, and counter1183/3742. Full receipt:
+recent errors, and counter2720/3742. Full receipt:
 `docs/results/mcln_pvground_20261101/nr3d-current-full-history-20261106T0246.json`.
 
 SR3D remains latest audited best/latest epoch41=11935/10046 over17726;
 its SHA audit remains
 `0692122690a378453a05bc99bdbf6180b69166e3b26516e6513e2fb9e91c5528`.
-At02:45:52UTC its trainer/keeper/retention were live with the original
+At03:09:15UTC its trainer/keeper/retention were live with the original
 config unchanged, finite recent losses, no recent errors, and counter
-2359/6486. This is training progress, not a new validation.
+3908/6486. This is training progress, not a new validation.
 
 Latest verified full-sample `last_semantic_alignment_top1` metrics:
 
@@ -41,7 +55,21 @@ Latest verified full-sample `last_semantic_alignment_top1` metrics:
 Best-checkpoint gaps remain ScanRefer222/289, NR3D453 Acc@0.25, and
 SR3D367 Acc@0.25 hits. No target has been met.
 
-## Previous Current Override: 2026-11-06 02:35 UTC
+Open-source review found relevant precedents, not proven MCLN gains:
+ConcreteNet's official 3D-grounding code explicitly targets repetitive
+same-class distractors with relational fusion and contrastive training;
+H-DETR's official implementation keeps one-to-one inference while adding
+one-to-many training supervision; Stable-DINO aligns positive
+classification supervision with localization quality; Rank-DETR adds
+rank-oriented scoring/loss for detection. Candidate transfer is a
+scene-normalized same-instance hard-negative/listwise objective for
+QILA, with multi-positive supervision only as auxiliary training signal
+and no inference-architecture change. ConcreteNet is the closest
+grounding precedent; detector results do not establish ScanRefer benefit.
+After the active budget and checkpoint audit, run matched X0, then true
+QILA X1 only after objective/unit and real-update gates pass.
+
+## Previous Current Override: 2026-11-06 03:00 UTC
 
 ### Verified current state
 
